@@ -1,0 +1,24 @@
+"pages"
+,"uid","pid","sorting","deleted","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title"
+,1,0,256,0,0,0,0,0,"FunctionalTest"
+,88,1,256,0,0,0,0,0,"DataHandlerTest"
+,89,88,256,0,0,0,0,0,"Relations"
+,90,88,512,0,0,0,0,0,"Target"
+"tx_test_mm"
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","parent","group_mm_1_local"
+,28,0,256,0,0,0,0,0,0,0,"Surf A",0,0
+,29,0,512,0,0,0,0,0,0,0,"Surf B",0,0
+,30,0,768,0,0,0,0,0,0,0,"Surf C",0,0
+,31,0,1024,0,0,0,0,0,0,0,"Surf A.A",28,0
+"group_mm_1_relations_mm"
+,"uid_local","uid_foreign","tablenames","sorting","sorting_foreign","fieldname"
+,28,297,"tt_content",0,1,"group_mm_1_foreign"
+,29,297,"tt_content",0,2,"group_mm_1_foreign"
+"tt_content"
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","image","group_mm_1_foreign"
+,297,89,256,0,0,0,0,0,0,0,"Regular Element #1",0,2
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting"
+,"39da406998127a9cc83f7668f10d5b33","tx_test_mm",28,"group_mm_1_local",0,0,2147483647,0,,,,0,0,"tt_content",297,"group_mm_1_foreign",0,0,2147483647,0,1
+,"7f7256cdf348487c8b4960f7335609ff","tx_test_mm",29,"group_mm_1_local",0,0,2147483647,0,,,,0,0,"tt_content",297,"group_mm_1_foreign",0,0,2147483647,0,2
+,"aab8a4603b35763aef487c715405b807","tx_test_mm",31,"parent",0,0,2147483647,0,,,,0,0,"tx_test_mm",28,,0,0,2147483647,0,0

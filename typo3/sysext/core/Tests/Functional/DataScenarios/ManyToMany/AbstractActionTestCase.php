@@ -31,23 +31,23 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected const VALUE_ContentIdLast = 298;
     protected const VALUE_LanguageId = 1;
     protected const VALUE_LanguageIdSecond = 2;
-    protected const VALUE_SurfIdFirst = 28;
-    protected const VALUE_SurfIdSecond = 29;
-    protected const VALUE_SurfIdThird = 30;
-    protected const VALUE_SurfIdFourth = 31;
+    protected const VALUE_TestMMIdFirst = 28;
+    protected const VALUE_TestMMIdSecond = 29;
+    protected const VALUE_TestMMIdThird = 30;
+    protected const VALUE_TestMMIdFourth = 31;
 
     protected const TABLE_Page = 'pages';
     protected const TABLE_Content = 'tt_content';
-    protected const TABLE_Surf = 'tx_test_mm_surf';
-    protected const TABLE_ContentSurf_ManyToMany = 'surf_content_mm';
+    protected const TABLE_TEST_MM = 'tx_test_mm';
+    protected const TABLE_GROUP_1_ManyToMany = 'group_mm_1_relations_mm';
 
-    protected const FIELD_Relations = 'relations';
+    protected const FIELD_GROUP_MM_1_LOCAL = 'group_mm_1_local';
 
-    protected const FIELD_Posts = 'posts';
+    protected const FIELD_SELECT_MM_1_LOCAL = 'select_mm_1_local';
 
-    protected const FIELD_Surfing = 'surfing';
+    protected const FIELD_GROUP_MM_1_FOREIGN = 'group_mm_1_foreign';
 
-    protected const FIELD_Surfers = 'surfers';
+    protected const FIELD_SELECT_MM_1_FOREIGN = 'select_mm_1_foreign';
 
     protected const SCENARIO_DataSet = __DIR__ . '/DataSet/ImportDefault.csv';
 
@@ -77,68 +77,142 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->setUpFrontendRootPage(1, ['EXT:core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
     }
 
-    public function addSurfRelation(): void
+    public function addGroupMM1RelationOnForeignSide(): void
     {
         $this->actionService->modifyReferences(
             self::TABLE_Content,
             self::VALUE_ContentIdFirst,
-            self::FIELD_Surfing,
-            [self::VALUE_SurfIdFirst, self::VALUE_SurfIdSecond, 31]
+            self::FIELD_GROUP_MM_1_FOREIGN,
+            [self::VALUE_TestMMIdFirst, self::VALUE_TestMMIdSecond, 31]
         );
     }
 
-    public function createSurfAndAddRelation(): void
+    public function createTestMMAndAddGroupMM1Relation(): void
     {
         $newTableIds = $this->actionService->createNewRecord(
-            self::TABLE_Surf,
+            self::TABLE_TEST_MM,
             0,
-            ['title' => 'Surfing #1', self::FIELD_Relations => 'tt_content_' . self::VALUE_ContentIdFirst]
+            ['title' => 'Surfing #1', self::FIELD_GROUP_MM_1_LOCAL => 'tt_content_' . self::VALUE_ContentIdFirst]
         );
-        $this->recordIds['newSurfId'] = $newTableIds[self::TABLE_Surf][0];
+        $this->recordIds['newGroupMM1Id'] = $newTableIds[self::TABLE_TEST_MM][0];
     }
 
-    public function deleteSurfRelation(): void
+    public function createTestMMAndContentWithGroupMM1Relation(): void
+    {
+        $newTableIds = $this->actionService->createNewRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_TEST_MM => ['pid' => 0, 'title' => 'Surfing #1'],
+                self::TABLE_Content => ['header' => 'Surfing #1', self::FIELD_GROUP_MM_1_FOREIGN => '__previousUid'],
+            ]
+        );
+        $this->recordIds['newGroupMM1Id'] = $newTableIds[self::TABLE_TEST_MM][0];
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+    }
+
+    public function createTestMMAndContentWithAddedGroupMM1Relation(): void
+    {
+        $newTableIds = $this->actionService->createNewRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_TEST_MM => ['pid' => 0, 'title' => 'Surfing #1'],
+                self::TABLE_Content => ['header' => 'Surfing #1'],
+            ]
+        );
+        $this->recordIds['newGroupMM1Id'] = $newTableIds[self::TABLE_TEST_MM][0];
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+
+        $this->actionService->modifyRecord(
+            self::TABLE_Content,
+            $this->recordIds['newContentId'],
+            [self::FIELD_GROUP_MM_1_FOREIGN => $this->recordIds['newGroupMM1Id']]
+        );
+    }
+
+    public function createContentAndAddGroupMM1Relation(): void
+    {
+        $newTableIds = $this->actionService->createNewRecord(
+            self::TABLE_Content,
+            self::VALUE_PageId,
+            ['header' => 'Surfing #1', self::FIELD_GROUP_MM_1_FOREIGN => self::VALUE_TestMMIdSecond]
+        );
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+    }
+
+    public function createContentAndTestMMWithAddedGroupMM1Relation(): void
+    {
+        $newTableIds = $this->actionService->createNewRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_Content => ['header' => 'Surfing #1'],
+                self::TABLE_TEST_MM => ['pid' => 0, 'title' => 'Surfing #1', self::FIELD_GROUP_MM_1_LOCAL => 'tt_content___previousUid'],
+            ]
+        );
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+        $this->recordIds['newGroupMM1Id'] = $newTableIds[self::TABLE_TEST_MM][0];
+
+        $this->actionService->modifyRecord(
+            self::TABLE_TEST_MM,
+            $this->recordIds['newGroupMM1Id'],
+            [self::FIELD_GROUP_MM_1_LOCAL => 'tt_content_' . $this->recordIds['newContentId']]
+        );
+    }
+
+    public function createContentAndTestMMWithGroupMM1Relation(): void
+    {
+        $newTableIds = $this->actionService->createNewRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_Content => ['header' => 'Surfing #1'],
+                self::TABLE_TEST_MM => ['pid' => 0, 'title' => 'Surfing #1', self::FIELD_GROUP_MM_1_LOCAL => 'tt_content___previousUid'],
+            ]
+        );
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+        $this->recordIds['newGroupMM1Id'] = $newTableIds[self::TABLE_TEST_MM][0];
+    }
+
+    public function deleteGroupMM1RelationOnForeignSide(): void
     {
         $this->actionService->modifyReferences(
             self::TABLE_Content,
             self::VALUE_ContentIdFirst,
-            self::FIELD_Surfing,
-            [self::VALUE_SurfIdFirst]
+            self::FIELD_GROUP_MM_1_FOREIGN,
+            [self::VALUE_TestMMIdFirst]
         );
     }
 
-    public function changeSurfRelationSorting(): void
+    public function changeGroupMM1SortingOnForeignSide(): void
     {
         $this->actionService->modifyReferences(
             self::TABLE_Content,
             self::VALUE_ContentIdFirst,
-            self::FIELD_Surfing,
-            [self::VALUE_SurfIdSecond, self::VALUE_SurfIdFirst]
+            self::FIELD_GROUP_MM_1_FOREIGN,
+            [self::VALUE_TestMMIdSecond, self::VALUE_TestMMIdFirst]
         );
     }
 
-    public function modifySurfOfRelation(): void
+    public function modifyTestMM(): void
     {
-        $this->actionService->modifyRecord(self::TABLE_Surf, self::VALUE_SurfIdFirst, ['title' => 'Surfing #1']);
+        $this->actionService->modifyRecord(self::TABLE_TEST_MM, self::VALUE_TestMMIdFirst, ['title' => 'Surfing #1']);
     }
 
-    public function modifyContentOfRelation(): void
+    public function modifyContent(): void
     {
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, ['header' => 'Surfing #1']);
     }
 
-    public function modifyBothsOfRelation(): void
+    public function modifyTestMMAndContent(): void
     {
-        $this->actionService->modifyRecord(self::TABLE_Surf, self::VALUE_SurfIdFirst, ['title' => 'Surfing #1']);
+        $this->actionService->modifyRecord(self::TABLE_TEST_MM, self::VALUE_TestMMIdFirst, ['title' => 'Surfing #1']);
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, ['header' => 'Surfing #1']);
     }
 
-    public function deleteContentOfRelation(): void
+    public function deleteContentWithMultipleRelations(): void
     {
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
     }
 
-    public function deleteContentOfRelationWithoutSoftDelete(): void
+    public function deleteContentWithMultipleRelationsAndWithoutSoftDelete(): void
     {
         unset($GLOBALS['TCA'][self::TABLE_Content]['ctrl']['delete']);
         $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
@@ -147,81 +221,77 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['deletedRecordId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast] ?? self::VALUE_ContentIdLast;
     }
 
-    public function deleteSurfOfRelation(): void
+    public function deleteTestMM(): void
     {
-        $this->actionService->deleteRecord(self::TABLE_Surf, self::VALUE_SurfIdFirst);
+        $this->actionService->deleteRecord(self::TABLE_TEST_MM, self::VALUE_TestMMIdFirst);
     }
 
-    public function copyContentOfRelation(): void
+    public function copyContentWithRelations(): void
     {
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageId);
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
-    public function copySurfOfRelation(): void
+    public function copyTestMM(): void
     {
-        $newTableIds = $this->actionService->copyRecord(self::TABLE_Surf, self::VALUE_SurfIdFirst, 0);
-        $this->recordIds['newSurfId'] = $newTableIds[self::TABLE_Surf][self::VALUE_SurfIdFirst];
+        $newTableIds = $this->actionService->copyRecord(self::TABLE_TEST_MM, self::VALUE_TestMMIdFirst, 0);
+        $this->recordIds['newGroupMM1Id'] = $newTableIds[self::TABLE_TEST_MM][self::VALUE_TestMMIdFirst];
     }
 
-    /**
-     * See DataSet/copyContentToLanguageOfRelation.csv
-     */
-    public function copyContentToLanguageOfRelation(): void
+    public function copyContentToLanguage(): void
     {
         $newTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
     /**
-     * See DataSet/copySurfToLanguageOfRelation.csv
      * @todo: This action does not copy the relations with it (at least in workspaces), and should be re-evaluated
      */
-    public function copySurfToLanguageOfRelation(): void
+    public function copyTestMMToLanguage(): void
     {
-        $newTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Surf, self::VALUE_SurfIdFirst, self::VALUE_LanguageId);
-        $this->recordIds['newSurfId'] = $newTableIds[self::TABLE_Surf][self::VALUE_SurfIdFirst];
+        $newTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_TEST_MM, self::VALUE_TestMMIdFirst, self::VALUE_LanguageId);
+        $this->recordIds['newGroupMM1Id'] = $newTableIds[self::TABLE_TEST_MM][self::VALUE_TestMMIdFirst];
     }
 
-    public function localizeContentOfRelation(): void
+    public function localizeContent(): void
     {
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
-    public function localizeContentOfRelationWithLanguageSynchronization(): void
+    public function localizeContentWithLanguageSynchronization(): void
     {
-        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Surfing]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_GROUP_MM_1_FOREIGN]['config']['behaviour']['allowLanguageSynchronization'] = true;
         $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
-    public function localizeContentOfRelationWithLanguageExclude(): void
+    public function localizeContentWithLanguageExclude(): void
     {
-        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Surfing]['config']['l10n_mode'] = 'exclude';
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_GROUP_MM_1_FOREIGN]['config']['l10n_mode'] = 'exclude';
         $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
-    public function localizeContentOfRelationAndAddSurfWithLanguageSynchronization(): void
+    public function localizeContentAndAddTestMMWithLanguageSynchronization(): void
     {
-        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Surfing]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_GROUP_MM_1_FOREIGN]['config']['behaviour']['allowLanguageSynchronization'] = true;
         $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
         $this->actionService->modifyReferences(
             self::TABLE_Content,
             self::VALUE_ContentIdLast,
-            self::FIELD_Surfing,
-            [self::VALUE_SurfIdSecond, self::VALUE_SurfIdThird, self::VALUE_SurfIdFourth]
+            self::FIELD_GROUP_MM_1_FOREIGN,
+            [self::VALUE_TestMMIdSecond, self::VALUE_TestMMIdThird, self::VALUE_TestMMIdFourth]
         );
     }
 
-    public function localizeContentChainOfRelationAndAddSurfWithLanguageSynchronization(): void
+    public function localizeContentChainAndAddTestMMWithLanguageSynchronization(): void
     {
-        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Surfing]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_GROUP_MM_1_FOREIGN]['config']['behaviour']['allowLanguageSynchronization'] = true;
         $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
@@ -230,67 +300,67 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->modifyRecord(
             self::TABLE_Content,
             $this->recordIds['localizedContentIdSecond'],
-            ['l10n_state' => [self::FIELD_Surfing => 'source']]
+            ['l10n_state' => [self::FIELD_GROUP_MM_1_FOREIGN => 'source']]
         );
         $this->actionService->modifyReferences(
             self::TABLE_Content,
             self::VALUE_ContentIdLast,
-            self::FIELD_Surfing,
-            [self::VALUE_SurfIdSecond, self::VALUE_SurfIdThird, self::VALUE_SurfIdFourth]
+            self::FIELD_GROUP_MM_1_FOREIGN,
+            [self::VALUE_TestMMIdSecond, self::VALUE_TestMMIdThird, self::VALUE_TestMMIdFourth]
         );
     }
 
-    public function localizeSurfOfRelation(): void
+    public function localizeTestMM(): void
     {
-        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Surf, self::VALUE_SurfIdFirst, self::VALUE_LanguageId);
-        $this->recordIds['localizedSurfId'] = $localizedTableIds[self::TABLE_Surf][self::VALUE_SurfIdFirst];
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_TEST_MM, self::VALUE_TestMMIdFirst, self::VALUE_LanguageId);
+        $this->recordIds['localizedSurfId'] = $localizedTableIds[self::TABLE_TEST_MM][self::VALUE_TestMMIdFirst];
     }
 
-    public function localizeLocalDefaultSurfer(): void
+    public function localizeTestMMSelect1MMLocal(): void
     {
-        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Surf, self::VALUE_SurfIdThird, self::VALUE_LanguageId);
-        $this->recordIds['localizedSurfId'] = $localizedTableIds[self::TABLE_Surf][self::VALUE_SurfIdThird];
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_TEST_MM, self::VALUE_TestMMIdThird, self::VALUE_LanguageId);
+        $this->recordIds['localizedSurfId'] = $localizedTableIds[self::TABLE_TEST_MM][self::VALUE_TestMMIdThird];
     }
 
-    public function localizeLocalDefaultSurferWithExclude(): void
+    public function localizeTestMMSelect1MMLocalWithExclude(): void
     {
-        $GLOBALS['TCA'][self::TABLE_Surf]['columns'][self::FIELD_Posts]['config']['l10n_mode'] = 'exclude';
+        $GLOBALS['TCA'][self::TABLE_TEST_MM]['columns'][self::FIELD_SELECT_MM_1_LOCAL]['config']['l10n_mode'] = 'exclude';
         $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
-        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Surf, self::VALUE_SurfIdThird, self::VALUE_LanguageId);
-        $this->recordIds['localizedSurfId'] = $localizedTableIds[self::TABLE_Surf][self::VALUE_SurfIdThird];
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_TEST_MM, self::VALUE_TestMMIdThird, self::VALUE_LanguageId);
+        $this->recordIds['localizedSurfId'] = $localizedTableIds[self::TABLE_TEST_MM][self::VALUE_TestMMIdThird];
     }
 
-    public function localizeLocalDefaultSurferWithLanguageSynchronization(): void
+    public function localizeTestMMSelect1MMLocalWithLanguageSynchronization(): void
     {
-        $GLOBALS['TCA'][self::TABLE_Surf]['columns'][self::FIELD_Posts]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $GLOBALS['TCA'][self::TABLE_TEST_MM]['columns'][self::FIELD_SELECT_MM_1_LOCAL]['config']['behaviour']['allowLanguageSynchronization'] = true;
         $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
-        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Surf, self::VALUE_SurfIdThird, self::VALUE_LanguageId);
-        $this->recordIds['localizedSurfId'] = $localizedTableIds[self::TABLE_Surf][self::VALUE_SurfIdThird];
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_TEST_MM, self::VALUE_TestMMIdThird, self::VALUE_LanguageId);
+        $this->recordIds['localizedSurfId'] = $localizedTableIds[self::TABLE_TEST_MM][self::VALUE_TestMMIdThird];
     }
 
-    public function localizeForeignDefaultPost(): void
+    public function localizeContentSelect1MMForeign(): void
     {
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
-    public function localizeForeignDefaultPostWithExclude(): void
+    public function localizeContentSelect1MMForeignWithExclude(): void
     {
-        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Surfers]['config']['l10n_mode'] = 'exclude';
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_SELECT_MM_1_FOREIGN]['config']['l10n_mode'] = 'exclude';
         $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
-    public function localizeForeignDefaultPostWithLanguageSynchronization(): void
+    public function localizeContentSelect1MMForeignWithLanguageSynchronization(): void
     {
-        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Surfers]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_SELECT_MM_1_FOREIGN]['config']['behaviour']['allowLanguageSynchronization'] = true;
         $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
-    public function moveContentOfRelationToDifferentPage(): void
+    public function moveContentToDifferentPage(): void
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
     }
