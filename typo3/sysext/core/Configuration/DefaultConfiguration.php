@@ -367,7 +367,36 @@ return [
             // mapped to a concrete MIME type by their file extension
             // (but only if the file was detected as the generalized mime type!)
             'mimeTypeCompatibility' => [
+                // mime-db/db.json only knows: "application/octet-stream", "application/x-msdos-program", "application/x-msdownload"
+                // So we map all other possible .exe types to this.
                 'application/x-dosexec' => [
+                    'exe' => 'application/x-msdos-program',
+                ],
+                'application/x-mz-executable' => [
+                    'exe' => 'application/x-msdos-program',
+                ],
+                'application/x-wine-extension-mz' => [
+                    'exe' => 'application/x-msdos-program',
+                ],
+                'application/x-executable' => [
+                    'exe' => 'application/x-msdos-program',
+                ],
+                'application/binary' => [
+                    'exe' => 'application/x-msdos-program',
+                ],
+                'application/x-ms-application' => [
+                    'exe' => 'application/x-msdos-program',
+                ],
+                'application/dos-exe' => [
+                    'exe' => 'application/x-msdos-program',
+                ],
+                'application/x-ms-dos-executable' => [
+                    'exe' => 'application/x-msdos-program',
+                ],
+                'application/vnd.microsoft.portable-executable' => [
+                    'exe' => 'application/x-msdos-program',
+                ],
+                'application/x-winexe' => [
                     'exe' => 'application/x-msdos-program',
                 ],
                 // Encrypted Office Open XML documents
@@ -435,10 +464,12 @@ return [
                     'jfif' => 'image/pjpeg',
                 ],
                 'text/plain' => [
+                    'json' => 'application/json',
+                    'srt' => 'application/x-subrip',
+                    'vimeo' => 'video/vimeo',
                     'yaml' => 'application/yaml',
                     'yml' => 'application/yaml',
                     'youtube' => 'video/youtube',
-                    'vimeo' => 'video/vimeo',
                 ],
                 'text/xml' => [
                     'opml' => 'text/x-opml',
