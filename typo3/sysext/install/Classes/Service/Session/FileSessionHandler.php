@@ -42,11 +42,13 @@ class FileSessionHandler implements \SessionHandlerInterface
      */
     private int $expirationTimeInMinutes;
 
+    private HashService $hashService;
+
     public function __construct(
         string $sessionPath,
         int $expirationTimeInMinutes,
-        private readonly HashService $hashService
     ) {
+        $this->hashService = new HashService();
         $this->sessionPath = rtrim($sessionPath, '/') . '/';
         $this->expirationTimeInMinutes = $expirationTimeInMinutes;
         // Start our PHP session early so that hasSession() works
@@ -57,9 +59,8 @@ class FileSessionHandler implements \SessionHandlerInterface
      * Returns the path where to store our session files
      *
      * @throws \TYPO3\CMS\Install\Exception
-     * @return string Session save path
      */
-    private function getSessionSavePath()
+    private function getSessionSavePath(): string
     {
         if (empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
             throw new \TYPO3\CMS\Install\Exception(
@@ -74,10 +75,8 @@ class FileSessionHandler implements \SessionHandlerInterface
 
     /**
      * Returns the file where to store our session data
-     *
-     * @return string A filename
      */
-    private function getSessionFile(string $id)
+    private function getSessionFile(string $id): string
     {
         $sessionSavePath = $this->getSessionSavePath();
         return $sessionSavePath . '/hash_' . $this->getSessionHash($id);

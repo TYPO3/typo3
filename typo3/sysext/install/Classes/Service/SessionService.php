@@ -16,9 +16,9 @@
 namespace TYPO3\CMS\Install\Service;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
@@ -44,36 +44,36 @@ class SessionService implements SingletonInterface
 
     /**
      * the cookie to store the session ID of the install tool
-     *
-     * @var string
      */
-    private $cookieName = 'Typo3InstallTool';
+    private string $cookieName = 'Typo3InstallTool';
 
     /**
      * time (minutes) to expire an unused session
-     *
-     * @var int
      */
-    private $expireTimeInMinutes = 15;
+    private int $expireTimeInMinutes = 15;
 
     /**
      * time (minutes) to generate a new session id for our current session
-     *
-     * @var int
      */
-    private $regenerateSessionIdTime = 5;
+    private int $regenerateSessionIdTime = 5;
 
-    public function __construct(private readonly HashService $hashService) {}
+    public function __construct(protected readonly LoggerInterface $logger) {}
 
     public function installSessionHandler(): void
     {
         // Register our "save" session handler
-        $sessionHandler = GeneralUtility::makeInstance(
-            FileSessionHandler::class,
-            Environment::getVarPath() . '/session',
-            $this->expireTimeInMinutes,
-            $this->hashService
-        );
+        $sessionHandlerClass = $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolSessionHandler']['className'] ?? FileSessionHandler::class;
+        $options = $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolSessionHandler']['options'] ?? [];
+        $options['expirationTimeInMinutes'] = $this->expireTimeInMinutes;
+        try {
+            $sessionHandler = new $sessionHandlerClass(...$options);
+        } catch (\Throwable $throwable) {
+            $this->logger->error('Session handler is not configured properly: ' . $throwable->getMessage());
+            // Regardless of ANY misconfiguration, we expect the session handler - like the whole install tool - to work
+            // at ANY time. For this reason, any PHP error or misconfiguration fails silently to the FileSessionHandler.
+            $sessionHandler = $this->getDefaultSessionHandler();
+        }
+
         session_set_save_handler($sessionHandler);
         session_name($this->cookieName);
         ini_set('session.cookie_secure', GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'On' : 'Off');
@@ -95,6 +95,14 @@ class SessionService implements SingletonInterface
             $sessionCreationError .= 'Make sure no installed extension is starting a session in its ext_localconf.php or ext_tables.php.';
             throw new Exception($sessionCreationError, 1294587486);
         }
+    }
+
+    protected function getDefaultSessionHandler(): \SessionHandlerInterface
+    {
+        return new FileSessionHandler(
+            $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolSessionHandler']['options']['sessionPath'] ?? Environment::getVarPath() . '/session',
+            $this->expireTimeInMinutes,
+        );
     }
 
     public function initializeSession()

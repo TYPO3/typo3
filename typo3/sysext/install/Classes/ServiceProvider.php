@@ -231,7 +231,7 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getSessionService(ContainerInterface $container): Service\SessionService
     {
         return new Service\SessionService(
-            $container->get(HashService::class),
+            $container->get(LogManager::class)->getLogger(Service\SessionService::class)
         );
     }
 
