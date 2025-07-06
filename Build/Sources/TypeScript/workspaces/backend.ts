@@ -89,7 +89,6 @@ class Backend extends Workspaces {
 
     DocumentService.ready().then((): void => {
       this.registerEvents();
-      this.notifyWorkspaceSwitchAction();
 
       // Set the depth from the main element
       this.settings.depth = (document.querySelector(Identifiers.depthSelector) as HTMLInputElement)?.value;
@@ -146,17 +145,6 @@ class Backend extends Workspaces {
           checkbox.dispatchEvent(new CustomEvent('multiRecordSelection:checkbox:state:changed', { bubbles: true, cancelable: false }));
         }
       });
-    }
-  }
-
-  private notifyWorkspaceSwitchAction(): void {
-    const mainElement = document.querySelector('main[data-workspace-switch-action]') as HTMLElement;
-    if (mainElement.dataset.workspaceSwitchAction) {
-      const workspaceSwitchInformation = JSON.parse(mainElement.dataset.workspaceSwitchAction);
-      // we need to do this manually, but this should be done better via proper events
-      top.TYPO3.WorkspacesMenu.performWorkspaceSwitch(workspaceSwitchInformation.id, workspaceSwitchInformation.title);
-      top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
-      top.TYPO3.ModuleMenu.App.refreshMenu();
     }
   }
 

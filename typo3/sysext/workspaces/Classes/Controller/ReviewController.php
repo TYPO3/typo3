@@ -125,52 +125,10 @@ final readonly class ReviewController
             $pageTitle
         );
         $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
-        $this->addWorkspaceSelector($view, $availableWorkspaces, $activeWorkspace, $pageUid);
         $this->addPreviewLink($view, $pageUid, $activeWorkspace);
         $this->addEditWorkspaceRecordButton($view, $pageUid, $activeWorkspace);
         $this->addShortcutButton($view, $activeWorkspaceTitle, $pageTitle, $pageUid);
         return $view->renderResponse('Review/Index');
-    }
-
-    /**
-     * Create the workspace selection drop-down menu.
-     */
-    private function addWorkspaceSelector(ModuleTemplate $view, array $availableWorkspaces, int $activeWorkspace, int $pageUid): void
-    {
-        $items = [];
-        $items[] = [
-            'title' => $availableWorkspaces[$activeWorkspace],
-            'active' => true,
-            'url' => $this->getModuleUri($pageUid),
-        ];
-        foreach ($availableWorkspaces as $workspaceId => $workspaceTitle) {
-            if ($workspaceId === $activeWorkspace) {
-                continue;
-            }
-            $items[] = [
-                'title' => $workspaceTitle,
-                'active' => false,
-                'url' => $this->getModuleUri($pageUid, (int)$workspaceId),
-            ];
-        }
-        $actionMenu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
-        $actionMenu->setIdentifier('workspaceSelector');
-        $actionMenu->setLabel(
-            $this->getLanguageService()->sL(
-                'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:moduleMenu.dropdown.label'
-            )
-        );
-        foreach ($items as $workspaceData) {
-            $menuItem = $actionMenu
-                ->makeMenuItem()
-                ->setTitle($workspaceData['title'])
-                ->setHref($workspaceData['url']);
-            if ($workspaceData['active']) {
-                $menuItem->setActive(true);
-            }
-            $actionMenu->addMenuItem($menuItem);
-        }
-        $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($actionMenu);
     }
 
     private function addShortcutButton(ModuleTemplate $view, string $activeWorkspaceTitle, string $pageTitle, int $pageId): void
@@ -231,17 +189,6 @@ final readonly class ReviewController
         }
     }
 
-    private function getModuleUri(int $pageUid, ?int $workspaceId = null): string
-    {
-        $parameters = [
-            'id' => $pageUid,
-        ];
-        if ($workspaceId !== null) {
-            $parameters['workspace'] = $workspaceId;
-        }
-        return (string)$this->uriBuilder->buildUriFromRoute('workspaces_admin', $parameters);
-    }
-
     /**
      * Returns true if at least one custom workspace next to live workspace exists.
      */
@@ -279,8 +226,8 @@ final readonly class ReviewController
     private function getStageActions(): array
     {
         $languageService = $this->getLanguageService();
-        $currentWorkspace = $this->getBackendUser()->workspace;
         $backendUser = $this->getBackendUser();
+        $currentWorkspace = $backendUser->workspace;
         $actions = [];
         $massActionsEnabled = (bool)($backendUser->getTSConfig()['options.']['workspaces.']['enableMassActions'] ?? true);
         if ($massActionsEnabled) {

@@ -124,12 +124,8 @@ class WorkspacesMenu {
 
   /**
    * Changes the data in the module menu and the updates the backend context
-   * This method is also used in the workspaces backend module.
-   *
-   * @param {Number} id the workspace ID
-   * @param {String} title the workspace title
    */
-  public performWorkspaceSwitch(id: number, title: string): void {
+  private performWorkspaceSwitch(id: number, title: string): void {
     const toolbarItemContainer = document.querySelector(Identifiers.containerSelector);
     // remove "active" class
     toolbarItemContainer.querySelector(Identifiers.activeMenuItemLinkSelector).classList.remove('active');
