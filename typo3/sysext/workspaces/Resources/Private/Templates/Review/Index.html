@@ -19,7 +19,7 @@
 
     <f:if condition="{pageTitle}"><h1>{pageTitle}</h1></f:if>
 
-    <main data-workspace-switch-action="{workspaceSwitched -> f:format.raw()}">
+    <main>
         <f:if condition="{showGrid}">
             <f:then>
                 <f:render partial="WorkingTable" arguments="{_all}" />
