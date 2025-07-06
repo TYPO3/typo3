@@ -62,9 +62,9 @@ class PreviewController
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
         $queryParameters = $request->getQueryParams();
-        $previewWS = $queryParameters['previewWS'] ?? null;
         $pageUid = (int)$queryParameters['id'];
         $backendUser = $this->getBackendUser();
+        $activeWorkspace = $backendUser->workspace;
 
         // Initialize module template here, so custom css / js is loaded afterwards (making overrides possible)
         $view = $this->moduleTemplateFactory->create($request);
@@ -89,23 +89,10 @@ class PreviewController
         $this->pageRenderer->addInlineSetting('Workspaces', 'id', $pageUid);
 
         // Fetch next and previous stage
-        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
-            $this->stageService->getWorkspaceId(),
-            -99,
-            $pageUid,
-            0,
-            'tables_modify'
-        );
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($activeWorkspace, -99, $pageUid, 0, 'tables_modify');
         [, $nextStage] = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
         [, $previousStage] = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);
         $availableWorkspaces = $this->workspaceService->getAvailableWorkspaces();
-        $activeWorkspace = $backendUser->workspace;
-        if ($previewWS !== null && array_key_exists($previewWS, $availableWorkspaces) && $activeWorkspace != $previewWS) {
-            $activeWorkspace = $previewWS;
-            $backendUser->setWorkspace($activeWorkspace);
-            BackendUtility::setUpdateSignal('updatePageTree');
-        }
-
         try {
             $liveUrl = false;
             $site = $this->siteFinder->getSiteByPageId($pageUid);

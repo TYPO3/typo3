@@ -174,9 +174,7 @@ class PreviewUriBuilder
 
         // Directly use pid value and consider move placeholders
         $previewPageId = (int)(empty($versionRecord['pid']) ? $liveRecord['pid'] : $versionRecord['pid']);
-        $linkParameters = [
-            'previewWS' => $versionRecord['t3ver_wsid'],
-        ];
+        $linkParameters = [];
         // Add language parameter if record is a localization
         if (BackendUtility::isTableLocalizable($table)) {
             $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
