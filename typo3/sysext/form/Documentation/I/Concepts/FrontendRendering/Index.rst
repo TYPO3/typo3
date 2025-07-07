@@ -44,7 +44,7 @@ via YAML. The settings are part of the ``prototypes`` configuration.
 
 For each ``form definition`` - which references the prototype ``standard`` -
 the form framework will additionally look for Fluid templates within the
-path 'EXT:my_site_package/Resources/Private/Frontend/[*]' as set above.
+path ``'EXT:my_site_package/Resources/Private/Frontend/[*]'`` as set above.
 Apart from the 'Form' element, the process will search for templates within
 the ``partialRootPaths`` folder. The name of the partial is derived from the
 property ``formElementTypeIdentifier``. For example, the template of the
