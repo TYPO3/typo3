@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Workspaces\Service;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
@@ -60,7 +59,6 @@ use TYPO3\CMS\Workspaces\Service\Dependency\CollectionService;
 /**
  * @internal
  */
-#[Autoconfigure(public: true)]
 readonly class GridDataService
 {
     public function __construct(
@@ -81,6 +79,7 @@ readonly class GridDataService
         private SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
         private VisibleSchemaFieldsCollector $visibleSchemaFieldsCollector,
         private Avatar $avatar,
+        private TranslationConfigurationProvider $translationConfigurationProvider,
     ) {}
 
     /**
@@ -288,7 +287,6 @@ readonly class GridDataService
         $swapStage = ($workspaceAccess['publish_access'] ?? 0) & WorkspaceService::PUBLISH_ACCESS_ONLY_IN_PUBLISH_STAGE ? StagesService::STAGE_PUBLISH_ID : StagesService::STAGE_EDIT_ID;
 
         $isAllowedToPublish = $this->workspacePublishGate->isGranted($backendUser, $backendUser->workspace);
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $stagesObj = GeneralUtility::makeInstance(StagesService::class);
         $defaultGridColumns = [
             'Workspaces_Collection' => 0,
@@ -332,7 +330,7 @@ readonly class GridDataService
                 }
                 $viewUrl = $this->previewUriBuilder->buildUriForElement($table, (int)$record['uid'], $origRecord, $versionRecord);
                 $workspaceRecordLabel = BackendUtility::getRecordTitle($table, $versionRecord);
-                $iconWorkspace = $iconFactory->getIconForRecord($table, $versionRecord, IconSize::SMALL);
+                $iconWorkspace = $this->iconFactory->getIconForRecord($table, $versionRecord, IconSize::SMALL);
                 $calculatedT3verOid = $record['t3ver_oid'];
                 if (VersionState::tryFrom($record['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER) {
                     // If we're dealing with a 'new' record, this one has no t3ver_oid. On publish, there is no
@@ -370,7 +368,7 @@ readonly class GridDataService
                 $languageValue = $this->getLanguageValue($schema, $versionRecord);
                 $versionArray['languageValue'] = $languageValue;
                 $versionArray['language'] = [
-                    'icon' => $iconFactory->getIcon($this->getSystemLanguageValue($languageValue, $pageId, 'flagIcon') ?? 'empty-empty', IconSize::SMALL)->getIdentifier(),
+                    'icon' => $this->iconFactory->getIcon($this->getSystemLanguageValue($languageValue, $pageId, 'flagIcon') ?? 'empty-empty', IconSize::SMALL)->getIdentifier(),
                     'title' => $this->getSystemLanguageValue($languageValue, $pageId, 'title'),
                     'title_crop' => htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->getSystemLanguageValue($languageValue, $pageId, 'title'), (int)$backendUser->uc['titleLen'])),
                 ];
@@ -427,7 +425,9 @@ readonly class GridDataService
         $event = new AfterDataGeneratedForWorkspaceEvent($this, $dataArray, $versions);
         $this->eventDispatcher->dispatch($event);
         $dataArray = $event->getData();
-        $dataArray = $this->sortDataArray($dataArray);
+        $event = new SortVersionedDataEvent($this, $dataArray, 'label_Workspace', 'ASC');
+        $this->eventDispatcher->dispatch($event);
+        $dataArray = $event->getData();
         return $this->resolveDataArrayDependencies($dataArray);
     }
 
@@ -472,32 +472,6 @@ readonly class GridDataService
         $event = new GetVersionedDataEvent($this, $dataArray, $start, $limit, $dataArrayPart);
         $this->eventDispatcher->dispatch($event);
         return $event->getDataArrayPart();
-    }
-
-    protected function sortDataArray(array $dataArray): array
-    {
-        uasort($dataArray, function ($a, $b) {
-            if ($a['Workspaces_CollectionLevel'] === 0 && $b['Workspaces_CollectionLevel'] === 0
-                || $a['Workspaces_CollectionParent'] === $b['Workspaces_CollectionParent']
-            ) {
-                // Early returns when elements are not sortable: Only elements on the first level (0) or
-                // below the same parent element are directly sortable.
-                return 0;
-            }
-            // First sort by using the page-path in current workspace
-            $pathSortingResult = strcasecmp($a['path_Workspace'], $b['path_Workspace']);
-            if ($pathSortingResult !== 0) {
-                return $pathSortingResult;
-            }
-            if ($a['label_Workspace'] === $b['label_Workspace']) {
-                return 0;
-            }
-            return strcasecmp($a['label_Workspace'], $b['label_Workspace']);
-        });
-        // Trigger an event for extensibility
-        $event = new SortVersionedDataEvent($this, $dataArray, 'label_Workspace', 'ASC');
-        $this->eventDispatcher->dispatch($event);
-        return $event->getData();
     }
 
     /**
@@ -569,13 +543,11 @@ readonly class GridDataService
      * @param int $id system language uid
      * @param int $pageId page id of a site
      * @param string $key Name of the value to be fetched (e.g. title)
-     * @return string|null
-     * @see getSystemLanguages
      */
     protected function getSystemLanguageValue(int $id, int $pageId, string $key): ?string
     {
         $value = null;
-        $systemLanguages = $this->getSystemLanguages($pageId);
+        $systemLanguages = $this->translationConfigurationProvider->getSystemLanguages($pageId);
         if (!empty($systemLanguages[$id][$key])) {
             $value = $systemLanguages[$id][$key];
         }
@@ -794,14 +766,6 @@ readonly class GridDataService
             'live' => $liveInformation,
             'differences' => $differences,
         ];
-    }
-
-    /**
-     * Gets all available system languages.
-     */
-    protected function getSystemLanguages(int $pageId): array
-    {
-        return GeneralUtility::makeInstance(TranslationConfigurationProvider::class)->getSystemLanguages($pageId);
     }
 
     protected function getDependencyCollectionService(): CollectionService
