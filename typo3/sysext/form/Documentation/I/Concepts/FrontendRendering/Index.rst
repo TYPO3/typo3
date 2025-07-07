@@ -26,7 +26,7 @@ Custom templates
 If you want to use custom Fluid templates for the frontend output of the
 form elements, you cannot register an additional template path using
 TypoScript. Instead, the registration of new template paths has to be done
-via YAML. The settings are part of the ``prototypes`` configuration.
+via YAML. The settings are part of the `prototypes` configuration.
 
 .. code-block:: yaml
 
@@ -42,16 +42,16 @@ via YAML. The settings are part of the ``prototypes`` configuration.
              layoutRootPaths:
                100: 'EXT:my_site_package/Resources/Private/Frontend/Layouts/'
 
-For each ``form definition`` - which references the prototype ``standard`` -
+For each `form definition` - which references the prototype `standard` -
 the form framework will additionally look for Fluid templates within the
-path 'EXT:my_site_package/Resources/Private/Frontend/[*]' as set above.
+path :directory:`EXT:my_site_package/Resources/Private/Frontend/[*]` as set above.
 Apart from the 'Form' element, the process will search for templates within
-the ``partialRootPaths`` folder. The name of the partial is derived from the
-property ``formElementTypeIdentifier``. For example, the template of the
-form element ``Text`` must be stored within the ``partialRootPaths`` folder
-named ``Text.html``. In contrast, the template of the ``Form`` element must
-reside within the ``templateRootPaths`` folder. According to the introduced
-logic, the template name must be ``Form.html``.
+the :directory:`partialRootPaths` folder. The name of the partial is derived from the
+property `formElementTypeIdentifier`. For example, the template of the
+form element `Text` must be stored within the :directory:`partialRootPaths` folder
+named :file:`Text.html`. In contrast, the template of the `Form` element must
+reside within the :directory:`templateRootPaths` folder. According to the introduced
+logic, the template name must be :file:`Form.html`.
 
 
 .. _concepts-frontendrendering-templates-singlevalues:
@@ -60,10 +60,10 @@ Access single values in finisher templates
 ------------------------------------------
 
 You can access single form values and place them freely in your finisher templates.
-The ``RenderFormValueViewHelper`` does the job. The viewhelper accepts a single form
+The :php:`RenderFormValueViewHelper` does the job. The viewhelper accepts a single form
 element and renders it. Have a look at the following example. In order to output
-the value of the field ``message`` the "RenderFormValueViewHelper"
-is called with two parameters. ``{formValue.processedValue}`` contains the specific
+the value of the field `message` the :php:`RenderFormValueViewHelper`
+is called with two parameters. :fluid:`{formValue.processedValue}` contains the specific
 value which can be manipulated with Fluid or styled etc.
 
 .. code-block:: html
