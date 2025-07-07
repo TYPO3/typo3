@@ -24,10 +24,10 @@ final class SudoModeVerifyEvent
     private bool $verified = false;
 
     public function __construct(
-        readonly private AccessClaim $claim,
+        private readonly AccessClaim $claim,
         #[\SensitiveParameter]
-        readonly private string $password,
-        readonly private bool $useInstallToolPassword,
+        private readonly string $password,
+        private readonly bool $useInstallToolPassword,
     ) {}
 
     public function getClaim(): AccessClaim
