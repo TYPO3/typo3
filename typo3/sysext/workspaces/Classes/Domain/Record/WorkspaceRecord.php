@@ -54,6 +54,7 @@ class WorkspaceRecord
 
     protected ?array $owners;
     protected ?array $members;
+    protected array $record;
 
     /**
      * @var StageRecord[]|null
@@ -114,11 +115,9 @@ class WorkspaceRecord
     {
         if (!isset($this->stages)) {
             $this->stages = [];
-            $this->addStage($this->createInternalStage(StagesService::STAGE_EDIT_ID));
-
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('sys_workspace_stage');
-
+            $stage = $this->createInternalStage(StagesService::STAGE_EDIT_ID);
+            $this->stages[$stage->getUid()] = $stage;
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace_stage');
             $result = $queryBuilder
                 ->select('*')
                 ->from('sys_workspace_stage')
@@ -130,15 +129,15 @@ class WorkspaceRecord
                 )
                 ->orderBy('sorting')
                 ->executeQuery();
-
             while ($record = $result->fetchAssociative()) {
-                $this->addStage(new StageRecord($this, $record));
+                $stage = new StageRecord($this, $record, false);
+                $this->stages[$stage->getUid()] = $stage;
             }
-
-            $this->addStage($this->createInternalStage(StagesService::STAGE_PUBLISH_ID));
-            $this->addStage($this->createInternalStage(StagesService::STAGE_PUBLISH_EXECUTE_ID));
+            $stage = $this->createInternalStage(StagesService::STAGE_PUBLISH_ID);
+            $this->stages[$stage->getUid()] = $stage;
+            $stage = $this->createInternalStage(StagesService::STAGE_PUBLISH_EXECUTE_ID);
+            $this->stages[$stage->getUid()] = $stage;
         }
-
         return $this->stages;
     }
 
@@ -178,32 +177,21 @@ class WorkspaceRecord
         return $this->stages[$nextStageId];
     }
 
-    protected function addStage(StageRecord $stage): void
-    {
-        $this->stages[$stage->getUid()] = $stage;
-    }
-
     protected function createInternalStage(int $stageId): StageRecord
     {
         if (!isset($this->internalStages[$stageId])) {
             throw new \RuntimeException('Invalid internal stage "' . $stageId . '"', 1476048246);
         }
-
         $record = [
             'uid' => $stageId,
             'title' => $this->getLanguageService()->sL($this->internalStages[$stageId]['label']),
         ];
-
         $fieldNamePrefix = $this->internalStages[$stageId]['name'] . '_';
         foreach ($this->internalStageFieldNames as $fieldName) {
             $record[$fieldName] = $this->record[$fieldNamePrefix . $fieldName] ?? null;
         }
-
-        $stage = new StageRecord($this, $record);
-        $stage->setInternal(true);
-        return $stage;
+        return new StageRecord($this, $record, true);
     }
-    protected array $record;
 
     protected static function fetch(string $tableName, int $uid): array
     {

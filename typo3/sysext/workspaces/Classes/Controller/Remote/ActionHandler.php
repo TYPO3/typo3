@@ -384,13 +384,7 @@ class ActionHandler
     public function discardStagesFromPage($pageId)
     {
         $cmdMapArray = [];
-        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
-            $this->stagesService->getWorkspaceId(),
-            -99,
-            $pageId,
-            0,
-            'tables_modify'
-        );
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($this->getBackendUser()->workspace, -99, $pageId, 0, 'tables_modify');
         foreach ($workspaceItemsArray as $tableName => $items) {
             foreach ($items as $item) {
                 $cmdMapArray[$tableName][$item['uid']]['version']['action'] = 'clearWSID';
@@ -679,18 +673,6 @@ class ActionHandler
     }
 
     /**
-     * Gets the default comment of a particular stage.
-     *
-     * @param int $stage
-     * @return string
-     */
-    protected function getDefaultCommentOfStage($stage)
-    {
-        $result = $this->stagesService->getPropertyOfCurrentWorkspaceStage($stage, 'default_mailcomment');
-        return $result;
-    }
-
-    /**
      * Send all available workspace records to the previous stage.
      *
      * @param int $id Current page id to process items to previous stage.
@@ -698,22 +680,10 @@ class ActionHandler
      */
     public function sendPageToPreviousStage($id)
     {
-        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
-            $this->stagesService->getWorkspaceId(),
-            -99,
-            $id,
-            0,
-            'tables_modify'
-        );
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($this->getBackendUser()->workspace, -99, $id, 0, 'tables_modify');
         [$currentStage, $previousStage] = $this->stagesService->getPreviousStageForElementCollection($workspaceItemsArray);
         // get only the relevant items for processing
-        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
-            $this->stagesService->getWorkspaceId(),
-            $currentStage['uid'],
-            $id,
-            0,
-            'tables_modify'
-        );
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($this->getBackendUser()->workspace, $currentStage['uid'], $id, 0, 'tables_modify');
         $stageFormFields = $this->getSentToStageWindow($previousStage['uid']);
         $result = array_merge($stageFormFields, [
             'title' => 'Status message: Page send to next stage - ID: ' . $id . ' - Next stage title: ' . $previousStage['title'],
@@ -730,22 +700,10 @@ class ActionHandler
      */
     public function sendPageToNextStage($id)
     {
-        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
-            $this->stagesService->getWorkspaceId(),
-            -99,
-            $id,
-            0,
-            'tables_modify'
-        );
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($this->getBackendUser()->workspace, -99, $id, 0, 'tables_modify');
         [$currentStage, $nextStage] = $this->stagesService->getNextStageForElementCollection($workspaceItemsArray);
         // get only the relevant items for processing
-        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
-            $this->stagesService->getWorkspaceId(),
-            $currentStage['uid'],
-            $id,
-            0,
-            'tables_modify'
-        );
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($this->getBackendUser()->workspace, $currentStage['uid'], $id, 0, 'tables_modify');
         $stageFormFields = $this->getSentToStageWindow($nextStage['uid']);
         $result = array_merge($stageFormFields, [
             'title' => 'Status message: Page send to next stage - ID: ' . $id . ' - Next stage title: ' . $nextStage['title'],
@@ -762,13 +720,7 @@ class ActionHandler
     public function updateStageChangeButtons(int $id, ServerRequestInterface $request): string
     {
         // Fetch next and previous stage
-        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
-            $this->stagesService->getWorkspaceId(),
-            -99,
-            $id,
-            0,
-            'tables_modify'
-        );
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($this->getBackendUser()->workspace, -99, $id, 0, 'tables_modify');
         [, $nextStage] = $this->stagesService->getNextStageForElementCollection($workspaceItemsArray);
         [, $previousStage] = $this->stagesService->getPreviousStageForElementCollection($workspaceItemsArray);
         $view = $this->backendViewFactory->create($request, ['typo3/cms-workspaces']);

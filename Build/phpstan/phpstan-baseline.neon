@@ -4807,12 +4807,6 @@ parameters:
 			path: ../../typo3/sysext/workspaces/Classes/Dependency/ElementEntity.php
 
 		-
-			message: '#^Call to function is_array\(\) with non\-empty\-array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Service/StagesService.php
-
-		-
 			message: '#^Strict comparison using \!\=\= between \(int\|string\) and null will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 2

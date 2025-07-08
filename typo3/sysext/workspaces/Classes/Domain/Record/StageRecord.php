@@ -29,19 +29,16 @@ use TYPO3\CMS\Workspaces\Service\StagesService;
  */
 class StageRecord
 {
-    protected array $record;
-    protected WorkspaceRecord $workspace;
-    protected bool $internal = false;
     protected ?array $responsiblePersons;
     protected ?array $defaultRecipients;
     protected ?array $preselectedRecipients;
     protected ?array $allRecipients;
 
-    public function __construct(WorkspaceRecord $workspace, array $record)
-    {
-        $this->workspace = $workspace;
-        $this->record = $record;
-    }
+    public function __construct(
+        protected readonly WorkspaceRecord $workspace,
+        protected readonly array $record,
+        protected readonly bool $internal,
+    ) {}
 
     public function __toString(): string
     {
@@ -124,11 +121,6 @@ class StageRecord
             $defaultComment = $this->record['default_mailcomment'];
         }
         return $defaultComment;
-    }
-
-    public function setInternal(bool $internal): void
-    {
-        $this->internal = $internal;
     }
 
     public function isInternal(): bool
