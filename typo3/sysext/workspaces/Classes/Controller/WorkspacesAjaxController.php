@@ -425,7 +425,8 @@ final readonly class WorkspacesAjaxController
     private function discardStagesFromPage(int $pageId): array
     {
         $cmdMapArray = [];
-        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($this->stagesService->getWorkspaceId(), -99, $pageId, 0, 'tables_modify');
+        $currentWorkspace = $this->getBackendUser()->workspace;
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($currentWorkspace, -99, $pageId, 0, 'tables_modify');
         foreach ($workspaceItemsArray as $tableName => $items) {
             foreach ($items as $item) {
                 $cmdMapArray[$tableName][$item['uid']]['version']['action'] = 'clearWSID';
@@ -481,10 +482,11 @@ final readonly class WorkspacesAjaxController
 
     private function sendPageToNextStage(int $id): array
     {
-        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($this->stagesService->getWorkspaceId(), -99, $id, 0, 'tables_modify');
+        $currentWorkspace = $this->getBackendUser()->workspace;
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($currentWorkspace, -99, $id, 0, 'tables_modify');
         [$currentStage, $nextStage] = $this->stagesService->getNextStageForElementCollection($workspaceItemsArray);
         // get only the relevant items for processing
-        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($this->stagesService->getWorkspaceId(), $currentStage['uid'], $id, 0, 'tables_modify');
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($currentWorkspace, $currentStage['uid'], $id, 0, 'tables_modify');
         $nextStageObject = WorkspaceRecord::get($this->getBackendUser()->workspace)->getStage((int)$nextStage['uid']);
         if ($nextStageObject === null) {
             return [
@@ -501,10 +503,11 @@ final readonly class WorkspacesAjaxController
 
     private function sendPageToPreviousStage(int $id): array
     {
-        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($this->stagesService->getWorkspaceId(), -99, $id, 0, 'tables_modify');
+        $currentWorkspace = $this->getBackendUser()->workspace;
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($currentWorkspace, -99, $id, 0, 'tables_modify');
         [$currentStage, $previousStage] = $this->stagesService->getPreviousStageForElementCollection($workspaceItemsArray);
         // get only the relevant items for processing
-        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($this->stagesService->getWorkspaceId(), $currentStage['uid'], $id, 0, 'tables_modify');
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($currentWorkspace, $currentStage['uid'], $id, 0, 'tables_modify');
         $previousStageObject = WorkspaceRecord::get($this->getBackendUser()->workspace)->getStage((int)$previousStage['uid']);
         if ($previousStageObject === null) {
             return [
@@ -525,7 +528,8 @@ final readonly class WorkspacesAjaxController
      */
     private function updateStageChangeButtons(int $id, ServerRequestInterface $request): string
     {
-        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($this->stagesService->getWorkspaceId(), -99, $id, 0, 'tables_modify');
+        $currentWorkspace = $this->getBackendUser()->workspace;
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($currentWorkspace, -99, $id, 0, 'tables_modify');
         [, $nextStage] = $this->stagesService->getNextStageForElementCollection($workspaceItemsArray);
         [, $previousStage] = $this->stagesService->getPreviousStageForElementCollection($workspaceItemsArray);
         $view = $this->backendViewFactory->create($request, ['typo3/cms-workspaces']);

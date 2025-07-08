@@ -297,7 +297,6 @@ readonly class GridDataService
         ];
         $searchDataKeys = [
             'path_Workspace',
-            'path_Live',
             'label_Stage',
             'label_Workspace',
         ];
@@ -339,20 +338,16 @@ readonly class GridDataService
                     $calculatedT3verOid = $record['uid'];
                 }
 
-                $versionArray = [];
+                $versionArray = $defaultGridColumns;
                 $versionArray['table'] = $table;
                 $versionArray['id'] = $table . ':' . $record['uid'];
                 $versionArray['uid'] = $record['uid'];
-                $versionArray = array_merge($versionArray, $defaultGridColumns);
                 $versionArray['label_Workspace'] = htmlspecialchars($workspaceRecordLabel);
                 $versionArray['label_Stage'] = htmlspecialchars($stagesObj->getStageTitle((int)$versionRecord['t3ver_stage']));
                 $tempStage = $stagesObj->getNextStage($versionRecord['t3ver_stage']);
-                $versionArray['label_nextStage'] = htmlspecialchars($stagesObj->getStageTitle((int)$tempStage['uid']));
                 $versionArray['value_nextStage'] = (int)$tempStage['uid'];
                 $tempStage = $stagesObj->getPrevStage($versionRecord['t3ver_stage']);
-                $versionArray['label_prevStage'] = htmlspecialchars($stagesObj->getStageTitle((int)($tempStage['uid'] ?? 0)));
                 $versionArray['value_prevStage'] = (int)($tempStage['uid'] ?? 0);
-                $versionArray['path_Live'] = htmlspecialchars(BackendUtility::getRecordPath($record['livepid'], '', 999));
                 $versionArray['path_Workspace'] = htmlspecialchars(BackendUtility::getRecordPath((int)$record['wspid'], '', 0));
                 $versionArray['lastChangedFormatted'] = '';
                 if (array_key_exists('tstamp', $versionRecord)) {
@@ -366,7 +361,6 @@ readonly class GridDataService
                 $versionArray['icon_Workspace'] = $iconWorkspace->getIdentifier();
                 $versionArray['icon_Workspace_Overlay'] = $iconWorkspace->getOverlayIcon()?->getIdentifier() ?? '';
                 $languageValue = $this->getLanguageValue($schema, $versionRecord);
-                $versionArray['languageValue'] = $languageValue;
                 $versionArray['language'] = [
                     'icon' => $this->iconFactory->getIcon($this->getSystemLanguageValue($languageValue, $pageId, 'flagIcon') ?? 'empty-empty', IconSize::SMALL)->getIdentifier(),
                     'title' => $this->getSystemLanguageValue($languageValue, $pageId, 'title'),
