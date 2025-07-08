@@ -21,8 +21,8 @@
 	"require": {
 		"psr/http-message": "^1.1 || ^2.0",
 		"symfony/expression-language": "^7.2",
-		"typo3/cms-core": "13.4.15",
-		"typo3/cms-frontend": "13.4.15"
+		"typo3/cms-core": "13.4.*@dev",
+		"typo3/cms-frontend": "13.4.*@dev"
 	},
 	"suggest": {
 		"typo3/cms-filelist": "Listing of files in the directory",

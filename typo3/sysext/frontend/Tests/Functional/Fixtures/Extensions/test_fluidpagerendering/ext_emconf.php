@@ -4,13 +4,13 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Fluidpage Rendering Test',
     'description' => 'Fluidpage Rendering Test',
     'category' => 'example',
-    'version' => '13.4.15',
+    'version' => '13.4.16',
     'state' => 'stable',
     'author' => 'Benni Mack',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.15',
+            'typo3' => '13.4.16',
         ],
         'conflicts' => [],
         'suggests' => [],
