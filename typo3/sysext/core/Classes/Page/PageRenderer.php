@@ -737,7 +737,7 @@ class PageRenderer implements SingletonInterface
     /**
      * Adds footer data
      *
-     * @param string $data Free header data for HTML header
+     * @param string $data Free footer data for HTML footer before closing body tag
      */
     public function addFooterData($data)
     {
