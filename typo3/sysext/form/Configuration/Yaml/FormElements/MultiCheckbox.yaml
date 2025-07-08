@@ -167,6 +167,3 @@ prototypes:
           labelClassAttribute: form-check-wrapping-label
           labelTextClassAttribute: form-check-label
           legendVisuallyHidden: 0
-    formEditor:
-      formEditorPartials:
-        FormElement-MultiCheckbox: Stage/SelectTemplate

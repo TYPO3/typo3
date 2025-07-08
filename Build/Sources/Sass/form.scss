@@ -568,7 +568,6 @@
 .formeditor-stage {
     .formeditor-page-title {
         cursor: pointer;
-        margin: 0;
 
         &:empty:before {
             opacity: .75;
@@ -701,8 +700,8 @@
 
     .formeditor-element-info {
         display: flex;
+        width: 100%;
         position: relative;
-        flex-grow: 1;
         height: 100%;
         padding: var(--formeditor-stage-element-padding-y) var(--formeditor-stage-element-padding-x);
         gap: var(--formeditor-stage-element-padding-x);
@@ -720,20 +719,21 @@
                     var(--formeditor-stage-element-bg) 100%
                 );
         }
+
+        > * {
+            flex: 0 0 50%;
+        }
     }
 
     .formeditor-element-info-label {
         display: flex;
         align-items: center;
         position: relative;
-        width: 45%;
-        height: 100%;
     }
 
     .formeditor-element-info-content {
         display: flex;
         align-items: center;
-        flex-grow: 1;
         flex-flow: row wrap;
     }
 
@@ -773,7 +773,8 @@
     .formeditor-element-validator-icon {
         height: 100%;
 
-        .icon {
+        .icon,
+        typo3-backend-icon {
             height: 100%;
             z-index: 1;
             margin-inline: var(--formeditor-stage-element-padding-x);

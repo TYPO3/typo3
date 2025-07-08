@@ -93,7 +93,7 @@
 .formeditor-inspector-element-headline h2{align-items:center;display:flex;font-family:inherit;font-size:var(--typo3-font-size);font-weight:700;gap:.25rem;margin:0}
 .formeditor-inspector-collection-element .panel-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:0}
 .formeditor-inspector-collection-element .panel-actions{margin:calc(var(--formeditor-stage-element-padding-y)*-1) 0}
-.formeditor-stage .formeditor-page-title{cursor:pointer;margin:0}
+.formeditor-stage .formeditor-page-title{cursor:pointer}
 .formeditor-stage .formeditor-page-title:empty:before{content:attr(data-empty-message);opacity:.75}
 .formeditor-stage .formeditor-page-title:hover{text-decoration:underline;-webkit-text-decoration-color:color-mix(in srgb,currentColor,transparent 50%);text-decoration-color:color-mix(in srgb,currentColor,transparent 50%);text-underline-offset:.1em}
 .formeditor-stage div:has(>.formeditor-page-title):has(+*) .formeditor-page-title{margin:0 0 var(--typo3-spacing)}
@@ -111,15 +111,16 @@
 .formeditor-element .formeditor-element-label{color:var(--formeditor-stage-element-color-state,var(--formeditor-stage-element-color));display:none;font-size:var(--typo3-font-size-small);inset-inline-start:calc(var(--formeditor-stage-element-icon-width) + var(--formeditor-stage-element-padding-x));position:absolute;top:.9rem;z-index:2}
 .formeditor-element .formeditor-element-icon{align-items:center;background-color:color-mix(in srgb,var(--formeditor-stage-element-bg-state,var(--formeditor-stage-element-bg)),var(--formeditor-stage-element-color-state,var(--formeditor-stage-element-color)) 5%);color:var(--formeditor-stage-element-color-state,var(--formeditor-stage-element-color));cursor:move;display:flex;flex-shrink:0;height:100%;justify-content:center;width:var(--formeditor-stage-element-icon-width)}
 .formeditor-element .formeditor-element-body{display:flex;overflow:hidden;position:relative;-webkit-padding-end:40px;background-color:var(--formeditor-stage-element-bg);border-radius:calc(var(--formeditor-stage-element-border-radius) - var(--formeditor-stage-element-border-width));color:var(--formeditor-stage-element-color);height:var(--formeditor-stage-element-height);padding-inline-end:40px}
-.formeditor-element .formeditor-element-info{display:flex;flex-grow:1;gap:var(--formeditor-stage-element-padding-x);height:100%;padding:var(--formeditor-stage-element-padding-y) var(--formeditor-stage-element-padding-x);position:relative}
+.formeditor-element .formeditor-element-info{display:flex;gap:var(--formeditor-stage-element-padding-x);height:100%;padding:var(--formeditor-stage-element-padding-y) var(--formeditor-stage-element-padding-x);position:relative;width:100%}
 .formeditor-element .formeditor-element-info:after{background:linear-gradient(to bottom,color-mix(in srgb,var(--formeditor-stage-element-bg),transparent 100%) 0,var(--formeditor-stage-element-bg) 100%);bottom:0;content:"";height:calc(var(--formeditor-stage-element-padding-y)*2);inset-inline:0;position:absolute}
-.formeditor-element .formeditor-element-info-label{align-items:center;display:flex;height:100%;position:relative;width:45%}
-.formeditor-element .formeditor-element-info-content{align-items:center;display:flex;flex-flow:row wrap;flex-grow:1}
+.formeditor-element .formeditor-element-info>*{flex:0 0 50%}
+.formeditor-element .formeditor-element-info-label{align-items:center;display:flex;position:relative}
+.formeditor-element .formeditor-element-info-content{align-items:center;display:flex;flex-flow:row wrap}
 .formeditor-element .formeditor-element-validator{background-color:var(--formeditor-stage-element-hover-bg);color:var(--formeditor-stage-element-hover-color);display:flex;height:100%;inset-inline-end:0;overflow:hidden;position:absolute;top:0;-webkit-margin-end:calc(var(--formeditor-stage-element-validator-width)*-1);margin-inline-end:calc(var(--formeditor-stage-element-validator-width)*-1);transition:margin .15s ease-in-out;z-index:2}
 .formeditor-element .formeditor-element-validator:has(.formeditor-element-validator-icon:empty){display:none}
 .formeditor-element .formeditor-element-validator:after{background:linear-gradient(to bottom,color-mix(in srgb,var(--formeditor-stage-element-hover-bg),transparent 100%) 0,var(--formeditor-stage-element-hover-bg) 100%);bottom:0;content:"";height:calc(var(--formeditor-stage-element-padding-y)*2);inset-inline:0;position:absolute;z-index:1}
 .formeditor-element .formeditor-element-validator-icon{height:100%}
-.formeditor-element .formeditor-element-validator-icon .icon{height:100%;margin-inline:var(--formeditor-stage-element-padding-x);z-index:1}
+.formeditor-element .formeditor-element-validator-icon .icon,.formeditor-element .formeditor-element-validator-icon typo3-backend-icon{height:100%;margin-inline:var(--formeditor-stage-element-padding-x);z-index:1}
 .formeditor-element .formeditor-element-validator-list{align-items:center;display:flex;flex-flow:row wrap;gap:1px;height:100%;padding:var(--formeditor-stage-element-padding-y) var(--formeditor-stage-element-padding-x);-webkit-padding-start:0;font-size:var(--typo3-font-size-small);padding-inline-start:0;transition:margin .15s ease-in-out;width:var(--formeditor-stage-element-validator-width)}
 .formeditor-element .formeditor-element-validator-list:hover{-webkit-margin-end:0;margin-inline-end:0}
 .formeditor-element .formeditor-element-validator-list-item{opacity:.75;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%}

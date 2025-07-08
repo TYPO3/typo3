@@ -84,6 +84,3 @@ prototypes:
             renderingOptions:
               enabled: false
             condition: 'stepType == "SummaryPage" || finisherIdentifier in ["EmailToSender", "EmailToReceiver"]'
-    formEditor:
-      formEditorPartials:
-        FormElement-Hidden: Stage/SimpleTemplate

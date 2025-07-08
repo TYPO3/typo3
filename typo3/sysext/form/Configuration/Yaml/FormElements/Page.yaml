@@ -42,6 +42,3 @@ prototypes:
           _isCompositeFormElement: true
           nextButtonLabel: 'next Page'
           previousButtonLabel: 'previous Page'
-    formEditor:
-      formEditorPartials:
-        FormElement-Page: Stage/Page

@@ -46,6 +46,3 @@ prototypes:
           listRowClassAttribute: row
           labelWrapperClassAttribute: col
           valueWrapperClassAttribute: col
-    formEditor:
-      formEditorPartials:
-        FormElement-SummaryPage: Stage/SummaryPage

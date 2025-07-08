@@ -322,6 +322,3 @@ prototypes:
         validators:
           -
             identifier: EmailAddress
-    formEditor:
-      formEditorPartials:
-        FormElement-Email: Stage/SimpleTemplate

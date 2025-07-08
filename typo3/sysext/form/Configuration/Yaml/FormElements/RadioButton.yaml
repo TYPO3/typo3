@@ -132,6 +132,3 @@ prototypes:
           labelClassAttribute: form-check-wrapping-label
           labelTextClassAttribute: form-check-label
           legendVisuallyHidden: 1
-    formEditor:
-      formEditorPartials:
-        FormElement-RadioButton: Stage/SelectTemplate

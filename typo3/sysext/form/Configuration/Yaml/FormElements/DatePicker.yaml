@@ -162,6 +162,3 @@ prototypes:
           datePickerInitializationJavaScriptFile: EXT:form/Resources/Public/JavaScript/frontend/date-picker.js
           enableDatePicker: true
           displayTimeSelector: false
-    formEditor:
-      formEditorPartials:
-        FormElement-DatePicker: Stage/SimpleTemplate

@@ -125,6 +125,3 @@ prototypes:
           elementClassAttribute: form-select
           elementErrorClassAttribute: ~
           labelClassAttribute: form-label
-    formEditor:
-      formEditorPartials:
-        FormElement-CountrySelect: Stage/SelectTemplate

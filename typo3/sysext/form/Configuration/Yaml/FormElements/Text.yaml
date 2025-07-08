@@ -389,6 +389,3 @@ prototypes:
           elementClassAttribute: form-control
           elementErrorClassAttribute: ~
           labelClassAttribute: form-label
-    formEditor:
-      formEditorPartials:
-        FormElement-Text: Stage/SimpleTemplate

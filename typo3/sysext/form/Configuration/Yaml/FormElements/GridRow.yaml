@@ -78,6 +78,3 @@ prototypes:
         renderingOptions:
           _isCompositeFormElement: true
           _isGridRowFormElement: true
-    formEditor:
-      formEditorPartials:
-        FormElement-GridRow: Stage/Fieldset

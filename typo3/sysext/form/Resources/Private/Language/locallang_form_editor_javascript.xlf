@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_form_editor_javascript.xlf" date="2026-01-26T11:12:56Z" product-name="form">
+    <header/>
+    <body>
+      <trans-unit id="formEditor.insert_elements">
+        <source>Insert elements</source>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.new_element">
+        <source>Create new element</source>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.new_element.inside">
+        <source>Inside</source>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.new_element.after">
+        <source>After</source>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.remove">
+        <source>Remove</source>
+      </trans-unit>
+      <trans-unit id="formEditor.step.name.empty">
+        <source>Step name is not set</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

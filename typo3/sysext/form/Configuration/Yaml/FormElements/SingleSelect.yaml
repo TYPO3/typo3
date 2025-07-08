@@ -135,6 +135,3 @@ prototypes:
           elementClassAttribute: form-select
           elementErrorClassAttribute: ~
           labelClassAttribute: form-label
-    formEditor:
-      formEditorPartials:
-        FormElement-SingleSelect: Stage/SelectTemplate

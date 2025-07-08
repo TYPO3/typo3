@@ -173,6 +173,3 @@ prototypes:
           imageLinkMaxWidth: 500
           imageMaxWidth: 500
           imageMaxHeight: 500
-    formEditor:
-      formEditorPartials:
-        FormElement-ImageUpload: Stage/FileUploadTemplate

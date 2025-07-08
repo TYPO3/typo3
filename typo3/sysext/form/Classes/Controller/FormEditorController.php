@@ -168,6 +168,7 @@ class FormEditorController extends ActionController
         array_map($pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(...), $javaScriptModules);
         $pageRenderer->addInlineSettingArray(null, $addInlineSettings);
         $pageRenderer->addInlineLanguageLabelFile('EXT:form/Resources/Private/Language/locallang_formEditor_failSafeErrorHandling_javascript.xlf');
+        $pageRenderer->addInlineLanguageLabelFile('EXT:form/Resources/Private/Language/locallang_form_editor_javascript.xlf');
         $stylesheets = $prototypeConfiguration['formEditor']['stylesheets'];
         foreach ($stylesheets as $stylesheet) {
             $pageRenderer->addCssFile($stylesheet);

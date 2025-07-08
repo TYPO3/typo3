@@ -181,6 +181,3 @@ prototypes:
           labelClassAttribute: form-label
           saveToFileMount: '1:/user_upload/'
           allowedMimeTypes: []
-    formEditor:
-      formEditorPartials:
-        FormElement-FileUpload: Stage/FileUploadTemplate

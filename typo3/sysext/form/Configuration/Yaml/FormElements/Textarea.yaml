@@ -329,6 +329,3 @@ prototypes:
           elementClassAttribute: 'form-control xxlarge'
           elementErrorClassAttribute: error
           labelClassAttribute: form-label
-    formEditor:
-      formEditorPartials:
-        FormElement-Textarea: Stage/SimpleTemplate

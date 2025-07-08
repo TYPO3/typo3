@@ -62,6 +62,3 @@ prototypes:
         renderingOptions:
           _isCompositeFormElement: true
           _isSection: true
-    formEditor:
-      formEditorPartials:
-        FormElement-Fieldset: Stage/Fieldset

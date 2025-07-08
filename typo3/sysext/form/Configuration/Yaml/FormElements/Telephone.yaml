@@ -334,6 +334,3 @@ prototypes:
             identifier: RegularExpression
             options:
               regularExpression: '/^.*$/'
-    formEditor:
-      formEditorPartials:
-        FormElement-Telephone: Stage/SimpleTemplate

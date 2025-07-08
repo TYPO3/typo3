@@ -12,4 +12,5 @@ For Integrators
 
    Concepts/Index
    Config/Index
+   HowTos/Index
    FAQ/Index

@@ -1,0 +1,105 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+    <f:comment>
+        Custom form element template for a gender selection field.
+    </f:comment>
+
+    <formvh:renderRenderable renderable="{element}">
+
+        <f:comment>Render the field wrapper with optional fieldset and legend</f:comment>
+        <f:render partial="Field/Field"
+                  arguments="{
+                      element: element,
+                      renderFieldset: '{true}',
+                      doNotShowLabel: '{true}'
+                  }"
+                  contentAs="elementContent">
+
+            <f:form.validationResults for="{element.rootForm.identifier}.{element.identifier}">
+
+                <f:comment>Apply error class if validation errors exist</f:comment>
+                <f:variable name="errorClass">
+                    {f:if(
+                        condition: '{validationResults.errors}',
+                        then: 'is-invalid'
+                    )}
+                </f:variable>
+
+                <f:comment>Radio button group container</f:comment>
+                <div id="{element.uniqueIdentifier}"
+                     class="gender-select {errorClass}"
+                     role="radiogroup"
+                     aria-label="{element.label}">
+
+                    <f:comment>Loop through all available options (e.g., male, female, diverse)</f:comment>
+                    <f:for each="{element.properties.options}" as="label" key="value" iteration="idIterator">
+
+                        <f:comment>Set ARIA attributes for accessibility</f:comment>
+                        <f:if condition="{element.properties.elementDescription}">
+                            <f:variable name="aria" value="{describedby: '{element.uniqueIdentifier}-desc'}" />
+                        </f:if>
+
+                        <f:comment>Add error indication to the first radio button if validation fails</f:comment>
+                        <f:if condition="{validationResults.errors} && {idIterator.isFirst}">
+                            <f:variable name="aria" value="{
+                                invalid: 'true',
+                                describedby: '{element.uniqueIdentifier}-errors'
+                            }" />
+                        </f:if>
+
+                        <f:comment>Individual radio button container</f:comment>
+                        <div class="form-check mb-2">
+                            <label class="form-check-wrapping-label"
+                                   for="{element.uniqueIdentifier}-{idIterator.index}">
+
+                                <f:form.radio
+                                    property="{element.identifier}"
+                                    id="{element.uniqueIdentifier}-{idIterator.index}"
+                                    class="form-check-input"
+                                    value="{value}"
+                                    errorClass="is-invalid"
+                                    additionalAttributes="{formvh:translateElementProperty(
+                                        element: element,
+                                        property: 'fluidAdditionalAttributes'
+                                    )}"
+                                    aria="{aria}"
+                                />
+
+                                <span class="{element.properties.labelTextClassAttribute}">
+                                    {formvh:translateElementProperty(
+                                        element: element,
+                                        property: '{0: \'options\', 1: value}'
+                                    )}
+                                </span>
+
+                            </label>
+                        </div>
+
+                    </f:for>
+
+                </div>
+
+                <f:comment>Display validation errors</f:comment>
+                <f:if condition="{validationResults.flattenedErrors}">
+                    <span id="{element.uniqueIdentifier}-errors"
+                          role="alert">
+
+                        <f:for each="{validationResults.errors}" as="error">
+                            <f:format.htmlspecialchars>
+                                {formvh:translateElementError(element: element, error: error)}
+                            </f:format.htmlspecialchars>
+                            <br/>
+                        </f:for>
+
+                    </span>
+                </f:if>
+
+            </f:form.validationResults>
+
+        </f:render>
+
+    </formvh:renderRenderable>
+
+</html>

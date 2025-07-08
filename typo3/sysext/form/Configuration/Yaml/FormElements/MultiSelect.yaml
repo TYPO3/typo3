@@ -172,6 +172,3 @@ prototypes:
           elementClassAttribute: 'form-select xlarge'
           elementErrorClassAttribute: ~
           labelClassAttribute: form-label
-    formEditor:
-      formEditorPartials:
-        FormElement-MultiSelect: Stage/SelectTemplate

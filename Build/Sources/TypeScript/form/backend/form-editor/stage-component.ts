@@ -18,6 +18,10 @@ import $ from 'jquery';
 import * as Helper from '@typo3/form/backend/form-editor/helper';
 import Icons from '@typo3/backend/icons';
 import Sortable from 'sortablejs';
+import type { FormElementStageItem, Validator, SelectOption } from '@typo3/form/backend/form-editor/component/form-element-stage-item';
+import '@typo3/form/backend/form-editor/component/form-element-stage-item';
+import type { PageStageItem } from '@typo3/form/backend/form-editor/component/page-stage-item';
+import '@typo3/form/backend/form-editor/component/page-stage-item';
 
 import type {
   FormEditor,
@@ -66,32 +70,6 @@ const defaultConfiguration: Configuration = {
     buttonPaginationNext: 'buttonPaginationNext',
     'FormElement-_ElementToolbar': 'FormElement-_ElementToolbar',
     'FormElement-_UnknownElement': 'FormElement-_UnknownElement',
-    'FormElement-AdvancedPassword': 'FormElement-AdvancedPassword',
-    'FormElement-Checkbox': 'FormElement-Checkbox',
-    'FormElement-ContentElement': 'FormElement-ContentElement',
-    'FormElement-CountrySelect': 'FormElement-CountrySelect',
-    'FormElement-DatePicker': 'FormElement-DatePicker',
-    'FormElement-Fieldset': 'FormElement-Fieldset',
-    'FormElement-GridColumn': 'FormElement-GridColumn',
-    'FormElement-GridRow': 'FormElement-GridRow',
-    'FormElement-FileUpload': 'FormElement-FileUpload',
-    'FormElement-Hidden': 'FormElement-Hidden',
-    'FormElement-ImageUpload': 'FormElement-ImageUpload',
-    'FormElement-MultiCheckbox': 'FormElement-MultiCheckbox',
-    'FormElement-MultiSelect': 'FormElement-MultiSelect',
-    'FormElement-Page': 'FormElement-Page',
-    'FormElement-Password': 'FormElement-Password',
-    'FormElement-RadioButton': 'FormElement-RadioButton',
-    'FormElement-SingleSelect': 'FormElement-SingleSelect',
-    'FormElement-StaticText': 'FormElement-StaticText',
-    'FormElement-SummaryPage': 'FormElement-SummaryPage',
-    'FormElement-Text': 'FormElement-Text',
-    'FormElement-Textarea': 'FormElement-Textarea',
-    'FormElement-Email': 'FormElement-Email',
-    'FormElement-Url': 'FormElement-Url',
-    'FormElement-Telephone': 'FormElement-Telephone',
-    'FormElement-Number': 'FormElement-Number',
-    'FormElement-Date': 'FormElement-Date',
     formElementIcon: 'elementIcon',
     iconValidator: 'form-validator',
     multiValueContainer: 'multiValueContainer',
@@ -162,46 +140,6 @@ function setTemplateTextContent(domElement: HTMLElement, content: string): void 
  * @publish view/stage/abstract/render/template/perform
  */
 function renderTemplateDispatcher(formElement: FormElement, template: JQuery): void {
-  switch (formElement.get('type')) {
-    case 'Checkbox':
-      renderCheckboxTemplate(formElement, template);
-      break;
-    case 'FileUpload':
-    case 'ImageUpload':
-      renderFileUploadTemplates(formElement, template);
-      break;
-    case 'CountrySelect':
-    case 'SingleSelect':
-    case 'RadioButton':
-    case 'MultiSelect':
-    case 'MultiCheckbox':
-      renderSelectTemplates(formElement, template);
-      break;
-    case 'Textarea':
-    case 'AdvancedPassword':
-    case 'Password':
-    case 'Text':
-    case 'Email':
-    case 'Url':
-    case 'Telephone':
-    case 'Number':
-    case 'DatePicker':
-    case 'Date':
-      renderSimpleTemplateWithValidators(formElement, template);
-      break;
-    case 'Fieldset':
-    case 'GridColumn':
-    case 'GridRow':
-    case 'SummaryPage':
-    case 'Page':
-    case 'StaticText':
-    case 'Hidden':
-    case 'ContentElement':
-      renderSimpleTemplate(formElement, template);
-      break;
-    default:
-      break;
-  }
   getPublisherSubscriber().publish('view/stage/abstract/render/template/perform', [formElement, template]);
 }
 
@@ -240,6 +178,7 @@ function renderNestedSortableListItem(formElement: FormElement): JQuery {
 
   const isCompositeFormElement = getFormElementDefinition(formElement, '_isCompositeFormElement');
   if (isCompositeFormElement) {
+
     template.attr(getHelper().getDomElementDataAttribute('abstractType'), 'isCompositeFormElement');
   }
   const isTopLevelFormElement = getFormElementDefinition(formElement, '_isTopLevelFormElement');
@@ -253,7 +192,15 @@ function renderNestedSortableListItem(formElement: FormElement): JQuery {
   }
   listItem.append(template);
 
-  renderTemplateDispatcher(formElement, template);
+  const shouldRenderWebComponent = getHelper().getTemplate('FormElement-' + formElement.get('type')).length === 0;
+
+  if (isTopLevelFormElement && shouldRenderWebComponent) {
+    renderTopLevelStageItem(formElement, template);
+  } else if (shouldRenderWebComponent) {
+    renderFormElementStageItem(formElement, template);
+  } else {
+    renderTemplateDispatcher(formElement, template);
+  }
 
   if (isTopLevelFormElement || isCompositeFormElement) {
     childList = $('<ol></ol>');
@@ -473,6 +420,7 @@ export function getAbstractViewFormElementDomElement(formElement?: FormElement |
 
 export function removeAllStageToolbars(): void {
   $(getHelper().getDomElementDataIdentifierSelector('abstractViewToolbar'), stageDomElement).off().empty().remove();
+  hideFormElementStageItemToolbar();
 }
 
 /**
@@ -554,6 +502,18 @@ export function createAndAddAbstractViewFormElementToolbar(
     formElement = getCurrentlySelectedFormElement();
   }
 
+  // Check if the element is a web component (FormElementStageItem)
+  const webComponent = selectedFormElementDomElement.find('typo3-form-form-element-stage-item')[0] as FormElementStageItem;
+
+  if (webComponent && webComponent.toolbarConfig) {
+    webComponent.toolbarConfig = {
+      ...webComponent.toolbarConfig,
+      showToolbar: true
+    };
+    return;
+  }
+
+  // Fallback to old jQuery-based toolbar
   if (useFadeEffect) {
     createAbstractViewFormElementToolbar(formElement).fadeOut(0, function(this: HTMLElement) {
       selectedFormElementDomElement.prepend($(this));
@@ -562,6 +522,19 @@ export function createAndAddAbstractViewFormElementToolbar(
   } else {
     selectedFormElementDomElement.prepend(createAbstractViewFormElementToolbar(formElement));
   }
+}
+
+export function hideFormElementStageItemToolbar(): void {
+  const webComponents = document.querySelectorAll('typo3-form-form-element-stage-item');
+  webComponents.forEach((component) => {
+    const stageItem = component as FormElementStageItem;
+    if (stageItem.toolbarConfig) {
+      stageItem.toolbarConfig = {
+        ...stageItem.toolbarConfig,
+        showToolbar: false
+      };
+    }
+  });
 }
 
 /**
@@ -642,6 +615,193 @@ export function renderPreviewStageArea(html: string): void {
 /* *************************************************************
  * Template rendering
  * ************************************************************/
+
+/**
+ * Renders a top-level form element (page) using the PageStageItem web component
+ *
+ * @throws 1768924251
+ */
+export function renderTopLevelStageItem(formElement: FormElement, template: JQuery): void {
+  assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1768924251);
+
+  const stageItem = document.createElement('typo3-form-page-stage-item') as PageStageItem;
+
+  stageItem.pageTitle = formElement.get('label') || '';
+
+  template.empty().append(stageItem);
+}
+
+/**
+ * @throws 1768924252
+ */
+export function renderFormElementStageItem(formElement: FormElement, template: JQuery): void {
+  assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1768924252);
+
+  const stageItem = document.createElement('typo3-form-form-element-stage-item') as FormElementStageItem;
+
+  stageItem.elementType = getFormElementDefinition(formElement, 'label');
+  stageItem.elementIdentifier = formElement.get('identifier');
+  stageItem.elementLabel = formElement.get('label') || formElement.get('identifier');
+  stageItem.elementIconIdentifier = getFormElementDefinition(formElement, 'iconIdentifier');
+  stageItem.isHidden = formElement.get('renderingOptions.enabled') === false;
+
+  const validators = formElement.get('validators');
+  const validatorList: Validator[] = [];
+  let hasNotEmptyValidator = false;
+
+  if ('array' === $.type(validators) && validators.length > 0) {
+    for (let i = 0, len = validators.length; i < len; ++i) {
+      if ('NotEmpty' === validators[i].identifier) {
+        hasNotEmptyValidator = true;
+        continue;
+      }
+
+      const collectionElementConfiguration = getFormEditorApp()
+        .getFormEditorDefinition('validators', validators[i].identifier);
+
+      validatorList.push({
+        identifier: validators[i].identifier,
+        label: collectionElementConfiguration.label
+      });
+    }
+  }
+
+  stageItem.validators = validatorList;
+  stageItem.isRequired = hasNotEmptyValidator;
+
+  const textValue = formElement.get('properties.text');
+  if (textValue && getUtility().isNonEmptyString(textValue)) {
+    stageItem.content = textValue;
+  }
+
+  const contentElementUid = formElement.get('properties.contentElementUid');
+  if (contentElementUid && getUtility().isNonEmptyString(contentElementUid)) {
+    stageItem.content = contentElementUid;
+  }
+
+  // Process options (for select elements like SingleSelect, MultiSelect, RadioButton, etc.)
+  const propertyPath = 'properties.options';
+  const propertyValue = formElement.get(propertyPath);
+  const optionsList: SelectOption[] = [];
+
+  if (propertyValue) {
+    let defaultValue = formElement.get('defaultValue');
+
+    if (getFormEditorApp().getUtility().isUndefinedOrNull(defaultValue)) {
+      defaultValue = {};
+    } else if ('string' === $.type(defaultValue)) {
+      defaultValue = { 0: defaultValue };
+    }
+
+    if ('object' === $.type(propertyValue)) {
+      for (const propertyValueKey of Object.keys(propertyValue)) {
+        let isSelected = false;
+        for (const defaultValueKey of Object.keys(defaultValue)) {
+          if (defaultValue[defaultValueKey] === propertyValueKey) {
+            isSelected = true;
+            break;
+          }
+        }
+        optionsList.push({
+          label: propertyValue[propertyValueKey],
+          value: propertyValueKey,
+          selected: isSelected
+        });
+      }
+    } else if ('array' === $.type(propertyValue)) {
+      for (const propertyValueKey of Object.keys(propertyValue)) {
+        let label: string;
+        let value: string;
+
+        if (getUtility().isUndefinedOrNull(propertyValue[propertyValueKey]._label)) {
+          label = propertyValue[propertyValueKey];
+          value = propertyValueKey;
+        } else {
+          label = propertyValue[propertyValueKey]._label;
+          value = propertyValue[propertyValueKey]._value;
+        }
+
+        let isSelected = false;
+        for (const defaultValueKey of Object.keys(defaultValue)) {
+          if (defaultValue[defaultValueKey] === value) {
+            isSelected = true;
+            break;
+          }
+        }
+
+        optionsList.push({
+          label: label,
+          value: value,
+          selected: isSelected
+        });
+      }
+    }
+  }
+
+  stageItem.options = optionsList;
+
+  // Process allowed mime types (for FileUpload and ImageUpload elements)
+  const allowedMimeTypesPath = 'properties.allowedMimeTypes';
+  const allowedMimeTypesValue = formElement.get(allowedMimeTypesPath);
+  const mimeTypesList: string[] = [];
+
+  if (allowedMimeTypesValue) {
+    if ('object' === $.type(allowedMimeTypesValue)) {
+      for (const key of Object.keys(allowedMimeTypesValue)) {
+        if (!isNaN(Number(key))) {
+          mimeTypesList.push(allowedMimeTypesValue[key]);
+        }
+      }
+    } else if ('array' === $.type(allowedMimeTypesValue)) {
+      for (let i = 0, len = allowedMimeTypesValue.length; i < len; ++i) {
+        mimeTypesList.push(allowedMimeTypesValue[i]);
+      }
+    }
+  }
+
+  if (mimeTypesList.length > 0) {
+    stageItem.allowedMimeTypes = mimeTypesList;
+  }
+
+  if (stageItem.isHidden) {
+    stageItem.classList.add('formeditor-element-hidden');
+  }
+
+  // Configure toolbar (will be shown when element is selected)
+  const formElementTypeDefinition = getFormElementDefinition(formElement, undefined);
+  stageItem.toolbarConfig = {
+    showToolbar: false, // Initially hidden, will be toggled when selected
+    isCompositeElement: formElementTypeDefinition._isCompositeFormElement || false,
+    elementTypeLabel: getFormElementDefinition(formElement, 'label'),
+    elementIdentifier: formElement.get('identifier')
+  };
+
+  // Register event listeners for toolbar actions
+  stageItem.addEventListener('toolbar-new-element-after', () => {
+    getPublisherSubscriber().publish('view/stage/abstract/elementToolbar/button/newElement/clicked', [
+      'view/insertElements/perform/after',
+      {
+        disableElementTypes: []
+      }
+    ]);
+  });
+
+  stageItem.addEventListener('toolbar-new-element-inside', () => {
+    getPublisherSubscriber().publish('view/stage/abstract/elementToolbar/button/newElement/clicked', [
+      'view/insertElements/perform/inside',
+      {
+        disableElementTypes: [],
+        onlyEnableElementTypes: []
+      }
+    ]);
+  });
+
+  stageItem.addEventListener('toolbar-remove-element', () => {
+    getViewModel().showRemoveFormElementModal();
+  });
+
+  template.empty().append(stageItem);
+}
 
 export function eachTemplateProperty(
   formElement: FormElement,
