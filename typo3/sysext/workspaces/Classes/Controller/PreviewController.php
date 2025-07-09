@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
@@ -46,7 +45,6 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 final readonly class PreviewController
 {
     public function __construct(
-        private StagesService $stageService,
         private WorkspaceService $workspaceService,
         private PageRenderer $pageRenderer,
         private UriBuilder $uriBuilder,
@@ -88,10 +86,6 @@ final readonly class PreviewController
         }
         $this->pageRenderer->addInlineSetting('Workspaces', 'id', $pageUid);
 
-        // Fetch next and previous stage
-        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($activeWorkspace, -99, $pageUid, 0, 'tables_modify');
-        [, $nextStage] = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
-        [, $previousStage] = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);
         $availableWorkspaces = $this->workspaceService->getAvailableWorkspaces();
         try {
             $liveUrl = false;
@@ -105,7 +99,7 @@ final readonly class PreviewController
 
             // Build URL for live version of page
             $page = BackendUtility::getRecord('pages', $pageUid);
-            $rootline = BackendUtility::BEgetRootLine($pageUid, '', false);
+            $rootline = BackendUtility::BEgetRootLine($pageUid);
             $queryParametersLive = PreviewUriBuilder::getAdditionalQueryParametersForAccessRestrictedPages(
                 $page,
                 clone GeneralUtility::makeInstance(Context::class),
@@ -155,23 +149,8 @@ final readonly class PreviewController
             'activeWorkspace' => $availableWorkspaces[$activeWorkspace],
             'splitPreviewModes' => $splitPreviewModes,
             'firstPreviewMode' => current($splitPreviewModes),
-            'enablePreviousStageButton' => $this->isValidStage($previousStage),
-            'enableNextStageButton' => $this->isValidStage($nextStage),
-            'enableDiscardStageButton' => $this->isValidStage($nextStage) || $this->isValidStage($previousStage),
-            'nextStage' => $nextStage['title'] ?? '',
-            'nextStageId' => $nextStage['uid'] ?? 0,
-            'prevStage' => $previousStage['title'] ?? '',
-            'prevStageId' => $previousStage['uid'] ?? 0,
         ]);
         return $view->renderResponse('Preview/Index');
-    }
-
-    /**
-     * Evaluate the active state.
-     */
-    private function isValidStage($stageArray): bool
-    {
-        return is_array($stageArray) && !empty($stageArray);
     }
 
     private function getBackendUser(): BackendUserAuthentication
