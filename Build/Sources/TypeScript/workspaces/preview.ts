@@ -50,6 +50,7 @@ class Preview extends Workspaces {
       this.getElements();
       this.resizeViews();
       this.registerEvents();
+      this.initStageButtons();
     });
   }
 
@@ -89,6 +90,14 @@ class Preview extends Workspaces {
 
     new ThrottleEvent('input', this.updateSlidePosition.bind(this), 10).bindTo(document.querySelector(Identifiers.stageSlider));
     new RegularEvent('click', this.changePreviewMode.bind(this)).delegateTo(this.elements.previewModeContainer, '[data-preview-mode]');
+  }
+
+  private initStageButtons(): void {
+    this.sendRemoteRequest([
+      this.generateRemoteActionsPayload('updateStageChangeButtons', [TYPO3.settings.Workspaces.id]),
+    ], Identifiers.topbar).then(async (response: AjaxResponse): Promise<void> => {
+      this.renderStageButtons((await response.resolve())[0].result);
+    });
   }
 
   /**
