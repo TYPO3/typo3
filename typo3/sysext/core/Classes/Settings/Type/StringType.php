@@ -21,9 +21,11 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use TYPO3\CMS\Core\Settings\SettingDefinition;
 use TYPO3\CMS\Core\Settings\SettingsTypeInterface;
+use TYPO3\CMS\Core\Settings\SettingsTypeOption;
+use TYPO3\CMS\Core\Settings\SettingsTypeOptionAwareInterface;
 
 #[AsTaggedItem(index: 'string')]
-readonly class StringType implements SettingsTypeInterface
+readonly class StringType implements SettingsTypeInterface, SettingsTypeOptionAwareInterface
 {
     public function __construct(
         protected LoggerInterface $logger,
@@ -34,6 +36,22 @@ readonly class StringType implements SettingsTypeInterface
         if (is_object($value) && !$value instanceof \Stringable) {
             return false;
         }
+
+        // Normalize value
+        $stringValue = (string)$value;
+
+        // Check optional constraints
+        if (array_key_exists('min', $definition->options) &&
+            mb_strlen($stringValue) < (int)$definition->options['min']
+        ) {
+            return false;
+        }
+        if (array_key_exists('max', $definition->options) &&
+            mb_strlen($stringValue) > (int)$definition->options['max']
+        ) {
+            return false;
+        }
+
         return true;
     }
 
@@ -49,7 +67,40 @@ readonly class StringType implements SettingsTypeInterface
             }
             return 'false';
         }
+
         return (string)$value;
+    }
+
+    public function getSupportedOptions(): array
+    {
+        return [
+            'min' => new SettingsTypeOption(
+                type: 'int',
+                description: 'Minimum character count allowed',
+                required: false,
+            ),
+            'max' => new SettingsTypeOption(
+                type: 'int',
+                description: 'Maximum character count allowed',
+                required: false,
+            ),
+        ];
+    }
+
+    public function validateOptions(SettingDefinition $definition): bool
+    {
+        $min = $definition->options['min'] ?? null;
+        $max = $definition->options['max'] ?? null;
+        if ($min !== null && $min < 0) {
+            return false;
+        }
+        if ($max !== null && $max < 1) {
+            return false;
+        }
+        if ($min !== null && $max !== null && $min > $max) {
+            return false;
+        }
+        return true;
     }
 
     public function getJavaScriptModule(): string

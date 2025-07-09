@@ -138,7 +138,7 @@ final class SetRegistryTest extends FunctionalTestCase
         yield [
             'set' => 'typo3tests/invalid-settings-definitions-invalid-type',
             'error' => SetError::invalidSettingsDefinitions,
-            'context' => 'Invalid settings type "invalidtype" for settings definition: {"type":"invalidtype","label":"Foo Bar","default":""}',
+            'context' => 'Invalid settings type "invalidtype" in setting "foo.bar"',
         ];
         yield [
             'set' => 'typo3tests/invalid-settings',

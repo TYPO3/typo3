@@ -43,7 +43,134 @@ final class SiteSettingsTest extends FunctionalTestCase
         self::assertSame('a', $settings->get('foo.bar.baz.0'));
         self::assertTrue($settings->has('foo.bar.baz.1'));
         self::assertSame('b', $settings->get('foo.bar.baz.1'));
-        self::assertSame(['foo.bar.baz'], $settings->getIdentifiers());
+        self::assertContains('foo.bar.baz', $settings->getIdentifiers());
+    }
+
+    #[Test]
+    public function retrieveSettingsWithValidationOptions(): void
+    {
+        $siteSettingsFactory = $this->get(SiteSettingsFactory::class);
+        $settings = $siteSettingsFactory->composeSettings([], ['typo3tests/site-settings-set-1']);
+
+        // Available because of definition from settings.definitions.yaml
+        self::assertTrue($settings->has('example.string.with.min.option'));
+        self::assertTrue($settings->has('example.string.with.max.option'));
+        self::assertTrue($settings->has('example.string.with.minmax.option'));
+        self::assertTrue($settings->has('example.int.with.min.option'));
+        self::assertTrue($settings->has('example.int.with.max.option'));
+        self::assertTrue($settings->has('example.int.with.step.option'));
+        self::assertTrue($settings->has('example.int.with.minmax.option'));
+        self::assertTrue($settings->has('example.int.with.minmaxstep.option'));
+        self::assertTrue($settings->has('example.number.with.min.option'));
+        self::assertTrue($settings->has('example.number.with.max.option'));
+        self::assertTrue($settings->has('example.number.with.step.option'));
+        self::assertTrue($settings->has('example.number.with.minmax.option'));
+        self::assertTrue($settings->has('example.number.with.minmaxstep.option'));
+
+        self::assertSame('foo', $settings->get('example.string.with.min.option'));
+        self::assertSame('foo', $settings->get('example.string.with.max.option'));
+        self::assertSame('foo', $settings->get('example.string.with.minmax.option'));
+        self::assertSame(3, $settings->get('example.int.with.min.option'));
+        self::assertSame(3, $settings->get('example.int.with.max.option'));
+        self::assertSame(6, $settings->get('example.int.with.step.option'));
+        self::assertSame(3, $settings->get('example.int.with.minmax.option'));
+        self::assertSame(5, $settings->get('example.int.with.minmaxstep.option'));
+        self::assertSame(3.3, $settings->get('example.number.with.min.option'));
+        self::assertSame(3.3, $settings->get('example.number.with.max.option'));
+        self::assertSame(0.6, $settings->get('example.number.with.step.option'));
+        self::assertSame(3.3, $settings->get('example.number.with.minmax.option'));
+        self::assertSame(3.5, $settings->get('example.number.with.minmaxstep.option'));
+    }
+
+    #[Test]
+    public function retrieveCorrectlyOverwrittenSettingsWithValidationOptions(): void
+    {
+        $siteSettingsFactory = $this->get(SiteSettingsFactory::class);
+        $settings = $siteSettingsFactory->composeSettings(
+            [
+                'example.string.with.min.option' => 'foobar',
+                'example.string.with.max.option' => 'fo',
+                'example.string.with.minmax.option' => 'bar',
+                'example.int.with.min.option' => 4,
+                'example.int.with.max.option' => 2,
+                'example.int.with.step.option' => 2,
+                'example.int.with.minmax.option' => 3,
+                'example.int.with.minmaxstep.option' => 7,
+                'example.number.with.min.option' => 3.4,
+                'example.number.with.max.option' => 3.2,
+                'example.number.with.step.option' => 3.3,
+                'example.number.with.minmax.option' => 3.3,
+                'example.number.with.minmaxstep.option' => 3.7,
+            ],
+            ['typo3tests/site-settings-set-1']
+        );
+
+        // Available because of definition from settings.definitions.yaml
+        self::assertTrue($settings->has('example.string.with.min.option'));
+        self::assertTrue($settings->has('example.string.with.max.option'));
+        self::assertTrue($settings->has('example.string.with.minmax.option'));
+        self::assertTrue($settings->has('example.int.with.min.option'));
+        self::assertTrue($settings->has('example.int.with.max.option'));
+        self::assertTrue($settings->has('example.int.with.step.option'));
+        self::assertTrue($settings->has('example.int.with.minmax.option'));
+        self::assertTrue($settings->has('example.int.with.minmaxstep.option'));
+        self::assertTrue($settings->has('example.number.with.min.option'));
+        self::assertTrue($settings->has('example.number.with.max.option'));
+        self::assertTrue($settings->has('example.number.with.step.option'));
+        self::assertTrue($settings->has('example.number.with.minmax.option'));
+        self::assertTrue($settings->has('example.number.with.minmaxstep.option'));
+
+        self::assertSame('foobar', $settings->get('example.string.with.min.option'));
+        self::assertSame('fo', $settings->get('example.string.with.max.option'));
+        self::assertSame('bar', $settings->get('example.string.with.minmax.option'));
+        self::assertSame(4, $settings->get('example.int.with.min.option'));
+        self::assertSame(2, $settings->get('example.int.with.max.option'));
+        self::assertSame(6, $settings->get('example.int.with.step.option'));
+        self::assertSame(3, $settings->get('example.int.with.minmax.option'));
+        self::assertSame(7, $settings->get('example.int.with.minmaxstep.option'));
+        self::assertSame(3.4, $settings->get('example.number.with.min.option'));
+        self::assertSame(3.2, $settings->get('example.number.with.max.option'));
+        self::assertSame(3.3, $settings->get('example.number.with.step.option'));
+        self::assertSame(3.3, $settings->get('example.number.with.minmax.option'));
+        self::assertSame(3.7, $settings->get('example.number.with.minmaxstep.option'));
+    }
+
+    #[Test]
+    public function retrieveInvalidlyOverwrittenSettingsWithValidationOptionsWhichNeedToRevertToTheirDefaultValue(): void
+    {
+        $siteSettingsFactory = $this->get(SiteSettingsFactory::class);
+        $settings = $siteSettingsFactory->composeSettings(
+            [
+                'example.string.with.min.option' => 'fo',
+                'example.string.with.max.option' => 'foobar',
+                'example.string.with.minmax.option' => 'foobar',
+                'example.int.with.min.option' => 2,
+                'example.int.with.max.option' => 4,
+                'example.int.with.step.option' => 8,
+                'example.int.with.minmax.option' => 4,
+                'example.int.with.minmaxstep.option' => 4,
+                'example.number.with.min.option' => 3.2,
+                'example.number.with.max.option' => 3.4,
+                'example.number.with.step.option' => 3.4,
+                'example.number.with.minmax.option' => 3.4,
+                'example.number.with.minmaxstep.option' => 3.4,
+            ],
+            ['typo3tests/site-settings-set-1']
+        );
+
+        self::assertSame('foo', $settings->get('example.string.with.min.option'));
+        self::assertSame('foo', $settings->get('example.string.with.max.option'));
+        self::assertSame('foo', $settings->get('example.string.with.minmax.option'));
+        self::assertSame(3, $settings->get('example.int.with.min.option'));
+        self::assertSame(3, $settings->get('example.int.with.max.option'));
+        self::assertSame(6, $settings->get('example.int.with.step.option'));
+        self::assertSame(3, $settings->get('example.int.with.minmax.option'));
+        self::assertSame(5, $settings->get('example.int.with.minmaxstep.option'));
+        self::assertSame(3.3, $settings->get('example.number.with.min.option'));
+        self::assertSame(3.3, $settings->get('example.number.with.max.option'));
+        self::assertSame(0.6, $settings->get('example.number.with.step.option'));
+        self::assertSame(3.3, $settings->get('example.number.with.minmax.option'));
+        self::assertSame(3.5, $settings->get('example.number.with.minmaxstep.option'));
     }
 
     #[Test]

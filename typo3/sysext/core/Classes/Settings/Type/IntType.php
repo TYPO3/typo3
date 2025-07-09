@@ -21,10 +21,12 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use TYPO3\CMS\Core\Settings\SettingDefinition;
 use TYPO3\CMS\Core\Settings\SettingsTypeInterface;
+use TYPO3\CMS\Core\Settings\SettingsTypeOption;
+use TYPO3\CMS\Core\Settings\SettingsTypeOptionAwareInterface;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 #[AsTaggedItem(index: 'int')]
-readonly class IntType implements SettingsTypeInterface
+readonly class IntType implements SettingsTypeInterface, SettingsTypeOptionAwareInterface
 {
     public function __construct(
         protected LoggerInterface $logger,
@@ -32,15 +34,34 @@ readonly class IntType implements SettingsTypeInterface
 
     public function validate(mixed $value, SettingDefinition $definition): bool
     {
+        // Normalize to integer if possible
         if (is_int($value)) {
-            return true;
+            $intValue = $value;
+        } elseif (is_string($value) && MathUtility::canBeInterpretedAsInteger($value)) {
+            $intValue = (int)$value;
+        } else {
+            return false;
         }
 
-        if (is_string($value) && MathUtility::canBeInterpretedAsInteger($value)) {
-            return true;
+        // Check optional constraints
+        if (array_key_exists('min', $definition->options) &&
+            $intValue < $definition->options['min']
+        ) {
+            return false;
+        }
+        if (array_key_exists('max', $definition->options) &&
+            $intValue > $definition->options['max']
+        ) {
+            return false;
+        }
+        if (array_key_exists('step', $definition->options)) {
+            $stepBase = array_key_exists('min', $definition->options) ? $definition->options['min'] : 0;
+            if (($stepBase - $value) % $definition->options['step'] !== 0) {
+                return false;
+            }
         }
 
-        return false;
+        return true;
     }
 
     public function transformValue(mixed $value, SettingDefinition $definition): int
@@ -51,6 +72,46 @@ readonly class IntType implements SettingsTypeInterface
         }
 
         return (int)$value;
+    }
+
+    public function getSupportedOptions(): array
+    {
+        return [
+            'min' => new SettingsTypeOption(
+                type: 'int',
+                description: 'Minimum value allowed',
+                required: false,
+            ),
+            'max' => new SettingsTypeOption(
+                type: 'int',
+                description: 'Maximum value allowed',
+                required: false,
+            ),
+            'step' => new SettingsTypeOption(
+                type: 'int',
+                description: 'Step size',
+                required: false,
+            ),
+        ];
+    }
+
+    public function validateOptions(SettingDefinition $definition): bool
+    {
+        $min = $definition->options['min'] ?? null;
+        $max = $definition->options['max'] ?? null;
+        $step = $definition->options['step'] ?? null;
+        if ($min !== null && $max !== null && $min > $max) {
+            return false;
+        }
+        if ($min !== null && $max !== null && $step !== null) {
+            if ($max - $min < $step) {
+                return false;
+            }
+            if (($max - $min) % $step !== 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public function getJavaScriptModule(): string

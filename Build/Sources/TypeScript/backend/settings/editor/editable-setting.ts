@@ -38,6 +38,7 @@ interface SettingDefinition {
   enum: Record<string, string>|Array<string>,
   categories: string[],
   tags: string[],
+  options: Record<string, unknown>,
 }
 
 /** @see \TYPO3\CMS\Backend\Dto\Settings\EditableSetting */
@@ -130,6 +131,7 @@ export class EditableSettingElement extends LitElement {
       readonly: definition.readonly,
       enum: enumEntries.length > 0 ? JSON.stringify(Object.fromEntries(enumEntries)) : false,
       default: Array.isArray(definition.default) ? JSON.stringify(definition.default) : String(definition.default),
+      options: definition.options ? (Array.isArray(definition.options) && definition.options.length === 0 ? '{}' : JSON.stringify(definition.options)) : '{}',
     };
     for (const [key, value] of Object.entries(attributes)) {
       if (typeof value === 'boolean') {
@@ -192,6 +194,9 @@ export class EditableSettingElement extends LitElement {
   protected setToDefaultValue(): void {
     if (this.typeElement) {
       this.typeElement.value = this.setting.systemDefault as unknown;
+      // Explicitly request update, since the live value may be different
+      // to the property value, if the live value is an invalid value
+      this.typeElement.requestUpdate('value');
     }
   }
 

@@ -21,10 +21,12 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use TYPO3\CMS\Core\Settings\SettingDefinition;
 use TYPO3\CMS\Core\Settings\SettingsTypeInterface;
+use TYPO3\CMS\Core\Settings\SettingsTypeOption;
+use TYPO3\CMS\Core\Settings\SettingsTypeOptionAwareInterface;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 #[AsTaggedItem(index: 'number')]
-readonly class NumberType implements SettingsTypeInterface
+readonly class NumberType implements SettingsTypeInterface, SettingsTypeOptionAwareInterface
 {
     public function __construct(
         protected LoggerInterface $logger,
@@ -32,21 +34,38 @@ readonly class NumberType implements SettingsTypeInterface
 
     public function validate(mixed $value, SettingDefinition $definition): bool
     {
-        if (is_int($value)) {
-            return true;
-        }
-        if (is_float($value)) {
-            return true;
-        }
-
-        if (is_string($value) && (
+        // Normalize value
+        if (is_int($value) || is_float($value)) {
+            $numericValue = (float)$value;
+        } elseif (is_string($value) && (
             MathUtility::canBeInterpretedAsInteger($value) ||
             MathUtility::canBeInterpretedAsFloat($value)
         )) {
-            return true;
+            $numericValue = (float)$value;
+        } else {
+            return false;
         }
 
-        return false;
+        // Check optional constraints
+        if (array_key_exists('min', $definition->options) &&
+            $numericValue < $definition->options['min']
+        ) {
+            return false;
+        }
+        if (array_key_exists('max', $definition->options) &&
+            $numericValue > $definition->options['max']
+        ) {
+            return false;
+        }
+        if (array_key_exists('step', $definition->options)) {
+            $stepBase = array_key_exists('min', $definition->options) ? $definition->options['min'] : 0.0;
+            $offset = ($stepBase - $numericValue) / $definition->options['step'];
+            if ((string)(int)$offset !== (string)$offset) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function transformValue(mixed $value, SettingDefinition $definition): int|float
@@ -57,12 +76,53 @@ readonly class NumberType implements SettingsTypeInterface
         }
 
         if (is_string($value)) {
-            if (MathUtility::canBeInterpretedAsInteger($value)) {
-                return (int)$value;
-            }
-            return (float)$value;
+            return MathUtility::canBeInterpretedAsInteger($value)
+                ? (int)$value
+                : (float)$value;
         }
+
         return $value;
+    }
+
+    public function getSupportedOptions(): array
+    {
+        return [
+            'min' => new SettingsTypeOption(
+                type: 'number',
+                description: 'Minimum value allowed',
+                required: false,
+            ),
+            'max' => new SettingsTypeOption(
+                type: 'number',
+                description: 'Maximum value allowed',
+                required: false,
+            ),
+            'step' => new SettingsTypeOption(
+                type: 'number',
+                description: 'Step size',
+                required: false,
+            ),
+        ];
+    }
+
+    public function validateOptions(SettingDefinition $definition): bool
+    {
+        $min = $definition->options['min'] ?? null;
+        $max = $definition->options['max'] ?? null;
+        $step = $definition->options['step'] ?? null;
+        if ($min !== null && $max !== null && $min > $max) {
+            return false;
+        }
+        if ($min !== null && $max !== null && $step !== null) {
+            if ($max - $min < $step) {
+                return false;
+            }
+            $steps = ($max - $min) / $step;
+            if ((string)(int)$steps !== (string)$steps) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public function getJavaScriptModule(): string
