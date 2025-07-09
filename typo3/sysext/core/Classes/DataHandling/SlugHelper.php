@@ -534,7 +534,9 @@ class SlugHelper
             return $records;
         }
 
+        // filters out non-records (`null` or empty array `[]`)
         return array_filter(
+            // performs workspace overlay and sanitization on each record
             array_map(
                 function (array $record): ?array {
                     BackendUtility::workspaceOL(
@@ -543,6 +545,9 @@ class SlugHelper
                         $this->workspaceId,
                         true
                     );
+                    if (!is_array($record)) {
+                        return null;
+                    }
                     if (VersionState::tryFrom($record['t3ver_state'] ?? 0) ===
                         VersionState::DELETE_PLACEHOLDER) {
                         return null;
