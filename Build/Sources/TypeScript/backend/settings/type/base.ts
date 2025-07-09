@@ -29,13 +29,16 @@ export const getFormState = Symbol('getFormState');
  *
  * See https://web.dev/articles/more-capable-form-controls#defining_a_form-associated_custom_element
  */
-export abstract class BaseElement<T = string> extends LitElement {
-
+export abstract class BaseElement<
+  T = string,
+  OptionsType extends Record<string, unknown> = Record<string, unknown>
+> extends LitElement {
   @property({ type: String }) key: string;
   @property({ type: String }) formid: string;
   @property({ type: Boolean }) readonly: boolean = false;
   @property({ type: Object }) enum: Record<string, string>;
   @property({ type: Boolean }) debug: boolean = false;
+  @property({ type: Object }) options: OptionsType;
 
   static readonly formAssociated = true;
 

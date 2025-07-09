@@ -3,3 +3,101 @@ settings:
     type: stringlist
     default: ['a', 'b']
     label: FooBar
+
+  example.string.with.min.option:
+    type: string
+    label: 'String with min option'
+    default: 'foo'
+    options:
+      min: 3
+
+  example.string.with.max.option:
+    type: string
+    label: 'String with max option'
+    default: 'foo'
+    options:
+      max: 3
+
+  example.string.with.minmax.option:
+    type: string
+    label: 'String with min and max option'
+    default: 'foo'
+    options:
+      min: 3
+      max: 3
+
+  example.int.with.min.option:
+    type: int
+    label: 'int with min option'
+    default: 3
+    options:
+      min: 3
+
+  example.int.with.max.option:
+    type: int
+    label: 'int with max option'
+    default: 3
+    options:
+      max: 3
+
+  example.int.with.step.option:
+    type: int
+    label: 'int with step option'
+    default: 6
+    options:
+      step: 3
+
+  example.int.with.minmax.option:
+    type: int
+    label: 'int with min and max option'
+    default: 3
+    options:
+      min: 3
+      max: 3
+
+  example.int.with.minmaxstep.option:
+    type: int
+    label: 'int with min, max and step option'
+    default: 5
+    options:
+      min: 3
+      max: 7
+      step: 2
+
+  example.number.with.min.option:
+    type: number
+    label: 'Number with min option'
+    default: 3.3
+    options:
+      min: 3.3
+
+  example.number.with.max.option:
+    type: number
+    label: 'Number with max option'
+    default: 3.3
+    options:
+      max: 3.3
+
+  example.number.with.step.option:
+    type: number
+    label: 'Number with min, max and step option'
+    default: 0.6
+    options:
+      step: 0.3
+
+  example.number.with.minmax.option:
+    type: number
+    label: 'Number with min and max option'
+    default: 3.3
+    options:
+      min: 3.3
+      max: 3.3
+
+  example.number.with.minmaxstep.option:
+    type: number
+    label: 'Number with min and max option'
+    default: 3.5
+    options:
+      min: 3.3
+      max: 3.7
+      step: 0.2

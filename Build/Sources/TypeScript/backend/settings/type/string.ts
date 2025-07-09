@@ -13,14 +13,27 @@
 
 import { html, nothing, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators';
+import { live } from 'lit/directives/live';
 import { BaseElement } from './base';
 
 export const componentName = 'typo3-backend-settings-type-string';
 
 @customElement(componentName)
-export class StringTypeElement extends BaseElement<string> {
-
+export class StringTypeElement extends BaseElement<
+  string,
+  {
+    min?: number,
+    max?: number,
+  }
+> {
   @property({ type: String }) override value: string;
+
+  protected handleChange(e: InputEvent): void {
+    const input = e.target as HTMLInputElement;
+    if (input.reportValidity()) {
+      this.value = input.value;
+    }
+  }
 
   protected renderEnum(): TemplateResult {
     return html`
@@ -28,8 +41,8 @@ export class StringTypeElement extends BaseElement<string> {
         id=${this.formid}
         class="form-select"
         ?readonly=${this.readonly}
-        .value=${this.value}
-        @change=${(e: InputEvent) => this.value = (e.target as HTMLInputElement).value}
+        .value=${live(this.value)}
+        @change=${this.handleChange}
       >
         ${Object.entries(this.enum).map(([value, label]) => html`
           <option ?selected=${this.value === value} value=${value}>${label}${this.debug ? html` [${value}]` : nothing}</option>
@@ -48,8 +61,10 @@ export class StringTypeElement extends BaseElement<string> {
         id=${this.formid}
         class="form-control"
         ?readonly=${this.readonly}
-        .value=${this.value}
-        @change=${(e: InputEvent) => this.value = (e.target as HTMLInputElement).value}
+        .value=${live(this.value)}
+        minlength=${this.options.min ?? nothing}
+        maxlength=${this.options.max ?? nothing}
+        @change=${this.handleChange}
       />
     `;
   }

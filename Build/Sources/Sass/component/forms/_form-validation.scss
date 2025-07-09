@@ -86,3 +86,27 @@
         flex-shrink: 0;
     }
 }
+
+//
+// This section provides the same functionality as .is-invalid or .has-error,
+// but is limited to native input validation for input elements only.
+// To prevent unintended side effects, this will not be applied globally,
+// but only within a strictly controlled environment.
+//
+// Currently, the scope is limited to the settings editor to eliminate the need
+// for developers to manually add custom CSS classes to their markup.
+//
+typo3-backend-editable-setting {
+    *:user-invalid {
+        --typo3-input-color: var(--typo3-surface-container-danger-text);
+        --typo3-input-bg: var(--typo3-surface-container-danger);
+        --typo3-input-group-addon-bg: color-mix(in srgb, var(--typo3-input-bg), var(--typo3-input-color) 10%);
+        --typo3-input-border-color: var(--typo3-state-danger-border-color);
+        --typo3-input-hover-color: var(--typo3-input-color);
+        --typo3-input-hover-bg: var(--typo3-input-bg);
+        --typo3-input-hover-border-color: var(--typo3-state-danger-hover-border-color);
+        --typo3-input-focus-color: var(--typo3-input-color);
+        --typo3-input-focus-bg: var(--typo3-input-bg);
+        --typo3-input-focus-border-color: var(--typo3-state-danger-focus-border-color);
+    }
+}

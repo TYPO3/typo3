@@ -61,6 +61,7 @@ export interface SettingDefinition {
   enum: ValueType[],
   categories: string[],
   tags: string[],
+  options: Record<string, unknown>,
 }
 
 /** @see \TYPO3\CMS\Backend\Dto\Settings\EditableSetting */

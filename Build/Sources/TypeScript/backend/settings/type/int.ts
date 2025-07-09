@@ -11,16 +11,31 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, type TemplateResult } from 'lit';
+import { html, nothing, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators';
+import { live } from 'lit/directives/live';
 import { BaseElement } from './base';
 
 export const componentName = 'typo3-backend-settings-type-int';
 
 @customElement(componentName)
-export class IntTypeElement extends BaseElement<number> {
+export class IntTypeElement extends BaseElement<
+  number,
+  {
+    min?: number,
+    max?: number,
+    step?: number,
+  }
+> {
 
   @property({ type: Number }) override value: number;
+
+  protected handleChange(e: InputEvent): void {
+    const input = e.target as HTMLInputElement;
+    if (input.reportValidity()) {
+      this.value = input.valueAsNumber;
+    }
+  }
 
   protected override render(): TemplateResult {
     return html`
@@ -29,8 +44,12 @@ export class IntTypeElement extends BaseElement<number> {
         id=${this.formid}
         class="form-control"
         ?readonly=${this.readonly}
-        .value=${this.value}
-        @change=${(e: InputEvent) => this.value = parseInt((e.target as HTMLInputElement).value, 10)}
+        .value=${live(String(this.value))}
+        required
+        min=${this.options.min ?? nothing}
+        max=${this.options.max ?? nothing}
+        step=${this.options.step ?? nothing}
+        @change=${this.handleChange}
       />
     `;
   }
