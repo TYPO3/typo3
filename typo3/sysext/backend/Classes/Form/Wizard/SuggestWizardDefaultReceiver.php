@@ -161,7 +161,7 @@ class SuggestWizardDefaultReceiver
                 $this->manipulateRecord($row);
                 $this->makeWorkspaceOverlay($row);
                 // check if the user has access to the record
-                if (!$this->checkRecordAccess($row, $row['uid'])) {
+                if (!is_array($row) || !$this->checkRecordAccess($row, $row['uid'])) {
                     continue;
                 }
                 $icon = $this->iconFactory->getIconForRecord($this->table, $row, IconSize::SMALL);
@@ -332,6 +332,7 @@ class SuggestWizardDefaultReceiver
      * Overlay the given record with its workspace-version, if any
      *
      * @param array $row The record to get the workspace version for
+     * @param-out false|array|null $row
      */
     protected function makeWorkspaceOverlay(array &$row): void
     {

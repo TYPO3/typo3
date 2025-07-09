@@ -289,12 +289,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Utility/FormEngineUtility.php
 
 		-
-			message: '#^Parameter &\$row by\-ref type of method TYPO3\\CMS\\Backend\\Form\\Wizard\\SuggestWizardDefaultReceiver\:\:makeWorkspaceOverlay\(\) expects array, array\|null given\.$#'
-			identifier: parameterByRef.type
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Wizard/SuggestWizardDefaultReceiver.php
-
-		-
 			message: '#^Variable \$pidList in empty\(\) always exists and is not falsy\.$#'
 			identifier: empty.variable
 			count: 1
@@ -501,12 +495,6 @@ parameters:
 		-
 			message: '#^Offset ''record_pid'' on non\-empty\-array\<string, mixed\> on left side of \?\? always exists and is not nullable\.$#'
 			identifier: nullCoalesce.offset
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
-
-		-
-			message: '#^Parameter &\$row by\-ref type of method TYPO3\\CMS\\Backend\\Utility\\BackendUtility\:\:workspaceOL\(\) expects array\|null, false given\.$#'
-			identifier: parameterByRef.type
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
 
@@ -4457,12 +4445,6 @@ parameters:
 			identifier: function.alreadyNarrowedType
 			count: 1
 			path: ../../typo3/sysext/impexp/Classes/Import.php
-
-		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/impexp/Classes/ImportExport.php
 
 		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
