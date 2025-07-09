@@ -141,9 +141,9 @@ editor:
 
     highlight:
       options:
-        - { model: 'yellowMarker', class: 'marker-yellow', title: 'Yellow marker', type: 'marker', color: 'var(--ck-highlight-marker-yellow)' }
-        - { model: 'greenMarker', class: 'marker-green', title: 'Green marker', type: 'marker', color: 'var(--ck-highlight-marker-green)' }
-        - { model: 'redPen', class: 'pen-red', title: 'Red pen', type: 'pen', color: 'var(--ck-highlight-pen-red)' }
+        - { model: 'yellowMarker', class: 'marker-yellow', title: 'Yellow marker', type: 'marker', color: 'var(--ck-content--highlight-marker-yellow)' }
+        - { model: 'greenMarker', class: 'marker-green', title: 'Green marker', type: 'marker', color: 'var(--ck-content-highlight-marker-green)' }
+        - { model: 'redPen', class: 'pen-red', title: 'Red pen', type: 'pen', color: 'var(--ck-content-highlight-pen-red)' }
 
     mention:
       feeds:

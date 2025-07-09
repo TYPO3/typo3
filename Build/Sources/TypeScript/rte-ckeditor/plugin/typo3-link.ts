@@ -7,7 +7,7 @@ import * as Utils from '@ckeditor/ckeditor5-utils';
 import * as Link from '@ckeditor/ckeditor5-link';
 import { LinkUtils } from '@ckeditor/ckeditor5-link';
 import { default as modalObject, type ModalElement } from '@typo3/backend/modal';
-import type { ViewAttributeElement, ViewElement, Schema, Writer } from '@ckeditor/ckeditor5-engine';
+import type { ViewAttributeElement, ViewElement, ModelSchema, ModelWriter } from '@ckeditor/ckeditor5-engine';
 import type { GeneralHtmlSupport, DataFilter } from '@ckeditor/ckeditor5-html-support';
 import type { GHSViewAttributes } from '@ckeditor/ckeditor5-html-support/src/utils';
 import { IconLink, IconPencil, IconUnlink } from '@ckeditor/ckeditor5-icons';
@@ -167,12 +167,12 @@ export class Typo3LinkCommand extends Core.Command {
     });
   }
 
-  private getLinkAttributesAllowedOnText(schema: Schema): Array<string> {
+  private getLinkAttributesAllowedOnText(schema: ModelSchema): Array<string> {
     const textAttributes = schema.getDefinition('$text').allowAttributes;
     return textAttributes.filter(attribute => attribute.startsWith('link') || attribute === 'htmlA');
   }
 
-  private removeLinkAttributesFromSelection(writer: Writer, linkAttributes: Array<string>): void {
+  private removeLinkAttributesFromSelection(writer: ModelWriter, linkAttributes: Array<string>): void {
     writer.removeSelectionAttribute('linkHref');
 
     for (const attribute of linkAttributes) {
@@ -207,7 +207,7 @@ export class Typo3LinkCommand extends Core.Command {
     return attrs;
   }
 
-  private isRangeToUpdate(range: Engine.Range, allowedRanges: Engine.Range[]) {
+  private isRangeToUpdate(range: Engine.ModelRange, allowedRanges: Engine.ModelRange[]) {
     for (const allowedRange of allowedRanges) {
       // A range is inside an element that will have the `linkHref` attribute. Do not modify its nodes.
       if (allowedRange.containsRange(range)) {
@@ -331,7 +331,7 @@ export class Typo3LinkEditing extends Core.Plugin {
       model: { key: 'linkRel', value: (viewElement: ViewElement) => viewElement.getAttribute('rel') }
     });
 
-    // overrides 'link' command, 'unlink' command is taken from CKEditor5's `LinkEditing`
+    // overrides 'link' command, 'unlink' command is taken from CKEditor 5's `LinkEditing`
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     editor.commands.add('link', new Typo3LinkCommand(editor));

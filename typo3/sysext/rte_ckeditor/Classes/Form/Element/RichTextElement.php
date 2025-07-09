@@ -339,7 +339,7 @@ class RichTextElement extends AbstractFormElement
                 'configName' => $configuration['configName'] ?? $pluginName,
             ];
             unset($configuration['configName']);
-            // CKEditor4 style config, unused in CKEditor5 and not forwarded to the resutling plugin config
+            // CKEditor 4 style config, unused in CKEditor 5 and not forwarded to the resutling plugin config
             unset($configuration['resource']);
 
             if ($configuration['route'] ?? null) {

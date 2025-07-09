@@ -16,7 +16,7 @@ Regular Expression objects for certain keys. By defining a Regular Expression,
 the CKEditor replacement/transformation functionality feature is now fully
 usable.
 
-The CKEditor v5 configuration API allows to specify
+The CKEditor 5 configuration API allows to specify
 Regular Expression JavaScript objects, for example in
 :javascript:`editor.config.typing.transformations.extra.from` or
 :javascript:`editor.config.htmlSupport.allow.name`:

@@ -14,7 +14,7 @@ Description
 TYPO3 v12 ships with CKEditor 5, which is a completely new, rewritten editor
 compared to CKEditor 4 which was shipped since TYPO3 v8.
 
-Any kind of plugin, which was written for CKEditor4 is not compatible anymore.
+Any kind of plugin, which was written for CKEditor 4 is not compatible anymore.
 
 In addition, since CKEditor 5 does not grant HTML input the same way as before.
 
@@ -40,7 +40,7 @@ In general, it is advised to read the `CKEditor 4 to 5 migration <https://ckedit
 to understand the conceptual changes, also related to plugins.
 
 Writing a custom plugin for CKEditor 5 can be done in TypeScript or JavaScript,
-using the `CKEditor5 plugin system <https://ckeditor.com/docs/ckeditor5/latest/installation/advanced/plugins.html>`__.
+using the `CKEditor 5 plugin system <https://ckeditor.com/docs/ckeditor5/latest/installation/advanced/plugins.html>`__.
 
 Example - A timestamp plugin :js:`@my-vendor/my-package/timestamp-plugin.js`
 which adds a toolbar item to add the current timestamp into the editor.

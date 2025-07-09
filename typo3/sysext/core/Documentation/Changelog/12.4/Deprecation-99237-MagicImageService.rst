@@ -13,7 +13,7 @@ Description
 
 The class :php:`\TYPO3\CMS\Core\Resource\Service\MagicImageService`, which was
 previously used for inline images by EXT:rtehtmlarea has been marked as
-deprecated, since its functionality is no longer needed for `CKeditor`.
+deprecated, since its functionality is no longer needed for `CKEditor`.
 
 Impact
 ======

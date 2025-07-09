@@ -82,7 +82,7 @@ export default [
               source !== 'color-name' &&
               source !== 'color-parse'
             ) {
-              throw new Error(`HEADS UP: New CKEditor5 import "${source}" (import from ${from}). Please decide whether to bundle or package separately and adapt Build/rollup/ckeditor.js accordingly.`);
+              throw new Error(`HEADS UP: New CKEditor 5 import "${source}" (import from ${from}). Please decide whether to bundle or package separately and adapt Build/rollup/ckeditor.js accordingly.`);
             }
             return null
           }
@@ -94,7 +94,7 @@ export default [
               return null;
             }
             const ms = new MagicString(code);
-            // Workaround a CKEditor5 bug where a link without an `href` attribute is created
+            // Workaround a CKEditor 5 bug where a link without an `href` attribute is created
             // when the cursor is placed at the end of a link containing a class attribute.
             // @todo: Fix this upstream: htmlA should theoretically be removed automatically
             // when linkHref is removed as it is defined to be a coupledAttribute with linkHref.

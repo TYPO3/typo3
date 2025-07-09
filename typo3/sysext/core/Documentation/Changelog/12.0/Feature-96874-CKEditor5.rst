@@ -121,7 +121,7 @@ from `editor.config.wordcount` to `editor.config.wordCount`:
     Please note that as of today, the "classes" attribute must be used,
     and custom "style" attribute is no longer supported. Also note that an empty
     class list is migrated to `classes: ['']` and will render `class=""`, as
-    CKEditor5 internals require this attribute to be set.
+    CKEditor 5 internals require this attribute to be set.
 
 *   `editor.config.toolbarGroups` was previously used to create the buttons in the
     toolbar. This was used in conjunction with `editor.config.removeButtons`.
