@@ -90,6 +90,14 @@ class CategoryCollection extends CoreCategoryCollection
             ->executeQuery()
             ->fetchAssociative();
 
+        if ($collectionRecord === false) {
+            return GeneralUtility::makeInstance(
+                self::class,
+                $tableName,
+                $fieldName
+            );
+        }
+
         $collectionRecord['table_name'] = $tableName;
         $collectionRecord['field_name'] = $fieldName;
 
