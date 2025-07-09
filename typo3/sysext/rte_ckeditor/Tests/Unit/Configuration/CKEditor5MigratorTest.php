@@ -369,7 +369,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
             ],
 
             // Toolbar migration
-            'CKEditor4 Toolbar Basic' => [
+            'CKEditor 4 Toolbar Basic' => [
                 [
                     'editor' => [
                         'config' => [
@@ -419,7 +419,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                 ],
             ],
-            'CKEditor4 Toolbar Advanced' => [
+            'CKEditor 4 Toolbar Advanced' => [
                 [
                     'editor' => [
                         'config' => [
@@ -486,7 +486,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                 ],
             ],
-            'CKEditor4 ToolbarGroups' => [
+            'CKEditor 4 ToolbarGroups' => [
                 [
                     'editor' => [
                         'config' => [
@@ -549,7 +549,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                 ],
             ],
-            'CKEditor4 ToolbarReference' => [
+            'CKEditor 4 ToolbarReference' => [
                 [
                     'editor' => [
                         'config' => [
@@ -600,7 +600,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                 ],
             ],
-            'CKEditor5 Flat' => [
+            'CKEditor 5 Flat' => [
                 [
                     'editor' => [
                         'config' => [
@@ -658,7 +658,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                 ],
             ],
-            'CKEditor5 Nested' => [
+            'CKEditor 5 Nested' => [
                 [
                     'editor' => [
                         'config' => [
@@ -718,7 +718,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                 ],
             ],
-            'CKEditor5 Grouped' => [
+            'CKEditor 5 Grouped' => [
                 [
                     'editor' => [
                         'config' => [
@@ -768,7 +768,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                 ],
             ],
-            'CKEditor5 toolbar.removeItems and CKEditor4 removeButtons' => [
+            'CKEditor 5 toolbar.removeItems and CKEditor 4 removeButtons' => [
                 [
                     'editor' => [
                         'config' => [
@@ -819,7 +819,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                 ],
             ],
-            'CKEditor5 shouldNotGroupWhenFull' => [
+            'CKEditor 5 shouldNotGroupWhenFull' => [
                 [
                     'editor' => [
                         'config' => [
@@ -855,7 +855,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
             ],
 
             // TYPO3 11.5 Toolbar Presets
-            'CKEditor4 Toolbar Default' => [
+            'CKEditor 4 Toolbar Default' => [
                 [
                     'editor' => [
                         'config' => [
@@ -940,7 +940,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                 ],
             ],
-            'CKEditor4 Toolbar Full' => [
+            'CKEditor 4 Toolbar Full' => [
                 [
                     'editor' => [
                         'config' => [
@@ -1037,7 +1037,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                 ],
             ],
-            'CKEditor4 Toolbar Minimal' => [
+            'CKEditor 4 Toolbar Minimal' => [
                 [
                     'editor' => [
                         'config' => [
@@ -1517,7 +1517,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                 ],
             ],
-            'Configure Alignment like CKEditor4' => [
+            'Configure Alignment like CKEditor 4' => [
                 [
                     'editor' => [
                         'config' => [
@@ -1554,7 +1554,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                 ],
             ],
-            'Configure Alignment like CKEditor4 Partially' => [
+            'Configure Alignment like CKEditor 4 Partially' => [
                 [
                     'editor' => [
                         'config' => [
@@ -1589,7 +1589,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                 ],
             ],
-            'Configure Alignment like CKEditor5' => [
+            'Configure Alignment like CKEditor 5' => [
                 [
                     'editor' => [
                         'config' => [
@@ -1628,7 +1628,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                 ],
             ],
-            'Configure Alignment like CKEditor5 Partially' => [
+            'Configure Alignment like CKEditor 5 Partially' => [
                 [
                     'editor' => [
                         'config' => [
@@ -1827,7 +1827,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                 ],
             ],
-            'Configure WordCount like CKEditor4' => [
+            'Configure WordCount like CKEditor 4' => [
                 [
                     'editor' => [
                         'config' => [
@@ -1862,7 +1862,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                 ],
             ],
-            'Configure WordCount like CKEditor4 Partially' => [
+            'Configure WordCount like CKEditor 4 Partially' => [
                 [
                     'editor' => [
                         'config' => [
@@ -1897,7 +1897,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                 ],
             ],
-            'Configure WordCount like CKEditor5' => [
+            'Configure WordCount like CKEditor 5' => [
                 [
                     'editor' => [
                         'config' => [
@@ -1932,7 +1932,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     ],
                 ],
             ],
-            'Configure WordCount like CKEditor5 Partially' => [
+            'Configure WordCount like CKEditor 5 Partially' => [
                 [
                     'editor' => [
                         'config' => [

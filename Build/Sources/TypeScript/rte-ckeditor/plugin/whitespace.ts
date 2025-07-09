@@ -5,7 +5,7 @@ import * as Typing from '@ckeditor/ckeditor5-typing';
 import type { InsertTextCommand } from '@ckeditor/ckeditor5-typing';
 
 /**
- * CKEditor5 Whitespace Plugin
+ * CKEditor 5 Whitespace Plugin
  *
  * Add support for non breaking spaces
  * - Make non breaking spaces visible

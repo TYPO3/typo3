@@ -16,7 +16,7 @@ import Modal from '@typo3/backend/modal';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { type Typo3LinkDict, LINK_ALLOWED_ATTRIBUTES, addLinkPrefix } from '@typo3/rte-ckeditor/plugin/typo3-link';
 import type * as Core from '@ckeditor/ckeditor5-core';
-import type Position from '@ckeditor/ckeditor5-engine/src/model/position';
+import type { ModelPosition } from '@ckeditor/ckeditor5-engine/src/model/position';
 
 /**
  * Module: @typo3/rte-ckeditor/rte-link-browser
@@ -24,8 +24,8 @@ import type Position from '@ckeditor/ckeditor5-engine/src/model/position';
  */
 class RteLinkBrowser {
   protected editor: Core.Editor = null;
-  protected selectionStartPosition: Position = null;
-  protected selectionEndPosition: Position = null;
+  protected selectionStartPosition: ModelPosition = null;
+  protected selectionEndPosition: ModelPosition = null;
 
   public initialize(): void {
     this.editor = Modal.currentModal.userData.editor;

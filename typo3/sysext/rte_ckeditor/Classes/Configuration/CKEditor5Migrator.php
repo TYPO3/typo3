@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class CKEditor5Migrator
 {
     /**
-     * Main groups in CKEditor4 contain subgroups.
+     * Main groups in CKEditor 4 contain subgroups.
      * These groups are expanded during migration.
      */
     private const TOOLBAR_MAIN_GROUPS_MAP = [
@@ -48,7 +48,7 @@ class CKEditor5Migrator
     ];
 
     /**
-     * Groups in CKEditor4 contain buttons.
+     * Groups in CKEditor 4 contain buttons.
      */
     private const TOOLBAR_GROUPS_MAP = [
         'mode' => ['Source'],
@@ -347,7 +347,7 @@ class CKEditor5Migrator
             'shouldNotGroupWhenFull' => $this->configuration['editor']['config']['toolbar']['shouldNotGroupWhenFull'] ?? true,
         ];
 
-        // Migrate CKEditor4 toolbarGroups
+        // Migrate CKEditor 4 toolbarGroups
         // There can only be one configuration at a time, if 'toolbarGroups' is set
         // we prefer this definition above the toolbar definition.
         // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-toolbarGroups
@@ -356,7 +356,7 @@ class CKEditor5Migrator
             unset($this->configuration['editor']['config']['toolbar'], $this->configuration['editor']['config']['toolbarGroups']);
         }
 
-        // Migrate CKEditor4 toolbar templates
+        // Migrate CKEditor 4 toolbar templates
         // Resolve toolbar template and override current toolbar
         // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-toolbar
         if (is_string($this->configuration['editor']['config']['toolbar'] ?? null)) {
@@ -385,11 +385,11 @@ class CKEditor5Migrator
                 continue;
             }
             if (is_array($item)) {
-                // Expand CKEditor4 preset toolbar groups
+                // Expand CKEditor 4 preset toolbar groups
                 if (is_string($item['name'] ?? null) && count($item) === 1 && isset(self::TOOLBAR_MAIN_GROUPS_MAP[$item['name']])) {
                     $item['groups'] = self::TOOLBAR_MAIN_GROUPS_MAP[$item['name']];
                 }
-                // Flatten CKEditor4 arrays that only have strings assigned
+                // Flatten CKEditor 4 arrays that only have strings assigned
                 if (count($item) === count(array_filter($item, static fn(mixed $value): bool => is_string($value)))) {
                     $migratedToolbarItems = $item;
                     $migratedToolbarItems = $this->migrateToolbarButtons($migratedToolbarItems);
@@ -398,7 +398,7 @@ class CKEditor5Migrator
                     $toolbarItems[] = '|';
                     continue;
                 }
-                // Flatten CKEditor4 named groups
+                // Flatten CKEditor 4 named groups
                 if (is_string($item['name'] ?? null) && is_array($item['items'] ?? null)) {
                     $migratedToolbarItems = $item['items'];
                     $migratedToolbarItems = $this->migrateToolbarButtons($migratedToolbarItems);
@@ -407,11 +407,11 @@ class CKEditor5Migrator
                     $toolbarItems[] = '|';
                     continue;
                 }
-                // Expand CKEditor4 toolbar groups
+                // Expand CKEditor 4 toolbar groups
                 if (is_string($item['name'] ?? null) && is_array($item['groups'] ?? null)) {
                     $itemGroups = array_filter($item['groups'], static fn(mixed $itemGroup): bool => is_string($itemGroup));
 
-                    // Process Main CKEditor4 Groups
+                    // Process Main CKEditor 4 Groups
                     $unGroupedToolbarItems = [];
                     foreach ($itemGroups as $itemGroup) {
                         if (isset(self::TOOLBAR_MAIN_GROUPS_MAP[$itemGroup])) {
@@ -422,7 +422,7 @@ class CKEditor5Migrator
                         $unGroupedToolbarItems[] = $itemGroup;
                     }
 
-                    // Process CKEditor4 Groups
+                    // Process CKEditor 4 Groups
                     $groupedToolbarItems = [];
                     foreach ($itemGroups as $itemGroup) {
                         if (isset(self::TOOLBAR_GROUPS_MAP[$itemGroup])) {
@@ -920,7 +920,7 @@ class CKEditor5Migrator
     {
         // Migrate legacy configuration
         //
-        // CKEditor4 used `wordcount` (lowercase), which is `wordCount` in CKEditor5.
+        // CKEditor 4 used `wordcount` (lowercase), which is `wordCount` in CKEditor 5.
         // The amount of properties has been reduced.
         //
         // see https://ckeditor.com/docs/ckeditor5/latest/features/word-count.html
@@ -966,9 +966,9 @@ class CKEditor5Migrator
             foreach ($this->configuration['editor']['config']['style']['definitions'] as $definitionIndex => $definition) {
                 $classes = $definition['classes'] ?? [];
                 if ($classes === []) {
-                    // See CKeditor5Migrator::migrateStylesSetToStyleDefinitions - an empty array is not allowed.
+                    // See CKEditor5Migrator::migrateStylesSetToStyleDefinitions - an empty array is not allowed.
                     // The "classes" attribute must always either be a string (even using `true` will lead to class="true"),
-                    // or "['']" (array with empty string, leading to class=""). CKEditor5 requires this attribute to
+                    // or "['']" (array with empty string, leading to class=""). CKEditor 5 requires this attribute to
                     // be set, see https://ckeditor.com/docs/ckeditor5/latest/api/module_style_styleconfig-StyleDefinition.html
                     $this->configuration['editor']['config']['style']['definitions'][$definitionIndex]['classes'] = [''];
                 }

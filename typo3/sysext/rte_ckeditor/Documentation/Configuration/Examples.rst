@@ -96,7 +96,7 @@ example:
 How do I allow a specific tag?
 ==============================
 
-Allowed content in CKEditor5 is to be configured via the General HTML Support
+Allowed content in CKEditor 5 is to be configured via the General HTML Support
 plugin option :yaml:`config.htmlSupport`.
 
 ..  literalinclude:: _Examples/_AllowSpecificTag.yaml
@@ -105,12 +105,12 @@ plugin option :yaml:`config.htmlSupport`.
 
 ..  note::
     :yaml:`config.htmlSupport` only applies to elements that are "known" to
-    CKEditor5. Tags like :html:`<svg>` or custom elements like
+    CKEditor 5. Tags like :html:`<svg>` or custom elements like
     :html:`<my-element>` are not configurable this way as
     :yaml:`htmlSupport.allow` can only handle
-    elements that are defined in the `CKEditor5 schema`_.
+    elements that are defined in the `CKEditor 5 schema`_.
 
-..  _CKEditor5 schema: https://ckeditor.com/docs/ckeditor5/latest/features/html/general-html-support.html#enabling-custom-elements
+..  _CKEditor 5 schema: https://ckeditor.com/docs/ckeditor5/latest/features/html/general-html-support.html#enabling-custom-elements
 
 
 ..  _config-example-fontplugin:
@@ -165,7 +165,7 @@ are not compatible with CKEditor 5. It is advised to read the
 to understand the conceptual changes, also related to plugins.
 
 Writing a custom plugin for CKEditor 5 can be done in TypeScript or JavaScript,
-using the `CKEditor5 plugin system <https://ckeditor.com/docs/ckeditor5/latest/installation/advanced/plugins.html>`__.
+using the `CKEditor 5 plugin system <https://ckeditor.com/docs/ckeditor5/latest/installation/advanced/plugins.html>`__.
 
 In this example, we integrate a simple timestamp plugin to CKEditor 5.
 Make sure to replace `<my_extension>` with your extension key.

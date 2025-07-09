@@ -2,16 +2,16 @@
 
 .. _important-100847-1686218342:
 
-===================================================
-Important: #100847 - Added font plugin to CKEditor5
-===================================================
+====================================================
+Important: #100847 - Added font plugin to CKEditor 5
+====================================================
 
 See :issue:`100847`
 
 Description
 ===========
 
-The font plugin has been added to the CKEditor5.
+The font plugin has been added to the CKEditor 5.
 In order to use the font plugin, the RTE configuration needs to be adapted:
 
 .. code-block:: yaml
