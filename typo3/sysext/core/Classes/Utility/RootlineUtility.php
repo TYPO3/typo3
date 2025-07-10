@@ -575,7 +575,6 @@ class RootlineUtility
                     $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
                 )
             )
-            ->setMaxResults(1)
             ->executeQuery();
 
         $record = $statement->fetchAssociative();
@@ -806,7 +805,7 @@ class RootlineUtility
         $expr = $cte->expr();
         $initial = $this->createQueryBuilder('pages');
         $initial->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        if ($workspaceId <= 0) {
+        if ($workspaceId === 0) {
             // Return simplified initial expression for live workspace resolving only.
             return $initial
                 ->selectLiteral(...array_values([
@@ -980,7 +979,7 @@ class RootlineUtility
         $expr = $cte->expr();
         $traversal = $this->createQueryBuilder('pages');
         $traversal->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        if ($workspaceId <= 0) {
+        if ($workspaceId === 0) {
             $traversal
                 ->selectLiteral(...array_values([
                     // data fields
@@ -1227,22 +1226,20 @@ class RootlineUtility
      */
     protected function getWorkspaceResolvedPageRecord(int $pageId, int $workspaceId): ?array
     {
-        $createForLiveWorkspace = ($workspaceId <= 0);
         $queryBuilder = $this->createQueryBuilder('pages');
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        $fields = $this->getPagesFields();
-        if ($createForLiveWorkspace) {
-            // For live workspace only we can even more simplify this
+        if ($workspaceId === 0) {
+            // For live workspace only we can simplify this even more
             $queryBuilder
-                ->select(...array_values($fields))
+                ->select('*')
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)),
-                    $queryBuilder->expr()->in('t3ver_wsid', $queryBuilder->createNamedParameter([0, $workspaceId], Connection::PARAM_INT_ARRAY)),
-                )
-                ->setMaxResults(1);
+                    $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                );
             return $queryBuilder->executeQuery()->fetchAssociative() ?: null;
         }
+        $fields = $this->getPagesFields();
         $prefixedFields = array_filter($fields, static fn($value) => $value !== 'uid');
         array_walk(
             $prefixedFields,
@@ -1394,8 +1391,14 @@ class RootlineUtility
         return $row;
     }
 
+    /**
+     * Uses a two-layer cache to ensure that this check is really called VERY VERY SELDOM.
+     */
     protected function getPagesFields(): array
     {
+        if ($this->runtimeCache->has('rootline-localcache-pagesfields')) {
+            return $this->runtimeCache->get('rootline-localcache-pagesfields');
+        }
         $fieldNames = [];
         $columns = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('pages')
@@ -1404,6 +1407,7 @@ class RootlineUtility
         foreach ($columns as $column) {
             $fieldNames[] = $column->getName();
         }
+        $this->runtimeCache->set('rootline-localcache-pagesfields', $fieldNames);
         return $fieldNames;
     }
 
