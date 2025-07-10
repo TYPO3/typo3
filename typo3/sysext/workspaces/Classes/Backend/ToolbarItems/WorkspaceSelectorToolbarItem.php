@@ -32,7 +32,7 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 class WorkspaceSelectorToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemInterface
 {
     private ServerRequestInterface $request;
-    protected array $availableWorkspaces;
+    protected readonly array $availableWorkspaces;
 
     public function __construct(
         private readonly WorkspaceService $workspaceService,

@@ -46,18 +46,17 @@ readonly class DatabaseUserPermissionCheck implements FormDataProviderInterface
      *
      * A couple of different exceptions are thrown here:
      * * If something weird happens a top level SPL exception is thrown.
-     *   This indicates a non recoverable error.
+     *   This indicates a non-recoverable error.
      * * If user has no access to whatever should be done, an exception that
      *   extends from Form\Exception\AccessDeniedException is thrown. This
      *   can be caught by upper level controller code and can be translated
-     *   to a specific error message that is shown to the user depending on
-     *   specific exception that is thrown.
+     *   to a specific error message that is shown to the user.
      *
      * @param array $result
      * @return array
      * @throws AccessDeniedException
      */
-    public function addData(array $result)
+    public function addData(array $result): array
     {
         $backendUser = $this->getBackendUser();
 

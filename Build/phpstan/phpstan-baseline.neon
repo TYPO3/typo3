@@ -3437,9 +3437,3 @@ parameters:
 			identifier: identical.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/workspaces/Classes/Dependency/ElementEntity.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between \(int\|string\) and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 2
-			path: ../../typo3/sysext/workspaces/Classes/Service/StagesService.php

@@ -846,6 +846,13 @@ final class GeneralUtilityTest extends UnitTestCase
                 0,
                 ['a', 'b', 'c', 'd', 'e', 'f'],
             ],
+            'duplicate values are kept' => [
+                ',',
+                'a,b,a',
+                true,
+                0,
+                ['a', 'b', 'a'],
+            ],
             'keeps remaining results with empty items after reaching limit with positive parameter' => [
                 ',',
                 ' a , b , c , , d,, ,e ',

@@ -48,11 +48,13 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Authorization\WorkspacePublishGate;
 use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
+use TYPO3\CMS\Workspaces\Domain\Model\WorkspaceStage;
 use TYPO3\CMS\Workspaces\Event\AfterCompiledCacheableDataForWorkspaceEvent;
 use TYPO3\CMS\Workspaces\Event\AfterDataGeneratedForWorkspaceEvent;
 use TYPO3\CMS\Workspaces\Event\GetVersionedDataEvent;
 use TYPO3\CMS\Workspaces\Event\ModifyVersionDifferencesEvent;
 use TYPO3\CMS\Workspaces\Event\SortVersionedDataEvent;
+use TYPO3\CMS\Workspaces\Exception\WorkspaceStageNotFoundException;
 use TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder;
 use TYPO3\CMS\Workspaces\Service\Dependency\CollectionService;
 
@@ -85,19 +87,20 @@ readonly class GridDataService
     /**
      * Generates grid list array from given versions.
      *
+     * @param WorkspaceStage[] $stages
      * @param array $versions All records uids etc. First key is table name, second key incremental integer.
      *                        Records are associative arrays with uid and t3ver_oid fields. The pid of the online
      *                        record is found as "livepid" the pid of the offline record is found in "wspid"
      * @param \stdClass $parameter Parameters as submitted by JavaScript component
      * @return array Version record information (filtered, sorted and limited)
      */
-    public function generateGridListFromVersions(array $versions, \stdClass $parameter): array
+    public function generateGridListFromVersions(array $stages, array $versions, \stdClass $parameter): array
     {
         // Read the given parameters from grid. If the parameter is not set use default values.
         $filterTxt = $parameter->filterTxt ?? '';
         $start = isset($parameter->start) ? (int)$parameter->start : 0;
         $limit = isset($parameter->limit) ? (int)$parameter->limit : 30;
-        $dataArray = $this->generateDataArray($versions, $filterTxt);
+        $dataArray = $this->generateDataArray($stages, $versions, $filterTxt);
         return [
             // Only count parent records for pagination
             'total' => count(array_filter($dataArray, static function ($element) {
@@ -107,7 +110,10 @@ readonly class GridDataService
         ];
     }
 
-    public function getRowDetails(\stdClass $parameter): array
+    /**
+     * @param WorkspaceStage[] $stages
+     */
+    public function getRowDetails(array $stages, \stdClass $parameter): array
     {
         $backendUser = $this->getBackendUser();
         $table = $parameter->table;
@@ -117,8 +123,34 @@ readonly class GridDataService
         $plainLiveRecord = $liveRecord = (array)BackendUtility::getRecord($table, $parameter->t3ver_oid);
         $plainVersionRecord = $versionRecord = (array)BackendUtility::getRecord($table, $parameter->uid);
         $versionState = VersionState::tryFrom($versionRecord['t3ver_state'] ?? 0);
+
+        try {
+            $currentStage = $this->stagesService->getStage($stages, $parameter->stage);
+        } catch (WorkspaceStageNotFoundException) {
+            $currentStage = null;
+        }
+        $nextStageSendToTitle = false;
+        $previousStageSendToTitle = false;
+        if ($currentStage?->isAllowed) {
+            try {
+                $nextStage = $this->stagesService->getNextStage($stages, $currentStage->uid);
+                if ($nextStage->isExecuteStage) {
+                    $nextStageSendToTitle = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:publish_execute_action_option');
+                } else {
+                    $nextStageSendToTitle = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:actionSendToStage') . ' "' . $nextStage->title . '"';
+                }
+            } catch (WorkspaceStageNotFoundException) {
+                // keep false as title
+            }
+            try {
+                $previousStage = $this->stagesService->getPreviousStage($stages, $currentStage->uid);
+                $previousStageSendToTitle = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:actionSendToStage') . ' "' . $previousStage->title . '"';
+            } catch (WorkspaceStageNotFoundException) {
+                // keep false as title
+            }
+        }
+
         $iconWorkspace = $this->iconFactory->getIconForRecord($table, $versionRecord, IconSize::SMALL);
-        $stagePosition = $this->stagesService->getPositionOfCurrentStage($parameter->stage);
         $fieldsOfRecords = array_keys($liveRecord);
         $isNewOrDeletePlaceholder = $versionState === VersionState::NEW_PLACEHOLDER || $versionState === VersionState::DELETE_PLACEHOLDER;
         $suitableFields = ($isNewOrDeletePlaceholder && ($parameter->filterFields ?? false)) ? array_flip($this->getSuitableFields($table, $liveRecord)) : [];
@@ -155,7 +187,6 @@ readonly class GridDataService
                         $differentExtensions = array_diff($allowedExtensions, $fileExtensions);
                         $useThumbnails = empty($differentExtensions);
                     }
-
                     if ($fieldTypeInformation->getType() === 'file') {
                         $liveFileReferences = $this->resolveFileReferences($table, $fieldName, $fieldTypeInformation, $liveRecord, 0);
                         $versionFileReferences = $this->resolveFileReferences($table, $fieldName, $fieldTypeInformation, $versionRecord, $backendUser->workspace);
@@ -215,9 +246,7 @@ readonly class GridDataService
                 }
             }
         }
-        $versionDifferencesEvent = $this->eventDispatcher->dispatch(
-            new ModifyVersionDifferencesEvent($diffReturnArray, $liveReturnArray, $parameter)
-        );
+        $versionDifferencesEvent = $this->eventDispatcher->dispatch(new ModifyVersionDifferencesEvent($diffReturnArray, $liveReturnArray, $parameter));
         $history = $this->historyService->getHistory($table, $parameter->t3ver_oid);
         $stageChanges = $this->historyService->getStageChanges($table, (int)$parameter->t3ver_oid);
         $commentsForRecord = [];
@@ -233,18 +262,6 @@ readonly class GridDataService
             $preparedEntry['user_avatar'] = $beUserRecord ? $this->avatar->render($beUserRecord) : '';
             $commentsForRecord[] = $preparedEntry;
         }
-        if ($this->stagesService->isPrevStageAllowedForUser($parameter->stage)) {
-            $prevStage = $this->stagesService->getPrevStage($parameter->stage);
-            if (isset($prevStage[0])) {
-                $prevStage = current($prevStage);
-            }
-        }
-        if ($this->stagesService->isNextStageAllowedForUser($parameter->stage)) {
-            $nextStage = $this->stagesService->getNextStage($parameter->stage);
-            if (isset($nextStage[0])) {
-                $nextStage = current($nextStage);
-            }
-        }
         return [
             'total' => 1,
             'data' => [
@@ -256,11 +273,11 @@ readonly class GridDataService
                     'comments' => $commentsForRecord,
                     // escape/sanitize the others
                     'path_Live' => htmlspecialchars(BackendUtility::getRecordPath($liveRecord['pid'], '', 999)),
-                    'label_Stage' => htmlspecialchars($this->stagesService->getStageTitle($parameter->stage)),
-                    'label_PrevStage' => $prevStage ?? false,
-                    'label_NextStage' => $nextStage ?? false,
-                    'stage_position' => (int)$stagePosition['position'],
-                    'stage_count' => (int)$stagePosition['count'],
+                    'label_Stage' => htmlspecialchars($currentStage->title),
+                    'label_PrevStage' => ['title' => $previousStageSendToTitle],
+                    'label_NextStage' => ['title' => $nextStageSendToTitle],
+                    'stage_position' => $this->stagesService->getPositionOfCurrentStage($stages, $currentStage->uid),
+                    'stage_count' => count($stages) - 1, // Do not count 'pseudo' execute stage
                     'parent' => [
                         'table' => htmlspecialchars($table),
                         'uid' => (int)$parameter->uid,
@@ -277,17 +294,17 @@ readonly class GridDataService
     /**
      * Generates grid list array from given versions.
      *
+     * @param WorkspaceStage[] $stages
      * @param array $versions All available version records
      * @param string $filterTxt Text to be used to filter record result
      */
-    protected function generateDataArray(array $versions, string $filterTxt): array
+    protected function generateDataArray(array $stages, array $versions, string $filterTxt): array
     {
         $backendUser = $this->getBackendUser();
         $workspaceAccess = $backendUser->checkWorkspace($backendUser->workspace);
         $swapStage = ($workspaceAccess['publish_access'] ?? 0) & WorkspaceService::PUBLISH_ACCESS_ONLY_IN_PUBLISH_STAGE ? StagesService::STAGE_PUBLISH_ID : StagesService::STAGE_EDIT_ID;
 
         $isAllowedToPublish = $this->workspacePublishGate->isGranted($backendUser, $backendUser->workspace);
-        $stagesObj = GeneralUtility::makeInstance(StagesService::class);
         $defaultGridColumns = [
             'Workspaces_Collection' => 0,
             'Workspaces_CollectionLevel' => 0,
@@ -312,8 +329,20 @@ readonly class GridDataService
                 $origRecord = (array)BackendUtility::getRecord($table, $record['t3ver_oid']);
                 $versionRecord = (array)BackendUtility::getRecord($table, $record['uid']);
                 $combinedRecord = CombinedRecord::createFromArrays($table, $origRecord, $versionRecord);
-                $hasDiff = $this->versionIsModified($combinedRecord);
+                $hasDiff = $this->versionIsModified($stages, $combinedRecord);
                 $integrityIssues = $this->integrityService->checkElement($combinedRecord, $integrityIssues);
+                $currentStage = null;
+                $currentStageTitle = '';
+                $previousStage = null;
+                $nextStage = null;
+                try {
+                    $currentStage = $this->stagesService->getStage($stages, (int)$versionRecord['t3ver_stage']);
+                    $currentStageTitle = $currentStage->title;
+                    $nextStage = $this->stagesService->getNextStage($stages, $currentStage->uid);
+                    $previousStage = $this->stagesService->getPreviousStage($stages, $currentStage->uid);
+                } catch (WorkspaceStageNotFoundException) {
+                    // Shouldn't happen except for 'editing' stage, which has no previous stage.
+                }
 
                 if ($hiddenField !== null) {
                     $recordState = $this->workspaceState($versionRecord['t3ver_state'], (bool)$origRecord[$hiddenField], (bool)$versionRecord[$hiddenField], $hasDiff);
@@ -343,11 +372,9 @@ readonly class GridDataService
                 $versionArray['id'] = $table . ':' . $record['uid'];
                 $versionArray['uid'] = $record['uid'];
                 $versionArray['label_Workspace'] = htmlspecialchars($workspaceRecordLabel);
-                $versionArray['label_Stage'] = htmlspecialchars($stagesObj->getStageTitle((int)$versionRecord['t3ver_stage']));
-                $tempStage = $stagesObj->getNextStage($versionRecord['t3ver_stage']);
-                $versionArray['value_nextStage'] = (int)$tempStage['uid'];
-                $tempStage = $stagesObj->getPrevStage($versionRecord['t3ver_stage']);
-                $versionArray['value_prevStage'] = (int)($tempStage['uid'] ?? 0);
+                $versionArray['label_Stage'] = htmlspecialchars($currentStageTitle);
+                $versionArray['value_nextStage'] = $nextStage->uid ?? 0;
+                $versionArray['value_prevStage'] = $previousStage->uid ?? 0;
                 $versionArray['path_Workspace'] = htmlspecialchars(BackendUtility::getRecordPath((int)$record['wspid'], '', 0));
                 $versionArray['lastChangedFormatted'] = '';
                 if (array_key_exists('tstamp', $versionRecord)) {
@@ -366,8 +393,8 @@ readonly class GridDataService
                     'title' => $this->getSystemLanguageValue($languageValue, $pageId, 'title'),
                     'title_crop' => htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->getSystemLanguageValue($languageValue, $pageId, 'title'), (int)$backendUser->uc['titleLen'])),
                 ];
-                if ($isAllowedToPublish && $swapStage !== StagesService::STAGE_EDIT_ID && (int)$versionRecord['t3ver_stage'] === $swapStage) {
-                    $versionArray['allowedAction_publish'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($swapStage);
+                if ($isAllowedToPublish && $swapStage === StagesService::STAGE_PUBLISH_ID && (int)$versionRecord['t3ver_stage'] === StagesService::STAGE_PUBLISH_ID) {
+                    $versionArray['allowedAction_publish'] = $isRecordTypeAllowedToModify && $this->stagesService->getStage($stages, StagesService::STAGE_PUBLISH_ID)->isAllowed;
                 } elseif ($isAllowedToPublish && $swapStage === StagesService::STAGE_EDIT_ID) {
                     $versionArray['allowedAction_publish'] = $isRecordTypeAllowedToModify;
                 } else {
@@ -425,7 +452,10 @@ readonly class GridDataService
         return $this->resolveDataArrayDependencies($dataArray);
     }
 
-    protected function versionIsModified(CombinedRecord $combinedRecord): bool
+    /**
+     * @param WorkspaceStage[] $stages
+     */
+    protected function versionIsModified(array $stages, CombinedRecord $combinedRecord): bool
     {
         $params = new \stdClass();
         $params->stage = (int)$combinedRecord->getVersionRecord()->getRow()['t3ver_stage'];
@@ -433,7 +463,7 @@ readonly class GridDataService
         $params->table = $combinedRecord->getLiveRecord()->getTable();
         $params->uid = $combinedRecord->getVersionRecord()->getUid();
         // @todo: Refactor. It is odd this calls the huge getRowDetails() method when only the 'diff' array section is needed.
-        $result = $this->getRowDetails($params);
+        $result = $this->getRowDetails($stages, $params);
         return !empty($result['data'][0]['diff']);
     }
 

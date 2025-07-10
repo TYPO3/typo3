@@ -46,7 +46,6 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 #[Autoconfigure(public: true)]
 readonly class WorkspaceService
 {
-    public const TABLE_WORKSPACE = 'sys_workspace';
     public const LIVE_WORKSPACE_ID = 0;
 
     public const PUBLISH_ACCESS_ONLY_IN_PUBLISH_STAGE = 1;
@@ -74,11 +73,11 @@ readonly class WorkspaceService
             $availableWorkspaces[self::LIVE_WORKSPACE_ID] = $this->getWorkspaceTitle(self::LIVE_WORKSPACE_ID);
         }
         // add custom workspaces (selecting all, filtering by BE_USER check):
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_WORKSPACE);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_workspace');
         $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
         $result = $queryBuilder
             ->select('uid', 'title', 'adminusers', 'members')
-            ->from(self::TABLE_WORKSPACE)
+            ->from('sys_workspace')
             ->orderBy('title')
             ->executeQuery();
 
@@ -101,11 +100,11 @@ readonly class WorkspaceService
                 $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:shortcut_onlineWS');
                 break;
             default:
-                $schema = $this->tcaSchemaFactory->get(self::TABLE_WORKSPACE);
+                $schema = $this->tcaSchemaFactory->get('sys_workspace');
                 /** @var LabelCapability $labelCapability */
                 $labelCapability = $schema->getCapability(TcaSchemaCapability::Label);
                 $labelField = $labelCapability->getPrimaryFieldName();
-                $wsRecord = BackendUtility::getRecord(self::TABLE_WORKSPACE, $wsId, 'uid,' . $labelField);
+                $wsRecord = BackendUtility::getRecord('sys_workspace', $wsId, 'uid,' . $labelField);
                 if (is_array($wsRecord)) {
                     $title = (string)$wsRecord[$labelField];
                 }
@@ -130,7 +129,7 @@ readonly class WorkspaceService
         if ($wsid > 0) {
             // Define stage to select:
             $stage = -99;
-            $workspaceRec = BackendUtility::getRecord(self::TABLE_WORKSPACE, $wsid);
+            $workspaceRec = BackendUtility::getRecord('sys_workspace', $wsid);
             if ($workspaceRec['publish_access'] & self::PUBLISH_ACCESS_ONLY_IN_PUBLISH_STAGE) {
                 $stage = StagesService::STAGE_PUBLISH_ID;
             }

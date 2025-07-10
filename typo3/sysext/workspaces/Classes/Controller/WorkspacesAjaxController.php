@@ -29,8 +29,10 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
-use TYPO3\CMS\Workspaces\Domain\Record\StageRecord;
-use TYPO3\CMS\Workspaces\Domain\Record\WorkspaceRecord;
+use TYPO3\CMS\Workspaces\Domain\Model\WorkspaceStage;
+use TYPO3\CMS\Workspaces\Domain\Repository\WorkspaceRepository;
+use TYPO3\CMS\Workspaces\Domain\Repository\WorkspaceStageRepository;
+use TYPO3\CMS\Workspaces\Exception\WorkspaceStageNotFoundException;
 use TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder;
 use TYPO3\CMS\Workspaces\Service\GridDataService;
 use TYPO3\CMS\Workspaces\Service\IntegrityService;
@@ -54,6 +56,8 @@ final readonly class WorkspacesAjaxController
         private PreviewUriBuilder $previewUriBuilder,
         private StagesService $stagesService,
         private BackendViewFactory $backendViewFactory,
+        private WorkspaceRepository $workspaceRepository,
+        private WorkspaceStageRepository $workspaceStageRepository,
     ) {}
 
     public function dispatch(ServerRequestInterface $request): ResponseInterface
@@ -110,7 +114,10 @@ final readonly class WorkspacesAjaxController
             // -99 disables stage filtering
             $parameter->stage = -99;
         }
-        $currentWorkspace = $this->getBackendUser()->workspace;
+        $backendUser = $this->getBackendUser();
+        $currentWorkspace = $backendUser->workspace;
+        $workspaceRecord = $this->workspaceRepository->findByUid($currentWorkspace);
+        $stages = $this->workspaceStageRepository->findAllStagesByWorkspace($backendUser, $workspaceRecord);
         $versions = $this->workspaceService->selectVersionsInWorkspace(
             $currentWorkspace,
             (int)$parameter->stage,
@@ -119,7 +126,7 @@ final readonly class WorkspacesAjaxController
             'tables_select',
             $parameter->language !== null ? (int)$parameter->language : null
         );
-        return $this->gridDataService->generateGridListFromVersions($versions, $parameter);
+        return $this->gridDataService->generateGridListFromVersions($stages, $versions, $parameter);
     }
 
     /**
@@ -144,7 +151,10 @@ final readonly class WorkspacesAjaxController
 
     private function getRowDetails(\stdClass $parameters): array
     {
-        return $this->gridDataService->getRowDetails($parameters);
+        $backendUser = $this->getBackendUser();
+        $workspaceRecord = $this->workspaceRepository->findByUid($backendUser->workspace);
+        $stages = $this->workspaceStageRepository->findAllStagesByWorkspace($backendUser, $workspaceRecord);
+        return $this->gridDataService->getRowDetails($stages, $parameters);
     }
 
     private function publishSingleRecord(string $table, int $t3ver_oid, int $orig_uid): array
@@ -229,6 +239,7 @@ final readonly class WorkspacesAjaxController
      */
     private function sendToNextStageWindow(int $uid, string $table, int $t3ver_oid): array
     {
+        $backendUser = $this->getBackendUser();
         $elementRecord = BackendUtility::getRecord($table, $uid);
         if (!is_array($elementRecord)) {
             return [
@@ -239,9 +250,11 @@ final readonly class WorkspacesAjaxController
                 'success' => false,
             ];
         }
-        $workspaceRecord = WorkspaceRecord::get($elementRecord['t3ver_wsid']);
-        $nextStageRecord = $workspaceRecord->getNextStage($elementRecord['t3ver_stage']);
-        if ($nextStageRecord === null) {
+        $workspaceRecord = $this->workspaceRepository->findByUid((int)$elementRecord['t3ver_wsid']);
+        $stages = $this->workspaceStageRepository->findAllStagesByWorkspace($backendUser, $workspaceRecord);
+        try {
+            $nextStageRecord = $this->stagesService->getNextStage($stages, $elementRecord['t3ver_stage']);
+        } catch (WorkspaceStageNotFoundException) {
             return [
                 'error' => [
                     'code' => 1291111644,
@@ -253,7 +266,7 @@ final readonly class WorkspacesAjaxController
         $result = $this->getSentToStageWindow($nextStageRecord);
         $result['affects'] = [
             'table' => $table,
-            'nextStage' => $nextStageRecord->getUid(),
+            'nextStage' => $nextStageRecord->uid,
             // @todo: sendToPrevStageWindow() does not add this?
             't3ver_oid' => $t3ver_oid,
             'uid' => $uid,
@@ -266,6 +279,7 @@ final readonly class WorkspacesAjaxController
      */
     private function sendToPrevStageWindow(int $uid, string $table): array
     {
+        $backendUser = $this->getBackendUser();
         $elementRecord = BackendUtility::getRecord($table, $uid);
         if (!is_array($elementRecord)) {
             return [
@@ -276,9 +290,11 @@ final readonly class WorkspacesAjaxController
                 'success' => false,
             ];
         }
-        $workspaceRecord = WorkspaceRecord::get($elementRecord['t3ver_wsid']);
-        $stageRecord = $workspaceRecord->getStage($elementRecord['t3ver_stage']);
-        if ($stageRecord === null) {
+        $workspaceRecord = $this->workspaceRepository->findByUid((int)$elementRecord['t3ver_wsid']);
+        $stages = $this->workspaceStageRepository->findAllStagesByWorkspace($backendUser, $workspaceRecord);
+        try {
+            $stageRecord = $this->stagesService->getStage($stages, $elementRecord['t3ver_stage']);
+        } catch (WorkspaceStageNotFoundException) {
             return [
                 'error' => [
                     'code' => 1291111644,
@@ -287,7 +303,7 @@ final readonly class WorkspacesAjaxController
                 'success' => false,
             ];
         }
-        if ($stageRecord->isEditStage()) {
+        if ($stageRecord->isEditStage) {
             return [
                 'error' => [
                     'code' => 1287264746,
@@ -296,8 +312,9 @@ final readonly class WorkspacesAjaxController
                 'success' => false,
             ];
         }
-        $previousStageRecord = $stageRecord->getPrevious();
-        if ($previousStageRecord === null) {
+        try {
+            $previousStageRecord = $this->stagesService->getPreviousStage($stages, $stageRecord->uid);
+        } catch (WorkspaceStageNotFoundException) {
             return [
                 'error' => [
                     'code' => 1287264747,
@@ -310,7 +327,7 @@ final readonly class WorkspacesAjaxController
         $result['affects'] = [
             'table' => $table,
             'uid' => $uid,
-            'nextStage' => $previousStageRecord->getUid(),
+            'nextStage' => $previousStageRecord->uid,
         ];
         return $result;
     }
@@ -365,8 +382,12 @@ final readonly class WorkspacesAjaxController
 
     private function sendToSpecificStageWindow(int $nextStageId): array
     {
-        $nextStage = WorkspaceRecord::get($this->getBackendUser()->workspace)->getStage($nextStageId);
-        if ($nextStage === null) {
+        $backendUser = $this->getBackendUser();
+        $workspaceRecord = $this->workspaceRepository->findByUid($backendUser->workspace);
+        $stages = $this->workspaceStageRepository->findAllStagesByWorkspace($backendUser, $workspaceRecord);
+        try {
+            $nextStage = $this->stagesService->getStage($stages, $nextStageId);
+        } catch (WorkspaceStageNotFoundException) {
             return [
                 'success' => false,
             ];
@@ -474,43 +495,45 @@ final readonly class WorkspacesAjaxController
 
     private function sendPageToNextStage(int $id): array
     {
-        $currentWorkspace = $this->getBackendUser()->workspace;
+        $backendUser = $this->getBackendUser();
+        $currentWorkspace = $backendUser->workspace;
+        $workspaceRecord = $this->workspaceRepository->findByUid($currentWorkspace);
+        $stages = $this->workspaceStageRepository->findAllStagesByWorkspace($backendUser, $workspaceRecord);
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($currentWorkspace, -99, $id, 0, 'tables_modify');
-        [$currentStage, $nextStage] = $this->stagesService->getNextStageForElementCollection($workspaceItemsArray);
+        [$currentStage, $nextStage] = $this->stagesService->getNextStageForElementCollection($stages, $workspaceItemsArray);
         // get only the relevant items for processing
-        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($currentWorkspace, $currentStage['uid'], $id, 0, 'tables_modify');
-        $nextStageObject = WorkspaceRecord::get($this->getBackendUser()->workspace)->getStage((int)$nextStage['uid']);
-        if ($nextStageObject === null) {
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($currentWorkspace, $currentStage->uid, $id, 0, 'tables_modify');
+        if (!$nextStage) {
             return [
                 'success' => false,
             ];
         }
-        $stageFormFields = $this->getSentToStageWindow($nextStageObject);
+        $stageFormFields = $this->getSentToStageWindow($nextStage);
         return array_merge($stageFormFields, [
-            'title' => 'Status message: Page send to next stage - ID: ' . $id . ' - Next stage title: ' . $nextStage['title'],
             'affects' => $workspaceItemsArray,
-            'stageId' => $nextStage['uid'],
+            'stageId' => $nextStage->uid,
         ]);
     }
 
     private function sendPageToPreviousStage(int $id): array
     {
-        $currentWorkspace = $this->getBackendUser()->workspace;
+        $backendUser = $this->getBackendUser();
+        $currentWorkspace = $backendUser->workspace;
+        $workspaceRecord = $this->workspaceRepository->findByUid($currentWorkspace);
+        $stages = $this->workspaceStageRepository->findAllStagesByWorkspace($backendUser, $workspaceRecord);
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($currentWorkspace, -99, $id, 0, 'tables_modify');
-        [$currentStage, $previousStage] = $this->stagesService->getPreviousStageForElementCollection($workspaceItemsArray);
+        [$currentStage, $previousStage] = $this->stagesService->getPreviousStageForElementCollection($stages, $workspaceItemsArray);
         // get only the relevant items for processing
-        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($currentWorkspace, $currentStage['uid'], $id, 0, 'tables_modify');
-        $previousStageObject = WorkspaceRecord::get($this->getBackendUser()->workspace)->getStage((int)$previousStage['uid']);
-        if ($previousStageObject === null) {
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($currentWorkspace, $currentStage->uid, $id, 0, 'tables_modify');
+        if (!$previousStage) {
             return [
                 'success' => false,
             ];
         }
-        $stageFormFields = $this->getSentToStageWindow($previousStageObject);
+        $stageFormFields = $this->getSentToStageWindow($previousStage);
         return array_merge($stageFormFields, [
-            'title' => 'Status message: Page send to next stage - ID: ' . $id . ' - Next stage title: ' . $previousStage['title'],
             'affects' => $workspaceItemsArray,
-            'stageId' => $previousStage['uid'],
+            'stageId' => $previousStage->uid,
         ]);
     }
 
@@ -520,19 +543,33 @@ final readonly class WorkspacesAjaxController
      */
     private function updateStageChangeButtons(int $id, ServerRequestInterface $request): string
     {
-        $currentWorkspace = $this->getBackendUser()->workspace;
+        $backendUser = $this->getBackendUser();
+        $currentWorkspace = $backendUser->workspace;
+        $workspaceRecord = $this->workspaceRepository->findByUid($currentWorkspace);
+        $stages = $this->workspaceStageRepository->findAllStagesByWorkspace($backendUser, $workspaceRecord);
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($currentWorkspace, -99, $id, 0, 'tables_modify');
-        [, $nextStage] = $this->stagesService->getNextStageForElementCollection($workspaceItemsArray);
-        [, $previousStage] = $this->stagesService->getPreviousStageForElementCollection($workspaceItemsArray);
+        [, $nextStage] = $this->stagesService->getNextStageForElementCollection($stages, $workspaceItemsArray);
+        [, $previousStage] = $this->stagesService->getPreviousStageForElementCollection($stages, $workspaceItemsArray);
         $view = $this->backendViewFactory->create($request, ['typo3/cms-workspaces']);
+        $previousStageSendToTitle = $previousStage
+            ? $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:actionSendToStage') . ' "' . $previousStage->title . '"'
+            : '';
+        $nextStageSendToTitle = '';
+        if ($nextStage) {
+            if ($nextStage->isExecuteStage) {
+                $nextStageSendToTitle = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:publish_execute_action_option');
+            } else {
+                $nextStageSendToTitle = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:actionSendToStage') . ' "' . $nextStage->title . '"';
+            }
+        }
         $view->assignMultiple([
-            'enablePreviousStageButton' => is_array($previousStage) && !empty($previousStage),
-            'enableNextStageButton' => is_array($nextStage) && !empty($nextStage),
-            'enableDiscardStageButton' => (is_array($nextStage) && !empty($nextStage)) || (is_array($previousStage) && !empty($previousStage)),
-            'nextStage' => $nextStage['title'] ?? '',
-            'nextStageId' => $nextStage['uid'] ?? 0,
-            'prevStage' => $previousStage['title'] ?? '',
-            'prevStageId' => $previousStage['uid'] ?? 0,
+            'enablePreviousStageButton' => !is_null($previousStage),
+            'enableNextStageButton' => !is_null($nextStage),
+            'enableDiscardStageButton' => !is_null($previousStage) || !is_null($nextStage),
+            'nextStage' => $nextStageSendToTitle,
+            'nextStageId' => $nextStage->uid ?? 0,
+            'prevStage' => $previousStageSendToTitle,
+            'prevStageId' => $previousStage->uid ?? 0,
         ]);
         return $view->render('Preview/Ajax/StageButtons');
     }
@@ -621,10 +658,10 @@ final readonly class WorkspacesAjaxController
     /**
      * Gets the dialog window to be displayed before a record can be sent to a stage.
      */
-    private function getSentToStageWindow(StageRecord $nextStage): array
+    private function getSentToStageWindow(WorkspaceStage $nextStage): array
     {
         $result = [];
-        if ($nextStage->isDialogEnabled()) {
+        if ($nextStage->isDialogEnabled) {
             $result['sendMailTo'] = $this->getRecipientsOfStage($nextStage);
             $result['additional'] = [
                 'type' => 'textarea',
@@ -633,7 +670,7 @@ final readonly class WorkspacesAjaxController
         }
         $result['comments'] = [
             'type' => 'textarea',
-            'value' => $nextStage->isInternal() ? '' : $nextStage->getDefaultComment(),
+            'value' => $nextStage->defaultComment,
         ];
         return $result;
     }
@@ -641,19 +678,18 @@ final readonly class WorkspacesAjaxController
     /**
      * Gets all assigned recipients of a particular stage.
      */
-    private function getRecipientsOfStage(StageRecord $stageRecord): array
+    private function getRecipientsOfStage(WorkspaceStage $stageRecord): array
     {
         $result = [];
         $allRecipients = $this->stagesService->getResponsibleBeUser($stageRecord);
-        $preselectedRecipients = $this->stagesService->getPreselectedRecipients($stageRecord);
-        $isPreselectionChangeable = $stageRecord->isPreselectionChangeable();
+        $preselectedRecipients = $stageRecord->preselectedRecipients;
         foreach ($allRecipients as $backendUserId => $backendUser) {
             if (empty($backendUser['email']) || !GeneralUtility::validEmail($backendUser['email'])) {
                 continue;
             }
             $name = (!empty($backendUser['realName']) ? $backendUser['realName'] : $backendUser['username']);
             $checked = in_array($backendUserId, $preselectedRecipients);
-            $disabled = ($checked && !$isPreselectionChangeable);
+            $disabled = ($checked && !$stageRecord->isPreselectionChangeable);
             $result[] = [
                 'label' => sprintf('%s (%s)', $name, $backendUser['email']),
                 'value' => $backendUserId,
@@ -670,16 +706,13 @@ final readonly class WorkspacesAjaxController
      */
     private function getRecipientList(array $uidsOfRecipients, string $additionalRecipients, int $stageId): array
     {
-        $stageRecord = WorkspaceRecord::get($this->getBackendUser()->workspace)->getStage($stageId);
-        if ($stageRecord === null) {
-            throw new \InvalidArgumentException(
-                $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'),
-                1476044776
-            );
-        }
+        $backendUser = $this->getBackendUser();
+        $workspaceRecord = $this->workspaceRepository->findByUid($backendUser->workspace);
+        $stages = $this->workspaceStageRepository->findAllStagesByWorkspace($backendUser, $workspaceRecord);
+        $stageRecord = $this->stagesService->getStage($stages, $stageId);
         $recipients = [];
         $finalRecipients = [];
-        $backendUserIds = $stageRecord->getAllRecipients();
+        $backendUserIds = $stageRecord->allRecipients;
         foreach ($uidsOfRecipients as $userUid) {
             if (!in_array($userUid, $backendUserIds)) {
                 // Ensure that only configured backend users are considered
@@ -693,10 +726,9 @@ final readonly class WorkspacesAjaxController
                 ];
             }
         }
-        if ($stageRecord->hasPreselection() && !$stageRecord->isPreselectionChangeable()) {
-            $preselectedBackendUsers = $this->stagesService->getBackendUsers(
-                $this->stagesService->getPreselectedRecipients($stageRecord)
-            );
+        if (!$stageRecord->isPreselectionChangeable && !empty($stageRecord->preselectedRecipients)) {
+            // Always notify preselected recipients if list is not changeable by user
+            $preselectedBackendUsers = $this->stagesService->getBackendUsers($stageRecord->preselectedRecipients);
             foreach ($preselectedBackendUsers as $preselectedBackendUser) {
                 if (empty($preselectedBackendUser['email']) || !GeneralUtility::validEmail($preselectedBackendUser['email'])) {
                     continue;
