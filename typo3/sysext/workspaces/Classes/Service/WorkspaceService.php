@@ -39,9 +39,8 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  * @todo: This is public:true only because testing-framework uses GU::makeInstance() on it. Get rid of this.
  */
 #[Autoconfigure(public: true)]
-class WorkspaceService
+readonly class WorkspaceService
 {
-    public const TABLE_WORKSPACE = 'sys_workspace';
     public const LIVE_WORKSPACE_ID = 0;
 
     public const PUBLISH_ACCESS_ONLY_IN_PUBLISH_STAGE = 1;
@@ -64,9 +63,7 @@ class WorkspaceService
         }
         // add custom workspaces (selecting all, filtering by BE_USER check):
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace');
-        $queryBuilder->getRestrictions()
-            ->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
-
+        $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
         $result = $queryBuilder
             ->select('uid', 'title', 'adminusers', 'members')
             ->from('sys_workspace')

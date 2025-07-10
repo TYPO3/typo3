@@ -31,9 +31,11 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Authorization\WorkspacePublishGate;
+use TYPO3\CMS\Workspaces\Domain\Model\WorkspaceStage;
+use TYPO3\CMS\Workspaces\Domain\Repository\WorkspaceRepository;
+use TYPO3\CMS\Workspaces\Domain\Repository\WorkspaceStageRepository;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
@@ -51,7 +53,9 @@ class ReviewController
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly WorkspacePublishGate $workspacePublishGate,
-        protected readonly TranslationConfigurationProvider $translationConfigurationProvider
+        protected readonly TranslationConfigurationProvider $translationConfigurationProvider,
+        protected readonly WorkspaceRepository $workspaceRepository,
+        protected readonly WorkspaceStageRepository $workspaceStageRepository,
     ) {}
 
     /**
@@ -85,40 +89,33 @@ class ReviewController
             $pageTitle = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? '';
         }
         $availableWorkspaces = $this->workspaceService->getAvailableWorkspaces();
-        $customWorkspaceExists = $this->customWorkspaceExists($availableWorkspaces);
-        $activeWorkspace = $backendUser->workspace;
-        $activeWorkspaceTitle = $this->workspaceService->getWorkspaceTitle($activeWorkspace);
-        $workspaceSwitched = '';
-        if (isset($queryParams['workspace'])) {
-            $switchWs = (int)$queryParams['workspace'];
-            if (array_key_exists($switchWs, $availableWorkspaces) && $activeWorkspace !== $switchWs) {
-                $activeWorkspace = $switchWs;
-                $backendUser->setWorkspace($activeWorkspace);
-                $activeWorkspaceTitle = $this->workspaceService->getWorkspaceTitle($activeWorkspace);
-                $workspaceSwitched = GeneralUtility::jsonEncodeForHtmlAttribute(['id' => $activeWorkspace, 'title' => $activeWorkspaceTitle]);
-            }
-        }
         $workspaceIsAccessible = $backendUser->workspace !== WorkspaceService::LIVE_WORKSPACE_ID && $pageUid > 0;
-
+        $activeWorkspace = $backendUser->workspace;
+        $stagesForUser = [];
+        $availableSelectStages = [];
+        if ($workspaceIsAccessible) {
+            $workspaceRecord = $this->workspaceRepository->findByUid($activeWorkspace);
+            $stages = $this->workspaceStageRepository->findAllStagesByWorkspace($backendUser, $workspaceRecord);
+            $stagesForUser = $this->stagesService->getStagesForWSUser($stages);
+            $availableSelectStages = $this->getAvailableSelectStages($stagesForUser);
+        }
+        $activeWorkspaceTitle = $this->workspaceService->getWorkspaceTitle($activeWorkspace);
         $selectedLanguage = (string)$moduleData->get('language');
         $view = $this->moduleTemplateFactory->create($request);
         $view->assignMultiple([
             'isAdmin' => $backendUser->isAdmin(),
-            'customWorkspaceExists' => $customWorkspaceExists,
+            'customWorkspaceExists' => max(array_keys($availableWorkspaces)) > 0, // exists and access to
             'showGrid' => $workspaceIsAccessible,
             'pageUid' => $pageUid,
             'pageTitle' => $pageTitle,
-            'activeWorkspaceUid' => $activeWorkspace,
-            'activeWorkspaceTitle' => $activeWorkspaceTitle,
             'availableLanguages' => $this->getSystemLanguages($pageUid, $selectedLanguage),
-            'availableStages' => $this->stagesService->getStagesForWSUser(),
-            'availableSelectStages' => $this->getAvailableSelectStages(),
+            'availableStages' => $stagesForUser,
+            'availableSelectStages' => $availableSelectStages,
             'stageActions' => $this->getStageActions(),
             'showEntireWorkspaceDropDown' => !(($backendUser->workspaceRec['publish_access'] ?? 0) & WorkspaceService::PUBLISH_ACCESS_HIDE_ENTIRE_WORKSPACE_ACTION_DROPDOWN),
             'selectedLanguage' => $selectedLanguage,
             'selectedDepth' => (int)$moduleData->get('depth', ($pageUid === 0 ? 999 : 1)),
             'selectedStage' => (int)$moduleData->get('stage'),
-            'workspaceSwitched' => $workspaceSwitched,
         ]);
         $view->setTitle(
             $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab') . ' [' . $activeWorkspaceTitle . ']',
@@ -190,19 +187,6 @@ class ReviewController
     }
 
     /**
-     * Returns true if at least one custom workspace next to live workspace exists.
-     */
-    protected function customWorkspaceExists(array $workspaceList): bool
-    {
-        foreach (array_keys($workspaceList) as $workspaceId) {
-            if ($workspaceId > 0) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Gets all available system languages.
      */
     protected function getSystemLanguages(int $pageId, string $selectedLanguage): array
@@ -246,17 +230,28 @@ class ReviewController
     /**
      * Get stages to be used in the review filter. This basically
      * adds -99 (all stages) and removes the publishing stage (-20).
+     *
+     * @param WorkspaceStage[] $stages
      */
-    protected function getAvailableSelectStages(): array
+    protected function getAvailableSelectStages(array $stages): array
     {
-        $languageService = $this->getLanguageService();
-        $stages = $this->stagesService->getStagesForWSUser();
-        return array_merge([
+        $selectStages = [
             [
                 'uid' => -99,
-                'label' => $languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:stage_all'),
+                'label' => $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:stage_all'),
             ],
-        ], array_filter($stages, static fn(array $stage): bool => (int)($stage['uid'] ?? 0) !== StagesService::STAGE_PUBLISH_EXECUTE_ID));
+        ];
+        foreach ($stages as $stage) {
+            if ($stage->uid === StagesService::STAGE_PUBLISH_EXECUTE_ID) {
+                // Removes the publishing stage (-20) by skipping it.
+                continue;
+            }
+            $selectStages[] = [
+                'uid' => $stage->uid,
+                'label' => $stage->title,
+            ];
+        }
+        return $selectStages;
     }
 
     protected function getLanguageService(): LanguageService

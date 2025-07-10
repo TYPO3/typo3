@@ -4591,12 +4591,6 @@ parameters:
 			path: ../../typo3/sysext/workspaces/Classes/Dependency/ElementEntity.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between \(int\|string\) and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 2
-			path: ../../typo3/sysext/workspaces/Classes/Service/StagesService.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array and ''The result from…'' will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 4

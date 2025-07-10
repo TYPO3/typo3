@@ -19,18 +19,22 @@ namespace TYPO3\CMS\Workspaces\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Controller\Remote\ActionHandler;
 use TYPO3\CMS\Workspaces\Controller\Remote\MassActionHandler;
 use TYPO3\CMS\Workspaces\Controller\Remote\RemoteServer;
+use TYPO3\CMS\Workspaces\Domain\Repository\WorkspaceRepository;
+use TYPO3\CMS\Workspaces\Domain\Repository\WorkspaceStageRepository;
 
 /**
  * Implements the AJAX functionality for the various asynchronous calls.
  *
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
- * @todo: The entire workspace modul ajax routing is a mess and needs a rewrite.
  */
+#[AsController]
 class AjaxDispatcher
 {
     protected array $classMap = [
@@ -38,6 +42,12 @@ class AjaxDispatcher
         'MassActions' => MassActionHandler::class,
         'Actions' => ActionHandler::class,
     ];
+
+    public function __construct(
+        protected RemoteServer $remoteServer,
+        protected WorkspaceRepository $workspaceRepository,
+        protected WorkspaceStageRepository $workspaceStageRepository,
+    ) {}
 
     public function dispatch(ServerRequestInterface $request): ResponseInterface
     {
@@ -55,6 +65,10 @@ class AjaxDispatcher
                 unset($parameters[1]);
             }
             $parameters[] = $request;
+            if ($method === 'getRowDetails') {
+                $results[] = $this->buildResultFromResponse($this->getRowDetails($call->data[0]), $call);
+                continue;
+            }
             $instance = GeneralUtility::makeInstance($className);
             $results[] = $this->buildResultFromResponse($instance->$method(...$parameters), $call);
         }
@@ -74,5 +88,18 @@ class AjaxDispatcher
         $tmp->method = $call->method;
         $tmp->result = $responseFromMethod;
         return $tmp;
+    }
+
+    private function getRowDetails(\stdClass $parameters): array
+    {
+        $backendUser = $this->getBackendUser();
+        $workspaceRecord = $this->workspaceRepository->findByUid($backendUser->workspace);
+        $stages = $this->workspaceStageRepository->findAllStagesByWorkspace($backendUser, $workspaceRecord);
+        return $this->remoteServer->getRowDetails($stages, $parameters);
+    }
+
+    private function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

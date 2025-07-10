@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
+use TYPO3\CMS\Core\Authentication\GroupResolver;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -33,6 +34,8 @@ use TYPO3\CMS\Core\Schema\VisibleSchemaFieldsCollector;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Controller\Remote\RemoteServer;
+use TYPO3\CMS\Workspaces\Domain\Repository\WorkspaceRepository;
+use TYPO3\CMS\Workspaces\Domain\Repository\WorkspaceStageRepository;
 use TYPO3\CMS\Workspaces\Service\GridDataService;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
@@ -116,7 +119,7 @@ final class RemoteServerTest extends UnitTestCase
         $versionFileReferences = $this->getFileReferenceMocks($versionFileReferenceList);
         $subject = new RemoteServer(
             $this->createMock(GridDataService::class),
-            new StagesService(),
+            new StagesService($this->createMock(GroupResolver::class)),
             new WorkspaceService(),
             new NoopEventDispatcher(),
             new FlexFormValueFormatter(),
@@ -126,6 +129,8 @@ final class RemoteServerTest extends UnitTestCase
             new ConnectionPool(),
             $this->createMock(SearchableSchemaFieldsCollector::class),
             $this->createMock(VisibleSchemaFieldsCollector::class),
+            $this->createMock(WorkspaceRepository::class),
+            $this->createMock(WorkspaceStageRepository::class),
         );
         $subjectReflection = new \ReflectionObject($subject);
         $result = $subjectReflection->getMethod('prepareFileReferenceDifferences')

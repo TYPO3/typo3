@@ -223,13 +223,8 @@
 			<trans-unit id="window.selectionAction.title">
 				<source>Prepare to execute actions on selection</source>
 			</trans-unit>
-			<trans-unit id="error.stageId.integer">
-				<source>StageId is supposed to be an integer</source>
-			</trans-unit>
-			<trans-unit id="error.stageId.invalid" xml:space="preserve">
-				<source>The stage to be used seems to be invalid and cannot be used. Please consider to use the update
-					wizard in the install tool to fix this.
-				</source>
+			<trans-unit id="error.stageId.invalid">
+				<source>The stage to be used seems to be invalid and cannot be used. Please consider to use the update wizard in the install tool to fix this.</source>
 			</trans-unit>
 			<trans-unit id="error.sendToNextStage.noRecordFound">
 				<source>The record element could not be found.</source>

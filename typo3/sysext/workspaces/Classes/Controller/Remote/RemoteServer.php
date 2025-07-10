@@ -42,7 +42,11 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
+use TYPO3\CMS\Workspaces\Domain\Model\WorkspaceStage;
+use TYPO3\CMS\Workspaces\Domain\Repository\WorkspaceRepository;
+use TYPO3\CMS\Workspaces\Domain\Repository\WorkspaceStageRepository;
 use TYPO3\CMS\Workspaces\Event\ModifyVersionDifferencesEvent;
+use TYPO3\CMS\Workspaces\Exception\WorkspaceStageNotFoundException;
 use TYPO3\CMS\Workspaces\Service\GridDataService;
 use TYPO3\CMS\Workspaces\Service\HistoryService;
 use TYPO3\CMS\Workspaces\Service\IntegrityService;
@@ -69,6 +73,8 @@ readonly class RemoteServer
         protected ConnectionPool $connectionPool,
         protected SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
         protected VisibleSchemaFieldsCollector $visibleSchemaFieldsCollector,
+        protected WorkspaceRepository $workspaceRepository,
+        protected WorkspaceStageRepository $workspaceStageRepository,
     ) {}
 
     /**
@@ -103,6 +109,10 @@ readonly class RemoteServer
             // -99 disables stage filtering
             $parameter->stage = -99;
         }
+        $backendUser = $this->getBackendUser();
+        $currentWorkspace = $backendUser->workspace;
+        $workspaceRecord = $this->workspaceRepository->findByUid($currentWorkspace);
+        $stages = $this->workspaceStageRepository->findAllStagesByWorkspace($backendUser, $workspaceRecord);
         $versions = $this->workspaceService->selectVersionsInWorkspace(
             $this->getCurrentWorkspace(),
             (int)$parameter->stage,
@@ -111,25 +121,49 @@ readonly class RemoteServer
             'tables_select',
             $parameter->language !== null ? (int)$parameter->language : null
         );
-        $data = $this->gridDataService->generateGridListFromVersions($versions, $parameter);
-        return $data;
+        return $this->gridDataService->generateGridListFromVersions($stages, $versions, $parameter);
     }
 
     /**
      * Fetch further information to current selected workspace record.
      *
-     * @param \stdClass $parameter
-     * @return array $data
+     * @param WorkspaceStage[] $stages
      */
-    public function getRowDetails($parameter)
+    public function getRowDetails(array $stages, \stdClass $parameter): array
     {
         $diffReturnArray = [];
         $liveReturnArray = [];
         $plainLiveRecord = $liveRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
         $plainVersionRecord = $versionRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->uid);
         $versionState = VersionState::tryFrom($versionRecord['t3ver_state'] ?? 0);
+
+        try {
+            $currentStage = $this->stagesService->getStage($stages, $parameter->stage);
+        } catch (WorkspaceStageNotFoundException) {
+            $currentStage = null;
+        }
+        $nextStageSendToTitle = false;
+        $previousStageSendToTitle = false;
+        if ($currentStage?->isAllowed) {
+            try {
+                $nextStage = $this->stagesService->getNextStage($stages, $currentStage->uid);
+                if ($nextStage->isExecuteStage) {
+                    $nextStageSendToTitle = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:publish_execute_action_option');
+                } else {
+                    $nextStageSendToTitle = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:actionSendToStage') . ' "' . $nextStage->title . '"';
+                }
+            } catch (WorkspaceStageNotFoundException) {
+                // keep false as title
+            }
+            try {
+                $previousStage = $this->stagesService->getPreviousStage($stages, $currentStage->uid);
+                $previousStageSendToTitle = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:actionSendToStage') . ' "' . $previousStage->title . '"';
+            } catch (WorkspaceStageNotFoundException) {
+                // keep false as title
+            }
+        }
+
         $iconWorkspace = $this->iconFactory->getIconForRecord($parameter->table, $versionRecord, IconSize::SMALL);
-        $stagePosition = $this->stagesService->getPositionOfCurrentStage($parameter->stage);
         $fieldsOfRecords = array_keys($liveRecord);
         $isNewOrDeletePlaceholder = $versionState === VersionState::NEW_PLACEHOLDER || $versionState === VersionState::DELETE_PLACEHOLDER;
         $suitableFields = ($isNewOrDeletePlaceholder && ($parameter->filterFields ?? false)) ? array_flip($this->getSuitableFields($parameter->table, $liveRecord)) : [];
@@ -166,7 +200,6 @@ readonly class RemoteServer
                         $differentExtensions = array_diff($allowedExtensions, $fileExtensions);
                         $useThumbnails = empty($differentExtensions);
                     }
-
                     $liveFileReferences = (array)BackendUtility::resolveFileReferences(
                         $parameter->table,
                         $fieldName,
@@ -244,28 +277,12 @@ readonly class RemoteServer
             }
         }
 
-        $versionDifferencesEvent = $this->eventDispatcher->dispatch(
-            new ModifyVersionDifferencesEvent($diffReturnArray, $liveReturnArray, $parameter)
-        );
-
+        $versionDifferencesEvent = $this->eventDispatcher->dispatch(new ModifyVersionDifferencesEvent($diffReturnArray, $liveReturnArray, $parameter));
         $historyService = GeneralUtility::makeInstance(HistoryService::class);
         $history = $historyService->getHistory($parameter->table, $parameter->t3ver_oid);
         $stageChanges = $historyService->getStageChanges($parameter->table, (int)$parameter->t3ver_oid);
         $stageChangesFromSysLog = $this->getStageChangesFromSysLog($parameter->table, (int)$parameter->t3ver_oid);
         $commentsForRecord = $this->getCommentsForRecord($stageChanges, $stageChangesFromSysLog);
-
-        if ($this->stagesService->isPrevStageAllowedForUser($parameter->stage)) {
-            $prevStage = $this->stagesService->getPrevStage($parameter->stage);
-            if (isset($prevStage[0])) {
-                $prevStage = current($prevStage);
-            }
-        }
-        if ($this->stagesService->isNextStageAllowedForUser($parameter->stage)) {
-            $nextStage = $this->stagesService->getNextStage($parameter->stage);
-            if (isset($nextStage[0])) {
-                $nextStage = current($nextStage);
-            }
-        }
 
         return [
             'total' => 1,
@@ -279,11 +296,11 @@ readonly class RemoteServer
                     'comments' => $commentsForRecord,
                     // escape/sanitize the others
                     'path_Live' => htmlspecialchars(BackendUtility::getRecordPath($liveRecord['pid'], '', 999)),
-                    'label_Stage' => htmlspecialchars($this->stagesService->getStageTitle($parameter->stage)),
-                    'label_PrevStage' => $prevStage ?? false,
-                    'label_NextStage' => $nextStage ?? false,
-                    'stage_position' => (int)$stagePosition['position'],
-                    'stage_count' => (int)$stagePosition['count'],
+                    'label_Stage' => htmlspecialchars($currentStage->title),
+                    'label_PrevStage' => $previousStageSendToTitle ? ['title' => $previousStageSendToTitle] : false,
+                    'label_NextStage' => $nextStageSendToTitle ? ['title' => $nextStageSendToTitle] : false,
+                    'stage_position' => $this->stagesService->getPositionOfCurrentStage($stages, $currentStage->uid),
+                    'stage_count' => count($stages) - 1, // Do not count 'pseudo' execute stage
                     'parent' => [
                         'table' => htmlspecialchars($parameter->table),
                         'uid' => (int)$parameter->uid,
