@@ -129,6 +129,20 @@ In order to use the font plugin, the RTE configuration needs to be adapted:
 More information can be found in the
 `official documentation of CKEditor <https://ckeditor.com/docs/ckeditor5/latest/features/font.html>`__.
 
+How do I enable the fullscreen plugin?
+======================================
+
+..  versionadded:: 13.4.16
+
+In order to use the fullscreen plugin, the RTE configuration needs to be adapted:
+
+..  literalinclude:: _Examples/_FullscreenPlugin.yaml
+    :language: yaml
+    :caption: EXT:my_sitepackage/Configuration/RTE/MyPreset.yaml
+
+More information can be found in the
+`official documentation of CKEditor <https://ckeditor.com/docs/ckeditor5/latest/features/fullscreen.html>`__.
+
 ..  _config-example-customplugin:
 
 How do I configure the Link Browser?

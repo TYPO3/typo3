@@ -10,6 +10,7 @@ import type { SourceEditing } from '@ckeditor/ckeditor5-source-editing';
 import type { GeneralHtmlSupportConfig } from '@ckeditor/ckeditor5-html-support';
 import type { TypingConfig } from '@ckeditor/ckeditor5-typing';
 import type { EventInfo } from '@ckeditor/ckeditor5-utils';
+import type { FullscreenConfig } from '@ckeditor/ckeditor5-fullscreen';
 
 type PluginModuleDescriptor = {
   module: string,
@@ -125,6 +126,14 @@ export class CKEditor5Element extends LitElement {
       delete otherOptions.contentsCss;
     }
 
+    let fullscreenConfiguration: FullscreenConfig = {};
+    if ('fullscreen' in otherOptions) {
+      fullscreenConfiguration = otherOptions.fullscreen;
+      delete otherOptions.fullscreen;
+    }
+    // Set `.module-body` as the parent container to let users reach controls, e.g. the "Save" button
+    fullscreenConfiguration.container = document.querySelector('.module-body');
+
     const plugins = await this.resolvePlugins(defaultPlugins, importModules, removeImportModules);
 
     const config: EditorConfig = {
@@ -137,6 +146,7 @@ export class CKEditor5Element extends LitElement {
       wordCount,
       typo3link: typo3link || null,
       removePlugins: removePlugins || [],
+      fullscreen: fullscreenConfiguration
     };
 
     if (htmlSupport !== undefined) {
@@ -278,10 +288,20 @@ export class CKEditor5Element extends LitElement {
       console.error(`Failed to fetch CSS content for CKEditor5 prefixing: "${url}"`, e);
       throw new Error();
     }
-    // Prefix custom stylesheets with id of the container element and a required `.ck-content` selector
     // see https://ckeditor.com/docs/ckeditor5/latest/installation/advanced/content-styles.html
-    const newParent = `#${fieldId} .ck-content`;
-    const prefixedCss = prefixAndRebaseCss(content, url, newParent);
+    const newParents = [
+      // Prefix custom stylesheets with id of the container element and a required `.ck-content` selector
+      `#${fieldId} .ck-content`,
+    ];
+
+    if (this.options.toolbar.items.includes('fullscreen')) {
+      // If the "fullscreen" action is available, prefix custom stylesheets with fullscreen class and a required `.ck-content` selector
+      newParents.push('.ck-fullscreen__editable .ck-content');
+    }
+    let prefixedCss = '';
+    for (const newParent of newParents) {
+      prefixedCss += prefixAndRebaseCss(content, url, newParent);
+    }
 
     const styleSheet = new CSSStyleSheet();
     await styleSheet.replace(

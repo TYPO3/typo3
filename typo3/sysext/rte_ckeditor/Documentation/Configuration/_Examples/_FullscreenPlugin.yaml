@@ -1,0 +1,14 @@
+editor:
+  config:
+    toolbar:
+      items:
+        # add button to enable fullscreen view
+        - fullscreen
+
+    fullscreen:
+      menuBar:
+        # Disable menu bar in fullscreen view
+        isVisible: false
+
+    importModules:
+      - { module: '@ckeditor/ckeditor5-fullscreen', exports: [ 'Fullscreen' ] }
