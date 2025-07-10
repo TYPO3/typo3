@@ -99,6 +99,7 @@
     "@ckeditor/ckeditor5-essentials": "^45.2.1",
     "@ckeditor/ckeditor5-find-and-replace": "^45.2.1",
     "@ckeditor/ckeditor5-font": "^45.2.1",
+    "@ckeditor/ckeditor5-fullscreen": "^45.2.1",
     "@ckeditor/ckeditor5-heading": "^45.2.1",
     "@ckeditor/ckeditor5-highlight": "^45.2.1",
     "@ckeditor/ckeditor5-horizontal-line": "^45.2.1",

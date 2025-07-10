@@ -14,9 +14,20 @@ editor:
       - { name: links, groups: [ links ] }
       - { name: clipboard, groups: [clipboard, undo] }
       - { name: document, groups: [ mode ] }
+      - { name: fullscreen, groups: [ fullscreen ] }
 
     removeButtons:
       - Anchor
-      - Style
+
+    removePlugins:
+      - Heading
+      - Strikethrough
+      - Table
+      - TableToolbar
+      - TableProperties
+      - TableCellProperties
+      - TableCaption
       - Underline
-      - Strike
+
+    importModules:
+      - { module: '@ckeditor/ckeditor5-fullscreen', exports: [ 'Fullscreen' ] }
