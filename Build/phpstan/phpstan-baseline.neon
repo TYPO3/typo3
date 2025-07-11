@@ -271,12 +271,6 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/Domain/Model/FormElements/AbstractSection.php
 
 		-
-			rawMessage: 'Call to function is_object() with object will always evaluate to true.'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/form/Classes/ViewHelpers/RenderFormValueViewHelper.php
-
-		-
 			rawMessage: 'Call to function is_array() with null will always evaluate to false.'
 			identifier: function.impossibleType
 			count: 1

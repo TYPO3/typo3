@@ -99,7 +99,7 @@ class ConfirmationFinisher extends AbstractFinisher
             $contentObjectRenderer->setCurrentVal((string)$contentElementUid);
             $message = $contentObjectRenderer->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.'], $lastSegment);
         } else {
-            $message = $this->parseOption('message');
+            $message = $this->parseOptionAsDisplayValue('message');
         }
 
         $formRuntime = $this->finisherContext->getFormRuntime();

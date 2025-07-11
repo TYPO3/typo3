@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
 
 /**
@@ -30,7 +32,7 @@ use TYPO3\CMS\Form\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
  *
  * Scope: frontend
  */
-class FileUpload extends AbstractFormElement
+class FileUpload extends AbstractFormElement implements StringableFormElementInterface, ProcessableValueFormElementInterface
 {
     /**
      * Initializes the Form Element by setting the data type to an Extbase File Reference
@@ -103,5 +105,30 @@ class FileUpload extends AbstractFormElement
         } catch (\InvalidArgumentException|InsufficientFolderAccessPermissionsException|FolderDoesNotExistException $e) {
             return false;
         }
+    }
+
+    public function valueToString($value): string
+    {
+        if ($value instanceof ObjectStorage) {
+            $fileNames = [];
+            foreach ($value as $fileReference) {
+                if ($fileReference instanceof FileReference) {
+                    $fileNames[] = $fileReference->getOriginalResource()->getName();
+                }
+            }
+            return implode(', ', $fileNames);
+        }
+        if ($value instanceof FileReference) {
+            return $value->getOriginalResource()->getName();
+        }
+        return '';
+    }
+
+    public function processElementValue(mixed $value, FormRuntime $formRuntime): mixed
+    {
+        if ($value instanceof ObjectStorage || $value instanceof FileReference) {
+            return $this->valueToString($value);
+        }
+        return $value;
     }
 }

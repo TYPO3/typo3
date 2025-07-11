@@ -29,8 +29,10 @@ use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
+use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\FormElements\StringableFormElementInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
+use TYPO3\CMS\Form\Service\FormValueResolver;
 use TYPO3\CMS\Form\Service\TranslationService;
 
 /**
@@ -79,6 +81,8 @@ abstract class AbstractFinisher implements FinisherInterface, LoggerAwareInterfa
 
     private TranslationService $translationService;
 
+    private FormValueResolver $formValueResolver;
+
     public function injectViewFactory(ViewFactoryInterface $viewFactory)
     {
         $this->viewFactory = $viewFactory;
@@ -87,6 +91,11 @@ abstract class AbstractFinisher implements FinisherInterface, LoggerAwareInterfa
     public function injectTranslationService(TranslationService $translationService)
     {
         $this->translationService = $translationService;
+    }
+
+    public function injectFormValueResolver(FormValueResolver $formValueResolver): void
+    {
+        $this->formValueResolver = $formValueResolver;
     }
 
     /**
@@ -167,6 +176,21 @@ abstract class AbstractFinisher implements FinisherInterface, LoggerAwareInterfa
     abstract protected function executeInternal();
 
     /**
+     * Same as parseOption(), except that {<elementIdentifier>} resolves to the
+     * display representation of a submitted value - the translated label of a
+     * select option instead of the option key that was submitted.
+     *
+     * Use it for options that are read by a human, never for options that end
+     * up in a query, a stored record or a URL.
+     *
+     * @return string|array|int|bool|\Closure|callable|null
+     */
+    protected function parseOptionAsDisplayValue(string $optionName)
+    {
+        return $this->parseOptionValue($optionName, true);
+    }
+
+    /**
      * Read the option called $optionName from $this->options, and parse {...}
      * as object accessors.
      *
@@ -178,6 +202,14 @@ abstract class AbstractFinisher implements FinisherInterface, LoggerAwareInterfa
      * @return string|array|int|bool|\Closure|callable|null
      */
     protected function parseOption(string $optionName)
+    {
+        return $this->parseOptionValue($optionName, false);
+    }
+
+    /**
+     * @return string|array|int|bool|\Closure|callable|null
+     */
+    private function parseOptionValue(string $optionName, bool $resolveDisplayValues)
     {
         if ($optionName === 'translation') {
             return null;
@@ -207,7 +239,7 @@ abstract class AbstractFinisher implements FinisherInterface, LoggerAwareInterfa
         }
 
         $formRuntime = $this->finisherContext->getFormRuntime();
-        $optionValue = $this->substituteRuntimeReferences($optionValue, $formRuntime);
+        $optionValue = $this->substituteReferences($optionValue, $formRuntime, $resolveDisplayValues);
 
         if (is_string($optionValue)) {
             $translationOptions = is_array($this->options['translation'] ?? null)
@@ -222,7 +254,7 @@ abstract class AbstractFinisher implements FinisherInterface, LoggerAwareInterfa
                 $translationOptions
             );
 
-            $optionValue = $this->substituteRuntimeReferences($optionValue, $formRuntime);
+            $optionValue = $this->substituteReferences($optionValue, $formRuntime, $resolveDisplayValues);
         }
 
         if (empty($optionValue)) {
@@ -290,6 +322,15 @@ abstract class AbstractFinisher implements FinisherInterface, LoggerAwareInterfa
      */
     protected function substituteRuntimeReferences($needle, FormRuntime $formRuntime)
     {
+        return $this->substituteReferences($needle, $formRuntime, false);
+    }
+
+    /**
+     * @param string|array $needle
+     * @return mixed
+     */
+    private function substituteReferences($needle, FormRuntime $formRuntime, bool $resolveDisplayValues)
+    {
         // neither array nor string, directly return
         if (!is_array($needle) && !is_string($needle)) {
             return $needle;
@@ -299,8 +340,8 @@ abstract class AbstractFinisher implements FinisherInterface, LoggerAwareInterfa
         if (is_array($needle)) {
             $substitutedNeedle = [];
             foreach ($needle as $key => $item) {
-                $key = $this->substituteRuntimeReferences($key, $formRuntime);
-                $item = $this->substituteRuntimeReferences($item, $formRuntime);
+                $key = $this->substituteReferences($key, $formRuntime, $resolveDisplayValues);
+                $item = $this->substituteReferences($item, $formRuntime, $resolveDisplayValues);
                 $substitutedNeedle[$key] = $item;
             }
             return $substitutedNeedle;
@@ -309,9 +350,10 @@ abstract class AbstractFinisher implements FinisherInterface, LoggerAwareInterfa
         // substitute one(!) variable in string which either could result
         // again in a string or an array representing multiple values
         if (preg_match('/^{([^}]+)}$/', $needle, $matches)) {
-            return $this->resolveRuntimeReference(
+            return $this->resolveReference(
                 $matches[1],
-                $formRuntime
+                $formRuntime,
+                $resolveDisplayValues
             );
         }
 
@@ -323,10 +365,11 @@ abstract class AbstractFinisher implements FinisherInterface, LoggerAwareInterfa
         // * mixed cases of the above
         return preg_replace_callback(
             '/{([^}]+)}/',
-            function ($matches) use ($formRuntime) {
-                $value = $this->resolveRuntimeReference(
+            function ($matches) use ($formRuntime, $resolveDisplayValues) {
+                $value = $this->resolveReference(
                     $matches[1],
-                    $formRuntime
+                    $formRuntime,
+                    $resolveDisplayValues
                 );
 
                 // substitute each match by returning the resolved value
@@ -334,14 +377,7 @@ abstract class AbstractFinisher implements FinisherInterface, LoggerAwareInterfa
                     return $value;
                 }
 
-                // now the resolve value is an array that shall substitute
-                // a variable in a string that probably is not the only one
-                // or is wrapped with other static string content (see above)
-                // ... which is just not possible
-                throw new FinisherException(
-                    'Cannot convert array to string',
-                    1519239265
-                );
+                return $this->arrayToString($value);
             },
             $needle
         );
@@ -360,21 +396,12 @@ abstract class AbstractFinisher implements FinisherInterface, LoggerAwareInterfa
 
         // try to resolve the path '{...}' within the FormRuntime
         $value = ObjectAccess::getPropertyPath($formRuntime, $property);
-
-        if (is_object($value)) {
-            $element = $formRuntime->getFormDefinition()->getElementByIdentifier($property);
-
-            if (!$element instanceof StringableFormElementInterface) {
-                throw new FinisherException(
-                    sprintf('Cannot convert object value of "%s" to string', $property),
-                    1574362327
-                );
+        if ($value !== null) {
+            $element = $this->resolveFormElementByProperty($property, $formRuntime);
+            if (is_object($value) && $element instanceof StringableFormElementInterface) {
+                $value = $element->valueToString($value);
             }
-
-            $value = $element->valueToString($value);
-        }
-
-        if ($value === null) {
+        } else {
             // try to resolve the path '{...}' within the FinisherVariableProvider
             $value = ObjectAccess::getPropertyPath(
                 $this->finisherContext->getFinisherVariableProvider(),
@@ -383,11 +410,83 @@ abstract class AbstractFinisher implements FinisherInterface, LoggerAwareInterfa
         }
 
         if ($value !== null) {
+            if (is_object($value) && !method_exists($value, '__toString')) {
+                throw new FinisherException(
+                    sprintf('Cannot convert object value of "%s" to string', $property),
+                    1574362327
+                );
+            }
+
             return $value;
         }
 
         // in case no value could be resolved
         return '{' . $property . '}';
+    }
+
+    /**
+     * Resolves a reference the way resolveRuntimeReference() does, and maps the
+     * result to the display representation the form element provides for it.
+     *
+     * @return mixed
+     */
+    private function resolveReference(string $property, FormRuntime $formRuntime, bool $resolveDisplayValues)
+    {
+        $value = $this->resolveRuntimeReference($property, $formRuntime);
+        if (!$resolveDisplayValues) {
+            return $value;
+        }
+
+        $element = $this->resolveFormElementByProperty($property, $formRuntime);
+        if (!$element instanceof FormElementInterface) {
+            return $value;
+        }
+
+        return $this->formValueResolver->resolveDisplayValue($element, $value, $formRuntime);
+    }
+
+    private function resolveFormElementByProperty(string $property, FormRuntime $formRuntime): ?object
+    {
+        $elementIdentifier = $this->resolveElementIdentifierFromProperty($property);
+        if ($elementIdentifier === null) {
+            return null;
+        }
+
+        return $formRuntime->getFormDefinition()->getElementByIdentifier($elementIdentifier);
+    }
+
+    private function resolveElementIdentifierFromProperty(string $property): ?string
+    {
+        if (!str_contains($property, '.')) {
+            return $property;
+        }
+
+        $prefixes = [
+            'formState.formValues.',
+            'formValues.',
+        ];
+        foreach ($prefixes as $prefix) {
+            if (str_starts_with($property, $prefix)) {
+                return substr($property, strlen($prefix));
+            }
+        }
+
+        return null;
+    }
+
+    private function arrayToString(array $value): string
+    {
+        $flatValues = [];
+        array_walk_recursive($value, static function (mixed $item) use (&$flatValues): void {
+            if (is_object($item) && !method_exists($item, '__toString')) {
+                throw new FinisherException(
+                    sprintf('Cannot convert object value of type "%s" to string', get_debug_type($item)),
+                    1787754756
+                );
+            }
+            $flatValues[] = (string)$item;
+        });
+        return implode(', ', $flatValues);
     }
 
     /**

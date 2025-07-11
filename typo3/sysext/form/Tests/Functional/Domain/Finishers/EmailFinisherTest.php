@@ -17,24 +17,58 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\Domain\Finishers;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Domain\Finishers\EmailFinisher;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
+use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Event\BeforeEmailFinisherInitializedEvent;
+use TYPO3\CMS\Form\Service\FormValueResolver;
 use TYPO3\CMS\Form\Service\TranslationService;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class EmailFinisherTest extends FunctionalTestCase
 {
+    protected array $coreExtensionsToLoad = ['form'];
+
     protected bool $initializeDatabase = false;
+
+    private ArrayFormFactory $formFactory;
+    private Request $request;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([]);
+
+        $feRequest = new ServerRequest()
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript)
+            ->withAttribute('language', new SiteLanguage(0, 'en_US.UTF-8', new Uri('/'), []));
+
+        $this->get(ExtbaseConfigurationManagerInterface::class)->setRequest($feRequest);
+        $this->formFactory = $this->get(ArrayFormFactory::class);
+        $this->request = $this->buildExtbaseRequest();
+    }
 
     #[Test]
     public function beforeEmailFinisherInitializedEventIsCalled(): void
@@ -79,6 +113,7 @@ final class EmailFinisherTest extends FunctionalTestCase
             $this->get(MailerInterface::class),
         );
         $subject->injectTranslationService($translationServiceStub);
+        $subject->injectFormValueResolver(new FormValueResolver($translationServiceStub));
         $subject->setOptions([
             'senderAddress' => 'sender@example.org',
             'templateName' => 'template',
@@ -94,5 +129,169 @@ final class EmailFinisherTest extends FunctionalTestCase
             'recipients' => ['user@example.org' => 'John Doe'],
             'subject' => 'dynamic event subject',
         ], $beforeEmailFinisherInitializedEvent->getOptions());
+    }
+
+    public static function subjectPlaceholderDataProvider(): array
+    {
+        return [
+            'single select label replacement' => ['Choice: {single-select}', 'Choice: Mister'],
+            'multi select label replacement in text' => ['Choices: {multi-select}', 'Choices: Mister, Missis'],
+            'multi select placeholder only' => ['{multi-select}', 'Mister, Missis'],
+        ];
+    }
+
+    #[DataProvider('subjectPlaceholderDataProvider')]
+    #[Test]
+    public function subjectUsesDisplayValuesFromFormElements(string $subjectTemplate, string $expectedSubject): void
+    {
+        $this->executeFinisherWithOptions(
+            [
+                'senderAddress' => 'sender@example.org',
+                'templateName' => 'template',
+                'recipients' => ['user@example.org' => 'John Doe'],
+                'subject' => $subjectTemplate,
+            ],
+            static function (FluidEmail $mail) use ($expectedSubject): void {
+                self::assertSame($expectedSubject, $mail->getSubject());
+            }
+        );
+    }
+
+    #[Test]
+    public function emailAddressesKeepTheSubmittedValue(): void
+    {
+        $this->executeFinisherWithOptions(
+            [
+                'senderAddress' => '{department}',
+                'templateName' => 'template',
+                'recipients' => ['{department}' => 'Team'],
+                'replyToRecipients' => ['{department}' => 'Team'],
+                'subject' => 'Request for {department}',
+            ],
+            static function (FluidEmail $mail): void {
+                self::assertSame('sales@example.org', $mail->getTo()[0]->getAddress());
+                self::assertSame('sales@example.org', $mail->getReplyTo()[0]->getAddress());
+                self::assertSame('sales@example.org', $mail->getFrom()[0]->getAddress());
+                // The very same element reads as its label where a human sees it
+                self::assertSame('Request for Sales', $mail->getSubject());
+            }
+        );
+    }
+
+    #[Test]
+    public function senderNameUsesTheTranslatedOptionLabel(): void
+    {
+        $this->executeFinisherWithOptions(
+            [
+                'senderAddress' => 'sender@example.org',
+                'senderName' => '{single-select} Doe',
+                'templateName' => 'template',
+                'recipients' => ['user@example.org' => 'John Doe'],
+                'subject' => 'Subject',
+            ],
+            static function (FluidEmail $mail): void {
+                self::assertSame('Mister Doe', $mail->getFrom()[0]->getName());
+            }
+        );
+    }
+
+    private function executeFinisherWithOptions(array $options, \Closure $assertMail): void
+    {
+        /** @var Container $container */
+        $container = $this->get('service_container');
+
+        $mailerMock = $this->createMock(MailerInterface::class);
+        $mailerMock->expects($this->once())->method('send')->willReturnCallback($assertMail);
+        $container->set(MailerInterface::class, $mailerMock);
+
+        $translationServiceStub = self::createStub(TranslationService::class);
+        $translationServiceStub->method('translateFinisherOption')->willReturnArgument(3);
+
+        $subject = new EmailFinisher(
+            $this->get(EventDispatcher::class),
+            $this->get(TemplatedEmailFactory::class),
+            $this->get(MailerInterface::class),
+        );
+        $subject->injectTranslationService($translationServiceStub);
+        $subject->injectFormValueResolver(new FormValueResolver($translationServiceStub));
+        $subject->setOptions($options);
+        $subject->execute(new FinisherContext($this->buildFormRuntime(), $this->request));
+    }
+
+    private function buildExtbaseRequest(): Request
+    {
+        $frontendUser = new FrontendUserAuthentication();
+        $frontendUser->initializeUserSessionManager();
+        $serverRequest = new ServerRequest()
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.user', $frontendUser)
+            ->withAttribute('language', new SiteLanguage(0, 'en_US.UTF-8', new Uri('/'), []));
+
+        $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
+
+        return new Request($serverRequest)->withPluginName('Formframework');
+    }
+
+    private function buildFormRuntime(): FormRuntime
+    {
+        $formDefinition = $this->buildFormDefinition();
+        $formRuntime = $formDefinition->bind($this->request);
+        $formRuntime->getFormState()->setFormValue('single-select', 'mr');
+        $formRuntime->getFormState()->setFormValue('multi-select', ['mr', 'mrs']);
+        $formRuntime->getFormState()->setFormValue('department', 'sales@example.org');
+        return $formRuntime;
+    }
+
+    private function buildFormDefinition(): FormDefinition
+    {
+        return $this->formFactory->build([
+            'type' => 'Form',
+            'identifier' => 'test-form',
+            'label' => 'Test form',
+            'prototypeName' => 'standard',
+            'renderables' => [
+                [
+                    'type' => 'Page',
+                    'identifier' => 'page-1',
+                    'label' => 'Page 1',
+                    'renderables' => [
+                        [
+                            'type' => 'SingleSelect',
+                            'identifier' => 'single-select',
+                            'label' => 'Single',
+                            'properties' => [
+                                'options' => [
+                                    'mr' => 'Mister',
+                                    'mrs' => 'Missis',
+                                ],
+                            ],
+                        ],
+                        [
+                            'type' => 'SingleSelect',
+                            'identifier' => 'department',
+                            'label' => 'Department',
+                            'properties' => [
+                                'options' => [
+                                    'sales@example.org' => 'Sales',
+                                    'support@example.org' => 'Support',
+                                ],
+                            ],
+                        ],
+                        [
+                            'type' => 'MultiSelect',
+                            'identifier' => 'multi-select',
+                            'label' => 'Multi',
+                            'properties' => [
+                                'options' => [
+                                    'mr' => 'Mister',
+                                    'mrs' => 'Missis',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ], null, new ServerRequest());
     }
 }

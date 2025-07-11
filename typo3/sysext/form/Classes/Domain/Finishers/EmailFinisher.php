@@ -98,18 +98,21 @@ class EmailFinisher extends AbstractFinisher
             $this->options['addHtmlPart'] = false;
         }
 
-        $subject = (string)$this->parseOption('subject');
+        $subjectOption = $this->parseOptionAsDisplayValue('subject');
+        $subject = is_array($subjectOption)
+            ? implode(', ', $subjectOption)
+            : (string)$subjectOption;
         $recipients = $this->getRecipients('recipients');
         $senderAddress = $this->parseOption('senderAddress');
         $senderAddress = is_string($senderAddress) ? $senderAddress : '';
-        $senderName = $this->parseOption('senderName');
+        $senderName = $this->parseOptionAsDisplayValue('senderName');
         $senderName = is_string($senderName) ? $senderName : '';
         $replyToRecipients = $this->getRecipients('replyToRecipients');
         $carbonCopyRecipients = $this->getRecipients('carbonCopyRecipients');
         $blindCarbonCopyRecipients = $this->getRecipients('blindCarbonCopyRecipients');
         $addHtmlPart = (bool)$this->parseOption('addHtmlPart');
         $attachUploads = $this->parseOption('attachUploads');
-        $title = (string)$this->parseOption('title') ?: $subject;
+        $title = (string)$this->parseOptionAsDisplayValue('title') ?: $subject;
 
         if ($subject === '') {
             throw new FinisherException('The option "subject" must be set for the EmailFinisher.', 1327060320);
@@ -147,7 +150,7 @@ class EmailFinisher extends AbstractFinisher
             $mail->assign('languageKey', $this->options['translation']['language']);
         }
 
-        $message = $this->parseOption('message');
+        $message = $this->parseOptionAsDisplayValue('message');
         if (is_string($message) && $message !== '') {
             // Remove whitespace between HTML tags to prevent lib.parseFunc_RTE
             // from converting newlines into additional blank lines in the email output

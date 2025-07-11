@@ -26,6 +26,11 @@ use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Finishers\RedirectFinisher;
+use TYPO3\CMS\Form\Domain\Model\FormDefinition;
+use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
+use TYPO3\CMS\Form\Domain\Model\FormElements\ProcessableValueFormElementInterface;
+use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
+use TYPO3\CMS\Form\Service\FormValueResolver;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -98,5 +103,77 @@ final class RedirectFinisherTest extends UnitTestCase
                 3,
             ],
         ];
+    }
+
+    #[Test]
+    public function redirectTargetsKeepTheSubmittedValue(): void
+    {
+        $contentObjectRendererStub = self::createStub(ContentObjectRenderer::class);
+        $contentObjectRendererStub->method('createUrl')->willReturnCallback(static function (array $conf): string {
+            return 'https://site.test/?id=' . $conf['parameter'] . $conf['additionalParams'] . '#' . $conf['section'];
+        });
+
+        $serverRequest = new ServerRequest()
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('currentContentObject', $contentObjectRendererStub);
+        $contentObjectRendererStub->setRequest($serverRequest);
+
+        $finisherContextMock = $this->createMock(FinisherContext::class);
+        $finisherContextMock->method('getRequest')->willReturn(new Request($serverRequest));
+        $finisherContextMock->method('getFormRuntime')->willReturn($this->buildFormRuntimeWithOptionableElement());
+        $finisherContextMock->expects($this->once())->method('cancel');
+
+        $translationServiceStub = self::createStub(TranslationService::class);
+        $translationServiceStub->method('translateFinisherOption')->willReturnArgument(3);
+
+        $redirectFinisherMock = $this->getAccessibleMock(RedirectFinisher::class, null, [], '', false);
+        $redirectFinisherMock->_set('options', [
+            'pageUid' => '{topic}',
+            'additionalParameters' => 'department={department}',
+            'fragment' => '{department}',
+        ]);
+        $redirectFinisherMock->injectTranslationService($translationServiceStub);
+        $redirectFinisherMock->injectFormValueResolver(new FormValueResolver($translationServiceStub));
+
+        try {
+            $redirectFinisherMock->execute($finisherContextMock);
+            self::fail('RedirectFinisher did not throw expected exception.');
+        } /** @noinspection PhpRedundantCatchClauseInspection */ catch (PropagateResponseException $e) {
+            self::assertSame(
+                'https://site.test/?id=3&department=sales#sales',
+                $e->getResponse()->getHeader('Location')[0]
+            );
+        }
+    }
+
+    private function buildFormRuntimeWithOptionableElement(): FormRuntime
+    {
+        // A page uid and a mail alias picked from a select, both of which lose
+        // their meaning once the option label is substituted for them
+        $submittedValues = ['topic' => '3', 'department' => 'sales'];
+        $labels = ['topic' => 'Sales team', 'department' => 'Sales'];
+
+        $elementStubs = [];
+        foreach ($labels as $identifier => $label) {
+            $elementStub = self::createStubForIntersectionOfInterfaces([
+                FormElementInterface::class,
+                ProcessableValueFormElementInterface::class,
+            ]);
+            $elementStub->method('processElementValue')->willReturn($label);
+            $elementStubs[$identifier] = $elementStub;
+        }
+
+        $formDefinitionStub = self::createStub(FormDefinition::class);
+        $formDefinitionStub->method('getElementByIdentifier')->willReturnCallback(
+            static fn(string $identifier) => $elementStubs[$identifier] ?? null
+        );
+
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('offsetExists')->willReturn(true);
+        $formRuntimeStub->method('offsetGet')->willReturnCallback(
+            static fn(string $identifier) => $submittedValues[$identifier] ?? null
+        );
+        $formRuntimeStub->method('getFormDefinition')->willReturn($formDefinitionStub);
+        return $formRuntimeStub;
     }
 }

@@ -18,14 +18,25 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Functional\Domain\Finishers;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\Platform\SQLitePlatform;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Finishers\SaveToDatabaseFinisher;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Domain\Runtime\FormState;
+use TYPO3\CMS\Form\Service\FormValueResolver;
 use TYPO3\CMS\Form\Service\TranslationService;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class SaveToDatabaseFinisherTest extends FunctionalTestCase
@@ -74,5 +85,125 @@ final class SaveToDatabaseFinisherTest extends FunctionalTestCase
             self::assertTrue($finisherContext->getFinisherVariableProvider()->exists('SaveToDatabase', 'insertedUids.0'));
             self::assertSame(0, $finisherContext->getFinisherVariableProvider()->get('SaveToDatabase', 'insertedUids.0'));
         }
+    }
+
+    #[Test]
+    public function bothMappingRoutesStoreTheSubmittedOptionKey(): void
+    {
+        $request = $this->buildExtbaseRequest();
+        $subject = $this->buildFinisher([
+            'table' => 'sys_category_record_mm',
+            'mode' => 'insert',
+            'elements' => [
+                'single-select' => ['mapOnDatabaseColumn' => 'fieldname'],
+            ],
+            'databaseColumnMappings' => [
+                'uid_local' => ['value' => 47],
+                'uid_foreign' => ['value' => 11],
+                'tablenames' => ['value' => '{single-select}'],
+            ],
+        ]);
+
+        $subject->execute(new FinisherContext($this->buildFormRuntime($request), $request));
+
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('sys_category_record_mm');
+        $row = $queryBuilder->select('tablenames', 'fieldname')->from('sys_category_record_mm')->executeQuery()->fetchAssociative();
+        self::assertSame('mr', $row['fieldname']);
+        self::assertSame('mr', $row['tablenames']);
+    }
+
+    #[Test]
+    public function whereClauseMatchesTheSubmittedOptionKey(): void
+    {
+        $connection = $this->getConnectionPool()->getConnectionForTable('sys_category_record_mm');
+        $connection->insert('sys_category_record_mm', [
+            'uid_local' => 47,
+            'uid_foreign' => 11,
+            'tablenames' => 'mr',
+        ]);
+
+        $request = $this->buildExtbaseRequest();
+        $subject = $this->buildFinisher([
+            'table' => 'sys_category_record_mm',
+            'mode' => 'update',
+            'whereClause' => [
+                'tablenames' => '{single-select}',
+            ],
+            'databaseColumnMappings' => [
+                'uid_foreign' => ['value' => 99],
+            ],
+        ]);
+
+        $subject->execute(new FinisherContext($this->buildFormRuntime($request), $request));
+
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('sys_category_record_mm');
+        $row = $queryBuilder->select('uid_foreign')->from('sys_category_record_mm')->executeQuery()->fetchAssociative();
+        self::assertSame(99, (int)$row['uid_foreign']);
+    }
+
+    private function buildFinisher(array $options): SaveToDatabaseFinisher
+    {
+        $subject = new SaveToDatabaseFinisher();
+        $subject->setFinisherIdentifier('SaveToDatabase');
+        $subject->injectTranslationService($this->get(TranslationService::class));
+        $subject->injectFormValueResolver($this->get(FormValueResolver::class));
+        $subject->setOptions($options);
+        return $subject;
+    }
+
+    private function buildExtbaseRequest(): Request
+    {
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([]);
+        $this->get(ExtbaseConfigurationManagerInterface::class)->setRequest(
+            new ServerRequest()
+                ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+                ->withAttribute('frontend.typoscript', $frontendTypoScript)
+                ->withAttribute('language', new SiteLanguage(0, 'en_US.UTF-8', new Uri('/'), []))
+        );
+
+        $frontendUser = new FrontendUserAuthentication();
+        $frontendUser->initializeUserSessionManager();
+        $serverRequest = new ServerRequest()
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.user', $frontendUser)
+            ->withAttribute('language', new SiteLanguage(0, 'en_US.UTF-8', new Uri('/'), []));
+        $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
+
+        return new Request($serverRequest)->withPluginName('Formframework');
+    }
+
+    private function buildFormRuntime(Request $request): FormRuntime
+    {
+        $formDefinition = $this->get(ArrayFormFactory::class)->build([
+            'type' => 'Form',
+            'identifier' => 'test-form',
+            'label' => 'Test form',
+            'prototypeName' => 'standard',
+            'renderables' => [
+                [
+                    'type' => 'Page',
+                    'identifier' => 'page-1',
+                    'label' => 'Page 1',
+                    'renderables' => [
+                        [
+                            'type' => 'SingleSelect',
+                            'identifier' => 'single-select',
+                            'label' => 'Single',
+                            'properties' => [
+                                'options' => [
+                                    'mr' => 'Mister',
+                                    'mrs' => 'Missis',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ], null, new ServerRequest());
+        $formRuntime = $formDefinition->bind($request);
+        $formRuntime->getFormState()->setFormValue('single-select', 'mr');
+        return $formRuntime;
     }
 }
