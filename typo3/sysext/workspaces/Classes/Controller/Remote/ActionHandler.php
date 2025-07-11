@@ -216,7 +216,6 @@ class ActionHandler
             $workspaceRecord = WorkspaceRecord::get($elementRecord['t3ver_wsid']);
             $nextStageRecord = $workspaceRecord->getNextStage($elementRecord['t3ver_stage']);
             if ($nextStageRecord !== null) {
-                $this->stagesService->getRecordService()->add($table, $uid);
                 $result = $this->getSentToStageWindow($nextStageRecord);
                 $result['affects'] = [
                     'table' => $table,
@@ -250,7 +249,6 @@ class ActionHandler
 
             if ($stageRecord !== null) {
                 if (!$stageRecord->isEditStage()) {
-                    $this->stagesService->getRecordService()->add($table, $uid);
                     $previousStageRecord = $stageRecord->getPrevious();
                     if ($previousStageRecord === null) {
                         return $this->getErrorResponse('error.sendToPrevStage.noPreviousStage', 1287264747);
@@ -278,18 +276,10 @@ class ActionHandler
      * Gets the dialog window to be displayed before a record can be sent to a specific stage.
      *
      * @param int $nextStageId
-     * @param array|\stdClass[] $elements
      * @return array
      */
-    public function sendToSpecificStageWindow($nextStageId, array $elements)
+    public function sendToSpecificStageWindow($nextStageId)
     {
-        foreach ($elements as $element) {
-            $this->stagesService->getRecordService()->add(
-                $element->table,
-                (int)$element->uid
-            );
-        }
-
         $result = $this->getSentToStageWindow($nextStageId);
         $result['affects'] = [
             'nextStage' => $nextStageId,

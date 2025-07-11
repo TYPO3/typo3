@@ -869,9 +869,7 @@ class Backend extends Workspaces {
       });
     }
     this.sendRemoteRequest(
-      this.generateRemoteActionsPayload('sendToSpecificStageWindow', [
-        stage, affectedRecords,
-      ]),
+      this.generateRemoteActionsPayload('sendToSpecificStageWindow', [stage]),
     ).then(async (response: AjaxResponse): Promise<void> => {
       const modal = this.renderSendToStageWindow(await response.resolve());
       modal.addEventListener('button.clicked', (modalEvent: Event): void => {

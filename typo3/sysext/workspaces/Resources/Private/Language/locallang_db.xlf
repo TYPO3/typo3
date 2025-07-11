@@ -70,7 +70,7 @@
 				<source>Members</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.preselection.editors">
-				<source>Editors</source>
+				<source>Unused, no functionality attached</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.preselection.responsiblePersons">
 				<source>Responsible Persons</source>
