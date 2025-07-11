@@ -77,7 +77,7 @@ final readonly class WorkspacesAjaxController
                 'sendToPrevStageWindow' => $this->sendToPrevStageWindow((int)$call->data[0], (string)$call->data[1]),
                 'sendToNextStageExecute' => $this->sendToNextStageExecute($call->data[0]),
                 'sendToPrevStageExecute' => $this->sendToPrevStageExecute($call->data[0]),
-                'sendToSpecificStageWindow' => $this->sendToSpecificStageWindow((int)$call->data[0], $call->data[1]),
+                'sendToSpecificStageWindow' => $this->sendToSpecificStageWindow((int)$call->data[0]),
                 'sendToSpecificStageExecute' => $this->sendToSpecificStageExecute($call->data[0]),
                 'discardStagesFromPage' => $this->discardStagesFromPage((int)$call->data[0]),
                 'sendCollectionToStage' => $this->sendCollectionToStage($call->data[0]),
@@ -250,7 +250,6 @@ final readonly class WorkspacesAjaxController
                 'success' => false,
             ];
         }
-        $this->stagesService->getRecordService()->add($table, $uid);
         $result = $this->getSentToStageWindow($nextStageRecord);
         $result['affects'] = [
             'table' => $table,
@@ -297,7 +296,6 @@ final readonly class WorkspacesAjaxController
                 'success' => false,
             ];
         }
-        $this->stagesService->getRecordService()->add($table, $uid);
         $previousStageRecord = $stageRecord->getPrevious();
         if ($previousStageRecord === null) {
             return [
@@ -365,19 +363,13 @@ final readonly class WorkspacesAjaxController
         ];
     }
 
-    private function sendToSpecificStageWindow(int $nextStageId, array $elements): array
+    private function sendToSpecificStageWindow(int $nextStageId): array
     {
         $nextStage = WorkspaceRecord::get($this->getBackendUser()->workspace)->getStage($nextStageId);
         if ($nextStage === null) {
             return [
                 'success' => false,
             ];
-        }
-        foreach ($elements as $element) {
-            $this->stagesService->getRecordService()->add(
-                $element->table,
-                (int)$element->uid
-            );
         }
         $result = $this->getSentToStageWindow($nextStage);
         $result['affects'] = [

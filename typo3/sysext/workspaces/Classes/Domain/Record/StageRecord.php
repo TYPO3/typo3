@@ -163,11 +163,6 @@ class StageRecord
         return ((int)$this->record['notification_preselection'] & 2) > 0;
     }
 
-    public function areEditorsPreselected(): bool
-    {
-        return ((int)$this->record['notification_preselection'] & 4) > 0;
-    }
-
     public function areResponsiblePersonsPreselected(): bool
     {
         return ((int)$this->record['notification_preselection'] & 8) > 0;
@@ -183,7 +178,6 @@ class StageRecord
         return
             $this->areOwnersPreselected()
             || $this->areMembersPreselected()
-            || $this->areEditorsPreselected()
             || $this->areResponsiblePersonsPreselected()
             || $this->hasDefaultRecipients();
     }

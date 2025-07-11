@@ -37,8 +37,6 @@ class StagesService implements SingletonInterface
     public const STAGE_PUBLISH_ID = -10;
     public const STAGE_EDIT_ID = 0;
 
-    protected ?RecordService $recordService;
-
     /**
      * Local cache to reduce number of database queries for stages, groups, etc.
      */
@@ -372,12 +370,6 @@ class StagesService implements SingletonInterface
 
     public function getPreselectedRecipients(StageRecord $stageRecord): array
     {
-        if ($stageRecord->areEditorsPreselected()) {
-            return array_merge(
-                $stageRecord->getPreselectedRecipients(),
-                $this->getRecordService()->getCreateUserIds()
-            );
-        }
         return $stageRecord->getPreselectedRecipients();
     }
 
@@ -462,14 +454,6 @@ class StagesService implements SingletonInterface
         $isAllowed = $this->getBackendUser()->workspaceCheckStageForCurrent($stageId);
         $this->workspaceStageAllowedCache[$cacheKey] = $isAllowed;
         return $isAllowed;
-    }
-
-    public function getRecordService(): RecordService
-    {
-        if (!isset($this->recordService)) {
-            $this->recordService = GeneralUtility::makeInstance(RecordService::class);
-        }
-        return $this->recordService;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

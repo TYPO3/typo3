@@ -163,7 +163,6 @@ return [
                 'items' => [
                     ['label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.owners'],
                     ['label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.members'],
-                    ['label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.editors'],
                 ],
                 'default' => 2,
                 'cols' => 1,
@@ -199,7 +198,6 @@ return [
                 'items' => [
                     ['label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.owners'],
                     ['label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.members'],
-                    ['label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.editors'],
                 ],
                 'default' => 1,
                 'cols' => 1,
@@ -235,7 +233,6 @@ return [
                 'items' => [
                     ['label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.owners'],
                     ['label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.members'],
-                    ['label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.editors'],
                 ],
                 'default' => 3,
                 'cols' => 1,
