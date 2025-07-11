@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -140,6 +141,7 @@ final class PageRecordProvider implements SearchProviderInterface
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
+            ->add(new WorkspaceRestriction($this->getBackendUser()->workspace))
             ->removeByType(HiddenRestriction::class)
             ->removeByType(StartTimeRestriction::class)
             ->removeByType(EndTimeRestriction::class);
@@ -194,6 +196,8 @@ final class PageRecordProvider implements SearchProviderInterface
         $items = [];
         $result = $queryBuilder->executeQuery();
         $schema = $this->tcaSchemaFactory->get('pages');
+        $hasWorkspaceCapability = $schema->hasCapability(TcaSchemaCapability::Workspace);
+
         while ($row = $result->fetchAssociative()) {
             BackendUtility::workspaceOL('pages', $row);
             if (!is_array($row)) {
@@ -238,6 +242,7 @@ final class PageRecordProvider implements SearchProviderInterface
                 ->setExtraData([
                     'breadcrumb' => BackendUtility::getRecordPath($row['pid'], 'AND ' . $this->userPermissions, 0),
                     'flagIcon' => $flagIconData,
+                    'inWorkspace' => $hasWorkspaceCapability && $row['t3ver_wsid'] > 0,
                 ])
                 ->setInternalData([
                     'row' => $row,

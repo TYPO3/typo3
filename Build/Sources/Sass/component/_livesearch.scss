@@ -196,7 +196,8 @@ typo3-backend-live-search-result-item-action {
         overflow: hidden;
         flex-grow: 1;
 
-        .livesearch-result-item-icon {
+        .livesearch-result-item-icon,
+        .livesearch-result-item-indicator {
             display: flex;
             gap: .5em;
             flex-grow: 0;
@@ -204,14 +205,27 @@ typo3-backend-live-search-result-item-action {
             align-items: center;
         }
 
-        .livesearch-result-item-title {
-            flex-grow: 1;
+        .livesearch-result-item-summary {
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
-            text-wrap: nowrap;
-            text-overflow: ellipsis;
+            gap: .25em;
 
             small {
                 opacity: .5;
+            }
+        }
+
+        .livesearch-result-item-title {
+            display: flex;
+            flex-grow: 1;
+            gap: .5em;
+            align-items: center;
+
+            &-contentlabel {
+                overflow: hidden;
+                text-wrap: nowrap;
+                text-overflow: ellipsis;
             }
         }
     }

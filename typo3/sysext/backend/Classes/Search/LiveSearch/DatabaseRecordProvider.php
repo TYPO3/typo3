@@ -36,11 +36,11 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Schema\Capability\RootLevelCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\DateTimeFieldType;
 use TYPO3\CMS\Core\Schema\Field\NumberFieldType;
@@ -194,6 +194,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($tableName);
         $queryBuilder->getRestrictions()
+            ->add(new WorkspaceRestriction($this->getBackendUser()->workspace))
             ->removeByType(HiddenRestriction::class)
             ->removeByType(StartTimeRestriction::class)
             ->removeByType(EndTimeRestriction::class);
@@ -250,8 +251,9 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         $items = [];
         $result = $queryBuilder->executeQuery();
         $schema = $this->tcaSchemaFactory->get($tableName);
-        /** @var RootLevelCapability $rootLevelCapability */
         $rootLevelCapability = $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel);
+        $hasWorkspaceCapability = $schema->hasCapability(TcaSchemaCapability::Workspace);
+
         while ($row = $result->fetchAssociative()) {
             BackendUtility::workspaceOL($tableName, $row);
             if (!is_array($row)) {
@@ -278,6 +280,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
             $extraData = [
                 'table' => $tableName,
                 'uid' => $row['uid'],
+                'inWorkspace' => $hasWorkspaceCapability && $row['t3ver_wsid'] > 0,
             ];
             if ($rootLevelCapability->canExistOnPages()) {
                 $extraData['breadcrumb'] = BackendUtility::getRecordPath($row['pid'], 'AND ' . $this->userPermissions, 0);
