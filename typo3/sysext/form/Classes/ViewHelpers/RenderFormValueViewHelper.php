@@ -21,15 +21,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\ViewHelpers;
 
-use TYPO3\CMS\Core\Country\CountryProvider;
-use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Domain\Model\FileReference;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
-use TYPO3\CMS\Form\Domain\Model\FormElements\StringableFormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
+use TYPO3\CMS\Form\Service\FormValueResolver;
 use TYPO3Fluid\Fluid\Core\Variables\ScopedVariableProvider;
 use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -47,6 +41,10 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
      * @var bool
      */
     protected $escapeOutput = false;
+
+    public function __construct(
+        private readonly FormValueResolver $formValueResolver
+    ) {}
 
     public function initializeArguments(): void
     {
@@ -79,7 +77,7 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
             $data = [
                 'element' => $element,
                 'value' => $value,
-                'processedValue' => $this->processElementValue($element, $value),
+                'processedValue' => $this->formValueResolver->resolveDisplayValue($element, $value, $formRuntime),
                 'isMultiValue' => is_iterable($value),
             ];
         }
@@ -88,105 +86,6 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
         $output = (string)$this->renderChildren();
         $this->renderingContext->setVariableProvider($variableProvider->getGlobalVariableProvider());
         return $output;
-    }
-
-    /**
-     * Converts the given value to a simple type (string or array) considering the underlying FormElement definition.
-     *
-     * @param mixed $value
-     * @return mixed
-     */
-    private function processElementValue(
-        FormElementInterface $element,
-        $value
-    ) {
-        $properties = $element->getProperties();
-        $options = $properties['options'] ?? null;
-        if ($element->getType() === 'CountrySelect') {
-            $country = GeneralUtility::makeInstance(CountryProvider::class)->getByIsoCode($value ?? '');
-            if ($country !== null) {
-                return (string)LocalizationUtility::translate($country->getLocalizedNameLabel());
-            }
-        }
-        if (is_array($options)) {
-            $options = (array)$this->renderingContext->getViewHelperInvoker()->invoke(
-                TranslateElementPropertyViewHelper::class,
-                ['element' => $element, 'property' => 'options'],
-                $this->renderingContext,
-                $this->renderChildren(...),
-            );
-            if (is_array($value)) {
-                return self::mapValuesToOptions($value, $options);
-            }
-            return self::mapValueToOption($value, $options);
-        }
-        if ($value instanceof ObjectStorage) {
-            $result = [];
-            foreach ($value as $item) {
-                $result[] = is_object($item) ? self::processObject($element, $item) : $item;
-            }
-            return $result;
-        }
-        if (is_object($value)) {
-            return self::processObject($element, $value);
-        }
-        return $value;
-    }
-
-    /**
-     * Replaces the given values (=keys) with the corresponding elements in $options.
-     *
-     * @see mapValueToOption()
-     */
-    private static function mapValuesToOptions(array $value, array $options): array
-    {
-        $result = [];
-        foreach ($value as $key) {
-            $result[] = self::mapValueToOption($key, $options);
-        }
-        return $result;
-    }
-
-    /**
-     * Replaces the given value (=key) with the corresponding element in $options
-     * If the key does not exist in $options, it is returned without modification
-     *
-     * @param mixed $value
-     * @return mixed
-     */
-    private static function mapValueToOption($value, array $options)
-    {
-        return $options[$value] ?? $value;
-    }
-
-    /**
-     * Converts the given $object to a string representation considering the $element FormElement definition.
-     *
-     * @param object $object
-     */
-    private static function processObject(FormElementInterface $element, $object): string
-    {
-        if ($element instanceof StringableFormElementInterface) {
-            return $element->valueToString($object);
-        }
-
-        if ($object instanceof \DateTime) {
-            return $object->format(\DateTimeInterface::W3C);
-        }
-
-        if ($object instanceof File || $object instanceof FileReference) {
-            if ($object instanceof FileReference) {
-                $object = $object->getOriginalResource();
-            }
-
-            return $object->getName();
-        }
-
-        if (method_exists($object, '__toString')) {
-            return (string)$object;
-        }
-
-        return 'Object [' . get_class($object) . ']';
     }
 
     private static function isEnabled(RenderableInterface $renderable): bool

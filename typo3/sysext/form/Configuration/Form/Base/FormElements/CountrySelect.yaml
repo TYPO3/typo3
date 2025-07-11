@@ -119,7 +119,7 @@ prototypes:
           group: select
           groupSorting: 200
           iconIdentifier: form-multi-select
-        implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
+        implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\CountrySelect
         properties:
           containerClassAttribute: 'form-element form-element-select mb-3'
           elementClassAttribute: form-select

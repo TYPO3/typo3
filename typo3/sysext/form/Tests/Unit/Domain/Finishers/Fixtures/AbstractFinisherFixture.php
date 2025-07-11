@@ -40,6 +40,11 @@ final class AbstractFinisherFixture extends AbstractFinisher
         return parent::parseOption($optionName);
     }
 
+    public function parseOptionAsDisplayValue(string $optionName)
+    {
+        return parent::parseOptionAsDisplayValue($optionName);
+    }
+
     protected function translateFinisherOption(
         $subject,
         FormRuntime $formRuntime,

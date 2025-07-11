@@ -122,7 +122,7 @@ prototypes:
           group: select
           groupSorting: 300
           iconIdentifier: form-radio-button
-        implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
+        implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericOptionableFormElement
         properties:
           renderFieldset: 1
           fieldsetClassAttribute: 'form-element form-element-radio mb-3'
