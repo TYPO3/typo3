@@ -54,6 +54,11 @@ class FileProvider extends AbstractProvider
             'iconIdentifier' => 'actions-open',
             'callbackAction' => 'editMetadata',
         ],
+        'replaceFile' => [
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.replace',
+            'iconIdentifier' => 'actions-edit-replace',
+            'callbackAction' => 'replaceFile',
+        ],
         'rename' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.rename',
             'iconIdentifier' => 'actions-edit-rename',
@@ -172,6 +177,9 @@ class FileProvider extends AbstractProvider
             case 'edit':
                 $canRender = $this->canBeEdited();
                 break;
+            case 'replaceFile':
+                $canRender = $this->canBeReplaced();
+                break;
             case 'editMetadata':
                 $canRender = $this->canEditMetadata();
                 break;
@@ -222,6 +230,12 @@ class FileProvider extends AbstractProvider
                 break;
         }
         return $canRender;
+    }
+
+    protected function canBeReplaced(): bool
+    {
+        return $this->isFile()
+            && $this->record->checkActionPermission('replace');
     }
 
     protected function canBeEdited(): bool
@@ -488,6 +502,9 @@ class FileProvider extends AbstractProvider
                 break;
             case 'newFile':
                 $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('file_create');
+                break;
+            case 'replaceFile':
+                $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('file_replace');
                 break;
             case 'updateOnlineMedia':
                 $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('file_update_online_media');

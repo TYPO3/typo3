@@ -61,6 +61,14 @@ class ContextMenuActions {
     })();
   }
 
+  public static replaceFile(table: string, uid: string, dataset: DOMStringMap): void {
+    const resource = FileListActionUtility.createResourceFromContextDataset(dataset);
+    const actionUrl: string = dataset.actionUrl;
+    top.TYPO3.Backend.ContentContainer.setUrl(
+      actionUrl + '&target=' + encodeURIComponent(resource.identifier) + '&uid=' + encodeURIComponent(resource.uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
+    );
+  }
+
   public static editFile(table: string, uid: string, dataset: DOMStringMap): void {
     const actionUrl: string = dataset.actionUrl;
     top.TYPO3.Backend.ContentContainer.setUrl(
