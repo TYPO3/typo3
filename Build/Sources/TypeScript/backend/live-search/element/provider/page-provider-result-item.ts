@@ -12,8 +12,9 @@
  */
 
 import { customElement, property } from 'lit/decorators';
-import { html, LitElement, type TemplateResult } from 'lit';
+import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import '@typo3/backend/element/icon-element';
+import { lll } from '@typo3/core/lit-helper';
 
 @customElement('typo3-backend-live-search-result-item-page-provider')
 export default class PageProviderResultItem extends LitElement {
@@ -33,8 +34,12 @@ export default class PageProviderResultItem extends LitElement {
         <typo3-backend-icon title="${this.icon.title}" identifier="${this.icon.identifier}" overlay="${this.icon.overlay}" size="small"></typo3-backend-icon>
         <typo3-backend-icon title="${this.extraData.flagIcon.title}" identifier="${this.extraData.flagIcon.identifier}" size="small"></typo3-backend-icon>
       </div>
-      <div class="livesearch-result-item-title">
-        ${this.itemTitle}<br><small>${this.extraData.breadcrumb}</small>
+      <div class="livesearch-result-item-summary">
+        <div class="livesearch-result-item-title">
+          <div class="livesearch-result-item-title-contentlabel">${this.itemTitle}</div>
+          ${this.extraData.inWorkspace ? html`<div class="livesearch-result-item-title-indicator"><typo3-backend-icon title="${lll('liveSearch.versionizedRecord')}" identifier="actions-dot" size="small" class="text-warning"></typo3-backend-icon></div>` : nothing}
+        </div>
+        <small>${this.extraData.breadcrumb}</small>
       </div>
     `;
   }

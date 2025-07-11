@@ -426,6 +426,9 @@
 			<trans-unit id="liveSearch_helpDescription">
 				<source>Search in certain tables</source>
 			</trans-unit>
+			<trans-unit id="liveSearch.versionizedRecord">
+				<source>Versionized record</source>
+			</trans-unit>
 			<trans-unit id="liveSearch_helpDescriptionPages">
 				<source>`#page:Home` will search for all pages with the title "Home"</source>
 			</trans-unit>
