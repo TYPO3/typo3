@@ -106,7 +106,10 @@
 				<source>Hide "Entire workspace" action drop down</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.stagechg_notification">
-				<source>Notification settings during state change</source>
+				<source>Send notifications upon state changes</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.stagechg_notification.description">
+				<source>This workspace-level setting determines if notifications are triggered when records transition to other stages or are published. Individual stages can have their own notification preferences.</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.previewlink_lifetime">
 				<source>Lifetime in hours on how long a preview link will be valid</source>
