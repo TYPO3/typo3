@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
+namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Be;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
