@@ -32,7 +32,7 @@ class Category extends AbstractEntity
 
     protected string $description = '';
 
-    #[Lazy()]
+    #[Lazy]
     protected Category|LazyLoadingProxy|null $parent = null;
 
     public function getTitle(): string
