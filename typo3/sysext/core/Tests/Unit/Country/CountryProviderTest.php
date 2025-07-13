@@ -48,6 +48,14 @@ final class CountryProviderTest extends UnitTestCase
     }
 
     #[Test]
+    public function findByUnspecifiedIsoCodeReturnsNull(): void
+    {
+        $subject = new CountryProvider(new NoopEventDispatcher());
+        $emptyIsocode = $subject->getByIsoCode('');
+        self::assertNull($emptyIsocode);
+    }
+
+    #[Test]
     public function findByThreeLetterIsoCodeReturnsValidObject(): void
     {
         $subject = new CountryProvider(new NoopEventDispatcher());

@@ -1743,6 +1743,11 @@ class CountryProvider
         return $this->countries;
     }
 
+    /**
+     * Searches for a matching country with fallback; uses Alpha2 ISO-Code by
+     * default, and if that does not match, compare the input $isoCode
+     * as an Alpha3 ISO-Code.
+     */
     public function getByIsoCode(string $isoCode): ?Country
     {
         $isoCode = strtoupper($isoCode);
@@ -1773,6 +1778,7 @@ class CountryProvider
         }
         return null;
     }
+
     public function getByEnglishName(string $name): ?Country
     {
         foreach ($this->countries as $country) {

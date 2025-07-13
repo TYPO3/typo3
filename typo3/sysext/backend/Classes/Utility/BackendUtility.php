@@ -1693,7 +1693,7 @@ class BackendUtility
                 }
                 break;
             case 'country':
-                $country = GeneralUtility::makeInstance(CountryProvider::class)->getByIsoCode($value);
+                $country = GeneralUtility::makeInstance(CountryProvider::class)->getByIsoCode($value ?? '');
                 if ($country) {
                     $l = $lang->sL($country->getLocalizedNameLabel());
                 }

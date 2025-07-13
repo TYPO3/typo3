@@ -99,7 +99,7 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
         $properties = $element->getProperties();
         $options = $properties['options'] ?? null;
         if ($element->getType() === 'CountrySelect') {
-            $country = GeneralUtility::makeInstance(CountryProvider::class)->getByIsoCode($value);
+            $country = GeneralUtility::makeInstance(CountryProvider::class)->getByIsoCode($value ?? '');
             if ($country !== null) {
                 return $country->getName();
             }
