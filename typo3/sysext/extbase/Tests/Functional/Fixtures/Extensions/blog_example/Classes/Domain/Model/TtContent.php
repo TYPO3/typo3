@@ -29,7 +29,7 @@ class TtContent extends AbstractEntity
     /**
      * @var ObjectStorage<FileReference>
      */
-    #[Lazy()]
+    #[Lazy]
     protected ObjectStorage $image;
 
     /**

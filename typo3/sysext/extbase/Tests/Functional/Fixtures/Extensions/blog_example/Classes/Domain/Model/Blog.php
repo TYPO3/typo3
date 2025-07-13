@@ -60,7 +60,7 @@ class Blog extends AbstractEntity
      *
      * @var ObjectStorage<Post>
      */
-    #[Lazy()]
+    #[Lazy]
     #[Cascade(['value' => 'remove'])]
     protected ObjectStorage $posts;
 
@@ -72,7 +72,7 @@ class Blog extends AbstractEntity
     /**
      * The blog's administrator
      */
-    #[Lazy()]
+    #[Lazy]
     protected Administrator|LazyLoadingProxy|null $administrator = null;
 
     public function __construct()

@@ -59,14 +59,14 @@ class Post extends AbstractEntity
     /**
      * @var ObjectStorage<Comment>
      */
-    #[Lazy()]
+    #[Lazy]
     #[Cascade(['value' => 'remove'])]
     protected ObjectStorage $comments;
 
     /**
      * @var ObjectStorage<Post>
      */
-    #[Lazy()]
+    #[Lazy]
     protected ObjectStorage $relatedPosts;
 
     /**
@@ -83,7 +83,7 @@ class Post extends AbstractEntity
      * 1:n relation stored as CSV value
      * @var ObjectStorage<Comment>
      */
-    #[Lazy()]
+    #[Lazy]
     protected ObjectStorage $additionalComments;
 
     public function __construct()
