@@ -33,10 +33,11 @@ return [
             ],
         ],
         'rte_1' => [
-            'label' => 'rte_1',
+            'label' => 'rte_1 richtextConfiguration=RTE-Styleguide',
             'config' => [
                 'type' => 'text',
                 'enableRichtext' => true,
+                'richtextConfiguration' => 'RTE-Styleguide',
             ],
         ],
     ],
