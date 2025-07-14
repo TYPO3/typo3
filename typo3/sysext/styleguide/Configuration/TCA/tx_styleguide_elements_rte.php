@@ -40,11 +40,12 @@ return [
             ],
         ],
         'rte_3' => [
-            'label' => 'rte_3 nullable=true',
+            'label' => 'rte_3 nullable=true, richtextConfiguration=RTE-Styleguide',
             'config' => [
                 'type' => 'text',
                 'nullable' => true,
                 'enableRichtext' => true,
+                'richtextConfiguration' => 'RTE-Styleguide',
             ],
         ],
         'rte_4' => [
