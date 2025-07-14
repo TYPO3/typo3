@@ -86,11 +86,10 @@ class SiteWriter
             if (!is_file($fileName)) {
                 return;
             }
-            if (is_writable($fileName) && @unlink($fileName)) {
-                return;
-            }
+            $yamlFileContents = '# No site specific settings defined';
+        } else {
+            $yamlFileContents = Yaml::dump($settings, 99, 2, Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE | Yaml::DUMP_OBJECT_AS_MAP);
         }
-        $yamlFileContents = Yaml::dump($settings, 99, 2, Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE | Yaml::DUMP_OBJECT_AS_MAP);
         if (!GeneralUtility::writeFile($fileName, $yamlFileContents, true)) {
             throw new SiteConfigurationWriteException('Unable to write site settings in sites/' . $siteIdentifier . '/' . self::SETTINGS_FILE_NAME, 1590487411);
         }

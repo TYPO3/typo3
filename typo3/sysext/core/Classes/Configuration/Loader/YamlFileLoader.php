@@ -45,8 +45,9 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 readonly class YamlFileLoader
 {
     public const PATTERN_PARTS = '%[^(%]+?\([\'"]?([^(]*?)[\'"]?\)%|%([^%()]*?)%';
-    public const PROCESS_PLACEHOLDERS = 1;
-    public const PROCESS_IMPORTS = 2;
+    public const PROCESS_PLACEHOLDERS = 0x01;
+    public const PROCESS_IMPORTS = 0x02;
+    public const ALLOW_EMPTY_FILE = 0x04;
 
     public function __construct(
         private LoggerInterface $logger,
@@ -83,6 +84,10 @@ readonly class YamlFileLoader
                 1740817000,
                 $e
             );
+        }
+
+        if ($content === null && $this->hasFlag($flags, self::ALLOW_EMPTY_FILE)) {
+            $content = [];
         }
 
         if (!is_array($content)) {

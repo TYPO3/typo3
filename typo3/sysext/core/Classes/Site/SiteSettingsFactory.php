@@ -82,7 +82,10 @@ readonly class SiteSettingsFactory
             return null;
         }
 
-        return $this->yamlFileLoader->load(GeneralUtility::fixWindowsFilePath($fileName));
+        return $this->yamlFileLoader->load(
+            GeneralUtility::fixWindowsFilePath($fileName),
+            YamlFileLoader::PROCESS_PLACEHOLDERS | YamlFileLoader::PROCESS_IMPORTS | YamlFileLoader::ALLOW_EMPTY_FILE
+        );
     }
 
     /**
