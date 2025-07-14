@@ -841,6 +841,7 @@ Usage within form definition.
            advancedpassword-1:
              mapOnDatabaseColumn: 'password'
              skipIfValueIsEmpty: true
+             hashed: true
    ...
 
 
@@ -862,6 +863,7 @@ Usage through code::
            'advancedpassword-1' => [
                'mapOnDatabaseColumn' => 'password',
                'skipIfValueIsEmpty' => true,
+               'hashed' => true
            ],
        ],
    ]);
@@ -885,6 +887,7 @@ or create manually (not preferred)::
            'advancedpassword-1' => [
                'mapOnDatabaseColumn' => 'password',
                'skipIfValueIsEmpty' => true,
+               'hashed' => true
            ],
        ],
    ]);
@@ -1094,6 +1097,24 @@ elements.<formElementIdentifier>.skipIfValueIsEmpty
 :aspect:`Description`
       Set this to true if the database column should not be written if the value from the submitted form element with the identifier
       ``<formElementIdentifier>`` is empty (think about password fields etc.). Empty means strings without content, whitespace is valid content.
+
+
+.. _apireference-finisheroptions-savetodatabasefinisher-options-elements-<formelementidentifier>-hashed:
+
+elements.<formElementIdentifier>.hashed
++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+:aspect:`Data type`
+      bool
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value`
+      false
+
+:aspect:`Description`
+      Set this to true if the value from the submitted form element should be hashed before writing into the database.
 
 
 .. _apireference-finisheroptions-savetodatabasefinisher-options-elements-<formelementidentifier>-savefileidentifierinsteadofuid:

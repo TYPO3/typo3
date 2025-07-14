@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Domain\Finishers;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Finishers\SaveToDatabaseFinisher;
@@ -132,6 +133,27 @@ final class SaveToDatabaseFinisherTest extends UnitTestCase
         $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
 
         self::assertSame($expectedEmpty, empty($databaseData));
+    }
+
+    #[Test]
+    public function prepareDataHashesValue(): void
+    {
+        $elementsConfiguration = [
+            'password' => [
+                'mapOnDatabaseColumn' => 'password',
+                'hashed' => true,
+            ],
+        ];
+
+        $saveToDatabaseFinisher = $this->getAccessibleMock(SaveToDatabaseFinisher::class, ['getFormValues', 'getElementByIdentifier']);
+        $saveToDatabaseFinisher->method('getFormValues')->willReturn([
+            'password' => 'rawValue',
+        ]);
+        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->createMock(FormElementInterface::class));
+        $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
+
+        $passwordHash = (new PasswordHashFactory())->getDefaultHashInstance('FE');
+        self::assertTrue($passwordHash->checkPassword('rawValue', $databaseData['password']));
     }
 
     #[Test]

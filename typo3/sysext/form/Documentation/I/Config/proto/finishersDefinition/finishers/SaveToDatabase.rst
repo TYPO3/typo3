@@ -255,6 +255,34 @@ options.elements.<formElementIdentifier>.skipIfValueIsEmpty
       is valid content.
 
 
+.. _prototypes.prototypeIdentifier.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.hashed:
+
+options.elements.<formElementIdentifier>.hashed
+-------------------------------------------------------------------------------
+
+:aspect:`Option path`
+      prototypes.<prototypeIdentifier>.finishersDefinition.SaveToDatabase.options.elements.<formElementIdentifier>.hashed
+
+:aspect:`Data type`
+      bool
+
+:aspect:`Needed by`
+      Frontend
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value`
+      false
+
+:aspect:`Good to know`
+      - :ref:`"SaveToDatabase finisher"<apireference-finisheroptions-savetodatabasefinisher>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+
+:aspect:`Description`
+      Set this to true if the value from the submitted form element should be hashed before writing into the database.
+
+
 .. _prototypes.prototypeIdentifier.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.dateformat:
 
 options.elements.<formElementIdentifier>.dateFormat
