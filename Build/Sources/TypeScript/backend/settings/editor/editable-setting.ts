@@ -91,22 +91,32 @@ export class EditableSettingElement extends LitElement {
     `;
   }
 
-  protected async renderField(): Promise<HTMLElement> {
-    const { definition, value, typeImplementation } = this.setting;
-    let element = this.typeElement;
-    if (!element) {
+  protected renderField(): HTMLElement|Promise<HTMLElement> {
+    if (this.typeElement !== null) {
+      this.updateFieldAttributes(this.typeElement);
+      return this.typeElement;
+    }
+
+    return (async (): Promise<HTMLElement> => {
+      const { typeImplementation } = this.setting;
       const implementation = await import(typeImplementation);
       if (!('componentName' in implementation)) {
         throw new Error(`module ${typeImplementation} is missing the "componentName" export`);
       }
-      element = document.createElement(implementation.componentName);
-      this.typeElement = element;
+      const element = document.createElement(implementation.componentName);
 
       element.addEventListener('typo3:setting:changed', (e: CustomEvent) => {
         this.hasChange = JSON.stringify(this.setting.value) !== JSON.stringify(e.detail.value);
       });
-    }
 
+      this.updateFieldAttributes(element);
+      this.typeElement = element;
+      return element;
+    })();
+  }
+
+  protected updateFieldAttributes(element: HTMLElement): void {
+    const { definition, value } = this.setting;
     // Force conversion to an object, as PHP json_encode encodes ['0' => 'foo'] as
     // ['foo'] instead of {'0' => 'foo'}
     const enumEntries = Object.entries(definition.enum || {});
@@ -135,8 +145,6 @@ export class EditableSettingElement extends LitElement {
         element.setAttribute(key, value);
       }
     }
-
-    return element;
   }
 
   protected renderActions(): TemplateResult {
