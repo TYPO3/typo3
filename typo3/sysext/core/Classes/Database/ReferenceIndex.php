@@ -432,7 +432,11 @@ class ReferenceIndex
             }
         }
         if (!$testOnly && !empty($relationsToInsert)) {
-            $connection->bulkInsert('sys_refindex', $relationsToInsert, array_keys(current($relationsToInsert)));
+            try {
+                $connection->bulkInsert('sys_refindex', $relationsToInsert, array_keys(current($relationsToInsert)));
+            } catch (\Exception $e) {
+                // Do nothing for the time being
+            }
         }
 
         // If any existing are left, they are not in the current set anymore. Remove them.
