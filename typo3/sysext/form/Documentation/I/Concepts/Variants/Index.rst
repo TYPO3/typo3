@@ -248,7 +248,7 @@ The most needed ones are for sure:
 
 For example:
 
-:yaml:`siteLanguage("locale") == "de_DE"`.
+:yaml:`siteLanguage("locale").getName() == "de-DE"`.
 
 
 ``applicationContext`` (string)
@@ -327,7 +327,7 @@ the frontend language.
    variants:
      -
        identifier: language-variant-1
-       condition: 'siteLanguage("locale") == "en_US.UTF-8"'
+       condition: 'siteLanguage("locale").getName() == "en-US"'
        label: Contact form
        renderingOptions:
          submitButtonLabel: Submit
@@ -342,7 +342,7 @@ the frontend language.
        variants:
          -
            identifier: language-variant-1
-           condition: 'siteLanguage("locale") == "en_US.UTF-8"'
+           condition: 'siteLanguage("locale").getName() == "en-US"'
            label: Contact data
            renderingOptions:
              previousButtonLabel: Previous step
@@ -358,7 +358,7 @@ the frontend language.
            variants:
              -
                identifier: language-variant-1
-               condition: 'siteLanguage("locale") == "en_US.UTF-8"'
+               condition: 'siteLanguage("locale").getName() == "en-US"'
                label: Full name
                properties:
                  fluidAdditionalAttributes:
@@ -619,7 +619,7 @@ In this example a select option is removed for a specific locale.
            variants:
              -
                identifier: salutation-variant
-               condition: 'siteLanguage("locale") == "zh_CN.utf-8"'
+               condition: 'siteLanguage("locale").getName() == "zh-CN"'
                properties:
                  options:
                    miss: __UNSET
