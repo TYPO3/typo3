@@ -41,6 +41,7 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
             $this->getSessionFunction(),
             $this->getSiteFunction(),
             $this->getSiteLanguageFunction(),
+            $this->getLocaleFunction(),
         ];
     }
 
@@ -122,6 +123,21 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
                     if (method_exists($siteLanguage, $methodName)) {
                         return $siteLanguage->$methodName();
                     }
+                }
+                return null;
+            }
+        );
+    }
+
+    protected function getLocaleFunction(): ExpressionFunction
+    {
+        return new ExpressionFunction(
+            'locale',
+            static fn() => null, // Not implemented, we only use the evaluator
+            static function (array $arguments) {
+                $siteLanguage = $arguments['siteLanguage'] ?? null;
+                if ($siteLanguage instanceof SiteLanguage) {
+                    return $siteLanguage->getLocale();
                 }
                 return null;
             }
