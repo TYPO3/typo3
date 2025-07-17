@@ -227,6 +227,8 @@ class GraphicalFunctions
         if ($gfxConf['processor_effects']) {
             $this->cmds['jpg'] = $this->v5_sharpen(10);
             $this->cmds['jpeg'] = $this->v5_sharpen(10);
+            $this->cmds['webp'] = $this->v5_sharpen(10);
+            $this->cmds['avif'] = $this->v5_sharpen(10);
         }
         // Secures that images are not scaled up.
         $this->mayScaleUp = (bool)$gfxConf['processor_allowUpscaling'];
