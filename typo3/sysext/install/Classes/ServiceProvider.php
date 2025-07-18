@@ -43,6 +43,7 @@ use TYPO3\CMS\Core\Middleware\VerifyHostHeader;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\PasswordPolicy\PasswordService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Service\DatabaseUpgradeWizardsService;
@@ -337,6 +338,7 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(AstTraverser::class),
             $container->get(FormProtectionFactory::class),
             $container->get(ConfigurationManager::class),
+            $container->get(PasswordService::class),
         );
     }
 
@@ -384,7 +386,9 @@ class ServiceProvider extends AbstractServiceProvider
             'install:password:set',
             $container->get(PasswordHashFactory::class),
             $container->get(ConfigurationManager::class),
-            $container->get(Random::class)
+            $container->get(Random::class),
+            $container->get(LanguageServiceFactory::class),
+            $container->get(PasswordService::class),
         );
     }
 

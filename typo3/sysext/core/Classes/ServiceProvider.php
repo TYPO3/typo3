@@ -109,6 +109,7 @@ class ServiceProvider extends AbstractServiceProvider
             Middleware\VerifyHostHeader::class => self::getVerifyHostHeaderMiddleware(...),
             Package\FailsafePackageManager::class => self::getFailsafePackageManager(...),
             Package\Cache\PackageDependentCacheIdentifier::class => self::getPackageDependentCacheIdentifier(...),
+            PasswordPolicy\PasswordService::class => self::getPasswordService(...),
             Routing\BackendEntryPointResolver::class => self::getBackendEntryPointResolver(...),
             Routing\RequestContextFactory::class => self::getRequestContextFactory(...),
             Registry::class => self::getRegistry(...),
@@ -730,6 +731,11 @@ class ServiceProvider extends AbstractServiceProvider
         return new Service\SilentConfigurationUpgradeService(
             $container->get(ConfigurationManager::class)
         );
+    }
+
+    public static function getPasswordService(): PasswordPolicy\PasswordService
+    {
+        return new PasswordPolicy\PasswordService();
     }
 
     public static function provideFallbackEventDispatcher(

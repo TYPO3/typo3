@@ -34,6 +34,8 @@ class PasswordStrength {
 
   private checkPassword(fieldElement: HTMLInputElement): void {
     const value = fieldElement.value;
+    // @todo - Different requirements might be set in PHP-scope with e.g. $GLOBALS['TYPO3_CONF_VARS']['SYS']['passwordPolicies']['installTool']['validators']
+    // Find a way/API to propagate these settings here?
     const strongRegex = new RegExp('^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$', 'g');
     const mediumRegex = new RegExp('^(?=.{8,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$', 'g');
     const enoughRegex = new RegExp('(?=.{8,}).*', 'g');

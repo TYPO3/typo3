@@ -1432,6 +1432,20 @@ return [
             ],
         ],
         'passwordPolicies' => [
+            'installTool' => [
+                'validators' => [
+                    \TYPO3\CMS\Core\PasswordPolicy\Validator\CorePasswordValidator::class => [
+                        'options' => [
+                            'minimumLength' => 8,
+                            'upperCaseCharacterRequired' => true,
+                            'lowerCaseCharacterRequired' => true,
+                            'digitCharacterRequired' => true,
+                            'specialCharacterRequired' => true,
+                        ],
+                        'excludeActions' => [],
+                    ],
+                ],
+            ],
             'default' => [
                 'validators' => [
                     \TYPO3\CMS\Core\PasswordPolicy\Validator\CorePasswordValidator::class => [

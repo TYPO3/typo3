@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\PasswordPolicy\PasswordService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\TypoScript\AST\CommentAwareAstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
@@ -60,6 +61,7 @@ class SettingsController extends AbstractController
         private readonly AstTraverser $astTraverser,
         private readonly FormProtectionFactory $formProtectionFactory,
         private readonly ConfigurationManager $configurationManager,
+        private readonly PasswordService $passwordService
     ) {}
 
     /**
@@ -116,16 +118,17 @@ class SettingsController extends AbstractController
         } else {
             $password = $request->getParsedBody()['install']['password'] ?? '';
             $passwordCheck = $request->getParsedBody()['install']['passwordCheck'];
-
+            $validationResultErrors = $this->passwordService->getValidationErrorsForInstallToolUpdate($password);
             if ($password !== $passwordCheck) {
                 $messageQueue->enqueue(new FlashMessage(
                     'Given passwords do not match.',
                     'Install tool password not changed',
                     ContextualFeedbackSeverity::ERROR
                 ));
-            } elseif (strlen($password) < 8) {
+            } elseif ($validationResultErrors !== []) {
+                $errors = array_values($validationResultErrors);
                 $messageQueue->enqueue(new FlashMessage(
-                    'Given password must be at least eight characters long.',
+                    implode('. ', $errors) . '.',
                     'Install tool password not changed',
                     ContextualFeedbackSeverity::ERROR
                 ));

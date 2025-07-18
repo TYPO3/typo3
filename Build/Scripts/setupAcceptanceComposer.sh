@@ -20,8 +20,8 @@ mkdir -p "config/system/"
 cat > "config/system/additional.php" <<\EOF
 <?php
 $GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] = true;
-// "temporary password"
-$GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'] = '$argon2i$v=19$m=65536,t=16,p=1$Rk9Edk1UWTd1MUtVY1Nydg$bJJgiAH3NT66LkvcTsnYbQvFS/ePOw/50rYjhxUk8L8';
+// "Temporary Password - 123"
+$GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'] = '$argon2i$v=19$m=65536,t=16,p=1$c3hCMGVXOHhRd0M3MzhSVw$WPQHpElapKMxsxfSkkXw5YQxGKN+rGmjM8vQv3g79YY';
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors'] = true;
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '*';
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['exceptionalErrors'] = E_ALL;

@@ -25,7 +25,7 @@ use TYPO3\CMS\Install\Service\EnableFileService;
 class AbstractCest
 {
     private const ADDITIONAL_CONFIGURATION_FILEPATH = '/system/additional.php';
-    protected const INSTALL_TOOL_PASSWORD = 'temporary password';
+    protected const INSTALL_TOOL_PASSWORD = 'Temporary Password - 123';
 
     public function _before(ApplicationTester $I): void
     {

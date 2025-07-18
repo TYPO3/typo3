@@ -23,11 +23,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Exception\InvalidPasswordRulesException;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\PasswordPolicy\PasswordService;
 
 final class PasswordSetCommand extends Command
 {
@@ -35,7 +39,9 @@ final class PasswordSetCommand extends Command
         string $name,
         private readonly PasswordHashFactory $passwordHashFactory,
         private readonly ConfigurationManager $configurationManager,
-        private readonly Random $random
+        private readonly Random $random,
+        private readonly LanguageServiceFactory $languageServiceFactory,
+        private readonly PasswordService $passwordService,
     ) {
         parent::__construct($name);
     }
@@ -43,6 +49,13 @@ final class PasswordSetCommand extends Command
     protected function configure(): void
     {
         $this
+            ->addOption(
+                'password-length',
+                'p',
+                InputOption::VALUE_REQUIRED,
+                'Specify the length of auto-generated passwords.',
+                8,
+            )
             ->addOption(
                 'dry-run',
                 'd',
@@ -59,8 +72,22 @@ final class PasswordSetCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $io = new SymfonyStyle($input, $output);
+
+        if (!Bootstrap::checkIfEssentialConfigurationExists($this->configurationManager)) {
+            $io->error('Setting an Install Tool password requires a working installation (configuration files are missing).');
+            return Command::FAILURE;
+        }
+
+        $currentSettingsWithoutAdditionalParsing = $this->configurationManager->getMergedLocalConfiguration();
+        if (($currentSettingsWithoutAdditionalParsing['BE']['installToolPassword'] ?? '') !== ($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'] ?? '')) {
+            $io->error('Your Install Tool password is different in settings.php and additional.php. This command can only effectively change the password for "settings.php" and therefore any changes would not take effect.');
+            return Command::FAILURE;
+        }
+
         $dryRun = $input->getOption('dry-run');
         $noInteraction = $input->getOption('no-interaction');
+        $length = (int)$input->getOption('password-length');
 
         $password = !$noInteraction
             ? $this
@@ -69,8 +96,27 @@ final class PasswordSetCommand extends Command
             : null;
 
         if ($password === null) {
-            $password = $this->random->generateRandomPassword([]);
+            // Password length is defined in the method itself as a proper fallback
+            $password = $this->random->generateRandomPassword([
+                'specialCharacters' => true,
+                'lowerCaseCharacters' => true,
+                'digitCharacters' => true,
+                'upperCaseCharacters' => true,
+                'length' => $length,
+            ]);
+            $output->writeln(sprintf('Password length: %d characters', $length));
             $output->writeln(sprintf('Generated password: <info>%s</info>', $password));
+        }
+
+        // Validation error messages require a valid LANG object to operate on (or a backend user context, which we don't need here)
+        $GLOBALS['LANG'] = $this->languageServiceFactory->create('default');
+        $validationResultErrors = $this->passwordService->getValidationErrorsForInstallToolUpdate($password);
+        if ($validationResultErrors !== []) {
+            $output->writeln('Your password could not be used. The following validation rules did not pass:');
+            foreach ($validationResultErrors as $validatorKey => $message) {
+                $output->writeln(sprintf(' - <error>%s</error> (%s)', $message, $validatorKey));
+            }
+            return Command::FAILURE;
         }
 
         $passwordHashed = $this->passwordHashFactory->getDefaultHashInstance('BE')->getHashedPassword($password);
@@ -82,7 +128,8 @@ final class PasswordSetCommand extends Command
                 ->configurationManager
                 ->setLocalConfigurationValueByPath('BE/installToolPassword', $passwordHashed);
 
-            $output->writeln('<info>Install Tool password updated.</info>');
+            $output->writeln('<info>Install Tool password updated in "settings.php".</info>');
+            $output->writeln('<comment>Please note that a custom override of this password in "additional.php" will have higher priority.</comment>');
         }
 
         return Command::SUCCESS;
