@@ -283,19 +283,14 @@ class Stream implements StreamInterface
 
     /**
      * Returns the remaining contents in a string
-     *
-     * @throws \RuntimeException if unable to read or an error occurs while reading.
      */
     public function getContents(): string
     {
         if (!is_resource($this->resource) || !$this->isReadable()) {
             return '';
         }
-        $result = stream_get_contents($this->resource);
-        if ($result === false) {
-            throw new \RuntimeException('Error reading from stream', 1436717295);
-        }
-        return $result;
+        // Will always return a string; "false" was only possible if offset > 0, which we do not use.
+        return stream_get_contents($this->resource, null, -1);
     }
 
     /**
