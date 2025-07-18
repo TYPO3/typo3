@@ -216,7 +216,7 @@ class Router {
   }
 
   public async handleAjaxError(error: AjaxResponse, outputContainer?: HTMLElement): Promise<void> {
-    if (error.response.status === 403) {
+    if (error.response?.status === 403) {
       // Install Tool session expired - depending on context render error message or login
       if (this.context === 'backend') {
         this.rootContainer.replaceChildren(
@@ -258,7 +258,7 @@ class Router {
         + '</h3>'
         + '<div id="collapse-error" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-error">'
         + '<div class="panel-body">'
-        + (await error.response.text())
+        + (error.response ? await error.response.text() : (error as unknown as Error).message)
         + '</div>'
         + '</div>'
         + '</div>'
