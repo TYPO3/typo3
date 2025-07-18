@@ -12,6 +12,8 @@ seo_sitemap {
       10.header = Content-Type:application/xml;charset=utf-8
       20.header = X-Robots-Tag:noindex
     }
+    # Prevent sitemap.xml from appearing in the search results of EXT:indexed_search
+    index_enable = 0
   }
 
   10 = USER
