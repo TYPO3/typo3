@@ -289,6 +289,10 @@ export class NewRecordWizard extends LitElement {
         border-color: var(--typo3-component-active-border-color);
       }
 
+      .navigation-item.active:focus-visible {
+        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-component-active-border-color), transparent 25%);
+      }
+
       .navigation-item:disabled {
         cursor: not-allowed;
         color: var(--typo3-component-disabled-color);
@@ -572,7 +576,7 @@ export class NewRecordWizard extends LitElement {
 
   protected renderNavigationList(): TemplateResult {
     return html`
-      <div class="navigation-list${(this.toggleMenu === true) ? ' show' : ''}" role="tablist">
+      <div class="navigation-list${(this.toggleMenu === true) ? ' show' : ''}" role="tablist" aria-orientation="vertical">
     ${this.categories.items.map((category: Category) => {
     return html`
         <button
@@ -580,6 +584,10 @@ export class NewRecordWizard extends LitElement {
           class="navigation-item${(category.featured) ? ' navigation-item-featured' : ''}${(this.selectedCategory === category) ? ' active' : ''}"
           ?disabled="${category.disabled}"
           @click="${() => { this.handleNavigationClick(category); }}"
+          @keydown="${(event: KeyboardEvent) => { this.handleNavigationKeydown(event, category); }}"
+          role="tab"
+          aria-selected="${(this.selectedCategory === category) ? 'true' : 'false'}"
+          tabindex="${(this.selectedCategory === category) ? '0' : '-1'}"
         >
           ${category.icon ? html`<span class="navigation-item-icon"><typo3-backend-icon identifier="${category.icon}" size="small"></typo3-backend-icon></div>` : nothing}
           <span class="navigation-item-label">${category.label}</span>
@@ -599,6 +607,26 @@ export class NewRecordWizard extends LitElement {
     }
   }
 
+  protected handleNavigationKeydown(event: KeyboardEvent, category: Category): void {
+    const activeCategories = this.categories.categoriesWithItems();
+    const currentIndex = activeCategories.findIndex((item: Category): boolean => item.identifier === category.identifier);
+    let selectedCategory: Category | undefined = undefined;
+
+    if (event.key === KeyTypesEnum.UP) {
+      selectedCategory = activeCategories[currentIndex - 1] ?? undefined;
+    } else if (event.key === KeyTypesEnum.DOWN) {
+      selectedCategory = activeCategories[currentIndex + 1] ?? undefined;
+    } else {
+      return;
+    }
+
+    if (selectedCategory) {
+      const categoryButton = this.shadowRoot.querySelector(`button[data-identifier="${selectedCategory.identifier}"]`) as HTMLButtonElement;
+      categoryButton.focus();
+      this.handleNavigationClick(selectedCategory);
+    }
+  }
+
   protected renderCategories(): TemplateResult {
     return html`
       <div class="elementwizard-categories">
@@ -612,7 +640,7 @@ export class NewRecordWizard extends LitElement {
   protected renderCategory(category: Category): TemplateResult {
     return html`${(this.selectedCategory === category || this.displayMenu === false) && !category.disabled ?
       html`
-        <div class="elementwizard-category">
+        <div class="elementwizard-category" role="${this.displayMenu ? 'tabpanel' : nothing}">
           ${this.displayMenu === false ?
     html`<div class="elementwizard-category-headline">
       ${ category.icon ? html`<typo3-backend-icon identifier="${category.icon}" size="small"></typo3-backend-icon>` : nothing }
