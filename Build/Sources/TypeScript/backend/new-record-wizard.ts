@@ -276,6 +276,10 @@ export class NewRecordWizard extends LitElement {
         border-color: var(--typo3-component-active-border-color);
       }
 
+      .navigation-item.active:focus-visible {
+        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-component-active-border-color), transparent 25%);
+      }
+
       .navigation-item:disabled {
         cursor: not-allowed;
         color: var(--typo3-component-disabled-color);
@@ -504,14 +508,18 @@ export class NewRecordWizard extends LitElement {
 
   protected renderNavigationList(): TemplateResult {
     return html`
-      <div class="navigation-list${(this.toggleMenu === true) ? ' show' : ''}" role="tablist">
+      <div class="navigation-list${(this.toggleMenu === true) ? ' show' : ''}" role="tablist" aria-orientation="vertical">
     ${this.categories.items.map((category: Category) => {
     return html`
         <button
           data-identifier="${category.identifier}"
           class="navigation-item${(this.selectedCategory === category) ? ' active' : ''}"
           ?disabled="${category.disabled}"
-          @click="${() => { this.selectedCategory = category; this.toggleMenu = false; }}"
+          @click="${() => { this.handleNavigationClick(category); }}"
+          @keydown="${(event: KeyboardEvent) => { this.handleNavigationKeydown(event, category); }}"
+          role="tab"
+          aria-selected="${(this.selectedCategory === category) ? 'true' : 'false'}"
+          tabindex="${(this.selectedCategory === category) ? '0' : '-1'}"
         >
           <span class="navigation-item-label">${category.label}</span>
           <span class="navigation-item-count">${category.activeItems().length}</span>
@@ -519,6 +527,31 @@ export class NewRecordWizard extends LitElement {
       `;
   })}
       </div>`;
+  }
+
+  protected handleNavigationClick(category: Category): void {
+    this.selectedCategory = category;
+    this.toggleMenu = false;
+  }
+
+  protected handleNavigationKeydown(event: KeyboardEvent, category: Category): void {
+    const activeCategories = this.categories.categoriesWithItems();
+    const currentIndex = activeCategories.findIndex((item: Category): boolean => item.identifier === category.identifier);
+    let selectedCategory: Category | undefined = undefined;
+
+    if (event.key === KeyTypesEnum.UP) {
+      selectedCategory = activeCategories[currentIndex - 1] ?? undefined;
+    } else if (event.key === KeyTypesEnum.DOWN) {
+      selectedCategory = activeCategories[currentIndex + 1] ?? undefined;
+    } else {
+      return;
+    }
+
+    if (selectedCategory) {
+      const categoryButton = this.shadowRoot.querySelector(`button[data-identifier="${selectedCategory.identifier}"]`) as HTMLButtonElement;
+      categoryButton.focus();
+      this.handleNavigationClick(selectedCategory);
+    }
   }
 
   protected renderCategories(): TemplateResult {
