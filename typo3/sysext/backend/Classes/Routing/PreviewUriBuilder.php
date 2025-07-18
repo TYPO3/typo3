@@ -57,6 +57,7 @@ class PreviewUriBuilder
     public const OPTION_WINDOW_SCOPE_GLOBAL = 'global';
 
     protected array $record = [];
+    protected string $table = 'pages';
     protected int $pageId;
     protected int $languageId = 0;
     protected array $rootLine = [];
@@ -108,6 +109,7 @@ class PreviewUriBuilder
         $recordId = is_int($record) ? $record : (int)($record['uid'] ?? 0);
         $previewPageId = self::getPreviewPageId($table, $recordId, $pageId);
         $obj = self::create($previewPageId);
+        $obj->table = $table;
         $obj = $obj->withRootLine(BackendUtility::BEgetRootLine($previewPageId));
         $obj = $obj->withSection($table === 'tt_content' ? '#c' . $recordId : '');
         $obj = $obj->withAdditionalQueryParameters(self::getPreviewUrlParameters($previewPageId, $table, $record));
@@ -211,12 +213,19 @@ class PreviewUriBuilder
 
     public function isPreviewable(): bool
     {
-        if ($this->pageId === 0 || $this->record === []) {
+        if ($this->pageId === 0 || !isset($this->record['doktype'])) {
             return false;
         }
         $isDeletePlaceholder = VersionState::tryFrom($this->record['t3ver_state'] ?? 0) === VersionState::DELETE_PLACEHOLDER;
         if ($isDeletePlaceholder) {
             return false;
+        }
+        // Custom records need to be configured via pages TSconfig to allow previews
+        if ($this->table !== 'pages' && $this->table !== 'tt_content') {
+            $previewConfiguration = BackendUtility::getPagesTSconfig($this->pageId)['TCEMAIN.']['preview.'][$this->table . '.'] ?? null;
+            if (!is_array($previewConfiguration)) {
+                return false;
+            }
         }
         return self::isPreviewableDoktype($this->pageId, (int)$this->record['doktype']);
     }

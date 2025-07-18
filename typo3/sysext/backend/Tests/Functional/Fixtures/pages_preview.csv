@@ -1,0 +1,14 @@
+"pages"
+,"uid","pid","sorting","title","deleted","doktype","TSconfig"
+,1,0,128,"Default",0,1,"some_property=0"
+,2,1,128,"Sys Folder",0,254,""
+,3,2,128,"Spacer",0,199,""
+,4,3,128,"Custom 1",0,1,"TCEMAIN.preview.tx_custom_table {
+    previewPageId = 4
+}"
+,5,1,256,"Custom 2",0,254,"TCEMAIN.preview.tx_custom_table {
+    previewPageId = 5
+}"
+,6,1,256,"Custom 2",0,1,"TCEMAIN.preview.disableButtonForDokType = 1"
+,7,1,256,"Custom 2",0,1,"TCEMAIN.preview.disableButtonForDokType = 1"
+,8,1,256,"Custom 2",0,1,"TCEMAIN.preview.disableButtonForDokType = 1,2,3"
