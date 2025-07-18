@@ -1435,6 +1435,12 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Http/ServerRequest.php
 
 		-
+			message: '#^Strict comparison using \=\=\= between string and false will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Http/Stream.php
+
+		-
 			message: '#^Parameter &\$consumed by\-ref type of method TYPO3\\CMS\\Core\\IO\\CsvStreamFilter\:\:filter\(\) expects int, \(float\|int\) given\.$#'
 			identifier: parameterByRef.type
 			count: 1
@@ -5701,6 +5707,12 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
 
 		-
+			message: '#^Property TYPO3\\CMS\\Core\\Imaging\\GraphicalFunctions\:\:\$setup \(array\) does not accept ArrayAccess\.$#'
+			identifier: assign.propertyType
+			count: 6
+			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
+
+		-
 			message: '#^Property TYPO3\\CMS\\Core\\Imaging\\GraphicalFunctions\:\:\$setup \(array\) on left side of \?\? is not nullable\.$#'
 			identifier: nullCoalesce.property
 			count: 9
@@ -6151,7 +6163,7 @@ parameters:
 			path: ../../typo3/sysext/indexed_search/Classes/Controller/AdministrationController.php
 
 		-
-			message: '#^Call to function is_array\(\) with array\<int\<0, max\>, array\<string, mixed\>\> will always evaluate to true\.$#'
+			message: '#^Call to function is_array\(\) with list\<array\<string, mixed\>\> will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
 			path: ../../typo3/sysext/indexed_search/Classes/Controller/AdministrationController.php
