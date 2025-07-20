@@ -2035,12 +2035,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/Argument.php
 
 		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/MvcPropertyMappingConfigurationService.php
-
-		-
 			message: '#^Offset non\-empty\-string on array\{\} on left side of \?\? does not exist\.$#'
 			identifier: nullCoalesce.offset
 			count: 1
