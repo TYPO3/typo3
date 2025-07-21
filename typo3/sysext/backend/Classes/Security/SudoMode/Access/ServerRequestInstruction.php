@@ -73,7 +73,7 @@ class ServerRequestInstruction implements \JsonSerializable
         $target->requestTarget = $data['requestTarget'];
         $target->method = $data['method'];
         $target->uri = new Uri($data['uri']);
-        $target->body = new Stream('php://temp', $data['body']['mode']);
+        $target->body = new Stream('php://temp', 'w+b');
         $target->body->write($data['body']['contents']);
         $target->parsedBody = $data['parsedBody'];
         $target->queryParams = $data['queryParams'];
@@ -109,7 +109,6 @@ class ServerRequestInstruction implements \JsonSerializable
             'method' => $this->method,
             'uri' => (string)$this->uri,
             'body' => [
-                'mode' => $this->body->getMetadata('mode'),
                 'contents' => (string)$this->body,
             ],
             'parsedBody' => $this->parsedBody,
