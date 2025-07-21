@@ -29,31 +29,31 @@
         <div>
             <label for="tx-felogin-input-username">
                 <f:translate key="username"/>
-                <f:form.textfield name="user" required="true" autocomplete="username" id="tx-felogin-input-username"/>
             </label>
+            <f:form.textfield name="user" required="true" autocomplete="username" id="tx-felogin-input-username"/>
         </div>
         <div>
             <label for="tx-felogin-input-password">
                 <f:translate key="password"/>
-                <f:form.password name="pass" required="required" autocomplete="current-password" id="tx-felogin-input-password"/>
             </label>
+            <f:form.password name="pass" required="required" autocomplete="current-password" id="tx-felogin-input-password"/>
         </div>
 
         <f:if condition="{permaloginStatus} > -1">
             <div>
                 <label for="permalogin">
                     <f:translate id="permalogin"/>
-                    <f:if condition="{permaloginStatus} == 1">
-                        <f:then>
-                            <f:form.hidden name="permalogin" value="0" disabled="disabled"/>
-                            <f:form.checkbox name="permalogin" id="permalogin" value="1" checked="checked"/>
-                        </f:then>
-                        <f:else>
-                            <f:form.hidden name="permalogin" value="0"/>
-                            <f:form.checkbox name="permalogin" id="permalogin" value="1"/>
-                        </f:else>
-                    </f:if>
                 </label>
+                <f:if condition="{permaloginStatus} == 1">
+                    <f:then>
+                        <f:form.hidden name="permalogin" value="0" disabled="disabled"/>
+                        <f:form.checkbox name="permalogin" id="permalogin" value="1" checked="checked"/>
+                    </f:then>
+                    <f:else>
+                        <f:form.hidden name="permalogin" value="0"/>
+                        <f:form.checkbox name="permalogin" id="permalogin" value="1"/>
+                    </f:else>
+                </f:if>
             </div>
         </f:if>
 
