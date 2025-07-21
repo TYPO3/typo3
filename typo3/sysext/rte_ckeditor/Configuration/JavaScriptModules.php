@@ -4,9 +4,6 @@ return [
     'dependencies' => [
         'backend',
     ],
-    'tags' => [
-        'backend.form',
-    ],
     'imports' => [
         '@typo3/rte-ckeditor/' => [
             'path' => 'EXT:rte_ckeditor/Resources/Public/JavaScript/',

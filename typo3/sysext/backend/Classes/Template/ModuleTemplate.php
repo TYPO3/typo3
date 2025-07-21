@@ -152,6 +152,7 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
             'flashMessageQueueIdentifier' => $this->flashMessageQueue->getIdentifier(),
             'formTag' => $this->formTag,
         ]);
+        $this->pageRenderer->getJavaScriptRenderer()->includeAllImports();
         $this->pageRenderer->loadJavaScriptModule('bootstrap');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-help.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/global-event-handler.js');
