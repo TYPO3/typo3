@@ -129,7 +129,7 @@
 .formeditor-element-validator:hover{-webkit-margin-end:0;margin-inline-end:0}}
 .formeditor-element:has(+.formeditor-list){border-end-end-radius:0;border-end-start-radius:0}
 .formeditor-element.selected:has(+.formeditor-list) .formeditor-element-body{border-end-end-radius:0;border-end-start-radius:0}
-.formeditor-element+.formeditor-list{padding:var(--formeditor-stage-element-padding-y);-webkit-padding-start:var(--formeditor-stage-element-icon-width);border:var(--formeditor-stage-element-border-width) solid var(--formeditor-stage-element-border-color-state,var(--formeditor-stage-element-border-color));border-end-end-radius:var(--formeditor-stage-element-border-radius);border-end-start-radius:var(--formeditor-stage-element-border-radius);border-top:none;padding-inline-start:var(--formeditor-stage-element-icon-width)}
+.formeditor-element+.formeditor-list:not(:empty){padding:var(--formeditor-stage-element-padding-y);-webkit-padding-start:var(--formeditor-stage-element-icon-width);border:var(--formeditor-stage-element-border-width) solid var(--formeditor-stage-element-border-color-state,var(--formeditor-stage-element-border-color));border-end-end-radius:var(--formeditor-stage-element-border-radius);border-end-start-radius:var(--formeditor-stage-element-border-radius);border-top:none;padding-inline-start:var(--formeditor-stage-element-icon-width)}
 .formeditor-new-element-container{align-items:center;border:var(--typo3-component-border-width) dashed color-mix(in srgb,transparent,currentColor 25%);border-radius:var(--typo3-component-border-radius);display:flex;justify-content:center;margin-top:var(--typo3-spacing);padding:.75rem .5rem}
 .property-grid .form-control{min-width:auto}
 .property-grid .table-fit{box-shadow:none;margin-bottom:0}
