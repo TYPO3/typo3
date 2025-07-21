@@ -503,9 +503,6 @@ class FileProvider extends AbstractProvider
             case 'newFile':
                 $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('file_create');
                 break;
-            case 'replaceFile':
-                $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('file_replace');
-                break;
             case 'updateOnlineMedia':
                 $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('file_update_online_media');
                 break;

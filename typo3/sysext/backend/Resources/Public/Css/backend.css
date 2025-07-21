@@ -2792,7 +2792,7 @@ td .table-fit{margin-bottom:0}
 .simpletable td:first-child,.simpletable th:first-child{-webkit-padding-start:0;padding-inline-start:0}
 .simpletable td:last-child,.simpletable th:last-child{-webkit-padding-end:0;padding-inline-end:0}
 .modal{--modal-height:auto;--modal-width:600px;--typo3-modal-zindex:var(--typo3-zindex-modal);--typo3-modal-padding:1rem;--typo3-modal-color:var(--typo3-component-color);--typo3-modal-bg:var(--typo3-surface-container-low);--typo3-modal-border-color:color-mix(in srgb,var(--typo3-modal-bg),var(--typo3-modal-color) 5%);--typo3-modal-border-width:var(--typo3-component-border-width);--typo3-modal-border-radius:var(--typo3-component-border-radius);--typo3-modal-box-shadow:var(--typo3-component-box-shadow-dialog);--typo3-modal-header-bg:var(--typo3-surface-container-base);--typo3-modal-header-color:var(--typo3-text-color-base);--typo3-modal-header-border-color:color-mix(in srgb,var(--typo3-modal-header-bg),var(--typo3-modal-header-color) 10%);--typo3-modal-header-font-size:var(--typo3-font-size);--typo3-modal-header-padding-y:.75rem;--typo3-modal-header-padding-x:1rem;--typo3-modal-footer-gap:.5rem;display:none;height:100%;left:0;outline:0;overflow-x:hidden;overflow-y:auto;position:fixed;top:0;width:100%;z-index:var(--typo3-modal-zindex)}
-.modal-dialog{align-items:stretch;display:flex;flex-direction:column;height:100dvh;justify-content:center;margin:0 auto!important;pointer-events:none;position:relative;width:100dvw}
+.modal-dialog{align-items:stretch;display:flex;flex-direction:column;height:100dvh;justify-content:center;margin:0 auto!important;pointer-events:none;position:relative;width:100dvw;word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;word-break:break-word}
 .modal.fade .modal-dialog{transform:translateY(-50px);transition:transform .3s ease-out}
 @media (prefers-reduced-motion){
 .modal.fade .modal-dialog{transition:none}}
@@ -3815,6 +3815,10 @@ td.permission-column-group{-webkit-padding-start:0;padding-inline-start:0;white-
 .distribution-detail-actions{list-style:none;padding:0}
 .distribution-detail-actions li{margin:.25em 0}
 .t3-filelist-info-container{align-items:center;display:flex;flex-direction:column;justify-content:center;margin-top:-2rem;min-height:300px}
+.file-replace-dialog{flex-direction:column}
+.file-replace-dialog,.file-replace-dialog-summary{display:flex;gap:var(--typo3-spacing)}
+.file-replace-dialog-summary-thumbnail{flex-shrink:1}
+.file-replace-dialog-summary-info{flex-grow:1}
 .help-view img{margin:1em 0}
 .help-copyright{border-top:1px solid rgba(0,0,0,.15);margin-top:1em;padding-top:1em}
 .help-teaser{cursor:help!important}

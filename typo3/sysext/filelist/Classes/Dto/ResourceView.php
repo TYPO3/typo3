@@ -176,6 +176,15 @@ class ResourceView
         return null;
     }
 
+    public function getSize(): ?int
+    {
+        if ($this->resource instanceof File) {
+            return $this->resource->getSize();
+        }
+
+        return null;
+    }
+
     public function getCheckboxConfig(): ?array
     {
         if (($this->resource instanceof Folder || $this->resource instanceof File)
@@ -257,6 +266,15 @@ class ResourceView
     {
         if ($this->resource instanceof File || $this->resource instanceof Folder) {
             return $this->resource->checkActionPermission('rename');
+        }
+
+        return null;
+    }
+
+    public function canReplace(): ?bool
+    {
+        if ($this->resource instanceof File) {
+            return $this->resource->checkActionPermission('replace');
         }
 
         return null;

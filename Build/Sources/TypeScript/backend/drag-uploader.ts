@@ -28,6 +28,7 @@ import DomHelper from '@typo3/backend/utility/dom-helper';
 import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
 import '@typo3/backend/element/progress-bar-element';
 import type { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
+import { FormatUtility } from '@typo3/backend/utility/format-utility';
 
 /**
  * Possible actions for conflicts w/ existing files
@@ -260,18 +261,6 @@ export default class DragUploader {
     });
   }
 
-  public static fileSizeAsString(size: number): string {
-    const sizeKB: number = size / 1024;
-    let str = '';
-
-    if (sizeKB > 1024) {
-      str = (sizeKB / 1024).toFixed(1) + ' MB';
-    } else {
-      str = sizeKB.toFixed(1) + ' KB';
-    }
-    return str;
-  }
-
   /**
    * @param {string} irreObject
    * @param {UploadedFile} file
@@ -500,11 +489,11 @@ export default class DragUploader {
     : this.askForOverride[i].original.icon}
           </td>
           <td>
-            ${this.askForOverride[i].original.name} (${DragUploader.fileSizeAsString(this.askForOverride[i].original.size)})<br />
+            ${this.askForOverride[i].original.name} (${FormatUtility.fileSizeAsString(this.askForOverride[i].original.size)})<br />
             ${DateTime.fromSeconds(this.askForOverride[i].original.mtime).toLocaleString(DateTime.DATETIME_MED)}
           </td>
           <td>
-            ${this.askForOverride[i].uploaded.name} (${DragUploader.fileSizeAsString(this.askForOverride[i].uploaded.size)})<br />
+            ${this.askForOverride[i].uploaded.name} (${FormatUtility.fileSizeAsString(this.askForOverride[i].uploaded.size)})<br />
             ${DateTime.fromMillis(this.askForOverride[i].uploaded.lastModified).toLocaleString(DateTime.DATETIME_MED)}
           </td>
           <td>
@@ -676,7 +665,7 @@ class FileQueueItem {
     if (this.dragUploader.maxFileSize > 0 && this.file.size > this.dragUploader.maxFileSize) {
       this.updateMessage(TYPO3.lang['file_upload.maxFileSizeExceeded']
         .replace(/\{0\}/g, this.file.name)
-        .replace(/\{1\}/g, DragUploader.fileSizeAsString(this.dragUploader.maxFileSize)));
+        .replace(/\{1\}/g, FormatUtility.fileSizeAsString(this.dragUploader.maxFileSize)));
       this.progressBar.value = 100;
       this.progressBar.severity = SeverityEnum.error;
 
@@ -695,7 +684,7 @@ class FileQueueItem {
       this.progressBar.value = 100;
       this.progressBar.severity = SeverityEnum.error;
     } else {
-      this.updateMessage('- ' + DragUploader.fileSizeAsString(this.file.size));
+      this.updateMessage('- ' + FormatUtility.fileSizeAsString(this.file.size));
 
       const formData = new FormData();
       formData.append('data[upload][1][target]', this.dragUploader.target);
@@ -865,7 +854,7 @@ class FileQueueItem {
     this.row.append(fileExtColumn);
 
     const fileSizeColumn = document.createElement('td');
-    fileSizeColumn.textContent = DragUploader.fileSizeAsString(fileInfo.size);
+    fileSizeColumn.textContent = FormatUtility.fileSizeAsString(fileInfo.size);
     this.row.append(fileSizeColumn);
 
     let permissions = '';

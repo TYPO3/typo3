@@ -220,6 +220,8 @@ class FileListController implements LoggerAwareInterface
         $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-list-actions.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-list-rename-handler.js');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf', 'file_rename');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-list-replace-handler.js');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf', 'file_replace');
 
         $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-delete.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-menu.js');

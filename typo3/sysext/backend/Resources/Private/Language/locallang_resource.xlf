@@ -10,6 +10,9 @@
 			<trans-unit id="ajax.success.message.renamed">
 				<source>The resource "%s" has been renamed to "%s".</source>
 			</trans-unit>
+			<trans-unit id="ajax.success.message.resourceReplaced">
+				<source>The resource %s has been replaced.</source>
+			</trans-unit>
 			<trans-unit id="ajax.error">
 				<source>An error occurred</source>
 			</trans-unit>
@@ -28,10 +31,15 @@
 			<trans-unit id="ajax.error.message.resourceNameNotDifferent">
 				<source>The identical name for the resource %s was provided, nothing to do.</source>
 			</trans-unit>
+			<trans-unit id="ajax.error.message.resourceNotAvailableToUpload">
+				<source>No resource was selected to be uploaded.</source>
+			</trans-unit>
 			<trans-unit id="ajax.error.message.resourceNotRenamed">
 				<source>The resource %s could not be renamed.</source>
 			</trans-unit>
-
+			<trans-unit id="ajax.error.message.resourceNotFound">
+				<source>The resource was not found.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

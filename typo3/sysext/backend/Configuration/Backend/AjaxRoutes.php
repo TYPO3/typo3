@@ -20,6 +20,22 @@ return [
         'inheritAccessFromModule' => 'media_management',
     ],
 
+    // Gather resource information
+    'resource_gather' => [
+        'path' => '/resource/gather',
+        'methods' => ['GET'],
+        'target' => Controller\Resource\ResourceController::class . '::gatherInformationAction',
+        'inheritAccessFromModule' => 'media_management',
+    ],
+
+    // Replace resource
+    'resource_replace' => [
+        'path' => '/resource/replace',
+        'methods' => ['POST'],
+        'target' => Controller\Resource\ResourceController::class . '::replaceResourceAction',
+        'inheritAccessFromModule' => 'media_management',
+    ],
+
     // Link resource
     'link_resource' => [
         'path' => '/link/resource',

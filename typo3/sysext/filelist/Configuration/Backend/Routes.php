@@ -24,12 +24,6 @@ return [
         'target' => \TYPO3\CMS\Filelist\Controller\File\CreateFileController::class . '::mainAction',
     ],
 
-    // Replace a file with a different one
-    'file_replace' => [
-        'path' => '/file/replace',
-        'target' => \TYPO3\CMS\Filelist\Controller\File\ReplaceFileController::class . '::mainAction',
-    ],
-
     // Upload new files
     'file_upload' => [
         'path' => '/file/upload',

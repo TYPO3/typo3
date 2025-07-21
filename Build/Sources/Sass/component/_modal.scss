@@ -41,6 +41,9 @@
     width: 100dvw;
     margin: 0 auto !important;
     pointer-events: none;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
 
     .modal.fade & {
         transform: translate(0, -50px);

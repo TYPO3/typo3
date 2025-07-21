@@ -19,6 +19,8 @@ export interface ResourceInterface {
   uid: number | null;
   metaUid: number | null;
   url: string | null;
+  createdAt: number | null;
+  size: number | null;
 }
 
 export class Resource implements ResourceInterface {
@@ -30,6 +32,8 @@ export class Resource implements ResourceInterface {
     public readonly uid: number | null = null,
     public readonly metaUid: number | null = null,
     public readonly url: string | null = null,
+    public readonly createdAt: number | null = null,
+    public readonly size: number | null = null,
   ) {
   }
 }

@@ -360,7 +360,6 @@ class FileList
             $resourceView->moduleUri = $this->createModuleUriForResource($resource);
             $resourceView->editDataUri = $this->createEditDataUriForResource($resource);
             $resourceView->editContentUri = $this->createEditContentUriForResource($resource);
-            $resourceView->replaceUri = $this->createReplaceUriForResource($resource);
 
             $resourceView->isDownloadable = $this->resourceDownloadMatcher !== null && $this->resourceDownloadMatcher->match($resource);
             $resourceView->isSelectable = $this->resourceSelectableMatcher !== null && $this->resourceSelectableMatcher->match($resource);
@@ -1093,13 +1092,13 @@ class FileList
 
     protected function createControlReplace(ResourceView $resourceView): ?ButtonInterface
     {
-        if (!$resourceView->replaceUri) {
+        if (!$resourceView->canReplace()) {
             return null;
         }
 
-        $button = GeneralUtility::makeInstance(LinkButton::class);
-        $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.replace'));
-        $button->setHref($resourceView->replaceUri);
+        $button = GeneralUtility::makeInstance(GenericButton::class);
+        $button->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.replace'));
+        $button->setAttributes(['type' => 'button', 'data-filelist-action' => 'replace']);
         $button->setIcon($this->iconFactory->getIcon('actions-edit-replace', IconSize::SMALL));
 
         return $button;
@@ -1642,21 +1641,6 @@ class FileList
             return $this->createEditDataUriForResource($resource);
         }
 
-        return null;
-    }
-
-    protected function createReplaceUriForResource(ResourceInterface $resource): ?string
-    {
-        if ($resource instanceof File
-            && $resource->checkActionPermission('replace')
-        ) {
-            $parameter = [
-                'target' => $resource->getCombinedIdentifier(),
-                'uid' => $resource->getUid(),
-                'returnUrl' => $this->createModuleUri(),
-            ];
-            return (string)$this->uriBuilder->buildUriFromRoute('file_replace', $parameter);
-        }
         return null;
     }
 

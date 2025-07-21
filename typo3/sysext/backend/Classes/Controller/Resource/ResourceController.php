@@ -28,6 +28,8 @@ use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -37,6 +39,7 @@ use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\SysLog\Action\File as SystemLogFileAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
+use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Validation\ResultException;
 use TYPO3\CMS\Core\Validation\ResultRenderingTrait;
@@ -51,7 +54,20 @@ final readonly class ResourceController
 
     public function __construct(
         private ResourceFactory $resourceFactory,
+        private ExtendedFileUtility $fileProcessor,
+        private FlashMessageService $flashMessageService,
     ) {}
+
+    public function gatherInformationAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $identifier = $request->getQueryParams()['identifier'] ?? null;
+        $resource = $this->resourceFactory->retrieveFileOrFolderObject($identifier);
+        if ($resource === null) {
+            return new JsonResponse(null, 404);
+        }
+
+        return new JsonResponse($this->getResourceResponseData($resource));
+    }
 
     public function requestThumbnailAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -140,6 +156,59 @@ final readonly class ResourceController
         ));
     }
 
+    public function replaceResourceAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $uploadedFiles = $request->getUploadedFiles();
+        if ($uploadedFiles === []) {
+            return new JsonResponse($this->getResponseData(
+                false,
+                $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.error.message.resourceNotAvailableToUpload'),
+            ));
+        }
+
+        $uid = $request->getParsedBody()['uid'];
+        $keepFilename = (bool)($request->getParsedBody()['keepFilename'] ?? false);
+        $origin = $this->resourceFactory->retrieveFileOrFolderObject($uid);
+        if ($origin === null) {
+            return new JsonResponse($this->getResponseData(
+                false,
+                $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.error.message.resourceNotFound'),
+            ));
+        }
+
+        $this->fileProcessor->setActionPermissions();
+        $this->fileProcessor->setExistingFilesConflictMode(DuplicationBehavior::REPLACE);
+        $this->fileProcessor->start([
+            'replace' => [
+                1 => [
+                    'data' => 1,
+                    'uid' => $uid,
+                    'keepFilename' => $keepFilename,
+                ],
+            ],
+        ], $uploadedFiles);
+        $result = $this->fileProcessor->processData();
+        $flashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
+        $messages = implode("\n", array_map(static fn(FlashMessage $message) => $message->getMessage(), $flashMessageQueue->getAllMessagesAndFlush()));
+
+        /** @var File|null $fileReplacement */
+        $fileReplacement = $result['replace'][0][0] ?? null;
+        if ($fileReplacement === null) {
+            return new JsonResponse($this->getResponseData(
+                false,
+                $messages,
+                $origin
+            ));
+        }
+
+        return new JsonResponse($this->getResponseData(
+            true,
+            $messages,
+            $origin,
+            $fileReplacement
+        ));
+    }
+
     /**
      * Prepare response data for a JSON response
      */
@@ -170,12 +239,16 @@ final readonly class ResourceController
         if (!$resource) {
             return null;
         }
+
         return [
             'type' => $resource instanceof File ? 'file' : 'folder',
             'identifier' => $resource instanceof File || $resource instanceof Folder ? $resource->getCombinedIdentifier() : null,
             'name' => $resource->getName(),
+            'hasPreview' => $resource instanceof File && ($resource->isImage() || $resource->isMediaFile()),
             'uid' => $resource instanceof File ? $resource->getUid() : null,
             'metaUid' => $resource instanceof File ? $resource->getMetaData()->offsetGet('uid') : null,
+            'createdAt' => $resource instanceof File ? $resource->getCreationTime() : null,
+            'size' => $resource instanceof File ? $resource->getSize() : null,
         ];
     }
 

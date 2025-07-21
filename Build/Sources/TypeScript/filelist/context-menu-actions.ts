@@ -62,11 +62,19 @@ class ContextMenuActions {
   }
 
   public static replaceFile(table: string, uid: string, dataset: DOMStringMap): void {
-    const resource = FileListActionUtility.createResourceFromContextDataset(dataset);
-    const actionUrl: string = dataset.actionUrl;
-    top.TYPO3.Backend.ContentContainer.setUrl(
-      actionUrl + '&target=' + encodeURIComponent(resource.identifier) + '&uid=' + encodeURIComponent(resource.uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
-    );
+    (async () => {
+      await import('@typo3/filelist/file-list-replace-handler');
+      const resource = FileListActionUtility.createResourceFromContextDataset(dataset);
+      const detail: FileListActionDetail = {
+        event: null,
+        trigger: null,
+        action: FileListActionEvent.rename,
+        resources: [resource],
+        url: null,
+        originalAction: null
+      };
+      document.dispatchEvent(new CustomEvent(FileListActionEvent.replace, { detail: detail }));
+    })();
   }
 
   public static editFile(table: string, uid: string, dataset: DOMStringMap): void {

@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-class a{constructor(t,i,s,e=!1,l=null,h=null,u=null,n=null,r=null){this.type=t,this.identifier=i,this.name=s,this.hasPreview=e,this.uid=l,this.metaUid=h,this.url=u,this.createdAt=n,this.size=r}}export{a as Resource};
+class s{static fileSizeAsString(t,B="iec"){const a={iec:{base:1024,labels:[" "," KiB"," MiB"," GiB"," TiB"," PiB"," EiB"," ZiB"," YiB"]},si:{base:1e3,labels:[" "," kB"," MB"," GB"," TB"," PB"," EB"," ZB"," YB"]}}[B],i=t===0?0:Math.floor(Math.log(t)/Math.log(a.base));return+(t/Math.pow(a.base,i)).toFixed(2)+a.labels[i]}}export{s as FormatUtility};

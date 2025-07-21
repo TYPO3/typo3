@@ -38,6 +38,9 @@ export class ThumbnailElement extends LitElement {
       const thumbnailUrl = new URL(url, window.origin);
       thumbnailUrl.searchParams.set('size', size);
       thumbnailUrl.searchParams.set('keepAspectRatio', keepAspectRatio ? '1' : '0');
+      // @todo: The "bust" search param must fall again.
+      //        This is currently required when the asset gets replaced as browsers don't re-request the file
+      thumbnailUrl.searchParams.set('bust', Date.now().toString(10));
 
       const img = new Image();
       img.src = thumbnailUrl.toString();

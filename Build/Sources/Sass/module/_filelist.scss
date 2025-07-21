@@ -9,3 +9,22 @@
     align-items: center;
     margin-top: -2rem;
 }
+
+.file-replace-dialog {
+    display: flex;
+    gap: var(--typo3-spacing);
+    flex-direction: column;
+
+    &-summary {
+        display: flex;
+        gap: var(--typo3-spacing);
+
+        &-thumbnail {
+            flex-shrink: 1;
+        }
+
+        &-info {
+            flex-grow: 1;
+        }
+    }
+}

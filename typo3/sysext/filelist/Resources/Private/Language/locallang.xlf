@@ -58,19 +58,19 @@
 			<trans-unit id="file_rename.php.label.target.folder">
 				<source>New folder name</source>
 			</trans-unit>
-			<trans-unit id="file_replace.php.pagetitle">
-				<source>Replace</source>
+			<trans-unit id="file_replace.title">
+				<source>Replace file "%s"</source>
 			</trans-unit>
-			<trans-unit id="file_replace.php.selectfile">
+			<trans-unit id="file_replace.intro">
+				<source>You're about to replace the file "%s".</source>
+			</trans-unit>
+			<trans-unit id="file_replace.new_file.label">
 				<source>Select new file</source>
 			</trans-unit>
-			<trans-unit id="file_replace.php.keepfiletitle">
-				<source>Keep the current filename?</source>
+			<trans-unit id="file_replace.keepFilename.label">
+				<source>Keep current filename "%s"?</source>
 			</trans-unit>
-			<trans-unit id="file_replace.php.browse">
-				<source>Browse</source>
-			</trans-unit>
-			<trans-unit id="file_replace.php.submit">
+			<trans-unit id="file_replace.button.replace">
 				<source>Replace</source>
 			</trans-unit>
 			<trans-unit id="file_edit.php.pagetitle">
