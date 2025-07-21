@@ -824,7 +824,7 @@
         }
     }
 
-    & + .formeditor-list {
+    & + .formeditor-list:not(:empty) {
         padding: var(--formeditor-stage-element-padding-y);
         padding-inline-start: var(--formeditor-stage-element-icon-width);
         border: var(--formeditor-stage-element-border-width) solid var(--formeditor-stage-element-border-color-state, var(--formeditor-stage-element-border-color));

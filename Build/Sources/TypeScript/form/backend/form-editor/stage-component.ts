@@ -238,10 +238,12 @@ function renderNestedSortableListItem(formElement: FormElement): JQuery {
     .attr(getHelper().getDomElementDataAttribute('elementIdentifier'), formElement.get('__identifierPath'))
     .append($(template.html()));
 
-  if (getFormElementDefinition(formElement, '_isCompositeFormElement')) {
+  const isCompositeFormElement = getFormElementDefinition(formElement, '_isCompositeFormElement');
+  if (isCompositeFormElement) {
     template.attr(getHelper().getDomElementDataAttribute('abstractType'), 'isCompositeFormElement');
   }
-  if (getFormElementDefinition(formElement, '_isTopLevelFormElement')) {
+  const isTopLevelFormElement = getFormElementDefinition(formElement, '_isTopLevelFormElement');
+  if (isTopLevelFormElement) {
     template.attr(getHelper().getDomElementDataAttribute('abstractType'), 'isTopLevelFormElement');
   } else {
     template.addClass('formeditor-element');
@@ -250,20 +252,19 @@ function renderNestedSortableListItem(formElement: FormElement): JQuery {
 
   renderTemplateDispatcher(formElement, template);
 
-  const childFormElements = formElement.get('renderables');
-  childList = null;
-  if ('array' === $.type(childFormElements)) {
+  if (isTopLevelFormElement || isCompositeFormElement) {
     childList = $('<ol></ol>');
     childList.addClass(getHelper().getDomElementClassName('sortable'));
     childList.addClass('formeditor-list');
-    for (let i = 0, len = childFormElements.length; i < len; ++i) {
-      childList.append(renderNestedSortableListItem(childFormElements[i]));
+    const childFormElements = formElement.get('renderables');
+    if ('array' === $.type(childFormElements)) {
+      for (let i = 0, len = childFormElements.length; i < len; ++i) {
+        childList.append(renderNestedSortableListItem(childFormElements[i]));
+      }
     }
-  }
-
-  if (childList) {
     listItem.append(childList);
   }
+
   return listItem;
 }
 
