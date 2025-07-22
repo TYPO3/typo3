@@ -61,7 +61,7 @@ class CacheLifetimeCalculator
         $cachedCacheLifetimeIdentifier = sprintf('calculateLifetimeForRow_%s_%d', $tableName, ($record['uid'] ?? 0));
         $cachedCacheLifetime = $this->runtimeCache->get($cachedCacheLifetimeIdentifier);
         if ($cachedCacheLifetime !== false) {
-            return $cachedCacheLifetime;
+            return (int)$cachedCacheLifetime;
         }
 
         $cacheTimeout = $defaultCacheTimoutInSeconds ?: self::defaultCacheTimeout;
@@ -93,7 +93,7 @@ class CacheLifetimeCalculator
             $record
         );
         $event = $this->eventDispatcher->dispatch($event);
-        $this->runtimeCache->set($cachedCacheLifetimeIdentifier, $event->cacheLifetime);
+        $this->runtimeCache->set($cachedCacheLifetimeIdentifier, (string)$event->cacheLifetime);
         return $cacheTimeout;
     }
 
@@ -105,7 +105,7 @@ class CacheLifetimeCalculator
         $cachedCacheLifetimeIdentifier = 'cacheLifeTimeForPage_' . $pageId;
         $cachedCacheLifetime = $this->runtimeCache->get($cachedCacheLifetimeIdentifier);
         if ($cachedCacheLifetime !== false) {
-            return $cachedCacheLifetime;
+            return (int)$cachedCacheLifetime;
         }
         if ($pageRecord['cache_timeout'] ?? false) {
             // Cache period was set for the page:
@@ -138,7 +138,7 @@ class CacheLifetimeCalculator
         );
         $event = $this->eventDispatcher->dispatch($event);
         $cacheTimeout = $event->getCacheLifetime();
-        $this->runtimeCache->set($cachedCacheLifetimeIdentifier, $cacheTimeout);
+        $this->runtimeCache->set($cachedCacheLifetimeIdentifier, (string)$cacheTimeout);
         return $cacheTimeout;
     }
 
