@@ -1,0 +1,177 @@
+############################
+### CUSTOM SUBCATEGORIES ###
+###########################
+# customsubcategory=100=Boolean
+# customsubcategory=101=Int
+# customsubcategory=102=Int+
+# customsubcategory=200=String
+# customsubcategory=201=Small
+# customsubcategory=202=Wrap
+# customsubcategory=300=Offset
+# customsubcategory=400=Color
+# customsubcategory=500=User
+# customsubcategory=600=Options
+# customsubcategory=900=Input
+# customsubcategory=901=Default
+
+
+############
+### Text ###
+############
+
+# cat=Text/200/10; type=string; label=String 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+string_1 = value
+# cat=Text/200/11; type=string; label=String 2 - no value
+string_2 =
+
+# cat=Text/201/10; type=small; label=Small 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+small_1 = value
+# cat=Text/201/11; type=small; label=Small 2 - no value
+small_2 =
+
+# cat=Text/202/10; type=wrap; label=Wrap 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+wrap_1 = value
+# cat=Text/202/11; type=wrap; label=Wrap 2 - no value
+wrap_2 =
+
+
+#############
+### Color ###
+#############
+
+# cat=Color/400/10; type=color; label=Color 1 - value black
+color_1 = black
+
+# cat=Color/400/11; type=color; label=Color 2 - value #000000
+color_2 = #000000
+
+# cat=Color/400/12; type=color; label=Color 3 - value 000000
+color_3 = 000000
+
+# cat=Color/400/13; type=color; label=Color 4 - no value
+color_4 =
+
+
+##############
+### Offset ###
+##############
+
+# cat=Offset/300/10; type=offset; label=Offset 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+offset_1 = x,y
+# cat=Offset/300/11; type=offset; label=Offset 2 - value x
+offset_2 = x
+# cat=Offset/300/12; type=offset; label=Offset 2 - value y
+offset_3 = ,y
+# cat=Offset/300/13; type=offset; label=Offset 2 - no value
+offset_4 =
+
+
+############
+### User ###
+############
+
+# cat=User/500/10; type=user[TYPO3\CMS\Styleguide\UserFunctions\ExtensionConfiguration\User1->user_1]; label=User - display params
+user_1 = 0
+
+
+###############
+### Options ###
+###############
+
+# cat=Options/600/10; type=options[Default=default, Option 1=option_1, Option 2=option_2, Option 3=option_3]; label=Option - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+options_1 = default
+# cat=Options/600/11; type=options[Default=default, Option 1=option_1, Option 2=option_2, Option 3=option_3]; label=Option - default option_2
+options_2 = option_2
+# cat=Options/600/11; type=options[Default=default, Option 1=option_1, Option 2=option_2, Option 3=option_3]; label=Option - no default
+options_3 =
+
+
+###############
+### Boolean ###
+###############
+
+# cat=Boolean/100/10; type=boolean; label=Boolean 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+boolean_1 = 0
+# cat=Boolean/100/11; type=boolean; label=Boolean 2 - checked
+boolean_2 = 1
+# cat=Boolean/100/12; type=boolean; label=Boolean 3 - no value
+boolean_3 =
+# cat=Boolean/100/13; type=boolean[myTrueValue]; label=Boolean 4 - different bool value
+boolean_4 = 0
+
+
+################
+### Integers ###
+################
+
+# cat=Integer/101/10; type=int; label=Int 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+int_1 = 1
+# cat=Integer/101/11; type=int; label=Int 2 - no value
+int_2 =
+# cat=Integer/101/12; type=int; label=Int 3 - negative value
+int_3 = -100
+# cat=Integer/101/13; type=int[1-5]; label=Int 4 - range (pos start, pos end)
+int_4 = 2
+# cat=Integer/101/14; type=int[-5-5]; label=Int 5 - range (neg start, pos end)
+int_5 = 2
+# cat=Integer/101/15; type=int[-5--1]; label=Int 6 - range (neg start, neg end)
+int_6 = 2
+# cat=Integer/101/16; type=int[1--5]; label=Int 7 - range (pos start, neg end)
+int_7 = 2
+# cat=Integer/101/17; type=int[--5]; label=Int 8 - range (neg end)
+int_8 = 2
+
+# cat=Integer/102/10; type=int+; label=Int+ 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+intplus_1 = 1
+# cat=Integer/102/11; type=int+; label=Int+ 2 - no value
+intplus_2 =
+# cat=Integer/101/12; type=int+[1-5]; label=Int+ 3 - range
+intplus_3 = 2
+
+
+
+#####################
+### Compatibility ###
+#####################
+
+# cat=Compatibility/900/10; type=input; label=Input 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+compat_input_1 = value
+# cat=Compatibility/900/11; type=input; label=Input 2 - no value
+compat_input_2 =
+
+# cat=Compatibility/901/10; type=default; label=Input 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+compat_default_1 = value
+# cat=Compatibility/901/11; type=default; label=Input 2 - no value
+compat_default_2 =
+
+##########################
+### Zero-indexed order ###
+##########################
+
+# cat=ZeroIndex//0; type=input; label=Input 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+zeroorder_input_1 = value
+# cat=ZeroIndex//2; type=input; label=Input 3 - no value
+zeroorder_input_3 =
+# cat=ZeroIndex//1; type=input; label=Input 2 - no value
+zeroorder_input_2 =
+
+##########################
+### Nested declaration ###
+##########################
+
+nested {
+  # cat=Nested; type=input; label=Input 1
+  input_1 = aDefault
+  # cat=Nested; type=input; label=Input 2
+  input_2 =
+}
+
+##################################
+### Pre defined sub categories ###
+##################################
+
+    # cat=Pre defined/dims/10; type=int; label=Input 1
+predefined.int_1 = 42
+
+    # cat=Pre defined/enable/10; type=boolean; label=LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:extConfTemplateLocalizedLabel
+predefined.boolean_1 = 1

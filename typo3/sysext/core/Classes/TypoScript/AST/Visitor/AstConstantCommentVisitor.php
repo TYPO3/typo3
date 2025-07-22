@@ -284,7 +284,7 @@ final class AstConstantCommentVisitor implements AstVisitorInterface
                                 $gotSeparatorDash = true;
                             } elseif (!$gotSeparatorDash) {
                                 $start .= $char;
-                            } elseif ($stop === '' && $char === '-') {
+                            } elseif ($stop === null && $char === '-') {
                                 $negativeStop = true;
                             } else {
                                 $stop .= $char;
