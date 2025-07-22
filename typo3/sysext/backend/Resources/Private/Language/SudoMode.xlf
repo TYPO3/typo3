@@ -30,6 +30,12 @@
 			<trans-unit id="installToolPasswordMode">
 				<source>Use Install Tool password instead</source>
 			</trans-unit>
+			<trans-unit id="sudoModeUserPasswordExplanation">
+				<source>To perform this action, please enter your user password to confirm you are authorized to proceed.</source>
+			</trans-unit>
+			<trans-unit id="sudoModeInstallToolPasswordExplanation">
+				<source>To perform this action, please enter the Install Tool password to confirm you are authorized to proceed.</source>
+			</trans-unit>
 			<trans-unit id="verificationFailed">
 				<source>Verification failed</source>
 			</trans-unit>
