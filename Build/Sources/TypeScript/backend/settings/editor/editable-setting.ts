@@ -14,7 +14,6 @@
 import { html, LitElement, type TemplateResult, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
 import { until } from 'lit/directives/until.js';
-import '@typo3/backend/element/spinner-element';
 import '@typo3/backend/element/icon-element';
 import { copyToClipboard } from '@typo3/backend/copy-to-clipboard';
 import Notification from '@typo3/backend/notification';
@@ -82,7 +81,7 @@ export class EditableSettingElement extends LitElement {
           ${this.mode === SettingsMode.advanced ? html`<div class="settings-item-key">${definition.key}</div>` : nothing}
         </div>
         <div class="settings-item-control">
-          ${until(this.renderField(), html`<typo3-backend-spinner></typo3-backend-spinner>`)}
+          ${until(this.renderField(), nothing)}
         </div>
         <div class="settings-item-message"></div>
         <div class="settings-item-actions">
