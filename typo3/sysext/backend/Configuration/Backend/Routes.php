@@ -290,4 +290,10 @@ return [
         'target' => Controller\ClipboardController::class . '::processRequest',
     ],
 
+    // Request thumbnail, created on-demand
+    'resource_request_thumbnail' => [
+        'path' => '/resource/request-thumbnail',
+        'methods' => ['GET'],
+        'target' => Controller\Resource\ResourceController::class . '::requestThumbnailAction',
+    ],
 ];

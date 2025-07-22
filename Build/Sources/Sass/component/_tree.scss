@@ -408,10 +408,14 @@
     display: flex;
     gap: .15rem;
 
-    img,
-    svg {
+    typo3-backend-drag-tooltip-thumbnail {
         display: block;
-        border-radius: .15rem;
+
+        img,
+        svg {
+            display: block;
+            border-radius: .15rem;
+        }
     }
 }
 
