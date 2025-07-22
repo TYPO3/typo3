@@ -2329,9 +2329,27 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/TypoScript/AST/Traverser/AstTraverser.php
 
 		-
+			message: '#^If condition is always false\.$#'
+			identifier: if.alwaysFalse
+			count: 1
+			path: ../../typo3/sysext/core/Classes/TypoScript/AST/Visitor/AstConstantCommentVisitor.php
+
+		-
 			message: '#^Offset 0 on non\-empty\-list\<string\> on left side of \?\? always exists and is not nullable\.$#'
 			identifier: nullCoalesce.offset
 			count: 4
+			path: ../../typo3/sysext/core/Classes/TypoScript/AST/Visitor/AstConstantCommentVisitor.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: ../../typo3/sysext/core/Classes/TypoScript/AST/Visitor/AstConstantCommentVisitor.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between non\-empty\-string\|null and '''' will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
 			path: ../../typo3/sysext/core/Classes/TypoScript/AST/Visitor/AstConstantCommentVisitor.php
 
 		-
@@ -4043,18 +4061,6 @@ parameters:
 			identifier: nullCoalesce.property
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Routing/ExtbasePluginEnhancer.php
-
-		-
-			message: '#^Negated boolean expression is always true\.$#'
-			identifier: booleanNot.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Service/CacheService.php
-
-		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Service/CacheService.php
 
 		-
 			message: '#^Parameter \#1 \$uid of method TYPO3\\CMS\\Core\\Resource\\ResourceFactory\:\:getFileObject\(\) expects int, string given\.$#'
