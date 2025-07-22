@@ -264,9 +264,13 @@
     display: flex;
     gap: 2px;
 
-    img {
-        height: 32px;
-        width: 32px;
-        background-color: #fff;
+    typo3-backend-drag-tooltip-thumbnail {
+        display: block;
+
+        img,
+        svg {
+            display: block;
+            border-radius: .15rem;
+        }
     }
 }

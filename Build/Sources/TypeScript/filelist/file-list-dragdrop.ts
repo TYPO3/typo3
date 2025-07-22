@@ -16,6 +16,7 @@ import { ResourceInterface } from '@typo3/backend/resource/resource';
 import Viewport from '@typo3/backend/viewport';
 import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';
 import { FileListActionSelector, FileListActionUtility } from '@typo3/filelist/file-list-actions';
+import { ThumbnailSize } from '@typo3/backend/element/thumbnail-element';
 
 export interface FileListDragDropDetail {
   action: string;
@@ -134,7 +135,7 @@ class FileListDragDrop {
   private createPreview(selectedItems: ResourceInterface[]): HTMLDivElement {
     // Container
     this.rootDocument.getElementById(this.dragPreviewId)?.remove();
-    const preview = document.createElement('div');
+    const preview = this.rootDocument.createElement('div');
     preview.id = this.dragPreviewId;
     preview.setAttribute('inert', 'true');
     preview.classList.add('resource-dragpreview');
@@ -145,15 +146,16 @@ class FileListDragDrop {
       .filter((item: ResourceInterface): boolean => item.thumbnail !== null)
       .slice(0, 3);
     if (previewItems.length > 0) {
-      const thumbnails = document.createElement('div');
+      const thumbnails = this.rootDocument.createElement('div');
       thumbnails.classList.add('resource-dragpreview-thumbnails');
       preview.appendChild(thumbnails);
       previewItems.forEach((item: ResourceInterface): void => {
-        const preview = new Image();
-        preview.src = item.thumbnail;
-        preview.height = this.previewSize;
-        preview.width = this.previewSize;
-        thumbnails.appendChild(preview);
+        const thumbnailElement = this.rootDocument.createElement('typo3-backend-thumbnail');
+        thumbnailElement.url = item.thumbnail;
+        thumbnailElement.size = ThumbnailSize.small;
+        thumbnailElement.height = this.previewSize;
+        thumbnailElement.width = this.previewSize;
+        thumbnails.appendChild(thumbnailElement);
       });
     }
 

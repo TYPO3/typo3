@@ -3832,7 +3832,8 @@ typo3-backend-live-search-result-item-action>* .livesearch-result-item-title .sm
 .resource-dragpreview img{display:block}
 .resource-dragpreview-counter{display:flex;justify-content:center;align-items:center;height:32px;min-width:32px}
 .resource-dragpreview-thumbnails{display:flex;gap:2px}
-.resource-dragpreview-thumbnails img{height:32px;width:32px;background-color:#fff}
+.resource-dragpreview-thumbnails typo3-backend-drag-tooltip-thumbnail{display:block}
+.resource-dragpreview-thumbnails typo3-backend-drag-tooltip-thumbnail img,.resource-dragpreview-thumbnails typo3-backend-drag-tooltip-thumbnail svg{display:block;border-radius:.15rem}
 .recordsearchbox-container{margin-bottom:var(--typo3-spacing)}
 .recordsearchbox-container [data-recordsearchbox-levels]{max-width:140px}
 :root{--treelist-color:#333;--treelist-comment-color:#666;--treelist-bg:#fff;--treelist-border-width:1px;--treelist-border-color:#ddd;--treelist-indentation:1rem;--treelist-indentation-spacer:.5rem;--treelist-item-spacer:2px;--treelist-item-line-height:24px;--treelist-control-size:16px}
