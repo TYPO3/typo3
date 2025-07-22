@@ -49,6 +49,7 @@ abstract class SudoModeProperties extends LitElement {
   @property({ type: Boolean, attribute: 'has-fatal-error' }) hasFatalError: boolean;
   @property({ type: Boolean, attribute: 'allow-install-tool-password' }) allowInstallToolPassword: boolean;
   @property({ type: Object }) labels: Labels;
+  public windowRef: Window | undefined;
 }
 
 export const initiateSudoModeModal = async (properties: Omit<SudoModeProperties, keyof LitElement>): Promise<void> => {
@@ -59,6 +60,7 @@ export const initiateSudoModeModal = async (properties: Omit<SudoModeProperties,
   }
   const el = top.document.createElement('typo3-backend-security-sudo-mode');
   Object.assign(el, properties);
+  el.windowRef = window;
   top.document.body.append(el);
   return new Promise<void>((resolve, reject) => {
     el.addEventListener('typo3:sudo-mode:verified', () => resolve());
@@ -119,6 +121,7 @@ export class SudoMode extends SudoModeProperties {
           .isAjax=${this.isAjax}
           .hasFatalError=${this.hasFatalError}
           .allowInstallToolPassword=${this.allowInstallToolPassword}
+          .windowRef=${this.windowRef}
           @typo3:sudo-mode:verified=${() => this.dispatchEvent(new Event('typo3:sudo-mode:verified'))}
         ></typo3-backend-security-sudo-mode-form>
       `
@@ -211,7 +214,13 @@ export class SudoModeForm extends SudoModeProperties {
       this.dispatchEvent(new Event('typo3:sudo-mode:verified'));
       this.closest('typo3-backend-modal').hideModal();
       if (!this.isAjax && responseData.redirect) {
-        Viewport.ContentContainer.setUrl(responseData.redirect.uri);
+        const { uri } = responseData.redirect;
+        const windowRef = this.windowRef ?? window;
+        if (windowRef.name === 'list_frame') {
+          Viewport.ContentContainer.setUrl(uri);
+        } else {
+          windowRef.location.assign(uri);
+        }
       }
     } catch (e: unknown) {
       if (e instanceof AjaxResponse) {
