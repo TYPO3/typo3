@@ -40,6 +40,8 @@ interface Labels {
   installToolPasswordMode: string;
   verificationFailed: string;
   verificationExpired: string;
+  sudoModeUserPasswordExplanation: string;
+  sudoModeInstallToolPasswordExplanation: string;
 }
 
 abstract class SudoModeProperties extends LitElement {
@@ -164,6 +166,7 @@ export class SudoModeForm extends SudoModeProperties {
         ${this.errorMessage ? html`
           <div class="alert alert-danger" id="invalid-password">${this.labels[this.errorMessage as keyof Labels] || this.errorMessage}</div>
         ` : nothing}
+        <p>${this.useInstallToolPassword ? this.labels.sudoModeInstallToolPasswordExplanation : this.labels.sudoModeUserPasswordExplanation}</p>
         <form method="post" class="form" id="verify-sudo-mode" spellcheck="false" @submit=${(evt: SubmitEvent) => this.verifyPassword(evt)}>
           ${this.useInstallToolPassword ? nothing : html`
             <input hidden aria-hidden="true" type="text" autocomplete="username" value=${TYPO3.configuration.username}>
