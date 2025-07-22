@@ -3151,7 +3151,8 @@ to{opacity:1;transform:translateZ(0)}}
 .dragging-tooltip-content-label{display:flex;flex-direction:column;gap:.15rem}
 .dragging-tooltip-content-description{opacity:.75}
 .dragging-tooltip-thumbnails{display:flex;gap:.15rem}
-.dragging-tooltip-thumbnails img,.dragging-tooltip-thumbnails svg{border-radius:.15rem;display:block}
+.dragging-tooltip-thumbnails typo3-backend-drag-tooltip-thumbnail{display:block}
+.dragging-tooltip-thumbnails typo3-backend-drag-tooltip-thumbnail img,.dragging-tooltip-thumbnails typo3-backend-drag-tooltip-thumbnail svg{border-radius:.15rem;display:block}
 .node-mount-point{align-items:center;background-color:var(--tree-info-bg);border:0;border-bottom:1px solid rgba(0,0,0,.25);color:var(--tree-info-color);display:flex;gap:.5em;padding:.75em 1.167em}
 .node-mount-point__icon{flex:0 auto}
 .node-mount-point__icon.mountpoint-close{cursor:pointer}

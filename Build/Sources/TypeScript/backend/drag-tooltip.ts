@@ -18,6 +18,8 @@ import BroadcastService from '@typo3/backend/broadcast-service';
 import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types';
 import type { PropertyValues, ReactiveElement } from '@lit/reactive-element';
 import type { WritablePart } from '@typo3/core/utility/types';
+import '@typo3/backend/element/thumbnail-element';
+import { ThumbnailSize } from '@typo3/backend/element/thumbnail-element';
 
 /**
  * Contains basic types for allowing dragging + dropping in trees
@@ -266,7 +268,7 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
           ${this.thumbnails.length === 0 ? nothing : html`
             <div class="dragging-tooltip-thumbnails">
               ${this.thumbnails.slice(0, 3).map(image => html`
-                <img src="${image.src}" width="${image.width}" height="${image.height}">
+                <typo3-backend-thumbnail url=${image.src} size=${ThumbnailSize.small} width=${image.width} height=${image.height}></typo3-backend-thumbnail>
               `)}
             </div>
           `}

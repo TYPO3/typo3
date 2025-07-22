@@ -22,19 +22,24 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\SysLog\Action\File as SystemLogFileAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Validation\ResultException;
 use TYPO3\CMS\Core\Validation\ResultRenderingTrait;
+use TYPO3\CMS\Filelist\Type\ThumbnailSize;
 
 /**
  * @internal
@@ -47,6 +52,33 @@ final readonly class ResourceController
     public function __construct(
         private ResourceFactory $resourceFactory,
     ) {}
+
+    public function requestThumbnailAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $identifier = $request->getQueryParams()['identifier'] ?? null;
+        $thumbnailSizeIdentifier = $request->getQueryParams()['size'] ?? 'default';
+        $keepAspectRatio = (bool)($request->getQueryParams()['keepAspectRatio'] ?? false);
+        $resource = null;
+
+        if ($identifier) {
+            $resource = $this->resourceFactory->retrieveFileOrFolderObject($identifier);
+        }
+        if ($resource === null || !($resource instanceof File && ($resource->isImage() || $resource->isMediaFile()))) {
+            return new Response(null, 404);
+        }
+        if (!$resource->checkActionPermission('read')) {
+            return new Response(null, 403);
+        }
+
+        $thumbnailSize = ThumbnailSize::tryFrom($thumbnailSizeIdentifier) ?? ThumbnailSize::DEFAULT;
+        [$width, $height] = $keepAspectRatio ? $thumbnailSize->getDimensions() : $thumbnailSize->getCroppedDimensions();
+        $thumbnail = $resource
+            ->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, ['width' => $width, 'height' => $height]);
+
+        return new RedirectResponse(
+            GeneralUtility::locationHeaderUrl($thumbnail->getPublicUrl() ?? '')
+        );
+    }
 
     public function renameResourceAction(ServerRequestInterface $request): ResponseInterface
     {
