@@ -3043,18 +3043,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Routing/ExtbasePluginEnhancer.php
 
 		-
-			message: '#^Negated boolean expression is always true\.$#'
-			identifier: booleanNot.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Service/CacheService.php
-
-		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Service/CacheService.php
-
-		-
 			message: '#^Parameter \#1 \$uid of method TYPO3\\CMS\\Core\\Resource\\ResourceFactory\:\:getFileObject\(\) expects int, string given\.$#'
 			identifier: argument.type
 			count: 1
