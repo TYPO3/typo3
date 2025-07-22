@@ -2191,18 +2191,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Routing/ExtbasePluginEnhancer.php
 
 		-
-			message: '#^Negated boolean expression is always true\.$#'
-			identifier: booleanNot.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Service/CacheService.php
-
-		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Service/CacheService.php
-
-		-
 			message: '#^Call to function is_array\(\) with object will always evaluate to false\.$#'
 			identifier: function.impossibleType
 			count: 1
