@@ -30,6 +30,7 @@ var __decorate=function(e,o,t,s){var r,a=arguments.length,i=a<3?o:null===s?s=Obj
         ${this.errorMessage?html`
           <div class="alert alert-danger" id="invalid-password">${this.labels[this.errorMessage]||this.errorMessage}</div>
         `:nothing}
+        <p>${this.useInstallToolPassword?this.labels.sudoModeInstallToolPasswordExplanation:this.labels.sudoModeUserPasswordExplanation}</p>
         <form method="post" class="form" id="verify-sudo-mode" spellcheck="false" @submit=${e=>this.verifyPassword(e)}>
           ${this.useInstallToolPassword?nothing:html`
             <input hidden aria-hidden="true" type="text" autocomplete="username" value=${TYPO3.configuration.username}>
