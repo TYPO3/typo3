@@ -11,7 +11,7 @@ See :issue:`102631`
 Description
 ===========
 
-A new custom PHP attribute :php:`\TYPO3\CMS\Core\Attribute\AsController` has
+A new custom PHP attribute :php:`\TYPO3\CMS\Backend\Attribute\AsController` has
 been introduced in order to automatically tag backend controllers, making them
 available in the service container and enabling dependency injection.
 
