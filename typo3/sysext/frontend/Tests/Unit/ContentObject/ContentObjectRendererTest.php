@@ -3719,8 +3719,8 @@ content="benni">',
         $container->set(EventDispatcherInterface::class, new EventDispatcher($listenerProvider));
 
         $content = StringUtility::getUniqueId('content');
-        $tags = [StringUtility::getUniqueId('tags')];
         $key = StringUtility::getUniqueId('key');
+        $tags = [StringUtility::getUniqueId('tags')];
         $lifetime = 100;
         $cacheConfig = [
             StringUtility::getUniqueId('cache.'),
@@ -3738,6 +3738,7 @@ content="benni">',
                 'getRequest',
             ]
         );
+
         $subject->expects(self::once())->method('calculateCacheKey')->with($cacheConfig)->willReturn($key);
         $subject->expects(self::once())->method('calculateCacheTags')->with($cacheConfig)->willReturn($tags);
         $subject->expects(self::once())->method('calculateCacheLifetime')->with($cacheConfig)->willReturn($lifetime);
