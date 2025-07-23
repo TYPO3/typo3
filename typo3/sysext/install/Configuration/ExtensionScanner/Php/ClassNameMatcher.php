@@ -2584,4 +2584,9 @@ return [
             'Breaking-105809-AfterMailerInitializationEventRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Collection\SortableCollectionInterface' => [
+        'restFiles' => [
+            'Breaking-33747-RemoveNonImplementedSortableCollectionLogic.rst',
+        ],
+    ],
 ];

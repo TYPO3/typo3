@@ -36,7 +36,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @template T
  * @implements RecordCollectionInterface<T>
  */
-abstract class AbstractRecordCollection implements RecordCollectionInterface, PersistableCollectionInterface, SortableCollectionInterface
+abstract class AbstractRecordCollection implements RecordCollectionInterface, PersistableCollectionInterface
 {
     /**
      * The table name collections are stored to
@@ -238,36 +238,6 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
     public function setItemTableName($tableName)
     {
         $this->itemTableName = $tableName;
-    }
-
-    /**
-     * Sorts collection via given callBackFunction
-     *
-     * The comparison function given as must return an integer less than, equal to, or greater than
-     * zero if the first argument is considered to be respectively less than, equal to, or greater than the second.
-     *
-     * @param callable $callbackFunction
-     * @see http://www.php.net/manual/en/function.usort.php
-     */
-    public function usort($callbackFunction)
-    {
-        // @todo Implement usort() method with TCEforms in mind
-        throw new \RuntimeException('This method is not yet supported.', 1322545589);
-    }
-
-    /**
-     * Moves the item within the collection
-     *
-     * the item at $currentPosition will be moved to
-     * $newPosition. Omitting $newPosition will move to top.
-     *
-     * @param int $currentPosition
-     * @param int $newPosition
-     */
-    public function moveItemAt($currentPosition, $newPosition = 0)
-    {
-        // @todo Implement usort() method with TCEforms in mind
-        throw new \RuntimeException('This method is not yet supported.', 1322545626);
     }
 
     /**
