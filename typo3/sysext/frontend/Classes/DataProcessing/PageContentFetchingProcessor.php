@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Frontend\DataProcessing;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Domain\Persistence\RecordIdentityMap;
-use TYPO3\CMS\Core\Page\PageLayoutResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Content\ContentSlideMode;
 use TYPO3\CMS\Frontend\Content\RecordCollector;
@@ -55,7 +54,6 @@ readonly class PageContentFetchingProcessor implements DataProcessorInterface
 {
     public function __construct(
         protected RecordCollector $recordCollector,
-        protected PageLayoutResolver $pageLayoutResolver,
         protected EventDispatcherInterface $eventDispatcher,
     ) {}
 
