@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference as CoreFileReference;
@@ -77,9 +78,9 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
     /**
      * One of 'cancel', 'replace', 'rename'
      *
-     * @var string
+     * @var DuplicationBehavior
      */
-    protected $defaultConflictMode = 'rename';
+    protected $defaultConflictMode = DuplicationBehavior::RENAME;
 
     /**
      * @var PseudoFileReference[]
@@ -205,7 +206,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
         $seed = $configuration->getConfigurationValue(self::class, self::CONFIGURATION_UPLOAD_SEED)
             ?: GeneralUtility::makeInstance(Random::class)->generateRandomHexString(40);
         $uploadFolderId = $configuration->getConfigurationValue(self::class, self::CONFIGURATION_UPLOAD_FOLDER) ?: $this->defaultUploadFolder;
-        $conflictMode = $configuration->getConfigurationValue(self::class, self::CONFIGURATION_UPLOAD_CONFLICT_MODE) ?: $this->defaultConflictMode;
+        $conflictMode = DuplicationBehavior::tryFrom($configuration->getConfigurationValue(self::class, self::CONFIGURATION_UPLOAD_CONFLICT_MODE)) ?? $this->defaultConflictMode;
         $pseudoFile = GeneralUtility::makeInstance(PseudoFile::class, $uploadInfo);
 
         $validators = $configuration->getConfigurationValue(self::class, self::CONFIGURATION_FILE_VALIDATORS);
