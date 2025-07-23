@@ -17,6 +17,7 @@ However, this behavior may pose challenges when integrating remote single sign-o
 providers, as these typically do not support a dedicated step-up authentication process.
 
 To address this, new PSR-14 events have been introduced:
+
 * :php:`TYPO3\CMS\Backend\Security\SudoMode\Event\SudoModeRequiredEvent` is triggered before
   showing the sudo-mode verification dialog
 * :php:`TYPO3\CMS\Backend\Security\SudoMode\Event\SudoModeVerifyEvent` is triggered before
