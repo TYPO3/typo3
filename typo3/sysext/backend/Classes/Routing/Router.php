@@ -118,10 +118,7 @@ class Router
         foreach ($this->routeCollection->getIterator() as $routeIdentifier => $route) {
             // This check is done in a simple way as there are no parameters yet (get parameters only)
             if ($route->getPath() === $pathInfo) {
-                $routeResult = new Route($route->getPath(), $route->getOptions());
-                // Store the name of the Route in the _identifier option so the token can be checked against that
-                $routeResult->setOption('_identifier', $routeIdentifier);
-                return $routeResult;
+                return Route::fromSymfonyRoute($route, $routeIdentifier);
             }
         }
 
@@ -155,15 +152,7 @@ class Router
         } catch (\Symfony\Component\Routing\Exception\ResourceNotFoundException $e) {
             throw new ResourceNotFoundException('The requested resource "' . $path . '" was not found.', 1612649840);
         }
-        // Apply matched method to route
-        $matchedOptions = $matchedSymfonyRoute->getOptions();
-        $methods = $matchedOptions['methods'] ?? [];
-        unset($matchedOptions['methods']);
-        $route = new Route($matchedSymfonyRoute->getPath(), $matchedOptions);
-        if (count($methods) > 0) {
-            $route->setMethods($methods);
-        }
-        $route->setOption('_identifier', $result['_route']);
+        $route = Route::fromSymfonyRoute($matchedSymfonyRoute, $result['_route']);
         unset($result['_route']);
         return new RouteResult($route, $result);
     }

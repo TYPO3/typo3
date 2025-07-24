@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Backend\Routing;
 
+use Symfony\Component\Routing\Route as SymfonyRoute;
+
 /**
  * This is a single entity for a Route.
  *
@@ -33,6 +35,21 @@ class Route
      * @var array
      */
     protected $options = [];
+
+    public static function fromSymfonyRoute(SymfonyRoute $source, string $identifier): self
+    {
+        $options = $source->getOptions();
+        // Store the name of the Route in the _identifier option so the token can be checked against that
+        $options['_identifier'] = $identifier;
+        $methods = $options['methods'] ?? [];
+        unset($options['methods']);
+
+        $target = new self($source->getPath(), $options);
+        if (is_array($methods) && $methods !== []) {
+            $target->setMethods($methods);
+        }
+        return $target;
+    }
 
     /**
      * Constructor setting up the required path and options
