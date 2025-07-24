@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Core\Site\Set;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
+use TYPO3\CMS\Core\Configuration\Loader\Exception\YamlParseException;
+use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Settings\CategoryDefinition;
 use TYPO3\CMS\Core\Settings\InvalidSettingDefinitionException;
 use TYPO3\CMS\Core\Settings\SettingDefinition;
@@ -34,6 +36,7 @@ class YamlSetDefinitionProvider
 {
     public function __construct(
         protected readonly SettingDefinitionValidation $settingDefinitionValidation,
+        protected readonly YamlFileLoader $yamlFileLoader,
     ) {}
 
     /** @var array<string, SetDefinition> */
@@ -96,15 +99,13 @@ class YamlSetDefinitionProvider
         $settingsFile = $path . '/settings.yaml';
         if (is_file($settingsFile)) {
             try {
-                $settings = Yaml::parseFile($settingsFile);
-            } catch (ParseException $e) {
+                // HEADS UP: YamlFileLoader::PROCESS_PLACEHOLDERS is omitted on purpose and MUST NOT be added.
+                // Site sets are intended to be self-contained and must not rely on implicit
+                // dependencies to global (environment) variables.
+                $settings = $this->yamlFileLoader->load($settingsFile, YamlFileLoader::PROCESS_IMPORTS | YamlFileLoader::ALLOW_EMPTY_FILE);
+            } catch (YamlParseException $e) {
                 $source = $virtualSetPath . basename($settingsFile);
                 throw new InvalidSettingsException('Invalid settings format. Source: ' . $source, 1711024380, $e, $setName);
-            }
-            $settings ??= [];
-            if (!is_array($settings)) {
-                $source = $virtualSetPath . basename($settingsFile);
-                throw new InvalidSettingsException('Invalid settings format. Source: ' . $source, 1711024382, null, $setName);
             }
             $set['settings'] = $settings;
         }

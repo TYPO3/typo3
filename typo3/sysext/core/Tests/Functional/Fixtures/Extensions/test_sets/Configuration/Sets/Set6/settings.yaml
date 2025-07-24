@@ -1,0 +1,2 @@
+imports:
+  - { resource: './settings.include.yaml' }
