@@ -46,7 +46,8 @@ prototypes:
                     email:
                       label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
                       config:
-                        type: email
+                        type: input
+                        eval: TYPO3\CMS\Form\Evaluation\EmailOrFormElementIdentifier
                         required: true
                     name:
                       label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
@@ -56,6 +57,7 @@ prototypes:
               label: tt_content.finishersDefinition.EmailToSender.senderAddress.label
               config:
                 type: input
+                eval: TYPO3\CMS\Form\Evaluation\EmailOrFormElementIdentifier
                 required: true
             senderName:
               label: tt_content.finishersDefinition.EmailToSender.senderName.label
@@ -75,7 +77,8 @@ prototypes:
                     email:
                       label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
                       config:
-                        type: email
+                        type: input
+                        eval: TYPO3\CMS\Form\Evaluation\EmailOrFormElementIdentifier
                         required: true
                     name:
                       label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
@@ -95,7 +98,8 @@ prototypes:
                     email:
                       label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
                       config:
-                        type: email
+                        type: input
+                        eval: TYPO3\CMS\Form\Evaluation\EmailOrFormElementIdentifier
                         required: true
                     name:
                       label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
@@ -115,7 +119,8 @@ prototypes:
                     email:
                       label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
                       config:
-                        type: email
+                        type: input
+                        eval: TYPO3\CMS\Form\Evaluation\EmailOrFormElementIdentifier
                         required: true
                     name:
                       label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
