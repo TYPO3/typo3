@@ -301,6 +301,7 @@ class Typo3DbQueryParser
                 /** @var ColumnMap $columnMap */
                 $relationTableName = (string)$columnMap->relationTableName;
                 $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
+                $queryBuilderForSubselect->getRestrictions()->removeAll();
                 $queryBuilderForSubselect
                     ->select($columnMap->parentKeyFieldName)
                     ->from($relationTableName)
@@ -326,6 +327,7 @@ class Typo3DbQueryParser
                     $childTableName = $columnMap->childTableName;
                     // Build the SQL statement of the subselect
                     $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
+                    $queryBuilderForSubselect->getRestrictions()->removeAll();
                     $queryBuilderForSubselect
                         ->select($columnMap->parentKeyFieldName)
                         ->from($childTableName)
@@ -747,14 +749,14 @@ class Typo3DbQueryParser
 
         $defLangTableAlias = $tableAlias . '_dl';
         $defaultLanguageRecordsSubSelect = $this->queryBuilder->getConnection()->createQueryBuilder();
+        $defaultLanguageRecordsSubSelect->getRestrictions()->removeAll();
         $defaultLanguageRecordsSubSelect
             ->select($defLangTableAlias . '.uid')
             ->from($tableName, $defLangTableAlias)
             ->where(
-                $defaultLanguageRecordsSubSelect->expr()->and(
-                    $defaultLanguageRecordsSubSelect->expr()->eq($defLangTableAlias . '.' . $transOrigPointerField, 0),
-                    $defaultLanguageRecordsSubSelect->expr()->eq($defLangTableAlias . '.' . $languageField, 0)
-                )
+                $defaultLanguageRecordsSubSelect->expr()->eq($defLangTableAlias . '.' . $transOrigPointerField, 0),
+                $defaultLanguageRecordsSubSelect->expr()->eq($defLangTableAlias . '.' . $languageField, 0),
+                $this->getVisibilityConstraintStatement($querySettings, $tableName, $defLangTableAlias)
             );
 
         $andConditions = [];
@@ -784,14 +786,15 @@ class Typo3DbQueryParser
             // together with not translated default language records
             $translatedOnlyTableAlias = $tableAlias . '_to';
             $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();
+            $queryBuilderForSubselect->getRestrictions()->removeAll();
             $queryBuilderForSubselect
                 ->select($translatedOnlyTableAlias . '.' . $transOrigPointerField)
                 ->from($tableName, $translatedOnlyTableAlias)
                 ->where(
-                    $queryBuilderForSubselect->expr()->and(
-                        $queryBuilderForSubselect->expr()->gt($translatedOnlyTableAlias . '.' . $transOrigPointerField, 0),
-                        $queryBuilderForSubselect->expr()->eq($translatedOnlyTableAlias . '.' . $languageField, $languageAspect->getContentId())
-                    )
+                    $queryBuilderForSubselect->expr()->gt($translatedOnlyTableAlias . '.' . $transOrigPointerField, 0),
+                    $queryBuilderForSubselect->expr()->eq($translatedOnlyTableAlias . '.' . $languageField, $languageAspect->getContentId()),
+                    //  The records in default language should also respect the visibility constraints
+                    $this->getVisibilityConstraintStatement($querySettings, $tableName, $translatedOnlyTableAlias)
                 );
             // records in default language, which do not have a translation
             $andConditions[] = $this->queryBuilder->expr()->and(
