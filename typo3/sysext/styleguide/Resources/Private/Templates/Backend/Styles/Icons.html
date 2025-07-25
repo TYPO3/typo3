@@ -176,9 +176,9 @@
                                 </div>
                             </div>
                         </form>
-                        <div class="row" id="t3js-filter-container">
+                        <div class="icon-container-wrapper" id="t3js-filter-container">
                             <f:for each="{allIcons}" as="icon">
-                                <div class="col-md-2 icon-container" data-icon-identifier="{icon}">
+                                <div class="icon-container" data-icon-identifier="{icon}" tabindex="0">
                                     <span class="icon-container-icon"><core:icon identifier="{icon}" size="large" /></span>
                                     <span class="icon-container-label">{icon}</span>
                                 </div>
@@ -187,9 +187,9 @@
                     </div>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="deprecated">
-                    <div class="row">
+                    <div class="icon-container-wrapper">
                         <f:for each="{deprecatedIcons}" key="icon" as="alternativeIcon">
-                            <div class="col-md-2 icon-container icon-deprecated-container" data-icon-identifier="{icon}">
+                            <div class="icon-container icon-deprecated-container" data-icon-identifier="{icon}" tabindex="0">
                                 <span class="icon-container-icon"><core:icon identifier="{icon}" size="large" /></span>
                                 <span class="icon-container-label">{icon}</span>
                                 <span class="icon-container-label"><core:icon identifier="actions-arrow-down-right-alt" size="small" /> {alternativeIcon}</span>

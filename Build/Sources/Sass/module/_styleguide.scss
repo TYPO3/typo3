@@ -14,28 +14,40 @@
     flex: 1 1 500px;
     contain: inline-size;
 
+    .icon-container-wrapper {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: .25rem;
+    }
+
     // Icon module
     .icon-container {
-        border: 1px solid transparent;
-        margin-bottom: 20px;
-        height: 100px;
+        --typo3-icon-container-bg: var(--typo3-state-default-bg);
+        --typo3-icon-container-border-radius: var(--typo3-component-border-radius);
+        --typo3-icon-container-transition-color: var(--typo3-transition-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: var(--typo3-spacing);
+        gap: var(--typo3-spacing);
+        border-radius: var(--typo3-icon-container-border-radius);
+        background-color: var(--typo3-icon-container-bg);
+        transition: var(--typo3-icon-container-transition-color);
 
-        &.icon-deprecated-container {
-            height: 175px;
+        &:hover {
+            --typo3-icon-container-bg: var(--typo3-state-default-hover-bg);
         }
 
         span.icon-container-icon,
         span.icon-container-label {
             display: block;
             text-align: center;
-            background-color: #eee;
-            min-height: 50px;
-            padding: 5px;
         }
 
-        &:hover span.icon-container-icon,
-        &:hover span.icon-container-label {
-            background-color: #e1e1e1;
+        &:not(:hover):not(:focus-visible) span.icon-container-label {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
         }
     }
 

@@ -3911,10 +3911,11 @@ td.permission-column-group{-webkit-padding-start:0;padding-inline-start:0;white-
 .module-styleguide .module-body{container-type:inline-size;display:flex;flex-wrap:wrap;gap:2.5rem}
 .styleguide-navigation{align-self:flex-start;flex:0 1 200px}
 .styleguide-content{contain:inline-size;flex:1 1 500px}
-.styleguide-content .icon-container{border:1px solid transparent;height:100px;margin-bottom:20px}
-.styleguide-content .icon-container.icon-deprecated-container{height:175px}
-.styleguide-content .icon-container span.icon-container-icon,.styleguide-content .icon-container span.icon-container-label{background-color:#eee;display:block;min-height:50px;padding:5px;text-align:center}
-.styleguide-content .icon-container:hover span.icon-container-icon,.styleguide-content .icon-container:hover span.icon-container-label{background-color:#e1e1e1}
+.styleguide-content .icon-container-wrapper{display:grid;gap:.25rem;grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.styleguide-content .icon-container{--typo3-icon-container-bg:var(--typo3-state-default-bg);--typo3-icon-container-border-radius:var(--typo3-component-border-radius);--typo3-icon-container-transition-color:var(--typo3-transition-color);background-color:var(--typo3-icon-container-bg);border-radius:var(--typo3-icon-container-border-radius);display:flex;flex-direction:column;gap:var(--typo3-spacing);justify-content:space-between;padding:var(--typo3-spacing);transition:var(--typo3-icon-container-transition-color)}
+.styleguide-content .icon-container:hover{--typo3-icon-container-bg:var(--typo3-state-default-hover-bg)}
+.styleguide-content .icon-container span.icon-container-icon,.styleguide-content .icon-container span.icon-container-label{display:block;text-align:center}
+.styleguide-content .icon-container:not(:hover):not(:focus-visible) span.icon-container-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .styleguide-content .example-container{align-items:center;display:flex;gap:var(--typo3-spacing)}
 .styleguide-content .example-container.example-container--large-spacing{gap:calc(var(--typo3-spacing)*2)}
 .styleguide-example{--typo3-example-border-width:var(--typo3-component-border-width);--typo3-example-border-color:var(--typo3-component-border-color);--typo3-example-border-radius:var(--typo3-component-border-radius);--typo3-example-box-shadow:var(--typo3-component-box-shadow);--typo3-example-margin-bottom:var(--typo3-spacing);--typo3-example-content-bg:var(--typo3-surface-base);--typo3-example-content-padding:var(--typo3-spacing);--typo3-example-code-bg:var(--typo3-surface-container-base);--typo3-example-code-border-top-width:var(--typo3-component-border-width);--typo3-example-code-border-top-color:var(--typo3-component-border-color);--typo3-example-code-padding:var(--typo3-spacing);--typo3-example-label-color:var(--typo3-component-variant-color);--typo3-example-label-margin-bottom:var(--typo3-spacing);border:var(--typo3-example-border-width) solid var(--typo3-example-border-color);border-radius:var(--typo3-example-border-radius);box-shadow:var(--typo3-example-box-shadow);margin-bottom:calc(var(--typo3-example-margin-bottom)*1.5)}
