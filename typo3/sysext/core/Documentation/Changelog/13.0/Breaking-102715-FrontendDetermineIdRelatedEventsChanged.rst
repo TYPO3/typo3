@@ -23,7 +23,7 @@ getter methods :php:`getController()` have been removed: The controller is insta
 *after* the events have been dispatched, event listeners can no longer work with this
 object.
 
-Instead, the events now contain an instance of the new :abbr:DTO (Data Transfer Object)`
+Instead, the events now contain an instance of the new :ab:DTO (Data Transfer Object)`
 :php:`\TYPO3\CMS\Frontend\Page\PageInformation`, which can be retrieved and
 manipulated by event listeners if necessary.
 
