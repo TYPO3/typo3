@@ -2162,7 +2162,7 @@ class ResourceStorage implements ResourceStorageInterface
         $targetFolder ??= $this->getDefaultFolder();
 
         $this->assureFileUploadPermissions($localFilePath, $targetFolder, $targetFileName, $size);
-        $this->assureResourceConsistency($localFilePath, $targetFileName);
+        // no `assureResourceConsistency` check here - this is checked in either `replaceFile` or `addFile`
 
         if ($this->hasFileInFolder($targetFileName, $targetFolder) && $conflictMode->equals(DuplicationBehavior::REPLACE)) {
             $file = $this->getFileInFolder($targetFileName, $targetFolder);
