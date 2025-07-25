@@ -113,13 +113,25 @@ corresponding form.
 
 .. code-block:: js
 
-   document.getElementById('myform-123')
-       .addEventListener('submit', function(e) {
-           e.target.querySelectorAll('[type="submit"]')
-               .forEach(function(button) {
-                   button.disabled = true;
-               });
-       });
+    const form = document.getElementById('myform-123');
+    form.addEventListener('submit', function(e) {
+        const submittedClass = 'submitted';
+        if (this.classList.contains(submittedClass)) {
+            e.preventDefault();
+        } else {
+            this.classList.add(submittedClass);
+        }
+    });
+
+You should also consider styling the submit button to provide visual feedback to the user.
+This helps make it clear that the form has already been submitted and prevents further interactions.
+
+.. code-block:: css
+
+    .submitted button[type="submit"] {
+        opacity: 0.6;
+        pointer-events: none;
+    }
 
 
 .. _faq-date-picker:
