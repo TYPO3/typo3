@@ -43,7 +43,7 @@
 		"guzzlehttp/guzzle": "^7.9.2",
 		"guzzlehttp/psr7": "^2.7.0",
 		"lolli42/finediff": "^1.1.1",
-		"masterminds/html5": "^2.9.0",
+		"masterminds/html5": "^2.10.0",
 		"psr/container": "^2.0",
 		"psr/event-dispatcher": "^1.0",
 		"psr/http-client": "^1.0.3",
