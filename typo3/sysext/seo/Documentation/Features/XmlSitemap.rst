@@ -59,7 +59,7 @@ Data providers for XML sitemaps
 ===============================
 
 The rendering of sitemaps is based on data providers implementing
-:php:`\TYPO3\CMS\Seo\XmlSitemap\XmlSitemapDataProviderInterface.
+:php:`\TYPO3\CMS\Seo\XmlSitemap\XmlSitemapDataProviderInterface`.
 
 :composer:`typo3/cms-seo` ships with the following data providers for XML
 sitemaps:
