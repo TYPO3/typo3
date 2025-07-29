@@ -104,7 +104,7 @@ for :php:`authMode` is :php:`explicitAllow`. Extensions using config value :php:
 should be adapted to switch to :php:`explicitAllow` instead. The upgrade wizard
 "Migrate backend groups "explicit_allowdeny" field to simplified format." that transfers
 existing :sql:`be_groups` rows to the new format *drops* any :sql:`DENY` fields and instructs
-admins no set new access rights of affected backend groups.
+admins to set new access rights of affected backend groups.
 
 Using authMode='individual'
 ---------------------------
