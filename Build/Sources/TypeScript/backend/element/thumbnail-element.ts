@@ -41,9 +41,12 @@ export class ThumbnailElement extends LitElement {
 
       const img = new Image();
       img.src = thumbnailUrl.toString();
-      img.width = width;
 
-      if (!keepAspectRatio) {
+      if (width > 0) {
+        img.width = width;
+      }
+
+      if (height > 0 && !keepAspectRatio) {
         // Only set height if we do not want to keep the aspect ratio (image is being cropped)
         img.height = height;
       }

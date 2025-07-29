@@ -367,7 +367,6 @@ class FileList
             $resourceView->editDataUri = $this->createEditDataUriForResource($resource);
             $resourceView->editContentUri = $this->createEditContentUriForResource($resource);
             $resourceView->replaceUri = $this->createReplaceUriForResource($resource);
-            $resourceView->thumbnailUri = $this->createThumbnailUriForResource($resource);
 
             $resourceView->isDownloadable = $this->resourceDownloadMatcher !== null && $this->resourceDownloadMatcher->match($resource);
             $resourceView->isSelectable = $this->resourceSelectableMatcher !== null && $this->resourceSelectableMatcher->match($resource);
@@ -531,7 +530,7 @@ class FileList
                 'data-filelist-identifier' => $resourceView->getIdentifier(),
                 'data-filelist-name' => htmlspecialchars($resourceView->getName()),
                 'data-filelist-icon' => $resourceView->getIconIdentifier(),
-                'data-filelist-thumbnail' => $resourceView->thumbnailUri,
+                'data-filelist-preview' => $resourceView->getPreview() !== null ? 'true' : 'false',
                 'data-filelist-uid' => $resourceView->getUid(),
                 'data-filelist-meta-uid' => $resourceView->getMetaDataUid(),
                 'data-filelist-url' => $resourceView->getPublicUrl(),
@@ -1665,17 +1664,6 @@ class FileList
                 'returnUrl' => $this->createModuleUri(),
             ];
             return (string)$this->uriBuilder->buildUriFromRoute('file_replace', $parameter);
-        }
-        return null;
-    }
-
-    protected function createThumbnailUriForResource(ResourceInterface $resource): ?string
-    {
-        if ($resource instanceof File && ($resource->isImage() || $resource->isMediaFile())) {
-            $parameter = [
-                'identifier' => $resource->getUid(),
-            ];
-            return (string)$this->uriBuilder->buildUriFromRoute('resource_request_thumbnail', $parameter);
         }
         return null;
     }

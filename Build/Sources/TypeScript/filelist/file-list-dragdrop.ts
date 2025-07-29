@@ -100,10 +100,13 @@ class FileListDragDrop {
 
   private getPreviewItems(selectedItems: ResourceInterface[]): DragDropThumbnail[] {
     return selectedItems
-      .filter((item: ResourceInterface): boolean => item.thumbnail !== null)
+      .filter((item: ResourceInterface): boolean => item.hasPreview)
       .map((item: ResourceInterface) => {
+        const thumbnailUrl = new URL(top.TYPO3.settings.Resource.thumbnailUrl, window.origin);
+        thumbnailUrl.searchParams.set('identifier', item.uid.toString(10));
+
         return {
-          src: item.thumbnail,
+          src: thumbnailUrl.toString(),
           width: this.previewSize,
           height: this.previewSize,
         };
@@ -112,7 +115,7 @@ class FileListDragDrop {
 
   private getPreviewLabel(selectedItems: ResourceInterface[]): string {
     // Counter
-    const previewItems = selectedItems.filter((item: ResourceInterface): boolean => item.thumbnail !== null);
+    const previewItems = selectedItems.filter((item: ResourceInterface): boolean => item.hasPreview);
     const count = selectedItems.length - previewItems.length;
     if (count > 0) {
       return (previewItems.length > 0 ? '+' : '') + count.toString();

@@ -93,6 +93,9 @@ declare namespace TYPO3 {
       export const startUid: number;
       export const tableSelection: string;
     }
+    export namespace Resource {
+      export const thumbnailUrl: string;
+    }
     export namespace ShowItem {
       export const moduleUrl: string;
     }
