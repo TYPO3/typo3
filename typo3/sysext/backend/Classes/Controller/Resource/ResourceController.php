@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller\Resource;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Backend\ThumbnailSize;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -39,7 +40,6 @@ use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Validation\ResultException;
 use TYPO3\CMS\Core\Validation\ResultRenderingTrait;
-use TYPO3\CMS\Filelist\Type\ThumbnailSize;
 
 /**
  * @internal

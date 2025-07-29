@@ -16,7 +16,7 @@ export interface ResourceInterface {
   identifier: string;
   stateIdentifier: string;
   name: string;
-  thumbnail: string | null;
+  hasPreview: boolean;
   uid: number | null;
   metaUid: number | null;
 }
@@ -27,7 +27,7 @@ export class Resource implements ResourceInterface {
     public readonly identifier: string,
     public readonly stateIdentifier: string,
     public readonly name: string,
-    public readonly thumbnail: string | null = null,
+    public readonly hasPreview: boolean = false,
     public readonly uid: number | null = null,
     public readonly metaUid: number | null = null,
   ) {

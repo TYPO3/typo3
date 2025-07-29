@@ -143,15 +143,18 @@ class FileListDragDrop {
 
     // Previews
     const previewItems = selectedItems
-      .filter((item: ResourceInterface): boolean => item.thumbnail !== null)
+      .filter((item: ResourceInterface): boolean => item.hasPreview)
       .slice(0, 3);
     if (previewItems.length > 0) {
       const thumbnails = this.rootDocument.createElement('div');
       thumbnails.classList.add('resource-dragpreview-thumbnails');
       preview.appendChild(thumbnails);
       previewItems.forEach((item: ResourceInterface): void => {
+        const thumbnailUrl = new URL(top.TYPO3.settings.Resource.thumbnailUrl, window.origin);
+        thumbnailUrl.searchParams.set('identifier', item.uid.toString(10));
+
         const thumbnailElement = this.rootDocument.createElement('typo3-backend-thumbnail');
-        thumbnailElement.url = item.thumbnail;
+        thumbnailElement.url = thumbnailUrl.toString();
         thumbnailElement.size = ThumbnailSize.small;
         thumbnailElement.height = this.previewSize;
         thumbnailElement.width = this.previewSize;

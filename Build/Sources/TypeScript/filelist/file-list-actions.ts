@@ -44,7 +44,7 @@ export class FileListActionUtility {
       identifier: dataset.filecontextIdentifier,
       stateIdentifier: dataset.filecontextIdentifier,
       name: dataset.filecontextName,
-      thumbnail: null,
+      hasPreview: false,
       uid: dataset.filecontextUid ? parseInt(dataset.filecontextUid, 10) : null,
       metaUid: dataset.filecontextMetaUid ? parseInt(dataset.filecontextMetaUid, 10) : null,
     };
@@ -59,7 +59,7 @@ export class FileListActionUtility {
       identifier: element.dataset.filelistIdentifier,
       stateIdentifier: element.dataset.filelistStateIdentifier,
       name: element.dataset.filelistName,
-      thumbnail: ('filelistThumbnail' in element.dataset && element.dataset.filelistThumbnail.trim() !== '') ? element.dataset.filelistThumbnail : null,
+      hasPreview: 'filelistPreview' in element.dataset && element.dataset.filelistPreview.trim() === 'true',
       uid: element.dataset.filelistUid ? parseInt(element.dataset.filelistUid, 10) : null,
       metaUid: element.dataset.filelistMetaUid ? parseInt(element.dataset.filelistMetaUid, 10) : null,
     };

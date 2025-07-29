@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-export class Resource{constructor(t,i,s,e,h=null,l=null,n=null){this.type=t,this.identifier=i,this.stateIdentifier=s,this.name=e,this.thumbnail=h,this.uid=l,this.metaUid=n}}
+export class Resource{constructor(t,i,e,s,h=!1,r=null,n=null){this.type=t,this.identifier=i,this.stateIdentifier=e,this.name=s,this.hasPreview=h,this.uid=r,this.metaUid=n}}

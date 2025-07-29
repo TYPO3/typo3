@@ -34,7 +34,6 @@ class ResourceView
     public ?string $editContentUri;
     public ?string $editDataUri;
     public ?string $replaceUri;
-    public ?string $thumbnailUri;
 
     public bool $isDownloadable = true;
     public bool $isSelectable = true;

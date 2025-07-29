@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Filelist\Type;
+namespace TYPO3\CMS\Backend\Backend;
 
 /**
  * @internal
@@ -29,15 +29,20 @@ enum ThumbnailSize: string
 
     public function getDimensions(): array
     {
+        return array_map(static fn(int $size) => $size . 'm', $this->getBaseDimensions());
+    }
+
+    public function getCroppedDimensions(): array
+    {
+        return array_map(static fn(int $size) => $size . 'c', $this->getBaseDimensions());
+    }
+
+    private function getBaseDimensions(): array
+    {
         return match ($this) {
             self::DEFAULT, self::SMALL => [32, 32],
             self::MEDIUM => [64, 64],
             self::LARGE => [96, 96],
         };
-    }
-
-    public function getCroppedDimensions(): array
-    {
-        return array_map(static fn(int $size) => $size . 'c', $this->getDimensions());
     }
 }

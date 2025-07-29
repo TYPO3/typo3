@@ -94,6 +94,9 @@ declare namespace TYPO3 {
         [key: string]: string
       };
     }
+    export namespace Resource {
+      export const thumbnailUrl: string;
+    }
     export namespace ShowItem {
       export const moduleUrl: string;
     }
