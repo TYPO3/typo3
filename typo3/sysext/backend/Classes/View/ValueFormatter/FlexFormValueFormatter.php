@@ -182,13 +182,18 @@ readonly class FlexFormValueFormatter
                     GeneralUtility::callUserFunction($userFunc, $parameters);
                     $processedValue = $parameters['title'];
                 } else {
-                    // @todo Evaluate manipulation of $GLOBALS['TCA'] - This will at least
-                    //       no longer work when core is using TcaSchema consistently
-                    $GLOBALS['TCA'][$processingTableValue]['columns'][$processingColumnValue]['config'] = $elementStructure['config'];
                     $processedValue = BackendUtility::getProcessedValue(
                         $processingTableValue,
                         $processingColumnValue,
                         $valueStructure[$elementKey]['vDEF'] ?? '',
+                        0,
+                        false,
+                        false,
+                        0,
+                        true,
+                        0,
+                        [],
+                        $elementStructure['config']
                     );
                 }
                 $processedElements[$elementKey] = [
@@ -196,9 +201,6 @@ readonly class FlexFormValueFormatter
                     'value' => $processedValue,
                 ];
             }
-        }
-        if (!empty($GLOBALS['TCA'][$processingTableValue])) {
-            unset($GLOBALS['TCA'][$processingTableValue]);
         }
         return $processedElements;
     }

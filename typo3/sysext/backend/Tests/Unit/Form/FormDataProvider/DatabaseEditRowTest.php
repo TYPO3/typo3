@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow;
 use TYPO3\CMS\Core\Schema\Field\FieldCollection;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DatabaseEditRowTest extends UnitTestCase
@@ -44,6 +45,7 @@ final class DatabaseEditRowTest extends UnitTestCase
     #[Test]
     public function addDataRetrievesRecordInformationFromDatabase(): void
     {
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
         $input = [
             'tableName' => 'tt_content',
             'command' => 'edit',
@@ -62,6 +64,7 @@ final class DatabaseEditRowTest extends UnitTestCase
     #[Test]
     public function addDataThrowsExceptionIfRetrievedRowHasNoPid(): void
     {
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
         $input = [
             'tableName' => 'tt_content',
             'command' => 'edit',
@@ -141,6 +144,7 @@ final class DatabaseEditRowTest extends UnitTestCase
             ->setConstructorArgs([$tcaSchemaFactoryMock])
             ->onlyMethods(['getDatabaseRow'])
             ->getMock();
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
         $input = [
             'tableName' => 'tt_content',
             'command' => 'edit',

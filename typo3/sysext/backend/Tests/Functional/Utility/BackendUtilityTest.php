@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Utility;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -218,6 +219,9 @@ final class BackendUtilityTest extends FunctionalTestCase
         $platform = $this->get(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->getDatabasePlatform();
         $tableName = uniqid('table');
         $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'] = $enableColumns;
+        foreach ($enableColumns as $column) {
+            $GLOBALS['TCA'][$tableName]['columns'][$column]['config']['type'] = 'check';
+        }
         $this->get(TcaSchemaFactory::class)->load($GLOBALS['TCA'], true);
         $GLOBALS['SIM_ACCESS_TIME'] = 1234567890;
         $statement = BackendUtility::BEenableFields($tableName, $inverted);
@@ -503,5 +507,947 @@ final class BackendUtilityTest extends FunctionalTestCase
             ['title', 'createdon', 'uid', 'pid', 'updatedon', 'sorting', 't3ver_state', 't3ver_wsid', 't3ver_oid'],
             BackendUtility::getAllowedFieldsForTable('myTable', false)
         );
+    }
+
+    #[Test]
+    public function getProcessedValueForZeroStringIsZero(): void
+    {
+        $GLOBALS['TCA']['test_table'] = [
+            'columns' => [
+                'header' => [
+                    'config' => [
+                        'type' => 'input',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        self::assertEquals('0', BackendUtility::getProcessedValue('test_table', 'header', '0'));
+    }
+
+    #[Test]
+    public function getProcessedValueForDatetimeDbTypeDateNull(): void
+    {
+        $GLOBALS['TCA']['test_table'] = [
+            'columns' => [
+                'header' => [
+                    'config' => [
+                        'type' => 'datetime',
+                        'dbType' => 'date',
+                        'format' => 'date',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        self::assertSame('', BackendUtility::getProcessedValue('test_table', 'header', null));
+    }
+
+    #[Test]
+    public function getProcessedValueForDatetimeDbTypeDatetime(): void
+    {
+        $GLOBALS['TCA']['test_table'] = [
+            'columns' => [
+                'header' => [
+                    'config' => [
+                        'type' => 'datetime',
+                        'dbType' => 'datetime',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $value = '2022-09-23 00:03:00';
+        $expected = BackendUtility::datetime((int)strtotime($value));
+        self::assertSame($expected, BackendUtility::getProcessedValue('test_table', 'header', $value));
+    }
+
+    #[Test]
+    public function getProcessedValueForDatetimeDbTypeDatetimeNull(): void
+    {
+        $GLOBALS['TCA']['test_table'] = [
+            'columns' => [
+                'header' => [
+                    'config' => [
+                        'type' => 'datetime',
+                        'dbType' => 'datetime',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        self::assertSame('', BackendUtility::getProcessedValue('test_table', 'header', null));
+    }
+
+    #[Test]
+    public function getProcessedValueForDatetimeDbTypeDate(): void
+    {
+        $GLOBALS['TCA']['test_table'] = [
+            'columns' => [
+                'header' => [
+                    'config' => [
+                        'type' => 'datetime',
+                        'format' => 'date',
+                        'dbType' => 'date',
+                        'disableAgeDisplay' => true,
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $value = '2022-09-23';
+        $expected = BackendUtility::date((int)strtotime($value));
+        self::assertSame($expected, BackendUtility::getProcessedValue('test_table', 'header', $value));
+    }
+
+    /**
+     * @todo This is so wrong ...
+     */
+    #[Test]
+    public function getProcessedValueForFlex(): void
+    {
+        $GLOBALS['TCA']['test_table'] = [
+            'columns' => [
+                'pi_flexform' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => [
+                            'default' => '
+                                <T3FlexForms>
+                                    <sheets type="array">
+                                        <sDEF type="array">
+                                            <ROOT type="array">
+                                                <type>array</type>
+                                                <el type="array">
+                                                    <field index="foo" type="array">
+                                                        <label>foo</label>
+                                                        <config>
+                                                            <type>input</type>
+                                                        </config>
+                                                    </field>
+                                                </el>
+                                            </ROOT>
+                                        </sDEF>
+                                    </sheets>
+                                </T3FlexForms>',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $expectation = "\n"
+            . "\n    "
+            . "\n        "
+            . "\n            "
+            . "\n                "
+            . "\n                    bar"
+            . "\n                "
+            . "\n            "
+            . "\n        "
+            . "\n    "
+            . "\n";
+
+        self::assertSame($expectation, BackendUtility::getProcessedValue('test_table', 'pi_flexform', '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3FlexForms>
+    <data>
+        <sheet index="sDEF">
+            <language index="lDEF">
+                <field index="foo">
+                    <value index="vDEF">bar</value>
+                </field>
+            </language>
+        </sheet>
+    </data>
+</T3FlexForms>'));
+    }
+
+    #[Test]
+    public function getProcessedValueDisplaysAgeForDateInputFieldsIfSettingAbsent(): void
+    {
+        $GLOBALS['EXEC_TIME'] = mktime(0, 0, 0, 8, 30, 2015);
+
+        $GLOBALS['TCA']['test_table'] = [
+            'columns' => [
+                'date' => [
+                    'config' => [
+                        'type' => 'datetime',
+                        'format' => 'date',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        self::assertSame('2015-08-28 (-2 days)', BackendUtility::getProcessedValue('test_table', 'date', mktime(0, 0, 0, 8, 28, 2015)));
+    }
+
+    public static function inputTypeDateDisplayOptions(): array
+    {
+        return [
+            'typeSafe Setting' => [
+                true,
+                '2015-08-28',
+            ],
+            'non typesafe setting' => [
+                1,
+                '2015-08-28',
+            ],
+            'setting disabled typesafe' => [
+                false,
+                '2015-08-28 (-2 days)',
+            ],
+            'setting disabled not typesafe' => [
+                0,
+                '2015-08-28 (-2 days)',
+            ],
+        ];
+    }
+
+    #[DataProvider('inputTypeDateDisplayOptions')]
+    #[Test]
+    public function getProcessedValueHandlesAgeDisplayCorrectly(bool|int $input, string $expected): void
+    {
+        $GLOBALS['EXEC_TIME'] = mktime(0, 0, 0, 8, 30, 2015);
+
+        $GLOBALS['TCA']['test_table'] = [
+            'columns' => [
+                'date' => [
+                    'config' => [
+                        'type' => 'datetime',
+                        'format' => 'date',
+                        'disableAgeDisplay' => $input,
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        self::assertSame($expected, BackendUtility::getProcessedValue('test_table', 'date', mktime(0, 0, 0, 8, 28, 2015)));
+    }
+
+    #[Test]
+    public function getProcessedValueForCheckWithSingleItem(): void
+    {
+        $GLOBALS['TCA']['test_table'] = [
+            'columns' => [
+                'hide' => [
+                    'config' => [
+                        'type' => 'check',
+                        'items' => [
+                            [
+                                0 => '',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        self::assertSame('Yes', BackendUtility::getProcessedValue('test_table', 'hide', 1));
+    }
+
+    #[Test]
+    public function getProcessedValueForCheckWithSingleItemInvertStateDisplay(): void
+    {
+        $GLOBALS['TCA']['test_table'] = [
+            'columns' => [
+                'hide' => [
+                    'config' => [
+                        'type' => 'check',
+                        'items' => [
+                            [
+                                0 => '',
+                                'invertStateDisplay' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        self::assertSame('No', BackendUtility::getProcessedValue('test_table', 'hide', 1));
+    }
+
+    #[Test]
+    public function getProcessedValueReturnsLabelsForExistingValuesSolely(): void
+    {
+        $table = 'test_table';
+        $col = 'someColumn';
+        $GLOBALS['TCA'][$table] = [
+            'columns' => [
+                'someColumn' => [
+                    'config' => [
+                        'type' => 'select',
+                        'items' => [
+                            ['label' => 'aFooLabel', 'value' => 'foo'],
+                            ['label' => 'aBarLabel', 'value' => 'bar'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $label = BackendUtility::getProcessedValue($table, $col, 'foo,invalidKey,bar');
+        self::assertEquals('aFooLabel, aBarLabel', $label);
+    }
+
+    #[Test]
+    public function getProcessedValueReturnsLabelsFormItemsProcFuncUsingRow(): void
+    {
+        $table = 'test_table';
+        $col = 'someColumn';
+        $uid = 123;
+        $GLOBALS['TCA'][$table] = [
+            'columns' => [
+                'someColumn' => [
+                    'config' => [
+                        'type' => 'select',
+                        'itemsProcFunc' => static function (array $parameters, $pObj) {
+                            $parameters['items'] = [
+                                ['label' => $parameters['row']['title'], 'value' => 'foo'],
+                                ['label' => $parameters['row']['title2'], 'value' => 'bar'],
+                                ['label' => (string)$parameters['row']['uid'], 'value' => 'uidIsApplied'],
+                            ];
+                        },
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $row = [
+            'title' => 'itemTitle',
+            'title2' => 'itemTitle2',
+        ];
+
+        $label = BackendUtility::getProcessedValue(
+            $table,
+            $col,
+            'foo,invalidKey,bar,uidIsApplied',
+            0,
+            false,
+            false,
+            $uid,
+            true,
+            0,
+            $row
+        );
+        self::assertEquals($row['title'] . ', ' . $row['title2'] . ', ' . $uid, $label);
+    }
+
+    #[Test]
+    public function getProcessedValueReturnsPlainValueIfItemIsNotFound(): void
+    {
+        $table = 'test_table';
+        $col = 'someColumn';
+        $GLOBALS['TCA'][$table] = [
+            'columns' => [
+                'someColumn' => [
+                    'config' => [
+                        'type' => 'select',
+                        'items' => [
+                            '0' => ['label' => 'aFooLabel', 'value' => 'foo'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $label = BackendUtility::getProcessedValue($table, $col, 'invalidKey');
+        self::assertEquals('invalidKey', $label);
+    }
+
+    public static function getLabelFromItemlistReturnsCorrectFieldsDataProvider(): array
+    {
+        return [
+            'item set' => [
+                'table' => 'tt_content',
+                'col' => 'menu_type',
+                'key' => '1',
+                'tca' => [
+                    'columns' => [
+                        'menu_type' => [
+                            'config' => [
+                                'type' => 'select',
+                                'items' => [
+                                    ['label' => 'Item 1', 'value' => '0'],
+                                    ['label' => 'Item 2', 'value' => '1'],
+                                    ['label' => 'Item 3', 'value' => '3'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedLabel' => 'Item 2',
+            ],
+            'item set twice' => [
+                'table' => 'tt_content',
+                'col' => 'menu_type',
+                'key' => '1',
+                'tca' => [
+                    'columns' => [
+                        'menu_type' => [
+                            'config' => [
+                                'type' => 'select',
+                                'items' => [
+                                    ['label' => 'Item 1', 'value' => '0'],
+                                    ['label' => 'Item 2a', 'value' => '1'],
+                                    ['label' => 'Item 2b', 'value' => '1'],
+                                    ['label' => 'Item 3', 'value' => '3'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedLabel' => 'Item 2a',
+            ],
+            'item not found' => [
+                'table' => 'tt_content',
+                'col' => 'menu_type',
+                'key' => '5',
+                'tca' => [
+                    'columns' => [
+                        'menu_type' => [
+                            'config' => [
+                                'type' => 'select',
+                                'items' => [
+                                    ['label' => 'Item 1', 'value' => '0'],
+                                    ['label' => 'Item 2', 'value' => '1'],
+                                    ['label' => 'Item 3', 'value' => '2'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedLabel' => null,
+            ],
+            'item from itemsProcFunc' => [
+                'table' => 'tt_content',
+                'col' => 'menu_type',
+                'key' => '1',
+                'tca' => [
+                    'columns' => [
+                        'menu_type' => [
+                            'config' => [
+                                'type' => 'radio',
+                                'items' => [],
+                                'itemsProcFunc' => static function (array $parameters, $pObj) {
+                                    $parameters['items'] = [
+                                        ['label' => 'Item 1', 'value' => '0'],
+                                        ['label' => 'Item 2', 'value' => '1'],
+                                        ['label' => 'Item 3', 'value' => '2'],
+                                    ];
+                                },
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedLabel' => 'Item 2',
+            ],
+        ];
+    }
+
+    #[DataProvider('getLabelFromItemlistReturnsCorrectFieldsDataProvider')]
+    #[Test]
+    public function getLabelFromItemlistReturnsCorrectFields(
+        string $table,
+        string $col,
+        string $key,
+        array $tca,
+        ?string $expectedLabel = ''
+    ): void {
+        $GLOBALS['TCA'][$table] = $tca;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $label = BackendUtility::getLabelFromItemlist($table, $col, $key);
+        self::assertEquals($expectedLabel, $label);
+    }
+
+    public static function getLabelsFromItemsListDataProvider(): array
+    {
+        return [
+            'return value if found' => [
+                'foobar', // table
+                'someColumn', // col
+                'foo, bar', // keyList
+                [ // TCA
+                    'columns' => [
+                        'someColumn' => [
+                            'config' => [
+                                'type' => 'select',
+                                'items' => [
+                                    ['label' => 'aFooLabel', 'value' => 'foo'],
+                                    ['label' => 'aBarLabel', 'value' => 'bar'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [], // page TSconfig
+                'aFooLabel, aBarLabel', // expected
+            ],
+            'page TSconfig overrules TCA' => [
+                'foobar', // table
+                'someColumn', // col
+                'foo,bar,add', // keyList
+                [ // TCA
+                    'columns' => [
+                        'someColumn' => [
+                            'config' => [
+                                'type' => 'select',
+                                'items' => [
+                                    ['label' => 'aFooLabel', 'value' => 'foo'],
+                                    ['label' => 'aBarLabel', 'value' => 'bar'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [ // page TSconfig
+                    'addItems.' => ['add' => 'aNewLabel'],
+                    'altLabels.' => ['bar' => 'aBarDiffLabel'],
+                ],
+                'aFooLabel, aBarDiffLabel, aNewLabel', // expected
+            ],
+            'itemsProcFunc is evaluated' => [
+                'foobar', // table
+                'someColumn', // col
+                'foo,bar', // keyList
+                [ // TCA
+                    'columns' => [
+                        'someColumn' => [
+                            'config' => [
+                                'type' => 'select',
+                                'itemsProcFunc' => static function (array $parameters, $pObj) {
+                                    $parameters['items'] = [
+                                        ['label' => 'aFooLabel', 'value' => 'foo'],
+                                        ['label' => 'aBarLabel', 'value' => 'bar'],
+                                    ];
+                                },
+                            ],
+                        ],
+                    ],
+                ],
+                [],
+                'aFooLabel, aBarLabel', // expected
+            ],
+        ];
+    }
+
+    #[DataProvider('getLabelsFromItemsListDataProvider')]
+    #[Test]
+    public function getLabelsFromItemsListReturnsCorrectValue(
+        string $table,
+        string $col,
+        string $keyList,
+        array $tca,
+        array $pageTsConfig,
+        string $expectedLabel
+    ): void {
+        $GLOBALS['TCA'][$table] = $tca;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $label = BackendUtility::getLabelsFromItemsList($table, $col, $keyList, $pageTsConfig);
+        self::assertEquals($expectedLabel, $label);
+    }
+
+    public static function getCommonSelectFieldsReturnsCorrectFieldsDataProvider(): array
+    {
+        return [
+            'minimum fields' => [
+                'table' => 'test_table',
+                'prefix' => '',
+                'presetFields' => [],
+                'tca' => [],
+                'expectedFields' => 'uid,pid',
+            ],
+            'label set' => [
+                'table' => 'test_table',
+                'prefix' => '',
+                'presetFields' => [],
+                'tca' => [
+                    'ctrl' => [
+                        'label' => 'label',
+                    ],
+                ],
+                'expectedFields' => 'uid,pid,label',
+            ],
+            'label_alt set' => [
+                'table' => 'test_table',
+                'prefix' => '',
+                'presetFields' => [],
+                'tca' => [
+                    'ctrl' => [
+                        'label' => 'label', // @todo This is a bug, see #107143
+                        'label_alt' => 'label2,label3',
+                    ],
+                ],
+                'expectedFields' => 'uid,pid,label,label2,label3',
+            ],
+            'versioningWS set' => [
+                'table' => 'test_table',
+                'prefix' => '',
+                'presetFields' => [],
+                'tca' => [
+                    'ctrl' => [
+                        'versioningWS' => true,
+                    ],
+                ],
+                'expectedFields' => 'uid,pid,t3ver_state,t3ver_wsid',
+            ],
+            'selicon_field set' => [
+                'table' => 'test_table',
+                'prefix' => '',
+                'presetFields' => [],
+                'tca' => [
+                    'ctrl' => [
+                        'selicon_field' => 'field',
+                    ],
+                ],
+                'expectedFields' => 'uid,pid,field',
+            ],
+            'typeicon_column set' => [
+                'table' => 'test_table',
+                'prefix' => '',
+                'presetFields' => [],
+                'tca' => [
+                    'ctrl' => [
+                        'typeicon_column' => 'field',
+                    ],
+                ],
+                'expectedFields' => 'uid,pid,field',
+            ],
+            'enablecolumns set' => [
+                'table' => 'test_table',
+                'prefix' => '',
+                'presetFields' => [],
+                'tca' => [
+                    'ctrl' => [
+                        'enablecolumns' => [
+                            'disabled' => 'hidden',
+                            'starttime' => 'start',
+                            'endtime' => 'stop',
+                            'fe_group' => 'groups',
+                        ],
+                    ],
+                    'columns' => [
+                        'hidden' => ['config' => ['type' => 'check']],
+                        'start' => ['config' => ['type' => 'check']],
+                        'stop' => ['config' => ['type' => 'check']],
+                        'groups' => ['config' => ['type' => 'check']],
+                    ],
+                ],
+                'expectedFields' => 'uid,pid,hidden,start,stop,groups',
+            ],
+            'label set to uid' => [
+                'table' => 'test_table',
+                'prefix' => '',
+                'presetFields' => [],
+                'tca' => [
+                    'ctrl' => [
+                        'label' => 'uid',
+                    ],
+                ],
+                'expectedFields' => 'uid,pid',
+            ],
+            'prefix used' => [
+                'table' => 'test_table',
+                'prefix' => 'prefix.',
+                'presetFields' => [
+                    'preset',
+                ],
+                'tca' => [
+                    'ctrl' => [
+                        'label' => 'label',
+                        'label_alt' => 'label2,label3', ],
+                ],
+                'expectedFields' => 'prefix.preset,prefix.uid,prefix.pid,prefix.label,prefix.label2,prefix.label3',
+            ],
+        ];
+    }
+
+    #[DataProvider('getCommonSelectFieldsReturnsCorrectFieldsDataProvider')]
+    #[IgnoreDeprecations]
+    #[Test]
+    public function getCommonSelectFieldsReturnsCorrectFields(
+        string $table,
+        string $prefix,
+        array $presetFields,
+        array $tca,
+        string $expectedFields = ''
+    ): void {
+        $GLOBALS['TCA'][$table] = $tca;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $selectFields = BackendUtility::getCommonSelectFields($table, $prefix, $presetFields);
+        self::assertEquals($expectedFields, $selectFields);
+    }
+
+    #[Test]
+    public function getAllowedFieldsForTableReturnsEmptyArrayOnBrokenTca(): void
+    {
+        $GLOBALS['BE_USER'] = $this->setUpBackendUser(1);
+        self::assertEmpty(BackendUtility::getAllowedFieldsForTable('nonExistentTable', false));
+    }
+
+    #[IgnoreDeprecations]
+    #[Test]
+    public function returnNullForMissingTcaConfigInResolveFileReferences(): void
+    {
+        $tableName = 'test_table';
+        $fieldName = 'field_a';
+        $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] = [];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        self::assertNull(BackendUtility::resolveFileReferences($tableName, $fieldName, []));
+    }
+
+    public static function unfitResolveFileReferencesTableConfig(): array
+    {
+        return [
+            'invalid table' => [
+                [
+                    'type' => 'inline',
+                    'foreign_table' => 'table_b',
+                ],
+            ],
+            'empty table' => [
+                [
+                    'type' => 'inline',
+                    'foreign_table' => '',
+                ],
+            ],
+            'invalid type' => [
+                [
+                    'type' => 'select',
+                    'foreign_table' => 'sys_file_reference',
+                ],
+            ],
+            'empty type' => [
+                [
+                    'type' => '',
+                    'foreign_table' => 'sys_file_reference',
+                ],
+            ],
+            'empty' => [
+                [
+                    'type' => '',
+                    'foreign_table' => '',
+                ],
+            ],
+        ];
+    }
+
+    #[DataProvider('unfitResolveFileReferencesTableConfig')]
+    #[IgnoreDeprecations]
+    #[Test]
+    public function returnNullForUnfitTableConfigInResolveFileReferences(array $config): void
+    {
+        $tableName = 'test_table';
+        $fieldName = 'field_a';
+        $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] = $config;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        self::assertNull(BackendUtility::resolveFileReferences($tableName, $fieldName, []));
+    }
+
+    #[IgnoreDeprecations]
+    #[Test]
+    public function resolveFileReferencesReturnsEmptyResultForNoReferencesAvailable(): void
+    {
+        $tableName = 'test_table';
+        $fieldName = 'field_a';
+        $elementData = [
+            $fieldName => '',
+            'uid' => 42,
+        ];
+        $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] = [
+            'type' => 'file',
+            'foreign_table' => 'sys_file_reference',
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        self::assertEmpty(BackendUtility::resolveFileReferences($tableName, $fieldName, $elementData));
+    }
+
+    public static function calcAgeDataProvider(): array
+    {
+        return [
+            '366 days' => [
+                'seconds' => 60 * 60 * 24 * (365 + 1),
+                'expectedLabel' => '1 year',
+            ],
+            '365 days' => [
+                'seconds' => 60 * 60 * 24 * 365,
+                'expectedLabel' => '1 year',
+            ],
+            'Plural years' => [
+                'seconds' => 60 * 60 * 24 * (365 * 2 + 1),
+                'expectedLabel' => '2 yrs',
+            ],
+            'Negative 366 year' => [
+                'seconds' => 60 * 60 * 24 * (365 + 1) * -1,
+                'expectedLabel' => '-1 year',
+            ],
+            'Negative 365 days (not a year, because of leap year)' => [
+                'seconds' => 60 * 60 * 24 * 365 * -1,
+                'expectedLabel' => '-365 days',
+            ],
+            'Negative 2*365 days' => [
+                'seconds' => 60 * 60 * 24 * (365 * 2) * -1,
+                'expectedLabel' => '-1 year',
+            ],
+            'Negative 366 + 365 days' => [
+                'seconds' => 60 * 60 * 24 * (366 + 365) * -1,
+                'expectedLabel' => '-2 yrs',
+            ],
+            'Single day' => [
+                'seconds' => 60 * 60 * 24,
+                'expectedLabel' => '1 day',
+            ],
+            'Plural days' => [
+                'seconds' => 60 * 60 * 24 * 2,
+                'expectedLabel' => '2 days',
+            ],
+            'Single negative day' => [
+                'seconds' => 60 * 60 * 24 * -1,
+                'expectedLabel' => '-1 day',
+            ],
+            'Plural negative days' => [
+                'seconds' => 60 * 60 * 24 * 2 * -1,
+                'expectedLabel' => '-2 days',
+            ],
+            'Single hour' => [
+                'seconds' => 60 * 60,
+                'expectedLabel' => '1 hour',
+            ],
+            'Plural hours' => [
+                'seconds' => 60 * 60 * 2,
+                'expectedLabel' => '2 hrs',
+            ],
+            'Single negative hour' => [
+                'seconds' => 60 * 60 * -1,
+                'expectedLabel' => '-1 hour',
+            ],
+            'Plural negative hours' => [
+                'seconds' => 60 * 60 * 2 * -1,
+                'expectedLabel' => '-2 hrs',
+            ],
+            'Single minute' => [
+                'seconds' => 60,
+                'expectedLabel' => '1 min',
+            ],
+            'Plural minutes' => [
+                'seconds' => 60 * 2,
+                'expectedLabel' => '2 min',
+            ],
+            'Single negative minute' => [
+                'seconds' => 60 * -1,
+                'expectedLabel' => '-1 min',
+            ],
+            'Plural negative minutes' => [
+                'seconds' => 60 * 2 * -1,
+                'expectedLabel' => '-2 min',
+            ],
+            'Zero seconds' => [
+                'seconds' => 0,
+                'expectedLabel' => '0 min',
+            ],
+        ];
+    }
+
+    #[DataProvider('calcAgeDataProvider')]
+    #[Test]
+    public function calcAgeReturnsExpectedValues(int $seconds, string $expectedLabel): void
+    {
+        $GLOBALS['EXEC_TIME'] = mktime(0, 0, 0, 8, 30, 2015);
+        self::assertSame($expectedLabel, BackendUtility::calcAge($seconds));
+    }
+
+    #[Test]
+    public function dateTimeAgeReturnsCorrectValues(): void
+    {
+        $GLOBALS['EXEC_TIME'] = mktime(0, 0, 0, 3, 23, 2016);
+
+        self::assertSame('2016-03-24 00:00 (-1 day)', BackendUtility::dateTimeAge($GLOBALS['EXEC_TIME'] + 86400));
+        self::assertSame('2016-03-24 (-1 day)', BackendUtility::dateTimeAge($GLOBALS['EXEC_TIME'] + 86400, 1, 'date'));
+    }
+
+    #[Test]
+    public function purgeComputedPropertyNamesRemovesPropertiesStartingWithUnderscore(): void
+    {
+        $propertyNames = [
+            'uid',
+            'pid',
+            '_ORIG_PID',
+        ];
+        $computedPropertyNames = BackendUtility::purgeComputedPropertyNames($propertyNames);
+        self::assertSame(['uid', 'pid'], $computedPropertyNames);
+    }
+
+    #[Test]
+    public function purgeComputedPropertiesFromRecordRemovesPropertiesStartingWithUnderscore(): void
+    {
+        $record = [
+            'uid'       => 1,
+            'pid'       => 2,
+            '_ORIG_PID' => 1,
+        ];
+        $expected = [
+            'uid' => 1,
+            'pid' => 2,
+        ];
+        $computedProperties = BackendUtility::purgeComputedPropertiesFromRecord($record);
+        self::assertSame($expected, $computedProperties);
+    }
+
+    public static function splitTableUidDataProvider(): array
+    {
+        return [
+            'simple' => [
+                'pages_23',
+                ['pages', '23'],
+            ],
+            'complex' => [
+                'tt_content_13',
+                ['tt_content', '13'],
+            ],
+            'multiple underscores' => [
+                'tx_runaway_domain_model_crime_scene_1234',
+                ['tx_runaway_domain_model_crime_scene', '1234'],
+            ],
+            'no underscore' => [
+                'foo',
+                ['', 'foo'],
+            ],
+        ];
+    }
+
+    #[DataProvider('splitTableUidDataProvider')]
+    #[Test]
+    public function splitTableUid($input, $expected): void
+    {
+        $result = BackendUtility::splitTable_Uid($input);
+        self::assertSame($expected, $result);
+    }
+
+    #[Test]
+    public function wsMapIdReturnsLiveIdIfNoBeUserIsAvailable(): void
+    {
+        $GLOBALS['BE_USER'] = null;
+        $tableName = 'table_a';
+        $uid = 42;
+        self::assertSame(42, BackendUtility::wsMapId($tableName, $uid));
     }
 }

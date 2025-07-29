@@ -22,7 +22,6 @@ use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FlexFormValueFormatterTest extends FunctionalTestCase
@@ -39,7 +38,7 @@ final class FlexFormValueFormatterTest extends FunctionalTestCase
     public function flexFormDataWillBeDisplayedHumanReadable(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds'] = 'FILE:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/FlexFormDataStructure.xml';
-        GeneralUtility::makeInstance(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $expectedOutput = trim(file_get_contents(__DIR__ . '/Fixtures/FlexFormValueFormatter/ValuePreview.txt'));
         $flexFormData = file_get_contents(__DIR__ . '/Fixtures/FlexFormValueFormatter/FlexFormValue.xml');
 

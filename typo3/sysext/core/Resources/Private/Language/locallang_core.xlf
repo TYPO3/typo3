@@ -256,6 +256,15 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.showList">
 				<source>Show record list</source>
 			</trans-unit>
+			<trans-unit id="labels.ws.deletedElement">
+				<source>Deleted element!</source>
+			</trans-unit>
+			<trans-unit id="labels.ws.newLocation">
+				<source>NEW LOCATION (Move-to Pointer) WSID#%s</source>
+			</trans-unit>
+			<trans-unit id="labels.ws.newElement">
+				<source>New element!</source>
+			</trans-unit>
 			<trans-unit id="labels.days">
 				<source>days</source>
 			</trans-unit>

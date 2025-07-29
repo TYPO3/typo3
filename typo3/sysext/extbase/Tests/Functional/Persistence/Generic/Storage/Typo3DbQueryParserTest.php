@@ -623,6 +623,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         // simulate time for backend enable fields
         $GLOBALS['SIM_ACCESS_TIME'] = 1451779200;
         $GLOBALS['TCA']['tx_blogexample_domain_model_blog']['ctrl']['enablecolumns']['endtime'] = 'endtime_column';
+        $GLOBALS['TCA']['tx_blogexample_domain_model_blog']['columns']['endtime_column']['config']['type'] = 'datetime';
         $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);
         $tcaSchemaFactory->load($GLOBALS['TCA'], true);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);

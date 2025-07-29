@@ -415,12 +415,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
 
 		-
-			message: '#^Call to function is_array\(\) with non\-empty\-array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
-
-		-
 			message: '#^Call to function is_string\(\) with non\-falsy\-string will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1

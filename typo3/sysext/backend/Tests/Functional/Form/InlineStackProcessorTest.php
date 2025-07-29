@@ -15,31 +15,15 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Backend\Tests\Unit\Form;
+namespace TYPO3\CMS\Backend\Tests\Functional\Form;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class InlineStackProcessorTest extends UnitTestCase
+final class InlineStackProcessorTest extends FunctionalTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $cacheManagerMock = $this->createMock(CacheManager::class);
-        $cacheMock = $this->createMock(FrontendInterface::class);
-        $cacheManagerMock->method('getCache')->with('runtime')->willReturn($cacheMock);
-        $cacheMock->method('get')->withAnyParameters()->willReturn(false);
-        $cacheMock->method('set')->withAnyParameters()->willReturn(false);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
-    }
-
     public static function structureStringIsParsedDataProvider(): array
     {
         return [
