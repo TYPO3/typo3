@@ -2328,7 +2328,7 @@ class DatabaseRecordList
             $this->table = 'pages';
             $this->showOnlyTranslatedRecords = true;
         }
-        $this->page = MathUtility::forceIntegerInRange((int)$pointer, 1, 1000);
+        $this->page = MathUtility::forceIntegerInRange((int)$pointer, 1, 10000000);
         $this->showLimit = MathUtility::forceIntegerInRange((int)$showLimit, 0, 10000);
         $this->searchString = trim($search);
         $this->searchLevels = (int)$levels;
