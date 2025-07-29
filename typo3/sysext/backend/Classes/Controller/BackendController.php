@@ -147,6 +147,7 @@ class BackendController
 
         // @todo: We can not put this into the template since PageRendererViewHelper does not deal with namespace in addInlineSettings argument
         $pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('show_item'));
+        $pageRenderer->addInlineSetting('Resource', 'thumbnailUrl', (string)$this->uriBuilder->buildUriFromRoute('resource_request_thumbnail'));
         $pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_history'));
         $pageRenderer->addInlineSetting('NewRecord', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('db_new'));
         $pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
