@@ -281,7 +281,7 @@ class RedisSessionBackend implements SessionBackendInterface, HashableSessionBac
         }
 
         if (isset($this->configuration['database'])
-            && $this->configuration['database'] > 0
+            && $this->configuration['database'] >= 0
             && !$this->redis->select($this->configuration['database'])
         ) {
             throw new \RuntimeException(
