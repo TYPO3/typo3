@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Beuser\Domain\Repository;
 
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Beuser\Domain\Model\Demand;
+use TYPO3\CMS\Beuser\Event\AfterBackendUserListConstraintsAssembledFromDemandEvent;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
@@ -105,6 +106,13 @@ class BackendUserRepository extends Repository
                 $query->like('usergroup', '%,' . $demand->getBackendUserGroup() . ',%'),
             );
         }
+        $constraints = $this->eventDispatcher->dispatch(
+            new AfterBackendUserListConstraintsAssembledFromDemandEvent(
+                $demand,
+                $query,
+                $constraints
+            )
+        )->constraints;
         $query->matching($query->logicalAnd(...$constraints));
 
         /** @var QueryResult $result */

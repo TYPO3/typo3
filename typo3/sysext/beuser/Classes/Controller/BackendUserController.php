@@ -32,6 +32,8 @@ use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository;
 use TYPO3\CMS\Beuser\Domain\Repository\FileMountRepository;
+use TYPO3\CMS\Beuser\Event\AfterBackendGroupFilterListIsAssembledEvent;
+use TYPO3\CMS\Beuser\Event\AfterFilemountsListIsAssembledEvent;
 use TYPO3\CMS\Beuser\Service\UserInformationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
@@ -39,6 +41,7 @@ use TYPO3\CMS\Core\Http\AllowedMethodsTrait;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -47,7 +50,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
-use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -163,6 +165,12 @@ class BackendUserController extends ActionController
         $backendUsers = $this->backendUserRepository->findDemanded($demand);
         $paginator = new QueryResultPaginator($backendUsers, $currentPage, 50);
         $pagination = new SimplePagination($paginator);
+        $backendUserGroups = $this->eventDispatcher->dispatch(
+            new AfterBackendGroupFilterListIsAssembledEvent(
+                $this->request,
+                array_merge([''], $this->backendUserGroupRepository->findAll()->toArray())
+            )
+        )->backendGroups;
 
         $this->moduleTemplate->assignMultiple([
             'onlineBackendUsers' => $this->getOnlineBackendUsers(),
@@ -170,7 +178,7 @@ class BackendUserController extends ActionController
             'paginator' => $paginator,
             'pagination' => $pagination,
             'totalAmountOfBackendUsers' => $backendUsers->count(),
-            'backendUserGroups' => array_merge([''], $this->backendUserGroupRepository->findAll()->toArray()),
+            'backendUserGroups' => $backendUserGroups,
             'compareUserUidList' => array_combine($compareUserList, $compareUserList),
             'currentUserUid' => $backendUser->user['uid'] ?? null,
             'compareUserList' => !empty($compareUserList) ? $this->backendUserRepository->findByUidList($compareUserList) : '',
@@ -600,18 +608,22 @@ class BackendUserController extends ActionController
 
     protected function filemountsAction(int $currentPage = 1): ResponseInterface
     {
-        /** @var QueryResultInterface $filemounts */
-        $filemounts = $this->fileMountRepository->findAll();
+        $filemounts = $this->eventDispatcher->dispatch(
+            new AfterFilemountsListIsAssembledEvent(
+                $this->request,
+                $this->fileMountRepository->findAll()->toArray()
+            )
+        )->filemounts;
 
         $this->addMainMenu('filemounts');
 
-        $paginator = new QueryResultPaginator($filemounts, $currentPage, 50);
+        $paginator = new ArrayPaginator($filemounts, $currentPage, 50);
         $pagination = new SimplePagination($paginator);
         $this->moduleTemplate->assignMultiple(
             [
                 'paginator' => $paginator,
                 'pagination' => $pagination,
-                'totalAmountOfFilemounts' => $filemounts->count(),
+                'totalAmountOfFilemounts' => count($filemounts),
             ]
         );
 

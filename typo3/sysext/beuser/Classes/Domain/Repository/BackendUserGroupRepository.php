@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Beuser\Domain\Repository;
 
 use TYPO3\CMS\Beuser\Domain\Dto\BackendUserGroup;
+use TYPO3\CMS\Beuser\Event\AfterBackendGroupListConstraintsAssembledFromDemandEvent;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -100,7 +101,13 @@ class BackendUserGroupRepository extends Repository
                 $constraints = $searchConstraints;
             }
         }
-
+        $constraints = $this->eventDispatcher->dispatch(
+            new AfterBackendGroupListConstraintsAssembledFromDemandEvent(
+                $backendUserGroupDto,
+                $query,
+                $constraints
+            )
+        )->constraints;
         $query->matching($query->logicalAnd(...$constraints));
         /** @var QueryResult $result */
         $result = $query->execute();

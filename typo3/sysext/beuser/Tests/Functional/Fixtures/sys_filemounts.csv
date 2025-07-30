@@ -1,0 +1,7 @@
+"sys_file_storage"
+,"uid","pid","tstamp","crdate","deleted","description","is_public","processingfolder","name","is_browsable","is_default","is_writable","is_online","auto_extract_metadata","driver","configuration"
+,1,0,1761590097,1761590097,0,"",1,NULL,"fileadmin",1,1,1,1,1,"Local",""
+"sys_filemounts"
+,"uid","pid","tstamp","deleted","hidden","sorting","description","title","identifier","read_only"
+,1,0,1761590304,0,0,256,"","Default","1:/",0
+,2,0,1761590304,0,0,256,"","Other default","1:/",0
