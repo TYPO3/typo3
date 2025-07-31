@@ -17,38 +17,64 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Backend\Event;
 
+use TYPO3\CMS\Backend\Backend\ToolbarItems\ClearCacheToolbarItem;
+
 /**
  * An event to modify the clear cache actions, shown in the TYPO3 Backend top toolbar
+ *
+ * @phpstan-import-type CacheAction from ClearCacheToolbarItem
  */
 final class ModifyClearCacheActionsEvent
 {
+    /**
+     * @param list<CacheAction> $cacheActions
+     * @param list<non-empty-string> $cacheActionIdentifiers
+     */
     public function __construct(private array $cacheActions, private array $cacheActionIdentifiers) {}
 
+    /**
+     * @param CacheAction $cacheAction
+     */
     public function addCacheAction(array $cacheAction): void
     {
         $this->cacheActions[] = $cacheAction;
     }
 
+    /**
+     * @param list<CacheAction> $cacheActions
+     */
     public function setCacheActions(array $cacheActions): void
     {
         $this->cacheActions = $cacheActions;
     }
 
+    /**
+     * @return list<CacheAction>
+     */
     public function getCacheActions(): array
     {
         return $this->cacheActions;
     }
 
+    /**
+     * @param non-empty-string $cacheActionIdentifier
+     */
     public function addCacheActionIdentifier(string $cacheActionIdentifier): void
     {
         $this->cacheActionIdentifiers[] = $cacheActionIdentifier;
     }
 
+    /**
+     * @param list<non-empty-string> $cacheActionIdentifiers
+     */
     public function setCacheActionIdentifiers(array $cacheActionIdentifiers): void
     {
         $this->cacheActionIdentifiers = $cacheActionIdentifiers;
     }
 
+    /**
+     * @return list<non-empty-string>
+     */
     public function getCacheActionIdentifiers(): array
     {
         return $this->cacheActionIdentifiers;

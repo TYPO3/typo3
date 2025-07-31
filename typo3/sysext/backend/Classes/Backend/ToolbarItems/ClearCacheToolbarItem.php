@@ -31,12 +31,29 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
  * Render cache clearing toolbar item.
  * Adds a dropdown if there are more than one item to clear (usually for admins to render the flush all caches).
  * The dropdown items can be manipulated using ModifyClearCacheActionsEvent.
+ *
+ * @phpstan-type CacheAction array{
+ *     href: non-empty-string,
+ *     id: non-empty-string,
+ *     iconIdentifier: non-empty-string,
+ *     title: non-empty-string,
+ *     description?: non-empty-string,
+ *     severity?: 'notice'|'info'|'succcess'|'warning'|'error',
+ * }
  */
 #[Autoconfigure(public: true)]
 class ClearCacheToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemInterface
 {
+    /**
+     * @var list<CacheAction>
+     */
     protected array $cacheActions = [];
+
+    /**
+     * @var list<non-empty-string>
+     */
     protected array $optionValues = [];
+
     private ServerRequestInterface $request;
 
     public function __construct(
