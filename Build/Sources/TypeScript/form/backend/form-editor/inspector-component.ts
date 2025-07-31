@@ -1248,6 +1248,7 @@ export function renderCountrySelectEditor(
     .getTemplatePropertyDomElement('selectOptions', editorHtml);
 
   const propertyData: Record<string, string> = getCurrentlySelectedFormElement().get(propertyPath) || {};
+  validateCollectionElement(propertyPath, editorHtml);
 
   const options = $('option', selectElement);
   selectElement.empty();
@@ -1274,6 +1275,7 @@ export function renderCountrySelectEditor(
     });
 
     getCurrentlySelectedFormElement().set(propertyPath, selectValues);
+    validateCollectionElement(propertyPath, editorHtml);
   });
 }
 
@@ -1330,6 +1332,7 @@ export function renderSingleSelectEditor(
     .getTemplatePropertyDomElement('selectOptions', editorHtml);
 
   const propertyData = getCurrentlySelectedFormElement().get(propertyPath);
+  validateCollectionElement(propertyPath, editorHtml);
 
   for (let i = 0, len = editorConfiguration.selectOptions.length; i < len; ++i) {
     let option;
@@ -1345,6 +1348,7 @@ export function renderSingleSelectEditor(
 
   selectElement.on('change', function(this: HTMLSelectElement) {
     getCurrentlySelectedFormElement().set(propertyPath, $('option:selected', $(this)).data('value'));
+    validateCollectionElement(propertyPath, editorHtml);
   });
 }
 
@@ -1401,6 +1405,7 @@ export function renderMultiSelectEditor(
     .getTemplatePropertyDomElement('selectOptions', editorHtml);
 
   const propertyData: Record<string, string> = getCurrentlySelectedFormElement().get(propertyPath) || {};
+  validateCollectionElement(propertyPath, editorHtml);
 
   for (let i = 0, len1 = editorConfiguration.selectOptions.length; i < len1; ++i) {
     let option = null;
@@ -1427,6 +1432,7 @@ export function renderMultiSelectEditor(
     });
 
     getCurrentlySelectedFormElement().set(propertyPath, selectValues);
+    validateCollectionElement(propertyPath, editorHtml);
   });
 }
 
@@ -2018,9 +2024,11 @@ export function renderTextareaEditor(
 
   const propertyData = getCurrentlySelectedFormElement().get(propertyPath);
   $('textarea', $(editorHtml)).val(propertyData);
+  validateCollectionElement(propertyPath, editorHtml);
 
   $('textarea', $(editorHtml)).on('keyup paste', function(this: HTMLTextAreaElement) {
     getCurrentlySelectedFormElement().set(propertyPath, $(this).val());
+    validateCollectionElement(propertyPath, editorHtml);
   });
 }
 
