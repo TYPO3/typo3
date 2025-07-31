@@ -129,7 +129,7 @@ function getPublisherSubscriber(): PublisherSubscriber {
 function addPropertyValidators(): void {
   getFormEditorApp().addPropertyValidationValidator('NotEmpty', function(formElement, propertyPath) {
     const value = formElement.get(propertyPath);
-    if (value === '' || $.isArray(value) && !value.length) {
+    if (!value || value === '' || $.isArray(value) && !value.length) {
       return getFormEditorApp().getFormElementPropertyValidatorDefinition('NotEmpty').errorMessage || 'invalid value';
     }
     return undefined;
