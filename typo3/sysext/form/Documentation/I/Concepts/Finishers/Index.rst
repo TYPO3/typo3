@@ -115,6 +115,7 @@ To customize the templates being used following options can be set:
 A finisher configuration could look like this:
 
 .. code-block:: yaml
+   :caption: e.g. EXT:my_site_package/Resources/Private/Forms/Contact.yaml (or a file like fileadmin/form_definitions/contact.form.yaml)
 
    identifier: contact
    type: Form
@@ -174,6 +175,7 @@ database table.
 Here is an example for adding uploads to ext:news (fal_related_files and fal_media).
 
 .. code-block:: yaml
+   :caption: e.g. EXT:my_site_package/Resources/Private/Forms/Backend.yaml (or a file like fileadmin/form_definitions/contact.form.yaml)
 
   -
     identifier: SaveToDatabase
@@ -269,6 +271,7 @@ Finishers are defined as part of a ``prototype`` within a
 utilized to load the finisher implementation.
 
 .. code-block:: yaml
+   :caption: e.g. EXT:my_site_package/Resources/Private/Forms/Backend.yaml (or a file like fileadmin/form_definitions/contact.form.yaml)
 
    prototypes:
      standard:
@@ -283,6 +286,7 @@ be overridden using the ``form definition``.
 Define the default value:
 
 .. code-block:: yaml
+   :caption: e.g. EXT:my_site_package/Resources/Private/Forms/Backend.yaml (or a file like fileadmin/form_definitions/contact.form.yaml)
 
    prototypes:
      standard:
@@ -295,6 +299,7 @@ Define the default value:
 Override the option using the ``form definition``:
 
 .. code-block:: yaml
+   :caption: e.g. EXT:my_site_package/Resources/Private/Forms/Contact.yaml (or a file like fileadmin/form_definitions/contact.form.yaml)
 
    identifier: sample-form
    label: 'Simple Contact Form'
@@ -372,6 +377,7 @@ within the finisher configuration. Check out the following example to
 get the whole idea.
 
 .. code-block:: yaml
+   :caption: e.g. EXT:my_site_package/Resources/Private/Forms/Contact.yaml (or a file like fileadmin/form_definitions/contact.form.yaml)
 
    identifier: simple-contact-form
    label: 'Simple Contact Form'
@@ -498,6 +504,7 @@ Assuming that a finisher called 'Custom' sets data as follows::
 in any other finisher.
 
 .. code-block:: yaml
+   :caption: e.g. EXT:my_site_package/Resources/Private/Forms/Contact.yaml (or a file like fileadmin/form_definitions/contact.form.yaml)
 
    identifier: sample-form
    label: 'Simple Contact Form'
@@ -526,6 +533,7 @@ form editor GUI to let your backend users configure it visually. Add the
 following to the backend yaml setup:
 
 .. code-block:: yaml
+   :caption: e.g. EXT:my_site_package/Resources/Private/Forms/Backend.yaml (or a file like fileadmin/form_definitions/contact.form.yaml)
 
    prototypes:
      standard:
@@ -599,6 +607,6 @@ Make sure the setup file is registered for the backend in a :file:`EXT:my_extens
 
     ExtensionManagementUtility::addTypoScriptSetup('
         module.tx_form.settings.yamlConfigurations {
-            123456789 = EXT:yourExtension/Configuration/Form/Backend.yaml
+            123456789 = EXT:my_site_package/Resources/Private/Forms/Backend.yaml
         }
     ');
