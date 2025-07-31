@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\DataHandling\SoftReference;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\DataHandling\Event\AppendLinkHandlerElementsEvent;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\File;
@@ -29,6 +31,13 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class TypolinkTagSoftReferenceParser extends AbstractSoftReferenceParser
 {
+    protected EventDispatcherInterface $eventDispatcher;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
     public function parse(string $table, string $field, int $uid, string $content, string $structurePath = ''): SoftReferenceParserResult
     {
         $this->setTokenIdBasePrefix($table, (string)$uid, $field, $structurePath);
@@ -110,6 +119,16 @@ class TypolinkTagSoftReferenceParser extends AbstractSoftReferenceParser
                             'tokenID' => $token,
                             'tokenValue' => (string)($linkDetails['telephone'] ?? ''),
                         ];
+                    } else {
+                        $token = $this->makeTokenID((string)$key);
+                        $event = new AppendLinkHandlerElementsEvent($linkDetails, $content, $elements, $key, $token);
+                        $this->eventDispatcher->dispatch($event);
+
+                        if (!$event->isResolved()) {
+                            continue;
+                        }
+
+                        $elements = $event->getElements();
                     }
                 } catch (\Exception $e) {
                     // skip invalid links

@@ -41,7 +41,7 @@ abstract class AbstractSoftReferenceParserTestCase extends UnitTestCase
         $softReferenceParserFactory = new SoftReferenceParserFactory($runtimeCache, new NullLogger());
         $softReferenceParserFactory->addParser(new SubstituteSoftReferenceParser(), 'substitute');
         $softReferenceParserFactory->addParser(new TypolinkSoftReferenceParser(new NoopEventDispatcher()), 'typolink');
-        $softReferenceParserFactory->addParser(new TypolinkTagSoftReferenceParser(), 'typolink_tag');
+        $softReferenceParserFactory->addParser(new TypolinkTagSoftReferenceParser(new NoopEventDispatcher()), 'typolink_tag');
         $softReferenceParserFactory->addParser(new ExtensionPathSoftReferenceParser(), 'ext_fileref');
         $softReferenceParserFactory->addParser(new EmailSoftReferenceParser(), 'email');
         $softReferenceParserFactory->addParser(new UrlSoftReferenceParser(), 'url');
