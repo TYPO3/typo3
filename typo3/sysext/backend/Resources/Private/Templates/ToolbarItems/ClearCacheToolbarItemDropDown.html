@@ -5,7 +5,7 @@
         <li>
             <a href="{cacheAction.href}" class="dropdown-item t3js-toolbar-cache-flush-action" aria-describedby="{cacheAction.id}-description">
                 <span class="dropdown-item-columns">
-                    <span class="dropdown-item-column dropdown-item-column-icon text-{cacheAction.severity}">
+                    <span class="dropdown-item-column dropdown-item-column-icon {f:if(condition: cacheAction.severity, then: 'text-{cacheAction.severity}')}">
                         <core:icon identifier="{cacheAction.iconIdentifier}" size="small" />
                     </span>
                     <span class="dropdown-item-column dropdown-item-column-text">
