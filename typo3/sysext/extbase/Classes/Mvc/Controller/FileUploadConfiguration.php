@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
-use TYPO3\CMS\Extbase\Validation\Validator\FileNameValidator;
+use TYPO3\CMS\Extbase\Validation\Validator\FileExtensionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\FileSizeValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ImageDimensionsValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\MimeTypeValidator;
@@ -56,7 +56,6 @@ class FileUploadConfiguration
             throw new \RuntimeException('Extbase file upload must at least define one validation rule.', 1711947120);
         }
 
-        $this->addFileNameValidator();
         $this->initializeUploadValidation($configuration['validation']);
 
         if (isset($configuration['uploadFolder']) && $configuration['uploadFolder'] !== '') {
@@ -92,14 +91,6 @@ class FileUploadConfiguration
     public function resetValidators(): self
     {
         $this->validators = [];
-        $this->addFileNameValidator();
-        return $this;
-    }
-
-    public function addFileNameValidator(): self
-    {
-        $denyPhpUploadValidator = GeneralUtility::makeInstance(FileNameValidator::class);
-        $this->addValidator($denyPhpUploadValidator);
         return $this;
     }
 
@@ -246,6 +237,14 @@ class FileUploadConfiguration
             $mimeTypeValidator = GeneralUtility::makeInstance(MimeTypeValidator::class);
             $mimeTypeValidator->setOptions($validationConfiguration['mimeType']);
             $this->addValidator($mimeTypeValidator);
+        }
+
+        if (($validationConfiguration['fileExtension'] ?? false) &&
+            is_array($validationConfiguration['fileExtension'])
+        ) {
+            $fileExtensionValidator = GeneralUtility::makeInstance(FileExtensionValidator::class);
+            $fileExtensionValidator->setOptions($validationConfiguration['fileExtension']);
+            $this->addValidator($fileExtensionValidator);
         }
 
         if (($validationConfiguration['fileSize'] ?? false) &&

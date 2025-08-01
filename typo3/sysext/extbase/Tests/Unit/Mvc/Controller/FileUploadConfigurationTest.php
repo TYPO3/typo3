@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Mvc\Controller\FileUploadConfiguration;
-use TYPO3\CMS\Extbase\Validation\Validator\FileNameValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\FileSizeValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\MimeTypeValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
@@ -59,15 +58,6 @@ final class FileUploadConfigurationTest extends UnitTestCase
     {
         $fileUploadConfiguration = new FileUploadConfiguration('myProperty');
         self::assertEmpty($fileUploadConfiguration->getValidators());
-    }
-
-    #[Test]
-    public function getValidatorsContainsFileNameValidatorWhenValidatorsAreReset(): void
-    {
-        $fileUploadConfiguration = new FileUploadConfiguration('myProperty');
-        $fileUploadConfiguration->resetValidators();
-        self::assertNotEmpty($fileUploadConfiguration->getValidators());
-        self::assertInstanceOf(FileNameValidator::class, $fileUploadConfiguration->getValidators()[0]);
     }
 
     #[Test]
@@ -200,8 +190,7 @@ final class FileUploadConfigurationTest extends UnitTestCase
                 'allowedMimeTypes' => ['image/jpeg', 'image/png'],
             ],
         ]);
-        self::assertInstanceOf(FileNameValidator::class, $fileUploadConfiguration->getValidators()[0]);
-        self::assertInstanceOf(MimeTypeValidator::class, $fileUploadConfiguration->getValidators()[1]);
+        self::assertInstanceOf(MimeTypeValidator::class, $fileUploadConfiguration->getValidators()[0]);
     }
 
     #[Test]
@@ -214,8 +203,7 @@ final class FileUploadConfigurationTest extends UnitTestCase
                 'mimeType' => ['allowedMimeTypes' => ['image/jpeg', 'image/png']],
             ],
         ]);
-        self::assertInstanceOf(FileNameValidator::class, $fileUploadConfiguration->getValidators()[0]);
-        self::assertInstanceOf(MimeTypeValidator::class, $fileUploadConfiguration->getValidators()[1]);
+        self::assertInstanceOf(MimeTypeValidator::class, $fileUploadConfiguration->getValidators()[0]);
     }
 
     #[Test]
@@ -228,8 +216,7 @@ final class FileUploadConfigurationTest extends UnitTestCase
                 'fileSize' => ['minimum' => '0K', 'maximum' => '2M'],
             ],
         ]);
-        self::assertInstanceOf(FileNameValidator::class, $fileUploadConfiguration->getValidators()[0]);
-        self::assertInstanceOf(FileSizeValidator::class, $fileUploadConfiguration->getValidators()[1]);
+        self::assertInstanceOf(FileSizeValidator::class, $fileUploadConfiguration->getValidators()[0]);
     }
 
     #[Test]

@@ -19,8 +19,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Resource\MimeTypeDetector;
-use TYPO3\CMS\Core\Type\File\FileInfo;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 
@@ -103,11 +101,6 @@ final class MimeTypeValidator extends AbstractValidator
                 }
             }
         }
-    }
-
-    protected function getFileInfo(string $filePath): FileInfo
-    {
-        return GeneralUtility::makeInstance(FileInfo::class, $filePath);
     }
 
     /**

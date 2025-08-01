@@ -66,6 +66,12 @@
 			<trans-unit id="validator.url.notvalid">
 				<source>The given subject is no valid URL.</source>
 			</trans-unit>
+			<trans-unit id="validation.fileextension.notallowed">
+				<source>The file extension '%s' is not allowed.</source>
+			</trans-unit>
+			<trans-unit id="validation.fileextensionmimetypeconsistency.notallowed">
+				<source>The resolved media type "%s" is not allowed for file extension "%s".</source>
+			</trans-unit>
 			<trans-unit id="validation.mimetype.notallowed">
 				<source>The mime type '%s' is not allowed.</source>
 			</trans-unit>
