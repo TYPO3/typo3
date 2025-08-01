@@ -913,12 +913,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Schema/Parser/Lexer.php
 
 		-
-			message: '#^Using nullsafe property access "\?\-\>type" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Schema/Parser/Parser.php
-
-		-
 			message: '#^Parameter \#1 \$array \(list\<Doctrine\\DBAL\\Schema\\Column\>\) of array_values is already a list, call has no effect\.$#'
 			identifier: arrayValues.list
 			count: 2
@@ -1091,12 +1085,6 @@ parameters:
 			identifier: parameterByRef.type
 			count: 1
 			path: ../../typo3/sysext/core/Classes/IO/CsvStreamFilter.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Imaging/IconFactory.php
 
 		-
 			message: '#^Method TYPO3\\CMS\\Core\\Imaging\\ImageManipulation\\CropVariant\:\:addCoverArea\(\) has TYPO3\\CMS\\Core\\Imaging\\ImageManipulation\\InvalidConfigurationException in PHPDoc @throws tag but it''s not thrown\.$#'
@@ -2737,12 +2725,6 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/Domain/Runtime/FormRuntime.php
 
 		-
-			message: '#^Using nullsafe property access "\?\-\>data" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Runtime/FormRuntime.php
-
-		-
 			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Resource\\ResourceInterface\:\:getCombinedIdentifier\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -3605,18 +3587,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: ../../typo3/sysext/styleguide/Classes/ViewHelpers/ExampleViewHelper.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>constants" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: ../../typo3/sysext/tstemplate/Classes/Controller/AbstractTemplateModuleController.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>setup" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: ../../typo3/sysext/tstemplate/Classes/Controller/AbstractTemplateModuleController.php
 
 		-
 			message: '#^Instanceof between TYPO3\\CMS\\Core\\Site\\Entity\\Site and TYPO3\\CMS\\Core\\Site\\Entity\\Site will always evaluate to true\.$#'

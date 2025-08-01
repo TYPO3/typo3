@@ -112,7 +112,7 @@ final class Parser
         $this->statement = $statement;
         $this->lexer->setInput($statement);
         $this->lexer->moveNext();
-        if (($this->lexer->lookahead?->type ?? null) !== Lexer::T_CREATE) {
+        if (($this->lexer->lookahead->type ?? null) !== Lexer::T_CREATE) {
             $this->syntaxError('CREATE');
         }
         $createStatement = $this->createStatement();

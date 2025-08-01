@@ -46,7 +46,7 @@ readonly class IconFactory
         ?string $overlayIdentifier = null,
         ?IconState $state = null
     ): Icon {
-        $cacheIdentifier = 'icon-factory-' . hash('xxh3', $identifier . $size->value . $overlayIdentifier . ($state?->value ?? ''));
+        $cacheIdentifier = 'icon-factory-' . hash('xxh3', $identifier . $size->value . $overlayIdentifier . ($state->value ?? ''));
         $icon = $this->runtimeCache->get($cacheIdentifier);
         if ($icon instanceof Icon) {
             return $icon;

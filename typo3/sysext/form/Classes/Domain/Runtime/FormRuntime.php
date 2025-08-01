@@ -1071,7 +1071,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             }
         }
 
-        $contentObjectData = $this->request->getAttribute('currentContentObject')?->data ?? [];
+        $contentObjectData = $this->request->getAttribute('currentContentObject')->data ?? [];
 
         return GeneralUtility::makeInstance(
             Resolver::class,
