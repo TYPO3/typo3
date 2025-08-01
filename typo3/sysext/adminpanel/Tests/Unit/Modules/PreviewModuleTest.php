@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Adminpanel\Modules\PreviewModule;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
+use TYPO3\CMS\Core\Authentication\GroupResolver;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -70,6 +71,7 @@ final class PreviewModuleTest extends UnitTestCase
             $this->createMock(CacheManager::class),
             $this->createMock(ViewFactoryInterface::class),
             $this->createMock(LoggerInterface::class),
+            $this->createMock(GroupResolver::class),
         );
         $previewModule->injectConfigurationService($configurationService);
         $previewModule->enrich(new ServerRequest());
@@ -111,6 +113,7 @@ final class PreviewModuleTest extends UnitTestCase
             $this->createMock(CacheManager::class),
             $this->createMock(ViewFactoryInterface::class),
             $this->createMock(LoggerInterface::class),
+            $this->createMock(GroupResolver::class),
         );
         $previewModule->injectConfigurationService($configurationService);
         $previewModule->enrich($request);

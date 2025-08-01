@@ -26,6 +26,7 @@ use TYPO3\CMS\Adminpanel\ModuleApi\PageSettingsProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\RequestEnricherInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
 use TYPO3\CMS\Adminpanel\Repositories\FrontendGroupsRepository;
+use TYPO3\CMS\Core\Authentication\GroupResolver;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
@@ -65,6 +66,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         protected readonly CacheManager $cacheManager,
         private readonly ViewFactoryInterface $viewFactory,
         private readonly LoggerInterface $logger,
+        private readonly GroupResolver $groupResolver,
     ) {}
 
     public function getIconIdentifier(): string
@@ -194,14 +196,12 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         if ($simulateUserGroup) {
             $frontendUser = $request->getAttribute('frontend.user');
             $frontendUser->user[$frontendUser->usergroup_column] = (string)$simulateUserGroup;
-            $frontendUser->userGroups[$simulateUserGroup] = [
-                'uid' => $simulateUserGroup,
-                'title' => '_PREVIEW_',
-            ];
-            // let's fake having a user with that group, too
+            $frontendUser->userGroups = $this->groupResolver->resolveGroupsForUser($frontendUser->user, 'fe_groups');
+            // let's fake having a user with that groups, too
             // This can be removed once #90989 is fixed
             $frontendUser->user['uid'] = PHP_INT_MAX;
-            $context->setAspect('frontend.user', new UserAspect($frontendUser, [$simulateUserGroup, -2]));
+            $groupUids = array_column($frontendUser->userGroups, 'uid');
+            $context->setAspect('frontend.user', new UserAspect($frontendUser, array_merge([-2], $groupUids)));
         }
         $isPreview = $simulateUserGroup || $simTime || $showHiddenPages || $showHiddenRecords || $showScheduledRecords;
         if ($context->hasAspect('frontend.preview')) {
