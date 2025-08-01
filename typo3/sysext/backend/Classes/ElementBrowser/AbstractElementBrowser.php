@@ -130,7 +130,7 @@ abstract class AbstractElementBrowser
     protected function getBParamDataAttributes()
     {
         $params = explode('|', $this->bparams);
-        $fieldRef = $params[0] ?? null;
+        $fieldRef = $params[0];
         $rteParams = $params[1] ?? null;
         $rteConfig = $params[2] ?? null;
         $irreObjectId = $params[4] ?? null;

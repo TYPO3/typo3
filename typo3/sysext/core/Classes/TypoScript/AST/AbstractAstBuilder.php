@@ -220,7 +220,7 @@ abstract class AbstractAstBuilder
                 return str_replace($functionArgument, '', $originalValue);
             case 'replaceString':
                 $functionValueArray = explode('|', $functionArgument, 2);
-                $fromStr = $functionValueArray[0] ?? '';
+                $fromStr = $functionValueArray[0];
                 $toStr = $functionValueArray[1] ?? '';
                 return str_replace($fromStr, $toStr, $originalValue);
             case 'addToList':

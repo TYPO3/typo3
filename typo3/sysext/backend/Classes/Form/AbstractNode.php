@@ -138,7 +138,7 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
     {
         $validationRules = [];
         if (!empty($config['eval'])) {
-            $evalList = GeneralUtility::trimExplode(',', $config['eval'] ?? '', true);
+            $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
             foreach ($evalList as $evalType) {
                 $validationRules[] = [
                     'type' => $evalType,
