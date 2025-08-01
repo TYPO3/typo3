@@ -252,7 +252,7 @@ class ImageContentObject extends AbstractContentObject
                 $wrapArr[0] = str_replace($reg[0], $uid, $wrapArr[0]);
             }
         }
-        return trim($wrapArr[0] ?? '') . $content . trim($wrapArr[1] ?? '');
+        return trim($wrapArr[0]) . $content . trim($wrapArr[1] ?? '');
     }
 
     /**

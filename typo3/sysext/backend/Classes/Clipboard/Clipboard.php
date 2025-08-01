@@ -223,7 +223,7 @@ class Clipboard
     public function cleanUpCBC(array $CBarr, string $table, bool $removeDeselected = false): array
     {
         foreach ($CBarr as $reference => $value) {
-            $referenceTable = (string)(explode('|', $reference)[0] ?? '');
+            [$referenceTable] = explode('|', $reference, 2);
             if ($referenceTable !== $table || ($removeDeselected && !$value)) {
                 unset($CBarr[$reference]);
             }

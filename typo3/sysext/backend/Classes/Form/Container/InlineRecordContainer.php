@@ -489,7 +489,7 @@ class InlineRecordContainer extends AbstractContainer
                     </span>';
             }
         } elseif (($data['isInlineDefaultLanguageRecordInLocalizedParentContext'] ?? false) && $isParentExisting) {
-            if ($event->isControlEnabled('localize') && ($data['isInlineDefaultLanguageRecordInLocalizedParentContext'] ?? false)) {
+            if ($event->isControlEnabled('localize') && $data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
                 $cells['localize'] = '
                     <button type="button" class="btn btn-default t3js-synchronizelocalize-button" data-type="' . htmlspecialchars($rec['uid']) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localize')) . '">
                         ' . $this->iconFactory->getIcon('actions-document-localize', IconSize::SMALL)->render() . '

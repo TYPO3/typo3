@@ -1370,8 +1370,7 @@ class BackendUtility
     {
         $pageTsConfig = static::getPagesTSconfig($pageId);
         $label = '';
-        if (isset($pageTsConfig['TCEFORM.'])
-            && is_array($pageTsConfig['TCEFORM.'] ?? null)
+        if (is_array($pageTsConfig['TCEFORM.'] ?? null)
             && is_array($pageTsConfig['TCEFORM.'][$table . '.'] ?? null)
             && is_array($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.'] ?? null)
         ) {
@@ -2381,7 +2380,7 @@ class BackendUtility
                     )
                 );
                 if ($row['record_pid'] && !isset($lockedRecords[$row['record_table'] . ':' . $row['record_pid']])) {
-                    $lockedRecords['pages:' . ($row['record_pid'] ?? '')]['msg'] = sprintf(
+                    $lockedRecords['pages:' . $row['record_pid']]['msg'] = sprintf(
                         $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.lockedRecordUser_content'),
                         $userType,
                         $userName,

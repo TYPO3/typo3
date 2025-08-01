@@ -248,7 +248,7 @@ final class AstConstantCommentVisitor implements AstVisitorInterface
                 continue;
             }
             $partArray = explode('=', $commentPart, 2);
-            $partKey = strtolower(trim($partArray[0] ?? ''));
+            $partKey = strtolower(trim($partArray[0]));
             $partValue = trim($partArray[1] ?? '');
             if (empty($partKey) || empty($partValue)) {
                 continue;
@@ -308,7 +308,7 @@ final class AstConstantCommentVisitor implements AstVisitorInterface
                 } elseif ($partValue === 'wrap') {
                     $parsedCommentArray['type'] = 'wrap';
                     $splitValue = explode('|', $currentValue ?? '');
-                    $parsedCommentArray['wrapStart'] = $splitValue[0] ?? '';
+                    $parsedCommentArray['wrapStart'] = $splitValue[0];
                     $parsedCommentArray['wrapEnd'] = $splitValue[1] ?? '';
                 } elseif (str_starts_with($partValue, 'offset')) {
                     $parsedCommentArray['type'] = 'offset';
@@ -381,7 +381,7 @@ final class AstConstantCommentVisitor implements AstVisitorInterface
                 }
             } elseif ($partKey === 'cat') {
                 $categorySplitArray = explode('/', strtolower($partValue));
-                $mainCategory = strtolower(trim($categorySplitArray[0] ?? ''));
+                $mainCategory = strtolower(trim($categorySplitArray[0]));
                 if (empty($mainCategory)) {
                     return [];
                 }
@@ -417,7 +417,7 @@ final class AstConstantCommentVisitor implements AstVisitorInterface
             } elseif ($partKey === 'label') {
                 $fullLabel = $languageService->sL($partValue);
                 $splitLabelArray = explode(':', $fullLabel, 2);
-                $parsedCommentArray['label'] = $splitLabelArray[0] ?? '';
+                $parsedCommentArray['label'] = $splitLabelArray[0];
                 $parsedCommentArray['description'] = $splitLabelArray[1] ?? '';
             }
         }

@@ -360,7 +360,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
             $platform instanceof DoctrineMariaDBPlatform => 'MySQL' . $version,
             $platform instanceof DoctrineMySQLPlatform => 'MySQL' . $version,
             $platform instanceof DoctrinePostgreSQLPlatform => 'PostgreSQL' . $version,
-            default => (str_replace('Platform', '', array_reverse(explode('\\', $platform::class))[0] ?? '')) . $version,
+            default => (str_replace('Platform', '', array_reverse(explode('\\', $platform::class))[0])) . $version,
         };
     }
 

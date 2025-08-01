@@ -84,7 +84,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         // Link to page even if access is missing?
         $frontendTypoScriptConfigArray = $request->getAttribute('frontend.typoscript')?->getConfigArray();
         if (isset($conf['linkAccessRestrictedPages'])) {
-            $disableGroupAccessCheck = (bool)($conf['linkAccessRestrictedPages'] ?? false);
+            $disableGroupAccessCheck = (bool)$conf['linkAccessRestrictedPages'];
         } else {
             $disableGroupAccessCheck = (bool)($frontendTypoScriptConfigArray['typolinkLinkAccessRestrictedPages'] ?? false);
         }
@@ -285,7 +285,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             $queryParameters['type'] = $linkDetails['pagetype'];
         }
         $conf['no_cache'] = (string)$this->contentObjectRenderer->stdWrapValue('no_cache', $conf);
-        if ($conf['no_cache'] ?? false) {
+        if ($conf['no_cache']) {
             $queryParameters['no_cache'] = 1;
         }
         // Override language property if not being set already, supporting historically 'L' and

@@ -99,13 +99,13 @@ class TextMenuContentObject extends AbstractMenuContentObject
             // Make before, middle and after parts
             $this->I['parts'] = [];
             $this->I['parts']['before'] = $this->getBeforeAfter('before', $cObjectForCurrentMenu);
-            $this->I['parts']['stdWrap2_begin'] = $wrapPartsStdWrap[0] ?? '';
+            $this->I['parts']['stdWrap2_begin'] = $wrapPartsStdWrap[0];
             // stdWrap for doNotShowLink
             $this->I['val']['doNotShowLink'] = $cObjectForCurrentMenu->stdWrapValue('doNotShowLink', $this->I['val']);
             if (!$this->I['val']['doNotShowLink']) {
-                $this->I['parts']['notATagBeforeWrap_begin'] = $wrapPartsAfter[0] ?? '';
+                $this->I['parts']['notATagBeforeWrap_begin'] = $wrapPartsAfter[0];
                 $this->I['parts']['ATag_begin'] = $this->I['A1'];
-                $this->I['parts']['ATagBeforeWrap_begin'] = $wrapPartsBefore[0] ?? '';
+                $this->I['parts']['ATagBeforeWrap_begin'] = $wrapPartsBefore[0];
                 $this->I['parts']['title'] = $this->I['title'];
                 $this->I['parts']['ATagBeforeWrap_end'] = $wrapPartsBefore[1] ?? '';
                 $this->I['parts']['ATag_end'] = $this->I['A2'];

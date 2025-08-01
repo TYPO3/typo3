@@ -1108,10 +1108,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
 
         // Cache handling
-        if (isset($conf['cache.']) && is_array($conf['cache.'])) {
-            $conf['cache.']['key'] = $this->stdWrapValue('key', $conf['cache.'] ?? []);
-            $conf['cache.']['tags'] = $this->stdWrapValue('tags', $conf['cache.'] ?? []);
-            $conf['cache.']['lifetime'] = $this->stdWrapValue('lifetime', $conf['cache.'] ?? []);
+        if (is_array($conf['cache.'] ?? null)) {
+            $conf['cache.']['key'] = $this->stdWrapValue('key', $conf['cache.']);
+            $conf['cache.']['tags'] = $this->stdWrapValue('tags', $conf['cache.']);
+            $conf['cache.']['lifetime'] = $this->stdWrapValue('lifetime', $conf['cache.']);
             $conf['cacheRead'] = 1;
             $conf['cacheStore'] = 1;
         }
@@ -1504,7 +1504,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $padType = STR_PAD_RIGHT;
 
         if (!empty($conf['strPad.']['type'])) {
-            $type = (string)$this->stdWrapValue('type', $conf['strPad.'] ?? []);
+            $type = (string)$this->stdWrapValue('type', $conf['strPad.']);
             if (strtolower($type) === 'left') {
                 $padType = STR_PAD_LEFT;
             } elseif (strtolower($type) === 'both') {
@@ -2841,7 +2841,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $splitCount = $min;
         }
         $wrap = (string)$this->stdWrapValue('wrap', $conf ?? []);
-        $cObjNumSplitConf = isset($conf['cObjNum.']) ? $this->stdWrap($conf['cObjNum'] ?? '', $conf['cObjNum.'] ?? []) : (string)($conf['cObjNum'] ?? '');
+        $cObjNumSplitConf = isset($conf['cObjNum.']) ? $this->stdWrap($conf['cObjNum'] ?? '', $conf['cObjNum.']) : (string)($conf['cObjNum'] ?? '');
         $splitArr = [];
         if ($wrap !== '' || $cObjNumSplitConf !== '') {
             $splitArr['wrap'] = $wrap;
@@ -3559,7 +3559,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         // split by mailto logic
         $textpieces = explode('mailto:', $data);
         $pieces = count($textpieces);
-        $textstr = $textpieces[0] ?? '';
+        $textstr = $textpieces[0];
         for ($i = 1; $i < $pieces; $i++) {
             $len = strcspn($textpieces[$i], chr(32) . "\t" . CRLF);
             if (trim(substr($textstr, -1)) === '' && $len) {
@@ -4435,7 +4435,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         if ($wrap) {
             $wrapArr = explode($char, $wrap);
-            $content = trim($wrapArr[0] ?? '') . $content . trim($wrapArr[1] ?? '');
+            $content = trim($wrapArr[0]) . $content . trim($wrapArr[1] ?? '');
         }
         return $content;
     }

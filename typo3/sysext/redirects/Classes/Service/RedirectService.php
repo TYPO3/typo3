@@ -470,7 +470,7 @@ class RedirectService
                 // Unsafe regexp captching group may lead to adding query parameters to result url, which we need
                 // to prevent here, thus throwing everything beginning with ? away
                 if (str_contains($val, '?')) {
-                    $val = explode('?', $val, 2)[0] ?? '';
+                    $val = explode('?', $val, 2)[0];
                     $this->logger->warning(
                         sprintf(
                             'Unsafe captching group regex in redirect #%s, including query parameters in matched group',
