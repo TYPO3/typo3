@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\UploadedFile;
+use TYPO3\CMS\Core\Type\File\FileInfo;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -214,6 +216,11 @@ abstract class AbstractValidator implements ValidatorInterface
         }
 
         throw new \InvalidArgumentException('Value to validate must be a TYPO3\\CMS\\Core\\Http\\UploadedFile', 1712057926);
+    }
+
+    protected function getFileInfo(string $filePath): FileInfo
+    {
+        return GeneralUtility::makeInstance(FileInfo::class, $filePath);
     }
 
     /**

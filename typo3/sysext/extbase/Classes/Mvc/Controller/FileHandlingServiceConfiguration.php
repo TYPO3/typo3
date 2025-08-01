@@ -24,6 +24,9 @@ use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extbase\Validation\Validator\FileExtensionMimeTypeConsistencyValidator;
+use TYPO3\CMS\Extbase\Validation\Validator\FileNameValidator;
+use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 
 /**
  * @internal Only to be used within Extbase, not part of TYPO3 Core API.
@@ -228,7 +231,10 @@ class FileHandlingServiceConfiguration
                 ->addError($minFilesError);
         }
 
-        foreach ($configuration->getValidators() as $validator) {
+        $validators = $this->enforceDefaultValidators(
+            ...$configuration->getValidators()
+        );
+        foreach ($validators as $validator) {
             foreach ($uploadedFiles as $uploadedFile) {
                 $validatorResult = $validator->validate($uploadedFile);
                 if ($validatorResult->hasErrors()) {
@@ -238,6 +244,23 @@ class FileHandlingServiceConfiguration
         }
 
         return $validationResults;
+    }
+
+    /**
+     * @return list<ValidatorInterface>
+     */
+    private function enforceDefaultValidators(ValidatorInterface ...$validators): array
+    {
+        $enforceValidators = [
+            FileNameValidator::class,
+            FileExtensionMimeTypeConsistencyValidator::class,
+        ];
+        $existingValidators = array_map(get_class(...), $validators);
+        $missingValidators = array_diff($enforceValidators, $existingValidators);
+        foreach ($missingValidators as $missingValidator) {
+            $validators[] = GeneralUtility::makeInstance($missingValidator);
+        }
+        return $validators;
     }
 
     /**
