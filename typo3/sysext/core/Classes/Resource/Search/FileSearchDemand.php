@@ -153,7 +153,7 @@ class FileSearchDemand
     public function addSearchField(string $tableName, string $field): self
     {
         $demand = clone $this;
-        $demand->searchFields[$tableName] = $field;
+        $demand->searchFields[$tableName][] = $field;
 
         return $demand;
     }
