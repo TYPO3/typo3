@@ -57,7 +57,7 @@ readonly class IconFactory
             );
             $stateValue = (string)$state;
         } else {
-            $stateValue = $state?->value ?? '';
+            $stateValue = $state->value ?? '';
         }
         if (is_string($size)) {
             $size = IconSize::from($size);

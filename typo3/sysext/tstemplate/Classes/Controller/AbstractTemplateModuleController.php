@@ -194,8 +194,8 @@ abstract class AbstractTemplateModuleController
                 $templateRecords[] = [
                     'type' => 'site',
                     'pid' => $pageId,
-                    'constants' => $typoScript?->constants ?? '',
-                    'config' => $typoScript?->setup ?? '',
+                    'constants' => $typoScript->constants ?? '',
+                    'config' => $typoScript->setup ?? '',
                     'root' => 1,
                     'clear' => 1,
                     'sorting' => -1,
