@@ -1,0 +1,6 @@
+fe_groups
+,uid,title,subgroup
+,1,"the group to simulate","2,3"
+,2,"a subgroup",
+,3,"another subgroup with one more subgroup",4
+,4,"that should be enough",
