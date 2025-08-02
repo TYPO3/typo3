@@ -1677,45 +1677,47 @@ class PageRepository implements LoggerAwareInterface
                 ->executeQuery()
                 ->fetchAssociative();
         }
-        if ($wsAlt = $this->getWorkspaceVersionOfRecord($table, (int)$row['uid'], $fields, $bypassEnableFieldsCheck)) {
-            if (is_array($wsAlt)) {
-                $rowVersionState = VersionState::tryFrom($wsAlt['t3ver_state'] ?? 0);
-                if ($rowVersionState === VersionState::MOVE_POINTER) {
-                    // For move pointers, store the actual live PID in the _ORIG_pid
-                    // The only place where PID is actually different in a workspace
-                    $wsAlt['_ORIG_pid'] = $row['pid'];
-                }
-                // For versions of single elements or page+content, preserve online UID
-                // (this will produce true "overlay" of element _content_, not any references)
-                // For new versions there is no online counterpart
-                if ($rowVersionState !== VersionState::NEW_PLACEHOLDER) {
-                    $wsAlt['_ORIG_uid'] = $wsAlt['uid'];
-                }
-                $wsAlt['uid'] = $row['uid'];
-                // Changing input record to the workspace version alternative:
-                $row = $wsAlt;
-                // Unset record if it turned out to be deleted in workspace
-                if ($rowVersionState === VersionState::DELETE_PLACEHOLDER) {
-                    $row = false;
-                }
-                // Check if move-pointer in workspace (unless if a move-placeholder is the
-                // reason why it appears!):
-                // You have to specifically set $unsetMovePointers in order to clear these
-                // because it is normally a display issue if it should be shown or not.
-                if ($rowVersionState === VersionState::MOVE_POINTER && !$incomingRecordIsAMoveVersion && $unsetMovePointers) {
-                    // Unset record if it turned out to be deleted in workspace
-                    $row = false;
-                }
-            } else {
-                // No version found, then check if online version is dummy-representation
-                // Notice, that unless $bypassEnableFieldsCheck is TRUE, the $row is unset if
-                // enablefields for BOTH the version AND the online record deselects it. See
-                // note for $bypassEnableFieldsCheck
-                if ($wsAlt <= -1 || VersionState::tryFrom($row['t3ver_state'] ?? 0)->indicatesPlaceholder()) {
-                    // Unset record if it turned out to be "hidden"
-                    $row = false;
-                }
+        $wsAlt = $this->getWorkspaceVersionOfRecord($table, (int)$row['uid'], $fields, $bypassEnableFieldsCheck);
+        if (!$wsAlt) {
+            return;
+        }
+        if (is_array($wsAlt)) {
+            $rowVersionState = VersionState::tryFrom($wsAlt['t3ver_state'] ?? 0);
+            if ($rowVersionState === VersionState::MOVE_POINTER) {
+                // For move pointers, store the actual live PID in the _ORIG_pid
+                // The only place where PID is actually different in a workspace
+                $wsAlt['_ORIG_pid'] = $row['pid'];
             }
+            // For versions of single elements or page+content, preserve online UID
+            // (this will produce true "overlay" of element _content_, not any references)
+            // For new versions there is no online counterpart
+            if ($rowVersionState !== VersionState::NEW_PLACEHOLDER) {
+                $wsAlt['_ORIG_uid'] = $wsAlt['uid'];
+            }
+            $wsAlt['uid'] = $row['uid'];
+            // Changing input record to the workspace version alternative:
+            $row = $wsAlt;
+            // Unset record if it turned out to be deleted in workspace
+            if ($rowVersionState === VersionState::DELETE_PLACEHOLDER) {
+                $row = false;
+            }
+            // Check if move-pointer in workspace (unless if a move-placeholder is the
+            // reason why it appears!):
+            // You have to specifically set $unsetMovePointers in order to clear these
+            // because it is normally a display issue if it should be shown or not.
+            if ($rowVersionState === VersionState::MOVE_POINTER && !$incomingRecordIsAMoveVersion && $unsetMovePointers) {
+                // Unset record if it turned out to be deleted in workspace
+                $row = false;
+            }
+            return;
+        }
+        // No version found, then check if online version is dummy-representation
+        // Notice, that unless $bypassEnableFieldsCheck is TRUE, the $row is unset if
+        // enablefields for BOTH the version AND the online record deselects it. See
+        // note for $bypassEnableFieldsCheck
+        if ($wsAlt <= -1 || VersionState::tryFrom($row['t3ver_state'] ?? 0)->indicatesPlaceholder()) {
+            // Unset record if it turned out to be "hidden"
+            $row = false;
         }
     }
 
