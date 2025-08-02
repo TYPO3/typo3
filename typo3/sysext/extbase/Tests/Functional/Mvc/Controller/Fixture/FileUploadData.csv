@@ -1,0 +1,10 @@
+"pages",
+,"uid","pid","doktype","deleted","hidden","sys_language_uid","l10n_parent","l18n_cfg","slug","title"
+,1,0,1,0,0,0,0,0,"/","Site Root (EN)"
+,2,0,1,0,0,1,1,0,"/","Site Root (DE)"
+,3,1,1,0,0,0,0,0,"/home","Home (EN)"
+,4,1,1,0,0,1,3,0,"/home","Home (DE)"
+"tt_content",
+,"uid","pid","deleted","hidden","sys_language_uid","l18n_parent","CType","header","bodytext"
+,1,3,0,0,0,0,"extbaseupload_pi1","UploadExample EN",""
+,2,3,0,0,1,1,"extbaseupload_pi1","UploadExample DE",""

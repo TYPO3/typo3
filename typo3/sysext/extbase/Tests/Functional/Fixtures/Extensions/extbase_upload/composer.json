@@ -1,0 +1,19 @@
+{
+	"name": "typo3tests/extbase-upload",
+	"type": "typo3-cms-extension",
+	"description": "A test extension for extbase",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "14.0.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "extbase_upload"
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\ExtbaseUpload\\": "Classes/"
+		}
+	}
+}

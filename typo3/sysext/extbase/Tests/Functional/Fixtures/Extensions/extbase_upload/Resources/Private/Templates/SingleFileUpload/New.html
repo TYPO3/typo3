@@ -1,0 +1,13 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:form="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<f:layout name="Default" />
+
+<f:section name="main">
+    <h1>New</h1>
+
+    <f:form action="create" name="item" object="{item}" enctype="multipart/form-data">
+        <f:render partial="SinglefileFormfields" />
+    </f:form>
+</f:section>

@@ -1,0 +1,12 @@
+<!-- optimized for functional test evaluation -->
+<f:form.validationResults>
+  <f:if condition="{validationResults.flattenedErrors}">
+      <f:for each="{validationResults.flattenedErrors}" as="errors" key="propertyPath">
+          <f:for each="{errors}" as="error">
+            <p class="validationError">{propertyPath}.{error.code}: {error}</p>
+          </f:for>
+      </f:for>
+  </f:if>
+</f:form.validationResults>
+
+<f:render section="main" />

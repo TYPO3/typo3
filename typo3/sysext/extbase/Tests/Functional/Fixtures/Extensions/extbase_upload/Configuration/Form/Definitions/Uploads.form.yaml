@@ -1,0 +1,44 @@
+type: Form
+identifier: fileUploadsDemo
+label: FileUploadsDemo
+prototypeName: standard
+renderingOptions:
+  submitButtonLabel: Submit
+renderables:
+  -
+    renderingOptions:
+      previousButtonLabel: 'Previous step'
+      nextButtonLabel: 'Next step'
+    type: Page
+    identifier: page-1
+    label: Step
+    renderables:
+      -
+        properties:
+          saveToFileMount: '1:/user_upload/'
+          allowedMimeTypes:
+            - application/msword
+            - application/pdf
+        type: FileUpload
+        identifier: fileupload-1
+        label: 'File upload (doc+pdf)'
+        validators:
+          -
+            options:
+              minimum: 0B
+              maximum: 3M
+            identifier: FileSize
+      -
+        properties:
+          saveToFileMount: '1:/user_upload/'
+          allowedMimeTypes:
+            - image/jpeg
+        type: ImageUpload
+        identifier: imageupload-1
+        label: 'Image upload (image/jpeg)'
+      -
+        properties:
+          saveToFileMount: '1:/user_upload/'
+        type: FileUpload
+        identifier: fileupload-2
+        label: 'File upload (NO MIMETYPE RESTRICTION)'

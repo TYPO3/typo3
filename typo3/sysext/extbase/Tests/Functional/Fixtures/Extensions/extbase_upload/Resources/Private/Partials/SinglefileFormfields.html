@@ -1,0 +1,156 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<div>
+    Title: <f:form.textfield id="persist-title" property="title" />
+</div>
+
+<h2>SINGLE FILE</h2>
+<div>
+    <f:if condition="{item.fileUnrestrictedSingle}">
+        <div>
+            Existing Filename: {item.fileUnrestrictedSingle.originalResource.name}
+        </div>
+    </f:if>
+    <h3>Unrestricted</h3>
+    <f:form.upload property="fileUnrestrictedSingle" />
+</div>
+<div>
+    <f:if condition="{item.fileImageSingle}">
+        <div>
+            Existing Filename: {item.fileImageSingle.originalResource.name}
+        </div>
+    </f:if>
+    <h3>Only image/jpeg</h3>
+    <f:form.upload property="fileImageSingle" />
+</div>
+<div>
+    <f:if condition="{item.fileAppSingle}">
+        <div>
+            Existing Filename: {item.fileAppSingle.originalResource.name}
+        </div>
+    </f:if>
+    <h3>Only application/exe</h3>
+    <f:form.upload property="fileAppSingle" />
+</div>
+<div>
+    <f:if condition="{item.fileExtensionSingle}">
+        <div>
+            Existing Filename: {item.fileExtensionSingle.originalResource.name}
+        </div>
+    </f:if>
+    <h3>File extension "exe" (matching MIME type)</h3>
+    <f:form.upload property="fileExtensionSingle" />
+</div>
+<div>
+    <f:if condition="{item.fileExtensionstorageSingle}">
+        <div>
+            Existing Filename: {item.fileExtensionstorageSingle.originalResource.name}
+        </div>
+    </f:if>
+    <h3>File extension defined in SYS.misc/text/mediafile_ext (e.g. "zip") (matching MIME type)</h3>
+    <f:form.upload property="fileExtensionstorageSingle" />
+</div>
+<div>
+    <f:if condition="{item.fileExtensionstorageplusSingle}">
+        <div>
+            Existing Filename: {item.fileExtensionstorageplusSingle.originalResource.name}
+        </div>
+    </f:if>
+    <h3>File extension defined in SYS.misc/text/mediafile_ext (e.g. "zip") plus exe (matching MIME type)</h3>
+    <f:form.upload property="fileExtensionstorageplusSingle" />
+</div>
+
+<br><br>
+<hr />
+
+<h2>MULTIPLE FILE</h2>
+
+<div>
+    <f:if condition="{item.fileUnrestrictedMulti}">
+        <div>
+            Existing Filenames:
+        </div>
+        <ul>
+            <f:for each="{item.fileUnrestrictedMulti}" as="file">
+                <li>{file.originalResource.name}</li>
+            </f:for>
+        </ul>
+    </f:if>
+    <h3>Unrestricted</h3>
+    <f:form.upload multiple="multiple" property="fileUnrestrictedMulti" />
+</div>
+<div>
+    <f:if condition="{item.fileImageMulti}">
+        <div>
+            Existing Filenames:
+        </div>
+        <ul>
+            <f:for each="{item.fileImageMulti}" as="file">
+                <li>{file.originalResource.name}</li>
+            </f:for>
+        </ul>
+    </f:if>
+    <h3>Only image/jpeg</h3>
+    <f:form.upload multiple="multiple" property="fileImageMulti" />
+</div>
+<div>
+    <f:if condition="{item.fileAppMulti}">
+        <div>
+            Existing Filenames:
+        </div>
+        <ul>
+            <f:for each="{item.fileAppMulti}" as="file">
+                <li>{file.originalResource.name}</li>
+            </f:for>
+        </ul>
+    </f:if>
+    <h3>Only application/exe</h3>
+    <f:form.upload multiple="multiple" property="fileAppMulti" />
+</div>
+<div>
+    <f:if condition="{item.fileExtensionMulti}">
+        <div>
+            Existing Filenames:
+        </div>
+        <ul>
+            <f:for each="{item.fileExtensionMulti}" as="file">
+                <li>{file.originalResource.name}</li>
+            </f:for>
+        </ul>
+    </f:if>
+    <h3>File extension "exe" (matching MIME type)</h3>
+    <f:form.upload multiple="multiple" property="fileExtensionMulti" />
+</div>
+<div>
+    <f:if condition="{item.fileExtensionstorageMulti}">
+        <div>
+            Existing Filenames:
+        </div>
+        <ul>
+            <f:for each="{item.fileExtensionstorageMulti}" as="file">
+                <li>{file.originalResource.name}</li>
+            </f:for>
+        </ul>
+    </f:if>
+    <h3>File extension defined in SYS.misc/text/mediafile_ext (e.g. "zip") (matching MIME type)</h3>
+    <f:form.upload multiple="multiple" property="fileExtensionstorageMulti" />
+</div>
+<div>
+    <f:if condition="{item.fileExtensionstorageplusMulti}">
+        <div>
+            Existing Filenames:
+        </div>
+        <ul>
+            <f:for each="{item.fileExtensionstorageplusMulti}" as="file">
+                <li>{file.originalResource.name}</li>
+            </f:for>
+        </ul>
+    </f:if>
+    <h3>File extension defined in SYS.misc/text/mediafile_ext (e.g. "zip") plus exe (matching MIME type)</h3>
+    <f:form.upload multiple="multiple" property="fileExtensionstorageplusMulti" />
+</div>
+
+<div>
+    <f:form.submit value="Save" />
+</div>
+

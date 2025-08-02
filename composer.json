@@ -305,6 +305,7 @@
 			"TYPO3Tests\\ActionControllerArgumentTest\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/action_controller_argument_test/Classes/",
 			"TYPO3Tests\\ActionControllerTest\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/action_controller_test/Classes/",
 			"TYPO3Tests\\BlogExample\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/",
+			"TYPO3Tests\\ExtbaseUpload\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/extbase_upload/Classes/",
 			"TYPO3Tests\\FileUpload\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/file_upload/Classes/",
 			"TYPO3Tests\\TestBolt\\": "typo3/sysext/redirects/Tests/Functional/Fixtures/Extensions/test_bolt/Classes/",
 			"TYPO3Tests\\ParentChildTranslation\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/parent_child_translation/Classes/",
