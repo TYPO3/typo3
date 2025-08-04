@@ -57,9 +57,8 @@ final class HtmlentitiesViewHelper extends AbstractEncodingViewHelper
      * Escapes special characters with their escaped counterparts as needed using PHPs htmlentities() function.
      *
      * @see https://www.php.net/manual/function.htmlentities.php
-     * @return mixed
      */
-    public function render()
+    public function render(): mixed
     {
         $value = $this->renderChildren();
         $encoding = $this->arguments['encoding'];

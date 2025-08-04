@@ -77,11 +77,11 @@ final class ActionMenuViewHelper extends AbstractTagBasedViewHelper
      * @param string $closureName
      * @param string $initializationPhpCode
      */
-    public function compile($argumentsName, $closureName, &$initializationPhpCode, ViewHelperNode $node, TemplateCompiler $compiler)
+    public function compile($argumentsName, $closureName, &$initializationPhpCode, ViewHelperNode $node, TemplateCompiler $compiler): string
     {
         // @todo: replace with a true compiling method to make compilable!
         $compiler->disable();
-        return null;
+        return '';
     }
 
     protected static function getPageRenderer(): PageRenderer
