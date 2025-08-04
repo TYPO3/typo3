@@ -55,7 +55,7 @@ use TYPO3\CMS\Form\Slot\FilePersistenceSlot;
  * Scope: frontend / backend
  * @internal
  */
-#[AsAlias(FormPersistenceManagerInterface::class, public: true)]
+#[AsAlias(FormPersistenceManagerInterface::class)]
 readonly class FormPersistenceManager implements FormPersistenceManagerInterface
 {
     public function __construct(
