@@ -1396,7 +1396,7 @@ return [
         // Backend Configuration.
         'languageDebug' => false,
         'fileadminDir' => 'fileadmin/',
-        'lockRootPath' => '',
+        'lockRootPath' => [],
         'userHomePath' => '',
         'groupHomePath' => '',
         'userUploadDir' => '',
