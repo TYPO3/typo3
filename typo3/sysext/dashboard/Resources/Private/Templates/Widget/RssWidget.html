@@ -10,7 +10,7 @@
                         <tr>
                             <td>
                                 <f:link.external uri="{item.link}" target="_blank" rel="noreferrer"><strong>{item.title}</strong></f:link.external>
-                                <small><time datetime="{item.pubDate -> f:format.date(format: '%Y-%m-%d')}">{item.pubDate -> f:format.date()}</time></small>
+                                <small><time datetime="{item.pubDate -> f:format.date(format: '%Y-%m-%d')}">{item.pubDate -> f:format.date()}</time><f:if condition="{item.author.name}"> | {item.author.name}</f:if></small>
                                 <p>{item.description -> f:format.crop(maxCharacters: 180)}</p>
                             </td>
                         </tr>

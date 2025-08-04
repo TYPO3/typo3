@@ -102,7 +102,7 @@ class RssWidget implements WidgetRendererInterface
         $items = [];
         if ($feedUrl) {
             try {
-                $items = $this->getRssItems($context->settings);
+                $items = $this->getFeedItems($context->settings);
             } catch (InvalidRssFeedException) {
                 $view->assign('invalidFeed', true);
             }
@@ -122,22 +122,46 @@ class RssWidget implements WidgetRendererInterface
         );
     }
 
-    protected function getRssItems(SettingsInterface $settings): array
+    protected function getFeedItems(SettingsInterface $settings): array
     {
         $cacheHash = md5($settings->get('feedUrl') . '-' . $settings->get('limit'));
         if ($items = $this->cache->get($cacheHash)) {
             return $items;
         }
 
-        $rssContent = GeneralUtility::getUrl($settings->get('feedUrl'));
-        if ($rssContent === false) {
+        $feedContent = GeneralUtility::getUrl($settings->get('feedUrl'));
+        if ($feedContent === false) {
             throw new InvalidRssFeedException('RSS URL could not be fetched', 1573385431);
         }
         try {
-            $rssFeed = simplexml_load_string($rssContent);
+            $feedXml = simplexml_load_string($feedContent);
         } catch (\Exception $e) {
             throw new InvalidRssFeedException('Received RSS feed could not be parsed.', 1573385432, $e);
         }
+
+        $items = match ($this->determineFeedType($feedXml)) {
+            'atom' => $this->parseAtomFeed($feedXml),
+            'rss' => $this->parseRssFeed($feedXml),
+            default => []
+        };
+
+        usort($items, static function ($item1, $item2) {
+            return new \DateTime($item2['pubDate']) <=> new \DateTime($item1['pubDate']);
+        });
+        $items = array_slice($items, 0, (int)$settings->get('limit'));
+
+        $this->cache->set($cacheHash, $items, ['dashboard_rss'], (int)$settings->get('lifeTime'));
+
+        return $items;
+    }
+
+    protected function determineFeedType(\SimpleXMLElement $feedXml): string
+    {
+        return $feedXml->getName() === 'feed' ? 'atom' : 'rss';
+    }
+
+    protected function parseRssFeed(\SimpleXMLElement $rssFeed): array
+    {
         $items = [];
         foreach ($rssFeed->channel->item as $item) {
             $items[] = [
@@ -147,13 +171,25 @@ class RssWidget implements WidgetRendererInterface
                 'description' => trim(strip_tags((string)$item->description)),
             ];
         }
-        usort($items, static function ($item1, $item2) {
-            return new \DateTime($item2['pubDate']) <=> new \DateTime($item1['pubDate']);
-        });
-        $items = array_slice($items, 0, (int)$settings->get('limit'));
+        return $items;
+    }
 
-        $this->cache->set($cacheHash, $items, ['dashboard_rss'], (int)$settings->get('lifeTime'));
-
+    protected function parseAtomFeed(\SimpleXMLElement $atomFeed): array
+    {
+        $items = [];
+        foreach ($atomFeed->entry as $entry) {
+            $items[] = [
+                'title' => trim((string)$entry->title),
+                'link' => trim((string)($entry->link['href'] ?? '')),
+                'pubDate' => trim((string)($entry->published ?? $entry->updated ?? '')),
+                'description' => trim(strip_tags((string)($entry->summary ?? $entry->content ?? ''))),
+                'author' => [
+                    'name' => trim((string)($entry->author->name ?? '')),
+                    'email' => trim((string)($entry->author->email ?? '')),
+                    'url' => trim((string)($entry->author->url ?? '')),
+                ],
+            ];
+        }
         return $items;
     }
 }
