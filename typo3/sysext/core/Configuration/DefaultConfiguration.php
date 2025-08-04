@@ -1412,7 +1412,7 @@ return [
         // Backend Configuration.
         'entryPoint' => '/typo3',
         'fileadminDir' => 'fileadmin/',
-        'lockRootPath' => '',
+        'lockRootPath' => [],
         'lockBackendFile' => '',
         'userHomePath' => '',
         'groupHomePath' => '',
