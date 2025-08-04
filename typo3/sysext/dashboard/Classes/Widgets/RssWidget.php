@@ -78,7 +78,7 @@ class RssWidget implements WidgetRendererInterface
             new SettingDefinition(
                 key: 'limit',
                 type: 'int',
-                default: 5,
+                default: (int)($this->options['limit'] ?? 5),
                 label: 'LLL:EXT:dashboard/Resources/Private/Language/locallang_widget_rss.xlf:widget.rss.setting.limit.label',
                 description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang_widget_rss.xlf:widget.rss.setting.limit.description',
                 readonly: array_key_exists('limit', $this->options),
