@@ -69,10 +69,7 @@ final class ValidationResultsViewHelper extends AbstractViewHelper
         $this->registerArgument('as', 'string', 'The name of the variable to store the current error', false, 'validationResults');
     }
 
-    /**
-     * @return mixed @todo: Really mixed here, not string?
-     */
-    public function render()
+    public function render(): string
     {
         $for = $this->arguments['for'];
         $as = $this->arguments['as'];
@@ -88,7 +85,7 @@ final class ValidationResultsViewHelper extends AbstractViewHelper
         }
         $variableProvider = new ScopedVariableProvider($this->renderingContext->getVariableProvider(), new StandardVariableProvider([$as => $validationResults]));
         $this->renderingContext->setVariableProvider($variableProvider);
-        $output = $this->renderChildren();
+        $output = (string)$this->renderChildren();
         $this->renderingContext->setVariableProvider($variableProvider->getGlobalVariableProvider());
         return $output;
     }

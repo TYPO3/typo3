@@ -2611,12 +2611,6 @@ parameters:
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Be/InfoboxViewHelper.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Fluid\\ViewHelpers\\Be\\Menus\\ActionMenuViewHelper\:\:compile\(\) should return string but returns null\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Be/Menus/ActionMenuViewHelper.php
-
-		-
 			message: '#^Parameter \#1 \$namespace of method TYPO3\\CMS\\Core\\Page\\PageRenderer\:\:addInlineSettingArray\(\) expects string, null given\.$#'
 			identifier: argument.type
 			count: 1

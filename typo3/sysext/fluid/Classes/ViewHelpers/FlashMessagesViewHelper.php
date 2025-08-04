@@ -71,10 +71,8 @@ final class FlashMessagesViewHelper extends AbstractViewHelper
      *       In case of conditional flash message rendering, caching must be disabled
      *       (e.g. for a controller action).
      *       Custom caching using the Caching Framework can be used in this case.
-     *
-     * @return mixed
      */
-    public function render()
+    public function render(): string
     {
         $as = $this->arguments['as'];
         $queueIdentifier = $this->arguments['queueIdentifier'];
@@ -103,7 +101,7 @@ final class FlashMessagesViewHelper extends AbstractViewHelper
         }
         $variableProvider = new ScopedVariableProvider($this->renderingContext->getVariableProvider(), new StandardVariableProvider([$as => $flashMessages]));
         $this->renderingContext->setVariableProvider($variableProvider);
-        $content = $this->renderChildren();
+        $content = (string)$this->renderChildren();
         $this->renderingContext->setVariableProvider($variableProvider->getGlobalVariableProvider());
         return $content;
     }

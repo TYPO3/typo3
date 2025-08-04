@@ -21,7 +21,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 final class TestViewHelper extends AbstractViewHelper
 {
-    public function render()
+    public function render(): string
     {
         return 'test viewhelper working';
     }

@@ -42,7 +42,7 @@ final class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
 
     protected static string $registryNamespace = 'extensionDataImport';
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('extension', 'array', 'Extension key', true);

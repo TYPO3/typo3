@@ -40,10 +40,8 @@ final class TranslateElementPropertyViewHelper extends AbstractViewHelper
 
     /**
      * Return array element by key.
-     *
-     * @return string|array
      */
-    public function render()
+    public function render(): array|string
     {
         self::assertArgumentTypes($this->arguments);
         $element = $this->arguments['element'];
@@ -67,7 +65,7 @@ final class TranslateElementPropertyViewHelper extends AbstractViewHelper
         return GeneralUtility::makeInstance(TranslationService::class)->translateFormElementValue($element, $propertyParts, $formRuntime);
     }
 
-    protected static function assertArgumentTypes(array $arguments)
+    protected static function assertArgumentTypes(array $arguments): void
     {
         foreach (['property', 'renderingOptionProperty'] as $argumentName) {
             if (

@@ -57,9 +57,8 @@ final class HtmlentitiesDecodeViewHelper extends AbstractEncodingViewHelper
      * Converts all HTML entities to their applicable characters as needed using PHPs html_entity_decode() function.
      *
      * @see https://www.php.net/html_entity_decode
-     * @return mixed
      */
-    public function render()
+    public function render(): mixed
     {
         $value = $this->renderChildren();
         $encoding = $this->arguments['encoding'];
