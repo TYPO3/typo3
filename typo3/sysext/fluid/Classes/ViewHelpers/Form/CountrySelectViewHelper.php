@@ -192,4 +192,20 @@ final class CountrySelectViewHelper extends AbstractFormFieldViewHelper
             ->setExcludeCountries($this->arguments['excludeCountries'] ?? []);
         return GeneralUtility::makeInstance(CountryProvider::class)->getFiltered($filter);
     }
+
+    /**
+     * Converts an arbitrary value to a plain value.
+     * Evaluates possible direct "Country" type properties.
+     *
+     * @param mixed $value The value to convert
+     * @return mixed
+     */
+    protected function convertToPlainValue($value)
+    {
+        if ($value instanceof Country) {
+            return $value->getAlpha2IsoCode();
+        }
+        return parent::convertToPlainValue($value);
+    }
+
 }

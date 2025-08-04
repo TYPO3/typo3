@@ -24,8 +24,12 @@ use TYPO3\CMS\Core\Country\Country;
 use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 use TYPO3Tests\BlogExample\Domain\Model\Person;
 use TYPO3Tests\BlogExample\Domain\Repository\PersonRepository;
 
@@ -42,6 +46,28 @@ final class TcaTypeCountryTest extends FunctionalTestCase
 
         $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
+    }
+
+    #[Test]
+    public function tcaTypeCountryCanBeMappedForFormUsage(): void
+    {
+        $countryProvider = $this->get(CountryProvider::class);
+        $person = new Person();
+        $person->setCountry($countryProvider->getByAlpha2IsoCode('DE'));
+
+        $serverRequest = (new ServerRequest())
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('
+            <f:form object="{person}" objectName="person">
+                <f:form.countrySelect name="country" property="country" onlyCountries="{0: \'CH\', 1: \'AT\', 2: \'DE\'}"  />
+            </f:form>
+        ');
+        $templateView = (new TemplateView($context));
+        $templateView->assign('person', $person);
+        $result = $templateView->render();
+        self::assertStringContainsString('<option value="DE" selected="selected">', $result);
     }
 
     #[Test]

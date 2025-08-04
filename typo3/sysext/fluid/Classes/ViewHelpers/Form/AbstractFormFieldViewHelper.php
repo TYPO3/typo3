@@ -318,7 +318,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
 
     /**
      * Internal method which checks if we should evaluate a domain object or just output arguments['name']
-     * and arguments['value']. Returns true if domoin object should be evaluated.
+     * and arguments['value']. Returns true if domain object should be evaluated.
      */
     protected function isObjectAccessorMode(): bool
     {
