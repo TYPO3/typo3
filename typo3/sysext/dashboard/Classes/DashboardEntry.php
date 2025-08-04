@@ -159,7 +159,7 @@ final readonly class DashboardEntry
 
         } catch (\Exception) {
             return new WidgetResult(
-                content: '<div class="widget-content-main">ERROR</div>',
+                content: sprintf('<div class="widget-content-main">%s</div>', $this->getLanguageService()->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.error')),
                 refreshable: true,
             );
         }

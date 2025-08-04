@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Settings\SettingDefinition;
 use TYPO3\CMS\Core\Settings\SettingsInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Dashboard\Exception\InvalidRssFeedException;
 
 /**
  * Concrete RSS widget implementation
@@ -97,8 +98,18 @@ class RssWidget implements WidgetRendererInterface
     public function renderWidget(WidgetContext $context): WidgetResult
     {
         $view = $this->backendViewFactory->create($context->request);
+        $feedUrl = $context->settings->get('feedUrl');
+        $items = [];
+        if ($feedUrl) {
+            try {
+                $items = $this->getRssItems($context->settings);
+            } catch (InvalidRssFeedException) {
+                $view->assign('invalidFeed', true);
+            }
+        }
         $view->assignMultiple([
-            'items' => $this->getRssItems($context->settings),
+            'feedUrl' => $feedUrl,
+            'items' => $items,
             'settings' => $context->settings,
             'options' => $this->options,
             'button' => $this->buttonProvider,
@@ -113,9 +124,6 @@ class RssWidget implements WidgetRendererInterface
 
     protected function getRssItems(SettingsInterface $settings): array
     {
-        if (empty($settings->get('feedUrl'))) {
-            return [];
-        }
         $cacheHash = md5($settings->get('feedUrl') . '-' . $settings->get('limit'));
         if ($items = $this->cache->get($cacheHash)) {
             return $items;
@@ -123,9 +131,13 @@ class RssWidget implements WidgetRendererInterface
 
         $rssContent = GeneralUtility::getUrl($settings->get('feedUrl'));
         if ($rssContent === false) {
-            throw new \RuntimeException('RSS URL could not be fetched', 1573385431);
+            throw new InvalidRssFeedException('RSS URL could not be fetched', 1573385431);
         }
-        $rssFeed = simplexml_load_string($rssContent);
+        try {
+            $rssFeed = simplexml_load_string($rssContent);
+        } catch (\Exception $e) {
+            throw new InvalidRssFeedException('Received RSS feed could not be parsed.', 1573385432, $e);
+        }
         $items = [];
         foreach ($rssFeed->channel->item as $item) {
             $items[] = [

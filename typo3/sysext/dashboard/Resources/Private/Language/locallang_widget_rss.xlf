@@ -39,6 +39,27 @@
 				<source>Defines how long to wait, in seconds, until fetching RSS Feed again.</source>
 			</trans-unit>
 
+			<trans-unit id="widget.rss.missingFeedConfiguration.title" xml:space="preserve">
+				<source>Missing feed configuration</source>
+			</trans-unit>
+			<trans-unit id="widget.rss.missingFeedConfiguration.message" xml:space="preserve">
+				<source>Please configure a feed URL to retrieve items from.</source>
+			</trans-unit>
+
+			<trans-unit id="widget.rss.feedError.title" xml:space="preserve">
+				<source>Feed error</source>
+			</trans-unit>
+			<trans-unit id="widget.rss.feedError.message" xml:space="preserve">
+				<source>The feed at "%1$s" could not be parsed.</source>
+			</trans-unit>
+
+			<trans-unit id="widget.rss.noItems.title" xml:space="preserve">
+				<source>No items to display</source>
+			</trans-unit>
+			<trans-unit id="widget.rss.noItems.message" xml:space="preserve">
+				<source>The feed at "%1$s" does not contain any items.</source>
+			</trans-unit>
+
 		</body>
 	</file>
 </xliff>
