@@ -8,49 +8,49 @@
 				<source>System Notes</source>
 			</trans-unit>
 			<trans-unit id="widget.pagesWithInternalNote.description" xml:space="preserve">
-				<source>Shows a list pages with system notes.</source>
+				<source>Shows a list of pages with system notes.</source>
 			</trans-unit>
 
 			<trans-unit id="widget.pagesWithInternalNote.all.title">
 				<source>All System Notes</source>
 			</trans-unit>
 			<trans-unit id="widget.pagesWithInternalNote.all.description">
-				<source>Shows a list pages with system notes</source>
+				<source>Shows a list of pages with system notes</source>
 			</trans-unit>
 
 			<trans-unit id="widget.pagesWithInternalNote.default.title">
 				<source>Notes in the category "Default"</source>
 			</trans-unit>
 			<trans-unit id="widget.pagesWithInternalNote.default.description">
-				<source>Shows a list pages with system notes in the category "Default"</source>
+				<source>Shows a list of pages with system notes in the category "Default"</source>
 			</trans-unit>
 
 			<trans-unit id="widget.pagesWithInternalNote.todo.title">
 				<source>Notes in the category "ToDo"</source>
 			</trans-unit>
 			<trans-unit id="widget.pagesWithInternalNote.todo.description">
-				<source>Shows a list pages with system notes in the category "ToDo"</source>
+				<source>Shows a list of pages with system notes in the category "ToDo"</source>
 			</trans-unit>
 
 			<trans-unit id="widget.pagesWithInternalNote.template.title">
 				<source>Notes in the category "Template"</source>
 			</trans-unit>
 			<trans-unit id="widget.pagesWithInternalNote.template.description">
-				<source>Shows a list pages with system notes in the category "Template"</source>
+				<source>Shows a list of pages with system notes in the category "Template"</source>
 			</trans-unit>
 
 			<trans-unit id="widget.pagesWithInternalNote.notes.title">
 				<source>Notes in the category "Notes"</source>
 			</trans-unit>
 			<trans-unit id="widget.pagesWithInternalNote.notes.description">
-				<source>Shows a list pages with system notes in the category "Notes"</source>
+				<source>Shows a list of pages with system notes in the category "Notes"</source>
 			</trans-unit>
 
 			<trans-unit id="widget.pagesWithInternalNote.instructions.title">
 				<source>Notes in the category "Instructions"</source>
 			</trans-unit>
 			<trans-unit id="widget.pagesWithInternalNote.instructions.description">
-				<source>Shows a list pages with system notes in the category "Instructions"</source>
+				<source>Shows a list of pages with system notes in the category "Instructions"</source>
 			</trans-unit>
 
 			<trans-unit id="widget.pagesWithInternalNote.setting.category.label" xml:space="preserve">
