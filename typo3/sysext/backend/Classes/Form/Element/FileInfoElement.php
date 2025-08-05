@@ -73,7 +73,7 @@ class FileInfoElement extends AbstractFormElement
                     . '</span>';
             }
             if ($file->isImage() || $file->isMediaFile()) {
-                $processedFile = $file->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, ['width' => 150, 'height' => 150]);
+                $processedFile = $file->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, ['width' => '150m', 'height' => '150m']);
                 $previewImage = $processedFile->getPublicUrl();
                 if ($previewImage) {
                     $content .= '<img src="' . htmlspecialchars($previewImage) . '" ' .
