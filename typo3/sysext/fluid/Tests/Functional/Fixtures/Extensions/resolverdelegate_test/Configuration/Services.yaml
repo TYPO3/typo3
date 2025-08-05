@@ -6,6 +6,3 @@ services:
 
   TYPO3Tests\ResolverdelegateTest\:
     resource: '../Classes/*'
-
-  TYPO3Tests\ResolverdelegateTest\Fluid\TestViewHelperResolverDelegate:
-    public: true
