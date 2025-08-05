@@ -131,7 +131,9 @@ final class PasswordResetTest extends FunctionalTestCase
             new SessionManager(),
             $this->createRateLimiterFactory(),
         );
-        $subject->initiateReset(new ServerRequest(), new Context(), $emailAddress);
+        $request = new ServerRequest();
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $subject->initiateReset($request, new Context(), $emailAddress);
     }
 
     #[Test]
@@ -242,6 +244,7 @@ final class PasswordResetTest extends FunctionalTestCase
             $this->createRateLimiterFactory(),
         );
         $request = new ServerRequest();
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withQueryParams(['t' => 'token', 'i' => 'identity', 'e' => 13465444]);
         $subject->resetPassword($request, new Context());
         // Now with a password

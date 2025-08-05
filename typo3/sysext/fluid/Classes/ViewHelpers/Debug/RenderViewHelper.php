@@ -18,7 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers\Debug;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3Fluid\Fluid\Core\Parser\ParsingState;
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperNodeInitializedEventInterface;
 
 /**
  * ViewHelper for a debuggable version of `<f:render>`.
@@ -32,8 +35,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * @see \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-render
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-debug-render
+ * @deprecated since TYPO3 v14.2, will be removed in TYPO3 v15.0.
  */
-final class RenderViewHelper extends AbstractViewHelper
+final class RenderViewHelper extends AbstractViewHelper implements ViewHelperNodeInitializedEventInterface
 {
     /**
      * @var bool
@@ -129,6 +133,14 @@ final class RenderViewHelper extends AbstractViewHelper
             $cssWrapper,
             $debugContent,
             $content
+        );
+    }
+
+    public static function nodeInitializedEvent(ViewHelperNode $node, array $arguments, ParsingState $parsingState): void
+    {
+        trigger_error(
+            '<f:debug.render> has been deprecated in TYPO3 v14.2 and will be removed in v15.0.',
+            E_USER_DEPRECATED
         );
     }
 }

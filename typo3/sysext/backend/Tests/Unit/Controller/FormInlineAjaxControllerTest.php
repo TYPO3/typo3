@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -38,13 +39,15 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
     #[Test]
     public function createActionThrowsExceptionIfContextIsEmpty(): void
     {
-        $request = (new ServerRequest())->withQueryParams(
-            [
-                'ajax' => [
-                    'context' => '',
-                ],
-            ]
-        );
+        $request = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withQueryParams(
+                [
+                    'ajax' => [
+                        'context' => '',
+                    ],
+                ]
+            );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751361);
         $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class));
@@ -54,13 +57,15 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
     #[Test]
     public function createActionThrowsExceptionIfContextConfigSectionIsEmpty(): void
     {
-        $request = (new ServerRequest())->withQueryParams(
-            [
-                'ajax' => [
-                    'context' => json_encode([ 'config' => '' ]),
-                ],
-            ]
-        );
+        $request = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withQueryParams(
+                [
+                    'ajax' => [
+                        'context' => json_encode([ 'config' => '' ]),
+                    ],
+                ]
+            );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751362);
         $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class));
@@ -70,20 +75,22 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
     #[Test]
     public function createActionThrowsExceptionIfContextConfigSectionDoesNotValidate(): void
     {
-        $request = (new ServerRequest())->withQueryParams(
-            [
-                'ajax' => [
-                    'context' => json_encode(
-                        [
-                            'config' => json_encode([
-                                'type' => 'inline',
-                            ]),
-                            'hmac' => 'anInvalidHash',
-                        ]
-                    ),
-                ],
-            ]
-        );
+        $request = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withQueryParams(
+                [
+                    'ajax' => [
+                        'context' => json_encode(
+                            [
+                                'config' => json_encode([
+                                    'type' => 'inline',
+                                ]),
+                                'hmac' => 'anInvalidHash',
+                            ]
+                        ),
+                    ],
+                ]
+            );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751363);
         $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class));
@@ -93,13 +100,15 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
     #[Test]
     public function detailsActionThrowsExceptionIfContextIsEmpty(): void
     {
-        $request = (new ServerRequest())->withQueryParams(
-            [
-                'ajax' => [
-                    'context' => '',
-                ],
-            ]
-        );
+        $request = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withQueryParams(
+                [
+                    'ajax' => [
+                        'context' => '',
+                    ],
+                ]
+            );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751361);
         $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class));
@@ -109,13 +118,15 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
     #[Test]
     public function detailsActionThrowsExceptionIfContextConfigSectionIsEmpty(): void
     {
-        $request = (new ServerRequest())->withQueryParams(
-            [
-                'ajax' => [
-                    'context' => json_encode([ 'config' => '' ]),
-                ],
-            ]
-        );
+        $request = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withQueryParams(
+                [
+                    'ajax' => [
+                        'context' => json_encode([ 'config' => '' ]),
+                    ],
+                ]
+            );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751362);
         $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class));
@@ -125,20 +136,22 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
     #[Test]
     public function detailsActionThrowsExceptionIfContextConfigSectionDoesNotValidate(): void
     {
-        $request = (new ServerRequest())->withQueryParams(
-            [
-                'ajax' => [
-                    'context' => json_encode(
-                        [
-                            'config' => json_encode([
-                                'type' => 'inline',
-                            ]),
-                            'hmac' => 'anInvalidHash',
-                        ]
-                    ),
-                ],
-            ]
-        );
+        $request = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withQueryParams(
+                [
+                    'ajax' => [
+                        'context' => json_encode(
+                            [
+                                'config' => json_encode([
+                                    'type' => 'inline',
+                                ]),
+                                'hmac' => 'anInvalidHash',
+                            ]
+                        ),
+                    ],
+                ]
+            );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751363);
         $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class));
@@ -148,13 +161,15 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
     #[Test]
     public function synchronizeLocalizeActionThrowsExceptionIfContextIsEmpty(): void
     {
-        $request = (new ServerRequest())->withQueryParams(
-            [
-                'ajax' => [
-                    'context' => '',
-                ],
-            ]
-        );
+        $request = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withQueryParams(
+                [
+                    'ajax' => [
+                        'context' => '',
+                    ],
+                ]
+            );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751361);
         $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class));
@@ -164,13 +179,15 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
     #[Test]
     public function synchronizeLocalizeActionThrowsExceptionIfContextConfigSectionIsEmpty(): void
     {
-        $request = (new ServerRequest())->withQueryParams(
-            [
-                'ajax' => [
-                    'context' => json_encode([ 'config' => '' ]),
-                ],
-            ]
-        );
+        $request = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withQueryParams(
+                [
+                    'ajax' => [
+                        'context' => json_encode([ 'config' => '' ]),
+                    ],
+                ]
+            );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751362);
         $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class));
@@ -180,20 +197,22 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
     #[Test]
     public function synchronizeLocalizeActionThrowsExceptionIfContextConfigSectionDoesNotValidate(): void
     {
-        $request = (new ServerRequest())->withQueryParams(
-            [
-                'ajax' => [
-                    'context' => json_encode(
-                        [
-                            'config' => json_encode([
-                                'type' => 'inline',
-                            ]),
-                            'hmac' => 'anInvalidHash',
-                        ]
-                    ),
-                ],
-            ]
-        );
+        $request = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withQueryParams(
+                [
+                    'ajax' => [
+                        'context' => json_encode(
+                            [
+                                'config' => json_encode([
+                                    'type' => 'inline',
+                                ]),
+                                'hmac' => 'anInvalidHash',
+                            ]
+                        ),
+                    ],
+                ]
+            );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751363);
         $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class));

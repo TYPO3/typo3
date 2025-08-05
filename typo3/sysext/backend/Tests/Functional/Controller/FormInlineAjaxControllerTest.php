@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\FormInlineAjaxController;
 use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -70,6 +71,7 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
             ],
         ];
         $request = new ServerRequest();
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
         $request = $request->withParsedBody($parsedBody);
         $response = $this->get(FormInlineAjaxController::class)->createAction($request);
@@ -88,6 +90,7 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
             ],
         ];
         $request = new ServerRequest();
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
         $request = $request->withParsedBody($parsedBody);
         $response = $this->get(FormInlineAjaxController::class)->createAction($request);
@@ -106,6 +109,7 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
             ],
         ];
         $request = new ServerRequest();
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
         $request = $request->withParsedBody($parsedBody);
         $response = $this->get(FormInlineAjaxController::class)->createAction($request);
@@ -128,6 +132,7 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
             ],
         ];
         $request = new ServerRequest();
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
         $request = $request->withParsedBody($parsedBody);
         $response = $this->get(FormInlineAjaxController::class)->createAction($request);
