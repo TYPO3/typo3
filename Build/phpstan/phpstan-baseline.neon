@@ -1435,12 +1435,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Http/ServerRequest.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between string and false will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Http/Stream.php
-
-		-
 			message: '#^Parameter &\$consumed by\-ref type of method TYPO3\\CMS\\Core\\IO\\CsvStreamFilter\:\:filter\(\) expects int, \(float\|int\) given\.$#'
 			identifier: parameterByRef.type
 			count: 1
@@ -5710,12 +5704,6 @@ parameters:
 			message: '#^Parameter \#1 \$image of function imagecolortransparent expects GdImage, resource given\.$#'
 			identifier: argument.type
 			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
-
-		-
-			message: '#^Property TYPO3\\CMS\\Core\\Imaging\\GraphicalFunctions\:\:\$setup \(array\) does not accept ArrayAccess\.$#'
-			identifier: assign.propertyType
-			count: 6
 			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
 
 		-
