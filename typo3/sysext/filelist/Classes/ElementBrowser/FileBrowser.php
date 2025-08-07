@@ -35,7 +35,6 @@ use TYPO3\CMS\Filelist\Matcher\MatcherInterface;
 use TYPO3\CMS\Filelist\Matcher\ResourceFileExtensionMatcher;
 use TYPO3\CMS\Filelist\Matcher\ResourceFolderTypeMatcher;
 use TYPO3\CMS\Filelist\Type\Mode;
-use TYPO3\CMS\Filelist\Type\SortDirection;
 
 /**
  * Browser for files. This is used when adding a FAL inline image with the 'add image' button in FormEngine.
@@ -128,7 +127,7 @@ class FileBrowser extends AbstractResourceBrowser
                 $this->selectedFolder,
                 MathUtility::forceIntegerInRange($this->currentPage, 1, 100000),
                 $this->sortField,
-                $this->sortDirection === SortDirection::DESCENDING,
+                $this->sortDirection,
                 Mode::BROWSE
             );
 

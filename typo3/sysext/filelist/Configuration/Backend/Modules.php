@@ -21,8 +21,8 @@ return [
         'moduleData' => [
             'displayThumbs' => true,
             'clipBoard' => true,
-            'sort' => 'name',
-            'reverse' => false,
+            'sortField' => 'name',
+            'sortDirection' => \TYPO3\CMS\Filelist\Type\SortDirection::ASCENDING->value,
             'viewMode' => null,
         ],
     ],

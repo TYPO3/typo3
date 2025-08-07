@@ -101,7 +101,7 @@ class FileList
     /**
      * The field to sort by
      */
-    public string $sort = '';
+    public string $sortField = '';
 
     public SortDirection $sortDirection = SortDirection::DESCENDING;
 
@@ -230,16 +230,24 @@ class FileList
      *
      * @param Folder $folderObject The folder to work on
      * @param int $currentPage The current page to render
-     * @param string $sort Sorting column
-     * @param bool $sortRev Sorting direction
+     * @param string $sortField Sorting column
+     * @param bool|SortDirection $sortDirection Sorting direction
      * @param Mode $mode Mode of the file list
      */
-    public function start(Folder $folderObject, int $currentPage, string $sort, bool $sortRev, Mode $mode = Mode::MANAGE)
+    public function start(Folder $folderObject, int $currentPage, string $sortField, bool|SortDirection $sortDirection, Mode $mode = Mode::MANAGE)
     {
         $this->folderObject = $folderObject;
         $this->currentPage = MathUtility::forceIntegerInRange($currentPage, 1, 100000);
-        $this->sort = $sort;
-        $this->sortDirection = $sortRev ? SortDirection::DESCENDING : SortDirection::ASCENDING;
+        $this->sortField = $sortField;
+        if (is_bool($sortDirection)) {
+            trigger_error(
+                'Passing the sort direction as boolean is deprecated and will be removed in future versions of TYPO3. Pass a ' . SortDirection::class . ' enum instead.',
+                E_USER_DEPRECATED
+            );
+            $this->sortDirection = $sortDirection ? SortDirection::DESCENDING : SortDirection::ASCENDING;
+        } else {
+            $this->sortDirection = $sortDirection;
+        }
         $this->totalbytes = 0;
         $this->resourceDownloadMatcher = null;
         $this->resourceDisplayMatcher = null;
@@ -334,8 +342,8 @@ class FileList
         $this->totalbytes = $resourceCollection->getTotalBytes();
 
         // Sort the files before sending it to the renderer
-        if (trim($this->sort) !== '') {
-            $resourceCollection->setResources($this->sortResources($resourceCollection->getResources(), $this->sort));
+        if (trim($this->sortField) !== '') {
+            $resourceCollection->setResources($this->sortResources($resourceCollection->getResources(), $this->sortField));
         }
 
         $paginator = new ResourceCollectionPaginator($resourceCollection, $this->currentPage, $this->itemsPerPage);
@@ -457,27 +465,27 @@ class FileList
             return $label;
         }
 
-        $params = ['sort' => $field, 'currentPage' => 0];
+        $params = ['sortField' => $field, 'currentPage' => 0];
         $paramsAsc = $params;
-        $paramsAsc['reverse'] = 0;
+        $paramsAsc['sortDirection'] = SortDirection::ASCENDING->value;
         $paramsDesc = $params;
-        $paramsDesc['reverse'] = 1;
+        $paramsDesc['sortDirection'] = SortDirection::DESCENDING->value;
 
-        $icon = $this->sort === $field
+        $icon = $this->sortField === $field
             ? $this->iconFactory->getIcon($this->sortDirection->getIconIdentifier(), IconSize::SMALL)->render()
             : $this->iconFactory->getIcon('empty-empty', IconSize::SMALL)->render();
 
         return '
             <div class="dropdown dropdown-static">
                 <button class="dropdown-toggle dropdown-toggle-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    ' . htmlspecialchars($label) . ' <div class="' . ($this->sort === $field ? 'text-primary' : '') . '">' . $icon . '</div>
+                    ' . htmlspecialchars($label) . ' <div class="' . ($this->sortField === $field ? 'text-primary' : '') . '">' . $icon . '</div>
                 </button>
                 <ul class="dropdown-menu">
                     <li>
                         <a href="' . $this->createModuleUri($paramsAsc) . '" class="dropdown-item">
                             <span class="dropdown-item-columns">
                                 <span class="dropdown-item-column dropdown-item-column-icon text-primary">
-                                    ' . ($this->sort === $field && $this->sortDirection === SortDirection::ASCENDING ? $this->iconFactory->getIcon('actions-dot', IconSize::SMALL)->render() : '') . '
+                                    ' . ($this->sortField === $field && $this->sortDirection === SortDirection::ASCENDING ? $this->iconFactory->getIcon('actions-dot', IconSize::SMALL)->render() : '') . '
                                 </span>
                                 <span class="dropdown-item-column dropdown-item-column-title">
                                     ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.asc') . '
@@ -489,7 +497,7 @@ class FileList
                         <a href="' . $this->createModuleUri($paramsDesc) . '" class="dropdown-item">
                             <span class="dropdown-item-columns">
                                 <span class="dropdown-item-column dropdown-item-column-icon text-primary">
-                                    ' . ($this->sort === $field && $this->sortDirection === SortDirection::DESCENDING ? $this->iconFactory->getIcon('actions-dot', IconSize::SMALL)->render() : '') . '
+                                    ' . ($this->sortField === $field && $this->sortDirection === SortDirection::DESCENDING ? $this->iconFactory->getIcon('actions-dot', IconSize::SMALL)->render() : '') . '
                                 </span>
                                 <span class="dropdown-item-column dropdown-item-column-title">
                                     ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.desc') . '

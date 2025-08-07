@@ -364,8 +364,8 @@ class FileListController implements LoggerAwareInterface
         $this->filelist->start(
             $this->folderObject,
             MathUtility::forceIntegerInRange($this->currentPage, 1, 100000),
-            (string)($this->moduleData->get('sort') ?: 'name'),
-            (bool)$this->moduleData->get('reverse')
+            (string)($this->moduleData->get('sortField') ?: 'name'),
+            SortDirection::tryFrom($request->getParsedBody()['sortDirection'] ?? $request->getQueryParams()['sortDirection'] ?? '') ?? SortDirection::ASCENDING
         );
 
         // Only add selected columns if the feature is enabled
@@ -572,25 +572,25 @@ class FileListController implements LoggerAwareInterface
                 $label = $this->filelist->getFieldLabel($field);
 
                 $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownRadio::class)
-                    ->setActive($this->filelist->sort === $field)
+                    ->setActive($this->filelist->sortField === $field)
                     ->setHref($this->filelist->createModuleUri([
-                        'sort' => $field,
+                        'sortField' => $field,
                         'currentPage' => 0,
-                        'reverse' => (int)($this->filelist->sortDirection === SortDirection::DESCENDING),
+                        'sortDirection' => (int)($this->filelist->sortDirection === SortDirection::DESCENDING),
                     ]))
                     ->setLabel($label);
             }
 
             $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownDivider::class);
         }
-        $defaultSortingDirectionParams = ['sort' => $this->filelist->sort, 'currentPage' => 0];
+        $defaultSortingDirectionParams = ['sortField' => $this->filelist->sortField, 'currentPage' => 0];
         $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownRadio::class)
             ->setActive($this->filelist->sortDirection === SortDirection::ASCENDING)
-            ->setHref($this->filelist->createModuleUri(array_merge($defaultSortingDirectionParams, ['reverse' => 0])))
+            ->setHref($this->filelist->createModuleUri(array_merge($defaultSortingDirectionParams, ['sortDirection' => SortDirection::ASCENDING->value])))
             ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.asc'));
         $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownRadio::class)
             ->setActive($this->filelist->sortDirection === SortDirection::DESCENDING)
-            ->setHref($this->filelist->createModuleUri(array_merge($defaultSortingDirectionParams, ['reverse' => 1])))
+            ->setHref($this->filelist->createModuleUri(array_merge($defaultSortingDirectionParams, ['sortDirection' => SortDirection::DESCENDING->value])))
             ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.desc'));
 
         foreach ($sortingModeButtons as $sortingModeButton) {
