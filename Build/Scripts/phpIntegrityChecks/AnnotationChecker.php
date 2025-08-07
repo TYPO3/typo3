@@ -46,8 +46,6 @@ final class AnnotationChecker extends AbstractPhpIntegrityChecker
 
                 // These annotations are OK to have on class, class property and class method level, everything else is denied
                 $negativeLookaheadMatches = [
-                    // Annotation tags
-                    'Annotation', 'Attribute', 'Attributes', 'Required', 'Target',
                     // PHPDocumentor 1 tags
                     'private', 'static', 'staticvar', 'staticVar',
                     // PHPDocumentor 2 tags
@@ -56,16 +54,6 @@ final class AnnotationChecker extends AbstractPhpIntegrityChecker
                     'depends', 'env',
                     // PHPCheckStyle
                     'SuppressWarnings', 'noinspection',
-                    // Extbase related
-                    'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\IgnoreValidation', 'Extbase\\\\IgnoreValidation', 'IgnoreValidation',
-                    'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\Inject', 'Extbase\\\\Inject', 'Inject',
-                    'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\Validate', 'Extbase\\\\Validate', 'Validate',
-                    'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\FileUpload', 'Extbase\\\\FileUpload', 'FileUpload',
-                    'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\ORM\\\\Cascade', 'Extbase\\\\ORM\\\\Cascade', 'Cascade',
-                    'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\ORM\\\\Lazy', 'Extbase\\\\ORM\\\\Lazy', 'Lazy',
-                    'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\ORM\\\\Transient', 'Extbase\\\\ORM\\\\Transient', 'Transient',
-                    // annotations shipped with doctrine/annotations
-                    'Doctrine\\\\Common\\\\Annotations\\\\Annotation\\\\Enum', 'Enum',
                     // Extension scanner
                     'extensionScannerIgnoreFile', 'extensionScannerIgnoreLine',
                     // static code analysis

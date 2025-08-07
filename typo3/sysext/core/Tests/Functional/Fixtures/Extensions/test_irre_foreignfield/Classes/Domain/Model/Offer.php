@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3Tests\TestIrreForeignfield\Domain\Model;
 
-use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Attribute as Extbase;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -32,9 +32,9 @@ class Offer extends AbstractEntity
     protected $title = '';
 
     /**
-     * @Extbase\ORM\Lazy
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3Tests\TestIrreForeignfield\Domain\Model\Offer>
      */
+    #[Extbase\ORM\Lazy]
     protected $prices;
 
     /**

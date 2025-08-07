@@ -20,11 +20,12 @@ namespace TYPO3Tests\ActionControllerTest\Controller;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\View\ViewInterface;
-use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Attribute as Extbase;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
+use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Validation\Validator\CustomValidator;
 use TYPO3Tests\ActionControllerTest\Domain\Model\Model;
 
 /**
@@ -78,17 +79,19 @@ class TestController extends ActionController
         return $this->htmlResponse('');
     }
 
-    /**
-     * @Extbase\Validate("\TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Validation\Validator\Custom", param="barParam")
-     */
+    #[Extbase\Validate([
+        'validator' => CustomValidator::class,
+        'param' => 'barParam',
+    ])]
     public function barAction(string $barParam): ResponseInterface
     {
         return $this->htmlResponse('');
     }
 
-    /**
-     * @Extbase\Validate("NotEmpty", param="bazParam")
-     */
+    #[Extbase\Validate([
+        'validator' => 'NotEmpty',
+        'param' => 'bazParam',
+    ])]
     public function bazAction(array $bazParam): ResponseInterface
     {
         return $this->htmlResponse('');

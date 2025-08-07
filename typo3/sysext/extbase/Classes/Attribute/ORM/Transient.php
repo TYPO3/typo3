@@ -15,11 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Annotation\ORM;
+namespace TYPO3\CMS\Extbase\Attribute\ORM;
 
-/**
- * @Annotation
- * @Target({"PROPERTY"})
- */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-class Lazy {}
+class Transient {}

@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3Tests\BlogExample\Controller;
 
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
+use TYPO3\CMS\Extbase\Attribute\IgnoreValidation;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;

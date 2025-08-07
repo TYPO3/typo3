@@ -7,6 +7,7 @@ return [
             'Deprecation-82869-ReplaceInjectWithTYPO3CMSExtbaseAnnotationInject.rst',
             'Deprecation-86907-DeprecateUsageOfDependencyInjectionWithNonPublicProperties.rst',
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+            'Breaking-107229-RemovedSupportOfAnnotationsInExtbase.rst',
         ],
     ],
     '@lazy' => [
@@ -14,6 +15,7 @@ return [
             'Feature-83078-ReplaceLazyWithTYPO3CMSExtbaseAnnotationORMLazy.rst',
             'Deprecation-83078-ReplaceLazyWithTYPO3CMSExtbaseAnnotationORMLazy.rst',
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+            'Breaking-107229-RemovedSupportOfAnnotationsInExtbase.rst',
         ],
     ],
     '@transient' => [
@@ -21,6 +23,7 @@ return [
             'Feature-83092-ReplaceTransientWithTYPO3CMSExtbaseAnnotationORMTransient.rst',
             'Deprecation-83092-ReplaceTransientWithTYPO3CMSExtbaseAnnotationORMTransient.rst',
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+            'Breaking-107229-RemovedSupportOfAnnotationsInExtbase.rst',
         ],
     ],
     '@cascade' => [
@@ -28,6 +31,7 @@ return [
             'Feature-83093-ReplaceCascadeWithTYPO3CMSExtbaseAnnotationORMCascade.rst',
             'Deprecation-83093-ReplaceCascadeWithTYPO3CMSExtbaseAnnotationORMCascade.rst',
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+            'Breaking-107229-RemovedSupportOfAnnotationsInExtbase.rst',
         ],
     ],
     '@validate' => [
@@ -35,6 +39,7 @@ return [
             'Feature-83167-ReplaceValidateWithTYPO3CMSExtbaseAnnotationValidate.rst',
             'Deprecation-83167-ReplaceValidateWithTYPO3CMSExtbaseAnnotationValidate.rst',
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+            'Breaking-107229-RemovedSupportOfAnnotationsInExtbase.rst',
         ],
     ],
 ];

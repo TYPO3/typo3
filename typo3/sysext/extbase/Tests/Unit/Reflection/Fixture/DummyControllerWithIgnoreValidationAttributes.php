@@ -19,14 +19,14 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
+use TYPO3\CMS\Extbase\Attribute\IgnoreValidation;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 
 /**
- * Dummy controller with @TYPO3\CMS\Extbase\Annotation\IgnoreValidation attribute
+ * Dummy controller with @TYPO3\CMS\Extbase\Attribute\IgnoreValidation attributes
  */
-class DummyControllerWithIgnoreValidationAttribute implements ControllerInterface
+class DummyControllerWithIgnoreValidationAttributes implements ControllerInterface
 {
     #[IgnoreValidation(['argumentName' => 'foo'])]
     #[IgnoreValidation(['argumentName' => 'bar'])]

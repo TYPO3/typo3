@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Beuser\Domain\Model;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Attribute as Extbase;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -30,9 +30,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 class BackendUser extends AbstractEntity
 {
-    /**
-     * @Extbase\Validate("NotEmpty")
-     */
+    #[Extbase\Validate(['validator' => 'NotEmpty'])]
     protected string $userName = '';
 
     /**

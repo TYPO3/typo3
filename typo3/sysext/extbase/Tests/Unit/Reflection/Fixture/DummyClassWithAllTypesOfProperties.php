@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
 
-use TYPO3\CMS\Extbase\Annotation as Extbase;
-use TYPO3\CMS\Extbase\Annotation\ORM\Transient;
+use TYPO3\CMS\Extbase\Attribute as Extbase;
+use TYPO3\CMS\Extbase\Attribute\ORM\Transient;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
@@ -41,24 +41,8 @@ class DummyClassWithAllTypesOfProperties extends AbstractEntity
 
     public ?string $nullableStringTypedProperty = null;
 
-    /**
-     * @Transient
-     */
-    public $propertyWithTransientAnnotation;
-
     #[Transient]
     public $propertyWithTransientAttribute;
-
-    /**
-     * @var DummyClassWithAllTypesOfProperties
-     * @Extbase\ORM\Cascade("remove")
-     */
-    public $propertyWithCascadeAnnotation;
-
-    /**
-     * @Extbase\ORM\Cascade("remove")
-     */
-    public $propertyWithCascadeAnnotationWithoutVarAnnotation;
 
     #[Extbase\ORM\Cascade(['value' => 'remove'])]
     public DummyClassWithAllTypesOfProperties $propertyWithCascadeAttribute;

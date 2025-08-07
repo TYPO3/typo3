@@ -15,21 +15,13 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Annotation;
+namespace TYPO3\CMS\Extbase\Attribute;
 
-use Doctrine\Common\Annotations\Annotation\Required;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 
-/**
- * @Annotation
- * @Target({"PROPERTY"})
- */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class FileUpload
 {
-    /**
-     * @Required
-     */
     public array $validation = [];
     public string $uploadFolder = '';
     public bool $addRandomSuffix = true;

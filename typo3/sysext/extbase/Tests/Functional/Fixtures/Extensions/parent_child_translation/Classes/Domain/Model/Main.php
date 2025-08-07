@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3Tests\ParentChildTranslation\Domain\Model;
 
-use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
-use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
+use TYPO3\CMS\Extbase\Attribute\ORM\Cascade;
+use TYPO3\CMS\Extbase\Attribute\ORM\Lazy;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -38,11 +38,9 @@ class Main extends AbstractEntity
      * squeeze
      *
      * @var ObjectStorage<Squeeze>
-     *
-     * @Cascade("remove")
-     *
-     * @Lazy
      */
+    #[Cascade(['value' => 'remove'])]
+    #[Lazy]
     protected ObjectStorage $squeeze;
 
     /**

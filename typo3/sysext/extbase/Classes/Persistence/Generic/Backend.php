@@ -308,8 +308,9 @@ class Backend implements BackendInterface
     /**
      * Persists an object storage. Objects of a 1:n or m:n relation are queued and processed with the parent object.
      * A 1:1 relation gets persisted immediately. Objects which were removed from the property were detached from
-     * the parent object. They will not be deleted by default. You have to annotate the property
-     * with '@TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")' if you want them to be deleted as well.
+     * the parent object. They will not be deleted by default. You have to add the attribute
+     * #[\TYPO3\CMS\Extbase\Attribute\ORM\Cascade(['value' => 'remove'])] to the property if you want them to
+     * be deleted as well.
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objectStorage The object storage to be persisted.
      * @param DomainObjectInterface $parentObject The parent object. One of the properties holds the object storage.

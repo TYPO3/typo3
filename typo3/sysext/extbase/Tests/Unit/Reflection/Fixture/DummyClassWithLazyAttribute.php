@@ -17,19 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
 
-use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
+use TYPO3\CMS\Extbase\Attribute as Extbase;
 
-/**
- * Dummy class with @TYPO3\CMS\Extbase\Annotation\IgnoreValidation annotation
- * Note: This class is excluded from phpstan analysing, because of errors which are test-purpose related.
- */
-class DummyClassWithIgnoreValidationDoctrineAnnotation
+class DummyClassWithLazyAttribute
 {
-    /**
-     * @param $foo
-     * @param $bar
-     * @IgnoreValidation("foo")
-     * @IgnoreValidation("bar")
-     */
-    public function someAction($foo, $bar): void {}
+    #[Extbase\ORM\Lazy]
+    public $propertyWithLazyAttribute;
 }

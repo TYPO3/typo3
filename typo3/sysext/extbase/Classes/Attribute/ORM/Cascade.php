@@ -15,30 +15,28 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Annotation;
+namespace TYPO3\CMS\Extbase\Attribute\ORM;
 
-/**
- * @Annotation
- * @Target({"METHOD"})
- */
-#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-class IgnoreValidation
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
+class Cascade
 {
     /**
      * @var non-empty-string|null
+     *
+     * Currently, Extbase does only support "remove".
+     *
+     * Other possible cascade operations would be: "persist", "merge", "detach", "refresh", "all"
+     * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/working-with-associations.html#transitive-persistence-cascade-operations
      */
-    public ?string $argumentName = null;
+    public ?string $value = null;
 
     /**
-     * @param array{value?: non-empty-string, argumentName?: non-empty-string} $values
-     * @throws \InvalidArgumentException
+     * @param array{value?: 'remove'} $values
      */
     public function __construct(array $values)
     {
         if (isset($values['value'])) {
-            $this->argumentName = $values['value'];
-        } elseif (isset($values['argumentName'])) {
-            $this->argumentName = $values['argumentName'];
+            $this->value = $values['value'];
         }
     }
 }

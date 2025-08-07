@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfProperties;
-use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithLazyDoctrineAnnotation;
+use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithLazyAttribute;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyModel;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
@@ -33,16 +33,9 @@ final class PropertyTest extends UnitTestCase
     protected bool $resetSingletonInstances = true;
 
     #[Test]
-    public function classSchemaDetectsPropertiesWithLazyAnnotation(): void
-    {
-        $classSchema = new ClassSchema(DummyClassWithLazyDoctrineAnnotation::class);
-        self::assertTrue($classSchema->getProperty('propertyWithLazyAnnotation')->isLazy());
-    }
-
-    #[Test]
     public function classSchemaDetectsPropertiesWithLazyAttribute(): void
     {
-        $classSchema = new ClassSchema(DummyClassWithLazyDoctrineAnnotation::class);
+        $classSchema = new ClassSchema(DummyClassWithLazyAttribute::class);
         self::assertTrue($classSchema->getProperty('propertyWithLazyAttribute')->isLazy());
     }
 
@@ -68,15 +61,6 @@ final class PropertyTest extends UnitTestCase
     }
 
     #[Test]
-    public function classSchemaDetectsTransientProperty(): void
-    {
-        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
-            ->getProperty('propertyWithTransientAnnotation');
-
-        self::assertTrue($property->isTransient());
-    }
-
-    #[Test]
     public function classSchemaDetectsTransientPropertyFromAttribute(): void
     {
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
@@ -86,30 +70,12 @@ final class PropertyTest extends UnitTestCase
     }
 
     #[Test]
-    public function classSchemaDetectsCascadeProperty(): void
-    {
-        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
-            ->getProperty('propertyWithCascadeAnnotation');
-
-        self::assertSame('remove', $property->getCascadeValue());
-    }
-
-    #[Test]
     public function classSchemaDetectsCascadePropertyFromAttribute(): void
     {
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
             ->getProperty('propertyWithCascadeAttribute');
 
         self::assertSame('remove', $property->getCascadeValue());
-    }
-
-    #[Test]
-    public function classSchemaDetectsCascadePropertyOnlyWithVarAnnotation(): void
-    {
-        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
-            ->getProperty('propertyWithCascadeAnnotationWithoutVarAnnotation');
-
-        self::assertNull($property->getCascadeValue());
     }
 
     #[Test]
@@ -144,42 +110,6 @@ final class PropertyTest extends UnitTestCase
 
         self::assertSame(ObjectStorage::class, $property->getTypes()[0]->getClassName());
         self::assertSame(DummyClassWithAllTypesOfProperties::class, $property->getTypes()[0]->getCollectionValueTypes()[0]->getClassName());
-    }
-
-    #[Test]
-    public function classSchemaDetectsValidateAnnotationsModelProperties(): void
-    {
-        $property = (new ClassSchema(DummyModel::class))
-            ->getProperty('propertyWithValidateAnnotations');
-
-        self::assertSame(
-            [
-                [
-                    'name' => 'StringLength',
-                    'options' => [
-                        'minimum' => 1,
-                        'maximum' => 10,
-                    ],
-                    'className' => StringLengthValidator::class,
-                ],
-                [
-                    'name' => 'NotEmpty',
-                    'options' => [],
-                    'className' => NotEmptyValidator::class,
-                ],
-                [
-                    'name' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator',
-                    'options' => [],
-                    'className' => NotEmptyValidator::class,
-                ],
-                [
-                    'name' => NotEmptyValidator::class,
-                    'options' => [],
-                    'className' => NotEmptyValidator::class,
-                ],
-            ],
-            $property->getValidators()
-        );
     }
 
     #[Test]
@@ -314,30 +244,6 @@ final class PropertyTest extends UnitTestCase
 
         self::assertCount(1, $types);
         self::assertSame(ObjectStorage::class, $types[0]->getClassName());
-    }
-
-    #[Test]
-    public function classSchemaDetectsFileUploadAnnotationModelProperties(): void
-    {
-        $property = (new ClassSchema(DummyModel::class))
-            ->getProperty('propertyWithFileUploadAnnotation');
-
-        self::assertSame(
-            [
-                'validation' => [
-                    'required' => true,
-                    'maxFiles' => 1,
-                    'fileSize' => ['minimum' => '0K', 'maximum' => '2M'],
-                    'mimeType' => ['allowedMimeTypes' => ['image/png']],
-                    'allowedMimeTypes' => ['image/png'],
-                ],
-                'uploadFolder' => '1:/user_upload/',
-                'addRandomSuffix' => true,
-                'duplicationBehavior' => DuplicationBehavior::REPLACE,
-                'createUploadFolderIfNotExist' => true,
-            ],
-            $property->getFileUpload()
-        );
     }
 
     #[Test]

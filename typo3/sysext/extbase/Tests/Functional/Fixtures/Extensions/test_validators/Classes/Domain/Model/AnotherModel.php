@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3Tests\TestValidators\Domain\Model;
 
-use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Attribute as Extbase;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
@@ -27,7 +27,7 @@ class AnotherModel extends AbstractEntity
 {
     /**
      * @var string
-     * @Extbase\Validate("NotEmpty")
      */
+    #[Extbase\Validate(['validator' => 'NotEmpty'])]
     protected $foo;
 }

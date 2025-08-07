@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Extbase\Mvc;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
+use TYPO3\CMS\Extbase\Attribute\IgnoreValidation;
 use TYPO3\CMS\Extbase\Event\Mvc\AfterRequestDispatchedEvent;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
@@ -59,8 +59,8 @@ class Dispatcher
             if ($dispatchLoopCount++ > 99) {
                 throw new InfiniteLoopException(
                     'Could not ultimately dispatch the request after ' . $dispatchLoopCount
-                    . ' iterations. Most probably, a @' . IgnoreValidation::class
-                    . ' annotation is missing on re-displaying a form with validation errors.',
+                    . ' iterations. Most probably, a #[' . IgnoreValidation::class . ']'
+                    . ' attribute is missing on re-displaying a form with validation errors.',
                     1217839467
                 );
             }

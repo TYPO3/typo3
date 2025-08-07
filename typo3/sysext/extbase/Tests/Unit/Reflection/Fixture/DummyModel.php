@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
 
-use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Attribute as Extbase;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 
@@ -26,26 +26,13 @@ use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
  */
 class DummyModel extends AbstractEntity
 {
-    protected $propertyWithoutValidateAnnotations;
-
-    /**
-     * @Extbase\Validate("StringLength", options={"minimum": 1, "maximum": 10})
-     * @Extbase\Validate("NotEmpty")
-     * @Extbase\Validate("\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator")
-     * @Extbase\Validate("TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator")
-     */
-    protected $propertyWithValidateAnnotations;
+    protected $propertyWithoutValidateAttributes;
 
     #[Extbase\Validate(['validator' => 'StringLength', 'options' => ['minimum' => 1, 'maximum' => 10]])]
     #[Extbase\Validate(['validator' => 'NotEmpty'])]
     #[Extbase\Validate(['validator' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator'])]
     #[Extbase\Validate(['validator' => NotEmptyValidator::class])]
     protected $propertyWithValidateAttributes;
-
-    /**
-     * @Extbase\FileUpload(validation={"required": true, "maxFiles": 1, "fileSize": {"minimum": "0K", "maximum": "2M"}, "mimeType": {"allowedMimeTypes": {0: "image/png"}}, "allowedMimeTypes": {0: "image/png"}}, uploadFolder="1:/user_upload/")
-     */
-    protected $propertyWithFileUploadAnnotation;
 
     #[Extbase\FileUpload([
         'validation' => [

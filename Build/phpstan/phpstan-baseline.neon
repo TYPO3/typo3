@@ -1867,10 +1867,10 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Annotation\\IgnoreValidation\:\:__construct\(\) has InvalidArgumentException in PHPDoc @throws tag but it''s not thrown\.$#'
+			message: '#^Method TYPO3\\CMS\\Extbase\\Attribute\\IgnoreValidation\:\:__construct\(\) has InvalidArgumentException in PHPDoc @throws tag but it''s not thrown\.$#'
 			identifier: throws.unusedType
 			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Annotation/IgnoreValidation.php
+			path: ../../typo3/sysext/extbase/Classes/Attribute/IgnoreValidation.php
 
 		-
 			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'

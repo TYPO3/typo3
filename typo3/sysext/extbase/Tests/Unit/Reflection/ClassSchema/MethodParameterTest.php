@@ -22,10 +22,8 @@ use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchMethodParameterException;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfMethods;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithIgnoreValidationAttribute;
-use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithIgnoreValidationDoctrineAnnotation;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyController;
-use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithIgnoreValidationAttribute;
-use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithIgnoreValidationDoctrineAnnotation;
+use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithIgnoreValidationAttributes;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -70,36 +68,12 @@ final class MethodParameterTest extends UnitTestCase
     }
 
     #[Test]
-    public function classSchemaDetectsIgnoreValidationAnnotation(): void
-    {
-        $classSchemaMethod = (new ClassSchema(DummyControllerWithIgnoreValidationDoctrineAnnotation::class))
-            ->getMethod('someAction');
-        self::assertTrue($classSchemaMethod->getParameter('foo')->ignoreValidation());
-        self::assertTrue($classSchemaMethod->getParameter('bar')->ignoreValidation());
-
-        $this->expectException(NoSuchMethodParameterException::class);
-        $classSchemaMethod->getParameter('baz')->ignoreValidation();
-    }
-
-    #[Test]
     public function classSchemaDetectsIgnoreValidationAttribute(): void
     {
-        $classSchemaMethod = (new ClassSchema(DummyControllerWithIgnoreValidationAttribute::class))
+        $classSchemaMethod = (new ClassSchema(DummyControllerWithIgnoreValidationAttributes::class))
             ->getMethod('someAction');
         self::assertTrue($classSchemaMethod->getParameter('foo')->ignoreValidation());
         self::assertTrue($classSchemaMethod->getParameter('bar')->ignoreValidation());
-
-        $this->expectException(NoSuchMethodParameterException::class);
-        $classSchemaMethod->getParameter('baz')->ignoreValidation();
-    }
-
-    #[Test]
-    public function classSchemaIgnoresIgnoreValidationAnnotationOnNonControllerClasses(): void
-    {
-        $classSchemaMethod = (new ClassSchema(DummyClassWithIgnoreValidationDoctrineAnnotation::class))
-            ->getMethod('someAction');
-        self::assertFalse($classSchemaMethod->getParameter('foo')->ignoreValidation());
-        self::assertFalse($classSchemaMethod->getParameter('bar')->ignoreValidation());
 
         $this->expectException(NoSuchMethodParameterException::class);
         $classSchemaMethod->getParameter('baz')->ignoreValidation();
@@ -147,7 +121,7 @@ final class MethodParameterTest extends UnitTestCase
                     'className' => NotEmptyValidator::class,
                 ],
             ],
-            $classSchema->getMethod('methodWithValidateAnnotationsAction')->getParameter('fooParam')->getValidators()
+            $classSchema->getMethod('methodWithValidateAttributesAction')->getParameter('fooParam')->getValidators()
         );
     }
 

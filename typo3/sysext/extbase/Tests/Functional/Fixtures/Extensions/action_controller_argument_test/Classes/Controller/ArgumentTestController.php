@@ -19,11 +19,12 @@ namespace TYPO3Tests\ActionControllerArgumentTest\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Attribute as Extbase;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3Tests\ActionControllerArgumentTest\Domain\Model\Model;
 use TYPO3Tests\ActionControllerArgumentTest\Domain\Model\ModelDto;
+use TYPO3Tests\ActionControllerArgumentTest\Domain\Validation\Validator\FailingValidator;
 
 /**
  * Fixture controller
@@ -85,9 +86,10 @@ class ArgumentTestController extends ActionController
         return $this->htmlResponse($this->view->render());
     }
 
-    /**
-     * @Extbase\Validate("TYPO3Tests\ActionControllerArgumentTest\Domain\Validation\Validator\Failing", param="model")
-     */
+    #[Extbase\Validate([
+        'validator' => FailingValidator::class,
+        'param' => 'model',
+    ])]
     public function validateModelAction(Model $model): ResponseInterface
     {
         $this->view->assignMultiple([
@@ -96,9 +98,10 @@ class ArgumentTestController extends ActionController
         return $this->htmlResponse($this->view->render());
     }
 
-    /**
-     * @Extbase\Validate("TYPO3Tests\ActionControllerArgumentTest\Domain\Validation\Validator\Failing", param="dto")
-     */
+    #[Extbase\Validate([
+        'validator' => FailingValidator::class,
+        'param' => 'dto',
+    ])]
     public function validateDtoAction(ModelDto $dto): ResponseInterface
     {
         $this->view->assignMultiple([

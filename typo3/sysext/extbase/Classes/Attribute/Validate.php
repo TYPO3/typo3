@@ -15,20 +15,11 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Annotation;
+namespace TYPO3\CMS\Extbase\Attribute;
 
-use Doctrine\Common\Annotations\Annotation\Required;
-
-/**
- * @Annotation
- * @Target({"PROPERTY", "METHOD"})
- */
 #[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Validate
 {
-    /**
-     * @Required
-     */
     public string $validator = '';
 
     public string $param = '';

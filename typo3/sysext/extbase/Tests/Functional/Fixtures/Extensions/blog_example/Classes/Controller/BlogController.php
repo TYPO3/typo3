@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3Tests\BlogExample\Controller;
 
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
+use TYPO3\CMS\Extbase\Attribute\IgnoreValidation;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
@@ -65,8 +65,8 @@ class BlogController extends ActionController
 
     /**
      * // needs to be imported entirely, else the annotationChecker test script complains
-     * @IgnoreValidation("blogPost")
      */
+    #[IgnoreValidation(['argumentName' => 'blogPost'])]
     public function testForwardAction(Post $blogPost): ForwardResponse
     {
         return (new ForwardResponse('testForwardTarget'))->withArguments(['blogPost' => $blogPost]);

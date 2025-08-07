@@ -17,12 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
 
-use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Attribute as Extbase;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 
 /**
- * Fixture class with @validate annotations
+ * Fixture class with #[Validate] attributes
  */
 class DummyControllerWithValidateAttributeWithoutParamTypeHint extends ActionController
 {

@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Core;
 
 use Composer\Autoload\ClassLoader;
 use Composer\InstalledVersions;
-use Doctrine\Common\Annotations\AnnotationReader;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -192,16 +191,9 @@ class Bootstrap
      * @param ClassLoader $classLoader an instance of the class loader
      * @internal This is not a public API method, do not use in own extensions
      */
-    public static function initializeClassLoader(ClassLoader $classLoader)
+    public static function initializeClassLoader(ClassLoader $classLoader): void
     {
         ClassLoadingInformation::setClassLoader($classLoader);
-
-        // Annotations used in unit tests
-        AnnotationReader::addGlobalIgnoredName('test');
-
-        // Annotations that control the extension scanner
-        AnnotationReader::addGlobalIgnoredName('extensionScannerIgnoreFile');
-        AnnotationReader::addGlobalIgnoredName('extensionScannerIgnoreLine');
     }
 
     /**

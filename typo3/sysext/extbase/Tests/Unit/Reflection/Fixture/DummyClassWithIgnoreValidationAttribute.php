@@ -17,10 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
 
-use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
+use TYPO3\CMS\Extbase\Attribute\IgnoreValidation;
 
 /**
- * Dummy class with @TYPO3\CMS\Extbase\Annotation\IgnoreValidation attribute
+ * Dummy class with @TYPO3\CMS\Extbase\Attribute\IgnoreValidation attribute
  */
 class DummyClassWithIgnoreValidationAttribute
 {

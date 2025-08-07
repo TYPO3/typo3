@@ -17,14 +17,21 @@ declare(strict_types=1);
 
 namespace TYPO3Tests\TestValidators\Domain\Model;
 
-use TYPO3\CMS\Extbase\Attribute as Extbase;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-use TYPO3Tests\TestValidators\Validation\Validator\CustomValidator;
 
 /**
  * Fixture model
+ * I am here, to remind you,
+ * of the Annotations that where here
+ * before you went away
+ * it's not fair, to deny me
+ * of validators that I bear
+ * that you gave to me
+ * you, you, you oughta test,
+ * while I'm here
  */
-class Model extends AbstractEntity
+class AliasedModel extends AbstractEntity
 {
     /**
      * @var string
@@ -33,20 +40,4 @@ class Model extends AbstractEntity
     #[Extbase\Validate(['validator' => 'StringLength', 'options' => ['maximum' => 10]])]
     #[Extbase\Validate(['validator' => 'NotEmpty'])]
     protected $foo;
-
-    /**
-     * @var int
-     */
-    #[Extbase\Validate(['validator' => CustomValidator::class])]
-    protected $bar;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Model>
-     */
-    protected $baz;
-
-    /**
-     * @var \TYPO3Tests\TestValidators\Domain\Model\AnotherModel
-     */
-    protected $qux;
 }
