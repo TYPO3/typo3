@@ -551,11 +551,11 @@ export default class DragUploader {
         const allActionSelect = document.createElement('span');
         allActionSelect.innerHTML = `
           <select class="form-select t3js-actions-all">
-            <option value="">${TYPO3.lang['file_upload.actions.all.empty']}</option>
+            <option value="" selected>${TYPO3.lang['file_upload.actions.all.empty']}</option>
             ${this.irreObjectUid ? `<option value="${Action.USE_EXISTING}">${TYPO3.lang['file_upload.actions.all.use_existing']}</option>` : ''}
-            <option value="${Action.SKIP}" ${this.defaultAction === Action.SKIP ? 'selected' : ''}>${TYPO3.lang['file_upload.actions.all.skip']}</option>
-            <option value="${Action.RENAME}" ${this.defaultAction === Action.RENAME ? 'selected' : ''}>${TYPO3.lang['file_upload.actions.all.rename']}</option>
-            <option value="${Action.OVERRIDE}" ${this.defaultAction === Action.OVERRIDE ? 'selected' : ''}>${TYPO3.lang['file_upload.actions.all.override']}</option>
+            <option value="${Action.SKIP}">${TYPO3.lang['file_upload.actions.all.skip']}</option>
+            <option value="${Action.RENAME}">${TYPO3.lang['file_upload.actions.all.rename']}</option>
+            <option value="${Action.OVERRIDE}">${TYPO3.lang['file_upload.actions.all.override']}</option>
           </select>
         `;
 
