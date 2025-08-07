@@ -59,6 +59,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         $record = $item->getRecord();
         $itemLabels = $item->getContext()->getItemLabels();
         $table = $item->getTable();
+        $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($table);
         $outHeader = '';
 
         $headerLayout = (string)($record['header_layout'] ?? '');
@@ -73,9 +74,11 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             $outHeader .= '<div class="element-preview-header-date">' . htmlspecialchars($dateLabel) . ' </div>';
         }
 
-        $label = BackendUtility::getRecordTitle($table, $record, false, false);
-        if ($label !== '') {
-            $outHeader .= '<div class="element-preview-header-header">' . $this->linkEditContent($this->renderText($label), $record, $table) . '</div>';
+        if ($schema->hasCapability(TcaSchemaCapability::Label)) {
+            $label = $record[$schema->getCapability(TcaSchemaCapability::Label)->getPrimaryFieldName()] ?? '';
+            if ($label !== '') {
+                $outHeader .= '<div class="element-preview-header-header">' . $this->linkEditContent($this->renderText($label), $record, $table) . '</div>';
+            }
         }
 
         $subHeader = (string)($record['subheader'] ?? '');
