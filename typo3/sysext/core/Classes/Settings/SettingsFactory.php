@@ -70,8 +70,12 @@ final readonly class SettingsFactory
             if ($definition === null) {
                 throw new \RuntimeException('Unexpected setting ' . $key . ' is not defined', 1724067004);
             }
-            // @todo We should collect invalid values (readonly-violation/validation-error) and report in the UI instead of ignoring them
-            if ($definition->readonly || !$this->validateAndTransformValue($value, $definition)) {
+            if ($definition->readonly) {
+                unset($settings[$key]);
+                continue;
+            }
+            // @todo We should collect invalid values and report in the UI instead of ignoring them
+            if (!$this->validateAndTransformValue($value, $definition)) {
                 $value = $definition->default;
             }
             $settings[$key] = $value;
