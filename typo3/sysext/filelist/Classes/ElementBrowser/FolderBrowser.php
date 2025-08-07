@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Filelist\Matcher\Matcher;
 use TYPO3\CMS\Filelist\Matcher\ResourceFolderTypeMatcher;
 use TYPO3\CMS\Filelist\Type\Mode;
-use TYPO3\CMS\Filelist\Type\SortDirection;
 
 /**
  * Browser for folders. This is used with type=folder to select folders.
@@ -66,7 +65,7 @@ class FolderBrowser extends AbstractResourceBrowser
                 $this->selectedFolder,
                 MathUtility::forceIntegerInRange($this->currentPage, 1, 100000),
                 $this->sortField,
-                $this->sortDirection === SortDirection::DESCENDING,
+                $this->sortDirection,
                 Mode::BROWSE
             );
 

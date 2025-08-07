@@ -30,7 +30,6 @@ use TYPO3\CMS\Filelist\Matcher\ResourceFolderTypeMatcher;
 use TYPO3\CMS\Filelist\Matcher\ResourceMatcher;
 use TYPO3\CMS\Filelist\Type\LinkType;
 use TYPO3\CMS\Filelist\Type\Mode;
-use TYPO3\CMS\Filelist\Type\SortDirection;
 
 /**
  * @internal
@@ -77,7 +76,7 @@ class FileLinkHandler extends AbstractResourceLinkHandler
                 $this->selectedFolder,
                 MathUtility::forceIntegerInRange($this->currentPage, 1, 100000),
                 $this->sortField,
-                $this->sortDirection === SortDirection::DESCENDING,
+                $this->sortDirection,
                 Mode::BROWSE
             );
             $this->filelist->setResourceDisplayMatcher($this->resourceDisplayMatcher);
