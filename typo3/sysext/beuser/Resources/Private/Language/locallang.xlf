@@ -329,6 +329,12 @@
 			<trans-unit id="backendUserGroup.list.title">
 				<source>Backend user groups</source>
 			</trans-unit>
+			<trans-unit id="backendUserGroup.noGroupsFound.title">
+				<source>No backend user groups found!</source>
+			</trans-unit>
+			<trans-unit id="backendUserGroup.noGroupsFound.message">
+				<source>There are currently no backend user groups found in the database.</source>
+			</trans-unit>
 			<trans-unit id="backendUserGroup.list.section.compare">
 				<source>Backend user groups to compare</source>
 			</trans-unit>
