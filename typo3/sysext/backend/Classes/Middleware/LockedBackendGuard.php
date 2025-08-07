@@ -87,7 +87,7 @@ class LockedBackendGuard implements MiddlewareInterface
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] < 0) {
             throw new BackendLockedException(
                 HttpUtility::HTTP_STATUS_403,
-                'Backend and Install Tool are locked for maintenance. [BE][adminOnly] is set to "' . (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] . '".',
+                'Backend is locked for maintenance. [BE][adminOnly] is set to "' . (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] . '".',
                 'TYPO3 Backend locked',
                 1517949794
             );
