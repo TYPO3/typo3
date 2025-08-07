@@ -52,7 +52,6 @@ use TYPO3\CMS\Core\SysLog\Action\Setting as SettingAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -265,9 +264,10 @@ readonly class SiteSettingsController
         $newSettings = $this->siteSettingsService->createSettingsFromFormData($site, $parsedBody['settings'] ?? []);
         $settingsDiff = $this->siteSettingsService->computeSettingsDiff($site, $newSettings, $minify);
         $settings = $settingsDiff->asArray();
-        if ($specificSetting !== '') {
-            $value = ArrayUtility::getValueByPath($settings, $specificSetting, '.');
-            $settings = ArrayUtility::setValueByPath([], $specificSetting, $value, '.');
+        if ($specificSetting !== '' && isset($settings[$specificSetting])) {
+            $settings = [
+                $specificSetting => $settings[$specificSetting],
+            ];
         }
 
         $yamlContents = Yaml::dump($settings, 99, 2, Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE | Yaml::DUMP_OBJECT_AS_MAP);
