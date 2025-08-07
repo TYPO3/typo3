@@ -749,7 +749,7 @@ class DataHandler
                         && $transOrigPointerField && isset($incomingFieldArray[$transOrigPointerField]) && $incomingFieldArray[$transOrigPointerField] > 0
                     ) {
                         $pageRecord = BackendUtility::getRecord('pages', $incomingFieldArray[$transOrigPointerField]) ?? [];
-                        if (!$this->hasPermissionToInsert($table, $incomingFieldArray[$transOrigPointerField], $pageRecord)) {
+                        if (!$this->hasPermissionToInsert($table, $incomingFieldArray[$transOrigPointerField], $pageRecord, (int)$incomingFieldArray[$languageField])) {
                             $this->log($table, $incomingFieldArray[$transOrigPointerField], SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to insert record on pages:{pid} where table "{table}" is not allowed', null, ['pid' => $incomingFieldArray[$transOrigPointerField], 'table' => $table], $incomingFieldArray[$transOrigPointerField]);
                             continue;
                         }
@@ -7265,11 +7265,16 @@ class DataHandler
      *
      * @param int $pid Integer PID
      */
-    protected function hasPermissionToInsert($table, $pid, array $pageRecord): bool
+    protected function hasPermissionToInsert($table, $pid, array $pageRecord, int $language = 0): bool
     {
         $schema = $this->tcaSchemaFactory->get($table);
         $pid = (int)$pid;
-        if ($table === 'pages') {
+        if ($table === 'pages' && $language > 0) {
+            // Localizing a page is treated as "PAGE_EDIT": This is not about creating a new sub-page which
+            // needs "PAGE_NEW". We want to be able to allow editors to create page localization of existing
+            // pages, while at the same time disallow creating new sub-pages.
+            $perms = Permission::PAGE_EDIT;
+        } elseif ($table === 'pages') {
             $perms = Permission::PAGE_NEW;
         } elseif (($table === 'sys_file_reference') && array_key_exists('pages', $this->datamap)) {
             // @todo: find a more generic way to handle content relations of a page (without needing content editing access to that page)
