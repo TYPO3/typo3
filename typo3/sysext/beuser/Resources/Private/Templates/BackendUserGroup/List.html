@@ -9,87 +9,98 @@
 <f:section name="Content">
 
     <h1><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroup.list.title" /></h1>
-
-    <f:if condition="{compareGroupList}">
-        <h2><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroup.list.section.compare" /></h2>
-        <div class="table-fit">
-            <table id="typo3-backend-user-list-compare" class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th colspan="2"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroup.list.table.column.groupTitle" /></th>
-                        <th class="col-control"><span class="visually-hidden"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_" /></span></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <f:for each="{compareGroupList}" as="compareGroup">
+    <f:if condition="{totalAmountOfBackendUserGroups} > 0">
+        <f:then>
+            <f:if condition="{compareGroupList}">
+                <h2><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroup.list.section.compare" /></h2>
+                <div class="table-fit">
+                    <table id="typo3-backend-user-list-compare" class="table table-striped table-hover">
+                        <thead>
                         <tr>
-                            <td class="col-icon">
-                                <button
-                                    type="button"
-                                    class="btn btn-link"
-                                    data-contextmenu-trigger="click"
-                                    data-contextmenu-table="be_groups"
-                                    data-contextmenu-uid="{compareGroup.uid}"
-                                    title="{f:if(condition: '{compareGroup.description}', then: '{compareGroup.description} (id={compareGroup.uid})', else: 'id={compareGroup.uid}')}"
-                                    aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open')}"
-                                >
-                                    <core:iconForRecord table="be_groups" row="{compareGroup}"/>
-                                </button>
-                            </td>
-                            <td class="col-title">
-                                <backend:link.editRecord
-                                    table="be_groups"
-                                    uid="{compareGroup.uid}"
-                                    title="{f:translate(key:'btn.edit')}"
-                                >
-                                    {compareGroup.title}
-                                </backend:link.editRecord>
-                            </td>
-                            <td class="col-control">
-                                <backend:link.editRecord
-                                    class="btn btn-default"
-                                    table="be_groups"
-                                    uid="{compareGroup.uid}"
-                                    title="{f:translate(key:'btn.edit')}"
-                                >
-                                    <core:icon identifier="actions-open" />
-                                </backend:link.editRecord>
-                                <f:form.button
-                                    form="form-remove-group-from-compare-list"
-                                    name="uid"
-                                    value="{compareGroup.uid}"
-                                    type="submit"
-                                    class="btn btn-default"
-                                    title="{f:translate(key: 'btn.removeFromCompareList')}"
-                                >
-                                    <core:icon identifier="actions-minus" />
-                                </f:form.button>
+                            <th colspan="2"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroup.list.table.column.groupTitle" /></th>
+                            <th class="col-control"><span class="visually-hidden"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_" /></span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <f:for each="{compareGroupList}" as="compareGroup">
+                            <tr>
+                                <td class="col-icon">
+                                    <button
+                                        type="button"
+                                        class="btn btn-link"
+                                        data-contextmenu-trigger="click"
+                                        data-contextmenu-table="be_groups"
+                                        data-contextmenu-uid="{compareGroup.uid}"
+                                        title="{f:if(condition: '{compareGroup.description}', then: '{compareGroup.description} (id={compareGroup.uid})', else: 'id={compareGroup.uid}')}"
+                                        aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open')}"
+                                    >
+                                        <core:iconForRecord table="be_groups" row="{compareGroup}"/>
+                                    </button>
+                                </td>
+                                <td class="col-title">
+                                    <backend:link.editRecord
+                                        table="be_groups"
+                                        uid="{compareGroup.uid}"
+                                        title="{f:translate(key:'btn.edit')}"
+                                    >
+                                        {compareGroup.title}
+                                    </backend:link.editRecord>
+                                </td>
+                                <td class="col-control">
+                                    <backend:link.editRecord
+                                        class="btn btn-default"
+                                        table="be_groups"
+                                        uid="{compareGroup.uid}"
+                                        title="{f:translate(key:'btn.edit')}"
+                                    >
+                                        <core:icon identifier="actions-open" />
+                                    </backend:link.editRecord>
+                                    <f:form.button
+                                        form="form-remove-group-from-compare-list"
+                                        name="uid"
+                                        value="{compareGroup.uid}"
+                                        type="submit"
+                                        class="btn btn-default"
+                                        title="{f:translate(key: 'btn.removeFromCompareList')}"
+                                    >
+                                        <core:icon identifier="actions-minus" />
+                                    </f:form.button>
+                                </td>
+                            </tr>
+                        </f:for>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="3">
+                                <f:if condition="{compareGroupList -> f:count()} > 1">
+                                    <f:then>{compareGroupList -> f:count()} <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:groups" /></f:then>
+                                    <f:else>{compareGroupList -> f:count()} <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:group" /></f:else>
+                                </f:if>
                             </td>
                         </tr>
-                    </f:for>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3">
-                            <f:if condition="{compareGroupList -> f:count()} > 1">
-                                <f:then>{compareGroupList -> f:count()} <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:groups" /></f:then>
-                                <f:else>{compareGroupList -> f:count()} <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:group" /></f:else>
-                            </f:if>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-        <f:link.action action="compareGroups" class="btn btn-default t3js-acceptance-compare">
-            <core:icon identifier="actions-code-compare" />
-            <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroup.list.btn.compareList" />
-        </f:link.action>
-        <f:form.button type="submit" class="btn btn-default" form="form-remove-all-groups-from-compare-list">
-            <core:icon identifier="actions-selection-delete" />
-            <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:btn.clearCompareList" />
-        </f:form.button>
+                        </tfoot>
+                    </table>
+                </div>
+                <f:link.action action="compareGroups" class="btn btn-default t3js-acceptance-compare">
+                    <core:icon identifier="actions-code-compare" />
+                    <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroup.list.btn.compareList" />
+                </f:link.action>
+                <f:form.button type="submit" class="btn btn-default" form="form-remove-all-groups-from-compare-list">
+                    <core:icon identifier="actions-selection-delete" />
+                    <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:btn.clearCompareList" />
+                </f:form.button>
 
-        <h2><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroup.list.section.allUserGroups" /></h2>
+                <h2><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroup.list.section.allUserGroups" /></h2>
+            </f:if>
+        </f:then>
+        <f:else>
+            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}" title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroup.noGroupsFound.title')}">
+                <p><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroup.noGroupsFound.message"/></p>
+                <backend:link.newRecord returnUrl="{returnUrl}" class="btn btn-primary" table="be_groups">
+                    <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:btn.backendUserGroup.create"/>
+                </backend:link.newRecord>
+            </f:be.infobox>
+        </f:else>
     </f:if>
 
     <f:render partial="BackendUserGroup/Filter" arguments="{userGroupDto: userGroupDto, backendUserGroups: backendUserGroups}" />
