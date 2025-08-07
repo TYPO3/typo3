@@ -60,7 +60,7 @@
                     <action type="Rewrite" url="index.php" appendQueryString="true" />
                 </rule>
                 <rule name="TYPO3 - Version Number in File Name (if set)" stopProcessing="true">
-                    <match url="^(.+)\.(\d+)\.(php|js|css|png|jpg|gif|gz)$" ignoreCase="false" />
+                    <match url="^(.+)\.(\d+)\.(php|js|css|png|jpg|gif|svg|avif|webp|gz)$" ignoreCase="false" />
                     <conditions logicalGrouping="MatchAll">
                         <add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
                         <add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" />
