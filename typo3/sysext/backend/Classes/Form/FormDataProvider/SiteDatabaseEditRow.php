@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
+use TYPO3\CMS\Backend\Configuration\SiteTcaConfiguration;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -32,6 +33,7 @@ readonly class SiteDatabaseEditRow implements FormDataProviderInterface
 {
     public function __construct(
         private SiteFinder $siteFinder,
+        private SiteTcaConfiguration $siteTcaConfiguration,
     ) {}
 
     /**
@@ -83,10 +85,14 @@ readonly class SiteDatabaseEditRow implements FormDataProviderInterface
     {
         $site = $this->siteFinder->getSiteByRootPageId($rootPageId);
         // load config as it is stored on disk (without replacements)
+        $siteTca = $this->siteTcaConfiguration->getTca();
+
         $configuration = GeneralUtility::makeInstance(SiteConfiguration::class)->load($site->getIdentifier());
-        // @todo parse pseudo TCA and react on type==select and renderType==selectMultipleSideBySide
-        if (is_array($configuration['dependencies'] ?? null)) {
-            $configuration['dependencies'] = implode(',', $configuration['dependencies']);
+
+        foreach ($configuration as $fieldName => $fieldValue) {
+            if (is_array($fieldValue) && ($siteTca['site']['columns'][$fieldName]['config']['type'] ?? '') === 'select' && ($siteTca['site']['columns'][$fieldName]['config']['renderType'] ?? '') === 'selectMultipleSideBySide') {
+                $configuration[$fieldName] = implode(',', $fieldValue);
+            }
         }
         return $configuration;
     }
