@@ -44,7 +44,7 @@ class ErrorController
      */
     public function internalErrorAction(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface
     {
-        if (!$this->isPageUnavailableHandlerConfigured($request)) {
+        if ($this->isRequestFromDevIp($request)) {
             throw new InternalServerErrorException($message, 1607585445);
         }
         $errorHandler = $this->getErrorHandlerFromSite($request, 500);
@@ -62,7 +62,7 @@ class ErrorController
      */
     public function unavailableAction(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface
     {
-        if (!$this->isPageUnavailableHandlerConfigured($request)) {
+        if ($this->isRequestFromDevIp($request)) {
             throw new ServiceUnavailableException($message, 1518472181);
         }
         $errorHandler = $this->getErrorHandlerFromSite($request, 503);
@@ -112,14 +112,13 @@ class ErrorController
 
     /**
      * Checks whether the devIPMask matches the current visitor's IP address.
-     * Note: the name of this method is a misnomer (legacy code),
      *
-     * @return bool True if the server error handler should be used.
+     * @return bool False if the server error handler should be used.
      */
-    protected function isPageUnavailableHandlerConfigured(ServerRequestInterface $request): bool
+    protected function isRequestFromDevIp(ServerRequestInterface $request): bool
     {
         $normalizedParams = $request->getAttribute('normalizedParams');
-        return !GeneralUtility::cmpIP($normalizedParams->getRemoteAddress(), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
+        return GeneralUtility::cmpIP($normalizedParams->getRemoteAddress(), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
     }
 
     /**
