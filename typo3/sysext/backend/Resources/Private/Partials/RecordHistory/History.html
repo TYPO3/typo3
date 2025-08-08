@@ -24,7 +24,9 @@
             <tbody>
                 <f:for each="{historyEntries}" as="historyRow">
                     <tr>
-                        <td class="col-time">{historyRow.time}</td>
+                        <td class="col-time">
+                            <f:format.date format="H:i:s">{historyRow.timestamp}</f:format.date>
+                        </td>
                         <td class="col-avatar">
                             <f:if condition="{historyRow.backendUserUid}">
                                 <be:avatar backendUser="{historyRow.backendUserUid}" showIcon="true" />
