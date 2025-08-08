@@ -25,7 +25,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class RestrictedComment extends AbstractEntity
 {
-    #[Validate(['validator' => 'StringLength', 'options' => ['maximum' => 500]])]
+    #[Validate(validator: 'StringLength', options: ['maximum' => 500])]
     protected string $content = '';
 
     // Note: Simple string access, no model relation

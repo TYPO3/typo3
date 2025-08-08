@@ -31,7 +31,7 @@ class FileMount extends AbstractEntity
     /**
      * Title of the file mount.
      */
-    #[Extbase\Validate(['validator' => 'NotEmpty'])]
+    #[Extbase\Validate(validator: 'NotEmpty')]
     protected string $title = '';
 
     /**

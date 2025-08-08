@@ -39,7 +39,7 @@ class Main extends AbstractEntity
      *
      * @var ObjectStorage<Squeeze>
      */
-    #[Cascade(['value' => 'remove'])]
+    #[Cascade('remove')]
     #[Lazy]
     protected ObjectStorage $squeeze;
 

@@ -23,18 +23,28 @@ class IgnoreValidation
     /**
      * @var non-empty-string|null
      */
-    public ?string $argumentName = null;
+    public readonly ?string $argumentName;
 
     /**
-     * @param array{value?: non-empty-string, argumentName?: non-empty-string} $values
-     * @throws \InvalidArgumentException
+     * @param non-empty-string|array{value?: non-empty-string, argumentName?: non-empty-string}|null $argumentName
      */
-    public function __construct(array $values)
-    {
-        if (isset($values['value'])) {
-            $this->argumentName = $values['value'];
-        } elseif (isset($values['argumentName'])) {
-            $this->argumentName = $values['argumentName'];
+    public function __construct(
+        // @todo Convert to ?string and use CPP with TYPO3 v15.0
+        string|array|null $argumentName = null,
+    ) {
+        // @todo Remove with TYPO3 v15.0
+        if (is_array($argumentName)) {
+            trigger_error(
+                'Passing an array of configuration values to Extbase attributes will be removed in TYPO3 v15.0. ' .
+                'Use explicit constructor parameters instead.',
+                E_USER_DEPRECATED,
+            );
+
+            $values = $argumentName;
+
+            $this->argumentName = $values['value'] ?? $values['argumentName'] ?? null;
+        } else {
+            $this->argumentName = $argumentName;
         }
     }
 }

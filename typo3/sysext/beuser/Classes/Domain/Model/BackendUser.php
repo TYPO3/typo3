@@ -30,7 +30,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 class BackendUser extends AbstractEntity
 {
-    #[Extbase\Validate(['validator' => 'NotEmpty'])]
+    #[Extbase\Validate(validator: 'NotEmpty')]
     protected string $userName = '';
 
     /**

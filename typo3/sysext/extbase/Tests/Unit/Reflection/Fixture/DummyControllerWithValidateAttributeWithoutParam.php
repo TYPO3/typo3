@@ -25,7 +25,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  */
 class DummyControllerWithValidateAttributeWithoutParam extends ActionController
 {
-    #[Extbase\Validate(['param' => 'fooParam', 'validator' => 'NotEmpty'])]
-    #[Extbase\Validate(['param' => 'fooParam', 'validator' => 'StringLength'])]
+    #[Extbase\Validate(validator: 'NotEmpty', param: 'fooParam')]
+    #[Extbase\Validate(validator: 'StringLength', param: 'fooParam')]
     public function methodWithValidateAttributesAction(): void {}
 }

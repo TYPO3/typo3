@@ -26,28 +26,28 @@ class Singlefile extends AbstractEntity
 {
     protected ?string $title = null;
 
-    #[FileUpload([
-        'validation' => [
+    #[FileUpload(
+        validation: [
             'maxFiles' => 1,
         ],
-        'addRandomSuffix' => false,
-        'uploadFolder' => '1:/user_upload/',
-    ])]
+        uploadFolder: '1:/user_upload/',
+        addRandomSuffix: false,
+    )]
     protected ?FileReference $fileUnrestrictedSingle = null;
 
-    #[FileUpload([
-        'validation' => [
+    #[FileUpload(
+        validation: [
             'mimeType' => [
                 'allowedMimeTypes' => ['image/jpeg'],
             ],
         ],
-        'addRandomSuffix' => false,
-        'uploadFolder' => '1:/user_upload/',
-    ])]
+        uploadFolder: '1:/user_upload/',
+        addRandomSuffix: false,
+    )]
     protected ?FileReference $fileImageSingle = null;
 
-    #[FileUpload([
-        'validation' => [
+    #[FileUpload(
+        validation: [
             'mimeType' => [
                 'allowedMimeTypes' => [
                     'application/pdf',
@@ -68,121 +68,121 @@ class Singlefile extends AbstractEntity
                 ],
             ],
         ],
-        'addRandomSuffix' => false,
-        'uploadFolder' => '1:/user_upload/',
-    ])]
+        uploadFolder: '1:/user_upload/',
+        addRandomSuffix: false,
+    )]
     protected ?FileReference $fileAppSingle = null;
 
-    #[FileUpload([
-        'validation' => [
+    #[FileUpload(
+        validation: [
             'fileExtension' => ['allowedFileExtensions' => ['exe']],
         ],
-        'addRandomSuffix' => false,
-        'uploadFolder' => '1:/user_upload/',
-    ])]
+        uploadFolder: '1:/user_upload/',
+        addRandomSuffix: false,
+    )]
     protected ?FileReference $fileExtensionSingle = null;
 
-    #[FileUpload([
-        'validation' => [
+    #[FileUpload(
+        validation: [
             'fileExtension' => ['useStorageDefaults' => true],
         ],
-        'addRandomSuffix' => false,
-        'uploadFolder' => '1:/user_upload/',
-    ])]
+        uploadFolder: '1:/user_upload/',
+        addRandomSuffix: false,
+    )]
     protected ?FileReference $fileExtensionstorageSingle = null;
 
-    #[FileUpload([
-        'validation' => [
+    #[FileUpload(
+        validation: [
             'fileExtension' => [
                 'allowedFileExtensions' => ['exe'],
                 'useStorageDefaults' => true,
             ],
         ],
-        'addRandomSuffix' => false,
-        'uploadFolder' => '1:/user_upload/',
-    ])]
+        uploadFolder: '1:/user_upload/',
+        addRandomSuffix: false,
+    )]
     protected ?FileReference $fileExtensionstorageplusSingle = null;
 
     // ------------------------ MULTI ---------------------------------------
-    #[FileUpload([
-        'validation' => [
+    #[FileUpload(
+        validation: [
             'maxFiles' => 10,
         ],
-        'addRandomSuffix' => false,
-        'uploadFolder' => '1:/user_upload/',
-    ])]
+        uploadFolder: '1:/user_upload/',
+        addRandomSuffix: false,
+    )]
     /**
      * @var ObjectStorage<FileReference>
      */
     protected ObjectStorage $fileUnrestrictedMulti;
 
-    #[FileUpload([
-        'validation' => [
+    #[FileUpload(
+        validation: [
             'maxFiles' => 10,
             'mimeType' => [
                 'allowedMimeTypes' => ['image/jpeg'],
             ],
         ],
-        'addRandomSuffix' => false,
-        'uploadFolder' => '1:/user_upload/',
-    ])]
+        uploadFolder: '1:/user_upload/',
+        addRandomSuffix: false,
+    )]
     /**
      * @var ObjectStorage<FileReference>
      */
     protected ObjectStorage $fileImageMulti;
 
-    #[FileUpload([
-        'validation' => [
+    #[FileUpload(
+        validation: [
             'maxFiles' => 10,
             'mimeType' => [
                 'allowedMimeTypes' => ['application/x-dosexec', 'application/x-msdos-program'],
             ],
         ],
-        'addRandomSuffix' => false,
-        'uploadFolder' => '1:/user_upload/',
-    ])]
+        uploadFolder: '1:/user_upload/',
+        addRandomSuffix: false,
+    )]
     /**
      * @var ObjectStorage<FileReference>
      */
     protected ObjectStorage $fileAppMulti;
 
-    #[FileUpload([
-        'validation' => [
+    #[FileUpload(
+        validation: [
             'maxFiles' => 10,
             'fileExtension' => ['allowedFileExtensions' => ['exe']],
         ],
-        'addRandomSuffix' => false,
-        'uploadFolder' => '1:/user_upload/',
-    ])]
+        uploadFolder: '1:/user_upload/',
+        addRandomSuffix: false,
+    )]
     /**
      * @var ObjectStorage<FileReference>
      */
     protected ObjectStorage $fileExtensionMulti;
 
-    #[FileUpload([
-        'validation' => [
+    #[FileUpload(
+        validation: [
             'maxFiles' => 10,
             'fileExtension' => ['useStorageDefaults' => true],
         ],
-        'addRandomSuffix' => false,
-        'uploadFolder' => '1:/user_upload/',
-    ])]
+        uploadFolder: '1:/user_upload/',
+        addRandomSuffix: false,
+    )]
     /**
      * @var ObjectStorage<FileReference>
      */
     protected ObjectStorage $fileExtensionstorageMulti;
 
-    #[FileUpload([
-        'validation' => [
+    #[FileUpload(
+        validation: [
             'maxFiles' => 10,
             'fileExtension' => [
                 'allowedFileExtensions' => ['exe'],
                 'useStorageDefaults' => true,
             ],
         ],
-        'addRandomSuffix' => false,
-        'uploadFolder' => '1:/user_upload/',
-    ])]
+        uploadFolder: '1:/user_upload/',
+        addRandomSuffix: false,
+    )]
     /**
      * @var ObjectStorage<FileReference>
      */

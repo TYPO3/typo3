@@ -20,34 +20,42 @@ namespace TYPO3\CMS\Extbase\Attribute;
 #[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Validate
 {
-    public string $validator = '';
-
-    public string $param = '';
+    public readonly string $validator;
 
     /**
      * @var array<string, mixed>
      */
-    public array $options = [];
+    public readonly array $options;
+
+    public readonly string $param;
 
     /**
-     * @param array{value?: non-empty-string, validator?: non-empty-string, options?: array<string, mixed>, param?: string} $values
+     * @param string|array{value?: non-empty-string, validator?: non-empty-string, options?: array<string, mixed>, param?: string} $validator
+     * @param array<string, mixed> $options
      */
-    public function __construct(array $values)
-    {
-        if (isset($values['value'])) {
-            $this->validator = $values['value'];
-        }
+    public function __construct(
+        // @todo Convert to string and use CPP in TYPO3 v15.0
+        string|array $validator,
+        array $options = [],
+        string $param = '',
+    ) {
+        // @todo Remove with TYPO3 v15.0
+        if (\is_array($validator)) {
+            trigger_error(
+                'Passing an array of configuration values to Extbase attributes will be removed in TYPO3 v15.0. ' .
+                'Use explicit constructor parameters instead.',
+                E_USER_DEPRECATED,
+            );
 
-        if (isset($values['validator'])) {
-            $this->validator = $values['validator'];
-        }
+            $values = $validator;
 
-        if (isset($values['options'])) {
-            $this->options = $values['options'];
-        }
-
-        if (isset($values['param'])) {
-            $this->param = $values['param'];
+            $this->validator = $values['validator'] ?? $values['value'] ?? '';
+            $this->options = $values['options'] ?? $options;
+            $this->param = $values['param'] ?? $param;
+        } else {
+            $this->validator = $validator;
+            $this->options = $options;
+            $this->param = $param;
         }
     }
 

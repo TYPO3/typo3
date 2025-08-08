@@ -22,36 +22,63 @@ use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class FileUpload
 {
-    public array $validation = [];
-    public string $uploadFolder = '';
-    public bool $addRandomSuffix = true;
-    public bool $createUploadFolderIfNotExist = true;
-    public DuplicationBehavior $duplicationBehavior = DuplicationBehavior::REPLACE;
+    public readonly array $validation;
+    public readonly string $uploadFolder;
+    public readonly bool $addRandomSuffix;
+    public readonly bool $createUploadFolderIfNotExist;
+    public readonly DuplicationBehavior $duplicationBehavior;
 
-    public function __construct(array $values)
-    {
-        if (isset($values['validation'])) {
-            $this->validation = $values['validation'];
-        }
+    public function __construct(
+        // @todo Use CPP with TYPO3 v15.0
+        array $validation,
+        string $uploadFolder = '',
+        bool $addRandomSuffix = true,
+        bool $createUploadFolderIfNotExist = true,
+        DuplicationBehavior $duplicationBehavior = DuplicationBehavior::REPLACE,
+    ) {
+        // @todo Remove with TYPO3 v15.0
+        if ($this->containsDeprecatedConfiguration($validation)) {
+            trigger_error(
+                'Passing an array of configuration values to Extbase attributes will be removed in TYPO3 v15.0. ' .
+                'Use explicit constructor parameters instead.',
+                E_USER_DEPRECATED,
+            );
 
-        if (isset($values['addRandomSuffix'])) {
-            $this->addRandomSuffix = (bool)$values['addRandomSuffix'];
-        }
+            $values = $validation;
 
-        if (isset($values['uploadFolder'])) {
-            $this->uploadFolder = $values['uploadFolder'];
-        }
+            $this->validation = $values['validation'] ?? [];
+            $this->addRandomSuffix = (bool)($values['addRandomSuffix'] ?? $addRandomSuffix);
+            $this->uploadFolder = $values['uploadFolder'] ?? $uploadFolder;
+            $this->createUploadFolderIfNotExist = (bool)($values['createUploadFolderIfNotExist'] ?? $createUploadFolderIfNotExist);
 
-        if (isset($values['createUploadFolderIfNotExist'])) {
-            $this->createUploadFolderIfNotExist = (bool)$values['createUploadFolderIfNotExist'];
-        }
+            if (isset($values['duplicationBehavior'])) {
+                if (!$values['duplicationBehavior'] instanceof DuplicationBehavior) {
+                    throw new \RuntimeException('Wrong annotation configuration for "duplicationBehavior". Ensure, that the value is a valid DuplicationBehavior.', 1711453150);
+                }
 
-        if (isset($values['duplicationBehavior'])) {
-            if (!$values['duplicationBehavior'] instanceof DuplicationBehavior) {
-                throw new \RuntimeException('Wrong annotation configuration for "duplicationBehavior". Ensure, that the value is a valid DuplicationBehavior.', 1711453150);
+                $this->duplicationBehavior = $values['duplicationBehavior'];
+            } else {
+                $this->duplicationBehavior = $duplicationBehavior;
             }
-
-            $this->duplicationBehavior = $values['duplicationBehavior'];
+        } else {
+            $this->validation = $validation;
+            $this->uploadFolder = $uploadFolder;
+            $this->addRandomSuffix = $addRandomSuffix;
+            $this->createUploadFolderIfNotExist = $createUploadFolderIfNotExist;
+            $this->duplicationBehavior = $duplicationBehavior;
         }
+    }
+
+    protected function containsDeprecatedConfiguration(array $values): bool
+    {
+        $deprecatedKeys = [
+            'validation',
+            'addRandomSuffix',
+            'uploadFolder',
+            'createUploadFolderIfNotExist',
+            'duplicationBehavior',
+        ];
+
+        return array_intersect_key(array_flip($deprecatedKeys), $values) !== [];
     }
 }

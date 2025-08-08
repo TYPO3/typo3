@@ -86,10 +86,7 @@ class ArgumentTestController extends ActionController
         return $this->htmlResponse($this->view->render());
     }
 
-    #[Extbase\Validate([
-        'validator' => FailingValidator::class,
-        'param' => 'model',
-    ])]
+    #[Extbase\Validate(validator: FailingValidator::class, param: 'model')]
     public function validateModelAction(Model $model): ResponseInterface
     {
         $this->view->assignMultiple([
@@ -98,10 +95,7 @@ class ArgumentTestController extends ActionController
         return $this->htmlResponse($this->view->render());
     }
 
-    #[Extbase\Validate([
-        'validator' => FailingValidator::class,
-        'param' => 'dto',
-    ])]
+    #[Extbase\Validate(validator: FailingValidator::class, param: 'dto')]
     public function validateDtoAction(ModelDto $dto): ResponseInterface
     {
         $this->view->assignMultiple([

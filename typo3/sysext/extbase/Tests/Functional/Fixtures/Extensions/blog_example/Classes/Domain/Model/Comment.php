@@ -27,13 +27,13 @@ class Comment extends AbstractEntity
 {
     protected \DateTime $date;
 
-    #[Validate(['validator' => 'NotEmpty'])]
+    #[Validate(validator: 'NotEmpty')]
     protected string $author = '';
 
-    #[Validate(['validator' => 'EmailAddress'])]
+    #[Validate(validator: 'EmailAddress')]
     protected string $email = '';
 
-    #[Validate(['validator' => 'StringLength', 'options' => ['maximum' => 500]])]
+    #[Validate(validator: 'StringLength', options: ['maximum' => 500])]
     protected string $content = '';
 
     public function __construct()

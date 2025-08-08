@@ -30,8 +30,8 @@ class MixedSymfonyModel extends AbstractEntity
         min: 2,
         minMessage: 'Your foo must be at least {{ limit }} characters long',
     )]
-    #[Validate(['validator' => 'NotEmpty'])]
-    #[Validate(['validator' => 'StringLength', 'options' => ['maximum' => 10]])]
+    #[Validate(validator: 'NotEmpty')]
+    #[Validate(validator: 'StringLength', options: ['maximum' => 10])]
     protected string $foo;
 
 }

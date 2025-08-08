@@ -44,7 +44,7 @@ class DummyClassWithAllTypesOfProperties extends AbstractEntity
     #[Transient]
     public $propertyWithTransientAttribute;
 
-    #[Extbase\ORM\Cascade(['value' => 'remove'])]
+    #[Extbase\ORM\Cascade('remove')]
     public DummyClassWithAllTypesOfProperties $propertyWithCascadeAttribute;
 
     /**

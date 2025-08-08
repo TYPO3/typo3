@@ -24,14 +24,14 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 class FileUploadObjectStorageUploadedFile extends AbstractEntity
 {
-    #[FileUpload([
-        'validation' => [
+    #[FileUpload(
+        validation: [
             'required' => true,
             'maxFiles' => 99,
             'fileSize' => ['minimum' => '0K', 'maximum' => '2M'],
             'mimeType' => ['allowedMimeTypes' => ['image/jpeg']],
         ],
-    ])]
+    )]
     /**
      * @var ObjectStorage<UploadedFile>
      */

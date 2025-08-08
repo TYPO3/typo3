@@ -28,6 +28,6 @@ class AnotherModel extends AbstractEntity
     /**
      * @var string
      */
-    #[Extbase\Validate(['validator' => 'NotEmpty'])]
+    #[Extbase\Validate(validator: 'NotEmpty')]
     protected $foo;
 }

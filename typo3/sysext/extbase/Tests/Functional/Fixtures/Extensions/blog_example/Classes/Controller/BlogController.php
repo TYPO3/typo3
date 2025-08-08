@@ -66,7 +66,7 @@ class BlogController extends ActionController
     /**
      * // needs to be imported entirely, else the annotationChecker test script complains
      */
-    #[IgnoreValidation(['argumentName' => 'blogPost'])]
+    #[IgnoreValidation(argumentName: 'blogPost')]
     public function testForwardAction(Post $blogPost): ForwardResponse
     {
         return (new ForwardResponse('testForwardTarget'))->withArguments(['blogPost' => $blogPost]);

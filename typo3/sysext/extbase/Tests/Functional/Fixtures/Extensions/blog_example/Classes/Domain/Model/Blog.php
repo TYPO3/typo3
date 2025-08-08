@@ -33,8 +33,8 @@ class Blog extends AbstractEntity
     /**
      * The blog's title.
      */
-    #[Validate(['validator' => 'NotEmpty'])]
-    #[Validate(['validator' => 'StringLength', 'options' => ['minimum' => 1, 'maximum' => 80]])]
+    #[Validate(validator: 'NotEmpty')]
+    #[Validate(validator: 'StringLength', options: ['minimum' => 1, 'maximum' => 80])]
     protected string $title = '';
 
     /**
@@ -45,7 +45,7 @@ class Blog extends AbstractEntity
     /**
      * A short description of the blog
      */
-    #[Validate(['validator' => 'StringLength', 'options' => ['minimum' => 1, 'maximum' => 150]])]
+    #[Validate(validator: 'StringLength', options: ['minimum' => 1, 'maximum' => 150])]
     protected string $description = '';
 
     /**
@@ -61,7 +61,7 @@ class Blog extends AbstractEntity
      * @var ObjectStorage<Post>
      */
     #[Lazy]
-    #[Cascade(['value' => 'remove'])]
+    #[Cascade('remove')]
     protected ObjectStorage $posts;
 
     /**

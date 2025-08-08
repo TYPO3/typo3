@@ -29,15 +29,15 @@ class Model extends AbstractEntity
     /**
      * @var string
      */
-    #[Extbase\Validate(['validator' => 'StringLength', 'options' => ['minimum' => 1]])]
-    #[Extbase\Validate(['validator' => 'StringLength', 'options' => ['maximum' => 10]])]
-    #[Extbase\Validate(['validator' => 'NotEmpty'])]
+    #[Extbase\Validate(validator: 'StringLength', options: ['minimum' => 1])]
+    #[Extbase\Validate(validator: 'StringLength', options: ['maximum' => 10])]
+    #[Extbase\Validate(validator: 'NotEmpty')]
     protected $foo;
 
     /**
      * @var int
      */
-    #[Extbase\Validate(['validator' => CustomValidator::class])]
+    #[Extbase\Validate(validator: CustomValidator::class)]
     protected $bar;
 
     /**

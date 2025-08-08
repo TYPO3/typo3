@@ -28,39 +28,39 @@ class DummyModel extends AbstractEntity
 {
     protected $propertyWithoutValidateAttributes;
 
-    #[Extbase\Validate(['validator' => 'StringLength', 'options' => ['minimum' => 1, 'maximum' => 10]])]
-    #[Extbase\Validate(['validator' => 'NotEmpty'])]
-    #[Extbase\Validate(['validator' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator'])]
-    #[Extbase\Validate(['validator' => NotEmptyValidator::class])]
+    #[Extbase\Validate(validator: 'StringLength', options: ['minimum' => 1, 'maximum' => 10])]
+    #[Extbase\Validate(validator: 'NotEmpty')]
+    #[Extbase\Validate(validator: '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator')]
+    #[Extbase\Validate(validator: NotEmptyValidator::class)]
     protected $propertyWithValidateAttributes;
 
-    #[Extbase\FileUpload([
-        'validation' => [
+    #[Extbase\FileUpload(
+        validation: [
             'required' => true,
             'maxFiles' => 1,
             'fileSize' => ['minimum' => '0K', 'maximum' => '2M'],
             'mimeType' => ['allowedMimeTypes' => ['image/jpeg', 'image/png']],
             'allowedMimeTypes' => ['image/png'],
         ],
-        'uploadFolder' => '1:/user_upload/',
-    ])]
+        uploadFolder: '1:/user_upload/',
+    )]
     protected $propertyWithFileUploadAttribute;
 
     public function __construct(
-        #[Extbase\FileUpload([
-            'validation' => [
+        #[Extbase\FileUpload(
+            validation: [
                 'required' => true,
                 'maxFiles' => 1,
                 'fileSize' => ['minimum' => '0K', 'maximum' => '2M'],
                 'mimeType' => ['allowedMimeTypes' => ['image/jpeg', 'image/png']],
                 'allowedMimeTypes' => ['image/png'],
             ],
-            'uploadFolder' => '1:/user_upload/',
-        ])]
-        #[Extbase\Validate(['validator' => 'StringLength', 'options' => ['minimum' => 1, 'maximum' => 10]])]
-        #[Extbase\Validate(['validator' => 'NotEmpty'])]
-        #[Extbase\Validate(['validator' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator'])]
-        #[Extbase\Validate(['validator' => NotEmptyValidator::class])]
+            uploadFolder: '1:/user_upload/',
+        )]
+        #[Extbase\Validate(validator: 'StringLength', options: ['minimum' => 1, 'maximum' => 10])]
+        #[Extbase\Validate(validator: 'NotEmpty')]
+        #[Extbase\Validate(validator: '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator')]
+        #[Extbase\Validate(validator: NotEmptyValidator::class)]
         public readonly string $dummyPromotedProperty
     ) {}
 }

@@ -24,7 +24,7 @@ use TYPO3\CMS\Extbase\Attribute\IgnoreValidation;
  */
 class DummyClassWithIgnoreValidationAttribute
 {
-    #[IgnoreValidation(['argumentName' => 'foo'])]
-    #[IgnoreValidation(['argumentName' => 'bar'])]
+    #[IgnoreValidation(argumentName: 'foo')]
+    #[IgnoreValidation(argumentName: 'bar')]
     public function someAction($foo, $bar): void {}
 }

@@ -30,7 +30,7 @@ class Post extends AbstractEntity
 {
     protected ?Blog $blog = null;
 
-    #[Validate(['validator' => 'StringLength', 'options' => ['minimum' => 3, 'maximum' => 50]])]
+    #[Validate(validator: 'StringLength', options: ['minimum' => 3, 'maximum' => 50])]
     protected string $title = '';
 
     protected \DateTime $date;
@@ -43,7 +43,7 @@ class Post extends AbstractEntity
 
     protected ?Person $reviewer = null;
 
-    #[Validate(['validator' => 'StringLength', 'options' => ['minimum' => 3]])]
+    #[Validate(validator: 'StringLength', options: ['minimum' => 3])]
     protected string $content = '';
 
     /**
@@ -60,7 +60,7 @@ class Post extends AbstractEntity
      * @var ObjectStorage<Comment>
      */
     #[Lazy]
-    #[Cascade(['value' => 'remove'])]
+    #[Cascade('remove')]
     protected ObjectStorage $comments;
 
     /**

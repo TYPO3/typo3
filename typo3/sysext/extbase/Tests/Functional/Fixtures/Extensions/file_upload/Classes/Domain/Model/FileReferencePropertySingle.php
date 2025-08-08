@@ -23,15 +23,15 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 class FileReferencePropertySingle extends AbstractEntity
 {
-    #[FileUpload([
-        'validation' => [
+    #[FileUpload(
+        validation: [
             'required' => true,
             'maxFiles' => 1,
             'fileSize' => ['minimum' => '0K', 'maximum' => '2M'],
             'mimeType' => ['allowedMimeTypes' => ['image/jpeg', 'image/png']],
         ],
-        'uploadFolder' => '1:/user_upload/folder_for_file/',
-    ])]
+        uploadFolder: '1:/user_upload/folder_for_file/',
+    )]
     protected ?FileReference $file =  null;
 
     public function getFile(): ?FileReference

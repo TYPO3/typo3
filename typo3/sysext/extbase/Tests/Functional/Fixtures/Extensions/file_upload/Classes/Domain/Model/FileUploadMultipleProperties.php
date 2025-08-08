@@ -24,25 +24,25 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 class FileUploadMultipleProperties extends AbstractEntity
 {
-    #[FileUpload([
-        'validation' => [
+    #[FileUpload(
+        validation: [
             'required' => true,
             'maxFiles' => 1,
             'fileSize' => ['minimum' => '0K', 'maximum' => '2M'],
             'mimeType' => ['allowedMimeTypes' => ['image/jpeg', 'image/png']],
         ],
-        'uploadFolder' => '1:/user_upload/folder_for_file/',
-    ])]
+        uploadFolder: '1:/user_upload/folder_for_file/',
+    )]
     protected ?FileReference $file =  null;
 
-    #[FileUpload([
-        'validation' => [
+    #[FileUpload(
+        validation: [
             'required' => true,
             'fileSize' => ['minimum' => '0K', 'maximum' => '2M'],
             'mimeType' => ['allowedMimeTypes' => ['image/jpeg']],
         ],
-        'uploadFolder' => '1:/user_upload/folder_for_files/',
-    ])]
+        uploadFolder: '1:/user_upload/folder_for_files/',
+    )]
     /**
      * @var ObjectStorage<FileReference>
      */

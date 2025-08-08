@@ -28,8 +28,8 @@ use TYPO3\CMS\Extbase\Mvc\RequestInterface;
  */
 class DummyControllerWithIgnoreValidationAttributes implements ControllerInterface
 {
-    #[IgnoreValidation(['argumentName' => 'foo'])]
-    #[IgnoreValidation(['argumentName' => 'bar'])]
+    #[IgnoreValidation(argumentName: 'foo')]
+    #[IgnoreValidation(argumentName: 'bar')]
     public function someAction($foo, $bar): void {}
 
     public function processRequest(RequestInterface $request): ResponseInterface
