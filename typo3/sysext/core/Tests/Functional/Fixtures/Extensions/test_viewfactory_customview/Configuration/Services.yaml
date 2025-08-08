@@ -1,0 +1,13 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  TYPO3Tests\TestViewfactoryCustomview\:
+    resource: '../Classes/*'
+
+  # Provide alternative ViewFactory implementation to 3rd-party service class
+  TYPO3Tests\TestViewfactoryTarget\Service\TestService:
+    arguments:
+      $viewFactory: '@TYPO3Tests\TestViewfactoryCustomview\View\CustomViewFactory'

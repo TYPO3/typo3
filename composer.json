@@ -328,6 +328,8 @@
 			"TYPO3Tests\\TestTyposcriptAstFunctionEvent\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_typoscript_ast_function_event/Classes/",
 			"TYPO3Tests\\TestTyposcriptPagetsconfigfactory\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_typoscript_pagetsconfigfactory/Classes/",
 			"TYPO3Tests\\TestTsconfigEvent\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_tsconfig_event/Classes/",
+			"TYPO3Tests\\TestViewfactoryCustomview\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_viewfactory_customview/Classes/",
+			"TYPO3Tests\\TestViewfactoryTarget\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_viewfactory_target/Classes/",
 			"TYPO3Tests\\TypeConverterTest\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/type_converter_test/Classes/",
 			"TYPO3Tests\\ViewhelperLibrary\\": "typo3/sysext/fluid/Tests/Functional/Fixtures/Libraries/viewhelper_library/src/",
 			"TYPO3\\CMS\\PHPStan\\": "Build/phpstan/src/"
