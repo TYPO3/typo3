@@ -1,0 +1,20 @@
+{
+	"name": "typo3tests/test-viewfactory-customview",
+	"type": "typo3-cms-extension",
+	"description": "This extension contains an alternative View implementation and injects it into test_viewfactory_target",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "14.0.*@dev",
+		"typo3tests/test-viewfactory-target": "*"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_viewfactory_customview"
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\TestViewfactoryCustomview\\": "Classes/"
+		}
+	}
+}
