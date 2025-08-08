@@ -31,6 +31,7 @@ use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -315,7 +316,7 @@ class ElementHistoryController
             $singleLine['diffUrl'] = $this->buildUrl(['historyEntry' => $entry['uid']]);
             // Add time
             $singleLine['day'] = BackendUtility::date($entry['tstamp']);
-            $singleLine['time'] = BackendUtility::time($entry['tstamp']);
+            $singleLine['timestamp'] = DateTimeFactory::createFromTimestamp($entry['tstamp']);
 
             $singleLine['title'] = $this->generateTitle($entry['tablename'], (string)$entry['recuid']);
             $singleLine['recordTable'] = $entry['tablename'];
