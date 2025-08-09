@@ -69,6 +69,12 @@
 			<trans-unit id="login.error.capslockStatus">
 				<source>Caps lock enabled</source>
 			</trans-unit>
+			<trans-unit id="login.warning.whitespace-around-password">
+				<source>The password you just pasted has leading and / or trailing whitespace.</source>
+			</trans-unit>
+			<trans-unit id="login.warning.whitespace-around-password.action-link">
+				<source>Remove whitespace</source>
+			</trans-unit>
 			<trans-unit id="login.news.header">
 				<source>System News</source>
 			</trans-unit>

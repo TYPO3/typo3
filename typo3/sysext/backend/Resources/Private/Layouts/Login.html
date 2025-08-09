@@ -37,6 +37,14 @@
                                 <div class="hidden t3js-login-error-noreferrer">
                                     <f:be.infobox message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.referrer')}" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR')}" />
                                 </div>
+                                <div class="hidden t3js-login-warning-password-whitespace">
+                                    <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_WARNING')}">
+                                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.warning.whitespace-around-password" />
+                                        <button class="btn btn-link text-decoration-underline t3js-login-warning-password-whitespace-action" role="button">
+                                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.warning.whitespace-around-password.action-link" />
+                                        </button>
+                                    </f:be.infobox>
+                                </div>
                                 <div class="typo3-login-form t3js-login-formfields">
                                     <form action="{formActionUrl}" method="post" name="loginform" id="typo3-login-form" spellcheck="false">
                                         <input type="hidden" name="login_status" value="login" />
