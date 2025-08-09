@@ -60,6 +60,9 @@
 			<trans-unit id="groups">
 				<source>Groups</source>
 			</trans-unit>
+			<trans-unit id="inheritance">
+				<source>Inheritance</source>
+			</trans-unit>
 			<trans-unit id="group">
 				<source>Group</source>
 			</trans-unit>
@@ -119,6 +122,9 @@
 			<trans-unit id="backendUser">
 				<source>Backend User</source>
 			</trans-unit>
+			<trans-unit id="backendUserGroup">
+				<source>Backend User Group</source>
+			</trans-unit>
 			<trans-unit id="backendUsers">
 				<source>Backend users</source>
 			</trans-unit>
@@ -127,6 +133,9 @@
 			</trans-unit>
 			<trans-unit id="backendUserGroupsMenu">
 				<source>Backend user groups</source>
+			</trans-unit>
+			<trans-unit id="backendUserGroupDetails">
+				<source>Backend user group details</source>
 			</trans-unit>
 			<trans-unit id="compareBackendUsers">
 				<source>Compare backend users</source>
@@ -358,6 +367,20 @@
 			</trans-unit>
 			<trans-unit id="backendUserGroup.confirmDelete">
 				<source>Are you sure you want to delete the backend user group '%s'?</source>
+			</trans-unit>
+
+			<!-- Backend user groups: Show -->
+			<trans-unit id="backendUserGroup.show.title">
+				<source>Configuration of backend user group "%s"</source>
+			</trans-unit>
+			<trans-unit id="backendUserGroup.show.notConfigured">
+				<source>Not configured.</source>
+			</trans-unit>
+			<trans-unit id="backendUserGroup.show.infobox.title">
+				<source>Compiled rights and settings</source>
+			</trans-unit>
+			<trans-unit id="backendUserGroup.show.infobox.message">
+				<source>This view displays all compiled rights and settings of the selected backend user group. These can come from settings in the backend user group record itself, as well as from settings that have been stored in backend user groups assigned to this backend user group.</source>
 			</trans-unit>
 
 			<!-- Backend user groups: Compare -->

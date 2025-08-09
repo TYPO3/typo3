@@ -44,6 +44,7 @@ return [
                 'terminateBackendUserSession',
                 'initiatePasswordReset',
                 'groups',
+                'showGroup',
                 'addGroupToCompareList',
                 'removeGroupFromCompareList',
                 'removeAllGroupsFromCompareList',

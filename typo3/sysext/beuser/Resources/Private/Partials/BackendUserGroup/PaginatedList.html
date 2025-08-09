@@ -91,6 +91,15 @@
                             </form>
                         </div>
                         <div class="btn-group" role="group">
+                            <f:link.action
+                                action="showGroup"
+                                arguments="{uid: backendUserGroup.uid}"
+                                class="btn btn-default"
+                                title="{f:translate(key: 'btn.details')}"
+                                role="button"
+                            >
+                                <core:icon identifier="actions-system-options-view" size="small"/>
+                            </f:link.action>
                             <a
                                 class="btn btn-default"
                                 href="#"

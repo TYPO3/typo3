@@ -477,6 +477,71 @@ class BackendUserController extends ActionController
         return $this->moduleTemplate->renderResponse('BackendUserGroup/List');
     }
 
+    /**
+     * Show a single backend user group.
+     */
+    public function showGroupAction(int $uid = 0): ResponseInterface
+    {
+        $data = $this->userInformationService->getGroupInformation($uid);
+        $this->moduleTemplate->assignMultiple([
+            'data' => $data,
+            'showUid' => $this->getBackendUser()->shallDisplayDebugInformation(),
+        ]);
+
+        $this->addMainMenu('showGroup');
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $backButton = $buttonBar->makeLinkButton()
+            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL))
+            ->setTitle(
+                LocalizationUtility::translate(
+                    'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'
+                )
+            )
+            ->setShowLabelText(true)
+            ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('backend_user_management', ['action' => 'groups']));
+        $buttonBar->addButton($backButton);
+        $editButton = $buttonBar->makeLinkButton()
+            ->setIcon($this->iconFactory->getIcon('actions-open', IconSize::SMALL))
+            ->setTitle(
+                LocalizationUtility::translate(
+                    'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.edit'
+                )
+            )
+            ->setShowLabelText(true)
+            ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
+                'edit' => ['be_groups' => [$uid => 'edit']],
+                'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
+            ]));
+        $buttonBar->addButton($editButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+        $addUserButton = $buttonBar->makeLinkButton()
+            ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL))
+            ->setTitle(
+                LocalizationUtility::translate(
+                    'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:btn.backendUserGroup.create',
+                    'beuser'
+                )
+            )
+            ->setShowLabelText(true)
+            ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
+                'edit' => ['be_groups' => [0 => 'new']],
+                'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
+            ]));
+        $buttonBar->addButton($addUserButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
+        $backendGroupTitle = empty($data['group']['title']) ? '' : ': ' . $data['group']['title'];
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setRouteIdentifier('backend_user_management')
+            ->setArguments(['action' => 'showGroup', 'uid' => $uid])
+            ->setDisplayName(
+                LocalizationUtility::translate(
+                    'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroup',
+                    'beuser'
+                ) . $backendGroupTitle
+            );
+        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+
+        return $this->moduleTemplate->renderResponse('BackendUserGroup/Show');
+    }
+
     public function compareGroupsAction(): ResponseInterface
     {
         $compareGroupUidList = array_keys((array)$this->moduleData->get('compareGroupUidList', []));
@@ -645,10 +710,18 @@ class BackendUserController extends ActionController
         }
         $menu->addMenuItem(
             $menu->makeMenuItem()
-            ->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroupsMenu', 'beuser'))
-            ->setHref($this->uriBuilder->uriFor('groups'))
-            ->setActive($currentAction === 'groups')
+                ->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroupsMenu', 'beuser'))
+                ->setHref($this->uriBuilder->uriFor('groups'))
+                ->setActive($currentAction === 'groups')
         );
+        if ($currentAction === 'showGroup') {
+            $menu->addMenuItem(
+                $menu->makeMenuItem()
+                    ->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroupDetails', 'beuser'))
+                    ->setHref($this->uriBuilder->uriFor('showGroup'))
+                    ->setActive(true)
+            );
+        }
         if ($currentAction === 'compareGroups') {
             $menu->addMenuItem(
                 $menu->makeMenuItem()
