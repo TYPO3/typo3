@@ -41,6 +41,12 @@ final class ToggleExtensionInstallationStateViewHelper extends AbstractTagBasedV
      */
     protected $tagName = 'form';
 
+    public function __construct(
+        private readonly IconFactory $iconFactory
+    ) {
+        parent::__construct();
+    }
+
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -76,11 +82,10 @@ final class ToggleExtensionInstallationStateViewHelper extends AbstractTagBasedV
         $this->tag->addAttribute('action', $uri);
         $this->tag->addAttribute('method', 'post');
 
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $buttonTagBuilder = new TagBuilder('button');
         $buttonTagBuilder->addAttribute('type', 'submit');
         $buttonTagBuilder->addAttribute('class', 'onClickMaskExtensionManager btn btn-default');
-        $buttonTagBuilder->setContent($iconFactory->getIcon('actions-system-extension-' . ($extension['installed'] ? 'uninstall' : 'install'), IconSize::SMALL)->render());
+        $buttonTagBuilder->setContent($this->iconFactory->getIcon('actions-system-extension-' . ($extension['installed'] ? 'uninstall' : 'install'), IconSize::SMALL)->render());
         $buttonTagBuilder->addAttribute('title', htmlspecialchars($this->getLanguageService()->sL(
             'LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.' . ($extension['installed'] ? 'deactivate' : 'activate')
         )));

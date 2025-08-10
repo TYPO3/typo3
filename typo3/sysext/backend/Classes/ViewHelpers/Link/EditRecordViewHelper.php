@@ -66,6 +66,12 @@ final class EditRecordViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'a';
 
+    public function __construct(
+        private readonly UriBuilder $uriBuilder
+    ) {
+        parent::__construct();
+    }
+
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -101,8 +107,7 @@ final class EditRecordViewHelper extends AbstractTagBasedViewHelper
                 $this->arguments['table'] => GeneralUtility::trimExplode(',', $this->arguments['fields'], true),
             ];
         }
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $uri = (string)$uriBuilder->buildUriFromRoute('record_edit', $params);
+        $uri = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
         $this->tag->addAttribute('href', $uri);
         $this->tag->setContent((string)$this->renderChildren());
         $this->tag->forceClosingTag(true);

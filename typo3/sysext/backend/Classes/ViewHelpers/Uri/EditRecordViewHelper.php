@@ -39,6 +39,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 final class EditRecordViewHelper extends AbstractViewHelper
 {
+    public function __construct(
+        private readonly UriBuilder $uriBuilder
+    ) {}
+
     public function initializeArguments(): void
     {
         $this->registerArgument('uid', 'int', 'uid of record to be edited, 0 for creation', true);
@@ -69,7 +73,6 @@ final class EditRecordViewHelper extends AbstractViewHelper
                 $this->arguments['table'] => GeneralUtility::trimExplode(',', $this->arguments['fields'], true),
             ];
         }
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        return (string)$uriBuilder->buildUriFromRoute('record_edit', $params);
+        return (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
     }
 }

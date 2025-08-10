@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\Locale;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -51,6 +50,10 @@ final class DateViewHelper extends AbstractViewHelper
      */
     protected $escapeChildren = false;
 
+    public function __construct(
+        private readonly Context $context
+    ) {}
+
     public function initializeArguments(): void
     {
         $this->registerArgument('date', 'mixed', 'Either an object implementing DateTimeInterface or a string that is accepted by DateTime constructor');
@@ -68,7 +71,7 @@ final class DateViewHelper extends AbstractViewHelper
     {
         $format = $this->arguments['format'] ?? '';
         $pattern = $this->arguments['pattern'] ?? null;
-        $base = $this->arguments['base'] ?? GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
+        $base = $this->arguments['base'] ?? $this->context->getPropertyFromAspect('date', 'timestamp');
         if (is_string($base)) {
             $base = trim($base);
         }
@@ -83,7 +86,7 @@ final class DateViewHelper extends AbstractViewHelper
             $date = trim($date);
         }
         if ($date === '') {
-            $date = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp', 'now');
+            $date = $this->context->getPropertyFromAspect('date', 'timestamp', 'now');
         }
         if (!$date instanceof \DateTimeInterface) {
             $base = $base instanceof \DateTimeInterface

@@ -41,6 +41,12 @@ final class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
 
     protected static string $registryNamespace = 'extensionDataImport';
 
+    public function __construct(
+        private readonly IconFactory $iconFactory
+    ) {
+        parent::__construct();
+    }
+
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -50,12 +56,10 @@ final class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
     public function render(): string
     {
         $extension = $this->arguments['extension'];
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-
         $staticSqlDataFile = $extension['packagePath'] . 'ext_tables_static+adt.sql';
         $registryKey = $extension['key'] . ':ext_tables_static+adt.sql';
         if (!file_exists($staticSqlDataFile)) {
-            return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', IconSize::SMALL)->render() . '</span>';
+            return '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', IconSize::SMALL)->render() . '</span>';
         }
 
         $registry = GeneralUtility::makeInstance(Registry::class);
@@ -91,7 +95,7 @@ final class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
         $this->tag->addAttribute('title', htmlspecialchars($this->getLanguageService()->sL(
             'LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:' . $languageKey
         )));
-        $this->tag->setContent($iconFactory->getIcon($iconIdentifier, IconSize::SMALL)->render());
+        $this->tag->setContent($this->iconFactory->getIcon($iconIdentifier, IconSize::SMALL)->render());
 
         return $this->tag->render();
     }

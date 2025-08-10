@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\ViewHelpers;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -42,6 +41,10 @@ final class IconForResourceViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
+    public function __construct(
+        private readonly IconFactory $iconFactory
+    ) {}
+
     public function initializeArguments(): void
     {
         $this->registerArgument('resource', ResourceInterface::class, 'Resource', true);
@@ -59,7 +62,6 @@ final class IconForResourceViewHelper extends AbstractViewHelper
         }
         $size = $this->arguments['size'];
         $overlay = $this->arguments['overlay'];
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        return $iconFactory->getIconForResource($resource, $size, $overlay, $this->arguments['options'])->render($this->arguments['alternativeMarkupIdentifier']);
+        return $this->iconFactory->getIconForResource($resource, $size, $overlay, $this->arguments['options'])->render($this->arguments['alternativeMarkupIdentifier']);
     }
 }

@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * ViewHelper for creating URIs to backend modules.
@@ -31,6 +30,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class UriViewHelper extends AbstractBackendViewHelper
 {
+    public function __construct(
+        private readonly UriBuilder $uriBuilder
+    ) {}
+
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -47,11 +50,10 @@ final class UriViewHelper extends AbstractBackendViewHelper
 
     public function render(): string
     {
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $route = $this->arguments['route'];
         $parameters = $this->arguments['parameters'];
         $referenceType = $this->arguments['referenceType'];
-        $uri = $uriBuilder->buildUriFromRoute($route, $parameters, $referenceType);
+        $uri = $this->uriBuilder->buildUriFromRoute($route, $parameters, $referenceType);
         return (string)$uri;
     }
 }

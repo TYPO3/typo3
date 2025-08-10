@@ -36,6 +36,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 final class ModuleLinkViewHelper extends AbstractViewHelper
 {
+    public function __construct(
+        private readonly UriBuilder $uriBuilder
+    ) {}
+
     public function initializeArguments(): void
     {
         $this->registerArgument('route', 'string', 'The route to link to', true);
@@ -49,7 +53,6 @@ final class ModuleLinkViewHelper extends AbstractViewHelper
      */
     public function render(): string
     {
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $parameters = $this->arguments['arguments'];
         if ($this->arguments['query'] !== null) {
             ArrayUtility::mergeRecursiveWithOverrule($parameters, GeneralUtility::explodeUrl2Array($this->arguments['query']));
@@ -63,6 +66,6 @@ final class ModuleLinkViewHelper extends AbstractViewHelper
             $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
             $parameters[$this->arguments['currentUrlParameterName']] = $request->getAttribute('normalizedParams')->getRequestUri();
         }
-        return (string)$uriBuilder->buildUriFromRoute($this->arguments['route'], $parameters);
+        return (string)$this->uriBuilder->buildUriFromRoute($this->arguments['route'], $parameters);
     }
 }

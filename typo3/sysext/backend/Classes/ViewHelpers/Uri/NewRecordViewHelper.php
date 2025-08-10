@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Backend\ViewHelpers\Uri;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -48,6 +47,12 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 final class NewRecordViewHelper extends AbstractTagBasedViewHelper
 {
+    public function __construct(
+        private readonly UriBuilder $uriBuilder
+    ) {
+        parent::__construct();
+    }
+
     public function initializeArguments(): void
     {
         $this->registerArgument('uid', 'int', 'uid < 0 will insert the record after the given uid');
@@ -80,7 +85,6 @@ final class NewRecordViewHelper extends AbstractTagBasedViewHelper
         if ($this->arguments['defaultValues']) {
             $params['defVals'] = $this->arguments['defaultValues'];
         }
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        return (string)$uriBuilder->buildUriFromRoute('record_edit', $params);
+        return (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
     }
 }

@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\ViewHelpers;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Service\TranslationService;
@@ -31,6 +30,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  */
 final class TranslateElementPropertyViewHelper extends AbstractViewHelper
 {
+    public function __construct(
+        private readonly TranslationService $translationService
+    ) {}
+
     public function initializeArguments(): void
     {
         $this->registerArgument('element', RootRenderableInterface::class, 'Form Element to translate', true);
@@ -62,7 +65,7 @@ final class TranslateElementPropertyViewHelper extends AbstractViewHelper
         $formRuntime = $this->renderingContext
             ->getViewHelperVariableContainer()
             ->get(RenderRenderableViewHelper::class, 'formRuntime');
-        return GeneralUtility::makeInstance(TranslationService::class)->translateFormElementValue($element, $propertyParts, $formRuntime);
+        return $this->translationService->translateFormElementValue($element, $propertyParts, $formRuntime);
     }
 
     protected static function assertArgumentTypes(array $arguments): void

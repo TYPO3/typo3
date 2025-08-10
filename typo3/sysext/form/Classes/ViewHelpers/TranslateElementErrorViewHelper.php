@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\ViewHelpers;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
@@ -31,6 +30,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 final class TranslateElementErrorViewHelper extends AbstractViewHelper
 {
+    public function __construct(
+        private readonly TranslationService $translationService
+    ) {}
+
     public function initializeArguments(): void
     {
         $this->registerArgument('element', RootRenderableInterface::class, 'Form Element to translate', true);
@@ -45,7 +48,7 @@ final class TranslateElementErrorViewHelper extends AbstractViewHelper
         $formRuntime = $this->renderingContext
             ->getViewHelperVariableContainer()
             ->get(RenderRenderableViewHelper::class, 'formRuntime');
-        return GeneralUtility::makeInstance(TranslationService::class)->translateFormElementError(
+        return $this->translationService->translateFormElementError(
             $element,
             $error->getCode(),
             $error->getArguments(),

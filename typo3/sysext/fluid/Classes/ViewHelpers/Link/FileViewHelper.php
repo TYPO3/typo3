@@ -44,6 +44,12 @@ final class FileViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'a';
 
+    public function __construct(
+        private readonly HashService $hashService
+    ) {
+        parent::__construct();
+    }
+
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -119,8 +125,7 @@ final class FileViewHelper extends AbstractTagBasedViewHelper
             $parameters['fn'] = $filename;
         }
 
-        $hashService = GeneralUtility::makeInstance(HashService::class);
-        $parameters['token'] = $hashService->hmac(implode('|', $parameters), 'resourceStorageDumpFile');
+        $parameters['token'] = $this->hashService->hmac(implode('|', $parameters), 'resourceStorageDumpFile');
 
         return GeneralUtility::locationHeaderUrl(PathUtility::getAbsoluteWebPath(Environment::getPublicPath() . '/index.php'))
             . '?' . http_build_query($parameters, '', '&', PHP_QUERY_RFC3986);

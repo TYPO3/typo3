@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Backend\ViewHelpers\Link;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -102,6 +101,12 @@ final class NewRecordViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'a';
 
+    public function __construct(
+        private readonly UriBuilder $uriBuilder
+    ) {
+        parent::__construct();
+    }
+
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -139,8 +144,7 @@ final class NewRecordViewHelper extends AbstractTagBasedViewHelper
             $params['defVals'] = $this->arguments['defaultValues'];
         }
 
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $uri = (string)$uriBuilder->buildUriFromRoute('record_edit', $params);
+        $uri = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
         $this->tag->addAttribute('href', $uri);
         $this->tag->setContent((string)$this->renderChildren());
         $this->tag->forceClosingTag(true);

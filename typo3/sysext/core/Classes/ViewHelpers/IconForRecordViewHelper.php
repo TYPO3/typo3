@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\ViewHelpers;
 
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -40,6 +39,10 @@ final class IconForRecordViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
+    public function __construct(
+        private readonly IconFactory $iconFactory
+    ) {}
+
     public function initializeArguments(): void
     {
         $this->registerArgument('table', 'string', 'the table for the record icon', true);
@@ -54,7 +57,6 @@ final class IconForRecordViewHelper extends AbstractViewHelper
         $size = IconSize::from($this->arguments['size']);
         $row = $this->arguments['row'];
         $alternativeMarkupIdentifier = $this->arguments['alternativeMarkupIdentifier'];
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        return $iconFactory->getIconForRecord($table, $row, $size)->render($alternativeMarkupIdentifier);
+        return $this->iconFactory->getIconForRecord($table, $row, $size)->render($alternativeMarkupIdentifier);
     }
 }

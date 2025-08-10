@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -37,6 +36,12 @@ final class LinkViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'a';
 
+    public function __construct(
+        private readonly UriBuilder $uriBuilder
+    ) {
+        parent::__construct();
+    }
+
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -47,11 +52,10 @@ final class LinkViewHelper extends AbstractTagBasedViewHelper
 
     public function render(): string
     {
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $route = $this->arguments['route'];
         $parameters = $this->arguments['parameters'];
         $referenceType = $this->arguments['referenceType'];
-        $uri = $uriBuilder->buildUriFromRoute($route, $parameters, $referenceType);
+        $uri = $this->uriBuilder->buildUriFromRoute($route, $parameters, $referenceType);
         $this->tag->addAttribute('href', (string)$uri);
         $this->tag->setContent((string)$this->renderChildren());
         $this->tag->forceClosingTag(true);

@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
-use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Extbase\Service\FileHandlingService;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
@@ -45,12 +44,18 @@ final class UploadDeleteCheckboxViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'input';
 
+    public function __construct(
+        private readonly HashService $hashService,
+    ) {
+        parent::__construct();
+    }
+
     public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('id', 'string', 'ID of the generated checkbox element');
         $this->registerArgument('property', 'string', 'Name of object property', true);
-        $this->registerArgument('fileReference', 'TYPO3\CMS\Extbase\Domain\Model\FileReference', 'The file reference object', true);
+        $this->registerArgument('fileReference', FileReference::class, 'The file reference object', true);
     }
 
     public function render(): string
@@ -64,10 +69,6 @@ final class UploadDeleteCheckboxViewHelper extends AbstractTagBasedViewHelper
         if (!$fileReference instanceof FileReference) {
             return '';
         }
-
-        /** @var HashService $hashService */
-        $hashService = GeneralUtility::makeInstance(HashService::class);
-        $extensionService = GeneralUtility::makeInstance(ExtensionService::class);
 
         $this->tag->addAttribute('type', 'checkbox');
         $request = ($this->renderingContext->getAttribute(ServerRequestInterface::class));
@@ -84,12 +85,13 @@ final class UploadDeleteCheckboxViewHelper extends AbstractTagBasedViewHelper
             'fileReference' => $fileReference->getUid(),
         ];
 
+        $extensionService = GeneralUtility::makeInstance(ExtensionService::class);
         $pluginNamespace = $extensionService->getPluginNamespace($extensionName, $pluginName);
         $formObjectName = $this->getFormObjectName();
-        $fileReferenceIdentifier = $hashService->hmac($property . $fileReference->getUid(), self::class);
+        $fileReferenceIdentifier = $this->hashService->hmac($property . $fileReference->getUid(), self::class);
         $nameAttribute = $pluginNamespace . '[' . FileHandlingService::DELETE_IDENTIFIER . ']' .
             '[' . $formObjectName . ']' . '[' . $fileReferenceIdentifier . ']';
-        $valueAttribute = $hashService->appendHmac(
+        $valueAttribute = $this->hashService->appendHmac(
             json_encode($deleteData, JSON_THROW_ON_ERROR),
             FileHandlingService::DELETE_IDENTIFIER
         );

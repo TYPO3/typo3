@@ -49,6 +49,12 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'a';
 
+    public function __construct(
+        private readonly BackendUriBuilder $uriBuilder
+    ) {
+        parent::__construct();
+    }
+
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -188,12 +194,11 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
         $arguments = array_replace_recursive($arguments, $additionalParams);
         $routeName = $arguments['route'] ?? null;
         unset($arguments['route'], $arguments['token']);
-        $backendUriBuilder = GeneralUtility::makeInstance(BackendUriBuilder::class);
         try {
             if ($absolute) {
-                $uri = (string)$backendUriBuilder->buildUriFromRoute($routeName, $arguments, BackendUriBuilder::ABSOLUTE_URL);
+                $uri = (string)$this->uriBuilder->buildUriFromRoute($routeName, $arguments, BackendUriBuilder::ABSOLUTE_URL);
             } else {
-                $uri = (string)$backendUriBuilder->buildUriFromRoute($routeName, $arguments, BackendUriBuilder::ABSOLUTE_PATH);
+                $uri = (string)$this->uriBuilder->buildUriFromRoute($routeName, $arguments, BackendUriBuilder::ABSOLUTE_PATH);
             }
         } catch (RouteNotFoundException) {
             $uri = '';

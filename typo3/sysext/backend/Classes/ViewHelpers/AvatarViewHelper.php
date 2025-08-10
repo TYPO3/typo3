@@ -42,6 +42,10 @@ final class AvatarViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
+    public function __construct(
+        private readonly ConnectionPool $connectionPool
+    ) {}
+
     public function initializeArguments(): void
     {
         $this->registerArgument('backendUser', 'int', 'uid of the backend user', false, 0);
@@ -55,7 +59,7 @@ final class AvatarViewHelper extends AbstractViewHelper
     public function render(): string
     {
         if ($this->arguments['backendUser'] > 0) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('be_users');
             $queryBuilder->getRestrictions()->removeAll();
             $backendUser = $queryBuilder
                 ->select('*')

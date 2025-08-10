@@ -17,12 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\ViewHelpers;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconSize;
-use TYPO3\CMS\Core\Imaging\IconState;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
@@ -32,83 +28,57 @@ final class IconViewHelperTest extends FunctionalTestCase
     protected bool $initializeDatabase = false;
 
     #[Test]
-    public function renderCallsIconFactoryWithDefaultSizeAndDefaultStateAndReturnsResult(): void
+    #[DataProvider('iconRenderingDataProvider')]
+    public function renderIconViewHelperWithVariousConfigurations(string $template, array $expectedStrings): void
     {
-        $iconFactoryMock = $this->createMock(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
-        $iconMock = $this->createMock(Icon::class);
-        $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')
-            ->with('myIdentifier', IconSize::SMALL, null, IconState::STATE_DEFAULT)
-            ->willReturn($iconMock);
-        $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('htmlFoo');
-
         $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="small" state="default" />');
-        self::assertSame('htmlFoo', (new TemplateView($context))->render());
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $result = (new TemplateView($context))->render();
+
+        foreach ($expectedStrings as $expectedString) {
+            self::assertStringContainsString($expectedString, $result);
+        }
     }
 
-    #[Test]
-    public function renderCallsIconFactoryWithGivenSizeAndReturnsResult(): void
+    public static function iconRenderingDataProvider(): array
     {
-        $iconFactoryMock = $this->createMock(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
-        $iconMock = $this->createMock(Icon::class);
-        $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')
-            ->with('myIdentifier', IconSize::LARGE, null, IconState::STATE_DEFAULT)
-            ->willReturn($iconMock);
-        $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('htmlFoo');
-
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="large" state="default" />');
-        self::assertSame('htmlFoo', (new TemplateView($context))->render());
-    }
-
-    #[Test]
-    public function renderCallsIconFactoryWithGivenStateAndReturnsResult(): void
-    {
-        $iconFactoryMock = $this->createMock(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
-        $iconMock = $this->createMock(Icon::class);
-        $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')
-            ->with('myIdentifier', IconSize::SMALL, null, IconState::STATE_DISABLED)
-            ->willReturn($iconMock);
-        $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('htmlFoo');
-
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="small" state="disabled" />');
-        self::assertSame('htmlFoo', (new TemplateView($context))->render());
-    }
-
-    #[Test]
-    public function renderCallsIconFactoryWithGivenOverlayAndReturnsResult(): void
-    {
-        $iconFactoryMock = $this->createMock(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
-        $iconMock = $this->createMock(Icon::class);
-        $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')
-            ->with('myIdentifier', self::anything(), 'overlayString', IconState::STATE_DEFAULT)
-            ->willReturn($iconMock);
-        $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('htmlFoo');
-
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="large" state="default" overlay="overlayString" />');
-        self::assertSame('htmlFoo', (new TemplateView($context))->render());
-    }
-
-    #[Test]
-    public function titleIsPassedFromViewhelperToIconClass(): void
-    {
-        $iconFactoryMock = $this->createMock(IconFactory::class);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
-        $iconMock = $this->createMock(Icon::class);
-        $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')
-            ->with('myIdentifier', self::anything(), null, IconState::STATE_DEFAULT)
-            ->willReturn($iconMock);
-        $iconMock->expects(self::atLeastOnce())->method('setTitle')->with('myTitle')->willReturn($iconMock);
-        $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('htmlFoo');
-
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="large" state="default" title="myTitle" />');
-        self::assertSame('htmlFoo', (new TemplateView($context))->render());
+        return [
+            'default size and state' => [
+                '<core:icon identifier="actions-search" size="small" state="default" />',
+                [
+                    '<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-search" data-identifier="actions-search" aria-hidden="true">',
+                    '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-search" /></svg>',
+                ],
+            ],
+            'given size' => [
+                '<core:icon identifier="actions-search" size="large" state="default" />',
+                [
+                    '<span class="t3js-icon icon icon-size-large icon-state-default icon-actions-search" data-identifier="actions-search" aria-hidden="true">',
+                    '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-search" /></svg>',
+                ],
+            ],
+            'given state' => [
+                '<core:icon identifier="actions-search" size="small" state="disabled" />',
+                [
+                    '<span class="t3js-icon icon icon-size-small icon-state-disabled icon-actions-search" data-identifier="actions-search" aria-hidden="true">',
+                    '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-search" /></svg>',
+                ],
+            ],
+            'given overlay' => [
+                '<core:icon identifier="actions-search" size="large" state="default" overlay="actions-plus" />',
+                [
+                    '<span class="t3js-icon icon icon-size-large icon-state-default icon-actions-search" data-identifier="actions-search" aria-hidden="true">',
+                    '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-search" /></svg>',
+                    '<span class="icon-overlay icon-actions-plus"><svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-plus" /></svg></span>',
+                ],
+            ],
+            'title is passed' => [
+                '<core:icon identifier="actions-search" size="large" state="default" title="myTitle" />',
+                [
+                    '<span title="myTitle" class="t3js-icon icon icon-size-large icon-state-default icon-actions-search" data-identifier="actions-search" aria-hidden="true">',
+                    '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-search" /></svg>',
+                ],
+            ],
+        ];
     }
 }

@@ -57,6 +57,11 @@ final class FlashMessagesViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
+    public function __construct(
+        private readonly FlashMessageService $flashMessageService,
+        private readonly FlashMessageRendererResolver $flashMessageRendererResolver
+    ) {}
+
     public function initializeArguments(): void
     {
         $this->registerArgument('queueIdentifier', 'string', 'Flash-message queue to use');
@@ -78,7 +83,8 @@ final class FlashMessagesViewHelper extends AbstractViewHelper
         $queueIdentifier = $this->arguments['queueIdentifier'];
         if ($queueIdentifier === null) {
             if (!$this->renderingContext->hasAttribute(ServerRequestInterface::class)
-                || !$this->renderingContext->getAttribute(ServerRequestInterface::class) instanceof RequestInterface) {
+                || !$this->renderingContext->getAttribute(ServerRequestInterface::class) instanceof RequestInterface
+            ) {
                 // Throw if not an extbase request
                 throw new \RuntimeException(
                     'ViewHelper f:flashMessages needs an extbase Request object to resolve the Queue identifier magically.'
@@ -91,13 +97,13 @@ final class FlashMessagesViewHelper extends AbstractViewHelper
             $pluginNamespace = $extensionService->getPluginNamespace($request->getControllerExtensionName(), $request->getPluginName());
             $queueIdentifier = 'extbase.flashmessages.' . $pluginNamespace;
         }
-        $flashMessageQueue = GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier($queueIdentifier);
+        $flashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier($queueIdentifier);
         $flashMessages = $flashMessageQueue->getAllMessagesAndFlush();
         if (count($flashMessages) === 0) {
             return '';
         }
         if ($as === null) {
-            return GeneralUtility::makeInstance(FlashMessageRendererResolver::class)->resolve()->render($flashMessages);
+            return $this->flashMessageRendererResolver->resolve()->render($flashMessages);
         }
         $variableProvider = new ScopedVariableProvider($this->renderingContext->getVariableProvider(), new StandardVariableProvider([$as => $flashMessages]));
         $this->renderingContext->setVariableProvider($variableProvider);

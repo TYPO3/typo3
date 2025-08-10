@@ -40,6 +40,12 @@ final class RemoveExtensionViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'a';
 
+    public function __construct(
+        private readonly IconFactory $iconFactory
+    ) {
+        parent::__construct();
+    }
+
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -51,13 +57,12 @@ final class RemoveExtensionViewHelper extends AbstractTagBasedViewHelper
         $extension = $this->arguments['extension'];
         $extensionKey = $extension['key'];
         $extensionType = ExtensionType::tryFrom($extension['type']);
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         if (
             ExtensionManagementUtility::isLoaded($extensionKey)
             || $extensionType === null
             || $extensionType === ExtensionType::System
         ) {
-            return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', IconSize::SMALL)->render() . '</span>';
+            return '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', IconSize::SMALL)->render() . '</span>';
         }
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         /** @var RequestInterface $request */
@@ -74,7 +79,7 @@ final class RemoveExtensionViewHelper extends AbstractTagBasedViewHelper
         $this->tag->addAttribute('title', htmlspecialchars($this->getLanguageService()->sL(
             'LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.remove'
         )));
-        $this->tag->setContent($iconFactory->getIcon('actions-edit-delete', IconSize::SMALL)->render());
+        $this->tag->setContent($this->iconFactory->getIcon('actions-edit-delete', IconSize::SMALL)->render());
         return $this->tag->render();
     }
 
