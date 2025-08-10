@@ -92,6 +92,12 @@ Improve the experience using the `typo3` CLI command dispatcher script, without
 impacting current usages. Also, this allows further improvements on existing commands or
 new commands by declaring completion behaviour for command options.
 
+The following commands are using autocompletion in (some of) their arguments as well:
+
+* `redirects:cleanup`
+* `redirects:checkintegrity`
+
+
 Example
 -------
 
@@ -100,13 +106,14 @@ Example
 
     <?php
 
-    // ...
+    namespace Vendor\MyPackage\Command;
+
+    use Symfony\Component\Console\Command\Command;
     use Symfony\Component\Console\Completion\CompletionInput;
-    use Symfony\Component\Console\Completion\CompletionSuggestions;
+    use Symfony\Component\Console\Input\InputArgument;
 
     class GreetCommand extends Command
     {
-        // ...
         protected function configure(): void
         {
             $this
@@ -122,9 +129,8 @@ Example
 
                         // get the list of username names from somewhere (e.g. the database)
                         // you may use $currentValue to filter down the names
-                        $availableUsernames = ...;
+                        $availableUsernames = ['jane', 'jon'];
 
-                        // then return the possible suggested usernames as values
                         return $availableUsernames;
                     }
                 )

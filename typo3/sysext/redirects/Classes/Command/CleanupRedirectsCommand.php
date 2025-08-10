@@ -48,14 +48,20 @@ class CleanupRedirectsCommand extends Command
                 'd',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.label.domain'),
-                null
+                null,
+                function (): array {
+                    return array_column($this->redirectRepository->findHostsOfRedirects(), 'name');
+                }
             )
             ->addOption(
                 'statusCode',
                 's',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.label.statusCode'),
-                null
+                null,
+                function (): array {
+                    return array_column($this->redirectRepository->findStatusCodesOfRedirects(), 'code');
+                }
             )
             ->addOption(
                 'days',
@@ -83,14 +89,20 @@ class CleanupRedirectsCommand extends Command
                 't',
                 InputOption::VALUE_OPTIONAL,
                 $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.label.creationType'),
-                null
+                null,
+                function (): array {
+                    return array_keys($this->redirectRepository->findCreationTypes());
+                }
             )
             ->addOption(
                 'integrityStatus',
                 'i',
                 InputOption::VALUE_OPTIONAL,
                 $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.label.integrityStatus'),
-                null
+                null,
+                function (): array {
+                    return array_keys($this->redirectRepository->findIntegrityStatusCodes());
+                }
             )
         ;
     }

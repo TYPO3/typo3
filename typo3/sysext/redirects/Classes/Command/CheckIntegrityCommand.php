@@ -24,6 +24,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Redirects\Service\IntegrityService;
 
@@ -37,7 +38,8 @@ class CheckIntegrityCommand extends Command
 
     public function __construct(
         private readonly Registry $registry,
-        private readonly IntegrityService $integrityService
+        private readonly IntegrityService $integrityService,
+        private readonly SiteFinder $siteFinder,
     ) {
         parent::__construct();
     }
@@ -48,7 +50,10 @@ class CheckIntegrityCommand extends Command
             'site',
             InputArgument::OPTIONAL,
             'If set, then only pages of a specific site are checked',
-            ''
+            '',
+            function (): array {
+                return array_keys($this->siteFinder->getAllSites());
+            }
         );
     }
 
