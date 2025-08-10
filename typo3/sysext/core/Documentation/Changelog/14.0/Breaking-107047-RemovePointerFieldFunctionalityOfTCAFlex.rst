@@ -119,8 +119,9 @@ Affected installations
 
 **FlexForm Pointer Field Removal**
 
-All installations using `ds_pointerField` and array-like structure for `ds` in
-their TCA type `flex` configuration.
+All installations using :php:`ds_pointerField` (as the pointer field
+functionality has been removed entirely) or an array-like structure for
+:php:`ds` in their TCA type `flex` configuration.
 
 **FlexFormTools Schema Parameter**
 

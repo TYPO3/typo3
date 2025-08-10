@@ -41,9 +41,8 @@ Migration
 
 Instead of using this method, define the FlexForm via one of these approaches:
 
-Option 1: Provide the FlexForm in the :php:`registerPlugin()`` call, which is possible since
-:ref:`feature-107047-1751984817`:
-
+Option 1: Provide the FlexForm in the :php:`registerPlugin()` call, which is
+possible since :ref:`feature-107047-1751984817`:
 
 .. code-block:: php
 
@@ -57,7 +56,24 @@ Option 1: Provide the FlexForm in the :php:`registerPlugin()`` call, which is po
         'FILE:EXT:myext/Configuration/FlexForm.xml'
     );
 
-Option 2: Use :php:`columnsOverrides` in TCA directly
+Option 2: Provide the FlexForm in the :php:`addPlugin()` call for non-extbase
+plugins, which is also possible since :ref:`feature-107047-1751984817`:
+
+.. code-block:: php
+
+    ExtensionUtility::addPlugin(
+        new SelectItem(
+            'select',
+            'My Plugin Title',
+            'myextension_myplugin',
+            'my-extension-icon',
+            'plugins',
+            'Plugin description',
+        ),
+        'FILE:EXT:myext/Configuration/FlexForm.xml'
+    );
+
+Option 3: Use :php:`columnsOverrides` in TCA directly
 
 .. code-block:: php
 
