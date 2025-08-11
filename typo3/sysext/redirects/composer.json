@@ -25,7 +25,7 @@
 		"symfony/console": "^7.2",
 		"typo3/cms-backend": "13.4.*@dev",
 		"typo3/cms-core": "13.4.*@dev",
-		"typo3fluid/fluid": "^4.4.0"
+		"typo3fluid/fluid": "^4.4.2"
 	},
 	"conflict": {
 		"typo3/cms": "*"
