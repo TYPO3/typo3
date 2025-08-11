@@ -111,7 +111,7 @@ export default (function() {
       staticBackdrop: true,
       buttons: [
         {
-          text: TYPO3.lang['button.cancel'] || 'Cancel',
+          text: TYPO3.lang['FormEngine.refreshRequiredCancel'] || TYPO3.lang['button.cancel'] || 'Cancel',
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
@@ -120,7 +120,7 @@ export default (function() {
           }
         },
         {
-          text: TYPO3.lang['button.ok'] || 'OK',
+          text: TYPO3.lang['FormEngine.refreshRequiredConfirm'] || TYPO3.lang['button.ok'] || 'OK',
           btnClass: 'btn-' + Severity.getCssClass(Severity.warning),
           name: 'ok',
           trigger: () => {

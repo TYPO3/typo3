@@ -45,7 +45,7 @@ final class TasksCest
         $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div.form-control-wrap:nth-of-type(1) > div.form-wizards-wrap:nth-of-type(1)';
         $select = $formWizardsWrap . ' > div:nth-of-type(1) > select';
         $I->selectOption($select, 'System Status Update [reports]');
-        $modalDialog->clickButtonInDialog('OK');
+        $modalDialog->clickButtonInDialog('Save and refresh');
         $I->switchToContentFrame();
         $I->waitForElement('#task_SystemStatusUpdateNotificationEmail');
         $I->fillField('#task_SystemStatusUpdateNotificationEmail', 'test@local.typo3.org');
