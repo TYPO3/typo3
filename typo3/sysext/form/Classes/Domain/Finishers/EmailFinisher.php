@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Finishers;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
@@ -27,6 +28,7 @@ use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
+use TYPO3\CMS\Form\Event\BeforeEmailFinisherInitializedEvent;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
 
@@ -58,6 +60,8 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  */
 class EmailFinisher extends AbstractFinisher
 {
+    public function __construct(protected readonly EventDispatcherInterface $eventDispatcher) {}
+
     /**
      * @var array
      */
@@ -76,6 +80,10 @@ class EmailFinisher extends AbstractFinisher
      */
     protected function executeInternal()
     {
+        $this->options = $this->eventDispatcher
+            ->dispatch(new BeforeEmailFinisherInitializedEvent($this->finisherContext, $this->options))
+            ->getOptions();
+
         $languageBackup = null;
         // Flexform overrides write strings instead of integers so
         // we need to cast the string '0' to false.
