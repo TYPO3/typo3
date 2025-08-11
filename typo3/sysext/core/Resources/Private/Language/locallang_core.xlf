@@ -926,6 +926,12 @@ Do you want to refresh it now?</source>
 			<trans-unit id="mess.refreshRequired.content">
 				<source>This change will affect which fields are available in the form. Would you like to save now in order to refresh the display?</source>
 			</trans-unit>
+			<trans-unit id="mess.refreshRequired.cancel">
+				<source>Keep editing</source>
+			</trans-unit>
+			<trans-unit id="mess.refreshRequired.confirm">
+				<source>Save and refresh</source>
+			</trans-unit>
 			<trans-unit id="mess.move_into">
 				<source>Move "%s" into "%s"?</source>
 			</trans-unit>
