@@ -21,7 +21,7 @@ cgl:
     - Build/Scripts/runTests.sh -s cgl -n -p 8.1
     - Build/Scripts/runTests.sh -s cglHeader -n -p 8.1
 
-integration various php 8.4:
+integration various php 8.5:
   stage: integrity
   tags:
     - metal2
@@ -29,23 +29,23 @@ integration various php 8.4:
   only:
     - schedules
   script:
-    - Build/Scripts/runTests.sh -s composerValidate -p 8.4
-    - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.4
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.4
-    - Build/Scripts/runTests.sh -s checkExceptionCodes -p 8.4
-    - Build/Scripts/runTests.sh -s checkGitSubmodule -p 8.4
-    - Build/Scripts/runTests.sh -s checkPermissions -p 8.4
-    - Build/Scripts/runTests.sh -s checkRst -p 8.4
-    - Build/Scripts/runTests.sh -s checkFilePathLength -p 8.4
-    - Build/Scripts/runTests.sh -s checkExtensionScannerRst -p 8.4
-    - Build/Scripts/runTests.sh -s checkBom -p 8.4
-    - Build/Scripts/runTests.sh -s checkComposer -p 8.4
-    - Build/Scripts/runTests.sh -s checkTestClassFinal -p 8.4
-    - Build/Scripts/runTests.sh -s checkTestMethodsPrefix -p 8.4
-    - Build/Scripts/runTests.sh -s checkNamespaceIntegrity -p 8.4
-    - Build/Scripts/runTests.sh -s lintServicesYaml -p 8.4
-    - Build/Scripts/runTests.sh -s lintYaml -p 8.4
-    - Build/Scripts/runTests.sh -s checkFilesAndPathsForSpaces -p 8.4
+    - Build/Scripts/runTests.sh -s composerValidate -p 8.5
+    - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.5
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.5
+    - Build/Scripts/runTests.sh -s checkExceptionCodes -p 8.5
+    - Build/Scripts/runTests.sh -s checkGitSubmodule -p 8.5
+    - Build/Scripts/runTests.sh -s checkPermissions -p 8.5
+    - Build/Scripts/runTests.sh -s checkRst -p 8.5
+    - Build/Scripts/runTests.sh -s checkFilePathLength -p 8.5
+    - Build/Scripts/runTests.sh -s checkExtensionScannerRst -p 8.5
+    - Build/Scripts/runTests.sh -s checkBom -p 8.5
+    - Build/Scripts/runTests.sh -s checkComposer -p 8.5
+    - Build/Scripts/runTests.sh -s checkTestClassFinal -p 8.5
+    - Build/Scripts/runTests.sh -s checkTestMethodsPrefix -p 8.5
+    - Build/Scripts/runTests.sh -s checkNamespaceIntegrity -p 8.5
+    - Build/Scripts/runTests.sh -s lintServicesYaml -p 8.5
+    - Build/Scripts/runTests.sh -s lintYaml -p 8.5
+    - Build/Scripts/runTests.sh -s checkFilesAndPathsForSpaces -p 8.5
 
 iso database max:
   stage: integrity
@@ -70,6 +70,7 @@ lint php:
     - Build/Scripts/runTests.sh -s lintPhp -p 8.2
     - Build/Scripts/runTests.sh -s lintPhp -p 8.3
     - Build/Scripts/runTests.sh -s lintPhp -p 8.4
+    - Build/Scripts/runTests.sh -s lintPhp -p 8.5
 
 grunt scss ts html:
   stage: integrity
