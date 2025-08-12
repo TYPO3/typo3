@@ -51,11 +51,10 @@ final class CssViewHelper extends AbstractTagBasedViewHelper
      */
     protected $escapeChildren = true;
 
-    protected AssetCollector $assetCollector;
-
-    public function injectAssetCollector(AssetCollector $assetCollector): void
-    {
-        $this->assetCollector = $assetCollector;
+    public function __construct(
+        private readonly AssetCollector $assetCollector,
+    ) {
+        parent::__construct();
     }
 
     public function initialize(): void

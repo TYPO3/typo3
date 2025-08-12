@@ -59,12 +59,9 @@ final class TableListViewHelper extends AbstractBackendViewHelper
      */
     protected $escapeOutput = false;
 
-    protected ConfigurationManagerInterface $configurationManager;
-
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
-    {
-        $this->configurationManager = $configurationManager;
-    }
+    public function __construct(
+        private readonly ConfigurationManagerInterface $configurationManager,
+    ) {}
 
     public function initializeArguments(): void
     {

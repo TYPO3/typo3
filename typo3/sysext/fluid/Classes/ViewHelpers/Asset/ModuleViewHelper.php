@@ -38,12 +38,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 final class ModuleViewHelper extends AbstractViewHelper
 {
-    protected AssetCollector $assetCollector;
-
-    public function injectAssetCollector(AssetCollector $assetCollector): void
-    {
-        $this->assetCollector = $assetCollector;
-    }
+    public function __construct(
+        private readonly AssetCollector $assetCollector,
+    ) {}
 
     public function initializeArguments(): void
     {

@@ -44,12 +44,11 @@ final class ExampleViewHelper extends AbstractViewHelper
      */
     protected $escapeChildren = false;
 
-    protected PageRenderer $pageRenderer;
-
-    public function injectPageRenderer(PageRenderer $pageRenderer): void
-    {
-        $this->pageRenderer = $pageRenderer;
-    }
+    public function __construct(
+        private readonly PageRenderer $pageRenderer,
+        private readonly CodeEditor $codeEditor,
+        private readonly ModeRegistry $modeRegistry,
+    ) {}
 
     public function initializeArguments(): void
     {
@@ -64,7 +63,7 @@ final class ExampleViewHelper extends AbstractViewHelper
     {
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/code-editor/element/code-mirror-element.js');
         // Compile and register code editor configuration
-        GeneralUtility::makeInstance(CodeEditor::class)->registerConfiguration();
+        $this->codeEditor->registerConfiguration();
 
         $content = $this->renderChildren();
 
@@ -92,11 +91,10 @@ final class ExampleViewHelper extends AbstractViewHelper
             }
             $code = implode(chr(10), $codeLines);
 
-            $registry = GeneralUtility::makeInstance(ModeRegistry::class);
-            if ($this->arguments['codeLanguage'] && ($registry->isRegistered($this->arguments['codeLanguage']))) {
-                $mode = $registry->getByFormatCode($this->arguments['codeLanguage']);
+            if ($this->arguments['codeLanguage'] && ($this->modeRegistry->isRegistered($this->arguments['codeLanguage']))) {
+                $mode = $this->modeRegistry->getByFormatCode($this->arguments['codeLanguage']);
             } else {
-                $mode = $registry->getDefaultMode();
+                $mode = $this->modeRegistry->getDefaultMode();
             }
 
             $codeMirrorConfig = [

@@ -22,7 +22,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\ViewHelpers\Form;
 
 use TYPO3\CMS\Core\Page\AssetCollector;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper;
@@ -43,11 +42,11 @@ final class DatePickerViewHelper extends AbstractFormFieldViewHelper
      */
     protected $tagName = 'input';
 
-    protected PropertyMapper $propertyMapper;
-
-    public function injectPropertyMapper(PropertyMapper $propertyMapper)
-    {
-        $this->propertyMapper = $propertyMapper;
+    public function __construct(
+        private readonly PropertyMapper $propertyMapper,
+        private readonly AssetCollector $assetCollector,
+    ) {
+        parent::__construct();
     }
 
     /**
@@ -98,7 +97,7 @@ final class DatePickerViewHelper extends AbstractFormFieldViewHelper
                 $this->tag->addAttribute('data-format', $datePickerDateFormat);
                 $this->tag->addAttribute('data-t3-form-datepicker', '');
                 if (!empty($this->arguments['datePickerInitializationJavaScriptFile'])) {
-                    GeneralUtility::makeInstance(AssetCollector::class)
+                    $this->assetCollector
                         ->addJavaScript(
                             't3-form-datepicker',
                             $this->arguments['datePickerInitializationJavaScriptFile'],

@@ -43,12 +43,9 @@ final class ColorSchemeViewHelper extends AbstractViewHelper
      */
     protected $escapeChildren = false;
 
-    protected PageRenderer $pageRenderer;
-
-    public function injectPageRenderer(PageRenderer $pageRenderer): void
-    {
-        $this->pageRenderer = $pageRenderer;
-    }
+    public function __construct(
+        private readonly PageRenderer $pageRenderer,
+    ) {}
 
     public function render(): string
     {

@@ -18,14 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewHelper;
 
@@ -41,17 +39,13 @@ final class DownloadExtensionViewHelper extends AbstractFormViewHelper
      */
     protected $tagName = 'form';
 
-    protected ExtensionService $extensionService;
-    protected IconFactory $iconFactory;
-
-    public function injectExtensionService(ExtensionService $extensionService): void
-    {
-        $this->extensionService = $extensionService;
-    }
-
-    public function injectIconFactory(IconFactory $iconFactory): void
-    {
-        $this->iconFactory = $iconFactory;
+    public function __construct(
+        #[Autowire(expression: 'service("extension-configuration").get("extensionmanager", "automaticInstallation")')]
+        private readonly string $automaticInstallation,
+        private readonly IconFactory $iconFactory,
+        private readonly UriBuilder $uriBuilder,
+    ) {
+        parent::__construct();
     }
 
     public function initializeArguments(): void
@@ -64,20 +58,18 @@ final class DownloadExtensionViewHelper extends AbstractFormViewHelper
     {
         /** @var Extension $extension */
         $extension = $this->arguments['extension'];
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         /** @var RequestInterface $request */
         $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
-        $uriBuilder->setRequest($request);
+        $this->uriBuilder->setRequest($request);
         $action = 'checkDependencies';
-        $uriBuilder->reset();
-        $uriBuilder->setFormat('json');
-        $uri = $uriBuilder->uriFor($action, [
+        $this->uriBuilder->reset();
+        $this->uriBuilder->setFormat('json');
+        $uri = $this->uriBuilder->uriFor($action, [
             'extension' => (int)$extension->getUid(),
         ], 'Download');
         $this->tag->addAttribute('data-href', $uri);
 
-        $automaticInstallation = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'automaticInstallation');
-        $labelKeySuffix = $automaticInstallation ? '' : '.downloadOnly';
+        $labelKeySuffix = $this->automaticInstallation ? '' : '.downloadOnly';
         $titleAndValue = $this->getLanguageService()->sL(
             'LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.downloadViewHelper.submit' . $labelKeySuffix
         );

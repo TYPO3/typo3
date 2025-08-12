@@ -17,11 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\ViewHelpers;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\View\AuthenticationStyleInformation;
-use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Security\SvgSanitizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -43,36 +43,13 @@ final class LoginLogoViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    protected AuthenticationStyleInformation $authenticationStyleInformation;
-    protected PageRenderer $pageRenderer;
-    protected SvgSanitizer $svgSanitizer;
-    protected CacheManager $cacheManager;
-    protected PackageDependentCacheIdentifier $packageDependentCacheIdentifier;
-
-    public function injectAuthenticationStyleInformation(AuthenticationStyleInformation $authenticationStyleInformation): void
-    {
-        $this->authenticationStyleInformation = $authenticationStyleInformation;
-    }
-
-    public function injectPageRenderer(PageRenderer $pageRenderer): void
-    {
-        $this->pageRenderer = $pageRenderer;
-    }
-
-    public function injectSvgSanitizer(SvgSanitizer $svgSanitizer): void
-    {
-        $this->svgSanitizer = $svgSanitizer;
-    }
-
-    public function injectPackageDependentCacheIdentifier(PackageDependentCacheIdentifier $packageDependentCacheIdentifier): void
-    {
-        $this->packageDependentCacheIdentifier = $packageDependentCacheIdentifier;
-    }
-
-    public function injectCacheManager(CacheManager $cacheManager): void
-    {
-        $this->cacheManager = $cacheManager;
-    }
+    public function __construct(
+        private readonly AuthenticationStyleInformation $authenticationStyleInformation,
+        private readonly SvgSanitizer $svgSanitizer,
+        private readonly PackageDependentCacheIdentifier $packageDependentCacheIdentifier,
+        #[Autowire(service: 'cache.assets')]
+        private readonly FrontendInterface $cache,
+    ) {}
 
     public function render(): string
     {
@@ -107,13 +84,12 @@ final class LoginLogoViewHelper extends AbstractViewHelper
             ->withPrefix('LoginLogo')
             ->withAdditionalHashedIdentifier($filepath)
             ->toString();
-        $cache = $this->cacheManager->getCache('assets');
-        if ($cache->has($cacheIdentifier)) {
-            return $cache->get($cacheIdentifier);
+        if ($this->cache->has($cacheIdentifier)) {
+            return $this->cache->get($cacheIdentifier);
         }
 
         $svgContent = $this->parseSvg($filepath);
-        $cache->set($cacheIdentifier, $svgContent);
+        $this->cache->set($cacheIdentifier, $svgContent);
         return $svgContent;
     }
 

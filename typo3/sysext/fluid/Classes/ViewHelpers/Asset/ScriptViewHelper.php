@@ -51,11 +51,10 @@ final class ScriptViewHelper extends AbstractTagBasedViewHelper
      */
     protected $escapeChildren = false;
 
-    protected AssetCollector $assetCollector;
-
-    public function injectAssetCollector(AssetCollector $assetCollector): void
-    {
-        $this->assetCollector = $assetCollector;
+    public function __construct(
+        private readonly AssetCollector $assetCollector,
+    ) {
+        parent::__construct();
     }
 
     public function initialize(): void

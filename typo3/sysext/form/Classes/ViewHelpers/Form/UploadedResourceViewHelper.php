@@ -38,17 +38,11 @@ final class UploadedResourceViewHelper extends AbstractFormFieldViewHelper
      */
     protected $tagName = 'input';
 
-    protected HashService $hashService;
-    protected PropertyMapper $propertyMapper;
-
-    public function injectHashService(HashService $hashService)
-    {
-        $this->hashService = $hashService;
-    }
-
-    public function injectPropertyMapper(PropertyMapper $propertyMapper)
-    {
-        $this->propertyMapper = $propertyMapper;
+    public function __construct(
+        private readonly HashService $hashService,
+        private readonly PropertyMapper $propertyMapper,
+    ) {
+        parent::__construct();
     }
 
     public function initializeArguments(): void

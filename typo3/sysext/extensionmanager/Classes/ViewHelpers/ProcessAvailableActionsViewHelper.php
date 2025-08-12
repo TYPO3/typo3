@@ -28,11 +28,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 final class ProcessAvailableActionsViewHelper extends AbstractTagBasedViewHelper
 {
-    protected EventDispatcherInterface $eventDispatcher;
-
-    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher): void
-    {
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(
+        private readonly EventDispatcherInterface $eventDispatcher,
+    ) {
+        parent::__construct();
     }
 
     public function initializeArguments(): void

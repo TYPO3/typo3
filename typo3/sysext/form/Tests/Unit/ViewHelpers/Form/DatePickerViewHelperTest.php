@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Form\Tests\Unit\ViewHelpers\Form;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Page\AssetCollector;
+use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Form\ViewHelpers\Form\DatePickerViewHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -77,7 +79,10 @@ final class DatePickerViewHelperTest extends UnitTestCase
         $mock = \Closure::bind(static function (DatePickerViewHelper $datePickerViewHelper) use ($input, &$result) {
             $result = $datePickerViewHelper->convertDateFormatToDatePickerFormat($input);
         }, null, DatePickerViewHelper::class);
-        $mock(new DatePickerViewHelper());
+
+        $propertyMapperMock = $this->createMock(PropertyMapper::class);
+        $assetCollectorMock = $this->createMock(AssetCollector::class);
+        $mock(new DatePickerViewHelper($propertyMapperMock, $assetCollectorMock));
         self::assertSame($expected, $result);
     }
 }

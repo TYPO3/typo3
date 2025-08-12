@@ -54,12 +54,9 @@ final class RenderViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    private FormPersistenceManagerInterface $formPersistenceManager;
-
-    public function injectFormPersistenceManager(FormPersistenceManagerInterface $formPersistenceManager): void
-    {
-        $this->formPersistenceManager = $formPersistenceManager;
-    }
+    public function __construct(
+        private readonly FormPersistenceManagerInterface $formPersistenceManager,
+    ) {}
 
     public function initializeArguments(): void
     {

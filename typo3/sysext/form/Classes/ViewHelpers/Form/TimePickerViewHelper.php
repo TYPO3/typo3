@@ -38,11 +38,10 @@ final class TimePickerViewHelper extends AbstractFormFieldViewHelper
      */
     protected $tagName = 'select';
 
-    protected PropertyMapper $propertyMapper;
-
-    public function injectPropertyMapper(PropertyMapper $propertyMapper)
-    {
-        $this->propertyMapper = $propertyMapper;
+    public function __construct(
+        private readonly PropertyMapper $propertyMapper,
+    ) {
+        parent::__construct();
     }
 
     public function initializeArguments(): void
