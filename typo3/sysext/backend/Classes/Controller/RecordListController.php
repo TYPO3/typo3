@@ -117,10 +117,12 @@ class RecordListController
 
         // Check if Clipboard is allowed to be shown:
         if (($this->modTSconfig['enableClipBoard'] ?? '') === 'activated') {
+            $this->moduleData->set('clipBoard', true);
             $this->allowClipboard = false;
         } elseif (($this->modTSconfig['enableClipBoard'] ?? '') === 'selectable') {
             $this->allowClipboard = true;
         } elseif (($this->modTSconfig['enableClipBoard'] ?? '') === 'deactivated') {
+            $this->moduleData->set('clipBoard', false);
             $this->allowClipboard = false;
         }
 
@@ -194,7 +196,7 @@ class RecordListController
             $searchBoxHtml = $this->renderSearchBox($request, $dbList, $this->searchTerm, $search_levels);
         }
         $clipboardHtml = '';
-        if ($this->allowClipboard && $this->moduleData->get('clipBoard') && ($tableListHtml || $clipboard->hasElements())) {
+        if ($this->moduleData->get('clipBoard') && ($tableListHtml || $clipboard->hasElements())) {
             $clipboardHtml = '<hr class="spacer"><typo3-backend-clipboard-panel return-url="' . htmlspecialchars($dbList->listURL()) . '"></typo3-backend-clipboard-panel>';
         }
 
