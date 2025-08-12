@@ -40,7 +40,7 @@ functional deprecated mysql 8.0 php 8.1 min:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s functionalDeprecated -d mysql -i 8.0 -p 8.1
 
-functional deprecated postgres 15 php 8.4 max:
+functional deprecated postgres 15 php 8.5 max:
   stage: functional
   tags:
     - metal2
@@ -48,8 +48,8 @@ functional deprecated postgres 15 php 8.4 max:
   only:
     - schedules
   script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.4
-    - Build/Scripts/runTests.sh -s functionalDeprecated -d postgres -i 15 -p 8.4
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d postgres -i 15 -p 8.5
 functional deprecated postgres 10 php 8.1 min:
   stage: functional
   tags:
@@ -151,7 +151,7 @@ functional postgres 10 php 8.1 min:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s functional -d postgres -i 10 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
-functional sqlite php 8.4 max:
+functional sqlite php 8.5 max:
   stage: functional
   tags:
     - metal2
@@ -160,8 +160,8 @@ functional sqlite php 8.4 max:
     - schedules
   parallel: 4
   script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.4
-    - Build/Scripts/runTests.sh -s functional -d sqlite -p 8.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
+    - Build/Scripts/runTests.sh -s functional -d sqlite -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional sqlite php 8.1 min:
   stage: functional
   tags:
