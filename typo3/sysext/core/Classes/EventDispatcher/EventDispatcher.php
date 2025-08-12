@@ -34,6 +34,11 @@ class EventDispatcher implements EventDispatcherInterface, SingletonInterface
         protected readonly ListenerProviderInterface $listenerProvider
     ) {}
 
+    /**
+     * @template T of object
+     * @param T $event
+     * @return T
+     */
     public function dispatch(object $event): object
     {
         // If the event is already stopped, nothing to do here.
