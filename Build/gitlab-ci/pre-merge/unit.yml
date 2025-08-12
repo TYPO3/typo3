@@ -104,3 +104,26 @@ unit php 8.4 pre-merge:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.4
     - Build/Scripts/runTests.sh -s unit -p 8.4
+
+unit php 8.5 deprecated pre-merge:
+  stage: main
+  tags:
+    - metal2
+  except:
+    refs:
+      - schedules
+      - "12.4"
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.5
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.5
+unit php 8.5 pre-merge:
+  stage: main
+  tags:
+    - metal2
+  except:
+    refs:
+      - schedules
+      - "12.4"
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.5
+    - Build/Scripts/runTests.sh -s unit -p 8.5

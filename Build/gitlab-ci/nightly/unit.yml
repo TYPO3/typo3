@@ -229,3 +229,34 @@ unit php 8.4 max random:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.4
     - Build/Scripts/runTests.sh -s unitRandom -p 8.4
+
+unit php 8.5 max:
+  stage: unit
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
+    - Build/Scripts/runTests.sh -s unit -p 8.5
+unit php 8.5 max deprecated:
+  stage: unit
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.5
+unit php 8.5 max random:
+  stage: unit
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
+    - Build/Scripts/runTests.sh -s unitRandom -p 8.5
