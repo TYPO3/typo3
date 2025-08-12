@@ -613,11 +613,11 @@ if ! type ${CONTAINER_BIN} >/dev/null 2>&1; then
     exit 1
 fi
 
-IMAGE_APACHE="ghcr.io/typo3/core-testing-apache24:1.5"
+IMAGE_APACHE="ghcr.io/typo3/core-testing-apache24:1.7"
 IMAGE_PHP="ghcr.io/typo3/core-testing-$(echo "php${PHP_VERSION}" | sed -e 's/\.//'):$(getPhpImageVersion $PHP_VERSION)"
 
-IMAGE_NODEJS="ghcr.io/typo3/core-testing-nodejs22:1.2"
-IMAGE_NODEJS_CHROME="ghcr.io/typo3/core-testing-nodejs22-chrome:1.2"
+IMAGE_NODEJS="ghcr.io/typo3/core-testing-nodejs22:1.3"
+IMAGE_NODEJS_CHROME="ghcr.io/typo3/core-testing-nodejs22-chrome:1.3"
 IMAGE_PLAYWRIGHT="mcr.microsoft.com/playwright:v1.45.1-jammy"
 IMAGE_ALPINE="docker.io/alpine:3.8"
 # HEADS UP: We need to pin to <132 for --headless=old support until https://issues.chromium.org/issues/362522328 is resolved
