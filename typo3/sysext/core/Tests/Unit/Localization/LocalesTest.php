@@ -32,7 +32,7 @@ final class LocalesTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->originalLocale = setlocale(LC_COLLATE, 0);
+        $this->originalLocale = setlocale(LC_COLLATE, '0');
     }
 
     protected function tearDown(): void
@@ -135,7 +135,7 @@ final class LocalesTest extends UnitTestCase
         $site = $this->createSiteWithDefaultLanguage('');
         $result = Locales::setSystemLocaleFromSiteLanguage($site->getLanguageById(0));
         self::assertFalse($result);
-        $currentLocale = setlocale(LC_COLLATE, 0);
+        $currentLocale = setlocale(LC_COLLATE, '0');
         // Check that the locale was not overridden
         self::assertEquals($this->originalLocale, $currentLocale);
     }
@@ -147,7 +147,7 @@ final class LocalesTest extends UnitTestCase
         $site = $this->createSiteWithDefaultLanguage($locale);
         $result = Locales::setSystemLocaleFromSiteLanguage($site->getLanguageById(0));
         self::assertTrue($result);
-        $currentLocale = setlocale(LC_COLLATE, 0);
+        $currentLocale = setlocale(LC_COLLATE, '0');
         // Check that the locale was overridden
         self::assertEquals($locale, $currentLocale);
     }

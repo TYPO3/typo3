@@ -36,7 +36,7 @@ unit php 8.2 pre-merge:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s unit -p 8.2
-unit php 8.4 pre-merge:
+unit php 8.5 pre-merge:
   stage: main
   tags:
     - metal2
@@ -45,5 +45,5 @@ unit php 8.4 pre-merge:
       - schedules
       - main
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.4
-    - Build/Scripts/runTests.sh -s unit -p 8.4
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.5
+    - Build/Scripts/runTests.sh -s unit -p 8.5
