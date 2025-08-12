@@ -492,13 +492,13 @@ class DragUploaderPlugin {
           $('<label/>').text(TYPO3.lang['file_upload.actions.all.label']),
           $('<span/>').append(
             $('<select/>', { class: 'form-select t3js-actions-all' }).append(
-              $('<option/>').val('').text(TYPO3.lang['file_upload.actions.all.empty']),
+              $('<option/>').val('').prop('selected', true).text(TYPO3.lang['file_upload.actions.all.empty']),
               (this.irreObjectUid ? $('<option/>').val(Action.USE_EXISTING).text(TYPO3.lang['file_upload.actions.all.use_existing']) : ''),
-              $('<option/>', { 'selected': this.defaultAction === Action.SKIP })
+              $('<option/>')
                 .val(Action.SKIP).text(TYPO3.lang['file_upload.actions.all.skip']),
-              $('<option/>', { 'selected': this.defaultAction === Action.RENAME })
+              $('<option/>')
                 .val(Action.RENAME).text(TYPO3.lang['file_upload.actions.all.rename']),
-              $('<option/>', { 'selected': this.defaultAction === Action.OVERRIDE })
+              $('<option/>')
                 .val(Action.OVERRIDE).text(TYPO3.lang['file_upload.actions.all.override']),
             ),
           ),
