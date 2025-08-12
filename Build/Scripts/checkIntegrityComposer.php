@@ -134,7 +134,7 @@ class checkIntegrityComposer
         }
         // Check root composer.json for missing non-sysext required packages
         foreach ($extensionComposerJson['require'] ?? [] as $requireKey => $requireItem) {
-            if (!str_starts_with($requireKey, 'typo3/cms-') && !isset($this->rootComposerJson['require'][$requireKey])) {
+            if ($this->shouldPackageNameBeChecked($requireKey) && !isset($this->rootComposerJson['require'][$requireKey])) {
                 $this->testResults['repo-root'][] = [
                     'type' => 'require',
                     'dependency' => $requireKey . ' by ' . $extensionKey,
@@ -143,6 +143,12 @@ class checkIntegrityComposer
                 ];
             }
         }
+    }
+
+    private function shouldPackageNameBeChecked(string $packageName): bool
+    {
+        return !str_starts_with($packageName, 'typo3/cms-')
+            && !str_starts_with($packageName, 'typo3tests/');
     }
 
     /**
