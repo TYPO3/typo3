@@ -1,4 +1,4 @@
-functional mariadb 10.10 php 8.4 max:
+functional mariadb 10.10 php 8.5 max:
   stage: functional
   tags:
     - metal2
@@ -7,8 +7,8 @@ functional mariadb 10.10 php 8.4 max:
     - schedules
   parallel: 6
   script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.4
-    - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.10 -p 8.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
+    - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.10 -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional mariadb 10.4 php 8.2 min:
   stage: functional
   tags:
@@ -67,7 +67,7 @@ functional postgres 10 php 8.2 min:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
     - Build/Scripts/runTests.sh -s functional -d postgres -i 10 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
-functional sqlite php 8.3 max:
+functional sqlite php 8.4 max:
   stage: functional
   tags:
     - metal2
@@ -76,8 +76,8 @@ functional sqlite php 8.3 max:
     - schedules
   parallel: 4
   script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
-    - Build/Scripts/runTests.sh -s functional -d sqlite -p 8.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.4
+    - Build/Scripts/runTests.sh -s functional -d sqlite -p 8.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional sqlite php 8.2 min:
   stage: functional
   tags:
