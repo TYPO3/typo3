@@ -2545,12 +2545,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/LinkHandling/EmailLinkHandlerTest.php
 
 		-
-			message: '#^Parameter \#2 \$locale of function setlocale expects array\|string\|null, int given\.$#'
-			identifier: argument.type
-			count: 3
-			path: ../../typo3/sysext/core/Tests/Unit/Localization/LocalesTest.php
-
-		-
 			message: '#^Method TYPO3\\CMS\\Core\\Tests\\Unit\\Log\\Fixtures\\WriterFixture\:\:writeLog\(\) should return TYPO3\\CMS\\Core\\Log\\Writer\\WriterInterface but return statement is missing\.$#'
 			identifier: return.missing
 			count: 1
