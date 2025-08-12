@@ -482,7 +482,7 @@ final class RequestBuilderTest extends FunctionalTestCase
     {
         $this->expectException(InvalidActionNameException::class);
         $this->expectExceptionCode(1313855175);
-        $this->expectExceptionMessage('The action "NonExistentAction" (controller "TYPO3Tests\BlogExample\Controller\BlogController") is not allowed by this plugin / module. Please check TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin() in your ext_localconf.php / TYPO3\CMS\Extbase\Utility\ExtensionUtility::configureModule() in your ext_tables.php.');
+        $this->expectExceptionMessage('The action "NonExistentAction" (controller "TYPO3Tests\BlogExample\Controller\BlogController") is not allowed by this plugin / module. Please check TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin() in your ext_localconf.php / array key "controllerActions" defined in your Configuration/Backend/Modules.php.');
 
         $extensionName = 'blog_example';
         $pluginName = 'blog';

@@ -221,7 +221,7 @@ class RequestBuilder implements SingletonInterface
                 }
                 return $defaultActionName;
             }
-            throw new InvalidActionNameException('The action "' . $actionName . '" (controller "' . $controllerClassName . '") is not allowed by this plugin / module. Please check TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php / TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configureModule() in your ext_tables.php.', 1313855175);
+            throw new InvalidActionNameException('The action "' . $actionName . '" (controller "' . $controllerClassName . '") is not allowed by this plugin / module. Please check TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php / array key "controllerActions" defined in your Configuration/Backend/Modules.php.', 1313855175);
         }
         return preg_replace('/[^a-zA-Z0-9]+/', '', $actionName);
     }
