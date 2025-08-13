@@ -667,24 +667,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Core\\DataHandling\\Localization\\DataMapProcessor\:\:fetchDependencies\(\) should return array\<array\<TYPO3\\CMS\\Core\\DataHandling\\Localization\\DataMapItem\>\> but returns array\<int\|string, array\<string, list\<TYPO3\\CMS\\Core\\DataHandling\\Localization\\DataMapItem\>\>\>\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/Localization/DataMapProcessor.php
-
-		-
-			message: '#^Parameter \#1 \$dependencies of method TYPO3\\CMS\\Core\\DataHandling\\Localization\\DataMapItem\:\:setDependencies\(\) expects array\<array\<TYPO3\\CMS\\Core\\DataHandling\\Localization\\DataMapItem\>\>, array\<TYPO3\\CMS\\Core\\DataHandling\\Localization\\DataMapItem\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/Localization/DataMapProcessor.php
-
-		-
-			message: '#^Property TYPO3\\CMS\\Core\\DataHandling\\Localization\\State\:\:\$states on left side of \?\? is not nullable nor uninitialized\.$#'
-			identifier: nullCoalesce.initializedProperty
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/Localization/State.php
-
-		-
 			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Resource\\FileInterface\:\:getUid\(\)\.$#'
 			identifier: method.notFound
 			count: 2
@@ -827,12 +809,6 @@ parameters:
 			identifier: nullCoalesce.variable
 			count: 2
 			path: ../../typo3/sysext/core/Classes/Database/Query/QueryBuilder.php
-
-		-
-			message: '#^Call to function is_array\(\) with array\<int\<0, max\>, mixed\> will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/RelationHandler.php
 
 		-
 			message: '#^Instanceof between TYPO3\\CMS\\Core\\Database\\Schema\\SchemaDiff and TYPO3\\CMS\\Core\\Database\\Schema\\SchemaDiff will always evaluate to true\.$#'

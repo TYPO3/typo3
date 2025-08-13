@@ -30,6 +30,15 @@ class State
     public const STATE_PARENT = 'parent';
     public const STATE_SOURCE = 'source';
 
+    protected string $tableName;
+    protected array $states;
+    protected array $originalStates;
+    protected array $validStates = [
+        self::STATE_CUSTOM,
+        self::STATE_SOURCE,
+        self::STATE_PARENT,
+    ];
+
     public static function create(string $tableName): ?State
     {
         if (!static::isApplicable($tableName)) {
@@ -84,15 +93,6 @@ class State
         );
     }
 
-    protected string $tableName;
-    protected array $states;
-    protected array $originalStates;
-    protected array $validStates = [
-        self::STATE_CUSTOM,
-        self::STATE_SOURCE,
-        self::STATE_PARENT,
-    ];
-
     public function __construct(string $tableName, array $states = [])
     {
         $this->tableName = $tableName;
@@ -136,7 +136,7 @@ class State
 
     public function toArray(): array
     {
-        return $this->states ?? [];
+        return $this->states;
     }
 
     /**
