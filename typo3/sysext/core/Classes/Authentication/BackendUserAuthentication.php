@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent;
+use TYPO3\CMS\Core\Authentication\Exception\InvalidPageRecordException;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Context\Context;
@@ -350,7 +351,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param int|array $idOrRow Page ID or full page record to check
      * @param string $readPerms Content of "->getPagePermsClause(1)" (read-permissions). If not set, they will be internally calculated (but if you have the correct value right away you can save that database lookup!)
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
-     * @throws \RuntimeException
+     * @throws InvalidPageRecordException If the given page record is missing its uid
      * @return int|null The page UID of a page in the rootline that matched a mount point
      */
     public function isInWebMount($idOrRow, $readPerms = '', bool $useDeleteClause = true)
@@ -366,7 +367,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         $fetchPageFromDatabase = true;
         if (is_array($idOrRow)) {
             if (!isset($idOrRow['uid'])) {
-                throw new \RuntimeException('The given page record is invalid. Missing uid.', 1578950324);
+                throw new InvalidPageRecordException('The given page record is invalid. Missing uid.', 1578950324);
             }
             $checkRec = $idOrRow;
             $id = (int)$idOrRow['uid'];
