@@ -888,7 +888,7 @@ class DataMapProcessor
      * + [7]   -> []                               # since there's nothing
      *
      * @param int[]|string[] $ids
-     * @return DataMapItem[][]
+     * @return array<int|string, array<string, list<DataMapItem>>>
      */
     protected function fetchDependencies(string $tableName, array $ids): array
     {

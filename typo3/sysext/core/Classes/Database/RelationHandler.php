@@ -749,7 +749,7 @@ class RelationHandler
                 }
             }
             // Delete all not-used relations:
-            if (is_array($oldMMs) && !empty($oldMMs)) {
+            if ($oldMMs !== []) {
                 $queryBuilder = $connection->createQueryBuilder();
                 $removeClauses = $queryBuilder->expr()->or();
                 foreach ($oldMMs as $oldMM_key => $mmItem) {

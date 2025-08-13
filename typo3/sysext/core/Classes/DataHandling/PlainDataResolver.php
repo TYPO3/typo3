@@ -187,11 +187,11 @@ class PlainDataResolver
             ->executeQuery();
 
         while ($version = $result->fetchAssociative()) {
-            $liveReferenceId = $version['t3ver_oid'];
-            $versionId = $version['uid'];
+            $liveReferenceId = (int)$version['t3ver_oid'];
+            $versionId = (int)$version['uid'];
             if (isset($ids[$liveReferenceId])) {
                 if (!$this->keepDeletePlaceholder
-                    && VersionState::tryFrom($version['t3ver_state'] ?? 0) === VersionState::DELETE_PLACEHOLDER
+                    && VersionState::tryFrom((int)($version['t3ver_state'] ?? 0)) === VersionState::DELETE_PLACEHOLDER
                 ) {
                     unset($ids[$liveReferenceId]);
                 } else {
@@ -289,10 +289,8 @@ class PlainDataResolver
                 )
             );
 
-        if (!empty($this->sortingStatement)) {
-            foreach ($this->sortingStatement as $sortingStatement) {
-                $queryBuilder->getConcreteQueryBuilder()->addOrderBy($sortingStatement);
-            }
+        foreach ($this->sortingStatement as $sortingStatement) {
+            $queryBuilder->getConcreteQueryBuilder()->addOrderBy($sortingStatement);
         }
         // Always add explicit order by uid to have deterministic rows from dbms like postgres.
         // Scenario (see workspace FAL/Modify/ActionTest modifyContentAndDeleteFileReference):
@@ -351,8 +349,8 @@ class PlainDataResolver
 
         $versionIds = [];
         while ($record = $result->fetchAssociative()) {
-            $liveId = $record['uid'];
-            $versionIds[$liveId] = $record['t3ver_oid'];
+            $liveId = (int)$record['uid'];
+            $versionIds[$liveId] = (int)$record['t3ver_oid'];
         }
 
         foreach ($ids as $id) {
