@@ -1537,4 +1537,53 @@ final class FlexFormToolsTest extends FunctionalTestCase
 
         (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
     }
+
+    #[Test]
+    public function parseDataStructureByIdentifierPreservesManuallyForeignTableWhereForCategory(): void
+    {
+        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
+            <T3DataStructure>
+                <ROOT>
+                    <sheetTitle>aTitle</sheetTitle>
+                    <type>array</type>
+                    <el>
+                        <category>
+                            <label>Custom category</label>
+                            <config>
+                                <type>category</type>
+                                <relationship>oneToOne</relationship>
+                                <foreign_table_where> AND {#sys_category}.{#title} LIKE "%special%"</foreign_table_where>
+                            </config>
+                        </category>
+                    </el>
+                </ROOT>
+            </T3DataStructure>
+        ';
+        $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+        $expected = [
+            'sheets' => [
+                'sDEF' => [
+                    'ROOT' => [
+                        'type' => 'array',
+                        'el' => [
+                            'category' => [
+                                'label' => 'Custom category',
+                                'config' => [
+                                    'type' => 'category',
+                                    'relationship' => 'oneToOne',
+                                    'foreign_table' => 'sys_category',
+                                    'foreign_table_where' => ' AND {#sys_category}.{#title} LIKE "%special%"',
+                                    'maxitems' => 1,
+                                    'size' => 20,
+                                    'default' => 0,
+                                ],
+                            ],
+                        ],
+                        'sheetTitle' => 'aTitle',
+                    ],
+                ],
+            ],
+        ];
+        self::assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
+    }
 }
