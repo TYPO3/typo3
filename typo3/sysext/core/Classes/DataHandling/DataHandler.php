@@ -28,6 +28,7 @@ use Symfony\Component\Uid\Uuid;
 use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Authentication\Exception\InvalidPageRecordException;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\AbstractInvalidDataStructureException;
@@ -7691,7 +7692,11 @@ class DataHandler
             return $tableSchema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction();
         }
         $pagesSchema = $this->tcaSchemaFactory->get('pages');
-        if (!$pagesSchema->hasCapability(TcaSchemaCapability::RestrictionWebMount) && !$this->BE_USER->isInWebMount($page, '', $useDeleteClause)) {
+        try {
+            if (!$pagesSchema->hasCapability(TcaSchemaCapability::RestrictionWebMount) && !$this->BE_USER->isInWebMount($page, '', $useDeleteClause)) {
+                return false;
+            }
+        } catch (InvalidPageRecordException) {
             return false;
         }
         $beUserUid = $this->BE_USER->getUserId();
