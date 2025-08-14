@@ -4,7 +4,7 @@
 	"description": "This extension contains dependency injection fixtures.",
 	"license": "GPL-2.0-or-later",
 	"require": {
-		"typo3/cms-core": "12.4.36"
+		"typo3/cms-core": "12.4.*@dev"
 	},
 	"extra": {
 		"typo3/cms": {
