@@ -55,4 +55,8 @@ final readonly class GroupFieldType extends AbstractFieldType implements Relatio
         return false;
     }
 
+    public function getSoftReferenceKeys(): false
+    {
+        return false;
+    }
 }

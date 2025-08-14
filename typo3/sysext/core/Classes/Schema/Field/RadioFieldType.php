@@ -36,4 +36,9 @@ final readonly class RadioFieldType extends AbstractFieldType
     {
         return false;
     }
+
+    public function getSoftReferenceKeys(): false
+    {
+        return false;
+    }
 }

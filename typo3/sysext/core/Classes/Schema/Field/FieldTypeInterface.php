@@ -39,5 +39,6 @@ interface FieldTypeInterface
     public function hasDefaultValue(): bool;
     public function getTranslationBehaviour(): FieldTranslationBehaviour;
     public function getConfiguration(): array;
+    public function getSoftReferenceKeys(): array|false;
     public static function __set_state(array $state): FieldTypeInterface;
 }

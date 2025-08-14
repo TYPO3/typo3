@@ -51,4 +51,9 @@ final readonly class UuidFieldType extends AbstractFieldType
     {
         return true;
     }
+
+    public function getSoftReferenceKeys(): false
+    {
+        return false;
+    }
 }

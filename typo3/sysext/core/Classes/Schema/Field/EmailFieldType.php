@@ -31,5 +31,4 @@ final readonly class EmailFieldType extends AbstractFieldType
     {
         return true;
     }
-
 }

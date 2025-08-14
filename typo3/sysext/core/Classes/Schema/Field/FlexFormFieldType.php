@@ -41,4 +41,9 @@ final readonly class FlexFormFieldType extends AbstractFieldType
     {
         return false;
     }
+
+    public function getSoftReferenceKeys(): false
+    {
+        return false;
+    }
 }

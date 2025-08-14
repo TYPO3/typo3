@@ -37,4 +37,8 @@ final readonly class CheckboxFieldType extends AbstractFieldType
         return false;
     }
 
+    public function getSoftReferenceKeys(): false
+    {
+        return false;
+    }
 }

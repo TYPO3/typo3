@@ -36,4 +36,9 @@ final readonly class ColorFieldType extends AbstractFieldType
     {
         return true;
     }
+
+    public function getSoftReferenceKeys(): false
+    {
+        return false;
+    }
 }

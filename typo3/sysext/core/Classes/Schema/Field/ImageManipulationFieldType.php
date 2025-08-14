@@ -40,4 +40,9 @@ final readonly class ImageManipulationFieldType extends AbstractFieldType
     {
         return false;
     }
+
+    public function getSoftReferenceKeys(): false
+    {
+        return false;
+    }
 }

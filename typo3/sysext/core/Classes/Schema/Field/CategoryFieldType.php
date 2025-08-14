@@ -59,4 +59,9 @@ final readonly class CategoryFieldType extends AbstractFieldType implements Rela
     {
         return false;
     }
+
+    public function getSoftReferenceKeys(): false
+    {
+        return false;
+    }
 }
