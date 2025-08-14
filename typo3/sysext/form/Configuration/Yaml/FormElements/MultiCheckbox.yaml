@@ -29,7 +29,6 @@ prototypes:
               enableDeleteRow: true
               removeLastAvailableRowFlashMessageTitle: formEditor.elements.SelectionMixin.editor.options.removeLastAvailableRowFlashMessageTitle
               removeLastAvailableRowFlashMessageMessage: formEditor.elements.SelectionMixin.editor.options.removeLastAvailableRowFlashMessageMessage
-              shouldShowPreselectedValueColumn: multiple
               multiSelection: true
             600:
               identifier: autocomplete

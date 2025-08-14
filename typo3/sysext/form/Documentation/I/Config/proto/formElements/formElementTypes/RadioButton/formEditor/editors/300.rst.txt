@@ -36,5 +36,4 @@ formEditor.editors.300
                  enableDeleteRow: true
                  removeLastAvailableRowFlashMessageTitle: formEditor.elements.SelectionMixin.editor.options.removeLastAvailableRowFlashMessageTitle
                  removeLastAvailableRowFlashMessageMessage: formEditor.elements.SelectionMixin.editor.options.removeLastAvailableRowFlashMessageMessage
-                 shouldShowPreselectedValueColumn: single
                  multiSelection: false

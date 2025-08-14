@@ -59,7 +59,6 @@ export type EditorConfiguration = {
   propertyValidatorsMode?: 'OR' | 'AND',
   removeLastAvailableRowFlashMessageTitle?: string,
   removeLastAvailableRowFlashMessageMessage?: string,
-  shouldShowPreselectedValueColumn?: 'single' | 'multiple',
   selectOptions?: Array<{
     value: string,
     label: string,

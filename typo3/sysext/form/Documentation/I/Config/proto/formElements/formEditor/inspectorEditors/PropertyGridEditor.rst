@@ -205,28 +205,3 @@ removeLastAvailableRowFlashMessageMessage
 :aspect:`Description`
       There must be at least one existing row within this ``inspector editor``. If the last existing row is tried to be removed a flash message is shown.
       This property defines the text for the flash message.
-
-
-
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.shouldshowpreselectedvaluecolumn-propertygrideditor:
-
-shouldShowPreselectedValueColumn
---------------------------------
-
-:aspect:`Data type`
-      string
-
-:aspect:`Needed by`
-      Backend (form editor)
-
-:aspect:`Mandatory`
-      Yes
-
-.. :aspect:`Related options`
-      @ToDo
-
-:aspect:`Good to know`
-      - :ref:`"Inspector"<concepts-formeditor-inspector>`
-
-:aspect:`Description`
-      If set to 'false' the column which is used to mark a row as preselected will be disabled.
