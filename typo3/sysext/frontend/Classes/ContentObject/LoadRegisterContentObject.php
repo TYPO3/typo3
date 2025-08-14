@@ -16,37 +16,42 @@
 namespace TYPO3\CMS\Frontend\ContentObject;
 
 /**
- * Contains LOAD_REGISTER class object.
+ * Implement cObj "LOAD_REGISTER":
+ * Get latest Register, clone it, set a key/value, push as new latest RegisterStack entry.
+ *
+ * Note the naming "LOAD_REGISTER" is kinda misleading since it rather "loads into" or
+ * sets a new value and pushes as key/value to the stack. "RESTORE_REGISTER" is the
+ * counterpart cObj to get rid of that state again.
  */
 class LoadRegisterContentObject extends AbstractContentObject
 {
     /**
-     * Rendering the cObject, LOAD_REGISTER
-     * NOTICE: This cObject does NOT return any content since it just sets internal data based on the TypoScript properties.
+     * Does not return any content, it just sets internal data based on the TypoScript properties.
      *
      * @param array $conf Array of TypoScript properties
-     * @return string Empty string (the cObject only sets internal data!)
+     * @return string Empty string
      */
-    public function render($conf = [])
+    public function render($conf = []): string
     {
-        $frontendController = $this->getTypoScriptFrontendController();
-        $frontendController->registerStack[] = $frontendController->register;
+        $registerStack = $this->request->getAttribute('frontend.register.stack');
+        $clonedRegister = clone $registerStack->current();
         if (is_array($conf)) {
             $isExecuted = [];
-            foreach ($conf as $theKey => $theValue) {
-                $register = rtrim($theKey, '.');
-                if (!isset($isExecuted[$register]) || !$isExecuted[$register]) {
-                    $registerProperties = $register . '.';
-                    if (isset($conf[$register]) && isset($conf[$registerProperties])) {
-                        $theValue = $this->cObj->stdWrap($conf[$register], $conf[$registerProperties]);
+            foreach ($conf as $key => $value) {
+                $key = rtrim($key, '.');
+                if (!isset($isExecuted[$key]) || !$isExecuted[$key]) {
+                    $registerProperties = $key . '.';
+                    if (isset($conf[$key]) && isset($conf[$registerProperties])) {
+                        $value = $this->cObj->stdWrap($conf[$key], $conf[$registerProperties]);
                     } elseif (isset($conf[$registerProperties])) {
-                        $theValue = $this->cObj->stdWrap('', $conf[$registerProperties]);
+                        $value = $this->cObj->stdWrap('', $conf[$registerProperties]);
                     }
-                    $frontendController->register[$register] = $theValue;
-                    $isExecuted[$register] = true;
+                    $clonedRegister->set($key, $value);
+                    $isExecuted[$key] = true;
                 }
             }
         }
+        $registerStack->push($clonedRegister);
         return '';
     }
 }

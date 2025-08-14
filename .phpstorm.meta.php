@@ -92,6 +92,7 @@ namespace PHPSTORM_META {
         'frontend.cache.instruction',
         'frontend.page.information',
         'frontent.page.parts',
+        'frontend.register.stack',
     );
     override(\Psr\Http\Message\ServerRequestInterface::getAttribute(), map([
         'frontend.user' => \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class,
@@ -107,6 +108,7 @@ namespace PHPSTORM_META {
         'frontend.cache.instruction' => \TYPO3\CMS\Frontend\Cache\CacheInstruction::class,
         'frontend.page.information' => \TYPO3\CMS\Frontend\Page\PageInformation::class,
         'frontend.page.parts' => \TYPO3\CMS\Frontend\Page\PageParts::class,
+        'frontend.register.stack' => \TYPO3\CMS\Frontend\ContentObject\RegisterStack::class,
     ]));
 
     expectedArguments(

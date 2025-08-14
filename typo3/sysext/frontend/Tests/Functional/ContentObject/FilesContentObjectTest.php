@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\ContentObject\RegisterStack;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FilesContentObjectTest extends FunctionalTestCase
@@ -43,6 +44,7 @@ final class FilesContentObjectTest extends FunctionalTestCase
         $this->setUpBackendUser(1);
         $contentObjectRenderer = GeneralUtility::getContainer()->get(ContentObjectRenderer::class);
         $request = new ServerRequest();
+        $request = $request->withAttribute('frontend.register.stack', new RegisterStack());
         $contentObjectRenderer->setRequest($request);
         $this->subject = $contentObjectRenderer->getContentObject('FILES');
     }

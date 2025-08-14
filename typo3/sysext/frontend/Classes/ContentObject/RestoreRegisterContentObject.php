@@ -16,21 +16,21 @@
 namespace TYPO3\CMS\Frontend\ContentObject;
 
 /**
- * Contains RESTORE_REGISTER class object.
+ * Implement cObj "RESTORE_REGISTER":
+ * As the counterpart of "LOAD_REGISTER", "RESTORE_REGISTER" removes any state
+ * added by latest "LOAD_REGISTER" again.
  */
 class RestoreRegisterContentObject extends AbstractContentObject
 {
     /**
-     * Rendering the cObject, RESTORE_REGISTER
-     * NOTICE: This cObject does NOT return any content since it just sets internal data based on the TypoScript properties.
+     * Does not return any content, it just sets internal data based on the TypoScript properties.
      *
      * @param array $conf Array of TypoScript properties
-     * @return string Empty string (the cObject only sets internal data!)
+     * @return string Empty string
      */
-    public function render($conf = [])
+    public function render($conf = []): string
     {
-        $frontendController = $this->getTypoScriptFrontendController();
-        $frontendController->register = array_pop($frontendController->registerStack) ?? [];
+        $this->request->getAttribute('frontend.register.stack')->pop();
         return '';
     }
 }

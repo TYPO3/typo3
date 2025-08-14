@@ -2865,8 +2865,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
         $content = '';
         for ($a = 0; $a < $splitCount; $a++) {
-            $this->getTypoScriptFrontendController()->register['SPLIT_COUNT'] = $a;
-            $value = '' . $valArr[$a];
+            $this->getRequest()->getAttribute('frontend.register.stack')->current()->set('SPLIT_COUNT', $a);
+            $value = $valArr[$a];
             $this->data[$this->currentValKey] = $value;
             if ($splitArr[$a]['cObjNum'] ?? false) {
                 $objName = (int)$splitArr[$a]['cObjNum'];
@@ -3925,8 +3925,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             // of a request attribute. The register access via TS should continue to work, though.
                             $retVal = $this->getRequest()->getAttribute('frontend.page.parts')->getLastChanged();
                         } else {
-                            $tsfe = $this->getTypoScriptFrontendController();
-                            $retVal = $tsfe->register[$key] ?? null;
+                            $retVal = $this->getRequest()->getAttribute('frontend.register.stack')->current()->get($key);
                         }
                         break;
                     case 'global':
@@ -4040,8 +4039,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                                 $retVal = DebugUtility::viewArray($this->data);
                                 break;
                             case 'register':
-                                $tsfe = $this->getTypoScriptFrontendController();
-                                $retVal = DebugUtility::viewArray($tsfe->register);
+                                $retVal = DebugUtility::viewArray($this->getRequest()->getAttribute('frontend.register.stack')->current());
                                 break;
                             case 'page':
                                 $retVal = DebugUtility::viewArray($this->getRequest()->getAttribute('frontend.page.information')->getPageRecord());

@@ -84,6 +84,7 @@ use TYPO3\CMS\Frontend\ContentObject\ImageContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ImageResourceContentObject;
 use TYPO3\CMS\Frontend\ContentObject\LoadRegisterContentObject;
 use TYPO3\CMS\Frontend\ContentObject\RecordsContentObject;
+use TYPO3\CMS\Frontend\ContentObject\RegisterStack;
 use TYPO3\CMS\Frontend\ContentObject\RestoreRegisterContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ScalableVectorGraphicsContentObject;
 use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
@@ -812,6 +813,25 @@ final class ContentObjectRendererTest extends UnitTestCase
     #[Test]
     public function recursiveStdWrapIsOnlyCalledOnce(): void
     {
+        $subject = new ContentObjectRenderer();
+
+        $request = new ServerRequest();
+        $request = $request->withAttribute('frontend.register.stack', new RegisterStack());
+        $subject->setRequest($request);
+
+        // @todo: This thing needs a review and should be refactored away, for instance by putting
+        //        whatever is really needed into single tests instead. Also, ContentObjectFactory
+        //        needs an overhaul in general.
+        $contentObjectFactoryMock = $this->createContentObjectFactoryMock();
+        $cObj = $subject;
+        foreach ($this->contentObjectMap as $name => $className) {
+            $contentObjectFactoryMock->addGetContentObjectCallback($name, $className, $request, $cObj);
+        }
+        $container = new Container();
+        $container->set(ContentObjectFactory::class, $contentObjectFactoryMock);
+        $container->set(EventDispatcherInterface::class, new NoopEventDispatcher());
+        GeneralUtility::setContainer($container);
+
         $stdWrapConfiguration = [
             'append' => 'TEXT',
             'append.' => [
@@ -831,10 +851,7 @@ final class ContentObjectRendererTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame(
-            'Counter:1',
-            $this->subject->stdWrap('Counter:', $stdWrapConfiguration)
-        );
+        self::assertSame('Counter:1', $subject->stdWrap('Counter:', $stdWrapConfiguration));
     }
 
     /**
@@ -1289,11 +1306,12 @@ final class ContentObjectRendererTest extends UnitTestCase
         $pageInformation->setPageRecord([]);
         $request = new ServerRequest('https://example.com');
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
-        $this->subject->setRequest($request);
+        $registerStack = new RegisterStack();
         $key = StringUtility::getUniqueId('someKey');
         $value = StringUtility::getUniqueId('someValue');
-        $GLOBALS['TSFE'] = $this->frontendControllerMock;
-        $GLOBALS['TSFE']->register[$key] = $value;
+        $registerStack->current()->set($key, $value);
+        $request = $request->withAttribute('frontend.register.stack', $registerStack);
+        $this->subject->setRequest($request);
         self::assertEquals($value, $this->subject->getData('register:' . $key));
     }
 
@@ -1820,20 +1838,20 @@ final class ContentObjectRendererTest extends UnitTestCase
         $pageInformation->setPageRecord([]);
         $request = new ServerRequest('https://example.com');
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
-        $this->subject->setRequest($request);
 
+        $registerStack = new RegisterStack();
         $key = StringUtility::getUniqueId('someKey');
         $value = StringUtility::getUniqueId('someValue');
-        $GLOBALS['TSFE'] = $this->frontendControllerMock;
-        $GLOBALS['TSFE']->register = [$key => $value];
+        $registerStack->current()->set($key, $value);
+        $request = $request->withAttribute('frontend.register.stack', $registerStack);
 
-        $expectedResult = 'array(1item)' . $key . '=>"' . $value . '"(' . strlen($value) . 'chars)';
+        $this->subject->setRequest($request);
 
         DebugUtility::useAnsiColor(false);
         $result = $this->subject->getData('debug:register');
-        $cleanedResult = str_replace(["\r", "\n", "\t", ' '], '', $result);
 
-        self::assertEquals($expectedResult, $cleanedResult);
+        self::assertStringContainsString('someKey', $result);
+        self::assertStringContainsString('someValue', $result);
     }
 
     /**
@@ -5937,61 +5955,6 @@ content="benni">',
         self::assertSame(
             $return,
             $subject->stdWrap_postUserFunc($content, $conf)
-        );
-    }
-
-    /**
-     * Check if stdWrap_postUserFuncInt works properly.
-     *
-     * Show:
-     *
-     * - Calls frontend controller method uniqueHash.
-     * - Concatenates "INT_SCRIPT." and the returned hash to $substKey.
-     * - Configures the frontend controller for 'INTincScript.$substKey'.
-     * - The configuration array contains:
-     *   - content: $content
-     *   - postUserFunc: $conf['postUserFuncInt']
-     *   - conf: $conf['postUserFuncInt.']
-     *   - type: 'POSTUSERFUNC'
-     *   - cObj: serialized content renderer object
-     * - Returns "<!-- $substKey -->".
-     */
-    #[Test]
-    public function stdWrap_postUserFuncInt(): void
-    {
-        $uniqueHash = StringUtility::getUniqueId('uniqueHash');
-        $substKey = 'INT_SCRIPT.' . $uniqueHash;
-        $content = StringUtility::getUniqueId('content');
-        $conf = [
-            'postUserFuncInt' => StringUtility::getUniqueId('function'),
-            'postUserFuncInt.' => [StringUtility::getUniqueId('function array')],
-        ];
-        $expect = '<!--' . $substKey . '-->';
-        $frontend = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->disableOriginalConstructor()->onlyMethods(['uniqueHash'])
-            ->getMock();
-        $frontend->expects($this->once())->method('uniqueHash')
-            ->with()->willReturn($uniqueHash);
-        $frontend->config = ['INTincScript' => []];
-        $subject = $this->getAccessibleMock(
-            ContentObjectRenderer::class,
-            null,
-            [$frontend]
-        );
-        self::assertSame(
-            $expect,
-            $subject->stdWrap_postUserFuncInt($content, $conf)
-        );
-        $array = [
-            'content' => $content,
-            'postUserFunc' => $conf['postUserFuncInt'],
-            'conf' => $conf['postUserFuncInt.'],
-            'type' => 'POSTUSERFUNC',
-            'cObj' => serialize($subject),
-        ];
-        self::assertSame(
-            $array,
-            $frontend->config['INTincScript'][$substKey]
         );
     }
 

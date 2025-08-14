@@ -34,9 +34,7 @@ use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 use TYPO3\CMS\Frontend\ContentObject\Menu\Exception\NoSuchMenuTypeException;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Event\FilterMenuItemsEvent;
 use TYPO3\CMS\Frontend\Typolink\LinkResult;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
@@ -395,8 +393,7 @@ abstract class AbstractMenuContentObject
             $this->menuArr = $this->userProcess('itemArrayProcFunc', $this->menuArr);
         }
         // Setting number of menu items
-        $frontendController = $this->getTypoScriptFrontendController();
-        $frontendController->register['count_menuItems'] = count($this->menuArr);
+        $this->request->getAttribute('frontend.register.stack')->current()->set('count_menuItems', count($this->menuArr));
         $this->generate();
         // End showAccessRestrictedPages
         if ($this->mconf['showAccessRestrictedPages'] ?? false) {
@@ -568,8 +565,7 @@ abstract class AbstractMenuContentObject
             $languageItems = GeneralUtility::intExplode(',', $specialValue);
         }
 
-        $tsfe = $this->getTypoScriptFrontendController();
-        $tsfe->register['languages_HMENU'] = implode(',', $languageItems);
+        $this->request->getAttribute('frontend.register.stack')->current()->set('languages_HMENU', implode(',', $languageItems));
 
         $currentLanguageId = $this->getCurrentLanguageAspect()->getId();
 
@@ -1295,18 +1291,17 @@ abstract class AbstractMenuContentObject
                 }
                 if ($submenu->start(null, $this->sys_page, $uid, $this->conf, $this->menuNumber + 1, $objSuffix, $this->request)) {
                     $submenu->makeMenu();
-                    // Memorize the current menu item count
-                    $tsfe = $this->getTypoScriptFrontendController();
-                    $tempCountMenuObj = $tsfe->register['count_MENUOBJ'];
-                    // Reset the menu item count for the submenu
-                    $tsfe->register['count_MENUOBJ'] = 0;
+                    $registerStack = $this->request->getAttribute('frontend.register.stack');
+                    $clonedRegister = clone $registerStack->current();
+                    // Reset the menu item count for the submenu by pushing a new register to register stack
+                    $clonedRegister->set('count_MENUOBJ', 0);
+                    $registerStack->push($clonedRegister);
                     $content = $submenu->writeMenu();
-                    // Restore the item count now that the submenu has been handled
-                    $tsfe->register['count_MENUOBJ'] = $tempCountMenuObj;
-                    $tsfe->register['count_menuItems'] = count($this->menuArr);
+                    $registerStack->pop();
+                    $registerStack->current()->set('count_menuItems', count($this->menuArr));
                     return $content;
                 }
-            } catch (NoSuchMenuTypeException $e) {
+            } catch (NoSuchMenuTypeException) {
             }
         }
         return '';
@@ -1766,18 +1761,6 @@ abstract class AbstractMenuContentObject
     public function getParentContentObject()
     {
         return $this->parent_cObj;
-    }
-
-    /**
-     * @throws ContentRenderingException
-     */
-    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
-    {
-        $frontendController = $this->parent_cObj->getTypoScriptFrontendController();
-        if (!$frontendController instanceof TypoScriptFrontendController) {
-            throw new ContentRenderingException('TypoScriptFrontendController is not available.', 1655725105);
-        }
-        return $frontendController;
     }
 
     protected function getCurrentLanguageAspect(): LanguageAspect

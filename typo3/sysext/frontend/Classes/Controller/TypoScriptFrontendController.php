@@ -131,18 +131,6 @@ class TypoScriptFrontendController
     public string $absRefPrefix = '';
 
     /**
-     * @internal
-     */
-    public array $register = [];
-
-    /**
-     * Stack used for storing array and retrieving register arrays.
-     * See LOAD_REGISTER and RESTORE_REGISTER.
-     * @internal
-     */
-    public array $registerStack = [];
-
-    /**
      * Used by RecordContentObject and ContentContentObject to ensure the a records is NOT
      * rendered twice through it!
      *

@@ -37,15 +37,15 @@ class TextMenuContentObject extends AbstractMenuContentObject
             return '';
         }
 
-        $frontendController = $this->getTypoScriptFrontendController();
+        $register = $this->request->getAttribute('frontend.register.stack')->current();
         $cObjectForCurrentMenu = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $menuContent = '';
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $subMenuObjSuffixes = $typoScriptService->explodeConfigurationForOptionSplit(['sOSuffix' => $this->mconf['submenuObjSuffixes'] ?? null], count($this->result));
         $explicitSpacerRenderingEnabled = ($this->mconf['SPC'] ?? false);
         foreach ($this->result as $key => $val) {
-            $frontendController->register['count_HMENU_MENUOBJ']++;
-            $frontendController->register['count_MENUOBJ']++;
+            $register->set('count_HMENU_MENUOBJ', (int)$register->get('count_HMENU_MENUOBJ', 0) + 1);
+            $register->set('count_MENUOBJ', (int)$register->get('count_MENUOBJ', 0) + 1);
 
             // Initialize the cObj with the page record of the menu item
             $cObjectForCurrentMenu->setRequest($this->request);

@@ -3103,12 +3103,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
 
 		-
-			message: '#^Offset non\-falsy\-string does not exist on array\{\}\.$#'
-			identifier: offsetAccess.notFound
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
 			message: '#^Parameter \#2 \$conf of method TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer\:\:prefixComment\(\) expects array, null given\.$#'
 			identifier: argument.type
 			count: 1

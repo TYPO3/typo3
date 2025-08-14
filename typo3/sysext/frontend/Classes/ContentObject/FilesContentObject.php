@@ -36,9 +36,7 @@ class FilesContentObject extends AbstractContentObject
         if (!empty($conf['if.']) && !$this->cObj->checkIf($conf['if.'])) {
             return '';
         }
-        $frontendController = $this->hasTypoScriptFrontendController()
-            ? $this->getTypoScriptFrontendController()
-            : null;
+        $register = $this->request->getAttribute('frontend.register.stack')->current();
         // Store the original "currentFile" within a variable so it can be re-applied later-on
         $originalFileInContentObject = $this->cObj->getCurrentFile();
 
@@ -56,9 +54,7 @@ class FilesContentObject extends AbstractContentObject
         $limit = (int)$this->cObj->stdWrapValue('maxItems', $conf, $availableFileObjectCount);
         $end = MathUtility::forceIntegerInRange($start + $limit, $start, $availableFileObjectCount);
 
-        if ($frontendController !== null) {
-            $frontendController->register['FILES_COUNT'] = min($limit, $availableFileObjectCount);
-        }
+        $register->set('FILES_COUNT', min($limit, $availableFileObjectCount));
         $fileObjectCounter = 0;
         $keys = array_keys($fileObjects);
 
@@ -66,10 +62,7 @@ class FilesContentObject extends AbstractContentObject
         for ($i = $start; $i < $end; $i++) {
             $key = $keys[$i];
             $fileObject = $fileObjects[$key];
-
-            if ($frontendController !== null) {
-                $frontendController->register['FILE_NUM_CURRENT'] = $fileObjectCounter;
-            }
+            $register->set('FILE_NUM_CURRENT', $fileObjectCounter);
             $this->cObj->setCurrentFile($fileObject);
             $content .= $this->cObj->cObjGetSingle($splitConf[$key]['renderObj'], $splitConf[$key]['renderObj.'], 'renderObj');
             $fileObjectCounter++;

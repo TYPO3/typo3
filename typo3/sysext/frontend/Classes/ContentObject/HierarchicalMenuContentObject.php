@@ -39,21 +39,19 @@ class HierarchicalMenuContentObject extends AbstractContentObject
         $theValue = '';
         $menuType = $conf[1] ?? '';
         try {
-            $frontendController = $this->getTypoScriptFrontendController();
+            $register = $this->request->getAttribute('frontend.register.stack')->current();
             $menuObjectFactory = GeneralUtility::makeInstance(MenuContentObjectFactory::class);
             $menu = $menuObjectFactory->getMenuObjectByType($menuType);
-            if (isset($frontendController->register['count_HMENU'])) {
-                $frontendController->register['count_HMENU']++;
-            } else {
-                $frontendController->register['count_HMENU'] = 1;
-            }
-            $frontendController->register['count_HMENU_MENUOBJ'] = 0;
-            $frontendController->register['count_MENUOBJ'] = 0;
+            $countHMENU = (int)$register->get('count_HMENU', 0);
+            $countHMENU++;
+            $register->set('count_HMENU', $countHMENU);
+            $register->set('count_HMENU_MENUOBJ', 0);
+            $register->set('count_MENUOBJ', 0);
             $menu->parent_cObj = $this->getContentObjectRenderer();
             $menu->start(null, $this->getPageRepository(), '', $conf, 1, '', $this->request);
             $menu->makeMenu();
             $theValue .= $menu->writeMenu();
-        } catch (NoSuchMenuTypeException $e) {
+        } catch (NoSuchMenuTypeException) {
         }
         $wrap = $this->cObj->stdWrapValue('wrap', $conf);
         if ($wrap) {

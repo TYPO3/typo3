@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 use TYPO3\CMS\Frontend\Cache\CacheInstruction;
+use TYPO3\CMS\Frontend\ContentObject\RegisterStack;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
@@ -107,6 +108,7 @@ final readonly class TypoScriptFrontendInitialization implements MiddlewareInter
 
         $controller = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
         $controller->initializePageRenderer($request);
+        $request = $request->withAttribute('frontend.register.stack', new RegisterStack());
         $request = $request->withAttribute('frontend.controller', $controller);
         $pageParts = new PageParts();
         // Init "last changed" with "tstamp" of the page record, or SYS_LASTCHANGED if it is lower.
