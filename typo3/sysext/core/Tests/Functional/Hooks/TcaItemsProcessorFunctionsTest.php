@@ -415,6 +415,10 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
                         // No flex field
                         'showitem' => 'pointerField',
                     ],
+                    '5' => [
+                        // Evaluated as integer by PHP
+                        'showitem' => 'pointerField,aFlexField',
+                    ],
                 ],
             ],
             'barTable' => [
@@ -444,12 +448,22 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
                     'value' => 'barTable:barflexField;default;sDEF;input_exclude',
                     'icon' => 'empty-empty',
                 ],
+                'fooTableTitle defaultFlexFieldTitle 5' => [
+                    'label' => 'fooTableTitle defaultFlexFieldTitle 5',
+                    'value' => '--div--',
+                    'icon' => '',
+                ],
+                1 => [
+                    'label' => 'defaultFieldLabel (input1)',
+                    'value' => 'fooTable:aFlexField;5;sDEF;input1',
+                    'icon' => 'empty-empty',
+                ],
                 'fooTableTitle defaultFlexFieldTitle default' => [
                     'label' => 'fooTableTitle defaultFlexFieldTitle default',
                     'value' => '--div--',
                     'icon' => '',
                 ],
-                1 => [
+                2 => [
                     'label' => 'defaultFieldLabel (input1)',
                     'value' => 'fooTable:aFlexField;default;sDEF;input1',
                     'icon' => 'empty-empty',
@@ -459,7 +473,7 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
                     'value' => '--div--',
                     'icon' => '',
                 ],
-                2 => [
+                3 => [
                     'label' => 'defaultFieldLabel (input1)',
                     'value' => 'fooTable:aFlexField;dummy2;sDEF;input1',
                     'icon' => 'empty-empty',
@@ -469,7 +483,7 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
                     'value' => '--div--',
                     'icon' => '',
                 ],
-                3 => [
+                4 => [
                     'label' => 'overrideFieldLabel (text1)',
                     'value' => 'fooTable:aFlexField;dummy;sDEF;text1',
                     'icon' => 'empty-empty',

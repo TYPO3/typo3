@@ -295,8 +295,8 @@ readonly class TcaItemsProcessorFunctions
                 $flexFieldLabel = '';
                 // Get all sheets
                 foreach ($flexForms as $extIdent => $extConf) {
-                    if ($schema->hasSubSchema($extIdent)) {
-                        $fieldDefinition = $schema->getSubSchema($extIdent)->getField($tableField);
+                    if ($schema->hasSubSchema((string)$extIdent)) {
+                        $fieldDefinition = $schema->getSubSchema((string)$extIdent)->getField($tableField);
                     } else {
                         $fieldDefinition = $schema->getField($tableField);
                     }
