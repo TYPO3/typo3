@@ -85,9 +85,14 @@ class FileCollectionRegistry implements SingletonInterface
      * @param string $availableFields comma separated list of fields to show
      * @param array $additionalColumns Additional columns configuration
      * @return array adjusted TCA for sys_file_collection
+     * @deprecated since TYPO3 v14.0, will be removed in TYPO3 v15.0.
      */
     public function addTypeToTCA($type, $label, $availableFields, array $additionalColumns = [])
     {
+        trigger_error(
+            'FileCollectionRegistry->addTypeToTCA() has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Add new types via TCA directly.',
+            E_USER_DEPRECATED
+        );
         $GLOBALS['TCA']['sys_file_collection']['types'][$type] = [
             'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, ' . $availableFields,
         ];

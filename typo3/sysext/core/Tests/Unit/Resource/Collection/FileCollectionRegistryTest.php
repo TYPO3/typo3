@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Collection;
 
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry;
 use TYPO3\CMS\Core\Tests\Unit\Resource\Collection\Fixtures\OtherTestingFileCollection;
@@ -132,6 +133,7 @@ final class FileCollectionRegistryTest extends UnitTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function addNewTypeToTCA(): void
     {
         // Create a TCA fixture for sys_file_collection

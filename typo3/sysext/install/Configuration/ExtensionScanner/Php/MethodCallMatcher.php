@@ -6432,4 +6432,11 @@ return [
             'Breaking-105695-SimplifiedCharsetConverter.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry->addTypeToTCA' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-107287-FileCollectionRegistryAddTypeToTCA.rst',
+        ],
+    ],
 ];
