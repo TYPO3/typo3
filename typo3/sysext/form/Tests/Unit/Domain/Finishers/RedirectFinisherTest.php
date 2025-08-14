@@ -20,17 +20,14 @@ namespace TYPO3\CMS\Form\Tests\Unit\Domain\Finishers;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Finishers\RedirectFinisher;
-use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RedirectFinisherTest extends UnitTestCase
@@ -49,30 +46,24 @@ final class RedirectFinisherTest extends UnitTestCase
         $contentObjectRendererMock->method('createUrl')->willReturnCallback(static function (array $conf) use ($uriPrefix): string {
             return $uriPrefix . $conf['parameter'];
         });
-        $frontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
-        $frontendController = $frontendControllerMock;
-        $frontendController->cObj = $contentObjectRendererMock;
-        $GLOBALS['TSFE'] = $frontendController;
 
-        $redirectFinisherMock = $this->getAccessibleMock(RedirectFinisher::class, null, [], '', false);
-        $redirectFinisherMock->_set('options', [
-            'pageUid' => $pageUid,
-        ]);
-
-        $formRuntimeMock = $this->createMock(FormRuntime::class);
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $serverRequest = $serverRequest->withAttribute('currentContentObject', $contentObjectRendererMock);
+        $contentObjectRendererMock->setRequest($serverRequest);
         $request = new Request($serverRequest);
-        $formRuntimeMock->method('getRequest')->willReturn($request);
-        $formRuntimeMock->method('getResponse')->willReturn(new Response());
 
         $finisherContextMock = $this->createMock(FinisherContext::class);
-        $finisherContextMock->method('getFormRuntime')->willReturn($formRuntimeMock);
+        $finisherContextMock->method('getRequest')->willReturn($request);
         $finisherContextMock->expects(self::once())->method('cancel');
 
         $translationServiceMock = $this->createMock(TranslationService::class);
         $translationServiceMock->method('translateFinisherOption')->with(self::anything())->willReturnArgument(3);
         GeneralUtility::setSingletonInstance(TranslationService::class, $translationServiceMock);
 
+        $redirectFinisherMock = $this->getAccessibleMock(RedirectFinisher::class, null, [], '', false);
+        $redirectFinisherMock->_set('options', [
+            'pageUid' => $pageUid,
+        ]);
         try {
             $redirectFinisherMock->execute($finisherContextMock);
             self::fail('RedirectFinisher did not throw expected exception.');

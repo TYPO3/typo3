@@ -15,44 +15,45 @@
 
 namespace TYPO3\CMS\Core\Resource;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Collection\AbstractRecordCollection;
 use TYPO3\CMS\Core\Collection\CollectionInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Repository for accessing file collections stored in the database
  */
-class FileCollectionRepository
+readonly class FileCollectionRepository
 {
-    protected string $table = 'sys_file_collection';
-    protected string $typeField = 'type';
+    public function __construct(
+        private ConnectionPool $connectionPool,
+        private FileCollectionRegistry $fileCollectionRegistry
+    ) {}
 
     /**
      * Finds a record collection by uid.
      *
-     * @param int $uid The uid to be looked up
      * @throws Exception\ResourceDoesNotExistException
      */
-    public function findByUid($uid): ?CollectionInterface
+    public function findByUid(int $uid): ?CollectionInterface
     {
         $object = null;
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
-
-        if ($this->getEnvironmentMode() === 'FE') {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file_collection');
+        if ($this->isFrontendRequest()) {
             $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
         } else {
-            $queryBuilder->getRestrictions()
-                ->removeAll()
+            $queryBuilder->getRestrictions()->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         }
-
         $data = $queryBuilder->select('*')
-            ->from($this->table)
+            ->from('sys_file_collection')
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchAssociative();
@@ -60,7 +61,7 @@ class FileCollectionRepository
             $object = $this->createDomainObject($data);
         }
         if ($object === null) {
-            throw new ResourceDoesNotExistException('Could not find row with uid "' . $uid . '" in table "' . $this->table . '"', 1314354066);
+            throw new ResourceDoesNotExistException('Could not find row with uid "' . $uid . '" in table "sys_file_collection"', 1314354066);
         }
         return $object;
     }
@@ -68,18 +69,24 @@ class FileCollectionRepository
     /**
      * Finds record collection by type.
      *
-     * @param string $type Type to be looked up
      * @return CollectionInterface[]|null
      */
-    public function findByType($type): ?array
+    public function findByType(string $type): ?array
     {
-        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($this->table)
-            ->expr();
-
+        $expressionBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file_collection')->expr();
         return $this->queryMultipleRecords([
-            $expressionBuilder->eq($this->typeField, $expressionBuilder->literal((string)$type)),
+            $expressionBuilder->eq('type', $expressionBuilder->literal($type)),
         ]);
+    }
+
+    /**
+     * Finds all record collections.
+     *
+     * @return CollectionInterface[]|null
+     */
+    public function findAll(): ?array
+    {
+        return $this->queryMultipleRecords();
     }
 
     /**
@@ -91,24 +98,17 @@ class FileCollectionRepository
     protected function queryMultipleRecords(array $conditions = []): ?array
     {
         $result = null;
-
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
-        $queryBuilder->getRestrictions()
-            ->removeAll()
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file_collection');
+        $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-        $queryBuilder->select('*')
-            ->from($this->table);
-
+        $queryBuilder->select('*')->from('sys_file_collection');
         if (!empty($conditions)) {
             $queryBuilder->where(...$conditions);
         }
-
         $data = $queryBuilder->executeQuery()->fetchAllAssociative();
         if (!empty($data)) {
             $result = $this->createMultipleDomainObjects($data);
         }
-
         return $result;
     }
 
@@ -127,13 +127,14 @@ class FileCollectionRepository
         return $collections;
     }
 
-    /**
-     * Function to return the current application (FE/BE) based on $GLOBALS[TSFE].
-     * This function can be mocked in unit tests to be able to test frontend behaviour.
-     */
-    protected function getEnvironmentMode(): string
+    protected function isFrontendRequest(): bool
     {
-        return ($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController ? 'FE' : 'BE';
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+        ) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -143,21 +144,8 @@ class FileCollectionRepository
      */
     protected function createDomainObject(array $record): CollectionInterface
     {
-        return $this->getFileFactory()->createCollectionObject($record);
-    }
-
-    protected function getFileFactory(): ResourceFactory
-    {
-        return GeneralUtility::makeInstance(ResourceFactory::class);
-    }
-
-    /**
-     * Finds all record collections.
-     *
-     * @return CollectionInterface[]|null
-     */
-    public function findAll(): ?array
-    {
-        return $this->queryMultipleRecords();
+        /** @var AbstractRecordCollection $className */
+        $className = $this->fileCollectionRegistry->getFileCollectionClass($record['type']);
+        return $className::create($record);
     }
 }

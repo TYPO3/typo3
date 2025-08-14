@@ -65,31 +65,29 @@ class RedirectFinisher extends AbstractFinisher
      * if used with other request types.
      *
      * @param int $pageUid Target page uid. If NULL, the current page uid is used
-     * @param string $additionalParameters
-     * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
+     * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other"
      * @see forward()
      */
-    protected function redirect(int $pageUid, string $additionalParameters, string $fragment, int $statusCode)
+    protected function redirect(int $pageUid, string $additionalParameters, string $fragment, int $statusCode): never
     {
-        $typolinkConfiguration = [
+        $redirectUri = $this->finisherContext->getRequest()->getAttribute('currentContentObject')->createUrl([
             'parameter' => $pageUid,
             'additionalParams' => $additionalParameters,
             'section' => $fragment,
-        ];
-        $redirectUri = $this->getTypoScriptFrontendController()->cObj->createUrl($typolinkConfiguration);
+        ]);
         $this->redirectToUri($redirectUri, $statusCode);
     }
 
     /**
      * Redirects the web request to another uri.
      *
-     * NOTE: This method only supports web requests and will thrown an exception if used with other request types.
+     * NOTE: This method only supports web requests and will throw an exception if used with other request types.
      *
      * @param string $uri A string representation of a URI
      * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
      * @throws PropagateResponseException
      */
-    protected function redirectToUri(string $uri, int $statusCode = 303)
+    protected function redirectToUri(string $uri, int $statusCode = 303): never
     {
         $uri = $this->addBaseUriIfNecessary($uri);
         $response = new RedirectResponse($uri, $statusCode);

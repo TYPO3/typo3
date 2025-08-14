@@ -17,16 +17,17 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Repository for accessing file objects.
@@ -171,11 +172,15 @@ readonly class FileRepository
     }
 
     /**
-     * Function to return the current application type based on $GLOBALS['TSFE'].
      * This function can be mocked in unit tests to be able to test frontend behaviour.
      */
     protected function isFrontend(): bool
     {
-        return ($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController;
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+        ) {
+            return true;
+        }
+        return false;
     }
 }

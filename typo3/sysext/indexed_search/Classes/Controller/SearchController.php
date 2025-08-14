@@ -32,7 +32,6 @@ use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\Frontend\Typolink\LinkResult;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
@@ -1020,7 +1019,8 @@ class SearchController extends ActionController
                             array_pop($breadcrumbWraps);
                             break;
                         }
-                        $path = $this->getTypoScriptFrontendController()->cObj->wrap(htmlspecialchars($v['title']), array_pop($breadcrumbWraps)['wrap']) . $path;
+                        $contentObjectRenderer = $this->request->getAttribute('currentContentObject');
+                        $path = $contentObjectRenderer->wrap(htmlspecialchars($v['title']), array_pop($breadcrumbWraps)['wrap']) . $path;
                     }
                 }
             } catch (RootLineException $e) {
@@ -1098,47 +1098,47 @@ class SearchController extends ActionController
         $fullTypoScriptArray = $this->typoScriptService->convertPlainArrayToTypoScriptArray($this->settings);
         $typoScriptArray = $fullTypoScriptArray['results.'];
 
-        $typoScriptFrontendController = $this->getTypoScriptFrontendController();
+        $contentObjectRenderer = $this->request->getAttribute('currentContentObject');
         $this->settings['results.']['summaryCropAfter'] = MathUtility::forceIntegerInRange(
-            $typoScriptFrontendController->cObj->stdWrapValue('summaryCropAfter', $typoScriptArray ?? []),
+            $contentObjectRenderer->stdWrapValue('summaryCropAfter', $typoScriptArray ?? []),
             10,
             5000,
             180
         );
-        $this->settings['results.']['summaryCropSignifier'] = $typoScriptFrontendController->cObj->stdWrapValue('summaryCropSignifier', $typoScriptArray ?? []);
+        $this->settings['results.']['summaryCropSignifier'] = $contentObjectRenderer->stdWrapValue('summaryCropSignifier', $typoScriptArray ?? []);
         $this->settings['results.']['titleCropAfter'] = MathUtility::forceIntegerInRange(
-            $typoScriptFrontendController->cObj->stdWrapValue('titleCropAfter', $typoScriptArray ?? []),
+            $contentObjectRenderer->stdWrapValue('titleCropAfter', $typoScriptArray ?? []),
             10,
             500,
             50
         );
-        $this->settings['results.']['titleCropSignifier'] = $typoScriptFrontendController->cObj->stdWrapValue('titleCropSignifier', $typoScriptArray ?? []);
+        $this->settings['results.']['titleCropSignifier'] = $contentObjectRenderer->stdWrapValue('titleCropSignifier', $typoScriptArray ?? []);
         $this->settings['results.']['markupSW_summaryMax'] = MathUtility::forceIntegerInRange(
-            $typoScriptFrontendController->cObj->stdWrapValue('markupSW_summaryMax', $typoScriptArray ?? []),
+            $contentObjectRenderer->stdWrapValue('markupSW_summaryMax', $typoScriptArray ?? []),
             10,
             5000,
             300
         );
         $this->settings['results.']['markupSW_postPreLgd'] = MathUtility::forceIntegerInRange(
-            $typoScriptFrontendController->cObj->stdWrapValue('markupSW_postPreLgd', $typoScriptArray ?? []),
+            $contentObjectRenderer->stdWrapValue('markupSW_postPreLgd', $typoScriptArray ?? []),
             1,
             500,
             60
         );
         $this->settings['results.']['markupSW_postPreLgd_offset'] = MathUtility::forceIntegerInRange(
-            $typoScriptFrontendController->cObj->stdWrapValue('markupSW_postPreLgd_offset', $typoScriptArray ?? []),
+            $contentObjectRenderer->stdWrapValue('markupSW_postPreLgd_offset', $typoScriptArray ?? []),
             1,
             50,
             5
         );
-        $this->settings['results.']['markupSW_divider'] = $typoScriptFrontendController->cObj->stdWrapValue('markupSW_divider', $typoScriptArray ?? []);
+        $this->settings['results.']['markupSW_divider'] = $contentObjectRenderer->stdWrapValue('markupSW_divider', $typoScriptArray ?? []);
         $this->settings['results.']['hrefInSummaryCropAfter'] = MathUtility::forceIntegerInRange(
-            $typoScriptFrontendController->cObj->stdWrapValue('hrefInSummaryCropAfter', $typoScriptArray ?? []),
+            $contentObjectRenderer->stdWrapValue('hrefInSummaryCropAfter', $typoScriptArray ?? []),
             10,
             400,
             60
         );
-        $this->settings['results.']['hrefInSummaryCropSignifier'] = $typoScriptFrontendController->cObj->stdWrapValue('hrefInSummaryCropSignifier', $typoScriptArray ?? []);
+        $this->settings['results.']['hrefInSummaryCropSignifier'] = $contentObjectRenderer->stdWrapValue('hrefInSummaryCropSignifier', $typoScriptArray ?? []);
     }
 
     /**
@@ -1160,10 +1160,5 @@ class SearchController extends ActionController
         }
 
         return $searchWord;
-    }
-
-    private function getTypoScriptFrontendController(): TypoScriptFrontendController
-    {
-        return $this->request->getAttribute('frontend.controller');
     }
 }
