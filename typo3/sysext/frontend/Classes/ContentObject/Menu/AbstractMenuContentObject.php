@@ -52,6 +52,21 @@ use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
  */
 abstract class AbstractMenuContentObject
 {
+    protected const customItemStates = [
+        // IFSUB is TRUE if there exist submenu items to the current item
+        'IFSUB',
+        'ACT',
+        // ACTIFSUB is TRUE if there exist submenu items to the current item and the current item is active
+        'ACTIFSUB',
+        // CUR is TRUE if the current page equals the item here!
+        'CUR',
+        // CURIFSUB is TRUE if there exist submenu items to the current item and the current page equals the item here!
+        'CURIFSUB',
+        'USR',
+        'SPC',
+        'USERDEF1',
+        'USERDEF2',
+    ];
     /**
      * tells you which menu number this is. This is important when getting data from the setup
      */
@@ -174,22 +189,6 @@ abstract class AbstractMenuContentObject
     protected $parentMenuArr;
 
     protected bool $disableGroupAccessCheck = false;
-
-    protected const customItemStates = [
-        // IFSUB is TRUE if there exist submenu items to the current item
-        'IFSUB',
-        'ACT',
-        // ACTIFSUB is TRUE if there exist submenu items to the current item and the current item is active
-        'ACTIFSUB',
-        // CUR is TRUE if the current page equals the item here!
-        'CUR',
-        // CURIFSUB is TRUE if there exist submenu items to the current item and the current page equals the item here!
-        'CURIFSUB',
-        'USR',
-        'SPC',
-        'USERDEF1',
-        'USERDEF2',
-    ];
 
     /**
      * The initialization of the object. This just sets some internal variables.

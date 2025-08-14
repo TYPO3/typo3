@@ -30,6 +30,13 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 final class HookTest extends FunctionalTestCase
 {
+    private const VALUE_PageId = 89;
+    private const VALUE_ContentId = 297;
+    private const TABLE_Content = 'tt_content';
+    private const TABLE_Hotel = 'tx_testirreforeignfield_hotel';
+    private const TABLE_Category = 'sys_category';
+    private const FIELD_ContentHotel = 'tx_testirreforeignfield_hotels';
+    private const FIELD_Categories = 'categories';
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
     ];
@@ -46,14 +53,6 @@ final class HookTest extends FunctionalTestCase
             ],
         ],
     ];
-
-    private const VALUE_PageId = 89;
-    private const VALUE_ContentId = 297;
-    private const TABLE_Content = 'tt_content';
-    private const TABLE_Hotel = 'tx_testirreforeignfield_hotel';
-    private const TABLE_Category = 'sys_category';
-    private const FIELD_ContentHotel = 'tx_testirreforeignfield_hotels';
-    private const FIELD_Categories = 'categories';
 
     protected function setUp(): void
     {

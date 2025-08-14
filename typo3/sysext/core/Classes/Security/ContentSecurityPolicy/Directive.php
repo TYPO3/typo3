@@ -23,12 +23,6 @@ namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
  */
 enum Directive: string
 {
-    private const STAND_ALONE = [
-        self::Sandbox,
-        self::TrustedTypes,
-        self::UpgradeInsecureRequests,
-    ];
-
     case DefaultSrc = 'default-src';
     case BaseUri = 'base-uri';
     case ChildSrc = 'child-src';
@@ -58,6 +52,11 @@ enum Directive: string
     case TrustedTypes = 'trusted-types';
     case UpgradeInsecureRequests = 'upgrade-insecure-requests';
     case WorkerSrc = 'worker-src';
+    private const STAND_ALONE = [
+        self::Sandbox,
+        self::TrustedTypes,
+        self::UpgradeInsecureRequests,
+    ];
 
     /**
      * @return list<self>

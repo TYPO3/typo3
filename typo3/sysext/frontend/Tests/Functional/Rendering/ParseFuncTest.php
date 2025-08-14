@@ -28,14 +28,14 @@ final class ParseFuncTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    protected array $coreExtensionsToLoad = ['fluid_styled_content'];
-
     /**
      * @var array Used by buildDefaultLanguageConfiguration() of SiteBasedTestTrait
      */
     protected const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
+
+    protected array $coreExtensionsToLoad = ['fluid_styled_content'];
 
     public static function contentIsRenderedDataProvider(): array
     {

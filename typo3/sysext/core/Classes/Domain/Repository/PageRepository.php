@@ -70,6 +70,25 @@ class PageRepository implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     /**
+     * Named constants for "magic numbers" of the field doktype
+     */
+    public const DOKTYPE_DEFAULT = 1;
+    public const DOKTYPE_LINK = 3;
+    public const DOKTYPE_SHORTCUT = 4;
+    public const DOKTYPE_BE_USER_SECTION = 6;
+    public const DOKTYPE_MOUNTPOINT = 7;
+    public const DOKTYPE_SPACER = 199;
+    public const DOKTYPE_SYSFOLDER = 254;
+
+    /**
+     * Named constants for "magic numbers" of the field shortcut_mode
+     */
+    public const SHORTCUT_MODE_NONE = 0;
+    public const SHORTCUT_MODE_FIRST_SUBPAGE = 1;
+    public const SHORTCUT_MODE_RANDOM_SUBPAGE = 2;
+    public const SHORTCUT_MODE_PARENT_PAGE = 3;
+
+    /**
      * This is not the final clauses. There will normally be conditions for the
      * hidden, starttime and endtime fields as well. This is initialized in the init() function.
      */
@@ -91,25 +110,6 @@ class PageRepository implements LoggerAwareInterface
         '_ORIG_pid',
         '_SHORTCUT_ORIGINAL_PAGE_UID',
     ];
-
-    /**
-     * Named constants for "magic numbers" of the field doktype
-     */
-    public const DOKTYPE_DEFAULT = 1;
-    public const DOKTYPE_LINK = 3;
-    public const DOKTYPE_SHORTCUT = 4;
-    public const DOKTYPE_BE_USER_SECTION = 6;
-    public const DOKTYPE_MOUNTPOINT = 7;
-    public const DOKTYPE_SPACER = 199;
-    public const DOKTYPE_SYSFOLDER = 254;
-
-    /**
-     * Named constants for "magic numbers" of the field shortcut_mode
-     */
-    public const SHORTCUT_MODE_NONE = 0;
-    public const SHORTCUT_MODE_FIRST_SUBPAGE = 1;
-    public const SHORTCUT_MODE_RANDOM_SUBPAGE = 2;
-    public const SHORTCUT_MODE_PARENT_PAGE = 3;
 
     protected Context $context;
 

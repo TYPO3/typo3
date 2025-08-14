@@ -38,13 +38,6 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    protected array $testExtensionsToLoad = [
-        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
-    ];
-    protected array $pathsToLinkInTestInstance = [
-        'typo3/sysext/extbase/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload',
-    ];
-
     private const VALUE_PageId = 89;
     private const TABLE_Content = 'tt_content';
     private const LANGUAGE_PRESETS = [
@@ -52,6 +45,13 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
         'DA' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'da_DK.UTF8'],
         'DE' => ['id' => 2, 'title' => 'Deutsch', 'locale' => 'de_DE.UTF8'],
         'PL' => ['id' => 3, 'title' => 'Polski', 'locale' => 'pl_PL.UTF8'],
+    ];
+
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
+    ];
+    protected array $pathsToLinkInTestInstance = [
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload',
     ];
 
     protected function setUp(): void

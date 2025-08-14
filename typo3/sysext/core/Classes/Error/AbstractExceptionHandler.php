@@ -40,8 +40,6 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
     public const CONTEXT_WEB = 'WEB';
     public const CONTEXT_CLI = 'CLI';
 
-    protected bool $logExceptionStackTrace = false;
-
     protected const IGNORED_EXCEPTION_CODES = [
         1396795884, // Current host header value does not match the configured trusted hosts pattern
         1616175867, // Backend login request is rate limited
@@ -63,6 +61,8 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
         1704454157, // Failed HMAC validation due to modified HMAC string in Core HashService
         1704454152, // Failed HMAC validation due to too short HMAC string in Core HashService
     ];
+
+    protected bool $logExceptionStackTrace = false;
 
     /**
      * Displays the given exception

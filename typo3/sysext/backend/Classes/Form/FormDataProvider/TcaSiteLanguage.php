@@ -34,12 +34,11 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormDataProviderInterface
 {
+    private const FOREIGN_TABLE = 'site_language';
+    private const FOREIGN_FIELD = 'languageId';
     public function __construct(
         private readonly SiteFinder $siteFinder,
     ) {}
-
-    private const FOREIGN_TABLE = 'site_language';
-    private const FOREIGN_FIELD = 'languageId';
 
     public function addData(array $result): array
     {

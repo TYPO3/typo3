@@ -30,16 +30,16 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    protected array $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv',
-    ];
-
     /**
      * @var array
      */
     protected const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
         'DA' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'da_DK.UTF8'],
+    ];
+
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv',
     ];
 
     protected function setUp(): void

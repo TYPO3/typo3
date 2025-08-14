@@ -32,6 +32,11 @@ use TYPO3Tests\BlogExample\Domain\Repository\BlogRepository;
 final class BlogPostEditingControllerTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
+
+    protected const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en', 'hrefLang' => 'en-US', 'direction' => ''],
+        'DE' => ['id' => 1, 'title' => 'Deutsch', 'locale' => 'de_DE.UTF8', 'iso' => 'de', 'hrefLang' => 'de-DE', 'direction' => ''],
+    ];
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
     protected array $coreExtensionsToLoad = ['fluid_styled_content'];
 
@@ -42,11 +47,6 @@ final class BlogPostEditingControllerTest extends FunctionalTestCase
         'FE' => [
             'debug' => true,
         ],
-    ];
-
-    protected const LANGUAGE_PRESETS = [
-        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en', 'hrefLang' => 'en-US', 'direction' => ''],
-        'DE' => ['id' => 1, 'title' => 'Deutsch', 'locale' => 'de_DE.UTF8', 'iso' => 'de', 'hrefLang' => 'de-DE', 'direction' => ''],
     ];
 
     private function setUpFrontendRootPageForTestCase(): void

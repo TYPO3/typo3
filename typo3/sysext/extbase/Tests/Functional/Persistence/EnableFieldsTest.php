@@ -29,13 +29,13 @@ final class EnableFieldsTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    protected array $testExtensionsToLoad = [
-        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
-    ];
-
     private const TABLE_Blog = 'tx_blogexample_domain_model_blog';
     private const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+    ];
+
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
     ];
 
     protected function setUp(): void

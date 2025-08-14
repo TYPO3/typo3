@@ -96,14 +96,6 @@ class UpgradeController extends AbstractController
      */
     protected $coreVersionService;
 
-    public function __construct(
-        protected readonly PackageManager $packageManager,
-        private readonly LateBootService $lateBootService,
-        private readonly DatabaseUpgradeWizardsService $databaseUpgradeWizardsService,
-        private readonly FormProtectionFactory $formProtectionFactory,
-        private readonly LoadTcaService $loadTcaService
-    ) {}
-
     /**
      * Matcher registry of extension scanner.
      * Node visitors that implement CodeScannerInterface
@@ -204,6 +196,14 @@ class UpgradeController extends AbstractController
             'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/ScalarStringMatcher.php',
         ],
     ];
+
+    public function __construct(
+        protected readonly PackageManager $packageManager,
+        private readonly LateBootService $lateBootService,
+        private readonly DatabaseUpgradeWizardsService $databaseUpgradeWizardsService,
+        private readonly FormProtectionFactory $formProtectionFactory,
+        private readonly LoadTcaService $loadTcaService
+    ) {}
 
     /**
      * Main "show the cards" view

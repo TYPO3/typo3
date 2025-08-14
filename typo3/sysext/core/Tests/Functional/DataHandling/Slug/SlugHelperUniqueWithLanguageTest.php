@@ -28,12 +28,12 @@ final class SlugHelperUniqueWithLanguageTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    protected array $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler_slug',
-    ];
-
     private const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+    ];
+
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler_slug',
     ];
 
     protected function setUp(): void

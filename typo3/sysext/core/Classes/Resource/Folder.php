@@ -41,6 +41,16 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class Folder implements FolderInterface
 {
     /**
+     * Modes for filter usage in getFiles()/getFolders()
+     */
+    public const FILTER_MODE_NO_FILTERS = 0;
+    // Merge local filters into storage's filters
+    public const FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS = 1;
+    // Only use the filters provided by the storage
+    public const FILTER_MODE_USE_STORAGE_FILTERS = 2;
+    // Only use the filters provided by the current class
+    public const FILTER_MODE_USE_OWN_FILTERS = 3;
+    /**
      * The storage this folder belongs to.
      *
      * @var ResourceStorage
@@ -69,17 +79,6 @@ class Folder implements FolderInterface
      * @var callable[]
      */
     protected $fileAndFolderNameFilters = [];
-
-    /**
-     * Modes for filter usage in getFiles()/getFolders()
-     */
-    public const FILTER_MODE_NO_FILTERS = 0;
-    // Merge local filters into storage's filters
-    public const FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS = 1;
-    // Only use the filters provided by the storage
-    public const FILTER_MODE_USE_STORAGE_FILTERS = 2;
-    // Only use the filters provided by the current class
-    public const FILTER_MODE_USE_OWN_FILTERS = 3;
 
     /**
      * Initialization of the folder

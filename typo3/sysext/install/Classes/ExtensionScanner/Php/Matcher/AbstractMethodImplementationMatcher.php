@@ -28,9 +28,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AbstractMethodImplementationMatcher extends AbstractCoreMatcher
 {
-    protected array $matcherDefinitionLookup = [];
     protected const DEFINITION_STATIC = 'static';
     protected const DEFINITION_LOCAL  = 'local';
+    protected array $matcherDefinitionLookup = [];
 
     /**
      * @param array $matcherDefinitions Incoming main configuration

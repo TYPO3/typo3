@@ -45,6 +45,13 @@ class LinkButton extends AbstractButton
     protected $href = '';
 
     /**
+     * `role` attribute of the link
+     *
+     * @var string
+     */
+    protected $role = 'button';
+
+    /**
      * Get href
      *
      * @return string
@@ -66,13 +73,6 @@ class LinkButton extends AbstractButton
         $this->href = $href;
         return $this;
     }
-
-    /**
-     * `role` attribute of the link
-     *
-     * @var string
-     */
-    protected $role = 'button';
 
     /**
      * Get role

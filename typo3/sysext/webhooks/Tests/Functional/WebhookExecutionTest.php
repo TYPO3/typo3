@@ -48,11 +48,11 @@ final class WebhookExecutionTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    protected array $coreExtensionsToLoad = ['webhooks'];
-
     private const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
+
+    protected array $coreExtensionsToLoad = ['webhooks'];
 
     protected function setUp(): void
     {

@@ -30,8 +30,6 @@ final class HrefLangGeneratorTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    protected array $coreExtensionsToLoad = ['seo'];
-
     /**
      * @var array
      */
@@ -43,6 +41,8 @@ final class HrefLangGeneratorTest extends FunctionalTestCase
         'FR' => ['id' => 4, 'title' => 'French', 'locale' => 'fr_FR.UTF8'],
         'DA' => ['id' => 5, 'title' => 'Danish', 'locale' => 'da_DK.UTF8'],
     ];
+
+    protected array $coreExtensionsToLoad = ['seo'];
 
     protected function setUp(): void
     {

@@ -25,19 +25,6 @@ namespace TYPO3\CMS\Core\Schema\Capability;
  */
 enum TcaSchemaCapability
 {
-    private const SYSTEM_CAPABILITIES = [
-        self::CreatedAt,
-        self::UpdatedAt,
-        self::RestrictionStartTime,
-        self::RestrictionEndTime,
-        self::SoftDelete,
-        self::EditLock,
-        self::RestrictionDisabledField,
-        self::InternalDescription,
-        self::SortByField,
-        self::RestrictionUserGroup,
-    ];
-
     // TCA[ctrl][delete]
     case SoftDelete;
 
@@ -102,6 +89,18 @@ enum TcaSchemaCapability
 
     // TCA[ctrl][ignoreWebMountRestriction] inverted
     case RestrictionWebMount;
+    private const SYSTEM_CAPABILITIES = [
+        self::CreatedAt,
+        self::UpdatedAt,
+        self::RestrictionStartTime,
+        self::RestrictionEndTime,
+        self::SoftDelete,
+        self::EditLock,
+        self::RestrictionDisabledField,
+        self::InternalDescription,
+        self::SortByField,
+        self::RestrictionUserGroup,
+    ];
 
     public static function getSystemCapabilities(): array
     {

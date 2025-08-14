@@ -32,10 +32,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class MfaProviderPropertyManager implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+    protected const DATABASE_FIELD_NAME = 'mfa';
 
     protected array $mfa;
     protected array $providerProperties;
-    protected const DATABASE_FIELD_NAME = 'mfa';
 
     public function __construct(protected readonly AbstractUserAuthentication $user, protected readonly string $providerIdentifier)
     {

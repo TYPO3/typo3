@@ -134,6 +134,10 @@ use TYPO3\CMS\Core\Validation\ResultException;
 class ResourceStorage implements ResourceStorageInterface
 {
     /**
+     * Levels numbers used to generate hashed subfolders in the processing folder
+     */
+    public const PROCESSING_FOLDER_LEVELS = 2;
+    /**
      * The storage driver instance belonging to this storage.
      *
      * @var Driver\DriverInterface
@@ -224,11 +228,6 @@ class ResourceStorage implements ResourceStorageInterface
      * @var array
      */
     protected $fileAndFolderNameFilters = [];
-
-    /**
-     * Levels numbers used to generate hashed subfolders in the processing folder
-     */
-    public const PROCESSING_FOLDER_LEVELS = 2;
 
     /**
      * Constructor for a storage object.

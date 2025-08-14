@@ -30,13 +30,13 @@ final class LocalizationControllerTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    protected array $coreExtensionsToLoad = ['workspaces'];
-
     protected const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
         'DA' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'da_DK.UTF8'],
         'DE' => ['id' => 2, 'title' => 'Deutsch', 'locale' => 'de_DE.UTF-8'],
     ];
+
+    protected array $coreExtensionsToLoad = ['workspaces'];
 
     protected function setUp(): void
     {

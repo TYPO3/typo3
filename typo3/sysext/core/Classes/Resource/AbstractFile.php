@@ -28,47 +28,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 abstract class AbstractFile implements FileInterface
 {
     /**
-     * Various file properties
-     *
-     * Note that all properties, which only the persisted (indexed) files have are stored in this
-     * overall properties array only. The only properties which really exist as object properties of
-     * the file object are the storage, the identifier, the fileName and the indexing status.
-     *
-     * @var array<non-empty-string, mixed>
-     */
-    protected array $properties = [];
-
-    /**
-     * The storage this file is located in
-     *
-     * @var ResourceStorage|null
-     */
-    protected $storage;
-
-    /**
-     * The identifier of this file to identify it on the storage.
-     * On some drivers, this is the path to the file, but drivers could also just
-     * provide any other unique identifier for this file on the specific storage.
-     *
-     * @var string
-     */
-    protected $identifier;
-
-    /**
-     * The file name of this file
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * If set to true, this file is regarded as being deleted.
-     *
-     * @var bool
-     */
-    protected $deleted = false;
-
-    /**
      * any other file
      * @deprecated will be removed in TYPO3 v14, use TYPO3\CMS\Core\Resource\FileType::UNKNOWN instead
      */
@@ -108,6 +67,46 @@ abstract class AbstractFile implements FileInterface
      * @deprecated will be removed in TYPO3 v14, use TYPO3\CMS\Core\Resource\FileType::APPLICATION instead
      */
     public const FILETYPE_APPLICATION = 5;
+    /**
+     * Various file properties
+     *
+     * Note that all properties, which only the persisted (indexed) files have are stored in this
+     * overall properties array only. The only properties which really exist as object properties of
+     * the file object are the storage, the identifier, the fileName and the indexing status.
+     *
+     * @var array<non-empty-string, mixed>
+     */
+    protected array $properties = [];
+
+    /**
+     * The storage this file is located in
+     *
+     * @var ResourceStorage|null
+     */
+    protected $storage;
+
+    /**
+     * The identifier of this file to identify it on the storage.
+     * On some drivers, this is the path to the file, but drivers could also just
+     * provide any other unique identifier for this file on the specific storage.
+     *
+     * @var string
+     */
+    protected $identifier;
+
+    /**
+     * The file name of this file
+     *
+     * @var string
+     */
+    protected $name;
+
+    /**
+     * If set to true, this file is regarded as being deleted.
+     *
+     * @var bool
+     */
+    protected $deleted = false;
 
     /******************
      * VARIOUS FILE PROPERTY GETTERS

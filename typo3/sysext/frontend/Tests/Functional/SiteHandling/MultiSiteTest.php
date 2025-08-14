@@ -30,12 +30,12 @@ final class MultiSiteTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    protected array $testExtensionsToLoad = [
-        'typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_site_sets',
-    ];
-
     protected const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+    ];
+
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_site_sets',
     ];
 
     #[Test]

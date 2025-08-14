@@ -34,13 +34,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[Autoconfigure(public: true)]
 class YamlSetDefinitionProvider
 {
+    /** @var array<string, SetDefinition> */
+    protected array $sets = [];
     public function __construct(
         protected readonly SettingDefinitionValidation $settingDefinitionValidation,
         protected readonly YamlFileLoader $yamlFileLoader,
     ) {}
-
-    /** @var array<string, SetDefinition> */
-    protected array $sets = [];
 
     /**
      * @return array<string, SetDefinition>

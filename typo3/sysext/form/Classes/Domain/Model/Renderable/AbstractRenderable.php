@@ -101,6 +101,8 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
 
     protected ?ValidatorResolver $validatorResolver = null;
 
+    protected ?ServerRequestInterface $request = null;
+
     /**
      * Get the type of the renderable
      */
@@ -124,8 +126,6 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
     {
         $this->identifier = $identifier;
     }
-
-    protected ?ServerRequestInterface $request = null;
 
     public function getRequest(): ?ServerRequestInterface
     {

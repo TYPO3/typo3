@@ -41,21 +41,6 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * Error levels which should result in an exception thrown.
-     */
-    protected int $exceptionalErrors = 0;
-
-    /**
-     * Error levels which should be handled.
-     */
-    protected int $errorHandlerErrors = 0;
-
-    /**
-     * Whether to write a flash message in case of an error
-     */
-    protected bool $debugMode = false;
-
     protected const ERROR_LEVEL_LABELS = [
         E_WARNING => 'PHP Warning',
         E_NOTICE => 'PHP Notice',
@@ -70,6 +55,21 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
         //        See https://wiki.php.net/rfc/deprecations_php_8_4#remove_e_strict_error_level_and_deprecate_e_strict_constant
         2048 /* deprecated E_STRICT */ => 'PHP Runtime Notice',
     ];
+
+    /**
+     * Error levels which should result in an exception thrown.
+     */
+    protected int $exceptionalErrors = 0;
+
+    /**
+     * Error levels which should be handled.
+     */
+    protected int $errorHandlerErrors = 0;
+
+    /**
+     * Whether to write a flash message in case of an error
+     */
+    protected bool $debugMode = false;
 
     /**
      * Registers this class as default error handler
