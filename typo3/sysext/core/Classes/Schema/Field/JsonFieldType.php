@@ -33,4 +33,9 @@ final readonly class JsonFieldType extends AbstractFieldType
     {
         return false;
     }
+
+    public function getSoftReferenceKeys(): false
+    {
+        return false;
+    }
 }

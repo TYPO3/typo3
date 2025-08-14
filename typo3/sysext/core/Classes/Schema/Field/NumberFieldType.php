@@ -33,4 +33,9 @@ final readonly class NumberFieldType extends AbstractFieldType
     {
         return $this->configuration['format'] ?? '';
     }
+
+    public function getSoftReferenceKeys(): false
+    {
+        return false;
+    }
 }

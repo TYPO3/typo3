@@ -28,5 +28,4 @@ final readonly class EmailFieldType extends AbstractFieldType
     {
         return (bool)($this->configuration['searchable'] ?? true);
     }
-
 }

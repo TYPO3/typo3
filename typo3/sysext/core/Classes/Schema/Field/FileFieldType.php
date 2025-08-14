@@ -75,4 +75,9 @@ final readonly class FileFieldType extends AbstractFieldType implements Relation
     {
         return false;
     }
+
+    public function getSoftReferenceKeys(): false
+    {
+        return false;
+    }
 }

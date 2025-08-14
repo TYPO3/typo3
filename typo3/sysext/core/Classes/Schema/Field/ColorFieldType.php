@@ -33,4 +33,9 @@ final readonly class ColorFieldType extends AbstractFieldType
     {
         return (bool)($this->configuration['searchable'] ?? true);
     }
+
+    public function getSoftReferenceKeys(): false
+    {
+        return false;
+    }
 }

@@ -38,4 +38,8 @@ final readonly class FolderFieldType extends AbstractFieldType
         return false;
     }
 
+    public function getSoftReferenceKeys(): false
+    {
+        return false;
+    }
 }

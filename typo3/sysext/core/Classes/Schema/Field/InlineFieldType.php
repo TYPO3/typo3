@@ -64,4 +64,9 @@ final readonly class InlineFieldType extends AbstractFieldType implements Relati
     {
         return false;
     }
+
+    public function getSoftReferenceKeys(): false
+    {
+        return false;
+    }
 }

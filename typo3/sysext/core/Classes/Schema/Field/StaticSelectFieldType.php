@@ -49,5 +49,4 @@ final readonly class StaticSelectFieldType extends AbstractFieldType
     {
         return false;
     }
-
 }

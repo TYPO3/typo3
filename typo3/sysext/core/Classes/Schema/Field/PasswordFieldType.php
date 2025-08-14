@@ -33,4 +33,9 @@ final readonly class PasswordFieldType extends AbstractFieldType
     {
         return $this->configuration['hashed'] ?? true;
     }
+
+    public function getSoftReferenceKeys(): false
+    {
+        return false;
+    }
 }

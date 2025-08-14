@@ -488,8 +488,9 @@ class ReferenceIndex
             if ((string)$value !== '') {
                 // Soft References
                 $softRefValue = $value;
-                if (!empty($fieldConfig['softref'])) {
-                    foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList($fieldConfig['softref']) as $softReferenceParser) {
+                $softReferenceKeys = $field->getSoftReferenceKeys();
+                if ($softReferenceKeys !== false) {
+                    foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList(implode(',', $softReferenceKeys)) as $softReferenceParser) {
                         $parserResult = $softReferenceParser->parse($tableName, $fieldName, (int)$record['uid'], $softRefValue);
                         if ($parserResult->hasMatched()) {
                             $result[$fieldName]['softrefs']['keys'][$softReferenceParser->getParserKey()] = $parserResult->getMatchedElements();
@@ -1067,7 +1068,7 @@ class ReferenceIndex
         return
             $this->isDbReferenceField($field->getConfiguration())
             || $field->isType(TableColumnType::FLEX)
-            || isset($field->getConfiguration()['softref'])
+            || $field->getSoftReferenceKeys() !== false
         ;
     }
 

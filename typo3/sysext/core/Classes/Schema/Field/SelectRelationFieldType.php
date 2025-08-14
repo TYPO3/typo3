@@ -55,4 +55,8 @@ final readonly class SelectRelationFieldType extends AbstractFieldType implement
         return false;
     }
 
+    public function getSoftReferenceKeys(): false
+    {
+        return false;
+    }
 }

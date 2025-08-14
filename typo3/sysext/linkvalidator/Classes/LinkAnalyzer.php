@@ -355,13 +355,14 @@ class LinkAnalyzer
             // @todo: check for 'type' => 'file' as well and update in documentation?
 
             // Check if a TCA configured field has soft references defined (see TYPO3 Core API document)
-            if (!($conf['softref'] ?? false) || (string)$valueField === '') {
+            $softReferenceKeys = $fieldInformation->getSoftReferenceKeys();
+            if ($softReferenceKeys === false || (string)$valueField === '') {
                 continue;
             }
             // Traverse soft references
             // set subst such that findRef will return substitutes for urls, emails etc
             $softRefParams = ['subst'];
-            foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList($conf['softref'], $softRefParams) as $softReferenceParser) {
+            foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList(implode(',', $softReferenceKeys), $softRefParams) as $softReferenceParser) {
                 $parserResult = $softReferenceParser->parse($table, $field, $idRecord, $valueField);
                 if (!$parserResult->hasMatched()) {
                     continue;

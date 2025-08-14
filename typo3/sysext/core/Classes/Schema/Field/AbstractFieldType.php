@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Schema\Field;
 
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A single field definition containing the basic information for a field
@@ -97,5 +98,14 @@ abstract readonly class AbstractFieldType implements FieldTypeInterface
     public function isType(TableColumnType ...$tableColumnTypes): bool
     {
         return in_array(TableColumnType::tryFrom($this->getType()), $tableColumnTypes, true);
+    }
+
+    public function getSoftReferenceKeys(): array|false
+    {
+        if (!isset($this->configuration['softref'])) {
+            return false;
+        }
+
+        return GeneralUtility::trimExplode(',', $this->configuration['softref'], true);
     }
 }

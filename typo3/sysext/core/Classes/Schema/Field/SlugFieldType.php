@@ -52,4 +52,9 @@ final readonly class SlugFieldType extends AbstractFieldType
     {
         return false;
     }
+
+    public function getSoftReferenceKeys(): false
+    {
+        return false;
+    }
 }

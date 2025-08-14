@@ -68,4 +68,9 @@ final readonly class DateTimeFieldType extends AbstractFieldType
     {
         return in_array($this->configuration['dbType'] ?? null, QueryHelper::getDateTimeTypes(), true) ? $this->configuration['dbType'] : null;
     }
+
+    public function getSoftReferenceKeys(): false
+    {
+        return false;
+    }
 }
