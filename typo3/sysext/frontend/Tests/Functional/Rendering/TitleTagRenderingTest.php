@@ -27,6 +27,10 @@ final class TitleTagRenderingTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
+    private const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'websiteTitle' => 'Site EN'],
+    ];
+
     protected array $coreExtensionsToLoad = ['seo'];
 
     protected array $configurationToUseInTestInstance = [
@@ -35,10 +39,6 @@ final class TitleTagRenderingTest extends FunctionalTestCase
                 'enforceValidation' => false,
             ],
         ],
-    ];
-
-    private const LANGUAGE_PRESETS = [
-        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'websiteTitle' => 'Site EN'],
     ];
 
     protected function setUp(): void

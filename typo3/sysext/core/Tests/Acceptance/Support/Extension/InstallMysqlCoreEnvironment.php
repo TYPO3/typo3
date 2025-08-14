@@ -43,6 +43,13 @@ final class InstallMysqlCoreEnvironment extends Extension
     ];
 
     /**
+     * Events to listen to
+     */
+    public static $events = [
+        Events::TEST_BEFORE => 'bootstrapTypo3Environment',
+    ];
+
+    /**
      * Override configuration from ENV if needed
      */
     public function _initialize(): void
@@ -71,13 +78,6 @@ final class InstallMysqlCoreEnvironment extends Extension
             throw new \RuntimeException('No database name given', 1530827194);
         }
     }
-
-    /**
-     * Events to listen to
-     */
-    public static $events = [
-        Events::TEST_BEFORE => 'bootstrapTypo3Environment',
-    ];
 
     /**
      * Handle SUITE_BEFORE event.

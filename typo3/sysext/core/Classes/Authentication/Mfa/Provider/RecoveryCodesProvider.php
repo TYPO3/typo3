@@ -44,6 +44,7 @@ use TYPO3\CMS\Core\View\ViewFactoryInterface;
  */
 final readonly class RecoveryCodesProvider implements MfaProviderInterface
 {
+    private const MAX_ATTEMPTS = 3;
     public function __construct(
         private MfaProviderRegistry $mfaProviderRegistry,
         private Context $context,
@@ -52,8 +53,6 @@ final readonly class RecoveryCodesProvider implements MfaProviderInterface
         private HashService $hashService,
         private ViewFactoryInterface $viewFactory,
     ) {}
-
-    private const MAX_ATTEMPTS = 3;
 
     /**
      * Check if a recovery code is given in the current request

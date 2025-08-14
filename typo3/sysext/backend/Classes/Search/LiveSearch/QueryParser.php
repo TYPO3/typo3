@@ -28,22 +28,21 @@ class QueryParser
     /**
      * @var string
      */
-    protected $commandKey = '';
-
-    /**
-     * @var string
-     */
-    protected $tableName = '';
-
-    /**
-     * @var string
-     */
     public const COMMAND_KEY_INDICATOR = '#';
 
     /**
      * @var string
      */
     public const COMMAND_SPLIT_INDICATOR = ':';
+    /**
+     * @var string
+     */
+    protected $commandKey = '';
+
+    /**
+     * @var string
+     */
+    protected $tableName = '';
 
     /**
      * Retrieve the validated command key

@@ -25,6 +25,14 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class LanguageServiceTest extends FunctionalTestCase
 {
+    // Constants to access the various language files
+    private const LANGUAGE_FILE = 'EXT:test_localization/Resources/Private/Language/locallang.xlf';
+    private const LANGUAGE_FILE_OVERRIDE = 'EXT:test_localization/Resources/Private/Language/locallang_override.xlf';
+    private const LANGUAGE_FILE_OVERRIDE_DE = 'EXT:test_localization/Resources/Private/Language/de.locallang_override.xlf';
+    private const LANGUAGE_FILE_OVERRIDE_FR = 'EXT:test_localization/Resources/Private/Language/fr.locallang_override.xlf';
+    private const LANGUAGE_FILE_CORE = 'EXT:core/Resources/Private/Language/locallang_common.xlf';
+    private const LANGUAGE_FILE_CORE_OVERRIDE = 'EXT:test_localization/Resources/Private/Language/locallang_common_override.xlf';
+    private const LANGUAGE_FILE_CORE_OVERRIDE_FR = 'EXT:test_localization/Resources/Private/Language/fr.locallang_common_override.xlf';
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_localization',
     ];
@@ -43,15 +51,6 @@ final class LanguageServiceTest extends FunctionalTestCase
             'locallangXMLOverride' => [],
         ],
     ];
-
-    // Constants to access the various language files
-    private const LANGUAGE_FILE = 'EXT:test_localization/Resources/Private/Language/locallang.xlf';
-    private const LANGUAGE_FILE_OVERRIDE = 'EXT:test_localization/Resources/Private/Language/locallang_override.xlf';
-    private const LANGUAGE_FILE_OVERRIDE_DE = 'EXT:test_localization/Resources/Private/Language/de.locallang_override.xlf';
-    private const LANGUAGE_FILE_OVERRIDE_FR = 'EXT:test_localization/Resources/Private/Language/fr.locallang_override.xlf';
-    private const LANGUAGE_FILE_CORE = 'EXT:core/Resources/Private/Language/locallang_common.xlf';
-    private const LANGUAGE_FILE_CORE_OVERRIDE = 'EXT:test_localization/Resources/Private/Language/locallang_common_override.xlf';
-    private const LANGUAGE_FILE_CORE_OVERRIDE_FR = 'EXT:test_localization/Resources/Private/Language/fr.locallang_common_override.xlf';
 
     #[DataProvider('splitLabelTestDataProvider')]
     #[Test]

@@ -28,6 +28,10 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
+    protected const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en'],
+    ];
+
     protected array $configurationToUseInTestInstance = [
         'FE' => [
             'cacheHash' => [
@@ -65,10 +69,6 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
     ];
 
     protected array $coreExtensionsToLoad = ['rte_ckeditor'];
-
-    protected const LANGUAGE_PRESETS = [
-        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en'],
-    ];
 
     protected function setUp(): void
     {

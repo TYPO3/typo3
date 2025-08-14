@@ -30,16 +30,16 @@ class StartTimeRestriction implements QueryRestrictionInterface
 {
     protected TcaSchemaFactory $tcaSchemaFactory;
 
+    /**
+     * @var int
+     */
+    protected $accessTimeStamp;
+
     public function __construct(?int $accessTimeStamp = null)
     {
         $this->accessTimeStamp = $accessTimeStamp ?: ($GLOBALS['SIM_ACCESS_TIME'] ?? null);
         $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
     }
-
-    /**
-     * @var int
-     */
-    protected $accessTimeStamp;
 
     /**
      * Main method to build expressions for given tables

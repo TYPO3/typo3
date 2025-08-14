@@ -26,12 +26,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class BrokenLinkRepositoryTest extends FunctionalTestCase
 {
-    protected array $coreExtensionsToLoad = [
-        'info',
-        'linkvalidator',
-        'seo',
-    ];
-
     private const beusers = [
         'admin' => [
             'fixture' => __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/be_users.csv',
@@ -68,6 +62,11 @@ final class BrokenLinkRepositoryTest extends FunctionalTestCase
             'groupFixture' => __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/be_groups.csv',
         ],
 
+    ];
+    protected array $coreExtensionsToLoad = [
+        'info',
+        'linkvalidator',
+        'seo',
     ];
 
     public static function getLinkCountsForPagesAndLinktypesReturnsCorrectCountForUserDataProvider(): ?\Generator

@@ -39,18 +39,18 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
     protected const VALUE_BackendUserId = 1;
     protected const VALUE_WorkspaceId = 0;
 
+    protected const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+        'DA' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'da_DK.UTF8'],
+        'DE' => ['id' => 2, 'title' => 'Deutsch', 'locale' => 'de_DE.UTF-8'],
+    ];
+
     /** The number of log entries is asserted. This should usually be 0. */
     protected int $expectedErrorLogEntries = 0;
     protected array $recordIds = [];
 
     protected ActionService $actionService;
     protected BackendUserAuthentication $backendUser;
-
-    protected const LANGUAGE_PRESETS = [
-        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
-        'DA' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'da_DK.UTF8'],
-        'DE' => ['id' => 2, 'title' => 'Deutsch', 'locale' => 'de_DE.UTF-8'],
-    ];
 
     protected function setUp(): void
     {

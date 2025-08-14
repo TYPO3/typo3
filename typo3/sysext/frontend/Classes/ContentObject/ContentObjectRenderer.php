@@ -114,6 +114,19 @@ class ContentObjectRenderer implements LoggerAwareInterface
     use DefaultJavaScriptAssetTrait;
 
     /**
+     * Indicates that object type is USER.
+     *
+     * @see ContentObjectRender::$userObjectType
+     */
+    public const OBJECTTYPE_USER_INT = 1;
+    /**
+     * Indicates that object type is USER.
+     *
+     * @see ContentObjectRender::$userObjectType
+     */
+    public const OBJECTTYPE_USER = 2;
+
+    /**
      * @var ContainerInterface|null
      */
     protected $container;
@@ -376,19 +389,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Request pointer, if injected. Use getRequest() instead of reading this property directly.
      */
     private ?ServerRequestInterface $request = null;
-
-    /**
-     * Indicates that object type is USER.
-     *
-     * @see ContentObjectRender::$userObjectType
-     */
-    public const OBJECTTYPE_USER_INT = 1;
-    /**
-     * Indicates that object type is USER.
-     *
-     * @see ContentObjectRender::$userObjectType
-     */
-    public const OBJECTTYPE_USER = 2;
 
     public function __construct(?TypoScriptFrontendController $typoScriptFrontendController = null, ?ContainerInterface $container = null)
     {

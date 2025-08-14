@@ -60,8 +60,6 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  */
 class EmailFinisher extends AbstractFinisher
 {
-    public function __construct(protected readonly EventDispatcherInterface $eventDispatcher) {}
-
     /**
      * @var array
      */
@@ -71,6 +69,7 @@ class EmailFinisher extends AbstractFinisher
         'addHtmlPart' => true,
         'attachUploads' => true,
     ];
+    public function __construct(protected readonly EventDispatcherInterface $eventDispatcher) {}
 
     /**
      * Executes this finisher

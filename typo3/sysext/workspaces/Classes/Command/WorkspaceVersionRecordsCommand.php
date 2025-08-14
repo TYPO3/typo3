@@ -48,13 +48,6 @@ class WorkspaceVersionRecordsCommand extends Command
      */
     protected array $allWorkspaces = [0 => 'Live Workspace'];
 
-    public function __construct(
-        private readonly ConnectionPool $connectionPool,
-        private readonly TcaSchemaFactory $tcaSchemaFactory
-    ) {
-        parent::__construct();
-    }
-
     /**
      * Array with all records found when traversing the database
      * @var array
@@ -74,6 +67,13 @@ class WorkspaceVersionRecordsCommand extends Command
         // Subset of "versions" that doesn't belong to an existing workspace [Warning: Fix by move to live workspace]
         'invalid_workspace' => [],
     ];
+
+    public function __construct(
+        private readonly ConnectionPool $connectionPool,
+        private readonly TcaSchemaFactory $tcaSchemaFactory
+    ) {
+        parent::__construct();
+    }
 
     /**
      * Configuring the command options

@@ -96,6 +96,7 @@ return (new \PhpCsFixer\Config())
             'syntax' => 'question_mark',
         ],
         'nullable_type_declaration_for_default_null_value' => true,
+        'ordered_class_elements' => ['order' => ['use_trait', 'case', 'constant', 'property']],
         'ordered_imports' => ['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'alpha'],
         'php_unit_construct' => ['assertions' => ['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame']],
         'php_unit_mock_short_will_return' => true,

@@ -105,6 +105,12 @@ class DataHandler
     use LogDataTrait;
 
     /**
+     * Prefix for the cache entries of nested element calls since the runtimeCache has a global scope.
+     */
+    protected const CACHE_IDENTIFIER_NESTED_ELEMENT_CALLS_PREFIX = 'core-datahandler-nestedElementCalls-';
+    protected const CACHE_IDENTIFIER_ELEMENTS_TO_BE_DELETED = 'core-datahandler-elementsToBeDeleted';
+
+    /**
      * If TRUE, actions are logged to sys_log.
      */
     public bool $enableLogging = true;
@@ -423,12 +429,6 @@ class DataHandler
      * to retrieve the parent folder/page at a later stage
      */
     protected static array $recordPidsForDeletedRecords = [];
-
-    /**
-     * Prefix for the cache entries of nested element calls since the runtimeCache has a global scope.
-     */
-    protected const CACHE_IDENTIFIER_NESTED_ELEMENT_CALLS_PREFIX = 'core-datahandler-nestedElementCalls-';
-    protected const CACHE_IDENTIFIER_ELEMENTS_TO_BE_DELETED = 'core-datahandler-elementsToBeDeleted';
 
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,

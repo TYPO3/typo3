@@ -27,12 +27,12 @@ final class IntegrityServiceTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    protected array $coreExtensionsToLoad = ['redirects'];
-
     // Needed to happify phpstan in combination with SiteBasedTestTrait
     protected const LANGUAGE_PRESETS = [
         'unused' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
+
+    protected array $coreExtensionsToLoad = ['redirects'];
 
     protected function setUp(): void
     {

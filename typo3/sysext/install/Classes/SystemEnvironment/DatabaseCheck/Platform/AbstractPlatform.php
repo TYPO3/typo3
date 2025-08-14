@@ -28,14 +28,13 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 abstract class AbstractPlatform implements PlatformCheckInterface
 {
     /**
-     * @var FlashMessageQueue
-     */
-    protected $messageQueue;
-
-    /**
      * @var int The maximum length of the schema name
      */
     protected const SCHEMA_NAME_MAX_LENGTH = 64;
+    /**
+     * @var FlashMessageQueue
+     */
+    protected $messageQueue;
 
     public function __construct()
     {
