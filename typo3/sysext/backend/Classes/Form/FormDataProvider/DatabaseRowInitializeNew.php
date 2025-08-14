@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -57,6 +58,9 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
 
     /**
      * Set defaults defined by user ts "TCAdefaults"
+     * Supports both field-level defaults and type-specific defaults
+     * TCAdefaults.tt_content.header_layout = 1 (field-level)
+     * TCAdefaults.tt_content.header_layout.types.textmedia = 3 (type-specific)
      *
      * @param array $result Result array
      * @return array Modified result array
@@ -68,7 +72,13 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
         if (isset($result['userTsConfig']['TCAdefaults.'][$tableNameWithDot])
             && is_array($result['userTsConfig']['TCAdefaults.'][$tableNameWithDot])
         ) {
-            foreach ($result['userTsConfig']['TCAdefaults.'][$tableNameWithDot] as $fieldName => $fieldValue) {
+            $recordType = $this->getRecordTypeFromRow($result);
+            $mergedDefaults = $this->mergeTypeSpecificTcaDefaults(
+                $result['userTsConfig']['TCAdefaults.'][$tableNameWithDot],
+                $recordType
+            );
+
+            foreach ($mergedDefaults as $fieldName => $fieldValue) {
                 if (isset($result['processedTca']['columns'][$fieldName])) {
                     $result['databaseRow'][$fieldName] = $fieldValue;
                 }
@@ -79,6 +89,9 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
 
     /**
      * Set defaults defined by page ts "TCAdefaults"
+     * Supports both field-level defaults and type-specific defaults
+     * TCAdefaults.tt_content.header_layout = 1 (field-level)
+     * TCAdefaults.tt_content.header_layout.types.textmedia = 3 (type-specific)
      *
      * @param array $result Result array
      * @return array Modified result array
@@ -89,7 +102,13 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
         if (isset($result['pageTsConfig']['TCAdefaults.'][$tableNameWithDot])
             && is_array($result['pageTsConfig']['TCAdefaults.'][$tableNameWithDot])
         ) {
-            foreach ($result['pageTsConfig']['TCAdefaults.'][$tableNameWithDot] as $fieldName => $fieldValue) {
+            $recordType = $this->getRecordTypeFromRow($result);
+            $mergedDefaults = $this->mergeTypeSpecificTcaDefaults(
+                $result['pageTsConfig']['TCAdefaults.'][$tableNameWithDot],
+                $recordType
+            );
+
+            foreach ($mergedDefaults as $fieldName => $fieldValue) {
                 if (isset($result['processedTca']['columns'][$fieldName])) {
                     $result['databaseRow'][$fieldName] = $fieldValue;
                 }
@@ -267,5 +286,100 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
         }
 
         return $result;
+    }
+
+    /**
+     * Determine the record type from the current database row
+     * and additionally fall back to defaultValues as this is
+     * basically the only source we have for new records at this point.
+     *
+     * @param array $result The form data result array
+     * @return string The record type value
+     */
+    protected function getRecordTypeFromRow(array $result): string
+    {
+        // If recordTypeValue is already set, use it
+        if (is_string($result['recordTypeValue'] ?? false) && $result['recordTypeValue'] !== '') {
+            return $result['recordTypeValue'];
+        }
+
+        $recordTypeValue = '0';
+        // Check if there's a type field defined in TCA
+        if (is_string($result['processedTca']['ctrl']['type'] ?? false) && $result['processedTca']['ctrl']['type'] !== '') {
+            $tcaTypeField = $result['processedTca']['ctrl']['type'];
+
+            // Handle simple type field (not foreign field reference)
+            if (!str_contains($tcaTypeField, ':')) {
+                // First check if the type field exists in the database row and has a value
+                if (array_key_exists($tcaTypeField, $result['databaseRow']) && $result['databaseRow'][$tcaTypeField] !== null) {
+                    $recordTypeValue = (string)$result['databaseRow'][$tcaTypeField];
+                } else {
+                    // Check if the type field is set in defaultValues
+                    $tableName = $result['tableName'];
+                    if (isset($result['defaultValues'][$tableName][$tcaTypeField])) {
+                        $recordTypeValue = (string)$result['defaultValues'][$tableName][$tcaTypeField];
+                    }
+                }
+            }
+        }
+
+        // Apply the same fallback logic as DatabaseRecordTypeValue:
+        // Check the determined value actually exists as types key, otherwise fall back to 0 or 1
+        if (empty($result['processedTca']['types'][$recordTypeValue])) {
+            $recordTypeValue = !empty($result['processedTca']['types']['0']) ? '0' : '1';
+        }
+
+        return $recordTypeValue;
+    }
+
+    /**
+     * Merge type-specific TCAdefaults over field-level defaults
+     * Similar to how TCEFORM type-specific settings work
+     *
+     * @param array $tcaDefaults The TCAdefaults configuration for the table
+     * @param string $recordType The current record type value
+     * @return array Merged defaults with type-specific values taking precedence
+     */
+    protected function mergeTypeSpecificTcaDefaults(array $tcaDefaults, string $recordType): array
+    {
+        $mergedDefaults = [];
+
+        foreach ($tcaDefaults as $fieldKey => $fieldConfiguration) {
+            if (str_ends_with($fieldKey, '.')) {
+                // This is a field with sub-configuration (potentially types)
+                $fieldName = rtrim($fieldKey, '.');
+                if (!is_array($fieldConfiguration)) {
+                    continue;
+                }
+                $fieldDefault = $fieldConfiguration;
+                // Check if there are type-specific overrides
+                if (!empty($fieldConfiguration['types.']) && is_array($fieldConfiguration['types.'])) {
+                    $typeSpecificConfiguration = $fieldConfiguration['types.'];
+                    unset($fieldDefault['types.']);
+
+                    // If we have a matching type-specific configuration, merge it
+                    if (!empty($typeSpecificConfiguration[$recordType . '.']) && is_array($typeSpecificConfiguration[$recordType . '.'])) {
+                        ArrayUtility::mergeRecursiveWithOverrule($fieldDefault, $typeSpecificConfiguration[$recordType . '.']);
+                    } elseif (!empty($typeSpecificConfiguration[$recordType])) {
+                        // Simple value (not array)
+                        $mergedDefaults[$fieldName] = $typeSpecificConfiguration[$recordType];
+                        continue;
+                    }
+                }
+                // If the field configuration is now empty (only had types.), skip it
+                // Otherwise, use the first non-array value or the whole configuration
+                foreach ($fieldDefault as $key => $value) {
+                    if (!str_ends_with($key, '.') && !is_array($value)) {
+                        $mergedDefaults[$fieldName] = $value;
+                        break;
+                    }
+                }
+            } else {
+                // Simple field-level default
+                $mergedDefaults[$fieldKey] = $fieldConfiguration;
+            }
+        }
+
+        return $mergedDefaults;
     }
 }

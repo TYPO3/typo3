@@ -69,6 +69,7 @@ use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\FieldTranslationBehaviour;
 use TYPO3\CMS\Core\Schema\Field\FileFieldType;
 use TYPO3\CMS\Core\Schema\Field\InlineFieldType;
+use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -547,6 +548,9 @@ class DataHandler
 
     /**
      * Initializes default values coming from user TSconfig
+     * Supports both field-level defaults and type-specific defaults
+     * TCAdefaults.tt_content.header_layout = 1 (field-level)
+     * TCAdefaults.tt_content.header_layout.types.textmedia = 3 (type-specific)
      *
      * @param array $userTS User TSconfig array
      * @internal should only be used from within DataHandler
@@ -561,6 +565,10 @@ class DataHandler
             if (!$k || !is_array($v) || !$this->tcaSchemaFactory->has($k)) {
                 continue;
             }
+            // Process type-specific TCA defaults, if schema supports subschema
+            if ($this->tcaSchemaFactory->get($k)->supportsSubSchema()) {
+                $v = $this->processTypeSpecificTcaDefaults($v);
+            }
             if (is_array($this->defaultValues[$k] ?? false)) {
                 $this->defaultValues[$k] = array_merge($this->defaultValues[$k], $v);
             } else {
@@ -570,19 +578,60 @@ class DataHandler
     }
 
     /**
+     * Process TCA defaults configuration, preserving type-specific
+     * structure for later processing when record type is known.
+     *
+     * @param array $tcaDefaults Raw TCA defaults configuration
+     * @return array Processed defaults ready for storage
+     */
+    protected function processTypeSpecificTcaDefaults(array $tcaDefaults): array
+    {
+        $processedDefaults = [];
+
+        foreach ($tcaDefaults as $fieldKey => $fieldConfiguration) {
+            if (str_ends_with($fieldKey, '.')) {
+                // Field with potential sub-configuration (types)
+                $fieldName = rtrim($fieldKey, '.');
+                if (!is_array($fieldConfiguration)) {
+                    continue;
+                }
+
+                // Store the full configuration including type-specific data
+                // This will be processed later in newFieldArray when we have record context
+                $processedDefaults['__typeSpecific'][$fieldName] = $fieldConfiguration;
+
+                // Also set field-level default if available
+                foreach ($fieldConfiguration as $key => $value) {
+                    if (!str_ends_with($key, '.') && !is_array($value)) {
+                        $processedDefaults[$fieldName] = $value;
+                        break;
+                    }
+                }
+            } else {
+                // Simple field-level default
+                $processedDefaults[$fieldKey] = $fieldConfiguration;
+            }
+        }
+
+        return $processedDefaults;
+    }
+
+    /**
      * When a new record is created, all values that haven't been set but are set via PageTSconfig / UserTSconfig
      * get applied here.
      *
      * This is only executed for new records. The most important part is that the pageTS of the actual resolved $pid
      * is taken, and a new field array with empty defaults is set again.
      */
-    protected function applyDefaultsForFieldArray(string $table, int $pageId, array $prepopulatedFieldArray): array
+    protected function applyDefaultsForFieldArray(string $table, int $pageId, array $prepopulatedFieldArray, array $incomingFieldArray = []): array
     {
         // First set TCAdefaults respecting the given PageID
         $tcaDefaults = BackendUtility::getPagesTSconfig($pageId)['TCAdefaults.'] ?? null;
         // Re-apply $this->defaultValues settings
         $this->setDefaultsFromUserTS($tcaDefaults);
-        $cleanFieldArray = $this->newFieldArray($table);
+        // Merge incoming field array to have access to record type for type-specific defaults
+        $recordContext = array_merge($prepopulatedFieldArray, $incomingFieldArray);
+        $cleanFieldArray = $this->newFieldArray($table, $recordContext);
         if (isset($prepopulatedFieldArray['pid'])) {
             $cleanFieldArray['pid'] = $prepopulatedFieldArray['pid'];
         }
@@ -698,7 +747,7 @@ class DataHandler
                 if (!MathUtility::canBeInterpretedAsInteger($id)) {
                     // $id is not an integer. We're creating a new record.
                     // Get a fieldArray with tca default values
-                    $fieldArray = $this->newFieldArray($table);
+                    $fieldArray = $this->newFieldArray($table, $incomingFieldArray);
                     if (isset($incomingFieldArray['pid'])) {
                         // A pid must be set for new records.
                         $pid_value = $incomingFieldArray['pid'];
@@ -772,7 +821,7 @@ class DataHandler
                     // Here the "pid" is set IF NOT the old pid was a string pointing to a place in the subst-id array.
                     [$tscPID] = BackendUtility::getTSCpid($table, $id, $old_pid_value ?: ($fieldArray['pid'] ?? 0));
                     // Apply TCA defaults from pageTS
-                    $fieldArray = $this->applyDefaultsForFieldArray($table, (int)$tscPID, $fieldArray);
+                    $fieldArray = $this->applyDefaultsForFieldArray($table, (int)$tscPID, $fieldArray, $incomingFieldArray);
                     // Apply page permissions as well
                     if ($table === 'pages') {
                         $fieldArray = $this->pagePermissionAssembler->applyDefaults(
@@ -8021,22 +8070,61 @@ class DataHandler
      * they will overrule though. Used for new records and during copy operations for defaults.
      *
      * @param string $table Table name for which to set default values.
+     * @param array $recordContext Record context to determine type
      * @return array Array with default values.
      * @internal should only be used from within DataHandler
      */
-    public function newFieldArray($table): array
+    public function newFieldArray($table, array $recordContext = []): array
     {
         $fieldArray = [];
         if ($this->tcaSchemaFactory->has($table)) {
-            foreach ($this->tcaSchemaFactory->get($table)->getFields() as $field) {
-                if (isset($this->defaultValues[$table][$field->getName()])) {
-                    $fieldArray[$field->getName()] = $this->defaultValues[$table][$field->getName()];
+            foreach (($schema = $this->tcaSchemaFactory->get($table))->getFields() as $field) {
+                $fieldName = $field->getName();
+                if (($typeSpecificValue = $this->getTypeSpecificDefault($schema, $fieldName, $recordContext)) !== null) {
+                    $fieldArray[$fieldName] = $typeSpecificValue;
+                } elseif (isset($this->defaultValues[$table][$fieldName])) {
+                    $fieldArray[$fieldName] = $this->defaultValues[$table][$fieldName];
                 } elseif ($field->hasDefaultValue() && ($field->getDefaultValue() !== null || $field->isNullable())) {
-                    $fieldArray[$field->getName()] = $field->getDefaultValue();
+                    $fieldArray[$fieldName] = $field->getDefaultValue();
                 }
             }
         }
         return $fieldArray;
+    }
+
+    /**
+     * Get type-specific default value for a field if available
+
+     * @param array $recordContext Record context to determine type
+     * @return mixed|null Type-specific default value or null if not found
+     */
+    protected function getTypeSpecificDefault(TcaSchema $schema, string $fieldName, array $recordContext): mixed
+    {
+        $tableName = $schema->getName();
+
+        // Check if we have type-specific configuration for this table and field
+        if (!isset($this->defaultValues[$tableName]['__typeSpecific'][$fieldName])) {
+            return null;
+        }
+
+        // Determine record type from record context using Schema API
+        $recordType = '';
+        if ($schema->supportsSubSchema()) {
+            $typeFieldName = $schema->getSubSchemaTypeInformation()->getFieldName();
+            if (isset($recordContext[$typeFieldName])) {
+                $recordType = (string)$recordContext[$typeFieldName];
+            }
+        }
+
+        if ($recordType === '') {
+            return null;
+        }
+
+        // Get type-specific configuration for this field
+        $fieldTypeConfig = $this->defaultValues[$tableName]['__typeSpecific'][$fieldName];
+
+        // Check if there's a type-specific override
+        return $fieldTypeConfig['types.'][$recordType] ?? null;
     }
 
     /**

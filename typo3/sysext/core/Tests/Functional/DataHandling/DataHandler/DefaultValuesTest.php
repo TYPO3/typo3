@@ -178,4 +178,192 @@ final class DefaultValuesTest extends FunctionalTestCase
         $newContentRecord = BackendUtility::getRecord('tt_content', $translatedContentId);
         self::assertNull($newContentRecord['bodytext']);
     }
+
+    #[Test]
+    public function typeSpecificTcaDefaultsAreApplied(): void
+    {
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->setUpBackendUser(2));
+
+        $this->writeSiteConfiguration(
+            'acme-com',
+            $this->buildSiteConfiguration(1000, 'https://acme.com/'),
+        );
+
+        // Create a text content element - should use field-level default
+        $map = $this->actionService->createNewRecord('tt_content', 1, [
+            'CType' => 'text',
+            'header' => 'Test Text Element',
+        ]);
+        $newTextContentId = reset($map['tt_content']);
+        $textContentRecord = BackendUtility::getRecord('tt_content', $newTextContentId);
+        self::assertEquals('1', $textContentRecord['header_layout']);
+
+        // Create a textmedia content element - should use type-specific default
+        $map = $this->actionService->createNewRecord('tt_content', 1, [
+            'CType' => 'textmedia',
+            'header' => 'Test Textmedia Element',
+        ]);
+        $newTextmediaContentId = reset($map['tt_content']);
+        $textmediaContentRecord = BackendUtility::getRecord('tt_content', $newTextmediaContentId);
+        self::assertEquals('3', $textmediaContentRecord['header_layout']);
+    }
+
+    #[Test]
+    public function typeSpecificTcaDefaultsWorkWithPageTsConfig(): void
+    {
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        $this->writeSiteConfiguration(
+            'acme-com',
+            $this->buildSiteConfiguration(1000, 'https://acme.com/'),
+        );
+
+        $this->actionService->modifyRecord('pages', 88, [
+            'TSconfig' => chr(10) .
+                'TCAdefaults.tt_content.header_layout = 1' . chr(10) .
+                'TCAdefaults.tt_content.header_layout.types.textmedia = 4' . chr(10) .
+                'TCAdefaults.tt_content.frame_class = default' . chr(10) .
+                'TCAdefaults.tt_content.frame_class.types.textmedia = ruler-after',
+        ]);
+
+        // Create textmedia content element on page with TSconfig
+        $map = $this->actionService->createNewRecord('tt_content', 88, [
+            'CType' => 'textmedia',
+            'header' => 'Test with Page TSconfig',
+        ]);
+        $newContentId = reset($map['tt_content']);
+        $contentRecord = BackendUtility::getRecord('tt_content', $newContentId);
+
+        self::assertEquals('4', $contentRecord['header_layout']);
+        self::assertEquals('ruler-after', $contentRecord['frame_class']);
+    }
+
+    #[Test]
+    public function typeSpecificTcaDefaultsWithMultipleFields(): void
+    {
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        $this->writeSiteConfiguration(
+            'acme-com',
+            $this->buildSiteConfiguration(1000, 'https://acme.com/'),
+        );
+
+        // Set up complex page TSconfig with multiple type-specific defaults
+        $this->actionService->modifyRecord('pages', 88, [
+            'TSconfig' => chr(10) .
+                'TCAdefaults.tt_content.header_layout = 1' . chr(10) .
+                'TCAdefaults.tt_content.header_layout.types.textmedia = 3' . chr(10) .
+                'TCAdefaults.tt_content.header_layout.types.image = 2' . chr(10) .
+                'TCAdefaults.tt_content.frame_class = default' . chr(10) .
+                'TCAdefaults.tt_content.frame_class.types.textmedia = ruler-before' . chr(10) .
+                'TCAdefaults.tt_content.space_before_class = none',
+        ]);
+
+        // Create textmedia element
+        $map = $this->actionService->createNewRecord('tt_content', 88, [
+            'CType' => 'textmedia',
+            'header' => 'Test Textmedia',
+        ]);
+        $textmediaContentId = reset($map['tt_content']);
+        $textmediaRecord = BackendUtility::getRecord('tt_content', $textmediaContentId);
+
+        self::assertEquals('3', $textmediaRecord['header_layout']);
+        self::assertEquals('ruler-before', $textmediaRecord['frame_class']);
+        self::assertEquals('none', $textmediaRecord['space_before_class']);
+
+        // Create image element
+        $map = $this->actionService->createNewRecord('tt_content', 88, [
+            'CType' => 'image',
+            'header' => 'Test Image',
+        ]);
+        $imageContentId = reset($map['tt_content']);
+        $imageRecord = BackendUtility::getRecord('tt_content', $imageContentId);
+
+        self::assertEquals('2', $imageRecord['header_layout']);
+        self::assertEquals('default', $imageRecord['frame_class']);
+        self::assertEquals('none', $imageRecord['space_before_class']);
+
+        // Create text element (no type-specific overrides)
+        $map = $this->actionService->createNewRecord('tt_content', 88, [
+            'CType' => 'text',
+            'header' => 'Test Text',
+        ]);
+        $textContentId = reset($map['tt_content']);
+        $textRecord = BackendUtility::getRecord('tt_content', $textContentId);
+
+        self::assertEquals('1', $textRecord['header_layout']);
+        self::assertEquals('default', $textRecord['frame_class']);
+        self::assertEquals('none', $textRecord['space_before_class']);
+    }
+
+    #[Test]
+    public function typeSpecificTcaDefaultsWithInheritance(): void
+    {
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        $this->writeSiteConfiguration(
+            'acme-com',
+            $this->buildSiteConfiguration(1000, 'https://acme.com/'),
+        );
+
+        // Set up page TSconfig with inheritance test (parent + child configuration)
+        $this->actionService->modifyRecord('pages', 88, [
+            'TSconfig' => chr(10) .
+                'TCAdefaults.tt_content.header_layout = 0' . chr(10) .
+                'TCAdefaults.tt_content.header_layout.types.textmedia = 1' . chr(10) .
+                'TCAdefaults.tt_content.header_layout.types.textmedia = 5',
+        ]);
+
+        // Create textmedia element - later configuration should override earlier
+        $map = $this->actionService->createNewRecord('tt_content', 88, [
+            'CType' => 'textmedia',
+            'header' => 'Test Override',
+        ]);
+        $contentId = reset($map['tt_content']);
+        $record = BackendUtility::getRecord('tt_content', $contentId);
+
+        self::assertEquals('5', $record['header_layout']);
+    }
+
+    #[Test]
+    public function typeSpecificTcaDefaultsWithOnlyTypeSpecificConfiguration(): void
+    {
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        $this->writeSiteConfiguration(
+            'acme-com',
+            $this->buildSiteConfiguration(1000, 'https://acme.com/'),
+        );
+
+        // Only type-specific defaults, no field-level defaults - use page TSconfig
+        $this->actionService->modifyRecord('pages', 88, [
+            'TSconfig' => chr(10) .
+                'TCAdefaults.tt_content.header_layout.types.textmedia = 7',
+        ]);
+
+        // Create textmedia element
+        $map = $this->actionService->createNewRecord('tt_content', 88, [
+            'CType' => 'textmedia',
+            'header' => 'Test Only Type Specific',
+        ]);
+        $contentId = reset($map['tt_content']);
+        $record = BackendUtility::getRecord('tt_content', $contentId);
+
+        self::assertEquals('7', $record['header_layout']);
+
+        // Create text element (should not get any default since no field-level or matching type-specific)
+        $map = $this->actionService->createNewRecord('tt_content', 88, [
+            'CType' => 'text',
+            'header' => 'Test No Default',
+        ]);
+        $textContentId = reset($map['tt_content']);
+        $textRecord = BackendUtility::getRecord('tt_content', $textContentId);
+
+        // Should use TCA default
+        self::assertSame($textRecord['header_layout'], 0);
+    }
 }
