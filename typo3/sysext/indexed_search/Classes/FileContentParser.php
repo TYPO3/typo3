@@ -20,11 +20,11 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\IndexedSearch\Dto\IndexingDataAsString;
 
 /**
@@ -44,7 +44,7 @@ class FileContentParser
     public array $ext2itemtype_map = [];
     public array $supportedExtensions = [];
     public Indexer $pObj;
-    protected LanguageService|TypoScriptFrontendController $langObject;
+    protected LanguageService $langObject;
     protected ?string $lastLocale = null;
 
     /**
@@ -52,8 +52,14 @@ class FileContentParser
      */
     public function __construct()
     {
-        // Set the language object to be used accordant to current application type
-        $this->langObject = ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend() ? $GLOBALS['TSFE'] : $GLOBALS['LANG'];
+        // @todo: Needs refactoring, obviously.
+        $request = $GLOBALS['TYPO3_REQUEST'];
+        if (ApplicationType::fromRequest($request)->isFrontend()) {
+            $language = $request->getAttribute('language') ?? $request->getAttribute('site')->getDefaultLanguage();
+            $this->langObject = GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromSiteLanguage($language);
+        } else {
+            $this->langObject = $GLOBALS['LANG'];
+        }
     }
 
     /**

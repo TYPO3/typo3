@@ -101,7 +101,7 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
     }
 
     /**
-     * Collects images from TypoScriptFrontendController and calculates the total size.
+     * Get image information from AssetCollector and calculates the total size.
      * Returns human-readable image sizes for fluid template output
      */
     protected function collectImagesOnPage(ServerRequestInterface $request): array

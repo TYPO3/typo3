@@ -28,8 +28,8 @@ use TYPO3\CMS\IndexedSearch\Event\EnableIndexingEvent;
 use TYPO3\CMS\IndexedSearch\Indexer;
 
 /**
- * PSR-14 Event Listener for \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController (TSFE),
- * which is called just before the content should be stored in the TYPO3 Cache.
+ * Listen on AfterCacheableContentIsGeneratedEvent, which is called just before the content
+ * should be stored in the TYPO3 Cache.
  *
  * @internal this is a TYPO3-internal Event listener implementation and not part of TYPO3's Core API.
  */

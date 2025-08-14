@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Frontend\Page;
 
 /**
  * Contains a list of all reasons that TYPO3 internally uses when a page cannot be found/rendered etc.
- * See TypoScriptFrontendController for more details and the usage.
  */
 final class PageAccessFailureReasons
 {

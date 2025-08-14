@@ -571,8 +571,7 @@ class Indexer
     }
 
     /**
-     * Attempts to create a local file path by matching absRefPrefix. This
-     * requires TSFE. If TSFE is missing, this function does nothing.
+     * Attempts to create a local file path by matching absRefPrefix.
      */
     protected function createLocalPathUsingAbsRefPrefix(string $sourcePath): string
     {

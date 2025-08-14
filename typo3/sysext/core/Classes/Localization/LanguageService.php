@@ -29,8 +29,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * Usually this is injected into $GLOBALS['LANG'] when in backend or CLI context, and
  * populated by the current backend user. Do not rely on $GLOBAL['LANG'] in frontend, as it is only
  * available under certain circumstances!
- * In frontend, this is also used to translate "labels", see TypoScriptFrontendController->sL()
- * for that.
  *
  * As TYPO3 internally does not match the proper ISO locale standard, the "locale" here
  * is actually a list of supported language keys, (see Locales class), whereas "English"

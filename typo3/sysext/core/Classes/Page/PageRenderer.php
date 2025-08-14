@@ -2023,7 +2023,6 @@ class PageRenderer implements SingletonInterface
         // Get an absolute web path of filename for backend disposal.
         // Resolving the absolute path in the frontend will conflict with
         // applying config.absRefPrefix in frontend rendering process.
-        // @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::setAbsRefPrefix()
         if ($this->getApplicationType() === 'FE') {
             return $file;
         }

@@ -25,12 +25,10 @@ use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
  *
  *
  * "id" (languageId, int)
- * - formerly known as $TSFE->sys_language_uid
  * - the requested language of the current page (frontend)
  * - used in menus and links to generate "links in language with this ID"
  *
  * "contentId" (int)
- * - formerly known as $TSFE->sys_language_content
  * - the language of records to be fetched
  * - if empty, "languageId" is used.
  *
@@ -38,14 +36,13 @@ use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
  *  - when "fallback" go with
  *  - depends on what "contentId" value should be set
  *  - defined in config.sys_language_mode (strict/content_fallback:4,5,stop/ignore?)
- *  - previously known as $TSFE->sys_language_mode
  *  - defines "contentId" based on "if the current page is available in this language"
  *   - "strict"
  *   - "fallback" if current page is not available, check the "fallbackChain"
  *   - "fallbackAndIgnore"
  *
  * "overlayType"
- * - defines which way the records should be fetched from ($TSFE->sys_language_contentOL and config.sys_language_overlay)
+ * - defines which way the records should be fetched from
  * - usually you fetch language 0 and -1, then take the "contentId" and "overlay" them
  *    - here you have two choices
  *          1. "on" if there is no overlay, do not render the default language records ("hideNonTranslated")
@@ -111,7 +108,7 @@ final readonly class LanguageAspect implements AspectInterface
     }
 
     /**
-     * Previously known as TSFE->sys_language_mode, here for compatibility reasons
+     * Here for compatibility reasons
      */
     public function getLegacyLanguageMode(): string
     {
@@ -125,7 +122,7 @@ final readonly class LanguageAspect implements AspectInterface
     }
 
     /**
-     * Previously known as TSFE->sys_language_contentOL, here for compatibility reasons
+     * Here for compatibility reasons
      */
     public function getLegacyOverlayType(): string
     {

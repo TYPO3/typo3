@@ -21,12 +21,12 @@ use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
-class LanguageServiceFactory
+readonly class LanguageServiceFactory
 {
     public function __construct(
-        protected readonly Locales $locales,
-        protected readonly LocalizationFactory $localizationFactory,
-        protected readonly FrontendInterface $runtimeCache
+        protected Locales $locales,
+        protected LocalizationFactory $localizationFactory,
+        protected FrontendInterface $runtimeCache
     ) {}
 
     /**

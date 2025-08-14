@@ -301,8 +301,7 @@ class Locales implements SingletonInterface
     }
 
     /**
-     * Setting locale based on a SiteLanguage's defined locale.
-     * Used for frontend rendering, previously set within TSFE->settingLocale
+     * Setting locale based on a SiteLanguage's defined locale. Used for frontend rendering.
      *
      * @return bool whether the locale was found on the system (and could be set properly) or not
      */
