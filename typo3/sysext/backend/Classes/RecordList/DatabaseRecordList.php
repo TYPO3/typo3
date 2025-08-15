@@ -1544,10 +1544,6 @@ class DatabaseRecordList
         $backendUser = $this->getBackendUserAuthentication();
         $schema = $this->tcaSchemaFactory->get($table);
         $userTsConfig = $backendUser->getTSConfig();
-        $rowUid = $row['uid'];
-        if (isset($row['_ORIG_uid'])) {
-            $rowUid = $row['_ORIG_uid'];
-        }
         $isDeletePlaceHolder = $this->isRecordDeletePlaceholder($row);
         $cells = [
             'primary' => [],
@@ -1652,7 +1648,7 @@ class DatabaseRecordList
         // If the table is NOT a read-only table, then show these links:
         if ($this->isEditable($table)) {
             // "Revert" link (history/undo)
-            if (\trim($userTsConfig['options.']['showHistory.'][$table] ?? $userTsConfig['options.']['showHistory'] ?? '1')) {
+            if (trim($userTsConfig['options.']['showHistory.'][$table] ?? $userTsConfig['options.']['showHistory'] ?? '1')) {
                 if (!$isDeletePlaceHolder) {
                     $moduleUrl = $this->uriBuilder->buildUriFromRoute('record_history', [
                         'element' => $table . ':' . $row['uid'],
@@ -1696,7 +1692,7 @@ class DatabaseRecordList
                         $params = [
                             'edit' => [
                                 $table => [
-                                    (0 - (($row['_MOVE_PLH'] ?? 0) ? $row['_MOVE_PLH_uid'] : $row['uid'])) => 'new',
+                                    (0 - (int)($row['uid'])) => 'new',
                                 ],
                             ],
                             'returnUrl' => $this->listURL(),
@@ -1792,7 +1788,7 @@ class DatabaseRecordList
             }
 
             // "Delete" link:
-            $disableDelete = (bool)\trim((string)($userTsConfig['options.']['disableDelete.'][$table] ?? $userTsConfig['options.']['disableDelete'] ?? ''));
+            $disableDelete = (bool)trim((string)($userTsConfig['options.']['disableDelete.'][$table] ?? $userTsConfig['options.']['disableDelete'] ?? ''));
             if ($permsEdit
                 && !$disableDelete
                 && (($table === 'pages' && $localCalcPerms->deletePagePermissionIsGranted()) || ($table !== 'pages' && $this->calcPerms->editContentPermissionIsGranted()))
