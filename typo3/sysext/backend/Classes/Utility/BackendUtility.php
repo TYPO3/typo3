@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\ItemProcessingService;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
+use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Localization\DateFormatter;
@@ -1130,12 +1131,15 @@ class BackendUtility
      * The included information depends on features of the table, but if hidden, starttime, endtime and fe_group fields are configured for, information about the record status in regard to these features are is included.
      * "pages" table can be used as well and will return the result of ->titleAttribForPages() for that page.
      *
-     * @param array $row Table row; $row is a row from the table, $table
+     * @param array|RecordInterface $row Table row; $row is a row from the table, $table
      * @param string $table Table name
      * @param bool $escapeResult If $escapeResult is set, then the return value is escaped with htmlspecialchars()
      */
     public static function getRecordIconAltText($row, $table = 'pages', bool $escapeResult = true): string
     {
+        if ($row instanceof RecordInterface) {
+            $row = $row->getRawRecord()->toArray();
+        }
         if ($table === 'pages') {
             $title = self::titleAttribForPages($row, '', false);
             return $escapeResult ? htmlspecialchars($title) : $title;
@@ -1397,7 +1401,7 @@ class BackendUtility
      * The field(s) from which the value is taken is determined by the "ctrl"-entries 'label', 'label_alt' and 'label_alt_force'
      *
      * @param string $table Table name, present in TCA
-     * @param array $row Row from table
+     * @param array|RecordInterface|null $row Row from table
      * @param bool $prep If set, result is prepared for output: The output is cropped to a limited length (depending on BE_USER->uc['titleLen']) and if no value is found for the title, '<em>[No title]</em>' is returned (localized). Further, the output is htmlspecialchars()'ed
      * @param bool $forceResult If set, the function always returns an output. If no value is found for the title, '[No title]' is returned (localized).
      * @return string
@@ -1407,6 +1411,9 @@ class BackendUtility
         $schema = self::getTcaSchema($table);
         if ($schema === null) {
             return '';
+        }
+        if ($row instanceof RecordInterface) {
+            $row = $row->getRawRecord()->toArray();
         }
         $labelCapability = $schema->hasCapability(TcaSchemaCapability::Label) ? $schema->getCapability(TcaSchemaCapability::Label) : null;
         // If configured, call userFunc
@@ -2500,7 +2507,7 @@ class BackendUtility
      * Counting translations of records
      *
      * @param string $table Table name
-     * @param string $ref Reference: the record's uid
+     * @param string|int $ref Reference: the record's uid
      * @param string $msg Message with %s, eg. "This record has %s translation(s) which will be deleted, too!
      * @return string Output string (or int count value if no msg string specified)
      */
@@ -2522,7 +2529,7 @@ class BackendUtility
                 ->where(
                     $queryBuilder->expr()->eq(
                         $languageCapability->getTranslationOriginPointerField()->getName(),
-                        $queryBuilder->createNamedParameter($ref, Connection::PARAM_INT)
+                        $queryBuilder->createNamedParameter((int)$ref, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->neq(
                         $languageCapability->getLanguageField()->getName(),
@@ -2985,10 +2992,28 @@ class BackendUtility
             if ($schema->hasCapability(TcaSchemaCapability::SortByField)) {
                 $fieldList[] = $schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName();
             }
+            if ($schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
+                $fieldList[] = $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName();
+            }
+            if ($schema->hasCapability(TcaSchemaCapability::InternalDescription)) {
+                $fieldList[] = $schema->getCapability(TcaSchemaCapability::InternalDescription)->getFieldName();
+            }
             if ($schema->hasCapability(TcaSchemaCapability::Workspace)) {
                 $fieldList[] = 't3ver_state';
+                $fieldList[] = 't3ver_stage';
                 $fieldList[] = 't3ver_wsid';
                 $fieldList[] = 't3ver_oid';
+            }
+            if ($schema->isLanguageAware()) {
+                $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+                $fieldList[] = $languageCapability->getLanguageField()->getName();
+                $fieldList[] = $languageCapability->getTranslationOriginPointerField()->getName();
+                if ($languageCapability->hasTranslationSourceField()) {
+                    $fieldList[] = $languageCapability->getTranslationSourceField()->getName();
+                }
+                if ($languageCapability->hasDiffSourceField()) {
+                    $fieldList[] = $languageCapability->getDiffSourceField()->getName();
+                }
             }
         }
 

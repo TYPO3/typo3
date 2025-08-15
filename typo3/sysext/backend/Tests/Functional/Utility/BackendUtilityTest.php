@@ -504,7 +504,7 @@ final class BackendUtilityTest extends FunctionalTestCase
         $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         self::assertEquals(
-            ['title', 'createdon', 'uid', 'pid', 'updatedon', 'sorting', 't3ver_state', 't3ver_wsid', 't3ver_oid'],
+            ['title', 'createdon', 'uid', 'pid', 'updatedon', 'sorting', 't3ver_state', 't3ver_stage', 't3ver_wsid', 't3ver_oid'],
             BackendUtility::getAllowedFieldsForTable('myTable', false)
         );
     }

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Clipboard\Type\CountMode;
@@ -202,7 +203,7 @@ class RecordListController
         }
         $clipboardHtml = '';
         if ($this->moduleData->get('clipBoard') && ($tableListHtml || $clipboard->hasElements())) {
-            $clipboardHtml = '<hr class="spacer"><typo3-backend-clipboard-panel return-url="' . htmlspecialchars($dbList->listURL()) . '"></typo3-backend-clipboard-panel>';
+            $clipboardHtml = '<hr class="spacer"><typo3-backend-clipboard-panel return-url="' . htmlspecialchars((string)$dbList->listURL()) . '"></typo3-backend-clipboard-panel>';
         }
 
         $view->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:mlang_tabs_tab'), $title);
@@ -402,7 +403,7 @@ class RecordListController
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
      */
-    protected function getDocHeaderButtons(ModuleTemplate $view, Clipboard $clipboard, ServerRequestInterface $request, string $table, string $listUrl, array $moduleSettings): void
+    protected function getDocHeaderButtons(ModuleTemplate $view, Clipboard $clipboard, ServerRequestInterface $request, string $table, UriInterface $listUrl, array $moduleSettings): void
     {
         $queryParams = $request->getQueryParams();
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
@@ -499,7 +500,7 @@ class RecordListController
         }
         // Reload
         $reloadButton = $buttonBar->makeLinkButton()
-            ->setHref($listUrl)
+            ->setHref((string)$listUrl)
             ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
             ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);

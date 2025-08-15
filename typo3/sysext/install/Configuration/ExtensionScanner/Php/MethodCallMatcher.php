@@ -6439,4 +6439,67 @@ return [
             'Deprecation-107287-FileCollectionRegistryAddTypeToTCA.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\RecordList\DatabaseRecordList->renderListRow' => [
+        'numberOfMandatoryArguments' => 5,
+        'maximumNumberOfArguments' => 5,
+        'restFiles' => [
+            'Breaking-107356-UseRecordAPIInListModule.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\RecordList\DatabaseRecordList->makeControl' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-107356-UseRecordAPIInListModule.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\RecordList\DatabaseRecordList->makeCheckbox' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-107356-UseRecordAPIInListModule.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\RecordList\DatabaseRecordList->languageFlag' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-107356-UseRecordAPIInListModule.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\RecordList\DatabaseRecordList->makeLocalizationPanel' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Breaking-107356-UseRecordAPIInListModule.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\RecordList\DatabaseRecordList->linkWrapItems' => [
+        'numberOfMandatoryArguments' => 4,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Breaking-107356-UseRecordAPIInListModule.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\RecordList\DatabaseRecordList->getPreviewUriBuilder' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-107356-UseRecordAPIInListModule.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\RecordList\DatabaseRecordList->isRecordDeletePlaceholder' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-107356-UseRecordAPIInListModule.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Controller\RecordListController->getDocHeaderButtons' => [
+        'numberOfMandatoryArguments' => 6,
+        'maximumNumberOfArguments' => 6,
+        'restFiles' => [
+            'Breaking-107356-UseRecordAPIInListModule.rst',
+        ],
+    ],
 ];

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\View;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 /**
@@ -52,7 +53,7 @@ class RecordSearchBoxComponent
         return $this;
     }
 
-    public function render(ServerRequestInterface $request, string $formUrl = ''): string
+    public function render(ServerRequestInterface $request, UriInterface|string|null $formUrl = null): string
     {
         $view = $this->backendViewFactory->create($request, ['typo3/cms-backend']);
         return $view

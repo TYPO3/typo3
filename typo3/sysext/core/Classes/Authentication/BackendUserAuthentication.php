@@ -30,6 +30,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
+use TYPO3\CMS\Core\Domain\Record;
+use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -667,18 +669,21 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * The function takes an ID (int) or row (array) as second argument.
      *
      * @param string $table Table name
-     * @param array $row Full record row
+     * @param array|RecordInterface $row Full record row
      * @param bool $newRecord Set, if testing a new (non-existing) record array. Will disable certain checks that doesn't make much sense in that context.
      * @param null $_ unused
      * @param bool $checkFullLanguageAccess Set, whenever access to all translations of the record is required
      * @return bool TRUE if OK, otherwise FALSE
      * @internal should only be used from within TYPO3 Core
      */
-    public function recordEditAccessInternals(string $table, array $row, $newRecord = false, $_ = null, $checkFullLanguageAccess = false): bool
+    public function recordEditAccessInternals(string $table, array|RecordInterface $row, $newRecord = false, $_ = null, $checkFullLanguageAccess = false): bool
     {
         $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
         if (!$schemaFactory->has($table)) {
             return false;
+        }
+        if ($row instanceof RecordInterface) {
+            $row = $row->getRawRecord()->toArray();
         }
         $schema = $schemaFactory->get($table);
         // Always return TRUE for Admin users.

@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\RecordList;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
+use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -40,15 +41,10 @@ class ElementBrowserRecordList extends DatabaseRecordList
 
     /**
      * Returns the title (based on $code) of a record (from table $table) with the proper link around (that is for "pages"-records a link to the level of that record...)
-     *
-     * @param string $table Table name
-     * @param int $uid UID (not used here)
-     * @param string $code Title string
-     * @param array $row Records array (from table name)
-     * @return string
      */
-    public function linkWrapItems($table, $uid, $code, $row)
+    public function linkWrapItems(string $table, int $uid, string $code, RecordInterface $record): string
     {
+        $row = $record->getRawRecord()->toArray();
         if (!$code) {
             $code = '<i>[' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title')) . ']</i>';
         } else {
@@ -69,12 +65,12 @@ class ElementBrowserRecordList extends DatabaseRecordList
     /**
      * Check if all row listing conditions are fulfilled.
      *
-     * @param string $table String Table name
-     * @param array $row Array Record
+     * @param RecordInterface $record Record
      * @return bool True, if all conditions are fulfilled.
      */
-    protected function isRowListingConditionFulfilled($table, $row)
+    protected function isRowListingConditionFulfilled(RecordInterface $record): bool
     {
+        $table = $record->getMainType();
         $returnValue = true;
         if (!$this->relatingField) {
             return true;
@@ -90,7 +86,7 @@ class ElementBrowserRecordList extends DatabaseRecordList
                 continue;
             }
             $parameters = $filter['parameters'] ?? [];
-            $parameters['values'] = [$table . '_' . $row['uid']];
+            $parameters['values'] = [$table . '_' . $record->getUid()];
             $parameters['tcaFieldConfig'] = $tcaFieldConfig;
             $valueArray = GeneralUtility::callUserFunction($filter['userFunc'], $parameters, $this);
             if (empty($valueArray)) {
@@ -101,7 +97,7 @@ class ElementBrowserRecordList extends DatabaseRecordList
             /** @var FileExtensionFilter $fileExtensionFilter */
             $fileExtensionFilter = GeneralUtility::makeInstance(FileExtensionFilter::class);
             $valueArray = $fileExtensionFilter->filter(
-                [$table . '_' . $row['uid']],
+                [$table . '_' . $record->getUid()],
                 (string)($tcaFieldConfig['allowed'] ?? ''),
                 (string)($tcaFieldConfig['disallowed'] ?? ''),
             );

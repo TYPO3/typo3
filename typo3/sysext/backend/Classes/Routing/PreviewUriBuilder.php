@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
+use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -104,8 +105,11 @@ class PreviewUriBuilder
     /**
      * @internal Only to be used by TYPO3 core - for now
      */
-    public static function createForRecordPreview(string $table, int|array $record, int $pageId): self
+    public static function createForRecordPreview(string $table, int|array|RecordInterface $record, int $pageId): self
     {
+        if ($record instanceof RecordInterface) {
+            $record = $record->getRawRecord()->toArray();
+        }
         $recordId = is_int($record) ? $record : (int)($record['uid'] ?? 0);
         $previewPageId = self::getPreviewPageId($table, $recordId, $pageId);
         $obj = self::create($previewPageId);
