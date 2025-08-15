@@ -38,7 +38,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
  *     iconIdentifier: non-empty-string,
  *     title: non-empty-string,
  *     description?: non-empty-string,
- *     severity?: 'notice'|'info'|'succcess'|'warning'|'error',
+ *     severity?: 'notice'|'info'|'succcess'|'warning'|'error'|'danger',
  * }
  */
 #[Autoconfigure(public: true)]
