@@ -57,12 +57,12 @@ final class ExtensionRepositoryTest extends UnitTestCase
     {
         $suitableDependency = Dependency::createFromEmConf('typo3', '3.6.1');
         $suitableDependencies = new \SplObjectStorage();
-        $suitableDependencies->attach($suitableDependency);
+        $suitableDependencies->offsetSet($suitableDependency);
 
         $unsuitableDependency = Dependency::createFromEmConf('typo3', '-4.3.0');
 
         $unsuitableDependencies = new \SplObjectStorage();
-        $unsuitableDependencies->attach($unsuitableDependency);
+        $unsuitableDependencies->offsetSet($unsuitableDependency);
 
         // foo1 should be kept
         $foo1 = new Extension();
@@ -96,7 +96,7 @@ final class ExtensionRepositoryTest extends UnitTestCase
     {
         $suitableDependency = Dependency::createFromEmConf('typo3', '10.4.0-99.99.99');
         $suitableDependencies = new \SplObjectStorage();
-        $suitableDependencies->attach($suitableDependency);
+        $suitableDependencies->offsetSet($suitableDependency);
         $suitableExtension = new Extension();
         $suitableExtension->setExtensionKey('suitable');
         $suitableExtension->setVersion('1.0.0');
@@ -104,7 +104,7 @@ final class ExtensionRepositoryTest extends UnitTestCase
 
         $unsuitableDependency = Dependency::createFromEmConf('typo3', '9.5.0-10.4.99');
         $unsuitableDependencies = new \SplObjectStorage();
-        $unsuitableDependencies->attach($unsuitableDependency);
+        $unsuitableDependencies->offsetSet($unsuitableDependency);
         $unsuitableExtension = new Extension();
         $unsuitableExtension->setExtensionKey('unsuitable');
         $unsuitableExtension->setVersion('1.0.0');

@@ -36,7 +36,7 @@ final class ConjunctionValidatorTest extends FunctionalTestCase
         $conjunctionValidator->setOptions([]);
         $mockValidator = $this->createMock(ValidatorInterface::class);
         $conjunctionValidator->addValidator($mockValidator);
-        self::assertTrue($conjunctionValidator->getValidators()->contains($mockValidator));
+        self::assertTrue($conjunctionValidator->getValidators()->offsetExists($mockValidator));
     }
 
     #[Test]
@@ -111,8 +111,8 @@ final class ConjunctionValidatorTest extends FunctionalTestCase
         $validatorConjunction->addValidator($validator1);
         $validatorConjunction->addValidator($validator2);
         $validatorConjunction->removeValidator($validator1);
-        self::assertFalse($validatorConjunction->getValidators()->contains($validator1));
-        self::assertTrue($validatorConjunction->getValidators()->contains($validator2));
+        self::assertFalse($validatorConjunction->getValidators()->offsetExists($validator1));
+        self::assertTrue($validatorConjunction->getValidators()->offsetExists($validator2));
     }
 
     #[Test]

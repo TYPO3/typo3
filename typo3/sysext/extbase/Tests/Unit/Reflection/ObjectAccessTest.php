@@ -241,8 +241,8 @@ final class ObjectAccessTest extends UnitTestCase
         $exampleObject->key = 'value';
         $exampleObject2 = new \stdClass();
         $exampleObject2->key = 'value2';
-        $objectStorage->attach($exampleObject);
-        $objectStorage->attach($exampleObject2);
+        $objectStorage->offsetSet($exampleObject);
+        $objectStorage->offsetSet($exampleObject2);
         return $objectStorage;
     }
 

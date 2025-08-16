@@ -133,7 +133,7 @@ abstract class AbstractGenericObjectValidator extends AbstractValidator implemen
         if (!isset($this->propertyValidators[$propertyName])) {
             $this->propertyValidators[$propertyName] = new \SplObjectStorage();
         }
-        $this->propertyValidators[$propertyName]->attach($validator);
+        $this->propertyValidators[$propertyName]->offsetSet($validator);
     }
 
     protected function isValidatedAlready(object $object): bool
@@ -141,7 +141,7 @@ abstract class AbstractGenericObjectValidator extends AbstractValidator implemen
         if ($this->validatedInstancesContainer === null) {
             $this->validatedInstancesContainer = new \SplObjectStorage();
         }
-        if ($this->validatedInstancesContainer->contains($object)) {
+        if ($this->validatedInstancesContainer->offsetExists($object)) {
             return true;
         }
 
@@ -150,7 +150,7 @@ abstract class AbstractGenericObjectValidator extends AbstractValidator implemen
 
     protected function markInstanceAsValidated(object $object): void
     {
-        $this->validatedInstancesContainer->attach($object);
+        $this->validatedInstancesContainer->offsetSet($object);
     }
 
     /**
