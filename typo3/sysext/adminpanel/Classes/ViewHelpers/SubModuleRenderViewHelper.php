@@ -48,7 +48,7 @@ final class SubModuleRenderViewHelper extends AbstractViewHelper
     {
         $module = $arguments['module'];
         $data = $arguments['data'];
-        $moduleData = $data->contains($module) ? $data->offsetGet($module) : new ModuleData();
+        $moduleData = $data->offsetExists($module) ? $data->offsetGet($module) : new ModuleData();
         return $module->getContent($moduleData);
     }
 }

@@ -261,7 +261,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
 
         // Don't add any validators for now
         $validators = new \SplObjectStorage();
-        $validators->attach($otherValidator);
+        $validators->offsetSet($otherValidator);
 
         $this->processingRule
             ->method('getValidators')
@@ -292,7 +292,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
 
         // Don't add any validators for now
         $validators = new \SplObjectStorage();
-        $validators->attach($notEmptyValidator);
+        $validators->offsetSet($notEmptyValidator);
 
         $this->processingRule
             ->method('getValidators')

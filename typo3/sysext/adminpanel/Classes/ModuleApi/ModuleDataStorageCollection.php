@@ -24,7 +24,7 @@ class ModuleDataStorageCollection extends \SplObjectStorage
 {
     public function addModuleData(DataProviderInterface $module, ModuleData $moduleData): void
     {
-        $this->attach($module, $moduleData);
+        $this->offsetSet($module, $moduleData);
     }
 
     public function getHash(object $object): string

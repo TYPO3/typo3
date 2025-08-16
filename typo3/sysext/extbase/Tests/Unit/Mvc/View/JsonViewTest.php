@@ -146,7 +146,7 @@ final class JsonViewTest extends UnitTestCase
         $nestedObject = new \stdClass();
         $nestedObject->value1 = 'foo';
         $value = new \SplObjectStorage();
-        $value->attach($nestedObject);
+        $value->offsetSet($nestedObject);
         $configuration = [];
         $expected = [['value1' => 'foo']];
         $output[] = [$value, $configuration, $expected, 'SplObjectStorage with objects should be serialized'];
