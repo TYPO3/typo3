@@ -241,10 +241,10 @@ final class GenericObjectValidatorTest extends UnitTestCase
         $validator->addPropertyValidator('bar', $validatorForBar);
 
         $fooObjectStorage = new \SplObjectStorage();
-        $fooObjectStorage->attach($validatorForFoo);
+        $fooObjectStorage->offsetSet($validatorForFoo);
 
         $barObjectStorage = new \SplObjectStorage();
-        $barObjectStorage->attach($validatorForBar);
+        $barObjectStorage->offsetSet($validatorForBar);
 
         $expected = [
             'foo' => $fooObjectStorage,
@@ -265,7 +265,7 @@ final class GenericObjectValidatorTest extends UnitTestCase
         $validator->addPropertyValidator('bar', $validatorForBar);
 
         $fooObjectStorage = new \SplObjectStorage();
-        $fooObjectStorage->attach($validatorForFoo);
+        $fooObjectStorage->offsetSet($validatorForFoo);
 
         self::assertEquals($fooObjectStorage, $validator->getPropertyValidators('foo'));
     }

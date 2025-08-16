@@ -86,7 +86,7 @@ final class NotEmptyValidatorTest extends FunctionalTestCase
     public function notEmptyValidatorWorksForNotEmptyCountableObjects(): void
     {
         $countableObject = new \SplObjectStorage();
-        $countableObject->attach(new \stdClass());
+        $countableObject->offsetSet(new \stdClass());
         $validator = new NotEmptyValidator();
         $validator->setOptions([]);
         self::assertFalse($validator->validate($countableObject)->hasErrors());

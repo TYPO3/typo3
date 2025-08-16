@@ -48,7 +48,7 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
      */
     public function addValidator(ValidatorInterface $validator): void
     {
-        $this->validators->attach($validator);
+        $this->validators->offsetSet($validator);
     }
 
     public function getRequest(): ?ServerRequestInterface
@@ -68,10 +68,10 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
      */
     public function removeValidator(ValidatorInterface $validator): void
     {
-        if (!$this->validators->contains($validator)) {
+        if (!$this->validators->offsetExists($validator)) {
             throw new NoSuchValidatorException('Cannot remove validator because its not in the conjunction.', 1207020177);
         }
-        $this->validators->detach($validator);
+        $this->validators->offsetUnset($validator);
     }
 
     /**

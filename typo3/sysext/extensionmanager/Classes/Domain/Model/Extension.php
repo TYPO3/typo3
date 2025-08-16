@@ -232,7 +232,7 @@ class Extension extends AbstractEntity
 
     public function addDependency(Dependency $dependency): void
     {
-        $this->dependencies->attach($dependency);
+        $this->dependencies->offsetSet($dependency);
     }
 
     public function setIntegerVersion(int $integerVersion): void
@@ -330,7 +330,7 @@ class Extension extends AbstractEntity
             foreach ($dependencyValues as $dependency => $versionConstraint) {
                 if ($dependency) {
                     $dependencyObject = Dependency::createFromEmConf((string)$dependency, $versionConstraint, (string)$dependencyType);
-                    $dependenciesObject->attach($dependencyObject);
+                    $dependenciesObject->offsetSet($dependencyObject);
                 }
             }
         }

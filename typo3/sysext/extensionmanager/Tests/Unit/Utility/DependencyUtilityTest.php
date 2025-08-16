@@ -35,7 +35,7 @@ final class DependencyUtilityTest extends UnitTestCase
     {
         $dependency = Dependency::createFromEmConf('typo3', '15.0.0-0');
         $dependencies = new \SplObjectStorage();
-        $dependencies->attach($dependency);
+        $dependencies->offsetSet($dependency);
 
         $extension = new Extension();
         $extension->setExtensionKey('foo');
@@ -53,7 +53,7 @@ final class DependencyUtilityTest extends UnitTestCase
     {
         $dependency = Dependency::createFromEmConf('typo3', '1.0.0-3.0.0');
         $dependencies = new \SplObjectStorage();
-        $dependencies->attach($dependency);
+        $dependencies->offsetSet($dependency);
 
         $extension = new Extension();
         $extension->setExtensionKey('foo');
@@ -71,7 +71,7 @@ final class DependencyUtilityTest extends UnitTestCase
     {
         $dependency = Dependency::createFromEmConf('typo3', '1.0.0-25.0.0');
         $dependencies = new \SplObjectStorage();
-        $dependencies->attach($dependency);
+        $dependencies->offsetSet($dependency);
 
         $extension = new Extension();
         $extension->setExtensionKey('foo');
@@ -88,7 +88,7 @@ final class DependencyUtilityTest extends UnitTestCase
     {
         $dependency = Dependency::createFromEmConf('typo3', '1.0.0');
         $dependencies = new \SplObjectStorage();
-        $dependencies->attach($dependency);
+        $dependencies->offsetSet($dependency);
 
         $extension = new Extension();
         $extension->setExtensionKey('foo');
@@ -105,7 +105,7 @@ final class DependencyUtilityTest extends UnitTestCase
     {
         $dependency = Dependency::createFromEmConf('typo3', '-15.0.0');
         $dependencies = new \SplObjectStorage();
-        $dependencies->attach($dependency);
+        $dependencies->offsetSet($dependency);
 
         $extension = new Extension();
         $extension->setExtensionKey('foo');
@@ -122,7 +122,7 @@ final class DependencyUtilityTest extends UnitTestCase
     {
         $dependency = Dependency::createFromEmConf('php', '15.0.0');
         $dependencies = new \SplObjectStorage();
-        $dependencies->attach($dependency);
+        $dependencies->offsetSet($dependency);
 
         $extension = new Extension();
         $extension->setExtensionKey('foo');
@@ -140,7 +140,7 @@ final class DependencyUtilityTest extends UnitTestCase
     {
         $dependency = Dependency::createFromEmConf('php', '1.0.0-3.0.0');
         $dependencies = new \SplObjectStorage();
-        $dependencies->attach($dependency);
+        $dependencies->offsetSet($dependency);
 
         $extension = new Extension();
         $extension->setExtensionKey('foo');
@@ -158,7 +158,7 @@ final class DependencyUtilityTest extends UnitTestCase
     {
         $dependency = Dependency::createFromEmConf('php', '1.0.0-15.0.0');
         $dependencies = new \SplObjectStorage();
-        $dependencies->attach($dependency);
+        $dependencies->offsetSet($dependency);
 
         $extension = new Extension();
         $extension->setExtensionKey('foo');
@@ -176,7 +176,7 @@ final class DependencyUtilityTest extends UnitTestCase
     {
         $dependency = Dependency::createFromEmConf('php', '1.0.0');
         $dependencies = new \SplObjectStorage();
-        $dependencies->attach($dependency);
+        $dependencies->offsetSet($dependency);
 
         $extension = new Extension();
         $extension->setExtensionKey('foo');
@@ -194,7 +194,7 @@ final class DependencyUtilityTest extends UnitTestCase
     {
         $dependency = Dependency::createFromEmConf('typo3', '-25.0.0');
         $dependencies = new \SplObjectStorage();
-        $dependencies->attach($dependency);
+        $dependencies->offsetSet($dependency);
 
         $extension = new Extension();
         $extension->setExtensionKey('foo');
@@ -331,11 +331,11 @@ final class DependencyUtilityTest extends UnitTestCase
     {
         $suitableDependency = Dependency::createFromEmConf('typo3', '3.6.1');
         $suitableDependencies = new \SplObjectStorage();
-        $suitableDependencies->attach($suitableDependency);
+        $suitableDependencies->offsetSet($suitableDependency);
 
         $unsuitableDependency = Dependency::createFromEmConf('typo3', '-4.3.0');
         $unsuitableDependencies = new \SplObjectStorage();
-        $unsuitableDependencies->attach($unsuitableDependency);
+        $unsuitableDependencies->offsetSet($unsuitableDependency);
 
         $extension1 = new Extension();
         $extension1->setExtensionKey('foo');

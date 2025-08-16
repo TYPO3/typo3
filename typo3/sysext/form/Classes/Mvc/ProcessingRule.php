@@ -125,7 +125,7 @@ class ProcessingRule
         $validators = $this->getValidators();
         foreach ($validators as $validator) {
             if (!$filter($validator)) {
-                $validatorsToRemove->attach($validator);
+                $validatorsToRemove->offsetSet($validator);
             }
         }
         $validators->removeAll($validatorsToRemove);
