@@ -59,7 +59,7 @@ final class DatePickerViewHelper extends AbstractFormFieldViewHelper
         $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this ViewHelper', false, 'f3-form-error');
         $this->registerArgument('initialDate', 'string', 'Initial date (@see http://www.php.net/manual/en/datetime.formats.php for supported formats)');
         $this->registerArgument('enableDatePicker', 'bool', 'Enable the Datepicker', false, true);
-        $this->registerArgument('previewMode', 'bool', 'Preview mde flag', true, false);
+        $this->registerArgument('previewMode', 'bool', 'Preview mode flag', true);
         $this->registerArgument('dateFormat', 'string', 'The date format', false, 'Y-m-d');
         // use the default value if custom templates have not yet adapted this property
         $this->registerArgument('datePickerInitializationJavaScriptFile', 'string', 'The JavaScript file to initialize the date picker', false, 'EXT:form/Resources/Public/JavaScript/frontend/date-picker.js');
