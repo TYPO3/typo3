@@ -36,8 +36,8 @@ final class FineDiffViewHelper extends AbstractViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerArgument('from', 'string', 'Source string', true, '');
-        $this->registerArgument('to', 'string', 'Target string', true, '');
+        $this->registerArgument('from', 'string', 'Source string', true);
+        $this->registerArgument('to', 'string', 'Target string', true);
     }
 
     public function render(): string
