@@ -400,8 +400,6 @@ class GraphicalFunctions
                 }
                 $this->copyGifOntoGif($destImg, $cpImg, $conf, $workArea);
                 $this->ImageWrite($destImg, $theImage);
-                imagedestroy($cpImg);
-                imagedestroy($destImg);
                 // Prepare mask image
                 $cpImg = $this->imageCreateFromFile($BBmask[3]);
                 $destImg = imagecreatetruecolor($w, $h);
@@ -415,8 +413,6 @@ class GraphicalFunctions
                 }
                 $this->copyGifOntoGif($destImg, $cpImg, $conf, $workArea);
                 $this->ImageWrite($destImg, $theMask);
-                imagedestroy($cpImg);
-                imagedestroy($destImg);
                 // Mask the images
                 $this->ImageWrite($im, $theDest);
                 // Let combineExec handle maskNegation
@@ -456,7 +452,6 @@ class GraphicalFunctions
             }
             $cpImg = $this->imageCreateFromFile($conf['file']);
             $this->copyGifOntoGif($im, $cpImg, $conf, $workArea);
-            imagedestroy($cpImg);
         }
     }
 
@@ -628,7 +623,6 @@ class GraphicalFunctions
                     $this->renderTTFText($maskImg, $conf['fontSize'], $conf['angle'] ?? 0, $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'] ?? [], $conf, $sF);
                 }
                 $this->ImageWrite($maskImg, $fileMask);
-                imagedestroy($maskImg);
                 // Downscales the mask
                 if (!$this->processorEffectsEnabled) {
                     $command = trim($this->scalecmd . ' ' . $w . 'x' . $h . '! -negate');
@@ -644,7 +638,6 @@ class GraphicalFunctions
                 $Ccolor = imagecolorallocate($colorImg, $cols[0], $cols[1], $cols[2]);
                 imagefilledrectangle($colorImg, 0, 0, $w, $h, $Ccolor);
                 $this->ImageWrite($colorImg, $fileColor);
-                imagedestroy($colorImg);
                 // The mask is applied
                 // The main pictures is saved temporarily
                 $this->ImageWrite($im, $fileMenu);
@@ -1427,7 +1420,6 @@ class GraphicalFunctions
             $Bcolor = imagecolorallocate($blurColImg, $bcols[0], $bcols[1], $bcols[2]);
             imagefilledrectangle($blurColImg, 0, 0, $w, $h, $Bcolor);
             $this->ImageWrite($blurColImg, $fileColor);
-            imagedestroy($blurColImg);
             // The mask is made: BlurTextImage
             $blurTextImg = imagecreatetruecolor($w + $blurBorder * 2, $h + $blurBorder * 2);
             // Black background
@@ -1438,8 +1430,6 @@ class GraphicalFunctions
             $this->makeText($blurTextImg, $txtConf, $this->applyOffset($workArea, $blurBordArr));
             // Dump to temporary file
             $this->ImageWrite($blurTextImg, $fileMask);
-            // Destroy
-            imagedestroy($blurTextImg);
             $command = $this->v5_blur($blurRate + 1);
             $this->imageMagickExec($fileMask, $fileMask, $command . ' +matte');
             // The mask is loaded again
@@ -1449,8 +1439,6 @@ class GraphicalFunctions
                 // Cropping the border from the mask
                 $blurTextImg = imagecreatetruecolor($w, $h);
                 $this->imagecopyresized($blurTextImg, $blurTextImg_tmp, 0, 0, $blurBorder, $blurBorder, $w, $h, $w, $h);
-                // Destroy the temporary mask
-                imagedestroy($blurTextImg_tmp);
                 // Adjust the mask
                 $intensity = 40;
                 if ($conf['intensity'] ?? false) {
@@ -1466,8 +1454,6 @@ class GraphicalFunctions
                 }
                 // Dump the mask again
                 $this->ImageWrite($blurTextImg, $fileMask);
-                // Destroy the mask
-                imagedestroy($blurTextImg);
                 // The pictures are combined
                 // The main pictures is saved temporarily
                 $this->ImageWrite($im, $fileMenu);
@@ -1740,7 +1726,6 @@ class GraphicalFunctions
             $theNewFile = $this->imageMagickConvert($theFile, $this->gifExtension, $conf['width'] ?? '', $conf['height'] ?? '', $conf['params'] ?? '');
             $tmpImg = $this->imageCreateFromFile($theNewFile[3]);
             if ($tmpImg) {
-                imagedestroy($im);
                 $im = $tmpImg;
                 $this->w = imagesx($im);
                 $this->h = imagesy($im);
@@ -2633,7 +2618,6 @@ class GraphicalFunctions
         } elseif (($type === 'GD' || !$type) && $gfxConf['gdlib'] && !$gfxConf['gdlib_png']) {
             $tempImage = imagecreatefromgif($theFile);
             imagegif($tempImage, $theFile);
-            imagedestroy($tempImage);
             $returnCode = 'GD';
             if (@is_file($theFile)) {
                 GeneralUtility::fixPermissions($theFile);
@@ -2702,7 +2686,6 @@ class GraphicalFunctions
         $this->imageMagickExec($theFile, $theFile, $command);
         $tmpImg = $this->imageCreateFromFile($theFile);
         if ($tmpImg) {
-            imagedestroy($im);
             $im = $tmpImg;
             $this->w = imagesx($im);
             $this->h = imagesy($im);
@@ -2780,7 +2763,7 @@ class GraphicalFunctions
      */
     public function destroy()
     {
-        imagedestroy($this->im);
+        unset($this->im);
     }
 
     /**

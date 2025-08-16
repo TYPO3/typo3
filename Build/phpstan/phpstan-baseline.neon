@@ -1561,12 +1561,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
 
 		-
-			message: '#^Parameter \#1 \$image of function imagedestroy expects GdImage, resource given\.$#'
-			identifier: argument.type
-			count: 11
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
 			message: '#^Parameter \#1 \$image of function imagefilledellipse expects GdImage, resource given\.$#'
 			identifier: argument.type
 			count: 1

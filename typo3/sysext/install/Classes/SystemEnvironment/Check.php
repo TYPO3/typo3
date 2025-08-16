@@ -628,7 +628,6 @@ class Check implements CheckInterface
         if (function_exists('imagecreatetruecolor')) {
             $imageResource = @imagecreatetruecolor(50, 100);
             if ($this->checkImageResource($imageResource)) {
-                imagedestroy($imageResource);
                 $this->messageQueue->enqueue(new FlashMessage(
                     '',
                     'PHP GD library true color works'
@@ -662,7 +661,6 @@ class Check implements CheckInterface
             // Do not use data:// wrapper to be independent of allow_url_fopen
             $imageResource = @imagecreatefromgif(__DIR__ . '/../../Resources/Public/Images/TestInput/Test.gif');
             if ($this->checkImageResource($imageResource)) {
-                imagedestroy($imageResource);
                 $this->messageQueue->enqueue(new FlashMessage(
                     '',
                     'PHP GD library has gif support'
@@ -717,7 +715,6 @@ class Check implements CheckInterface
             // Do not use data:// wrapper to be independent of allow_url_fopen
             $imageResource = @imagecreatefrompng(__DIR__ . '/../../Resources/Public/Images/TestInput/Test.png');
             if ($this->checkImageResource($imageResource)) {
-                imagedestroy($imageResource);
                 $this->messageQueue->enqueue(new FlashMessage(
                     '',
                     'PHP GD library has png support'
