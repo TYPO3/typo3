@@ -1109,7 +1109,6 @@ class GeneralUtility
         if (xml_get_error_code($parser)) {
             return 'Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser));
         }
-        xml_parser_free($parser);
         $stack = [[]];
         $stacktop = 0;
         $startPoint = 0;
@@ -1333,7 +1332,6 @@ class GeneralUtility
         if (xml_get_error_code($parser)) {
             return 'Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser));
         }
-        xml_parser_free($parser);
         // Init vars:
         $stack = [[]];
         $stacktop = 0;

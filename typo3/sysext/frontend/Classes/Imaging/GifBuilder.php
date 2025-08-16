@@ -434,7 +434,6 @@ class GifBuilder
             // Create file
             $gdImage = $this->make();
             $this->output($gdImage, $fullFileName);
-            imagedestroy($gdImage);
         }
 
         $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $fullFileName);
@@ -706,8 +705,6 @@ class GifBuilder
                 }
                 $this->copyGifOntoGif($destImg, $cpImg, $conf, $workArea);
                 $this->ImageWrite($destImg, $theImage);
-                imagedestroy($cpImg);
-                imagedestroy($destImg);
                 // Prepare mask image
                 $cpImg = $this->imageCreateFromFile($BBmask->getRealPath());
                 $destImg = imagecreatetruecolor($w, $h);
@@ -721,8 +718,6 @@ class GifBuilder
                 }
                 $this->copyGifOntoGif($destImg, $cpImg, $conf, $workArea);
                 $this->ImageWrite($destImg, $theMask);
-                imagedestroy($cpImg);
-                imagedestroy($destImg);
                 // Mask the images
                 $this->ImageWrite($im, $theDest);
                 // Let combineExec handle maskNegation
@@ -762,7 +757,6 @@ class GifBuilder
             }
             $cpImg = $this->imageCreateFromFile($conf['file']);
             $this->copyGifOntoGif($im, $cpImg, $conf, $workArea);
-            imagedestroy($cpImg);
         }
     }
 
@@ -822,7 +816,6 @@ class GifBuilder
                 $this->renderTTFText($maskImg, $conf['fontSize'], $conf['angle'] ?? 0, $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'] ?? [], $conf, $sF);
             }
             $this->ImageWrite($maskImg, $fileMask);
-            imagedestroy($maskImg);
             // Downscales the mask
             if (!$this->processorEffectsEnabled) {
                 $command = trim($this->imageService->scalecmd . ' ' . $w . 'x' . $h . '! -negate');
@@ -838,7 +831,6 @@ class GifBuilder
             $Ccolor = imagecolorallocate($colorImg, $cols[0], $cols[1], $cols[2]);
             imagefilledrectangle($colorImg, 0, 0, $w, $h, $Ccolor);
             $this->ImageWrite($colorImg, $fileColor);
-            imagedestroy($colorImg);
             // The mask is applied
             // The main pictures is saved temporarily
             $this->ImageWrite($im, $fileMenu);
@@ -947,7 +939,6 @@ class GifBuilder
             $Bcolor = imagecolorallocate($blurColImg, $bcols[0], $bcols[1], $bcols[2]);
             imagefilledrectangle($blurColImg, 0, 0, $w, $h, $Bcolor);
             $this->ImageWrite($blurColImg, $fileColor);
-            imagedestroy($blurColImg);
             // The mask is made: BlurTextImage
             $blurTextImg = imagecreatetruecolor($w + $blurBorder * 2, $h + $blurBorder * 2);
             // Black background
@@ -958,8 +949,6 @@ class GifBuilder
             $this->makeText($blurTextImg, $txtConf, $this->applyOffset($workArea, $blurBordArr));
             // Dump to temporary file
             $this->ImageWrite($blurTextImg, $fileMask);
-            // Destroy
-            imagedestroy($blurTextImg);
             $command = $this->imageService->v5_blur($blurRate + 1);
             $this->imageService->imageMagickExec($fileMask, $fileMask, $command . ' +matte');
             // The mask is loaded again
@@ -969,8 +958,6 @@ class GifBuilder
                 // Cropping the border from the mask
                 $blurTextImg = imagecreatetruecolor($w, $h);
                 $this->imagecopyresized($blurTextImg, $blurTextImg_tmp, 0, 0, $blurBorder, $blurBorder, $w, $h, $w, $h);
-                // Destroy the temporary mask
-                imagedestroy($blurTextImg_tmp);
                 // Adjust the mask
                 $intensity = 40;
                 if ($conf['intensity'] ?? false) {
@@ -986,8 +973,6 @@ class GifBuilder
                 }
                 // Dump the mask again
                 $this->ImageWrite($blurTextImg, $fileMask);
-                // Destroy the mask
-                imagedestroy($blurTextImg);
                 // The pictures are combined
                 // The main pictures is saved temporarily
                 $this->ImageWrite($im, $fileMenu);
@@ -1180,7 +1165,6 @@ class GifBuilder
             if ($theNewFile->isFile()) {
                 $tmpImg = $this->imageCreateFromFile($theNewFile->getRealPath());
                 if ($tmpImg) {
-                    imagedestroy($im);
                     $im = $tmpImg;
                     $this->w = imagesx($im);
                     $this->h = imagesy($im);
@@ -2582,7 +2566,6 @@ class GifBuilder
         $this->imageService->imageMagickExec($theFile, $theFile, $command);
         $tmpImg = $this->imageCreateFromFile($theFile);
         if ($tmpImg) {
-            imagedestroy($im);
             $im = $tmpImg;
             $this->w = imagesx($im);
             $this->h = imagesy($im);

@@ -97,7 +97,6 @@ class ExtensionXmlParser implements \SplSubject
                 throw $this->createXmlErrorException($parser, $file);
             }
         }
-        xml_parser_free($parser);
     }
 
     private function createUnableToOpenFileResourceException(string $file): ExtensionManagerException
