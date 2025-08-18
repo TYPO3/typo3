@@ -1387,6 +1387,9 @@ class TcaMigration
                 ) {
                     $hasLegacyItemConfiguration = false;
                     $items = $fieldConfig['config']['items'];
+                    if (is_string($items)) {
+                        continue;
+                    }
                     foreach ($items as $key => $item) {
                         if (!is_array($item)) {
                             continue;

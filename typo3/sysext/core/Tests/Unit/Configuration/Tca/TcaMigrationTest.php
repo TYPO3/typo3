@@ -3412,6 +3412,13 @@ final class TcaMigrationTest extends UnitTestCase
                             ],
                         ],
                     ],
+                    'eColumn' => [
+                        'config' => [
+                            'type' => 'select',
+                            'itemsProcFunc' => 'Vendor\\Package\\Class->method',
+                            'items' => '   ',
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -3464,6 +3471,13 @@ final class TcaMigrationTest extends UnitTestCase
                                     'bar',
                                 ],
                             ],
+                        ],
+                    ],
+                    'eColumn' => [
+                        'config' => [
+                            'type' => 'select',
+                            'itemsProcFunc' => 'Vendor\\Package\\Class->method',
+                            'items' => '   ',
                         ],
                     ],
                 ],
