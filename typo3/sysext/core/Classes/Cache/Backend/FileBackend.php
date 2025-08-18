@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
 
 use TYPO3\CMS\Core\Cache\Exception;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -26,7 +25,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * A caching backend which stores cache entries in files
  */
-class FileBackend extends SimpleFileBackend implements FreezableBackendInterface, TaggableBackendInterface
+class FileBackend extends SimpleFileBackend implements TaggableBackendInterface
 {
     public const SEPARATOR = '^';
     public const EXPIRYTIME_FORMAT = 'YmdHis';
@@ -43,73 +42,6 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
      * @var array
      */
     protected $cacheEntryIdentifiers = [];
-
-    /**
-     * @var bool
-     */
-    protected $frozen = false;
-
-    /**
-     * Freezes this cache backend.
-     *
-     * All data in a frozen backend remains unchanged and methods which try to add
-     * or modify data result in an exception thrown. Possible expiry times of
-     * individual cache entries are ignored.
-     *
-     * On the positive side, a frozen cache backend is much faster on read access.
-     * A frozen backend can only be thawed by calling the flush() method.
-     *
-     * @throws \RuntimeException
-     */
-    public function freeze()
-    {
-        if ($this->frozen === true) {
-            throw new \RuntimeException(sprintf('The cache "%s" is already frozen.', $this->cacheIdentifier), 1323353176);
-        }
-        $cacheEntryFileExtensionLength = strlen($this->cacheEntryFileExtension);
-        for ($directoryIterator = new \DirectoryIterator($this->cacheDirectory); $directoryIterator->valid(); $directoryIterator->next()) {
-            if (!$directoryIterator->isFile()) {
-                continue;
-            }
-            if ($cacheEntryFileExtensionLength > 0) {
-                $entryIdentifier = substr($directoryIterator->getFilename(), 0, -$cacheEntryFileExtensionLength);
-            } else {
-                $entryIdentifier = $directoryIterator->getFilename();
-            }
-            $this->cacheEntryIdentifiers[$entryIdentifier] = true;
-            file_put_contents($this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension, $this->get($entryIdentifier));
-        }
-        file_put_contents($this->cacheDirectory . 'FrozenCache.data', serialize($this->cacheEntryIdentifiers));
-        $this->frozen = true;
-    }
-
-    /**
-     * Tells if this backend is frozen.
-     *
-     * @return bool
-     */
-    public function isFrozen()
-    {
-        return $this->frozen;
-    }
-
-    /**
-     * Sets a reference to the cache frontend which uses this backend and
-     * initializes the default cache directory.
-     *
-     * This method also detects if this backend is frozen and sets the internal
-     * flag accordingly.
-     *
-     * @param FrontendInterface $cache The cache frontend
-     */
-    public function setCache(FrontendInterface $cache)
-    {
-        parent::setCache($cache);
-        if (file_exists($this->cacheDirectory . 'FrozenCache.data')) {
-            $this->frozen = true;
-            $this->cacheEntryIdentifiers = unserialize((string)file_get_contents($this->cacheDirectory . 'FrozenCache.data'));
-        }
-    }
 
     /**
      * Saves data in a cache file.
@@ -133,9 +65,6 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
         }
         if ($entryIdentifier === '') {
             throw new \InvalidArgumentException('The specified entry identifier must not be empty.', 1298114280);
-        }
-        if ($this->frozen === true) {
-            throw new \RuntimeException(sprintf('Cannot add or modify cache entry because the backend of cache "%s" is frozen.', $this->cacheIdentifier), 1323344192);
         }
         $this->remove($entryIdentifier);
         $temporaryCacheEntryPathAndFilename = $this->cacheDirectory . StringUtility::getUniqueId() . '.temp';
@@ -168,9 +97,6 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
      */
     public function get($entryIdentifier)
     {
-        if ($this->frozen === true) {
-            return isset($this->cacheEntryIdentifiers[$entryIdentifier]) ? file_get_contents($this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension) : false;
-        }
         if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073033);
         }
@@ -197,30 +123,10 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
      */
     public function has($entryIdentifier)
     {
-        if ($this->frozen === true) {
-            return isset($this->cacheEntryIdentifiers[$entryIdentifier]);
-        }
         if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073034);
         }
         return !$this->isCacheFileExpired($this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension);
-    }
-
-    /**
-     * Removes all cache entries matching the specified identifier.
-     * Usually this only affects one entry.
-     *
-     * @param string $entryIdentifier Specifies the cache entry to remove
-     * @return bool TRUE if (at least) an entry could be removed or FALSE if no entry was found
-     * @throws \RuntimeException
-     * @throws \InvalidArgumentException
-     */
-    public function remove($entryIdentifier)
-    {
-        if ($this->frozen === true) {
-            throw new \RuntimeException(sprintf('Cannot remove cache entry because the backend of cache "%s" is frozen.', $this->cacheIdentifier), 1323344193);
-        }
-        return parent::remove($entryIdentifier);
     }
 
     /**
@@ -261,17 +167,6 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
             }
         }
         return $entryIdentifiers;
-    }
-
-    /**
-     * Removes all cache entries of this cache and sets the frozen flag to FALSE.
-     */
-    public function flush()
-    {
-        parent::flush();
-        if ($this->frozen === true) {
-            $this->frozen = false;
-        }
     }
 
     /**
@@ -318,9 +213,6 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
      */
     public function collectGarbage()
     {
-        if ($this->frozen === true) {
-            return;
-        }
         for ($directoryIterator = new \DirectoryIterator($this->cacheDirectory); $directoryIterator->valid(); $directoryIterator->next()) {
             if (!$directoryIterator->isFile()) {
                 continue;
@@ -363,12 +255,6 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
      */
     public function requireOnce($entryIdentifier)
     {
-        if ($this->frozen === true) {
-            if (isset($this->cacheEntryIdentifiers[$entryIdentifier])) {
-                return require_once $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
-            }
-            return false;
-        }
         if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073036);
         }
@@ -385,12 +271,6 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
      */
     public function require(string $entryIdentifier)
     {
-        if ($this->frozen) {
-            if (isset($this->cacheEntryIdentifiers[$entryIdentifier])) {
-                return require $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
-            }
-            return false;
-        }
         if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1532528246);
         }

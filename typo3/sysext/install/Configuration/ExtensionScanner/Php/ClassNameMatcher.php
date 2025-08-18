@@ -2594,4 +2594,9 @@ return [
             'Breaking-107047-RemovePointerFieldFunctionalityOfTCAFlex.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Cache\Backend\FreezableBackendInterface' => [
+        'restFiles' => [
+            'Breaking-107310-RemoveFreezableBackendInterface.rst',
+        ],
+    ],
 ];
