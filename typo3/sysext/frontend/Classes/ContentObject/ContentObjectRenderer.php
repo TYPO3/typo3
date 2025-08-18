@@ -682,7 +682,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
                 $tags = $this->calculateCacheTags($cacheConfiguration);
                 $cacheLifetime = $this->calculateCacheLifetime($cacheConfiguration);
-                $cacheTagLifetime = $this->calculateCacheTagLifetime($cacheLifetime);
                 $cachedData = [
                     'content' => $content,
                     'cacheTags' => $tags,
@@ -691,11 +690,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
                 // If no tags are given, we restrict the maximum lifetime of the cache to the lifetime of the cache entry.
                 if ($tags === []) {
-                    $this->getRequest()->getAttribute('frontend.cache.collector')->restrictMaximumLifetime($cacheTagLifetime);
+                    $this->getRequest()->getAttribute('frontend.cache.collector')->restrictMaximumLifetime($cacheLifetime);
                 }
 
                 $this->getRequest()->getAttribute('frontend.cache.collector')->addCacheTags(
-                    ...array_map(fn(string $tag) => new CacheTag($tag, $cacheTagLifetime), $tags)
+                    ...array_map(fn(string $tag) => new CacheTag($tag, $cacheLifetime), $tags)
                 );
             }
         }
@@ -2416,14 +2415,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $event->getLifetime()
             );
 
-        $cacheTagLifetime = $this->calculateCacheTagLifetime($event->getLifetime());
         // If no tags are given, we restrict the maximum lifetime of the cache to the lifetime of the cache entry.
         if ($event->getTags() === []) {
-            $this->getRequest()->getAttribute('frontend.cache.collector')->restrictMaximumLifetime($cacheTagLifetime);
+            $this->getRequest()->getAttribute('frontend.cache.collector')->restrictMaximumLifetime($event->getLifetime());
         }
 
         $this->getRequest()->getAttribute('frontend.cache.collector')->addCacheTags(
-            ...array_map(fn(string $tag) => new CacheTag($tag, $cacheTagLifetime), $event->getTags())
+            ...array_map(fn(string $tag) => new CacheTag($tag, $event->getLifetime()), $event->getTags())
         );
         return $event->getContent();
     }
@@ -5397,34 +5395,22 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Calculates the lifetime of a cache entry based on the given configuration
      */
-    protected function calculateCacheLifetime(array $configuration): ?int
+    protected function calculateCacheLifetime(array $configuration): int
     {
         $configuration['lifetime'] = $configuration['lifetime'] ?? '';
         $lifetimeConfiguration = (string)$this->stdWrapValue('lifetime', $configuration);
 
-        $lifetime = null; // default lifetime of the cache backend. Can be configured via cache configuration options of the backend.
         if (strtolower($lifetimeConfiguration) === 'unlimited') {
-            $lifetime = 0; // unlimited lifetime of the cache backend. Handled different in each cache backend. Some use 0 as unlimited, some use 1 year.
+            $lifetime = 31536000; // unlimited lifetime - 1 year.
         } elseif (strtolower($lifetimeConfiguration) === 'default') {
             $lifetime = $this->getDefaultCachePeriod(); // default lifetime of config.cache_period or 86400 seconds
         } elseif ($lifetimeConfiguration > 0) {
             $lifetime = (int)$lifetimeConfiguration;
+        } else {
+            // If no lifetime is specified, we use the default cache period.
+            $lifetime = $this->getDefaultCachePeriod();
         }
         return $lifetime;
-    }
-
-    /**
-     * This methods converts the cache lifetime into a cache tag lifetime.
-     * This method handles the defaults of the cache backend in a single place
-     */
-    protected function calculateCacheTagLifetime(?int $lifetime): int
-    {
-        // If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-        return match ($lifetime) {
-            0 => PHP_INT_MAX,
-            null => $this->getDefaultCachePeriod(),
-            default => $lifetime,
-        };
     }
 
     /**
