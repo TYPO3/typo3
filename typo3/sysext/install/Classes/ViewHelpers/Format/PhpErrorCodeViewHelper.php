@@ -30,7 +30,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 final class PhpErrorCodeViewHelper extends AbstractViewHelper
 {
-    protected static array $levelNames = [
+    private static array $levelNames = [
         E_ERROR => 'E_ERROR',
         E_WARNING => 'E_WARNING',
         E_PARSE => 'E_PARSE',

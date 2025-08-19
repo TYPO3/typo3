@@ -52,7 +52,7 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'img';
 
-    protected ImageService $imageService;
+    private ImageService $imageService;
 
     public function __construct()
     {
@@ -174,7 +174,7 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
         return $this->tag->render();
     }
 
-    protected function getExceptionMessage(string $detailedMessage): string
+    private function getExceptionMessage(string $detailedMessage): string
     {
         if ($this->renderingContext->hasAttribute(ServerRequestInterface::class)
             && $this->renderingContext->getAttribute(ServerRequestInterface::class) instanceof RequestInterface

@@ -72,7 +72,7 @@ final class ColorSchemeViewHelper extends AbstractViewHelper
         return implode('', $markup);
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

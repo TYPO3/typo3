@@ -89,7 +89,7 @@ final class ActionMenuItemViewHelper extends AbstractTagBasedViewHelper
         return $this->tag->render();
     }
 
-    protected function evaluateSelectItemState(string $controller, string $action, array $arguments): void
+    private function evaluateSelectItemState(string $controller, string $action, array $arguments): void
     {
         /** @var RequestInterface $request */
         $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);

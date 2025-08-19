@@ -93,7 +93,7 @@ final class ToggleExtensionInstallationStateViewHelper extends AbstractTagBasedV
         return $this->tag->render();
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

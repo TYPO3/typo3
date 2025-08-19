@@ -84,7 +84,7 @@ final class ActionMenuViewHelper extends AbstractTagBasedViewHelper
         return '';
     }
 
-    protected static function getPageRenderer(): PageRenderer
+    private static function getPageRenderer(): PageRenderer
     {
         return GeneralUtility::makeInstance(PageRenderer::class);
     }

@@ -92,7 +92,7 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
      * @param mixed $value
      * @return mixed
      */
-    protected function processElementValue(
+    private function processElementValue(
         FormElementInterface $element,
         $value
     ) {
@@ -127,7 +127,7 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
      *
      * @see mapValueToOption()
      */
-    protected static function mapValuesToOptions(array $value, array $options): array
+    private static function mapValuesToOptions(array $value, array $options): array
     {
         $result = [];
         foreach ($value as $key) {
@@ -143,7 +143,7 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
      * @param mixed $value
      * @return mixed
      */
-    protected static function mapValueToOption($value, array $options)
+    private static function mapValueToOption($value, array $options)
     {
         return $options[$value] ?? $value;
     }
@@ -153,7 +153,7 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
      *
      * @param object $object
      */
-    protected static function processObject(FormElementInterface $element, $object): string
+    private static function processObject(FormElementInterface $element, $object): string
     {
         if ($element instanceof StringableFormElementInterface) {
             return $element->valueToString($object);
@@ -178,7 +178,7 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
         return 'Object [' . get_class($object) . ']';
     }
 
-    protected static function isEnabled(RenderableInterface $renderable): bool
+    private static function isEnabled(RenderableInterface $renderable): bool
     {
         if (!$renderable->isEnabled()) {
             return false;

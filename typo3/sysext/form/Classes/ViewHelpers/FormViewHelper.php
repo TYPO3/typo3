@@ -63,7 +63,7 @@ final class FormViewHelper extends FluidFormViewHelper
         return $markup;
     }
 
-    protected function createHiddenInputElement(string $name, string $value): string
+    private function createHiddenInputElement(string $name, string $value): string
     {
         $tagBuilder = GeneralUtility::makeInstance(TagBuilder::class, 'input');
         $tagBuilder->addAttribute('type', 'hidden');
@@ -81,7 +81,7 @@ final class FormViewHelper extends FluidFormViewHelper
         return $this->getFormRuntime()->getFormDefinition()->getIdentifier();
     }
 
-    protected function getFormRuntime(): FormRuntime
+    private function getFormRuntime(): FormRuntime
     {
         return $this->arguments['object'];
     }

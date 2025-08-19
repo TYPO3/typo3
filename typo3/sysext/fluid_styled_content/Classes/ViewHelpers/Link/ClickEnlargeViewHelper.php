@@ -70,12 +70,12 @@ final class ClickEnlargeViewHelper extends AbstractViewHelper
         return $result;
     }
 
-    protected static function getContentObjectRenderer(): ContentObjectRenderer
+    private static function getContentObjectRenderer(): ContentObjectRenderer
     {
         return $GLOBALS['TSFE']->cObj;
     }
 
-    protected static function getTypoScriptService(): TypoScriptService
+    private static function getTypoScriptService(): TypoScriptService
     {
         return GeneralUtility::makeInstance(TypoScriptService::class);
     }

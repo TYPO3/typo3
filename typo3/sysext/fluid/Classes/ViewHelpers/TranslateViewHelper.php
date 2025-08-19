@@ -120,7 +120,7 @@ final class TranslateViewHelper extends AbstractViewHelper
     /**
      * Ensure that a string is returned, if the underlying logic returns null, or cannot handle a translation
      */
-    protected static function handleDefaultValue(string $default, ?array $translateArguments): string
+    private static function handleDefaultValue(string $default, ?array $translateArguments): string
     {
         if (!empty($translateArguments)) {
             return vsprintf($default, $translateArguments);
@@ -128,7 +128,7 @@ final class TranslateViewHelper extends AbstractViewHelper
         return $default;
     }
 
-    protected static function getUsedLocale(Locale|string|null $languageKey, ?ServerRequestInterface $request): Locale|string|null
+    private static function getUsedLocale(Locale|string|null $languageKey, ?ServerRequestInterface $request): Locale|string|null
     {
         if ($languageKey !== null && $languageKey !== '') {
             return $languageKey;

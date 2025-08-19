@@ -65,7 +65,7 @@ final class TypolinkViewHelper extends AbstractViewHelper
         return $typolink !== '' ? self::invokeContentObjectRenderer($this->arguments, $typolink, $request) : '';
     }
 
-    protected static function invokeContentObjectRenderer(array $arguments, string $typoLinkParameter, ?ServerRequestInterface $request): string
+    private static function invokeContentObjectRenderer(array $arguments, string $typoLinkParameter, ?ServerRequestInterface $request): string
     {
         $addQueryString = $arguments['addQueryString'] ?? false;
         $addQueryStringExclude = $arguments['addQueryStringExclude'] ?? '';
@@ -95,7 +95,7 @@ final class TypolinkViewHelper extends AbstractViewHelper
     /**
      * Merges view helper arguments with typolink parts.
      */
-    protected static function mergeTypoLinkConfiguration(array $typoLinkConfiguration, array $arguments): array
+    private static function mergeTypoLinkConfiguration(array $typoLinkConfiguration, array $arguments): array
     {
         if ($typoLinkConfiguration === []) {
             return $typoLinkConfiguration;

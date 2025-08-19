@@ -77,12 +77,12 @@ final class SwitchUserViewHelper extends AbstractTagBasedViewHelper
         return $this->tag->render();
     }
 
-    protected static function getBackendUserAuthentication(): BackendUserAuthentication
+    private static function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
-    protected static function getLanguageService(): LanguageService
+    private static function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

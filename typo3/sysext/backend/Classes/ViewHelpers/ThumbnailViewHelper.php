@@ -41,7 +41,7 @@ final class ThumbnailViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'img';
 
-    protected ImageService $imageService;
+    private ImageService $imageService;
 
     public function __construct()
     {

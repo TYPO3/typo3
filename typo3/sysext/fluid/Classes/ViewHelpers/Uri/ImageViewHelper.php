@@ -150,7 +150,7 @@ final class ImageViewHelper extends AbstractViewHelper
         }
     }
 
-    protected static function getExceptionMessage(string $detailedMessage, RenderingContextInterface $renderingContext): string
+    private static function getExceptionMessage(string $detailedMessage, RenderingContextInterface $renderingContext): string
     {
         $request = null;
         if ($renderingContext->hasAttribute(ServerRequestInterface::class)) {
@@ -165,7 +165,7 @@ final class ImageViewHelper extends AbstractViewHelper
         return sprintf('Unable to render image uri: %s', $detailedMessage);
     }
 
-    protected static function getImageService(): ImageService
+    private static function getImageService(): ImageService
     {
         return GeneralUtility::makeInstance(ImageService::class);
     }

@@ -73,7 +73,7 @@ final class OptionViewHelper extends AbstractFormFieldViewHelper
         return $this->tag->render();
     }
 
-    protected function isValueSelected(string $value): bool
+    private function isValueSelected(string $value): bool
     {
         $selectedValue = $this->renderingContext->getViewHelperVariableContainer()->get(SelectViewHelper::class, 'selectedValue');
         if (is_array($selectedValue)) {

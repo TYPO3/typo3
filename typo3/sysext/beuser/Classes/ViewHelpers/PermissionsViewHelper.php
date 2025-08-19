@@ -37,7 +37,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 final class PermissionsViewHelper extends AbstractViewHelper
 {
-    protected const MASKS = [1, 16, 2, 4, 8];
+    private const MASKS = [1, 16, 2, 4, 8];
 
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.
@@ -89,7 +89,7 @@ final class PermissionsViewHelper extends AbstractViewHelper
         return $icon;
     }
 
-    protected function resolvePermissionLabel(int $mask): string
+    private function resolvePermissionLabel(int $mask): string
     {
         $cacheIdentifier = 'beuser-viewhelper-permission_' . $mask;
         if (!$this->cachePermissionLabels->has($cacheIdentifier)) {
@@ -100,7 +100,7 @@ final class PermissionsViewHelper extends AbstractViewHelper
         return $this->cachePermissionLabels->get($cacheIdentifier);
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

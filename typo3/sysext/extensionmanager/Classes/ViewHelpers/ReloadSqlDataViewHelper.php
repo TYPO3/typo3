@@ -39,7 +39,7 @@ final class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'a';
 
-    protected static string $registryNamespace = 'extensionDataImport';
+    private static string $registryNamespace = 'extensionDataImport';
 
     public function __construct(
         private readonly IconFactory $iconFactory
@@ -100,7 +100,7 @@ final class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
         return $this->tag->render();
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

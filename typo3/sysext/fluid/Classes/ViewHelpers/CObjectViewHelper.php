@@ -126,7 +126,7 @@ final class CObjectViewHelper extends AbstractViewHelper
     /**
      * Renders single content object and increases time tracker stack pointer
      */
-    protected static function renderContentObject(ContentObjectRenderer $contentObjectRenderer, array $setup, string $typoscriptObjectPath, string $lastSegment): string
+    private static function renderContentObject(ContentObjectRenderer $contentObjectRenderer, array $setup, string $typoscriptObjectPath, string $lastSegment): string
     {
         $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
         if ($timeTracker->LR) {
@@ -141,13 +141,13 @@ final class CObjectViewHelper extends AbstractViewHelper
         return $content;
     }
 
-    protected static function getConfigurationManager(): ConfigurationManagerInterface
+    private static function getConfigurationManager(): ConfigurationManagerInterface
     {
         // @todo: this should be replaced by DI once Fluid can handle DI properly
         return GeneralUtility::getContainer()->get(ConfigurationManagerInterface::class);
     }
 
-    protected static function getContentObjectRenderer(ServerRequestInterface $request): ContentObjectRenderer
+    private static function getContentObjectRenderer(ServerRequestInterface $request): ContentObjectRenderer
     {
         if (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
             $tsfe = $GLOBALS['TSFE'];
@@ -167,7 +167,7 @@ final class CObjectViewHelper extends AbstractViewHelper
     /**
      * \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->cObjGetSingle() relies on $GLOBALS['TSFE']
      */
-    protected static function simulateFrontendEnvironment(): ?TypoScriptFrontendController
+    private static function simulateFrontendEnvironment(): ?TypoScriptFrontendController
     {
         $tsfeBackup = $GLOBALS['TSFE'] ?? null;
         $GLOBALS['TSFE'] = new \stdClass();
@@ -178,7 +178,7 @@ final class CObjectViewHelper extends AbstractViewHelper
     /**
      * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
      */
-    protected static function resetFrontendEnvironment(?TypoScriptFrontendController $tsfeBackup): void
+    private static function resetFrontendEnvironment(?TypoScriptFrontendController $tsfeBackup): void
     {
         $GLOBALS['TSFE'] = $tsfeBackup;
     }

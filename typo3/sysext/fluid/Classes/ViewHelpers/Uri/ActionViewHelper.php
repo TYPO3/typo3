@@ -78,7 +78,7 @@ final class ActionViewHelper extends AbstractViewHelper
         );
     }
 
-    protected static function renderFrontendLinkWithCoreContext(ServerRequestInterface $request, array $arguments, \Closure $renderChildrenClosure): string
+    private static function renderFrontendLinkWithCoreContext(ServerRequestInterface $request, array $arguments, \Closure $renderChildrenClosure): string
     {
         // No support for following arguments:
         //  * format
@@ -177,7 +177,7 @@ final class ActionViewHelper extends AbstractViewHelper
         }
     }
 
-    protected static function renderWithExtbaseContext(ExtbaseRequestInterface $request, array $arguments): string
+    private static function renderWithExtbaseContext(ExtbaseRequestInterface $request, array $arguments): string
     {
         $pageUid = (int)($arguments['pageUid'] ?? 0);
         $pageType = (int)($arguments['pageType'] ?? 0);

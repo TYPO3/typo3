@@ -52,14 +52,14 @@ final class ConstraintsViewHelper extends AbstractViewHelper
         return $groupedConstraints;
     }
 
-    protected static function getTransformedIdentifier(string $identifier): string
+    private static function getTransformedIdentifier(string $identifier): string
     {
         return in_array($identifier, Dependency::$specialDependencies, true)
             ? strtoupper($identifier)
             : strtolower($identifier);
     }
 
-    protected static function getVersionString(string $lowestVersion, string $highestVersion): string
+    private static function getVersionString(string $lowestVersion, string $highestVersion): string
     {
         $version = '';
         if ($lowestVersion !== '') {
@@ -72,7 +72,7 @@ final class ConstraintsViewHelper extends AbstractViewHelper
         return $version;
     }
 
-    protected static function isVersionCompatible(Dependency $dependency): bool
+    private static function isVersionCompatible(Dependency $dependency): bool
     {
         if ($dependency->getIdentifier() === 'typo3') {
             return $dependency->isVersionCompatible(VersionNumberUtility::getNumericTypo3Version());

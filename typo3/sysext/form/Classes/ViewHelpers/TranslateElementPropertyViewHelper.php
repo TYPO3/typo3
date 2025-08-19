@@ -68,7 +68,7 @@ final class TranslateElementPropertyViewHelper extends AbstractViewHelper
         return $this->translationService->translateFormElementValue($element, $propertyParts, $formRuntime);
     }
 
-    protected static function assertArgumentTypes(array $arguments): void
+    private static function assertArgumentTypes(array $arguments): void
     {
         foreach (['property', 'renderingOptionProperty'] as $argumentName) {
             if (

@@ -70,7 +70,7 @@ final class WorkspaceTitleViewHelper extends AbstractViewHelper
         return $this->workspaceTitleRuntimeCache->get($cacheIdentifier);
     }
 
-    protected static function getLanguageService(): LanguageService
+    private static function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

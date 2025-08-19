@@ -66,7 +66,7 @@ final class TriggerViewHelper extends AbstractBackendViewHelper
         return $html;
     }
 
-    protected function buildInstructionDataTag(string $dispatchAction): string
+    private function buildInstructionDataTag(string $dispatchAction): string
     {
         return sprintf(
             '<typo3-immediate-action action="%s"></typo3-immediate-action>' . "\n",

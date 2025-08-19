@@ -80,7 +80,7 @@ final class PageViewHelper extends AbstractViewHelper
         );
     }
 
-    protected static function renderBackendLinkWithCoreContext(ServerRequestInterface $request, array $arguments): string
+    private static function renderBackendLinkWithCoreContext(ServerRequestInterface $request, array $arguments): string
     {
         $pageUid = isset($arguments['pageUid']) ? (int)$arguments['pageUid'] : null;
         $section = isset($arguments['section']) ? (string)$arguments['section'] : '';
@@ -125,7 +125,7 @@ final class PageViewHelper extends AbstractViewHelper
         return $uri;
     }
 
-    protected static function renderFrontendLinkWithCoreContext(ServerRequestInterface $request, array $arguments, \Closure $renderChildrenClosure): string
+    private static function renderFrontendLinkWithCoreContext(ServerRequestInterface $request, array $arguments, \Closure $renderChildrenClosure): string
     {
         $pageUid = isset($arguments['pageUid']) ? (int)$arguments['pageUid'] : 'current';
         $pageType = isset($arguments['pageType']) ? (int)$arguments['pageType'] : 0;
@@ -180,7 +180,7 @@ final class PageViewHelper extends AbstractViewHelper
         }
     }
 
-    protected static function renderWithExtbaseContext(ExtbaseRequestInterface $request, array $arguments): string
+    private static function renderWithExtbaseContext(ExtbaseRequestInterface $request, array $arguments): string
     {
         $pageUid = $arguments['pageUid'];
         $additionalParams = $arguments['additionalParams'];

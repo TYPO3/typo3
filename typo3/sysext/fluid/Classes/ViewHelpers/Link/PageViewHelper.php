@@ -101,7 +101,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
         );
     }
 
-    protected function renderFrontendLinkWithCoreContext(ServerRequestInterface $request): string
+    private function renderFrontendLinkWithCoreContext(ServerRequestInterface $request): string
     {
         $pageUid = isset($this->arguments['pageUid']) ? (int)$this->arguments['pageUid'] : 'current';
         $pageType = isset($this->arguments['pageType']) ? (int)$this->arguments['pageType'] : 0;
@@ -165,7 +165,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
         return $result;
     }
 
-    protected function renderBackendLinkWithCoreContext(ServerRequestInterface $request): string
+    private function renderBackendLinkWithCoreContext(ServerRequestInterface $request): string
     {
         $pageUid = isset($this->arguments['pageUid']) ? (int)$this->arguments['pageUid'] : null;
         $section = isset($this->arguments['section']) ? (string)$this->arguments['section'] : '';
@@ -209,7 +209,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
         return $uri;
     }
 
-    protected function renderWithExtbaseContext(ExtbaseRequestInterface $request): string
+    private function renderWithExtbaseContext(ExtbaseRequestInterface $request): string
     {
         $pageUid = isset($this->arguments['pageUid']) ? (int)$this->arguments['pageUid'] : null;
         $pageType = isset($this->arguments['pageType']) ? (int)$this->arguments['pageType'] : 0;

@@ -97,7 +97,7 @@ final class CountrySelectViewHelper extends AbstractFormFieldViewHelper
      * @param Country[] $countries
      * @return array<string, string>
      */
-    protected function createOptions(array $countries): array
+    private function createOptions(array $countries): array
     {
         $options = [];
         foreach ($countries as $code => $country) {
@@ -144,7 +144,7 @@ final class CountrySelectViewHelper extends AbstractFormFieldViewHelper
         return $options;
     }
 
-    protected function translate(string $label): string
+    private function translate(string $label): string
     {
         if ($this->arguments['alternativeLanguage']) {
             return (string)LocalizationUtility::translate($label, languageKey: $this->arguments['alternativeLanguage']);
@@ -155,7 +155,7 @@ final class CountrySelectViewHelper extends AbstractFormFieldViewHelper
     /**
      * Render prepended option tag
      */
-    protected function renderPrependOptionTag(): string
+    private function renderPrependOptionTag(): string
     {
         if ($this->hasArgument('prependOptionLabel')) {
             $value = $this->hasArgument('prependOptionValue') ? $this->arguments['prependOptionValue'] : '';
@@ -173,7 +173,7 @@ final class CountrySelectViewHelper extends AbstractFormFieldViewHelper
      * @param bool $isSelected specifies whether to add selected attribute
      * @return string the rendered option tag
      */
-    protected function renderOptionTag(string $value, string $label, bool $isSelected): string
+    private function renderOptionTag(string $value, string $label, bool $isSelected): string
     {
         $output = '<option value="' . htmlspecialchars($value) . '"';
         if ($isSelected) {
@@ -186,7 +186,7 @@ final class CountrySelectViewHelper extends AbstractFormFieldViewHelper
     /**
      * @return Country[]
      */
-    protected function getCountryList(): array
+    private function getCountryList(): array
     {
         $filter = new CountryFilter();
         $filter->setOnlyCountries($this->arguments['onlyCountries'] ?? [])
@@ -208,5 +208,4 @@ final class CountrySelectViewHelper extends AbstractFormFieldViewHelper
         }
         return parent::convertToPlainValue($value);
     }
-
 }

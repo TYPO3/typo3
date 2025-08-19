@@ -105,7 +105,7 @@ final class UploadedResourceViewHelper extends AbstractFormFieldViewHelper
      * Return a previously uploaded resource.
      * Return NULL if errors occurred during property mapping for this property.
      */
-    protected function getUploadedResource(): ?FileReference
+    private function getUploadedResource(): ?FileReference
     {
         if ($this->getMappingResultsForProperty()->hasErrors()) {
             return null;

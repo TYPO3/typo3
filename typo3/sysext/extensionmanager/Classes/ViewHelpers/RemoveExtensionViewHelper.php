@@ -83,7 +83,7 @@ final class RemoveExtensionViewHelper extends AbstractTagBasedViewHelper
         return $this->tag->render();
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

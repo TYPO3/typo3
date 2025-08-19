@@ -70,7 +70,7 @@ final class LoginLogoViewHelper extends AbstractViewHelper
         return $this->renderImage($uri, $alternativeText);
     }
 
-    protected function renderImage(string $uri, string $alt): string
+    private function renderImage(string $uri, string $alt): string
     {
         return sprintf('<img %s>', GeneralUtility::implodeAttributes([
             'src' => $uri,
@@ -78,7 +78,7 @@ final class LoginLogoViewHelper extends AbstractViewHelper
         ], true));
     }
 
-    protected function getInlineSvg(string $filepath): ?string
+    private function getInlineSvg(string $filepath): ?string
     {
         $cacheIdentifier = $this->packageDependentCacheIdentifier
             ->withPrefix('LoginLogo')
@@ -93,7 +93,7 @@ final class LoginLogoViewHelper extends AbstractViewHelper
         return $svgContent;
     }
 
-    protected function parseSvg(string $filepath): ?string
+    private function parseSvg(string $filepath): ?string
     {
         if (!str_ends_with($filepath, '.svg')) {
             return null;
@@ -147,7 +147,7 @@ final class LoginLogoViewHelper extends AbstractViewHelper
         return $domXml->saveXML($svgElement);
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

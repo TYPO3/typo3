@@ -116,7 +116,7 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
      * @param string $height
      * @return string Rendered img tag
      */
-    protected function renderImage(FileInterface $image, $width, $height, ?string $fileExtension): string
+    private function renderImage(FileInterface $image, $width, $height, ?string $fileExtension): string
     {
         $cropVariant = (string)(($this->arguments['cropVariant'] ?? '') ?: 'default');
         $cropString = $image instanceof FileReference ? $image->getProperty('crop') : '';
@@ -164,7 +164,7 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
         return $this->tag->render();
     }
 
-    protected function getImageService(): ImageService
+    private function getImageService(): ImageService
     {
         return GeneralUtility::makeInstance(ImageService::class);
     }

@@ -92,7 +92,7 @@ final class TypolinkViewHelper extends AbstractViewHelper
         return $content;
     }
 
-    protected static function invokeContentObjectRenderer(array $arguments, string $typoLinkParameter, string $content, ?ServerRequestInterface $request): string
+    private static function invokeContentObjectRenderer(array $arguments, string $typoLinkParameter, string $content, ?ServerRequestInterface $request): string
     {
         $addQueryString = $arguments['addQueryString'] ?? false;
         $addQueryStringExclude = $arguments['addQueryStringExclude'] ?? '';
@@ -125,7 +125,7 @@ final class TypolinkViewHelper extends AbstractViewHelper
         return $contentObject->typoLink($content, $instructions);
     }
 
-    protected static function serializeTagParameters(array $arguments): string
+    private static function serializeTagParameters(array $arguments): string
     {
         // array(param1 -> value1, param2 -> value2) --> param1="value1" param2="value2" for typolink.ATagParams
         $extraAttributes = [];
@@ -139,7 +139,7 @@ final class TypolinkViewHelper extends AbstractViewHelper
     /**
      * Merges view helper arguments with typolink parts.
      */
-    protected static function mergeTypoLinkConfiguration(array $typoLinkConfiguration, array $arguments): array
+    private static function mergeTypoLinkConfiguration(array $typoLinkConfiguration, array $arguments): array
     {
         if ($typoLinkConfiguration === []) {
             return $typoLinkConfiguration;

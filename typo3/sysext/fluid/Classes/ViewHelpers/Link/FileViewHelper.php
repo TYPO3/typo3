@@ -102,7 +102,7 @@ final class FileViewHelper extends AbstractTagBasedViewHelper
     /**
      * Create a file dump URL, taking the view helper arguments into account
      */
-    protected function createFileDumpUrl(FileInterface $file): string
+    private function createFileDumpUrl(FileInterface $file): string
     {
         $parameters = ['eID' => 'dumpFile'];
 
@@ -131,7 +131,7 @@ final class FileViewHelper extends AbstractTagBasedViewHelper
             . '?' . http_build_query($parameters, '', '&', PHP_QUERY_RFC3986);
     }
 
-    protected function getAlternativeFilename(FileInterface $file): string
+    private function getAlternativeFilename(FileInterface $file): string
     {
         $alternativeFilename = $this->arguments['filename'] ?? '';
 

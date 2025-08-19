@@ -73,7 +73,7 @@ final class PagePathViewHelper extends AbstractBackendViewHelper
         return $pagePath;
     }
 
-    protected static function getLanguageService(): LanguageService
+    private static function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

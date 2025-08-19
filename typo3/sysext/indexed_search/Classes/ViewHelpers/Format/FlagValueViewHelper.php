@@ -64,7 +64,7 @@ final class FlagValueViewHelper extends AbstractViewHelper
         return implode(' ', $content);
     }
 
-    protected static function getLanguageService(): LanguageService
+    private static function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

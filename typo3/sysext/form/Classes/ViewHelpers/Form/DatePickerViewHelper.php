@@ -120,7 +120,7 @@ final class DatePickerViewHelper extends AbstractFormFieldViewHelper
         return $content;
     }
 
-    protected function getSelectedDate(): ?\DateTime
+    private function getSelectedDate(): ?\DateTime
     {
         /** @var FormRuntime $formRuntime */
         $formRuntime = $this->renderingContext
@@ -145,7 +145,7 @@ final class DatePickerViewHelper extends AbstractFormFieldViewHelper
         return null;
     }
 
-    protected function convertDateFormatToDatePickerFormat(string $dateFormat): string
+    private function convertDateFormatToDatePickerFormat(string $dateFormat): string
     {
         $replacements = [
             'd' => 'dd',

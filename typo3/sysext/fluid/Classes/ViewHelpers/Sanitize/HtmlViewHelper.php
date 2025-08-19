@@ -63,12 +63,12 @@ final class HtmlViewHelper extends AbstractViewHelper
         return self::createSanitizer($build)->sanitize((string)$value, self::createInitiator());
     }
 
-    protected static function createInitiator(): SanitizerInitiator
+    private static function createInitiator(): SanitizerInitiator
     {
         return GeneralUtility::makeInstance(SanitizerInitiator::class, self::class);
     }
 
-    protected static function createSanitizer(string $build): Sanitizer
+    private static function createSanitizer(string $build): Sanitizer
     {
         if (class_exists($build) && is_a($build, BuilderInterface::class, true)) {
             $builder = GeneralUtility::makeInstance($build);

@@ -118,7 +118,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
     /**
      * Render prepended option tag
      */
-    protected function renderPrependOptionTag(): string
+    private function renderPrependOptionTag(): string
     {
         $output = '';
         if ($this->hasArgument('prependOptionLabel')) {
@@ -132,7 +132,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
     /**
      * Render the option tags.
      */
-    protected function renderOptionTags(array $options): string
+    private function renderOptionTags(array $options): string
     {
         $output = '';
         foreach ($options as $value => $label) {
@@ -147,7 +147,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
      *
      * @return array An associative array of options, key will be the value of the option tag
      */
-    protected function getOptions(): array
+    private function getOptions(): array
     {
         if (!is_array($this->arguments['options']) && !$this->arguments['options'] instanceof \Traversable) {
             return [];
@@ -217,7 +217,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
      * @param mixed $value Value to check for
      * @return bool True if the value should be marked as selected.
      */
-    protected function isSelected($value): bool
+    private function isSelected($value): bool
     {
         $selectedValue = $this->getSelectedValue();
         if ($value === $selectedValue || (string)$value === $selectedValue) {
@@ -239,7 +239,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
      *
      * @return mixed value string or an array of strings
      */
-    protected function getSelectedValue()
+    private function getSelectedValue()
     {
         $this->setRespectSubmittedDataValue(true);
         $value = $this->getValueAttribute();
@@ -259,7 +259,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
      * @param mixed $valueElement
      * @return string @todo: Does not always return string ...
      */
-    protected function getOptionValueScalar($valueElement)
+    private function getOptionValueScalar($valueElement)
     {
         if (is_object($valueElement)) {
             if ($this->hasArgument('optionValueField')) {
@@ -295,7 +295,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
      * @param bool $isSelected specifies whether to add selected attribute
      * @return string the rendered option tag
      */
-    protected function renderOptionTag(string $value, string $label, bool $isSelected): string
+    private function renderOptionTag(string $value, string $label, bool $isSelected): string
     {
         $output = '<option value="' . htmlspecialchars($value) . '"';
         if ($isSelected) {

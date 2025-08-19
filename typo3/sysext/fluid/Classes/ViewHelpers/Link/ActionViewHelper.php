@@ -85,7 +85,7 @@ final class ActionViewHelper extends AbstractTagBasedViewHelper
         );
     }
 
-    protected function renderFrontendLinkWithCoreContext(ServerRequestInterface $request): string
+    private function renderFrontendLinkWithCoreContext(ServerRequestInterface $request): string
     {
         // No support for following arguments:
         //  * format
@@ -192,7 +192,7 @@ final class ActionViewHelper extends AbstractTagBasedViewHelper
         }
     }
 
-    protected function renderWithExtbaseContext(ExtbaseRequestInterface $request): string
+    private function renderWithExtbaseContext(ExtbaseRequestInterface $request): string
     {
         $action = $this->arguments['action'];
         $controller = $this->arguments['controller'];

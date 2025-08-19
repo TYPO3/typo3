@@ -104,12 +104,12 @@ final class PageRendererViewHelper extends AbstractViewHelper
         }
     }
 
-    protected static function getPageRenderer(): PageRenderer
+    private static function getPageRenderer(): PageRenderer
     {
         return GeneralUtility::makeInstance(PageRenderer::class);
     }
 
-    protected static function getLanguageService(): LanguageService
+    private static function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
