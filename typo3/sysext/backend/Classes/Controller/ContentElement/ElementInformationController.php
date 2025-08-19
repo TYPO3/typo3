@@ -104,7 +104,8 @@ class ElementInformationController
                             $uid = (int)$this->row['_ORIG_uid'];
                         }
                         $pageInfo = BackendUtility::readPageAccess((int)$this->row['pid'], $permsClause) ?: [];
-                        $accessAllowed = $pageInfo !== [];
+                        $accessAllowed = $pageInfo !== []
+                            || ((int)$this->row['pid'] === 0 && $this->tcaSchemaFactory->get($this->table)->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction());
                     }
                 }
             }
