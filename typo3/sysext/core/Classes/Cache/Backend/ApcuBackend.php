@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -51,11 +53,9 @@ final class ApcuBackend extends AbstractBackend implements TaggableBackendInterf
     /**
      * Constructs this backend
      *
-     * @param string $context Unused, for backward compatibility only
      * @param array $options Configuration options - unused here
-     * @throws Exception
      */
-    public function __construct($context, array $options = [])
+    public function __construct(array $options = [])
     {
         if (!extension_loaded('apcu')) {
             throw new Exception('The PHP extension "apcu" must be installed and loaded in order to use the APCu backend.', 1232985914);
@@ -63,34 +63,22 @@ final class ApcuBackend extends AbstractBackend implements TaggableBackendInterf
         if (PHP_SAPI === 'cli' && ini_get('apc.enable_cli') == 0) {
             throw new Exception('The APCu backend cannot be used because apcu is disabled on CLI.', 1232985915);
         }
-        parent::__construct($context, $options);
+        parent::__construct($options);
     }
 
-    /**
-     * Initializes the identifier prefix when setting the cache.
-     */
     public function setCache(FrontendInterface $cache): void
     {
         parent::setCache($cache);
-        $this->identifierPrefix = 'TYPO3_' . hash('xxh3', Environment::getProjectPath() . $this->context . $cache->getIdentifier()) . '_';
+        $this->identifierPrefix = 'TYPO3_' . hash('xxh3', Environment::getProjectPath() . $cache->getIdentifier()) . '_';
     }
 
     /**
-     * Saves data in the cache.
-     *
-     * @param string $entryIdentifier An identifier for this specific cache entry
-     * @param mixed $data The data to be stored
-     * @param array $tags Tags to associate with this cache entry
-     * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @throws Exception if no cache frontend has been set.
+     * @param mixed $data The data to be stored. mixed is allowed due to TransientBackendInterface
      */
-    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null): void
+    public function set(string $entryIdentifier, mixed $data, array $tags = [], ?int $lifetime = null): void
     {
-        if (!$this->cache instanceof FrontendInterface) {
-            throw new Exception('No cache frontend has been set yet via setCache().', 1232986118);
-        }
-        $expiration = $lifetime ?? $this->defaultLifetime;
-        $success = apcu_store($this->identifierPrefix . $entryIdentifier, $data, $expiration);
+        $lifetime ??= $this->defaultLifetime;
+        $success = apcu_store($this->identifierPrefix . $entryIdentifier, $data, $lifetime);
         if ($success === true) {
             $this->removeIdentifierFromAllTags($entryIdentifier);
             $this->addIdentifierToTags($entryIdentifier, $tags);
@@ -102,23 +90,16 @@ final class ApcuBackend extends AbstractBackend implements TaggableBackendInterf
     /**
      * Loads data from the cache.
      *
-     * @param string $entryIdentifier An identifier which describes the cache entry to load
      * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
      */
-    public function get($entryIdentifier): mixed
+    public function get(string $entryIdentifier): mixed
     {
         $success = false;
         $value = apcu_fetch($this->identifierPrefix . $entryIdentifier, $success);
         return $success ? $value : $success;
     }
 
-    /**
-     * Checks if a cache entry with the specified identifier exists.
-     *
-     * @param string $entryIdentifier An identifier specifying the cache entry
-     * @return bool TRUE if such an entry exists, FALSE if not
-     */
-    public function has($entryIdentifier): bool
+    public function has(string $entryIdentifier): bool
     {
         $success = false;
         apcu_fetch($this->identifierPrefix . $entryIdentifier, $success);
@@ -130,23 +111,15 @@ final class ApcuBackend extends AbstractBackend implements TaggableBackendInterf
      * Usually this only affects one entry but if - for what reason ever -
      * old entries for the identifier still exist, they are removed as well.
      *
-     * @param string $entryIdentifier Specifies the cache entry to remove
      * @return bool TRUE if (at least) an entry could be removed or FALSE if no entry was found
      */
-    public function remove($entryIdentifier): bool
+    public function remove(string $entryIdentifier): bool
     {
         $this->removeIdentifierFromAllTags($entryIdentifier);
         return apcu_delete($this->identifierPrefix . $entryIdentifier);
     }
 
-    /**
-     * Finds and returns all cache entry identifiers which are tagged by the
-     * specified tag.
-     *
-     * @param string $tag The tag to search for
-     * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-     */
-    public function findIdentifiersByTag($tag): array
+    public function findIdentifiersByTag(string $tag): array
     {
         $success = false;
         $identifiers = apcu_fetch($this->identifierPrefix . 'tag_' . $tag, $success);
@@ -156,25 +129,12 @@ final class ApcuBackend extends AbstractBackend implements TaggableBackendInterf
         return (array)$identifiers;
     }
 
-    /**
-     * Removes all cache entries of this cache.
-     *
-     * @throws Exception
-     */
     public function flush(): void
     {
-        if (!$this->cache instanceof FrontendInterface) {
-            throw new Exception('Yet no cache frontend has been set via setCache().', 1232986571);
-        }
         apcu_delete(new \APCUIterator('/^' . preg_quote($this->identifierPrefix, '/') . '/'));
     }
 
-    /**
-     * Removes all cache entries of this cache which are tagged by the specified tag.
-     *
-     * @param string $tag The tag the entries must have
-     */
-    public function flushByTag($tag): void
+    public function flushByTag(string $tag): void
     {
         $identifiers = $this->findIdentifiersByTag($tag);
         foreach ($identifiers as $identifier) {
@@ -182,9 +142,16 @@ final class ApcuBackend extends AbstractBackend implements TaggableBackendInterf
         }
     }
 
-    /**
-     * Associates the identifier with the given tags
-     */
+    public function flushByTags(array $tags): void
+    {
+        array_walk($tags, $this->flushByTag(...));
+    }
+
+    public function collectGarbage(): void
+    {
+        // Noop, APCu has internal GC
+    }
+
     private function addIdentifierToTags(string $entryIdentifier, array $tags): void
     {
         // Get identifier-to-tag index to look for updates
@@ -211,9 +178,6 @@ final class ApcuBackend extends AbstractBackend implements TaggableBackendInterf
         }
     }
 
-    /**
-     * Removes association of the identifier with the given tags
-     */
     private function removeIdentifierFromAllTags(string $entryIdentifier): void
     {
         // Get tags for this identifier
@@ -239,19 +203,10 @@ final class ApcuBackend extends AbstractBackend implements TaggableBackendInterf
         apcu_delete($this->identifierPrefix . 'ident_' . $entryIdentifier);
     }
 
-    /**
-     * Finds all tags for the given identifier. This function uses reverse tag
-     * index to search for tags.
-     */
     private function findTagsByIdentifier(string $identifier): array
     {
         $success = false;
         $tags = apcu_fetch($this->identifierPrefix . 'ident_' . $identifier, $success);
         return $success ? (array)$tags : [];
-    }
-
-    public function collectGarbage(): void
-    {
-        // Noop, APCu has internal GC
     }
 }

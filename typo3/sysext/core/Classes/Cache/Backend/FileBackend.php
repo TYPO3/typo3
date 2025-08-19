@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,7 +18,6 @@
 namespace TYPO3\CMS\Core\Cache\Backend;
 
 use TYPO3\CMS\Core\Cache\Exception;
-use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -27,39 +28,14 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class FileBackend extends SimpleFileBackend implements TaggableBackendInterface
 {
-    public const SEPARATOR = '^';
-    public const EXPIRYTIME_FORMAT = 'YmdHis';
-    public const EXPIRYTIME_LENGTH = 14;
-    public const DATASIZE_DIGITS = 10;
-    /**
-     * A file extension to use for each cache entry.
-     *
-     * @var string
-     */
-    protected $cacheEntryFileExtension = '';
+    protected const EXPIRYTIME_LENGTH = 14;
+    protected const DATASIZE_DIGITS = 10;
 
     /**
-     * @var array
-     */
-    protected $cacheEntryIdentifiers = [];
-
-    /**
-     * Saves data in a cache file.
-     *
-     * @param string $entryIdentifier An identifier for this specific cache entry
-     * @param string $data The data to be stored
-     * @param array $tags Tags to associate with this cache entry
-     * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @throws \RuntimeException
-     * @throws InvalidDataException if the directory does not exist or is not writable or exceeds the maximum allowed path length, or if no cache frontend has been set.
      * @throws Exception if the directory does not exist or is not writable or exceeds the maximum allowed path length, or if no cache frontend has been set.
-     * @throws \InvalidArgumentException
      */
-    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
+    public function set(string $entryIdentifier, string $data, array $tags = [], ?int $lifetime = null): void
     {
-        if (!is_string($data)) {
-            throw new InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1204481674);
-        }
         if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073032);
         }
@@ -68,7 +44,7 @@ class FileBackend extends SimpleFileBackend implements TaggableBackendInterface
         }
         $this->remove($entryIdentifier);
         $temporaryCacheEntryPathAndFilename = $this->cacheDirectory . StringUtility::getUniqueId() . '.temp';
-        $lifetime = (int)($lifetime ?? $this->defaultLifetime);
+        $lifetime ??= $this->defaultLifetime;
         $expiryTime = $lifetime === 0 ? 0 : (int)($GLOBALS['EXEC_TIME'] + $lifetime);
         $metaData = str_pad((string)$expiryTime, self::EXPIRYTIME_LENGTH) . implode(' ', $tags) . str_pad((string)strlen($data), self::DATASIZE_DIGITS);
         $result = GeneralUtility::writeFile($temporaryCacheEntryPathAndFilename, $data . $metaData, true);
@@ -89,13 +65,9 @@ class FileBackend extends SimpleFileBackend implements TaggableBackendInterface
     }
 
     /**
-     * Loads data from a cache file.
-     *
-     * @param string $entryIdentifier An identifier which describes the cache entry to load
-     * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
-     * @throws \InvalidArgumentException If identifier is invalid
+     * @return false|string The cache entry's content as a string or FALSE if the cache entry could not be loaded
      */
-    public function get($entryIdentifier)
+    public function get(string $entryIdentifier): false|string
     {
         if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073033);
@@ -114,14 +86,7 @@ class FileBackend extends SimpleFileBackend implements TaggableBackendInterface
         return file_get_contents($pathAndFilename, false, null, 0, $dataSize);
     }
 
-    /**
-     * Checks if a cache entry with the specified identifier exists.
-     *
-     * @param string $entryIdentifier
-     * @return bool TRUE if such an entry exists, FALSE if not
-     * @throws \InvalidArgumentException
-     */
-    public function has($entryIdentifier)
+    public function has(string $entryIdentifier): bool
     {
         if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073034);
@@ -129,14 +94,7 @@ class FileBackend extends SimpleFileBackend implements TaggableBackendInterface
         return !$this->isCacheFileExpired($this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension);
     }
 
-    /**
-     * Finds and returns all cache entry identifiers which are tagged by the
-     * specified tag.
-     *
-     * @param string $searchedTag The tag to search for
-     * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-     */
-    public function findIdentifiersByTag($searchedTag): array
+    public function findIdentifiersByTag(string $tag): array
     {
         $entryIdentifiers = [];
         $now = $GLOBALS['EXEC_TIME'];
@@ -158,9 +116,9 @@ class FileBackend extends SimpleFileBackend implements TaggableBackendInterface
             if ($expiryTime !== 0 && $expiryTime < $now) {
                 continue;
             }
-            if (in_array($searchedTag, explode(' ', substr($metaData, self::EXPIRYTIME_LENGTH, -self::DATASIZE_DIGITS)))) {
+            if (in_array($tag, explode(' ', substr($metaData, self::EXPIRYTIME_LENGTH, -self::DATASIZE_DIGITS)))) {
                 if ($cacheEntryFileExtensionLength > 0) {
-                    $entryIdentifiers[] = substr($directoryIterator->getFilename(), 0, -$cacheEntryFileExtensionLength);
+                    $entryIdentifiers[] = substr((string)$directoryIterator->getFilename(), 0, -$cacheEntryFileExtensionLength);
                 } else {
                     $entryIdentifiers[] = $directoryIterator->getFilename();
                 }
@@ -169,30 +127,24 @@ class FileBackend extends SimpleFileBackend implements TaggableBackendInterface
         return $entryIdentifiers;
     }
 
-    /**
-     * Removes all cache entries of this cache which are tagged by the specified tag.
-     *
-     * @param string $tag The tag the entries must have
-     */
-    public function flushByTag($tag)
+    public function flushByTag(string $tag): void
     {
         $identifiers = $this->findIdentifiersByTag($tag);
-        if (empty($identifiers)) {
-            return;
-        }
         foreach ($identifiers as $entryIdentifier) {
             $this->remove($entryIdentifier);
         }
     }
 
+    public function flushByTags(array $tags): void
+    {
+        array_walk($tags, $this->flushByTag(...));
+    }
+
     /**
      * Checks if the given cache entry files are still valid or if their
      * lifetime has exceeded.
-     *
-     * @param string $cacheEntryPathAndFilename
-     * @return bool
      */
-    protected function isCacheFileExpired($cacheEntryPathAndFilename)
+    protected function isCacheFileExpired(string $cacheEntryPathAndFilename): bool
     {
         if (file_exists($cacheEntryPathAndFilename) === false) {
             return true;
@@ -208,10 +160,7 @@ class FileBackend extends SimpleFileBackend implements TaggableBackendInterface
         return $expiryTime !== 0 && $expiryTime < $GLOBALS['EXEC_TIME'];
     }
 
-    /**
-     * Does garbage collection
-     */
-    public function collectGarbage()
+    public function collectGarbage(): void
     {
         for ($directoryIterator = new \DirectoryIterator($this->cacheDirectory); $directoryIterator->valid(); $directoryIterator->next()) {
             if (!$directoryIterator->isFile()) {
@@ -228,32 +177,7 @@ class FileBackend extends SimpleFileBackend implements TaggableBackendInterface
         }
     }
 
-    /**
-     * Tries to find the cache entry for the specified identifier.
-     * Usually only one cache entry should be found - if more than one exist, this
-     * is due to some error or crash.
-     *
-     * @param string $entryIdentifier The cache entry identifier
-     * @return mixed The filenames (including path) as an array if one or more entries could be found, otherwise FALSE
-     */
-    protected function findCacheFilesByIdentifier($entryIdentifier)
-    {
-        $pattern = $this->cacheDirectory . $entryIdentifier;
-        $filesFound = glob($pattern);
-        if (empty($filesFound)) {
-            return false;
-        }
-        return $filesFound;
-    }
-
-    /**
-     * Loads PHP code from the cache and require_onces it right away.
-     *
-     * @param string $entryIdentifier An identifier which describes the cache entry to load
-     * @throws \InvalidArgumentException
-     * @return mixed Potential return value from the include operation
-     */
-    public function requireOnce($entryIdentifier)
+    public function requireOnce(string $entryIdentifier): mixed
     {
         if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073036);
@@ -262,14 +186,7 @@ class FileBackend extends SimpleFileBackend implements TaggableBackendInterface
         return $this->isCacheFileExpired($pathAndFilename) ? false : require_once $pathAndFilename;
     }
 
-    /**
-     * Loads PHP code from the cache and require it right away.
-     *
-     * @param string $entryIdentifier An identifier which describes the cache entry to load
-     * @throws \InvalidArgumentException
-     * @return mixed Potential return value from the include operation
-     */
-    public function require(string $entryIdentifier)
+    public function require(string $entryIdentifier): mixed
     {
         if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
             throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1532528246);

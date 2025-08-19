@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -23,33 +25,17 @@ use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
  */
 class PhpFrontend extends AbstractFrontend
 {
-    /**
-     * Constructs the cache
-     *
-     * @param string $identifier An identifier which describes this cache
-     * @param PhpCapableBackendInterface $backend Backend to be used for this cache
-     */
-    public function __construct($identifier, PhpCapableBackendInterface $backend)
+    public function __construct(string $identifier, PhpCapableBackendInterface $backend)
     {
         parent::__construct($identifier, $backend);
     }
 
-    /**
-     * Saves the PHP source code in the cache.
-     *
-     * @param string $entryIdentifier An identifier used for this cache entry, for example the class name
-     * @param string $sourceCode PHP source code
-     * @param array $tags Tags to associate with this cache entry
-     * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @throws \InvalidArgumentException If $entryIdentifier or $tags is invalid
-     * @throws InvalidDataException If $sourceCode is not a string
-     */
-    public function set($entryIdentifier, $sourceCode, array $tags = [], $lifetime = null)
+    public function set(string $entryIdentifier, mixed $data, array $tags = [], ?int $lifetime = null): void
     {
         if (!$this->isValidEntryIdentifier($entryIdentifier)) {
             throw new \InvalidArgumentException('"' . $entryIdentifier . '" is not a valid cache entry identifier.', 1264023823);
         }
-        if (!is_string($sourceCode)) {
+        if (!is_string($data)) {
             throw new InvalidDataException('The given source code is not a valid string.', 1264023824);
         }
         foreach ($tags as $tag) {
@@ -57,18 +43,11 @@ class PhpFrontend extends AbstractFrontend
                 throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1264023825);
             }
         }
-        $sourceCode = '<?php' . LF . $sourceCode . LF . '#';
+        $sourceCode = '<?php' . LF . $data . LF . '#';
         $this->backend->set($entryIdentifier, $sourceCode, $tags, $lifetime);
     }
 
-    /**
-     * Finds and returns a variable value from the cache.
-     *
-     * @param string $entryIdentifier Identifier of the cache entry to fetch
-     * @return string The value
-     * @throws \InvalidArgumentException if the cache identifier is not valid
-     */
-    public function get($entryIdentifier)
+    public function get(string $entryIdentifier): mixed
     {
         if (!$this->isValidEntryIdentifier($entryIdentifier)) {
             throw new \InvalidArgumentException('"' . $entryIdentifier . '" is not a valid cache entry identifier.', 1233057753);
@@ -82,9 +61,13 @@ class PhpFrontend extends AbstractFrontend
      * @param string $entryIdentifier An identifier which describes the cache entry to load
      * @return mixed Potential return value from the include operation
      */
-    public function requireOnce($entryIdentifier)
+    public function requireOnce(string $entryIdentifier): mixed
     {
-        return $this->backend->requireOnce($entryIdentifier);
+        $backend = $this->getBackend();
+        if (!($backend instanceof PhpCapableBackendInterface)) {
+            throw new \RuntimeException('Can not require: Not a PhpCapableBackendInterface', 1763660480);
+        }
+        return $backend->requireOnce($entryIdentifier);
     }
 
     /**
@@ -96,8 +79,12 @@ class PhpFrontend extends AbstractFrontend
      * @param string $entryIdentifier An identifier which describes the cache entry to load
      * @return mixed Potential return value from the include operation
      */
-    public function require(string $entryIdentifier)
+    public function require(string $entryIdentifier): mixed
     {
-        return $this->backend->require($entryIdentifier);
+        $backend = $this->getBackend();
+        if (!($backend instanceof PhpCapableBackendInterface)) {
+            throw new \RuntimeException('Can not require: Not a PhpCapableBackendInterface', 1763660481);
+        }
+        return $backend->require($entryIdentifier);
     }
 }

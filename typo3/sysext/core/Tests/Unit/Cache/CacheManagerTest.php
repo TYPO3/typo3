@@ -290,7 +290,7 @@ final class CacheManagerTest extends UnitTestCase
     #[Test]
     public function getCacheCreatesCacheInstanceWithFallbackToDefaultFrontend(): void
     {
-        $manager = $this->getAccessibleMock(CacheManager::class, null, [], '', false);
+        $manager = $this->getAccessibleMock(CacheManager::class, null);
         $cacheIdentifier = StringUtility::getUniqueId('Test');
         $configuration = [
             $cacheIdentifier => [
@@ -313,7 +313,7 @@ final class CacheManagerTest extends UnitTestCase
     #[Test]
     public function getCacheCreatesCacheInstanceWithFallbackToDefaultBackend(): void
     {
-        $manager = $this->getAccessibleMock(CacheManager::class, null, [], '', false);
+        $manager = $this->getAccessibleMock(CacheManager::class, null);
         $cacheIdentifier = StringUtility::getUniqueId('Test');
         $configuration = [
             $cacheIdentifier => [

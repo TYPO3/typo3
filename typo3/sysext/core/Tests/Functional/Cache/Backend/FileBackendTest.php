@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\Cache\Backend;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\FileBackend;
-use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
@@ -109,7 +108,7 @@ final class FileBackendTest extends FunctionalTestCase
     #[Test]
     public function getCacheDirectoryReturnsTheCurrentCacheDirectory(): void
     {
-        $subject = new FileBackend('');
+        $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache(new NullFrontend('SomeCache'));
         self::assertEquals($this->instancePath . '/Foo/cache/code/SomeCache/', $subject->getCacheDirectory());
@@ -120,21 +119,10 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $mockCache = $this->createMock(PhpFrontend::class);
         $mockCache->method('getIdentifier')->willReturn('SomeCache');
-        $subject = new FileBackend('');
+        $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         self::assertEquals($this->instancePath . '/Foo/cache/code/SomeCache/', $subject->getCacheDirectory());
-    }
-
-    #[Test]
-    public function setThrowsExceptionIfDataIsNotAString(): void
-    {
-        $this->expectException(InvalidDataException::class);
-        $this->expectExceptionCode(1204481674);
-        $subject = new FileBackend('');
-        $subject->setCacheDirectory($this->instancePath . '/Foo/');
-        $subject->setCache(new NullFrontend('SomeCache'));
-        $subject->set('some identifier', ['not a string']);
     }
 
     #[Test]
@@ -145,7 +133,7 @@ final class FileBackendTest extends FunctionalTestCase
         $data = 'some data' . microtime();
         $entryIdentifier = 'BackendFileTest';
         $pathAndFilename = $this->instancePath . '/Foo/cache/data/UnitTestCache/' . $entryIdentifier;
-        $subject = new FileBackend('');
+        $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->set($entryIdentifier, $data);
@@ -162,7 +150,7 @@ final class FileBackendTest extends FunctionalTestCase
         $data1 = 'some data' . microtime();
         $data2 = 'some data' . microtime();
         $entryIdentifier = 'BackendFileRemoveBeforeSetTest';
-        $subject = new FileBackend('');
+        $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->set($entryIdentifier, $data1, [], 500);
@@ -180,13 +168,13 @@ final class FileBackendTest extends FunctionalTestCase
         $mockCache->expects($this->atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
         $data = 'some data' . microtime();
         $entryIdentifier = 'BackendFileRemoveBeforeSetTest';
-        $subject = new FileBackend('');
+        $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->set($entryIdentifier, $data, ['Tag1', 'Tag2']);
         $pathAndFilename = $this->instancePath . '/Foo/cache/data/UnitTestCache/' . $entryIdentifier;
         self::assertFileExists($pathAndFilename);
-        $retrievedData = file_get_contents($pathAndFilename, false, null, \strlen($data) + FileBackend::EXPIRYTIME_LENGTH, 9);
+        $retrievedData = file_get_contents($pathAndFilename, false, null, \strlen($data) + 14, 9);
         self::assertEquals('Tag1 Tag2', $retrievedData);
     }
 
@@ -195,7 +183,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects($this->atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = new FileBackend('');
+        $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $entryIdentifier = 'BackendFileTest';
@@ -224,7 +212,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects($this->atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = new FileBackend('');
+        $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $entryIdentifier = 'BackendFileTest';
@@ -251,7 +239,7 @@ final class FileBackendTest extends FunctionalTestCase
         $data = 'some data' . microtime();
         $entryIdentifier = 'BackendFileTest';
         $pathAndFilename = $this->instancePath . '/Foo/cache/data/UnitTestCache/' . $entryIdentifier;
-        $subject = new FileBackend('');
+        $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->set($entryIdentifier, $data);
@@ -286,7 +274,7 @@ final class FileBackendTest extends FunctionalTestCase
         $this->expectExceptionCode(1282073032);
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects($this->atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = new FileBackend('');
+        $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->set($identifier, 'cache data', []);
@@ -300,7 +288,7 @@ final class FileBackendTest extends FunctionalTestCase
         $this->expectExceptionCode(1282073033);
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects($this->atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = new FileBackend('');
+        $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->get($identifier);
@@ -312,7 +300,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1282073034);
-        $subject = new FileBackend('');
+        $subject = new FileBackend();
         $subject->has($identifier);
     }
 
@@ -324,7 +312,7 @@ final class FileBackendTest extends FunctionalTestCase
         $this->expectExceptionCode(1334756960);
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects($this->atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = new FileBackend('');
+        $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->remove($identifier);
@@ -338,7 +326,7 @@ final class FileBackendTest extends FunctionalTestCase
         $this->expectExceptionCode(1282073036);
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects($this->atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = new FileBackend('');
+        $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->requireOnce($identifier);
@@ -349,7 +337,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects($this->atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = new FileBackend('');
+        $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $entryIdentifier = 'SomePhpEntry';
@@ -367,7 +355,7 @@ final class FileBackendTest extends FunctionalTestCase
         $this->expectExceptionCode(1532528246);
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects($this->atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = new FileBackend('');
+        $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->require($identifier);
@@ -378,7 +366,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects($this->atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = new FileBackend('');
+        $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $entryIdentifier = 'SomePhpEntry2';
@@ -393,7 +381,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $frontendMock = $this->getMockBuilder(AbstractFrontend::class)->disableOriginalConstructor()->getMock();
         $frontendMock->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = new FileBackend('Testing');
+        $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($frontendMock);
         $subject->set('BarEntry', '<?php return "foo"; ?>');
@@ -408,7 +396,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects($this->atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = new FileBackend('');
+        $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $data = 'some data' . microtime();
@@ -425,7 +413,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects($this->atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = new FileBackend('');
+        $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $data = 'some data';
@@ -443,7 +431,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects($this->atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = new FileBackend('');
+        $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $data = 'some data';
@@ -461,7 +449,7 @@ final class FileBackendTest extends FunctionalTestCase
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects($this->atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
-        $subject = new FileBackend('');
+        $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
         $subject->setCache($mockCache);
         $subject->flush();
@@ -483,9 +471,10 @@ final class FileBackendTest extends FunctionalTestCase
             ['baz'],
         ];
         $subject->expects($this->exactly(3))->method('remove')
-            ->willReturnCallback(function (string $value) use (&$series): void {
+            ->willReturnCallback(function (string $value) use (&$series): bool {
                 $arguments = array_shift($series);
                 self::assertSame($arguments[0], $value);
+                return true;
             });
         $subject->flushByTag('UnitTestTag%special');
     }

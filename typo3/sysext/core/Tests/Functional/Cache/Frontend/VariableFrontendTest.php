@@ -68,7 +68,7 @@ final class VariableFrontendTest extends FunctionalTestCase
         string $identifier,
         array $arrayToSerialize
     ): void {
-        $typo3DatabaseBackend = new Typo3DatabaseBackend('Testing');
+        $typo3DatabaseBackend = new Typo3DatabaseBackend();
         $subject = new VariableFrontend($identifier, $typo3DatabaseBackend);
 
         $subject->set('myIdentifier', $arrayToSerialize);

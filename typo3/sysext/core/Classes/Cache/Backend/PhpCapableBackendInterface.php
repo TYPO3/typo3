@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -22,12 +24,18 @@ namespace TYPO3\CMS\Core\Cache\Backend;
 interface PhpCapableBackendInterface extends BackendInterface
 {
     /**
-     * Loads PHP code from the cache and require_onces it right away.
+     * Loads PHP code from the cache and require_once() it right away.
      *
      * @param string $entryIdentifier An identifier which describes the cache entry to load
      * @return mixed Potential return value from the include operation
      */
-    public function requireOnce($entryIdentifier);
+    public function requireOnce(string $entryIdentifier): mixed;
 
-    // @todo: Add require() as breaking patch in TYPO3 v10.0 to the interface
+    /**
+     * Loads PHP code from the cache and require() it right away.
+     *
+     * @param string $entryIdentifier An identifier which describes the cache entry to load
+     * @return mixed Potential return value from the include operation
+     */
+    public function require(string $entryIdentifier): mixed;
 }

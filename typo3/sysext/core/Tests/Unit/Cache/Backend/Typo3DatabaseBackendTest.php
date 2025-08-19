@@ -19,8 +19,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
-use TYPO3\CMS\Core\Cache\Exception;
-use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -32,103 +30,10 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
     protected bool $resetSingletonInstances = true;
 
     #[Test]
-    public function setCacheCalculatesCacheTableName(): void
-    {
-        $frontend = new NullFrontend('test');
-        $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontend);
-        self::assertEquals('cache_test', $subject->getCacheTable());
-    }
-
-    #[Test]
-    public function setCacheCalculatesTagsTableName(): void
-    {
-        $frontend = new NullFrontend('test');
-        $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontend);
-
-        self::assertEquals('cache_test_tags', $subject->getTagsTable());
-    }
-
-    #[Test]
-    public function setThrowsExceptionIfFrontendWasNotSet(): void
-    {
-        $subject = new Typo3DatabaseBackend('Testing');
-        $this->expectException(Exception::class);
-        $this->expectExceptionCode(1236518288);
-        $subject->set('identifier', 'data');
-    }
-
-    #[Test]
-    public function setThrowsExceptionIfDataIsNotAString(): void
-    {
-        $this->expectException(InvalidDataException::class);
-        $this->expectExceptionCode(1236518298);
-        $frontend = new NullFrontend('test');
-        $subject = new Typo3DatabaseBackend('Testing');
-        $subject->setCache($frontend);
-        $subject->set('identifier', ['iAmAnArray']);
-    }
-
-    #[Test]
-    public function getThrowsExceptionIfFrontendWasNotSet(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionCode(1236518288);
-        $subject = new Typo3DatabaseBackend('Testing');
-        $subject->get('identifier');
-    }
-
-    #[Test]
-    public function hasThrowsExceptionIfFrontendWasNotSet(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionCode(1236518288);
-        $subject = new Typo3DatabaseBackend('Testing');
-        $subject->has('identifier');
-    }
-
-    #[Test]
-    public function removeThrowsExceptionIfFrontendWasNotSet(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionCode(1236518288);
-        $subject = new Typo3DatabaseBackend('Testing');
-        $subject->remove('identifier');
-    }
-
-    #[Test]
-    public function collectGarbageThrowsExceptionIfFrontendWasNotSet(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionCode(1236518288);
-        $subject = new Typo3DatabaseBackend('Testing');
-        $subject->collectGarbage();
-    }
-
-    #[Test]
-    public function findIdentifiersByTagThrowsExceptionIfFrontendWasNotSet(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionCode(1236518288);
-        $subject = new Typo3DatabaseBackend('Testing');
-        $subject->findIdentifiersByTag('identifier');
-    }
-
-    #[Test]
-    public function flushThrowsExceptionIfFrontendWasNotSet(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionCode(1236518288);
-        $subject = new Typo3DatabaseBackend('Testing');
-        $subject->flush();
-    }
-
-    #[Test]
     public function flushRemovesAllCacheEntries(): void
     {
         $frontend = new NullFrontend('test');
-        $subject = new Typo3DatabaseBackend('Testing');
+        $subject = new Typo3DatabaseBackend();
         $subject->setCache($frontend);
 
         $connectionMock = $this->createMock(Connection::class);
@@ -155,7 +60,7 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
     public function flushByTagCallsDeleteOnConnection(): void
     {
         $frontend = new NullFrontend('test');
-        $subject = new Typo3DatabaseBackend('Testing');
+        $subject = new Typo3DatabaseBackend();
         $subject->setCache($frontend);
 
         $connectionMock = $this->createMock(Connection::class);
@@ -181,7 +86,7 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
     public function flushByTagsCallsDeleteOnConnection(): void
     {
         $frontend = new NullFrontend('test');
-        $subject = new Typo3DatabaseBackend('Testing');
+        $subject = new Typo3DatabaseBackend();
         $subject->setCache($frontend);
 
         $connectionMock = $this->createMock(Connection::class);
@@ -202,23 +107,5 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionMock);
 
         $subject->flushByTags(['Tag1', 'Tag2']);
-    }
-
-    #[Test]
-    public function flushByTagThrowsExceptionIfFrontendWasNotSet(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionCode(1236518288);
-        $subject = new Typo3DatabaseBackend('Testing');
-        $subject->flushByTag('Tag');
-    }
-
-    #[Test]
-    public function flushByTagsThrowsExceptionIfFrontendWasNotSet(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionCode(1236518288);
-        $subject = new Typo3DatabaseBackend('Testing');
-        $subject->flushByTags([]);
     }
 }

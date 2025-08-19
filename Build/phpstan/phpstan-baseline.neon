@@ -421,106 +421,10 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Authentication/Mfa/Provider/TotpProvider.php
 
 		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Cache\\Backend\\AbstractBackend\:\:flushByTag\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Cache/Backend/AbstractBackend.php
-
-		-
-			message: '#^Call to function is_int\(\) with int will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Cache/Backend/AbstractBackend.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface and TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Cache/Backend/ApcuBackend.php
-
-		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Cache/Backend/FileBackend.php
-
-		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Cache/Backend/MemcachedBackend.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface and TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Cache/Backend/MemcachedBackend.php
-
-		-
-			message: '#^Call to function is_bool\(\) with bool will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Cache/Backend/RedisBackend.php
-
-		-
-			message: '#^Call to function is_int\(\) with int will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 4
-			path: ../../typo3/sysext/core/Classes/Cache/Backend/RedisBackend.php
-
-		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Cache/Backend/RedisBackend.php
-
-		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Cache/Backend/SimpleFileBackend.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface and TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Cache/Backend/TransientMemoryBackend.php
-
-		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Cache/Backend/Typo3DatabaseBackend.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface and TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Cache/Backend/Typo3DatabaseBackend.php
-
-		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Cache/CacheManager.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Cache\\Backend\\BackendInterface\:\:require\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Cache/Frontend/PhpFrontend.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Cache\\Backend\\BackendInterface\:\:requireOnce\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Cache/Frontend/PhpFrontend.php
-
-		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Cache/Frontend/PhpFrontend.php
 
 		-
 			message: '#^Unsafe usage of new static\(\)\.$#'
@@ -1225,12 +1129,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Site/SiteFinder.php
 
 		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Site/SiteSettingsFactory.php
-
-		-
 			message: '#^Call to preg_quote\(\) is missing delimiter / to be effective\.$#'
 			identifier: argument.invalidPregQuote
 			count: 2
@@ -1417,66 +1315,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/RootlineUtility.php
 
 		-
-			message: '#^Parameter \#2 \$data of method TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend\:\:set\(\) expects string, array\<int, string\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Cache/Backend/FileBackendTest.php
-
-		-
-			message: '#^Parameter \#2 \$data of method TYPO3\\CMS\\Core\\Cache\\Backend\\MemcachedBackend\:\:set\(\) expects string, array\<string, float\|int\|list\<string\>\|string\|true\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Cache/Backend/MemcachedBackendTest.php
-
-		-
-			message: '#^Parameter \#1 \$entryIdentifier of method TYPO3\\CMS\\Core\\Cache\\Backend\\RedisBackend\:\:get\(\) expects string, array given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Cache/Backend/RedisBackendTest.php
-
-		-
-			message: '#^Parameter \#1 \$entryIdentifier of method TYPO3\\CMS\\Core\\Cache\\Backend\\RedisBackend\:\:has\(\) expects string, array given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Cache/Backend/RedisBackendTest.php
-
-		-
-			message: '#^Parameter \#1 \$entryIdentifier of method TYPO3\\CMS\\Core\\Cache\\Backend\\RedisBackend\:\:remove\(\) expects string, array given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Cache/Backend/RedisBackendTest.php
-
-		-
-			message: '#^Parameter \#1 \$entryIdentifier of method TYPO3\\CMS\\Core\\Cache\\Backend\\RedisBackend\:\:set\(\) expects string, array given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Cache/Backend/RedisBackendTest.php
-
-		-
-			message: '#^Parameter \#1 \$tag of method TYPO3\\CMS\\Core\\Cache\\Backend\\RedisBackend\:\:findIdentifiersByTag\(\) expects string, array given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Cache/Backend/RedisBackendTest.php
-
-		-
-			message: '#^Parameter \#1 \$tag of method TYPO3\\CMS\\Core\\Cache\\Backend\\RedisBackend\:\:flushByTag\(\) expects string, array given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Cache/Backend/RedisBackendTest.php
-
-		-
-			message: '#^Parameter \#2 \$data of method TYPO3\\CMS\\Core\\Cache\\Backend\\RedisBackend\:\:set\(\) expects string, array given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Cache/Backend/RedisBackendTest.php
-
-		-
-			message: '#^Parameter \#4 \$lifetime of method TYPO3\\CMS\\Core\\Cache\\Backend\\RedisBackend\:\:set\(\) expects int\|null, array given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Cache/Backend/RedisBackendTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Core\\\\Category\\\\Collection\\\\CategoryCollection'' and TYPO3\\CMS\\Core\\Category\\Collection\\CategoryCollection will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 2
@@ -1543,28 +1381,10 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Functional/Log/LoggerAwareChannelTest.php
 
 		-
-			message: '#^Parameter \#2 \$data of method TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend\:\:set\(\) expects string, array\<int, string\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Cache/Backend/Typo3DatabaseBackendTest.php
-
-		-
-			message: '#^Constructor of class TYPO3\\CMS\\Core\\Tests\\Unit\\Cache\\Fixtures\\BackendConfigurationOptionFixture has an unused parameter \$context\.$#'
-			identifier: constructor.unusedParameter
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Cache/Fixtures/BackendConfigurationOptionFixture.php
-
-		-
 			message: '#^Constructor of class TYPO3\\CMS\\Core\\Tests\\Unit\\Cache\\Fixtures\\FrontendBackendInstanceFixture has an unused parameter \$_\.$#'
 			identifier: constructor.unusedParameter
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Cache/Fixtures/FrontendBackendInstanceFixture.php
-
-		-
-			message: '#^Parameter \#2 \$sourceCode of method TYPO3\\CMS\\Core\\Cache\\Frontend\\PhpFrontend\:\:set\(\) expects string, array given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Cache/Frontend/PhpFrontendTest.php
 
 		-
 			message: '#^Parameter \#1 \$expected of static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) contains unresolvable type\.$#'

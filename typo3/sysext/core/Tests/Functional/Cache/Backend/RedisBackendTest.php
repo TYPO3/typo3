@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\Backend\RedisBackend;
-use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -47,14 +46,13 @@ final class RedisBackendTest extends FunctionalTestCase
         // We know this env is set, otherwise setUp() would skip the tests
         $backendOptions['hostname'] = getenv('typo3TestingRedisHost');
         // If typo3TestingRedisPort env is set, use it, otherwise fall back to standard port
-        $env = getenv('typo3TestingRedisPort');
-        $backendOptions['port'] = is_string($env) ? (int)$env : 6379;
+        $backendOptions['port'] = (int)(getenv('typo3TestingRedisPort') ?: 6379);
 
         $frontendMock = $this->createMock(FrontendInterface::class);
         $frontendMock->method('getIdentifier')->willReturn('pages');
 
         $GLOBALS['TYPO3_CONF_VARS']['LOG'] = 'only needed for logger initialisation';
-        $subject = new RedisBackend('Testing', $backendOptions);
+        $subject = new RedisBackend($backendOptions);
         $subject->setLogger($this->createMock(LoggerInterface::class));
         $subject->setCache($frontendMock);
         $subject->initializeObject();
@@ -67,19 +65,10 @@ final class RedisBackendTest extends FunctionalTestCase
         // We know this env is set, otherwise setUp() would skip the tests
         $redisHost = getenv('typo3TestingRedisHost');
         // If typo3TestingRedisPort env is set, use it, otherwise fall back to standard port
-        $env = getenv('typo3TestingRedisPort');
-        $redisPort = is_string($env) ? (int)$env : 6379;
+        $redisPort = (int)(getenv('typo3TestingRedisPort') ?: 6379);
         $redis = new \Redis();
         $redis->connect($redisHost, $redisPort);
         return $redis;
-    }
-
-    #[Test]
-    public function setDatabaseThrowsExceptionIfGivenDatabaseNumberIsNotAnInteger(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1279763057);
-        $this->setUpSubject(['database' => 'foo']);
     }
 
     #[Test]
@@ -91,35 +80,11 @@ final class RedisBackendTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function setCompressionThrowsExceptionIfCompressionParameterIsNotOfTypeBoolean(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1289679153);
-        $this->setUpSubject(['compression' => 'foo']);
-    }
-
-    #[Test]
-    public function setCompressionLevelThrowsExceptionIfCompressionLevelIsNotInteger(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1289679154);
-        $this->setUpSubject(['compressionLevel' => 'foo']);
-    }
-
-    #[Test]
     public function setCompressionLevelThrowsExceptionIfCompressionLevelIsNotBetweenMinusOneAndNine(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1289679155);
         $this->setUpSubject(['compressionLevel' => 11]);
-    }
-
-    #[Test]
-    public function setConnectionTimeoutThrowsExceptionIfConnectionTimeoutIsNotInteger(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1487849315);
-        $this->setUpSubject(['connectionTimeout' => 'foo']);
     }
 
     #[Test]
@@ -131,39 +96,12 @@ final class RedisBackendTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function setThrowsExceptionIfIdentifierIsNotAString(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1377006651);
-        $subject = $this->setUpSubject();
-        $subject->set([], 'data');
-    }
-
-    #[Test]
-    public function setThrowsExceptionIfDataIsNotAString(): void
-    {
-        $this->expectException(InvalidDataException::class);
-        $this->expectExceptionCode(1279469941);
-        $subject = $this->setUpSubject();
-        $subject->set(StringUtility::getUniqueId('identifier'), []);
-    }
-
-    #[Test]
     public function setThrowsExceptionIfLifetimeIsNegative(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1279487573);
         $subject = $this->setUpSubject();
         $subject->set(StringUtility::getUniqueId('identifier'), 'data', [], -42);
-    }
-
-    #[Test]
-    public function setThrowsExceptionIfLifetimeIsNotNullOrAnInteger(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1279488008);
-        $subject = $this->setUpSubject();
-        $subject->set(StringUtility::getUniqueId('identifier'), 'data', [], []);
     }
 
     #[Test]
@@ -524,16 +462,6 @@ final class RedisBackendTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function hasThrowsExceptionIfIdentifierIsNotAString(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1377006653);
-
-        $subject = $this->setUpSubject();
-        $subject->has([]);
-    }
-
-    #[Test]
     public function hasReturnsFalseForNotExistingEntry(): void
     {
         $subject = $this->setUpSubject();
@@ -548,16 +476,6 @@ final class RedisBackendTest extends FunctionalTestCase
         $identifier = StringUtility::getUniqueId('identifier');
         $subject->set($identifier, 'data');
         self::assertTrue($subject->has($identifier));
-    }
-
-    #[Test]
-    public function getThrowsExceptionIfIdentifierIsNotAString(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        // @todo Add exception code with redis extension
-
-        $subject = $this->setUpSubject();
-        $subject->get([]);
     }
 
     #[Test]
@@ -582,16 +500,6 @@ final class RedisBackendTest extends FunctionalTestCase
         $subject->set($identifier, $data);
         $fetchedData = $subject->get($identifier);
         self::assertSame($data, $fetchedData);
-    }
-
-    #[Test]
-    public function removeThrowsExceptionIfIdentifierIsNotAString(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1377006654);
-
-        $subject = $this->setUpSubject();
-        $subject->remove([]);
     }
 
     #[Test]
@@ -666,16 +574,6 @@ final class RedisBackendTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function findIdentifiersByTagThrowsExceptionIfTagIsNotAString(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1377006655);
-
-        $subject = $this->setUpSubject();
-        $subject->findIdentifiersByTag([]);
-    }
-
-    #[Test]
     public function findIdentifiersByTagReturnsEmptyArrayForNotExistingTag(): void
     {
         $subject = $this->setUpSubject();
@@ -710,16 +608,6 @@ final class RedisBackendTest extends FunctionalTestCase
         $subject->set($identifier, 'data');
         $subject->flush();
         self::assertSame([], $redis->keys('*'));
-    }
-
-    #[Test]
-    public function flushByTagThrowsExceptionIfTagIsNotAString(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1377006656);
-
-        $subject = $this->setUpSubject();
-        $subject->flushByTag([]);
     }
 
     #[Test]

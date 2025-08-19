@@ -46,7 +46,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         $frontendMock = $this->createMock(FrontendInterface::class);
         $frontendMock->method('getIdentifier')->willReturn('pages');
 
-        $subject = new Typo3DatabaseBackend('Testing');
+        $subject = new Typo3DatabaseBackend();
         $subject->setCache($frontendMock);
 
         $subject->set('myIdentifier', 'myData');
@@ -59,7 +59,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         $frontendMock = $this->createMock(FrontendInterface::class);
         $frontendMock->method('getIdentifier')->willReturn('pages');
 
-        $subject = new Typo3DatabaseBackend('Testing');
+        $subject = new Typo3DatabaseBackend();
         $subject->setCache($frontendMock);
 
         $subject->set('myIdentifier', 'myData');
@@ -73,7 +73,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         $frontendMock = $this->createMock(FrontendInterface::class);
         $frontendMock->method('getIdentifier')->willReturn('pages');
 
-        $subject = new Typo3DatabaseBackend('Testing');
+        $subject = new Typo3DatabaseBackend();
         $subject->setCache($frontendMock);
 
         $subject->set('myIdentifier', 'myData', ['aTag', 'anotherTag']);
@@ -92,7 +92,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         $frontendMock->method('getIdentifier')->willReturn('pages');
 
         // Have backend with compression enabled
-        $subject = new Typo3DatabaseBackend('Testing', ['compression' => true]);
+        $subject = new Typo3DatabaseBackend(['compression' => true]);
         $subject->setCache($frontendMock);
 
         $subject->set('myIdentifier', 'myCachedContent');
@@ -116,7 +116,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         $frontendMock = $this->createMock(FrontendInterface::class);
         $frontendMock->method('getIdentifier')->willReturn('pages');
 
-        $subject = new Typo3DatabaseBackend('Testing');
+        $subject = new Typo3DatabaseBackend();
         $subject->setCache($frontendMock);
 
         self::assertFalse($subject->get('myIdentifier'));
@@ -141,7 +141,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
             ]
         );
 
-        $subject = new Typo3DatabaseBackend('Testing');
+        $subject = new Typo3DatabaseBackend();
         $subject->setCache($frontendMock);
 
         self::assertFalse($subject->get('myIdentifier'));
@@ -166,7 +166,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
             ]
         );
 
-        $subject = new Typo3DatabaseBackend('Testing');
+        $subject = new Typo3DatabaseBackend();
         $subject->setCache($frontendMock);
 
         self::assertSame('myCachedContent', $subject->get('myIdentifier'));
@@ -192,7 +192,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         );
 
         // Have backend with compression enabled
-        $subject = new Typo3DatabaseBackend('Testing', ['compression' => true]);
+        $subject = new Typo3DatabaseBackend(['compression' => true]);
         $subject->setCache($frontendMock);
 
         // Content comes back uncompressed
@@ -219,7 +219,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         );
 
         // Have backend with compression enabled
-        $subject = new Typo3DatabaseBackend('Testing', ['compression' => true]);
+        $subject = new Typo3DatabaseBackend(['compression' => true]);
         $subject->setCache($frontendMock);
 
         // Content comes back uncompressed
@@ -232,7 +232,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         $frontendMock = $this->createMock(FrontendInterface::class);
         $frontendMock->method('getIdentifier')->willReturn('pages');
 
-        $subject = new Typo3DatabaseBackend('Testing');
+        $subject = new Typo3DatabaseBackend();
         $subject->setCache($frontendMock);
 
         self::assertFalse($subject->has('myIdentifier'));
@@ -257,7 +257,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
             ]
         );
 
-        $subject = new Typo3DatabaseBackend('Testing');
+        $subject = new Typo3DatabaseBackend();
         $subject->setCache($frontendMock);
 
         self::assertFalse($subject->has('myIdentifier'));
@@ -282,7 +282,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
             ]
         );
 
-        $subject = new Typo3DatabaseBackend('Testing');
+        $subject = new Typo3DatabaseBackend();
         $subject->setCache($frontendMock);
 
         self::assertTrue($subject->has('myIdentifier'));
@@ -294,7 +294,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         $frontendMock = $this->createMock(FrontendInterface::class);
         $frontendMock->method('getIdentifier')->willReturn('pages');
 
-        $subject = new Typo3DatabaseBackend('Testing');
+        $subject = new Typo3DatabaseBackend();
         $subject->setCache($frontendMock);
 
         self::assertFalse($subject->remove('myIdentifier'));
@@ -319,7 +319,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
             ]
         );
 
-        $subject = new Typo3DatabaseBackend('Testing');
+        $subject = new Typo3DatabaseBackend();
         $subject->setCache($frontendMock);
 
         self::assertTrue($subject->remove('myIdentifier'));
@@ -346,7 +346,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
                 'content' => Connection::PARAM_LOB,
             ]
         );
-        $subject = new Typo3DatabaseBackend('Testing');
+        $subject = new Typo3DatabaseBackend();
         $subject->setCache($frontendMock);
 
         // Add a couple of tags
@@ -449,7 +449,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         $frontendMock = $this->createMock(FrontendInterface::class);
         $frontendMock->method('getIdentifier')->willReturn('pages');
 
-        $subject = new Typo3DatabaseBackend('Testing');
+        $subject = new Typo3DatabaseBackend();
         $subject->setCache($frontendMock);
 
         // idA should be expired after EXEC_TIME manipulation, idB should stay
@@ -471,7 +471,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         $frontendMock = $this->createMock(FrontendInterface::class);
         $frontendMock->method('getIdentifier')->willReturn('pages');
 
-        $subject = new Typo3DatabaseBackend('Testing');
+        $subject = new Typo3DatabaseBackend();
         $subject->setCache($frontendMock);
 
         // tag rows tagA and tagB should be removed by garbage collector after EXEC_TIME manipulation
@@ -493,7 +493,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         $frontendMock = $this->createMock(FrontendInterface::class);
         $frontendMock->method('getIdentifier')->willReturn('pages');
 
-        $subject = new Typo3DatabaseBackend('Testing');
+        $subject = new Typo3DatabaseBackend();
         $subject->setCache($frontendMock);
 
         // tag rows tagA and tagB should be removed by garbage collector after EXEC_TIME manipulation
@@ -533,7 +533,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         $frontendMock = $this->createMock(FrontendInterface::class);
         $frontendMock->method('getIdentifier')->willReturn('pages');
 
-        $subject = new Typo3DatabaseBackend('Testing');
+        $subject = new Typo3DatabaseBackend();
         $subject->setCache($frontendMock);
 
         $subject->set('idA', 'dataA', ['tagA', 'tagB']);
@@ -551,7 +551,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         $frontendMock = $this->createMock(FrontendInterface::class);
         $frontendMock->method('getIdentifier')->willReturn('pages');
 
-        $subject = new Typo3DatabaseBackend('Testing');
+        $subject = new Typo3DatabaseBackend();
         $subject->setCache($frontendMock);
 
         $subject->set('idA', 'dataA', ['tagA', 'tagB']);

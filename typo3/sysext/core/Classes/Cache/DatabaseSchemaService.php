@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -40,12 +42,11 @@ final class DatabaseSchemaService
      *
      * @return string Cache framework SQL
      */
-    private function getCachingFrameworkRequiredDatabaseSchema()
+    private function getCachingFrameworkRequiredDatabaseSchema(): string
     {
         // Use new to circumvent the singleton pattern of CacheManager
         $cacheManager = new CacheManager();
         $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
-
         $tableDefinitions = '';
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] as $cacheName => $_) {
             $backend = $cacheManager->getCache($cacheName)->getBackend();
@@ -53,7 +54,6 @@ final class DatabaseSchemaService
                 $tableDefinitions .= LF . $backend->getTableDefinitions();
             }
         }
-
         return $tableDefinitions;
     }
 }

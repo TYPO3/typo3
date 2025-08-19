@@ -63,7 +63,7 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         $formProtectionMock = $this->createMock(BackendFormProtection::class);
         $formProtectionMock->expects($this->once())->method('clean');
 
-        $runtimeCache = new VariableFrontend('null', new TransientMemoryBackend('null', ['logger' => new NullLogger()]));
+        $runtimeCache = new VariableFrontend('null', new TransientMemoryBackend(['logger' => new NullLogger()]));
         $formProtectionFactory = new FormProtectionFactory(
             $this->createMock(FlashMessageService::class),
             $this->createMock(LanguageServiceFactory::class),

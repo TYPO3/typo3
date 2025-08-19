@@ -54,29 +54,17 @@ final class MemcachedBackendTest extends FunctionalTestCase
         // We know this env is set, otherwise setUp() would skip the tests
         $memcachedHost = getenv('typo3TestingMemcachedHost');
         // If typo3TestingMemcachedPort env is set, use it, otherwise fall back to standard port
-        $env = getenv('typo3TestingMemcachedPort');
-        $memcachedPort = is_string($env) ? (int)$env : 11211;
+        $memcachedPort = (int)(getenv('typo3TestingMemcachedPort') ?: 11211);
 
-        $subject = new MemcachedBackend('Testing', [ 'servers' => [$memcachedHost . ':' . $memcachedPort] ]);
+        $subject = new MemcachedBackend([ 'servers' => [$memcachedHost . ':' . $memcachedPort] ]);
         $subject->initializeObject();
         return $subject;
     }
 
     #[Test]
-    public function setThrowsExceptionIfNoFrontEndHasBeenSet(): void
-    {
-        $subject = $this->initializeSubject();
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionCode(1207149215);
-
-        $subject->set(StringUtility::getUniqueId('MyIdentifier'), 'some data');
-    }
-
-    #[Test]
     public function initializeObjectThrowsExceptionIfNoMemcacheServerIsConfigured(): void
     {
-        $subject = new MemcachedBackend('Testing');
+        $subject = new MemcachedBackend();
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1213115903);
         $subject->initializeObject();

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend;
  */
 class ContainerBackend extends SimpleFileBackend
 {
-    public function flush()
+    public function flush(): void
     {
         // disable cache flushing
     }

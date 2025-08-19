@@ -77,7 +77,7 @@ final class LocalizationFactoryTest extends UnitTestCase
         $cacheFrontendMock->expects($this->atLeastOnce())->method('get')->with(self::isString())->willReturn(false);
         $cacheFrontendMock->expects($this->atLeastOnce())->method('set')->with(self::isString(), [
             'label1' => 'This is label #1',
-        ])->willReturn(null);
+        ]);
 
         $result = (new LocalizationFactory($translatorMock, $cacheFrontendMock, new NullFrontend('runtime'), $labelMapperMock, new LabelFileResolver($packageManagerMock)))
             ->getParsedData('EXT:core/Tests/Unit/Localization/Fixtures/locallang.xlf', 'en');

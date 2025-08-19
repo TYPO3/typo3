@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -29,50 +31,33 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\SingletonInterface;
 
-/**
- * The Cache Manager
- */
 class CacheManager implements SingletonInterface
 {
     /**
      * @var FrontendInterface[]
      */
-    protected $caches = [];
+    protected array $caches = [];
 
-    /**
-     * @var array
-     */
-    protected $cacheConfigurations = [];
+    protected array $cacheConfigurations = [];
 
     /**
      * Used to flush caches of a specific group
      * is an associative array containing the group identifier as key
      * and the identifier as an array within that group
      * groups are set via the cache configurations of each cache.
-     *
-     * @var array
      */
-    protected $cacheGroups = [];
+    protected array $cacheGroups = [];
 
-    /**
-     * @var array Default cache configuration as fallback
-     */
-    protected $defaultCacheConfiguration = [
+    protected array $defaultCacheConfiguration = [
         'frontend' => VariableFrontend::class,
         'backend' => Typo3DatabaseBackend::class,
         'options' => [],
         'groups' => ['all'],
     ];
 
-    /**
-     * @var bool
-     */
-    protected $disableCaching = false;
-
-    public function __construct(bool $disableCaching = false)
-    {
-        $this->disableCaching = $disableCaching;
-    }
+    public function __construct(
+        protected bool $disableCaching = false
+    ) {}
 
     /**
      * Sets configurations for caches. The key of each entry specifies the
@@ -89,7 +74,7 @@ class CacheManager implements SingletonInterface
      * @param array<string, array> $cacheConfigurations The cache configurations to set
      * @throws \InvalidArgumentException If $cacheConfigurations is not an array
      */
-    public function setCacheConfigurations(array $cacheConfigurations)
+    public function setCacheConfigurations(array $cacheConfigurations): void
     {
         $newConfiguration = [];
         foreach ($cacheConfigurations as $identifier => $configuration) {
@@ -107,11 +92,10 @@ class CacheManager implements SingletonInterface
     /**
      * Registers a cache so it can be retrieved at a later point.
      *
-     * @param FrontendInterface $cache The cache frontend to be registered
      * @param array $groups Cache groups to be associated to the cache
      * @throws DuplicateIdentifierException if a cache with the given identifier has already been registered.
      */
-    public function registerCache(FrontendInterface $cache, array $groups = [])
+    public function registerCache(FrontendInterface $cache, array $groups = []): void
     {
         // PHPStan ignore required taking phpdoc-block into account, but it is not ensured and may be also null.
         /** @phpstan-ignore nullCoalesce.expr */
@@ -128,11 +112,9 @@ class CacheManager implements SingletonInterface
     /**
      * Returns the cache specified by $identifier
      *
-     * @param string $identifier Identifies which cache to return
-     * @return FrontendInterface The specified cache frontend
      * @throws NoSuchCacheException
      */
-    public function getCache($identifier)
+    public function getCache(string $identifier): FrontendInterface
     {
         if ($this->hasCache($identifier) === false) {
             throw new NoSuchCacheException('A cache with identifier "' . $identifier . '" does not exist.', 1203699034);
@@ -145,11 +127,8 @@ class CacheManager implements SingletonInterface
 
     /**
      * Checks if the specified cache has been registered.
-     *
-     * @param string $identifier The identifier of the cache
-     * @return bool TRUE if a cache with the given identifier exists, otherwise FALSE
      */
-    public function hasCache($identifier)
+    public function hasCache(string $identifier): bool
     {
         return isset($this->caches[$identifier]) || isset($this->cacheConfigurations[$identifier]);
     }
@@ -157,7 +136,7 @@ class CacheManager implements SingletonInterface
     /**
      * Flushes all registered caches
      */
-    public function flushCaches()
+    public function flushCaches(): void
     {
         $this->createAllCaches();
         foreach ($this->caches as $cache) {
@@ -168,10 +147,9 @@ class CacheManager implements SingletonInterface
     /**
      * Flushes all registered caches of a specific group
      *
-     * @param string $groupIdentifier
      * @throws NoSuchCacheGroupException
      */
-    public function flushCachesInGroup($groupIdentifier)
+    public function flushCachesInGroup(string $groupIdentifier): void
     {
         $this->createAllCaches();
         if (!isset($this->cacheGroups[$groupIdentifier])) {
@@ -188,11 +166,9 @@ class CacheManager implements SingletonInterface
      * Flushes entries tagged by the specified tag of all registered
      * caches of a specific group.
      *
-     * @param string $groupIdentifier
-     * @param string|array $tag Tag to search for
      * @throws NoSuchCacheGroupException
      */
-    public function flushCachesInGroupByTag($groupIdentifier, $tag)
+    public function flushCachesInGroupByTag(string $groupIdentifier, string $tag): void
     {
         if (empty($tag)) {
             return;
@@ -212,11 +188,9 @@ class CacheManager implements SingletonInterface
      * Flushes entries tagged by any of the specified tags in all registered
      * caches of a specific group.
      *
-     * @param string $groupIdentifier
-     * @param string[] $tags Tags to search for
      * @throws NoSuchCacheGroupException
      */
-    public function flushCachesInGroupByTags($groupIdentifier, array $tags)
+    public function flushCachesInGroupByTags(string $groupIdentifier, array $tags): void
     {
         if (empty($tags)) {
             return;
@@ -233,12 +207,9 @@ class CacheManager implements SingletonInterface
     }
 
     /**
-     * Flushes entries tagged by the specified tag of all registered
-     * caches.
-     *
-     * @param string $tag Tag to search for
+     * Flushes entries tagged by the specified tag of all registered caches.
      */
-    public function flushCachesByTag($tag)
+    public function flushCachesByTag(string $tag): void
     {
         $this->createAllCaches();
         foreach ($this->caches as $cache) {
@@ -248,10 +219,8 @@ class CacheManager implements SingletonInterface
 
     /**
      * Flushes entries tagged by any of the specified tags in all registered caches.
-     *
-     * @param string[] $tags Tags to search for
      */
-    public function flushCachesByTags(array $tags)
+    public function flushCachesByTags(array $tags): void
     {
         $this->createAllCaches();
         foreach ($this->caches as $cache) {
@@ -266,7 +235,6 @@ class CacheManager implements SingletonInterface
     public function getCacheGroups(): array
     {
         $groups = array_keys($this->cacheGroups);
-
         foreach ($this->cacheConfigurations as $config) {
             foreach ($config['groups'] ?? [] as $group) {
                 if (!in_array($group, $groups, true)) {
@@ -274,7 +242,6 @@ class CacheManager implements SingletonInterface
                 }
             }
         }
-
         return $groups;
     }
 
@@ -285,10 +252,7 @@ class CacheManager implements SingletonInterface
         }
     }
 
-    /**
-     * Instantiates all registered caches.
-     */
-    protected function createAllCaches()
+    protected function createAllCaches(): void
     {
         foreach ($this->cacheConfigurations as $identifier => $_) {
             if (!isset($this->caches[$identifier])) {
@@ -300,12 +264,11 @@ class CacheManager implements SingletonInterface
     /**
      * Instantiates the cache for $identifier.
      *
-     * @param string $identifier
      * @throws DuplicateIdentifierException
      * @throws InvalidBackendException
      * @throws InvalidCacheException
      */
-    protected function createCache($identifier)
+    protected function createCache(string $identifier): void
     {
         if (isset($this->cacheConfigurations[$identifier]['frontend'])) {
             $frontend = $this->cacheConfigurations[$identifier]['frontend'];
@@ -344,7 +307,7 @@ class CacheManager implements SingletonInterface
         // New operator used on purpose: This class is required early during
         // bootstrap before makeInstance() is properly set up
         $backend = '\\' . ltrim($backend, '\\');
-        $backendInstance = new $backend('production', $backendOptions);
+        $backendInstance = new $backend($backendOptions);
         if (!$backendInstance instanceof BackendInterface) {
             throw new InvalidBackendException('"' . $backend . '" is not a valid cache backend object.', 1464550977);
         }

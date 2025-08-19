@@ -22,10 +22,9 @@ class BackendConfigurationOptionFixture extends BackendFixture
     /**
      * Test if constructor receives backend options
      *
-     * @param string $context Unused, for backward compatibility only
      * @param array $options Configuration options - depends on the actual backend
      */
-    public function __construct($context, array $options = [])
+    public function __construct(array $options = [])
     {
         $testOptions = [
             'anOption' => 'anOptionValue',

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -17,7 +19,4 @@ namespace TYPO3\CMS\Core\Cache\Exception;
 
 use TYPO3\CMS\Core\Cache\Exception;
 
-/**
- * A "Duplicate Identifier" exception
- */
 class DuplicateIdentifierException extends Exception {}

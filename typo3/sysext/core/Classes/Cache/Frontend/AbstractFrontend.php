@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,68 +20,30 @@ namespace TYPO3\CMS\Core\Cache\Frontend;
 use TYPO3\CMS\Core\Cache\Backend\BackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface;
 
-/**
- * An abstract cache
- */
 abstract class AbstractFrontend implements FrontendInterface
 {
-    /**
-     * Identifies this cache
-     *
-     * @var string
-     */
-    protected $identifier;
-
-    /**
-     * @var BackendInterface|TaggableBackendInterface
-     */
-    protected $backend;
-
-    /**
-     * Constructs the cache
-     *
-     * @param string $identifier An identifier which describes this cache
-     * @param BackendInterface $backend Backend to be used for this cache
-     * @throws \InvalidArgumentException if the identifier doesn't match PATTERN_ENTRYIDENTIFIER
-     */
-    public function __construct($identifier, BackendInterface $backend)
-    {
+    public function __construct(
+        protected string $identifier,
+        protected BackendInterface $backend
+    ) {
         if (preg_match(self::PATTERN_ENTRYIDENTIFIER, $identifier) !== 1) {
             throw new \InvalidArgumentException('"' . $identifier . '" is not a valid cache identifier.', 1203584729);
         }
         $this->identifier = $identifier;
-        $this->backend = $backend;
         $this->backend->setCache($this);
     }
 
-    /**
-     * Returns this cache's identifier
-     *
-     * @return string The identifier for this cache
-     */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->identifier;
     }
 
-    /**
-     * Returns the backend used by this cache
-     *
-     * @return BackendInterface The backend used by this cache
-     */
-    public function getBackend()
+    public function getBackend(): BackendInterface
     {
         return $this->backend;
     }
 
-    /**
-     * Checks if a cache entry with the specified identifier exists.
-     *
-     * @param string $entryIdentifier An identifier specifying the cache entry
-     * @return bool TRUE if such an entry exists, FALSE if not
-     * @throws \InvalidArgumentException If $entryIdentifier is invalid
-     */
-    public function has($entryIdentifier)
+    public function has(string $entryIdentifier): bool
     {
         if (!$this->isValidEntryIdentifier($entryIdentifier)) {
             throw new \InvalidArgumentException('"' . $entryIdentifier . '" is not a valid cache entry identifier.', 1233058486);
@@ -87,14 +51,7 @@ abstract class AbstractFrontend implements FrontendInterface
         return $this->backend->has($entryIdentifier);
     }
 
-    /**
-     * Removes the given cache entry from the cache.
-     *
-     * @param string $entryIdentifier An identifier specifying the cache entry
-     * @return bool TRUE if such an entry exists, FALSE if not
-     * @throws \InvalidArgumentException
-     */
-    public function remove($entryIdentifier)
+    public function remove(string $entryIdentifier): bool
     {
         if (!$this->isValidEntryIdentifier($entryIdentifier)) {
             throw new \InvalidArgumentException('"' . $entryIdentifier . '" is not a valid cache entry identifier.', 1233058495);
@@ -102,84 +59,51 @@ abstract class AbstractFrontend implements FrontendInterface
         return $this->backend->remove($entryIdentifier);
     }
 
-    /**
-     * Removes all cache entries of this cache.
-     */
-    public function flush()
+    public function flush(): void
     {
         $this->backend->flush();
     }
 
-    /**
-     * Removes all cache entries of this cache which are tagged by any of the specified tags.
-     *
-     * @param string[] $tags
-     * @throws \InvalidArgumentException
-     */
-    public function flushByTags(array $tags)
+    public function flushByTags(array $tags): void
     {
+        if (!$this->backend instanceof TaggableBackendInterface) {
+            return;
+        }
+
         foreach ($tags as $tag) {
             if (!$this->isValidTag($tag)) {
                 throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1233057360);
             }
         }
-        if ($this->backend instanceof TaggableBackendInterface) {
-            $this->backend->flushByTags($tags);
-        }
+
+        $this->backend->flushByTags($tags);
     }
 
-    /**
-     * Removes all cache entries of this cache which are tagged by the specified tag.
-     *
-     * @param string $tag The tag the entries must have
-     * @throws \InvalidArgumentException
-     */
-    public function flushByTag($tag)
+    public function flushByTag(string $tag): void
     {
+        if (!$this->backend instanceof TaggableBackendInterface) {
+            return;
+        }
+
         if (!$this->isValidTag($tag)) {
             throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1233057359);
         }
 
-        if ($this->backend instanceof TaggableBackendInterface) {
-            $this->backend->flushByTag($tag);
-        }
+        $this->backend->flushByTag($tag);
     }
 
-    /**
-     * Does garbage collection
-     */
-    public function collectGarbage()
+    public function collectGarbage(): void
     {
         $this->backend->collectGarbage();
     }
 
-    /**
-     * Checks the validity of an entry identifier. Returns TRUE if it's valid.
-     *
-     * @param string $identifier An identifier to be checked for validity
-     * @return bool
-     */
-    public function isValidEntryIdentifier($identifier)
+    public function isValidEntryIdentifier(string $identifier): bool
     {
         return preg_match(self::PATTERN_ENTRYIDENTIFIER, $identifier) === 1;
     }
 
-    /**
-     * Checks the validity of a tag. Returns TRUE if it's valid.
-     *
-     * @param string|array $tag An identifier to be checked for validity
-     * @return bool
-     */
-    public function isValidTag($tag)
+    public function isValidTag(string $tag): bool
     {
-        if (!is_array($tag)) {
-            return preg_match(self::PATTERN_TAG, $tag) === 1;
-        }
-        foreach ($tag as $tagValue) {
-            if (!$this->isValidTag($tagValue)) {
-                return false;
-            }
-        }
-        return true;
+        return preg_match(self::PATTERN_TAG, $tag) === 1;
     }
 }

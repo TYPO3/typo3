@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Cache\Frontend;
 
-use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 
 /**
@@ -30,16 +29,11 @@ class NullFrontend extends PhpFrontend
 {
     public function __construct(string $identifier)
     {
-        $backend = new NullBackend(
-            '',
-            [
-                'logger' => new NullLogger(),
-            ]
-        );
+        $backend = new NullBackend();
         parent::__construct($identifier, $backend);
     }
 
-    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
+    public function set(string $entryIdentifier, mixed $data, array $tags = [], ?int $lifetime = null): void
     {
         // Noop
     }

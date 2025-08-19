@@ -39,34 +39,37 @@ class FrontendFixture implements FrontendInterface
         throw new \RuntimeException('testing', 1668942244);
     }
 
-    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null): void {}
+    public function set(string $entryIdentifier, mixed $data, array $tags = [], ?int $lifetime = null): void {}
 
-    public function get($entryIdentifier) {}
+    public function get(string $entryIdentifier): mixed
+    {
+        return null;
+    }
 
-    public function has($entryIdentifier)
+    public function has(string $entryIdentifier): bool
     {
         return false;
     }
 
-    public function remove($entryIdentifier)
+    public function remove(string $entryIdentifier): bool
     {
         return false;
     }
 
     public function flush(): void {}
 
-    public function flushByTag($tag): void {}
+    public function flushByTag(string $tag): void {}
 
     public function flushByTags(array $tags): void {}
 
     public function collectGarbage(): void {}
 
-    public function isValidEntryIdentifier($identifier)
+    public function isValidEntryIdentifier(string $identifier): bool
     {
         return true;
     }
 
-    public function isValidTag($tag)
+    public function isValidTag(string $tag): bool
     {
         return true;
     }

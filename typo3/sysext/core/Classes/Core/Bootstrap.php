@@ -347,7 +347,7 @@ class Bootstrap
             $options = [];
         }
 
-        $backendInstance = new $backend('production', $options);
+        $backendInstance = new $backend($options);
         if (!$backendInstance instanceof BackendInterface) {
             throw new InvalidBackendException('"' . $backend . '" is not a valid cache backend object.', 1545260108);
         }

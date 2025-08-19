@@ -29,7 +29,7 @@ final class AbstractBackendTest extends UnitTestCase
     public function theConstructorCallsSetterMethodsForAllSpecifiedOptions(): void
     {
         // The fixture class implements methods setSomeOption() and getSomeOption()
-        $backend = new ConcreteBackendFixture('Testing', ['someOption' => 'someValue']);
+        $backend = new ConcreteBackendFixture(['someOption' => 'someValue']);
         self::assertSame('someValue', $backend->getSomeOption());
     }
 }

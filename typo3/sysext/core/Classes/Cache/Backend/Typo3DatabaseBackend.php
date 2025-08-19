@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,8 +17,6 @@
 
 namespace TYPO3\CMS\Core\Cache\Backend;
 
-use TYPO3\CMS\Core\Cache\Exception;
-use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -30,40 +30,35 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInterface
 {
     /**
-     * @var int Timestamp of 2038-01-01)
+     * @var int Timestamp of 2038-01-01
      */
-    public const FAKED_UNLIMITED_EXPIRE = 2145909600;
+    protected const FAKED_UNLIMITED_EXPIRE = 2145909600;
     /**
      * @var string Name of the cache data table
      */
-    protected $cacheTable;
+    protected string $cacheTable;
 
     /**
      * @var string Name of the cache tags table
      */
-    protected $tagsTable;
+    protected string $tagsTable;
 
     /**
      * @var bool Indicates whether data is compressed or not (requires php zlib)
      */
-    protected $compression = false;
+    protected bool $compression = false;
 
     /**
      * @var int -1 to 9, indicates zlib compression level: -1 = default level 6, 0 = no compression, 9 maximum compression
      */
-    protected $compressionLevel = -1;
+    protected int $compressionLevel = -1;
 
     /**
      * @var int Maximum lifetime to stay with expire field below FAKED_UNLIMITED_LIFETIME
      */
-    protected $maximumLifetime;
+    protected int $maximumLifetime;
 
-    /**
-     * Set cache frontend instance and calculate data and tags table name
-     *
-     * @param FrontendInterface $cache The frontend for this backend
-     */
-    public function setCache(FrontendInterface $cache)
+    public function setCache(FrontendInterface $cache): void
     {
         parent::setCache($cache);
         $this->cacheTable = 'cache_' . $this->cacheIdentifier;
@@ -71,25 +66,8 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
         $this->maximumLifetime = self::FAKED_UNLIMITED_EXPIRE - $GLOBALS['EXEC_TIME'];
     }
 
-    /**
-     * Saves data in a cache file.
-     *
-     * @param string $entryIdentifier An identifier for this specific cache entry
-     * @param string $data The data to be stored
-     * @param array $tags Tags to associate with this cache entry
-     * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @throws Exception if no cache frontend has been set.
-     * @throws InvalidDataException if the data to be stored is not a string.
-     */
-    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
+    public function set(string $entryIdentifier, string $data, array $tags = [], $lifetime = null): void
     {
-        $this->throwExceptionIfFrontendDoesNotExist();
-        if (!is_string($data)) {
-            throw new InvalidDataException(
-                'The specified data is of type "' . gettype($data) . '" but a string is expected.',
-                1236518298
-            );
-        }
         if ($lifetime === null) {
             $lifetime = $this->defaultLifetime;
         }
@@ -125,17 +103,9 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
         }
     }
 
-    /**
-     * Loads data from a cache file.
-     *
-     * @param string $entryIdentifier An identifier which describes the cache entry to load
-     * @return mixed The cache entry's data as a string or FALSE if the cache entry could not be loaded
-     */
-    public function get($entryIdentifier)
+    public function get(string $entryIdentifier): mixed
     {
-        $this->throwExceptionIfFrontendDoesNotExist();
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($this->cacheTable);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->cacheTable);
         $cacheRow = $queryBuilder->select('content')
             ->from($this->cacheTable)
             ->where(
@@ -157,20 +127,12 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
         if ($this->compression && (string)$content !== '') {
             $content = gzuncompress($content);
         }
-        return !empty($cacheRow) ? $content : false;
+        return empty($cacheRow) ? false : $content;
     }
 
-    /**
-     * Checks if a cache entry with the specified identifier exists.
-     *
-     * @param string $entryIdentifier Specifies the identifier to check for existence
-     * @return bool TRUE if such an entry exists, FALSE if not
-     */
-    public function has($entryIdentifier)
+    public function has(string $entryIdentifier): bool
     {
-        $this->throwExceptionIfFrontendDoesNotExist();
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($this->cacheTable);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->cacheTable);
         $count = $queryBuilder->count('*')
             ->from($this->cacheTable)
             ->where(
@@ -188,16 +150,8 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
         return (bool)$count;
     }
 
-    /**
-     * Removes all cache entries matching the specified identifier.
-     * Usually this only affects one entry.
-     *
-     * @param string $entryIdentifier Specifies the cache entry to remove
-     * @return bool TRUE if (at least) an entry could be removed or FALSE if no entry was found
-     */
-    public function remove($entryIdentifier)
+    public function remove(string $entryIdentifier): bool
     {
-        $this->throwExceptionIfFrontendDoesNotExist();
         $numberOfRowsRemoved = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable($this->cacheTable)
             ->delete(
@@ -215,16 +169,9 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
         return (bool)$numberOfRowsRemoved;
     }
 
-    /**
-     * Finds and returns all cache entries which are tagged by the specified tag.
-     *
-     * @param string $tag The tag to search for
-     */
-    public function findIdentifiersByTag($tag): array
+    public function findIdentifiersByTag(string $tag): array
     {
-        $this->throwExceptionIfFrontendDoesNotExist();
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($this->tagsTable);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->tagsTable);
         $result = $queryBuilder->select($this->cacheTable . '.identifier')
             ->from($this->cacheTable)
             ->from($this->tagsTable)
@@ -245,29 +192,14 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
         return array_combine($identifiers, $identifiers);
     }
 
-    /**
-     * Removes all cache entries of this cache.
-     */
-    public function flush()
+    public function flush(): void
     {
-        $this->throwExceptionIfFrontendDoesNotExist();
-        GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable($this->cacheTable)
-            ->truncate($this->cacheTable);
-        GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable($this->tagsTable)
-            ->truncate($this->tagsTable);
+        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->cacheTable)->truncate($this->cacheTable);
+        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->tagsTable)->truncate($this->tagsTable);
     }
 
-    /**
-     * Removes all entries tagged by any of the specified tags. Performs the SQL
-     * operation as a bulk query for better performance.
-     *
-     * @param string[] $tags
-     */
-    public function flushByTags(array $tags)
+    public function flushByTags(array $tags): void
     {
-        $this->throwExceptionIfFrontendDoesNotExist();
         if (empty($tags)) {
             return;
         }
@@ -292,14 +224,8 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
         $this->flushCacheByCacheEntryIdentifiers($cacheEntryIdentifiers);
     }
 
-    /**
-     * Removes all cache entries of this cache which are tagged by the specified tag.
-     *
-     * @param string $tag The tag the entries must have
-     */
-    public function flushByTag($tag)
+    public function flushByTag(string $tag): void
     {
-        $this->throwExceptionIfFrontendDoesNotExist();
         if (empty($tag)) {
             return;
         }
@@ -343,13 +269,8 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
         }
     }
 
-    /**
-     * Does garbage collection
-     */
-    public function collectGarbage()
+    public function collectGarbage(): void
     {
-        $this->throwExceptionIfFrontendDoesNotExist();
-
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->cacheTable);
         $queryBuilder = $connection->createQueryBuilder();
         $result = $queryBuilder->select('identifier')
@@ -402,34 +323,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
         }
     }
 
-    /**
-     * Returns the table where the cache entries are stored.
-     *
-     * @return string The cache table.
-     */
-    public function getCacheTable()
-    {
-        $this->throwExceptionIfFrontendDoesNotExist();
-        return $this->cacheTable;
-    }
-
-    /**
-     * Gets the table where cache tags are stored.
-     *
-     * @return string Name of the table storing tags
-     */
-    public function getTagsTable()
-    {
-        $this->throwExceptionIfFrontendDoesNotExist();
-        return $this->tagsTable;
-    }
-
-    /**
-     * Enable data compression
-     *
-     * @param bool $compression TRUE to enable compression
-     */
-    public function setCompression($compression)
+    protected function setCompression(bool $compression): void
     {
         $this->compression = $compression;
     }
@@ -441,22 +335,10 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
      *
      * @param int $compressionLevel -1 to 9: Compression level
      */
-    public function setCompressionLevel($compressionLevel)
+    protected function setCompressionLevel(int $compressionLevel): void
     {
         if ($compressionLevel >= -1 && $compressionLevel <= 9) {
             $this->compressionLevel = $compressionLevel;
-        }
-    }
-
-    /**
-     * Check if required frontend instance exists
-     *
-     * @throws Exception If there is no frontend instance in $this->cache
-     */
-    protected function throwExceptionIfFrontendDoesNotExist()
-    {
-        if (!$this->cache instanceof FrontendInterface) {
-            throw new Exception('No cache frontend has been set via setCache() yet.', 1236518288);
         }
     }
 
@@ -467,7 +349,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
      *
      * @return string SQL of table definitions
      */
-    public function getTableDefinitions()
+    public function getTableDefinitions(): string
     {
         $cacheTableSql = (string)file_get_contents(
             ExtensionManagementUtility::extPath('core') .
@@ -478,7 +360,6 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
             ExtensionManagementUtility::extPath('core') .
             'Resources/Private/Sql/Cache/Backend/Typo3DatabaseBackendTags.sql'
         );
-        $requiredTableStructures .= str_replace('###TAGS_TABLE###', $this->tagsTable, $tagsTableSql) . LF;
-        return $requiredTableStructures;
+        return $requiredTableStructures . (str_replace('###TAGS_TABLE###', $this->tagsTable, $tagsTableSql) . LF);
     }
 }

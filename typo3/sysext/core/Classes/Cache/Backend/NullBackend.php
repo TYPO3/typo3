@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,104 +17,51 @@
 
 namespace TYPO3\CMS\Core\Cache\Backend;
 
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+
 /**
  * A caching backend which forgets everything immediately
  */
-class NullBackend extends AbstractBackend implements PhpCapableBackendInterface, TaggableBackendInterface
+class NullBackend implements PhpCapableBackendInterface, TaggableBackendInterface
 {
-    /**
-     * Acts as if it would save data
-     *
-     * @param string $entryIdentifier ignored
-     * @param string $data ignored
-     * @param array $tags ignored
-     * @param int $lifetime ignored
-     */
-    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null) {}
+    public function set(string $entryIdentifier, string $data, array $tags = [], ?int $lifetime = null): void {}
 
-    /**
-     * Acts as if it would enable data compression
-     *
-     * @param bool $compression ignored
-     */
-    public function setCompression($compression) {}
-
-    /**
-     * Returns False
-     *
-     * @param string $entryIdentifier ignored
-     * @return bool FALSE
-     */
-    public function get($entryIdentifier)
+    public function get(string $entryIdentifier): false
     {
         return false;
     }
 
-    /**
-     * Returns False
-     *
-     * @param string $entryIdentifier ignored
-     * @return bool FALSE
-     */
-    public function has($entryIdentifier)
+    public function has(string $entryIdentifier): false
     {
         return false;
     }
 
-    /**
-     * Does nothing
-     *
-     * @param string $entryIdentifier ignored
-     * @return bool FALSE
-     */
-    public function remove($entryIdentifier)
+    public function remove(string $entryIdentifier): false
     {
         return false;
     }
 
-    /**
-     * Returns an empty array
-     */
     public function findIdentifiersByTag($tag): array
     {
         return [];
     }
 
-    /**
-     * Does nothing
-     */
-    public function flush() {}
+    public function flush(): void {}
 
-    /**
-     * Does nothing
-     *
-     * @param string $tag ignored
-     */
-    public function flushByTag($tag) {}
+    public function flushByTag(string $tag): void {}
 
-    /**
-     * Does nothing
-     */
-    public function collectGarbage() {}
+    public function flushByTags(array $tags): void {}
 
-    /**
-     * Does nothing
-     *
-     * @param string $identifier An identifier which describes the cache entry to load
-     * @return bool
-     */
-    public function requireOnce($identifier)
+    public function setCache(FrontendInterface $cache): void {}
+
+    public function collectGarbage(): void {}
+
+    public function requireOnce(string $entryIdentifier): false
     {
         return false;
     }
 
-    /**
-     * Does nothing
-     *
-     * @param string $identifier An identifier which describes the cache entry to load
-     * @return bool
-     */
-    public function require(string $identifier)
+    public function require(string $entryIdentifier): false
     {
         return false;
     }

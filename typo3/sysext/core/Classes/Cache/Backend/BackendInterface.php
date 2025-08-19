@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,7 +17,6 @@
 
 namespace TYPO3\CMS\Core\Cache\Backend;
 
-use TYPO3\CMS\Core\Cache;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 
 /**
@@ -26,9 +27,9 @@ interface BackendInterface
     /**
      * Sets a reference to the cache frontend which uses this backend
      *
-     * @param Cache\Frontend\FrontendInterface $cache The frontend for this backend
+     * @param FrontendInterface $cache The frontend for this backend
      */
-    public function setCache(FrontendInterface $cache);
+    public function setCache(FrontendInterface $cache): void;
 
     /**
      * Saves data in the cache.
@@ -36,11 +37,9 @@ interface BackendInterface
      * @param string $entryIdentifier An identifier for this specific cache entry
      * @param string $data The data to be stored
      * @param array $tags Tags to associate with this cache entry. If the backend does not support tags, this option can be ignored.
-     * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @throws \TYPO3\CMS\Core\Cache\Exception if no cache frontend has been set.
-     * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if the data is not a string
+     * @param int|null $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
      */
-    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null);
+    public function set(string $entryIdentifier, string $data, array $tags = [], ?int $lifetime = null): void;
 
     /**
      * Loads data from the cache.
@@ -48,7 +47,7 @@ interface BackendInterface
      * @param string $entryIdentifier An identifier which describes the cache entry to load
      * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
      */
-    public function get($entryIdentifier);
+    public function get(string $entryIdentifier): mixed;
 
     /**
      * Checks if a cache entry with the specified identifier exists.
@@ -56,7 +55,7 @@ interface BackendInterface
      * @param string $entryIdentifier An identifier specifying the cache entry
      * @return bool TRUE if such an entry exists, FALSE if not
      */
-    public function has($entryIdentifier);
+    public function has(string $entryIdentifier): bool;
 
     /**
      * Removes all cache entries matching the specified identifier.
@@ -66,15 +65,15 @@ interface BackendInterface
      * @param string $entryIdentifier Specifies the cache entry to remove
      * @return bool TRUE if (at least) an entry could be removed or FALSE if no entry was found
      */
-    public function remove($entryIdentifier);
+    public function remove(string $entryIdentifier): bool;
 
     /**
      * Removes all cache entries of this cache.
      */
-    public function flush();
+    public function flush(): void;
 
     /**
      * Does garbage collection
      */
-    public function collectGarbage();
+    public function collectGarbage(): void;
 }

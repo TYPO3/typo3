@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -46,55 +48,36 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
 {
     /**
      * Max bucket size, (1024*1024)-42 bytes
-     *
-     * @var int
      */
-    public const MAX_BUCKET_SIZE = 1048534;
+    protected const MAX_BUCKET_SIZE = 1048534;
 
     /**
      * Instance of the PHP Memcache class
-     *
-     * @var \Memcache|\Memcached
      */
-    protected $memcache;
+    protected \Memcache|\Memcached $memcache;
 
     /**
      * Used PECL module for memcached
-     *
-     * @var string
      */
-    protected $usedPeclModule = '';
+    protected string $usedPeclModule = '';
 
     /**
      * Array of Memcache server configurations
-     *
-     * @var array
      */
-    protected $servers = [];
+    protected array $servers = [];
 
     /**
      * Indicates whether the memcache uses compression or not (requires zlib),
      * either 0 or \Memcached::OPT_COMPRESSION / MEMCACHE_COMPRESSED
-     *
-     * @var int
      */
-    protected $flags;
+    protected int $flags = 0;
 
     /**
      * A prefix to separate stored data from other data possibly stored in the memcache
-     *
-     * @var string
      */
-    protected $identifierPrefix;
+    protected string $identifierPrefix;
 
-    /**
-     * Constructs this backend
-     *
-     * @param string $context Unused, for backward compatibility only
-     * @param array $options Configuration options - depends on the actual backend
-     * @throws Exception if memcache is not installed
-     */
-    public function __construct($context, array $options = [])
+    public function __construct(array $options = [])
     {
         if (!extension_loaded('memcache') && !extension_loaded('memcached')) {
             throw new Exception('The PHP extension "memcache" or "memcached" must be installed and loaded in order to use the Memcached backend.', 1213987706);
@@ -106,7 +89,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
                 $this->usedPeclModule = 'memcached';
             }
         }
-        parent::__construct($context, $options);
+        parent::__construct($options);
     }
 
     /**
@@ -115,20 +98,18 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      *
      * @param array $servers An array of servers to add.
      */
-    protected function setServers(array $servers)
+    protected function setServers(array $servers): void
     {
         $this->servers = $servers;
     }
 
     /**
      * Setter for compression flags bit
-     *
-     * @param bool $useCompression
      */
-    protected function setCompression($useCompression)
+    protected function setCompression(bool $useCompression): void
     {
         $compressionFlag = $this->usedPeclModule === 'memcache' ? MEMCACHE_COMPRESSED : \Memcached::OPT_COMPRESSION;
-        if ($useCompression === true) {
+        if ($useCompression) {
             $this->flags ^= $compressionFlag;
         } else {
             $this->flags &= ~$compressionFlag;
@@ -137,10 +118,8 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
 
     /**
      * Getter for compression flag
-     *
-     * @return bool
      */
-    protected function getCompression()
+    protected function getCompression(): bool
     {
         return $this->flags !== 0;
     }
@@ -150,7 +129,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      *
      * @throws Exception
      */
-    public function initializeObject()
+    public function initializeObject(): void
     {
         if (empty($this->servers)) {
             throw new Exception('No servers were given to Memcache', 1213115903);
@@ -159,21 +138,21 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
         $this->memcache = new $memcachedPlugin();
         $defaultPort = $this->usedPeclModule === 'memcache' ? ini_get('memcache.default_port') : 11211;
         foreach ($this->servers as $server) {
-            if (str_starts_with($server, 'unix://')) {
+            if (str_starts_with((string)$server, 'unix://')) {
                 $host = $server;
                 $port = 0;
             } else {
-                if (str_starts_with($server, 'tcp://')) {
-                    $server = substr($server, 6);
+                if (str_starts_with((string)$server, 'tcp://')) {
+                    $server = substr((string)$server, 6);
                 }
-                if (str_contains($server, ':')) {
-                    [$host, $port] = explode(':', $server, 2);
+                if (str_contains((string)$server, ':')) {
+                    [$host, $port] = explode(':', (string)$server, 2);
                 } else {
                     $host = $server;
                     $port = $defaultPort;
                 }
             }
-            $this->memcache->addserver($host, $port);
+            $this->memcache->addserver($host, (int)$port);
         }
         if ($this->usedPeclModule === 'memcached') {
             $this->memcache->setOption(\Memcached::OPT_COMPRESSION, $this->getCompression());
@@ -182,11 +161,8 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
 
     /**
      * Sets the preferred PECL module
-     *
-     * @param string $peclModule
-     * @throws Exception
      */
-    public function setPeclModule($peclModule)
+    public function setPeclModule(string $peclModule): void
     {
         if ($peclModule !== 'memcache' && $peclModule !== 'memcached') {
             throw new Exception('PECL module must be either "memcache" or "memcached".', 1442239768);
@@ -195,35 +171,20 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
         $this->usedPeclModule = $peclModule;
     }
 
-    /**
-     * Initializes the identifier prefix when setting the cache.
-     *
-     * @param FrontendInterface $cache The frontend for this backend
-     */
-    public function setCache(FrontendInterface $cache)
+    public function setCache(FrontendInterface $cache): void
     {
         parent::setCache($cache);
-        $identifierHash = substr(md5(Environment::getProjectPath() . $this->context . $this->cacheIdentifier), 0, 12);
+        $identifierHash = substr(md5(Environment::getProjectPath() . $this->cacheIdentifier), 0, 12);
         $this->identifierPrefix = 'TYPO3_' . $identifierHash . '_';
     }
 
     /**
-     * Saves data in the cache.
-     *
-     * @param string $entryIdentifier An identifier for this specific cache entry
-     * @param string $data The data to be stored
-     * @param array $tags Tags to associate with this cache entry
-     * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @throws Exception if no cache frontend has been set.
-     * @throws \InvalidArgumentException if the identifier is not valid or the final memcached key is longer than 250 characters
+     * @param mixed $data The data to be stored. mixed is allowed due to TransientBackendInterface
      */
-    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
+    public function set(string $entryIdentifier, mixed $data, array $tags = [], ?int $lifetime = null): void
     {
         if (strlen($this->identifierPrefix . $entryIdentifier) > 250) {
             throw new \InvalidArgumentException('Could not set value. Key more than 250 characters (' . $this->identifierPrefix . $entryIdentifier . ').', 1232969508);
-        }
-        if (!$this->cache instanceof FrontendInterface) {
-            throw new Exception('No cache frontend has been set yet via setCache().', 1207149215);
         }
         $tags[] = '%MEMCACHEBE%' . $this->cacheIdentifier;
         $expiration = $lifetime ?? $this->defaultLifetime;
@@ -246,7 +207,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
             } else {
                 $success = $this->setInternal($entryIdentifier, $data, $expiration);
             }
-            if ($success === true) {
+            if ($success) {
                 $this->removeIdentifierFromAllTags($entryIdentifier);
                 $this->addIdentifierToTags($entryIdentifier, $tags);
             } else {
@@ -257,29 +218,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
         }
     }
 
-    /**
-     * Stores the actual data inside memcache/memcached
-     *
-     * @param string $entryIdentifier
-     * @param mixed $data
-     * @param int $expiration
-     * @return bool
-     */
-    protected function setInternal($entryIdentifier, $data, $expiration)
-    {
-        if ($this->usedPeclModule === 'memcache') {
-            return $this->memcache->set($this->identifierPrefix . $entryIdentifier, $data, $this->flags, $expiration);
-        }
-        return $this->memcache->set($this->identifierPrefix . $entryIdentifier, $data, $expiration);
-    }
-
-    /**
-     * Loads data from the cache.
-     *
-     * @param string $entryIdentifier An identifier which describes the cache entry to load
-     * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
-     */
-    public function get($entryIdentifier)
+    public function get(string $entryIdentifier): mixed
     {
         $value = $this->memcache->get($this->identifierPrefix . $entryIdentifier);
         if (is_string($value) && str_starts_with($value, 'TYPO3*chunked:')) {
@@ -292,18 +231,11 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
         return $value;
     }
 
-    /**
-     * Checks if a cache entry with the specified identifier exists.
-     *
-     * @param string $entryIdentifier An identifier specifying the cache entry
-     * @return bool TRUE if such an entry exists, FALSE if not
-     */
-    public function has($entryIdentifier)
+    public function has(string $entryIdentifier): bool
     {
         if ($this->usedPeclModule === 'memcache') {
             return $this->memcache->get($this->identifierPrefix . $entryIdentifier) !== false;
         }
-
         // pecl-memcached supports storing literal FALSE
         $this->memcache->get($this->identifierPrefix . $entryIdentifier);
         return $this->memcache->getResultCode() !== \Memcached::RES_NOTFOUND;
@@ -317,20 +249,13 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      * @param string $entryIdentifier Specifies the cache entry to remove
      * @return bool TRUE if (at least) an entry could be removed or FALSE if no entry was found
      */
-    public function remove($entryIdentifier)
+    public function remove(string $entryIdentifier): bool
     {
         $this->removeIdentifierFromAllTags($entryIdentifier);
         return $this->memcache->delete($this->identifierPrefix . $entryIdentifier, 0);
     }
 
-    /**
-     * Finds and returns all cache entry identifiers which are tagged by the
-     * specified tag.
-     *
-     * @param string $tag The tag to search for
-     * @return array An array of entries with all matching entries. An empty array if no entries matched
-     */
-    public function findIdentifiersByTag($tag): array
+    public function findIdentifiersByTag(string $tag): array
     {
         $identifiers = $this->memcache->get($this->identifierPrefix . 'tag_' . $tag);
         if ($identifiers !== false) {
@@ -339,25 +264,12 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
         return [];
     }
 
-    /**
-     * Removes all cache entries of this cache.
-     *
-     * @throws Exception
-     */
-    public function flush()
+    public function flush(): void
     {
-        if (!$this->cache instanceof FrontendInterface) {
-            throw new Exception('No cache frontend has been set via setCache() yet.', 1204111376);
-        }
         $this->flushByTag('%MEMCACHEBE%' . $this->cacheIdentifier);
     }
 
-    /**
-     * Removes all cache entries of this cache which are tagged by the specified tag.
-     *
-     * @param string $tag The tag the entries must have
-     */
-    public function flushByTag($tag)
+    public function flushByTag(string $tag): void
     {
         $identifiers = $this->findIdentifiersByTag($tag);
         foreach ($identifiers as $identifier) {
@@ -365,12 +277,31 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
         }
     }
 
+    public function flushByTags(array $tags): void
+    {
+        array_walk($tags, $this->flushByTag(...));
+    }
+
+    /**
+     * Does nothing, as memcached does GC itself
+     */
+    public function collectGarbage(): void {}
+
+    /**
+     * Stores the actual data inside memcache/memcached
+     */
+    protected function setInternal(string $entryIdentifier, mixed $data, int $expiration): bool
+    {
+        if ($this->usedPeclModule === 'memcache') {
+            return $this->memcache->set($this->identifierPrefix . $entryIdentifier, $data, $this->flags, $expiration);
+        }
+        return $this->memcache->set($this->identifierPrefix . $entryIdentifier, $data, $expiration);
+    }
+
     /**
      * Associates the identifier with the given tags
-     *
-     * @param string $entryIdentifier
      */
-    protected function addIdentifierToTags($entryIdentifier, array $tags)
+    protected function addIdentifierToTags(string $entryIdentifier, array $tags): void
     {
         // Get identifier-to-tag index to look for updates
         $existingTags = $this->findTagsByIdentifier($entryIdentifier);
@@ -398,10 +329,8 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
 
     /**
      * Removes association of the identifier with the given tags
-     *
-     * @param string $entryIdentifier
      */
-    protected function removeIdentifierFromAllTags($entryIdentifier)
+    protected function removeIdentifierFromAllTags(string $entryIdentifier): void
     {
         // Get tags for this identifier
         $tags = $this->findTagsByIdentifier($entryIdentifier);
@@ -431,16 +360,10 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      * index to search for tags.
      *
      * @param string $identifier Identifier to find tags by
-     * @return array
      */
-    protected function findTagsByIdentifier($identifier)
+    protected function findTagsByIdentifier(string $identifier): array
     {
         $tags = $this->memcache->get($this->identifierPrefix . 'ident_' . $identifier);
         return $tags === false ? [] : (array)$tags;
     }
-
-    /**
-     * Does nothing, as memcached does GC itself
-     */
-    public function collectGarbage() {}
 }

@@ -122,7 +122,7 @@ readonly class SiteSettingsFactory
     protected function getSettingsProviders(array $settings, array $sets): array
     {
         $activeSets = [];
-        if (is_array($sets) && $sets !== []) {
+        if ($sets !== []) {
             $activeSets = $this->setRegistry->getSets(...$sets);
         }
 

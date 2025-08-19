@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 
 use PHPUnit\Framework\Attributes\Test;
-use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -37,12 +36,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FormProtectionFactoryTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
+
     protected FormProtectionFactory $subject;
     protected FrontendInterface $runtimeCacheMock;
 
     protected function setUp(): void
     {
-        $this->runtimeCacheMock = new VariableFrontend('null', new TransientMemoryBackend('null', ['logger' => new NullLogger()]));
+        $this->runtimeCacheMock = new VariableFrontend('null', new TransientMemoryBackend());
         $this->subject = new FormProtectionFactory(
             new FlashMessageService(),
             new LanguageServiceFactory(
@@ -54,12 +55,6 @@ final class FormProtectionFactoryTest extends UnitTestCase
             $this->runtimeCacheMock
         );
         parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->runtimeCacheMock->flush();
-        parent::tearDown();
     }
 
     #[Test]

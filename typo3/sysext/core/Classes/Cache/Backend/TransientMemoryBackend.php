@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,77 +17,41 @@
 
 namespace TYPO3\CMS\Core\Cache\Backend;
 
-use TYPO3\CMS\Core\Cache\Exception;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-
 /**
  * A caching backend which stores cache entries during one script run.
  */
 class TransientMemoryBackend extends AbstractBackend implements TaggableBackendInterface, TransientBackendInterface
 {
-    /**
-     * @var array
-     */
-    protected $entries = [];
+    protected array $entries = [];
+
+    protected array $tagsAndEntries = [];
 
     /**
-     * @var array
+     * @param mixed $data The data to be stored. mixed is allowed due to TransientBackendInterface
      */
-    protected $tagsAndEntries = [];
-
-    /**
-     * Saves data in the cache.
-     *
-     * @param string $entryIdentifier An identifier for this specific cache entry
-     * @param string $data The data to be stored
-     * @param array $tags Tags to associate with this cache entry
-     * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
-     * @throws Exception if no cache frontend has been set.
-     */
-    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
+    public function set(string $entryIdentifier, mixed $data, array $tags = [], $lifetime = null): void
     {
-        if (!$this->cache instanceof FrontendInterface) {
-            throw new Exception('No cache frontend has been set yet via setCache().', 1238244992);
-        }
         $this->entries[$entryIdentifier] = $data;
         foreach ($tags as $tag) {
             $this->tagsAndEntries[$tag][$entryIdentifier] = true;
         }
     }
 
-    /**
-     * Loads data from the cache.
-     *
-     * @param string $entryIdentifier An identifier which describes the cache entry to load
-     * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
-     */
-    public function get($entryIdentifier)
+    public function get(string $entryIdentifier): mixed
     {
         return $this->entries[$entryIdentifier] ?? false;
     }
 
-    /**
-     * Checks if a cache entry with the specified identifier exists.
-     *
-     * @param string $entryIdentifier An identifier specifying the cache entry
-     * @return bool TRUE if such an entry exists, FALSE if not
-     */
-    public function has($entryIdentifier)
+    public function has(string $entryIdentifier): bool
     {
         return isset($this->entries[$entryIdentifier]);
     }
 
-    /**
-     * Removes all cache entries matching the specified identifier.
-     *
-     * @param string $entryIdentifier Specifies the cache entry to remove
-     * @return bool TRUE if the entry could be removed or FALSE if no entry was found
-     */
-    public function remove($entryIdentifier)
+    public function remove(string $entryIdentifier): bool
     {
         if (isset($this->entries[$entryIdentifier])) {
             unset($this->entries[$entryIdentifier]);
-            foreach ($this->tagsAndEntries as $tag => $_) {
+            foreach (array_keys($this->tagsAndEntries) as $tag) {
                 if (isset($this->tagsAndEntries[$tag][$entryIdentifier])) {
                     unset($this->tagsAndEntries[$tag][$entryIdentifier]);
                 }
@@ -95,13 +61,7 @@ class TransientMemoryBackend extends AbstractBackend implements TaggableBackendI
         return false;
     }
 
-    /**
-     * Finds and returns all cache entry identifiers which are tagged by the
-     * specified tag.
-     *
-     * @param string $tag The tag to search for
-     */
-    public function findIdentifiersByTag($tag): array
+    public function findIdentifiersByTag(string $tag): array
     {
         if (isset($this->tagsAndEntries[$tag])) {
             return array_keys($this->tagsAndEntries[$tag]);
@@ -109,21 +69,13 @@ class TransientMemoryBackend extends AbstractBackend implements TaggableBackendI
         return [];
     }
 
-    /**
-     * Removes all cache entries of this cache.
-     */
-    public function flush()
+    public function flush(): void
     {
         $this->entries = [];
         $this->tagsAndEntries = [];
     }
 
-    /**
-     * Removes all cache entries of this cache which are tagged by the specified tag.
-     *
-     * @param string $tag The tag the entries must have
-     */
-    public function flushByTag($tag)
+    public function flushByTag(string $tag): void
     {
         $identifiers = $this->findIdentifiersByTag($tag);
         foreach ($identifiers as $identifier) {
@@ -131,8 +83,13 @@ class TransientMemoryBackend extends AbstractBackend implements TaggableBackendI
         }
     }
 
+    public function flushByTags(array $tags): void
+    {
+        array_walk($tags, $this->flushByTag(...));
+    }
+
     /**
-     * Does nothing
+     * No-op
      */
-    public function collectGarbage() {}
+    public function collectGarbage(): void {}
 }

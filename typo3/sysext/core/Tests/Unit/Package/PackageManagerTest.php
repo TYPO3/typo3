@@ -53,7 +53,7 @@ final class PackageManagerTest extends UnitTestCase
         $mockCache = $this->createMock(PhpFrontend::class);
         $mockCacheBackend = $this->createMock(SimpleFileBackend::class);
         $mockCache->method('has')->willReturn(false);
-        $mockCache->method('set')->willReturn(true);
+        $mockCache->method('set');
         $mockCache->method('getBackend')->willReturn($mockCacheBackend);
         $mockCacheBackend->method('getCacheDirectory')->willReturn($this->testRoot . 'Cache');
         $this->packageManager = $this->getAccessibleMock(

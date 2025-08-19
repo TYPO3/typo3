@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -25,14 +27,14 @@ interface TaggableBackendInterface extends BackendInterface
      *
      * @param string $tag The tag the entries must have
      */
-    public function flushByTag($tag);
+    public function flushByTag(string $tag): void;
 
     /**
      * Removes all cache entries of this cache which are tagged by any of the specified tags.
      *
      * @param string[] $tags List of tags
      */
-    public function flushByTags(array $tags);
+    public function flushByTags(array $tags): void;
 
     /**
      * Finds and returns all cache entry identifiers which are tagged by the
@@ -41,5 +43,5 @@ interface TaggableBackendInterface extends BackendInterface
      * @param string $tag The tag to search for
      * @return array An array with identifiers of all matching entries. An empty array if no entries matched
      */
-    public function findIdentifiersByTag($tag);
+    public function findIdentifiersByTag(string $tag): array;
 }
