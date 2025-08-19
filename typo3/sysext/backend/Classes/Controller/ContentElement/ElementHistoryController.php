@@ -478,9 +478,11 @@ class ElementHistoryController
             return false;
         }
 
+        $schema = $this->tcaSchemaFactory->get($tableName);
+
         // Early return if $elementUid is zero
         if ($elementUid === 0) {
-            return !$this->tcaSchemaFactory->get($tableName)->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction();
+            return !$schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction();
         }
 
         $record = BackendUtility::getRecord($tableName, $elementUid, '*', '', false);
@@ -490,6 +492,7 @@ class ElementHistoryController
             $record = BackendUtility::getRecord('pages', $pageId, '*', '', false);
         }
 
-        return (bool)$record['editlock'];
+        return $schema->hasCapability(TcaSchemaCapability::EditLock)
+            && ($record[$schema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] ?? false);
     }
 }
