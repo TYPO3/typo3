@@ -365,7 +365,7 @@ class FileListController implements LoggerAwareInterface
             $this->folderObject,
             MathUtility::forceIntegerInRange($this->currentPage, 1, 100000),
             (string)($this->moduleData->get('sortField') ?: 'name'),
-            SortDirection::tryFrom($request->getParsedBody()['sortDirection'] ?? $request->getQueryParams()['sortDirection'] ?? '') ?? SortDirection::ASCENDING
+            SortDirection::tryFrom($this->moduleData->get('sortDirection') ?? '') ?? SortDirection::ASCENDING
         );
 
         // Only add selected columns if the feature is enabled
