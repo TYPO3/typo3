@@ -254,7 +254,7 @@ The example shows how to modify the file upload configuration for the argument
 :php:`item` and the property :php:`file`. The minimum amount of files to be
 uploaded is set to :php:`2` and a custom validator is added.
 
-To remove all defined validators except the :php:`DenyPhpUploadValidator`, use
+To remove all defined validators except the :php:`FileNameValidator`, use
 the :php:`resetValidators()` method.
 
 
