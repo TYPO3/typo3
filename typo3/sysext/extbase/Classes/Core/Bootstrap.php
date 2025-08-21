@@ -29,6 +29,7 @@ use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Service\CacheService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Response\ResponseData;
 
 /**
  * Creates a request and dispatches it to the controller which was specified
@@ -169,19 +170,19 @@ class Bootstrap
             $response = $response->withoutHeader('Content-Type');
         }
 
-        if (headers_sent() === false) {
+        $responseData = $request->getAttribute('frontend.response.data');
+        if ($responseData instanceof ResponseData) {
             foreach ($response->getHeaders() as $name => $values) {
-                foreach ($values as $value) {
-                    header(sprintf('%s: %s', $name, $value));
-                }
+                $responseData->setHeader($name, $values);
             }
-
-            // Set status code from extbase response
-            // @todo: Remove when ContentObjectRenderer is response aware
+            // @todo: Get rid of this in TYPO3 v15. See todos in ResponseData.
             if ($response->getStatusCode() >= 300) {
-                header('HTTP/' . $response->getProtocolVersion() . ' ' . $response->getStatusCode() . ' ' . $response->getReasonPhrase());
+                $responseData->setProtocolVersion($response->getProtocolVersion());
+                $responseData->setStatusCode($response->getStatusCode());
+                $responseData->setReasonPhrase($response->getReasonPhrase());
             }
         }
+
         $body = $response->getBody();
         $body->rewind();
         $content = $body->getContents();

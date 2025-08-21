@@ -54,6 +54,7 @@ use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 use TYPO3\CMS\Frontend\Page\PageInformationCreationFailedException;
 use TYPO3\CMS\Frontend\Page\PageInformationFactory;
 use TYPO3\CMS\Frontend\Page\PageParts;
+use TYPO3\CMS\Frontend\Response\ResponseData;
 
 /**
  * This important middleware prepares a lot of the heavy lifting.
@@ -102,6 +103,11 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
         $cacheDataCollector = $request->getAttribute('frontend.cache.collector');
         $language = $request->getAttribute('language') ?? $site->getDefaultLanguage();
         $routing = $request->getAttribute('routing');
+
+        // Add the (internal!) response data "collector" attribute to allow single content elements
+        // to register HTTP header data. We do not check for attribute existence here, since
+        // middlewares *before* could just add their own headers directly.
+        $request = $request->withAttribute('frontend.response.data', new ResponseData());
 
         if ($this->context->getPropertyFromAspect('frontend.preview', 'isPreview', false)) {
             // Disable cache if this is a preview

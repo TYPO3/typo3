@@ -488,7 +488,7 @@ $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'features\'][\'security.system.enforceFi
             ->withAddedHeader('Content-Type', 'multipart/form-data; boundary=' . $boundary);
 
         $response = $this->executeFrontendSubRequest($request, $requestContext);
-        self::assertSame(200, $response->getStatusCode());
+        self::assertSame($expectation ? 303 : 200, $response->getStatusCode());
 
         if (!$expectation) {
             // Expecting validation errors.

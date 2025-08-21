@@ -117,7 +117,7 @@ final class BlogPostEditingControllerTest extends FunctionalTestCase
             ->withAddedHeader('Content-Type', 'application/x-www-form-urlencoded');
 
         $response = $this->executeFrontendSubRequest($request, $requestContext);
-        self::assertSame(200, $response->getStatusCode());
+        self::assertSame(303, $response->getStatusCode());
 
         $blogRepository = $this->get(BlogRepository::class);
         $blog = $blogRepository->findByUid(1);
@@ -476,7 +476,7 @@ final class BlogPostEditingControllerTest extends FunctionalTestCase
             ->withAddedHeader('Content-Type', 'application/x-www-form-urlencoded');
 
         $response = $this->executeFrontendSubRequest($request, $requestContext);
-        self::assertSame(200, $response->getStatusCode());
+        self::assertSame(303, $response->getStatusCode());
 
         $blogRepository = $this->get(BlogRepository::class);
         $blog = $blogRepository->findByUid(5);

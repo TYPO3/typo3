@@ -31,10 +31,6 @@ abstract class AbstractApplication implements ApplicationInterface, RequestHandl
 {
     use LoggerAwareTrait;
 
-    private const MULTI_LINE_HEADERS = [
-        'set-cookie',
-    ];
-
     /**
      * @var RequestHandlerInterface|null
      */
@@ -60,12 +56,12 @@ abstract class AbstractApplication implements ApplicationInterface, RequestHandl
             }
 
             foreach ($response->getHeaders() as $name => $values) {
-                if (in_array(strtolower($name), self::MULTI_LINE_HEADERS, true)) {
-                    foreach ($values as $value) {
-                        header($name . ': ' . $value, false);
-                    }
-                } else {
-                    header($name . ': ' . implode(', ', $values));
+                // Allow replacement for first occurrence of header but afterward do not replace
+                // to allow multiple headers to be sent, e.g. for Set-Cookie headers.
+                $replace = true;
+                foreach ($values as $value) {
+                    header($name . ': ' . $value, $replace);
+                    $replace = false;
                 }
             }
         }

@@ -59,6 +59,7 @@ use TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent;
 use TYPO3\CMS\Frontend\Event\ModifyHrefLangTagsEvent;
 use TYPO3\CMS\Frontend\Page\PageParts;
 use TYPO3\CMS\Frontend\Resource\PublicUrlPrefixer;
+use TYPO3\CMS\Frontend\Response\ResponseData;
 
 /**
  * This is the main entry point of the TypoScript driven standard front-end.
@@ -1164,6 +1165,17 @@ readonly class RequestHandler implements RequestHandlerInterface
                 'Cached page generated ' . date($dateFormat . ' ' . $timeFormat, $pageParts->getPageCacheGeneratedTimestamp()) . '.'
                     . ' Expires ' . date($dateFormat . ' ' . $timeFormat, $pageParts->getPageCacheExpireTimestamp())
             );
+        }
+
+        // Add status code and response headers which were set by in the frontend.response.data attribute
+        $responseData = $request->getAttribute('frontend.response.data');
+        if ($responseData instanceof ResponseData) {
+            // @todo: Note status and version should most likely vanish here again, see attribute comments.
+            $response = $response->withStatus($responseData->getStatusCode());
+            $response = $response->withProtocolVersion($responseData->getProtocolVersion());
+            foreach ($responseData->getHeaders() as $name => $value) {
+                $response = $response->withHeader($name, $value);
+            }
         }
 
         // Add cache related headers for proxy / client caching
