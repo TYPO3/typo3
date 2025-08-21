@@ -274,8 +274,8 @@ readonly class GridDataService
                     // escape/sanitize the others
                     'path_Live' => htmlspecialchars(BackendUtility::getRecordPath($liveRecord['pid'], '', 999)),
                     'label_Stage' => htmlspecialchars($currentStage->title),
-                    'label_PrevStage' => ['title' => $previousStageSendToTitle],
-                    'label_NextStage' => ['title' => $nextStageSendToTitle],
+                    'label_PrevStage' => $previousStageSendToTitle ? ['title' => $previousStageSendToTitle] : false,
+                    'label_NextStage' => $nextStageSendToTitle ? ['title' => $nextStageSendToTitle] : false,
                     'stage_position' => $this->stagesService->getPositionOfCurrentStage($stages, $currentStage->uid),
                     'stage_count' => count($stages) - 1, // Do not count 'pseudo' execute stage
                     'parent' => [

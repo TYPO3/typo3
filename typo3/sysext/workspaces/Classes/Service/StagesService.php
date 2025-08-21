@@ -100,7 +100,6 @@ readonly class StagesService
      */
     public function getPreviousStageForElementCollection(array $stages, array $workspaceItems): array
     {
-        $stages = array_reverse($stages);
         $availableStagesForWSUser = $this->getStagesForWSUser($stages);
         $usedStages = [];
         foreach ($workspaceItems as $tableName => $items) {
@@ -113,7 +112,7 @@ readonly class StagesService
         }
         $currentStage = null;
         $previousStage = null;
-        foreach ($stages as $stage) {
+        foreach (array_reverse($stages) as $stage) {
             if (isset($usedStages[$stage->uid])) {
                 $currentStage = $this->getStage($stages, $stage->uid);
                 try {

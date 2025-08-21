@@ -52,8 +52,6 @@ readonly class DatabaseUserPermissionCheck implements FormDataProviderInterface
      *   can be caught by upper level controller code and can be translated
      *   to a specific error message that is shown to the user.
      *
-     * @param array $result
-     * @return array
      * @throws AccessDeniedException
      */
     public function addData(array $result): array
