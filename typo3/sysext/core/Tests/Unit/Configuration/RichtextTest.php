@@ -19,11 +19,30 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Configuration\Event\AfterRichtextConfigurationPreparedEvent;
 use TYPO3\CMS\Core\Configuration\Richtext;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\RteCKEditor\Configuration\CKEditor5Migrator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RichtextTest extends UnitTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $eventDispatcher = new class () implements EventDispatcherInterface {
+            public function dispatch(object $event)
+            {
+                if ($event instanceof AfterRichtextConfigurationPreparedEvent) {
+                    $event->setConfiguration((new CKEditor5Migrator($event->getConfiguration()))->get());
+                }
+                return $event;
+            }
+        };
+        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
+    }
+
     #[Test]
     public function getConfigurationUsesOverruleModeFromType(): void
     {

@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Configuration;
+namespace TYPO3\CMS\RteCKEditor\Configuration;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -737,13 +737,10 @@ class CKEditor5Migrator
             }
             $name = $matches[1];
             $properties = $matches[2];
-            $config = true;
-            if ($properties !== null) {
-                $config = [];
-                $config['styles'] = $this->parseRuleProperties($properties, 'styles');
-                $config['attributes'] = $this->parseRuleProperties($properties, 'attrs');
-                $config['classes'] = $this->parseRuleProperties($properties, 'classes');
-            }
+            $config = [];
+            $config['styles'] = $this->parseRuleProperties($properties, 'styles');
+            $config['attributes'] = $this->parseRuleProperties($properties, 'attrs');
+            $config['classes'] = $this->parseRuleProperties($properties, 'classes');
             $ruleConfig[$name] = $config;
 
             $input = substr($input, strlen($matches[0]));

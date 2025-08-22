@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Configuration;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Configuration\Event\AfterRichtextConfigurationPreparedEvent;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -77,10 +79,10 @@ class Richtext
             $configuration['proc.']['overruleMode'] = 'default';
         }
 
-        return GeneralUtility::makeInstance(
-            CKEditor5Migrator::class,
-            $configuration
-        )->get();
+        $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
+        $event = $eventDispatcher->dispatch(new AfterRichtextConfigurationPreparedEvent($configuration));
+
+        return $event->getConfiguration();
     }
 
     /**

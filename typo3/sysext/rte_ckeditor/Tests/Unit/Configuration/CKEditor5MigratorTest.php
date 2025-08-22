@@ -15,11 +15,11 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
+namespace TYPO3\CMS\RteCKEditor\Tests\Unit\Configuration;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Configuration\CKEditor5Migrator;
+use TYPO3\CMS\RteCKEditor\Configuration\CKEditor5Migrator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CKEditor5MigratorTest extends UnitTestCase
