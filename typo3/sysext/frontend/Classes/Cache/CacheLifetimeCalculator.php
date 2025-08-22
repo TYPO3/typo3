@@ -65,7 +65,7 @@ class CacheLifetimeCalculator
         }
         // A pages endtime limits the upper bound of the maxmium cache lifetime
         $pageEndtime = (int)($pageRecord['endtime'] ?? 0);
-        if ($pageEndtime > 0) {
+        if ($pageEndtime > 0 && ($pageEndtime - $GLOBALS['EXEC_TIME']) > 0) {
             $cacheTimeout = min($cacheTimeout, $pageEndtime - $GLOBALS['EXEC_TIME']);
         }
         if (!empty($renderingInstructions['cache_clearAtMidnight'])) {
