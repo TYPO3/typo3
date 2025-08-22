@@ -97,7 +97,7 @@ class FileReferenceContainer extends AbstractContainer
             if ($isNewRecord) {
                 // Add pid of file reference as hidden field
                 $html .= '<input type="hidden" name="data' . htmlspecialchars($appendFormFieldNames)
-                    . '[pid]" value="' . (int)$record['pid'] . '"/>';
+                    . '[pid]" value="' . htmlspecialchars((string)$record['pid']) . '"/>';
                 // Tell DataHandler this file reference is expanded
                 $ucFieldName = 'uc[inlineView]'
                     . '[' . $this->data['inlineTopMostParentTableName'] . ']'
