@@ -7,9 +7,9 @@
 ,91,88,256,1,1,89,0,0,0,0,"[Translate to Dansk:] Relations","/data-handler/translate-to-dansk-relations",,,,
 ,92,88,256,1,2,89,0,0,0,0,"[Translate to Deutsch:] Relations","/data-handler/translate-to-deutsch-relations",,,,
 "sys_workspace",,,,,,,,,,,,,,,,,
-,"uid","pid","deleted","title","adminusers","members","db_mountpoints","file_mountpoints","freeze","live_edit","publish_access","custom_stages","stagechg_notification","edit_notification_defaults","edit_allow_notificaton_settings","publish_notification_defaults","publish_allow_notificaton_settings"
-,1,0,0,"Workspace #1",,,,,0,0,0,0,0,0,0,0,0
-,2,0,0,"Workspace #2",,,,,0,0,0,0,0,0,0,0,0
+,"uid","pid","deleted","title","adminusers","members","db_mountpoints","file_mountpoints","live_edit","publish_access","custom_stages","stagechg_notification","edit_notification_defaults","edit_allow_notificaton_settings","publish_notification_defaults","publish_allow_notificaton_settings"
+,1,0,0,"Workspace #1",,,,,0,0,0,0,0,0,0,0
+,2,0,0,"Workspace #2",,,,,0,0,0,0,0,0,0,0
 "sys_workspace_stage",,,,,,,,,,,,,,,,,
 ,"uid","pid","tstamp","deleted","sorting","title","responsible_persons","default_mailcomment","parentid","notification_defaults","allow_notificaton_settings",,,,,
 ,1,0,1290048921,0,1,"Stage 1","be_users_3",,1,0,0,,,,,

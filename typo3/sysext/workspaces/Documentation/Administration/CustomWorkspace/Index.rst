@@ -99,8 +99,8 @@ Subsequently you can configure settings for the three predefined stages.
 
 The "Settings dialog" is about the popup window which appears after
 each review process. If the "show dialog" box is not checked, the
-popup will not show notification settings and notifications will 
-be sent according to the predefined settings. 
+popup will not show notification settings and notifications will
+be sent according to the predefined settings.
 When the "changeable preselection" box is checked, the preselected
 list of users to notify can be modified
 on the fly before sending the change notification.
@@ -202,9 +202,6 @@ Other
 
 The "Other" tab is comprised of various settings affecting
 the behavior of the custom workspace.
-
-The "Freeze editing" flag actually blocks all operations in
-the workspace until it is turned off again.
 
 It is possible to allow editing of non-versionable records
 in the custom workspace. These records will be edited "live",

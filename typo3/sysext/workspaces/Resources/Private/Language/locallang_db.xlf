@@ -87,9 +87,6 @@
 			<trans-unit id="sys_workspace.unpublish_time">
 				<source>Un-Publish changes on (requires scheduler task)</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.freeze">
-				<source>Freeze Editing</source>
-			</trans-unit>
 			<trans-unit id="sys_workspace.live_edit">
 				<source>Allow "live" editing of records from tables without versioning</source>
 			</trans-unit>

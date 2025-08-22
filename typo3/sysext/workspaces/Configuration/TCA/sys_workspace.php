@@ -76,14 +76,6 @@ return [
                 'default' => 0,
             ],
         ],
-        'freeze' => [
-            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.freeze',
-            'config' => [
-                'type' => 'check',
-                'renderType' => 'checkboxToggle',
-                'default' => 0,
-            ],
-        ],
         'live_edit' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.live_edit',
             'config' => [
@@ -240,9 +232,6 @@ return [
         ],
     ],
     'palettes' => [
-        'main' => [
-            'showitem' => 'title,freeze',
-        ],
         'memberlist' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:tabs.users',
             'showitem' => 'adminusers,members',
@@ -263,7 +252,7 @@ return [
     'types' => [
         '0' => ['showitem' => '
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
-                --palette--;;main,
+                title,
                 stagechg_notification,
                 --palette--;;memberlist,
             --div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:tabs.internal_stages,
