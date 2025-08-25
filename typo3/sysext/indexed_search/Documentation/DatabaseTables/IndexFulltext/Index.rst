@@ -8,6 +8,9 @@ index\_fulltext
 For free text searching, e.g. with a sentence, in all content: title,
 description, keywords, body.
 
+This table is used when `basic.useMysqlFulltext` extension configuration
+is enabled.
+
 
 .. _index-fulltext-phash:
 
@@ -36,6 +39,3 @@ fulltextdata
 
    Description
          The total content stripped for any HTML codes.
-
-Currently the MySQL FULLTEXT search is not used (something with MATCH
-... AGAINST), but this will be added in the future.
