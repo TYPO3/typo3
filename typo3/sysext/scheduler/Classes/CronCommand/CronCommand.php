@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -52,7 +54,7 @@ class CronCommand
      * @param string $cronCommand The cron command can hold any combination documented as valid
      * @param bool|int $timestamp Optional start time, used in unit tests
      */
-    public function __construct($cronCommand, $timestamp = false)
+    public function __construct(string $cronCommand, bool|int $timestamp = false)
     {
         $cronCommand = NormalizeCommand::normalize($cronCommand);
         // Explode cron command to sections
@@ -72,7 +74,7 @@ class CronCommand
      *
      * @throws \RuntimeException
      */
-    public function calculateNextValue()
+    public function calculateNextValue(): void
     {
         $newTimestamp = $this->getTimestamp();
         // Calculate next minute and hour field
@@ -117,8 +119,6 @@ class CronCommand
     /**
      * Get cron command sections. Array of strings, each containing either
      * a list of comma separated integers or *
-     *
-     * @internal
      */
     public function getCronCommandSections(): array
     {
@@ -127,11 +127,8 @@ class CronCommand
 
     /**
      * Determine if current timestamp matches minute and hour cron command restriction.
-     *
-     * @param int $timestamp to test
-     * @return bool TRUE if cron command conditions are met
      */
-    protected function minuteAndHourMatchesCronCommand($timestamp)
+    protected function minuteAndHourMatchesCronCommand(int $timestamp): bool
     {
         $minute = (int)date('i', $timestamp);
         $hour = (int)date('G', $timestamp);
@@ -145,11 +142,8 @@ class CronCommand
     /**
      * Determine if current timestamp matches day of month, month and day of week
      * cron command restriction
-     *
-     * @param int $timestamp to test
-     * @return bool TRUE if cron command conditions are met
      */
-    protected function dayMatchesCronCommand($timestamp): bool
+    protected function dayMatchesCronCommand(int $timestamp): bool
     {
         $dayOfMonth = (int)date('j', $timestamp);
         $month = (int)date('n', $timestamp);
@@ -176,14 +170,10 @@ class CronCommand
     /**
      * Determine if a given number validates a cron command section. The given cron
      * command must be a 'normalized' list with only comma separated integers or '*'
-     *
-     * @param string $commandExpression cron command
-     * @param int $numberToMatch number to look up
-     * @return bool TRUE if number is in list
      */
-    protected function isInCommandList($commandExpression, $numberToMatch)
+    protected function isInCommandList(string $commandExpression, int $numberToMatch): bool
     {
-        if ((string)$commandExpression === '*') {
+        if ($commandExpression === '*') {
             $inList = true;
         } else {
             $inList = GeneralUtility::inList($commandExpression, (string)$numberToMatch);
@@ -199,11 +189,8 @@ class CronCommand
      * on every last sunday in march clocks are forwarded by one hour (set from 2:00 to 3:00),
      * and on last sunday of october they are set back one hour (from 3:00 to 2:00).
      * This shortens and lengthens the length of a day by one hour.
-     *
-     * @param int $timestamp Unix timestamp
-     * @return int Number of seconds of day
      */
-    protected function numberOfSecondsInDay($timestamp)
+    protected function numberOfSecondsInDay(int $timestamp): int
     {
         $now = mktime(0, 0, 0, (int)date('n', $timestamp), (int)date('j', $timestamp), (int)date('Y', $timestamp));
         // Make sure to be in next day, even if day has 25 hours
@@ -214,9 +201,6 @@ class CronCommand
 
     /**
      * Round a timestamp down to full minute.
-     *
-     * @param int $timestamp Unix timestamp
-     * @return int Rounded timestamp
      */
     protected function roundTimestamp(int $timestamp): int
     {

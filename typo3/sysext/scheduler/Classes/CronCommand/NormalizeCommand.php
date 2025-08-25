@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -36,25 +38,19 @@ class NormalizeCommand
      * the letter '*' or a sorted, unique comma separated list of integers.
      *
      * @throws \InvalidArgumentException cron command is invalid or out of bounds
-     * @param string $cronCommand The cron command to normalize
-     * @return string Normalized cron command
      */
-    public static function normalize($cronCommand)
+    public static function normalize(string $cronCommand): string
     {
         $cronCommand = trim($cronCommand);
         $cronCommand = self::convertKeywordsToCronCommand($cronCommand);
-        $cronCommand = self::normalizeFields($cronCommand);
-        return $cronCommand;
+        return self::normalizeFields($cronCommand);
     }
 
     /**
      * Accept special cron command keywords and convert to standard cron syntax.
      * Allowed keywords: @yearly, @annually, @monthly, @weekly, @daily, @midnight, @hourly
-     *
-     * @param string $cronCommand Cron command
-     * @return string Normalized cron command if keyword was found, else unchanged cron command
      */
-    protected static function convertKeywordsToCronCommand($cronCommand)
+    protected static function convertKeywordsToCronCommand(string $cronCommand): string
     {
         switch ($cronCommand) {
             case '@yearly':
@@ -81,30 +77,24 @@ class NormalizeCommand
 
     /**
      * Normalize cron command field to list of integers or *
-     *
-     * @param string $cronCommand cron command
-     * @return string Normalized cron command
      */
-    protected static function normalizeFields($cronCommand)
+    protected static function normalizeFields(string $cronCommand): string
     {
         $fieldArray = self::splitFields($cronCommand);
-        $fieldArray[0] = self::normalizeIntegerField($fieldArray[0], 0, 59);
+        $fieldArray[0] = self::normalizeIntegerField($fieldArray[0]);
         $fieldArray[1] = self::normalizeIntegerField($fieldArray[1], 0, 23);
         $fieldArray[2] = self::normalizeIntegerField($fieldArray[2], 1, 31);
         $fieldArray[3] = self::normalizeMonthAndWeekdayField($fieldArray[3], true);
         $fieldArray[4] = self::normalizeMonthAndWeekdayField($fieldArray[4], false);
-        $normalizedCronCommand = implode(' ', $fieldArray);
-        return $normalizedCronCommand;
+        return implode(' ', $fieldArray);
     }
 
     /**
      * Split a given cron command like '23 * * * *' to an array with five fields.
      *
      * @throws \InvalidArgumentException If splitted array does not contain five entries
-     * @param string $cronCommand cron command
-     * @return array
      */
-    protected static function splitFields($cronCommand)
+    protected static function splitFields(string $cronCommand): array
     {
         $fields = explode(' ', $cronCommand);
         if (count($fields) !== 5) {
@@ -115,12 +105,8 @@ class NormalizeCommand
 
     /**
      * Normalize month field.
-     *
-     * @param string $expression Month field expression
-     * @param bool $isMonthField TRUE if month field is handled, FALSE for weekday field
-     * @return string Normalized expression
      */
-    protected static function normalizeMonthAndWeekdayField($expression, $isMonthField = true)
+    protected static function normalizeMonthAndWeekdayField(string $expression, bool $isMonthField = true): string
     {
         if ((string)$expression === '*') {
             $fieldValues = '*';
@@ -160,14 +146,10 @@ class NormalizeCommand
      * Normalize integer field.
      *
      * @throws \InvalidArgumentException If field is invalid or out of bounds
-     * @param string $expression Expression
-     * @param int $lowerBound Lower limit of result list
-     * @param int $upperBound Upper limit of result list
-     * @return string Normalized expression
      */
-    protected static function normalizeIntegerField($expression, $lowerBound = 0, $upperBound = 59)
+    protected static function normalizeIntegerField(string $expression, int $lowerBound = 0, int $upperBound = 59): string
     {
-        if ((string)$expression === '*') {
+        if ($expression === '*') {
             $fieldValues = '*';
         } else {
             $listOfCommaValues = explode(',', $expression);
@@ -175,7 +157,7 @@ class NormalizeCommand
             foreach ($listOfCommaValues as $listElement) {
                 if (str_contains($listElement, '/')) {
                     [$left, $right] = explode('/', $listElement);
-                    if ((string)$left === '*') {
+                    if ($left === '*') {
                         $leftList = self::convertRangeToListOfValues($lowerBound . '-' . $upperBound);
                     } else {
                         $leftList = self::convertRangeToListOfValues($left);
@@ -193,10 +175,10 @@ class NormalizeCommand
             }
             $fieldValues = implode(',', $fieldArray);
         }
-        if ((string)$fieldValues === '') {
+        if ($fieldValues === '') {
             throw new \InvalidArgumentException('Unable to convert integer field to list of values: Result list empty.', 1291422012);
         }
-        if ((string)$fieldValues !== '*') {
+        if ($fieldValues !== '*') {
             $fieldList = explode(',', $fieldValues);
             sort($fieldList);
             $fieldList = array_unique($fieldList);
@@ -214,13 +196,12 @@ class NormalizeCommand
     /**
      * Convert a range of integers to a list: 4-6 results in a string '4,5,6'
      *
+     * @param string $range integer-integer
      * @throws \InvalidArgumentException If range can not be converted to list
-     * @param string $range Integer-integer
-     * @return string
      */
-    protected static function convertRangeToListOfValues($range)
+    protected static function convertRangeToListOfValues(string $range): string
     {
-        if ((string)$range === '') {
+        if ($range === '') {
             throw new \InvalidArgumentException('Unable to convert range to list of values with empty string.', 1291234985);
         }
         $rangeArray = explode('-', $range);
@@ -258,11 +239,10 @@ class NormalizeCommand
      * 1-5/2 -> 1,3,5
      * 2-10/3 -> 2,5,8
      *
+     * @return string comma-separated list of valid values
      * @throws \InvalidArgumentException if step value is invalid or if resulting list is empty
-     * @param string $stepExpression Step value expression
-     * @return string Comma separated list of valid values
      */
-    protected static function reduceListOfValuesByStepValue($stepExpression)
+    protected static function reduceListOfValuesByStepValue(string $stepExpression): string
     {
         if ($stepExpression === '') {
             throw new \InvalidArgumentException('Unable to convert step values.', 1291234987);
@@ -307,12 +287,8 @@ class NormalizeCommand
 
     /**
      * Dispatcher method for normalizeMonth and normalizeWeekday
-     *
-     * @param string $expression Month or weekday to be normalized
-     * @param bool $isMonth TRUE if a month is handled, FALSE for weekday
-     * @return string normalized month or weekday
      */
-    protected static function normalizeMonthAndWeekday($expression, $isMonth = true)
+    protected static function normalizeMonthAndWeekday(string $expression, bool $isMonth = true): string
     {
         $expression = $isMonth ? self::normalizeMonth($expression) : self::normalizeWeekday($expression);
         return (string)$expression;
@@ -323,9 +299,8 @@ class NormalizeCommand
      * 'jan', 'February', 01, ... and convert to normalized integer value between 1 and 12
      *
      * @throws \InvalidArgumentException If month string can not be converted to integer
-     * @param string $month Month representation
      */
-    protected static function normalizeMonth($month): int
+    protected static function normalizeMonth(string $month): int
     {
         $timestamp = strtotime('2010-' . $month . '-01');
         // timestamp must be >= 2010-01-01 and <= 2010-12-01
@@ -340,13 +315,12 @@ class NormalizeCommand
      * 'mon', 'Friday', 3, ... and convert to normalized integer value between 1 and 7
      *
      * @throws \InvalidArgumentException If weekday string can not be converted
-     * @param string $weekday Weekday representation
      */
-    protected static function normalizeWeekday($weekday): int
+    protected static function normalizeWeekday(string $weekday): int
     {
         $normalizedWeekday = false;
         // 0 (sunday) -> 7
-        if ((string)$weekday === '0') {
+        if ($weekday === '0') {
             $weekday = 7;
         }
         if ($weekday >= 1 && $weekday <= 7) {

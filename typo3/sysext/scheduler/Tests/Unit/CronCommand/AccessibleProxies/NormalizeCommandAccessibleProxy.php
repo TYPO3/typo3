@@ -24,52 +24,52 @@ use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
  */
 class NormalizeCommandAccessibleProxy extends NormalizeCommand
 {
-    public static function convertKeywordsToCronCommand($cronCommand): string
+    public static function convertKeywordsToCronCommand(string $cronCommand): string
     {
         return parent::convertKeywordsToCronCommand($cronCommand);
     }
 
-    public static function normalizeFields($cronCommand): string
+    public static function normalizeFields(string $cronCommand): string
     {
         return parent::normalizeFields($cronCommand);
     }
 
-    public static function normalizeMonthAndWeekdayField($expression, $isMonthField = true): string
+    public static function normalizeMonthAndWeekdayField(string $expression, bool $isMonthField = true): string
     {
         return parent::normalizeMonthAndWeekdayField($expression, $isMonthField);
     }
 
-    public static function normalizeIntegerField($expression, $lowerBound = 0, $upperBound = 59): string
+    public static function normalizeIntegerField(string $expression, int $lowerBound = 0, int $upperBound = 59): string
     {
         return parent::normalizeIntegerField($expression, $lowerBound, $upperBound);
     }
 
-    public static function splitFields($cronCommand): array
+    public static function splitFields(string $cronCommand): array
     {
         return parent::splitFields($cronCommand);
     }
 
-    public static function convertRangeToListOfValues($range): string
+    public static function convertRangeToListOfValues(string $range): string
     {
         return parent::convertRangeToListOfValues($range);
     }
 
-    public static function reduceListOfValuesByStepValue($stepExpression): string
+    public static function reduceListOfValuesByStepValue(string $stepExpression): string
     {
         return parent::reduceListOfValuesByStepValue($stepExpression);
     }
 
-    public static function normalizeMonthAndWeekday($expression, $isMonth = true): string
+    public static function normalizeMonthAndWeekday(string $expression, bool $isMonth = true): string
     {
         return parent::normalizeMonthAndWeekday($expression, $isMonth);
     }
 
-    public static function normalizeMonth($month): int
+    public static function normalizeMonth(string $month): int
     {
         return parent::normalizeMonth($month);
     }
 
-    public static function normalizeWeekday($weekday): int
+    public static function normalizeWeekday(string $weekday): int
     {
         return parent::normalizeWeekday($weekday);
     }

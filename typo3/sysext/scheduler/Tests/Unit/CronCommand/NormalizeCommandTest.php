@@ -178,7 +178,6 @@ final class NormalizeCommandTest extends UnitTestCase
         return [
             '*' => ['*', '*'],
             'string 2' => ['2', '2'],
-            'integer 3' => [3, '3'],
             'list of values' => ['1,2,3', '1,2,3'],
             'unsorted list of values' => ['3,1,5', '1,3,5'],
             'duplicate values' => ['0-2/2,2', '0,2'],
@@ -194,7 +193,7 @@ final class NormalizeCommandTest extends UnitTestCase
 
     #[DataProvider('normalizeIntegerFieldValidDataProvider')]
     #[Test]
-    public function normalizeIntegerFieldReturnsNormalizedListForValidExpression(string|int $expression, string $expected): void
+    public function normalizeIntegerFieldReturnsNormalizedListForValidExpression(string $expression, string $expected): void
     {
         $result = NormalizeCommandAccessibleProxy::normalizeIntegerField($expression);
         self::assertSame($expected, $result);
@@ -248,7 +247,6 @@ final class NormalizeCommandTest extends UnitTestCase
         return [
             'empty string' => [''],
             'foo' => ['foo'],
-            'integer 4' => [4],
             'four fields' => ['* * * *'],
             'six fields' => ['* * * * * *'],
         ];
@@ -256,7 +254,7 @@ final class NormalizeCommandTest extends UnitTestCase
 
     #[DataProvider('invalidCronCommandFieldsDataProvider')]
     #[Test]
-    public function splitFieldsThrowsExceptionIfCronCommandDoesNotContainFiveFields(string|int $cronCommand): void
+    public function splitFieldsThrowsExceptionIfCronCommandDoesNotContainFiveFields(string $cronCommand): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1291227373);
@@ -267,7 +265,6 @@ final class NormalizeCommandTest extends UnitTestCase
     {
         return [
             'single value' => ['3', '3'],
-            'integer 3' => [3, '3'],
             '0-0' => ['0-0', '0'],
             '4-4' => ['4-4', '4'],
             '0-3' => ['0-3', '0,1,2,3'],
@@ -389,9 +386,7 @@ final class NormalizeCommandTest extends UnitTestCase
             'nov' => ['nov', 11],
             'dec' => ['dec', 12],
             'string 7' => ['7', 7],
-            'integer 7' => [7, 7],
             'string 07' => ['07', 7],
-            'integer 07' => [7, 7],
         ];
     }
 
@@ -417,14 +412,9 @@ final class NormalizeCommandTest extends UnitTestCase
             'Tuesday' => ['Tuesday', 1291083486],
             'Tue' => ['Tue', 1291083486],
             'string 0' => ['0', 1291083486],
-            'integer 0' => [0, 1291083486],
             'string seven' => ['seven', 1291083486],
             'string 13' => ['13', 1291083486],
-            'integer 13' => [13, 1291083486],
-            'integer 99' => [99, 1291083486],
-            'integer 2010' => [2010, 1291083486],
             'string minus 7' => ['-7', 1291083486],
-            'negative integer 7' => [-7, 1291083486],
         ];
     }
 
@@ -445,15 +435,12 @@ final class NormalizeCommandTest extends UnitTestCase
             'string 1' => ['1', 1],
             'string 2' => ['2', 2],
             'string 02' => ['02', 2],
-            'integer 02' => [2, 2],
             'string 3' => ['3', 3],
             'string 4' => ['4', 4],
             'string 5' => ['5', 5],
-            'integer 5' => [5, 5],
             'string 6' => ['6', 6],
             'string 7' => ['7', 7],
             'string 0' => ['0', 7],
-            'integer 0' => [0, 7],
             'mon' => ['mon', 1],
             'monday' => ['monday', 1],
             'tue' => ['tue', 2],
@@ -491,7 +478,6 @@ final class NormalizeCommandTest extends UnitTestCase
             ',fri' => [',fri'],
             ',friday,' => [',friday,'],
             'string minus 1' => ['-1'],
-            'integer -1' => [-1],
             'string seven' => ['seven'],
             'string 8' => ['8'],
             'string 29' => ['29'],
