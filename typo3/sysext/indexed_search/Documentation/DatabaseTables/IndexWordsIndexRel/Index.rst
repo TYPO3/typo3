@@ -4,8 +4,12 @@
 index\_words, index\_rel
 ========================
 
-Words-table and word-relation table. Almost self-explanatory. For the
-index\_rel table some fields require explanation:
+Words-table and word-relation table. Almost self-explanatory.
+
+Both tables are not used when `basic.useMysqlFulltext` extension configuration
+is enabled.
+
+For the index\_rel table some fields require explanation:
 
 .. _index-words-index-rel-count:
 
