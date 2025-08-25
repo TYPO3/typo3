@@ -110,7 +110,7 @@ final readonly class TcaFactory
             return require $filename;
         };
         // First load "full table" files from Configuration/TCA
-        $GLOBALS['TCA'] = [];
+        $tca = [];
         $activePackages = $this->packageManager->getActivePackages();
         foreach ($activePackages as $package) {
             try {
@@ -123,12 +123,10 @@ final readonly class TcaFactory
                 $tcaOfTable = $scopedReturnRequire($fileInfo->getPathname());
                 if (is_array($tcaOfTable)) {
                     $tcaTableName = substr($fileInfo->getBasename(), 0, -4);
-                    $GLOBALS['TCA'][$tcaTableName] = $tcaOfTable;
+                    $tca[$tcaTableName] = $tcaOfTable;
                 }
             }
         }
-        $tca = $GLOBALS['TCA'];
-        unset($GLOBALS['TCA']);
         return $tca;
     }
 
