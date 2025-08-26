@@ -97,7 +97,7 @@ The following methods have been marked :php:`@internal` and may vanish anytime:
 * :php:`TypoScriptFrontendController->sL()` - Use :php:`GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromSiteLanguage($request->getAttribute('language'))->sL()`` instead
 * :php:`TypoScriptFrontendController->get_cache_timeout()`
 * :php:`TypoScriptFrontendController->getRequestedId()` - Use :php:`$request->getAttribute('routing')->getPageId()` instead
-* :php:`TypoScriptFrontendController->getLanguage()` - Use :php:`$request->getAttribute('site')->getDefaultLanguage()` instead
+* :php:`TypoScriptFrontendController->getLanguage()` - Use :php:`$request->getAttribute('language') ?? $request->getAttribute('site')->getDefaultLanguage()` instead
 * :php:`TypoScriptFrontendController->getSite()` - Use :php:`$request->getAttribute('site')` instead
 * :php:`TypoScriptFrontendController->getContext()` - Use dependency injection or :php:`GeneralUtility::makeInstance()` instead
 * :php:`TypoScriptFrontendController->getPageArguments()` - Use :php:`$request->getAttribute('routing')` instead
