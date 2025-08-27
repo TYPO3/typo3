@@ -74,8 +74,8 @@ Returns the last inserted ID (auto-created) on the connection.
             'some_string' => $someString,
         ],
         [
-            Typo3Connection::PARAM_INT,
-            Typo3Connection::PARAM_STR,
+            \PDO::PARAM_INT,
+            \PDO::PARAM_STR,
         ]
     );
     $uid = $connection->lastInsertId('tx_myextension_mytable');
