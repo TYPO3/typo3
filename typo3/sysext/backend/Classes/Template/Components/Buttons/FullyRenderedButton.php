@@ -23,12 +23,14 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons;
  *
  * There should be no need to use them, so do yourself a favour and don't.
  *
- * EXAMPLE USAGE TO ADD A BUTTON TO THE FIRST BUTTON GROUP IN THE LEFT BAR:
+ * Example:
  *
+ * ```
  * $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
  * $myButton = $buttonBar->makeFullyRenderedButton()
  *      ->setHtmlSource('<span class="i-should-not-be-using-this>Foo</span>');
  * $buttonBar->addButton($myButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
+ * ```
  */
 class FullyRenderedButton implements ButtonInterface
 {

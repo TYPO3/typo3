@@ -31,6 +31,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * type contains elements of type DropDownRadio it will use
  * the icon of the first active item of this type.
  *
+ * Example:
+ *
+ * ```
  * $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
  * $dropDownButton = $buttonBar->makeDropDownButton()
  *      ->setLabel('Dropdown')
@@ -43,6 +46,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *              ->setHref('#')
  *      );
  * $buttonBar->addButton($dropDownButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+ * ```
  */
 class DropDownButton implements ButtonInterface
 {

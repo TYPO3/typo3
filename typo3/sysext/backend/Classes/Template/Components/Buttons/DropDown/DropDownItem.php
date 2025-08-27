@@ -21,6 +21,9 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons\DropDown;
  * This dropdown item type renders a simple element.
  * Use this element if you need a link, button.
  *
+ * Example:
+ *
+ * ```
  * $item = GeneralUtility::makeInstance(DropDownItem::class)
  *     ->setTag('a')
  *     ->setHref('#')
@@ -29,6 +32,7 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons\DropDown;
  *     ->setIcon($this->iconFactory->getIcon('actions-heart'))
  *     ->setAttributes(['data-value' => '123']);
  * $dropDownButton->addItem($item);
+ * ```
  */
 class DropDownItem extends AbstractDropDownItem implements DropDownItemInterface
 {
