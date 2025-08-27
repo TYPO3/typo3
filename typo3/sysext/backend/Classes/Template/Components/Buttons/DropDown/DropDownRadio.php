@@ -30,8 +30,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * At least 2 of these items need to exist within a dropdown button,
  * so a user has a choice of a state to select.
  *
- * Example: Viewmode -> List / Tiles
+ * Example:
  *
+ * ```
  * $item = GeneralUtility::makeInstance(DropDownRadio::class)
  *     ->setHref('#')
  *     ->setActive(true)
@@ -49,6 +50,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *     ->setIcon($this->iconFactory->getIcon('actions-viewmode-tiles'))
  *     ->setAttributes(['data-type' => 'tiles']);
  * $dropDownButton->addItem($item);
+ * ```
  */
 class DropDownRadio extends AbstractDropDownItem implements DropDownItemInterface
 {

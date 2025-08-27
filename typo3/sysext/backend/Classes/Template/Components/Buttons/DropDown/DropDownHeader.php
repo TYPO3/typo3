@@ -22,9 +22,13 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons\DropDown;
  * element to group items and gives more meaning to a set
  * of options.
  *
+ * Example:
+ *
+ * ```
  * $item = GeneralUtility::makeInstance(DropDownHeader::class)
  *     ->setLabel('Label');
  * $dropDownButton->addItem($item);
+ * ```
  */
 class DropDownHeader implements DropDownItemInterface, \Stringable
 {

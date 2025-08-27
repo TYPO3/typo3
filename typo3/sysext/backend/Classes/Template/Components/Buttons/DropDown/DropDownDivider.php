@@ -20,8 +20,12 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons\DropDown;
  *
  * This dropdown item type renders the divider element.
  *
+ * Example:
+ *
+ * ```
  * $item = GeneralUtility::makeInstance(DropDownDivider::class);
  * $dropDownButton->addItem($item);
+ * ```
  */
 class DropDownDivider implements DropDownItemInterface, \Stringable
 {

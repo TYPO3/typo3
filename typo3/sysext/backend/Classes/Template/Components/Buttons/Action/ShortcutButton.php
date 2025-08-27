@@ -37,8 +37,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Renders a shortcut button in the DocHeader which will be rendered
  * to the right position using button group "91".
  *
- * EXAMPLE USAGE TO ADD A SHORTCUT BUTTON:
+ * Example:
  *
+ * ```
  * $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
  * $pageId = (int)($request->getQueryParams()['id'] ?? 0);
  * $myButton = $buttonBar->makeShortcutButton()
@@ -48,6 +49,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *          'id' => $pageId
  *       ]);
  * $buttonBar->addButton($myButton);
+ * ```
  */
 class ShortcutButton implements ButtonInterface, PositionInterface
 {

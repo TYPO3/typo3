@@ -26,6 +26,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * When set to active, it will show a checkmark in front of the icon
  * and text to indicate the current state.
  *
+ * Example:
+ *
+ * ```
  * $item = GeneralUtility::makeInstance(DropDownToggle::class)
  *     ->setHref('#')
  *     ->setActive(true)
@@ -34,6 +37,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *     ->setIcon($this->iconFactory->getIcon('actions-heart'))
  *     ->setAttributes(['data-value' => '123']);
  * $dropDownButton->addItem($item);
+ * ```
  */
 class DropDownToggle extends AbstractDropDownItem implements DropDownItemInterface
 {
