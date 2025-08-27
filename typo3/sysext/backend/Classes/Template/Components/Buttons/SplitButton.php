@@ -21,8 +21,9 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons;
  * This button type renders a bootstrap split button.
  * It takes multiple button objects as parameters
  *
- * EXAMPLE USAGE TO ADD A SPLIT BUTTON TO THE FIRST BUTTON GROUP IN THE LEFT BAR:
+ * Example:
  *
+ * ```
  * $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
  *
  * $saveButton = $buttonBar->makeInputButton()
@@ -47,6 +48,7 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons;
  *      ->addItem($saveButton, TRUE)
  *      ->addItem($saveAndCloseButton)
  *      ->addItem($saveAndShowPageButton);
+ * ```
  */
 class SplitButton extends AbstractButton
 {
