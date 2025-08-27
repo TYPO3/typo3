@@ -276,12 +276,11 @@ class UserSessionManager implements LoggerAwareInterface
     }
 
     /**
-     * Calls the session backends `collectGarbage()` method
+     * Calls the session backends `collectGarbage()` method with the given probability in percent.
      */
     public function collectGarbage(int $garbageCollectionProbability = 1): void
     {
-        // If we're lucky we'll get to clean up old sessions
-        if (random_int(0, mt_getrandmax()) % 100 <= $garbageCollectionProbability) {
+        if (rand(0, 99) < $garbageCollectionProbability) {
             $this->sessionBackend->collectGarbage(
                 $this->sessionLifetime > 0 ? $this->sessionLifetime : self::GARBAGE_COLLECTION_LIFETIME,
                 $this->garbageCollectionForAnonymousSessions
