@@ -55,11 +55,11 @@ class ReferrerEnforcer
                 || ($referrerType & self::TYPE_REFERRER_SAME_SITE && in_array('refresh-same-site', $flags, true))
             )
         ) {
-            $refreshParameter = 'referrer-refresh=' . (time() + $expiration);
             $refreshUri = $request->getUri();
-            $query = $refreshUri->getQuery();
+            parse_str($refreshUri->getQuery(), $queryParams);
+            $queryParams['referrer-refresh'] = time() + $expiration;
             $refreshUri = $refreshUri->withQuery(
-                $query !== '' ? $query . '&' . $refreshParameter : $refreshParameter
+                http_build_query($queryParams, '', '&', PHP_QUERY_RFC3986)
             );
             $scriptUri = $this->resolveAbsoluteWebPath(
                 'EXT:core/Resources/Public/JavaScript/referrer-refresh.js'

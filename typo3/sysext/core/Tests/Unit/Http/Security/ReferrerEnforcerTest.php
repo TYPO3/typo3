@@ -107,6 +107,22 @@ final class ReferrerEnforcerTest extends UnitTestCase
                     'https://example.org/typo3/login?query=parameter'
                 ),
             ],
+            [
+                'https://example.org/typo3/login?query=parameter&referrer-refresh=0',
+                'https://other-example.site/security/',
+                ['flags' => ['refresh-always']],
+                self::buildRefreshContentPattern(
+                    'https://example.org/typo3/login?query=parameter'
+                ),
+            ],
+            [
+                'https://example.org/typo3/login?query=parameter&nested[array][key]=value+blank&referrer-refresh=0',
+                'https://other-example.site/security/',
+                ['flags' => ['refresh-always']],
+                self::buildRefreshContentPattern(
+                    'https://example.org/typo3/login?query=parameter&nested%5Barray%5D%5Bkey%5D=value%20blank'
+                ),
+            ],
         ];
     }
 
