@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\EventListener;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\Event\ModifyNewContentElementWizardItemsEvent;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Frontend\EventListener\RemoveListTypePluginFromNewContentElementWizard;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -35,7 +36,7 @@ final class RemoveListTypePluginFromNewContentElementWizardTest extends UnitTest
             'forms' => [],
             'forms_item1' => [],
         ];
-        $event = new ModifyNewContentElementWizardItemsEvent($wizardItems, [], 0, 0, 0);
+        $event = new ModifyNewContentElementWizardItemsEvent($wizardItems, [], 0, 0, 0, new ServerRequest());
         $eventListener = new RemoveListTypePluginFromNewContentElementWizard();
         $expected = [
             'header' => [],
@@ -65,7 +66,7 @@ final class RemoveListTypePluginFromNewContentElementWizardTest extends UnitTest
             'forms' => [],
             'forms_item1' => [],
         ];
-        $event = new ModifyNewContentElementWizardItemsEvent($wizardItems, [], 0, 0, 0);
+        $event = new ModifyNewContentElementWizardItemsEvent($wizardItems, [], 0, 0, 0, new ServerRequest());
         $eventListener = new RemoveListTypePluginFromNewContentElementWizard();
         $expected = [
             'header' => [],
