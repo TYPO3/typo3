@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -230,6 +231,7 @@ final class ActionControllerTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function renderAssetsForRequestAssignsHeaderDataFromViewIntoPageRenderer(): void
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
@@ -255,6 +257,7 @@ final class ActionControllerTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function renderAssetsForRequestAssignsFooterDataFromViewIntoPageRenderer(): void
     {
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap

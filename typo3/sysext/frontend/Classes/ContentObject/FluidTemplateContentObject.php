@@ -215,9 +215,17 @@ class FluidTemplateContentObject extends AbstractContentObject
         $headerAssets = $view->renderSection('HeaderAssets', [...$variables, 'contentObject' => $this], true);
         $footerAssets = $view->renderSection('FooterAssets', [...$variables, 'contentObject' => $this], true);
         if (!empty(trim($headerAssets))) {
+            trigger_error(
+                'HeaderAssets section has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Use f:page.headerData viewHelper instead.',
+                E_USER_DEPRECATED
+            );
             $pageRenderer->addHeaderData($headerAssets);
         }
         if (!empty(trim($footerAssets))) {
+            trigger_error(
+                'FooterAssets section has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Use f:page.footerData viewHelper instead.',
+                E_USER_DEPRECATED
+            );
             $pageRenderer->addFooterData($footerAssets);
         }
     }
