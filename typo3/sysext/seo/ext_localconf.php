@@ -31,10 +31,6 @@ unset($metaTagManagerRegistry);
 // Add module configuration
 ExtensionManagementUtility::addTypoScriptSetup(trim('
     config.pageTitleProviders {
-        recordTitle {
-            provider = TYPO3\CMS\Seo\PageTitle\RecordTitleProvider
-            before = seo
-        }
         seo {
             provider = TYPO3\CMS\Seo\PageTitle\SeoTitlePageTitleProvider
             before = record

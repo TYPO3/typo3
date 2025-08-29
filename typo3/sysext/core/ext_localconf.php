@@ -91,9 +91,15 @@ $metaTagManagerRegistry->registerManager(
 unset($metaTagManagerRegistry);
 
 // Add module configuration
-ExtensionManagementUtility::addTypoScriptSetup(
-    'config.pageTitleProviders.record.provider = TYPO3\CMS\Core\PageTitle\RecordPageTitleProvider'
-);
+ExtensionManagementUtility::addTypoScriptSetup('
+    config.pageTitleProviders {
+        record.provider = TYPO3\CMS\Core\PageTitle\RecordPageTitleProvider
+        recordTitle {
+            provider = TYPO3\CMS\Core\PageTitle\RecordTitleProvider
+            before = record
+        }
+    }
+');
 
 // Register preset for sys_news
 if (empty($GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['sys_news'])) {

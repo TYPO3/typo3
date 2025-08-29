@@ -15,9 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Seo\PageTitle;
-
-use TYPO3\CMS\Core\PageTitle\AbstractPageTitleProvider;
+namespace TYPO3\CMS\Core\PageTitle;
 
 /**
  * This class will take care of the seo title that can be set in the backend
