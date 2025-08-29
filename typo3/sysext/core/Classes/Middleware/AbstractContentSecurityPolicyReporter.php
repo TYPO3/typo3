@@ -17,12 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Middleware;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Configuration\DispositionConfiguration;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Configuration\DispositionMapFactory;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Event\BeforePersistingReportEvent;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyProvider;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\Report;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\ReportDetails;
@@ -39,6 +41,7 @@ abstract class AbstractContentSecurityPolicyReporter implements MiddlewareInterf
     protected const URI_KEYS = ['document-uri', 'report-uri', 'blocked-uri', 'referrer'];
 
     public function __construct(
+        protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly PolicyProvider $policyProvider,
         protected readonly DispositionMapFactory $dispositionMapFactory,
         protected readonly ReportRepository $reportRepository,
@@ -77,7 +80,12 @@ abstract class AbstractContentSecurityPolicyReporter implements MiddlewareInterf
             $details,
             $summary
         );
-        $this->reportRepository->add($report);
+        $event = $this->eventDispatcher->dispatch(
+            new BeforePersistingReportEvent($report, $request)
+        );
+        if ($event->report !== null) {
+            $this->reportRepository->add($event->report);
+        }
     }
 
     protected function generateReportSummary(Scope $scope, ReportDetails $details): string
@@ -85,8 +93,8 @@ abstract class AbstractContentSecurityPolicyReporter implements MiddlewareInterf
         return $this->hashService->hmac(
             json_encode([
                 $scope,
-                $details['effective-directive'],
-                $details['blocked-uri'],
+                $details['effective-directive'] ?? null,
+                $details['blocked-uri'] ?? null,
                 $details['script-sample'] ?? null,
             ]),
             self::class,
