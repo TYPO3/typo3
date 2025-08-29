@@ -1,0 +1,17 @@
+identifier: contact
+type: Form
+prototypeName: standard
+finishers:
+  -
+    identifier: EmailToSender
+    options:
+      subject: 'Your Message: {message}'
+      ## ...
+  -
+    identifier: DeleteUploads
+  -
+    # Attention! The Redirect finisher stops the execution of all finishers
+    identifier: Redirect
+    options:
+      pageUid: 1
+      additionalParameters: 'param1=value1&param2=value2'
