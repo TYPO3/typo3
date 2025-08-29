@@ -67,7 +67,7 @@ final class Map implements \ArrayAccess, \Countable, \Iterator
 
     public function key(): mixed
     {
-        return $this->storage->current();
+        return $this->valid() ? $this->storage->current() : null;
     }
 
     public function current(): mixed
@@ -100,17 +100,17 @@ final class Map implements \ArrayAccess, \Countable, \Iterator
         if (!$this->offsetExists($offset)) {
             return null;
         }
-        return $this->storage->offsetGet($offset);
+        return $this->storage[$offset];
     }
 
     public function offsetSet(mixed $offset, mixed $value): void
     {
-        $this->storage->offsetSet($offset, $value);
+        $this->storage[$offset] = $value;
     }
 
     public function offsetUnset(mixed $offset): void
     {
-        $this->storage->offsetUnset($offset);
+        unset($this->storage[$offset]);
     }
 
     public function assign(self $source): void
