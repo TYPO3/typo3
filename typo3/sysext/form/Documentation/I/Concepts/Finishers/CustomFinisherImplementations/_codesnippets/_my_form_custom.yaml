@@ -1,0 +1,15 @@
+identifier: sample-form
+label: 'Simple Contact Form'
+prototype: standard
+type: Form
+
+finishers:
+  -
+    identifier: Custom
+    options:
+      yourCustomOption: 'Frans'
+
+  -
+    identifier: SomeOtherStuff
+    options:
+      someOtherCustomOption: '{Custom.unique.value.identifier}'

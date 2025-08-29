@@ -1,0 +1,6 @@
+prototypes:
+  standard:
+    finishersDefinition:
+      CustomFinisher:
+        implementationClassName: 'MyVendor\MySitePackage\Domain\Finishers\CustomFinisher'
+

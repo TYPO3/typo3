@@ -1,0 +1,64 @@
+prototypes:
+  standard:
+    formElementsDefinition:
+      Form:
+        formEditor:
+          editors:
+            900:
+              # Extend finisher drop down
+              selectOptions:
+                35:
+                  value: 'CustomFinisher'
+                  label: 'Custom Finisher'
+          propertyCollections:
+            finishers:
+              # add finisher fields
+              25:
+                identifier: 'CustomFinisher'
+                editors:
+                  100:
+                    identifier: header
+                    templateName: Inspector-CollectionElementHeaderEditor
+                    label: "Custom Finisher"
+                  # custom field (input, required)
+                  110:
+                    identifier: 'customField'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'Custom Field'
+                    propertyPath: 'options.customField'
+                    propertyValidators:
+                      10: 'NotEmpty'
+                  # email field
+                  120:
+                    identifier: 'email'
+                    templateName: 'Inspector-TextEditor'
+                    label: 'Subscribers email'
+                    propertyPath: 'options.email'
+                    enableFormelementSelectionButton: true
+                    propertyValidators:
+                      10: 'NotEmpty'
+                      20: 'FormElementIdentifierWithinCurlyBracesInclusive'
+                  9999:
+                    identifier: removeButton
+                    templateName: Inspector-RemoveElementEditor
+    finishersDefinition:
+      CustomFinisher:
+        formEditor:
+          iconIdentifier: 'form-finisher'
+          label: 'Custom Finisher'
+          predefinedDefaults:
+            options:
+              customField: ''
+              email: ''
+        # displayed when overriding finisher settings
+        FormEngine:
+          label: 'Custom Finisher'
+          elements:
+            customField:
+              label: 'Custom Field'
+              config:
+                type: 'text'
+            email:
+              label: 'Subscribers email'
+              config:
+                type: 'text'

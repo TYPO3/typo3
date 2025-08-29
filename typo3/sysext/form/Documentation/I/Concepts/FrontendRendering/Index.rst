@@ -1,24 +1,22 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _concepts-frontendrendering:
+..  _concepts-frontendrendering:
 
 ==================
 Frontend rendering
 ==================
 
-
-.. _concepts-frontendrendering-templates:
+..  _concepts-frontendrendering-templates:
 
 Templates
 =========
 
 The Fluid templates of the form framework are based on `Bootstrap`_.
 
-.. _Bootstrap: https://getbootstrap.com/
+..  _Bootstrap: https://getbootstrap.com/
 
-
-.. _concepts-frontendrendering-templates-customtemplates:
+..  _concepts-frontendrendering-templates-customtemplates:
 
 Custom templates
 ----------------
@@ -28,19 +26,19 @@ form elements, you cannot register an additional template path using
 TypoScript. Instead, the registration of new template paths has to be done
 via YAML. The settings are part of the `prototypes` configuration.
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   prototypes:
-     standard:
-       formElementsDefinition:
-         Form:
-           renderingOptions:
-             templateRootPaths:
-               100: 'EXT:my_site_package/Resources/Private/Frontend/Templates/'
-             partialRootPaths:
-               100: 'EXT:my_site_package/Resources/Private/Frontend/Partials/'
-             layoutRootPaths:
-               100: 'EXT:my_site_package/Resources/Private/Frontend/Layouts/'
+    prototypes:
+      standard:
+        formElementsDefinition:
+          Form:
+            renderingOptions:
+              templateRootPaths:
+                100: 'EXT:my_site_package/Resources/Private/Frontend/Templates/'
+              partialRootPaths:
+                100: 'EXT:my_site_package/Resources/Private/Frontend/Partials/'
+              layoutRootPaths:
+                100: 'EXT:my_site_package/Resources/Private/Frontend/Layouts/'
 
 For each `form definition` - which references the prototype `standard` -
 the form framework will additionally look for Fluid templates within the
@@ -54,7 +52,7 @@ reside within the :directory:`templateRootPaths` folder. According to the introd
 logic, the template name must be :file:`Form.html`.
 
 
-.. _concepts-frontendrendering-templates-singlevalues:
+..  _concepts-frontendrendering-templates-singlevalues:
 
 Access single values in finisher templates
 ------------------------------------------
@@ -66,28 +64,27 @@ the value of the field `message` the :php:`RenderFormValueViewHelper`
 is called with two parameters. :fluid:`{formValue.processedValue}` contains the specific
 value which can be manipulated with Fluid or styled etc.
 
-.. code-block:: html
+..  code-block:: html
 
-   <formvh:renderFormValue renderable="{form.formDefinition.elements.message}" as="formValue">
-       {formValue.processedValue}
-   </formvh:renderFormValue>
+    <formvh:renderFormValue renderable="{form.formDefinition.elements.message}" as="formValue">
+        {formValue.processedValue}
+    </formvh:renderFormValue>
 
 If you don't know the names of your form elements, you could look them up in your
 form definition. In addition, you can use the following snippet to lists all of
 the available elements.
 
-.. code-block:: html
+..  code-block:: html
 
-   <f:debug>{page.rootForm.elements}</f:debug>
+    <f:debug>{page.rootForm.elements}</f:debug>
 
 
-.. _concepts-frontendrendering-translation:
+..  _concepts-frontendrendering-translation:
 
 Translation
 ===========
 
-
-.. _concepts-frontendrendering-translation-formdefinition:
+..  _concepts-frontendrendering-translation-formdefinition:
 
 Translate form definition
 -------------------------
@@ -117,17 +114,17 @@ additional language files which automatically translate the specific form.
 
 Additional translation files can be defined as follows:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   prototypes:
-     standard:
-       formElementsDefinition:
-         Form:
-           renderingOptions:
-             translation:
-               translationFiles:
-                 # custom translation file
-                 20: 'EXT:my_site_package/Resources/Private/Language/Form/locallang.xlf'
+    prototypes:
+      standard:
+        formElementsDefinition:
+          Form:
+            renderingOptions:
+              translation:
+                translationFiles:
+                  # custom translation file
+                  20: 'EXT:my_site_package/Resources/Private/Language/Form/locallang.xlf'
 
 The array is processed from the highest key to the lowest, i.e. your
 translation file with the key `20` is processed first. If the look-up
@@ -136,99 +133,98 @@ property value will be displayed unmodified.
 
 The following properties can be translated:
 
-- label
-- properties.[*]
-- properties.options.[*]
-- properties.fluidAdditionalAttributes.[*]
-- renderingOptions.[*]
+*   label
+*   properties.[*]
+*   properties.options.[*]
+*   properties.fluidAdditionalAttributes.[*]
+*   renderingOptions.[*]
 
 The translation keys are put together based on a specific pattern. In
 addition, a fallback chain that depends on the form element identifiers
 exists. As a result, the following translation scenarios are possible:
 
-- translation of a form element property for a specific form and form
-  element
-- translation of a form element property for a specific form element and
-  various forms
-- translation of a form element property for an element type and various
-  forms, e.g. the `Page` element
+*   translation of a form element property for a specific form and form
+    element
+*   translation of a form element property for a specific form element and
+    various forms
+*   translation of a form element property for an element type and various
+    forms, e.g. the `Page` element
 
 The look-up process searches for translation keys in all given translation
 files based on the following order:
 
-- `<formDefinitionIdentifier>.element.<elementIdentifier>.properties.<propertyName>`
-- `element.<formElementIdentifier>.properties.<propertyName>`
-- `element.<elementType>.properties.<propertyName>`
+*   `<formDefinitionIdentifier>.element.<elementIdentifier>.properties.<propertyName>`
+*   `element.<formElementIdentifier>.properties.<propertyName>`
+*   `element.<elementType>.properties.<propertyName>`
 
 Form elements with option properties (`properties.options`), like the
 `Select` element, feature the following look-up process:
 
-- `<formDefinitionIdentifier>.element.<elementIdentifier>.properties.options.<propertyValue>`
-- `element.<elementIdentifier>.properties.options.<propertyValue>`
+*   `<formDefinitionIdentifier>.element.<elementIdentifier>.properties.options.<propertyValue>`
+*   `element.<elementIdentifier>.properties.options.<propertyValue>`
 
 
 Example
-"""""""
+~~~~~~~
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   identifier: ApplicationForm
-   type: Form
-   prototypeName: standard
-   label: 'Application form'
+    identifier: ApplicationForm
+    type: Form
+    prototypeName: standard
+    label: 'Application form'
 
-   renderables:
-     -
-       identifier: GeneralInformation
-       type: Page
-       label: 'General information'
+    renderables:
+      -
+        identifier: GeneralInformation
+        type: Page
+        label: 'General information'
 
-       renderables:
-         -
-           identifier: LastName
-           type: Text
-           label: 'Last name'
-           properties:
-             placeholder: 'Please enter your last name.'
-           defaultValue: ''
-         -
-           identifier: Software
-           type: MultiSelect
-           label: 'Known software'
-           properties:
-             options:
-               value1: TYPO3
-               value2: Neos
+        renderables:
+          -
+            identifier: LastName
+            type: Text
+            label: 'Last name'
+            properties:
+              placeholder: 'Please enter your last name.'
+            defaultValue: ''
+          -
+            identifier: Software
+            type: MultiSelect
+            label: 'Known software'
+            properties:
+              options:
+                value1: TYPO3
+                value2: Neos
 
 For the form element `LastName`, the process will look for the following
 translation keys within the translation files:
 
-- `ApplicationForm.element.LastName.properties.label`
-- `element.LastName.properties.label`
-- `element.Text.properties.label`
+*   `ApplicationForm.element.LastName.properties.label`
+*   `element.LastName.properties.label`
+*   `element.Text.properties.label`
 
 If none of the above-mentioned keys exist, 'Last name' will be displayed.
 
 For the form element `Software`, the process will look for the following
 translation keys within the translation files:
 
-- `ApplicationForm.element.Software.properties.label`
-- `element.Software.properties.label`
-- `element.MultiSelect.properties.label`
+*   `ApplicationForm.element.Software.properties.label`
+*   `element.Software.properties.label`
+*   `element.MultiSelect.properties.label`
 
 If none of the above-mentioned keys exist, 'Known software' will be
 displayed. The option properties are addressed as follows:
 
-- `ApplicationForm.element.Software.properties.options.value1`
-- `element.Software.properties.options.value1`
-- `ApplicationForm.element.Software.properties.options.value2`
-- `element.Software.properties.options.value2`
+*   `ApplicationForm.element.Software.properties.options.value1`
+*   `element.Software.properties.options.value1`
+*   `ApplicationForm.element.Software.properties.options.value2`
+*   `element.Software.properties.options.value2`
 
 If none of the above-mentioned keys exist, 'TYPO3' will be displayed as
 label for the first option and 'Neos' as label for the second option.
 
-
-.. _concepts-frontendrendering-translation-validationerrors:
+..  _concepts-frontendrendering-translation-validationerrors:
 
 Translation of validation messages
 ----------------------------------
@@ -243,55 +239,55 @@ As mentioned above, the translation keys are put together based on a
 specific pattern. Furthermore, the fallback chain exists here as well. Thus,
 the following translation scenarios are possible:
 
-- translation of validation messages for a specific validator of a concrete
-  form element and concrete form
-- translation of validation messages for a specific validator of various
-  form elements within a concrete form
-- translation of validation messages for a specific validator of a concrete
-  form element in various forms
-- translation of validation messages for a specific validator within various
-  forms
+*   translation of validation messages for a specific validator of a concrete
+    form element and concrete form
+*   translation of validation messages for a specific validator of various
+    form elements within a concrete form
+*   translation of validation messages for a specific validator of a concrete
+    form element in various forms
+*   translation of validation messages for a specific validator within various
+    forms
 
 In Extbase, the validation messages are identified with the help of
 numerical codes (UNIX timestamps). For the same validator, different codes
-are valid. Read more about :ref:`concrete validator configurations <prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier-concreteconfigurations>`.
+are valid. Read more about
+:ref:`concrete validator configurations <prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier-concreteconfigurations>`.
 
 The look-up process searches for translation keys in all given translation
 files based on the following order:
 
-- `<formDefinitionIdentifier>.validation.error.<elementIdentifier>.<validationErrorCode>`
-- `<formDefinitionIdentifier>.validation.error.<validationErrorCode>`
-- `validation.error.<elementIdentifier>.<validationErrorCode>`
-- `validation.error.<validationErrorCode>`
-
+*   `<formDefinitionIdentifier>.validation.error.<elementIdentifier>.<validationErrorCode>`
+*   `<formDefinitionIdentifier>.validation.error.<validationErrorCode>`
+*   `validation.error.<elementIdentifier>.<validationErrorCode>`
+*   `validation.error.<validationErrorCode>`
 
 Example
-"""""""
+~~~~~~~
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   identifier: ContactForm
-   type: Form
-   prototypeName: standard
-   label: 'Contact us'
+    identifier: ContactForm
+    type: Form
+    prototypeName: standard
+    label: 'Contact us'
 
-   renderables:
-     -
-       identifier: Page1
-       type: Page
-       label: 'Page 1'
+    renderables:
+      -
+        identifier: Page1
+        type: Page
+        label: 'Page 1'
 
-       renderables:
-         -
-           identifier: LastName
-           type: Text
-           label: 'Last name'
-           properties:
-             fluidAdditionalAttributes:
-               required: required
-           validators:
-             -
-               identifier: NotEmpty
+        renderables:
+          -
+            identifier: LastName
+            type: Text
+            label: 'Last name'
+            properties:
+              fluidAdditionalAttributes:
+                required: required
+            validators:
+              -
+                identifier: NotEmpty
 
 Amongst others, the `NotEmpty` validator sends 1221560910 as `<validationErrorCode>`.
 If a user submits this form without providing a value for the field "Last
@@ -299,16 +295,16 @@ name", the `NotEmpty` validator fails. Now, the look-up process searches
 for the following translation keys for the `NotEmpty` validator combined
 with the form element `LastName`:
 
-- ContactForm.validation.error.LastName.1221560910
-- ContactForm.validation.error.1221560910
-- validation.error.LastName.1221560910
-- validation.error.1221560910
+*   ContactForm.validation.error.LastName.1221560910
+*   ContactForm.validation.error.1221560910
+*   validation.error.LastName.1221560910
+*   validation.error.1221560910
 
 As mentioned above, if there is no corresponding translation key available,
 the default message of the Extbase framework will be shown.
 
-
-.. _concepts-frontendrendering-translation-finishers:
+..  _concepts-finishers-translation:
+..  _concepts-frontendrendering-translation-finishers:
 
 Translation of finisher options
 -------------------------------
@@ -322,46 +318,46 @@ As mentioned above, the translation keys are put together based on a
 specific pattern. Furthermore, the fallback chain exists here as well. Thus,
 the following translation scenarios are possible:
 
-- translation of finisher options for a specific finisher of a concrete form
-- translation of finisher options for a specific finisher of various forms
+*   translation of finisher options for a specific finisher of a concrete form
+*   translation of finisher options for a specific finisher of various forms
 
 The look-up process searches for translation keys in all given translation
 files based on the following order:
 
-- `<formDefinitionIdentifier>.finisher.<finisherIdentifier>.<optionName>`
-- `finisher.<finisherIdentifier>.<optionName>`
+*   `<formDefinitionIdentifier>.finisher.<finisherIdentifier>.<optionName>`
+*   `finisher.<finisherIdentifier>.<optionName>`
 
 
 Example
-"""""""
+~~~~~~~
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   identifier: ContactForm
-   type: Form
-   prototypeName: standard
-   label: 'Contact us'
+    identifier: ContactForm
+    type: Form
+    prototypeName: standard
+    label: 'Contact us'
 
-   finishers:
-     -
-       identifier: Confirmation
-       options:
-         message: 'Thank you for your inquiry.'
+    finishers:
+      -
+        identifier: Confirmation
+        options:
+          message: 'Thank you for your inquiry.'
 
-   renderables:
-     ...
+    renderables:
+      ...
 
 The look-up process searches for the following translation keys for the
 `<finisherIdentifier>` 'Confirmation' and the option 'message':
 
-- `ContactForm.finisher.Confirmation.message`
-- `finisher.Confirmation.message`
+*   `ContactForm.finisher.Confirmation.message`
+*   `finisher.Confirmation.message`
 
 If no translation key exists, the message 'Thank you for your inquiry.' will
 be shown.
 
 
-.. _concepts-frontendrendering-translation-arguments:
+..  _concepts-frontendrendering-translation-arguments:
 
 Form element translation arguments
 ==================================
@@ -371,25 +367,24 @@ placeholders to output translation arguments. Translations can be enriched
 with variable values by passing arguments to form element properties. The
 feature was introduced with :issue:`81363`.
 
-
 Form element properties
 -----------------------
 
 Pure YAML is sufficient to add simple, static values:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   renderables:
-     - identifier: field-with-translation-arguments
-       type: Checkbox
-       label: This is a %s feature
-       renderingOptions:
-         translation:
-           translationFiles:
-             10: path/to/locallang.xlf
-           arguments:
-             label:
-               - useful
+    renderables:
+      - identifier: field-with-translation-arguments
+        type: Checkbox
+        label: This is a %s feature
+        renderingOptions:
+          translation:
+            translationFiles:
+              10: path/to/locallang.xlf
+            arguments:
+              label:
+                - useful
 
 This will produce the label: `This is a useful feature`.
 
@@ -407,17 +402,17 @@ has received a named key :yaml:`fieldWithTranslationArguments`. This key can be 
 as long as it is unique on the same level, usually simply copying the :yaml:`identifier`
 should be enough:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   renderables:
-     fieldWithTranslationArguments:
-       identifier: field-with-translation-arguments
-       type: Checkbox
-       label: I agree to the <a href="%s">terms and conditions</a>
-       renderingOptions:
-         translation:
-           translationFiles:
-             10: path/to/locallang.xlf
+    renderables:
+      fieldWithTranslationArguments:
+        identifier: field-with-translation-arguments
+        type: Checkbox
+        label: I agree to the <a href="%s">terms and conditions</a>
+        renderingOptions:
+          translation:
+            translationFiles:
+              10: path/to/locallang.xlf
 
 In case the label defines HTML markup - like in the above example, it must
 be wrapped into `CDATA` tags in the corresponding :directory:`path/to/locallang.xlf` file,
@@ -425,7 +420,7 @@ to prevent analysing of the character data by the parser. Additionally, the
 corresponding label should be rendered using the :fluid:`<f:format.raw>`
 view helper in fluid templates, to prevent escaping of the HTML tags.
 
-.. code-block:: xml
+..  code-block:: xml
 
     <trans-unit id="<form-id>.element.field-with-translation-arguments.properties.label">
         <source><![CDATA[I agree to the <a href="%s">terms and conditions</a>]]></source>
@@ -434,90 +429,87 @@ view helper in fluid templates, to prevent escaping of the HTML tags.
 The following TypoScript setup uses the named key :typoscript:`fieldWithTranslationArguments` to refer
 to the field and adds a page URL as translation argument:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
-   plugin.tx_form {
+    plugin.tx_form {
       settings {
-         formDefinitionOverrides {
-            <form-id> {
-               renderables {
-                  0 {
-                     # Page
-                     renderables {
-                        fieldWithTranslationArguments {
-                           renderingOptions {
-                              translation {
-                                 arguments {
-                                    label {
-                                       0 = TEXT
-                                       0.typolink {
-                                          # Terms and conditions page, could be
-                                          # set also via TypoScript constants
-                                          parameter = 42
-                                          returnLast = url
-                                       }
-                                    }
-                                 }
+        formDefinitionOverrides {
+          <form-id> {
+            renderables {
+              0 {
+                # Page
+                  renderables {
+                    fieldWithTranslationArguments {
+                      renderingOptions {
+                        translation {
+                          arguments {
+                            label {
+                              0 = TEXT
+                              0.typolink {
+                                # Terms and conditions page, could be
+                                # set also via TypoScript constants
+                                parameter = 42
+                                returnLast = url
                               }
-                           }
+                            }
+                          }
                         }
-                     }
+                      }
+                    }
                   }
-               }
+                }
+              }
             }
-         }
-      }
-   }
+          }
+       }
+    }
 
 The :yaml:`Page` element of the form definition was not registered with a named key so a numeric
 key :yaml:`0` must be used which, as mentioned above, is prone to errors when more pages are added
 or pages are reordered.
 
-.. important::
+..  important::
 
-   There must be at least one translation file with a translation for the
-   configured form element property. Arguments are not inserted into default
-   values defined in a form definition.
-
+    There must be at least one translation file with a translation for the
+    configured form element property. Arguments are not inserted into default
+    values defined in a form definition.
 
 Finishers
 ---------
 
 The same mechanism (YAML, YAML + TypoScript) works for finisher options:
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   finishers:
-     finisherWithTranslationArguments:
-       identifier: EmailToReceiver
-       options:
-         subject: My %s subject
-         recipients:
-           your.company@example.com: 'Your Company name'
-           ceo@example.com: 'CEO'
-         senderAddress: bar@example.org
-         translation:
-           translationFiles:
-             10: path/to/locallang.xlf
-           arguments:
-             subject:
-               - awesome
+    finishers:
+      finisherWithTranslationArguments:
+        identifier: EmailToReceiver
+        options:
+          subject: My %s subject
+          recipients:
+            your.company@example.com: 'Your Company name'
+            ceo@example.com: 'CEO'
+          senderAddress: bar@example.org
+          translation:
+            translationFiles:
+              10: path/to/locallang.xlf
+            arguments:
+              subject:
+                - awesome
 
 This will produce `My awesome subject`.
 
-
-.. _concepts-frontendrendering-basiccodecomponents:
+..  _concepts-frontendrendering-basiccodecomponents:
 
 Basic code components
 =====================
 
-.. figure:: ../../Images/basic_code_components.png
-   :alt: Basic code components
+..  figure:: ../../Images/basic_code_components.png
+    :alt: Basic code components
 
-   Basic code components
+    Basic code components
 
-
-.. _concepts-frontendrendering-basiccodecomponents-formdefinition:
+..  _concepts-frontendrendering-basiccodecomponents-formdefinition:
 
 TYPO3\\CMS\\Form\\Domain\\Model\\FormDefinition
 -----------------------------------------------
@@ -525,18 +517,17 @@ TYPO3\\CMS\\Form\\Domain\\Model\\FormDefinition
 The class :php:`TYPO3\CMS\Form\Domain\Model\FormDefinition` encapsulates
 a complete `form definition`, with all of its
 
-- pages,
-- form elements,
-- applicable validation rules, and
-- finishers, which should be executed when the form is submitted.
+*   pages,
+*   form elements,
+*   applicable validation rules, and
+*   finishers, which should be executed when the form is submitted.
 
 The FormDefinition domain model is not modified when the form is executed.
 
-
-.. _concepts-frontendrendering-basiccodecomponents-formdefinition-anatomy:
+..  _concepts-frontendrendering-basiccodecomponents-formdefinition-anatomy:
 
 The anatomy of a form
-"""""""""""""""""""""
+~~~~~~~~~~~~~~~~~~~~~
 
 A `FormDefinition` domain model consists of multiple `Page` objects.
 When a form is displayed, only one `Page` is visible at any given time.
@@ -549,30 +540,30 @@ i.e. the `FormDefinition` domain model and a `FormElement` object may
 have the same `identifier` but having the same identifier for two
 `FormElement` objects is disallowed.
 
-
-.. _concepts-frontendrendering-basiccodecomponents-formdefinition-anatomy-example:
+..  _concepts-frontendrendering-basiccodecomponents-formdefinition-anatomy-example:
 
 Example
-'''''''
+"""""""
 
 Basically, you can manually create a :php:`FormDefinition` domain model just
 by calling the API methods on it, or you can use a :php:`FormFactory` to build
-the form from a different representation format such as YAML::
+the form from a different representation format such as YAML:
 
-   $formDefinition = GeneralUtility::makeInstance(FormDefinition::class, 'myForm');
+..  code-block:: php
 
-   $page1 = GeneralUtility::makeInstance(Page::class, 'page1');
-   $formDefinition->addPage($page);
+    $formDefinition = GeneralUtility::makeInstance(FormDefinition::class, 'myForm');
 
-   // second argument is the <formElementTypeIdentifier> of the form element
-   $element1 = GeneralUtility::makeInstance(GenericFormElement::class, 'title', 'Text');
-   $page1->addElement($element1);
+    $page1 = GeneralUtility::makeInstance(Page::class, 'page1');
+    $formDefinition->addPage($page);
 
+    // second argument is the <formElementTypeIdentifier> of the form element
+    $element1 = GeneralUtility::makeInstance(GenericFormElement::class, 'title', 'Text');
+    $page1->addElement($element1);
 
-.. _concepts-frontendrendering-basiccodecomponents-formdefinition-createformusingabstracttypes:
+..  _concepts-frontendrendering-basiccodecomponents-formdefinition-createformusingabstracttypes:
 
 Creating a form using abstract form element types
-"""""""""""""""""""""""""""""""""""""""""""""""""
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 While you can use the :php:`TYPO3\CMS\Form\Domain\Model\FormDefinition::addPage()`
 or :php:`TYPO3\CMS\Form\Domain\Model\FormElements\Page::addElement()` methods
@@ -584,123 +575,128 @@ or `Page`. :t3ext:`form` will automatically resolve the implementation class
 name and set default values.
 
 The :ref:`simple example <concepts-frontendrendering-basiccodecomponents-formdefinition-anatomy-example>`
-shown above should be rewritten as follows::
+shown above should be rewritten as follows:
 
-   // we will come back to this later on
-   $prototypeConfiguration = [];
+..  code-block:: php
 
-   $formDefinition = GeneralUtility::makeInstance(FormDefinition::class, 'myForm', $prototypeConfiguration);
-   $page1 = $formDefinition->createPage('page1');
-   $element1 = $page1->addElement('title', 'Text');
+    // we will come back to this later on
+    $prototypeConfiguration = [];
+
+    $formDefinition = GeneralUtility::makeInstance(FormDefinition::class, 'myForm', $prototypeConfiguration);
+    $page1 = $formDefinition->createPage('page1');
+    $element1 = $page1->addElement('title', 'Text');
 
 You might wonder how the system knows that the element `Text` is
 implemented by using a `GenericFormElement`. This is configured in the
 :php:`$prototypeConfiguration`. To make the example from above actually work,
-we need to add some meaningful values to :php:`$prototypeConfiguration`::
+we need to add some meaningful values to :php:`$prototypeConfiguration`:
 
-   $prototypeConfiguration = [
-       'formElementsDefinition' => [
-           'Page' => [
-               'implementationClassName' => 'TYPO3\CMS\Form\Domain\Model\FormElements\Page'
-           ],
-           'Text' => [
-               'implementationClassName' => 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement'
-           ],
-       ],
-   ];
+..  code-block:: php
+
+    $prototypeConfiguration = [
+        'formElementsDefinition' => [
+            'Page' => [
+                'implementationClassName' => 'TYPO3\CMS\Form\Domain\Model\FormElements\Page'
+            ],
+            'Text' => [
+                'implementationClassName' => 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement'
+            ],
+        ],
+    ];
 
 For each abstract `<formElementTypeIdentifier>` we have to add some
 configuration. In the snippet above, we only define the `implementation
 class name`. Apart from that, it is always possible to set default values
 for all configuration options of such elements, as the following example
-shows::
+shows:
 
-   $prototypeConfiguration = [
-       'formElementsDefinition' => [
-           'Page' => [
-               'implementationClassName' => 'TYPO3\CMS\Form\Domain\Model\FormElements\Page',
-               'label' => 'This is the label of the page if nothing else is specified'
-           ],
-           'Text' => [
-               'implementationClassName' => 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement',
-               'label' = >'Default Label',
-               'defaultValue' => 'Default form element value',
-               'properties' => [
-                   'placeholder' => 'Text that is shown if element is empty'
-               ],
-           ],
-       ],
-   ];
+..  code-block:: php
 
+    $prototypeConfiguration = [
+        'formElementsDefinition' => [
+            'Page' => [
+                'implementationClassName' => 'TYPO3\CMS\Form\Domain\Model\FormElements\Page',
+                'label' => 'This is the label of the page if nothing else is specified'
+            ],
+            'Text' => [
+                'implementationClassName' => 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement',
+                'label' = >'Default Label',
+                'defaultValue' => 'Default form element value',
+                'properties' => [
+                    'placeholder' => 'Text that is shown if element is empty'
+                ],
+            ],
+        ],
+    ];
 
-.. _concepts-frontendrendering-basiccodecomponents-formdefinition-preconfiguredconfiguration:
+..  _concepts-frontendrendering-basiccodecomponents-formdefinition-preconfiguredconfiguration:
 
 Using pre-configured $prototypeConfiguration
-""""""""""""""""""""""""""""""""""""""""""""
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Often, it does not make sense to manually create the $prototypeConfiguration
 array. Bigger parts of this array are pre-configured in the extensions's
 YAML settings. The :php:`TYPO3\CMS\Form\Domain\Configuration\ConfigurationService`
 contains helper methods which return the ready-to-use :php`$prototypeConfiguration`.
 
-
-.. _concepts-frontendrendering-basiccodecomponents-formdefinition-rednering:
+..  _concepts-frontendrendering-basiccodecomponents-formdefinition-rednering:
 
 Rendering a FormDefinition
-""""""""""""""""""""""""""
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To trigger the rendering of a :php:`FormDefinition` domain model, the current
 :php:`TYPO3\CMS\Extbase\Mvc\Web\Request` needs to be bound to the
 `FormDefinition`. This binding results in a :php:`TYPO3\CMS\Form\Domain\Runtime\FormRuntime`
 object which contains the `Runtime State` of the form. Among other things,
-this object includes the currently inserted values::
+this object includes the currently inserted values:
 
-   // $currentRequest needs to be available.
-   // Inside a controller, you would use $this->request
-   $form = $formDefinition->bind($currentRequest);
-   // now, you can use the $form object to get information about the currently entered values, etc.
+..  code-block:: php
 
+    // $currentRequest needs to be available.
+    // Inside a controller, you would use $this->request
+    $form = $formDefinition->bind($currentRequest);
+    // now, you can use the $form object to get information about the currently entered values, etc.
 
-.. _concepts-frontendrendering-basiccodecomponents-formruntime:
+..  _concepts-frontendrendering-basiccodecomponents-formruntime:
 
 TYPO3\\CMS\\Form\\Domain\\Runtime\\FormRuntime
 ----------------------------------------------
 
 This class implements the runtime logic of a form, i.e. the class
 
-- decides which page is currently shown,
-- determines the current values of the form
-- triggers validation and property mappings.
+*   decides which page is currently shown,
+*   determines the current values of the form
+*   triggers validation and property mappings.
 
-You generally receive an instance of this class by calling :php:`TYPO3\CMS\Form\Domain\Model\FormDefinition::bind()`.
+You generally receive an instance of this class by
+calling :php:`TYPO3\CMS\Form\Domain\Model\FormDefinition::bind()`.
 
-
-.. _concepts-frontendrendering-basiccodecomponents-formruntime-render:
+..  _concepts-frontendrendering-basiccodecomponents-formruntime-render:
 
 Rendering a form
-""""""""""""""""
+~~~~~~~~~~~~~~~~
 
 Rendering a form is easy. Just call :php:`render()` on the :php:`FormRuntime`::
 
-   $form = $formDefinition->bind($request);
-   $renderedForm = $form->render();
+..  code-block:: php
 
+    $form = $formDefinition->bind($request);
+    $renderedForm = $form->render();
 
-.. _concepts-frontendrendering-basiccodecomponents-formruntime-accessingformvalues:
+..  _concepts-frontendrendering-basiccodecomponents-formruntime-accessingformvalues:
 
 Accessing form values
-"""""""""""""""""""""
+~~~~~~~~~~~~~~~~~~~~~
 
 In order to get the values the user has entered into the form, you can
 access the :php:`FormRuntime` object like an array. If a form element with the
 identifier `firstName` exists, you can use :php:`$form['firstName']` to
 retrieve its current value. You can set values the same way.
 
-
-.. _concepts-frontendrendering-basiccodecomponents-formruntime-renderinginternals:
+..  _concepts-frontendrendering-basiccodecomponents-formruntime-renderinginternals:
 
 Rendering internals
-"""""""""""""""""""
+~~~~~~~~~~~~~~~~~~~
 
 The :php:`FormRuntime` inquires the :php:`FormDefinition` domain model regarding
 the configured renderer (:php:`TYPO3\CMS\Form\Domain\Model\FormDefinition::getRendererClassName()`)
@@ -708,16 +704,15 @@ and then triggers :php:`render()` on this Renderer.
 
 This allows you to declaratively define how a form should be rendered.
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   prototypes:
-     standard:
-       formElementsDefinition:
-         Form:
-           rendererClassName: 'TYPO3\CMS\Form\Domain\Renderer\FluidFormRenderer'
+    prototypes:
+      standard:
+        formElementsDefinition:
+          Form:
+            rendererClassName: 'TYPO3\CMS\Form\Domain\Renderer\FluidFormRenderer'
 
-
-.. _concepts-frontendrendering-basiccodecomponents-fluidformrenderer:
+..  _concepts-frontendrendering-basiccodecomponents-fluidformrenderer:
 
 TYPO3\\CMS\\Form\\Domain\\Renderer\\FluidFormRenderer
 -----------------------------------------------------
@@ -726,10 +721,10 @@ This class is a :php:`TYPO3\CMS\Form\Domain\Renderer\RendererInterface`
 implementation which used to render a :php:`FormDefinition` domain model. It
 is the default :t3ext:`form` renderer.
 
-Learn more about the :ref:`FluidFormRenderer Options<apireference-frontendrendering-fluidformrenderer-options>`.
+Learn more about
+the :ref:`FluidFormRenderer Options<apireference-frontendrendering-fluidformrenderer-options>`.
 
-
-.. _concepts-frontendrendering-codecomponents-customformelementimplementations:
+..  _concepts-frontendrendering-codecomponents-customformelementimplementations:
 
 Custom form element implementations
 -----------------------------------
@@ -739,16 +734,16 @@ points of the life cycle of a `FormElement`. Most of the time, own
 implementations are therefore unnecessary. An own form element can be
 defined by:
 
-- writing some configuration, and
-- utilizing the standard implementation of :php:`TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement`.
+*   writing some configuration, and
+*   utilizing the standard implementation of :php:`TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement`.
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   prototypes:
-     standard:
-       formElementsDefinition:
-         CustomFormElementIdentifier:
-           implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement'
+    prototypes:
+      standard:
+        formElementsDefinition:
+          CustomFormElementIdentifier:
+            implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement'
 
 With the provided hooks, this `FormElement` can now be manipulated.
 
@@ -762,8 +757,7 @@ All of your own form element implementations must be programmed to the
 interface :php:`TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface`.
 It is a good idea to derive your implementation from :php:`TYPO3\CMS\Form\Domain\Model\FormElements\AbstractFormElement`.
 
-
-.. _concepts-frontendrendering-renderviewHelper:
+..  _concepts-frontendrendering-renderviewHelper:
 
 "render" viewHelper
 ===================
@@ -773,37 +767,35 @@ not the typical Extbase Controller as you may know it.
 
 For more technical insights read more about the viewHelper's :ref:`arguments<apireference-frontendrendering-renderviewHelper-arguments>`.
 
-
-.. _concepts-frontendrendering-fluidtemplate:
+..  _concepts-frontendrendering-fluidtemplate:
 
 Render through FLUIDTEMPLATE (without controller)
 -------------------------------------------------
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
-   tt_content.custom_content_element = COA_INT
-   tt_content.custom_content_element {
-       20 = FLUIDTEMPLATE
-       20 {
-           file = EXT:my_site_package/Resources/Private/Templates/CustomContentElement.html
-           settings {
-               persistenceIdentifier = EXT:my_site_package/Resources/Private/Forms/MyForm.yaml
-           }
-           extbase.pluginName = Formframework
-           extbase.controllerExtensionName = Form
-           extbase.controllerName = FormFrontend
-           extbase.controllerActionName = perform
-       }
-   }
+    tt_content.custom_content_element = COA_INT
+    tt_content.custom_content_element {
+      20 = FLUIDTEMPLATE
+      20 {
+        file = EXT:my_site_package/Resources/Private/Templates/CustomContentElement.html
+        settings {
+          persistenceIdentifier = EXT:my_site_package/Resources/Private/Forms/MyForm.yaml
+        }
+        extbase.pluginName = Formframework
+        extbase.controllerExtensionName = Form
+        extbase.controllerName = FormFrontend
+        extbase.controllerActionName = perform
+      }
+    }
 
 ``my_site_package/Resources/Private/Templates/CustomContentElement.html``:
 
-.. code-block:: html
+..  code-block:: html
 
-   <formvh:render persistenceIdentifier="{settings.persistenceIdentifier}" />
+    <formvh:render persistenceIdentifier="{settings.persistenceIdentifier}" />
 
-
-.. _concepts-frontendrendering-extbase:
+..  _concepts-frontendrendering-extbase:
 
 Render within your own Extbase extension
 ----------------------------------------
@@ -811,46 +803,44 @@ Render within your own Extbase extension
 It is straight forward. Use the `RenderViewHelper` like this and you are
 done:
 
-.. code-block:: html
+..  code-block:: html
 
-   <formvh:render persistenceIdentifier="EXT:my_site_package/Resources/Private/Forms/MyForm.yaml"/>
+    <formvh:render persistenceIdentifier="EXT:my_site_package/Resources/Private/Forms/MyForm.yaml"/>
 
 Point the property `controllerAction` to the desired action name and
 provide values for the other parameters displayed below (you might need
 those).
 
-.. code-block:: yaml
+..  code-block:: yaml
 
-   type: Form
-   identifier: 'example-form'
-   label: 'TYPO3 is cool'
-   prototypeName: standard
-   renderingOptions:
-     controllerAction: perform
-     addQueryString: false
-     argumentsToBeExcludedFromQueryString: []
-     additionalParams: []
+    type: Form
+    identifier: 'example-form'
+    label: 'TYPO3 is cool'
+    prototypeName: standard
+    renderingOptions:
+      controllerAction: perform
+      addQueryString: false
+      argumentsToBeExcludedFromQueryString: []
+      additionalParams: []
 
-   renderables:
-     ...
+    renderables:
+      ...
 
+..  note::
 
-.. note::
+    In general, you can override each and every `form definition` with the help
+    of TypoScript (see ':ref:`TypoScript overrides<concepts-frontendrendering-runtimemanipulation-typoscriptoverrides>`').
 
-   In general, you can override each and every `form definition` with the help
-   of TypoScript (see ':ref:`TypoScript overrides<concepts-frontendrendering-runtimemanipulation-typoscriptoverrides>`').
+    When using the `RenderViewHelper`, there is a second way:
+    The ':ref:`overrideConfiguration<apireference-frontendrendering-renderviewHelper-overrideconfiguration>`' parameter.
+    This way, you can override the form definition within your template.
+    Provide an according array as shown in the example below.
 
-   When using the `RenderViewHelper`, there is a second way:
-   The ':ref:`overrideConfiguration<apireference-frontendrendering-renderviewHelper-overrideconfiguration>`' parameter.
-   This way, you can override the form definition within your template.
-   Provide an according array as shown in the example below.
+    ..  code-block:: html
 
-   .. code-block:: html
+        <formvh:render persistenceIdentifier="EXT:my_site_package/Resources/Private/Forms/MyForm.yaml" overrideConfiguration="{renderables: {0: {renderables: {0: {label: 'My shiny new label'}}}}}"/>
 
-      <formvh:render persistenceIdentifier="EXT:my_site_package/Resources/Private/Forms/MyForm.yaml" overrideConfiguration="{renderables: {0: {renderables: {0: {label: 'My shiny new label'}}}}}"/>
-
-
-.. _concepts-frontendrendering-programmatically:
+..  _concepts-frontendrendering-programmatically:
 
 Build forms programmatically
 ============================
@@ -858,14 +848,12 @@ Build forms programmatically
 To learn more about this topic, head to the chapter ':ref:`Build forms programmatically<apireference-frontendrendering-programmatically>`'
 which is part of the API reference section.
 
-
-.. _concepts-frontendrendering-runtimemanipulation:
+..  _concepts-frontendrendering-runtimemanipulation:
 
 Runtime manipulation
 ====================
 
-
-.. _concepts-frontendrendering-runtimemanipulation-hooks:
+..  _concepts-frontendrendering-runtimemanipulation-hooks:
 
 Hooks
 -----
@@ -873,16 +861,15 @@ Hooks
 :t3ext:`form` implements a decent amount of hooks that allow the manipulation of
 your forms during runtime. In this way, it is possible to, for example,
 
-- ... prefill form elements with values from your database,
-- ... skip a whole page based on the value of a certain form element,
-- ... mark a form element as mandatory depending of the chosen value of another
-  form element.
+*   ... prefill form elements with values from your database,
+*   ... skip a whole page based on the value of a certain form element,
+*   ... mark a form element as mandatory depending of the chosen value of another
+    form element.
 
 Please check out the ':ref:`API reference section<apireference-frontendrendering-runtimemanipulation-hooks>`'
 for more details.
 
-
-.. _concepts-frontendrendering-runtimemanipulation-typoscriptoverrides:
+..  _concepts-frontendrendering-runtimemanipulation-typoscriptoverrides:
 
 TypoScript overrides
 --------------------
@@ -899,23 +886,23 @@ the `form definition` for a single page. In doing so, the altered
 generates the form programmatically. At this point, you can still change the
 form elements using the above-mentioned concept of :ref:`hooks<concepts-frontendrendering-runtimemanipulation-hooks>`.
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
-   plugin.tx_form {
-       settings {
-           formDefinitionOverrides {
-               <formDefinitionIdentifier> {
-                   renderables {
-                       0 {
-                           renderables {
-                               0 {
-                                   label = TEXT
-                                   label.value = Overridden label
-                               }
-                           }
-                       }
-                   }
-               }
-           }
-       }
-   }
+    plugin.tx_form {
+      settings {
+        formDefinitionOverrides {
+          <formDefinitionIdentifier> {
+            renderables {
+              0 {
+                renderables {
+                  0 {
+                    label = TEXT
+                    label.value = Overridden label
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }

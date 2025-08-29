@@ -1,0 +1,13 @@
+identifier: sample-form
+label: 'Simple Contact Form'
+prototype: standard
+type: Form
+
+finishers:
+  -
+    identifier: CustomFinisher
+    options:
+      yourCustomOption: 'Björn'
+
+renderables:
+  # ...

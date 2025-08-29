@@ -1,0 +1,16 @@
+identifier: simple-contact-form
+label: 'Simple Contact Form'
+prototype: standard
+type: Form
+
+finishers:
+  -
+    identifier: Custom
+    options:
+      yourCustomOption: '{subject}'
+
+renderables:
+  -
+    identifier: subject
+    label: 'Subject'
+    type: Text

@@ -1,0 +1,15 @@
+identifier: contact
+type: Form
+prototypeName: standard
+finishers:
+  -
+    identifier: EmailToSender
+    options:
+      subject: 'Your Message: {message}'
+      title: 'Hello {name}, your confirmation'
+      templateName: ContactForm
+      templateRootPaths:
+        100: 'EXT:my_site_package/Resources/Private/Templates/Email/'
+      partialRootPaths:
+        100: 'EXT:my_site_package/Resources/Private/Partials/Email/'
+      addHtmlPart: true
