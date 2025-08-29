@@ -24,12 +24,19 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class MapTest extends UnitTestCase
 {
-    #[Test]
-    public function mapIsArrayAccessible(): void
+    public static function mapKeysDataProvider(): \Generator
     {
-        $aKey = new \stdClass();
+        yield 'string keys' => ['aKey', 'bKey'];
+        yield 'array keys' => [['aArrayKey'], ['bArrayKey']];
+        yield 'object keys' => [new \stdClass(), new \stdClass()];
+        yield 'object & string keys' => [new \stdClass(), 'bKey'];
+    }
+
+    #[Test]
+    #[DataProvider('mapKeysDataProvider')]
+    public function mapIsArrayAccessible(mixed $aKey, mixed $bKey): void
+    {
         $aValue = new \stdClass();
-        $bKey = new \stdClass();
         $bValue = new \stdClass();
 
         $map = new Map();
@@ -43,11 +50,10 @@ final class MapTest extends UnitTestCase
     }
 
     #[Test]
-    public function mapKeyCanBeUnset(): void
+    #[DataProvider('mapKeysDataProvider')]
+    public function mapKeyCanBeUnset(mixed $aKey, mixed $bKey): void
     {
-        $aKey = new \stdClass();
         $aValue = new \stdClass();
-        $bKey = new \stdClass();
         $bValue = new \stdClass();
 
         $map = new Map();
@@ -61,11 +67,10 @@ final class MapTest extends UnitTestCase
     }
 
     #[Test]
-    public function mapCanBeIterated(): void
+    #[DataProvider('mapKeysDataProvider')]
+    public function mapCanBeIterated(mixed $aKey, mixed $bKey): void
     {
-        $aKey = new \stdClass();
         $aValue = new \stdClass();
-        $bKey = new \stdClass();
         $bValue = new \stdClass();
 
         $map = new Map();
@@ -85,11 +90,10 @@ final class MapTest extends UnitTestCase
     }
 
     #[Test]
-    public function mapIsCreatedFromEntries(): void
+    #[DataProvider('mapKeysDataProvider')]
+    public function mapIsCreatedFromEntries(mixed $aKey, mixed $bKey): void
     {
-        $aKey = new \stdClass();
         $aValue = new \stdClass();
-        $bKey = new \stdClass();
         $bValue = new \stdClass();
 
         $map = Map::fromEntries(
@@ -103,11 +107,10 @@ final class MapTest extends UnitTestCase
     }
 
     #[Test]
-    public function mapCanBeAssignedToOtherMap(): void
+    #[DataProvider('mapKeysDataProvider')]
+    public function mapCanBeAssignedToOtherMap(mixed $aKey, mixed $bKey): void
     {
-        $aKey = new \stdClass();
         $aValue = new \stdClass();
-        $bKey = new \stdClass();
         $bValue = new \stdClass();
 
         $map = new Map();
@@ -123,11 +126,10 @@ final class MapTest extends UnitTestCase
     }
 
     #[Test]
-    public function mapKeysAndValuesAreFetched(): void
+    #[DataProvider('mapKeysDataProvider')]
+    public function mapKeysAndValuesAreFetched(mixed $aKey, mixed $bKey): void
     {
-        $aKey = new \stdClass();
         $aValue = new \stdClass();
-        $bKey = new \stdClass();
         $bValue = new \stdClass();
 
         $map = Map::fromEntries(
@@ -137,6 +139,7 @@ final class MapTest extends UnitTestCase
 
         self::assertSame([$aKey, $bKey], $map->keys());
         self::assertSame([$aValue, $bValue], $map->values());
+        self::assertSame([[$aKey, $aValue], [$bKey, $bValue]], $map->entries());
     }
 
     public static function mapNextManagesStateDataProvider(): \Generator
