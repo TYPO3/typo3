@@ -5,14 +5,18 @@
 Known problems
 ==============
 
--   Currently the extension is under observation because instances of
-    heavy server load/unstability has been reported. It is not yet clear
-    if THIS extension has anything to do with. So it's only under
-    suspicion at this point until further data has been collected. But for
-    now it is advised to be careful with the application of the extension
-    for mission critical, high-load environments.
+Searching for hy-phen-at-ed words
+=================================
+When using the fulltext index feature, searching for words with hyphens in
+them ("Berners-Lee") will yield no results when MySQL is used
+as database server. MariaDB does not have this problem.
 
--   It's still uncertain how performance is under heavy load conditions
-    and when MANY pages are indexed. Currently benchmarks have been done
-    only up to 2000 pages indexed/approx. 400.000 relation records. It is
-    likely that some parts have to be optimized for such scenarios.
+The reason for this behavior is that the MySQL fulltext parser indexes
+`words with hyphens as two words`__: "Berners Lee".
+
+Another problem is that the "fulltext search minimum word length" setting
+`ft_min_word_len` default value is `4`, which means that three-letter
+words are not indexed at all.
+Of "Berners-Lee", only "Berners" will be in the index.
+
+__ https://dev.mysql.com/doc/refman/8.4/en/fulltext-fine-tuning.html#fulltext-modify-character-set
