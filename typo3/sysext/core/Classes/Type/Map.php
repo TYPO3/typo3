@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Type;
 
 /**
- * Map implementation that supports objects as keys.
+ * Map implementation that supports objects as keys, as well as scalar values.
  *
  * PHP's \WeakMap is not an option in case object keys are created and assigned
  * in an encapsulated scope (like passing a map to a function to enrich it). In
@@ -30,8 +30,8 @@ namespace TYPO3\CMS\Core\Type;
  * BC reasons (see https://bugs.php.net/bug.php?id=49967).
  *
  * This individual implementation works around the "weak" behavior of \WeakMap
- * and the iteration issue with `foreach` of `\SplObjectStorage` by acting as
- * a wrapper for `\SplObjectStorage` with reduced features.
+ * and the iteration issue with `foreach` of `\SplObjectStorage` by maintaining
+ * its own internal state.
  *
  * Example:
  * ```
@@ -45,7 +45,15 @@ namespace TYPO3\CMS\Core\Type;
  */
 final class Map implements \ArrayAccess, \Countable, \Iterator
 {
-    private \SplObjectStorage $storage;
+    private array $keys = [];
+    private array $values = [];
+    private int $index = 0;
+    private int $length = 0;
+    /**
+     * Whether the internal index exceeded the end (either the map is empty,
+     * or previous call to `next()` exceeded the amount of available entries)
+     */
+    private bool $end = true;
 
     /**
      * @template E array{0:mixed, 1:mixed}
@@ -60,57 +68,88 @@ final class Map implements \ArrayAccess, \Countable, \Iterator
         return $map;
     }
 
-    public function __construct()
-    {
-        $this->storage = new \SplObjectStorage();
-    }
-
     public function key(): mixed
     {
-        return $this->valid() ? $this->storage->current() : null;
+        return $this->valid() ? $this->keys[$this->index] : null;
     }
 
     public function current(): mixed
     {
-        return $this->storage->getInfo();
+        return $this->valid() ? $this->values[$this->index] : null;
     }
 
     public function next(): void
     {
-        $this->storage->next();
+        if (!$this->valid()) {
+            return;
+        }
+        if ($this->index + 1 < $this->length) {
+            $this->index++;
+        } else {
+            $this->end = true;
+        }
     }
 
     public function rewind(): void
     {
-        $this->storage->rewind();
+        $this->index = 0;
+        $this->updateState();
     }
 
     public function valid(): bool
     {
-        return $this->storage->valid();
+        return !$this->end;
     }
 
     public function offsetExists(mixed $offset): bool
     {
-        return $this->storage->offsetExists($offset);
+        return in_array($offset, $this->keys(), true);
     }
 
     public function offsetGet(mixed $offset): mixed
     {
-        if (!$this->offsetExists($offset)) {
-            return null;
-        }
-        return $this->storage[$offset];
+        $index = array_search($offset, $this->keys(), true);
+        return $index === false ? null : $this->values[$index];
     }
 
     public function offsetSet(mixed $offset, mixed $value): void
     {
-        $this->storage[$offset] = $value;
+        $index = array_search($offset, $this->keys, true);
+        if ($index !== false) {
+            $this->values[$index] = $value;
+            return;
+        }
+        $this->keys[] = $offset;
+        $this->values[] = $value;
+        $this->length++;
+        if ($this->end) {
+            $this->index = $this->length - 1;
+        }
+        $this->updateState();
     }
 
     public function offsetUnset(mixed $offset): void
     {
-        unset($this->storage[$offset]);
+        $index = array_search($offset, $this->keys, true);
+        if ($index === false) {
+            return;
+        }
+        unset($this->keys[$index], $this->values[$index]);
+        $this->keys = array_values($this->keys);
+        $this->values = array_values($this->values);
+        // key indexes `[0 => A, 1 => B, 2 => C]`
+        // | unset  | $this->   | $this->   |
+        // | $index | index cur | index new |
+        // +--------+-----------+-----------+
+        // | 1 (B)  |   2 (C)   |   1 (C)   |
+        // | 1 (B)  |   1 (B)   |   1 (C)   |
+        // | 2 (C)  |   1 (B)   |   1 (B)   |
+        // | 2 (C)  |   2 (C)   |   2 (ø)   |
+        if ($index < $this->index) {
+            $this->index--;
+        }
+        $this->length--;
+        $this->updateState();
     }
 
     public function assign(self $source): void
@@ -125,28 +164,33 @@ final class Map implements \ArrayAccess, \Countable, \Iterator
 
     public function keys(): array
     {
-        $keys = [];
-        $this->rewind();
-        while ($this->valid()) {
-            $keys[] = $this->key();
-            $this->next();
-        }
-        return $keys;
+        return $this->keys;
     }
 
     public function values(): array
     {
-        $values = [];
-        $this->rewind();
-        while ($this->valid()) {
-            $values[] = $this->current();
-            $this->next();
-        }
-        return $values;
+        return $this->values;
+    }
+
+    /**
+     * @return list<array{0:mixed, 1:mixed}>
+     */
+    public function entries(): array
+    {
+        return array_map(
+            static fn(mixed $key, mixed $value): array => [$key, $value],
+            $this->keys(),
+            $this->values()
+        );
     }
 
     public function count(): int
     {
-        return count($this->storage);
+        return $this->length;
+    }
+
+    private function updateState(): void
+    {
+        $this->end = !($this->index < $this->length);
     }
 }
