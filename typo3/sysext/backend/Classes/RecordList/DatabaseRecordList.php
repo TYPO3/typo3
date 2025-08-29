@@ -2280,12 +2280,13 @@ class DatabaseRecordList
     {
         if ($editPermission && !$this->getBackendUserAuthentication()->isAdmin()) {
             // If no $row is submitted we only check for general edit lock of current page (except for table "pages")
-            $pageHasEditLock = !empty($this->pageRow['editlock']);
+            $pageHasEditLock = ($pagesSchema = $this->tcaSchemaFactory->get('pages'))->hasCapability(TcaSchemaCapability::EditLock)
+                && ($this->pageRow[$pagesSchema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] ?? false);
             if (empty($row)) {
                 return ($table === 'pages') || !$pageHasEditLock;
             }
             $schema = $this->tcaSchemaFactory->get($table);
-            if (($table === 'pages' && ($row['editlock'] ?? false)) || ($table !== 'pages' && $pageHasEditLock)) {
+            if (($table === 'pages' && ($row[$pagesSchema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] ?? false)) || ($table !== 'pages' && $pageHasEditLock)) {
                 $editPermission = false;
             } elseif ($schema->hasCapability(TcaSchemaCapability::EditLock) && ($row[$schema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] ?? false)) {
                 $editPermission = false;

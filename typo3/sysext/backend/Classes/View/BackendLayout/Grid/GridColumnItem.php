@@ -251,9 +251,12 @@ class GridColumnItem extends AbstractGridObject
             return true;
         }
         $pageRecord = $this->context->getPageRecord();
-        return !($pageRecord['editlock'] ?? false)
-            && $backendUser->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT)
-            && $backendUser->recordEditAccessInternals($this->table, $this->record);
+        return $backendUser->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT)
+            && $backendUser->recordEditAccessInternals($this->table, $this->record)
+            && (
+                !($pagesSchema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('pages'))->hasCapability(TcaSchemaCapability::EditLock)
+                || !($pageRecord[$pagesSchema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] ?? false)
+            );
     }
 
     public function isDragAndDropAllowed(): bool
@@ -264,7 +267,13 @@ class GridColumnItem extends AbstractGridObject
             && (
                 $this->getBackendUser()->isAdmin()
                 || (
-                    ((int)($this->record['editlock'] ?? 0) === 0 && (int)($pageRecord['editlock'] ?? 0) === 0)
+                    (
+                        !($this->record[$this->schema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] ?? false)
+                        && (
+                            !($pagesSchema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('pages'))->hasCapability(TcaSchemaCapability::EditLock)
+                            || !($pageRecord[$pagesSchema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] ?? false)
+                        )
+                    )
                     && $this->getBackendUser()->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT)
                     && $this->getBackendUser()->checkAuthMode($this->table, $typeColumn, $this->getRecordType())
                 )

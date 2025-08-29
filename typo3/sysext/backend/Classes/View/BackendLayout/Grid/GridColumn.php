@@ -23,6 +23,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Backend\View\Event\BeforeSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -243,9 +245,12 @@ class GridColumn extends AbstractGridObject
             return true;
         }
         $pageRecord = $this->context->getPageRecord();
-        return !$pageRecord['editlock']
-            && $this->getBackendUser()->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT)
-            && $this->getBackendUser()->checkLanguageAccess($this->context->getSiteLanguage());
+        return $this->getBackendUser()->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT)
+            && $this->getBackendUser()->checkLanguageAccess($this->context->getSiteLanguage())
+            && (
+                !($pagesSchema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('pages'))->hasCapability(TcaSchemaCapability::EditLock)
+                || !($pageRecord[$pagesSchema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] ?? false)
+            );
     }
 
     /**

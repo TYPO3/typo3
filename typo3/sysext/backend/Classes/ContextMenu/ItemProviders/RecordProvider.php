@@ -328,11 +328,8 @@ class RecordProvider extends AbstractProvider
     protected function getEnableDisableAdditionalAttributes(): array
     {
         $hiddenFieldName = '';
-        if ($this->tcaSchemaFactory->has($this->table)) {
-            $schema = $this->tcaSchemaFactory->get($this->table);
-            if ($schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)) {
-                $hiddenFieldName = $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName();
-            }
+        if (($schema = $this->getSchema())?->hasCapability(TcaSchemaCapability::RestrictionDisabledField)) {
+            $hiddenFieldName = $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName();
         }
         return [
             'data-disable-field' => $hiddenFieldName,
@@ -578,10 +575,12 @@ class RecordProvider extends AbstractProvider
      */
     protected function isRecordLocked(): bool
     {
-        if ((int)$this->pageRecord['editlock'] === 1) {
+        if (($pageSchema = $this->tcaSchemaFactory->get('pages'))->hasCapability(TcaSchemaCapability::EditLock)
+            && ($this->pageRecord[$pageSchema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] ?? false)
+        ) {
             return true;
         }
-        if (!$this->getSchema()->hasCapability(TcaSchemaCapability::EditLock)) {
+        if (!$this->getSchema()?->hasCapability(TcaSchemaCapability::EditLock)) {
             return false;
         }
         return (bool)$this->record[$this->getSchema()->getCapability(TcaSchemaCapability::EditLock)->getFieldName()];

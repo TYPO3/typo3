@@ -658,7 +658,9 @@ class RecordListController
      */
     protected function editLockPermissions(): bool
     {
-        return $this->getBackendUserAuthentication()->isAdmin() || !($this->pageInfo['editlock'] ?? false);
+        return $this->getBackendUserAuthentication()->isAdmin()
+            || !($schema = $this->tcaSchemaFactory->get('pages'))->hasCapability(TcaSchemaCapability::EditLock)
+            || !($this->pageInfo[$schema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] ?? false);
     }
 
     /**

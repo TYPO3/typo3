@@ -77,7 +77,7 @@ class PageLayoutContext
         protected readonly BackendLayout $backendLayout,
         protected readonly SiteInterface $site,
         protected readonly DrawingConfiguration $drawingConfiguration,
-        protected readonly ServerRequestInterface $request
+        protected readonly ServerRequestInterface $request,
     ) {
         $this->pageId = (int)($pageRecord['uid'] ?? 0);
         $this->contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class);
@@ -194,7 +194,11 @@ class PageLayoutContext
         if ($this->getBackendUser()->isAdmin()) {
             return true;
         }
-        return !$this->pageRecord['editlock'] && $this->getBackendUser()->doesUserHaveAccess($this->pageRecord, Permission::PAGE_EDIT);
+        return $this->getBackendUser()->doesUserHaveAccess($this->pageRecord, Permission::PAGE_EDIT)
+            && (
+                !($schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('pages'))->hasCapability(TcaSchemaCapability::EditLock)
+                || !($this->pageRecord[$schema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] ?? false)
+            );
     }
 
     public function getAllowNewContent(): bool
