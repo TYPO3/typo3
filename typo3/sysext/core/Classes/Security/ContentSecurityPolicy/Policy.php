@@ -196,7 +196,6 @@ class Policy
      */
     public function prepare(): self
     {
-        $purged = false;
         $directives = clone $this->directives;
         $comparator = [$this, 'compareSources'];
         foreach ($directives as $directive => $collection) {
@@ -206,7 +205,6 @@ class Policy
                     && array_udiff($collection->sources, $ancestorCollection->sources, $comparator) === []
                     && array_udiff($ancestorCollection->sources, $collection->sources, $comparator) === []
                 ) {
-                    $purged = true;
                     unset($directives[$directive]);
                     continue 2;
                 }
@@ -217,9 +215,6 @@ class Policy
             if ($collection->contains(SourceKeyword::strictDynamic) && SourceKeyword::strictDynamic->isApplicable($directive)) {
                 $directives[$directive] = SourceKeyword::strictDynamic->applySourceImplications($collection) ?? $collection;
             }
-        }
-        if (!$purged) {
-            return $this;
         }
         $target = clone $this;
         $target->directives = $directives;
