@@ -20,11 +20,14 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller\Event;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\Event\ModifyNewContentElementWizardItemsEvent;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ModifyNewContentElementWizardItemsEventTest extends UnitTestCase
 {
     protected ModifyNewContentElementWizardItemsEvent $subject;
+
+    protected array $queryParams = ['a' => 'b'];
 
     protected function setUp(): void
     {
@@ -43,7 +46,8 @@ final class ModifyNewContentElementWizardItemsEventTest extends UnitTestCase
             ],
             1,
             2,
-            3
+            3,
+            (new ServerRequest('https://example.com', 'POST'))->withQueryParams($this->queryParams),
         );
     }
 
@@ -220,5 +224,11 @@ final class ModifyNewContentElementWizardItemsEventTest extends UnitTestCase
     {
         $this->subject->setWizardItem($identifier, $configuration, $position);
         self::assertEquals($expected, $this->subject->getWizardItems());
+    }
+
+    #[Test]
+    public function eventProvidesQueryParams(): void
+    {
+        self::assertEquals($this->queryParams, $this->subject->getRequest()->getQueryParams());
     }
 }

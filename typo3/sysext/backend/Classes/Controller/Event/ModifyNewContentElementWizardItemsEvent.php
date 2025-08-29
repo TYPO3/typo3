@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller\Event;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 /**
  * Listeners to this Event will be able to modify the wizard items of the new content element wizard component
  */
@@ -28,6 +30,7 @@ final class ModifyNewContentElementWizardItemsEvent
         private readonly ?int $colPos,
         private readonly int $sys_language,
         private readonly int $uid_pid,
+        private readonly ServerRequestInterface $request,
     ) {}
 
     public function getWizardItems(): array
@@ -127,5 +130,13 @@ final class ModifyNewContentElementWizardItemsEvent
     public function getUidPid(): int
     {
         return $this->uid_pid;
+    }
+
+    /**
+     * Provides the request in the state it was provided to the NewContentElementController::wizardAction() method.
+     */
+    public function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
     }
 }
