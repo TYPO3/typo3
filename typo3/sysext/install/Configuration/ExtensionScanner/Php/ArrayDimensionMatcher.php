@@ -1207,4 +1207,10 @@ return [
             'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'ext/form\'][\'beforeFormCreate\']' => [
+        'restFiles' => [
+            'Breaking-107343-RemovedBeforeFormCreateHook.rst',
+            'Feature-107343-IntroducePSR14BeforeFormIsCreatedEvent.rst',
+        ],
+    ],
 ];

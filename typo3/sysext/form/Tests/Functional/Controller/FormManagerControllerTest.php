@@ -18,15 +18,23 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Functional\Controller;
 
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Backend\Routing\UriBuilder as CoreUriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder as ExtbaseUriBuilder;
 use TYPO3\CMS\Form\Controller\FormManagerController;
+use TYPO3\CMS\Form\Event\BeforeFormIsCreatedEvent;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\CMS\Form\Service\DatabaseService;
@@ -35,8 +43,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FormManagerControllerTest extends FunctionalTestCase
 {
-    protected bool $initializeDatabase = false;
-
     protected array $coreExtensionsToLoad = [
         'form',
     ];
@@ -463,5 +469,56 @@ final class FormManagerControllerTest extends FunctionalTestCase
         $input = 'test form ä#!_-01';
         $expected = 'testformae_-01';
         self::assertSame($expected, $subjectMock->_call('convertFormNameToIdentifier', $input));
+    }
+
+    #[Test]
+    public function beforeFormIsCreatedEventIsTriggered(): void
+    {
+        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
+        $GLOBALS['BE_USER']->user = ['admin' => true];
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file_storage.csv');
+
+        /** @var Container $container */
+        $container = $this->get('service_container');
+
+        $state = [
+            'before-form-create-listener' => null,
+        ];
+
+        // Dummy listeners that just record that the event existed.
+        $container->set(
+            'before-form-create-listener',
+            static function (BeforeFormIsCreatedEvent $event) use (&$state) {
+                $event->formPersistenceIdentifier = '1:/form_definitions/new_form.form.yaml';
+                $event->form['label'] = 'bar';
+                $state['before-form-create-listener'] = $event;
+            }
+        );
+
+        $eventListener = $this->get(ListenerProvider::class);
+        $eventListener->addListener(BeforeFormIsCreatedEvent::class, 'before-form-create-listener');
+
+        $serverRequest = (new ServerRequest('https://example.com', 'POST'))
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $parsedBody = [
+            'formName' => 'test',
+            'templatePath' => 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/BlankForm.yaml',
+            'prototypeName' => 'standard',
+            'savePath' => '1:/form_definitions/',
+        ];
+        $serverRequest = $serverRequest->withParsedBody($parsedBody);
+        $request = (new Request($serverRequest))
+            ->withControllerExtensionName(FormManagerController::class)
+            ->withControllerName('FormManagerController')
+            ->withArguments($parsedBody)
+            ->withControllerActionName('create');
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $subject = $this->get(FormManagerController::class);
+        $subject->processRequest($request);
+
+        self::assertInstanceOf(BeforeFormIsCreatedEvent::class, $state['before-form-create-listener']);
+        self::assertEquals('1:/form_definitions/new_form.form.yaml', $state['before-form-create-listener']->formPersistenceIdentifier);
+        self::assertEquals('bar', $state['before-form-create-listener']->form['label']);
     }
 }
