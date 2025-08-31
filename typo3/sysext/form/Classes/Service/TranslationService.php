@@ -340,7 +340,14 @@ class TranslationService implements SingletonInterface
                 $optionLabel = $this->isEmptyTranslatedValue($translatedValue) ? $optionLabel : $translatedValue;
             }
             $translatedValue = $defaultValue;
-        } elseif ($property === 'fluidAdditionalAttributes' && is_array($defaultValue)) {
+        } elseif ($property === 'fluidAdditionalAttributes') {
+            // "fluidAdditionalAttributes" is a globally available property and is used across all built-in
+            // form templates. However, it's not necessarily defined in the form configuration. This can lead to
+            // an empty string as default value, which is invalid. This check makes sure that an array is returned
+            // even if the property is not defined.
+            if (!is_array($defaultValue)) {
+                $defaultValue = [];
+            }
             foreach ($defaultValue as $propertyName => &$propertyValue) {
                 $translationKeyChain = [];
                 foreach ($translationFiles as $translationFile) {
