@@ -25,7 +25,7 @@ now expands the record's values for most common field types (known
 from the TCA Schema) from their raw database value into "rich-flavored" values,
 which might be :php-short:`\TYPO3\CMS\Core\Domain\Record`,
 :php-short:`\TYPO3\CMS\Core\Resource\FileReference`,
-:php:`\TYPO3\CMS\Core\Resource Folder` or :php:`\DateTimeImmutable` objects.
+:php:`\TYPO3\CMS\Core\Resource\Folder` or :php:`\DateTimeImmutable` objects.
 
 This works for the following "relation" TCA types:
 
