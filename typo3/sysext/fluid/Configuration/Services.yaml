@@ -29,4 +29,11 @@ services:
   TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\RemoveCommentsTemplateProcessor:
     public: true
     shared: false
+  TYPO3Fluid\Fluid\Core\ViewHelper\StrictArgumentProcessor:
+    public: false
+    shared: true
 
+  # Use StrictArgumentProcessor as default
+  TYPO3Fluid\Fluid\Core\ViewHelper\ArgumentProcessorInterface:
+    alias: TYPO3Fluid\Fluid\Core\ViewHelper\StrictArgumentProcessor
+    public: true

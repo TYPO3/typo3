@@ -26,6 +26,7 @@ use TYPO3Fluid\Fluid\Core\Parser\Configuration;
 use TYPO3Fluid\Fluid\Core\Parser\InterceptorInterface;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateParser;
 use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ArgumentProcessorInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInvoker;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
@@ -50,11 +51,13 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
         array $templateProcessors,
         array $expressionNodeTypes,
         TemplatePaths $templatePaths,
+        ArgumentProcessorInterface $argumentProcessor
     ) {
         // Partially cloning parent::__construct() but with custom implementations.
         $this->setTemplateParser(new TemplateParser());
         $this->setTemplateCompiler(new TemplateCompiler());
         $this->setViewHelperInvoker(new ViewHelperInvoker());
+        $this->setArgumentProcessor($argumentProcessor);
         $this->setViewHelperVariableContainer(new ViewHelperVariableContainer());
         $this->setVariableProvider(new StandardVariableProvider());
         $this->setTemplateProcessors($templateProcessors);

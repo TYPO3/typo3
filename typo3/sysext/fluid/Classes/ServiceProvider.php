@@ -24,6 +24,8 @@ use TYPO3\CMS\Core\SystemResource\Identifier\SystemResourceIdentifierFactory;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ArgumentProcessorInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\StrictArgumentProcessor;
 
 /**
  * @internal
@@ -55,6 +57,7 @@ class ServiceProvider extends AbstractServiceProvider
             ViewFactoryInterface::class => self::provideFallbackViewFactory(...),
             ViewHelpers\ResourceViewHelper::class => self::provideFallbackResourceViewHelper(...),
             ViewHelpers\Uri\ResourceViewHelper::class => self::provideFallbackResourceUriViewHelper(...),
+            ArgumentProcessorInterface::class => self::provideFallbackArgumentProcessor(...),
         ] + parent::getExtensions();
     }
 
@@ -64,6 +67,7 @@ class ServiceProvider extends AbstractServiceProvider
             $container,
             $container->get(CacheManager::class),
             $container->get(Core\ViewHelper\ViewHelperResolverFactoryInterface::class),
+            $container->get(ArgumentProcessorInterface::class),
         ]);
     }
 
@@ -109,5 +113,13 @@ class ServiceProvider extends AbstractServiceProvider
         return $resourceViewHelper ?? new ViewHelpers\ResourceViewHelper(
             $container->get(SystemResourceFactory::class),
         );
+    }
+
+    public static function provideFallbackArgumentProcessor(
+        ContainerInterface $container,
+        ?ArgumentProcessorInterface $argumentProcessor = null
+    ): ArgumentProcessorInterface {
+        // Provide the default argument processor for the install tool when $argumentProcessor is null (that means when we run without symfony DI)
+        return $argumentProcessor ?? new StrictArgumentProcessor();
     }
 }

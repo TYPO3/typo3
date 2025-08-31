@@ -109,17 +109,17 @@ final class ImageConvertGMViewHelperTest extends FunctionalTestCase
         // non-web format
         yield 'eps to default' => [
             'template' => '<f:image src="fileadmin/file.eps" width="80" alt="eps-to-default" />',
-            'contentMatchRegExp' => '<img alt="eps-to-default" src="fileadmin/file.eps" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="eps-to-default" src="fileadmin/file.eps" />',
             'message' => 'File extension is "eps" for "eps" (unprocessed/original/non-web-format)',
         ];
         yield 'fax to default' => [
             'template' => '<f:image src="fileadmin/file.fax" width="80" alt="fax-to-default" />',
-            'contentMatchRegExp' => '<img alt="fax-to-default" src="fileadmin/file.fax" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="fax-to-default" src="fileadmin/file.fax" />',
             'message' => 'File extension is "fax" for "fax" (unprocessed/original/non-web-format)',
         ];
         yield 'ps to default' => [
             'template' => '<f:image src="fileadmin/file.ps" width="80" alt="ps-to-default" />',
-            'contentMatchRegExp' => '<img alt="ps-to-default" src="fileadmin/file.ps" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="ps-to-default" src="fileadmin/file.ps" />',
             'message' => 'File extension is "ps" for "ps" (unprocessed/original/non-web-format)',
         ];
         // pass-through format
@@ -131,17 +131,17 @@ final class ImageConvertGMViewHelperTest extends FunctionalTestCase
         // invalid
         yield 'avi to default' => [
             'template' => '<f:image src="fileadmin/invalid-file.avi" width="80" alt="avi-to-default" />',
-            'contentMatchRegExp' => '<img alt="avi-to-default" src="fileadmin/invalid-file.avi" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="avi-to-default" src="fileadmin/invalid-file.avi" />',
             'message' => 'File extension is "avi" for "avi" (unprocessed/original/invalid)',
         ];
         yield 'exe to default' => [
             'template' => '<f:image src="fileadmin/invalid-file.exe" width="80" alt="exe-to-default" />',
-            'contentMatchRegExp' => '<img alt="exe-to-default" src="fileadmin/invalid-file.exe" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="exe-to-default" src="fileadmin/invalid-file.exe" />',
             'message' => 'File extension is "exe" for "exe" (unprocessed/original/invalid)',
         ];
         yield 'zip to default' => [
             'template' => '<f:image src="fileadmin/invalid-file.zip" width="80" alt="zip-to-default" />',
-            'contentMatchRegExp' => '<img alt="zip-to-default" src="fileadmin/invalid-file.zip" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="zip-to-default" src="fileadmin/invalid-file.zip" />',
             'message' => 'File extension is "zip" for "zip" (unprocessed/original/invalid)',
         ];
     }
@@ -205,17 +205,17 @@ final class ImageConvertGMViewHelperTest extends FunctionalTestCase
         // non-web-format
         yield 'eps to jpg' => [
             'template' => '<f:image src="fileadmin/file.eps" fileExtension="jpg" width="80" alt="eps-to-jpg" />',
-            'contentMatchRegExp' => '<img alt="eps-to-jpg" src="fileadmin/file.eps" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="eps-to-jpg" src="fileadmin/file.eps" />',
             'message' => 'File extension is "eps" for "eps" (unprocessed/non-web format/not-enforceable)',
         ];
         yield 'fax to jpg' => [
             'template' => '<f:image src="fileadmin/file.fax" fileExtension="jpg" width="80" alt="fax-to-jpg" />',
-            'contentMatchRegExp' => '<img alt="fax-to-jpg" src="fileadmin/file.fax" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="fax-to-jpg" src="fileadmin/file.fax" />',
             'message' => 'File extension is "fax" for "fax" (unprocessed/non-web format/not-enforceable)',
         ];
         yield 'ps to jpg' => [
             'template' => '<f:image src="fileadmin/file.ps" fileExtension="jpg" width="80" alt="ps-to-jpg" />',
-            'contentMatchRegExp' => '<img alt="ps-to-jpg" src="fileadmin/file.ps" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="ps-to-jpg" src="fileadmin/file.ps" />',
             'message' => 'File extension is "ps" for "ps" (unprocessed/non-web format/not-enforceable)',
         ];
         // pass-through-format
@@ -227,17 +227,17 @@ final class ImageConvertGMViewHelperTest extends FunctionalTestCase
         // invalid
         yield 'avi to jpg' => [
             'template' => '<f:image src="fileadmin/invalid-file.avi" fileExtension="jpg" width="80" alt="avi-to-jpg" />',
-            'contentMatchRegExp' => '<img alt="avi-to-jpg" src="fileadmin/invalid-file.avi" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="avi-to-jpg" src="fileadmin/invalid-file.avi" />',
             'message' => 'File extension is "avi" for "avi" (unprocessed/invalid/not-enforceable)',
         ];
         yield 'exe to jpg' => [
             'template' => '<f:image src="fileadmin/invalid-file.exe" fileExtension="jpg" width="80" alt="exe-to-jpg" />',
-            'contentMatchRegExp' => '<img alt="exe-to-jpg" src="fileadmin/invalid-file.exe" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="exe-to-jpg" src="fileadmin/invalid-file.exe" />',
             'message' => 'File extension is "avi" for "avi" (unprocessed/invalid/not-enforceable)',
         ];
         yield 'zip to jpg' => [
             'template' => '<f:image src="fileadmin/invalid-file.zip" fileExtension="jpg" width="80" alt="zip-to-jpg" />',
-            'contentMatchRegExp' => '<img alt="zip-to-jpg" src="fileadmin/invalid-file.zip" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="zip-to-jpg" src="fileadmin/invalid-file.zip" />',
             'message' => 'File extension is "avi" for "avi" (unprocessed/invalid/not-enforceable)',
         ];
     }
@@ -301,17 +301,17 @@ final class ImageConvertGMViewHelperTest extends FunctionalTestCase
         // non-web-format
         yield 'eps to webp' => [
             'template' => '<f:image src="fileadmin/file.eps" fileExtension="webp" width="80" alt="eps-to-webp" />',
-            'contentMatchRegExp' => '<img alt="eps-to-webp" src="fileadmin/file.eps" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="eps-to-webp" src="fileadmin/file.eps" />',
             'message' => 'File extension is "eps" for "eps" (not-processed/not-forced/non-web-format)',
         ];
         yield 'fax to webp' => [
             'template' => '<f:image src="fileadmin/file.fax" fileExtension="webp" width="80" alt="fax-to-webp" />',
-            'contentMatchRegExp' => '<img alt="fax-to-webp" src="fileadmin/file.fax" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="fax-to-webp" src="fileadmin/file.fax" />',
             'message' => 'File extension is "eps" for "eps" (not-processed/not-forced/non-web-format)',
         ];
         yield 'ps to webp' => [
             'template' => '<f:image src="fileadmin/file.ps" fileExtension="webp" width="80" alt="ps-to-webp" />',
-            'contentMatchRegExp' => '<img alt="ps-to-webp" src="fileadmin/file.ps" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="ps-to-webp" src="fileadmin/file.ps" />',
             'message' => 'File extension is "eps" for "eps" (not-processed/not-forced/non-web-format)',
         ];
         // pass-through-format
@@ -323,17 +323,17 @@ final class ImageConvertGMViewHelperTest extends FunctionalTestCase
         // invalid
         yield 'avi to webp' => [
             'template' => '<f:image src="fileadmin/invalid-file.avi" fileExtension="webp" width="80" alt="avi-to-webp" />',
-            'contentMatchRegExp' => '<img alt="avi-to-webp" src="fileadmin/invalid-file.avi" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="avi-to-webp" src="fileadmin/invalid-file.avi" />',
             'message' => 'File extension is "avi" for "avi" (not-processed/not-forced/invalid)',
         ];
         yield 'exe to webp' => [
             'template' => '<f:image src="fileadmin/invalid-file.exe" fileExtension="webp" width="80" alt="exe-to-webp" />',
-            'contentMatchRegExp' => '<img alt="exe-to-webp" src="fileadmin/invalid-file.exe" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="exe-to-webp" src="fileadmin/invalid-file.exe" />',
             'message' => 'File extension is "exe" for "exe" (not-processed/not-forced/invalid)',
         ];
         yield 'zip to webp' => [
             'template' => '<f:image src="fileadmin/invalid-file.zip" fileExtension="webp" width="80" alt="zip-to-webp" />',
-            'contentMatchRegExp' => '<img alt="zip-to-webp" src="fileadmin/invalid-file.zip" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="zip-to-webp" src="fileadmin/invalid-file.zip" />',
             'message' => 'File extension is "zip" for "zip" (not-processed/not-forced/invalid)',
         ];
     }
@@ -399,17 +399,17 @@ final class ImageConvertGMViewHelperTest extends FunctionalTestCase
         // non-web-format
         yield 'eps to avif' => [
             'template' => '<f:image src="fileadmin/file.eps" fileExtension="avif" width="80" alt="eps-to-avif" />',
-            'contentMatchRegExp' => '<img alt="eps-to-avif" src="fileadmin/file.eps" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="eps-to-avif" src="fileadmin/file.eps" />',
             'message' => 'File extension is "eps" for "eps" (not-processed/not-forced/non-web-format)',
         ];
         yield 'fax to avif' => [
             'template' => '<f:image src="fileadmin/file.fax" fileExtension="avif" width="80" alt="fax-to-avif" />',
-            'contentMatchRegExp' => '<img alt="fax-to-avif" src="fileadmin/file.fax" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="fax-to-avif" src="fileadmin/file.fax" />',
             'message' => 'File extension is "fax" for "fax" (not-processed/not-forced/non-web-format)',
         ];
         yield 'ps to avif' => [
             'template' => '<f:image src="fileadmin/file.ps" fileExtension="avif" width="80" alt="ps-to-avif" />',
-            'contentMatchRegExp' => '<img alt="ps-to-avif" src="fileadmin/file.ps" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="ps-to-avif" src="fileadmin/file.ps" />',
             'message' => 'File extension is "fax" for "fax" (not-processed/not-forced/non-web-format)',
         ];
         // pass-through-format (GM does not support writing AVIF)
@@ -421,17 +421,17 @@ final class ImageConvertGMViewHelperTest extends FunctionalTestCase
         // invalid
         yield 'avi to avif' => [
             'template' => '<f:image src="fileadmin/invalid-file.avi" fileExtension="avif" width="80" alt="avi-to-avif" />',
-            'contentMatchRegExp' => '<img alt="avi-to-avif" src="fileadmin/invalid-file.avi" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="avi-to-avif" src="fileadmin/invalid-file.avi" />',
             'message' => 'File extension is "avi" for "avi" (not-processed/not-forced/invalid)',
         ];
         yield 'exe to avif' => [
             'template' => '<f:image src="fileadmin/invalid-file.exe" fileExtension="avif" width="80" alt="exe-to-avif" />',
-            'contentMatchRegExp' => '<img alt="exe-to-avif" src="fileadmin/invalid-file.exe" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="exe-to-avif" src="fileadmin/invalid-file.exe" />',
             'message' => 'File extension is "exe" for "exe" (not-processed/not-forced/invalid)',
         ];
         yield 'zip to avif' => [
             'template' => '<f:image src="fileadmin/invalid-file.zip" fileExtension="avif" width="80" alt="zip-to-avif" />',
-            'contentMatchRegExp' => '<img alt="zip-to-avif" src="fileadmin/invalid-file.zip" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="zip-to-avif" src="fileadmin/invalid-file.zip" />',
             'message' => 'File extension is "zip" for "zip" (not-processed/not-forced/invalid)',
         ];
     }
@@ -497,17 +497,17 @@ final class ImageConvertGMViewHelperTest extends FunctionalTestCase
         // non-web-format
         yield 'eps to tif' => [
             'template' => '<f:image src="fileadmin/file.eps" fileExtension="tif" width="80" alt="eps-to-tif" />',
-            'contentMatchRegExp' => '<img alt="eps-to-tif" src="fileadmin/file.eps" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="eps-to-tif" src="fileadmin/file.eps" />',
             'message' => 'File extension is "eps" for "eps" (not-processed/not-forced/non-web-format)',
         ];
         yield 'fax to tif' => [
             'template' => '<f:image src="fileadmin/file.fax" fileExtension="tif" width="80" alt="fax-to-tif" />',
-            'contentMatchRegExp' => '<img alt="fax-to-tif" src="fileadmin/file.fax" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="fax-to-tif" src="fileadmin/file.fax" />',
             'message' => 'File extension is "fax" for "fax" (not-processed/not-forced/non-web-format)',
         ];
         yield 'ps to tif' => [
             'template' => '<f:image src="fileadmin/file.ps" fileExtension="tif" width="80" alt="ps-to-tif" />',
-            'contentMatchRegExp' => '<img alt="ps-to-tif" src="fileadmin/file.ps" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="ps-to-tif" src="fileadmin/file.ps" />',
             'message' => 'File extension is "ps" for "ps" (not-processed/not-forced/non-web-format)',
         ];
         // pass-through-format
@@ -519,17 +519,17 @@ final class ImageConvertGMViewHelperTest extends FunctionalTestCase
         // invalid
         yield 'avi to tif' => [
             'template' => '<f:image src="fileadmin/invalid-file.avi" fileExtension="tif" width="80" alt="avi-to-tif" />',
-            'contentMatchRegExp' => '<img alt="avi-to-tif" src="fileadmin/invalid-file.avi" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="avi-to-tif" src="fileadmin/invalid-file.avi" />',
             'message' => 'File extension is "avi" for "avi" (not-processed/not-forced/invalid)',
         ];
         yield 'exe to tif' => [
             'template' => '<f:image src="fileadmin/invalid-file.exe" fileExtension="tif" width="80" alt="exe-to-tif" />',
-            'contentMatchRegExp' => '<img alt="exe-to-tif" src="fileadmin/invalid-file.exe" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="exe-to-tif" src="fileadmin/invalid-file.exe" />',
             'message' => 'File extension is "exe" for "exe" (not-processed/not-forced/invalid)',
         ];
         yield 'zip to tif' => [
             'template' => '<f:image src="fileadmin/invalid-file.zip" fileExtension="tif" width="80" alt="zip-to-tif" />',
-            'contentMatchRegExp' => '<img alt="zip-to-tif" src="fileadmin/invalid-file.zip" width="" height="" />',
+            'contentMatchRegExp' => '<img alt="zip-to-tif" src="fileadmin/invalid-file.zip" />',
             'message' => 'File extension is "zip" for "zip" (not-processed/not-forced/invalid)',
         ];
     }

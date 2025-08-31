@@ -29,6 +29,7 @@ use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\NamespaceDetectionTemplatePro
 use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\PassthroughSourceModifierTemplateProcessor;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\RemoveCommentsTemplateProcessor;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessorInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ArgumentProcessorInterface;
 
 /**
  * Factory class registered in ServiceProvider to create a RenderingContext.
@@ -55,6 +56,7 @@ final readonly class RenderingContextFactory
         private ContainerInterface $container,
         private CacheManager $cacheManager,
         private ViewHelperResolverFactoryInterface $viewHelperResolverFactory,
+        private ArgumentProcessorInterface $argumentProcessor,
     ) {}
 
     public function create(array $templatePathsArray = [], ?ServerRequestInterface $request = null): RenderingContext
@@ -99,7 +101,8 @@ final readonly class RenderingContextFactory
             $cache,
             $processors,
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['expressionNodeTypes'],
-            $templatePaths
+            $templatePaths,
+            $this->argumentProcessor,
         );
         if ($request) {
             $renderingContext->setAttribute(ServerRequestInterface::class, $request);

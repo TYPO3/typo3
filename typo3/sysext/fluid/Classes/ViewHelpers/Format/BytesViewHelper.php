@@ -42,7 +42,7 @@ final class BytesViewHelper extends AbstractViewHelper
 
     public function initializeArguments(): void
     {
-        $this->registerArgument('value', 'int', 'The incoming data to convert, or NULL if VH children should be used');
+        $this->registerArgument('value', 'int|float|string', 'The incoming data to convert, or NULL if VH children should be used');
         $this->registerArgument('decimals', 'int', 'The number of digits after the decimal point', false, 0);
         $this->registerArgument('decimalSeparator', 'string', 'The decimal point character', false, '.');
         $this->registerArgument('thousandsSeparator', 'string', 'The character for grouping the thousand digits', false, ',');
