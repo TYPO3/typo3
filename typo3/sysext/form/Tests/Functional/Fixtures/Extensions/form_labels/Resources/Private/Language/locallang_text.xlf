@@ -24,6 +24,10 @@
                 <source>form-element-identifier nextButtonLabel EN</source>
             </trans-unit>
 
+            <trans-unit id="form-runtime-identifier.element.form-element-identifier.properties.aria-label" xml:space="preserve">
+                <source>form-element-identifier ARIA-LABEL EN</source>
+            </trans-unit>
+
             <trans-unit id="form-runtime-identifier.element.options-form-element-identifier.properties.options.optionValue1" xml:space="preserve">
                 <source>options-form-element-identifier option 1 EN</source>
             </trans-unit>

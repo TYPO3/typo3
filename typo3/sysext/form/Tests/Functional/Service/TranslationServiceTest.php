@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\Service;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -187,6 +188,56 @@ final class TranslationServiceTest extends FunctionalTestCase
             ],
         ];
         self::assertEquals($expected, $this->subject->translateValuesRecursive($input, $xlfPaths));
+    }
+
+    public static function translateFormElementValueTranslatesFluidAdditionalAttributesDataProvider(): array
+    {
+        return [
+            [null, []],
+            [[], []],
+            ['foo', []],
+            [['foo' => 'bar'], ['foo' => 'bar']],
+            [['aria-label' => 'some label'], ['aria-label' => 'form-element-identifier ARIA-LABEL EN']],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('translateFormElementValueTranslatesFluidAdditionalAttributesDataProvider')]
+    public function translateFormElementValueTranslatesFluidAdditionalAttributes(mixed $fluidAdditionalAttributes, array $expected): void
+    {
+        $formRuntimeXlfPaths = ['EXT:form_labels/Resources/Private/Language/locallang_form.xlf'];
+        $textElementXlfPaths = ['EXT:form_labels/Resources/Private/Language/locallang_text.xlf'];
+
+        $formRuntimeIdentifier = 'form-runtime-identifier';
+        $formElementIdentifier = 'form-element-identifier';
+
+        $formRuntimeRenderingOptions = [
+            'translation' => [
+                'translationFiles' => $formRuntimeXlfPaths,
+                'translatePropertyValueIfEmpty' => true,
+            ],
+        ];
+
+        $formElementRenderingOptions = [
+            'translation' => [
+                'translationFiles' => $textElementXlfPaths,
+                'translatePropertyValueIfEmpty' => true,
+            ],
+        ];
+
+        $formElement = new GenericFormElement($formElementIdentifier, 'Text');
+        $formElement->setOptions([
+            'renderingOptions' => $formElementRenderingOptions,
+            'properties' => [
+                'fluidAdditionalAttributes' => $fluidAdditionalAttributes,
+            ],
+        ]);
+
+        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+
+        self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['fluidAdditionalAttributes'], $mockFormRuntime));
     }
 
     #[Test]
