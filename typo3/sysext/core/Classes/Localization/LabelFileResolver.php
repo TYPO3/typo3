@@ -42,6 +42,14 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 #[Autoconfigure(public: true)]
 readonly class LabelFileResolver
 {
+    /**
+     * Directories, relative to a package path, which are scanned for label files
+     */
+    public const array LABEL_DIRECTORIES = [
+        'Resources/Private/Language/',
+        'Configuration/Sets/',
+    ];
+
     public function __construct(
         protected PackageManager $packageManager,
         protected TranslationDomainResolver $translationDomainResolver,
@@ -59,13 +67,9 @@ readonly class LabelFileResolver
         } catch (UnknownPackageException) {
             throw new \InvalidArgumentException(sprintf('Package with key "%s" not found', $packageKey), 1760479988);
         }
-        $directoriesToSearch = [
-            'Resources/Private/Language/',
-            'Configuration/Sets/',
-        ];
         $allowedFileExtensions = $this->getSupportedExtensions();
         $allowedFileExtensions = implode(',', $allowedFileExtensions);
-        foreach ($directoriesToSearch as $searchPath) {
+        foreach (self::LABEL_DIRECTORIES as $searchPath) {
             $searchPath = $packagePath . $searchPath;
             $files = GeneralUtility::getAllFilesAndFoldersInPath([], $searchPath, $allowedFileExtensions);
             foreach ($files as $file) {

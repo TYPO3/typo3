@@ -116,14 +116,15 @@ readonly class LanguagePackService
         $extensions = [];
         foreach ($activePackages as $package) {
             $path = $package->getPackagePath();
-            $finder = new Finder();
-            try {
-                $files = $finder->files()->ignoreUnreadableDirs()->in($path . 'Resources/Private/Language/')->name('*.xlf');
-                if (!$files->hasResults()) {
-                    continue;
-                }
-            } catch (\InvalidArgumentException $e) {
-                // Dir does not exist
+            $labelDirectories = array_filter(
+                array_map(static fn(string $directory): string => $path . $directory, LabelFileResolver::LABEL_DIRECTORIES),
+                is_dir(...)
+            );
+            if ($labelDirectories === []) {
+                continue;
+            }
+            $files = new Finder()->files()->ignoreUnreadableDirs()->in($labelDirectories)->name('*.xlf');
+            if (!$files->hasResults()) {
                 continue;
             }
             $key = $package->getPackageKey();

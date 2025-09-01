@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.0" version="1.0">
+  <file source-language="en" datatype="plaintext" original="EXT:test_set_labels_only/Configuration/Sets/SetLabelsOnly/labels.xlf" date="2026-10-02T00:00:00Z" product-name="test_set_labels_only">
+    <header/>
+    <body>
+      <trans-unit id="label" resname="label">
+        <source>Test Set Fixture Labels Only</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
