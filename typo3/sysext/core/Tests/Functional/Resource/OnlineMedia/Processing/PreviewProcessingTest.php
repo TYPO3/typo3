@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\YouTubeHelper;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Processing\PreviewProcessing;
 use TYPO3\CMS\Core\Resource\Processing\AbstractTask;
-use TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -70,12 +69,13 @@ final class PreviewProcessingTest extends FunctionalTestCase
         $subject = new PreviewProcessing(
             $onlineMediaHelperRegistry,
             $container->get(EventDispatcherInterface::class),
-            $this->createMock(LocalImageProcessor::class)
         );
 
         $file = new File(['name' => 'MyVideo'], $this->createMock(ResourceStorage::class), []);
         $taskMock = $this->createMock(AbstractTask::class);
         $taskMock->method('getSourceFile')->willReturn($file);
+        $taskMock->method('getName')->willReturn('Preview');
+        $taskMock->method('getConfiguration')->willReturn(['width' => 150, 'height' => 150]);
 
         $subject->processTask($taskMock);
 
@@ -83,7 +83,6 @@ final class PreviewProcessingTest extends FunctionalTestCase
         self::assertEquals($initialPreviewImageFilename, $oldPreviewImageFilename);
         self::assertEquals($file, $afterVideoPreviewFetchedEvent->getFile());
         self::assertEquals($onlineMediaId, $afterVideoPreviewFetchedEvent->getOnlineMediaId());
-        self::assertEquals($newPreviewImageFilename, $afterVideoPreviewFetchedEvent->getPreviewImageFilename());
         self::assertEquals($newPreviewImageFilename, $afterVideoPreviewFetchedEvent->getPreviewImageFilename());
     }
 }

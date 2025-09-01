@@ -28,12 +28,11 @@ use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
  * Preview of Online Media item Processing
  */
 #[Autoconfigure(public: true)]
-final class PreviewProcessing implements ProcessorInterface
+final class PreviewProcessing extends LocalImageProcessor implements ProcessorInterface
 {
     public function __construct(
         protected readonly OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
         protected readonly EventDispatcherInterface $eventDispatcher,
-        protected readonly LocalImageProcessor $localImageProcessor,
     ) {}
 
     public function canProcessTask(TaskInterface $task): bool
@@ -54,7 +53,7 @@ final class PreviewProcessing implements ProcessorInterface
 
     public function processTask(TaskInterface $task): void
     {
-        $this->localImageProcessor->processTaskWithLocalFile(
+        $this->processTaskWithLocalFile(
             $task,
             $this->getPreviewImageFromOnlineMedia($task->getSourceFile())
         );

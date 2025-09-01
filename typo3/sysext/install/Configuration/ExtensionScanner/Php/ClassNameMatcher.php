@@ -2599,4 +2599,14 @@ return [
             'Breaking-107310-RemoveFreezableBackendInterface.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Resource\Processing\LocalCropScaleMaskHelper' => [
+        'restFiles' => [
+            'Breaking-107403-RemoveLocalPreviewHelperAndLocalCropScaleMaskHelper.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper' => [
+        'restFiles' => [
+            'Breaking-107403-RemoveLocalPreviewHelperAndLocalCropScaleMaskHelper.rst',
+        ],
+    ],
 ];
