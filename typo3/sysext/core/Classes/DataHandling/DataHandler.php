@@ -3425,7 +3425,7 @@ class DataHandler
                     }
                     foreach ($hookObjectsArr as $hookObj) {
                         if (method_exists($hookObj, 'processCmdmap_postProcess')) {
-                            $hookObj->processCmdmap_postProcess((string)$command, (string)$table, (int)$id, $value, $this, $pasteUpdate, $pasteDatamap);
+                            $hookObj->processCmdmap_postProcess($command, $table, $id, $value, $this, $pasteUpdate, $pasteDatamap);
                         }
                     }
                     // Merging the copy-array info together for remapping purposes.
