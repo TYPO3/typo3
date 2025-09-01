@@ -75,7 +75,7 @@
 		"typo3/cms-cli": "^3.1.1",
 		"typo3/cms-composer-installers": "^5.0.1",
 		"typo3/html-sanitizer": "^2.2.0",
-		"typo3fluid/fluid": "^4.4.2"
+		"typo3fluid/fluid": "^4.4.3"
 	},
 	"suggest": {
 		"ext-apcu": "Needed when non-default APCU based cache backends are used",
