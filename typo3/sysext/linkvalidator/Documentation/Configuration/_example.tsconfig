@@ -12,8 +12,10 @@ mod.linkvalidator {
     replytoemail =
     subject = TYPO3 LinkValidator report
   }
-  external {
-    httpAgentUrl = https://example.org/info.html
-    httpAgentEmail = info@example.org
+  linktypesConfig {
+    external {
+      httpAgentUrl = https://example.org/info.html
+      httpAgentEmail = info@example.org
+    }
   }
 }
