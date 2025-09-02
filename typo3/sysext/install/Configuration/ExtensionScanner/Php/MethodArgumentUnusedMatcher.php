@@ -35,4 +35,9 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    /** Note (leave this at the bottom):
+     *  The FQCN object definitions here are not actually checked, only
+     *  the method name itself. That means, never list generic method names
+     *  in this scanner definition.
+     */
 ];

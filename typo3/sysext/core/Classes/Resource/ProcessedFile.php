@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource;
 
-use TYPO3\CMS\Core\Resource\Processing\TaskTypeRegistry;
 use TYPO3\CMS\Core\Resource\Service\ConfigurationService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -65,9 +64,6 @@ class ProcessedFile extends AbstractFile
      */
     protected string $taskType;
 
-    protected ?Processing\TaskInterface $task = null;
-    protected Processing\TaskTypeRegistry $taskTypeRegistry;
-
     /**
      * Processing configuration
      */
@@ -113,7 +109,6 @@ class ProcessedFile extends AbstractFile
         if (is_array($databaseRow)) {
             $this->reconstituteFromDatabaseRecord($databaseRow);
         }
-        $this->taskTypeRegistry = GeneralUtility::makeInstance(TaskTypeRegistry::class);
     }
 
     /**
@@ -134,18 +129,6 @@ class ProcessedFile extends AbstractFile
         if (!empty($databaseRow['storage']) && (int)$this->storage->getUid() !== (int)$databaseRow['storage']) {
             $this->storage = GeneralUtility::makeInstance(StorageRepository::class)->findByUid($databaseRow['storage']);
         }
-    }
-
-    /********************************
-     * VARIOUS FILE PROPERTY GETTERS
-     ********************************/
-
-    /**
-     * Returns a unique checksum for this file's processing configuration and original file.
-     */
-    protected function calculateChecksum(): string
-    {
-        return $this->getTask()->getConfigurationChecksum();
     }
 
     /*******************
@@ -362,7 +345,6 @@ class ProcessedFile extends AbstractFile
 
         return array_merge($properties, [
             'storage' => $this->getStorage()->getUid(),
-            'checksum' => $this->calculateChecksum(),
             'task_type' => $this->taskType,
             'configurationsha1' => sha1($properties['configuration']),
             'original' => $this->originalFile->getUid(),
@@ -489,11 +471,6 @@ class ProcessedFile extends AbstractFile
             $fileMustBeRecreated = true;
         }
 
-        // hash does not match
-        if (array_key_exists('checksum', $this->properties) && $this->calculateChecksum() !== $this->properties['checksum']) {
-            $fileMustBeRecreated = true;
-        }
-
         // original file changed
         if ($this->originalFile->getSha1() !== $this->originalFileSha1) {
             $fileMustBeRecreated = true;
@@ -524,30 +501,6 @@ class ProcessedFile extends AbstractFile
     public function getTaskIdentifier(): string
     {
         return $this->taskType;
-    }
-
-    /**
-     * Returns the task object associated with this processed file.
-     */
-    public function getTask(): Processing\TaskInterface
-    {
-        if ($this->task === null) {
-            $this->task = $this->taskTypeRegistry->getTaskForType($this->taskType, $this, $this->processingConfiguration);
-        }
-
-        return $this->task;
-    }
-
-    /**
-     * Generate the name of the new File
-     */
-    public function generateProcessedFileNameWithoutExtension(): string
-    {
-        $name = $this->originalFile->getNameWithoutExtension();
-        $name .= '_' . $this->originalFile->getUid();
-        $name .= '_' . $this->calculateChecksum();
-
-        return $name;
     }
 
     /**

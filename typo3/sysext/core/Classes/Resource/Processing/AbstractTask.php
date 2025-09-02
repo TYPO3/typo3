@@ -149,7 +149,19 @@ abstract class AbstractTask implements TaskInterface
         if (!$processedFile->isProcessed()) {
             return true;
         }
-        return $processedFile->isNew() || (!$processedFile->usesOriginalFile() && !$processedFile->exists()) || $processedFile->isOutdated();
+
+        $checksum = $this->getTargetFile()->getProperty('checksum');
+        $checksumCalculationOk = !$checksum || $this->getConfigurationChecksum() === $checksum;
+
+        $fileNeedsReprocessing = $processedFile->isNew()
+            || (!$processedFile->usesOriginalFile() && !$processedFile->exists())
+            || ($processedFile->needsReprocessing() || !$checksumCalculationOk);
+
+        if ($fileNeedsReprocessing && $this->getTargetFile()->exists()) {
+            $this->getTargetFile()->delete();
+        }
+
+        return $fileNeedsReprocessing;
     }
 
     /**

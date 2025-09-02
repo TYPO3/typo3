@@ -124,15 +124,17 @@ class ProcessedFileRepository implements LoggerAwareInterface, SingletonInterfac
     /**
      * Adds a processed file object to the database.
      */
-    public function add(ProcessedFile $processedFile): void
+    public function add(ProcessedFile $processedFile, TaskInterface $task): void
     {
         if ($processedFile->isPersisted()) {
-            $this->update($processedFile);
+            $this->update($processedFile, $task);
         } else {
             $currentTimestamp = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
             $insertFields = $processedFile->toArray();
             $insertFields['crdate'] = $currentTimestamp;
             $insertFields['tstamp'] = $currentTimestamp;
+            $insertFields['checksum'] = $task->getConfigurationChecksum();
+
             $insertFields = $this->cleanUnavailableColumns($insertFields);
 
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file_processedfile');
@@ -151,13 +153,16 @@ class ProcessedFileRepository implements LoggerAwareInterface, SingletonInterfac
      * Updates an existing file object in the database. If the file has not been
      * persisted yet, nothing changes.
      */
-    public function update(ProcessedFile $processedFile): void
+    public function update(ProcessedFile $processedFile, TaskInterface $task): void
     {
         if ($processedFile->isPersisted()) {
-            $uid = (int)$processedFile->getUid();
-            $updateFields = $this->cleanUnavailableColumns($processedFile->toArray());
+            $uid = $processedFile->getUid();
+            $updateFields = $processedFile->toArray();
+            $updateFields['checksum'] = $task->getConfigurationChecksum();
+            $updateFields = $this->cleanUnavailableColumns($updateFields);
             unset($updateFields['uid']);
-            $updateFields['tstamp'] = time();
+            $currentTimestamp = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
+            $updateFields['tstamp'] = $currentTimestamp;
 
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file_processedfile');
             $connection->update(
@@ -290,14 +295,9 @@ class ProcessedFileRepository implements LoggerAwareInterface, SingletonInterfac
     /**
      * Creates a ProcessedFile object from a file object and a processing configuration.
      */
-    protected function createNewProcessedFileObject(FileInterface $originalFile, string $taskType, array $configuration): ProcessedFile
+    protected function createNewProcessedFileObject(File $originalFile, string $taskType, array $configuration): ProcessedFile
     {
-        return GeneralUtility::makeInstance(
-            ProcessedFile::class,
-            $originalFile,
-            $taskType,
-            $configuration
-        );
+        return new ProcessedFile($originalFile, $taskType, $configuration);
     }
 
     protected function createDomainObject(array $databaseRow): ProcessedFile
@@ -315,13 +315,7 @@ class ProcessedFileRepository implements LoggerAwareInterface, SingletonInterfac
             ]
         );
 
-        return GeneralUtility::makeInstance(
-            ProcessedFile::class,
-            $originalFile,
-            $taskType,
-            $configuration,
-            $databaseRow
-        );
+        return new ProcessedFile($originalFile, $taskType, $configuration, $databaseRow);
     }
 
     /**
@@ -344,18 +338,16 @@ class ProcessedFileRepository implements LoggerAwareInterface, SingletonInterfac
      * We need a task object, so the task can define what configuration is necessary. This way, we can then
      * use a cleaned up configuration to find already processed files.
      *
-     * The method sanitizeConfiguration should then be part of the TaskInterface later-on.
-     *
      * Note: The Task object needs to be re-created with a real processed file, once we have one,
      * as the current API Design is very tightly coupled:
      * - TaskInterface has a constructor in the interface (which is bad)
      * - TaskObject requires a constituted ProcessedFile object in order to "work"
-     * - ProcessedFile creates a TaskObject in ProcessedFile->getTask()
-     * - ProcessedFile AND TaskObject contain both the configuration, which should be avoided as well.
+     * - Task objects are created by external services when needed for processing
+     * - ProcessedFile AND TaskObject contain both the configuration, which should be avoided as well (getting smaller now).
      *
      * @todo: This should be shifted into a TaskFactory or the TaskRegistry
      */
-    protected function prepareTaskObject(FileInterface $fileObject, string $taskType, array $configuration): TaskInterface
+    protected function prepareTaskObject(File $fileObject, string $taskType, array $configuration): TaskInterface
     {
         $temporaryProcessedFile = $this->createNewProcessedFileObject($fileObject, $taskType, $configuration);
         $taskObject = $this->taskTypeRegistry->getTaskForType($taskType, $temporaryProcessedFile, $configuration);

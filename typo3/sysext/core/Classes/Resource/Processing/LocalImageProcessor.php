@@ -301,8 +301,22 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
     protected function getFilenameForImageCropScaleMask(TaskInterface $task): string
     {
         $targetFileExtension = $task->getTargetFileExtension();
-        return Environment::getPublicPath() . '/typo3temp/' . $task->getTargetFile()->generateProcessedFileNameWithoutExtension() . '.' . ltrim(trim($targetFileExtension), '.');
+        $name = $this->generateProcessedFileNameWithoutExtension($task);
+        return Environment::getPublicPath() . '/typo3temp/' . $name . '.' . ltrim(trim($targetFileExtension), '.');
     }
+
+    /**
+     * Generate the name of the new File. Should be placed somwhere else?
+     */
+    protected function generateProcessedFileNameWithoutExtension(TaskInterface $task): string
+    {
+        return implode('_', [
+            $task->getSourceFile()->getNameWithoutExtension(),
+            $task->getSourceFile()->getUid(),
+            $task->getConfigurationChecksum(),
+        ]);
+    }
+
     /**
      * Helper for creating local image previews using TYPO3s image processing classes.
      */

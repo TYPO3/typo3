@@ -6502,4 +6502,23 @@ return [
             'Breaking-107356-UseRecordAPIInListModule.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Resource\ProcessedFile->generateProcessedFileNameWithoutExtension' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-107397-CircularDependencyBetweenProcessedFileAndTaskRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\ProcessedFile->getTask' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-107397-CircularDependencyBetweenProcessedFileAndTaskRemoved.rst',
+        ],
+    ],
+    /** Note (leave this at the bottom):
+     *  The FQCN object definitions here are not actually checked, only
+     *  the method name itself. That means, never list generic method names
+     *  in this scanner definition.
+     */
 ];

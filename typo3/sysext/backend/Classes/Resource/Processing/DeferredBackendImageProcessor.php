@@ -60,7 +60,7 @@ class DeferredBackendImageProcessor implements ProcessorInterface
             // For now, we need to persist the processed file in the repository to be able to reference its uid
             // We could instead introduce a processing queue and persist the information there
             $processedFileRepository = GeneralUtility::makeInstance(ProcessedFileRepository::class);
-            $processedFileRepository->add($processedFile);
+            $processedFileRepository->add($processedFile, $task);
         }
         $processedFile->setName($task->getTargetFileName());
         $processingUrl = (string)GeneralUtility::makeInstance(UriBuilder::class)

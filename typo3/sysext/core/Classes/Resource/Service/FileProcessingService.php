@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\Processing\ProcessorInterface;
 use TYPO3\CMS\Core\Resource\Processing\ProcessorRegistry;
 use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
+use TYPO3\CMS\Core\Resource\Processing\TaskTypeRegistry;
 
 /**
  * This is a general service for creating Processed Files a.k.a. processing a File object with a given configuration.
@@ -41,7 +42,7 @@ use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
  * This class then transforms the information of a Task through a Processor into a ProcessedFile object.
  * For this, the DB is checked if there is a ProcessedFile which has been processed or does not need
  * to be processed. If processing is required, a valid Processor is searched for to process the
- * Task object (which is retrieved from ProcessedFile->getTask()).
+ * Task object (which is created from the TaskTypeRegistry when needed for processing).
  */
 #[Autoconfigure(public: true)]
 class FileProcessingService
@@ -50,6 +51,7 @@ class FileProcessingService
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly ProcessedFileRepository $processedFileRepository,
         protected readonly ProcessorRegistry $processorRegistry,
+        protected readonly TaskTypeRegistry $taskTypeRegistry,
     ) {}
 
     public function processFile(File|FileReference $fileObject, string $taskType, DriverInterface $driver, array $configuration): ProcessedFile
@@ -65,7 +67,7 @@ class FileProcessingService
             new BeforeFileProcessingEvent($driver, $processedFile, $fileObject, $taskType, $configuration)
         );
         $processedFile = $event->getProcessedFile();
-        $task = $processedFile->getTask();
+        $task = $this->taskTypeRegistry->getTaskForType($taskType, $processedFile, $configuration);
 
         // Only handle the file if it is not processed yet
         // (maybe modified or already processed by an event)
@@ -73,7 +75,7 @@ class FileProcessingService
         if ($task->fileNeedsProcessing()) {
             $this->getProcessorByTask($task)->processTask($task);
             if ($task->isExecuted() && $task->isSuccessful() && $processedFile->isProcessed()) {
-                $this->processedFileRepository->add($processedFile);
+                $this->processedFileRepository->add($processedFile, $task);
             }
         }
 
