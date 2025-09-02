@@ -191,6 +191,17 @@ readonly class RecordFactory
 
     protected function extractComputedProperties(array &$record): ComputedProperties
     {
+        $computed = $record['_computed'] ?? null;
+        if (is_array($computed)) {
+            $computedProperties = new ComputedProperties(
+                $computed['versionedUid'] ?? null,
+                $computed['localizedUid'] ?? null,
+                $computed['requestedOverlayLanguageId'] ?? null,
+                $computed['translationSource'] ?? null
+            );
+            unset($record['_computed']);
+            return $computedProperties;
+        }
         $computedProperties = new ComputedProperties(
             $record['_ORIG_uid'] ?? null,
             $record['_LOCALIZED_UID'] ?? null,
