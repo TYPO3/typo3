@@ -478,7 +478,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertCount(1, $result);
         self::assertSame('Category 1 translated', $result[0]->get('title'));
 
-        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', array_replace($dummyRecord->toArray(), ['uid' => 381]), $context);
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray(true), $context);
         self::assertInstanceOf(LazyRecordCollection::class, $resolvedRecord->get('typo3tests_contentelementb_categories_mm'));
         self::assertCount(1, $resolvedRecord->get('typo3tests_contentelementb_categories_mm'));
         self::assertSame('Category 1 translated', $resolvedRecord->get('typo3tests_contentelementb_categories_mm')[0]->get('title'));
