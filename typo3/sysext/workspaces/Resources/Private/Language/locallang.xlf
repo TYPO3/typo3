@@ -114,6 +114,15 @@
       <trans-unit id="error.noResponse">
         <source>The server did not send any response whether the action was successful.</source>
       </trans-unit>
+      <trans-unit id="error.dispatch.title">
+        <source>Workspace action failed</source>
+      </trans-unit>
+      <trans-unit id="error.dispatch.unavailable">
+        <source>The server could not be reached or sent an unexpected response. Please try again.</source>
+      </trans-unit>
+      <trans-unit id="error.dispatch.unknown">
+        <source>The server reported an error without further details.</source>
+      </trans-unit>
       <trans-unit id="rowDetails">
         <source>Row details...</source>
       </trans-unit>

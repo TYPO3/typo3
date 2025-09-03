@@ -527,8 +527,12 @@ readonly class GridDataService
         $params->table = $combinedRecord->getLiveRecord()->getTable();
         $params->uid = $combinedRecord->getVersionRecord()->getUid();
         // @todo: Refactor. It is odd this calls the huge getRowDetails() method when only the 'diff' array section is needed.
-        $result = $this->getRowDetails($stages, $params);
-        return !empty($result['data'][0]['diff']);
+        try {
+            $result = $this->getRowDetails($stages, $params);
+            return !empty($result['data'][0]['diff']);
+        } catch (\RuntimeException $e) {
+            return false;
+        }
     }
 
     /**

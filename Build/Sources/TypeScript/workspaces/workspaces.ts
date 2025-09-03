@@ -11,13 +11,27 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
+import Notification from '@typo3/backend/notification';
 import { default as Modal, type ModalElement } from '@typo3/backend/modal';
 import { html } from 'lit';
 import labels from '~labels/workspaces.messages';
+
+/**
+ * Result of a single call of a dispatched call stack, carrying either
+ * `result` if the call succeeded, or `error` if it did not.
+ */
+interface RemoteCallResult {
+  method: string;
+  result?: unknown;
+  error?: {
+    message: string;
+    code: number;
+  };
+}
 
 export default class Workspaces {
   protected readonly ajaxRoute: string = 'workspace_dispatch';
@@ -73,18 +87,22 @@ export default class Workspaces {
     this.progressBar = document.createElement('typo3-backend-progress-bar');
     document.querySelector(progressContainer).prepend(this.progressBar);
     this.progressBar.start();
-    return (new AjaxRequest(TYPO3.settings.ajaxUrls[this.ajaxRoute])).post(
-      payload,
-      {
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8'
+    const headers = {
+      'Content-Type': 'application/json; charset=utf-8'
+    };
+    return new AjaxRequest(TYPO3.settings.ajaxUrls[this.ajaxRoute])
+      .post(payload, { headers })
+      .catch(async (reason: unknown): Promise<never> => {
+        await this.notifyRequestFailure(reason);
+        // Rejection is kept up, so that callers do not continue with a payload
+        // that carries errors instead of the results they are written for.
+        throw reason;
+      })
+      .finally(() => {
+        if (this.progressBar) {
+          this.progressBar.done();
         }
-      }
-    ).finally(() => {
-      if (this.progressBar) {
-        this.progressBar.done();
-      }
-    });
+      });
   }
 
   /**
@@ -104,5 +122,40 @@ export default class Workspaces {
       data: data,
       method: method,
     };
+  }
+
+  /**
+   * Reports a failed request to the user. The server describes failing calls in the
+   * JSON body, anything else - an unreachable server, a session timeout redirect or
+   * an error page that is no JSON at all - can only be reported in a generic way.
+   */
+  private async notifyRequestFailure(reason: unknown): Promise<void> {
+    const title = labels.get('error.dispatch.title');
+    if (!(reason instanceof AjaxResponse)) {
+      Notification.error(title, labels.get('error.dispatch.unavailable'));
+      return;
+    }
+
+    let details: unknown;
+    try {
+      details = await reason.resolve('json');
+    } catch {
+      Notification.error(title, labels.get('error.dispatch.unavailable'));
+      return;
+    }
+
+    const messages: string[] = [];
+    if (Array.isArray(details)) {
+      for (const item of details as RemoteCallResult[]) {
+        if (item?.error?.message) {
+          messages.push(item.error.message);
+        }
+      }
+    }
+    if (messages.length === 0) {
+      Notification.error(title, labels.get('error.dispatch.unknown'));
+      return;
+    }
+    messages.forEach((message: string): void => Notification.error(title, message));
   }
 }
