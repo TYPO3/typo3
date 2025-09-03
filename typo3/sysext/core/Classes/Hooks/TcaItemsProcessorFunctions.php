@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\Capability\RootLevelCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\CategoryFieldType;
 use TYPO3\CMS\Core\Schema\TcaSchema;
@@ -264,7 +265,10 @@ readonly class TcaItemsProcessorFunctions
 
             // All field names configured and not restricted to admins
             $rootLevelCapability = $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel);
-            if (!$rootLevelCapability->shallIgnoreRootLevelRestriction() && !empty($rootLevelCapability->getRootLevelType())) {
+            // Skip this table if it’s rootlevel-only and the rootlevel restriction applies
+            // (unless ignoreRootLevelRestriction is enabled).
+
+            if (!$rootLevelCapability->shallIgnoreRootLevelRestriction() && $rootLevelCapability->getRootLevelType() === RootLevelCapability::TYPE_ONLY_ON_ROOTLEVEL) {
                 continue;
             }
             if ($schema->hasCapability(TcaSchemaCapability::AccessAdminOnly)) {
