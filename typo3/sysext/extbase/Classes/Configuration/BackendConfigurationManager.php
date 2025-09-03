@@ -264,6 +264,12 @@ final readonly class BackendConfigurationManager
         if ($recursionDepth <= 0) {
             return $storagePids;
         }
+
+        $cacheIdentifier = 'storage_pids-' . sha1(implode('_', $storagePids) . '-' . $recursionDepth);
+        if ($this->runtimeCache->has($cacheIdentifier)) {
+            return $this->runtimeCache->get($cacheIdentifier);
+        }
+
         $permsClause = QueryHelper::stripLogicalOperatorPrefix(
             $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
         );
@@ -276,7 +282,11 @@ final readonly class BackendConfigurationManager
                 $this->getPageChildrenRecursive($startPid, $recursionDepth, 0, $permsClause)
             );
         }
-        return array_unique($recursiveStoragePids);
+
+        $recursiveStoragePids = array_unique($recursiveStoragePids);
+        $this->runtimeCache->set($cacheIdentifier, $recursiveStoragePids);
+
+        return $recursiveStoragePids;
     }
 
     /**
