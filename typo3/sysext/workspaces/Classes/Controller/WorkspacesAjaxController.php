@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Workspaces\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -61,65 +62,83 @@ final readonly class WorkspacesAjaxController
         private BackendViewFactory $backendViewFactory,
         private WorkspaceRepository $workspaceRepository,
         private WorkspaceStageRepository $workspaceStageRepository,
+        private LoggerInterface $logger,
     ) {}
 
     public function dispatch(ServerRequestInterface $request): ResponseInterface
     {
-        $callStack = json_decode($request->getBody()->getContents());
-        if (!is_array($callStack)) {
-            $callStack = [$callStack];
-        }
-        $results = [];
-        foreach ($callStack as $call) {
-            $result = match ($call->method) {
-                'getWorkspaceInfos' => $this->getWorkspaceInfos($call->data[0]),
-                'checkIntegrity' => $this->checkIntegrity($call->data[0]),
-                'getRowDetails' => $this->getRowDetails($call->data[0]),
-                'publishSingleRecord' => $this->publishSingleRecord((string)$call->data[0], (int)$call->data[1], (int)$call->data[2]),
-                'discardSingleRecord' => $this->discardSingleRecord((string)$call->data[0], (int)$call->data[1]),
-                'generateWorkspacePreviewLinksForAllLanguages' => $this->generateWorkspacePreviewLinksForAllLanguages((int)$call->data[0]),
-                'viewSingleRecord' => $this->viewSingleRecord((string)$call->data[0], (int)$call->data[1]),
-                'executeSelectionAction' => $this->executeSelectionAction($call->data[0]),
-                'sendToNextStageWindow' => $this->sendToNextStageWindow((int)$call->data[0], (string)$call->data[1], (int)$call->data[2]),
-                'sendToPrevStageWindow' => $this->sendToPrevStageWindow((int)$call->data[0], (string)$call->data[1]),
-                'sendToNextStageExecute' => $this->sendToNextStageExecute($call->data[0]),
-                'sendToPrevStageExecute' => $this->sendToPrevStageExecute($call->data[0]),
-                'sendToSpecificStageWindow' => $this->sendToSpecificStageWindow((int)$call->data[0]),
-                'sendToSpecificStageExecute' => $this->sendToSpecificStageExecute($call->data[0]),
-                'publishEntireWorkspace' => $this->publishEntireWorkspace($call->data[0]),
-                'discardEntireWorkspace' => $this->discardEntireWorkspace($call->data[0]),
-                default => throw new \RuntimeException('Not implemented', 1749983978),
-            };
-            $resultObject = new \stdClass();
-            $resultObject->method = $call->method;
-            $resultObject->result = $result;
-            $results[] = $resultObject;
-        }
-        return new JsonResponse($results);
+        return $this->processCallStack($request, fn(\stdClass $call): mixed => match ($call->method) {
+            'getWorkspaceInfos' => $this->getWorkspaceInfos($call->data[0]),
+            'checkIntegrity' => $this->checkIntegrity($call->data[0]),
+            'getRowDetails' => $this->getRowDetails($call->data[0]),
+            'publishSingleRecord' => $this->publishSingleRecord((string)$call->data[0], (int)$call->data[1], (int)$call->data[2]),
+            'discardSingleRecord' => $this->discardSingleRecord((string)$call->data[0], (int)$call->data[1]),
+            'generateWorkspacePreviewLinksForAllLanguages' => $this->generateWorkspacePreviewLinksForAllLanguages((int)$call->data[0]),
+            'viewSingleRecord' => $this->viewSingleRecord((string)$call->data[0], (int)$call->data[1]),
+            'executeSelectionAction' => $this->executeSelectionAction($call->data[0]),
+            'sendToNextStageWindow' => $this->sendToNextStageWindow((int)$call->data[0], (string)$call->data[1], (int)$call->data[2]),
+            'sendToPrevStageWindow' => $this->sendToPrevStageWindow((int)$call->data[0], (string)$call->data[1]),
+            'sendToNextStageExecute' => $this->sendToNextStageExecute($call->data[0]),
+            'sendToPrevStageExecute' => $this->sendToPrevStageExecute($call->data[0]),
+            'sendToSpecificStageWindow' => $this->sendToSpecificStageWindow((int)$call->data[0]),
+            'sendToSpecificStageExecute' => $this->sendToSpecificStageExecute($call->data[0]),
+            'publishEntireWorkspace' => $this->publishEntireWorkspace($call->data[0]),
+            'discardEntireWorkspace' => $this->discardEntireWorkspace($call->data[0]),
+            default => throw new \RuntimeException('Not implemented', 1749983978),
+        });
     }
 
     public function preview(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this->processCallStack($request, fn(\stdClass $call): mixed => match ($call->method) {
+            'discardStagesFromPage' => $this->discardStagesFromPage((int)$call->data[0]),
+            'sendCollectionToStage' => $this->sendCollectionToStage($call->data[0]),
+            'sendPageToNextStage' => $this->sendPageToNextStage((int)$call->data[0]),
+            'sendPageToPreviousStage' => $this->sendPageToPreviousStage((int)$call->data[0]),
+            'updateStageChangeButtons' => $this->updateStageChangeButtons((int)$call->data[0], $request),
+            default => throw new \RuntimeException('Not implemented', 1762777405),
+        });
+    }
+
+    /**
+     * Executes all calls of a client side call stack. The response is always a list with one
+     * entry per call, carrying either a 'result' or an 'error' property. A failing call does
+     * not abort the remaining ones, so results already calculated are not thrown away. As soon
+     * as one call failed, the response is sent with HTTP status 500 to signal the client that
+     * the call stack did not fully succeed.
+     *
+     * @param \Closure(\stdClass): mixed $resolveCall
+     */
+    private function processCallStack(ServerRequestInterface $request, \Closure $resolveCall): ResponseInterface
     {
         $callStack = json_decode($request->getBody()->getContents());
         if (!is_array($callStack)) {
             $callStack = [$callStack];
         }
         $results = [];
+        $failed = false;
         foreach ($callStack as $call) {
-            $result = match ($call->method) {
-                'discardStagesFromPage' => $this->discardStagesFromPage((int)$call->data[0]),
-                'sendCollectionToStage' => $this->sendCollectionToStage($call->data[0]),
-                'sendPageToNextStage' => $this->sendPageToNextStage((int)$call->data[0]),
-                'sendPageToPreviousStage' => $this->sendPageToPreviousStage((int)$call->data[0]),
-                'updateStageChangeButtons' => $this->updateStageChangeButtons((int)$call->data[0], $request),
-                default => throw new \RuntimeException('Not implemented', 1762777405),
-            };
             $resultObject = new \stdClass();
             $resultObject->method = $call->method;
-            $resultObject->result = $result;
+            try {
+                $resultObject->result = $resolveCall($call);
+            } catch (\Throwable $exception) {
+                $failed = true;
+                // The exception is handled here and never reaches the global exception handler,
+                // so it has to be logged explicitly to not silently swallow server side errors.
+                $this->logger->critical('Workspace action "{method}" failed: {message}', [
+                    'method' => $call->method,
+                    'message' => $exception->getMessage(),
+                    'exception' => $exception,
+                ]);
+                $resultObject->error = [
+                    'message' => $exception->getMessage(),
+                    'code' => $exception->getCode(),
+                ];
+            }
             $results[] = $resultObject;
         }
-        return new JsonResponse($results);
+        return new JsonResponse($results, $failed ? 500 : 200);
     }
 
     /**
