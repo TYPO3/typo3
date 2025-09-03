@@ -41,6 +41,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Form\Event\BeforeFormIsCreatedEvent;
 use TYPO3\CMS\Form\Event\BeforeFormIsDeletedEvent;
+use TYPO3\CMS\Form\Event\BeforeFormIsDuplicatedEvent;
 use TYPO3\CMS\Form\Exception as FormException;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
@@ -208,15 +209,11 @@ class FormManagerController extends ActionController
         $formToDuplicate['label'] = $formName;
         $formToDuplicate['identifier'] = $this->formPersistenceManager->getUniqueIdentifier($formSettings, $this->convertFormNameToIdentifier($formName));
         $formPersistenceIdentifier = $this->formPersistenceManager->getUniquePersistenceIdentifier($formToDuplicate['identifier'], $savePath, $formSettings);
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDuplicate'] ?? [] as $className) {
-            $hookObj = GeneralUtility::makeInstance($className);
-            if (method_exists($hookObj, 'beforeFormDuplicate')) {
-                $formToDuplicate = $hookObj->beforeFormDuplicate(
-                    $formPersistenceIdentifier,
-                    $formToDuplicate
-                );
-            }
-        }
+        $event = $this->eventDispatcher->dispatch(
+            new BeforeFormIsDuplicatedEvent($formPersistenceIdentifier, $formToDuplicate)
+        );
+        $formPersistenceIdentifier = $event->formPersistenceIdentifier;
+        $formToDuplicate = $event->form;
         $response = [
             'status' => 'success',
             'url' => $this->uriBuilder->uriFor('index', ['formPersistenceIdentifier' => $formPersistenceIdentifier], 'FormEditor'),

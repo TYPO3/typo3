@@ -35,6 +35,7 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder as ExtbaseUriBuilder;
 use TYPO3\CMS\Form\Controller\FormManagerController;
 use TYPO3\CMS\Form\Event\BeforeFormIsCreatedEvent;
 use TYPO3\CMS\Form\Event\BeforeFormIsDeletedEvent;
+use TYPO3\CMS\Form\Event\BeforeFormIsDuplicatedEvent;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\CMS\Form\Service\DatabaseService;
@@ -478,9 +479,9 @@ final class FormManagerControllerTest extends FunctionalTestCase
     #[Test]
     public function beforeFormIsCreatedEventIsTriggered(): void
     {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file_storage.csv');
 
         /** @var Container $container */
         $container = $this->get('service_container');
@@ -581,5 +582,55 @@ final class FormManagerControllerTest extends FunctionalTestCase
         self::assertInstanceOf(BeforeFormIsDeletedEvent::class, $state['before-form-deleted-listener']);
         self::assertNull($state['before-form-deleted-listener-unused']);
         self::assertTrue($state['before-form-deleted-listener']->preventDeletion);
+    }
+
+    #[Test]
+    public function beforeFormIsDuplicatedEventIsTriggered(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file_storage.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+
+        /** @var Container $container */
+        $container = $this->get('service_container');
+
+        $state = [
+            'before-form-duplicated-listener' => null,
+        ];
+
+        // Dummy listeners that just record that the event existed.
+        $container->set(
+            'before-form-duplicated-listener',
+            static function (BeforeFormIsDuplicatedEvent $event) use (&$state) {
+                $event->formPersistenceIdentifier = '1:/form_definitions/duplicated_form.form.yaml';
+                $event->form['label'] = 'bar';
+                $state['before-form-duplicated-listener'] = $event;
+            }
+        );
+
+        $eventListener = $this->get(ListenerProvider::class);
+        $eventListener->addListener(BeforeFormIsDuplicatedEvent::class, 'before-form-duplicated-listener');
+
+        $serverRequest = (new ServerRequest('https://example.com', 'POST'))
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $parsedBody = [
+            'formName' => 'test',
+            'formPersistenceIdentifier' => '1:/form_definitions/test_form.form.yaml',
+            'savePath' => '1:/form_definitions/',
+        ];
+        $serverRequest = $serverRequest->withParsedBody($parsedBody);
+        $request = (new Request($serverRequest))
+            ->withControllerExtensionName(FormManagerController::class)
+            ->withControllerName('FormManagerController')
+            ->withArguments($parsedBody)
+            ->withControllerActionName('duplicate');
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $subject = $this->get(FormManagerController::class);
+        $subject->processRequest($request);
+
+        self::assertInstanceOf(BeforeFormIsDuplicatedEvent::class, $state['before-form-duplicated-listener']);
+        self::assertEquals('1:/form_definitions/duplicated_form.form.yaml', $state['before-form-duplicated-listener']->formPersistenceIdentifier);
+        self::assertEquals('bar', $state['before-form-duplicated-listener']->form['label']);
     }
 }

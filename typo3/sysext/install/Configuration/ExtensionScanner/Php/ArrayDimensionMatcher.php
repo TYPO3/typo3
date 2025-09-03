@@ -1225,4 +1225,10 @@ return [
             'Feature-107382-IntroducePSR14BeforeFormIsDeletedEvent.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'ext/form\'][\'beforeFormDuplicate\']' => [
+        'restFiles' => [
+            'Breaking-107380-RemovedBeforeFormDuplicateHook.rst',
+            'Feature-107380-IntroducePSR14BeforeFormIsDuplicatedEvent.rst',
+        ],
+    ],
 ];
