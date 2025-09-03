@@ -105,6 +105,47 @@ final class CopyRecordTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function copyIsDeniedIfDoktypeOfTargetPageDoesNotAllowTable(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/CopyRecord/DoktypeRestriction.csv');
+        $this->restrictSysFolderRecordTypes();
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->enableLogging = false;
+
+        $cmd['tt_content'][110]['copy'] = 101;
+        $dataHandler->start([], $cmd);
+        $dataHandler->process_cmdmap();
+
+        self::assertArrayNotHasKey(110, $dataHandler->copyMappingArray_merged['tt_content'] ?? []);
+    }
+
+    public static function copyIsAllowedIfOnlyDoktypeOfSourcePageDoesNotAllowTableDataProvider(): array
+    {
+        return [
+            'page with restrictive doktype onto standard page' => ['pages', 101, 100, 100],
+            'content from page with restrictive doktype onto standard page' => ['tt_content', 120, 100, 100],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('copyIsAllowedIfOnlyDoktypeOfSourcePageDoesNotAllowTableDataProvider')]
+    public function copyIsAllowedIfOnlyDoktypeOfSourcePageDoesNotAllowTable(string $table, int $uid, int $destination, int $expectedPid): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/CopyRecord/DoktypeRestriction.csv');
+        $this->restrictSysFolderRecordTypes();
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->enableLogging = false;
+
+        $cmd[$table][$uid]['copy'] = $destination;
+        $dataHandler->start([], $cmd);
+        $dataHandler->process_cmdmap();
+
+        $copyUid = $dataHandler->copyMappingArray_merged[$table][$uid] ?? null;
+        self::assertIsInt($copyUid);
+        self::assertSame($expectedPid, (int)BackendUtility::getRecord($table, $copyUid)['pid']);
+    }
+
+    #[Test]
     public function beforeRemoveNonCopyableFieldsEventIsCalledAndNonCopyableFieldsAreRespected(): void
     {
         $beforeRemoveNonCopyableFieldsEvent = null;
@@ -178,5 +219,12 @@ final class CopyRecordTest extends FunctionalTestCase
             ->executeQuery()
             ->fetchFirstColumn();
         self::assertSame($expectedTitles, $titles);
+    }
+
+    private function restrictSysFolderRecordTypes(): void
+    {
+        $GLOBALS['TCA']['pages']['types']['1']['allowedRecordTypes'] = ['*'];
+        $GLOBALS['TCA']['pages']['types']['254']['allowedRecordTypes'] = ['sys_category'];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
     }
 }
