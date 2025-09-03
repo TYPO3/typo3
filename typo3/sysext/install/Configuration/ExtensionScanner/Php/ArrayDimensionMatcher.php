@@ -1219,4 +1219,10 @@ return [
             'Feature-107388-IntroducePSR14BeforeFormIsSavedEvent.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'ext/form\'][\'beforeFormDelete\']' => [
+        'restFiles' => [
+            'Breaking-107382-RemovedBeforeFormDeleteHook.rst',
+            'Feature-107382-IntroducePSR14BeforeFormIsDeletedEvent.rst',
+        ],
+    ],
 ];

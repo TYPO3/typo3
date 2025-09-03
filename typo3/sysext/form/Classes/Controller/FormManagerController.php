@@ -40,6 +40,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Form\Event\BeforeFormIsCreatedEvent;
+use TYPO3\CMS\Form\Event\BeforeFormIsDeletedEvent;
 use TYPO3\CMS\Form\Exception as FormException;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
@@ -291,31 +292,24 @@ class FormManagerController extends ActionController
         if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier, $formSettings)) {
             throw new PersistenceManagerException(sprintf('Delete "%s" is not allowed', $formPersistenceIdentifier), 1614500661);
         }
-        $response = [
-            'status' => 'success',
-            'url' => $this->uriBuilder->uriFor('index', [], 'FormManager'),
-        ];
-        if (empty($this->databaseService->getReferencesByPersistenceIdentifier($formPersistenceIdentifier))) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDelete'] ?? [] as $className) {
-                $hookObj = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObj, 'beforeFormDelete')) {
-                    $hookObj->beforeFormDelete(
-                        $formPersistenceIdentifier
-                    );
-                }
-            }
-            $this->formPersistenceManager->delete($formPersistenceIdentifier, $formSettings);
-        } else {
-            $controllerConfiguration = $this->translationService->translateValuesRecursive(
-                $formSettings['formManager']['controller'],
-                $formSettings['formManager']['translationFiles'] ?? []
-            );
 
-            $response = [
-                'status' => 'error',
-                'title' => $controllerConfiguration['deleteAction']['errorTitle'],
-                'message' => sprintf($controllerConfiguration['deleteAction']['errorMessage'], $formPersistenceIdentifier),
-            ];
+        $hasReferences = !empty($this->databaseService->getReferencesByPersistenceIdentifier($formPersistenceIdentifier));
+
+        if ($hasReferences) {
+            $response = $this->getErrorResponseForDeleteAction($formSettings, $formPersistenceIdentifier);
+        } else {
+            $event = $this->eventDispatcher->dispatch(
+                new BeforeFormIsDeletedEvent($formPersistenceIdentifier)
+            );
+            if ($event->preventDeletion) {
+                $response = $this->getErrorResponseForDeleteAction($formSettings, $formPersistenceIdentifier);
+            } else {
+                $this->formPersistenceManager->delete($formPersistenceIdentifier, $formSettings);
+                $response = [
+                    'status' => 'success',
+                    'url' => $this->uriBuilder->uriFor('index', [], 'FormManager'),
+                ];
+            }
         }
 
         // deleteAction uses the extbase JsonView::class.
@@ -327,6 +321,19 @@ class FormManagerController extends ActionController
             'response',
         ]);
         return $this->jsonResponse();
+    }
+
+    protected function getErrorResponseForDeleteAction(array $formSettings, string $formPersistenceIdentifier): array
+    {
+        $controllerConfiguration = $this->translationService->translateValuesRecursive(
+            $formSettings['formManager']['controller'],
+            $formSettings['formManager']['translationFiles'] ?? []
+        );
+        return [
+            'status' => 'error',
+            'title' => $controllerConfiguration['deleteAction']['errorTitle'],
+            'message' => sprintf($controllerConfiguration['deleteAction']['errorMessage'], $formPersistenceIdentifier),
+        ];
     }
 
     protected function getFormSettings(): array

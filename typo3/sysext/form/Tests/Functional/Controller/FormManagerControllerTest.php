@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Backend\Routing\UriBuilder as CoreUriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
@@ -35,6 +34,7 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder as ExtbaseUriBuilder;
 use TYPO3\CMS\Form\Controller\FormManagerController;
 use TYPO3\CMS\Form\Event\BeforeFormIsCreatedEvent;
+use TYPO3\CMS\Form\Event\BeforeFormIsDeletedEvent;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\CMS\Form\Service\DatabaseService;
@@ -45,6 +45,10 @@ final class FormManagerControllerTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = [
         'form',
+    ];
+
+    protected array $pathsToProvideInTestInstance = [
+        'typo3/sysext/form/Tests/Functional/Controller/Fixtures/Folders/fileadmin/form_definitions' => 'fileadmin/form_definitions',
     ];
 
     #[Test]
@@ -474,8 +478,8 @@ final class FormManagerControllerTest extends FunctionalTestCase
     #[Test]
     public function beforeFormIsCreatedEventIsTriggered(): void
     {
-        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
-        $GLOBALS['BE_USER']->user = ['admin' => true];
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file_storage.csv');
 
         /** @var Container $container */
@@ -520,5 +524,62 @@ final class FormManagerControllerTest extends FunctionalTestCase
         self::assertInstanceOf(BeforeFormIsCreatedEvent::class, $state['before-form-create-listener']);
         self::assertEquals('1:/form_definitions/new_form.form.yaml', $state['before-form-create-listener']->formPersistenceIdentifier);
         self::assertEquals('bar', $state['before-form-create-listener']->form['label']);
+    }
+
+    #[Test]
+    public function beforeFormIsDeletedEventIsTriggered(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file_storage.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+
+        /** @var Container $container */
+        $container = $this->get('service_container');
+
+        $state = [
+            'before-form-deleted-listener' => null,
+            'before-form-deleted-listener-unused' => null,
+        ];
+
+        // Listeners which stops the event
+        $container->set(
+            'before-form-deleted-listener',
+            static function (BeforeFormIsDeletedEvent $event) use (&$state) {
+                $event->preventDeletion = true;
+                $state['before-form-deleted-listener'] = $event;
+            }
+        );
+
+        // Listeners which should not be called
+        $container->set(
+            'before-form-deleted-listener-unused',
+            static function (BeforeFormIsDeletedEvent $event) use (&$state) {
+                $state['before-form-deleted-listener-unused'] = $event;
+            }
+        );
+
+        $eventListener = $this->get(ListenerProvider::class);
+        $eventListener->addListener(BeforeFormIsDeletedEvent::class, 'before-form-deleted-listener');
+        $eventListener->addListener(BeforeFormIsDeletedEvent::class, 'before-form-deleted-listener-unused');
+
+        $serverRequest = (new ServerRequest('https://example.com', 'POST'))
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $parsedBody = [
+            'formPersistenceIdentifier' => '1:/form_definitions/test_form.form.yaml',
+        ];
+        $serverRequest = $serverRequest->withParsedBody($parsedBody);
+        $request = (new Request($serverRequest))
+            ->withControllerExtensionName(FormManagerController::class)
+            ->withControllerName('FormManagerController')
+            ->withArguments($parsedBody)
+            ->withControllerActionName('delete');
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $subject = $this->get(FormManagerController::class);
+        $subject->processRequest($request);
+
+        self::assertInstanceOf(BeforeFormIsDeletedEvent::class, $state['before-form-deleted-listener']);
+        self::assertNull($state['before-form-deleted-listener-unused']);
+        self::assertTrue($state['before-form-deleted-listener']->preventDeletion);
     }
 }

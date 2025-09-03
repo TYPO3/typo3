@@ -1,0 +1,8 @@
+type: 'Form'
+identifier: 'test'
+label: 'Test'
+renderables:
+  -
+    type: 'Page'
+    identifier: 'page-1'
+    label: 'Step'
