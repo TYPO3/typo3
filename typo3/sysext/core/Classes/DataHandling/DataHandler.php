@@ -3502,11 +3502,11 @@ class DataHandler
         }
 
         // NOT using \TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid() because we need the real pid - not the ID of a page, if the input is a page...
-        $pageRecord = is_array($pageContext) ? $pageContext : [];
         $tscPID = (int)BackendUtility::getTSconfig_pidValue($table, $uid, $destPid);
+        $destinationPageRecord = $tscPID > 0 ? (BackendUtility::getRecord('pages', $tscPID) ?? []) : [];
 
         // Check if table is allowed on destination page
-        if (!$this->isTableAllowedForThisPage($tscPID, $table, $pageRecord)) {
+        if (!$this->isTableAllowedForThisPage($tscPID, $table, $destinationPageRecord)) {
             $this->log($table, $uid, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to insert record "{table}:{uid}" on a page ({pid}) that can\'t store record type', null, ['table' => $table, 'uid' => $uid, 'pid' => $tscPID]);
             return null;
         }

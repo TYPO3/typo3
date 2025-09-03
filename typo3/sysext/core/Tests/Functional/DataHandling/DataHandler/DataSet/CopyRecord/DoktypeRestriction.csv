@@ -1,0 +1,8 @@
+"pages"
+,"uid","pid","sorting","title","doktype","deleted","perms_everybody"
+,100,1,256,"Standard page",1,0,15
+,101,1,512,"Restricted folder",254,0,15
+"tt_content"
+,"uid","pid","sorting","header"
+,110,100,256,"Content on standard page"
+,120,101,256,"Content on restricted folder"
