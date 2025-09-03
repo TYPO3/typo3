@@ -337,6 +337,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ($pageId !== $pageInformation->getContentFromPid()) {
             $cacheDataCollector->addCacheTags(new CacheTag('pageId_' . $this->contentPid, $lifetime));
         }
+
+        // Respect the translation page id on translated pages
+        if ((int)($pageRecord['_LOCALIZED_UID'] ?? 0) > 0) {
+            $cacheDataCollector->addCacheTags(new CacheTag('pageId_' . $pageRecord['_LOCALIZED_UID'], $lifetime));
+        }
+
         if (!empty($pageRecord['cache_tags'])) {
             $tags = GeneralUtility::trimExplode(',', $pageRecord['cache_tags'], true);
             array_walk($tags, fn(string $tag) => $cacheDataCollector->addCacheTags(new CacheTag($tag, $lifetime)));
