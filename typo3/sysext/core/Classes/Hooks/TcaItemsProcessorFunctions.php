@@ -257,7 +257,7 @@ readonly class TcaItemsProcessorFunctions
             if (!empty($GLOBALS['TCA'][$table]['columns'])
                 && is_array($GLOBALS['TCA'][$table]['columns'])
                 && empty($GLOBALS['TCA'][$table]['ctrl']['adminOnly'])
-                && (empty($GLOBALS['TCA'][$table]['ctrl']['rootLevel']) || !empty($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreRootLevelRestriction']))
+                && ((int)($GLOBALS['TCA'][$table]['ctrl']['rootLevel'] ?? 0) !== 1 || !empty($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreRootLevelRestriction']))
             ) {
                 foreach ($GLOBALS['TCA'][$table]['columns'] as $fieldName => $fieldDefinition) {
                     // Only show fields that can be excluded for editors, or are hidden for non-admins
