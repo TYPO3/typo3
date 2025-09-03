@@ -4,6 +4,7 @@
 ,2,1,256,0,0,0,0,0,0,0,"Root page having template with root flag set by tests","/","{}"
 ,88,2,256,0,0,0,0,0,0,0,"Sub page 1","/subpage1/","{}"
 ,89,88,256,0,0,0,0,0,0,0,"Sub sub page 1","/subpage1/sub1/","{}"
+,90,2,256,0,1,88,0,0,0,0,"Sub page 1 (DE)","/subpage1/","{}"
 ,98,2,256,0,0,0,0,0,0,0,"Sub page 2 having template with root flag","/subpage2/","{}"
 ,99,98,256,0,0,0,0,0,0,0,"Sub sub page 2","/subpage2/sub2/","{}"
 "sys_template"

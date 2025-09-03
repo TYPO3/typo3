@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Controller;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -30,6 +31,7 @@ final class TypoScriptFrontendControllerTest extends FunctionalTestCase
 
     protected const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+        'DE' => ['id' => 1, 'title' => 'German', 'locale' => 'de_DE.UTF8'],
     ];
 
     protected array $configurationToUseInTestInstance = [
@@ -186,5 +188,31 @@ alert(yes);', $body);
         $request = (new InternalRequest('http://website.local/en/'))->withPageId(2);
         $response = $this->executeFrontendSubRequest($request);
         self::assertStringContainsString('https-condition-off', (string)$response->getBody());
+    }
+
+    #[Test]
+    public function localizedPageCacheTagsAreAddedOnLocalizedPages(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
+        $this->setUpFrontendRootPage(
+            2,
+            ['EXT:frontend/Tests/Functional/Controller/Fixtures/PageHttpsConditionHelloWorld.typoscript'],
+        );
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(2, 'https://website.local/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
+                $this->buildLanguageConfiguration('DE', '/de/'),
+            ],
+        );
+
+        $this->executeFrontendSubRequest((new InternalRequest('https://website.local/de/'))->withPageId(90));
+
+        $cacheBackend = $this->get(CacheManager::class)->getCache('pages')->getBackend();
+
+        self::assertInstanceOf(Typo3DatabaseBackend::class, $cacheBackend);
+        self::assertCount(1, $cacheBackend->findIdentifiersByTag('pageId_88'));
+        self::assertCount(1, $cacheBackend->findIdentifiersByTag('pageId_90'));
     }
 }

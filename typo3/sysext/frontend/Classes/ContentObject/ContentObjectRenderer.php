@@ -475,11 +475,18 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $autoTagging = GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('frontend.cache.autoTagging');
         if (is_array($this->data) && $this->currentRecord !== '' && $autoTagging) {
             $cacheLifetimeCalculator = GeneralUtility::makeInstance(CacheLifetimeCalculator::class);
+            $lifetime = $cacheLifetimeCalculator->calculateLifetimeForRow($this->table, $this->data);
+            $cacheTags = [
+                sprintf('%s_%s', $this->table, ($this->data['uid'] ?? 0)),
+            ];
+            if ((int)($this->data['_LOCALIZED_UID'] ?? 0) > 0) {
+                $cacheTags[] = sprintf('%s_%s', $this->table, (int)$this->data['_LOCALIZED_UID']);
+            }
             $this->request?->getAttribute('frontend.cache.collector')?->addCacheTags(
-                new CacheTag(
-                    name: sprintf('%s_%s', $this->table, ($this->data['uid'] ?? 0)),
-                    lifetime: $cacheLifetimeCalculator->calculateLifetimeForRow($this->table, $this->data)
-                )
+                ...array_map(
+                    static fn(string $cacheTag) => new CacheTag($cacheTag, $lifetime),
+                    $cacheTags,
+                ),
             );
         }
     }
