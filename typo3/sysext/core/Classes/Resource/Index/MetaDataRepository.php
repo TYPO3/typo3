@@ -45,13 +45,6 @@ class MetaDataRepository implements SingletonInterface
      */
     protected $tableName = 'sys_file_metadata';
 
-    /**
-     * Internal storage for database table fields
-     *
-     * @var array
-     */
-    protected $tableFields = [];
-
     public function __construct(
         protected readonly EventDispatcherInterface $eventDispatcher,
     ) {}
@@ -228,13 +221,9 @@ class MetaDataRepository implements SingletonInterface
      */
     protected function getTableFields(): array
     {
-        if (empty($this->tableFields)) {
-            $this->tableFields = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable($this->tableName)
-                ->createSchemaManager()
-                ->listTableColumns($this->tableName);
-        }
-
-        return $this->tableFields;
+        return GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($this->tableName)
+            ->getSchemaInformation()
+            ->listTableColumns($this->tableName);
     }
 }

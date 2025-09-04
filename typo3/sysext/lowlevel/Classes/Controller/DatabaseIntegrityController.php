@@ -2711,7 +2711,7 @@ class DatabaseIntegrityController
             // Get fields list
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
             $identifierQuoteCharacter = $this->platformHelper->getIdentifierQuoteCharacter($connection->getDatabasePlatform());
-            $tableColumns = $connection->createSchemaManager()->listTableColumns($table);
+            $tableColumns = $connection->getSchemaInformation()->listTableColumns($table);
             $normalizedTableColumns = [];
             $fields = [];
             foreach ($tableColumns as $column) {

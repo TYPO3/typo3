@@ -39,14 +39,6 @@ class ProcessedFileRepository implements LoggerAwareInterface, SingletonInterfac
 {
     use LoggerAwareTrait;
 
-    /**
-     * As determining the table columns is a costly operation this is done only once
-     * during runtime and cached afterward.
-     *
-     * @see cleanUnavailableColumns()
-     */
-    protected array $tableColumns = [];
-
     public function __construct(
         protected readonly ResourceFactory $factory,
         protected readonly TaskTypeRegistry $taskTypeRegistry
@@ -329,15 +321,10 @@ class ProcessedFileRepository implements LoggerAwareInterface, SingletonInterfac
      */
     protected function cleanUnavailableColumns(array $data): array
     {
-        // As determining the table columns is a costly operation this is done only once during runtime and cached then
-        if ($this->tableColumns === []) {
-            $this->tableColumns = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('sys_file_processedfile')
-                ->createSchemaManager()
-                ->listTableColumns('sys_file_processedfile');
-        }
-
-        return array_intersect_key($data, $this->tableColumns);
+        return array_intersect_key($data, GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('sys_file_processedfile')
+            ->getSchemaInformation()
+            ->listTableColumns('sys_file_processedfile'));
     }
 
     /**
