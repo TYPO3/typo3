@@ -21,7 +21,6 @@ use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
-use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -34,7 +33,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Platform\PlatformHelper;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
@@ -231,7 +229,6 @@ class DatabaseIntegrityController
         protected IconFactory $iconFactory,
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-        protected readonly PlatformHelper $platformHelper,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
         protected readonly FlashMessageRendererResolver $flashMessageRendererResolver,
         protected readonly PageDoktypeRegistry $pageDoktypeRegistry,
@@ -2718,16 +2715,15 @@ class DatabaseIntegrityController
             }
             // Get fields list
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
-            $identifierQuoteCharacter = $this->platformHelper->getIdentifierQuoteCharacter($connection->getDatabasePlatform());
-            $tableColumns = $connection->createSchemaManager()->listTableColumns($table);
+            $tableColumnInfos = $connection->getSchemaInformation()->listTableColumnInfos($table);
             $normalizedTableColumns = [];
             $fields = [];
-            foreach ($tableColumns as $column) {
-                if (!$schema->hasField($column->getName())) {
+            foreach ($tableColumnInfos as $column) {
+                if (!$schema->hasField($column->name)) {
                     continue;
                 }
-                $fields[] = $column->getName();
-                $normalizedTableColumns[trim($column->getName(), $identifierQuoteCharacter)] = $column;
+                $fields[] = $column->name;
+                $normalizedTableColumns[$column->name] = $column;
             }
             $queryBuilder = $connection->createQueryBuilder();
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -2735,14 +2731,13 @@ class DatabaseIntegrityController
             $likes = [];
             $escapedLikeString = '%' . $queryBuilder->escapeLikeWildcards($swords) . '%';
             foreach ($fields as $field) {
-                $field = trim($field, $identifierQuoteCharacter);
                 $quotedField = $queryBuilder->quoteIdentifier($field);
                 $column = $normalizedTableColumns[$field] ?? $normalizedTableColumns[$quotedField] ?? null;
                 if ($column !== null
                     && $connection->getDatabasePlatform() instanceof DoctrinePostgreSQLPlatform
-                    && !in_array(Type::getTypeRegistry()->lookupName($column->getType()), [Types::STRING, Types::ASCII_STRING], true)
+                    && !in_array($column->typeName, [Types::STRING, Types::ASCII_STRING], true)
                 ) {
-                    if (Type::getTypeRegistry()->lookupName($column->getType()) === Types::SMALLINT) {
+                    if ($column->typeName === Types::SMALLINT) {
                         // we need to cast smallint to int first, otherwise text case below won't work
                         $quotedField .= '::int';
                     }
@@ -2769,14 +2764,13 @@ class DatabaseIntegrityController
                 }
                 $likes = [];
                 foreach ($fields as $field) {
-                    $field = trim($field, $identifierQuoteCharacter);
                     $quotedField = $queryBuilder->quoteIdentifier($field);
                     $column = $normalizedTableColumns[$field] ?? $normalizedTableColumns[$quotedField] ?? null;
                     if ($column !== null
                         && $connection->getDatabasePlatform() instanceof DoctrinePostgreSQLPlatform
-                        && !in_array(Type::getTypeRegistry()->lookupName($column->getType()), [Types::STRING, Types::ASCII_STRING], true)
+                        && !in_array($column->typeName, [Types::STRING, Types::ASCII_STRING], true)
                     ) {
-                        if (Type::getTypeRegistry()->lookupName($column->getType()) === Types::SMALLINT) {
+                        if ($column->typeName === Types::SMALLINT) {
                             // we need to cast smallint to int first, otherwise text case below won't work
                             $quotedField .= '::int';
                         }

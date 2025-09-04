@@ -22,7 +22,6 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Database\Platform\PlatformHelper;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -290,7 +289,6 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
             $this->get(IconFactory::class),
             $this->get(UriBuilder::class),
             $this->get(ModuleTemplateFactory::class),
-            $this->get(PlatformHelper::class),
             $tcaSchemaFactory,
             $this->get(FlashMessageRendererResolver::class),
             $this->get(PageDoktypeRegistry::class),
@@ -370,7 +368,6 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
             $iconFactoryMock,
             $this->get(UriBuilder::class),
             $this->get(ModuleTemplateFactory::class),
-            $this->get(PlatformHelper::class),
             $this->get(TcaSchemaFactory::class),
             $this->get(FlashMessageRendererResolver::class),
             $this->get(PageDoktypeRegistry::class),
