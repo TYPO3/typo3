@@ -19,6 +19,6 @@ namespace TYPO3\CMS\Form\Event;
 
 /**
  * Listeners to this Event will be able to modify the form definition
- * and persistence identifier before a new form is created.
+ * and persistence identifier before a form is saved.
  */
-final class BeforeFormIsCreatedEvent extends AbstractFormEvent {}
+final class BeforeFormIsSavedEvent extends AbstractFormEvent {}

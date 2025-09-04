@@ -45,6 +45,7 @@ use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionConversionService;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
+use TYPO3\CMS\Form\Event\BeforeFormIsSavedEvent;
 use TYPO3\CMS\Form\Exception;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
@@ -188,15 +189,11 @@ class FormEditorController extends ActionController
     protected function saveFormAction(string $formPersistenceIdentifier, FormDefinitionArray $formDefinition): ResponseInterface
     {
         $formDefinition = $formDefinition->getArrayCopy();
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormSave'] ?? [] as $className) {
-            $hookObj = GeneralUtility::makeInstance($className);
-            if (method_exists($hookObj, 'beforeFormSave')) {
-                $formDefinition = $hookObj->beforeFormSave(
-                    $formPersistenceIdentifier,
-                    $formDefinition
-                );
-            }
-        }
+        $event = $this->eventDispatcher->dispatch(
+            new BeforeFormIsSavedEvent($formPersistenceIdentifier, $formDefinition),
+        );
+        $formPersistenceIdentifier = $event->formPersistenceIdentifier;
+        $formDefinition = $event->form;
         $response = [
             'status' => 'success',
         ];

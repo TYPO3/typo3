@@ -18,27 +18,33 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Functional\Controller;
 
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Form\Controller\FormEditorController;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionConversionService;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
+use TYPO3\CMS\Form\Event\BeforeFormIsSavedEvent;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\CMS\Form\Service\DatabaseService;
 use TYPO3\CMS\Form\Service\TranslationService;
+use TYPO3\CMS\Form\Type\FormDefinitionArray;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FormEditorControllerTest extends FunctionalTestCase
 {
-    protected bool $initializeDatabase = false;
-
     protected array $coreExtensionsToLoad = [
         'form',
     ];
@@ -474,5 +480,62 @@ final class FormEditorControllerTest extends FunctionalTestCase
             ],
         ];
         self::assertSame($expected, $mockController->_call('filterEmptyArrays', $input));
+    }
+
+    #[Test]
+    public function beforeFormIsSavedEventIsTriggered(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file_storage.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+
+        /** @var Container $container */
+        $container = $this->get('service_container');
+
+        $state = [
+            'before-form-saved-listener' => null,
+        ];
+
+        // Dummy listeners that just record that the event existed.
+        $container->set(
+            'before-form-saved-listener',
+            static function (BeforeFormIsSavedEvent $event) use (&$state) {
+                $event->formPersistenceIdentifier = '1:/form_definitions/new_form.form.yaml';
+                $event->form['label'] = 'bar';
+                $state['before-form-saved-listener'] = $event;
+            }
+        );
+
+        $eventListener = $this->get(ListenerProvider::class);
+        $eventListener->addListener(BeforeFormIsSavedEvent::class, 'before-form-saved-listener');
+
+        $serverRequest = (new ServerRequest('https://example.com', 'POST'))
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+
+        $formDefinition = (new FormDefinitionConversionService())->addHmacData([
+            'type' => 'Form',
+            'identifier' => 'test123_1',
+            'label' => 'test123',
+            'prototypeName' => 'standard',
+        ]);
+
+        $parsedBody = [
+            'formPersistenceIdentifier' => '1:/form_definitions/test_form.form.yaml',
+            'formDefinition' => new FormDefinitionArray($formDefinition),
+        ];
+        $serverRequest = $serverRequest->withParsedBody($parsedBody);
+        $request = (new Request($serverRequest))
+            ->withControllerExtensionName(FormEditorController::class)
+            ->withControllerName('FormEditorController')
+            ->withArguments($parsedBody)
+            ->withControllerActionName('saveForm');
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $subject = $this->get(FormEditorController::class);
+        $subject->processRequest($request);
+
+        self::assertInstanceOf(BeforeFormIsSavedEvent::class, $state['before-form-saved-listener']);
+        self::assertEquals('1:/form_definitions/new_form.form.yaml', $state['before-form-saved-listener']->formPersistenceIdentifier);
+        self::assertEquals('bar', $state['before-form-saved-listener']->form['label']);
     }
 }
