@@ -89,7 +89,7 @@ typo3-backend-live-search-result-action-list {
 typo3-backend-live-search-result-list {
     .livesearch-result-item-group-label {
         color: var(--typo3-text-color-base);
-        background-color: var(--typo3-surface-base);
+        background-color: var(--typo3-surface-container-low);
         border-bottom: 1px solid var(--typo3-component-border-color);
         font-weight: bold;
         line-height: inherit;
