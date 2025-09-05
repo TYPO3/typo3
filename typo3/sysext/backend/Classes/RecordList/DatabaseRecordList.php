@@ -2299,7 +2299,7 @@ class DatabaseRecordList
     protected function isRecordDeletePlaceholder(RecordInterface $record): bool
     {
         return $this->getBackendUserAuthentication()->workspace > 0
-            && $record instanceof Record && $record->getVersionInfo()->getState() === VersionState::DELETE_PLACEHOLDER;
+            && $record instanceof Record && $record->getVersionInfo()?->getState() === VersionState::DELETE_PLACEHOLDER;
     }
 
     public function setIsEditable(bool $isEditable): void
