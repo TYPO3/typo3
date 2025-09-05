@@ -1385,7 +1385,7 @@ class DatabaseRecordList
                 ';
             }
             // If the table can be edited, add link for editing THIS field for all listed records:
-            if ($this->isEditable($table) && $this->canEditTable($table) && ($GLOBALS['TCA'][$table]['columns'][$field] ?? false)) {
+            if ($this->isEditable($table, $field) && $this->canEditTable($table)) {
                 $title = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:editThisColumn'), $label);
                 $attributes = [
                     'type' => 'button',
@@ -2248,15 +2248,22 @@ class DatabaseRecordList
     }
 
     /**
-     * Check if the table is readonly or editable
+     * Check if the table (and field) is readonly or editable.
      */
-    public function isEditable(string $table): bool
+    public function isEditable(string $table, string $field = ''): bool
     {
         $backendUser = $this->getBackendUserAuthentication();
         return !($GLOBALS['TCA'][$table]['ctrl']['readOnly'] ?? false)
             && $this->editable
             && ($backendUser->isAdmin() || $backendUser->check('tables_modify', $table))
-            && (BackendUtility::isTableWorkspaceEnabled($table) || $backendUser->workspaceAllowsLiveEditingInTable($table));
+            && (BackendUtility::isTableWorkspaceEnabled($table) || $backendUser->workspaceAllowsLiveEditingInTable($table))
+            && (
+                $field === ''
+                || (
+                    ($GLOBALS['TCA'][$table]['columns'][$field] ?? false)
+                    && !($GLOBALS['TCA'][$table]['columns'][$field]['config']['readOnly'] ?? false)
+                )
+            );
     }
 
     /**
