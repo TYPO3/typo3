@@ -108,7 +108,7 @@ return [
         'loginCopyrightWarrantyProvider' => '',
         'loginCopyrightWarrantyURL' => '',
         'textfile_ext' => 'txt,ts,typoscript,html,htm,css,tmpl,js,sql,xml,csv,xlf,yaml,yml',
-        'mediafile_ext' => 'gif,jpg,jpeg,bmp,png,webp,pdf,svg,ai,mp3,wav,mp4,ogg,flac,opus,webm,youtube,vimeo',
+        'mediafile_ext' => '3gp,aac,ai,aif,avif,bmp,flac,gif,heic,ico,jpeg,jpg,m4a,m4v,mov,mp3,mp4,ogg,opus,pdf,png,psd,svg,vimeo,wav,webm,webp,youtube',
         'miscfile_ext' => 'zip',
         'binPath' => '',
         'binSetup' => '',
