@@ -76,7 +76,7 @@ final class DatabaseLanguageRowsTest extends UnitTestCase
             ],
         ];
 
-        $this->subject->expects(self::once())->method('getRecordWorkspaceOverlay')->willReturn([]);
+        $this->subject->expects($this->once())->method('getRecordWorkspaceOverlay')->willReturn([]);
 
         $this->expectException(DatabaseDefaultLanguageException::class);
         $this->expectExceptionCode(1438249426);
@@ -110,7 +110,7 @@ final class DatabaseLanguageRowsTest extends UnitTestCase
             'sys_language_uid' => 0,
         ];
 
-        $this->subject->expects(self::once())->method('getRecordWorkspaceOverlay')->willReturn($defaultLanguageRow);
+        $this->subject->expects($this->once())->method('getRecordWorkspaceOverlay')->willReturn($defaultLanguageRow);
 
         $expected = $input;
         $expected['defaultLanguageRow'] = $defaultLanguageRow;
@@ -152,7 +152,7 @@ final class DatabaseLanguageRowsTest extends UnitTestCase
             'sys_language_uid' => 0,
         ];
 
-        $this->subject->expects(self::once())->method('getRecordWorkspaceOverlay')->willReturn($defaultLanguageRow);
+        $this->subject->expects($this->once())->method('getRecordWorkspaceOverlay')->willReturn($defaultLanguageRow);
 
         $expected = $input;
         $expected['defaultLanguageRow'] = $defaultLanguageRow;
@@ -223,7 +223,7 @@ final class DatabaseLanguageRowsTest extends UnitTestCase
         ];
 
         $translationMock = $this->createMock(TranslationConfigurationProvider::class);
-        $translationMock->expects(self::atLeastOnce())->method('translationInfo')
+        $translationMock->expects($this->atLeastOnce())->method('translationInfo')
             ->with('tt_content', 23, 3)->willReturn($translationResult);
 
         $subject = $this->getMockBuilder(DatabaseLanguageRows::class)
@@ -236,7 +236,7 @@ final class DatabaseLanguageRowsTest extends UnitTestCase
             [['tableName' => 'tt_content', 'uid' => 23], $defaultLanguageRow],
             [['tableName' => 'tt_content', 'uid' => 43], $recordWsolResult],
         ];
-        $subject->expects(self::exactly(2))
+        $subject->expects($this->exactly(2))
             ->method('getRecordWorkspaceOverlay')
             ->willReturnCallback(function (string $tableName, int $uid) use (&$series): array {
                 [$expectedArgs, $return] = array_shift($series);
@@ -324,7 +324,7 @@ final class DatabaseLanguageRowsTest extends UnitTestCase
         ];
 
         $translationMock = $this->createMock(TranslationConfigurationProvider::class);
-        $translationMock->expects(self::once())->method('translationInfo')->with('tt_content', 23, 3)
+        $translationMock->expects($this->once())->method('translationInfo')->with('tt_content', 23, 3)
             ->willReturn($translationResult);
 
         $subject = $this->getMockBuilder(DatabaseLanguageRows::class)
@@ -337,7 +337,7 @@ final class DatabaseLanguageRowsTest extends UnitTestCase
             [['tableName' => 'tt_content', 'uid' => 23], $defaultLanguageRow],
             [['tableName' => 'tt_content', 'uid' => 43], $recordWsolResult],
         ];
-        $subject->expects(self::exactly(2))
+        $subject->expects($this->exactly(2))
             ->method('getRecordWorkspaceOverlay')
             ->willReturnCallback(function (string $tableName, int $uid) use (&$series): array {
                 [$expectedArgs, $return] = array_shift($series);
@@ -419,7 +419,7 @@ final class DatabaseLanguageRowsTest extends UnitTestCase
             [['tableName' => 'tt_content', 'uid' => 23], $defaultLanguageRow],
             [['tableName' => 'tt_content', 'uid' => 24], $sourceLanguageRow],
         ];
-        $this->subject->expects(self::exactly(2))
+        $this->subject->expects($this->exactly(2))
             ->method('getRecordWorkspaceOverlay')
             ->willReturnCallback(function (string $tableName, int $uid) use (&$series): array {
                 [$expectedArgs, $return] = array_shift($series);

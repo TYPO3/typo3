@@ -46,7 +46,7 @@ final class DashboardWidgetPassTest extends UnitTestCase
     public function doesNothingIfWidgetRegistryIsUnknown(): void
     {
         $this->container->method('hasDefinition')->with(WidgetRegistry::class)->willReturn(false);
-        $this->container->expects(self::never())->method('findTaggedServiceIds')->with('dashboard.widget');
+        $this->container->expects($this->never())->method('findTaggedServiceIds')->with('dashboard.widget');
 
         $this->subject->process($this->container);
     }
@@ -56,8 +56,8 @@ final class DashboardWidgetPassTest extends UnitTestCase
     {
         $this->container->method('hasDefinition')->with(WidgetRegistry::class)->willReturn(true);
         $this->container->method('findDefinition')->with(WidgetRegistry::class)->willReturn($this->widgetRegistryDefinition);
-        $this->container->expects(self::once())->method('findTaggedServiceIds')->with('dashboard.widget')->willReturn([]);
-        $this->widgetRegistryDefinition->expects(self::never())->method('addMethodCall');
+        $this->container->expects($this->once())->method('findTaggedServiceIds')->with('dashboard.widget')->willReturn([]);
+        $this->widgetRegistryDefinition->expects($this->never())->method('addMethodCall');
 
         $this->subject->process($this->container);
     }
@@ -72,7 +72,7 @@ final class DashboardWidgetPassTest extends UnitTestCase
             [WidgetRegistry::class, $this->widgetRegistryDefinition],
             ['NewsWidget', $definition],
         ]);
-        $definition->expects(self::once())->method('setPublic')->with(true)->willReturn($definition);
+        $definition->expects($this->once())->method('setPublic')->with(true)->willReturn($definition);
 
         $this->subject->process($this->container);
     }
@@ -101,7 +101,7 @@ final class DashboardWidgetPassTest extends UnitTestCase
                 ],
             ],
         ]);
-        $this->container->expects(self::once())->method('addDefinitions')->with(self::callback(static function (array $widgetConfigurationDefinitions) {
+        $this->container->expects($this->once())->method('addDefinitions')->with(self::callback(static function (array $widgetConfigurationDefinitions) {
             $definition = $widgetConfigurationDefinitions['t3newsWidgetConfiguration'];
             /* @var Definition $definition */
             return $definition instanceof Definition
@@ -115,7 +115,7 @@ final class DashboardWidgetPassTest extends UnitTestCase
                 && $definition->getArgument('$width') === 'small'
             ;
         }));
-        $this->widgetRegistryDefinition->expects(self::once())->method('addMethodCall')->with(
+        $this->widgetRegistryDefinition->expects($this->once())->method('addMethodCall')->with(
             'registerWidget',
             [
                 't3newsWidgetConfiguration',
@@ -149,7 +149,7 @@ final class DashboardWidgetPassTest extends UnitTestCase
                 ],
             ],
         ]);
-        $this->container->expects(self::once())->method('addDefinitions')->with(self::callback(static function (array $widgetConfigurationDefinitions) {
+        $this->container->expects($this->once())->method('addDefinitions')->with(self::callback(static function (array $widgetConfigurationDefinitions) {
             $definition = $widgetConfigurationDefinitions['t3newsWidgetConfiguration'];
             /* @var Definition $definition */
             return $definition instanceof Definition
@@ -157,7 +157,7 @@ final class DashboardWidgetPassTest extends UnitTestCase
                 && $definition->getArgument('$groupNames') === ['typo3', 'general']
             ;
         }));
-        $this->widgetRegistryDefinition->expects(self::once())->method('addMethodCall')->with(
+        $this->widgetRegistryDefinition->expects($this->once())->method('addMethodCall')->with(
             'registerWidget',
             [
                 't3newsWidgetConfiguration',
@@ -194,7 +194,7 @@ final class DashboardWidgetPassTest extends UnitTestCase
                 ],
             ],
         ]);
-        $this->container->expects(self::once())->method('addDefinitions')->with(self::callback(static function (array $widgetConfigurationDefinitions) {
+        $this->container->expects($this->once())->method('addDefinitions')->with(self::callback(static function (array $widgetConfigurationDefinitions) {
             $definition = $widgetConfigurationDefinitions['t3newsWidgetConfiguration'];
             /* @var Definition $definition */
             return $definition instanceof Definition
@@ -208,7 +208,7 @@ final class DashboardWidgetPassTest extends UnitTestCase
                 && $definition->getArgument('$width') === 'medium'
             ;
         }));
-        $this->widgetRegistryDefinition->expects(self::once())->method('addMethodCall')->with(
+        $this->widgetRegistryDefinition->expects($this->once())->method('addMethodCall')->with(
             'registerWidget',
             [
                 't3newsWidgetConfiguration',

@@ -72,7 +72,7 @@ final class ExtensionStatusTest extends UnitTestCase
         $listUtilityMock = $this->setUpRegistryStatusTests();
         $remoteRegistryMock = $this->setUpRemoteRegistryMock();
         $remoteRegistryMock->method('getDefaultRemote')->willReturn($this->getDefaultTerExtensionRemote());
-        $remoteRegistryMock->expects(self::atLeastOnce())->method('hasDefaultRemote');
+        $remoteRegistryMock->expects($this->atLeastOnce())->method('hasDefaultRemote');
 
         $subject = new ExtensionStatus(
             $remoteRegistryMock,
@@ -277,7 +277,7 @@ final class ExtensionStatusTest extends UnitTestCase
         $mockListUtility = $this->getMockBuilder(ListUtility::class)->getMock();
         $mockListUtility->injectEventDispatcher($eventDispatcher);
         $mockListUtility
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAvailableAndInstalledExtensionsWithAdditionalInformation')
             ->willReturn([
                 'enetcache' => [

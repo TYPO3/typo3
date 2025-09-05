@@ -73,7 +73,7 @@ final class HrefLangGeneratorTest extends UnitTestCase
     {
         $mockUriInterface = $this->getMockBuilder(UriInterface::class)->getMock();
         $mockSiteLanguage = $this->getMockBuilder(SiteLanguage::class)->disableOriginalConstructor()->getMock();
-        $mockSiteLanguage->expects(self::once())->method('getBase')->willReturn($mockUriInterface);
+        $mockSiteLanguage->expects($this->once())->method('getBase')->willReturn($mockUriInterface);
         $this->subject->_call('getAbsoluteUrl', $url, $mockSiteLanguage);
     }
 
@@ -101,7 +101,7 @@ final class HrefLangGeneratorTest extends UnitTestCase
     {
         $mockUriInterface = $this->getMockBuilder(UriInterface::class)->getMock();
         $mockSiteLanguage = $this->getMockBuilder(SiteLanguage::class)->disableOriginalConstructor()->getMock();
-        $mockSiteLanguage->expects(self::never())->method('getBase')->willReturn($mockUriInterface);
+        $mockSiteLanguage->expects($this->never())->method('getBase')->willReturn($mockUriInterface);
         $this->subject->_call('getAbsoluteUrl', $url, $mockSiteLanguage);
     }
 }

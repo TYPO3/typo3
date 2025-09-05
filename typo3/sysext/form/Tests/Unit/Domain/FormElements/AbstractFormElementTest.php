@@ -140,7 +140,7 @@ final class AbstractFormElementTest extends UnitTestCase
         $secondFormElementMock = $this->createMock(TestingFormElement::class);
 
         $secondFormElementMock->
-        expects(self::once())
+        expects($this->once())
             ->method('initializeFormElement')
             ->with($formElement);
 

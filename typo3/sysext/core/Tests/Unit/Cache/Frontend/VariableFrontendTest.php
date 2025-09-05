@@ -79,7 +79,7 @@ final class VariableFrontendTest extends UnitTestCase
     public function flushCallsBackend(): void
     {
         $backend = $this->createMock(BackendInterface::class);
-        $backend->expects(self::once())->method('flush');
+        $backend->expects($this->once())->method('flush');
         $cache = new VariableFrontend('someCacheIdentifier', $backend);
         $cache->flush();
     }
@@ -90,7 +90,7 @@ final class VariableFrontendTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1233057359);
         $backend = $this->createMock(TaggableBackendInterface::class);
-        $backend->expects(self::never())->method('flushByTag');
+        $backend->expects($this->never())->method('flushByTag');
         $cache = new VariableFrontend('someCacheIdentifier', $backend);
         $cache->flushByTag('SomeInvalid\\Tag');
     }
@@ -100,7 +100,7 @@ final class VariableFrontendTest extends UnitTestCase
     {
         $tag = 'someTag';
         $backend = $this->createMock(TaggableBackendInterface::class);
-        $backend->expects(self::once())->method('flushByTag')->with($tag);
+        $backend->expects($this->once())->method('flushByTag')->with($tag);
         $cache = new VariableFrontend('someCacheIdentifier', $backend);
         $cache->flushByTag($tag);
     }
@@ -110,7 +110,7 @@ final class VariableFrontendTest extends UnitTestCase
     {
         $tag = 'someTag';
         $backend = $this->createMock(TaggableBackendInterface::class);
-        $backend->expects(self::once())->method('flushByTags')->with([$tag]);
+        $backend->expects($this->once())->method('flushByTags')->with([$tag]);
         $cache = new VariableFrontend('someCacheIdentifier', $backend);
         $cache->flushByTags([$tag]);
     }
@@ -119,7 +119,7 @@ final class VariableFrontendTest extends UnitTestCase
     public function collectGarbageCallsBackend(): void
     {
         $backend = $this->createMock(BackendInterface::class);
-        $backend->expects(self::once())->method('collectGarbage');
+        $backend->expects($this->once())->method('collectGarbage');
         $cache = new VariableFrontend('someCacheIdentifier', $backend);
         $cache->collectGarbage();
     }
@@ -240,7 +240,7 @@ final class VariableFrontendTest extends UnitTestCase
     {
         $theString = 'Just some value';
         $backend = $this->createMock(BackendInterface::class);
-        $backend->expects(self::once())->method('set')->with('VariableCacheTest', serialize($theString));
+        $backend->expects($this->once())->method('set')->with('VariableCacheTest', serialize($theString));
         $cache = new VariableFrontend('VariableFrontend', $backend);
         $cache->set('VariableCacheTest', $theString);
     }
@@ -250,7 +250,7 @@ final class VariableFrontendTest extends UnitTestCase
     {
         $theArray = ['Just some value', 'and another one.'];
         $backend = $this->createMock(BackendInterface::class);
-        $backend->expects(self::once())->method('set')->with('VariableCacheTest', serialize($theArray));
+        $backend->expects($this->once())->method('set')->with('VariableCacheTest', serialize($theArray));
         $cache = new VariableFrontend('VariableFrontend', $backend);
         $cache->set('VariableCacheTest', $theArray);
     }
@@ -261,7 +261,7 @@ final class VariableFrontendTest extends UnitTestCase
         $theString = 'Just some value';
         $theLifetime = 1234;
         $backend = $this->createMock(BackendInterface::class);
-        $backend->expects(self::once())->method('set')->with('VariableCacheTest', serialize($theString), [], $theLifetime);
+        $backend->expects($this->once())->method('set')->with('VariableCacheTest', serialize($theString), [], $theLifetime);
         $cache = new VariableFrontend('VariableFrontend', $backend);
         $cache->set('VariableCacheTest', $theString, [], $theLifetime);
     }
@@ -270,7 +270,7 @@ final class VariableFrontendTest extends UnitTestCase
     public function getFetchesStringValueFromBackend(): void
     {
         $backend = $this->createMock(BackendInterface::class);
-        $backend->expects(self::once())->method('get')->willReturn(serialize('Just some value'));
+        $backend->expects($this->once())->method('get')->willReturn(serialize('Just some value'));
         $cache = new VariableFrontend('VariableFrontend', $backend);
         self::assertEquals('Just some value', $cache->get('VariableCacheTest'));
     }
@@ -280,7 +280,7 @@ final class VariableFrontendTest extends UnitTestCase
     {
         $theArray = ['Just some value', 'and another one.'];
         $backend = $this->createMock(BackendInterface::class);
-        $backend->expects(self::once())->method('get')->willReturn(serialize($theArray));
+        $backend->expects($this->once())->method('get')->willReturn(serialize($theArray));
         $cache = new VariableFrontend('VariableFrontend', $backend);
         self::assertEquals($theArray, $cache->get('VariableCacheTest'));
     }
@@ -289,7 +289,7 @@ final class VariableFrontendTest extends UnitTestCase
     public function getFetchesFalseBooleanValueFromBackend(): void
     {
         $backend = $this->createMock(BackendInterface::class);
-        $backend->expects(self::once())->method('get')->willReturn(serialize(false));
+        $backend->expects($this->once())->method('get')->willReturn(serialize(false));
         $cache = new VariableFrontend('VariableFrontend', $backend);
         self::assertFalse($cache->get('VariableCacheTest'));
     }
@@ -298,7 +298,7 @@ final class VariableFrontendTest extends UnitTestCase
     public function hasReturnsResultFromBackend(): void
     {
         $backend = $this->createMock(BackendInterface::class);
-        $backend->expects(self::once())->method('has')->with(self::equalTo('VariableCacheTest'))->willReturn(true);
+        $backend->expects($this->once())->method('has')->with(self::equalTo('VariableCacheTest'))->willReturn(true);
         $cache = new VariableFrontend('VariableFrontend', $backend);
         self::assertTrue($cache->has('VariableCacheTest'));
     }
@@ -308,7 +308,7 @@ final class VariableFrontendTest extends UnitTestCase
     {
         $cacheIdentifier = 'someCacheIdentifier';
         $backend = $this->createMock(BackendInterface::class);
-        $backend->expects(self::once())->method('remove')->with(self::equalTo($cacheIdentifier))->willReturn(true);
+        $backend->expects($this->once())->method('remove')->with(self::equalTo($cacheIdentifier))->willReturn(true);
         $cache = new VariableFrontend('VariableFrontend', $backend);
         self::assertTrue($cache->remove($cacheIdentifier));
     }

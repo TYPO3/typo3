@@ -307,7 +307,7 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
             if (MathUtility::canBeInterpretedAsInteger($parameters['file'])) {
                 $uid = (int)$parameters['file'];
             }
-            $fileObject->expects(self::once())->method('getUid')->willReturn($uid);
+            $fileObject->expects($this->once())->method('getUid')->willReturn($uid);
             $fileObject->method('getIdentifier')->willReturn($parameters['file']);
             $parameters['file'] = $fileObject;
         }

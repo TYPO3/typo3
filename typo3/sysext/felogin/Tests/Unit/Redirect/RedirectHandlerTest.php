@@ -135,7 +135,7 @@ final class RedirectHandlerTest extends UnitTestCase
         $request = new Request($serverRequest);
 
         if ($redirectUrl === $expected) {
-            $this->redirectUrlValidator->expects(self::once())->method('isValid')->with($request, $redirectUrl)->willReturn(true);
+            $this->redirectUrlValidator->expects($this->once())->method('isValid')->with($request, $redirectUrl)->willReturn(true);
         }
 
         $configuration = RedirectConfiguration::fromSettings(['redirectMode' => $redirectMode]);
@@ -158,7 +158,7 @@ final class RedirectHandlerTest extends UnitTestCase
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withQueryParams(['referer' => $expectedReferrer]);
         $request = new Request($serverRequest);
-        $this->redirectUrlValidator->expects(self::once())->method('isValid')->with($request, $expectedReferrer)->willReturn(true);
+        $this->redirectUrlValidator->expects($this->once())->method('isValid')->with($request, $expectedReferrer)->willReturn(true);
         $settings = ['redirectMode' => RedirectMode::REFERRER];
         self::assertEquals($expectedReferrer, $this->subject->getReferrerForLoginForm($request, $settings));
     }
@@ -170,7 +170,7 @@ final class RedirectHandlerTest extends UnitTestCase
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withParsedBody(['referer' => $expectedReferrer]);
         $request = new Request($serverRequest);
-        $this->redirectUrlValidator->expects(self::once())->method('isValid')->with($request, $expectedReferrer)->willReturn(true);
+        $this->redirectUrlValidator->expects($this->once())->method('isValid')->with($request, $expectedReferrer)->willReturn(true);
         $settings = ['redirectMode' => RedirectMode::REFERRER];
         self::assertEquals($expectedReferrer, $this->subject->getReferrerForLoginForm($request, $settings));
     }
@@ -182,7 +182,7 @@ final class RedirectHandlerTest extends UnitTestCase
         $serverRequest = (new ServerRequest('/login', 'GET', 'php://input', [], ['HTTP_REFERER' => $expectedReferrer]))
             ->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
-        $this->redirectUrlValidator->expects(self::once())->method('isValid')->with($request, $expectedReferrer)->willReturn(true);
+        $this->redirectUrlValidator->expects($this->once())->method('isValid')->with($request, $expectedReferrer)->willReturn(true);
         $settings = ['redirectMode' => RedirectMode::REFERRER];
         self::assertEquals($expectedReferrer, $this->subject->getReferrerForLoginForm($request, $settings));
     }
@@ -194,7 +194,7 @@ final class RedirectHandlerTest extends UnitTestCase
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('originalRequest', new ServerRequest($expectedReferrer));
         $request = new Request($serverRequest);
-        $this->redirectUrlValidator->expects(self::once())->method('isValid')->with($request, $expectedReferrer)->willReturn(true);
+        $this->redirectUrlValidator->expects($this->once())->method('isValid')->with($request, $expectedReferrer)->willReturn(true);
         $settings = ['redirectMode' => RedirectMode::REFERRER];
         self::assertEquals($expectedReferrer, $this->subject->getReferrerForLoginForm($request, $settings));
     }
@@ -211,7 +211,7 @@ final class RedirectHandlerTest extends UnitTestCase
         ))->withQueryParams(['tx_felogin_login' => ['redirectReferrer' => 'off']])
             ->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
-        $this->redirectUrlValidator->expects(self::never())->method('isValid');
+        $this->redirectUrlValidator->expects($this->never())->method('isValid');
         $settings = ['redirectMode' => RedirectMode::REFERRER];
         self::assertEquals('', $this->subject->getReferrerForLoginForm($request, $settings));
     }

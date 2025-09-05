@@ -52,7 +52,7 @@ final class FloatConverterTest extends UnitTestCase
             [FloatConverter::class, FloatConverter::CONFIGURATION_DECIMAL_POINT, ','],
         ];
         $mockMappingConfiguration
-            ->expects(self::exactly(2))
+            ->expects($this->exactly(2))
             ->method('getConfigurationValue')
             ->willReturnCallback(function (string $class, string $key) use (&$series): string {
                 $arguments = array_shift($series);

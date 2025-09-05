@@ -402,7 +402,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectExceptionCode(1662727149);
 
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $eventDispatcher->expects(self::once())->method('dispatch')->willReturnCallback(static function (ModifyEditFormUserAccessEvent $event) {
+        $eventDispatcher->expects($this->once())->method('dispatch')->willReturnCallback(static function (ModifyEditFormUserAccessEvent $event) {
             $event->denyUserAccess();
             return $event;
         });
@@ -435,7 +435,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
 
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $eventDispatcher->expects(self::once())->method('dispatch')->willReturnCallback(static function (ModifyEditFormUserAccessEvent $event) {
+        $eventDispatcher->expects($this->once())->method('dispatch')->willReturnCallback(static function (ModifyEditFormUserAccessEvent $event) {
             $event->allowUserAccess();
             return $event;
         });

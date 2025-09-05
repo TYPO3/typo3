@@ -40,7 +40,7 @@ final class PaletteAndSingleContainerTest extends UnitTestCase
             'inlineData' => [],
             'html' => 'aFieldRenderedHtml',
         ];
-        $singleFieldContainerMock->expects(self::atLeastOnce())->method('render')->withAnyParameters()->willReturn($singleFieldContainerReturn);
+        $singleFieldContainerMock->expects($this->atLeastOnce())->method('render')->withAnyParameters()->willReturn($singleFieldContainerReturn);
 
         $labelReference = 'LLL:EXT:Resources/Private/Language/locallang.xlf:aLabel';
         $input = [
@@ -105,7 +105,7 @@ final class PaletteAndSingleContainerTest extends UnitTestCase
             'inlineData' => [],
             'html' => 'aFieldRenderedHtml',
         ];
-        $singleFieldContainerMock->expects(self::atLeastOnce())->method('render')->withAnyParameters()->willReturn($singleFieldContainerReturn);
+        $singleFieldContainerMock->expects($this->atLeastOnce())->method('render')->withAnyParameters()->willReturn($singleFieldContainerReturn);
 
         $labelReference = 'LLL:EXT:Resources/Private/Language/locallang.xlf:aLabel';
         $descriptionReference = 'LLL:EXT:Resources/Private/Language/locallang.xlf:aDescription';
@@ -174,7 +174,7 @@ final class PaletteAndSingleContainerTest extends UnitTestCase
             'inlineData' => [],
             'html' => 'aFieldRenderedHtml',
         ];
-        $singleFieldContainerMock->expects(self::atLeastOnce())->method('render')->withAnyParameters()->willReturn($singleFieldContainerReturn);
+        $singleFieldContainerMock->expects($this->atLeastOnce())->method('render')->withAnyParameters()->willReturn($singleFieldContainerReturn);
 
         $labelReferenceFieldArray = 'LLL:EXT:Resources/Private/Language/locallang.xlf:aLabel';
         $labelReferencePaletteArray = 'LLL:EXT:Resources/Private/Language/locallang.xlf:aLabelPalette';

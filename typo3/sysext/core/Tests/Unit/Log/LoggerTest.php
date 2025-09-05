@@ -57,7 +57,7 @@ final class LoggerTest extends UnitTestCase
         $processor = $this->getMockBuilder(NullProcessor::class)
             ->onlyMethods(['processLogRecord'])
             ->getMock();
-        $processor->expects(self::once())->method('processLogRecord')->willReturn(new LogRecord($component, $level, $message));
+        $processor->expects($this->once())->method('processLogRecord')->willReturn(new LogRecord($component, $level, $message));
         $logger->addProcessor($level, $processor);
         // we need a writer, otherwise we will not process log records
         $logger->addWriter($level, new NullWriter());
@@ -71,7 +71,7 @@ final class LoggerTest extends UnitTestCase
         $writer = $this->getMockBuilder(NullWriter::class)
             ->onlyMethods(['writeLog'])
             ->getMock();
-        $writer->expects(self::once())->method('writeLog');
+        $writer->expects($this->once())->method('writeLog');
         $logger->addWriter(LogLevel::DEBUG, $writer);
         $logger->warning('test');
     }

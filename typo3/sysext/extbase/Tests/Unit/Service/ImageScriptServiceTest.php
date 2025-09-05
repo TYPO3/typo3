@@ -51,10 +51,10 @@ final class ImageScriptServiceTest extends UnitTestCase
         $reference = $this->getMockBuilder(FileReference::class)->disableOriginalConstructor()->getMock();
         $file = $this->createMock(File::class);
         $processedFile = $this->createMock(ProcessedFile::class);
-        $file->expects(self::once())->method('process')->willReturn($processedFile);
-        $reference->expects(self::once())->method('getOriginalFile')->willReturn($file);
-        $processedFile->expects(self::once())->method('getOriginalFile')->willReturn($file);
-        $processedFile->expects(self::atLeastOnce())->method('getPublicUrl')->willReturn('https://example.com/foo.png');
+        $file->expects($this->once())->method('process')->willReturn($processedFile);
+        $reference->expects($this->once())->method('getOriginalFile')->willReturn($file);
+        $processedFile->expects($this->once())->method('getOriginalFile')->willReturn($file);
+        $processedFile->expects($this->atLeastOnce())->method('getPublicUrl')->willReturn('https://example.com/foo.png');
 
         $this->subject->applyProcessingInstructions($reference, []);
     }
@@ -78,7 +78,7 @@ final class ImageScriptServiceTest extends UnitTestCase
         $GLOBALS['TSFE']->absRefPrefix = '/prefix/';
 
         $file = $this->createMock(File::class);
-        $file->expects(self::once())->method('getPublicUrl')->willReturn($imageUri);
+        $file->expects($this->once())->method('getPublicUrl')->willReturn($imageUri);
 
         self::assertSame($expected, $this->subject->getImageUri($file));
     }
@@ -102,7 +102,7 @@ final class ImageScriptServiceTest extends UnitTestCase
         $GLOBALS['TSFE']->absRefPrefix = '/prefix/';
 
         $file = $this->createMock(File::class);
-        $file->expects(self::once())->method('getPublicUrl')->willReturn($imageUri);
+        $file->expects($this->once())->method('getPublicUrl')->willReturn($imageUri);
 
         self::assertSame($expected, $this->subject->getImageUri($file, true));
     }

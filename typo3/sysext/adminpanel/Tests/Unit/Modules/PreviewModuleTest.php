@@ -56,7 +56,7 @@ final class PreviewModuleTest extends UnitTestCase
     public function initializeFrontendPreviewSetsDateForSimulation(string $dateToSimulate, int $expectedExecTime, int $expectedAccessTime): void
     {
         $configurationService = $this->getMockBuilder(ConfigurationService::class)->disableOriginalConstructor()->getMock();
-        $configurationService->expects(self::once())->method('getMainConfiguration')->willReturn([]);
+        $configurationService->expects($this->once())->method('getMainConfiguration')->willReturn([]);
         $valueMap = [
             ['preview', 'showHiddenPages', ''],
             ['preview', 'simulateDate', $dateToSimulate],
@@ -86,7 +86,7 @@ final class PreviewModuleTest extends UnitTestCase
         $request = (new ServerRequest())->withAttribute('frontend.user', $this->getMockBuilder(FrontendUserAuthentication::class)->getMock());
 
         $configurationService = $this->getMockBuilder(ConfigurationService::class)->disableOriginalConstructor()->getMock();
-        $configurationService->expects(self::once())->method('getMainConfiguration')->willReturn([]);
+        $configurationService->expects($this->once())->method('getMainConfiguration')->willReturn([]);
         $valueMap = [
             ['preview', 'showHiddenPages', '0'],
             ['preview', 'simulateDate', '0'],
@@ -99,7 +99,7 @@ final class PreviewModuleTest extends UnitTestCase
 
         $context = $this->getMockBuilder(Context::class)->getMock();
         $context->method('hasAspect')->with('frontend.preview')->willReturn(false);
-        $context->expects(self::any())->method('setAspect')
+        $context->expects($this->any())->method('setAspect')
             ->willReturnCallback(fn(string $name): bool => match (true) {
                 $name === 'date',
                 $name === 'visibility',

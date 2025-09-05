@@ -54,12 +54,12 @@ final class FrontendUserAuthenticationTest extends UnitTestCase
         $userSessionManagerMock->method('createAnonymousSession')->willReturn(UserSession::createNonFixated('newSessionId'));
         // set() and update() shouldn't be called since no session cookie is set
         // remove() should be called with given session id
-        $userSessionManagerMock->expects(self::once())->method('isSessionPersisted')->with(self::anything())->willReturn(true);
-        $userSessionManagerMock->expects(self::once())->method('removeSession')->with(self::anything());
+        $userSessionManagerMock->expects($this->once())->method('isSessionPersisted')->with(self::anything())->willReturn(true);
+        $userSessionManagerMock->expects($this->once())->method('removeSession')->with(self::anything());
 
         // set() and update() shouldn't be called since no session cookie is set
-        $userSessionManagerMock->expects(self::never())->method('elevateToFixatedUserSession')->with(self::anything());
-        $userSessionManagerMock->expects(self::never())->method('updateSession')->with(self::anything());
+        $userSessionManagerMock->expects($this->never())->method('elevateToFixatedUserSession')->with(self::anything());
+        $userSessionManagerMock->expects($this->never())->method('updateSession')->with(self::anything());
 
         $subject = new FrontendUserAuthentication();
         $subject->initializeUserSessionManager($userSessionManagerMock);
@@ -87,12 +87,12 @@ final class FrontendUserAuthenticationTest extends UnitTestCase
         // Verify new session id is generated
         // set() and update() shouldn't be called since no session cookie is set
         // remove() should be called with given session id
-        $userSessionManagerMock->expects(self::once())->method('isSessionPersisted')->with(self::anything())->willReturn(true);
-        $userSessionManagerMock->expects(self::never())->method('removeSession')->with(self::anything());
+        $userSessionManagerMock->expects($this->once())->method('isSessionPersisted')->with(self::anything())->willReturn(true);
+        $userSessionManagerMock->expects($this->never())->method('removeSession')->with(self::anything());
 
         // set() and update() shouldn't be called since no session cookie is set
-        $userSessionManagerMock->expects(self::never())->method('elevateToFixatedUserSession')->with(self::anything());
-        $userSessionManagerMock->expects(self::once())->method('updateSession')->with(self::anything());
+        $userSessionManagerMock->expects($this->never())->method('elevateToFixatedUserSession')->with(self::anything());
+        $userSessionManagerMock->expects($this->once())->method('updateSession')->with(self::anything());
 
         // new session should be written
         $sessionRecord = [
@@ -105,7 +105,7 @@ final class FrontendUserAuthenticationTest extends UnitTestCase
         ];
         $userSessionToBePersisted = UserSession::createFromRecord($uniqueSessionId, $sessionRecord, true);
         $userSessionToBePersisted->set('foo', 'bar');
-        $userSessionManagerMock->expects(self::once())->method('updateSession')->with($userSessionToBePersisted);
+        $userSessionManagerMock->expects($this->once())->method('updateSession')->with($userSessionToBePersisted);
 
         $subject = new FrontendUserAuthentication();
         $subject->initializeUserSessionManager($userSessionManagerMock);

@@ -151,10 +151,10 @@ final class ConfigurationServiceTest extends UnitTestCase
         $requestMock = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
 
         $subModuleFixture = $this->getMockBuilder(SubModuleFixture::class)->getMock();
-        $subModuleFixture->expects(self::atLeastOnce())->method('onSubmit')->with([], $requestMock);
+        $subModuleFixture->expects($this->atLeastOnce())->method('onSubmit')->with([], $requestMock);
         $mainModuleFixture = $this->getMockBuilder(MainModuleFixture::class)->getMock();
         $mainModuleFixture->method('isEnabled')->willReturn(true);
-        $mainModuleFixture->expects(self::atLeastOnce())->method('onSubmit')->with([], $requestMock);
+        $mainModuleFixture->expects($this->atLeastOnce())->method('onSubmit')->with([], $requestMock);
         $mainModuleFixture->method('getSubModules')->willReturn(
             [$subModuleFixture]
         );
@@ -176,7 +176,7 @@ final class ConfigurationServiceTest extends UnitTestCase
             ],
         ];
 
-        $this->beUser->expects(self::atLeastOnce())->method('writeUC');
+        $this->beUser->expects($this->atLeastOnce())->method('writeUC');
 
         // new configuration to save
         $requestMock = $this->getMockBuilder(ServerRequestInterface::class)->getMock();

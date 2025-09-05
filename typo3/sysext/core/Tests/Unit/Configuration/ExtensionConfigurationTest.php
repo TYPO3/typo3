@@ -75,7 +75,7 @@ final class ExtensionConfigurationTest extends UnitTestCase
     {
         $configurationManagerMock = $this->createMock(ConfigurationManager::class);
         GeneralUtility::addInstance(ConfigurationManager::class, $configurationManagerMock);
-        $configurationManagerMock->expects(self::once())->method('removeLocalConfigurationKeysByPath')->with(['EXTENSIONS/foo']);
+        $configurationManagerMock->expects($this->once())->method('removeLocalConfigurationKeysByPath')->with(['EXTENSIONS/foo']);
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['foo'] = [
             'bar' => 'baz',
         ];
@@ -89,7 +89,7 @@ final class ExtensionConfigurationTest extends UnitTestCase
         $value = ['bar' => 'baz'];
         $configurationManagerMock = $this->createMock(ConfigurationManager::class);
         GeneralUtility::addInstance(ConfigurationManager::class, $configurationManagerMock);
-        $configurationManagerMock->expects(self::once())->method('setLocalConfigurationValueByPath')->with('EXTENSIONS/foo', $value);
+        $configurationManagerMock->expects($this->once())->method('setLocalConfigurationValueByPath')->with('EXTENSIONS/foo', $value);
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['foo'] = [
             'bar' => 'fizz',
             'bee' => 'boo',

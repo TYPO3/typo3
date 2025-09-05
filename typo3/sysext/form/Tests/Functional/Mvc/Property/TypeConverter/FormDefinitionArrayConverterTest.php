@@ -37,7 +37,7 @@ final class FormDefinitionArrayConverterTest extends FunctionalTestCase
     public function convertsJsonStringToFormDefinitionArray(): void
     {
         $formDefinitionValidationServiceMock = $this->createMock(FormDefinitionValidationService::class);
-        $formDefinitionValidationServiceMock->expects(self::atLeastOnce())->method('validateFormDefinitionProperties')->with(self::anything());
+        $formDefinitionValidationServiceMock->expects($this->atLeastOnce())->method('validateFormDefinitionProperties')->with(self::anything());
         $formDefinitionValidationServiceMock->method('isPropertyValueEqualToHistoricalValue')->with(self::anything())->willReturn(true);
 
         $subjectMock = $this->getAccessibleMock(

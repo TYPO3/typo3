@@ -55,7 +55,7 @@ final class DatabaseEditRowTest extends UnitTestCase
             'uid' => 10,
             'pid' => 123,
         ];
-        $this->subject->expects(self::once())->method('getDatabaseRow')->willReturn($resultRow);
+        $this->subject->expects($this->once())->method('getDatabaseRow')->willReturn($resultRow);
         $result = $this->subject->addData($input);
 
         self::assertSame($resultRow, $result['databaseRow']);
@@ -73,7 +73,7 @@ final class DatabaseEditRowTest extends UnitTestCase
         $resultRow = [
             'uid' => 10,
         ];
-        $this->subject->expects(self::once())->method('getDatabaseRow')->willReturn($resultRow);
+        $this->subject->expects($this->once())->method('getDatabaseRow')->willReturn($resultRow);
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1437663061);
@@ -104,7 +104,7 @@ final class DatabaseEditRowTest extends UnitTestCase
             'command' => 'edit',
             'vanillaUid' => 10,
         ];
-        $this->subject->expects(self::once())->method('getDatabaseRow')->willReturn([]);
+        $this->subject->expects($this->once())->method('getDatabaseRow')->willReturn([]);
 
         $this->expectException(DatabaseRecordException::class);
         $this->expectExceptionCode(1437656081);
@@ -120,7 +120,7 @@ final class DatabaseEditRowTest extends UnitTestCase
             'command' => 'edit',
             'vanillaUid' => 10,
         ];
-        $this->subject->expects(self::once())->method('getDatabaseRow')->willReturn([]);
+        $this->subject->expects($this->once())->method('getDatabaseRow')->willReturn([]);
 
         try {
             $this->subject->addData($input);
@@ -155,7 +155,7 @@ final class DatabaseEditRowTest extends UnitTestCase
             'pid' => 123,
             't3ver_state' => 2,
         ];
-        $this->subject->expects(self::once())->method('getDatabaseRow')->willReturn($resultRow);
+        $this->subject->expects($this->once())->method('getDatabaseRow')->willReturn($resultRow);
         $this->subject->addData($input);
     }
 
@@ -174,7 +174,7 @@ final class DatabaseEditRowTest extends UnitTestCase
             'databaseRow' => $virtualRow,
         ];
         $resultRow = $virtualRow;
-        $this->subject->expects(self::never())->method('getDatabaseRow');
+        $this->subject->expects($this->never())->method('getDatabaseRow');
 
         $result = $this->subject->addData($input);
 

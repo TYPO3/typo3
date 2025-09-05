@@ -160,7 +160,7 @@ final class RendererRegistryTest extends UnitTestCase
             ->setMockClassName($rendererClass1)
             ->getMock();
         $rendererObject1->method('getPriority')->willReturn(1);
-        $rendererObject1->expects(self::once())->method('canRender')->willReturn(true);
+        $rendererObject1->expects($this->once())->method('canRender')->willReturn(true);
 
         $rendererClass2 = StringUtility::getUniqueId('myAudioRenderer');
         $rendererObject2 = $this->getMockBuilder(FileRendererInterface::class)
@@ -168,7 +168,7 @@ final class RendererRegistryTest extends UnitTestCase
             ->setMockClassName($rendererClass2)
             ->getMock();
         $rendererObject2->method('getPriority')->willReturn(10);
-        $rendererObject2->expects(self::once())->method('canRender')->willReturn(false);
+        $rendererObject2->expects($this->once())->method('canRender')->willReturn(false);
 
         $fileResourceMock = $this->createMock(File::class);
 

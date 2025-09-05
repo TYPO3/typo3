@@ -70,7 +70,7 @@ final class OnTheFlyTest extends UnitTestCase
         ];
         $this->subject->setProviderList($providerList);
         $providerResult = ['foo'];
-        $formDataProviderMock->expects(self::atLeastOnce())->method('addData')->with(self::anything())
+        $formDataProviderMock->expects($this->atLeastOnce())->method('addData')->with(self::anything())
             ->willReturn($providerResult);
 
         self::assertEquals($providerResult, $this->subject->compile([]));

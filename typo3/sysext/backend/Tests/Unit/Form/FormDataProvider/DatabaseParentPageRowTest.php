@@ -55,7 +55,7 @@ final class DatabaseParentPageRowTest extends UnitTestCase
         ];
         GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
         GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
-        $this->subject->expects(self::exactly(2))->method('getDatabaseRow')->willReturnCallback(function (string $tableName, int $uid) use (&$series): array {
+        $this->subject->expects($this->exactly(2))->method('getDatabaseRow')->willReturnCallback(function (string $tableName, int $uid) use (&$series): array {
             [$expectedArgs, $return] = array_shift($series);
             self::assertSame($expectedArgs['tableName'], $tableName);
             self::assertSame($expectedArgs['uid'], $uid);
@@ -90,7 +90,7 @@ final class DatabaseParentPageRowTest extends UnitTestCase
         ];
         GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
         GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
-        $this->subject->expects(self::exactly(2))->method('getDatabaseRow')->willReturnCallback(function (string $tableName, int $uid) use (&$series): array {
+        $this->subject->expects($this->exactly(2))->method('getDatabaseRow')->willReturnCallback(function (string $tableName, int $uid) use (&$series): array {
             [$expectedArgs, $return] = array_shift($series);
             self::assertSame($expectedArgs['tableName'], $tableName);
             self::assertSame($expectedArgs['uid'], $uid);
@@ -112,7 +112,7 @@ final class DatabaseParentPageRowTest extends UnitTestCase
         ];
         GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
 
-        $this->subject->expects(self::once())
+        $this->subject->expects($this->once())
             ->method('getDatabaseRow')
             ->with($input['tableName'], 10)
             ->willReturn(['pid' => 0]);
@@ -136,7 +136,7 @@ final class DatabaseParentPageRowTest extends UnitTestCase
         ];
         GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
 
-        $this->subject->expects(self::once())
+        $this->subject->expects($this->once())
             ->method('getDatabaseRow')
             ->with('pages', 123)
             ->willReturn($parentPageRow);
@@ -163,7 +163,7 @@ final class DatabaseParentPageRowTest extends UnitTestCase
             'pid' => 456,
         ];
         GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
-        $this->subject->expects(self::once())
+        $this->subject->expects($this->once())
             ->method('getDatabaseRow')
             ->with('pages', 321)
             ->willReturn($parentPageRow);
@@ -183,7 +183,7 @@ final class DatabaseParentPageRowTest extends UnitTestCase
             'databaseRow' => [],
         ];
 
-        $this->subject->expects(self::never())->method('getDatabaseRow');
+        $this->subject->expects($this->never())->method('getDatabaseRow');
 
         $result = $this->subject->addData($input);
 
@@ -200,7 +200,7 @@ final class DatabaseParentPageRowTest extends UnitTestCase
             'databaseRow' => [],
         ];
 
-        $this->subject->expects(self::never())->method('getDatabaseRow');
+        $this->subject->expects($this->never())->method('getDatabaseRow');
 
         $result = $this->subject->addData($input);
 

@@ -68,7 +68,7 @@ final class BackendUserConfigurationTest extends UnitTestCase
             'foo' => 'A',
         ];
 
-        $this->backendUserMock->expects(self::atLeastOnce())->method('writeUC');
+        $this->backendUserMock->expects($this->atLeastOnce())->method('writeUC');
 
         $this->backendUserConfiguration->set('foo', 'X');
         $this->backendUserConfiguration->set('bar', 'Y');
@@ -94,7 +94,7 @@ final class BackendUserConfigurationTest extends UnitTestCase
             ],
         ];
 
-        $this->backendUserMock->expects(self::atLeastOnce())->method('writeUC');
+        $this->backendUserMock->expects($this->atLeastOnce())->method('writeUC');
 
         $this->backendUserConfiguration->addToList('foo', 'X');
         $this->backendUserConfiguration->addToList('nested.foo', 'X');
@@ -119,7 +119,7 @@ final class BackendUserConfigurationTest extends UnitTestCase
             ],
         ];
 
-        $this->backendUserMock->expects(self::atLeastOnce())->method('writeUC');
+        $this->backendUserMock->expects($this->atLeastOnce())->method('writeUC');
 
         $this->backendUserConfiguration->removeFromList('foo', 'B');
         $this->backendUserConfiguration->removeFromList('nested.foo', 'B');
@@ -136,7 +136,7 @@ final class BackendUserConfigurationTest extends UnitTestCase
     #[Test]
     public function clearsConfiguration(): void
     {
-        $this->backendUserMock->expects(self::atLeastOnce())->method('resetUC');
+        $this->backendUserMock->expects($this->atLeastOnce())->method('resetUC');
         $this->backendUserConfiguration->clear();
     }
 
@@ -148,7 +148,7 @@ final class BackendUserConfigurationTest extends UnitTestCase
             'bar' => 'B',
         ];
 
-        $this->backendUserMock->expects(self::atLeastOnce())->method('writeUC');
+        $this->backendUserMock->expects($this->atLeastOnce())->method('writeUC');
 
         $this->backendUserConfiguration->unsetOption('foo');
         $this->backendUserConfiguration->unsetOption('foo');

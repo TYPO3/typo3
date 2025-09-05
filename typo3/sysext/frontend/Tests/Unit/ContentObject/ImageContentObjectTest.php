@@ -182,7 +182,7 @@ final class ImageContentObjectTest extends UnitTestCase
 
         // Avoid calling of imgResource
         $cObj
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getImgResource')
             ->with(self::equalTo('testImageName'))
             ->willReturn(new ImageResource(100, 100, '', 'bar', 'bar'));
@@ -378,7 +378,7 @@ final class ImageContentObjectTest extends UnitTestCase
 
         // Avoid calling of imgResource
         $cObj
-            ->expects(self::exactly(2))
+            ->expects($this->exactly(2))
             ->method('getImgResource')
             ->with(self::equalTo('testImageName'))
             ->willReturn(new ImageResource(100, 100, '', 'bar-file.jpg', 'bar-file.jpg'));

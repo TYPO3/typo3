@@ -48,7 +48,7 @@ final class CountryConverterTest extends UnitTestCase
     {
         $mockMappingConfiguration = $this->createMock(PropertyMappingConfigurationInterface::class);
         $mockMappingConfiguration
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getConfigurationValue')
             ->with(CountryConverter::class, CountryConverter::CONFIGURATION_FROM)
             ->willReturn('alpha3IsoCode');

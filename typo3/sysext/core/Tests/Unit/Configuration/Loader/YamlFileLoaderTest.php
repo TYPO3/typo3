@@ -105,8 +105,8 @@ final class YamlFileLoaderTest extends UnitTestCase
             ['getFileContents', 'getStreamlinedFileName'],
             [$this->createMock(LoggerInterface::class)]
         );
-        $subject->expects(self::once())->method('getStreamlinedFileName')->with($fileName)->willReturn($fileName);
-        $subject->expects(self::once())->method('getFileContents')->with($fileName)->willReturn($fileContents);
+        $subject->expects($this->once())->method('getStreamlinedFileName')->with($fileName)->willReturn($fileName);
+        $subject->expects($this->once())->method('getFileContents')->with($fileName)->willReturn($fileContents);
         $output = $subject->load($fileName);
         self::assertSame($expected, $output);
         putenv('foo');
@@ -148,8 +148,8 @@ betterthanbefore: \'%env(mynonexistingenv)%\'
             ['getFileContents', 'getStreamlinedFileName'],
             [$this->createMock(LoggerInterface::class)]
         );
-        $subject->expects(self::once())->method('getStreamlinedFileName')->with($fileName)->willReturn($fileName);
-        $subject->expects(self::once())->method('getFileContents')->with($fileName)->willReturn($fileContents);
+        $subject->expects($this->once())->method('getStreamlinedFileName')->with($fileName)->willReturn($fileName);
+        $subject->expects($this->once())->method('getFileContents')->with($fileName)->willReturn($fileContents);
         $output = $subject->load($fileName);
         self::assertSame($expected, $output);
     }

@@ -35,13 +35,13 @@ final class CacheTagsAttributeTest extends UnitTestCase
     {
         $requestMock = $this->createMock(ServerRequestInterface::class);
         $requestMock
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('withAttribute')
             ->with('frontend.cache.collector', self::isInstanceOf(CacheDataCollectorInterface::class))
             ->willReturnSelf();
         $requestHandlerMock = $this->createMock(RequestHandlerInterface::class);
         $requestHandlerMock
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('handle')
             ->with(self::isInstanceOf(ServerRequestInterface::class))
             ->willReturn($this->createMock(ResponseInterface::class));
@@ -55,7 +55,7 @@ final class CacheTagsAttributeTest extends UnitTestCase
         $request = new ServerRequest();
         $requestHandlerMock = $this->createMock(RequestHandlerInterface::class);
         $requestHandlerMock
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('handle')
             ->willReturnCallback(
                 function (ServerRequestInterface $request) {
@@ -88,7 +88,7 @@ final class CacheTagsAttributeTest extends UnitTestCase
         $request = new ServerRequest();
         $requestHandlerMock = $this->createMock(RequestHandlerInterface::class);
         $requestHandlerMock
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('handle')
             ->willReturnCallback(
                 function (ServerRequestInterface $request) {

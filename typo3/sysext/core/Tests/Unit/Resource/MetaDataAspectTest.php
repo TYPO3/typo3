@@ -140,7 +140,7 @@ final class MetaDataAspectTest extends UnitTestCase
             ->getMock();
         $metaDataRepositoryMock->method('findByFileUid')->willReturn([]);
         $metaDataRepositoryMock->method('getTableFields')->willReturn(['title' => 'sometype']);
-        $metaDataRepositoryMock->expects(self::never())->method('update');
+        $metaDataRepositoryMock->expects($this->never())->method('update');
         GeneralUtility::setSingletonInstance(MetaDataRepository::class, $metaDataRepositoryMock);
 
         $file->getMetaData()->add($metaData)->save();
@@ -167,7 +167,7 @@ final class MetaDataAspectTest extends UnitTestCase
         $file = new File(['uid' => 12], $this->storageMock);
 
         $eventDispatcherMock = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
-        $eventDispatcherMock->expects(self::atLeastOnce())->method('dispatch')->with(self::anything())->willReturnArgument(0);
+        $eventDispatcherMock->expects($this->atLeastOnce())->method('dispatch')->with(self::anything())->willReturnArgument(0);
 
         $metaDataRepositoryMock = $this->getMockBuilder(MetaDataRepository::class)
             ->onlyMethods(['createMetaDataRecord', 'getTableFields'])

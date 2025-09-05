@@ -66,7 +66,7 @@ final class AssetRendererTest extends UnitTestCase
         );
 
         $eventDispatcher
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('dispatch')
             ->with($event);
 

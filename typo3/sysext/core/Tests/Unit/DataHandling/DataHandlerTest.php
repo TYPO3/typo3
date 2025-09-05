@@ -242,7 +242,7 @@ final class DataHandlerTest extends UnitTestCase
     {
         $event = new EnrichPasswordValidationContextDataEvent(new ContextData(), [], '');
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $eventDispatcher->expects(self::once())->method('dispatch')->willReturn($event);
+        $eventDispatcher->expects($this->once())->method('dispatch')->willReturn($event);
         $constructorArguments = [
             $eventDispatcher,
             $this->createMock(CacheManager::class),
@@ -885,7 +885,7 @@ final class DataHandlerTest extends UnitTestCase
             ->onlyMethods(['checkModifyAccessList'])
             ->setMockClassName($hookClass)
             ->getMock();
-        $hookMock->expects(self::once())->method('checkModifyAccessList');
+        $hookMock->expects($this->once())->method('checkModifyAccessList');
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = $hookClass;
         GeneralUtility::addInstance($hookClass, $hookMock);
         $this->subject->_call('checkModifyAccessList', 'tt_content');
@@ -1002,7 +1002,7 @@ final class DataHandlerTest extends UnitTestCase
     public function logCallsWriteLogOfBackendUserIfLoggingIsEnabled(): void
     {
         $backendUser = $this->createMock(BackendUserAuthentication::class);
-        $backendUser->expects(self::once())->method('writelog');
+        $backendUser->expects($this->once())->method('writelog');
         $this->subject->enableLogging = true;
         $this->subject->BE_USER = $backendUser;
         $this->subject->log('', 23, Action::UNDEFINED, null, Error::MESSAGE, 'details');
@@ -1012,7 +1012,7 @@ final class DataHandlerTest extends UnitTestCase
     public function logDoesNotCallWriteLogOfBackendUserIfLoggingIsDisabled(): void
     {
         $backendUser = $this->createMock(BackendUserAuthentication::class);
-        $backendUser->expects(self::never())->method('writelog');
+        $backendUser->expects($this->never())->method('writelog');
         $this->subject->enableLogging = false;
         $this->subject->BE_USER = $backendUser;
         $this->subject->log('', 23, Action::UNDEFINED, null, Error::MESSAGE, 'details');

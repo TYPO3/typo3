@@ -547,16 +547,16 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
     public function migrateSaltedPasswordsSetsSpecificHashMethodIfArgon2idAndArgon2iIsNotAvailable(): void
     {
         $argon2idBeMock = $this->createMock(Argon2idPasswordHash::class);
-        $argon2idBeMock->expects(self::atLeastOnce())->method('isAvailable')->willReturn(false);
+        $argon2idBeMock->expects($this->atLeastOnce())->method('isAvailable')->willReturn(false);
         GeneralUtility::addInstance(Argon2idPasswordHash::class, $argon2idBeMock);
         $argonBeMock = $this->createMock(Argon2iPasswordHash::class);
-        $argonBeMock->expects(self::atLeastOnce())->method('isAvailable')->willReturn(false);
+        $argonBeMock->expects($this->atLeastOnce())->method('isAvailable')->willReturn(false);
         GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonBeMock);
         $argon2idFeMock = $this->createMock(Argon2idPasswordHash::class);
-        $argon2idFeMock->expects(self::atLeastOnce())->method('isAvailable')->willReturn(false);
+        $argon2idFeMock->expects($this->atLeastOnce())->method('isAvailable')->willReturn(false);
         GeneralUtility::addInstance(Argon2idPasswordHash::class, $argon2idFeMock);
         $argonFeMock = $this->createMock(Argon2iPasswordHash::class);
-        $argonFeMock->expects(self::atLeastOnce())->method('isAvailable')->willReturn(false);
+        $argonFeMock->expects($this->atLeastOnce())->method('isAvailable')->willReturn(false);
         GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonFeMock);
 
         $testConfig = [

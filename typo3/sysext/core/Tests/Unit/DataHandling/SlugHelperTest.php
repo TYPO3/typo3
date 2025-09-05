@@ -584,7 +584,7 @@ final class SlugHelperTest extends UnitTestCase
             [13, $parentPage],
             [10, null],
         ];
-        $subject->expects(self::exactly(2))
+        $subject->expects($this->exactly(2))
             ->method('resolveParentPageRecord')
             ->willReturnCallback(function (int $pid) use (&$series): ?array {
                 $arguments = array_shift($series);
@@ -826,7 +826,7 @@ final class SlugHelperTest extends UnitTestCase
                 $options,
             ]
         );
-        $subject->expects(self::any())
+        $subject->expects($this->any())
             ->method('resolveParentPageRecord')
             ->withAnyParameters()
             ->willReturn($parentPage);

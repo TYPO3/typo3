@@ -43,8 +43,8 @@ final class ImageInfoTest extends UnitTestCase
         };
 
         $loggerMock = $this->createMock(Logger::class);
-        $loggerMock->expects(self::once())->method('error')->with(self::isString(), self::callback($exceptionIsLogged));
-        $loggerMock->expects(self::once())->method('warning')
+        $loggerMock->expects($this->once())->method('error')->with(self::isString(), self::callback($exceptionIsLogged));
+        $loggerMock->expects($this->once())->method('warning')
             ->with('I could not retrieve the image size for file {file}', ['file' => $testFile]);
 
         $subject = new ImageInfo($testFile);

@@ -58,7 +58,7 @@ final class BackendLayoutCollectionTest extends UnitTestCase
             ->onlyMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backendLayoutMock->expects(self::once())->method('getIdentifier')->willReturn($backendLayoutIdentifier);
+        $backendLayoutMock->expects($this->once())->method('getIdentifier')->willReturn($backendLayoutIdentifier);
 
         $backendLayoutCollection->add($backendLayoutMock);
     }
@@ -75,12 +75,12 @@ final class BackendLayoutCollectionTest extends UnitTestCase
             ->onlyMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
-        $firstBackendLayoutMock->expects(self::once())->method('getIdentifier')->willReturn($backendLayoutIdentifier);
+        $firstBackendLayoutMock->expects($this->once())->method('getIdentifier')->willReturn($backendLayoutIdentifier);
         $secondBackendLayoutMock = $this->getMockBuilder(BackendLayout::class)
             ->onlyMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
-        $secondBackendLayoutMock->expects(self::once())->method('getIdentifier')->willReturn($backendLayoutIdentifier);
+        $secondBackendLayoutMock->expects($this->once())->method('getIdentifier')->willReturn($backendLayoutIdentifier);
 
         $backendLayoutCollection->add($firstBackendLayoutMock);
         $backendLayoutCollection->add($secondBackendLayoutMock);
@@ -96,7 +96,7 @@ final class BackendLayoutCollectionTest extends UnitTestCase
             ->onlyMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backendLayoutMock->expects(self::once())->method('getIdentifier')->willReturn($backendLayoutIdentifier);
+        $backendLayoutMock->expects($this->once())->method('getIdentifier')->willReturn($backendLayoutIdentifier);
 
         $backendLayoutCollection->add($backendLayoutMock);
 

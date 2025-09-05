@@ -33,7 +33,7 @@ final class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
     public function enforceableRestrictionsAreKeptWhenRemoveAllIsCalled(): void
     {
         $restriction = $this->createMock(MockEnforceableQueryRestriction::class);
-        $restriction->expects(self::atLeastOnce())->method('buildExpression')->with(['aTable' => 'aTable'], $this->expressionBuilder)
+        $restriction->expects($this->atLeastOnce())->method('buildExpression')->with(['aTable' => 'aTable'], $this->expressionBuilder)
             ->willReturn(CompositeExpression::and('"aTable"."pid" = 0'));
         $restriction->method('isEnforced')->willReturn(true);
 
@@ -49,7 +49,7 @@ final class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
     public function enforceableRestrictionsWillBeRemovedWhenRemovedByType(): void
     {
         $restriction = $this->createMock(MockEnforceableQueryRestriction::class);
-        $restriction->expects(self::never())->method('buildExpression');
+        $restriction->expects($this->never())->method('buildExpression');
         $restriction->method('isEnforced')->willReturn(true);
 
         $subject = new InstantiatableAbstractRestrictionContainer();
@@ -94,7 +94,7 @@ final class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
     public function enforceableRestrictionsWillBeRemovedWhenRemovedByTypeAndRemovedAllIsAdditionallyCalled(): void
     {
         $restriction = $this->createMock(MockEnforceableQueryRestriction::class);
-        $restriction->expects(self::never())->method('buildExpression');
+        $restriction->expects($this->never())->method('buildExpression');
         $restriction->method('isEnforced')->willReturn(true);
 
         $subject = new InstantiatableAbstractRestrictionContainer();
@@ -110,7 +110,7 @@ final class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
     public function notEnforceableRestrictionsAreRemovedWhenRemoveAllIsCalled(): void
     {
         $restriction = $this->createMock(MockQueryRestriction::class);
-        $restriction->expects(self::never())->method('buildExpression');
+        $restriction->expects($this->never())->method('buildExpression');
 
         $subject = new InstantiatableAbstractRestrictionContainer();
         $subject->add($restriction);
@@ -124,7 +124,7 @@ final class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
     public function enforceableRestrictionsThatDeclareThemselvesNonStickyAreRemovedWhenRemoveAllIsCalled(): void
     {
         $restriction = $this->createMock(MockEnforceableQueryRestriction::class);
-        $restriction->expects(self::never())->method('buildExpression');
+        $restriction->expects($this->never())->method('buildExpression');
         $restriction->method('isEnforced')->willReturn(false);
 
         $subject = new InstantiatableAbstractRestrictionContainer();

@@ -87,12 +87,12 @@ final class GenericObjectValidatorTest extends UnitTestCase
         $validatorForFoo = $this->getMockBuilder(ValidatorInterface::class)
             ->onlyMethods(['validate', 'getOptions', 'setOptions', 'getRequest', 'setRequest'])
             ->getMock();
-        $validatorForFoo->expects(self::once())->method('validate')->with('foovalue')->willReturn($validationResultForFoo);
+        $validatorForFoo->expects($this->once())->method('validate')->with('foovalue')->willReturn($validationResultForFoo);
 
         $validatorForBar = $this->getMockBuilder(ValidatorInterface::class)
             ->onlyMethods(['validate', 'getOptions', 'setOptions', 'getRequest', 'setRequest'])
             ->getMock();
-        $validatorForBar->expects(self::once())->method('validate')->with('barvalue')->willReturn($validationResultForBar);
+        $validatorForBar->expects($this->once())->method('validate')->with('barvalue')->willReturn($validationResultForBar);
 
         $validator->addPropertyValidator('foo', $validatorForFoo);
         $validator->addPropertyValidator('bar', $validatorForBar);

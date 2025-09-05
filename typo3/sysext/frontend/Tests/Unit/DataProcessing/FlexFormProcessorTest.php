@@ -187,7 +187,7 @@ final class FlexFormProcessorTest extends UnitTestCase
                 'images' => '12',
             ],
         ];
-        $contentObjectRendererMock->expects(self::once())->method('start')->with([$convertedFlexFormData]);
+        $contentObjectRendererMock->expects($this->once())->method('start')->with([$convertedFlexFormData]);
 
         $contentDataProcessorMock = $this->getMockBuilder(ContentDataProcessor::class)->disableOriginalConstructor()->getMock();
         $renderedDataFromProcessors = [
@@ -242,7 +242,7 @@ final class FlexFormProcessorTest extends UnitTestCase
         $contentObjectRendererMock->method('getCurrentTable')->willReturn('tt_content');
         $fileCollectorMock = $this->getMockBuilder(FileCollector::class)->disableOriginalConstructor()->getMock();
         $fileCollectorMock
-            ->expects(self::exactly(1))
+            ->expects($this->exactly(1))
             ->method('addFilesFromRelation')
             ->with('tt_content', $processorConfiguration['references.']['options.']['image'], []);
         $fileCollectorMock->method('getFiles')->willReturn($renderedDataFromProcessors['options']['image']);

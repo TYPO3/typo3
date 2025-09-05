@@ -76,7 +76,7 @@ final class ExtensionManagementServiceTest extends UnitTestCase
         $extension->_setProperty('uid', 123);
         $extension->_setProperty('remote', 'ter');
 
-        $this->remoteMock->expects(self::once())->method('downloadExtension')->with(
+        $this->remoteMock->expects($this->once())->method('downloadExtension')->with(
             $extension->getExtensionKey(),
             $extension->getVersion(),
             $this->fileHandlingUtilityMock,
@@ -90,8 +90,8 @@ final class ExtensionManagementServiceTest extends UnitTestCase
     public function installExtensionReturnsFalseIfDependenciesCannotBeResolved(): void
     {
         $extension = new Extension();
-        $this->dependencyUtilityMock->expects(self::atLeastOnce())->method('setSkipDependencyCheck')->with(false);
-        $this->dependencyUtilityMock->expects(self::atLeastOnce())->method('checkDependencies')->with($extension);
+        $this->dependencyUtilityMock->expects($this->atLeastOnce())->method('setSkipDependencyCheck')->with(false);
+        $this->dependencyUtilityMock->expects($this->atLeastOnce())->method('checkDependencies')->with($extension);
         $this->dependencyUtilityMock->method('hasDependencyErrors')->willReturn(true);
 
         $result = $this->managementService->installExtension($extension);
@@ -119,8 +119,8 @@ final class ExtensionManagementServiceTest extends UnitTestCase
             'key' => 'foo',
             'remote' => 'ter',
         ]);
-        $this->installUtilityMock->expects(self::atLeastOnce())->method('reloadAvailableExtensions');
-        $this->installUtilityMock->expects(self::atLeastOnce())->method('install')->with('foo');
+        $this->installUtilityMock->expects($this->atLeastOnce())->method('reloadAvailableExtensions');
+        $this->installUtilityMock->expects($this->atLeastOnce())->method('install')->with('foo');
 
         $result = $this->managementService->installExtension($extension);
         self::assertSame(['downloaded' => ['foo' => $extension], 'installed' => ['foo' => 'foo']], $result);
@@ -137,11 +137,11 @@ final class ExtensionManagementServiceTest extends UnitTestCase
             'key' => 'foo',
             'remote' => 'ter',
         ]);
-        $this->installUtilityMock->expects(self::atLeastOnce())->method('reloadAvailableExtensions');
+        $this->installUtilityMock->expects($this->atLeastOnce())->method('reloadAvailableExtensions');
 
         // an extension update will uninstall the extension and install it again
-        $this->installUtilityMock->expects(self::atLeastOnce())->method('uninstall')->with('foo');
-        $this->installUtilityMock->expects(self::atLeastOnce())->method('install')->with('foo');
+        $this->installUtilityMock->expects($this->atLeastOnce())->method('uninstall')->with('foo');
+        $this->installUtilityMock->expects($this->atLeastOnce())->method('install')->with('foo');
 
         $result = $this->managementService->installExtension($extension);
 
@@ -154,7 +154,7 @@ final class ExtensionManagementServiceTest extends UnitTestCase
         $extension = new Extension();
         $extension->setExtensionKey('foo');
         $this->dependencyUtilityMock->method('hasDependencyErrors')->willReturn(false);
-        $this->dependencyUtilityMock->expects(self::once())->method('checkDependencies')->with($extension);
+        $this->dependencyUtilityMock->expects($this->once())->method('checkDependencies')->with($extension);
 
         $this->managementService->markExtensionForDownload($extension);
 
@@ -167,7 +167,7 @@ final class ExtensionManagementServiceTest extends UnitTestCase
         $extension = new Extension();
         $extension->setExtensionKey('foo');
         $this->dependencyUtilityMock->method('hasDependencyErrors')->willReturn(false);
-        $this->dependencyUtilityMock->expects(self::once())->method('checkDependencies')->with($extension);
+        $this->dependencyUtilityMock->expects($this->once())->method('checkDependencies')->with($extension);
 
         $this->managementService->markExtensionForUpdate($extension);
 

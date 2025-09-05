@@ -168,10 +168,10 @@ final class RootNodeTest extends UnitTestCase
         $path = $testRoot . StringUtility::getUniqueId('dir_');
         GeneralUtility::mkdir_deep($path);
         $node->method('getAbsolutePath')->willReturn($path);
-        $node->expects(self::once())->method('exists')->willReturn(true);
-        $node->expects(self::once())->method('isDirectory')->willReturn(true);
-        $node->expects(self::once())->method('isPermissionCorrect')->willReturn(true);
-        $node->expects(self::once())->method('isWritable')->willReturn(true);
+        $node->expects($this->once())->method('exists')->willReturn(true);
+        $node->expects($this->once())->method('isDirectory')->willReturn(true);
+        $node->expects($this->once())->method('isPermissionCorrect')->willReturn(true);
+        $node->expects($this->once())->method('isWritable')->willReturn(true);
         $statusArray = $node->getStatus();
         self::assertSame(ContextualFeedbackSeverity::OK, $statusArray[0]->getSeverity());
     }
@@ -197,7 +197,7 @@ final class RootNodeTest extends UnitTestCase
         $node->method('isPermissionCorrect')->willReturn(true);
         $node->method('isWritable')->willReturn(true);
         $childStatus = new FlashMessage('foo', '', ContextualFeedbackSeverity::ERROR);
-        $node->expects(self::once())->method('getChildrenStatus')->willReturn([$childStatus]);
+        $node->expects($this->once())->method('getChildrenStatus')->willReturn([$childStatus]);
         $statusArray = $node->getStatus();
         $statusSelf = $statusArray[0];
         $statusOfChild = $statusArray[1];

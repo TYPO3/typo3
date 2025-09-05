@@ -51,7 +51,7 @@ final class AbstractProcessorTest extends UnitTestCase
         $processor = $this->getMockBuilder(ProcessorInterface::class)
             ->onlyMethods(['processLogRecord'])
             ->getMock();
-        $processor->expects(self::once())->method('processLogRecord')->willReturn($logRecord);
+        $processor->expects($this->once())->method('processLogRecord')->willReturn($logRecord);
 
         $logger->addWriter($level, $writer);
         $logger->addProcessor($level, $processor);

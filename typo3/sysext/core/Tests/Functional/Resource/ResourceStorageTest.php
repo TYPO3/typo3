@@ -229,7 +229,7 @@ final class ResourceStorageTest extends FunctionalTestCase
         $this->expectExceptionCode(1325952534);
         $folderMock = $this->createMock(Folder::class);
         $mockedDriver = $this->createMock(DriverInterface::class);
-        $mockedDriver->expects(self::once())->method('isFolderEmpty')->willReturn(false);
+        $mockedDriver->expects($this->once())->method('isFolderEmpty')->willReturn(false);
         $subject = $this->getAccessibleMock(ResourceStorage::class, ['checkFolderActionPermission'], [], '', false);
         $subject->method('checkFolderActionPermission')->willReturn(true);
         $subject->_set('driver', $mockedDriver);
@@ -244,7 +244,7 @@ final class ResourceStorageTest extends FunctionalTestCase
             ->getMock();
         $driverMock->method('sanitizeFileName')
             ->willReturn('a_b.jpg');
-        $driverMock->expects(self::once())
+        $driverMock->expects($this->once())
             ->method('renameFile')
             ->with('/a b.jpg', 'a_b.jpg');
         $indexerMock = $this->getMockBuilder(Indexer::class)

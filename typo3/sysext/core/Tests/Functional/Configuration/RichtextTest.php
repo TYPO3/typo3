@@ -79,7 +79,7 @@ final class RichtextTest extends FunctionalTestCase
         $eventListener->addListener(AfterRichtextConfigurationPreparedEvent::class, 'after-richtext-configuration-prepared-listener');
 
         $subject = $this->getAccessibleMock(Richtext::class, ['getRtePageTsConfigOfPid'], [], '', false);
-        $subject->expects(self::once())->method('getRtePageTsConfigOfPid')->with(42)->willReturn($pageTsConfig);
+        $subject->expects($this->once())->method('getRtePageTsConfigOfPid')->with(42)->willReturn($pageTsConfig);
         $output = $subject->getConfiguration('aTable', 'aField', 42, 'textmedia', $fieldConfig);
 
         self::assertInstanceOf(AfterRichtextConfigurationPreparedEvent::class, $afterRichtextConfigurationPreparedEvent);

@@ -122,7 +122,7 @@ final class RedirectUrlValidatorTest extends UnitTestCase
         );
 
         $event = new ModifyRedirectUrlValidationResultEvent($url, false, $this->extbaseRequest);
-        $this->eventDispatcher->expects(self::once())->method('dispatch')->willReturn($event);
+        $this->eventDispatcher->expects($this->once())->method('dispatch')->willReturn($event);
 
         self::assertFalse($this->accessibleFixture->isValid($this->extbaseRequest, $url));
     }
@@ -163,7 +163,7 @@ final class RedirectUrlValidatorTest extends UnitTestCase
         );
 
         $event = new ModifyRedirectUrlValidationResultEvent($url, true, $this->extbaseRequest);
-        $this->eventDispatcher->expects(self::once())->method('dispatch')->willReturn($event);
+        $this->eventDispatcher->expects($this->once())->method('dispatch')->willReturn($event);
 
         self::assertTrue($this->accessibleFixture->isValid($this->extbaseRequest, $url));
     }
@@ -193,7 +193,7 @@ final class RedirectUrlValidatorTest extends UnitTestCase
         $this->setUpFakeSitePathAndHost();
 
         $event = new ModifyRedirectUrlValidationResultEvent($url, false, $this->extbaseRequest);
-        $this->eventDispatcher->expects(self::once())->method('dispatch')->willReturn($event);
+        $this->eventDispatcher->expects($this->once())->method('dispatch')->willReturn($event);
 
         self::assertFalse($this->accessibleFixture->isValid($this->extbaseRequest, $url));
     }
@@ -232,7 +232,7 @@ final class RedirectUrlValidatorTest extends UnitTestCase
         );
 
         $event = new ModifyRedirectUrlValidationResultEvent($url, true, $this->extbaseRequest);
-        $this->eventDispatcher->expects(self::once())->method('dispatch')->willReturn($event);
+        $this->eventDispatcher->expects($this->once())->method('dispatch')->willReturn($event);
 
         $this->testSitePath = '/subdir/';
         $this->setUpFakeSitePathAndHost();
@@ -257,7 +257,7 @@ final class RedirectUrlValidatorTest extends UnitTestCase
         $url = 'https://external-redirect.url';
         $event = new ModifyRedirectUrlValidationResultEvent($url, false, $this->extbaseRequest);
         $event->setValidationResult(true);
-        $this->eventDispatcher->expects(self::once())->method('dispatch')->willReturn($event);
+        $this->eventDispatcher->expects($this->once())->method('dispatch')->willReturn($event);
 
         $this->setUpFakeSitePathAndHost();
         self::assertTrue($this->accessibleFixture->isValid($this->extbaseRequest, $url));

@@ -549,8 +549,8 @@ final class IconFactoryTest extends FunctionalTestCase
         $mockedFile = $this->getMockBuilder(File::class)
             ->setConstructorArgs([['identifier' => '', 'name' => ''], $mockedStorage])
             ->getMock();
-        $mockedFile->expects(self::atMost(1))->method('getExtension')->willReturn($extension);
-        $mockedFile->expects(self::atLeastOnce())->method('getMimeType')->willReturn($mimeType);
+        $mockedFile->expects($this->atMost(1))->method('getExtension')->willReturn($extension);
+        $mockedFile->expects($this->atLeastOnce())->method('getMimeType')->willReturn($mimeType);
         return $mockedFile;
     }
 

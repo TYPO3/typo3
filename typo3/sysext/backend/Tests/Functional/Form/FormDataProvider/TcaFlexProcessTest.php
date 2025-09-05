@@ -504,7 +504,7 @@ final class TcaFlexProcessTest extends FunctionalTestCase
             'pageTsConfig' => [],
         ];
 
-        $this->backendUserMock->expects(self::atLeastOnce())->method('isAdmin')->willReturn(false);
+        $this->backendUserMock->expects($this->atLeastOnce())->method('isAdmin')->willReturn(false);
         $GLOBALS['BE_USER']->groupData['non_exclude_fields'] = '';
 
         $expected = $input;
@@ -569,7 +569,7 @@ final class TcaFlexProcessTest extends FunctionalTestCase
             'pageTsConfig' => [],
         ];
 
-        $this->backendUserMock->expects(self::atLeastOnce())->method('isAdmin')->willReturn(false);
+        $this->backendUserMock->expects($this->atLeastOnce())->method('isAdmin')->willReturn(false);
         $GLOBALS['BE_USER']->groupData['non_exclude_fields'] = 'aTable:aField;aFlex;sDEF;aFlexField';
 
         $expected = $input;
@@ -642,7 +642,7 @@ final class TcaFlexProcessTest extends FunctionalTestCase
             'pageTsConfig' => [],
         ];
 
-        $this->backendUserMock->expects(self::atLeastOnce())->method('isAdmin')->willReturn(true);
+        $this->backendUserMock->expects($this->atLeastOnce())->method('isAdmin')->willReturn(true);
         $GLOBALS['BE_USER']->groupData['non_exclude_fields'] = '';
 
         $expected = $input;
@@ -818,7 +818,7 @@ final class TcaFlexProcessTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $languageService;
         $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
 
-        $this->backendUserMock->expects(self::atLeastOnce())->method('isAdmin')->willReturn(true);
+        $this->backendUserMock->expects($this->atLeastOnce())->method('isAdmin')->willReturn(true);
         $this->backendUserMock->method('checkLanguageAccess')->with(self::anything())->willReturn(true);
 
         $expected = $input;
@@ -900,7 +900,7 @@ final class TcaFlexProcessTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $languageService;
         $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
 
-        $this->backendUserMock->expects(self::atLeastOnce())->method('isAdmin')->willReturn(true);
+        $this->backendUserMock->expects($this->atLeastOnce())->method('isAdmin')->willReturn(true);
         $this->backendUserMock->method('checkLanguageAccess')->with(self::anything())->willReturn(true);
 
         $expected = $input;
@@ -1067,7 +1067,7 @@ final class TcaFlexProcessTest extends FunctionalTestCase
         GeneralUtility::addInstance(FlexFormSegment::class, $dummyGroup);
 
         // Check array given to flex group contains databaseRow as flexParentDatabaseRow and check compile is called
-        $dummyGroup->expects(self::atLeastOnce())->method('compile')->with(self::callback(static function ($result) use ($input) {
+        $dummyGroup->expects($this->atLeastOnce())->method('compile')->with(self::callback(static function ($result) use ($input) {
             return $result['flexParentDatabaseRow'] === $input['databaseRow'];
         }))->willReturnArgument(0);
 
@@ -1123,7 +1123,7 @@ final class TcaFlexProcessTest extends FunctionalTestCase
         $dummyGroupExisting = $this->createMock(FlexFormSegment::class);
         GeneralUtility::addInstance(FlexFormSegment::class, $dummyGroupExisting);
         // Check array given to flex group contains databaseRow as flexParentDatabaseRow and check compile is called
-        $dummyGroupExisting->expects(self::atLeastOnce())->method('compile')->with(self::callback(static function ($result) use ($input) {
+        $dummyGroupExisting->expects($this->atLeastOnce())->method('compile')->with(self::callback(static function ($result) use ($input) {
             return $result['flexParentDatabaseRow'] === $input['databaseRow'];
         }))->willReturnArgument(0);
 

@@ -121,7 +121,7 @@ final class QueryResultTest extends UnitTestCase
         $queryResult->_set('persistenceManager', $this->mockPersistenceManager);
         $queryResult->_set('dataMapper', $this->mockDataMapper);
         $queryResult->setQuery($this->mockQuery);
-        $queryResult->expects(self::never())->method('initialize');
+        $queryResult->expects($this->never())->method('initialize');
         $queryResult->count();
     }
 
@@ -139,7 +139,7 @@ final class QueryResultTest extends UnitTestCase
     public function countCountsQueryResultDirectlyIfAlreadyInitialized(): void
     {
         $this->queryResult->setQuery($this->mockQuery);
-        $this->mockPersistenceManager->expects(self::never())->method('getObjectCountByQuery');
+        $this->mockPersistenceManager->expects($this->never())->method('getObjectCountByQuery');
         $this->queryResult->toArray();
         self::assertEquals(2, $this->queryResult->count());
     }
@@ -148,7 +148,7 @@ final class QueryResultTest extends UnitTestCase
     public function countOnlyCallsGetObjectCountByQueryOnPersistenceManagerOnce(): void
     {
         $this->queryResult->setQuery($this->mockQuery);
-        $this->mockPersistenceManager->expects(self::once())->method('getObjectCountByQuery')->willReturn(2);
+        $this->mockPersistenceManager->expects($this->once())->method('getObjectCountByQuery')->willReturn(2);
         $this->queryResult->count();
         self::assertEquals(2, $this->queryResult->count());
     }
@@ -157,7 +157,7 @@ final class QueryResultTest extends UnitTestCase
     public function countCallsGetObjectCountByQueryIfOffsetChanges(): void
     {
         $this->queryResult->setQuery($this->mockQuery);
-        $this->mockPersistenceManager->expects(self::once())->method('getObjectCountByQuery')->willReturn(2);
+        $this->mockPersistenceManager->expects($this->once())->method('getObjectCountByQuery')->willReturn(2);
         $firstCount = $this->queryResult->count();
         $this->queryResult->offsetSet(3, new \stdClass());
         $this->queryResult->offsetSet(4, new \stdClass());
@@ -198,7 +198,7 @@ final class QueryResultTest extends UnitTestCase
         $queryResult->_set('persistenceManager', $this->mockPersistenceManager);
         $queryResult->_set('dataMapper', $this->mockDataMapper);
         $queryResult->setQuery($this->mockQuery);
-        $this->mockPersistenceManager->expects(self::once())->method('getObjectDataByQuery')->with($this->mockQuery)->willReturn(['FAKERESULT']);
+        $this->mockPersistenceManager->expects($this->once())->method('getObjectDataByQuery')->with($this->mockQuery)->willReturn(['FAKERESULT']);
         $queryResult->_call('initialize');
     }
 }

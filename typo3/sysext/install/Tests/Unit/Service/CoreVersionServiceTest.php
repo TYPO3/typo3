@@ -34,7 +34,7 @@ final class CoreVersionServiceTest extends UnitTestCase
     {
         $response = new JsonResponse($responseData);
         $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
-        $requestFactoryMock->expects(self::atLeastOnce())->method('request')->willReturn($response);
+        $requestFactoryMock->expects($this->atLeastOnce())->method('request')->willReturn($response);
         GeneralUtility::addInstance(RequestFactory::class, $requestFactoryMock);
     }
 
@@ -51,7 +51,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         );
 
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledMajorVersion']);
-        $instance->expects(self::once())->method('getInstalledMajorVersion')->willReturn('9');
+        $instance->expects($this->once())->method('getInstalledMajorVersion')->willReturn('9');
 
         $result = $instance->getMaintenanceWindow()->isSupportedByCommunity();
 
@@ -72,7 +72,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         );
 
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledMajorVersion']);
-        $instance->expects(self::once())->method('getInstalledMajorVersion')->willReturn('9');
+        $instance->expects($this->once())->method('getInstalledMajorVersion')->willReturn('9');
 
         $result = $instance->getMaintenanceWindow()->isSupportedByCommunity();
 
@@ -93,7 +93,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         );
 
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledMajorVersion']);
-        $instance->expects(self::once())->method('getInstalledMajorVersion')->willReturn('7');
+        $instance->expects($this->once())->method('getInstalledMajorVersion')->willReturn('7');
 
         $result = $instance->getMaintenanceWindow()->isSupportedByCommunity();
 
@@ -113,7 +113,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         );
 
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledMajorVersion']);
-        $instance->expects(self::once())->method('getInstalledMajorVersion')->willReturn('9');
+        $instance->expects($this->once())->method('getInstalledMajorVersion')->willReturn('9');
 
         $result = $instance->getMaintenanceWindow()->isSupportedByElts();
 
@@ -134,7 +134,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         );
 
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledMajorVersion']);
-        $instance->expects(self::once())->method('getInstalledMajorVersion')->willReturn('9');
+        $instance->expects($this->once())->method('getInstalledMajorVersion')->willReturn('9');
 
         $result = $instance->getMaintenanceWindow()->isSupportedByElts();
 
@@ -155,7 +155,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         );
 
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledMajorVersion']);
-        $instance->expects(self::once())->method('getInstalledMajorVersion')->willReturn('7');
+        $instance->expects($this->once())->method('getInstalledMajorVersion')->willReturn('7');
 
         $result = $instance->getMaintenanceWindow()->isSupportedByElts();
 
@@ -241,8 +241,8 @@ final class CoreVersionServiceTest extends UnitTestCase
         );
 
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion', 'getInstalledMajorVersion']);
-        $instance->expects(self::atLeastOnce())->method('getInstalledMajorVersion')->willReturn('9');
-        $instance->expects(self::atLeastOnce())->method('getInstalledVersion')->willReturn('9.0.0');
+        $instance->expects($this->atLeastOnce())->method('getInstalledMajorVersion')->willReturn('9');
+        $instance->expects($this->atLeastOnce())->method('getInstalledVersion')->willReturn('9.0.0');
 
         $coreRelease = $instance->getYoungestPatchRelease();
         $result = $instance->isPatchReleaseSuitableForUpdate($coreRelease);
@@ -266,8 +266,8 @@ final class CoreVersionServiceTest extends UnitTestCase
         );
 
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion', 'getInstalledMajorVersion']);
-        $instance->expects(self::atLeastOnce())->method('getInstalledMajorVersion')->willReturn('9');
-        $instance->expects(self::atLeastOnce())->method('getInstalledVersion')->willReturn('9.1.0');
+        $instance->expects($this->atLeastOnce())->method('getInstalledMajorVersion')->willReturn('9');
+        $instance->expects($this->atLeastOnce())->method('getInstalledVersion')->willReturn('9.1.0');
 
         $coreRelease = $instance->getYoungestPatchRelease();
         $result = $instance->isPatchReleaseSuitableForUpdate($coreRelease);
@@ -311,8 +311,8 @@ final class CoreVersionServiceTest extends UnitTestCase
         );
 
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion', 'getInstalledMajorVersion']);
-        $instance->expects(self::atLeastOnce())->method('getInstalledMajorVersion')->willReturn('8');
-        $instance->expects(self::atLeastOnce())->method('getInstalledVersion')->willReturn('8.7.1');
+        $instance->expects($this->atLeastOnce())->method('getInstalledMajorVersion')->willReturn('8');
+        $instance->expects($this->atLeastOnce())->method('getInstalledVersion')->willReturn('8.7.1');
 
         $result = $instance->isUpdateSecurityRelevant($coreRelease);
 
@@ -355,8 +355,8 @@ final class CoreVersionServiceTest extends UnitTestCase
         );
 
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion', 'getInstalledMajorVersion']);
-        $instance->expects(self::atLeastOnce())->method('getInstalledMajorVersion')->willReturn('8');
-        $instance->expects(self::atLeastOnce())->method('getInstalledVersion')->willReturn('8.7.5');
+        $instance->expects($this->atLeastOnce())->method('getInstalledMajorVersion')->willReturn('8');
+        $instance->expects($this->atLeastOnce())->method('getInstalledVersion')->willReturn('8.7.5');
 
         $result = $instance->isUpdateSecurityRelevant($coreRelease);
 
@@ -391,8 +391,8 @@ final class CoreVersionServiceTest extends UnitTestCase
         );
 
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion', 'getInstalledMajorVersion']);
-        $instance->expects(self::atLeastOnce())->method('getInstalledVersion')->willReturn('8.7.5');
-        $instance->expects(self::atLeastOnce())->method('getInstalledMajorVersion')->willReturn('8');
+        $instance->expects($this->atLeastOnce())->method('getInstalledVersion')->willReturn('8.7.5');
+        $instance->expects($this->atLeastOnce())->method('getInstalledMajorVersion')->willReturn('8');
 
         $result = $instance->isUpdateSecurityRelevant($coreRelease);
 
@@ -437,8 +437,8 @@ final class CoreVersionServiceTest extends UnitTestCase
         );
 
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledMajorVersion', 'getInstalledVersion']);
-        $instance->expects(self::atLeastOnce())->method('getInstalledMajorVersion')->willReturn($major);
-        $instance->expects(self::atLeastOnce())->method('getInstalledVersion')->willReturn($version);
+        $instance->expects($this->atLeastOnce())->method('getInstalledMajorVersion')->willReturn($major);
+        $instance->expects($this->atLeastOnce())->method('getInstalledVersion')->willReturn($version);
 
         self::assertSame($expectation, $instance->isCurrentInstalledVersionElts());
     }
@@ -461,7 +461,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         );
 
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledMajorVersion']);
-        $instance->expects(self::atLeastOnce())->method('getInstalledMajorVersion')->willReturn($major);
+        $instance->expects($this->atLeastOnce())->method('getInstalledMajorVersion')->willReturn($major);
 
         $result = $instance->getYoungestPatchRelease();
 
@@ -548,7 +548,7 @@ final class CoreVersionServiceTest extends UnitTestCase
         );
 
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledMajorVersion']);
-        $instance->expects(self::atLeastOnce())->method('getInstalledMajorVersion')->willReturn('8');
+        $instance->expects($this->atLeastOnce())->method('getInstalledMajorVersion')->willReturn('8');
 
         $result = $instance->getYoungestCommunityPatchRelease();
 
@@ -559,7 +559,7 @@ final class CoreVersionServiceTest extends UnitTestCase
     public function isInstalledVersionAReleasedVersionReturnsTrueForNonDevelopmentVersion(): void
     {
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion'], [], '', false);
-        $instance->expects(self::once())->method('getInstalledVersion')->willReturn('7.2.0');
+        $instance->expects($this->once())->method('getInstalledVersion')->willReturn('7.2.0');
         self::assertTrue($instance->isInstalledVersionAReleasedVersion());
     }
 
@@ -567,7 +567,7 @@ final class CoreVersionServiceTest extends UnitTestCase
     public function isInstalledVersionAReleasedVersionReturnsFalseForDevelopmentVersion(): void
     {
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion'], [], '', false);
-        $instance->expects(self::once())->method('getInstalledVersion')->willReturn('7.4-dev');
+        $instance->expects($this->once())->method('getInstalledVersion')->willReturn('7.4-dev');
         self::assertFalse($instance->isInstalledVersionAReleasedVersion());
     }
 }

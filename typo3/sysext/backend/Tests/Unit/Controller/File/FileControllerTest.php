@@ -64,7 +64,7 @@ final class FileControllerTest extends UnitTestCase
     {
         $iconFactoryMock = $this->createMock(IconFactory::class);
         $icon = $this->createMock(Icon::class);
-        $icon->expects(self::once())->method('render')->willReturn('');
+        $icon->expects($this->once())->method('render')->willReturn('');
         $iconFactoryMock->method('getIconForFileExtension')->willReturn($icon);
         $subject = $this->getAccessibleMock(
             FileController::class,
@@ -107,7 +107,7 @@ final class FileControllerTest extends UnitTestCase
         );
         $subject->_set('fileData', ['delete' => [true]]);
         $subject->_set('redirect', false);
-        $subject->expects(self::once())->method('main');
+        $subject->expects($this->once())->method('main');
         $subject->processAjaxRequest(new ServerRequest());
     }
 
@@ -127,7 +127,7 @@ final class FileControllerTest extends UnitTestCase
         );
         $subject->_set('fileData', ['editfile' => [true]]);
         $subject->_set('redirect', false);
-        $subject->expects(self::once())->method('main');
+        $subject->expects($this->once())->method('main');
         $subject->processAjaxRequest(new ServerRequest());
     }
 

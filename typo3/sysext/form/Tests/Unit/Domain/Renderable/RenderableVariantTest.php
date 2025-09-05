@@ -85,7 +85,7 @@ final class RenderableVariantTest extends UnitTestCase
             ],
             $mockFormElement
         );
-        $mockResolver->expects(self::once())
+        $mockResolver->expects($this->once())
             ->method('evaluate')
             ->with('true', ['renderable' => $mockFormElement]);
         $subject->conditionMatches($mockResolver);

@@ -152,7 +152,7 @@ final class ConnectionTest extends UnitTestCase
     public function insertQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes): void
     {
         $connectionMock = $this->createConnectionMock();
-        $connectionMock->expects(self::once())
+        $connectionMock->expects($this->once())
             ->method('executeStatement')
             ->with($expectedQuery, $expectedValues, $expectedTypes)
             ->willReturn(1);
@@ -163,7 +163,7 @@ final class ConnectionTest extends UnitTestCase
     public function bulkInsert(): void
     {
         $connectionMock = $this->createConnectionMock(new MockSQLitePlatform());
-        $connectionMock->expects(self::once())
+        $connectionMock->expects($this->once())
             ->method('executeStatement')
             ->with('INSERT INTO "aTestTable" ("aField") VALUES (?), (?)', ['aValue', 'anotherValue'])
             ->willReturn(2);
@@ -205,7 +205,7 @@ final class ConnectionTest extends UnitTestCase
     public function updateQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes): void
     {
         $connectionMock = $this->createConnectionMock();
-        $connectionMock->expects(self::once())
+        $connectionMock->expects($this->once())
             ->method('executeStatement')
             ->with($expectedQuery, $expectedValues, $expectedTypes)
             ->willReturn(1);
@@ -247,7 +247,7 @@ final class ConnectionTest extends UnitTestCase
     public function deleteQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes): void
     {
         $connectionMock = $this->createConnectionMock();
-        $connectionMock->expects(self::once())
+        $connectionMock->expects($this->once())
             ->method('executeStatement')
             ->with($expectedQuery, $expectedValues, $expectedTypes)
             ->willReturn(1);
@@ -324,7 +324,7 @@ final class ConnectionTest extends UnitTestCase
         $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $resultStatement = $this->createMock(Result::class);
         $connectionMock = $this->createConnectionMock();
-        $connectionMock->expects(self::once())
+        $connectionMock->expects($this->once())
             ->method('executeQuery')
             ->with($expectedQuery, $expectedParameters)
             ->willReturn($resultStatement);
@@ -367,11 +367,11 @@ final class ConnectionTest extends UnitTestCase
     {
         $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $resultStatement = $this->createMock(Result::class);
-        $resultStatement->expects(self::once())
+        $resultStatement->expects($this->once())
             ->method('fetchOne')
             ->willReturn(false);
         $connectionMock = $this->createConnectionMock();
-        $connectionMock->expects(self::once())
+        $connectionMock->expects($this->once())
             ->method('executeQuery')
             ->with($expectedQuery, $expectedParameters)
             ->willReturn($resultStatement);
@@ -382,7 +382,7 @@ final class ConnectionTest extends UnitTestCase
     public function truncateQuery(): void
     {
         $connectionMock = $this->createConnectionMock();
-        $connectionMock->expects(self::once())
+        $connectionMock->expects($this->once())
             ->method('executeStatement')
             ->with('TRUNCATE "aTestTable"')
             ->willReturn(0);

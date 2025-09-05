@@ -274,7 +274,7 @@ final class SiteMatcherTest extends UnitTestCase
         $mock = $this->getMockBuilder(Features::class)
             ->onlyMethods(['isFeatureEnabled'])
             ->getMock();
-        $mock->expects(self::any())
+        $mock->expects($this->any())
             ->method('isFeatureEnabled')
             ->with('security.frontend.allowInsecureSiteResolutionByQueryParameters')
             ->willReturn(false);

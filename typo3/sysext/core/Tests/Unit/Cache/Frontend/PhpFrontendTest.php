@@ -81,7 +81,7 @@ final class PhpFrontendTest extends UnitTestCase
     public function flushCallsBackend(): void
     {
         $backend = $this->createMock(PhpCapableBackendInterface::class);
-        $backend->expects(self::once())->method('flush');
+        $backend->expects($this->once())->method('flush');
         $cache = new PhpFrontend('someCacheIdentifier', $backend);
         $cache->flush();
     }
@@ -92,7 +92,7 @@ final class PhpFrontendTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1233057359);
         $backend = $this->createMock(FileBackend::class);
-        $backend->expects(self::never())->method('flushByTag');
+        $backend->expects($this->never())->method('flushByTag');
         $cache = new PhpFrontend('someCacheIdentifier', $backend);
         $cache->flushByTag('SomeInvalid\\Tag');
     }
@@ -102,7 +102,7 @@ final class PhpFrontendTest extends UnitTestCase
     {
         $tag = 'someTag';
         $backend = $this->createMock(FileBackend::class);
-        $backend->expects(self::once())->method('flushByTag')->with($tag);
+        $backend->expects($this->once())->method('flushByTag')->with($tag);
         $cache = new PhpFrontend('someCacheIdentifier', $backend);
         $cache->flushByTag($tag);
     }
@@ -112,7 +112,7 @@ final class PhpFrontendTest extends UnitTestCase
     {
         $tag = 'someTag';
         $backend = $this->createMock(FileBackend::class);
-        $backend->expects(self::once())->method('flushByTags')->with([$tag]);
+        $backend->expects($this->once())->method('flushByTags')->with([$tag]);
         $cache = new PhpFrontend('someCacheIdentifier', $backend);
         $cache->flushByTags([$tag]);
     }
@@ -121,7 +121,7 @@ final class PhpFrontendTest extends UnitTestCase
     public function collectGarbageCallsBackend(): void
     {
         $backend = $this->createMock(PhpCapableBackendInterface::class);
-        $backend->expects(self::once())->method('collectGarbage');
+        $backend->expects($this->once())->method('collectGarbage');
         $cache = new PhpFrontend('someCacheIdentifier', $backend);
         $cache->collectGarbage();
     }
@@ -243,7 +243,7 @@ final class PhpFrontendTest extends UnitTestCase
         $originalSourceCode = 'return "hello world!";';
         $modifiedSourceCode = '<?php' . chr(10) . $originalSourceCode . chr(10) . '#';
         $mockBackend = $this->createMock(PhpCapableBackendInterface::class);
-        $mockBackend->expects(self::once())->method('set')->with('Foo-Bar', $modifiedSourceCode, ['tags'], 1234);
+        $mockBackend->expects($this->once())->method('set')->with('Foo-Bar', $modifiedSourceCode, ['tags'], 1234);
         $cache = new PhpFrontend('someCacheIdentifier', $mockBackend);
         $cache->set('Foo-Bar', $originalSourceCode, ['tags'], 1234);
     }
@@ -261,7 +261,7 @@ final class PhpFrontendTest extends UnitTestCase
     public function requireOnceCallsTheBackendsRequireOnceMethod(): void
     {
         $mockBackend = $this->createMock(PhpCapableBackendInterface::class);
-        $mockBackend->expects(self::once())->method('requireOnce')->with('Foo-Bar')->willReturn('hello world!');
+        $mockBackend->expects($this->once())->method('requireOnce')->with('Foo-Bar')->willReturn('hello world!');
         $cache = new PhpFrontend('someCacheIdentifier', $mockBackend);
         $result = $cache->requireOnce('Foo-Bar');
         self::assertSame('hello world!', $result);
@@ -271,7 +271,7 @@ final class PhpFrontendTest extends UnitTestCase
     public function requireCallsTheBackendsRequireMethod(): void
     {
         $mockBackend = $this->createMock(SimpleFileBackend::class);
-        $mockBackend->expects(self::once())->method('require')->with('Foo-Bar')->willReturn('hello world!');
+        $mockBackend->expects($this->once())->method('require')->with('Foo-Bar')->willReturn('hello world!');
         $cache = new PhpFrontend('someCacheIdentifier', $mockBackend);
         $result = $cache->require('Foo-Bar');
         self::assertSame('hello world!', $result);

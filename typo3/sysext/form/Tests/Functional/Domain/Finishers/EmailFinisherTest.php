@@ -53,7 +53,7 @@ final class EmailFinisherTest extends FunctionalTestCase
         // The method ->send() must be called exactly once and the subject of the passed FluidMail object must match
         // our defined string.
         $mailerMock = $this->createMock(MailerInterface::class);
-        $mailerMock->expects(self::once())->method('send')->willReturnCallback(static function (FluidEmail $mail) {
+        $mailerMock->expects($this->once())->method('send')->willReturnCallback(static function (FluidEmail $mail) {
             self::assertEquals('dynamic event subject', $mail->getSubject());
         });
         $container->set(MailerInterface::class, $mailerMock);

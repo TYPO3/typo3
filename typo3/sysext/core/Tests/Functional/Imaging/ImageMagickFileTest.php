@@ -235,8 +235,8 @@ final class ImageMagickFileTest extends FunctionalTestCase
             '',
             false
         );
-        $fileInfo->expects(self::atLeastOnce())->method('getMimeType')->willReturn($mimeType);
-        $fileInfo->expects(self::atLeastOnce())->method('getMimeExtensions')->willReturn([]);
+        $fileInfo->expects($this->atLeastOnce())->method('getMimeType')->willReturn($mimeType);
+        $fileInfo->expects($this->atLeastOnce())->method('getMimeExtensions')->willReturn([]);
         GeneralUtility::addInstance(FileInfo::class, $fileInfo);
     }
 }

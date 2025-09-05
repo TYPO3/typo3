@@ -142,7 +142,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
         $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
         $configurationManagerInterfaceMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getConfiguration')
             ->with($configurationType, 'label_test', null)
             ->willReturn(['_LOCAL_LANG' => [
@@ -180,7 +180,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
         $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
         $configurationManagerInterfaceMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getConfiguration')
             ->with($configurationType, 'label_test', null)
             ->willReturn([
@@ -208,7 +208,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
         $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
         $configurationManagerInterfaceMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getConfiguration')
             ->with($configurationType, 'label_test', null)
             ->willReturn([
@@ -244,7 +244,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
         $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
         $configurationManagerInterfaceMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getConfiguration')
             ->with($configurationType, 'label_test', null)
             ->willReturn([
@@ -295,7 +295,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
         $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
         $configurationManagerInterfaceMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getConfiguration')
             ->with($configurationType, 'core', null)
             ->willReturn($typoScriptLocalLang);

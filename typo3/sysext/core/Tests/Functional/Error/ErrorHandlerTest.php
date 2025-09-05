@@ -77,7 +77,7 @@ final class ErrorHandlerTest extends FunctionalTestCase
 
         // Make sure the core error handler does not return true due to a deprecation error
         $logManagerMock = $this->createMock(LogManager::class);
-        $logManagerMock->expects(self::never())->method('getLogger')->with('TYPO3.CMS.deprecations');
+        $logManagerMock->expects($this->never())->method('getLogger')->with('TYPO3.CMS.deprecations');
         GeneralUtility::setSingletonInstance(LogManager::class, $logManagerMock);
 
         $logger = $this->getMockBuilder(Logger::class)
@@ -86,7 +86,7 @@ final class ErrorHandlerTest extends FunctionalTestCase
             ->getMock();
 
         // Make sure the assigned logger does not log
-        $logger->expects(self::never())->method('log');
+        $logger->expects($this->never())->method('log');
 
         $coreErrorHandler = new ErrorHandler(
             // @todo: Remove 2048 (deprecated E_STRICT) in v14, as this value is no longer used by PHP itself

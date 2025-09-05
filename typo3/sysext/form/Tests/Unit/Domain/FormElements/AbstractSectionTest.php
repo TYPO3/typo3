@@ -113,8 +113,8 @@ final class AbstractSectionTest extends UnitTestCase
         ];
         $typeDefinitionWithoutImplementationClassName = $typeDefinition;
         unset($typeDefinitionWithoutImplementationClassName['implementationClassName']);
-        $implementationMock->expects(self::once())->method('initializeFormElement');
-        $implementationMock->expects(self::once())->method('setOptions')->with($typeDefinitionWithoutImplementationClassName);
+        $implementationMock->expects($this->once())->method('initializeFormElement');
+        $implementationMock->expects($this->once())->method('setOptions')->with($typeDefinitionWithoutImplementationClassName);
         $rootForm = $this->createMock(FormDefinition::class);
         $rootForm->method('getTypeDefinitions')->willReturn(['foobar' => $typeDefinition]);
         $subject = new AbstractSectionFixture('testing', '');

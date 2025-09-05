@@ -278,7 +278,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
         $linkService->method('resolve')->with('foo')->willThrowException(new InvalidPathException('', 1666303765));
         $linkFactory = new LinkFactory($linkService, $this->get(EventDispatcherInterface::class), $this->get(TypoLinkCodecService::class), $this->get('cache.runtime'), $this->get(SiteFinder::class));
         $logger = $this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock();
-        $logger->expects(self::atLeastOnce())->method('warning')->with('The link could not be generated', self::anything());
+        $logger->expects($this->atLeastOnce())->method('warning')->with('The link could not be generated', self::anything());
         $linkFactory->setLogger($logger);
         GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
         $subject = new ContentObjectRenderer();
