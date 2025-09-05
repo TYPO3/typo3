@@ -35,9 +35,9 @@ final class FieldControlTest extends UnitTestCase
     {
         $iconFactoryMock = $this->createMock(IconFactory::class);
         $iconMock = $this->createMock(Icon::class);
-        $iconMock->expects(self::atLeastOnce())->method('setTitle')->willReturn($iconMock);
-        $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('');
-        $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')->with(self::anything())->willReturn($iconMock);
+        $iconMock->expects($this->atLeastOnce())->method('setTitle')->willReturn($iconMock);
+        $iconMock->expects($this->atLeastOnce())->method('render')->willReturn('');
+        $iconFactoryMock->expects($this->atLeastOnce())->method('getIcon')->with(self::anything())->willReturn($iconMock);
 
         $languageServiceMock = $this->createMock(LanguageService::class);
         $languageServiceMock->method('sL')->with(self::anything())->willReturnArgument(0);

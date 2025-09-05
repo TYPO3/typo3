@@ -87,7 +87,7 @@ final class ResourceCompressorTest extends UnitTestCase
             ],
         ];
         $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
-        $subject->expects(self::once())
+        $subject->expects($this->once())
             ->method('compressCssFile')
             ->with($fileName)
             ->willReturn($compressedFileName);
@@ -111,7 +111,7 @@ final class ResourceCompressorTest extends UnitTestCase
             ],
         ];
         $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
-        $subject->expects(self::once())
+        $subject->expects($this->once())
             ->method('compressJsFile')
             ->with($fileName)
             ->willReturn($compressedFileName);
@@ -136,7 +136,7 @@ final class ResourceCompressorTest extends UnitTestCase
             ],
         ];
         $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
-        $subject->expects(self::once())
+        $subject->expects($this->once())
             ->method('createMergedCssFile')
             ->willReturn($concatenatedFileName);
 
@@ -172,7 +172,7 @@ final class ResourceCompressorTest extends UnitTestCase
             ],
         ];
         $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
-        $subject->expects(self::exactly(2))
+        $subject->expects($this->exactly(2))
             ->method('createMergedCssFile')
             ->willReturn('merged_' . $allFileName, 'merged_' . $screenFileName1);
 
@@ -213,7 +213,7 @@ final class ResourceCompressorTest extends UnitTestCase
         $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
         // Replace mocked method getFilenameFromMainDir by passthrough callback
         $subject->method('getFilenameFromMainDir')->willReturnArgument(0);
-        $subject->expects(self::once())
+        $subject->expects($this->once())
             ->method('createMergedCssFile')
             ->with(self::equalTo([$screen3FileName, $screen1FileName, $screen2FileName]));
 
@@ -245,7 +245,7 @@ final class ResourceCompressorTest extends UnitTestCase
         ];
         $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
         $subject->method('getFilenameFromMainDir')->willReturnArgument(0);
-        $subject->expects(self::once())
+        $subject->expects($this->once())
             ->method('createMergedCssFile')
             ->with(self::equalTo([$screen1FileName, $screen3FileName]))
             ->willReturn('merged_screen');
@@ -273,7 +273,7 @@ final class ResourceCompressorTest extends UnitTestCase
         ];
         $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory', 'getJavaScriptFileType']);
         $subject->method('getJavaScriptFileType')->willReturn('');
-        $subject->expects(self::once())
+        $subject->expects($this->once())
             ->method('createMergedJsFile')
             ->willReturn($concatenatedFileName);
 
@@ -397,7 +397,7 @@ final class ResourceCompressorTest extends UnitTestCase
         $concatenatedFileName = 'merged_foo.js';
         $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory', 'getJavaScriptFileType']);
         $subject->method('getJavaScriptFileType')->willReturn('');
-        $subject->expects(self::once())
+        $subject->expects($this->once())
             ->method('createMergedJsFile')
             ->willReturn($concatenatedFileName);
 

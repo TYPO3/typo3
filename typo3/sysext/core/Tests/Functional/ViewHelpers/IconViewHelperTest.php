@@ -37,10 +37,10 @@ final class IconViewHelperTest extends FunctionalTestCase
         $iconFactoryMock = $this->createMock(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
         $iconMock = $this->createMock(Icon::class);
-        $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')
+        $iconFactoryMock->expects($this->atLeastOnce())->method('getIcon')
             ->with('myIdentifier', IconSize::SMALL, null, IconState::STATE_DEFAULT)
             ->willReturn($iconMock);
-        $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('htmlFoo');
+        $iconMock->expects($this->atLeastOnce())->method('render')->willReturn('htmlFoo');
 
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="small" state="default" />');
@@ -53,10 +53,10 @@ final class IconViewHelperTest extends FunctionalTestCase
         $iconFactoryMock = $this->createMock(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
         $iconMock = $this->createMock(Icon::class);
-        $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')
+        $iconFactoryMock->expects($this->atLeastOnce())->method('getIcon')
             ->with('myIdentifier', IconSize::LARGE, null, IconState::STATE_DEFAULT)
             ->willReturn($iconMock);
-        $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('htmlFoo');
+        $iconMock->expects($this->atLeastOnce())->method('render')->willReturn('htmlFoo');
 
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="large" state="default" />');
@@ -69,10 +69,10 @@ final class IconViewHelperTest extends FunctionalTestCase
         $iconFactoryMock = $this->createMock(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
         $iconMock = $this->createMock(Icon::class);
-        $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')
+        $iconFactoryMock->expects($this->atLeastOnce())->method('getIcon')
             ->with('myIdentifier', IconSize::SMALL, null, IconState::STATE_DISABLED)
             ->willReturn($iconMock);
-        $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('htmlFoo');
+        $iconMock->expects($this->atLeastOnce())->method('render')->willReturn('htmlFoo');
 
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="small" state="disabled" />');
@@ -85,10 +85,10 @@ final class IconViewHelperTest extends FunctionalTestCase
         $iconFactoryMock = $this->createMock(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
         $iconMock = $this->createMock(Icon::class);
-        $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')
+        $iconFactoryMock->expects($this->atLeastOnce())->method('getIcon')
             ->with('myIdentifier', self::anything(), 'overlayString', IconState::STATE_DEFAULT)
             ->willReturn($iconMock);
-        $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('htmlFoo');
+        $iconMock->expects($this->atLeastOnce())->method('render')->willReturn('htmlFoo');
 
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="large" state="default" overlay="overlayString" />');
@@ -101,11 +101,11 @@ final class IconViewHelperTest extends FunctionalTestCase
         $iconFactoryMock = $this->createMock(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
         $iconMock = $this->createMock(Icon::class);
-        $iconFactoryMock->expects(self::atLeastOnce())->method('getIcon')
+        $iconFactoryMock->expects($this->atLeastOnce())->method('getIcon')
             ->with('myIdentifier', self::anything(), null, IconState::STATE_DEFAULT)
             ->willReturn($iconMock);
-        $iconMock->expects(self::atLeastOnce())->method('setTitle')->with('myTitle')->willReturn($iconMock);
-        $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('htmlFoo');
+        $iconMock->expects($this->atLeastOnce())->method('setTitle')->with('myTitle')->willReturn($iconMock);
+        $iconMock->expects($this->atLeastOnce())->method('render')->willReturn('htmlFoo');
 
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="large" state="default" title="myTitle" />');

@@ -89,7 +89,7 @@ final class ProcessedFileTest extends UnitTestCase
     #[Test]
     public function deletingProcessedFileRemovesFile(): void
     {
-        $this->storageMock->expects(self::once())->method('deleteFile');
+        $this->storageMock->expects($this->once())->method('deleteFile');
         $processedDatabaseRow = $this->databaseRow;
         $processedDatabaseRow['identifier'] = 'processed_dummy.txt';
         $processedFile = $this->getProcessedFileFixture($processedDatabaseRow);
@@ -99,7 +99,7 @@ final class ProcessedFileTest extends UnitTestCase
     #[Test]
     public function deletingProcessedFileThatUsesOriginalFileDoesNotRemoveFile(): void
     {
-        $this->storageMock->expects(self::never())->method('deleteFile');
+        $this->storageMock->expects($this->never())->method('deleteFile');
         $processedDatabaseRow = $this->databaseRow;
         $processedDatabaseRow['identifier'] = null;
         $processedFile = $this->getProcessedFileFixture($processedDatabaseRow);

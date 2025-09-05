@@ -46,7 +46,7 @@ final class PreviewModuleTest extends FunctionalTestCase
         $request = (new ServerRequest())->withAttribute('frontend.user', $frontendUser);
 
         $configurationService = $this->getMockBuilder(ConfigurationService::class)->disableOriginalConstructor()->getMock();
-        $configurationService->expects(self::once())->method('getMainConfiguration')->willReturn([]);
+        $configurationService->expects($this->once())->method('getMainConfiguration')->willReturn([]);
         $valueMap = [
             ['preview', 'showHiddenPages', '0'],
             ['preview', 'simulateDate', '0'],

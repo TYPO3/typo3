@@ -69,8 +69,8 @@ final class LimitToTablesRestrictionContainerTest extends AbstractRestrictionTes
         $GLOBALS['TCA']['bTable']['ctrl']['delete'] = 'deleted';
         $subject = new LimitToTablesRestrictionContainer();
         $containerMock = $this->createMock(QueryRestrictionContainerInterface::class);
-        $containerMock->expects(self::atLeastOnce())->method('removeByType')->with(DeletedRestriction::class);
-        $containerMock->expects(self::atLeastOnce())->method('buildExpression')->with(['bt' => 'bTable'], $this->expressionBuilder)
+        $containerMock->expects($this->atLeastOnce())->method('removeByType')->with(DeletedRestriction::class);
+        $containerMock->expects($this->atLeastOnce())->method('buildExpression')->with(['bt' => 'bTable'], $this->expressionBuilder)
             ->willReturn($this->expressionBuilder->and(...[]));
         $subject->addForTables($containerMock, ['bt']);
         $subject->removeByType(DeletedRestriction::class);

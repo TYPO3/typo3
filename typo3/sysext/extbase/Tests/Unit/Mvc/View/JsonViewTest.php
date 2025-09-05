@@ -375,7 +375,7 @@ final class JsonViewTest extends UnitTestCase
         $jsonView = $this->getAccessibleMock(JsonView::class, null, [], '', false);
         $jsonView->_set('persistenceManager', $persistenceManagerMock);
 
-        $persistenceManagerMock->expects(self::once())->method('getIdentifierByObject')->with($object->value1)->willReturn($dummyIdentifier);
+        $persistenceManagerMock->expects($this->once())->method('getIdentifierByObject')->with($object->value1)->willReturn($dummyIdentifier);
 
         $actual = $jsonView->_call('transformValue', $object, $configuration);
 

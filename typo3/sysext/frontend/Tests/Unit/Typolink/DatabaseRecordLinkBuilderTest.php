@@ -175,8 +175,8 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
                 ]
             );
 
-        $contentObjectRendererMock->expects(self::once())->method('start');
-        $contentObjectRendererMock->expects(self::once())->method('createLink');
+        $contentObjectRendererMock->expects($this->once())->method('start');
+        $contentObjectRendererMock->expects($this->once())->method('createLink');
 
         // Act
         $databaseRecordLinkBuilder = $this->getAccessibleMock(DatabaseRecordLinkBuilder::class, ['getPageTsConfig'], [$contentObjectRendererMock, $frontendControllerMock]);
@@ -185,7 +185,7 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
             $databaseRecordLinkBuilder->build($extractedLinkDetails, $linkText, $target, $confFromDb);
         } catch (UnableToLinkException) {
             // Assert
-            $contentObjectRendererMock->expects(self::once())->method('typoLink')->with($linkText, $expectedConfiguration);
+            $contentObjectRendererMock->expects($this->once())->method('typoLink')->with($linkText, $expectedConfiguration);
         }
     }
 }

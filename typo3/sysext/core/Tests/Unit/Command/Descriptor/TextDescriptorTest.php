@@ -44,7 +44,7 @@ final class TextDescriptorTest extends UnitTestCase
 
         $output = $this->createMock(OutputInterface::class);
 
-        $matcher = self::exactly(2);
+        $matcher = $this->exactly(2);
         $output
             ->expects($matcher)
             ->method('write')

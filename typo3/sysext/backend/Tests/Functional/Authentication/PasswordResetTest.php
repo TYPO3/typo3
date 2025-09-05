@@ -115,7 +115,7 @@ final class PasswordResetTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport'] = 'null';
         $emailAddress = 'does-not-exist@example.com';
         $loggerMock = $this->createMock(LoggerInterface::class);
-        $loggerMock->expects(self::atLeastOnce())->method('warning')->with(
+        $loggerMock->expects($this->atLeastOnce())->method('warning')->with(
             'Password reset requested for email {email} but no valid users',
             ['email' => 'does-not-exist@example.com']
         );
@@ -221,7 +221,7 @@ final class PasswordResetTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordResetForAdmins'] = true;
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport'] = 'null';
         $loggerMock = $this->createMock(LoggerInterface::class);
-        $loggerMock->expects(self::exactly(2))->method('warning')->with('Password reset not possible. Valid user for token not found.');
+        $loggerMock->expects($this->exactly(2))->method('warning')->with('Password reset not possible. Valid user for token not found.');
         $subject = new PasswordReset(
             $loggerMock,
             $this->get(MailerInterface::class),

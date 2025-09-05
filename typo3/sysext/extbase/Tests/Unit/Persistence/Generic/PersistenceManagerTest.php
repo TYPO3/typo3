@@ -41,7 +41,7 @@ final class PersistenceManagerTest extends UnitTestCase
         $objectStorage = new ObjectStorage();
         $objectStorage->attach($entity2);
         $mockBackend = $this->createMock(BackendInterface::class);
-        $mockBackend->expects(self::once())->method('setAggregateRootObjects')->with($objectStorage);
+        $mockBackend->expects($this->once())->method('setAggregateRootObjects')->with($objectStorage);
 
         $manager = new PersistenceManager(
             $this->createMock(QueryFactoryInterface::class),
@@ -60,7 +60,7 @@ final class PersistenceManagerTest extends UnitTestCase
         $objectStorage = new ObjectStorage();
         $objectStorage->attach($entity2);
         $mockBackend = $this->createMock(BackendInterface::class);
-        $mockBackend->expects(self::once())->method('setDeletedEntities')->with($objectStorage);
+        $mockBackend->expects($this->once())->method('setDeletedEntities')->with($objectStorage);
 
         $manager = new PersistenceManager(
             $this->createMock(QueryFactoryInterface::class),
@@ -79,7 +79,7 @@ final class PersistenceManagerTest extends UnitTestCase
         $object = new \stdClass();
 
         $mockBackend = $this->createMock(BackendInterface::class);
-        $mockBackend->expects(self::once())->method('getIdentifierByObject')->with($object)->willReturn($fakeUuid);
+        $mockBackend->expects($this->once())->method('getIdentifierByObject')->with($object)->willReturn($fakeUuid);
 
         $manager = new PersistenceManager(
             $this->createMock(QueryFactoryInterface::class),
@@ -97,8 +97,8 @@ final class PersistenceManagerTest extends UnitTestCase
         $object = new \stdClass();
 
         $mockSession = $this->createMock(Session::class);
-        $mockSession->expects(self::once())->method('hasIdentifier')->with($fakeUuid, \stdClass::class)->willReturn(true);
-        $mockSession->expects(self::once())->method('getObjectByIdentifier')->with($fakeUuid)->willReturn($object);
+        $mockSession->expects($this->once())->method('hasIdentifier')->with($fakeUuid, \stdClass::class)->willReturn(true);
+        $mockSession->expects($this->once())->method('getObjectByIdentifier')->with($fakeUuid)->willReturn($object);
 
         $manager = new PersistenceManager(
             $this->createMock(QueryFactoryInterface::class),
@@ -117,10 +117,10 @@ final class PersistenceManagerTest extends UnitTestCase
         $fakeEntityType = get_class($object);
 
         $mockSession = $this->createMock(Session::class);
-        $mockSession->expects(self::once())->method('hasIdentifier')->with($fakeUuid)->willReturn(false);
+        $mockSession->expects($this->once())->method('hasIdentifier')->with($fakeUuid)->willReturn(false);
 
         $mockBackend = $this->createMock(BackendInterface::class);
-        $mockBackend->expects(self::once())->method('getObjectByIdentifier')->with(
+        $mockBackend->expects($this->once())->method('getObjectByIdentifier')->with(
             $fakeUuid,
             $fakeEntityType
         )->willReturn($object);
@@ -141,13 +141,13 @@ final class PersistenceManagerTest extends UnitTestCase
         $fakeEntityType = 'foobar';
 
         $mockSession = $this->createMock(Session::class);
-        $mockSession->expects(self::once())->method('hasIdentifier')->with(
+        $mockSession->expects($this->once())->method('hasIdentifier')->with(
             $fakeUuid,
             $fakeEntityType
         )->willReturn(false);
 
         $mockBackend = $this->createMock(BackendInterface::class);
-        $mockBackend->expects(self::once())->method('getObjectByIdentifier')->with(
+        $mockBackend->expects($this->once())->method('getObjectByIdentifier')->with(
             $fakeUuid,
             $fakeEntityType
         )->willReturn(null);
@@ -177,11 +177,11 @@ final class PersistenceManagerTest extends UnitTestCase
         $expectedAddedObjects->attach($someObject);
 
         // this is the actual assertion
-        $backend->expects(self::atLeastOnce())->method('setAggregateRootObjects')->with($expectedAddedObjects);
+        $backend->expects($this->atLeastOnce())->method('setAggregateRootObjects')->with($expectedAddedObjects);
 
-        $backend->expects(self::atLeastOnce())->method('setChangedEntities')->with(self::anything());
-        $backend->expects(self::atLeastOnce())->method('setDeletedEntities')->with(self::anything());
-        $backend->expects(self::atLeastOnce())->method('commit');
+        $backend->expects($this->atLeastOnce())->method('setChangedEntities')->with(self::anything());
+        $backend->expects($this->atLeastOnce())->method('setDeletedEntities')->with(self::anything());
+        $backend->expects($this->atLeastOnce())->method('commit');
         $persistenceManager->persistAll();
     }
 
@@ -211,11 +211,11 @@ final class PersistenceManagerTest extends UnitTestCase
         $expectedAddedObjects->detach($object2);
 
         // this is the actual assertion
-        $backend->expects(self::atLeastOnce())->method('setAggregateRootObjects')->with($expectedAddedObjects);
+        $backend->expects($this->atLeastOnce())->method('setAggregateRootObjects')->with($expectedAddedObjects);
 
-        $backend->expects(self::atLeastOnce())->method('setChangedEntities')->with(self::anything());
-        $backend->expects(self::atLeastOnce())->method('setDeletedEntities')->with(self::anything());
-        $backend->expects(self::atLeastOnce())->method('commit');
+        $backend->expects($this->atLeastOnce())->method('setChangedEntities')->with(self::anything());
+        $backend->expects($this->atLeastOnce())->method('setDeletedEntities')->with(self::anything());
+        $backend->expects($this->atLeastOnce())->method('commit');
 
         $persistenceManager->persistAll();
     }
@@ -250,11 +250,11 @@ final class PersistenceManagerTest extends UnitTestCase
         $expectedAddedObjects->detach($object2);
 
         // this is the actual assertion
-        $backend->expects(self::atLeastOnce())->method('setAggregateRootObjects')->with($expectedAddedObjects);
+        $backend->expects($this->atLeastOnce())->method('setAggregateRootObjects')->with($expectedAddedObjects);
 
-        $backend->expects(self::atLeastOnce())->method('setChangedEntities')->with(self::anything());
-        $backend->expects(self::atLeastOnce())->method('setDeletedEntities')->with(self::anything());
-        $backend->expects(self::atLeastOnce())->method('commit');
+        $backend->expects($this->atLeastOnce())->method('setChangedEntities')->with(self::anything());
+        $backend->expects($this->atLeastOnce())->method('setDeletedEntities')->with(self::anything());
+        $backend->expects($this->atLeastOnce())->method('commit');
         $persistenceManager->persistAll();
     }
 
@@ -276,13 +276,13 @@ final class PersistenceManagerTest extends UnitTestCase
 
         $expectedDeletedObjects = new ObjectStorage();
         $expectedDeletedObjects->attach($object);
-        $backend->expects(self::atLeastOnce())->method('setAggregateRootObjects');
-        $backend->expects(self::atLeastOnce())->method('setChangedEntities')->with(self::anything());
+        $backend->expects($this->atLeastOnce())->method('setAggregateRootObjects');
+        $backend->expects($this->atLeastOnce())->method('setChangedEntities')->with(self::anything());
 
         // this is the actual assertion
-        $backend->expects(self::atLeastOnce())->method('setDeletedEntities')->with($expectedDeletedObjects);
+        $backend->expects($this->atLeastOnce())->method('setDeletedEntities')->with($expectedDeletedObjects);
 
-        $backend->expects(self::atLeastOnce())->method('commit');
+        $backend->expects($this->atLeastOnce())->method('commit');
         $persistenceManager->persistAll();
     }
 
@@ -320,7 +320,7 @@ final class PersistenceManagerTest extends UnitTestCase
             ->onlyMethods(['commit', 'setChangedEntities'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockBackend->expects(self::once())
+        $mockBackend->expects($this->once())
             ->method('setChangedEntities')
             ->with(self::equalTo($changedEntities));
 
@@ -341,7 +341,7 @@ final class PersistenceManagerTest extends UnitTestCase
     public function tearDownWithBackendSupportingTearDownDelegatesCallToBackend(): void
     {
         $mockBackend = $this->createMock(TearDownableBackendInterface::class);
-        $mockBackend->expects(self::once())->method('tearDown');
+        $mockBackend->expects($this->once())->method('tearDown');
         $persistenceManager = new PersistenceManager(
             $this->createMock(QueryFactoryInterface::class),
             $mockBackend,
@@ -371,7 +371,7 @@ final class PersistenceManagerTest extends UnitTestCase
             ->onlyMethods(['commit', 'setAggregateRootObjects', 'setDeletedEntities'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockBackend->expects(self::once())
+        $mockBackend->expects($this->once())
             ->method('setAggregateRootObjects')
             ->with(self::equalTo($aggregateRootObjects));
 

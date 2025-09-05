@@ -97,7 +97,7 @@ final class DatabaseDefaultLanguagePageRowTest extends UnitTestCase
             'l10n_parent' => 0,
         ];
 
-        $this->subject->expects(self::once())
+        $this->subject->expects($this->once())
             ->method('getDatabaseRow')
             ->with($input['tableName'], 13)
             ->willReturn($defaultLanguagePageRow);

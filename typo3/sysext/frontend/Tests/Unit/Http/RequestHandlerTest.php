@@ -103,7 +103,7 @@ final class RequestHandlerTest extends UnitTestCase
     {
         $subject = $this->getAccessibleMock(RequestHandler::class, null, [], '', false);
         $contentObjectRendererMock = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
-        $contentObjectRendererMock->expects(self::never())->method('stdWrap');
+        $contentObjectRendererMock->expects($this->never())->method('stdWrap');
         $result = $subject->_call('generateHtmlTag', $htmlTagAttributes, $configuration, $contentObjectRendererMock);
         self::assertEquals($expectedResult, $result);
     }
@@ -121,15 +121,15 @@ final class RequestHandlerTest extends UnitTestCase
 
         $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(3);
         $contentObjectRendererMock = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
-        $contentObjectRendererMock->expects(self::atLeastOnce())->method('cObjGet')->with(self::anything())->willReturn('');
-        $contentObjectRendererMock->expects(self::once())->method('stdWrap')->with(self::anything())->willReturn($stdWrapResult);
+        $contentObjectRendererMock->expects($this->atLeastOnce())->method('cObjGet')->with(self::anything())->willReturn('');
+        $contentObjectRendererMock->expects($this->once())->method('stdWrap')->with(self::anything())->willReturn($stdWrapResult);
         $frontendControllerMock = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
-        $frontendControllerMock->expects(self::once())->method('generatePageTitle')->willReturn('');
-        $frontendControllerMock->expects(self::once())->method('INTincScript_loadJSCode');
+        $frontendControllerMock->expects($this->once())->method('generatePageTitle')->willReturn('');
+        $frontendControllerMock->expects($this->once())->method('INTincScript_loadJSCode');
         $frontendController = $frontendControllerMock;
         $frontendController->cObj = $contentObjectRendererMock;
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
-        $typo3InformationMock->expects(self::once())->method('getInlineHeaderComment')->willReturn('dummy');
+        $typo3InformationMock->expects($this->once())->method('getInlineHeaderComment')->willReturn('dummy');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
 
         $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->getMock();
@@ -163,7 +163,7 @@ final class RequestHandlerTest extends UnitTestCase
         );
         $subject->method('getPageRenderer')->willReturn($pageRendererMock);
         $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $request);
-        $pageRendererMock->expects(self::never())->method('setMetaTag')->with($expectedTags['type'], $expectedTags['name'], $expectedTags['content'])->willThrowException(new \InvalidArgumentException('', 1666309039));
+        $pageRendererMock->expects($this->never())->method('setMetaTag')->with($expectedTags['type'], $expectedTags['name'], $expectedTags['content'])->willThrowException(new \InvalidArgumentException('', 1666309039));
     }
 
     public static function generateMetaTagHtmlGeneratesCorrectTagsDataProvider(): array
@@ -281,20 +281,20 @@ final class RequestHandlerTest extends UnitTestCase
     {
         $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(3);
         $contentObjectRendererMock = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
-        $contentObjectRendererMock->expects(self::atLeastOnce())->method('cObjGet')->with(self::anything())->willReturn('');
+        $contentObjectRendererMock->expects($this->atLeastOnce())->method('cObjGet')->with(self::anything())->willReturn('');
         $contentObjectRendererMock->method('stdWrap')->with(self::anything())->willReturn($stdWrapResult);
         $frontendControllerMock = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
-        $frontendControllerMock->expects(self::once())->method('generatePageTitle')->willReturn('');
-        $frontendControllerMock->expects(self::once())->method('INTincScript_loadJSCode');
+        $frontendControllerMock->expects($this->once())->method('generatePageTitle')->willReturn('');
+        $frontendControllerMock->expects($this->once())->method('INTincScript_loadJSCode');
         $frontendController = $frontendControllerMock;
         $frontendController->cObj = $contentObjectRendererMock;
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
-        $typo3InformationMock->expects(self::once())->method('getInlineHeaderComment')->willReturn('dummy');
+        $typo3InformationMock->expects($this->once())->method('getInlineHeaderComment')->willReturn('dummy');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
 
         $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->getMock();
         $pageRendererMock->method('getDocType')->willReturn(DocType::html5);
-        $pageRendererMock->expects(self::once())->method('setMetaTag')->with($expectedTags['type'], $expectedTags['name'], $expectedTags['content'], [], false);
+        $pageRendererMock->expects($this->once())->method('setMetaTag')->with($expectedTags['type'], $expectedTags['name'], $expectedTags['content'], [], false);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $frontendTypoScript->setPageArray([
@@ -328,20 +328,20 @@ final class RequestHandlerTest extends UnitTestCase
 
         $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(3);
         $contentObjectRendererMock = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
-        $contentObjectRendererMock->expects(self::atLeastOnce())->method('cObjGet')->with(self::anything())->willReturn('');
+        $contentObjectRendererMock->expects($this->atLeastOnce())->method('cObjGet')->with(self::anything())->willReturn('');
         $contentObjectRendererMock->method('stdWrap')->with(self::anything())->willReturn($stdWrapResult);
         $frontendControllerMock = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $frontendControllerMock->method('generatePageTitle')->willReturn('');
-        $frontendControllerMock->expects(self::once())->method('INTincScript_loadJSCode');
+        $frontendControllerMock->expects($this->once())->method('INTincScript_loadJSCode');
         $frontendController = $frontendControllerMock;
         $frontendController->cObj = $contentObjectRendererMock;
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
-        $typo3InformationMock->expects(self::once())->method('getInlineHeaderComment')->willReturn('dummy');
+        $typo3InformationMock->expects($this->once())->method('getInlineHeaderComment')->willReturn('dummy');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
 
         $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->getMock();
         $pageRendererMock->method('getDocType')->willReturn(DocType::html5);
-        $pageRendererMock->expects(self::never())->method('setMetaTag');
+        $pageRendererMock->expects($this->never())->method('setMetaTag');
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $frontendTypoScript->setPageArray([
@@ -431,15 +431,15 @@ final class RequestHandlerTest extends UnitTestCase
     {
         $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(3);
         $contentObjectRendererMock = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
-        $contentObjectRendererMock->expects(self::atLeastOnce())->method('cObjGet')->with(self::anything())->wilLReturn('');
+        $contentObjectRendererMock->expects($this->atLeastOnce())->method('cObjGet')->with(self::anything())->wilLReturn('');
         $contentObjectRendererMock->method('stdWrap')->with(self::anything())->willReturn($stdWrapResult);
         $frontendControllerMock = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
-        $frontendControllerMock->expects(self::once())->method('generatePageTitle')->willReturn('');
-        $frontendControllerMock->expects(self::once())->method('INTincScript_loadJSCode');
+        $frontendControllerMock->expects($this->once())->method('generatePageTitle')->willReturn('');
+        $frontendControllerMock->expects($this->once())->method('INTincScript_loadJSCode');
         $frontendController = $frontendControllerMock;
         $frontendController->cObj = $contentObjectRendererMock;
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
-        $typo3InformationMock->expects(self::once())->method('getInlineHeaderComment')->willReturn('This website is...');
+        $typo3InformationMock->expects($this->once())->method('getInlineHeaderComment')->willReturn('This website is...');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
 
         $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->getMock();
@@ -449,7 +449,7 @@ final class RequestHandlerTest extends UnitTestCase
             [$expectedTags[1]['type'], $expectedTags[1]['name'], $expectedTags[1]['content'], [], false],
         ];
         $pageRendererMock
-            ->expects(self::exactly(2))
+            ->expects($this->exactly(2))
             ->method('setMetaTag')
             ->willReturnCallback(function (string $type, string $name, string $content, array $subProperties, bool $replace) use (&$series): void {
                 $expectedArgs = array_shift($series);

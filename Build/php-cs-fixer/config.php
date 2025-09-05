@@ -49,7 +49,10 @@ return (new \PhpCsFixer\Config())
                 __DIR__ . '/../../typo3/sysext',
                 __DIR__ . '/../../Build',
             ])
-            ->exclude('node_modules')
+            ->exclude([
+                'node_modules',
+                'Build/composer',
+            ])
     )
     ->setRiskyAllowed(true)
     ->setRules([
@@ -100,7 +103,24 @@ return (new \PhpCsFixer\Config())
         'ordered_imports' => ['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'alpha'],
         'php_unit_construct' => ['assertions' => ['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame']],
         'php_unit_mock_short_will_return' => true,
-        'php_unit_test_case_static_method_calls' => ['call_type' => 'self'],
+        'php_unit_test_case_static_method_calls' => ['call_type' => 'self',
+            'methods' => [
+                'any' => 'this',
+                'atLeast' => 'this',
+                'atLeastOnce' => 'this',
+                'atMost' => 'this',
+                'exactly' => 'this',
+                'never' => 'this',
+                'onConsecutiveCalls' => 'this',
+                'once' => 'this',
+                'returnArgument' => 'this',
+                'returnCallback' => 'this',
+                'returnSelf' => 'this',
+                'returnValue' => 'this',
+                'returnValueMap' => 'this',
+                'throwException' => 'this',
+            ],
+        ],
         'phpdoc_no_access' => true,
         'phpdoc_no_empty_return' => true,
         'phpdoc_no_package' => true,

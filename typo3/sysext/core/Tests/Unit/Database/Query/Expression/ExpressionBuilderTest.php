@@ -71,7 +71,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     #[Test]
     public function eqQuotesIdentifier(): void
     {
-        $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
+        $this->connectionMock->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $result = $this->subject->eq('aField', 1);
 
         self::assertSame('aField = 1', $result);
@@ -80,7 +80,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     #[Test]
     public function neqQuotesIdentifier(): void
     {
-        $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
+        $this->connectionMock->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $result = $this->subject->neq('aField', 1);
 
         self::assertSame('aField <> 1', $result);
@@ -89,7 +89,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     #[Test]
     public function ltQuotesIdentifier(): void
     {
-        $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
+        $this->connectionMock->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $result = $this->subject->lt('aField', 1);
 
         self::assertSame('aField < 1', $result);
@@ -98,7 +98,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     #[Test]
     public function lteQuotesIdentifier(): void
     {
-        $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
+        $this->connectionMock->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $result = $this->subject->lte('aField', 1);
 
         self::assertSame('aField <= 1', $result);
@@ -107,7 +107,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     #[Test]
     public function gtQuotesIdentifier(): void
     {
-        $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
+        $this->connectionMock->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $result = $this->subject->gt('aField', 1);
 
         self::assertSame('aField > 1', $result);
@@ -116,7 +116,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     #[Test]
     public function gteQuotesIdentifier(): void
     {
-        $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
+        $this->connectionMock->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $result = $this->subject->gte('aField', 1);
 
         self::assertSame('aField >= 1', $result);
@@ -125,7 +125,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     #[Test]
     public function isNullQuotesIdentifier(): void
     {
-        $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
+        $this->connectionMock->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $result = $this->subject->isNull('aField');
 
         self::assertSame('aField IS NULL', $result);
@@ -134,7 +134,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     #[Test]
     public function isNotNullQuotesIdentifier(): void
     {
-        $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
+        $this->connectionMock->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $result = $this->subject->isNotNull('aField');
 
         self::assertSame('aField IS NOT NULL', $result);
@@ -145,7 +145,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     {
         $databasePlatform = $this->createMock(MockMySQLPlatform::class);
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
-        $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
+        $this->connectionMock->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $this->connectionMock->method('quote')->willReturnCallback(function (string $value): string {
             return '"' . $value . '"';
         });
@@ -158,7 +158,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     {
         $databasePlatform = $this->createMock(MockMySQLPlatform::class);
         $this->connectionMock->method('getDatabasePlatform')->willReturn($databasePlatform);
-        $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
+        $this->connectionMock->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $this->connectionMock->method('quote')->willReturnCallback(function (string $value): string {
             return '"' . $value . '"';
         });
@@ -169,7 +169,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     #[Test]
     public function inWithStringQuotesIdentifier(): void
     {
-        $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
+        $this->connectionMock->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $result = $this->subject->in('aField', '1,2,3');
 
         self::assertSame('aField IN (1,2,3)', $result);
@@ -178,7 +178,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     #[Test]
     public function inWithArrayQuotesIdentifier(): void
     {
-        $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
+        $this->connectionMock->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $result = $this->subject->in('aField', [1, 2, 3]);
 
         self::assertSame('aField IN (1, 2, 3)', $result);
@@ -203,7 +203,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     #[Test]
     public function notInWithStringQuotesIdentifier(): void
     {
-        $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
+        $this->connectionMock->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $result = $this->subject->notIn('aField', '1,2,3');
 
         self::assertSame('aField NOT IN (1,2,3)', $result);
@@ -212,7 +212,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     #[Test]
     public function notInWithArrayQuotesIdentifier(): void
     {
-        $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
+        $this->connectionMock->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $result = $this->subject->notIn('aField', [1, 2, 3]);
 
         self::assertSame('aField NOT IN (1, 2, 3)', $result);
@@ -273,7 +273,7 @@ final class ExpressionBuilderTest extends UnitTestCase
             ['1', "'1'"],
             [',', "','"],
         ];
-        $this->connectionMock->expects(self::exactly(2))->method('quote')
+        $this->connectionMock->expects($this->exactly(2))->method('quote')
             ->willReturnCallback(function (string $value) use (&$series): string {
                 $arguments = array_shift($series);
                 self::assertSame($arguments[0], $value);
@@ -294,7 +294,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function inSetForPostgreSQLWithColumn(): void
     {
         $databasePlatform = $this->createMock(MockPostgreSQLPlatform::class);
-        $this->connectionMock->expects(self::atLeastOnce())->method('quote')->with(',')->willReturn("','");
+        $this->connectionMock->expects($this->atLeastOnce())->method('quote')->with(',')->willReturn("','");
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
             return '"' . $identifier . '"';
         });
@@ -315,7 +315,7 @@ final class ExpressionBuilderTest extends UnitTestCase
             [',', "','"],
             [',1,', "'%,1,%'"],
         ];
-        $this->connectionMock->expects(self::exactly(3))->method('quote')
+        $this->connectionMock->expects($this->exactly(3))->method('quote')
             ->willReturnCallback(function (string $value) use (&$series): string {
                 $arguments = array_shift($series);
                 self::assertSame($arguments[0], $value);
@@ -345,7 +345,7 @@ final class ExpressionBuilderTest extends UnitTestCase
             [',', "','"],
             [',\'Some\'Value,', "',''Some''Value,'"],
         ];
-        $this->connectionMock->expects(self::exactly(3))->method('quote')
+        $this->connectionMock->expects($this->exactly(3))->method('quote')
             ->willReturnCallback(function (string $value) use (&$series): string {
                 $arguments = array_shift($series);
                 self::assertSame($arguments[0], $value);
@@ -429,7 +429,7 @@ final class ExpressionBuilderTest extends UnitTestCase
             ['1', "'1'"],
             [',', "','"],
         ];
-        $this->connectionMock->expects(self::exactly(2))->method('quote')
+        $this->connectionMock->expects($this->exactly(2))->method('quote')
             ->willReturnCallback(function (string $value) use (&$series): string {
                 $arguments = array_shift($series);
                 self::assertSame($arguments[0], $value);
@@ -451,7 +451,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     {
         $databasePlatform = $this->createMock(MockPostgreSQLPlatform::class);
 
-        $this->connectionMock->expects(self::atLeastOnce())->method('quote')->with(',')->willReturn("','");
+        $this->connectionMock->expects($this->atLeastOnce())->method('quote')->with(',')->willReturn("','");
         $this->connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
             return '"' . $identifier . '"';
         });
@@ -472,7 +472,7 @@ final class ExpressionBuilderTest extends UnitTestCase
             [',', "','"],
             [',1,', "'%,1,%'"],
         ];
-        $this->connectionMock->expects(self::exactly(3))->method('quote')
+        $this->connectionMock->expects($this->exactly(3))->method('quote')
             ->willReturnCallback(function (string $value) use (&$series): string {
                 $arguments = array_shift($series);
                 self::assertSame($arguments[0], $value);
@@ -498,7 +498,7 @@ final class ExpressionBuilderTest extends UnitTestCase
             [',', "','"],
             [',\'Some\'Value,', "',''Some''Value,'"],
         ];
-        $this->connectionMock->expects(self::exactly(3))->method('quote')
+        $this->connectionMock->expects($this->exactly(3))->method('quote')
             ->willReturnCallback(function (string $value) use (&$series): string {
                 $arguments = array_shift($series);
                 self::assertSame($arguments[0], $value);
@@ -641,8 +641,8 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function trimQuotesIdentifierWithDefaultValues(): void
     {
         $platform = new MockPlatform();
-        $this->connectionMock->expects(self::atLeastOnce())->method('getDatabasePlatform')->willReturn($platform);
-        $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')
+        $this->connectionMock->expects($this->atLeastOnce())->method('getDatabasePlatform')->willReturn($platform);
+        $this->connectionMock->expects($this->atLeastOnce())->method('quoteIdentifier')
             ->willReturnCallback(
                 static function (string $identifier) use ($platform): string {
                     return $platform->quoteIdentifier($identifier);
@@ -686,14 +686,14 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function trimQuotesIdentifier(TrimMode $position, string $char, string $expected): void
     {
         $platform = new MockPlatform();
-        $this->connectionMock->expects(self::atLeastOnce())->method('getDatabasePlatform')->willReturn($platform);
-        $this->connectionMock->expects(self::atLeastOnce())->method('quoteIdentifier')
+        $this->connectionMock->expects($this->atLeastOnce())->method('getDatabasePlatform')->willReturn($platform);
+        $this->connectionMock->expects($this->atLeastOnce())->method('quoteIdentifier')
             ->willReturnCallback(
                 static function (string $identifier) use ($platform): string {
                     return $platform->quoteIdentifier($identifier);
                 }
             );
-        $this->connectionMock->expects(self::atLeastOnce())->method('quote')->willReturnCallback(
+        $this->connectionMock->expects($this->atLeastOnce())->method('quote')->willReturnCallback(
             static function (string $identifier): string {
                 return '"' . $identifier . '"';
             }
@@ -708,7 +708,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     #[Test]
     public function literalQuotesValue(): void
     {
-        $this->connectionMock->expects(self::atLeastOnce())->method('quote')->with('aField')
+        $this->connectionMock->expects($this->atLeastOnce())->method('quote')->with('aField')
             ->willReturn('"aField"');
         $result = $this->subject->literal('aField');
 

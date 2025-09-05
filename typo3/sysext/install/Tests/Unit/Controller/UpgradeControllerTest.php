@@ -62,8 +62,8 @@ final class UpgradeControllerTest extends UnitTestCase
             'notAffectedFiles' => [],
         ]);
         $viewMock = $this->getMockBuilder(ViewInterface::class)->getMock();
-        $viewMock->expects(self::any())->method('assignMultiple')->willReturn($viewMock);
-        $viewMock->expects(self::any())->method('render')->willReturn('');
+        $viewMock->expects($this->any())->method('assignMultiple')->willReturn($viewMock);
+        $viewMock->expects($this->any())->method('render')->willReturn('');
         $subject->method('initializeView')->willReturn($viewMock);
         $subject->upgradeDocsGetChangelogForVersionAction($request);
     }
@@ -101,8 +101,8 @@ final class UpgradeControllerTest extends UnitTestCase
             'notAffectedFiles' => [],
         ]);
         $viewMock = $this->getMockBuilder(ViewInterface::class)->getMock();
-        $viewMock->expects(self::any())->method('assignMultiple')->willReturn($viewMock);
-        $viewMock->expects(self::any())->method('render')->willReturn('');
+        $viewMock->expects($this->any())->method('assignMultiple')->willReturn($viewMock);
+        $viewMock->expects($this->any())->method('render')->willReturn('');
         $subject->method('initializeView')->willReturn($viewMock);
         $subject->upgradeDocsGetChangelogForVersionAction($request);
     }

@@ -121,7 +121,7 @@ final class RequestHandlerTest extends AbstractTestCase
     public function nonceValueSubstitutionIsInvoked(): void
     {
         $nonceValueSubstitutionMock = $this->createMock(NonceValueSubstitution::class);
-        $nonceValueSubstitutionMock->expects(self::once())
+        $nonceValueSubstitutionMock->expects($this->once())
             ->method('substituteNonce')
             ->with(self::isArray())
             ->willReturnCallback(static fn(array $context) => $context['content'] ?? null);

@@ -31,7 +31,7 @@ final class AfterVideoPreviewFetchedEventTest extends UnitTestCase
     {
         $onlineMediaId = '2004';
         $onlineMediaHelper = $this->getMockBuilder(YouTubeHelper::class)->disableOriginalConstructor()->getMock();
-        $onlineMediaHelper->expects(self::atLeastOnce())->method('getOnlineMediaId')->willReturn($onlineMediaId);
+        $onlineMediaHelper->expects($this->atLeastOnce())->method('getOnlineMediaId')->willReturn($onlineMediaId);
 
         $oldPreviewImageFilename = '/var/www/previewOld.png';
         $newPreviewImageFilename = '/var/www/previewNew.png';

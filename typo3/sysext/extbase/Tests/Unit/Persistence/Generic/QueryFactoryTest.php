@@ -60,7 +60,7 @@ final class QueryFactoryTest extends UnitTestCase
         $querySettings = new Typo3QuerySettings(new Context(), $this->createMock(ConfigurationManagerInterface::class));
         GeneralUtility::addInstance(QuerySettingsInterface::class, $querySettings);
         GeneralUtility::addInstance(QueryInterface::class, $query);
-        $query->expects(self::once())->method('setQuerySettings')->with($querySettings);
+        $query->expects($this->once())->method('setQuerySettings')->with($querySettings);
         $subject->create($className);
         self::assertSame($expectedResult, $querySettings->getRespectStoragePage());
     }

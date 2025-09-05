@@ -232,7 +232,7 @@ final class VerifyHostHeaderTest extends UnitTestCase
         $request = new ServerRequest(serverParams: $serverParams);
         $requestHandlerMock = $this->createMock(RequestHandlerInterface::class);
 
-        $requestHandlerMock->expects(self::atLeastOnce())->method('handle')->with($request)->willReturn(new Response());
+        $requestHandlerMock->expects($this->atLeastOnce())->method('handle')->with($request)->willReturn(new Response());
 
         $subject->process($request, $requestHandlerMock);
     }

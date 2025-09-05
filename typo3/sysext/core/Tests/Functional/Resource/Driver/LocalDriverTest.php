@@ -186,7 +186,7 @@ final class LocalDriverTest extends FunctionalTestCase
         ];
         $subject = $this->getAccessibleMock(LocalDriver::class, ['sanitizeFilename'], [$driverConfiguration]);
         $subject->processConfiguration();
-        $subject->expects(self::exactly(2))
+        $subject->expects($this->exactly(2))
             ->method('sanitizeFileName')
             ->willReturn(
                 'sanitized'
@@ -199,7 +199,7 @@ final class LocalDriverTest extends FunctionalTestCase
     public function determineBaseUrlUrlEncodesUriParts(): void
     {
         $subject = $this->getAccessibleMock(LocalDriver::class, ['hasCapability'], [], '', false);
-        $subject->expects(self::once())
+        $subject->expects($this->once())
             ->method('hasCapability')
             ->with(Capabilities::CAPABILITY_PUBLIC)
             ->willReturn(
@@ -740,7 +740,7 @@ final class LocalDriverTest extends FunctionalTestCase
         ];
         $subject = $this->getAccessibleMock(LocalDriver::class, ['copyFileToTemporaryPath'], [$driverConfiguration]);
         $subject->processConfiguration();
-        $subject->expects(self::once())->method('copyFileToTemporaryPath')->willReturn('');
+        $subject->expects($this->once())->method('copyFileToTemporaryPath')->willReturn('');
         $subject->getFileForLocalProcessing('/someDir/someFile');
     }
 
@@ -934,8 +934,8 @@ final class LocalDriverTest extends FunctionalTestCase
         ];
         $subject = $this->getAccessibleMock(LocalDriver::class, ['createIdentifierMap'], [$driverConfiguration]);
         $subject->processConfiguration();
-        $subject->expects(self::atLeastOnce())->method('createIdentifierMap')->will(
-            self::throwException(
+        $subject->expects($this->atLeastOnce())->method('createIdentifierMap')->will(
+            $this->throwException(
                 new FileOperationErrorException('testing', 1476045666)
             )
         );

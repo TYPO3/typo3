@@ -194,10 +194,10 @@ final class RecoveryServiceTest extends UnitTestCase
             ->willReturn($settings);
 
         $uriBuilder = $this->getMockBuilder(UriBuilder::class)->disableOriginalConstructor()->getMock();
-        $uriBuilder->expects(self::once())->method('reset')->willReturn($uriBuilder);
-        $uriBuilder->expects(self::once())->method('setRequest')->with($this->extbaseRequest)->willReturn($uriBuilder);
-        $uriBuilder->expects(self::once())->method('setCreateAbsoluteUri')->with(true)->willReturn($uriBuilder);
-        $uriBuilder->expects(self::once())->method('uriFor')->with(
+        $uriBuilder->expects($this->once())->method('reset')->willReturn($uriBuilder);
+        $uriBuilder->expects($this->once())->method('setRequest')->with($this->extbaseRequest)->willReturn($uriBuilder);
+        $uriBuilder->expects($this->once())->method('setCreateAbsoluteUri')->with(true)->willReturn($uriBuilder);
+        $uriBuilder->expects($this->once())->method('uriFor')->with(
             'showChangePassword',
             ['hash' => $recoveryConfiguration['forgotHash']],
             'PasswordRecovery',
@@ -208,7 +208,7 @@ final class RecoveryServiceTest extends UnitTestCase
         $fluidEmailMock = $this->setupFluidEmailMock($receiver, $expectedViewVariables, $recoveryConfiguration);
 
         $mailer = $this->getMockBuilder(MailerInterface::class)->disableOriginalConstructor()->getMock();
-        $mailer->expects(self::once())->method('send')->with($fluidEmailMock);
+        $mailer->expects($this->once())->method('send')->with($fluidEmailMock);
 
         $eventDispatcherMock = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
         $subject = $this->getMockBuilder(RecoveryService::class)

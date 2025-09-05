@@ -1092,7 +1092,7 @@ final class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getAccessibleMock(ContentObjectRenderer::class, ['stdWrap_ifEmpty']);
         $request = new ServerRequest();
         $subject->setRequest($request);
-        $subject->expects(self::exactly(($ifEmptyShouldBeCalled ? 1 : 0)))
+        $subject->expects($this->exactly(($ifEmptyShouldBeCalled ? 1 : 0)))
             ->method('stdWrap_ifEmpty');
 
         $subject->stdWrap($content, $conf);
@@ -1197,7 +1197,7 @@ final class ContentObjectRendererTest extends UnitTestCase
         $request = new ServerRequest('https://example.com');
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
         $this->subject->setRequest($request);
-        $this->subject->expects(self::once())->method('getEnvironmentVariable')
+        $this->subject->expects($this->once())->method('getEnvironmentVariable')
             ->with(self::equalTo('SCRIPT_FILENAME'))->willReturn('dummyPath');
         self::assertEquals('dummyPath', $this->subject->getData('getindpenv:SCRIPT_FILENAME'));
     }
@@ -1257,7 +1257,7 @@ final class ContentObjectRendererTest extends UnitTestCase
         $this->subject->setRequest($request);
         $uid = StringUtility::getUniqueId();
         $file = $this->createMock(File::class);
-        $file->expects(self::once())->method('getUid')->willReturn($uid);
+        $file->expects($this->once())->method('getUid')->willReturn($uid);
         $this->subject->setCurrentFile($file);
         self::assertEquals($uid, $this->subject->getData($typoScriptPath));
     }
@@ -1306,7 +1306,7 @@ final class ContentObjectRendererTest extends UnitTestCase
         $frontendUser = $this->getMockBuilder(FrontendUserAuthentication::class)
             ->onlyMethods(['getSessionData'])
             ->getMock();
-        $frontendUser->expects(self::once())->method('getSessionData')->with('myext')->willReturn([
+        $frontendUser->expects($this->once())->method('getSessionData')->with('myext')->willReturn([
             'mydata' => [
                 'someValue' => 42,
             ],
@@ -1504,7 +1504,7 @@ final class ContentObjectRendererTest extends UnitTestCase
         $dummyRecord = ['uid' => 5, 'title' => 'someTitle'];
         $pageRepository = $this->createMock(PageRepository::class);
         GeneralUtility::addInstance(PageRepository::class, $pageRepository);
-        $pageRepository->expects(self::once())->method('getRawRecord')->with('tt_content', '106')->willReturn($dummyRecord);
+        $pageRepository->expects($this->once())->method('getRawRecord')->with('tt_content', '106')->willReturn($dummyRecord);
         self::assertSame('someTitle', $this->subject->getData('db:tt_content:106:title'));
     }
 
@@ -1565,7 +1565,7 @@ final class ContentObjectRendererTest extends UnitTestCase
         $dummyRecord = ['uid' => 5, 'title' => 'someTitle'];
         $pageRepository = $this->createMock(PageRepository::class);
         GeneralUtility::addInstance(PageRepository::class, $pageRepository);
-        $pageRepository->expects(self::once())->method('getRawRecord')->with('tt_content', '106')->willReturn($dummyRecord);
+        $pageRepository->expects($this->once())->method('getRawRecord')->with('tt_content', '106')->willReturn($dummyRecord);
         self::assertSame('', $this->subject->getData($identifier));
     }
 
@@ -1583,9 +1583,9 @@ final class ContentObjectRendererTest extends UnitTestCase
         $value = StringUtility::getUniqueId('someValue');
         $languageServiceFactory = $this->createMock(LanguageServiceFactory::class);
         $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceFactory->expects(self::once())->method('createFromSiteLanguage')->with(self::anything())->willReturn($languageServiceMock);
+        $languageServiceFactory->expects($this->once())->method('createFromSiteLanguage')->with(self::anything())->willReturn($languageServiceMock);
         GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactory);
-        $languageServiceMock->expects(self::once())->method('sL')->with('LLL:' . $key)->willReturn($value);
+        $languageServiceMock->expects($this->once())->method('sL')->with('LLL:' . $key)->willReturn($value);
         self::assertEquals($value, $this->subject->getData('lll:' . $key));
     }
 
@@ -2021,7 +2021,7 @@ final class ContentObjectRendererTest extends UnitTestCase
     private function createContentObjectThrowingExceptionFixture(ContentObjectRenderer $subject, bool $addProductionExceptionHandlerInstance = true): AbstractContentObject&MockObject
     {
         $contentObjectFixture = $this->getMockBuilder(AbstractContentObject::class)->getMock();
-        $contentObjectFixture->expects(self::once())
+        $contentObjectFixture->expects($this->once())
             ->method('render')
             ->willReturnCallback(static function (array $conf = []): string {
                 throw new \LogicException('Exception during rendering', 1414513947);
@@ -2889,7 +2889,7 @@ content="benni">',
     public function calculateCacheKey(string $expect, array $conf, int $times, ?string $with, ?array $withWrap, ?string $will): void
     {
         $subject = $this->getAccessibleMock(ContentObjectRenderer::class, ['stdWrap']);
-        $subject->expects(self::exactly($times))
+        $subject->expects($this->exactly($times))
             ->method('stdWrap')
             ->with($with, $withWrap)
             ->willReturn($will);
@@ -2953,25 +2953,25 @@ content="benni">',
             ]
         );
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('calculateCacheKey')
             ->with($conf)
             ->willReturn($cacheKey);
         $cacheDataCollector = $this->createMock(CacheDataCollectorInterface::class);
         $cacheDataCollector
-            ->expects(self::exactly($times))
+            ->expects($this->exactly($times))
             ->method('addCacheTags')
             ->with(self::isInstanceOf(CacheTag::class));
         $request = (new ServerRequest())
             ->withAttribute('frontend.cache.collector', $cacheDataCollector)
             ->withAttribute('frontend.cache.instruction', new CacheInstruction());
         $subject
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getRequest')
             ->willReturn($request);
         $cacheFrontend = $this->createMock(CacheFrontendInterface::class);
         $cacheFrontend
-            ->expects(self::exactly($times))
+            ->expects($this->exactly($times))
             ->method('get')
             ->with($cacheKey)
             ->willReturn(['content' => $cached, 'cacheTags' => $tags]);
@@ -3229,7 +3229,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['HTMLparser_TSbridge'])->getMock();
         $subject
-            ->expects(self::exactly($times))
+            ->expects($this->exactly($times))
             ->method('HTMLparser_TSbridge')
             ->with($content, $conf['HTMLparser.'] ?? [])
             ->willReturn($will);
@@ -3295,7 +3295,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['calcAge'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('calcAge')
             ->with($difference, $conf['age'])
             ->willReturn($return);
@@ -3326,7 +3326,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['cObjGetSingle'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('cObjGetSingle')
             ->with($conf['append'], $conf['append.'], $debugKey)
             ->willReturn($return);
@@ -3453,7 +3453,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['cObjGetSingle'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('cObjGetSingle')
             ->with($conf['cObject'], $conf['cObject.'], $debugKey)
             ->willReturn($return);
@@ -3615,7 +3615,7 @@ content="benni">',
             ['getFromCache']
         );
         $subject
-            ->expects(self::exactly($times))
+            ->expects($this->exactly($times))
             ->method('getFromCache')
             ->with($with)
             ->willReturn($will);
@@ -3679,7 +3679,7 @@ content="benni">',
                 'getTypoScriptFrontendController',
             ]
         );
-        $subject->expects(self::exactly($times))->method('calculateCacheKey')->with($confCache)->willReturn($key);
+        $subject->expects($this->exactly($times))->method('calculateCacheKey')->with($confCache)->willReturn($key);
         self::assertSame(
             $content,
             $subject->stdWrap_cacheStore($content, $conf)
@@ -3739,15 +3739,15 @@ content="benni">',
             ]
         );
 
-        $subject->expects(self::once())->method('calculateCacheKey')->with($cacheConfig)->willReturn($key);
-        $subject->expects(self::once())->method('calculateCacheTags')->with($cacheConfig)->willReturn($tags);
-        $subject->expects(self::once())->method('calculateCacheLifetime')->with($cacheConfig)->willReturn($lifetime);
+        $subject->expects($this->once())->method('calculateCacheKey')->with($cacheConfig)->willReturn($key);
+        $subject->expects($this->once())->method('calculateCacheTags')->with($cacheConfig)->willReturn($tags);
+        $subject->expects($this->once())->method('calculateCacheLifetime')->with($cacheConfig)->willReturn($lifetime);
         $cacheDataCollector = new CacheDataCollector();
         $request = (new ServerRequest())->withAttribute('frontend.cache.collector', $cacheDataCollector);
-        $subject->expects(self::once())->method('getRequest')->willReturn($request);
+        $subject->expects($this->once())->method('getRequest')->willReturn($request);
         $cacheFrontend = $this->createMock(CacheFrontendInterface::class);
         $cacheFrontend
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('set')
             ->with($key, ['content' => $modifiedContent, 'cacheTags' => $tags], $tags, $lifetime)
             ->willReturn(null);
@@ -3792,7 +3792,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['HTMLcaseshift'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('HTMLcaseshift')
             ->with($content, $conf['case'])
             ->willReturn($return);
@@ -3835,7 +3835,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['crop'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('crop')
             ->with($content, $conf['crop'])
             ->willReturn($return);
@@ -3867,7 +3867,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['cropHTML'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('cropHTML')
             ->with($content, $conf['cropHTML'])
             ->willReturn($return);
@@ -4095,7 +4095,7 @@ content="benni">',
         );
         $subject->_set('data', $data);
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getData')
             ->with($conf['data'], $expect)
             ->willReturn($return);
@@ -4124,7 +4124,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['dataWrap'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('dataWrap')
             ->with($content, $conf['dataWrap'])
             ->willReturn($return);
@@ -4390,7 +4390,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['encaps_lineSplit'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('encaps_lineSplit')
             ->with($content, $conf['encapsLines.'])
             ->willReturn($return);
@@ -4619,7 +4619,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['getFieldVal'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFieldVal')
             ->with($conf['field'])
             ->willReturn($expect);
@@ -4960,7 +4960,7 @@ content="benni">',
         $subject->_set('stdWrapRecursionLevel', 1);
         $subject->_set('stopRendering', [1 => false]);
         $subject
-            ->expects(self::exactly($times))
+            ->expects($this->exactly($times))
             ->method('checkIf')
             ->with($conf['if.'] ?? null)
             ->willReturn($will);
@@ -5283,7 +5283,7 @@ content="benni">',
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['insertData'])->getMock();
-        $subject->expects(self::once())->method('insertData')
+        $subject->expects($this->once())->method('insertData')
             ->with($content)->willReturn($return);
         self::assertSame(
             $return,
@@ -5542,7 +5542,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['listNum'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('listNum')
             ->with(
                 $content,
@@ -5660,7 +5660,7 @@ content="benni">',
         ];
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['numRows'])->getMock();
-        $subject->expects(self::once())->method('numRows')
+        $subject->expects($this->once())->method('numRows')
             ->with($conf['numRows.'])->willReturn('return');
         self::assertSame(
             'return',
@@ -5690,7 +5690,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['numberFormat'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('numberFormat')
             ->with((float)$content, $conf['numberFormat.'])
             ->willReturn($return);
@@ -5865,7 +5865,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['parseFunc'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('parseFunc')
             ->with($content, $conf['parseFunc.'], $conf['parseFunc'])
             ->willReturn($return);
@@ -5899,7 +5899,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['cObjGetSingle'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('cObjGetSingle')
             ->with($conf['postCObject'], $conf['postCObject.'], $debugKey)
             ->willReturn($return);
@@ -5930,7 +5930,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['callUserFunction'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('callUserFunction')
             ->with($conf['postUserFunc'], $conf['postUserFunc.'])
             ->willReturn($return);
@@ -5970,7 +5970,7 @@ content="benni">',
         $frontend = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->disableOriginalConstructor()->onlyMethods(['uniqueHash'])
             ->getMock();
-        $frontend->expects(self::once())->method('uniqueHash')
+        $frontend->expects($this->once())->method('uniqueHash')
             ->with()->willReturn($uniqueHash);
         $frontend->config = ['INTincScript' => []];
         $subject = $this->getAccessibleMock(
@@ -6019,7 +6019,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['cObjGetSingle'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('cObjGetSingle')
             ->with($conf['preCObject'], $conf['preCObject.'], $debugKey)
             ->willReturn($return);
@@ -6054,7 +6054,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['listNum'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('listNum')
             ->with(
                 $content,
@@ -6122,7 +6122,7 @@ content="benni">',
         $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)->onlyMethods(['prefixComment'])->getMock();
         $subject->setRequest($request);
-        $subject->expects(self::exactly($times))
+        $subject->expects($this->exactly($times))
             ->method('prefixComment')
             ->with($conf['prefixComment'] ?? null, [], $content)
             ->willReturn($will);
@@ -6156,7 +6156,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['cObjGetSingle'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('cObjGetSingle')
             ->with($conf['prepend'], $conf['prepend.'], $debugKey)
             ->willReturn($return);
@@ -6229,7 +6229,7 @@ content="benni">',
         ];
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['callUserFunction'])->getMock();
-        $subject->expects(self::once())->method('callUserFunction')
+        $subject->expects($this->once())->method('callUserFunction')
             ->with($conf['preUserFunc'], $conf['preUserFunc.'], $content)
             ->willReturn('return');
         self::assertSame(
@@ -6295,7 +6295,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['replacement'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('replacement')
             ->with($content, $conf['replacement.'])
             ->willReturn($return);
@@ -6375,7 +6375,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['round'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('round')
             ->with($content, $conf['round.'])
             ->willReturn($return);
@@ -6489,7 +6489,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['splitObj'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('splitObj')
             ->with($content, $conf['split.'])
             ->willReturn($return);
@@ -6520,7 +6520,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['stdWrap'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('stdWrap')
             ->with($content, $conf['stdWrap.'])
             ->willReturn($return);
@@ -6888,7 +6888,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['substring'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('substring')
             ->with($content, $conf['substring'])
             ->willReturn($return);
@@ -6980,7 +6980,7 @@ content="benni">',
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['typolink'])->getMock();
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('typolink')
             ->with($content, $conf['typolink.'])
             ->willReturn($return);

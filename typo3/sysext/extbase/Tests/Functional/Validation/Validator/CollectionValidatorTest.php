@@ -65,7 +65,7 @@ final class CollectionValidatorTest extends FunctionalTestCase
         $subject->setOptions(['elementValidator' => 'EmailAddress']);
         $emailAddressValidator = new EmailAddressValidator();
         $emailAddressValidator->setOptions([]);
-        $mockValidatorResolver->expects(self::exactly(4))
+        $mockValidatorResolver->expects($this->exactly(4))
             ->method('createValidator')
             ->with('EmailAddress')
             ->willReturn($emailAddressValidator);
@@ -137,7 +137,7 @@ final class CollectionValidatorTest extends FunctionalTestCase
             ['createValidator', 'buildBaseValidatorConjunction', 'getBaseValidatorConjunction'],
             [$this->get(ReflectionService::class)]
         );
-        $mockValidatorResolver->expects(self::never())->method('createValidator');
+        $mockValidatorResolver->expects($this->never())->method('createValidator');
         $subject = $this->get(CollectionValidator::class);
         $subject->setOptions(['elementType' => $elementType]);
         $subject->validate($objectStorage);

@@ -75,7 +75,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
     public function getThrowsExceptionIfClassThatHandlesAHashIsNotAvailable(): void
     {
         $phpassPasswordHashMock = $this->createMock(PhpassPasswordHash::class);
-        $phpassPasswordHashMock->expects(self::atLeastOnce())->method('isAvailable')->willReturn(false);
+        $phpassPasswordHashMock->expects($this->atLeastOnce())->method('isAvailable')->willReturn(false);
         GeneralUtility::addInstance(PhpassPasswordHash::class, $phpassPasswordHashMock);
         $this->expectException(InvalidPasswordHashException::class);
         $this->expectExceptionCode(1533818591);
@@ -180,7 +180,7 @@ final class PasswordHashFactoryTest extends UnitTestCase
     public function getDefaultHashThrowsExceptionIfDefaultHashMethodIsNotAvailable(): void
     {
         $argon2idPasswordHashMock = $this->createMock(Argon2idPasswordHash::class);
-        $argon2idPasswordHashMock->expects(self::atLeastOnce())->method('isAvailable')->willReturn(false);
+        $argon2idPasswordHashMock->expects($this->atLeastOnce())->method('isAvailable')->willReturn(false);
         GeneralUtility::addInstance(Argon2idPasswordHash::class, $argon2idPasswordHashMock);
         $this->expectException(InvalidPasswordHashException::class);
         $this->expectExceptionCode(1533822084);

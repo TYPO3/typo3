@@ -34,7 +34,7 @@ final class LocalizationFactoryTest extends UnitTestCase
         $languageStoreMock = $this->createMock(LanguageStore::class);
         $languageStoreMock->method('hasData')->with(self::anything())->willReturn(false);
         $languageStoreMock->method('getData')->with(self::anything())->willReturn(['default' => []]);
-        $languageStoreMock->expects(self::atLeastOnce())->method('setData')->with(self::anything());
+        $languageStoreMock->expects($this->atLeastOnce())->method('setData')->with(self::anything());
         $languageStoreMock->method('setConfiguration')->with(self::anything())->willThrowException(new FileNotFoundException('testing', 1476049512));
         $languageStoreMock->method('getFileReferenceWithoutExtension')->with(self::anything())->willReturn('');
         $languageStoreMock->method('getSupportedExtensions')->willReturn([]);
@@ -42,7 +42,7 @@ final class LocalizationFactoryTest extends UnitTestCase
 
         $cacheFrontendMock = $this->createMock(FrontendInterface::class);
         $cacheFrontendMock->method('get')->with(self::anything())->willReturn(false);
-        $cacheFrontendMock->expects(self::atLeastOnce())->method('set')->with(self::anything());
+        $cacheFrontendMock->expects($this->atLeastOnce())->method('set')->with(self::anything());
 
         $cacheManagerMock = $this->createMock(CacheManager::class);
         $cacheManagerMock->method('getCache')->with('l10n')->willReturn($cacheFrontendMock);
@@ -60,8 +60,8 @@ final class LocalizationFactoryTest extends UnitTestCase
         $packageManagerMock->method('extractPackageKeyFromPackagePath')->with('EXT:core/Tests/Unit/Localization/Fixtures/locallang.xlf')->willReturn('core');
 
         $cacheFrontendMock = $this->createMock(FrontendInterface::class);
-        $cacheFrontendMock->expects(self::atLeastOnce())->method('get')->with(self::isString())->willReturn(false);
-        $cacheFrontendMock->expects(self::atLeastOnce())->method('set')->with(self::isString(), [
+        $cacheFrontendMock->expects($this->atLeastOnce())->method('get')->with(self::isString())->willReturn(false);
+        $cacheFrontendMock->expects($this->atLeastOnce())->method('set')->with(self::isString(), [
             'label1' => [['source' => 'This is label #1', 'target' => 'This is label #1']],
         ])->willReturn(null);
 

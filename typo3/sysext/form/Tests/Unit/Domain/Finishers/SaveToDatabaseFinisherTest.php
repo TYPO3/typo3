@@ -75,7 +75,7 @@ final class SaveToDatabaseFinisherTest extends UnitTestCase
             ],
         ]);
 
-        $saveToDatabaseFinisher->expects(self::once())->method('process')->with(0);
+        $saveToDatabaseFinisher->expects($this->once())->method('process')->with(0);
 
         $saveToDatabaseFinisher->execute($this->createMock(FinisherContext::class));
     }
@@ -152,7 +152,7 @@ final class SaveToDatabaseFinisherTest extends UnitTestCase
                 ],
             ],
         ]);
-        $saveToDatabaseFinisher->expects(self::exactly(2))->method('process');
+        $saveToDatabaseFinisher->expects($this->exactly(2))->method('process');
         $saveToDatabaseFinisher->execute($this->createMock(FinisherContext::class));
     }
 

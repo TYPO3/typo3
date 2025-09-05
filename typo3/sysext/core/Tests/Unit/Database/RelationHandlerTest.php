@@ -56,7 +56,7 @@ final class RelationHandlerTest extends UnitTestCase
             'sys_category' => [1, 2, 3],
         ];
 
-        $this->subject->expects(self::once())
+        $this->subject->expects($this->once())
             ->method('purgeVersionedIds')
             ->with('sys_category', [1, 2, 3])
             ->willReturn([2]);

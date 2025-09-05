@@ -118,7 +118,7 @@ final class CompositeExpressionTest extends UnitTestCase
         $compositeExpressionMock = $this->createMock(CompositeExpression::class);
         $compositeExpressionMock->__construct(CompositeExpression::TYPE_AND);
         $compositeExpressionMock
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('__toString')
             ->willReturn('');
         self::assertTrue($this->callStaticIsEmptyPartMethod($compositeExpressionMock));
@@ -130,7 +130,7 @@ final class CompositeExpressionTest extends UnitTestCase
         $compositeExpressionMock = $this->createMock(CompositeExpression::class);
         $compositeExpressionMock->__construct(CompositeExpression::TYPE_AND, [null, '', '( ( ) )']);
         $compositeExpressionMock
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('__toString')
             ->willReturn('');
         self::assertTrue($this->callStaticIsEmptyPartMethod($compositeExpressionMock));

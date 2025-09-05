@@ -54,7 +54,7 @@ final class PageRendererTest extends UnitTestCase
             ->onlyMethods(['reset', 'prepareRendering', 'renderJavaScriptAndCss', 'getPreparedMarkerArray', 'getTemplate'])
             ->getMock();
 
-        $pageRenderer->expects(self::once())->method('reset');
+        $pageRenderer->expects($this->once())->method('reset');
         GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
         $pageRenderer->render();
     }

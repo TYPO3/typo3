@@ -36,7 +36,7 @@ final class LinkOrDirectoryNodeTest extends AbstractFolderStructureTestCase
             ->onlyMethods(['fixSelf'])
             ->getMock();
         $uniqueReturn = [new FlashMessage(StringUtility::getUniqueId('foo_'))];
-        $node->expects(self::once())->method('fixSelf')->willReturn($uniqueReturn);
+        $node->expects($this->once())->method('fixSelf')->willReturn($uniqueReturn);
         self::assertSame($uniqueReturn, $node->fix());
     }
 
@@ -45,15 +45,15 @@ final class LinkOrDirectoryNodeTest extends AbstractFolderStructureTestCase
     {
         $node = $this->getAccessibleMock(LinkOrDirectoryNode::class, ['fixSelf'], [], '', false);
         $uniqueReturnSelf = new FlashMessage(StringUtility::getUniqueId('foo_'));
-        $node->expects(self::once())->method('fixSelf')->willReturn([$uniqueReturnSelf]);
+        $node->expects($this->once())->method('fixSelf')->willReturn([$uniqueReturnSelf]);
 
         $childMock1 = $this->createMock(NodeInterface::class);
         $uniqueReturnChild1 = new FlashMessage(StringUtility::getUniqueId('foo_'));
-        $childMock1->expects(self::once())->method('fix')->willReturn([$uniqueReturnChild1]);
+        $childMock1->expects($this->once())->method('fix')->willReturn([$uniqueReturnChild1]);
 
         $childMock2 = $this->createMock(NodeInterface::class);
         $uniqueReturnChild2 = new FlashMessage(StringUtility::getUniqueId('foo_'));
-        $childMock2->expects(self::once())->method('fix')->willReturn([$uniqueReturnChild2]);
+        $childMock2->expects($this->once())->method('fix')->willReturn([$uniqueReturnChild2]);
 
         $node->_set('children', [$childMock1, $childMock2]);
 
@@ -70,10 +70,10 @@ final class LinkOrDirectoryNodeTest extends AbstractFolderStructureTestCase
             '',
             false
         );
-        $node->expects(self::once())->method('exists')->willReturn(false);
+        $node->expects($this->once())->method('exists')->willReturn(false);
         $node->method('isPermissionCorrect')->willReturn(true);
         $uniqueReturn = new FlashMessage('foo');
-        $node->expects(self::once())->method('createDirectory')->willReturn($uniqueReturn);
+        $node->expects($this->once())->method('createDirectory')->willReturn($uniqueReturn);
         self::assertSame([$uniqueReturn], $node->_call('fixSelf'));
     }
 
@@ -109,7 +109,7 @@ final class LinkOrDirectoryNodeTest extends AbstractFolderStructureTestCase
         $node->method('exists')->willReturn(true);
         $node->method('isWritable')->willReturn(false);
         $message = new FlashMessage('foo');
-        $node->expects(self::once())->method('fixPermission')->willReturn($message);
+        $node->expects($this->once())->method('fixPermission')->willReturn($message);
         self::assertSame([$message], $node->_call('fixSelf'));
     }
 

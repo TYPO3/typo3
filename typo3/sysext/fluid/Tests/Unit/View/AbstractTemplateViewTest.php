@@ -54,7 +54,7 @@ final class AbstractTemplateViewTest extends UnitTestCase
     #[Test]
     public function viewIsPlacedInViewHelperVariableContainer(): void
     {
-        $this->viewHelperVariableContainer->expects(self::once())->method('setView')->with($this->view);
+        $this->viewHelperVariableContainer->expects($this->once())->method('setView')->with($this->view);
         $this->view->setRenderingContext($this->renderingContext);
     }
 }

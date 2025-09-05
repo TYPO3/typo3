@@ -35,7 +35,7 @@ final class CachingFrameworkGarbageCollectionTest extends UnitTestCase
     {
         $cache = $this->createMock(VariableFrontend::class);
         $cache->method('getIdentifier')->willReturn('cache');
-        $cache->expects(self::atLeastOnce())->method('collectGarbage');
+        $cache->expects($this->atLeastOnce())->method('collectGarbage');
         $mockCacheManager = new CacheManager();
         $mockCacheManager->registerCache($cache);
         GeneralUtility::setSingletonInstance(CacheManager::class, $mockCacheManager);
@@ -58,7 +58,7 @@ final class CachingFrameworkGarbageCollectionTest extends UnitTestCase
     {
         $cache = $this->createMock(VariableFrontend::class);
         $cache->method('getIdentifier')->willReturn('cache');
-        $cache->expects(self::never())->method('collectGarbage');
+        $cache->expects($this->never())->method('collectGarbage');
         $mockCacheManager = new CacheManager();
         $mockCacheManager->registerCache($cache);
         GeneralUtility::setSingletonInstance(CacheManager::class, $mockCacheManager);

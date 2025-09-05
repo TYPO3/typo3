@@ -105,7 +105,7 @@ final class TemplatePathsTest extends UnitTestCase
     public function getContextSpecificViewConfigurationSortsTypoScriptConfiguredPathsCorrectlyInFrontendMode(): void
     {
         $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $configurationManager->expects(self::once())->method('getConfiguration')->willReturn([
+        $configurationManager->expects($this->once())->method('getConfiguration')->willReturn([
             'plugin.' => [
                 'tx_test.' => [
                     'view.' => [
@@ -131,7 +131,7 @@ final class TemplatePathsTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManager);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $subject = $this->getAccessibleMock(TemplatePaths::class, ['getExtensionPrivateResourcesPath']);
-        $subject->expects(self::once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
+        $subject->expects($this->once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
         $result = $subject->_call('getContextSpecificViewConfiguration', 'test');
         self::assertSame([
             'templateRootPaths' => [
@@ -159,7 +159,7 @@ final class TemplatePathsTest extends UnitTestCase
     public function getContextSpecificViewConfigurationSortsTypoScriptConfiguredPathsCorrectlyInBackendMode(): void
     {
         $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $configurationManager->expects(self::once())->method('getConfiguration')->willReturn([
+        $configurationManager->expects($this->once())->method('getConfiguration')->willReturn([
             'module.' => [
                 'tx_test.' => [
                     'view.' => [
@@ -185,7 +185,7 @@ final class TemplatePathsTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManager);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $subject = $this->getAccessibleMock(TemplatePaths::class, ['getExtensionPrivateResourcesPath']);
-        $subject->expects(self::once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
+        $subject->expects($this->once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
         $result = $subject->_call('getContextSpecificViewConfiguration', 'test');
         self::assertSame([
             'templateRootPaths' => [
@@ -213,7 +213,7 @@ final class TemplatePathsTest extends UnitTestCase
     public function getContextSpecificViewConfigurationDoesNotResolveFromTypoScriptAndDoesNotSortInUnspecifiedMode(): void
     {
         $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $configurationManager->expects(self::once())->method('getConfiguration')->willReturn([
+        $configurationManager->expects($this->once())->method('getConfiguration')->willReturn([
             'plugin.' => [
                 'tx_test.' => [
                     'view.' => [
@@ -238,7 +238,7 @@ final class TemplatePathsTest extends UnitTestCase
         ]);
         GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManager);
         $subject = $this->getAccessibleMock(TemplatePaths::class, ['getExtensionPrivateResourcesPath']);
-        $subject->expects(self::once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
+        $subject->expects($this->once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
         $result = $subject->_call('getContextSpecificViewConfiguration', 'test');
         self::assertSame([
             'templateRootPaths' => [
@@ -257,7 +257,7 @@ final class TemplatePathsTest extends UnitTestCase
     public function getContextSpecificViewConfigurationRespectsTypoScriptConfiguredPaths(): void
     {
         $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $configurationManager->expects(self::once())->method('getConfiguration')->willReturn([
+        $configurationManager->expects($this->once())->method('getConfiguration')->willReturn([
             'plugin.' => [
                 'tx_test.' => [
                     'view.' => [
@@ -280,7 +280,7 @@ final class TemplatePathsTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManager);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $subject = $this->getAccessibleMock(TemplatePaths::class, ['getExtensionPrivateResourcesPath']);
-        $subject->expects(self::once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
+        $subject->expects($this->once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
         $result = $subject->_call('getContextSpecificViewConfiguration', 'test');
         self::assertSame([
             'templateRootPaths' => [

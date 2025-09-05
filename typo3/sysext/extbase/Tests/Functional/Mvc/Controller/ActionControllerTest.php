@@ -240,12 +240,12 @@ final class ActionControllerTest extends FunctionalTestCase
         );
 
         $viewMock = $this->createMock(FluidTemplateView::class);
-        $viewMock->expects(self::exactly(2))->method('renderSection')->willReturnOnConsecutiveCalls('custom-header-data', '');
+        $viewMock->expects($this->exactly(2))->method('renderSection')->willReturnOnConsecutiveCalls('custom-header-data', '');
         $expectedHeader = 'custom-header-data';
 
         $pageRenderer = $this->createMock(PageRenderer::class);
-        $pageRenderer->expects(self::atLeastOnce())->method('addHeaderData')->with($expectedHeader);
-        $pageRenderer->expects(self::never())->method('addFooterData');
+        $pageRenderer->expects($this->atLeastOnce())->method('addHeaderData')->with($expectedHeader);
+        $pageRenderer->expects($this->never())->method('addFooterData');
         GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
 
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
@@ -265,12 +265,12 @@ final class ActionControllerTest extends FunctionalTestCase
         );
 
         $viewMock = $this->createMock(FluidTemplateView::class);
-        $viewMock->expects(self::exactly(2))->method('renderSection')->willReturnOnConsecutiveCalls('', 'custom-footer-data');
+        $viewMock->expects($this->exactly(2))->method('renderSection')->willReturnOnConsecutiveCalls('', 'custom-footer-data');
         $expectedFooter = 'custom-footer-data';
 
         $pageRenderer = $this->createMock(PageRenderer::class);
-        $pageRenderer->expects(self::never())->method('addHeaderData');
-        $pageRenderer->expects(self::atLeastOnce())->method('addFooterData')->with($expectedFooter);
+        $pageRenderer->expects($this->never())->method('addHeaderData');
+        $pageRenderer->expects($this->atLeastOnce())->method('addFooterData')->with($expectedFooter);
         GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
 
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());

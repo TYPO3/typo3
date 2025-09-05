@@ -32,7 +32,7 @@ final class DatabaseTreeDataProviderTest extends UnitTestCase
         $treeData = new TreeNode();
         $subject->_set('treeData', $treeData);
         $subject->_set('levelMaximum', 0);
-        $subject->expects(self::never())->method('getChildrenOf');
+        $subject->expects($this->never())->method('getChildrenOf');
         $subject->_call('loadTreeData');
     }
 
@@ -44,7 +44,7 @@ final class DatabaseTreeDataProviderTest extends UnitTestCase
         $treeData = new TreeNode();
         $subject->_set('treeData', $treeData);
         $subject->_set('levelMaximum', 1);
-        $subject->expects(self::once())->method('getChildrenOf')->with($treeData, 1);
+        $subject->expects($this->once())->method('getChildrenOf')->with($treeData, 1);
         $subject->_call('loadTreeData');
     }
 }

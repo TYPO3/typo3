@@ -47,10 +47,10 @@ final class IndexerTest extends UnitTestCase
         $fileMock->method('getStorage')->willReturn($mockStorage);
 
         $extractorServiceMock = $this->getMockBuilder(ExtractorService::class)->getMock();
-        $extractorServiceMock->expects(self::once())->method('extractMetaData')->with($fileMock);
+        $extractorServiceMock->expects($this->once())->method('extractMetaData')->with($fileMock);
         $subject->method('getExtractorService')->willReturn($extractorServiceMock);
 
-        $indexFileRepositoryMock->expects(self::once())->method('updateIndexingTime')->with($fileMock->getUid());
+        $indexFileRepositoryMock->expects($this->once())->method('updateIndexingTime')->with($fileMock->getUid());
 
         $subject->extractMetaData($fileMock);
     }

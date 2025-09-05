@@ -152,7 +152,7 @@ final class FileWriterTest extends UnitTestCase
             ->onlyMethods(['createLogFile'])
             ->getMock();
 
-        $secondWriter->expects(self::never())->method('createLogFile');
+        $secondWriter->expects($this->never())->method('createLogFile');
 
         $logFilePrefix = StringUtility::getUniqueId('unique');
         $firstWriter->setLogFile($this->getDefaultFileName($logFilePrefix));
@@ -169,8 +169,8 @@ final class FileWriterTest extends UnitTestCase
             ->onlyMethods(['closeLogFile'])
             ->getMock();
 
-        $firstWriter->expects(self::never())->method('closeLogFile');
-        $secondWriter->expects(self::once())->method('closeLogFile');
+        $firstWriter->expects($this->never())->method('closeLogFile');
+        $secondWriter->expects($this->once())->method('closeLogFile');
 
         $logFilePrefix = StringUtility::getUniqueId('unique');
         $firstWriter->setLogFile($this->getDefaultFileName($logFilePrefix));

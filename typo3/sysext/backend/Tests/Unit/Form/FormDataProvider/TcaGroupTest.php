@@ -78,16 +78,16 @@ final class TcaGroupTest extends UnitTestCase
 
         $clipboardMock = $this->createMock(Clipboard::class);
         GeneralUtility::addInstance(Clipboard::class, $clipboardMock);
-        $clipboardMock->expects(self::atLeastOnce())->method('initializeClipboard');
-        $clipboardMock->expects(self::atLeastOnce())->method('elFromTable')->with('aForeignTable')->willReturn([]);
+        $clipboardMock->expects($this->atLeastOnce())->method('initializeClipboard');
+        $clipboardMock->expects($this->atLeastOnce())->method('elFromTable')->with('aForeignTable')->willReturn([]);
 
         $relationHandlerMock = $this->createMock(RelationHandler::class);
         GeneralUtility::addInstance(RelationHandler::class, $relationHandlerMock);
-        $relationHandlerMock->expects(self::atLeastOnce())->method('start')
+        $relationHandlerMock->expects($this->atLeastOnce())->method('start')
             ->with('1,2', 'aForeignTable', 'mmTableName', 42, 'aTable', $aFieldConfig);
-        $relationHandlerMock->expects(self::atLeastOnce())->method('getFromDB');
-        $relationHandlerMock->expects(self::atLeastOnce())->method('processDeletePlaceholder');
-        $relationHandlerMock->expects(self::atLeastOnce())->method('getResolvedItemArray')->willReturn([
+        $relationHandlerMock->expects($this->atLeastOnce())->method('getFromDB');
+        $relationHandlerMock->expects($this->atLeastOnce())->method('processDeletePlaceholder');
+        $relationHandlerMock->expects($this->atLeastOnce())->method('getResolvedItemArray')->willReturn([
             [
                 'table' => 'aForeignTable',
                 'uid' => 1,

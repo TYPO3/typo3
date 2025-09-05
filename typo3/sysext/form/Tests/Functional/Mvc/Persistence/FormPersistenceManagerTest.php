@@ -606,7 +606,7 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
     public function getUniquePersistenceIdentifierAppendNumberIfPersistenceIdentifierExists(): void
     {
         $subjectMock = $this->getAccessibleMock(FormPersistenceManager::class, ['exists'], [], '', false);
-        $subjectMock->expects(self::exactly(3))->method('exists')->willReturn(true, true, false);
+        $subjectMock->expects($this->exactly(3))->method('exists')->willReturn(true, true, false);
         $expected = '-1:/user_uploads/example_2.form.yaml';
         $result = $subjectMock->getUniquePersistenceIdentifier('example', '-1:/user_uploads/', []);
         self::assertSame($expected, $result);
@@ -616,7 +616,7 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
     public function getUniquePersistenceIdentifierAppendTimestampIfPersistenceIdentifierExists(): void
     {
         $subjectMock = $this->getAccessibleMock(FormPersistenceManager::class, ['exists'], [], '', false);
-        $subjectMock->expects(self::exactly(101))->method('exists')->willReturn(...array_values($this->returnTrue100TimesThenFalse()));
+        $subjectMock->expects($this->exactly(101))->method('exists')->willReturn(...array_values($this->returnTrue100TimesThenFalse()));
         $expected = '#^-1:/user_uploads/example_([0-9]{10}).form.yaml$#';
         $returnValue = $subjectMock->getUniquePersistenceIdentifier('example', '-1:/user_uploads/', []);
         self::assertMatchesRegularExpression($expected, $returnValue);
@@ -648,7 +648,7 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
     public function getUniqueIdentifierAppendTimestampIfIdentifierExists(): void
     {
         $subjectMock = $this->getAccessibleMock(FormPersistenceManager::class, ['checkForDuplicateIdentifier'], [], '', false);
-        $subjectMock->expects(self::exactly(101))->method('checkForDuplicateIdentifier')->willReturn(...array_values($this->returnTrue100TimesThenFalse()));
+        $subjectMock->expects($this->exactly(101))->method('checkForDuplicateIdentifier')->willReturn(...array_values($this->returnTrue100TimesThenFalse()));
         $expected = '#^example_([0-9]{10})$#';
         $returnValue = $subjectMock->getUniqueIdentifier([], 'example');
         self::assertMatchesRegularExpression($expected, $returnValue);
@@ -658,7 +658,7 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
     public function checkForDuplicateIdentifierReturnsTrueIfIdentifierIsUsed(): void
     {
         $subjectMock = $this->getAccessibleMock(FormPersistenceManager::class, ['listForms'], [], '', false);
-        $subjectMock->expects(self::once())->method('listForms')->willReturn([
+        $subjectMock->expects($this->once())->method('listForms')->willReturn([
             0 => [
                 'identifier' => 'example',
             ],
@@ -670,7 +670,7 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
     public function checkForDuplicateIdentifierReturnsFalseIfIdentifierIsUsed(): void
     {
         $subjectMock = $this->getAccessibleMock(FormPersistenceManager::class, ['listForms'], [], '', false);
-        $subjectMock->expects(self::once())->method('listForms')->willReturn([
+        $subjectMock->expects($this->once())->method('listForms')->willReturn([
             0 => [
                 'identifier' => 'example',
             ],

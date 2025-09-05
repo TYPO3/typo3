@@ -3217,8 +3217,8 @@ final class GeneralUtilityTest extends UnitTestCase
     {
         $cacheMock = $this->createMock(FrontendInterface::class);
         $cacheMock->method('getIdentifier')->willReturn('runtime');
-        $cacheMock->expects(self::atLeastOnce())->method('get')->with('generalUtilityXml2Array')->willReturn(false);
-        $cacheMock->expects(self::atLeastOnce())->method('set')->with('generalUtilityXml2Array', self::anything());
+        $cacheMock->expects($this->atLeastOnce())->method('get')->with('generalUtilityXml2Array')->willReturn(false);
+        $cacheMock->expects($this->atLeastOnce())->method('set')->with('generalUtilityXml2Array', self::anything());
         $cacheManager = new CacheManager();
         $cacheManager->registerCache($cacheMock);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);

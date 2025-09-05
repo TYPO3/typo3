@@ -80,7 +80,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function exprReturnsExpressionBuilderForConnection(): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('getExpressionBuilder')
+        $this->connection->expects($this->atLeastOnce())->method('getExpressionBuilder')
             ->willReturn(GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection));
         $this->subject->expr();
     }
@@ -93,7 +93,7 @@ final class QueryBuilderTest extends UnitTestCase
             $this->{$property} = $value;
         }, $this->concreteQueryBuilder, ConcreteQueryBuilder::class);
         $setQueryType->call($this->concreteQueryBuilder, 'type', QueryType::UPDATE);
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getSQL')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('getSQL')
             ->willReturn('UPDATE aTable SET pid = 7');
         $this->subject->getSQL();
     }
@@ -101,7 +101,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function setParameterDelegatesToConcreteQueryBuilder(): void
     {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('setParameter')->with('aField', 5, self::anything())
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('setParameter')->with('aField', 5, self::anything())
             ->willReturn($this->subject);
         $this->subject->setParameter('aField', 5);
     }
@@ -109,7 +109,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function setParametersDelegatesToConcreteQueryBuilder(): void
     {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('setParameters')->with(['aField' => 'aValue'], [])
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('setParameters')->with(['aField' => 'aValue'], [])
             ->willReturn($this->subject);
         $this->subject->setParameters(['aField' => 'aValue']);
     }
@@ -117,7 +117,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function getParametersDelegatesToConcreteQueryBuilder(): void
     {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getParameters')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('getParameters')
             ->willReturn(['aField' => 'aValue']);
         $this->subject->getParameters();
     }
@@ -125,7 +125,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function getParameterDelegatesToConcreteQueryBuilder(): void
     {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getParameter')->with('aField')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('getParameter')->with('aField')
             ->willReturn('aValue');
         $this->subject->getParameter('aField');
     }
@@ -133,14 +133,14 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function getParameterTypesDelegatesToConcreteQueryBuilder(): void
     {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getParameterTypes')->willReturn([]);
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('getParameterTypes')->willReturn([]);
         $this->subject->getParameterTypes();
     }
 
     #[Test]
     public function getParameterTypeDelegatesToConcreteQueryBuilder(): void
     {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getParameterType')->with('aField')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('getParameterType')->with('aField')
             ->willReturn(Connection::PARAM_STR);
         $this->subject->getParameterType('aField');
     }
@@ -148,7 +148,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function setFirstResultDelegatesToConcreteQueryBuilder(): void
     {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('setFirstResult')->with(self::anything())
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('setFirstResult')->with(self::anything())
             ->willReturn($this->subject);
         $this->subject->setFirstResult(1);
     }
@@ -156,14 +156,14 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function getFirstResultDelegatesToConcreteQueryBuilder(): void
     {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getFirstResult')->willReturn(1);
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('getFirstResult')->willReturn(1);
         $this->subject->getFirstResult();
     }
 
     #[Test]
     public function setMaxResultsDelegatesToConcreteQueryBuilder(): void
     {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('setMaxResults')->with(self::anything())
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('setMaxResults')->with(self::anything())
             ->willReturn($this->subject);
         $this->subject->setMaxResults(1);
     }
@@ -171,7 +171,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function getMaxResultsDelegatesToConcreteQueryBuilder(): void
     {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('getMaxResults')->willReturn(1);
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('getMaxResults')->willReturn(1);
         $this->subject->getMaxResults();
     }
 
@@ -179,7 +179,7 @@ final class QueryBuilderTest extends UnitTestCase
     public function countBuildsExpressionAndCallsSelect(): void
     {
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('select')->with('COUNT(*)')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('select')->with('COUNT(*)')
             ->willReturn($this->subject);
         $this->subject->count('*');
     }
@@ -191,13 +191,13 @@ final class QueryBuilderTest extends UnitTestCase
             ['aField'],
             ['anotherField'],
         ];
-        $this->connection->expects(self::exactly(2))->method('quoteIdentifier')
+        $this->connection->expects($this->exactly(2))->method('quoteIdentifier')
             ->willReturnCallback(function (string $field) use (&$series): string {
                 $arguments = array_shift($series);
                 self::assertSame($arguments[0], $field);
                 return $field;
             });
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('select')->with('aField', 'anotherField')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('select')->with('aField', 'anotherField')
             ->willReturn($this->subject);
         $this->subject->select('aField', 'anotherField');
     }
@@ -288,8 +288,8 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function selectDoesNotQuoteStarPlaceholder(): void
     {
-        $this->connection->expects(self::never())->method('quoteIdentifier')->with('*');
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('select')->with('*')
+        $this->connection->expects($this->never())->method('quoteIdentifier')->with('*');
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('select')->with('*')
             ->willReturn($this->subject);
         $this->subject->select('*');
     }
@@ -301,13 +301,13 @@ final class QueryBuilderTest extends UnitTestCase
             ['aField'],
             ['anotherField'],
         ];
-        $this->connection->expects(self::exactly(2))->method('quoteIdentifier')
+        $this->connection->expects($this->exactly(2))->method('quoteIdentifier')
             ->willReturnCallback(function (string $field) use (&$series): string {
                 $arguments = array_shift($series);
                 self::assertSame($arguments[0], $field);
                 return $field;
             });
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('addSelect')->with('aField', 'anotherField')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('addSelect')->with('aField', 'anotherField')
             ->willReturn($this->subject);
         $this->subject->addSelect('aField', 'anotherField');
     }
@@ -315,8 +315,8 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function addSelectDoesNotQuoteStarPlaceholder(): void
     {
-        $this->connection->expects(self::never())->method('quoteIdentifier')->with('*');
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('addSelect')->with('*')
+        $this->connection->expects($this->never())->method('quoteIdentifier')->with('*');
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('addSelect')->with('*')
             ->willReturn($this->subject);
         $this->subject->addSelect('*');
     }
@@ -324,8 +324,8 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function selectLiteralDirectlyDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::never())->method('quoteIdentifier')->with(self::anything());
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('select')->with('MAX(aField) AS anAlias')
+        $this->connection->expects($this->never())->method('quoteIdentifier')->with(self::anything());
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('select')->with('MAX(aField) AS anAlias')
             ->willReturn($this->subject);
         $this->subject->selectLiteral('MAX(aField) AS anAlias');
     }
@@ -333,8 +333,8 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function addSelectLiteralDirectlyDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::never())->method('quoteIdentifier')->with(self::anything());
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('addSelect')->with('MAX(aField) AS anAlias')
+        $this->connection->expects($this->never())->method('quoteIdentifier')->with(self::anything());
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('addSelect')->with('MAX(aField) AS anAlias')
             ->willReturn($this->subject);
         $this->subject->addSelectLiteral('MAX(aField) AS anAlias');
     }
@@ -342,7 +342,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function deleteQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aTable')
+        $this->connection->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aTable')
             ->willReturnArgument(0);
         $this->concreteQueryBuilder->method('delete')->with('aTable')->willReturn($this->subject);
         $this->subject->delete('aTable');
@@ -351,7 +351,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function updateQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aTable')
+        $this->connection->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aTable')
             ->willReturnArgument(0);
         $this->concreteQueryBuilder->method('update')->with('aTable')->willReturn($this->subject);
         $this->subject->update('aTable');
@@ -360,7 +360,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function insertQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aTable')
+        $this->connection->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aTable')
             ->willReturnArgument(0);
         $this->concreteQueryBuilder->method('insert')->with('aTable')->willReturn($this->subject);
         $this->subject->insert('aTable');
@@ -372,7 +372,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function fromQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aTable')
+        $this->connection->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aTable')
             ->willReturnArgument(0);
         $this->concreteQueryBuilder->method('from')->with('aTable', self::anything())->willReturn($this->subject);
         $this->subject->from('aTable');
@@ -386,13 +386,13 @@ final class QueryBuilderTest extends UnitTestCase
             ['join'],
             ['alias'],
         ];
-        $this->connection->expects(self::exactly(3))->method('quoteIdentifier')
+        $this->connection->expects($this->exactly(3))->method('quoteIdentifier')
             ->willReturnCallback(function (string $field) use (&$series): string {
                 $arguments = array_shift($series);
                 self::assertSame($arguments[0], $field);
                 return $field;
             });
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('innerJoin')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('innerJoin')
             ->with('fromAlias', 'join', 'alias', null)->willReturn($this->subject);
         $this->subject->join('fromAlias', 'join', 'alias');
     }
@@ -405,13 +405,13 @@ final class QueryBuilderTest extends UnitTestCase
             ['join'],
             ['alias'],
         ];
-        $this->connection->expects(self::exactly(3))->method('quoteIdentifier')
+        $this->connection->expects($this->exactly(3))->method('quoteIdentifier')
             ->willReturnCallback(function (string $field) use (&$series): string {
                 $arguments = array_shift($series);
                 self::assertSame($arguments[0], $field);
                 return $field;
             });
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('innerJoin')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('innerJoin')
             ->with('fromAlias', 'join', 'alias', null)->willReturn($this->subject);
         $this->subject->innerJoin('fromAlias', 'join', 'alias');
     }
@@ -424,13 +424,13 @@ final class QueryBuilderTest extends UnitTestCase
             ['join'],
             ['alias'],
         ];
-        $this->connection->expects(self::exactly(3))->method('quoteIdentifier')
+        $this->connection->expects($this->exactly(3))->method('quoteIdentifier')
             ->willReturnCallback(function (string $field) use (&$series): string {
                 $arguments = array_shift($series);
                 self::assertSame($arguments[0], $field);
                 return $field;
             });
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('leftJoin')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('leftJoin')
             ->with('fromAlias', 'join', 'alias', self::anything())->willReturn($this->subject);
         $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
@@ -445,13 +445,13 @@ final class QueryBuilderTest extends UnitTestCase
             ['join'],
             ['alias'],
         ];
-        $this->connection->expects(self::exactly(3))->method('quoteIdentifier')
+        $this->connection->expects($this->exactly(3))->method('quoteIdentifier')
             ->willReturnCallback(function (string $field) use (&$series): string {
                 $arguments = array_shift($series);
                 self::assertSame($arguments[0], $field);
                 return $field;
             });
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('rightJoin')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('rightJoin')
             ->with('fromAlias', 'join', 'alias', self::anything())->willReturn($this->subject);
         // Set protected properties of the concrete QueryBuilder
         $setParts = \Closure::bind(function (string $property, array $value) {
@@ -466,11 +466,11 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function setQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')
+        $this->connection->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')
             ->willReturnArgument(0);
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('createNamedParameter')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('createNamedParameter')
             ->with('aValue', self::anything())->willReturn(':dcValue1');
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('set')->with('aField', ':dcValue1')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('set')->with('aField', ':dcValue1')
             ->willReturn($this->subject);
         $this->subject->set('aField', 'aValue');
     }
@@ -478,10 +478,10 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function setWithoutNamedParameterQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')
+        $this->connection->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')
             ->willReturnArgument(0);
-        $this->concreteQueryBuilder->expects(self::never())->method('createNamedParameter')->with(self::anything());
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('set')->with('aField', 'aValue')
+        $this->concreteQueryBuilder->expects($this->never())->method('createNamedParameter')->with(self::anything());
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('set')->with('aField', 'aValue')
             ->willReturn($this->subject);
         $this->subject->set('aField', 'aValue', false);
     }
@@ -489,7 +489,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function whereDelegatesToConcreteQueryBuilder(): void
     {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('where')->with('uid=1', 'type=9')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('where')->with('uid=1', 'type=9')
             ->willReturn($this->subject);
         $this->subject->where('uid=1', 'type=9');
     }
@@ -497,7 +497,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function andWhereDelegatesToConcreteQueryBuilder(): void
     {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('andWhere')->with('uid=1', 'type=9')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('andWhere')->with('uid=1', 'type=9')
             ->willReturn($this->subject);
         $this->subject->andWhere('uid=1', 'type=9');
     }
@@ -505,7 +505,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function orWhereDelegatesToConcreteQueryBuilder(): void
     {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('orWhere')->with('uid=1', 'type=9')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('orWhere')->with('uid=1', 'type=9')
             ->willReturn($this->subject);
         $this->subject->orWhere('uid=1', 'type=9');
     }
@@ -513,9 +513,9 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function groupByQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteIdentifiers')->with(['aField', 'anotherField'])
+        $this->connection->expects($this->atLeastOnce())->method('quoteIdentifiers')->with(['aField', 'anotherField'])
             ->willReturnArgument(0);
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('groupBy')->with('aField', 'anotherField')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('groupBy')->with('aField', 'anotherField')
             ->willReturn($this->subject);
         $this->subject->groupBy('aField', 'anotherField');
     }
@@ -523,9 +523,9 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function addGroupByQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteIdentifiers')->with(['aField', 'anotherField'])
+        $this->connection->expects($this->atLeastOnce())->method('quoteIdentifiers')->with(['aField', 'anotherField'])
             ->willReturnArgument(0);
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('addGroupBy')->with('aField', 'anotherField')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('addGroupBy')->with('aField', 'anotherField')
             ->willReturn($this->subject);
         $this->subject->addGroupBy('aField', 'anotherField');
     }
@@ -533,11 +533,11 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function setValueQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')
+        $this->connection->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')
             ->willReturnArgument(0);
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('createNamedParameter')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('createNamedParameter')
             ->with('aValue', self::anything())->willReturn(':dcValue1');
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('setValue')->with('aField', ':dcValue1')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('setValue')->with('aField', ':dcValue1')
             ->willReturn($this->subject);
         $this->subject->setValue('aField', 'aValue');
     }
@@ -545,9 +545,9 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function setValueWithoutNamedParameterQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')
+        $this->connection->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')
             ->willReturnArgument(0);
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('setValue')->with('aField', 'aValue')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('setValue')->with('aField', 'aValue')
             ->willReturn($this->subject);
         $this->subject->setValue('aField', 'aValue', false);
     }
@@ -555,19 +555,19 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function valuesQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteColumnValuePairs')
+        $this->connection->expects($this->atLeastOnce())->method('quoteColumnValuePairs')
             ->with(['aField' => ':dcValue1', 'aValue' => ':dcValue2'])->willReturnArgument(0);
         $series = [
             [1, ':dcValue1'],
             [2, ':dcValue2'],
         ];
-        $this->concreteQueryBuilder->expects(self::exactly(2))->method('createNamedParameter')
+        $this->concreteQueryBuilder->expects($this->exactly(2))->method('createNamedParameter')
             ->willReturnCallback(function (int $value) use (&$series): string {
                 $arguments = array_shift($series);
                 self::assertSame($arguments[0], $value);
                 return $arguments[1];
             });
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('values')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('values')
             ->with(['aField' => ':dcValue1', 'aValue' => ':dcValue2'])->willReturn($this->subject);
         $this->subject->values(['aField' => 1, 'aValue' => 2]);
     }
@@ -575,9 +575,9 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function valuesWithoutNamedParametersQuotesIdentifiersAndDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteColumnValuePairs')
+        $this->connection->expects($this->atLeastOnce())->method('quoteColumnValuePairs')
             ->with(['aField' => 1, 'aValue' => 2])->willReturnArgument(0);
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('values')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('values')
             ->with(['aField' => 1, 'aValue' => 2])->willReturn($this->subject);
         $this->subject->values(['aField' => 1, 'aValue' => 2], false);
     }
@@ -585,7 +585,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function havingDelegatesToConcreteQueryBuilder(): void
     {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('having')->with('uid=1', 'type=9')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('having')->with('uid=1', 'type=9')
             ->willReturn($this->subject);
         $this->subject->having('uid=1', 'type=9');
     }
@@ -593,7 +593,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function andHavingDelegatesToConcreteQueryBuilder(): void
     {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('andHaving')->with('uid=1', 'type=9')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('andHaving')->with('uid=1', 'type=9')
             ->willReturn($this->subject);
         $this->subject->andHaving('uid=1', 'type=9');
     }
@@ -601,7 +601,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function orHavingDelegatesToConcreteQueryBuilder(): void
     {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('orHaving')->with('uid=1', 'type=9')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('orHaving')->with('uid=1', 'type=9')
             ->willReturn($this->subject);
         $this->subject->orHaving('uid=1', 'type=9');
     }
@@ -609,9 +609,9 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function orderByQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')
+        $this->connection->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')
             ->willReturnArgument(0);
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('orderBy')->with('aField', null)
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('orderBy')->with('aField', null)
             ->willReturn($this->subject);
         $this->subject->orderBy('aField');
     }
@@ -619,9 +619,9 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function addOrderByQuotesIdentifierAndDelegatesToConcreteQueryBuilder(): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')
+        $this->connection->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')
             ->willReturnArgument(0);
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('addOrderBy')->with('aField', 'DESC')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('addOrderBy')->with('aField', 'DESC')
             ->willReturn($this->subject);
         $this->subject->addOrderBy('aField', 'DESC');
     }
@@ -629,7 +629,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function createNamedParameterDelegatesToConcreteQueryBuilder(): void
     {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('createNamedParameter')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('createNamedParameter')
             ->with(5, self::anything())->willReturn(':dcValue1');
         $this->subject->createNamedParameter(5);
     }
@@ -637,7 +637,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function createPositionalParameterDelegatesToConcreteQueryBuilder(): void
     {
-        $this->concreteQueryBuilder->expects(self::atLeastOnce())->method('createPositionalParameter')
+        $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('createPositionalParameter')
             ->with(5, self::anything())->willReturn('?');
         $this->subject->createPositionalParameter(5);
     }
@@ -672,7 +672,7 @@ final class QueryBuilderTest extends UnitTestCase
             ->where('uid=1');
 
         $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))';
-        $this->connection->expects(self::atLeastOnce())->method('executeQuery')->with($expectedSQL, self::anything(), self::anything(), self::anything())
+        $this->connection->expects($this->atLeastOnce())->method('executeQuery')->with($expectedSQL, self::anything(), self::anything(), self::anything())
             ->willReturn($this->createMock(Result::class));
 
         $subject->executeQuery();
@@ -705,7 +705,7 @@ final class QueryBuilderTest extends UnitTestCase
         $subject->count('uid')->from('pages')->where('uid=1');
 
         $expectedSQL = 'SELECT COUNT(uid) FROM pages WHERE (uid=1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))';
-        $this->connection->expects(self::atLeastOnce())->method('executeQuery')->with($expectedSQL, self::anything())
+        $this->connection->expects($this->atLeastOnce())->method('executeQuery')->with($expectedSQL, self::anything())
             ->willReturn($this->createMock(Result::class));
 
         $subject->executeQuery();
@@ -799,7 +799,7 @@ final class QueryBuilderTest extends UnitTestCase
             [$expectedSQLForQuery, $this->createMock(Result::class)],
             [$expectedSQLForResetRestrictions, $this->createMock(Result::class)],
         ];
-        $this->connection->expects(self::exactly(2))->method('executeQuery')
+        $this->connection->expects($this->exactly(2))->method('executeQuery')
             ->willReturnCallback(function (string $sql) use (&$series): Result&MockObject {
                 $arguments = array_shift($series);
                 self::assertSame($arguments[0], $sql);
@@ -996,7 +996,7 @@ final class QueryBuilderTest extends UnitTestCase
         );
 
         $container = $this->createMock(AbstractRestrictionContainer::class);
-        $container->expects(self::atLeastOnce())->method('add')->with(new $restrictionClass());
+        $container->expects($this->atLeastOnce())->method('add')->with(new $restrictionClass());
 
         $queryBuilder->setRestrictions($container);
     }
@@ -1013,7 +1013,7 @@ final class QueryBuilderTest extends UnitTestCase
         );
 
         $container = $this->createMock(AbstractRestrictionContainer::class);
-        $container->expects(self::atLeastOnce())->method('add')->with(new $restrictionClass());
+        $container->expects($this->atLeastOnce())->method('add')->with(new $restrictionClass());
 
         $queryBuilder->setRestrictions($container);
     }
@@ -1030,7 +1030,7 @@ final class QueryBuilderTest extends UnitTestCase
         );
 
         $container = $this->createMock(AbstractRestrictionContainer::class);
-        $container->expects(self::never())->method('add')->with(new $restrictionClass());
+        $container->expects($this->never())->method('add')->with(new $restrictionClass());
 
         $queryBuilder->setRestrictions($container);
     }
@@ -1049,7 +1049,7 @@ final class QueryBuilderTest extends UnitTestCase
         );
 
         $container = $this->createMock(DefaultRestrictionContainer::class);
-        $container->expects(self::atLeastOnce())->method('add')->with(new $restrictionClass());
+        $container->expects($this->atLeastOnce())->method('add')->with(new $restrictionClass());
         GeneralUtility::addInstance(DefaultRestrictionContainer::class, $container);
 
         $queryBuilder->resetRestrictions();
@@ -1117,7 +1117,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function castFieldToTextType(DoctrineAbstractPlatform $platform, string $expectation): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
+        $this->connection->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $this->connection->method('getDatabasePlatform')->willReturn($platform);
         $concreteQueryBuilder = new ConcreteQueryBuilder($this->connection);
         $subject = new QueryBuilder($this->connection, null, $concreteQueryBuilder);
@@ -1157,7 +1157,7 @@ final class QueryBuilderTest extends UnitTestCase
             )
             ->where($expressionBuilder->eq('uid', 1));
 
-        $this->connection->expects(self::atLeastOnce())->method('executeQuery')->with(
+        $this->connection->expects($this->atLeastOnce())->method('executeQuery')->with(
             'SELECT * FROM pages LEFT JOIN tt_content content ON pages.uid = content.pid WHERE (uid = 1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))',
             self::anything()
         )->willReturn($this->createMock(Result::class));
@@ -1198,7 +1198,7 @@ final class QueryBuilderTest extends UnitTestCase
             )
             ->where($expressionBuilder->eq('uid', 1));
 
-        $this->connection->expects(self::atLeastOnce())->method('executeQuery')->with(
+        $this->connection->expects($this->atLeastOnce())->method('executeQuery')->with(
             'SELECT * FROM pages LEFT JOIN tt_content content ON pages.uid = content.pid WHERE (uid = 1) AND (pages.hidden = 0)',
             self::anything()
         )->willReturn($this->createMock(Result::class));
@@ -1236,7 +1236,7 @@ final class QueryBuilderTest extends UnitTestCase
                 )
                 ->where($expressionBuilder->eq('uid', 1));
 
-        $this->connection->expects(self::atLeastOnce())->method('executeQuery')->with(
+        $this->connection->expects($this->atLeastOnce())->method('executeQuery')->with(
             'SELECT * FROM pages LEFT JOIN tt_content content ON ((pages.uid = content.pid) AND (((content.deleted = 0) AND (content.hidden = 0)))) WHERE (uid = 1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))',
             self::anything()
         )->willReturn($this->createMock(Result::class));
@@ -1274,7 +1274,7 @@ final class QueryBuilderTest extends UnitTestCase
                 )
                 ->where($expressionBuilder->eq('uid', 1));
 
-        $this->connection->expects(self::atLeastOnce())->method('executeQuery')->with(
+        $this->connection->expects($this->atLeastOnce())->method('executeQuery')->with(
             'SELECT * FROM tt_content RIGHT JOIN pages pages ON ((pages.uid = tt_content.pid) AND (((tt_content.deleted = 0) AND (tt_content.hidden = 0)))) WHERE (uid = 1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))',
             self::anything()
         )->willReturn($this->createMock(Result::class));

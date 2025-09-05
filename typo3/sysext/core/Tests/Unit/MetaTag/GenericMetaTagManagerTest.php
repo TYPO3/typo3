@@ -262,7 +262,7 @@ final class GenericMetaTagManagerTest extends UnitTestCase
     public function checkRenderAllPropertiesUsesCorrectEndingSlash(): void
     {
         $pageRenderer = $this->getMockBuilder(PageRenderer::class)->onlyMethods(['getDocType'])->disableOriginalConstructor()->getMock();
-        $pageRenderer->expects(self::once())->method('getDocType')->willReturn(DocType::xhtml11);
+        $pageRenderer->expects($this->once())->method('getDocType')->willReturn(DocType::xhtml11);
         GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
 
         $manager = new GenericMetaTagManager();

@@ -108,7 +108,7 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
             ->onlyMethods(['isPackageActive'])
             ->disableOriginalConstructor()
             ->getMock();
-        $packageManager->expects(self::once())
+        $packageManager->expects($this->once())
                 ->method('isPackageActive')
                 ->with(self::equalTo($packageName))
                 ->willReturn(false);
@@ -127,14 +127,14 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
             ->onlyMethods(['isPackageActive', 'getPackage'])
             ->disableOriginalConstructor()
             ->getMock();
-        $package->expects(self::once())
+        $package->expects($this->once())
                 ->method('getPackagePath')
                 ->willReturn(Environment::getPublicPath() . '/foo/');
-        $packageManager->expects(self::once())
+        $packageManager->expects($this->once())
                 ->method('isPackageActive')
                 ->with(self::equalTo('foo'))
                 ->willReturn(true);
-        $packageManager->expects(self::once())
+        $packageManager->expects($this->once())
                 ->method('getPackage')
                 ->with('foo')
                 ->willReturn($package);
@@ -1154,7 +1154,7 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
             ->onlyMethods(['isPackageActive'])
             ->disableOriginalConstructor()
             ->getMock();
-        $packageManager->expects(self::once())
+        $packageManager->expects($this->once())
             ->method('isPackageActive')
             ->with(self::equalTo($packageName))
             ->willReturn(false);
@@ -1173,7 +1173,7 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
         $packageManager
             ->method('isPackageActive')
             ->willReturn(true);
-        $packageManager->expects(self::once())
+        $packageManager->expects($this->once())
             ->method('deactivatePackage')
             ->with($packageName);
         ExtensionManagementUtility::setPackageManager($packageManager);

@@ -67,7 +67,7 @@ final class ImportTest extends AbstractImportExportTestCase
         $this->expectException(LoadingFileFailedException::class);
 
         $importMock = $this->getAccessibleMock(Import::class, ['loadInit']);
-        $importMock->expects(self::never())->method('loadInit');
+        $importMock->expects($this->never())->method('loadInit');
         $importMock->loadFile($filePath);
         self::assertEmpty($importMock->_get('dat'));
     }

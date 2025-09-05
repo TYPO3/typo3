@@ -227,9 +227,9 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
     public function findRefReturnsParsedElementsWithFile(array $softrefConfiguration, array $expectedElement): void
     {
         $fileObject = $this->createMock(File::class);
-        $fileObject->expects(self::once())->method('getUid')->willReturn(42);
-        $fileObject->expects(self::any())->method('getName')->willReturn('download.jpg');
-        $fileObject->expects(self::any())->method('getIdentifier')->willReturn('fileadmin/download.jpg');
+        $fileObject->expects($this->once())->method('getUid')->willReturn(42);
+        $fileObject->expects($this->any())->method('getName')->willReturn('download.jpg');
+        $fileObject->expects($this->any())->method('getIdentifier')->willReturn('fileadmin/download.jpg');
 
         $resourceFactory = $this->createMock(ResourceFactory::class);
         $resourceFactory->method('getFileObject')->with('42')->willReturn($fileObject);
@@ -282,7 +282,7 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
         $folderObject = $this->createMock(Folder::class);
 
         $resourceFactory = $this->createMock(ResourceFactory::class);
-        $resourceFactory->expects(self::once())->method('getFolderObjectFromCombinedIdentifier')
+        $resourceFactory->expects($this->once())->method('getFolderObjectFromCombinedIdentifier')
             ->with('1:/foo/bar/baz')->willReturn($folderObject);
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
 

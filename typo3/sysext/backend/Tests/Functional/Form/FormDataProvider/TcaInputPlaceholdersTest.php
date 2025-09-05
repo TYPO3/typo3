@@ -145,7 +145,7 @@ final class TcaInputPlaceholdersTest extends FunctionalTestCase
 
         $formDataCompilerMock = $this->createMock(FormDataCompiler::class);
         GeneralUtility::addInstance(FormDataCompiler::class, $formDataCompilerMock);
-        $formDataCompilerMock->expects(self::atLeastOnce())->method('compile')->with([
+        $formDataCompilerMock->expects($this->atLeastOnce())->method('compile')->with([
             'request' => $request,
             'command' => 'edit',
             'vanillaUid' => 42,
@@ -249,7 +249,7 @@ final class TcaInputPlaceholdersTest extends FunctionalTestCase
 
         $formDataCompilerMock = $this->createMock(FormDataCompiler::class);
         GeneralUtility::addInstance(FormDataCompiler::class, $formDataCompilerMock);
-        $formDataCompilerMock->expects(self::atLeastOnce())->method('compile')->with([
+        $formDataCompilerMock->expects($this->atLeastOnce())->method('compile')->with([
             'request' => $request,
             'command' => 'edit',
             'vanillaUid' => 3,
@@ -315,7 +315,7 @@ final class TcaInputPlaceholdersTest extends FunctionalTestCase
 
         $formDataCompilerMock = $this->createMock(FormDataCompiler::class);
         GeneralUtility::addInstance(FormDataCompiler::class, $formDataCompilerMock);
-        $formDataCompilerMock->expects(self::atLeastOnce())->method('compile')->with([
+        $formDataCompilerMock->expects($this->atLeastOnce())->method('compile')->with([
             'request' => $request,
             'command' => 'edit',
             'vanillaUid' => 2,
@@ -408,7 +408,7 @@ final class TcaInputPlaceholdersTest extends FunctionalTestCase
 
         $sysFileFormDataCompilerMock = $this->createMock(FormDataCompiler::class);
         GeneralUtility::addInstance(FormDataCompiler::class, $sysFileFormDataCompilerMock);
-        $sysFileFormDataCompilerMock->expects(self::atLeastOnce())->method('compile')->with([
+        $sysFileFormDataCompilerMock->expects($this->atLeastOnce())->method('compile')->with([
             'request' => $request,
             'command' => 'edit',
             'vanillaUid' => 3,
@@ -420,7 +420,7 @@ final class TcaInputPlaceholdersTest extends FunctionalTestCase
 
         $sysFileMetaDataFormDataCompilerMock = $this->createMock(FormDataCompiler::class);
         GeneralUtility::addInstance(FormDataCompiler::class, $sysFileMetaDataFormDataCompilerMock);
-        $sysFileMetaDataFormDataCompilerMock->expects(self::atLeastOnce())->method('compile')->with([
+        $sysFileMetaDataFormDataCompilerMock->expects($this->atLeastOnce())->method('compile')->with([
             'request' => $request,
             'command' => 'edit',
             'vanillaUid' => 7,
@@ -460,7 +460,7 @@ final class TcaInputPlaceholdersTest extends FunctionalTestCase
 
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->expects(self::atLeastOnce())->method('sL')->with($labelString)->willReturn($localizedString);
+        $languageService->expects($this->atLeastOnce())->method('sL')->with($labelString)->willReturn($localizedString);
 
         self::assertSame($expected, $this->get(TcaInputPlaceholders::class)->addData($input));
     }

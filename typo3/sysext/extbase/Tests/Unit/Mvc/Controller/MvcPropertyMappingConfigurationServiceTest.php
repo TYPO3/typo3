@@ -131,7 +131,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $requestHashService = $this->getMockBuilder(MvcPropertyMappingConfigurationService::class)
             ->onlyMethods(['encodeAndHashFormFieldArray'])
             ->getMock();
-        $requestHashService->expects(self::once())->method('encodeAndHashFormFieldArray')->with($expected);
+        $requestHashService->expects($this->once())->method('encodeAndHashFormFieldArray')->with($expected);
         $requestHashService->generateTrustedPropertiesToken($input);
     }
 

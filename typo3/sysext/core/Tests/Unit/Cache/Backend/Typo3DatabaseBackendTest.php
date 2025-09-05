@@ -136,7 +136,7 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
             ['cache_test'],
             ['cache_test_tags'],
         ];
-        $connectionMock->expects(self::exactly(2))->method('truncate')
+        $connectionMock->expects($this->exactly(2))->method('truncate')
             ->willReturnCallback(function (string $table) use (&$series): int {
                 $arguments = array_shift($series);
                 self::assertSame($arguments[0], $table);
@@ -159,7 +159,7 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
         $subject->setCache($frontend);
 
         $connectionMock = $this->createMock(Connection::class);
-        $connectionMock->expects(self::exactly(2))
+        $connectionMock->expects($this->exactly(2))
             ->method('delete')
             ->willReturnMap(
                 [
@@ -185,7 +185,7 @@ final class Typo3DatabaseBackendTest extends UnitTestCase
         $subject->setCache($frontend);
 
         $connectionMock = $this->createMock(Connection::class);
-        $connectionMock->expects(self::exactly(2))
+        $connectionMock->expects($this->exactly(2))
             ->method('delete')
             ->willReturnMap(
                 [

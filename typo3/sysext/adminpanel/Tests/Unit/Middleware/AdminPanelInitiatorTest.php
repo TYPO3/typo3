@@ -46,7 +46,7 @@ final class AdminPanelInitiatorTest extends UnitTestCase
             ],
         ];
         $userAuthentication = $this->getMockBuilder(FrontendBackendUserAuthentication::class)->getMock();
-        $userAuthentication->expects(self::once())->method('getTSConfig')->willReturn($tsConfig);
+        $userAuthentication->expects($this->once())->method('getTSConfig')->willReturn($tsConfig);
         $userAuthentication->uc = $uc;
         $GLOBALS['BE_USER'] = $userAuthentication;
 
@@ -54,8 +54,8 @@ final class AdminPanelInitiatorTest extends UnitTestCase
         GeneralUtility::addInstance(MainController::class, $controller);
         $handler = $this->getHandlerMock();
         $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
-        $request->expects(self::any())->method('withAttribute')->withAnyParameters()->willReturn($request);
-        $controller->expects(self::once())->method('initialize')->with($request)->willReturn($request);
+        $request->expects($this->any())->method('withAttribute')->withAnyParameters()->willReturn($request);
+        $controller->expects($this->once())->method('initialize')->with($request)->willReturn($request);
 
         $adminPanelInitiator = new AdminPanelInitiator();
         $adminPanelInitiator->process($request, $handler);
@@ -96,7 +96,7 @@ final class AdminPanelInitiatorTest extends UnitTestCase
     protected function checkAdminPanelDoesNotCallInitialize(array $tsConfig, array $uc): void
     {
         $userAuthentication = $this->getMockBuilder(FrontendBackendUserAuthentication::class)->getMock();
-        $userAuthentication->expects(self::once())->method('getTSConfig')->willReturn($tsConfig);
+        $userAuthentication->expects($this->once())->method('getTSConfig')->willReturn($tsConfig);
         $userAuthentication->uc = $uc;
         $GLOBALS['BE_USER'] = $userAuthentication;
 
@@ -104,7 +104,7 @@ final class AdminPanelInitiatorTest extends UnitTestCase
         GeneralUtility::addInstance(MainController::class, $controller);
         $handler = $this->getHandlerMock();
         $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
-        $controller->expects(self::never())->method('initialize');
+        $controller->expects($this->never())->method('initialize');
 
         $adminPanelInitiator = new AdminPanelInitiator();
         $adminPanelInitiator->process($request, $handler);
@@ -116,7 +116,7 @@ final class AdminPanelInitiatorTest extends UnitTestCase
     {
         $response = $this->getMockBuilder(ResponseInterface::class)->getMock();
         $handler = $this->getMockBuilder(RequestHandlerInterface::class)->onlyMethods(['handle'])->getMock();
-        $handler->expects(self::any())->method('handle')->withAnyParameters()->willReturn($response);
+        $handler->expects($this->any())->method('handle')->withAnyParameters()->willReturn($response);
         return $handler;
     }
 }

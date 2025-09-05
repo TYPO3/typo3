@@ -1901,7 +1901,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
 
         $backendUserMock = $this->createMock(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserMock;
-        $backendUserMock->expects(self::once())->method('isAdmin')->willReturn(true);
+        $backendUserMock->expects($this->once())->method('isAdmin')->willReturn(true);
 
         $expected = $input;
         $expected['databaseRow']['doktype'] = ['keep'];
@@ -2731,8 +2731,8 @@ final class TcaSelectItemsTest extends FunctionalTestCase
     {
         $relationHandlerMock = $this->createMock(RelationHandler::class);
         GeneralUtility::addInstance(RelationHandler::class, $relationHandlerMock);
-        $relationHandlerMock->expects(self::never())->method('start');
-        $relationHandlerMock->expects(self::never())->method('getValueArray');
+        $relationHandlerMock->expects($this->never())->method('start');
+        $relationHandlerMock->expects($this->never())->method('getValueArray');
 
         $input = [
             'tableName' => 'aTable',
@@ -2769,8 +2769,8 @@ final class TcaSelectItemsTest extends FunctionalTestCase
     {
         $relationHandlerMock = $this->createMock(RelationHandler::class);
         GeneralUtility::addInstance(RelationHandler::class, $relationHandlerMock);
-        $relationHandlerMock->expects(self::never())->method('start');
-        $relationHandlerMock->expects(self::never())->method('getValueArray');
+        $relationHandlerMock->expects($this->never())->method('start');
+        $relationHandlerMock->expects($this->never())->method('getValueArray');
 
         $input = [
             'tableName' => 'aTable',

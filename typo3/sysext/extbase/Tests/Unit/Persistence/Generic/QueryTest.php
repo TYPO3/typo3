@@ -65,7 +65,7 @@ final class QueryTest extends UnitTestCase
     public function executeReturnsQueryResultInstanceAndInjectsItself(): void
     {
         $queryResult = $this->createMock(QueryResult::class);
-        $this->container->expects(self::once())->method('get')->with(QueryResultInterface::class)->willReturn($queryResult);
+        $this->container->expects($this->once())->method('get')->with(QueryResultInterface::class)->willReturn($queryResult);
         $actualResult = $this->query->execute();
         self::assertSame($queryResult, $actualResult);
     }
@@ -74,7 +74,7 @@ final class QueryTest extends UnitTestCase
     public function executeReturnsRawObjectDataIfReturnRawQueryResultIsSet(): void
     {
         $expectedResult = [];
-        $this->persistenceManager->expects(self::once())->method('getObjectDataByQuery')->with($this->query)->willReturn($expectedResult);
+        $this->persistenceManager->expects($this->once())->method('getObjectDataByQuery')->with($this->query)->willReturn($expectedResult);
         $actualResult = $this->query->execute(true);
         self::assertSame($expectedResult, $actualResult);
     }
@@ -154,7 +154,7 @@ final class QueryTest extends UnitTestCase
     public function equalsForCaseSensitiveFalseLowercasesOperand(string $propertyName, $operand, string $expectedOperand): void
     {
         $qomFactory = $this->getAccessibleMock(QueryObjectModelFactory::class, ['comparison']);
-        $qomFactory->expects(self::once())->method('comparison')->with(self::anything(), self::anything(), $expectedOperand);
+        $qomFactory->expects($this->once())->method('comparison')->with(self::anything(), self::anything(), $expectedOperand);
         $this->query->method('getSelectorName')->willReturn('someSelector');
         $this->query->_set('qomFactory', $qomFactory);
         $this->query->equals($propertyName, $operand, false);

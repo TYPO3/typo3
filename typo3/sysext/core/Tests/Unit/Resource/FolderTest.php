@@ -70,7 +70,7 @@ final class FolderTest extends UnitTestCase
     public function getFilesReturnsArrayWithFilenamesAsKeys(): void
     {
         $mockedStorage = $this->createMock(ResourceStorage::class);
-        $mockedStorage->expects(self::once())->method('getFilesInFolder')->willReturn(
+        $mockedStorage->expects($this->once())->method('getFilesInFolder')->willReturn(
             [
                 'somefile.png' => [
                     'name' => 'somefile.png',
@@ -92,7 +92,7 @@ final class FolderTest extends UnitTestCase
     {
         $mockedStorage = $this->createMock(ResourceStorage::class);
         $mockedStorage
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFilesInFolder')
             ->with(self::anything(), self::anything(), self::anything(), self::anything(), false)
             ->willReturn([]);
@@ -106,7 +106,7 @@ final class FolderTest extends UnitTestCase
     {
         $mockedStorage = $this->createMock(ResourceStorage::class);
         $mockedStorage
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFilesInFolder')
             ->with(self::anything(), self::anything(), self::anything(), self::anything(), true)
             ->willReturn([]);
@@ -119,7 +119,7 @@ final class FolderTest extends UnitTestCase
     public function getSubfolderCallsFactoryWithCorrectArguments(): void
     {
         $mockedStorage = $this->createMock(ResourceStorage::class);
-        $mockedStorage->expects(self::once())->method('hasFolderInFolder')->with(self::equalTo('someSubfolder'))->willReturn(true);
+        $mockedStorage->expects($this->once())->method('hasFolderInFolder')->with(self::equalTo('someSubfolder'))->willReturn(true);
 
         $mockedFactory = $this->createMock(ResourceFactory::class);
         $folderFixture = $this->createFolderFixture(
@@ -132,7 +132,7 @@ final class FolderTest extends UnitTestCase
             'someSubfolder',
             $mockedStorage
         );
-        $mockedStorage->expects(self::once())->method('getFolderInFolder')->willReturn($subfolderFixture);
+        $mockedStorage->expects($this->once())->method('getFolderInFolder')->willReturn($subfolderFixture);
         GeneralUtility::setSingletonInstance(
             ResourceFactory::class,
             $mockedFactory
@@ -151,8 +151,8 @@ final class FolderTest extends UnitTestCase
             ->onlyMethods(['getFolderIdentifierFromFileIdentifier', 'getFolder'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockedStorage->expects(self::once())->method('getFolderIdentifierFromFileIdentifier')->with($currentIdentifier)->willReturn($parentIdentifier);
-        $mockedStorage->expects(self::once())->method('getFolder')->with($parentIdentifier)->willReturn($parentFolderFixture);
+        $mockedStorage->expects($this->once())->method('getFolderIdentifierFromFileIdentifier')->with($currentIdentifier)->willReturn($parentIdentifier);
+        $mockedStorage->expects($this->once())->method('getFolder')->with($parentIdentifier)->willReturn($parentFolderFixture);
 
         $currentFolderFixture = $this->createFolderFixture($currentIdentifier, 'current', $mockedStorage);
 

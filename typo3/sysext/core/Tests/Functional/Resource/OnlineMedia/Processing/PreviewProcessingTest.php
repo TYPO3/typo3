@@ -62,10 +62,10 @@ final class PreviewProcessingTest extends FunctionalTestCase
         $eventListener->addListener(AfterVideoPreviewFetchedEvent::class, $afterVideoPreviewFetchedEventListener);
 
         $onlineMediaHelper = $this->getMockBuilder(YouTubeHelper::class)->disableOriginalConstructor()->getMock();
-        $onlineMediaHelper->expects(self::atLeastOnce())->method('getPreviewImage')->willReturn($oldPreviewImageFilename);
-        $onlineMediaHelper->expects(self::atLeastOnce())->method('getOnlineMediaId')->willReturn($onlineMediaId);
+        $onlineMediaHelper->expects($this->atLeastOnce())->method('getPreviewImage')->willReturn($oldPreviewImageFilename);
+        $onlineMediaHelper->expects($this->atLeastOnce())->method('getOnlineMediaId')->willReturn($onlineMediaId);
         $onlineMediaHelperRegistry = $this->getMockBuilder(OnlineMediaHelperRegistry::class)->disableOriginalConstructor()->getMock();
-        $onlineMediaHelperRegistry->expects(self::atLeastOnce())->method('getOnlineMediaHelper')->willReturn($onlineMediaHelper);
+        $onlineMediaHelperRegistry->expects($this->atLeastOnce())->method('getOnlineMediaHelper')->willReturn($onlineMediaHelper);
 
         $subject = new PreviewProcessing(
             $onlineMediaHelperRegistry,

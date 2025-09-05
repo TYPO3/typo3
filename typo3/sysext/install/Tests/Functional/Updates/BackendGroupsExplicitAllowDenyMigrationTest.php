@@ -28,7 +28,7 @@ final class BackendGroupsExplicitAllowDenyMigrationTest extends FunctionalTestCa
     public function backendGroupsRowsAreUpdated(): void
     {
         $outputMock = $this->getMockBuilder(OutputInterface::class)->getMock();
-        $outputMock->expects(self::atLeastOnce())->method('writeln');
+        $outputMock->expects($this->atLeastOnce())->method('writeln');
         $subject = new BackendGroupsExplicitAllowDenyMigration();
         $subject->setOutput($outputMock);
         $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendGroupsExplicitAllowDenyMigrationBefore.csv');

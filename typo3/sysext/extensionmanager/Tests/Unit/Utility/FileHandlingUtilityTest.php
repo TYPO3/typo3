@@ -69,7 +69,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
         $extKey = $this->createFakeExtension();
         $path = $this->fakedExtensions[$extKey]['packagePath'];
         $subject = $this->getAccessibleMock(FileHandlingUtility::class, ['removeDirectory', 'addDirectory', 'getExtensionDir'], [], '', false);
-        $subject->expects(self::once())->method('removeDirectory')->with($path);
+        $subject->expects($this->once())->method('removeDirectory')->with($path);
         $subject->method('getExtensionDir')->willReturn($path);
         $subject->_call('makeAndClearExtensionDir', $extKey);
     }
@@ -79,7 +79,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
     {
         $extKey = $this->createFakeExtension();
         $subject = $this->getAccessibleMock(FileHandlingUtility::class, ['removeDirectory', 'addDirectory', 'getExtensionDir'], [], '', false);
-        $subject->expects(self::once())->method('addDirectory')->with($this->testRoot . 'ext-' . $extKey . '/');
+        $subject->expects($this->once())->method('addDirectory')->with($this->testRoot . 'ext-' . $extKey . '/');
         $subject->method('getExtensionDir')->willReturn($this->testRoot . 'ext-' . $extKey . '/');
         $subject->_call('makeAndClearExtensionDir', $extKey);
     }
@@ -159,8 +159,8 @@ final class FileHandlingUtilityTest extends UnitTestCase
             '',
             false
         );
-        $subject->expects(self::once())->method('extractDirectoriesFromExtensionData')->willReturn([]);
-        $subject->expects(self::once())->method('makeAndClearExtensionDir')->with($extensionKey)->willReturn('my_path');
+        $subject->expects($this->once())->method('extractDirectoriesFromExtensionData')->willReturn([]);
+        $subject->expects($this->once())->method('makeAndClearExtensionDir')->with($extensionKey)->willReturn('my_path');
         $subject->unpackExtensionFromExtensionDataArray($extensionKey, []);
     }
 
@@ -228,11 +228,11 @@ final class FileHandlingUtilityTest extends UnitTestCase
             '',
             false
         );
-        $subject->expects(self::once())->method('extractDirectoriesFromExtensionData')->willReturn($directories);
-        $subject->expects(self::once())->method('createDirectoriesForExtensionFiles')->with($directories);
-        $subject->expects(self::once())->method('makeAndClearExtensionDir')->with($extensionData['extKey'])->willReturn('my_path');
-        $subject->expects(self::once())->method('writeExtensionFiles')->with($cleanedFiles);
-        $subject->expects(self::once())->method('reloadPackageInformation')->with('test');
+        $subject->expects($this->once())->method('extractDirectoriesFromExtensionData')->willReturn($directories);
+        $subject->expects($this->once())->method('createDirectoriesForExtensionFiles')->with($directories);
+        $subject->expects($this->once())->method('makeAndClearExtensionDir')->with($extensionData['extKey'])->willReturn('my_path');
+        $subject->expects($this->once())->method('writeExtensionFiles')->with($cleanedFiles);
+        $subject->expects($this->once())->method('reloadPackageInformation')->with('test');
         $subject->unpackExtensionFromExtensionDataArray('test', $extensionData);
     }
 

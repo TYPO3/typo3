@@ -164,15 +164,15 @@ final class RemoteServerTest extends UnitTestCase
         }
 
         $processedFileMock = $this->getMockBuilder(ProcessedFile::class)->disableOriginalConstructor()->getMock();
-        $processedFileMock->expects(self::any())->method('getPublicUrl')->willReturn('/tmb/' . $id . '.png');
+        $processedFileMock->expects($this->any())->method('getPublicUrl')->willReturn('/tmb/' . $id . '.png');
 
         $fileMock = $this->getMockBuilder(File::class)->disableOriginalConstructor()->getMock();
-        $fileMock->expects(self::any())->method('process')->willReturn($processedFileMock);
+        $fileMock->expects($this->any())->method('process')->willReturn($processedFileMock);
 
         $fileReferenceMock = $this->getMockBuilder(FileReference::class)->disableOriginalConstructor()->getMock();
         $fileReferenceMock->method('getUid')->willReturn($id);
         $fileReferenceMock->method('getOriginalFile')->willReturn($fileMock);
-        $fileReferenceMock->expects(self::any())->method('getPublicUrl')->willReturn('/img/' . $id . '.png');
+        $fileReferenceMock->expects($this->any())->method('getPublicUrl')->willReturn('/img/' . $id . '.png');
 
         $this->fileReferenceMocks[$id] = $fileReferenceMock;
         return $this->fileReferenceMocks[$id];

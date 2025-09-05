@@ -66,7 +66,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
             'name' => 'foo',
             'children' => $childArray,
         ];
-        $node->expects(self::once())->method('createChildren')->with($childArray);
+        $node->expects($this->once())->method('createChildren')->with($childArray);
         $node->__construct($structure, $parent);
     }
 
@@ -249,9 +249,9 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         $node->method('isPermissionCorrect')->willReturn(true);
         $node->method('isWritable')->willReturn(true);
         $childMock1 = $this->createMock(NodeInterface::class);
-        $childMock1->expects(self::once())->method('getStatus')->willReturn([]);
+        $childMock1->expects($this->once())->method('getStatus')->willReturn([]);
         $childMock2 = $this->createMock(NodeInterface::class);
-        $childMock2->expects(self::once())->method('getStatus')->willReturn([]);
+        $childMock2->expects($this->once())->method('getStatus')->willReturn([]);
         $node->_set('children', [$childMock1, $childMock2]);
         $node->getStatus();
     }
@@ -272,7 +272,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         $node->method('isWritable')->willReturn(true);
         $childMock = $this->createMock(NodeInterface::class);
         $childMessage = new FlashMessage('foo');
-        $childMock->expects(self::once())->method('getStatus')->willReturn([$childMessage]);
+        $childMock->expects($this->once())->method('getStatus')->willReturn([$childMessage]);
         $node->_set('children', [$childMock]);
         $status = $node->getStatus();
         $statusOfDirectory = $status[0];
@@ -289,7 +289,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
             ->onlyMethods(['fixSelf'])
             ->getMock();
         $uniqueReturn = [new FlashMessage(StringUtility::getUniqueId('foo_'))];
-        $node->expects(self::once())->method('fixSelf')->willReturn($uniqueReturn);
+        $node->expects($this->once())->method('fixSelf')->willReturn($uniqueReturn);
         self::assertSame($uniqueReturn, $node->fix());
     }
 
@@ -298,15 +298,15 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
     {
         $node = $this->getAccessibleMock(DirectoryNode::class, ['fixSelf'], [], '', false);
         $uniqueReturnSelf = new FlashMessage(StringUtility::getUniqueId('foo_'));
-        $node->expects(self::once())->method('fixSelf')->willReturn([$uniqueReturnSelf]);
+        $node->expects($this->once())->method('fixSelf')->willReturn([$uniqueReturnSelf]);
 
         $childMock1 = $this->createMock(NodeInterface::class);
         $uniqueReturnChild1 = new FlashMessage(StringUtility::getUniqueId('foo_'));
-        $childMock1->expects(self::once())->method('fix')->willReturn([$uniqueReturnChild1]);
+        $childMock1->expects($this->once())->method('fix')->willReturn([$uniqueReturnChild1]);
 
         $childMock2 = $this->createMock(NodeInterface::class);
         $uniqueReturnChild2 = new FlashMessage(StringUtility::getUniqueId('foo_'));
-        $childMock2->expects(self::once())->method('fix')->willReturn([$uniqueReturnChild2]);
+        $childMock2->expects($this->once())->method('fix')->willReturn([$uniqueReturnChild2]);
 
         $node->_set('children', [$childMock1, $childMock2]);
 
@@ -323,10 +323,10 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
             '',
             false
         );
-        $node->expects(self::once())->method('exists')->willReturn(false);
+        $node->expects($this->once())->method('exists')->willReturn(false);
         $node->method('isPermissionCorrect')->willReturn(true);
         $uniqueReturn = new FlashMessage('foo');
-        $node->expects(self::once())->method('createDirectory')->willReturn($uniqueReturn);
+        $node->expects($this->once())->method('createDirectory')->willReturn($uniqueReturn);
         self::assertSame([$uniqueReturn], $node->_call('fixSelf'));
     }
 
@@ -362,7 +362,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         $node->method('exists')->willReturn(true);
         $node->method('isWritable')->willReturn(false);
         $message = new FlashMessage('foo');
-        $node->expects(self::once())->method('fixPermission')->willReturn($message);
+        $node->expects($this->once())->method('fixPermission')->willReturn($message);
         self::assertSame([$message], $node->_call('fixSelf'));
     }
 
@@ -372,8 +372,8 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1366740091);
         $node = $this->getAccessibleMock(DirectoryNode::class, ['exists', 'getAbsolutePath'], [], '', false);
-        $node->expects(self::once())->method('getAbsolutePath')->willReturn('');
-        $node->expects(self::once())->method('exists')->willReturn(true);
+        $node->expects($this->once())->method('getAbsolutePath')->willReturn('');
+        $node->expects($this->once())->method('exists')->willReturn(true);
         $node->_call('createDirectory');
     }
 
@@ -382,7 +382,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
     {
         $node = $this->getAccessibleMock(DirectoryNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getTestFilePath('dir_');
-        $node->expects(self::once())->method('exists')->willReturn(false);
+        $node->expects($this->once())->method('exists')->willReturn(false);
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
         $node->_call('createDirectory');
@@ -394,7 +394,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
     {
         $node = $this->getAccessibleMock(DirectoryNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getTestFilePath('dir_');
-        $node->expects(self::once())->method('exists')->willReturn(false);
+        $node->expects($this->once())->method('exists')->willReturn(false);
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
         self::assertSame(ContextualFeedbackSeverity::OK, $node->_call('createDirectory')->getSeverity());

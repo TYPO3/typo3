@@ -68,7 +68,7 @@ final class TcaFolderTest extends UnitTestCase
         $folderMock = $this->createMock(Folder::class);
 
         $resourceFactoryMock = $this->createMock(ResourceFactory::class);
-        $resourceFactoryMock->expects(self::atLeastOnce())->method('retrieveFileOrFolderObject')
+        $resourceFactoryMock->expects($this->atLeastOnce())->method('retrieveFileOrFolderObject')
             ->with('1:/aFolder/anotherFolder/')->willReturn($folderMock);
 
         $expected = $input;

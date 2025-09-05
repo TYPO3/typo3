@@ -38,7 +38,7 @@ final class MfaStatusViewHelperTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users_mfa.csv');
 
         $mockLanguageService = $this->getMockBuilder(LanguageService::class)->disableOriginalConstructor()->getMock();
-        $mockLanguageService->expects(self::any())->method('sL')->willReturnArgument(0);
+        $mockLanguageService->expects($this->any())->method('sL')->willReturnArgument(0);
         $GLOBALS['LANG'] = $mockLanguageService;
 
         $context = $this->get(RenderingContextFactory::class)->create();

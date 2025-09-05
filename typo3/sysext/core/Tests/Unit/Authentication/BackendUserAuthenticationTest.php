@@ -61,7 +61,7 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
         $formProtectionMock = $this->createMock(BackendFormProtection::class);
-        $formProtectionMock->expects(self::once())->method('clean');
+        $formProtectionMock->expects($this->once())->method('clean');
 
         $runtimeCache = new VariableFrontend('null', new TransientMemoryBackend('null', ['logger' => new NullLogger()]));
         $formProtectionFactory = new FormProtectionFactory(

@@ -104,7 +104,7 @@ final class ModuleLoaderTest extends UnitTestCase
 
         $dependencyOrderingServiceMock = $this->getMockBuilder(DependencyOrderingService::class)->getMock();
         GeneralUtility::addInstance(DependencyOrderingService::class, $dependencyOrderingServiceMock);
-        $dependencyOrderingServiceMock->expects(self::atLeastOnce())->method('orderByDependencies')
+        $dependencyOrderingServiceMock->expects($this->atLeastOnce())->method('orderByDependencies')
             ->with($config)->willReturn($config);
 
         $moduleLoader = new ModuleLoader();
@@ -125,7 +125,7 @@ final class ModuleLoaderTest extends UnitTestCase
 
         $dependencyOrderingServiceMock = $this->getMockBuilder(DependencyOrderingService::class)->getMock();
         GeneralUtility::addInstance(DependencyOrderingService::class, $dependencyOrderingServiceMock);
-        $dependencyOrderingServiceMock->expects(self::atLeastOnce())->method('orderByDependencies')
+        $dependencyOrderingServiceMock->expects($this->atLeastOnce())->method('orderByDependencies')
             ->with($config)->willReturn($config);
 
         $moduleLoader = new ModuleLoader();

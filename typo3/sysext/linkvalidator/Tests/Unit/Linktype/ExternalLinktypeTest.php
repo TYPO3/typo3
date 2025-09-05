@@ -49,8 +49,8 @@ final class ExternalLinktypeTest extends UnitTestCase
     {
         $response = new Response(404);
         $clientExceptionMock = $this->getMockBuilder(ClientException::class)->disableOriginalConstructor()->getMock();
-        $clientExceptionMock->expects(self::once())->method('hasResponse')->willReturn(true);
-        $clientExceptionMock->expects(self::once())->method('getResponse')->willReturn($response);
+        $clientExceptionMock->expects($this->once())->method('hasResponse')->willReturn(true);
+        $clientExceptionMock->expects($this->once())->method('getResponse')->willReturn($response);
 
         $url = 'https://example.org/~not-existing-url';
         $options = $this->getRequestHeaderOptions();
@@ -73,8 +73,8 @@ final class ExternalLinktypeTest extends UnitTestCase
     {
         $response = new Response(404);
         $clientExceptionMock = $this->getMockBuilder(ClientException::class)->disableOriginalConstructor()->getMock();
-        $clientExceptionMock->expects(self::once())->method('hasResponse')->willReturn(true);
-        $clientExceptionMock->expects(self::once())->method('getResponse')->willReturn($response);
+        $clientExceptionMock->expects($this->once())->method('hasResponse')->willReturn(true);
+        $clientExceptionMock->expects($this->once())->method('getResponse')->willReturn($response);
 
         $options = $this->getRequestHeaderOptions();
 
@@ -184,7 +184,7 @@ final class ExternalLinktypeTest extends UnitTestCase
     public function setAdditionalConfigMergesHeaders(): void
     {
         $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
-        $requestFactoryMock->expects(self::once())->method('request')->with(
+        $requestFactoryMock->expects($this->once())->method('request')->with(
             'http://example.com',
             'HEAD',
             self::callback(static function ($result) {
@@ -212,7 +212,7 @@ final class ExternalLinktypeTest extends UnitTestCase
     public function requestWithNoTimeoutIsCalledIfTimeoutNotSetByTsConfig(): void
     {
         $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
-        $requestFactoryMock->expects(self::once())->method('request')->with(
+        $requestFactoryMock->expects($this->once())->method('request')->with(
             'http://example.com',
             'HEAD',
             self::callback(static function ($result) {
@@ -236,7 +236,7 @@ final class ExternalLinktypeTest extends UnitTestCase
     public function setAdditionalConfigOverwritesUserAgent(): void
     {
         $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
-        $requestFactoryMock->expects(self::once())->method('request')->with(
+        $requestFactoryMock->expects($this->once())->method('request')->with(
             'http://example.com',
             'HEAD',
             self::callback(static function ($result) {
@@ -260,7 +260,7 @@ final class ExternalLinktypeTest extends UnitTestCase
     public function setAdditionalConfigAppendsAgentUrlIfConfigured(): void
     {
         $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
-        $requestFactoryMock->expects(self::once())->method('request')->with(
+        $requestFactoryMock->expects($this->once())->method('request')->with(
             'http://example.com',
             'HEAD',
             self::callback(static function ($result) {
@@ -284,7 +284,7 @@ final class ExternalLinktypeTest extends UnitTestCase
     public function setAdditionalConfigAppendsEmailIfConfigured(): void
     {
         $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
-        $requestFactoryMock->expects(self::once())->method('request')->with(
+        $requestFactoryMock->expects($this->once())->method('request')->with(
             'http://example.com',
             'HEAD',
             self::callback(static function ($result) {
@@ -308,7 +308,7 @@ final class ExternalLinktypeTest extends UnitTestCase
     public function setAdditionalConfigAppendsEmailFromGlobalsIfConfigured(): void
     {
         $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
-        $requestFactoryMock->expects(self::once())->method('request')->with(
+        $requestFactoryMock->expects($this->once())->method('request')->with(
             'http://example.com',
             'HEAD',
             self::callback(static function ($result) {
@@ -332,7 +332,7 @@ final class ExternalLinktypeTest extends UnitTestCase
     public function setAdditionalConfigSetsRangeAndMethod(): void
     {
         $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
-        $requestFactoryMock->expects(self::once())->method('request')->with(
+        $requestFactoryMock->expects($this->once())->method('request')->with(
             'http://example.com',
             'GET',
             self::callback(static function ($result) {

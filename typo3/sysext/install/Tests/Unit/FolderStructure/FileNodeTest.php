@@ -333,7 +333,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
             false
         );
         $uniqueReturn = [new FlashMessage(StringUtility::getUniqueId('foo_'))];
-        $node->expects(self::once())->method('fixSelf')->willReturn($uniqueReturn);
+        $node->expects($this->once())->method('fixSelf')->willReturn($uniqueReturn);
         self::assertSame($uniqueReturn, $node->fix());
     }
 
@@ -351,7 +351,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         $node->method('isFile')->willReturn(true);
         $node->method('isPermissionCorrect')->willReturn(true);
         $message = new FlashMessage('foo');
-        $node->expects(self::once())->method('createFile')->willReturn($message);
+        $node->expects($this->once())->method('createFile')->willReturn($message);
         $actualReturn = $node->_call('fixSelf');
         $actualReturn = $actualReturn[0];
         self::assertSame($message, $actualReturn);
@@ -374,7 +374,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         $node->method('createFile')->willReturn($message1);
         $node->_set('targetContent', 'foo');
         $message2 = new FlashMessage('foo');
-        $node->expects(self::once())->method('setContent')->willReturn($message2);
+        $node->expects($this->once())->method('setContent')->willReturn($message2);
         $actualReturn = $node->_call('fixSelf');
         $actualReturn = $actualReturn[1];
         self::assertSame($message2, $actualReturn);
@@ -396,7 +396,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         $message = new FlashMessage('foo', '', ContextualFeedbackSeverity::ERROR);
         $node->method('createFile')->willReturn($message);
         $node->_set('targetContent', 'foo');
-        $node->expects(self::never())->method('setContent');
+        $node->expects($this->never())->method('setContent');
         $node->_call('fixSelf');
     }
 
@@ -416,7 +416,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         $message = new FlashMessage('foo');
         $node->method('createFile')->willReturn($message);
         $node->_set('targetContent', null);
-        $node->expects(self::never())->method('setContent');
+        $node->expects($this->never())->method('setContent');
         $node->_call('fixSelf');
     }
 
@@ -434,7 +434,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         $node->method('isFile')->willReturn(true);
         $node->method('isPermissionCorrect')->willReturn(false);
         $message = new FlashMessage('foo');
-        $node->expects(self::once())->method('fixPermission')->willReturn($message);
+        $node->expects($this->once())->method('fixPermission')->willReturn($message);
         self::assertSame([$message], $node->_call('fixSelf'));
     }
 
@@ -449,7 +449,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
             false
         );
         $node->method('exists')->willReturn(true);
-        $node->expects(self::once())->method('isFile')->willReturn(false);
+        $node->expects($this->once())->method('isFile')->willReturn(false);
         $node->method('isPermissionCorrect')->willReturn(true);
         $node->_call('fixSelf');
     }
@@ -476,8 +476,8 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1366398198);
         $node = $this->getAccessibleMock(FileNode::class, ['exists', 'getAbsolutePath'], [], '', false);
-        $node->expects(self::once())->method('getAbsolutePath')->willReturn('');
-        $node->expects(self::once())->method('exists')->willReturn(true);
+        $node->expects($this->once())->method('getAbsolutePath')->willReturn('');
+        $node->expects($this->once())->method('exists')->willReturn(true);
         $node->_call('createFile');
     }
 
@@ -486,7 +486,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
     {
         $node = $this->getAccessibleMock(FileNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getTestFilePath('file_');
-        $node->expects(self::once())->method('exists')->willReturn(false);
+        $node->expects($this->once())->method('exists')->willReturn(false);
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
         self::assertSame(ContextualFeedbackSeverity::OK, $node->_call('createFile')->getSeverity());
@@ -497,7 +497,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
     {
         $node = $this->getAccessibleMock(FileNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getTestFilePath('file_');
-        $node->expects(self::once())->method('exists')->willReturn(false);
+        $node->expects($this->once())->method('exists')->willReturn(false);
         $node->method('getAbsolutePath')->willReturn($path);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
         $node->_call('createFile');

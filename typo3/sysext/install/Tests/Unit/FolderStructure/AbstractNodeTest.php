@@ -71,7 +71,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
         $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
         $parent = $this->createMock(RootNodeInterface::class);
         $parentPath = '/foo/bar';
-        $parent->expects(self::once())->method('getAbsolutePath')->willReturn($parentPath);
+        $parent->expects($this->once())->method('getAbsolutePath')->willReturn($parentPath);
         $name = StringUtility::getUniqueId('test_');
         $node->_set('parent', $parent);
         $node->_set('name', $name);
@@ -83,7 +83,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
     {
         $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
         $parentMock = $this->createMock(NodeInterface::class);
-        $parentMock->expects(self::once())->method('isWritable');
+        $parentMock->expects($this->once())->method('isWritable');
         $node->_set('parent', $parentMock);
         $node->isWritable();
     }
@@ -93,7 +93,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
     {
         $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
         $parentMock = $this->createMock(NodeInterface::class);
-        $parentMock->expects(self::once())->method('isWritable')->willReturn(true);
+        $parentMock->expects($this->once())->method('isWritable')->willReturn(true);
         $node->_set('parent', $parentMock);
         self::assertTrue($node->isWritable());
     }
@@ -143,7 +143,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
             false
         );
         $node->method('getAbsolutePath')->willReturn('');
-        $node->expects(self::once())->method('isPermissionCorrect')->willReturn(true);
+        $node->expects($this->once())->method('isPermissionCorrect')->willReturn(true);
         self::assertEquals(ContextualFeedbackSeverity::OK, $node->_call('fixPermission')->getSeverity());
     }
 
@@ -158,7 +158,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
             false
         );
         $node->method('getRelativePathBelowSiteRoot')->willReturn('');
-        $node->expects(self::once())->method('isPermissionCorrect')->willReturn(false);
+        $node->expects($this->once())->method('isPermissionCorrect')->willReturn(false);
         $path = $this->getTestDirectory();
         $subPath = $path . '/' . StringUtility::getUniqueId('dir_');
         mkdir($subPath);
@@ -174,7 +174,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
     public function isPermissionCorrectReturnsTrueOnWindowsOs(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, ['isWindowsOs'], [], '', false);
-        $node->expects(self::once())->method('isWindowsOs')->willReturn(true);
+        $node->expects($this->once())->method('isWindowsOs')->willReturn(true);
         self::assertTrue($node->_call('isPermissionCorrect'));
     }
 
@@ -230,7 +230,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
             '',
             false
         );
-        $node->expects(self::once())->method('getAbsolutePath')->willReturn(Environment::getPublicPath());
+        $node->expects($this->once())->method('getAbsolutePath')->willReturn(Environment::getPublicPath());
         $node->_call('getRelativePathBelowSiteRoot', null);
     }
 

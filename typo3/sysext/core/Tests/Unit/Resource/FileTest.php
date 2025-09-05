@@ -139,7 +139,7 @@ final class FileTest extends UnitTestCase
         $mockedNewStorage = $this->createMock(ResourceStorage::class);
         $mockedStorageRepository = $this->createMock(StorageRepository::class);
         $mockedStorageRepository
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('findByUid')
             ->willReturn($mockedNewStorage);
         GeneralUtility::addInstance(StorageRepository::class, $mockedStorageRepository);
@@ -155,7 +155,7 @@ final class FileTest extends UnitTestCase
         $targetFolder = $this->createMock(Folder::class);
         $targetFolder->method('getStorage')->willReturn($targetStorage);
         $fixture = new File([], $this->storageMock);
-        $targetStorage->expects(self::once())->method('copyFile')->with(self::equalTo($fixture), self::equalTo($targetFolder));
+        $targetStorage->expects($this->once())->method('copyFile')->with(self::equalTo($fixture), self::equalTo($targetFolder));
         $fixture->copyTo($targetFolder);
     }
 
@@ -166,7 +166,7 @@ final class FileTest extends UnitTestCase
         $targetFolder = $this->createMock(Folder::class);
         $targetFolder->method('getStorage')->willReturn($targetStorage);
         $fixture = new File([], $this->storageMock);
-        $targetStorage->expects(self::once())->method('moveFile')->with(self::equalTo($fixture), self::equalTo($targetFolder));
+        $targetStorage->expects($this->once())->method('moveFile')->with(self::equalTo($fixture), self::equalTo($targetFolder));
         $fixture->moveTo($targetFolder);
     }
 

@@ -35,10 +35,10 @@ final class IconForRecordViewHelperTest extends FunctionalTestCase
     {
         $iconMock = $this->createMock(Icon::class);
         $iconMock->method('render')->willReturn('icon html');
-        $iconMock->expects(self::atLeastOnce())->method('render')->with('inline');
+        $iconMock->expects($this->atLeastOnce())->method('render')->with('inline');
         $iconFactoryMock = $this->createMock(IconFactory::class);
         $iconFactoryMock->method('getIconForRecord')->with(self::anything())->willReturn($iconMock);
-        $iconFactoryMock->expects(self::atLeastOnce())->method('getIconForRecord')
+        $iconFactoryMock->expects($this->atLeastOnce())->method('getIconForRecord')
             ->with('tt_content', ['uid' => 123], IconSize::LARGE->value);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
 

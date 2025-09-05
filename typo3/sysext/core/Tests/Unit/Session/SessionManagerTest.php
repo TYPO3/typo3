@@ -42,8 +42,8 @@ final class SessionManagerTest extends UnitTestCase
             'backend'  => $backendClassName,
             'options' => [],
         ];
-        $backendMock->expects(self::atLeastOnce())->method('initialize')->with(self::anything());
-        $backendMock->expects(self::atLeastOnce())->method('validateConfiguration');
+        $backendMock->expects($this->atLeastOnce())->method('initialize')->with(self::anything());
+        $backendMock->expects($this->atLeastOnce())->method('validateConfiguration');
         GeneralUtility::addInstance($backendClassName, $backendMock);
         $subject = new SessionManager();
         self::assertInstanceOf($backendClassName, $subject->getSessionBackend('myidentifier'));

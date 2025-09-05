@@ -472,7 +472,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
 
-        $languageService->expects(self::atLeastOnce())->method('sL')->with('aLabel')->willReturn('translated');
+        $languageService->expects($this->atLeastOnce())->method('sL')->with('aLabel')->willReturn('translated');
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['items'][0]['label'] = 'translated';
@@ -604,7 +604,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
         // itemsProcFunc must NOT have raised an exception
-        $flashMessageQueue->expects(self::never())->method('enqueue');
+        $flashMessageQueue->expects($this->never())->method('enqueue');
 
         (new TcaCheckboxItems())->addData($input);
     }
@@ -667,7 +667,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
         $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
-        $flashMessageQueue->expects(self::atLeastOnce())->method('enqueue');
+        $flashMessageQueue->expects($this->atLeastOnce())->method('enqueue');
 
         $subject = new TcaCheckboxItems();
         $subject->injectFlashMessageService($flashMessageService);

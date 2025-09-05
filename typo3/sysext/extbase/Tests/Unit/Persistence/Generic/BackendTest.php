@@ -58,11 +58,11 @@ final class BackendTest extends UnitTestCase
         ];
 
         $columnMap
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getRelationTableName')
             ->willReturn('myTable');
         $columnMap
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getRelationTableMatchFields')
             ->willReturn($mmMatchFields);
         $columnMap
@@ -75,7 +75,7 @@ final class BackendTest extends UnitTestCase
             ->method('buildDataMap')
             ->willReturn($dataMap);
         $storageBackend
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('addRow')
             ->with('myTable', $expectedRow, true);
 
@@ -88,7 +88,7 @@ final class BackendTest extends UnitTestCase
     public function getIdentifierByObjectWithStringInsteadOfObjectReturnsNull(): void
     {
         $session = $this->createMock(Session::class);
-        $session->expects(self::never())->method('getIdentifierByObject');
+        $session->expects($this->never())->method('getIdentifierByObject');
 
         $backend = $this->getAccessibleMock(Backend::class, null, [$this->createMock(ConfigurationManagerInterface::class)], '', false);
         $backend->_set('session', $session);
@@ -103,7 +103,7 @@ final class BackendTest extends UnitTestCase
         $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $session = $this->createMock(Session::class);
         $object = new \stdClass();
-        $session->expects(self::once())->method('getIdentifierByObject')->with($object)->willReturn($fakeUuid);
+        $session->expects($this->once())->method('getIdentifierByObject')->with($object)->willReturn($fakeUuid);
         $backend = $this->getAccessibleMock(Backend::class, null, [$configurationManager], '', false);
         $backend->_set('session', $session);
         self::assertEquals($backend->getIdentifierByObject($object), $fakeUuid);
@@ -117,8 +117,8 @@ final class BackendTest extends UnitTestCase
         $proxy = $this->createMock(LazyLoadingProxy::class);
         $session = $this->createMock(Session::class);
         $object = new \stdClass();
-        $proxy->expects(self::once())->method('_loadRealInstance')->willReturn($object);
-        $session->expects(self::once())->method('getIdentifierByObject')->with($object)->willReturn($fakeUuid);
+        $proxy->expects($this->once())->method('_loadRealInstance')->willReturn($object);
+        $session->expects($this->once())->method('getIdentifierByObject')->with($object)->willReturn($fakeUuid);
         $backend = $this->getAccessibleMock(Backend::class, null, [$configurationManager], '', false);
         $backend->_set('session', $session);
         self::assertEquals($backend->getIdentifierByObject($proxy), $fakeUuid);

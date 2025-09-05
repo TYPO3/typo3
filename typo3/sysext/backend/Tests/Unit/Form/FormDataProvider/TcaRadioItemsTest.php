@@ -205,7 +205,7 @@ final class TcaRadioItemsTest extends UnitTestCase
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
 
-        $languageService->expects(self::atLeastOnce())->method('sL')->with('aLabel')->willReturn('translated');
+        $languageService->expects($this->atLeastOnce())->method('sL')->with('aLabel')->willReturn('translated');
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['items'][0]['label'] = 'translated';
@@ -332,7 +332,7 @@ final class TcaRadioItemsTest extends UnitTestCase
         $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
         // itemsProcFunc must NOT have raised an exception
-        $flashMessageQueue->expects(self::never())->method('enqueue')->with($flashMessage);
+        $flashMessageQueue->expects($this->never())->method('enqueue')->with($flashMessage);
 
         $subject = new TcaRadioItems();
         $subject->injectFlashMessageService($flashMessageService);
@@ -397,7 +397,7 @@ final class TcaRadioItemsTest extends UnitTestCase
         $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
         $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
-        $flashMessageQueue->expects(self::atLeastOnce())->method('enqueue')->with($flashMessage);
+        $flashMessageQueue->expects($this->atLeastOnce())->method('enqueue')->with($flashMessage);
 
         $subject = new TcaRadioItems();
         $subject->injectFlashMessageService($flashMessageService);
@@ -445,7 +445,7 @@ final class TcaRadioItemsTest extends UnitTestCase
             'aLabel',
             'labelOverride',
         ];
-        $languageService->expects(self::atLeastOnce())->method('sL')->willReturnCallback(function (string $input) use (&$series): string {
+        $languageService->expects($this->atLeastOnce())->method('sL')->willReturnCallback(function (string $input) use (&$series): string {
             self::assertSame(array_shift($series), $input);
             return $input;
         });

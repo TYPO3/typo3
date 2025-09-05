@@ -53,7 +53,7 @@ final class TcaInlineTest extends UnitTestCase
         ];
 
         $this->beUserMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('check')
             ->with(
                 'tables_modify',
@@ -84,7 +84,7 @@ final class TcaInlineTest extends UnitTestCase
         ];
 
         $this->beUserMock
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('check')
             ->with(
                 'tables_modify',
@@ -115,7 +115,7 @@ final class TcaInlineTest extends UnitTestCase
         ];
 
         $this->beUserMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('check')
             ->with(
                 'tables_modify',

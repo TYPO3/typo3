@@ -30,7 +30,7 @@ final class StructureFacadeTest extends UnitTestCase
     {
         $facade = $this->getAccessibleMock(StructureFacade::class, null, [], '', false);
         $root = $this->createMock(RootNode::class);
-        $root->expects(self::once())->method('getStatus')->willReturn([]);
+        $root->expects($this->once())->method('getStatus')->willReturn([]);
         $facade->_set('structure', $root);
         $status = $facade->getStatus();
         self::assertInstanceOf(FlashMessageQueue::class, $status);
@@ -41,7 +41,7 @@ final class StructureFacadeTest extends UnitTestCase
     {
         $facade = $this->getAccessibleMock(StructureFacade::class, null, [], '', false);
         $root = $this->createMock(RootNode::class);
-        $root->expects(self::once())->method('fix')->willReturn([]);
+        $root->expects($this->once())->method('fix')->willReturn([]);
         $facade->_set('structure', $root);
         $status = $facade->fix();
         self::assertInstanceOf(FlashMessageQueue::class, $status);

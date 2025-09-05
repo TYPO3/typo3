@@ -277,7 +277,7 @@ final class DataStructureIdentifierListenerTest extends FunctionalTestCase
             ['ext-form-persistenceIdentifier' => ''],
         );
         $formPersistenceManagerMock = $this->createMock(FormPersistenceManagerInterface::class);
-        $formPersistenceManagerMock->expects(self::atLeastOnce())->method('listForms')->willReturn([$formDefinition]);
+        $formPersistenceManagerMock->expects($this->atLeastOnce())->method('listForms')->willReturn([$formDefinition]);
         $subject = new DataStructureIdentifierListener(
             $formPersistenceManagerMock,
             $this->createMock(ConfigurationService::class),

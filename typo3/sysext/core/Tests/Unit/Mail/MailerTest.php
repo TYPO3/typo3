@@ -72,7 +72,7 @@ final class MailerTest extends UnitTestCase
             'transport_sendmail_command' => 'sendmail -bs',
         ];
         $transportFactory = $this->createMock(TransportFactory::class);
-        $transportFactory->expects(self::atLeastOnce())->method('get')->with($settings)
+        $transportFactory->expects($this->atLeastOnce())->method('get')->with($settings)
             ->willReturn($this->createMock(SendmailTransport::class));
         GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
         $this->subject->injectMailSettings($settings);
@@ -87,7 +87,7 @@ final class MailerTest extends UnitTestCase
             'transport_sendmail_command' => 'sendmail -bs',
         ]);
         $transportFactory = $this->createMock(TransportFactory::class);
-        $transportFactory->expects(self::atLeastOnce())->method('get')->with($settings)
+        $transportFactory->expects($this->atLeastOnce())->method('get')->with($settings)
             ->willReturn($this->createMock(SendmailTransport::class));
         GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
         $this->subject->injectMailSettings($settings);

@@ -82,7 +82,7 @@ final class ResourceFactoryTest extends UnitTestCase
             false
         );
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFolderObjectFromCombinedIdentifier')
             ->with('typo3');
         $subject->retrieveFileOrFolderObject('typo3');
@@ -99,7 +99,7 @@ final class ResourceFactoryTest extends UnitTestCase
             false
         );
         $subject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFolderObjectFromCombinedIdentifier')
             ->with('typo3');
         $subject->retrieveFileOrFolderObject(Environment::getPublicPath() . '/typo3');
@@ -110,7 +110,7 @@ final class ResourceFactoryTest extends UnitTestCase
     {
         $this->subject = $this->getAccessibleMock(ResourceFactory::class, ['getFileObjectFromCombinedIdentifier'], [], '', false);
         $filename = 'typo3temp/var/tests/4711.txt';
-        $this->subject->expects(self::once())
+        $this->subject->expects($this->once())
             ->method('getFileObjectFromCombinedIdentifier')
             ->with($filename);
         // Create and prepare test file
@@ -138,7 +138,7 @@ final class ResourceFactoryTest extends UnitTestCase
 
         $this->subject = $this->getAccessibleMock(ResourceFactory::class, ['getFileObjectFromCombinedIdentifier'], [], '', false);
         $filename = 'typo3temp/var/tests/4711.txt';
-        $this->subject->expects(self::once())
+        $this->subject->expects($this->once())
             ->method('getFileObjectFromCombinedIdentifier')
             ->with($filename);
         // Create and prepare test file
@@ -162,7 +162,7 @@ final class ResourceFactoryTest extends UnitTestCase
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         $this->subject = $this->getAccessibleMock(ResourceFactory::class, ['getFileObjectFromCombinedIdentifier'], [], '', false);
-        $this->subject->expects(self::once())
+        $this->subject->expects($this->once())
             ->method('getFileObjectFromCombinedIdentifier')
             ->with('_assets/d25de869aebcd01495d2fe67ad5b0e25/Icons/Extension.svg');
         // Create and prepare test file
