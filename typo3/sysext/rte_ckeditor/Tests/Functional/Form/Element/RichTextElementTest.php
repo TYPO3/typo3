@@ -64,12 +64,12 @@ final class RichTextElementTest extends FunctionalTestCase
         $mtime = filemtime(__DIR__ . '/../../../../Resources/Public/Css/contents.css');
         yield 'resolve a extension path' => [
             'EXT:rte_ckeditor/Resources/Public/Css/contents.css',
-            '/_assets/a1ec5c458af2de6455fd3e0dc29a0e56/Css/contents.css?' . $mtime,
+            '/_assets/d06330b2f94417f8e5e5f457c6608eca/Css/contents.css?' . $mtime,
         ];
 
         yield 'resolve a extension path with a query string at it' => [
             'EXT:rte_ckeditor/Resources/Public/Css/contents.css?4',
-            '/_assets/a1ec5c458af2de6455fd3e0dc29a0e56/Css/contents.css?4',
+            '/_assets/d06330b2f94417f8e5e5f457c6608eca/Css/contents.css?4',
         ];
 
         yield 'resolve a regular file path' => [

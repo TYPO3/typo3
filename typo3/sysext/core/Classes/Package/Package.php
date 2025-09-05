@@ -208,7 +208,7 @@ class Package implements PackageInterface
         }
         $this->isRelativePackagePath = false;
 
-        return $this->packagePath = Environment::getComposerRootPath() . '/' . $this->packagePath;
+        return $this->packagePath = Environment::getProjectPath() . '/' . $this->packagePath;
     }
 
     /**

@@ -63,11 +63,11 @@ class PathUtility
                 // It is an absolute file system path with file/folder inside document root,
                 // therefore we can strip the full file system path to the document root to obtain the URI
                 $targetPath = self::stripPathSitePrefix($targetPath);
-            } elseif (Environment::isComposerMode() && str_contains($targetPath, 'Resources/Public') && str_starts_with($targetPath, Environment::getComposerRootPath())) {
+            } elseif (Environment::isComposerMode() && str_contains($targetPath, 'Resources/Public') && str_starts_with($targetPath, Environment::getProjectPath())) {
                 // TYPO3 is in managed by Composer and it is an absolute file system path inside composer root path,
                 // and a public resource is referenced, therefore we can calculate the path to the published assets
                 // This is true for all Composer packages that are installed in vendor folder by Composer, but still recognized by TYPO3
-                $relativePath = substr($targetPath, strlen(Environment::getComposerRootPath()));
+                $relativePath = substr($targetPath, strlen(Environment::getProjectPath()));
                 // The $relativePath might contain multiple occurrences of 'Resources/Public', so only search for first one
                 [$relativePrefix, $relativeAssetPath] = explode('Resources/Public', $relativePath, 2);
                 $targetPath = '_assets/' . md5($relativePrefix) . $relativeAssetPath;

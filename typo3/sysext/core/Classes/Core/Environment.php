@@ -17,9 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Core;
 
-use Composer\InstalledVersions;
-use TYPO3\CMS\Core\Utility\PathUtility;
-
 /**
  * This class is initialized once in the SystemEnvironmentBuilder, and can then
  * be used throughout the application to access common variables
@@ -74,11 +71,6 @@ class Environment
     /**
      * @var string
      */
-    protected static $composerRootPath;
-
-    /**
-     * @var string
-     */
     protected static $publicPath;
 
     /**
@@ -123,7 +115,6 @@ class Environment
         self::$composerMode = $composerMode;
         self::$context = $context;
         self::$projectPath = $projectPath;
-        self::$composerRootPath = $composerMode ? PathUtility::getCanonicalPath(InstalledVersions::getRootPackage()['install_path']) : '';
         self::$publicPath = $publicPath;
         self::$varPath = $varPath;
         self::$configPath = $configPath;
@@ -171,24 +162,6 @@ class Environment
     public static function getProjectPath(): string
     {
         return self::$projectPath;
-    }
-
-    /**
-     * In most cases in composer-mode setups this is the same as project path.
-     * However since the project path is configurable, the paths may differ.
-     * In future versions this configurability will go away and this method will be removed.
-     * This path is only required for some internal path handling regarding package paths until then.
-     * @internal
-     *
-     * @return string The absolute path to the composer root directory without the trailing slash
-     */
-    public static function getComposerRootPath(): string
-    {
-        if (self::$composerMode === false) {
-            throw new \BadMethodCallException('Composer root path is only available in Composer mode', 1631700480);
-        }
-
-        return self::$composerRootPath;
     }
 
     /**

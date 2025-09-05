@@ -1728,4 +1728,11 @@ return [
             'Deprecation-107413-PathUtilityGetRelativePathMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Core\Environment::getComposerRootPath' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-107482-EnvironmentGetComposerRootPathMethodsRemoved.rst',
+        ],
+    ],
 ];
