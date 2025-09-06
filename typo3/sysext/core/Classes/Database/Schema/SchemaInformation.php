@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -28,8 +27,6 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
  * specific schema related information. This should only be used in context where no changes are expected to happen.
  *
  * @internal This class is only for internal core usage and is not part of the public core API.
- * @todo Add `runtime` cache as a second layer cache to reduce filesystem operation due to the used filesystem cache.
- * @todo Investigate if filesystem cache layer can be removed AFTER runtime level cache has been added.
  */
 final class SchemaInformation
 {
@@ -66,19 +63,6 @@ final class SchemaInformation
             $tableNames[] = $table->getName();
         });
         return $tableNames;
-    }
-
-    /**
-     * @return array<string, Column>
-     */
-    public function listTableColumns(string $table): array
-    {
-        $columnsIndexedByName = [];
-        $columns = $this->introspectTable($table)->getColumns();
-        array_walk($columns, static function (Column $column) use (&$columnsIndexedByName): void {
-            $columnsIndexedByName[$column->getName()] = $column;
-        });
-        return $columnsIndexedByName;
     }
 
     /**
