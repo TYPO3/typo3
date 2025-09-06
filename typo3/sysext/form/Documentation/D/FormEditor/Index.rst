@@ -6,57 +6,77 @@
 Form editor
 ===========
 
+..  contents::
+    :depth: 1
+
+.. _apireference-formeditor-events:
+
+Events to manipulate the backend form editor
+--------------------------------------------
+
+..  contents::
+    :local:
+
+.. _apireference-formeditor-hooks-beforeformcreate:
+.. _apireference-formeditor-hooks-beforeformcreate-connect:
+.. _apireference-formeditor-hooks-beforeformcreate-use:
+.. _apireference-formeditor-events-beforeformiscreatedevent:
+
+BeforeFormIsCreatedEvent
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+..  versionadded:: 14.0
+    The event :php-short:`TYPO3\CMS\Form\Event\BeforeFormIsCreatedEvent`
+    serves as a direct replacement for the removed hook
+    :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormCreate']`.
+
+The event :php-short:`TYPO3\CMS\Form\Event\BeforeFormIsCreatedEvent` allows a
+to modify a form before it gets created. The event is dispatched just right
+before a new form is created in the backend.
+
+..  rubric:: Example
+
+..  literalinclude:: _codesnippets/_BeforeFormIsCreatedEventListener.php
+    :caption: EXT:my_extension/Classes/EventListener/MyEventListener.php
+
+.. _apireference-formeditor-hooks-beforeformsave:
+.. _apireference-formeditor-hooks-beforeformsave-connect:
+.. _apireference-formeditor-hooks-beforeformsave-use:
+.. _apireference-formeditor-events-beforeformissavedevent:
+
+BeforeFormIsSavedEvent
+^^^^^^^^^^^^^^^^^^^^^^
+
+..  versionadded:: 14.0
+    The event :php-short:`TYPO3\CMS\Form\Event\BeforeFormIsSavedEvent`
+    serves as a direct replacement for the removed hook
+    :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormSave']`.
+
+The event :php-short:`TYPO3\CMS\Form\Event\BeforeFormIsSavedEvent` allows a
+to modify a form definition as well as the form persistence identifier before
+it gets saved. It is dispatched just right before a form is saved in the backend.
+
+..  rubric:: Example
+
+..  literalinclude:: _codesnippets/_BeforeFormIsSavedEventListener.php
+    :caption: EXT:my_extension/Classes/EventListener/MyEventListener.php
 
 .. _apireference-formeditor-hooks:
 
 Hooks
 -----
 
+..  contents::
+    :local:
+
 EXT:form implements various hooks so that forms can be manipulated while being
 created or saved.
 
-
-.. _apireference-formeditor-hooks-beforeformcreate:
-
-beforeFormCreate
-^^^^^^^^^^^^^^^^
-
-The form manager calls the 'beforeFormCreate' hook.
-
-
-.. _apireference-formeditor-hooks-beforeformcreate-connect:
-
-Connect to the hook
-+++++++++++++++++++
-
-::
-
-   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormCreate'][<useATimestampAsKeyPlease>]
-       = \VENDOR\YourNamespace\YourClass::class;
-
-
-.. note::
-
-   Wondering what :ref:`useATimestampAsKeyPlease<useATimestampAsKeyPlease>`
-   means?
-
-
-.. _apireference-formeditor-hooks-beforeformcreate-use:
-
-Use the hook
-++++++++++++
-
-::
-
-   /**
-    * @param string $formPersistenceIdentifier
-    * @param array $formDefinition
-    * @return array
-    */
-   public function beforeFormCreate(string $formPersistenceIdentifier, array $formDefinition): array
-   {
-       return $formDefinition;
-   }
+..  versionchanged:: 14.0
+    The hooks `beforeFormCreate` and `beforeFormSave` have been removed in
+    favor of the newly introduced events
+    `BeforeFormIsCreatedEvent <https://docs.typo3.org/permalink/typo3/cms-form:apireference-formeditor-events-beforeformiscreatedevent>`_
+    and `BeforeFormIsSavedEvent <https://docs.typo3.org/permalink/typo3/cms-form:apireference-formeditor-events-beforeformissavedevent>`_.
 
 
 .. _apireference-formeditor-hooks-beforeformduplicate:
@@ -141,50 +161,6 @@ Use the hook
    public function beforeFormDelete(string $formPersistenceIdentifier)
    {
    }
-
-
-.. _apireference-formeditor-hooks-beforeformsave:
-
-beforeFormSave
-^^^^^^^^^^^^^^
-
-The form editor call the 'beforeFormSave' hook.
-
-
-.. _apireference-formeditor-hooks-beforeformsave-connect:
-
-Connect to the hook
-+++++++++++++++++++
-
-::
-
-   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormSave'][<useATimestampAsKeyPlease>]
-       = \VENDOR\YourNamespace\YourClass::class;
-
-
-.. note::
-
-   Wondering what :ref:`useATimestampAsKeyPlease<useATimestampAsKeyPlease>`
-   means?
-
-
-.. _apireference-formeditor-hooks-beforeformsave-use:
-
-Use the hook
-++++++++++++
-
-::
-
-   /**
-    * @param string $formPersistenceIdentifier
-    * @param array $formDefinition
-    * @return array
-    */
-   public function beforeFormSave(string $formPersistenceIdentifier, array $formDefinition): array
-   {
-       return $formDefinition;
-   }
-
 
 
 .. _apireference-formeditor-stage:
