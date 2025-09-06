@@ -1,0 +1,28 @@
+services:
+
+  # Button provider for external link
+  dashboard.buttons.github_releases:
+    class: 'TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider'
+    arguments:
+      $title: 'View all releases'
+      $link: 'https://github.com/TYPO3/typo3/releases'
+      $target: '_blank'
+
+  # RSS widget with Atom feed URL
+  dashboard.widget.github_releases:
+    class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
+    arguments:
+      $buttonProvider: '@dashboard.buttons.github_releases'
+      $options:
+        feedUrl: 'https://github.com/TYPO3/typo3/releases.atom'
+        lifeTime: 43200
+        limit: 10
+    tags:
+      - name: dashboard.widget
+        identifier: 'github_releases'
+        groupNames: 'general'
+        title: 'LLL:EXT:my_extension/Resources/Private/Language/locallang.xlf:widgets.github_releases.title'
+        description: 'LLL:EXT:my_extension/Resources/Private/Language/locallang.xlf:widgets.github_releases.description'
+        iconIdentifier: 'content-widget-rss'
+        height: 'large'
+        width: 'medium'
