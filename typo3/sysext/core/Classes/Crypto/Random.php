@@ -105,6 +105,7 @@ class Random
                 );
             }
 
+            // enforces that at least one character matches the requirements
             foreach ($characterSets as $characterSet) {
                 $password .= $characterSet[random_int(0, strlen($characterSet) - 1)];
             }
@@ -114,10 +115,33 @@ class Random
                 $password .= $characters[random_int(0, $charactersCount - 1)];
             }
 
-            str_shuffle($password);
+            $password = $this->shuffleBytes($password);
         }
 
         return $password;
+    }
+
+    /**
+     * Get a byte-wise permutation of a string.
+     *  - local polyfill for `Random\Randomizer::shuffleBytes(string $bytes)`
+     *  - inspired by https://github.com/php/php-src/blob/PHP-8.2.29/ext/standard/string.c#L5730-L5740
+     */
+    protected function shuffleBytes(string $bytes): string
+    {
+        if (class_exists(\Random\Randomizer::class)) {
+            return (new \Random\Randomizer())->shuffleBytes($bytes);
+        }
+        $pointer = strlen($bytes);
+        if ($pointer < 2) {
+            return $bytes;
+        }
+        while (--$pointer > 0) {
+            $random = random_int(0, $pointer);
+            $temp = $bytes[$pointer];
+            $bytes[$pointer] = $bytes[$random];
+            $bytes[$random] = $temp;
+        }
+        return $bytes;
     }
 
     /**
