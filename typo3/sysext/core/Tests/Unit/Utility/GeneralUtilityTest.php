@@ -1384,6 +1384,21 @@ final class GeneralUtilityTest extends UnitTestCase
                 'localhost',
                 '/cms/',
             ],
+            '/cms/typo3/alt_intro.php&param=oneparam' => [
+                '/cms/typo3/alt_intro.php&param=oneparam',
+                'localhost',
+                '/cms/',
+            ],
+            '/cms/typo3/alt_intro.php&param=oneparam with spaces' => [
+                '/cms/typo3/alt_intro.php&param=oneparam with spaces',
+                'localhost',
+                '/cms/',
+            ],
+            '/cms/typo3/alt_intro.php&param=oneparam with spaces&normalparam=2' => [
+                '/cms/typo3/alt_intro.php&param=oneparam with spaces',
+                'localhost',
+                '/cms/',
+            ],
         ];
     }
 
@@ -1446,7 +1461,7 @@ final class GeneralUtilityTest extends UnitTestCase
             'relative URL with location header injection via leading space' => [' //evil.site/'],
             'relative URL with location header injection via leading horizontal tab' => ["\t" . '//evil.site/'],
             'relative URL with location header injection attempt (not known to work) via vertical white space' => ["\v" . '//evil.site/'],
-            'HTTP header smuggling attempt' => ["/\r\nX-Injected: evil"],
+            'HTTP header smuggling attempt' => ["/\r\nX-Injected: evil", true],
             'null-byte break out attempt' => ["http\x00://www.google.de"],
         ];
     }
@@ -1473,7 +1488,7 @@ final class GeneralUtilityTest extends UnitTestCase
 
     #[DataProvider('sanitizeLocalUrlInvalidDataProvider')]
     #[Test]
-    public function sanitizeLocalUrlDeniesPlainInvalidUrlsInFrontendContext(string $url): void
+    public function sanitizeLocalUrlDeniesPlainInvalidUrlsInFrontendContext(string $url, bool $skipExplicitEncodeTest = false): void
     {
         Environment::initialize(
             Environment::getContext(),
@@ -1493,8 +1508,11 @@ final class GeneralUtilityTest extends UnitTestCase
 
     #[DataProvider('sanitizeLocalUrlInvalidDataProvider')]
     #[Test]
-    public function sanitizeLocalUrlDeniesEncodedInvalidUrls(string $url): void
+    public function sanitizeLocalUrlDeniesEncodedInvalidUrls(string $url, bool $skipExplicitEncodeTest = false): void
     {
+        if ($skipExplicitEncodeTest) {
+            self::markTestSkipped('Explicit rawurlencoding skipped because the contents are considered allowed payload if encoded');
+        }
         self::assertEquals('', GeneralUtility::sanitizeLocalUrl(rawurlencode($url)));
     }
 
