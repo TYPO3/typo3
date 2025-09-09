@@ -12,5 +12,6 @@ return [
     'workspace_dispatch' => [
         'path' => '/workspace/dispatch',
         'target' => \TYPO3\CMS\Workspaces\Controller\WorkspacesAjaxController::class . '::dispatch',
+        'inheritAccessFromModule' => 'workspaces_admin',
     ],
 ];

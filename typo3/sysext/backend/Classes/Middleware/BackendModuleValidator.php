@@ -31,6 +31,7 @@ use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
@@ -68,10 +69,19 @@ class BackendModuleValidator implements MiddlewareInterface
         $inaccessibleSubModule = null;
         $ensureToPersistUserSettings = false;
         $backendUser = $GLOBALS['BE_USER'] ?? null;
-        if (!$backendUser
-            || !$route->hasOption('module')
-            || !(($module = $route->getOption('module')) instanceof ModuleInterface)
-        ) {
+
+        if (!$backendUser) {
+            return $handler->handle($request);
+        }
+
+        // Exit if access to module was denied using module access inheritance check
+        $inheritAccessFromModule = $route->getOption('inheritAccessFromModule');
+        if ($inheritAccessFromModule !== null && !$this->moduleProvider->accessGranted($inheritAccessFromModule, $backendUser)) {
+            return new Response(null, 403);
+        }
+
+        $module = $route->getOption('module');
+        if (!$module instanceof ModuleInterface) {
             return $handler->handle($request);
         }
 

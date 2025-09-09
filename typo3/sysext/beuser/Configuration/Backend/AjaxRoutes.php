@@ -8,5 +8,6 @@ return [
     'user_access_permissions' => [
         'path' => '/users/access/permissions',
         'target' => \TYPO3\CMS\Beuser\Controller\PermissionController::class . '::handleAjaxRequest',
+        'inheritAccessFromModule' => 'permissions_pages',
     ],
 ];

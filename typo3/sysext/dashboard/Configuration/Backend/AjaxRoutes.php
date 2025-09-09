@@ -8,26 +8,31 @@ return [
         'path' => '/dashboard/dashboards/get',
         'target' => DashboardAjaxController::class . '::getDashboards',
         'methods' => ['GET'],
+        'inheritAccessFromModule' => 'dashboard',
     ],
     'dashboard_dashboard_add' => [
         'path' => '/dashboard/dashboard/add',
         'target' => DashboardAjaxController::class . '::addDashboard',
         'methods' => ['POST'],
+        'inheritAccessFromModule' => 'dashboard',
     ],
     'dashboard_dashboard_edit' => [
         'path' => '/dashboard/dashboard/edit',
         'target' => DashboardAjaxController::class . '::editDashboard',
         'methods' => ['POST'],
+        'inheritAccessFromModule' => 'dashboard',
     ],
     'dashboard_dashboard_update' => [
         'path' => '/dashboard/dashboard/update',
         'target' => DashboardAjaxController::class . '::updateDashboard',
         'methods' => ['POST'],
+        'inheritAccessFromModule' => 'dashboard',
     ],
     'dashboard_dashboard_delete' => [
         'path' => '/dashboard/dashboard/delete',
         'target' => DashboardAjaxController::class . '::deleteDashboard',
         'methods' => ['POST'],
+        'inheritAccessFromModule' => 'dashboard',
     ],
 
     // Presets
@@ -35,6 +40,7 @@ return [
         'path' => '/dashboard/presets/get',
         'target' => DashboardAjaxController::class . '::getPresets',
         'methods' => ['GET'],
+        'inheritAccessFromModule' => 'dashboard',
     ],
 
     // Categories
@@ -42,6 +48,7 @@ return [
         'path' => '/dashboard/categories/get',
         'target' => DashboardAjaxController::class . '::getCategories',
         'methods' => ['GET'],
+        'inheritAccessFromModule' => 'dashboard',
     ],
 
     // Widgets
@@ -49,25 +56,30 @@ return [
         'path' => '/dashboard/widget/get',
         'target' => DashboardAjaxController::class . '::getWidget',
         'methods' => ['GET'],
+        'inheritAccessFromModule' => 'dashboard',
     ],
     'dashboard_widget_add' => [
         'path' => '/dashboard/widget/add',
         'target' => DashboardAjaxController::class . '::addWidget',
         'methods' => ['POST'],
+        'inheritAccessFromModule' => 'dashboard',
     ],
     'dashboard_widget_remove' => [
         'path' => '/dashboard/widget/remove',
         'target' => DashboardAjaxController::class . '::removeWidget',
         'methods' => ['POST'],
+        'inheritAccessFromModule' => 'dashboard',
     ],
     'dashboard_widget_settings_get' => [
         'path' => '/dashboard/widget/settings/get',
         'target' => DashboardAjaxController::class . '::getWidgetSettings',
         'methods' => ['GET'],
+        'inheritAccessFromModule' => 'dashboard',
     ],
     'dashboard_widget_settings_update' => [
         'path' => '/dashboard/widget/settings/update',
         'target' => DashboardAjaxController::class . '::updateWidgetSettings',
         'methods' => ['POST'],
+        'inheritAccessFromModule' => 'dashboard',
     ],
 ];

@@ -17,6 +17,7 @@ return [
         'path' => '/resource/rename',
         'methods' => ['POST'],
         'target' => Controller\Resource\ResourceController::class . '::renameResourceAction',
+        'inheritAccessFromModule' => 'media_management',
     ],
 
     // Link resource
@@ -30,12 +31,14 @@ return [
     'file_process' => [
         'path' => '/file/process',
         'target' => Controller\File\FileController::class . '::processAjaxRequest',
+        'inheritAccessFromModule' => 'media_management',
     ],
 
     // Check if file exists
     'file_exists' => [
         'path' => '/file/exists',
         'target' => Controller\File\FileController::class . '::fileExistsInFolderAction',
+        'inheritAccessFromModule' => 'media_management',
     ],
 
     // Get details of a file reference in FormEngine
@@ -93,6 +96,7 @@ return [
     'site_configuration_inline_create' => [
         'path' => '/siteconfiguration/inline/create',
         'target' => Controller\SiteInlineAjaxController::class . '::newInlineChildAction',
+        'inheritAccessFromModule' => 'site_configuration',
     ],
 
     // Validate slug input
@@ -105,6 +109,7 @@ return [
     'site_configuration_inline_details' => [
         'path' => '/siteconfiguration/inline/details',
         'target' => Controller\SiteInlineAjaxController::class . '::openInlineChildAction',
+        'inheritAccessFromModule' => 'site_configuration',
     ],
 
     // Add a flex form section container
@@ -353,18 +358,21 @@ return [
     'page_languages' => [
         'path' => '/records/localize/get-languages',
         'target' => Controller\Page\LocalizationController::class . '::getUsedLanguagesInPage',
+        'inheritAccessFromModule' => 'web_layout',
     ],
 
     // Get summary of records to localize
     'records_localize_summary' => [
         'path' => '/records/localize/summary',
         'target' => Controller\Page\LocalizationController::class . '::getRecordLocalizeSummary',
+        'inheritAccessFromModule' => 'web_layout',
     ],
 
     // Localize the records
     'records_localize' => [
         'path' => '/records/localize',
         'target' => Controller\Page\LocalizationController::class . '::localizeRecords',
+        'inheritAccessFromModule' => 'web_layout',
     ],
 
     // column selector
@@ -407,6 +415,7 @@ return [
         'access' => 'systemMaintainer',
         'path' => '/security/csp/control',
         'target' => \TYPO3\CMS\Backend\Security\ContentSecurityPolicy\CspAjaxController::class . '::handleRequest',
+        'inheritAccessFromModule' => 'tools_csp',
     ],
 
     'sudo_mode_control' => [
