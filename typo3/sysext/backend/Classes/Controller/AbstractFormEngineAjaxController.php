@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller;
 
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\JavaScriptItems;
@@ -60,10 +59,7 @@ abstract readonly class AbstractFormEngineAjaxController
     protected function getRelativePathToStylesheetFile(string $stylesheetFile): string
     {
         if (PathUtility::isExtensionPath($stylesheetFile)) {
-            // @see PageRenderer::getStreamlinedFileName()
-            $stylesheetFile = Environment::getPublicPath() . '/' . PathUtility::getPublicResourceWebPath($stylesheetFile, false);
-            $stylesheetFile = PathUtility::getRelativePathTo($stylesheetFile) ?? '';
-            $stylesheetFile = rtrim($stylesheetFile, '/');
+            $stylesheetFile = PathUtility::getPublicResourceWebPath($stylesheetFile, false);
         }
         $stylesheetFile = GeneralUtility::createVersionNumberedFilename($stylesheetFile);
         return PathUtility::getAbsoluteWebPath($stylesheetFile);

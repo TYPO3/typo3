@@ -122,7 +122,7 @@ final class ResourceCompressorTest extends FunctionalTestCase
     public function compressCssFileContent(string $cssFile, string $expected): void
     {
         $cssContent = file_get_contents($cssFile);
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory']);
+        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir']);
         $subject->_call('initialize');
         $compressedCss = $subject->_call('compressCssString', $cssContent);
         // we have to fix relative paths, if we aren't working on a file in our target directory
@@ -155,10 +155,6 @@ final class ResourceCompressorTest extends FunctionalTestCase
     #[Test]
     public function getFilenamesFromMainDirInFrontendContext(string $filename, string $expected): void
     {
-        // getCurrentScript() called by PathUtility::getRelativePathTo() is usually something
-        // like '.../bin/phpunit' in testing context, but we want .../index.php as entry
-        // script point here to fake the frontend call.
-        $fePath = Environment::getPublicPath();
         Environment::initialize(
             Environment::getContext(),
             true,
@@ -167,12 +163,12 @@ final class ResourceCompressorTest extends FunctionalTestCase
             Environment::getPublicPath(),
             Environment::getVarPath(),
             Environment::getConfigPath(),
-            $fePath . '/index.php',
+            // Frontend Context
+            Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         $subject = $this->getAccessibleMock(ResourceCompressor::class, null);
         $subject->_call('initialize');
-        $subject->_set('rootPath', $fePath . '/');
         $relativeToRootPath = $subject->_call('getFilenameFromMainDir', $filename);
         self::assertSame($expected, $relativeToRootPath);
     }

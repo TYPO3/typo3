@@ -1714,4 +1714,18 @@ return [
             'Deprecation-107047-ExtensionManagementUtilityAddPiFlexFormValue.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\PathUtility::getRelativePathTo' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-107413-PathUtilityGetRelativePathMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\PathUtility::getRelativePath' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-107413-PathUtilityGetRelativePathMethods.rst',
+        ],
+    ],
 ];

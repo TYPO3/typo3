@@ -24,7 +24,6 @@ use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -238,7 +237,7 @@ class PageRenderer implements SingletonInterface
         $this->headerData = [];
         $this->footerData = [];
         $this->javaScriptRenderer = JavaScriptRenderer::create(
-            $this->getStreamlinedFileName('EXT:core/Resources/Public/JavaScript/java-script-item-handler.js', true)
+            $this->getStreamlinedFileName('EXT:core/Resources/Public/JavaScript/java-script-item-handler.js')
         );
     }
 
@@ -1596,15 +1595,15 @@ class PageRenderer implements SingletonInterface
     private function createCssTag(array $properties, string $file): string
     {
         $includeInline = $properties['inline'] ?? false;
-        $file = $this->getStreamlinedFileName($file, !$includeInline);
-        if ($includeInline && @is_file($file)) {
-            $tag = $this->createInlineCssTagFromFile($file, $properties);
+        $absolutePathToFile = $includeInline ? GeneralUtility::getFileAbsFileName($file) : '';
+        if ($absolutePathToFile !== '' && @is_file($absolutePathToFile)) {
+            $tag = $this->createInlineCssTagFromFile($absolutePathToFile, $properties);
         } else {
             $tagAttributes = [];
             if ($properties['rel'] ?? false) {
                 $tagAttributes['rel'] = $properties['rel'];
             }
-            $tagAttributes['href'] = $file;
+            $tagAttributes['href'] = $this->getStreamlinedFileName($file);
             if ($properties['media'] ?? false) {
                 $tagAttributes['media'] = $properties['media'];
             }
@@ -2004,40 +2003,27 @@ class PageRenderer implements SingletonInterface
 
     /**
      * This function acts as a wrapper to allow relative and paths starting with EXT: to be dealt with
-     * in this very case to always return the absolute web path to be included directly before output.
+     * in this very case to always return the "absolute web path" to be included directly before output.
      *
      * This is mainly added so the EXT: syntax can be resolved for PageRenderer in one central place,
      * and hopefully removed in the future by one standard API call.
      *
+     * The file is also prepared as version numbered file and prefixed as absolute webpath
+     *
      * @param string $file the filename to process
-     * @param bool $prepareForOutput whether the file should be prepared as version numbered file and prefixed as absolute webpath
-     * @return string
      * @internal
      */
-    protected function getStreamlinedFileName($file, $prepareForOutput = true)
+    protected function getStreamlinedFileName(string $file): string
     {
         if (PathUtility::isExtensionPath($file)) {
-            $file = Environment::getPublicPath() . '/' . PathUtility::getPublicResourceWebPath($file, false);
-            // as the path is now absolute, make it "relative" to the current script to stay compatible
-            $file = PathUtility::getRelativePathTo($file) ?? '';
-            $file = rtrim($file, '/');
+            $file = PathUtility::getPublicResourceWebPath($file, false);
         }
-        if ($prepareForOutput) {
-            $file = GeneralUtility::createVersionNumberedFilename($file);
-            $file = $this->getAbsoluteWebPath($file);
-        }
-        return $file;
-    }
+        $file = GeneralUtility::createVersionNumberedFilename($file);
 
-    /**
-     * Gets absolute web path of filename for backend disposal.
-     * Resolving the absolute path in the frontend with conflict with
-     * applying config.absRefPrefix in frontend rendering process.
-     *
-     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::setAbsRefPrefix()
-     */
-    protected function getAbsoluteWebPath(string $file): string
-    {
+        // Get an absolute web path of filename for backend disposal.
+        // Resolving the absolute path in the frontend will conflict with
+        // applying config.absRefPrefix in frontend rendering process.
+        // @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::setAbsRefPrefix()
         if ($this->getApplicationType() === 'FE') {
             return $file;
         }

@@ -35,11 +35,6 @@ class ResourceCompressor
     protected $targetDirectory = 'typo3temp/assets/compressed/';
 
     /**
-     * @var string
-     */
-    protected $rootPath = '';
-
-    /**
      * gzipped versions are only created if $TYPO3_CONF_VARS['BE' or 'FE']['compressionLevel'] is set
      *
      * @var bool
@@ -71,7 +66,7 @@ class ResourceCompressor
         if ($this->initialized) {
             return;
         }
-        // we check for existence of our targetDirectory
+        // we check the existence of our targetDirectory
         if (!is_dir(Environment::getPublicPath() . '/' . $this->targetDirectory)) {
             GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/' . $this->targetDirectory);
         }
@@ -93,7 +88,6 @@ class ResourceCompressor
                 $this->gzipCompressionLevel = (int)$compressionLevel;
             }
         }
-        $this->rootPath = Environment::getPublicPath() . '/';
         $this->initialized = true;
     }
 
@@ -252,7 +246,7 @@ class ResourceCompressor
                 ) {
                     // attempt to turn it into a local file path
                     $localFilename = substr($filename, strlen($GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl()));
-                    if (@is_file($this->rootPath . $localFilename)) {
+                    if (@is_file(Environment::getPublicPath() . '/' . $localFilename)) {
                         $filesToInclude[$key] = $localFilename;
                     } else {
                         $filesToInclude[$key] = $this->retrieveExternalFile($filename);
@@ -262,7 +256,7 @@ class ResourceCompressor
                 }
                 $filename = $filesToInclude[$key];
             }
-            $filenameAbsolute = $this->rootPath . $filename;
+            $filenameAbsolute = Environment::getPublicPath() . '/' . $filename;
             if (@file_exists($filenameAbsolute)) {
                 $fileStatus = stat($filenameAbsolute);
                 $unique .= $filenameAbsolute . $fileStatus['mtime'] . $fileStatus['size'];
@@ -276,7 +270,7 @@ class ResourceCompressor
             $concatenated = '';
             // concatenate all the files together
             foreach ($filesToInclude as $filename) {
-                $filenameAbsolute = $this->rootPath . $filename;
+                $filenameAbsolute = Environment::getPublicPath() . '/' . $filename;
                 $filename = PathUtility::stripPathSitePrefix($filenameAbsolute);
                 $contents = (string)file_get_contents($filenameAbsolute);
                 // remove any UTF-8 byte order mark (BOM) from files
@@ -338,7 +332,7 @@ class ResourceCompressor
     {
         $this->initialize();
         // generate the unique name of the file
-        $filenameAbsolute = $this->rootPath . $this->getFilenameFromMainDir($filename);
+        $filenameAbsolute = Environment::getPublicPath() . '/' . $this->getFilenameFromMainDir($filename);
         if (@file_exists($filenameAbsolute)) {
             $fileStatus = stat($filenameAbsolute);
             $unique = $filenameAbsolute . $fileStatus['mtime'] . $fileStatus['size'];
@@ -395,7 +389,7 @@ class ResourceCompressor
     {
         $this->initialize();
         // generate the unique name of the file
-        $filenameAbsolute = $this->rootPath . $this->getFilenameFromMainDir($filename);
+        $filenameAbsolute = Environment::getPublicPath() . '/' . $this->getFilenameFromMainDir($filename);
         if (@file_exists($filenameAbsolute)) {
             $fileStatus = stat($filenameAbsolute);
             $unique = $filenameAbsolute . $fileStatus['mtime'] . $fileStatus['size'];
@@ -413,10 +407,10 @@ class ResourceCompressor
     }
 
     /**
-     * Finds the relative path to a file, relative to the root path.
+     * Finds the relative path to a file, relative to the public path.
      *
      * @param string $filename the name of the file
-     * @return string the path to the file relative to the root path ($this->rootPath)
+     * @return string the path to the file relative to the public path
      */
     protected function getFilenameFromMainDir($filename)
     {
@@ -424,69 +418,35 @@ class ResourceCompressor
          * The various paths may have those values (e.g. if TYPO3 is installed in a subdir)
          * - docRoot = /var/www/html/
          * - Environment::getPublicPath() = /var/www/html/sites/site1/
-         * - $this->rootPath = /var/www/html/sites/site1/typo3
          *
          * The file names passed into this function may be either:
-         * - relative to $this->rootPath
          * - relative to Environment::getPublicPath()
          * - relative to docRoot
          */
         $docRoot = GeneralUtility::getIndpEnv('TYPO3_DOCUMENT_ROOT');
         $fileNameWithoutSlash = ltrim($filename, '/');
 
-        // if the file is an absolute reference within the docRoot
-        $absolutePath = $docRoot . '/' . $fileNameWithoutSlash;
         // If the $filename stems from a call to PathUtility::getAbsoluteWebPath() it has a leading slash,
         // hence isAbsolutePath() results in true, which is obviously wrong. Check file existence to be sure.
         // Calling is_file without @ for a path starting with '../' causes a PHP Warning when using open_basedir restriction
         if (PathUtility::isAbsolutePath($filename) && @is_file($filename)) {
             $absolutePath = $filename;
+        } else {
+            // if the file is an absolute reference within the docRoot
+            $absolutePath = $docRoot . '/' . $fileNameWithoutSlash;
         }
         if (@is_file($absolutePath)) {
-            $absolutePath = Environment::getPublicPath() . '/' . PathUtility::getAbsoluteWebPath($absolutePath, false);
-            if (str_starts_with($absolutePath, $this->rootPath)) {
-                // the path is within the current root path, simply strip rootPath off
-                return substr($absolutePath, strlen($this->rootPath));
-            }
-            // the path is not within the root path, strip off the site path, the remaining logic below
-            // takes care about adjusting the path correctly.
-            $filename = substr($absolutePath, strlen(Environment::getPublicPath() . '/'));
+            return PathUtility::getAbsoluteWebPath($absolutePath, false);
         }
         // if the file exists in the root path, just return the $filename
-        if (is_file($this->rootPath . $fileNameWithoutSlash)) {
+        if (is_file(Environment::getPublicPath() . '/' . $fileNameWithoutSlash)) {
             return $fileNameWithoutSlash;
         }
         // build the file path relative to the public web path
         if (PathUtility::isExtensionPath($filename)) {
-            $file = Environment::getPublicPath() . '/' . PathUtility::getPublicResourceWebPath($filename, false);
-        } else {
-            $file = Environment::getPublicPath() . '/' . $filename;
+            return PathUtility::getPublicResourceWebPath($filename, false);
         }
-
-        // check if the file exists, and if so, return the path relative to current PHP script
-        if (is_file($file)) {
-            return rtrim((string)PathUtility::getRelativePathTo($file), '/');
-        }
-        // none of above conditions were met, fallback to default behaviour
         return $filename;
-    }
-
-    /**
-     * Decides whether a file comes from one of the baseDirectories
-     *
-     * @param string $filename Filename
-     * @param array $baseDirectories Base directories
-     * @return bool File belongs to a base directory or not
-     */
-    protected function checkBaseDirectory($filename, array $baseDirectories)
-    {
-        foreach ($baseDirectories as $baseDirectory) {
-            // check, if $filename starts with base directory
-            if (str_starts_with($filename, $baseDirectory)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     protected function cssFixRelativeUrlPaths(string $contents, string $filename): string
@@ -577,7 +537,7 @@ class ResourceCompressor
         if ($this->createGzipped && str_contains(GeneralUtility::getIndpEnv('HTTP_ACCEPT_ENCODING'), 'gzip')) {
             $filename .= $this->gzipFileExtension;
         }
-        return PathUtility::getRelativePath($this->rootPath, Environment::getPublicPath() . '/') . $filename;
+        return $filename;
     }
 
     /**

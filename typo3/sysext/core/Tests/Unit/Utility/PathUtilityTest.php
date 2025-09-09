@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -140,6 +141,7 @@ final class PathUtilityTest extends UnitTestCase
      */
     #[DataProvider('isRelativePathResolvedCorrectlyDataProvider')]
     #[Test]
+    #[IgnoreDeprecations]
     public function isRelativePathResolvedCorrectly($source, $target, $expected): void
     {
         $relativePath = PathUtility::getRelativePath($source, $target);

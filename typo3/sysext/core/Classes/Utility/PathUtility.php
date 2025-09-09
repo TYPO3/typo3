@@ -29,10 +29,12 @@ class PathUtility
      * Gets the relative path from the current used script to a given directory.
      *
      * The allowed TYPO3 path is checked as well, thus it's not possible to go to upper levels.
+     * @deprecated will be removed in TYPO3 v15.0.
      */
     public static function getRelativePathTo(string $absolutePath): ?string
     {
-        return self::getRelativePath(self::dirname(Environment::getCurrentScript()), $absolutePath);
+        trigger_error('PathUtility::getRelativePathTo() will be removed in TYPO3 v15.0', E_USER_DEPRECATED);
+        return self::getRelativePath(self::dirname(Environment::getCurrentScript()), $absolutePath, false);
     }
 
     /**
@@ -126,9 +128,13 @@ class PathUtility
      *
      * @param string $sourcePath Absolute source path
      * @param string $targetPath Absolute target path
+     * @deprecated will be removed in TYPO3 v15.0
      */
-    public static function getRelativePath(string $sourcePath, string $targetPath): ?string
+    public static function getRelativePath(string $sourcePath, string $targetPath, bool $triggerDeprecation = true): ?string
     {
+        if ($triggerDeprecation) {
+            trigger_error('PathUtility::getRelativePath() will be removed in TYPO3 v15.0', E_USER_DEPRECATED);
+        }
         $relativePath = null;
         $sourcePath = rtrim(GeneralUtility::fixWindowsFilePath($sourcePath), '/');
         $targetPath = rtrim(GeneralUtility::fixWindowsFilePath($targetPath), '/');

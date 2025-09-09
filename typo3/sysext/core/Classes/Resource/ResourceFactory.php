@@ -253,7 +253,7 @@ readonly class ResourceFactory implements SingletonInterface
                     return null;
                 }
                 if (str_starts_with($absoluteFilePath, Environment::getPublicPath())) {
-                    $relativePath = PathUtility::getRelativePath(Environment::getPublicPath() . '/', PathUtility::dirname($absoluteFilePath)) . PathUtility::basename($absoluteFilePath);
+                    $relativePath = PathUtility::stripPathSitePrefix($absoluteFilePath);
                 } else {
                     try {
                         // The second parameter needs to be false in order to have getFileObjectFromCombinedIdentifier()
