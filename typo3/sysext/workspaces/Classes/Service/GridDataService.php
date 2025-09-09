@@ -117,7 +117,15 @@ readonly class GridDataService
     {
         $backendUser = $this->getBackendUser();
         $table = $parameter->table;
-        $schema = $this->tcaSchemaFactory->get($table);
+        $schema = $this->tcaSchemaFactory->has($table) ? $this->tcaSchemaFactory->get($table) : null;
+
+        if ($schema === null
+            || !$schema->isWorkspaceAware()
+            || !$backendUser->check('tables_modify', $table)
+        ) {
+            throw new \RuntimeException(sprintf('Invalid access to table "%s"', $table), 1756882012);
+        }
+
         $diffReturnArray = [];
         $liveReturnArray = [];
         $plainLiveRecord = $liveRecord = (array)BackendUtility::getRecord($table, $parameter->t3ver_oid);
@@ -176,7 +184,12 @@ readonly class GridDataService
             $configuration = $fieldTypeInformation->getConfiguration();
             // check for exclude fields
             $isFieldExcluded = $fieldTypeInformation->supportsAccessControl();
-            if ($backendUser->isAdmin() || !$isFieldExcluded || GeneralUtility::inList($backendUser->groupData['non_exclude_fields'], $table . ':' . $fieldName)) {
+            if ($backendUser->isAdmin()
+                || (
+                    $fieldTypeInformation->getDisplayConditions() !== 'HIDE_FOR_NON_ADMINS'
+                    && (!$isFieldExcluded || GeneralUtility::inList($backendUser->groupData['non_exclude_fields'], $table . ':' . $fieldName))
+                )
+            ) {
                 $granularity = $fieldTypeInformation->isType(TableColumnType::FLEX) ? DiffGranularity::CHARACTER : DiffGranularity::WORD;
                 // call diff class only if there is a difference
                 if ($fieldTypeInformation->isType(TableColumnType::FILE)) {
