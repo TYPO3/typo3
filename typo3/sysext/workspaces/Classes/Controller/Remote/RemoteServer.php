@@ -131,6 +131,12 @@ readonly class RemoteServer
      */
     public function getRowDetails(array $stages, \stdClass $parameter): array
     {
+        if (!BackendUtility::isTableWorkspaceEnabled($parameter->table)
+            || !$this->getBackendUser()->check('tables_modify', $parameter->table)
+        ) {
+            throw new \RuntimeException(sprintf('Invalid access to table "%s"', $parameter->table), 1756882012);
+        }
+
         $diffReturnArray = [];
         $liveReturnArray = [];
         $plainLiveRecord = $liveRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
@@ -190,7 +196,12 @@ readonly class RemoteServer
             $configuration = $GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['config'];
             // check for exclude fields
             $isFieldExcluded = (bool)($GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['exclude'] ?? false);
-            if ($this->getBackendUser()->isAdmin() || !$isFieldExcluded || GeneralUtility::inList($this->getBackendUser()->groupData['non_exclude_fields'], $parameter->table . ':' . $fieldName)) {
+            if ($this->getBackendUser()->isAdmin()
+                || (
+                    ($GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['displayCond'] ?? null) !== 'HIDE_FOR_NON_ADMINS'
+                    && (!$isFieldExcluded || GeneralUtility::inList($this->getBackendUser()->groupData['non_exclude_fields'], $parameter->table . ':' . $fieldName))
+                )
+            ) {
                 // call diff class only if there is a difference
                 if ($configuration['type'] === 'file') {
                     $useThumbnails = false;
