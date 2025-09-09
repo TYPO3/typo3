@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Backend\Shortcut;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Router;
@@ -59,6 +60,7 @@ class ShortcutRepository
         protected readonly ModuleProvider $moduleProvider,
         protected readonly Router $router,
         protected readonly UriBuilder $uriBuilder,
+        protected readonly LoggerInterface $logger,
     ) {
         $this->shortcutGroups = $this->initShortcutGroups();
         $this->shortcuts = $this->initShortcuts();
@@ -444,6 +446,13 @@ class ShortcutRepository
                     } catch (FolderDoesNotExistException $e) {
                         // Folder does not longer exists. However, the shortcut
                         // is still displayed, allowing the user to remove it.
+                    } catch (\Throwable $e) {
+                        // Catch any other error or exception to avoid blocking this component
+                        $this->logger->error('Failed to resolve folder identifier "{folder}" in backend user shortcut: {message}', [
+                            'folder' => $folderIdentifier,
+                            'message' => $e->getMessage(),
+                        ]);
+                        continue;
                     }
                 }
             } else {
