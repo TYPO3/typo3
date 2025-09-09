@@ -103,6 +103,12 @@ class RecordListDownloadController
         if ($this->table === '') {
             throw new \RuntimeException('No table was given for downloading records', 1623941276);
         }
+
+        $backendUser = $this->getBackendUserAuthentication();
+        if (!$backendUser->check('tables_select', $this->table)) {
+            throw new AccessDeniedException('Insufficient permissions for accessing this download', 1756895674);
+        }
+
         $this->format = (string)($parsedBody['format'] ?? '');
         if ($this->format === '' || !isset(self::DOWNLOAD_FORMATS[$this->format])) {
             throw new \RuntimeException('No or an invalid download format given', 1624562166);
@@ -119,7 +125,6 @@ class RecordListDownloadController
         $tsConfig = is_array($tsConfig) ? $tsConfig : null;
 
         // Loading current page record and checking access
-        $backendUser = $this->getBackendUserAuthentication();
         $perms_clause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
         $pageinfo = BackendUtility::readPageAccess($this->id, $perms_clause);
         $searchString = (string)($parsedBody['searchString'] ?? '');
