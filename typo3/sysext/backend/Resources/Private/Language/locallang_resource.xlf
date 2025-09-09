@@ -25,6 +25,12 @@
 			<trans-unit id="ajax.error.message.resourceNameCannotBeEmpty">
 				<source>The resource name cannot be empty.</source>
 			</trans-unit>
+			<trans-unit id="ajax.error.message.resourceNameNotDifferent">
+				<source>The identical name for the resource %s was provided, nothing to do.</source>
+			</trans-unit>
+			<trans-unit id="ajax.error.message.resourceNotRenamed">
+				<source>The resource %s could not be renamed.</source>
+			</trans-unit>
 
 		</body>
 	</file>
