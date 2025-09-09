@@ -5,10 +5,12 @@ return [
     'dashboard_get_widget_content' => [
         'path' => '/dashboard/widget/content',
         'target' => TYPO3\CMS\Dashboard\Controller\WidgetAjaxController::class . '::getContent',
+        'inheritAccessFromModule' => 'dashboard',
     ],
     // Save positions of the widgets
     'dashboard_save_widget_positions' => [
         'path' => '/dashboard/widget/positions/save',
         'target' => TYPO3\CMS\Dashboard\Controller\WidgetAjaxController::class . '::savePositions',
+        'inheritAccessFromModule' => 'dashboard',
     ],
 ];

@@ -46,7 +46,7 @@ final class BackendModuleValidatorTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users_core.csv');
         $this->setUpBackendUser(1);
         Bootstrap::initializeLanguageObject();
 
@@ -68,6 +68,36 @@ final class BackendModuleValidatorTest extends FunctionalTestCase
                     ->withHeader('X-ModuleData-reverse', (string)($request->getAttribute('moduleData')?->get('reverse') ?? '0'));
             }
         };
+    }
+
+    #[Test]
+    public function processReturnsForbiddenResponseIfModuleInheritanceAccessCheckFails(): void
+    {
+        $this->setUpBackendUser(2);
+
+        $GLOBALS['TYPO3_REQUEST'] = $request = $this->request->withAttribute(
+            'route',
+            new Route('/some/route', ['inheritAccessFromModule' => 'web_layout']),
+        );
+
+        $response = $this->subject->process($request, $this->requestHandler);
+
+        self::assertSame(403, $response->getStatusCode());
+    }
+
+    #[Test]
+    public function processReturnsOkResponseIfModuleInheritanceAccessCheckIsSuccessful(): void
+    {
+        $this->setUpBackendUser(3);
+
+        $GLOBALS['TYPO3_REQUEST'] = $request = $this->request->withAttribute(
+            'route',
+            new Route('/some/route', ['inheritAccessFromModule' => 'web_layout']),
+        );
+
+        $response = $this->subject->process($request, $this->requestHandler);
+
+        self::assertSame(200, $response->getStatusCode());
     }
 
     #[Test]
