@@ -44,7 +44,7 @@ either within the CKEditor YAML context, or via Page TSconfig:
 
     RTE.default.proc {
       HTMLparser_db {
-        removeTags: link, meta, o:p, sdfield, style, title
+        removeTags = link, meta, o:p, sdfield, style, title
       }
     }
 
