@@ -2706,7 +2706,7 @@ class GeneralUtility
 
     /**
      * Checks if a given string is a valid frame URL to be loaded in the
-     * backend.
+     * backend or used in redirect headers.
      *
      * If the given url is empty or considered to be harmless, it is returned
      * as is, else the event is logged and an empty string is returned.
@@ -2719,6 +2719,10 @@ class GeneralUtility
         $sanitizedUrl = '';
         if (!empty($url)) {
             $decodedUrl = rawurldecode($url);
+            if (strpbrk($decodedUrl, " \n\r\t\v\x00") !== false) {
+                static::getLogger()->notice('URL "{url}" contains unexpected whitespace and was denied as local url.', ['url' => $url]);
+                return '';
+            }
             $parsedUrl = parse_url($decodedUrl);
             $testAbsoluteUrl = self::resolveBackPath($decodedUrl);
             $testRelativeUrl = self::resolveBackPath(self::dirname(self::getIndpEnv('SCRIPT_NAME')) . '/' . $decodedUrl);
