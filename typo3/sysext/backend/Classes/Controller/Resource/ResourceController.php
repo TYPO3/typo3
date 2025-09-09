@@ -104,7 +104,16 @@ final readonly class ResourceController
                 throw new \InvalidArgumentException('The resource name cannot be empty', 1676978732);
             }
             $oldName = $origin->getName();
+            if ($oldName === $resourceName) {
+                $message = sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.error.message.resourceNameNotDifferent'), $oldName);
+                return new JsonResponse($this->getResponseData(true, $message, $origin));
+            }
+
             $resource = $origin->rename($resourceName);
+            if ($resource->getName() === $oldName) {
+                $message = sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.error.message.resourceNotRenamed'), $oldName);
+                return new JsonResponse($this->getResponseData(false, $message, $origin));
+            }
         } catch (ResultException $exception) {
             // Possible Exception thrown within the `->rename(...)` chain via ResourceConsistencyService
             return new JsonResponse($this->getResponseData(false, $this->renderResultException($exception, $this->getLanguageService())));

@@ -737,12 +737,12 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
 
         if ($removeOriginal) {
             if (is_uploaded_file($localFilePath)) {
-                $result = move_uploaded_file($localFilePath, $targetPath);
+                $result = @move_uploaded_file($localFilePath, $targetPath);
             } else {
-                $result = rename($localFilePath, $targetPath);
+                $result = @rename($localFilePath, $targetPath);
             }
         } else {
-            $result = copy($localFilePath, $targetPath);
+            $result = @copy($localFilePath, $targetPath);
         }
         if ($result === false || !file_exists($targetPath)) {
             throw new \RuntimeException(
@@ -826,9 +826,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     {
         $filePath = $this->getAbsolutePath($fileIdentifier);
         if (is_uploaded_file($localFilePath)) {
-            $result = move_uploaded_file($localFilePath, $filePath);
+            $result = @move_uploaded_file($localFilePath, $filePath);
         } else {
-            $result = rename($localFilePath, $filePath);
+            $result = @rename($localFilePath, $filePath);
         }
         GeneralUtility::fixPermissions($filePath);
         if ($result === false) {
@@ -854,7 +854,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         $newIdentifier = $this->canonicalizeAndCheckFileIdentifier($newIdentifier);
 
         $absoluteFilePath = $this->getAbsolutePath($newIdentifier);
-        copy($sourcePath, $absoluteFilePath);
+        @copy($sourcePath, $absoluteFilePath);
         GeneralUtility::fixPermissions($absoluteFilePath);
         return $newIdentifier;
     }
@@ -874,7 +874,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         $sourcePath = $this->getAbsolutePath($fileIdentifier);
         $targetIdentifier = $targetFolderIdentifier . '/' . $newFileName;
         $targetIdentifier = $this->canonicalizeAndCheckFileIdentifier($targetIdentifier);
-        $result = rename($sourcePath, $this->getAbsolutePath($targetIdentifier));
+        $result = @rename($sourcePath, $this->getAbsolutePath($targetIdentifier));
         if ($result === false) {
             throw new \RuntimeException('Moving file ' . $sourcePath . ' to ' . $targetIdentifier . ' failed.', 1315314712);
         }
@@ -888,14 +888,14 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     {
         $sourcePath = $this->getAbsolutePath($fileIdentifier);
         $temporaryPath = $this->getTemporaryPathForFile($fileIdentifier);
-        $result = copy($sourcePath, $temporaryPath);
-        touch($temporaryPath, (int)filemtime($sourcePath));
+        $result = @copy($sourcePath, $temporaryPath);
         if ($result === false) {
             throw new \RuntimeException(
                 'Copying file "' . $fileIdentifier . '" to temporary path "' . $temporaryPath . '" failed.',
                 1320577649
             );
         }
+        @touch($temporaryPath, (int)filemtime($sourcePath));
         return $temporaryPath;
     }
 
@@ -910,11 +910,11 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
             $timeStamp = \DateTimeImmutable::createFromFormat('U.u', (string)microtime(true))->format('YmdHisu');
             $destinationFile = $recycleDirectory . '/' . $timeStamp . '_' . PathUtility::basename($filePath);
         }
-        $result = rename($filePath, $destinationFile);
+        $result = @rename($filePath, $destinationFile);
         // Update the mtime for the file, so the recycler garbage collection task knows which files to delete
         // Using ctime() is not possible there since this is not supported on Windows
         if ($result) {
-            touch($destinationFile);
+            @touch($destinationFile);
         }
         return $result;
     }
@@ -965,7 +965,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         $targetPath = $this->getAbsolutePath($relativeTargetPath);
         // get all files and folders we are going to move, to have a map for updating later.
         $filesAndFolders = $this->retrieveFileAndFoldersInPath($sourcePath, true);
-        $result = rename($sourcePath, $targetPath);
+        $result = @rename($sourcePath, $targetPath);
         if ($result === false) {
             throw new \RuntimeException('Moving folder ' . $sourcePath . ' to ' . $targetPath . ' failed.', 1320711817);
         }
@@ -1007,7 +1007,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
             } elseif ($current->isFile()) {
                 $copySourcePath = $sourceFolderPath . '/' . $itemSubPath;
                 $copyTargetPath = $targetFolderPath . '/' . $itemSubPath;
-                $result = copy($copySourcePath, $copyTargetPath);
+                $result = @copy($copySourcePath, $copyTargetPath);
                 if ($result === false) {
                     // rollback
                     GeneralUtility::rmdir($targetFolderIdentifier, true);
@@ -1045,7 +1045,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         }
         $sourcePath = $this->getAbsolutePath($fileIdentifier);
         $targetPath = $this->getAbsolutePath($newIdentifier);
-        $result = rename($sourcePath, $targetPath);
+        $result = @rename($sourcePath, $targetPath);
         if ($result === false) {
             throw new \RuntimeException('Renaming file ' . $sourcePath . ' to ' . $targetPath . ' failed.', 1320375115);
         }
@@ -1072,7 +1072,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         $targetPath = $this->getAbsolutePath($newIdentifier);
         // get all files and folders we are going to move, to have a map for updating later.
         $filesAndFolders = $this->retrieveFileAndFoldersInPath($sourcePath, true);
-        $result = rename($sourcePath, $targetPath);
+        $result = @rename($sourcePath, $targetPath);
         if ($result === false) {
             throw new \RuntimeException(sprintf('Renaming folder "%1$s" to "%2$s" failed."', $sourcePath, $targetPath), 1320375116);
         }
@@ -1080,7 +1080,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
             // Create a mapping from old to new identifiers
             $identifierMap = $this->createIdentifierMap($filesAndFolders, $folderIdentifier, $newIdentifier);
         } catch (\Exception $e) {
-            rename($targetPath, $sourcePath);
+            @rename($targetPath, $sourcePath);
             throw new \RuntimeException(
                 sprintf(
                     'Creating filename mapping after renaming "%1$s" to "%2$s" failed. Reverted rename operation.\\n\\nOriginal error: %3$s"',
@@ -1104,7 +1104,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     public function deleteFile(string $fileIdentifier): bool
     {
         $filePath = $this->getAbsolutePath($fileIdentifier);
-        $result = unlink($filePath);
+        $result = @unlink($filePath);
 
         if ($result === false) {
             throw new \RuntimeException('Deletion of file ' . $fileIdentifier . ' failed.', 1320855304);
@@ -1234,12 +1234,12 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
             $parentFolderIdentifier . $fileName
         );
         $absoluteFilePath = $this->getAbsolutePath($fileIdentifier);
-        $result = touch($absoluteFilePath);
-        GeneralUtility::fixPermissions($absoluteFilePath);
-        clearstatcache();
+        $result = @touch($absoluteFilePath);
         if ($result !== true) {
             throw new \RuntimeException('Creating file ' . $fileIdentifier . ' failed.', 1320569854);
         }
+        GeneralUtility::fixPermissions($absoluteFilePath);
+        clearstatcache();
         return $fileIdentifier;
     }
 
