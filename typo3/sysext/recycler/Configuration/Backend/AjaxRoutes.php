@@ -8,5 +8,6 @@ return [
     'recycler' => [
         'path' => '/recycler',
         'target' => \TYPO3\CMS\Recycler\Controller\RecyclerAjaxController::class . '::dispatch',
+        'inheritAccessFromModule' => 'recycler',
     ],
 ];
