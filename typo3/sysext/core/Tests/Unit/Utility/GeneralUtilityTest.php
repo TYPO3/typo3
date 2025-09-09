@@ -1447,6 +1447,11 @@ final class GeneralUtilityTest extends UnitTestCase
             'invalid URL, UNC path' => ['\\\\foo\\bar\\'],
             'invalid URL, HTML break out attempt' => ['" >blabuubb'],
             'base64 encoded string' => ['data:%20text/html;base64,PHNjcmlwdD5hbGVydCgnWFNTJyk8L3NjcmlwdD4='],
+            'relative URL with location header injection via leading space' => [' //evil.site/'],
+            'relative URL with location header injection via leading horizontal tab' => ["\t" . '//evil.site/'],
+            'relative URL with location header injection attempt (not known to work) via vertical white space' => ["\v" . '//evil.site/'],
+            'HTTP header smuggling attempt' => ["/\r\nX-Injected: evil"],
+            'null-byte break out attempt' => ["http\x00://www.google.de"],
         ];
     }
 
