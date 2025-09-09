@@ -2718,11 +2718,17 @@ class GeneralUtility
     {
         $sanitizedUrl = '';
         if (!empty($url)) {
-            $decodedUrl = rawurldecode($url);
-            if (strpbrk($decodedUrl, " \n\r\t\v\x00") !== false) {
+            if (strpbrk($url, "\n\r\x00") !== false) {
                 static::getLogger()->notice('URL "{url}" contains unexpected whitespace and was denied as local url.', ['url' => $url]);
                 return '';
             }
+
+            $decodedUrl = rawurldecode($url);
+            if ($decodedUrl !== ltrim($decodedUrl, " \t\v")) {
+                static::getLogger()->notice('URL "{url}" contains unexpected whitespace and was denied as local url.', ['url' => $url]);
+                return '';
+            }
+
             $parsedUrl = parse_url($decodedUrl);
             $testAbsoluteUrl = self::resolveBackPath($decodedUrl);
             $testRelativeUrl = self::resolveBackPath(self::dirname(self::getIndpEnv('SCRIPT_NAME')) . '/' . $decodedUrl);
