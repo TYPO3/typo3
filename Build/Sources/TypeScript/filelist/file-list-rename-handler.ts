@@ -63,11 +63,10 @@ class FileListRenameHandler {
             const formData = new FormData(event.target as HTMLFormElement);
             const submittedData = Object.fromEntries(formData);
             const resourceName = submittedData.name.toString();
-            if (detail.resources[0].name !== resourceName) {
-
+            if (resource.name !== resourceName) {
               const request = new AjaxRequest(TYPO3.settings.ajaxUrls.resource_rename);
               request.post({
-                identifier: detail.resources[0].identifier,
+                identifier: resource.identifier,
                 resourceName: resourceName,
               }).then(async (success: AjaxResponse): Promise<void> => {
 
@@ -102,7 +101,11 @@ class FileListRenameHandler {
           });
 
           modal.addEventListener('typo3-modal-shown', (): void => {
-            form.querySelector('input')?.focus();
+            const renameInput = form.querySelector('input');
+            if (renameInput !== null) {
+              renameInput.focus();
+              renameInput.setSelectionRange(0, resource.name.lastIndexOf('.'));
+            }
           });
         }
       });
