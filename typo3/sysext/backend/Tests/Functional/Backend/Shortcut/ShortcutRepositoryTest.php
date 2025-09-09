@@ -27,12 +27,15 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Routing\RequestContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ShortcutRepositoryTest extends FunctionalTestCase
 {
     protected ShortcutRepository $subject;
+
+    protected array $coreExtensionsToLoad = ['filelist'];
 
     protected function setUp(): void
     {
@@ -46,13 +49,7 @@ final class ShortcutRepositoryTest extends FunctionalTestCase
         $requestContextFactory = $this->get(RequestContextFactory::class);
         $uriBuilder = $this->get(UriBuilder::class);
         $uriBuilder->setRequestContext($requestContextFactory->fromBackendRequest($request));
-        $this->subject = new ShortcutRepository(
-            $this->get(ConnectionPool::class),
-            $this->get(IconFactory::class),
-            $this->get(ModuleProvider::class),
-            $this->get(Router::class),
-            $this->get(UriBuilder::class),
-        );
+        $this->subject = $this->createShortcutRepository();
     }
 
     #[DataProvider('shortcutExistsTestDataProvider')]
@@ -185,5 +182,51 @@ final class ShortcutRepositoryTest extends FunctionalTestCase
             self::assertStringContainsString($expected[$id]['icon'], $shortcut['icon']);
             self::assertStringMatchesFormat($expected[$id]['href'], $shortcut['href']);
         }
+    }
+
+    public static function invalidShortcutArgumentsAreIgnoredDataProvider(): \Generator
+    {
+        yield 'record_edit invalid JSON' => [
+            'record_edit',
+            '$INVALID/JSON$',
+        ];
+        yield 'record_edit invalid edit data' => [
+            'record_edit',
+            json_encode(['edit' => [9, 8, 7]]),
+        ];
+        yield 'record_edit incomplete edit data' => [
+            'record_edit',
+            json_encode(['edit' => ['invalid' => ['987' => 'edit']]]),
+        ];
+        yield 'media_management invalid path' => [
+            'media_management',
+            json_encode(['id' => '1:any/../../thing']),
+        ];
+        yield 'media_management non-existing path' => [
+            'media_management',
+            json_encode(['id' => '1:any/thing']),
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('invalidShortcutArgumentsAreIgnoredDataProvider')]
+    public function invalidShortcutArgumentsAreIgnored($routIdentifier, string $arguments): void
+    {
+        $this->expectNotToPerformAssertions();
+        $this->subject->addShortcut($routIdentifier, $arguments, 'Test');
+        // create new instance to trigger initialization in constructor
+        $this->createShortcutRepository();
+    }
+
+    private function createShortcutRepository(): ShortcutRepository
+    {
+        return new ShortcutRepository(
+            $this->get(ConnectionPool::class),
+            $this->get(IconFactory::class),
+            $this->get(ModuleProvider::class),
+            $this->get(Router::class),
+            $this->get(UriBuilder::class),
+            $this->get(LogManager::class)->getLogger(ShortcutRepository::class),
+        );
     }
 }
