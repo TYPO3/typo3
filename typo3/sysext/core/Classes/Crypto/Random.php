@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Crypto;
 
+use Random\Randomizer;
 use TYPO3\CMS\Core\Exception\InvalidPasswordRulesException;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -105,6 +106,7 @@ readonly class Random
                 );
             }
 
+            // enforces that at least one character matches the requirements
             foreach ($characterSets as $characterSet) {
                 $password .= $characterSet[random_int(0, strlen($characterSet) - 1)];
             }
@@ -114,7 +116,7 @@ readonly class Random
                 $password .= $characters[random_int(0, $charactersCount - 1)];
             }
 
-            str_shuffle($password);
+            $password = (new Randomizer())->shuffleBytes($password);
         }
 
         return $password;

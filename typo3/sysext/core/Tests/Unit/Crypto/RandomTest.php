@@ -204,4 +204,20 @@ final class RandomTest extends UnitTestCase
     ): void {
         self::assertEquals($length, strlen((new Random())->generateRandomPassword($passwordRules)));
     }
+
+    #[Test]
+    public function generateRandomPasswordIsUnpredictable(): void
+    {
+        $subject = new Random();
+        $max = 1000;
+        $count = 0;
+        for ($i = 0; $i < $max; $i++) {
+            $result = $subject->generateRandomPassword(['passwordLength' => 12]);
+            if (preg_match('/^[a-z][A-Z][0-9]/', $result)) {
+                $count++;
+            }
+        }
+        self::assertNotEquals($max, $count);
+        self::assertLessThan(0.1, $count / $max);
+    }
 }
