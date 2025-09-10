@@ -277,10 +277,10 @@ readonly class SiteSettingsController
         ]);
     }
 
-    protected function addDocHeaderBreadcrumb(ModuleTemplate $moduleTempalte, Site $site): void
+    protected function addDocHeaderBreadcrumb(ModuleTemplate $moduleTemplate, Site $site): void
     {
         $record = BackendUtility::getRecord('pages', $site->getRootPageId());
-        $moduleTempalte->getDocHeaderComponent()->setMetaInformation($record);
+        $moduleTemplate->getDocHeaderComponent()->setMetaInformation($record ?? []);
     }
 
     protected function addDocHeaderCloseAndSaveButtons(ModuleTemplate $moduleTemplate, Site $site, string $closeUrl, bool $saveEnabled): void
