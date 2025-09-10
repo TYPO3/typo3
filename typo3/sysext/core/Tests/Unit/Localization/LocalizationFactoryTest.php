@@ -18,10 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Localization;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Cache\CacheManager;
+use Symfony\Component\Translation\MessageCatalogue;
+use Symfony\Component\Translation\Translator;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
-use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -31,26 +31,23 @@ final class LocalizationFactoryTest extends UnitTestCase
     #[Test]
     public function getParsedDataCallsLocalizationOverrideIfFileNotFoundExceptionIsThrown(): void
     {
-        $languageStoreMock = $this->createMock(LanguageStore::class);
-        $languageStoreMock->method('hasData')->with(self::anything())->willReturn(false);
-        $languageStoreMock->method('getData')->with(self::anything())->willReturn(['default' => []]);
-        $languageStoreMock->expects($this->atLeastOnce())->method('setData')->with(self::anything());
-        $languageStoreMock->method('setConfiguration')->with(self::anything())->willThrowException(new FileNotFoundException('testing', 1476049512));
-        $languageStoreMock->method('getFileReferenceWithoutExtension')->with(self::anything())->willReturn('');
-        $languageStoreMock->method('getSupportedExtensions')->willReturn([]);
-        $languageStoreMock->method('getDataByLanguage')->with(self::anything())->willReturn([]);
+        $translatorMock = $this->createMock(Translator::class);
+        $translatorMock->method('addResource')->willThrowException(new FileNotFoundException('testing', 1476049512));
 
         $cacheFrontendMock = $this->createMock(FrontendInterface::class);
         $cacheFrontendMock->method('get')->with(self::anything())->willReturn(false);
         $cacheFrontendMock->expects($this->atLeastOnce())->method('set')->with(self::anything());
 
-        $cacheManagerMock = $this->createMock(CacheManager::class);
-        $cacheManagerMock->method('getCache')->with('l10n')->willReturn($cacheFrontendMock);
+        $packageManagerMock = $this->createMock(PackageManager::class);
 
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'] = ['foo' => 'bar'];
+        $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides'] = ['foo' => 'bar'];
 
-        (new LocalizationFactory($languageStoreMock, $cacheManagerMock))
+        $result = (new LocalizationFactory($packageManagerMock, $translatorMock, $cacheFrontendMock, $this->createMock(FrontendInterface::class)))
             ->getParsedData(__DIR__ . '/Fixtures/locallang.invalid', 'default');
+
+        // Should return empty structure when file not found
+        self::assertNotEmpty($result);
+        self::assertArrayHasKey('en', $result);
     }
 
     #[Test]
@@ -59,16 +56,55 @@ final class LocalizationFactoryTest extends UnitTestCase
         $packageManagerMock = $this->createMock(PackageManager::class);
         $packageManagerMock->method('extractPackageKeyFromPackagePath')->with('EXT:core/Tests/Unit/Localization/Fixtures/locallang.xlf')->willReturn('core');
 
+        $catalogue = $this->createMock(MessageCatalogue::class);
+        $catalogue->method('getLocale')->willReturn('en');
+        $catalogue->method('all')->willReturn([
+            'messages' => [
+                'label1' => 'This is label #1',
+            ],
+        ]);
+
+        $translatorMock = $this->createMock(Translator::class);
+        $translatorMock->method('getCatalogue')->willReturn($catalogue);
+
         $cacheFrontendMock = $this->createMock(FrontendInterface::class);
         $cacheFrontendMock->expects($this->atLeastOnce())->method('get')->with(self::isString())->willReturn(false);
         $cacheFrontendMock->expects($this->atLeastOnce())->method('set')->with(self::isString(), [
             'label1' => [['source' => 'This is label #1', 'target' => 'This is label #1']],
         ])->willReturn(null);
 
-        $cacheManagerMock = $this->createMock(CacheManager::class);
-        $cacheManagerMock->method('getCache')->with('l10n')->willReturn($cacheFrontendMock);
-
-        (new LocalizationFactory(new LanguageStore($packageManagerMock), $cacheManagerMock))
+        $result = (new LocalizationFactory($packageManagerMock, $translatorMock, $cacheFrontendMock, $this->createMock(FrontendInterface::class)))
             ->getParsedData('EXT:core/Tests/Unit/Localization/Fixtures/locallang.xlf', 'default');
+
+        // Verify we get the expected structure
+        self::assertNotEmpty($result);
+        self::assertArrayHasKey('en', $result);
+    }
+
+    #[Test]
+    public function usesSymfonyTranslatorInternally(): void
+    {
+        $packageManagerMock = $this->createMock(PackageManager::class);
+        $cacheFrontendMock = $this->createMock(FrontendInterface::class);
+        $cacheFrontendMock->method('get')->willReturn(false);
+
+        $translatorMock = $this->createMock(Translator::class);
+
+        // Expect that addResource is called - this proves we're using Symfony Translator
+        $translatorMock->expects($this->exactly(2))
+            ->method('addResource')
+            ->with('xlf', self::stringContains('locallang.xlf'), 'en', 'messages');
+
+        $catalogue = $this->createMock(MessageCatalogue::class);
+        $catalogue->method('getLocale')->willReturn('en');
+        $catalogue->method('all')->willReturn(['messages' => []]);
+
+        $translatorMock->method('getCatalogue')->willReturn($catalogue);
+
+        $factory = new LocalizationFactory($packageManagerMock, $translatorMock, $cacheFrontendMock, $cacheFrontendMock);
+
+        // Create a test file that exists
+        $testFile = __DIR__ . '/Fixtures/locallang.xlf';
+        $factory->getParsedData($testFile, 'en');
     }
 }

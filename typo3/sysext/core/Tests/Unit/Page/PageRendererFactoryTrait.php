@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
+use Symfony\Component\Translation\Translator;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
@@ -24,7 +25,6 @@ use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Core\Http\StreamFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
@@ -46,7 +46,9 @@ trait PageRendererFactoryTrait
         ?CacheManager $cacheManager = null,
     ): array {
         $packageManager ??= new PackageManager(new DependencyOrderingService());
-        $cacheManager ??= $this->createMock(CacheManager::class);
+        $cacheManagerMock = $this->createMock(CacheManager::class);
+        $cacheManagerMock->method('getCache')->with('l10n')->willReturn(new NullFrontend('l10n'));
+        $cacheManager ??= $cacheManagerMock;
         return [
             new NullFrontend('assets'),
             new MarkerBasedTemplateService(
@@ -60,7 +62,7 @@ trait PageRendererFactoryTrait
             new RelativeCssPathFixer(),
             new LanguageServiceFactory(
                 new Locales(),
-                new LocalizationFactory(new LanguageStore($packageManager), $cacheManager),
+                new LocalizationFactory($packageManager, new Translator('en'), $cacheManager->getCache('l10n'), new NullFrontend('runtime')),
                 new NullFrontend('null')
             ),
             new ResponseFactory(),

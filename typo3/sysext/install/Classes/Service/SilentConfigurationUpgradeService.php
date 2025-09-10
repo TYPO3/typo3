@@ -206,6 +206,9 @@ class SilentConfigurationUpgradeService
         'BE/defaultUserTSconfig',
         // #101799
         'BE/defaultPageTSconfig',
+        // #107436
+        // symfony/translation loaders used now
+        'SYS/lang/parser',
     ];
 
     public function __construct(private readonly ConfigurationManager $configurationManager) {}
@@ -237,6 +240,7 @@ class SilentConfigurationUpgradeService
         $this->migrateMailSettingsToSendmail();
         $this->migrateMailSmtpEncryptSetting();
         $this->migrateVersionNumberInFileNameSetting();
+        $this->migrateLanguageSettings();
 
         // Should run at the end to prevent obsolete settings are removed before migration
         $this->removeObsoleteLocalConfigurationSettings();
@@ -1128,6 +1132,67 @@ class SilentConfigurationUpgradeService
             }
         } catch (MissingArrayPathException) {
             // no change inside the system/settings.php found, so nothing needs to be modified
+        }
+    }
+
+    /**
+     * Migrate 'SYS'/'lang' related configuration settings to 'LANG'
+     *
+     * @throws ConfigurationChangedException
+     */
+    protected function migrateLanguageSettings(): void
+    {
+        $confManager = $this->configurationManager;
+        $newSettings = [];
+        $removeSettings = [];
+
+        // Migrate SYS/lang/requireApprovedLocalizations => LANG/requireApprovedLocalizations
+        try {
+            $value = $confManager->getLocalConfigurationValueByPath('SYS/lang/requireApprovedLocalizations');
+            $removeSettings[] = 'SYS/lang/requireApprovedLocalizations';
+            $newSettings['LANG/requireApprovedLocalizations'] = $value;
+        } catch (MissingArrayPathException) {
+            // Old setting does not exist, do nothing
+        }
+
+        // Migrate SYS/lang/format => LANG/format
+        try {
+            $value = $confManager->getLocalConfigurationValueByPath('SYS/lang/format');
+            $removeSettings[] = 'SYS/lang/format';
+            $newSettings['LANG/format'] = $value;
+        } catch (MissingArrayPathException) {
+            // Old setting does not exist, do nothing
+        }
+
+        // Migrate EXTCONF/lang/availableLanguages => LANG/availableLocales
+        try {
+            $value = $confManager->getLocalConfigurationValueByPath('EXTCONF/lang/availableLanguages');
+            $removeSettings[] = 'EXTCONF/lang/availableLanguages';
+            $newSettings['LANG/availableLocales'] = $value;
+        } catch (MissingArrayPathException) {
+            // Old setting does not exist, do nothing
+        }
+
+        // Migrate SYS/locallangXMLOverride => LANG/resourceOverrides
+        try {
+            $value = $confManager->getLocalConfigurationValueByPath('SYS/locallangXMLOverride');
+            $removeSettings[] = 'SYS/locallangXMLOverride';
+            $newSettings['LANG/resourceOverrides'] = $value;
+        } catch (MissingArrayPathException) {
+            // Old setting does not exist, do nothing
+        }
+
+        // Add new settings and remove old ones
+        if (!empty($newSettings)) {
+            $confManager->setLocalConfigurationValuesByPathValuePairs($newSettings);
+        }
+        if (!empty($removeSettings)) {
+            $confManager->removeLocalConfigurationKeysByPath($removeSettings);
+        }
+
+        // Throw redirect if something was changed
+        if (!empty($newSettings) || !empty($removeSettings)) {
+            $this->throwConfigurationChangedException();
         }
     }
 }

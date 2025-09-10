@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Localization\Parser;
 /**
  * Parser for XLIFF file.
  * @internal This class is a concrete implementation and is not part of the TYPO3 Core API.
+ * @deprecated will be removed in TYPO3 v15.0. Switch to Symfony Translation loaders.
  */
 class XliffParser extends AbstractXmlParser
 {
@@ -33,7 +34,7 @@ class XliffParser extends AbstractXmlParser
     {
         $parsedData = [];
         $bodyOfFileTag = $root->file->body;
-        $requireApprovedLocalizations = (bool)($GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['requireApprovedLocalizations'] ?? true);
+        $requireApprovedLocalizations = (bool)($GLOBALS['TYPO3_CONF_VARS']['LANG']['requireApprovedLocalizations'] ?? true);
         if ($bodyOfFileTag instanceof \SimpleXMLElement) {
             foreach ($bodyOfFileTag->children() as $translationElement) {
                 /** @var \SimpleXMLElement $translationElement */

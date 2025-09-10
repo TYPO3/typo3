@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Localization\Parser;
 
 /**
  * Parser interface.
+ * @deprecated will be removed in TYPO3 v15.0. Switch to Symfony Translation loaders.
  */
 interface LocalizationParserInterface
 {

@@ -1027,18 +1027,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/LinkHandling/LinkService.php
 
 		-
-			message: '#^Right side of && is always true\.$#'
-			identifier: booleanAnd.rightAlwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Localization/LanguageStore.php
-
-		-
-			message: '#^Call to function is_array\(\) with array\<string, array\<string, array\<int, array\<string, string\>\>\>\> will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Localization/LocalizationFactory.php
-
-		-
 			message: '#^PHPDoc tag @var with type TYPO3\\CMS\\Core\\Locking\\LockingStrategyInterface is not subtype of native type \(int\|string\)\.$#'
 			identifier: varTag.nativeType
 			count: 1

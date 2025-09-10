@@ -40,6 +40,9 @@ final class LanguageServiceTest extends FunctionalTestCase
     protected bool $initializeDatabase = false;
 
     protected array $configurationToUseInTestInstance = [
+        'LANG' => [
+            'resourceOverrides' => [],
+        ],
         'SYS' => [
             'caching' => [
                 'cacheConfigurations' => [
@@ -48,7 +51,6 @@ final class LanguageServiceTest extends FunctionalTestCase
                     ],
                 ],
             ],
-            'locallangXMLOverride' => [],
         ],
     ];
 
@@ -168,9 +170,9 @@ final class LanguageServiceTest extends FunctionalTestCase
     #[Test]
     public function ensureVariousLocalizationOverrideScenariosWork(string $locale, array $expectedLabels): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][self::LANGUAGE_FILE][] = self::LANGUAGE_FILE_OVERRIDE;
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['de'][self::LANGUAGE_FILE][] = self::LANGUAGE_FILE_OVERRIDE_DE;
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['fr'][self::LANGUAGE_FILE][] = self::LANGUAGE_FILE_OVERRIDE_FR;
+        $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides'][self::LANGUAGE_FILE][] = self::LANGUAGE_FILE_OVERRIDE;
+        $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides']['de'][self::LANGUAGE_FILE][] = self::LANGUAGE_FILE_OVERRIDE_DE;
+        $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides']['fr'][self::LANGUAGE_FILE][] = self::LANGUAGE_FILE_OVERRIDE_FR;
 
         $this->ensureLocalizationScenarioWorks($locale, self::LANGUAGE_FILE, $expectedLabels);
     }
@@ -207,8 +209,8 @@ final class LanguageServiceTest extends FunctionalTestCase
     #[Test]
     public function ensureVariousLocalizationOverrideScenariosForCoreExtensionWork(string $locale, array $expectedLabels): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][self::LANGUAGE_FILE_CORE][] = self::LANGUAGE_FILE_CORE_OVERRIDE;
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['fr'][self::LANGUAGE_FILE_CORE][] = self::LANGUAGE_FILE_CORE_OVERRIDE_FR;
+        $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides'][self::LANGUAGE_FILE_CORE][] = self::LANGUAGE_FILE_CORE_OVERRIDE;
+        $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides']['fr'][self::LANGUAGE_FILE_CORE][] = self::LANGUAGE_FILE_CORE_OVERRIDE_FR;
 
         $this->ensureLocalizationScenarioWorks($locale, self::LANGUAGE_FILE_CORE, $expectedLabels);
     }

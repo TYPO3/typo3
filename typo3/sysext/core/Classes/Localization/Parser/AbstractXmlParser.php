@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * Abstract class for XML based parser.
  * @internal This class is a concrete implementation and is not part of the TYPO3 Core API.
+ * @deprecated will be removed in TYPO3 v15.0. Switch to Symfony Translation loaders.
  */
 abstract class AbstractXmlParser implements LocalizationParserInterface
 {
@@ -38,6 +39,11 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
      * @var string
      */
     protected $languageKey;
+
+    public function __construct()
+    {
+        trigger_error('The class ' . __CLASS__ . ' will be removed in TYPO3 v15.0. Switch to Symfony Translation loaders.', E_USER_DEPRECATED);
+    }
 
     /**
      * New method for parsing xml files, not part of an interface as the plan is to replace

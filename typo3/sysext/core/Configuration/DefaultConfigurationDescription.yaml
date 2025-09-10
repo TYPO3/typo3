@@ -235,13 +235,22 @@ SYS:
         availablePasswordHashAlgorithms:
             type: array
             description: 'A list of available password hash mechanisms. Extensions may register additional mechanisms here. This is usually not extended in system/settings.php.'
-        lang:
-          type: container
-          description: 'Settings related to XLF labels'
-          items:
-            requireApprovedLocalizations:
-              type: bool
-              description: 'If set, translations are only taken into account if the according "approved" attribute is set to "yes" within the XLF file. Otherwise, all available translations are used.'
+LANG:
+    type: container
+    description: 'Language and Localization'
+    items:
+        loader:
+            type: element-list
+            description: 'Loader for localization files. Defaults to TYPO3\\CMS\\Core\\Localization\\Loader\\XliffLoader for XLIFF files.'
+        requireApprovedLocalizations:
+            type: bool
+            description: 'If set, translations are only taken into account if the according "approved" attribute is set to "yes" within the XLF file. Otherwise, all available translations are used.'
+        availableLocales:
+            type: element-list
+            description: 'Array of available locales for the system.'
+        resourceOverrides:
+            type: element-list
+            description: 'List of overrides for localization resources.'
 EXT:
     type: container
     description: 'Extension Installation'

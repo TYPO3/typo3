@@ -2609,4 +2609,20 @@ return [
             'Breaking-107403-RemoveLocalPreviewHelperAndLocalCropScaleMaskHelper.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Localization\Parser\LocalizationParserInterface' => [
+        'restFiles' => [
+            'Deprecation-107436-LocalizationParsers.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Localization\Parser\AbstractXmlParser' => [
+        'restFiles' => [
+            'Deprecation-107436-LocalizationParsers.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Localization\Parser\XliffParser' => [
+        'restFiles' => [
+            'Deprecation-107436-LocalizationParsers.rst',
+        ],
+    ],
+
 ];

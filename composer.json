@@ -98,6 +98,7 @@
 		"symfony/property-info": "^7.2",
 		"symfony/rate-limiter": "^7.2",
 		"symfony/routing": "^7.2",
+		"symfony/translation": "^7.2",
 		"symfony/uid": "^7.2",
 		"symfony/yaml": "^7.2",
 		"typo3/class-alias-loader": "^1.2",
@@ -123,7 +124,6 @@
 		"phpunit/phpunit": "^11.5.33",
 		"sebastian/recursion-context": "^6.0.3",
 		"sokil/php-isocodes-db-i18n": "^4.0.26",
-		"symfony/translation": "^7.2",
 		"typo3/testing-framework": "dev-main",
 		"webmozart/assert": "^1.11.0"
 	},

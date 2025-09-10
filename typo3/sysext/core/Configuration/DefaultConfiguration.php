@@ -54,17 +54,19 @@ return [
         'webp_quality' => 85,
         'avif_quality' => 85,
     ],
-    'SYS' => [
-        // System related concerning both frontend and backend.
-        'lang' => [
-            'requireApprovedLocalizations' => true,
-            'format' => [
-                'priority' => 'xlf',
-            ],
-            'parser' => [
-                'xlf' => \TYPO3\CMS\Core\Localization\Parser\XliffParser::class,
-            ],
+    'LANG' => [
+        // english is implicit
+        'availableLocales' => [],
+        'format' => [
+            'priority' => 'xlf',
         ],
+        'loader' => [
+            'xlf' => \TYPO3\CMS\Core\Localization\Loader\XliffLoader::class,
+        ],
+        'requireApprovedLocalizations' => true,
+        'resourceOverrides' => [],
+    ],
+    'SYS' => [
         'session' => [
             'BE' => [
                 'backend' => \TYPO3\CMS\Core\Session\Backend\DatabaseSessionBackend::class,
@@ -275,7 +277,6 @@ return [
         'exceptionalErrors' => E_ALL & ~(2048 /* deprecated E_STRICT */ | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR | E_DEPRECATED | E_USER_DEPRECATED | E_WARNING | E_USER_ERROR | E_USER_NOTICE | E_USER_WARNING),
         'belogErrorReporting' => E_ALL & ~(2048 /* deprecated E_STRICT */ | E_NOTICE),
         'allowedPhpDisableFunctions' => [],
-        'locallangXMLOverride' => [], // For extension/overriding of the arrays in 'locallang' files in frontend  and backend.
         'generateApacheHtaccess' => 1,
         'ipAnonymization' => 1,
         'Objects' => [],

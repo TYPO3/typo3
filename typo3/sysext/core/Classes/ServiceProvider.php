@@ -21,6 +21,7 @@ use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Command\DumpCompletionCommand as SymfonyDumpCompletionCommand;
 use Symfony\Component\Console\Command\HelpCommand;
+use Symfony\Component\Translation\Translator as SymfonyTranslator;
 use Symfony\Component\Yaml\Command\LintCommand as SymfonyLintCommand;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 use TYPO3\CMS\Core\Adapter\EventDispatcherAdapter as SymfonyEventDispatcher;
@@ -62,6 +63,7 @@ class ServiceProvider extends AbstractServiceProvider
             SymfonyEventDispatcher::class => self::getSymfonyEventDispatcher(...),
             SymfonyLintCommand::class => self::getSymfonyLintCommand(...),
             SymfonyDumpCompletionCommand::class => self::getSymfonyDumpCompletionCommand(...),
+            SymfonyTranslator::class => self::getSymfonyTranslator(...),
             Cache\CacheManager::class => self::getCacheManager(...),
             Database\DriverMiddlewareService::class => self::getDriverMiddlewaresService(...),
             Charset\CharsetConverter::class => self::getCharsetConverter(...),
@@ -92,7 +94,6 @@ class ServiceProvider extends AbstractServiceProvider
             Imaging\IconFactory::class => self::getIconFactory(...),
             Imaging\IconRegistry::class => self::getIconRegistry(...),
             Localization\LanguageServiceFactory::class => self::getLanguageServiceFactory(...),
-            Localization\LanguageStore::class => self::getLanguageStore(...),
             Localization\Locales::class => self::getLocales(...),
             Localization\LocalizationFactory::class => self::getLocalizationFactory(...),
             Mail\Mailer::class => self::getMailer(...),
@@ -404,11 +405,6 @@ class ServiceProvider extends AbstractServiceProvider
         ]);
     }
 
-    public static function getLanguageStore(ContainerInterface $container): Localization\LanguageStore
-    {
-        return self::new($container, Localization\LanguageStore::class, [$container->get(PackageManager::class)]);
-    }
-
     public static function getLocales(ContainerInterface $container): Localization\Locales
     {
         return self::new($container, Localization\Locales::class);
@@ -417,9 +413,16 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getLocalizationFactory(ContainerInterface $container): Localization\LocalizationFactory
     {
         return self::new($container, Localization\LocalizationFactory::class, [
-            $container->get(Localization\LanguageStore::class),
-            $container->get(Cache\CacheManager::class),
+            $container->get(PackageManager::class),
+            $container->get(SymfonyTranslator::class),
+            $container->get(Cache\CacheManager::class)->getCache('l10n'),
+            $container->get(Cache\CacheManager::class)->getCache('runtime'),
         ]);
+    }
+
+    public static function getSymfonyTranslator(ContainerInterface $container): SymfonyTranslator
+    {
+        return self::new($container, SymfonyTranslator::class, ['en']);
     }
 
     public static function getMailer(ContainerInterface $container): Mail\Mailer

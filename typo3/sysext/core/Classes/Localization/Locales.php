@@ -206,7 +206,7 @@ class Locales implements SingletonInterface
     {
         return array_merge(
             ['default'],
-            array_filter(array_values($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'] ?? []))
+            array_filter(array_values($GLOBALS['TYPO3_CONF_VARS']['LANG']['availableLocales'] ?? []))
         );
     }
 

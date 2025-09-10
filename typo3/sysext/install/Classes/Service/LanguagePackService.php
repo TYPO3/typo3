@@ -77,7 +77,7 @@ class LanguagePackService
      */
     public function getActiveLanguages(): array
     {
-        $availableLanguages = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'] ?? [];
+        $availableLanguages = $GLOBALS['TYPO3_CONF_VARS']['LANG']['availableLocales'] ?? [];
         return array_values(array_filter($availableLanguages));
     }
 
@@ -267,7 +267,7 @@ class LanguagePackService
      */
     public function setLastUpdatedIsoCode(array $isos)
     {
-        $activeLanguages = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'] ?? [];
+        $activeLanguages = $GLOBALS['TYPO3_CONF_VARS']['LANG']['availableLocales'] ?? [];
         foreach ($isos as $iso) {
             if (!in_array($iso, $activeLanguages, true)) {
                 throw new \RuntimeException('Language iso code ' . (string)$iso . ' not available or active', 1520176318);

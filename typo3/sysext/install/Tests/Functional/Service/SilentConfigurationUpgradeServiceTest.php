@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
+use TYPO3\CMS\Core\Localization\Parser\XliffParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
@@ -643,6 +644,129 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
                 $expectedFluidTemplateConfiguration,
                 $configurationManager->getLocalConfigurationValueByPath('SYS/caching/cacheConfigurations/fluid_template')
             );
+        }
+    }
+
+    #[Test]
+    public function migrateLanguageSettings(): void
+    {
+        $testConfig = [
+            'SYS' => [
+                'lang' => [
+                    'requireApprovedLocalizations' => '1',
+                    'format' => ['priority' => 'xlf'],
+                    'parser' => [
+                        'xliff' => XliffParser::class,
+                    ],
+                ],
+                'locallangXMLOverride' => [
+                    'EXT:backend/Resources/Private/Language/locallang.xlf' => [
+                        'de' => 'EXT:myext/Resources/Private/Language/de.locallang.xlf',
+                    ],
+                ],
+            ],
+            'EXTCONF' => [
+                'lang' => [
+                    'availableLanguages' => ['de', 'fr'],
+                ],
+            ],
+        ];
+        $configurationManager = $this->get(ConfigurationManager::class);
+        $configurationManager->updateLocalConfiguration($testConfig);
+
+        $subject = $this->get(SilentConfigurationUpgradeService::class);
+        $exceptionCaught = false;
+        try {
+            $subject->execute();
+        } catch (ConfigurationChangedException) {
+            $exceptionCaught = true;
+        } finally {
+            self::assertTrue($exceptionCaught);
+            $settings = $configurationManager->getLocalConfiguration();
+
+            // Check that old settings are removed
+            self::assertArrayNotHasKey('requireApprovedLocalizations', $settings['SYS']['lang']);
+            self::assertArrayNotHasKey('format', $settings['SYS']['lang']);
+            self::assertArrayNotHasKey('locallangXMLOverride', $settings['SYS']);
+            self::assertArrayNotHasKey('availableLanguages', $settings['EXTCONF']['lang']);
+
+            // Check that new settings are set correctly
+            self::assertSame('1', $configurationManager->getLocalConfigurationValueByPath('LANG/requireApprovedLocalizations'));
+            self::assertSame(['priority' => 'xlf'], $configurationManager->getLocalConfigurationValueByPath('LANG/format'));
+            self::assertSame(['de', 'fr'], $configurationManager->getLocalConfigurationValueByPath('LANG/availableLocales'));
+            self::assertSame([
+                'EXT:backend/Resources/Private/Language/locallang.xlf' => [
+                    'de' => 'EXT:myext/Resources/Private/Language/de.locallang.xlf',
+                ],
+            ], $configurationManager->getLocalConfigurationValueByPath('LANG/resourceOverrides'));
+        }
+    }
+
+    #[Test]
+    public function migrateLanguageSettingsWithPartialConfiguration(): void
+    {
+        $testConfig = [
+            'SYS' => [
+                'lang' => [
+                    'requireApprovedLocalizations' => false,
+                ],
+                'locallangXMLOverride' => [
+                    'EXT:core/Resources/Private/Language/locallang_general.xlf' => [
+                        'en' => 'EXT:myext/Resources/Private/Language/en.locallang_general.xlf',
+                    ],
+                ],
+            ],
+        ];
+        $configurationManager = $this->get(ConfigurationManager::class);
+        $configurationManager->updateLocalConfiguration($testConfig);
+
+        $subject = $this->get(SilentConfigurationUpgradeService::class);
+        $exceptionCaught = false;
+        try {
+            $subject->execute();
+        } catch (ConfigurationChangedException) {
+            $exceptionCaught = true;
+        } finally {
+            self::assertTrue($exceptionCaught);
+            $settings = $configurationManager->getLocalConfiguration();
+
+            // Check that old settings are removed
+            self::assertArrayNotHasKey('requireApprovedLocalizations', $settings['SYS']['lang']);
+            self::assertArrayNotHasKey('locallangXMLOverride', $settings['SYS']);
+
+            // Check that new settings are set correctly
+            self::assertFalse($configurationManager->getLocalConfigurationValueByPath('LANG/requireApprovedLocalizations'));
+            self::assertSame([
+                'EXT:core/Resources/Private/Language/locallang_general.xlf' => [
+                    'en' => 'EXT:myext/Resources/Private/Language/en.locallang_general.xlf',
+                ],
+            ], $configurationManager->getLocalConfigurationValueByPath('LANG/resourceOverrides'));
+        }
+    }
+
+    #[Test]
+    public function obsoleteLangParserSettingIsRemoved(): void
+    {
+        $testConfig = [
+            'SYS' => [
+                'lang' => [
+                    'parser' => XliffParser::class,
+                ],
+            ],
+        ];
+        $configurationManager = $this->get(ConfigurationManager::class);
+        $configurationManager->updateLocalConfiguration($testConfig);
+
+        $subject = $this->get(SilentConfigurationUpgradeService::class);
+        $exceptionCaught = false;
+        try {
+            $subject->execute();
+        } catch (ConfigurationChangedException) {
+            $exceptionCaught = true;
+        } finally {
+            self::assertTrue($exceptionCaught);
+            $settings = $configurationManager->getLocalConfiguration();
+            self::assertArrayNotHasKey('parser', $settings['SYS']['lang']);
         }
     }
 }

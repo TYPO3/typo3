@@ -1231,4 +1231,39 @@ return [
             'Feature-107380-IntroducePSR14BeforeFormIsDuplicatedEvent.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'lang\'][\'parser\']' => [
+        'restFiles' => [
+            'Breaking-107436-LocalizationSystemChanges.rst',
+            'Deprecation-107436-LocalizationParsers.rst',
+            'Feature-107436-SymfonyTranslationIntegration.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'lang\'][\'requireApprovedLocalizations\']' => [
+        'restFiles' => [
+            'Breaking-107436-LocalizationSystemChanges.rst',
+            'Deprecation-107436-LocalizationParsers.rst',
+            'Feature-107436-SymfonyTranslationIntegration.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'lang\'][\'format\']' => [
+        'restFiles' => [
+            'Breaking-107436-LocalizationSystemChanges.rst',
+            'Deprecation-107436-LocalizationParsers.rst',
+            'Feature-107436-SymfonyTranslationIntegration.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'locallangXMLOverride\']' => [
+        'restFiles' => [
+            'Breaking-107436-LocalizationSystemChanges.rst',
+            'Deprecation-107436-LocalizationParsers.rst',
+            'Feature-107436-SymfonyTranslationIntegration.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'lang\'][\'availableLanguages\']' => [
+        'restFiles' => [
+            'Breaking-107436-LocalizationSystemChanges.rst',
+            'Deprecation-107436-LocalizationParsers.rst',
+            'Feature-107436-SymfonyTranslationIntegration.rst',
+        ],
+    ],
 ];

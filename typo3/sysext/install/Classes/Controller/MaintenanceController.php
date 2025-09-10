@@ -647,8 +647,8 @@ class MaintenanceController extends AbstractController
                 $activeLanguages = array_merge($activeLanguages, $activateArray);
                 sort($activeLanguages);
                 $this->configurationManager->setLocalConfigurationValueByPath(
-                    'EXTCONF/lang',
-                    ['availableLanguages' => $activeLanguages]
+                    'LANG',
+                    ['availableLocales' => $activeLanguages]
                 );
                 $activationArray = [];
                 foreach ($activateArray as $activateIso) {
@@ -728,8 +728,8 @@ class MaintenanceController extends AbstractController
                         $newActiveLanguages[] = $activeLanguage;
                     }
                     $this->configurationManager->setLocalConfigurationValueByPath(
-                        'EXTCONF/lang',
-                        ['availableLanguages' => $newActiveLanguages]
+                        'LANG',
+                        ['availableLocales' => $newActiveLanguages]
                     );
                     $messageQueue->enqueue(new FlashMessage(
                         'Language "' . $availableLanguages[$iso] . ' (' . $iso . ')" has been deactivated'

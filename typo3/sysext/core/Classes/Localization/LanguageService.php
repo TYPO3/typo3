@@ -269,9 +269,9 @@ class LanguageService
         $allLocales = array_reverse($allLocales);
         foreach ($allLocales as $locale) {
             $tempLL = $this->localizationFactory->getParsedData($fileRef, $locale);
-            $localLanguage['default'] = $tempLL['default'];
+            $localLanguage['default'] = $tempLL['en'];
             if (!isset($localLanguage[$mainLanguageKey])) {
-                $localLanguage[$mainLanguageKey] = $localLanguage['default'];
+                $localLanguage[$mainLanguageKey] = $tempLL['en'];
             }
             if ($mainLanguageKey !== 'default') {
                 // Fallback as long as TYPO3 supports "da_DK" and "da-DK"
