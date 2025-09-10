@@ -149,7 +149,7 @@ class FlexFormFieldValues implements ContainerInterface, \ArrayAccess
             } catch (\Exception $e) {
                 // Consumers of this method can rely on catching ContainerExceptionInterface
                 throw new FlexFieldPropertyException(
-                    'An exception occured while instantiating flex field property "' . $id . '"',
+                    'An exception occurred while instantiating flex field property "' . $id . '"',
                     1731962735,
                     $e
                 );

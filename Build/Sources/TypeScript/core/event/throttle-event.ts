@@ -31,7 +31,7 @@ class ThrottleEvent extends RegularEvent {
       eventData = args;
       if (intervalId !== null) {
         // Bail out, a previous call to dispatch invoked an interval
-        // that will pick up eventData once the timeout occured.
+        // that will pick up eventData once the timeout occurred.
         return;
       }
       const dispatch = () => {

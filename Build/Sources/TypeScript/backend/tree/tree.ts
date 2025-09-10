@@ -1552,7 +1552,7 @@ export class Tree extends LitElement {
       );
     } catch {
       console.error('Failed to check the existence of window.frameElement – using a foreign origin?');
-      // Do nothing if an error occured during the event registration
+      // Do nothing if an error occurred during the event registration
     }
   }
 }

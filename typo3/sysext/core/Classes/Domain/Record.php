@@ -107,7 +107,7 @@ class Record implements RecordInterface
                 } catch (\Exception $e) {
                     // Consumers of this method can rely on catching ContainerExceptionInterface
                     throw new RecordPropertyException(
-                        'An exception occured while instantiating record property "' . $id . '"',
+                        'An exception occurred while instantiating record property "' . $id . '"',
                         1725892139,
                         $e
                     );
