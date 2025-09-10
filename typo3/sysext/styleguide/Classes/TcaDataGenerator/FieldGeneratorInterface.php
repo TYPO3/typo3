@@ -34,5 +34,5 @@ interface FieldGeneratorInterface
     /**
      * Returns the generated value to be inserted into DB for this field
      */
-    public function generate(array $data): string|int|null;
+    public function generate(array $data): string|int|null|array;
 }

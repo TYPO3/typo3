@@ -139,4 +139,21 @@ final class KauderwelschService
     {
         return '#FF8700';
     }
+
+    /**
+     * Get a json as array
+     */
+    public function getJson(): array
+    {
+        return [
+            [
+                'name' => 'Alice',
+                'age' => 25,
+            ],
+            [
+                'name' => 'Bob',
+                'age' => 42,
+            ],
+        ];
+    }
 }

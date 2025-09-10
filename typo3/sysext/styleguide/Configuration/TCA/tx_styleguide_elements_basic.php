@@ -1076,6 +1076,21 @@ backend_layout {
             ],
         ],
 
+        'json_1' => [
+            'label' => 'json_1',
+            'description' => 'json',
+            'config' => [
+                'type' => 'json',
+            ],
+        ],
+        'json_2' => [
+            'label' => 'json_2 readonly',
+            'description' => 'json readonly',
+            'config' => [
+                'type' => 'json',
+                'readOnly' => true,
+            ],
+        ],
         'uuid_1' => [
             'label' => 'uuid_1',
             'description' => 'uuid',
@@ -1962,6 +1977,8 @@ backend_layout {
                     text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_9, text_10,
                     text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17, text_19,
                     text_20,
+                --div--;json,
+                    json_1, json_2,
                 --div--;uuid,
                     uuid_1, uuid_2, uuid_3,
                 --div--;check,
