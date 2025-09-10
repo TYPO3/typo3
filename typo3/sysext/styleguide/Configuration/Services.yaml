@@ -72,6 +72,9 @@ services:
         # General type=color generator
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeColor'
 
+        # General type=json generator
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeJson'
+
         # Specific type=number generator
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeNumberFormatDecimal'
 
