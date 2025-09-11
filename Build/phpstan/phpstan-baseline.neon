@@ -907,12 +907,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Schema/DefaultTcaSchema.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Core\\Database\\Schema\\Parser\\Lexer\:\:getType\(\) never assigns int to &\$value so it can be removed from the @param\-out type\.$#'
-			identifier: paramOut.unusedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Schema/Parser/Lexer.php
-
-		-
 			message: '#^Parameter \#1 \$array \(list\<Doctrine\\DBAL\\Schema\\Column\>\) of array_values is already a list, call has no effect\.$#'
 			identifier: arrayValues.list
 			count: 2
@@ -3757,12 +3751,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/Category/Collection/CategoryCollection.php
 
 		-
-			message: '#^Offset ''pidInList\.'' on array\{pidInList\: string\} in isset\(\) does not exist\.$#'
-			identifier: isset.offset
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentContentObject.php
-
-		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -4053,18 +4041,6 @@ parameters:
 		-
 			message: '#^Call to function is_array\(\) with non\-empty\-array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Typolink/PageLinkBuilder.php
-
-		-
-			message: '#^Cannot unset offset ''parameter\.'' on array\{parameter\: mixed\}\.$#'
-			identifier: unset.offset
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Typolink/PageLinkBuilder.php
-
-		-
-			message: '#^Offset ''extTarget'' on array\{parameter\: mixed\} in isset\(\) does not exist\.$#'
-			identifier: isset.offset
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/Typolink/PageLinkBuilder.php
 
