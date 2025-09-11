@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\IndexedSearch\Tests\Functional\Utility;
 
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
@@ -29,6 +30,9 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class LikeWildcardTest extends FunctionalTestCase
 {
+    /**
+     * @param array<class-string<AbstractPlatform>, string> $expected
+     */
     #[DataProvider('getLikeQueryPartDataProvider')]
     #[Test]
     public function getLikeQueryPart(string $tableName, string $fieldName, string $likeValue, LikeWildcard $subject, array $expected): void
