@@ -74,7 +74,15 @@ final class PageTreesController
             throw new \RuntimeException('Action not allowed', 1720610774);
         }
         $actionMethodName = $currentAction . 'Action';
-        return $this->$actionMethodName($request);
+        try {
+            return $this->$actionMethodName($request);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'status' => false,
+                'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:pageTreeProcessingError'),
+                'body' => $e->getMessage(),
+            ]);
+        }
     }
 
     private function managePageTreesAction(ServerRequestInterface $request): ResponseInterface

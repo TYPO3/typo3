@@ -140,6 +140,9 @@
 				<source>Typography</source>
 			</trans-unit>
 
+			<trans-unit id="pageTreeProcessingError">
+				<source>An error occured while processing the page tree</source>
+			</trans-unit>
 			<trans-unit id="tcaCreateButton">
 				<source>Create page tree</source>
 			</trans-unit>
