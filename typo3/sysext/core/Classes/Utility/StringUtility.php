@@ -53,6 +53,8 @@ class StringUtility
     /**
      * This function generates a unique id by using the more entropy parameter.
      * Furthermore, the dots are removed so the id can be used inside HTML attributes e.g. id.
+     *
+     * @return non-empty-string
      */
     public static function getUniqueId(string $prefix = ''): string
     {
