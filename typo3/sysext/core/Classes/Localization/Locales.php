@@ -41,7 +41,7 @@ class Locales implements SingletonInterface
      * @var array<non-empty-string, non-empty-string>
      */
     protected array $languages = [
-        'default' => 'English',
+        'default' => 'English', // internally, this is the fallback, the mapping from "default" to "en" is done within LanguageService + LocalizationFactory.
         'af' => 'Afrikaans',
         'ar' => 'Arabic',
         'bs' => 'Bosnian',

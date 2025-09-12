@@ -30,16 +30,14 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * This class acts currently as facade around SymfonyTranslator.
  * User-land code should use LanguageService for the time being, and this class should not be exposed directly.
  *
- * Hand in the locale to load, or "default" for english (not en).
+ * Hand in the locale to load, or english ("default").
  *
  * What it does:
  * - Caches on a system-level cache
  * - Caches on a runtime memory cache ($this->data) per file
- * - Handles loading "default" (= english) over translated files
+ * - Handles loading default (= english) before translated files
  * - Handles file name juggling of translated files.
  * - Handles localization overrides via $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides']
- *
- * Should also handle multiple loaders in the future (XLIFF, PHP, etc.)
  */
 class LocalizationFactory implements SingletonInterface
 {
@@ -349,17 +347,11 @@ class LocalizationFactory implements SingletonInterface
                     $plurals = $this->parseIcuPlural($value);
                     $result[$languageKey][$key] = [];
                     foreach ($plurals as $index => $pluralValue) {
-                        $result[$languageKey][$key][$index] = [
-                            'source' => $pluralValue,
-                            'target' => $pluralValue,
-                        ];
+                        $result[$languageKey][$key][$index] = $pluralValue;
                     }
                 } else {
                     // Regular translation
-                    $result[$languageKey][$key][0] = [
-                        'source' => $value,
-                        'target' => $value,
-                    ];
+                    $result[$languageKey][$key] = $value;
                 }
             }
         }
@@ -370,17 +362,11 @@ class LocalizationFactory implements SingletonInterface
                     $plurals = $this->parseIcuPlural($value);
                     $result[$languageKey][$key] = [];
                     foreach ($plurals as $index => $pluralValue) {
-                        $result[$languageKey][$key][$index] = [
-                            'source' => $pluralValue, // In practice, we'd need the source from the original
-                            'target' => $pluralValue,
-                        ];
+                        $result[$languageKey][$key][$index] = $pluralValue;
                     }
                 } else {
                     // Regular translation
-                    $result[$languageKey][$key][0] = [
-                        'source' => $value ?: $fallbackCatalogue->get($key), // In practice, we'd need the source from the original
-                        'target' => $value ?: $fallbackCatalogue->get($key),
-                    ];
+                    $result[$languageKey][$key] = $value ?: $fallbackCatalogue->get($key);
                 }
             }
         }

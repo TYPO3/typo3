@@ -70,7 +70,7 @@ final class LocalizationFactoryTest extends UnitTestCase
         $cacheFrontendMock = $this->createMock(FrontendInterface::class);
         $cacheFrontendMock->expects($this->atLeastOnce())->method('get')->with(self::isString())->willReturn(false);
         $cacheFrontendMock->expects($this->atLeastOnce())->method('set')->with(self::isString(), [
-            'label1' => [['source' => 'This is label #1', 'target' => 'This is label #1']],
+            'label1' => 'This is label #1',
         ])->willReturn(null);
 
         $result = (new LocalizationFactory($packageManagerMock, $translatorMock, $cacheFrontendMock, $this->createMock(FrontendInterface::class)))
