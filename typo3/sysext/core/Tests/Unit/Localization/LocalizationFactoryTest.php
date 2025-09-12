@@ -22,6 +22,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Translation\Translator;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
+use TYPO3\CMS\Core\Localization\LabelFileResolver;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -42,7 +43,7 @@ final class LocalizationFactoryTest extends UnitTestCase
 
         $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides'] = ['foo' => 'bar'];
 
-        $result = (new LocalizationFactory($packageManagerMock, $translatorMock, $cacheFrontendMock, $this->createMock(FrontendInterface::class)))
+        $result = (new LocalizationFactory($translatorMock, $cacheFrontendMock, $this->createMock(FrontendInterface::class), new LabelFileResolver($packageManagerMock)))
             ->getParsedData(__DIR__ . '/Fixtures/locallang.invalid', 'default');
 
         // Should return empty structure when file not found
@@ -73,7 +74,7 @@ final class LocalizationFactoryTest extends UnitTestCase
             'label1' => 'This is label #1',
         ])->willReturn(null);
 
-        $result = (new LocalizationFactory($packageManagerMock, $translatorMock, $cacheFrontendMock, $this->createMock(FrontendInterface::class)))
+        $result = (new LocalizationFactory($translatorMock, $cacheFrontendMock, $this->createMock(FrontendInterface::class), new LabelFileResolver($packageManagerMock)))
             ->getParsedData('EXT:core/Tests/Unit/Localization/Fixtures/locallang.xlf', 'default');
 
         // Verify we get the expected structure
@@ -101,7 +102,7 @@ final class LocalizationFactoryTest extends UnitTestCase
 
         $translatorMock->method('getCatalogue')->willReturn($catalogue);
 
-        $factory = new LocalizationFactory($packageManagerMock, $translatorMock, $cacheFrontendMock, $cacheFrontendMock);
+        $factory = new LocalizationFactory($translatorMock, $cacheFrontendMock, $cacheFrontendMock, new LabelFileResolver($packageManagerMock));
 
         // Create a test file that exists
         $testFile = __DIR__ . '/Fixtures/locallang.xlf';

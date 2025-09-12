@@ -18,13 +18,8 @@ namespace TYPO3\CMS\Core\Localization;
 use Symfony\Component\Translation\MessageCatalogueInterface;
 use Symfony\Component\Translation\Translator;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
-use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * This class acts currently as facade around SymfonyTranslator.
@@ -39,7 +34,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * - Handles file name juggling of translated files.
  * - Handles localization overrides via $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides']
  */
-class LocalizationFactory implements SingletonInterface
+class LocalizationFactory
 {
     /**
      * In-memory store for parsed data to avoid re-parsing within the same request.
@@ -49,10 +44,10 @@ class LocalizationFactory implements SingletonInterface
     protected array $dataStore = [];
 
     public function __construct(
-        protected readonly PackageManager $packageManager,
         protected readonly Translator $translator,
         protected readonly FrontendInterface $systemCache,
         protected readonly FrontendInterface $runtimeCache,
+        protected readonly LabelFileResolver $labelFileResolver,
     ) {
         foreach ($GLOBALS['TYPO3_CONF_VARS']['LANG']['loader'] ?? [] as $key => $loader) {
             if (class_exists($loader)) {
@@ -67,27 +62,26 @@ class LocalizationFactory implements SingletonInterface
      *
      * @param string $fileReference Input is a file-reference (see \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName). That file is expected to be a supported locallang file format
      * @param string $languageKey Language key
-     * @param bool $isLocalizationOverride TRUE if $fileReference is a localization override
      *
      * @return array<string, array<string, array<int, array<string, string>>>>
      */
-    public function getParsedData(string $fileReference, string $languageKey, bool $isLocalizationOverride = false): array
+    public function getParsedData(string $fileReference, string $languageKey): array
     {
         $languageKey = $languageKey === 'default' ? 'en' : $languageKey;
-        $hash = md5($fileReference . $languageKey);
+        $systemCacheIdentifier = md5($fileReference . $languageKey);
 
-        // Check if the default language is processed before processing other language
+        // Check if the default language is processed before processing any other language
         if (!$this->hasData($fileReference, 'en') && $languageKey !== 'en') {
             $this->getParsedData($fileReference, 'en');
         }
 
-        // If the content is parsed (local cache), use it
+        // If the content is parsed (runtime cache), use it
         if ($this->hasData($fileReference, $languageKey)) {
             return $this->getData($fileReference);
         }
 
-        // If the content is in cache (system cache), use it
-        $data = $this->systemCache->get($hash);
+        // If the content is in system cache, put it in runtime cache and use it
+        $data = $this->systemCache->get($systemCacheIdentifier);
         if ($data !== false) {
             $this->setData($fileReference, $languageKey, $data);
             return $this->getData($fileReference);
@@ -101,47 +95,29 @@ class LocalizationFactory implements SingletonInterface
             $labels = $this->getData($fileReference);
         }
 
-        // Override localization
-        if (!$isLocalizationOverride && isset($GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides'])) {
-            $labels = $this->localizationOverride($fileReference, $languageKey, $labels);
-        }
-
-        // Save parsed data in cache
+        // Save parsed data in runtime cache
         $this->setData($fileReference, $languageKey, $labels[$languageKey] ?? []);
 
         // Cache processed data
-        $this->systemCache->set($hash, $this->getDataByLanguage($fileReference, $languageKey));
+        $this->systemCache->set($systemCacheIdentifier, $this->getDataByLanguage($fileReference, $languageKey));
 
         return $this->getData($fileReference);
     }
 
     /**
-     * Override localization file
-     *
-     * This method merges the content of the override file with the default file
+     * Apply localization overrides by merging override file contents
      */
-    protected function localizationOverride(string $fileReference, string $languageKey, array $labels): array
+    protected function applyLocalizationOverrides(string $fileReference, string $languageKey, array $labels): array
     {
-        $validOverrideFiles = [];
-        $fileReferenceWithoutExtension = $this->getFileReferenceWithoutExtension($fileReference);
-        $overrideFiles = $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides'];
-        $supportedExtensions = $this->getSupportedExtensions();
+        $overrideFiles = $this->labelFileResolver->getOverrideFilePaths($fileReference, $languageKey);
 
-        foreach ($supportedExtensions as $extension) {
-            if (isset($overrideFiles[$languageKey][$fileReferenceWithoutExtension . '.' . $extension]) && is_array($overrideFiles[$languageKey][$fileReferenceWithoutExtension . '.' . $extension])) {
-                $validOverrideFiles = array_merge($validOverrideFiles, $overrideFiles[$languageKey][$fileReferenceWithoutExtension . '.' . $extension]);
-            } elseif (isset($overrideFiles[$fileReferenceWithoutExtension . '.' . $extension]) && is_array($overrideFiles[$fileReferenceWithoutExtension . '.' . $extension])) {
-                $validOverrideFiles = array_merge($validOverrideFiles, $overrideFiles[$fileReferenceWithoutExtension . '.' . $extension]);
-            }
+        foreach ($overrideFiles as $overrideFile) {
+            $catalogue = $this->getMessageCatalogue($overrideFile, $languageKey);
+            $fallbackCatalogue = $this->getMessageCatalogue($overrideFile, $languageKey, false);
+            $overrideLabels = $this->convertCatalogueToLegacyFormat($catalogue, $languageKey, $fallbackCatalogue);
+            ArrayUtility::mergeRecursiveWithOverrule($labels, $overrideLabels, true, false);
         }
-        foreach ($validOverrideFiles as $overrideFile) {
-            $languageOverrideFileName = $overrideFile;
-            if (!PathUtility::isExtensionPath($overrideFile)) {
-                $languageOverrideFileName = GeneralUtility::getFileAbsFileName($overrideFile);
-            }
-            $parsedData = $this->getParsedData($languageOverrideFileName, $languageKey, true);
-            ArrayUtility::mergeRecursiveWithOverrule($labels, $parsedData, true, false);
-        }
+
         return $labels;
     }
 
@@ -178,72 +154,15 @@ class LocalizationFactory implements SingletonInterface
     }
 
     /**
-     * Get absolute file reference
-     */
-    protected function getAbsoluteFileReference(string $fileReference): string
-    {
-        $fileReferenceWithoutExtension = $this->getFileReferenceWithoutExtension($fileReference);
-        $supportedExtensions = $this->getSupportedExtensions();
-
-        foreach ($supportedExtensions as $extension) {
-            $fullPath = GeneralUtility::getFileAbsFileName($fileReferenceWithoutExtension . '.' . $extension);
-            if (@is_file($fullPath)) {
-                return $fullPath;
-            }
-        }
-
-        throw new FileNotFoundException(sprintf('Source localization file (%s) not found', $fileReference), 1306410755);
-    }
-
-    /**
-     * Get file reference without extension
-     */
-    protected function getFileReferenceWithoutExtension(string $fileReference): string
-    {
-        return preg_replace('/\\.[a-z0-9]+$/i', '', $fileReference) ?? $fileReference;
-    }
-
-    /**
-     * Get localized labels path pattern for extensions
-     */
-    protected function getLocalizedLabelsPathPattern(string $fileReference): string
-    {
-        if (!PathUtility::isExtensionPath($fileReference)) {
-            throw new \InvalidArgumentException(sprintf('Invalid file reference configuration for the current file (%s)', $fileReference), 1635863703);
-        }
-
-        $packageKey = $this->packageManager->extractPackageKeyFromPackagePath($fileReference);
-        $relativeFileName = substr($fileReference, strlen($packageKey) + 5);
-        $directory = dirname($relativeFileName);
-        $fileName = basename($relativeFileName);
-
-        return sprintf(
-            '/%%1$s/%s/%s%%1$s.%s',
-            $packageKey,
-            ($directory !== '.' ? $directory . '/' : ''),
-            $fileName
-        );
-    }
-
-    /**
-     * Get supported extensions
-     */
-    protected function getSupportedExtensions(): array
-    {
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['LANG']['format']['priority']) && trim($GLOBALS['TYPO3_CONF_VARS']['LANG']['format']['priority']) !== '') {
-            return GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['LANG']['format']['priority']);
-        }
-        return ['xlf'];
-    }
-
-    /**
      * Get the catalogue and convert to TYPO3 format
      */
     protected function loadWithSymfonyTranslator(string $fileReference, string $languageKey): array
     {
         $catalogue = $this->getMessageCatalogue($fileReference, $languageKey);
         $fallbackCatalogue = $this->getMessageCatalogue($fileReference, $languageKey, false);
-        return $this->convertCatalogueToLegacyFormat($catalogue, $languageKey, $fallbackCatalogue);
+
+        $labels = $this->convertCatalogueToLegacyFormat($catalogue, $languageKey, $fallbackCatalogue);
+        return $this->applyLocalizationOverrides($fileReference, $languageKey, $labels);
     }
 
     /**
@@ -251,87 +170,12 @@ class LocalizationFactory implements SingletonInterface
      */
     protected function getMessageCatalogue(string $fileReference, string $locale, bool $useDefault = true): MessageCatalogueInterface
     {
-        $absoluteFileReference = $this->getAbsoluteFileReference($fileReference);
-
-        $actualSourcePath = $absoluteFileReference;
-        if (PathUtility::isExtensionPath($fileReference)) {
-            $actualSourcePath = $this->resolveExtensionResourcePath($absoluteFileReference, $locale, $fileReference);
-        }
-        $actualSourcePath = $useDefault ? $this->resolveLocalizedFilePath($actualSourcePath, $locale) : $actualSourcePath;
-
-        // Add the resource to Symfony Translator
+        $actualSourcePath = $this->labelFileResolver->resolveFileReference($fileReference, $locale, $useDefault);
         // @todo: we need to be more flexible with the file ending here.
         $fileExtension = (string)pathinfo($actualSourcePath, PATHINFO_EXTENSION);
+        // Add the resource to Symfony Translator
         $this->translator->addResource($fileExtension ?: 'xlf', $actualSourcePath, $locale, 'messages');
         return $this->translator->getCatalogue($locale);
-    }
-
-    /**
-     * Resolve extension resource path similar to parseExtensionResource
-     */
-    protected function resolveExtensionResourcePath(string $sourcePath, string $languageKey, string $fileReference): string
-    {
-        $localizedLabelsPathPattern = $this->getLocalizedLabelsPathPattern($fileReference);
-        $fileName = Environment::getLabelsPath() . sprintf($localizedLabelsPathPattern, $languageKey);
-
-        if (@is_file($fileName)) {
-            return $fileName;
-        }
-
-        // Fallback to source path if localized version doesn't exist
-        return $sourcePath;
-    }
-
-    /**
-     * Resolve localized file path similar to AbstractXmlParser::getLocalizedFileName
-     *
-     * But can also handle "de-CH.locallang.xlf" and "de_CH.locallang.xlf" - both variants.
-     */
-    protected function resolveLocalizedFilePath(string $sourcePath, string $languageKey): string
-    {
-        $possiblePrefixes = [$languageKey];
-        if (str_contains($languageKey, '_')) {
-            $possiblePrefixes[] = str_replace('_', '-', $languageKey);
-        } elseif (str_contains($languageKey, '-')) {
-            $possiblePrefixes[] = str_replace('-', '_', $languageKey);
-        }
-
-        foreach ($possiblePrefixes as $languageKey) {
-            $fileName = PathUtility::basename($sourcePath);
-            if (str_starts_with($fileName, $languageKey . '.')) {
-                return $sourcePath;
-            }
-
-            // Try same location first
-            $sameLocationPath = str_replace($fileName, $languageKey . '.' . $fileName, $sourcePath);
-            if (@is_file($sameLocationPath)) {
-                return $sameLocationPath;
-            }
-
-            // Try labels directory structure
-            if (str_starts_with($sourcePath, Environment::getFrameworkBasePath() . '/')) {
-                $validatedPrefix = Environment::getFrameworkBasePath() . '/';
-            } elseif (str_starts_with($sourcePath, Environment::getExtensionsPath() . '/')) {
-                $validatedPrefix = Environment::getExtensionsPath() . '/';
-            } else {
-                return $sourcePath;
-            }
-
-            [$extensionKey, $file_extPath] = explode('/', substr($sourcePath, strlen($validatedPrefix)), 2);
-            $temp = GeneralUtility::revExplode('/', $file_extPath, 2);
-            if (count($temp) === 1) {
-                array_unshift($temp, '');
-            }
-            [$file_extPath, $file_fileName] = $temp;
-
-            $localizedPath = Environment::getLabelsPath() . '/' . $languageKey . '/' . $extensionKey . '/' . ($file_extPath ? $file_extPath . '/' : '') . $languageKey . '.' . $file_fileName;
-
-            if (@is_file($localizedPath)) {
-                return $localizedPath;
-            }
-        }
-
-        return $sourcePath;
     }
 
     /**
@@ -344,11 +188,7 @@ class LocalizationFactory implements SingletonInterface
             foreach ($translations as $key => $value) {
                 // Check if this is a plural form (contains ICU format)
                 if (str_contains($value, '{0, plural,')) {
-                    $plurals = $this->parseIcuPlural($value);
-                    $result[$languageKey][$key] = [];
-                    foreach ($plurals as $index => $pluralValue) {
-                        $result[$languageKey][$key][$index] = $pluralValue;
-                    }
+                    $result[$languageKey][$key] = $this->parseIcuPlural($value);
                 } else {
                     // Regular translation
                     $result[$languageKey][$key] = $value;
@@ -359,11 +199,7 @@ class LocalizationFactory implements SingletonInterface
             foreach ($translations as $key => $value) {
                 // Check if this is a plural form (contains ICU format)
                 if (str_contains($value, '{0, plural,')) {
-                    $plurals = $this->parseIcuPlural($value);
-                    $result[$languageKey][$key] = [];
-                    foreach ($plurals as $index => $pluralValue) {
-                        $result[$languageKey][$key][$index] = $pluralValue;
-                    }
+                    $result[$languageKey][$key] = $this->parseIcuPlural($value);
                 } else {
                     // Regular translation
                     $result[$languageKey][$key] = $value ?: $fallbackCatalogue->get($key);

@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Core\Http\StreamFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Localization\LabelFileResolver;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
@@ -62,7 +63,7 @@ trait PageRendererFactoryTrait
             new RelativeCssPathFixer(),
             new LanguageServiceFactory(
                 new Locales(),
-                new LocalizationFactory($packageManager, new Translator('en'), $cacheManager->getCache('l10n'), new NullFrontend('runtime')),
+                new LocalizationFactory(new Translator('en'), $cacheManager->getCache('l10n'), new NullFrontend('runtime'), new LabelFileResolver($packageManager)),
                 new NullFrontend('null')
             ),
             new ResponseFactory(),

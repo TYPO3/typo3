@@ -261,29 +261,21 @@ class LanguageService
             return $cacheEntry;
         }
 
+        // Load the default
         $mainLanguageKey = $this->getTypo3LanguageKey();
-        $localLanguage = [];
-        $allLocales = array_merge([$mainLanguageKey], $this->locale->getDependencies());
-        $allLocales = array_reverse($allLocales);
-        foreach ($allLocales as $locale) {
-            $tempLL = $this->localizationFactory->getParsedData($fileRef, $locale);
-            $localLanguage['en'] = $tempLL['en'];
-            if (!isset($localLanguage[$mainLanguageKey])) {
-                $localLanguage[$mainLanguageKey] = $tempLL['en'];
-            }
-            if ($mainLanguageKey !== 'en') {
-                // Fallback as long as TYPO3 supports "da_DK" and "da-DK"
-                if ((!isset($tempLL[$locale]) || $tempLL[$locale] === []) && str_contains($locale, '-')) {
-                    $underscoredLocale = str_replace('-', '_', $locale);
-                    $tempLL = $this->localizationFactory->getParsedData($fileRef, $underscoredLocale);
-                    if (isset($tempLL[$underscoredLocale])) {
-                        $tempLL[$locale] = $tempLL[$underscoredLocale];
-                    }
-                }
-                if (isset($tempLL[$locale])) {
+        // Get english first
+        $localLanguage = $this->localizationFactory->getParsedData($fileRef, 'en');
+        if ($mainLanguageKey !== 'en') {
+            $localLanguage[$mainLanguageKey] = $localLanguage['en'];
+            $allLocales = array_merge([$mainLanguageKey], $this->locale->getDependencies());
+            $allLocales = array_unique($allLocales);
+            $allLocales = array_reverse($allLocales);
+            foreach ($allLocales as $locale) {
+                $labels = $this->localizationFactory->getParsedData($fileRef, $locale);
+                if (isset($labels[$locale])) {
                     // Merge current language labels onto labels from previous language
-                    // This way we have a labels with fall back applied
-                    ArrayUtility::mergeRecursiveWithOverrule($localLanguage[$mainLanguageKey], $tempLL[$locale], true, false);
+                    // This way we have a labels with fallback applied
+                    ArrayUtility::mergeRecursiveWithOverrule($localLanguage[$mainLanguageKey], $labels[$locale], true, false);
                 }
             }
         }
@@ -304,13 +296,12 @@ class LanguageService
         ];
         $mainLanguageKey = $this->getTypo3LanguageKey();
         if ($mainLanguageKey !== 'en') {
+            // Populate the initial values with "en", if no labels for the current language are given
+            $localLanguage[$mainLanguageKey] = $localLanguage['en'];
             $allLocales = array_merge([$mainLanguageKey], $this->locale->getDependencies());
+            $allLocales = array_unique($allLocales);
             $allLocales = array_reverse($allLocales);
             foreach ($allLocales as $language) {
-                // Populate the initial values with "en", if no labels for the current language are given
-                if (!isset($localLanguage[$mainLanguageKey])) {
-                    $localLanguage[$mainLanguageKey] = $localLanguage['en'];
-                }
                 if (isset($labels[$language])) {
                     $localLanguage[$mainLanguageKey] = array_replace_recursive($localLanguage[$mainLanguageKey], $labels[$language]);
                 }

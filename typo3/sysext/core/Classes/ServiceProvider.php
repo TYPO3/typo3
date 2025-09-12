@@ -93,6 +93,7 @@ class ServiceProvider extends AbstractServiceProvider
             Http\Security\ReferrerEnforcer::class => self::getReferrerEnforcer(...),
             Imaging\IconFactory::class => self::getIconFactory(...),
             Imaging\IconRegistry::class => self::getIconRegistry(...),
+            Localization\LabelFileResolver::class => self::getLabelFileResolver(...),
             Localization\LanguageServiceFactory::class => self::getLanguageServiceFactory(...),
             Localization\Locales::class => self::getLocales(...),
             Localization\LocalizationFactory::class => self::getLocalizationFactory(...),
@@ -413,16 +414,21 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getLocalizationFactory(ContainerInterface $container): Localization\LocalizationFactory
     {
         return self::new($container, Localization\LocalizationFactory::class, [
-            $container->get(PackageManager::class),
             $container->get(SymfonyTranslator::class),
             $container->get(Cache\CacheManager::class)->getCache('l10n'),
             $container->get(Cache\CacheManager::class)->getCache('runtime'),
+            $container->get(Localization\LabelFileResolver::class),
         ]);
     }
 
     public static function getSymfonyTranslator(ContainerInterface $container): SymfonyTranslator
     {
         return self::new($container, SymfonyTranslator::class, ['en']);
+    }
+
+    public static function getLabelFileResolver(ContainerInterface $container): Localization\LabelFileResolver
+    {
+        return self::new($container, Localization\LabelFileResolver::class, [$container->get(PackageManager::class)]);
     }
 
     public static function getMailer(ContainerInterface $container): Mail\Mailer

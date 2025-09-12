@@ -344,6 +344,14 @@ final class TranslateViewHelperTest extends FunctionalTestCase
                 '<f:translate key="localized.to.de_at" languageKey="de_at" />',
                 'DE_AT label',
             ],
+            'use direct "de_AT" label when key is localized to de-AT with explicit languageKey given' => [
+                '<f:translate key="localized.to.de_at" languageKey="de-AT" />',
+                'DE_AT label',
+            ],
+            'use direct "de_AT" label when key is localized to de_AT with explicit languageKey given' => [
+                '<f:translate key="localized.to.de_at" languageKey="de_AT" />',
+                'DE_AT label',
+            ],
             'use direct "de_AT" label when key is localized to de_at without explicit languageKey given' => [
                 '<f:translate key="localized.to.de_at" />',
                 'DE_AT label',
