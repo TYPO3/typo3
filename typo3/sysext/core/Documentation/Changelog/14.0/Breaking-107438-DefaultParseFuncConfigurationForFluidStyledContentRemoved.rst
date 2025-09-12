@@ -74,7 +74,7 @@ option without relying on prior default configuration:
 
 ..  code-block:: typoscript
 
-    lib.parseFunc_RTE.allowTags = b,span,i.em,wbr...
+    lib.parseFunc_RTE.allowTags = b,span,i,em,wbr...
 
 For custom CSS classes on HTML elements, use CSS or add the classes
 through other means like Fluid templates or custom TypoScript processing.
