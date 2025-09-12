@@ -17,7 +17,10 @@ namespace TYPO3\CMS\Core\Localization;
 
 use Symfony\Component\DependencyInjection\Attribute\Exclude;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -305,6 +308,44 @@ class LanguageService
             }
         }
         $this->overrideLabels[$fileRef] = $localLanguage;
+    }
+
+    /**
+     * Overwrites labels that are set via TypoScript.
+     *
+     * TS labels have to be configured like:
+     *     plugin.tx_myextension._LOCAL_LANG.languageKey.key = value
+     *
+     * @internal not part of TYPO3 Core API.
+     */
+    public function loadTypoScriptLabelsFromExtension(string $extensionName, FrontendTypoScript $typoScript, string $pluginName = ''): array
+    {
+        $extensionName = str_replace('_', '', $extensionName);
+        $extensionName = strtolower($extensionName);
+
+        $allLabels = $typoScript->getSetupArray()['plugin.']['tx_' . $extensionName . '.']['_LOCAL_LANG.'] ?? [];
+        if ($pluginName !== '') {
+            $allLabels = array_replace_recursive(
+                $allLabels,
+                $typoScript->getSetupArray()['plugin.']['tx_' . $extensionName . '_' . strtolower($pluginName) . '.']['_LOCAL_LANG.'] ?? [],
+            );
+        }
+        $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+        $allLabels = $typoScriptService->convertTypoScriptArrayToPlainArray($allLabels);
+        $finalLabels = [];
+        foreach ($allLabels as $languageKey => $labels) {
+            foreach ($labels ?? [] as $labelKey => $labelValue) {
+                if (is_string($labelValue)) {
+                    $finalLabels[$languageKey][$labelKey] = $labelValue;
+                } elseif (is_array($labelValue)) {
+                    $labelValue = $typoScriptService->flattenTypoScriptLabelArray($labelValue, $labelKey);
+                    foreach ($labelValue as $key => $value) {
+                        $finalLabels[$languageKey][$key] = $value;
+                    }
+                }
+            }
+        }
+        return $finalLabels;
     }
 
     public function getLocale(): ?Locale

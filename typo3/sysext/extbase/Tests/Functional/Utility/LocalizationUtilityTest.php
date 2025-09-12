@@ -22,6 +22,8 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -30,34 +32,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class LocalizationUtilityTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/label_test'];
-
-    #[Test]
-    public function implodeTypoScriptLabelArrayWorks(): void
-    {
-        $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
-        $method = $reflectionClass->getMethod('flattenTypoScriptLabelArray');
-
-        $expected = [
-            'key1' => 'value1',
-            'key2' => 'value2',
-            'key3' => 'value3',
-            'key3.subkey1' => 'subvalue1',
-            'key3.subkey2.subsubkey' => 'val',
-        ];
-        $input = [
-            'key1' => 'value1',
-            'key2' => 'value2',
-            'key3' => [
-                '_typoScriptNodeValue' => 'value3',
-                'subkey1' => 'subvalue1',
-                'subkey2' => [
-                    'subsubkey' => 'val',
-                ],
-            ],
-        ];
-        $result = $method->invoke(null, $input);
-        self::assertSame($expected, $result);
-    }
 
     #[Test]
     public function translateForEmptyStringKeyReturnsNull(): void
@@ -136,137 +110,128 @@ final class LocalizationUtilityTest extends FunctionalTestCase
     #[Test]
     public function loadTypoScriptLabels(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
-        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']
+        $request = new ServerRequest();
+        $request = $request
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
-        $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
-        $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
-        $configurationManagerInterfaceMock
-            ->expects($this->atLeastOnce())
-            ->method('getConfiguration')
-            ->with($configurationType, 'label_test', null)
-            ->willReturn(['_LOCAL_LANG' => [
-                'default' => [
-                    'key3' => 'English label for key3 from TypoScript',
-                ],
-                'da' => [
-                    'key1' => 'key1 value from TS core',
-                    'key3' => [
-                        'subkey1' => 'key3.subkey1 value from TypoScript',
-                        // this key doesn't exist in XLF files
-                        'subkey2' => [
-                            'subsubkey' => 'key3.subkey2.subsubkey value from TypoScript',
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([
+            'plugin.' => [
+                'tx_labeltest.' => ['_LOCAL_LANG.' => [
+                    'default.' => [
+                        'key3' => 'English label for key3 from TypoScript',
+                    ],
+                    'da.' => [
+                        'key1' => 'key1 value from TS core',
+                        'key3' => [
+                            'subkey1' => 'key3.subkey1 value from TypoScript',
+                            // this key doesn't exist in XLF files
+                            'subkey2' => [
+                                'subsubkey' => 'key3.subkey2.subsubkey value from TypoScript',
+                            ],
                         ],
                     ],
                 ],
+                ],
             ],
-            ]);
-        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceMock);
-
-        self::assertSame('key1 value from TS core', LocalizationUtility::translate('key1', 'label_test', languageKey: 'da'));
+        ]);
+        $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
+        self::assertSame('key1 value from TS core', LocalizationUtility::translate(key: 'key1', extensionName: 'label_test', languageKey: 'da', request: $request));
         // Label from XLF file, no override
-        self::assertSame('English label for key2', LocalizationUtility::translate('key2', 'label_test', languageKey: 'da'));
-        self::assertSame('English label for key3 from TypoScript', LocalizationUtility::translate('key3', 'label_test', languageKey: 'da'));
-        self::assertSame('key3.subkey1 value from TypoScript', LocalizationUtility::translate('key3.subkey1', 'label_test', languageKey: 'da'));
-        self::assertSame('key3.subkey2.subsubkey value from TypoScript', LocalizationUtility::translate('key3.subkey2.subsubkey', 'label_test', languageKey: 'da'));
+        self::assertSame('English label for key2', LocalizationUtility::translate('key2', 'label_test', languageKey: 'da', request: $request));
+        self::assertSame('English label for key3 from TypoScript', LocalizationUtility::translate('key3', 'label_test', languageKey: 'da', request: $request));
+        self::assertSame('key3.subkey1 value from TypoScript', LocalizationUtility::translate('key3.subkey1', 'label_test', languageKey: 'da', request: $request));
+        self::assertSame('key3.subkey2.subsubkey value from TypoScript', LocalizationUtility::translate('key3.subkey2.subsubkey', 'label_test', languageKey: 'da', request: $request));
     }
 
     #[Test]
     public function clearLabelWithTypoScript(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
-        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']
+        $request = new ServerRequest();
+        $request = $request
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
-        $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
-        $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
-        $configurationManagerInterfaceMock
-            ->expects($this->atLeastOnce())
-            ->method('getConfiguration')
-            ->with($configurationType, 'label_test', null)
-            ->willReturn([
-                '_LOCAL_LANG' => [
-                    'da' => [
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([
+            'plugin.' => [
+                'tx_labeltest.' => ['_LOCAL_LANG.' => [
+                    'da.' => [
                         'key1' => '',
                     ],
                 ],
-            ]);
-        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceMock);
+                ],
+            ],
+        ]);
+        $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
 
-        $result = LocalizationUtility::translate('key1', 'label_test', languageKey: 'da');
+        $result = LocalizationUtility::translate('key1', 'label_test', languageKey: 'da', request: $request);
         self::assertSame('', $result);
 
-        $result = LocalizationUtility::translate('missingkey', 'label_test', languageKey: 'da');
+        $result = LocalizationUtility::translate('missingkey', 'label_test', languageKey: 'da', request: $request);
         self::assertNull($result);
     }
 
     #[Test]
     public function clearAndOverrideLabelsWithTypoScriptButPreserveRemainingUnmodifiedLabels(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
-        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']
+        $request = new ServerRequest();
+        $request = $request
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
-        $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
-        $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
-        $configurationManagerInterfaceMock
-            ->expects($this->atLeastOnce())
-            ->method('getConfiguration')
-            ->with($configurationType, 'label_test', null)
-            ->willReturn([
-                '_LOCAL_LANG' => [
-                    'da' => [
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([
+            'plugin.' => [
+                'tx_labeltest.' => ['_LOCAL_LANG.' => [
+                    'da.' => [
                         'key1' => '',
                         'key4' => 'override',
                         // 'key6' not set, expected to remain as defined in locallang.xlf of fixture
                     ],
                 ],
-            ]);
-        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceMock);
+                ],
+            ],
+        ]);
+        $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
 
-        $result = LocalizationUtility::translate('key1', 'label_test', languageKey: 'da');
+        $result = LocalizationUtility::translate('key1', 'label_test', languageKey: 'da', request: $request);
         self::assertSame('', $result);
 
-        $result = LocalizationUtility::translate('key4', 'label_test', languageKey: 'da');
+        $result = LocalizationUtility::translate('key4', 'label_test', languageKey: 'da', request: $request);
         self::assertSame('override', $result);
 
-        $result = LocalizationUtility::translate('key6', 'label_test', languageKey: 'da');
+        $result = LocalizationUtility::translate('key6', 'label_test', languageKey: 'da', request: $request);
         self::assertSame('Dansk label for key6', $result);
 
-        $result = LocalizationUtility::translate('missingkey', 'label_test', languageKey: 'da');
+        $result = LocalizationUtility::translate('missingkey', 'label_test', languageKey: 'da', request: $request);
         self::assertNull($result);
     }
 
     #[Test]
     public function overrideWithoutClearingLabelsWithTypoScriptButPreserveRemainingUnmodifiedLabels(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
-        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']
+        $request = new ServerRequest();
+        $request = $request
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
-        $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
-        $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
-        $configurationManagerInterfaceMock
-            ->expects($this->atLeastOnce())
-            ->method('getConfiguration')
-            ->with($configurationType, 'label_test', null)
-            ->willReturn([
-                '_LOCAL_LANG' => [
-                    'da' => [
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([
+            'plugin.' => [
+                'tx_labeltest.' => ['_LOCAL_LANG.' => [
+                    'da.' => [
                         'key4' => 'override',
                         // 'key6' not set, expected to remain as defined in locallang.xlf of fixture
                     ],
                 ],
-            ]);
-        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceMock);
-
-        $result = LocalizationUtility::translate('key1', 'label_test', languageKey: 'da');
+                ],
+            ],
+        ]);
+        $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $result = LocalizationUtility::translate('key1', 'label_test', languageKey: 'da', request: $request);
         self::assertSame('Dansk label for key1', $result);
 
-        $result = LocalizationUtility::translate('key4', 'label_test', languageKey: 'da');
+        $result = LocalizationUtility::translate('key4', 'label_test', languageKey: 'da', request: $request);
         self::assertSame('override', $result);
 
-        $result = LocalizationUtility::translate('key6', 'label_test', languageKey: 'da');
+        $result = LocalizationUtility::translate('key6', 'label_test', languageKey: 'da', request: $request);
         self::assertSame('Dansk label for key6', $result);
 
-        $result = LocalizationUtility::translate('missingkey', 'label_test', languageKey: 'da');
+        $result = LocalizationUtility::translate('missingkey', 'label_test', languageKey: 'da', request: $request);
         self::assertNull($result);
     }
 
@@ -281,28 +246,22 @@ final class LocalizationUtilityTest extends FunctionalTestCase
     #[Test]
     public function translateWillReturnLabelsFromTsEvenIfNoXlfFileExists(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
-        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']
+        $request = new ServerRequest();
+        $request = $request
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
-        $typoScriptLocalLang = [
-            '_LOCAL_LANG' => [
-                'da' => [
-                    'key1' => 'I am a new key and there is no xlf file',
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([
+            'plugin.' => [
+                'tx_core.' => ['_LOCAL_LANG.' => [
+                    'da.' => [
+                        'key1' => 'I am a new key and there is no xlf file',
+                    ],
+                ],
                 ],
             ],
-        ];
-
-        $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
-        $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
-        $configurationManagerInterfaceMock
-            ->expects($this->atLeastOnce())
-            ->method('getConfiguration')
-            ->with($configurationType, 'core', null)
-            ->willReturn($typoScriptLocalLang);
-        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceMock);
-
-        $result = LocalizationUtility::translate('key1', 'core', [], 'da');
-
+        ]);
+        $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $result = LocalizationUtility::translate('key1', 'core', [], 'da', request: $request);
         self::assertSame('I am a new key and there is no xlf file', $result);
     }
 }

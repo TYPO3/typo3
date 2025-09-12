@@ -20,21 +20,19 @@ namespace TYPO3\CMS\Extbase\Utility;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\Request;
 
 /**
  * Localization helper which should be used to fetch localized labels.
  */
 class LocalizationUtility
 {
-    protected static string $locallangPath = 'Resources/Private/Language/';
-
     /**
      * Returns the localized label of the LOCAL_LANG key, $key.
      *
@@ -44,12 +42,20 @@ class LocalizationUtility
      * @param Locale|string|null $languageKey The language key or null for using the current language from the system
      * @return string|null The value from LOCAL_LANG or null if no translation was found.
      */
-    public static function translate(string $key, ?string $extensionName = null, ?array $arguments = null, Locale|string|null $languageKey = null): ?string
+    public static function translate(string $key, ?string $extensionName = null, ?array $arguments = null, Locale|string|null $languageKey = null, ?ServerRequestInterface $request = null): ?string
     {
         if ($key === '') {
             // Early return guard: returns null if the key was empty, because the key may be a dynamic value
             // (from for example Fluid). Returning null allows null coalescing to a default value when that happens.
             return null;
+        }
+
+        // Validate extension name for plain keys
+        if (!str_starts_with($key, 'LLL:') && empty($extensionName)) {
+            throw new \InvalidArgumentException(
+                'Parameter $extensionName cannot be empty if a fully-qualified key is not specified.',
+                1498144052
+            );
         }
         if (str_starts_with($key, 'LLL:')) {
             $keyParts = explode(':', $key);
@@ -57,22 +63,29 @@ class LocalizationUtility
             $key = array_pop($keyParts);
             $languageFilePath = implode(':', $keyParts);
         } else {
-            if (empty($extensionName)) {
-                throw new \InvalidArgumentException(
-                    'Parameter $extensionName cannot be empty if a fully-qualified key is not specified.',
-                    1498144052
-                );
-            }
             $languageFilePath = static::getLanguageFilePath($extensionName);
         }
         $locale = self::getLocale($languageKey);
-        $languageService = static::initializeLocalization($languageFilePath, $locale, $extensionName);
+        $languageService = self::buildLanguageService($locale, $languageFilePath);
+        $overrideLabels = [];
+        $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? null;
+        if (!empty($extensionName) && $request instanceof ServerRequestInterface) {
+            $typoScript = $request->getAttribute('frontend.typoscript');
+            if ($typoScript instanceof FrontendTypoScript) {
+                // Loads local-language values by looking for a "locallang.xlf" file in the plugin resources directory and if found includes it.
+                // Locallang values set in the TypoScript property "_LOCAL_LANG" are merged onto the values found in the "locallang.xlf" file.
+                $overrideLabels = $languageService->loadTypoScriptLabelsFromExtension($extensionName, $typoScript, self::getPluginName($request));
+                if ($overrideLabels !== []) {
+                    $languageService->overrideLabels($languageFilePath, $overrideLabels);
+                }
+            }
+        }
+
         $resolvedLabel = $languageService->sL('LLL:' . $languageFilePath . ':' . $key);
         $value = $resolvedLabel !== '' ? $resolvedLabel : null;
 
         // Check if a value was explicitly set to "" via TypoScript, if so, we need to ensure that this is "" and not null
-        if ($extensionName) {
-            $overrideLabels = static::loadTypoScriptLabels($extensionName);
+        if ($overrideLabels !== []) {
             $languageKey = $locale->getName();
             // @todo: probably cannot handle "de-DE" and "de" fallbacks
             if ($value === null && isset($overrideLabels[$languageKey][$key])) {
@@ -87,22 +100,6 @@ class LocalizationUtility
             return sprintf($value, ...array_values($arguments)) ?: sprintf('Error: could not translate key "%s" with value "%s" and %d argument(s)!', $key, $value, count($arguments));
         }
         return $value;
-    }
-
-    /**
-     * Loads local-language values by looking for a "locallang.xlf" file in the plugin resources directory and if found includes it.
-     * Locallang values set in the TypoScript property "_LOCAL_LANG" are merged onto the values found in the "locallang.xlf" file.
-     */
-    protected static function initializeLocalization(string $languageFilePath, Locale $locale, ?string $extensionName): LanguageService
-    {
-        $languageService = self::buildLanguageService($locale, $languageFilePath);
-        if (!empty($extensionName)) {
-            $overrideLabels = static::loadTypoScriptLabels($extensionName);
-            if ($overrideLabels !== []) {
-                $languageService->overrideLabels($languageFilePath, $overrideLabels);
-            }
-        }
-        return $languageService;
     }
 
     protected static function buildLanguageService(Locale $locale, string $languageFilePath): LanguageService
@@ -122,7 +119,7 @@ class LocalizationUtility
      */
     protected static function getLanguageFilePath(string $extensionName): string
     {
-        return 'EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/' . self::$locallangPath . 'locallang.xlf';
+        return 'EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Private/Language/locallang.xlf';
     }
 
     /**
@@ -142,71 +139,15 @@ class LocalizationUtility
     }
 
     /**
-     * Overwrites labels that are set via TypoScript.
-     * TS labels have to be configured like:
-     *     plugin.tx_myextension._LOCAL_LANG.languageKey.key = value
+     * Allow plugin.tx_myextension._LOCAL_LANG and plugin.tx_myextension_myplugin._LOCAL_LANG
      */
-    protected static function loadTypoScriptLabels(string $extensionName): array
+    protected static function getPluginName(?ServerRequestInterface $request = null): string
     {
-        // Only allow overrides in Frontend Context
-        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
-        if (!$request instanceof ServerRequestInterface || !ApplicationType::fromRequest($request)->isFrontend()) {
-            return [];
+        $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? null;
+        if ($request instanceof Request) {
+            return strtolower($request->getPluginName());
         }
-        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
-        $frameworkConfiguration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName);
-        if (!is_array($frameworkConfiguration['_LOCAL_LANG'] ?? false)) {
-            return [];
-        }
-        $finalLabels = [];
-        foreach ($frameworkConfiguration['_LOCAL_LANG'] as $languageKey => $labels) {
-            if (!is_array($labels)) {
-                continue;
-            }
-            foreach ($labels as $labelKey => $labelValue) {
-                if (is_string($labelValue)) {
-                    $finalLabels[$languageKey][$labelKey] = $labelValue;
-                } elseif (is_array($labelValue)) {
-                    $labelValue = self::flattenTypoScriptLabelArray($labelValue, $labelKey);
-                    foreach ($labelValue as $key => $value) {
-                        $finalLabels[$languageKey][$key] = $value;
-                    }
-                }
-            }
-        }
-        return $finalLabels;
-    }
-
-    /**
-     * Flatten TypoScript label array; converting a hierarchical array into a flat
-     * array with the keys separated by dots.
-     *
-     * Example Input:  array('k1' => array('subkey1' => 'val1'))
-     * Example Output: array('k1.subkey1' => 'val1')
-     *
-     * @param array $labelValues Hierarchical array of labels
-     * @param string $parentKey the name of the parent key in the recursion; is only needed for recursion.
-     * @return array flattened array of labels.
-     */
-    protected static function flattenTypoScriptLabelArray(array $labelValues, string $parentKey = ''): array
-    {
-        $result = [];
-        foreach ($labelValues as $key => $labelValue) {
-            if (!empty($parentKey)) {
-                if ($key === '_typoScriptNodeValue') {
-                    $key = $parentKey;
-                } else {
-                    $key = $parentKey . '.' . $key;
-                }
-            }
-            if (is_array($labelValue)) {
-                $labelValue = self::flattenTypoScriptLabelArray($labelValue, $key);
-                $result = array_merge($result, $labelValue);
-            } else {
-                $result[$key] = $labelValue;
-            }
-        }
-        return $result;
+        return '';
     }
 
     protected static function getRuntimeCache(): FrontendInterface

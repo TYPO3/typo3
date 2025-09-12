@@ -35,7 +35,6 @@ class TypoScriptService
      * @return array<string|int, mixed> for example `['foo' => ['_typoScriptNodeValue' => 'TEXT', 'bar' => 'baz']]`
      * @internal Avoid using this method. This has been invented for Extbase, which decided to move TypoScript
      *           arrays around in just another different way.
-     * @todo: Usages should be removed mid-term to work on the TypoScript object tree directly.
      */
     public function convertTypoScriptArrayToPlainArray(array $typoScriptArray): array
     {
@@ -69,7 +68,6 @@ class TypoScriptService
      * @return array Array with TypoScript as usual (with dot)
      * @internal Avoid using this method. This has been invented for Extbase, which decided to move TypoScript
      *           arrays around in just another different way.
-     * @todo: Usages should be removed mid-term to work on the TypoScript object tree directly.
      */
     public function convertPlainArrayToTypoScriptArray(array $plainArray): array
     {
@@ -99,7 +97,6 @@ class TypoScriptService
      * @param array $originalConfiguration A TypoScript array
      * @param int $splitCount The number of items for which to generate individual TypoScript arrays
      * @return array The individualized TypoScript array.
-     * @todo: This method is a sign of bad abstraction. It should be modelled differently and located elsewhere.
      */
     public function explodeConfigurationForOptionSplit(array $originalConfiguration, int $splitCount): array
     {
@@ -160,5 +157,37 @@ class TypoScriptService
             }
         }
         return $finalConfiguration;
+    }
+
+    /**
+     * Flatten TypoScript label array; converting a hierarchical array into a flat
+     * array with the keys separated by dots.
+     *
+     * Example Input:  array('k1' => array('subkey1' => 'val1'))
+     * Example Output: array('k1.subkey1' => 'val1')
+     *
+     * @param array $labelValues Hierarchical array of labels
+     * @param string $parentKey the name of the parent key in the recursion; is only needed for recursion.
+     * @return array flattened array of labels.
+     */
+    public function flattenTypoScriptLabelArray(array $labelValues, string $parentKey = ''): array
+    {
+        $result = [];
+        foreach ($labelValues as $key => $labelValue) {
+            if (!empty($parentKey)) {
+                if ($key === '_typoScriptNodeValue') {
+                    $key = $parentKey;
+                } else {
+                    $key = $parentKey . '.' . $key;
+                }
+            }
+            if (is_array($labelValue)) {
+                $labelValue = $this->flattenTypoScriptLabelArray($labelValue, $key);
+                $result = array_merge($result, $labelValue);
+            } else {
+                $result[$key] = $labelValue;
+            }
+        }
+        return $result;
     }
 }

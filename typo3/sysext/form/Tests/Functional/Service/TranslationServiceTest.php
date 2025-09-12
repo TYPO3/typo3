@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
 use TYPO3\CMS\Form\Domain\Model\FormElements\Page;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
@@ -37,9 +36,7 @@ final class TranslationServiceTest extends FunctionalTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $configurationManager = $this->getAccessibleMock(ConfigurationManager::class, ['getConfiguration'], [], '', false);
         $this->subject = new TranslationService(
-            $configurationManager,
             $this->get(LanguageServiceFactory::class),
             $this->get('cache.runtime'),
             new Locales()

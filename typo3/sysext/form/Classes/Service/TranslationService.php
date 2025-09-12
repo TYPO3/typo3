@@ -27,10 +27,10 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
@@ -54,7 +54,6 @@ class TranslationService implements SingletonInterface
     protected string $languageKey = '';
 
     public function __construct(
-        protected readonly ConfigurationManagerInterface $configurationManager,
         protected readonly LanguageServiceFactory $languageServiceFactory,
         #[Autowire(service: 'cache.runtime')]
         protected readonly FrontendInterface $runtimeCache,
@@ -98,18 +97,32 @@ class TranslationService implements SingletonInterface
         if ($language) {
             $this->languageKey = $language;
         }
-
         if ($this->languageKey === '' || $language !== null) {
             $this->setLanguageKeys($language);
         }
-        $languageService = $this->initializeLocalization($locallangPathAndFilename ?? '');
+
+        $languageService = $this->buildLanguageService($this->languageKey, $locallangPathAndFilename ?? '');
+
+        $overrideLabels = [];
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        if (!empty($locallangPathAndFilename) && $request instanceof ServerRequestInterface) {
+            $typoScript = $request->getAttribute('frontend.typoscript');
+            if ($typoScript instanceof FrontendTypoScript) {
+                $overrideLabels = $languageService->loadTypoScriptLabelsFromExtension('form', $typoScript);
+                if ($overrideLabels !== []) {
+                    $languageService->overrideLabels($locallangPathAndFilename, $overrideLabels);
+                }
+            }
+        }
+
         $resolvedLabel = $languageService->sL('LLL:' . $locallangPathAndFilename . ':' . $key);
         $value = $resolvedLabel !== '' ? $resolvedLabel : null;
 
         // Check if a value was explicitly set to ""
-        $overrideLabels = static::loadTypoScriptLabels();
-        if ($value === null && isset($overrideLabels[$this->languageKey])) {
-            $value = '';
+        if ($overrideLabels !== []) {
+            if ($value === null && isset($overrideLabels[$this->languageKey])) {
+                $value = '';
+            }
         }
 
         if (is_array($arguments) && !empty($arguments) && $value !== null) {
@@ -489,19 +502,6 @@ class TranslationService implements SingletonInterface
         return $translatedValue;
     }
 
-    protected function initializeLocalization(string $locallangPathAndFilename): LanguageService
-    {
-        $languageService = $this->buildLanguageService($this->languageKey, $locallangPathAndFilename);
-
-        if (!empty($locallangPathAndFilename)) {
-            $overrideLabels = $this->loadTypoScriptLabels();
-            if ($overrideLabels !== []) {
-                $languageService->overrideLabels($locallangPathAndFilename, $overrideLabels);
-            }
-        }
-        return $languageService;
-    }
-
     protected function buildLanguageService(string $languageKey, $languageFilePath): LanguageService
     {
         $languageKeyHash = sha1($languageKey . '_' . $languageFilePath);
@@ -532,64 +532,6 @@ class TranslationService implements SingletonInterface
                 $this->languageKey = $GLOBALS['BE_USER']->user['lang'];
             }
         }
-    }
-
-    /**
-     * Overwrites labels that are set via TypoScript.
-     * TS labels have to be configured like:
-     * plugin.tx_myextension._LOCAL_LANG.languageKey.key = value
-     */
-    protected function loadTypoScriptLabels(): array
-    {
-        $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'form');
-        if (!is_array($frameworkConfiguration['_LOCAL_LANG'] ?? false)) {
-            return [];
-        }
-        $finalLabels = [];
-        foreach ($frameworkConfiguration['_LOCAL_LANG'] as $languageKey => $labels) {
-            if (!is_array($labels)) {
-                continue;
-            }
-            foreach ($labels as $labelKey => $labelValue) {
-                if (is_string($labelValue)) {
-                    $finalLabels[$languageKey][$labelKey] = $labelValue;
-                } elseif (is_array($labelValue)) {
-                    $labelValue = $this->flattenTypoScriptLabelArray($labelValue, $labelKey);
-                    foreach ($labelValue as $key => $value) {
-                        $finalLabels[$languageKey][$key] = $value;
-                    }
-                }
-            }
-        }
-        return $finalLabels;
-    }
-
-    /**
-     * Flatten TypoScript label array; converting a hierarchical array into a flat
-     * array with the keys separated by dots.
-     *
-     * Example Input:  array('k1' => array('subkey1' => 'val1'))
-     * Example Output: array('k1.subkey1' => 'val1')
-     *
-     * @param array $labelValues Hierarchical array of labels
-     * @param string $parentKey the name of the parent key in the recursion; is only needed for recursion.
-     * @return array flattened array of labels.
-     */
-    protected function flattenTypoScriptLabelArray(array $labelValues, string $parentKey = ''): array
-    {
-        $result = [];
-        foreach ($labelValues as $key => $labelValue) {
-            if (!empty($parentKey)) {
-                $key = $parentKey . '.' . $key;
-            }
-            if (is_array($labelValue)) {
-                $labelValue = $this->flattenTypoScriptLabelArray($labelValue, $key);
-                $result = array_merge($result, $labelValue);
-            } else {
-                $result[$key] = $labelValue;
-            }
-        }
-        return $result;
     }
 
     /**

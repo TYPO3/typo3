@@ -106,7 +106,7 @@ final class TranslateViewHelper extends AbstractViewHelper
         }
         try {
             $locale = self::getUsedLocale($this->arguments['languageKey'], $request);
-            $value = LocalizationUtility::translate($id, $extensionName, $translateArguments, $locale);
+            $value = LocalizationUtility::translate($id, $extensionName, $translateArguments, $locale, $request);
         } catch (\InvalidArgumentException) {
             // @todo: Switch to more specific Exceptions here - for instance those thrown when a package was not found, see #95957
             $value = null;
