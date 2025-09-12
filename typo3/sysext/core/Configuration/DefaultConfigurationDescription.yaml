@@ -240,8 +240,9 @@ LANG:
     description: 'Language and Localization'
     items:
         loader:
-            type: element-list
-            description: 'Loader for localization files. Defaults to TYPO3\\CMS\\Core\\Localization\\Loader\\XliffLoader for XLIFF files.'
+            type: map
+            description: |
+              Loader for localization files. Defaults to <code>['xlf' => 'TYPO3\\CMS\\Core\\Localization\\Loader\\XliffLoader']</code> for XLIFF files.
         requireApprovedLocalizations:
             type: bool
             description: 'If set, translations are only taken into account if the according "approved" attribute is set to "yes" within the XLF file. Otherwise, all available translations are used.'
@@ -249,7 +250,7 @@ LANG:
             type: element-list
             description: 'Array of available locales for the system.'
         resourceOverrides:
-            type: element-list
+            type: map
             description: 'List of overrides for localization resources.'
 EXT:
     type: container
