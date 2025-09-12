@@ -16,6 +16,7 @@ import '@typo3/backend/input/clearable';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import RegularEvent from '@typo3/core/event/regular-event';
+import DocumentService from '@typo3/core/document-service';
 
 interface PreflightResponse {
   capabilities: PreflightResponseCapabilities;
@@ -165,7 +166,8 @@ class BackendLogin {
   /**
    * Registers listeners for the Login Interface
    */
-  private initializeEvents(): void {
+  private async initializeEvents(): Promise<void> {
+    await DocumentService.ready();
     new RegularEvent('submit', this.handleSubmit.bind(this)).bindTo(document.querySelector(this.options.loginForm));
 
     (document.querySelectorAll('.t3js-clearable') as NodeListOf<HTMLInputElement>).forEach(

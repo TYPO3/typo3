@@ -13,6 +13,7 @@
 
 import Login from './login';
 import RegularEvent from '@typo3/core/event/regular-event';
+import DocumentService from '@typo3/core/document-service';
 
 /**
  * Module: @typo3/backend/user-pass-login
@@ -23,12 +24,16 @@ class UserPassLogin {
   protected options: any;
 
   constructor() {
+    this.init();
+  }
+
+  private async init(): Promise<void> {
+    await DocumentService.ready();
     this.options = {
       usernameField: '.t3js-login-username-field',
       passwordField: '.t3js-login-password-field',
       copyrightLink: '.t3js-login-copyright-link',
     };
-
     const usernameField: HTMLInputElement = document.querySelector(this.options.usernameField);
     const passwordField: HTMLInputElement = document.querySelector(this.options.passwordField);
     const copyrightLink: HTMLInputElement = document.querySelector(this.options.copyrightLink);
@@ -53,7 +58,6 @@ class UserPassLogin {
     }
   }
 
-
   /**
    * Checks whether capslock is enabled (returns TRUE if enabled, false otherwise)
    * thanks to http://24ways.org/2007/capturing-caps-lock
@@ -61,7 +65,7 @@ class UserPassLogin {
    * @param {Event} e
    * @returns {boolean}
    */
-  public static isCapslockEnabled(e: any): boolean {
+  private isCapslockEnabled(e: any): boolean {
     const ev = e ? e : window.event;
     if (!ev) {
       return false;
@@ -88,7 +92,7 @@ class UserPassLogin {
   /**
    * Reset user password field to prevent it from being submitted
    */
-  public resetPassword = (): void => {
+  private readonly resetPassword = (): void => {
     const passwordField: HTMLInputElement = document.querySelector(this.options.passwordField);
     if (passwordField === null || passwordField.value === '') {
       return;
@@ -103,7 +107,7 @@ class UserPassLogin {
   /**
    * Toggle copyright
    */
-  public toggleCopyright = (event: KeyboardEvent): void => {
+  private readonly toggleCopyright = (event: KeyboardEvent): void => {
     if (event.key === ' ') {
       (event.target as HTMLLinkElement).click();
     }
@@ -173,7 +177,7 @@ class UserPassLogin {
     const title = targetElement.dataset.capslockwarningTitle;
     const message = targetElement.dataset.capslockwarningMessage;
 
-    if (UserPassLogin.isCapslockEnabled(event)) {
+    if (this.isCapslockEnabled(event)) {
       this.attachCapslockWarning(targetElement, title, message);
     } else {
       this.removeCapslockWarning(targetElement);
