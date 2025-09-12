@@ -714,20 +714,12 @@ final class LocalDriverTest extends FunctionalTestCase
     {
         $expectedMd5Hash = '8c67dbaf0ba22f2e7fbc26413b86051b';
         $expectedSha1Hash = 'a60cd808ba7a0bcfa37fa7f3fb5998e1b8dbcd9d';
+        $expectedSha256Hash = '29af08cbe576f38fc22803a03d083b1228321a5b617935a024c678ff985225d2';
         file_put_contents($this->baseDirectory . '/hashFile', '68b329da9893e34099c7d8ad5cb9c940');
         $subject = $this->getDefaultInitializedSubject();
-        self::assertEquals($expectedSha1Hash, $subject->hash('/hashFile', 'sha1'));
         self::assertEquals($expectedMd5Hash, $subject->hash('/hashFile', 'md5'));
-    }
-
-    #[Test]
-    public function hashingWithUnsupportedAlgorithmFails(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1304964032);
-        file_put_contents($this->baseDirectory . '/hashFile', '68b329da9893e34099c7d8ad5cb9c940');
-        $subject = $this->getDefaultInitializedSubject();
-        $subject->hash('/hashFile', StringUtility::getUniqueId('uri_'));
+        self::assertEquals($expectedSha1Hash, $subject->hash('/hashFile', 'sha1'));
+        self::assertEquals($expectedSha256Hash, $subject->hash('/hashFile', 'sha256'));
     }
 
     #[Test]

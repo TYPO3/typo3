@@ -51,11 +51,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     protected string $absoluteBasePath = '/';
 
     /**
-     * A list of all supported hash algorithms, written all lower case.
-     */
-    protected array $supportedHashAlgorithms = ['sha1', 'md5'];
-
-    /**
      * The base URL that points to this driver's storage. As long is this
      * is not set, it is assumed that this folder is not publicly available
      */
@@ -701,14 +696,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      */
     public function hash(string $fileIdentifier, string $hashAlgorithm): string
     {
-        if (!in_array($hashAlgorithm, $this->supportedHashAlgorithms, true)) {
-            throw new \InvalidArgumentException('Hash algorithm "' . $hashAlgorithm . '" is not supported.', 1304964032);
-        }
-        return match ($hashAlgorithm) {
-            'sha1' => sha1_file($this->getAbsolutePath($fileIdentifier)),
-            'md5' => md5_file($this->getAbsolutePath($fileIdentifier)),
-            default => throw new \RuntimeException('Hash algorithm ' . $hashAlgorithm . ' is not implemented.', 1329644451),
-        };
+        $hashContext = hash_init($hashAlgorithm);
+        hash_update_file($hashContext, $this->getAbsolutePath($fileIdentifier));
+        return hash_final($hashContext);
     }
 
     /**
