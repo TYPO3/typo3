@@ -31,7 +31,7 @@ use TYPO3\CMS\Frontend\Resource\FileCollector;
  * into a fluid readable array.
  *
  * Options:
- * fieldname      - The name of the field containing the FlexForm to be converted
+ * fieldName      - The name of the field containing the FlexForm to be converted
  * references     - A key / value list for fields with file references to process
  * dataProcessing - Additional sub DataProcessors to process
  * as             - The variable, the generated array should be assigned to
