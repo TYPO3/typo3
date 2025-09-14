@@ -40,6 +40,7 @@ use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItemFactory;
 use TYPO3\CMS\Redirects\Service\RedirectCacheService;
 use TYPO3\CMS\Redirects\Service\SlugService;
+use TYPO3\CMS\Redirects\Service\TemporaryPermissionMutationService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -169,6 +170,7 @@ final class SlugServiceTest extends FunctionalTestCase
             eventDispatcher: $this->get(EventDispatcherInterface::class),
             connectionPool: $this->getConnectionPool(),
             tcaSchemaFactory: $this->get(TcaSchemaFactory::class),
+            temporaryPermissionMutationService: $this->get(TemporaryPermissionMutationService::class)
         );
         $subject->setLogger(new NullLogger());
         return $subject;

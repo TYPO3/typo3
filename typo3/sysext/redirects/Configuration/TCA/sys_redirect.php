@@ -11,6 +11,7 @@ return [
         'label_alt_force' => true,
         'crdate' => 'createdon',
         'tstamp' => 'updatedon',
+        'hideTable' => true,
         'versioningWS' => false,
         'groupName' => 'system',
         'default_sortby' => 'source_host, source_path',
@@ -18,6 +19,7 @@ return [
         'security' => [
             'ignoreWebMountRestriction' => true,
             'ignoreRootLevelRestriction' => true,
+            'ignorePageTypeRestriction' => true,
         ],
         'delete' => 'deleted',
         'enablecolumns' => [

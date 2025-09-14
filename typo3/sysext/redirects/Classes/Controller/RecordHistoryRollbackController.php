@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\Service\SlugService;
+use TYPO3\CMS\Redirects\Service\TemporaryPermissionMutationService;
 
 /**
  * @internal
@@ -38,6 +39,7 @@ readonly class RecordHistoryRollbackController
     public function __construct(
         private LanguageServiceFactory $languageServiceFactory,
         private RecordHistoryRollback $recordHistoryRollback,
+        private TemporaryPermissionMutationService $temporaryPermissionMutationService
     ) {}
 
     public function revertCorrelation(ServerRequestInterface $request): ResponseInterface
@@ -84,11 +86,24 @@ readonly class RecordHistoryRollbackController
 
     protected function rollBackCorrelation(CorrelationId $correlationId): void
     {
+        // Temporary add permissions to the user to perform the action.
+        // Store if we need to revert those changes after the actions.
+        $addedTableSelect = $this->temporaryPermissionMutationService->addTableSelect();
+        $addedTableModify = $this->temporaryPermissionMutationService->addTableModify();
+
         foreach (GeneralUtility::makeInstance(RecordHistory::class)->findEventsForCorrelation((string)$correlationId) as $recordHistoryEntry) {
             $element = $recordHistoryEntry['tablename'] . ':' . $recordHistoryEntry['recuid'];
             $tempRecordHistory = GeneralUtility::makeInstance(RecordHistory::class, $element);
             $tempRecordHistory->setLastHistoryEntryNumber((int)$recordHistoryEntry['uid']);
             $this->recordHistoryRollback->performRollback('ALL', $tempRecordHistory->getDiff($tempRecordHistory->getChangeLog()));
+        }
+
+        // Revert temporary permissions
+        if ($addedTableSelect) {
+            $this->temporaryPermissionMutationService->removeTableSelect();
+        }
+        if ($addedTableModify) {
+            $this->temporaryPermissionMutationService->removeTableModify();
         }
     }
 
