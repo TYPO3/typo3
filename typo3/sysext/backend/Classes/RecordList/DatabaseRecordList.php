@@ -46,7 +46,6 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
-use TYPO3\CMS\Core\Domain\Exception\RecordPropertyNotFoundException;
 use TYPO3\CMS\Core\Domain\Persistence\RecordIdentityMap;
 use TYPO3\CMS\Core\Domain\Record;
 use TYPO3\CMS\Core\Domain\RecordFactory;
@@ -813,7 +812,7 @@ class DatabaseRecordList
                     $languageFieldName = $schema->isLanguageAware() ? $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName() : '';
                     // Guard clause so we can quickly return if a record is localized to "all languages"
                     // It should only be possible to localize a record off default (uid 0)
-                    if ($l10nEnabled && $record->getRawRecord()->has($languageFieldName) && (int)$record->getRawRecord()->get($languageFieldName) !== -1) {
+                    if ($l10nEnabled && $record->getRawRecord()?->has($languageFieldName) && (int)$record->getRawRecord()->get($languageFieldName) !== -1) {
                         $translationsRaw = $this->translateTools->translationInfo($table, $record->getUid(), 0, $record->getRawRecord()->toArray(), '*');
                         if (is_array($translationsRaw)) {
                             $translationEnabled = true;
@@ -1252,7 +1251,7 @@ class DatabaseRecordList
                     array_splice($this->fieldArray, 0, 1);
                 }
             } elseif ($fCol === 'icon') {
-                $rowArray = $record->getRawRecord()->toArray();
+                $rowArray = $record->getRawRecord()?->toArray() ?? [];
                 $icon = $this->iconFactory
                     ->getIconForRecord($table, $rowArray, IconSize::SMALL)
                     ->setTitle(BackendUtility::getRecordIconAltText($record, $table, false))
@@ -1279,8 +1278,8 @@ class DatabaseRecordList
             } elseif ($fCol !== '_LOCALIZATION_b') {
                 // default for all other columns, except "_LOCALIZATION_b"
                 $pageId = $table === 'pages' ? $record->getUid() : $record->getPid();
-                $fieldValue = $record->getRawRecord()->has($fCol) ? $record->getRawRecord()->get($fCol) : '';
-                $tmpProc = BackendUtility::getProcessedValueExtra($table, $fCol, $fieldValue, 100, $record->getUid(), true, $pageId, $record->getRawRecord()->toArray());
+                $fieldValue = $record->getRawRecord()?->has($fCol) ? $record->getRawRecord()->get($fCol) : '';
+                $tmpProc = BackendUtility::getProcessedValueExtra($table, $fCol, $fieldValue, 100, $record->getUid(), true, $pageId, $record->getRawRecord()?->toArray());
                 $theData[$fCol] = $this->linkUrlMail(htmlspecialchars((string)$tmpProc), (string)$fieldValue);
             }
         }
@@ -1785,7 +1784,7 @@ class DatabaseRecordList
                     $hiddenTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:unHide' . ($table === 'pages' ? 'Page' : ''));
                     $hiddenIcon = 'actions-edit-unhide';
                     $hiddenValue = '1';
-                    if ($record->getRawRecord()->get($hiddenField) ?? false) {
+                    if (($rawRecord = $record->getRawRecord())?->has($hiddenField) && ($rawRecord->get($hiddenField) ?? false)) {
                         $titleLabel = $hiddenTitle;
                         $iconIdentifier = $hiddenIcon;
                         $status = 'hidden';
@@ -2075,7 +2074,7 @@ class DatabaseRecordList
             $this->addDividerToCellGroup($cells);
             $pasteAfterUrl = $this->clipObj->pasteUrl($table, -$record->getUid());
             $pasteAfterTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_pasteAfter');
-            $pasteAfterContent = $this->clipObj->confirmMsgText($table, $record->getRawRecord()->toArray(), 'after');
+            $pasteAfterContent = $this->clipObj->confirmMsgText($table, $record->getRawRecord()?->toArray(), 'after');
             $clipboardCells['pasteAfter'] = '
                 <button type="button" class="btn btn-default t3js-modal-trigger" data-severity="warning" aria-haspopup="dialog" title="' . htmlspecialchars($pasteAfterTitle) . '" aria-label="' . htmlspecialchars($pasteAfterTitle) . '" data-uri="' . htmlspecialchars($pasteAfterUrl) . '" data-bs-content="' . htmlspecialchars($pasteAfterContent) . '">
                     ' . $this->iconFactory->getIcon('actions-document-paste-after', IconSize::SMALL)->render() . '
@@ -2089,7 +2088,7 @@ class DatabaseRecordList
             $this->addDividerToCellGroup($cells);
             $pasteIntoUrl = $this->clipObj->pasteUrl('', $record->getUid());
             $pasteIntoTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_pasteInto');
-            $pasteIntoContent = $this->clipObj->confirmMsgText($table, $record->getRawRecord()->toArray(), 'into');
+            $pasteIntoContent = $this->clipObj->confirmMsgText($table, $record->getRawRecord()?->toArray(), 'into');
             $clipboardCells['pasteInto'] = '
                 <button type="button" class="btn btn-default t3js-modal-trigger" aria-haspopup="dialog" data-severity="warning" title="' . htmlspecialchars($pasteIntoTitle) . '" aria-label="' . htmlspecialchars($pasteIntoTitle) . '" data-uri="' . htmlspecialchars($pasteIntoUrl) . '" data-bs-content="' . htmlspecialchars($pasteIntoContent) . '">
                     ' . $this->iconFactory->getIcon('actions-document-paste-into', IconSize::SMALL)->render() . '
@@ -3462,13 +3461,13 @@ class DatabaseRecordList
             return $record->getLanguageId() > 0 && $record->getLanguageInfo()?->getTranslationParent() > 0;
         }
         $schema = $this->tcaSchemaFactory->get($record->getMainType());
-        if ($schema->isLanguageAware()) {
+        if ($schema->isLanguageAware() && ($rawRecord = $record->getRawRecord()) !== null) {
             $languageFieldName = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
             $transPointerFieldName = $schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName();
-            try {
-                return $record->getRawRecord()?->get($languageFieldName) > 0 && $record->getRawRecord()->get($transPointerFieldName) > 0;
-            } catch (RecordPropertyNotFoundException) {
-            }
+            return $rawRecord->has($languageFieldName)
+                && $rawRecord->get($languageFieldName) > 0
+                && $rawRecord->has($transPointerFieldName)
+                && $rawRecord->get($transPointerFieldName) > 0;
         }
         return false;
     }
