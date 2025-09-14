@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\Service\SlugService;
+use TYPO3\CMS\Redirects\Service\TemporaryPermissionMutationService;
 
 /**
  * @internal
@@ -36,12 +37,12 @@ use TYPO3\CMS\Redirects\Service\SlugService;
 class RecordHistoryRollbackController
 {
     protected ?LanguageService $languageService = null;
-    protected LanguageServiceFactory $languageServiceFactory;
 
-    public function __construct(LanguageServiceFactory $languageServiceFactory)
-    {
-        $this->languageServiceFactory = $languageServiceFactory;
-    }
+    public function __construct(
+        protected LanguageServiceFactory $languageServiceFactory,
+        protected RecordHistoryRollback $recordHistoryRollback,
+        protected TemporaryPermissionMutationService $temporaryPermissionMutationService
+    ) {}
 
     public function revertCorrelation(ServerRequestInterface $request): ResponseInterface
     {
@@ -87,12 +88,24 @@ class RecordHistoryRollbackController
 
     protected function rollBackCorrelation(CorrelationId $correlationId): void
     {
-        $recordHistoryRollback = GeneralUtility::makeInstance(RecordHistoryRollback::class);
+        // Temporary add permissions to the user to perform the action.
+        // Store if we need to revert those changes after the actions.
+        $addedTableSelect = $this->temporaryPermissionMutationService->addTableSelect();
+        $addedTableModify = $this->temporaryPermissionMutationService->addTableModify();
+
         foreach (GeneralUtility::makeInstance(RecordHistory::class)->findEventsForCorrelation((string)$correlationId) as $recordHistoryEntry) {
             $element = $recordHistoryEntry['tablename'] . ':' . $recordHistoryEntry['recuid'];
             $tempRecordHistory = GeneralUtility::makeInstance(RecordHistory::class, $element);
             $tempRecordHistory->setLastHistoryEntryNumber((int)$recordHistoryEntry['uid']);
-            $recordHistoryRollback->performRollback('ALL', $tempRecordHistory->getDiff($tempRecordHistory->getChangeLog()));
+            $this->recordHistoryRollback->performRollback('ALL', $tempRecordHistory->getDiff($tempRecordHistory->getChangeLog()));
+        }
+
+        // Revert temporary permissions
+        if ($addedTableSelect) {
+            $this->temporaryPermissionMutationService->removeTableSelect();
+        }
+        if ($addedTableModify) {
+            $this->temporaryPermissionMutationService->removeTableModify();
         }
     }
 }
