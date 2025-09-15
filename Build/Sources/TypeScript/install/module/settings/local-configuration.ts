@@ -45,6 +45,7 @@ type LocalConfigurationWrittenResponse = {
  */
 class LocalConfiguration extends AbstractInteractableModule {
   private searchInput: HTMLInputElement;
+  private toggleAll: boolean = false;
 
   public override initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
@@ -60,8 +61,13 @@ class LocalConfiguration extends AbstractInteractableModule {
     new RegularEvent('click', (): void => {
       const modalContent = this.getModalBody();
       const panels = modalContent.querySelectorAll<HTMLElement>('.panel-collapse');
+      this.toggleAll = !this.toggleAll;
+      const action = this.toggleAll ? 'show' : 'hide';
       panels.forEach((panel: HTMLElement) => {
-        const action = panels[0].classList.contains('show') ? 'hide' : 'show';
+        const toggleButton: HTMLElement = modalContent.querySelector(`[data-bs-target="#${panel.id}"]`);
+        if (toggleButton) {
+          toggleButton.classList.toggle('collapsed', !this.toggleAll);
+        }
         Collapse.getOrCreateInstance(panel)[action]();
       });
     }).delegateTo(currentModal, Identifiers.toggleAllTrigger);
