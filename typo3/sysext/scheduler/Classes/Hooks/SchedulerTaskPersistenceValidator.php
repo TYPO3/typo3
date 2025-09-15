@@ -190,8 +190,6 @@ final readonly class SchedulerTaskPersistenceValidator
             $this->addErrorMessage($dataHandler, $taskId, 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.endDateSmallerThanStartDate');
         }
         if ($runningType === AbstractTask::TYPE_RECURRING) {
-            debug($parsedBody);
-            debug($frequency);
             if (empty(trim($frequency))) {
                 $result = false;
                 $this->addErrorMessage($dataHandler, $taskId, 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noFrequency');
