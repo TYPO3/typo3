@@ -399,9 +399,8 @@ readonly class ResourceFactory implements SingletonInterface
      *
      * @param int $uid The uid of the file usage (sys_file_reference) to be fetched
      * @param bool $raw Whether to get raw results without performing overlays
-     * @return array|null
      */
-    protected function getFileReferenceData(int $uid, bool $raw = false): ?array
+    protected function getFileReferenceData(int $uid, bool $raw = false): array|false|null
     {
         $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
         if (!$raw
