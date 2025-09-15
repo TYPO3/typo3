@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Functional\ViewHelpers;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -45,7 +46,7 @@ final class ThumbnailViewHelperTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function sysFileReferenceAsImageAttrbuteReturnsExpectedImageTag(): void
+    public function sysFileReferenceAsImageAttributeReturnsExpectedImageTag(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/ThumbnailViewHelper/fal_image.csv');
         $resourceFactory = $this->get(ResourceFactory::class);
@@ -57,5 +58,16 @@ final class ThumbnailViewHelperTest extends FunctionalTestCase
         $expected = '<img src="fileadmin/_processed_/3/7/preview_ImageViewHelperFalTest_252565634e.jpg" width="64" height="48" alt="alt text from metadata" />';
 
         self::assertEquals($expected, (new TemplateView($context))->render());
+    }
+
+    #[Test]
+    public function missingSysFileReferenceLookupThrowsException(): void
+    {
+        $this->expectException(ResourceDoesNotExistException::class);
+        $this->expectExceptionCode(1317178794);
+
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ThumbnailViewHelper/fal_image.csv');
+        $resourceFactory = $this->get(ResourceFactory::class);
+        $file = $resourceFactory->getFileReferenceObject(42);
     }
 }
