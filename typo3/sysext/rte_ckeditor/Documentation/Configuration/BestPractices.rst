@@ -77,6 +77,7 @@ should already be there.
 The include files are already split up so the processing transformations can
 just be included or even completely disabled (by removing the line for importing).
 
-Please be aware that removing the :file:`Processing.yaml` removes
-security measures. In that case you have to take care of keeping the ckeditor
-safe yourself.
+..  attention::
+    Please be aware that removing the :file:`Processing.yaml` removes
+    security measures. In that case you have to take care of keeping the ckeditor
+    safe yourself.
