@@ -45,6 +45,7 @@ class TaskService
      * This method fetches a list of all classes that have been registered with the Scheduler
      * For each item the following information is provided, as an associative array:
      *
+     * ['className'] => Name of the task PHP class
      * ['extension'] => Key of the extension which provides the class
      * ['filename'] => Path to the file containing the class
      * ['title'] => String (possibly localized) containing a human-readable name for the class
@@ -56,10 +57,11 @@ class TaskService
     {
         $languageService = $this->getLanguageService();
         $list = [];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'] ?? [] as $class => $registrationInformation) {
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'] ?? [] as $className => $registrationInformation) {
             $title = isset($registrationInformation['title']) ? $languageService->sL($registrationInformation['title']) : '';
             $description = isset($registrationInformation['description']) ? $languageService->sL($registrationInformation['description']) : '';
-            $list[$class] = [
+            $list[$className] = [
+                'className' => $className,
                 'extension' => $registrationInformation['extension'],
                 'title' => $title,
                 'description' => $description,
@@ -71,7 +73,7 @@ class TaskService
 
     public function hasTaskType(string $taskType): bool
     {
-        return isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$taskType]);
+        return isset($this->getAvailableTaskTypes()[$taskType]);
     }
 
     /**
@@ -94,16 +96,17 @@ class TaskService
     public function getAllTaskTypes(): array
     {
         $taskTypes = [];
-        foreach ($this->getAvailableTaskTypes() as $taskClass => $registrationInformation) {
+        foreach ($this->getAvailableTaskTypes() as $taskType => $registrationInformation) {
             $data = [
-                'class' => $taskClass,
+                'className' => $registrationInformation['className'],
+                'taskType' => $taskType,
                 'category' => $registrationInformation['extension'],
                 'title' => $registrationInformation['title'],
                 'fullTitle' => $registrationInformation['title'] . ' [' . $registrationInformation['extension'] . ']',
                 'description' => $registrationInformation['description'],
                 'provider' => $registrationInformation['provider'] ?? '',
             ];
-            if ($taskClass === ExecuteSchedulableCommandTask::class) {
+            if ($registrationInformation['className'] === ExecuteSchedulableCommandTask::class) {
                 foreach ($this->commandRegistry->getSchedulableCommands() as $commandIdentifier => $command) {
                     $commandData = $data;
                     $commandData['category'] = explode(':', $commandIdentifier)[0];
@@ -111,10 +114,11 @@ class TaskService
                     $commandData['description'] = $command->getDescription();
                     // Used for select dropdown and on InfoScreen
                     $commandData['fullTitle'] = $command->getDescription() . ' [' . $command->getName() . ']';
+                    $commandData['isCliCommand'] = true;
                     $taskTypes[$commandIdentifier] = $commandData;
                 }
             } else {
-                $taskTypes[$taskClass] = $data;
+                $taskTypes[$taskType] = $data;
             }
         }
         ksort($taskTypes);
@@ -170,7 +174,7 @@ class TaskService
     {
         /** @var AbstractTask $task */
         $task = GeneralUtility::makeInstance(
-            $this->getAllTaskTypes()[$taskType]['class']
+            $this->getAllTaskTypes()[$taskType]['className']
         );
         if ($task instanceof ExecuteSchedulableCommandTask) {
             $task->setTaskType($taskType);
@@ -287,7 +291,17 @@ class TaskService
                 description: $taskInformation['description'],
             );
         }
-        // @todo: Let's sort them by group
+        // Sort all items by group, and groups as well
+        usort($config['items'], static function (SelectItem $a, SelectItem $b): int {
+            if ($a->getGroup() === 'scheduler') {
+                return -1;
+            }
+            $groupComparison = strnatcasecmp($a->getGroup(), $b->getGroup());
+            if ($groupComparison !== 0) {
+                return $groupComparison;
+            }
+            return strnatcasecmp($a->getLabel(), $b->getLabel());
+        });
         return $config;
     }
 

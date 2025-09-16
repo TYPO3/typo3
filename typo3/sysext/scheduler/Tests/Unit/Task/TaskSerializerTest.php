@@ -23,6 +23,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Console\CommandRegistry;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Scheduler\Service\TaskService;
 use TYPO3\CMS\Scheduler\Task\TaskSerializer;
 use TYPO3\CMS\Scheduler\Tests\Unit\Task\Fixtures\TestTask;
@@ -62,6 +63,7 @@ final class TaskSerializerTest extends UnitTestCase
     #[Test]
     public function dataIsReconstituted(array $data, TestTask $expectation): void
     {
+        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][TestTask::class] = [
             'extension' => 'scheduler',
         ];
