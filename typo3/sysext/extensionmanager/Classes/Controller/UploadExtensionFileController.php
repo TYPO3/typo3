@@ -133,7 +133,10 @@ class UploadExtensionFileController extends AbstractController
                         [
                             'extensionKey' => $extensionKey,
                             'returnAction' => ['controller' => 'List', 'action' => 'index'],
-                        ]
+                        ],
+                        null,
+                        null,
+                        307,
                     );
                 }
             }
