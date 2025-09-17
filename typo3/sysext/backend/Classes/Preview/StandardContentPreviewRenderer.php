@@ -255,7 +255,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         foreach ($fieldArr as $field) {
             if ($record[$field]) {
                 $fieldValue = BackendUtility::getProcessedValue($table, $field, $record[$field], 0, false, false, $record['uid'] ?? 0, true, $record['pid'] ?? 0, $record) ?? '';
-                $info[] = '<strong>' . htmlspecialchars((string)($itemLabels[$field] ?? '')) . '</strong> ' . htmlspecialchars($fieldValue);
+                $info[] = '<strong>' . htmlspecialchars((string)($itemLabels[$field] ?? '')) . '</strong> ' . htmlspecialchars((string)$fieldValue);
             }
         }
     }
@@ -273,7 +273,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             if ($fileObject->isMissing()) {
                 $missingFileIcon = $this->getIconFactory()
                     ->getIcon('mimetypes-other-other', IconSize::MEDIUM, 'overlay-missing')
-                    ->setTitle(static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing') . ' ' . $fileObject->getName())
+                    ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing') . ' ' . $fileObject->getName())
                     ->render();
                 $thumbData .= '<div class="preview-thumbnails-element"><div class="preview-thumbnails-element-image">' . $missingFileIcon . '</div></div>';
                 continue;

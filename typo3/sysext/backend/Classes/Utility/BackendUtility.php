@@ -1538,7 +1538,7 @@ class BackendUtility
      * @param array $fullRow Optional full database row to provide additional context, e.g. to be used in itemsProcFunc
      * @param array $theColConf @internal Needs to be migrated properly - will not stay! Is required for "volatile" columns config, {@see FlexFormValueFormatter}
      * @throws \InvalidArgumentException
-     * @return string|null
+     * @return string|int|null
      */
     public static function getProcessedValue(
         $table,
