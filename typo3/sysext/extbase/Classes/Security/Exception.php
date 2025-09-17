@@ -19,9 +19,4 @@ namespace TYPO3\CMS\Extbase\Security;
 
 use TYPO3\CMS\Extbase\Exception as ExtbaseException;
 
-/**
- * A hash service which should be used to generate and validate hashes.
- *
- * It will use some salt / encryption key in the future.
- */
 class Exception extends ExtbaseException {}
