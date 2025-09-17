@@ -328,8 +328,8 @@ the following translation scenarios are possible:
 The look-up process searches for translation keys in all given translation
 files based on the following order:
 
-- `<formDefinitionIdentifier>.finisher.finisheridentifier.<optionName>`
-- `finisher.finisheridentifier.<optionName>`
+- `<formDefinitionIdentifier>.finisher.<finisherIdentifier>.<optionName>`
+- `finisher.<finisherIdentifier>.<optionName>`
 
 
 Example
