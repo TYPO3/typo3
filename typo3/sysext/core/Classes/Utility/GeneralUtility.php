@@ -24,7 +24,6 @@ use Egulias\EmailValidator\Validation\RFCValidation;
 use Egulias\EmailValidator\Warning\CFWSNearAt;
 use GuzzleHttp\Exception\TransferException;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Authentication\AbstractAuthenticationService;
@@ -33,9 +32,11 @@ use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Package\Exception as PackageException;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\SystemResource\Http\CacheBustingUri;
 
 /**
  * The legendary "t3lib_div" class - Miscellaneous functions for general purpose.
@@ -2034,54 +2035,27 @@ class GeneralUtility
      */
     public static function createVersionNumberedFilename(string $file): string
     {
-        $isFrontend = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend();
         $lookupFile = explode('?', $file);
-        $path = $lookupFile[0];
-
+        $path = $absoluteFilePath = $lookupFile[0];
         if (!PathUtility::isAbsolutePath($path)) {
-            $path = Environment::getPublicPath() . '/' . $path;
+            $absoluteFilePath = Environment::getPublicPath() . '/' . $path;
         } elseif (is_file(Environment::getPublicPath() . '/' . ltrim($path, '/'))) {
             // Frontend should still allow /static/myfile.css - see #98106
             // This should happen regardless of the incoming path is absolute or not
             // Use-case: $path = /typo3/sysext/backend/Resources/Public/file.css when the order was not built properly
-            $path = Environment::getPublicPath() . '/' . ltrim($path, '/');
+            $absoluteFilePath = Environment::getPublicPath() . '/' . ltrim($path, '/');
         }
-
-        if ($isFrontend) {
-            $configValue = (bool)($GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'] ?? false);
-        } else {
-            $configValue = (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['versionNumberInFilename'] ?? false);
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        $applicationType = $request ? ApplicationType::fromRequest($request) : null;
+        $uri = CacheBustingUri::fromFileSystemPath($absoluteFilePath, new Uri($file), $applicationType);
+        if (!str_starts_with($uri->getPath(), '/')) {
+            // For legacy reasons, we allow to return relative URLs here,
+            // when the given path was relative as well.
+            // This method will be deprecated and replaced entirely later on,
+            // with the new API, that only deals with URI objects
+            return ltrim((string)$uri, '/');
         }
-        try {
-            $fileExists = file_exists($path);
-        } catch (\Throwable $e) {
-            $fileExists = false;
-        }
-        if (!$fileExists) {
-            // File not found, return filename unaltered
-            $fullName = $file;
-        } else {
-            if (!$configValue) {
-                // If .htaccess rule is not configured,
-                // use the default query-string method
-                if (!empty($lookupFile[1])) {
-                    $separator = '&';
-                } else {
-                    $separator = '?';
-                }
-                $fullName = $file . $separator . filemtime($path);
-            } else {
-                // Change the filename
-                $name = explode('.', $lookupFile[0]);
-                $extension = array_pop($name);
-                array_push($name, filemtime($path), $extension);
-                $fullName = implode('.', $name);
-                // Append potential query string
-                $fullName .= !empty($lookupFile[1]) ? '?' . $lookupFile[1] : '';
-            }
-        }
-        return $fullName;
+        return (string)$uri;
     }
 
     /**

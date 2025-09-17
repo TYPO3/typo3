@@ -63,9 +63,9 @@ final class AssetRendererTest extends FunctionalTestCase
                     ['file1', '"><script>alert(1)</script><x "', [], []],
                 ],
                 'expectedMarkup' => [
-                    'css_no_prio' => '<link href="&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;&lt;x &quot;" rel="stylesheet" >',
+                    'css_no_prio' => '<link href="%22%3E%3Cscript%3Ealert%281%29%3C/script%3E%3Cx%20%22" rel="stylesheet" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script src="&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;&lt;x &quot;"></script>',
+                    'js_no_prio' => '<script src="%22%3E%3Cscript%3Ealert%281%29%3C/script%3E%3Cx%20%22"></script>',
                     'js_prio' => '',
                 ],
             ],
