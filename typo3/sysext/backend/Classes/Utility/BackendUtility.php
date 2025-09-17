@@ -1611,7 +1611,7 @@ class BackendUtility
      * @param int $pid Optional page uid is used to evaluate page TSconfig for the given field
      * @param array $fullRow Optional full database row to provide additional context, e.g. to be used in itemsProcFunc
      * @throws \InvalidArgumentException
-     * @return string|null
+     * @return string|int|null
      */
     public static function getProcessedValue(
         $table,
