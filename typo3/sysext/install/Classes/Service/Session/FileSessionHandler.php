@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Service\Session;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Security\BlockSerializationTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -45,11 +46,11 @@ class FileSessionHandler implements \SessionHandlerInterface
     private HashService $hashService;
 
     public function __construct(
-        string $sessionPath,
+        ?string $sessionPath,
         int $expirationTimeInMinutes,
     ) {
         $this->hashService = new HashService();
-        $this->sessionPath = rtrim($sessionPath, '/') . '/';
+        $this->sessionPath = rtrim($sessionPath ?? Environment::getVarPath() . '/session', '/') . '/';
         $this->expirationTimeInMinutes = $expirationTimeInMinutes;
         // Start our PHP session early so that hasSession() works
         session_save_path($this->getSessionSavePath());

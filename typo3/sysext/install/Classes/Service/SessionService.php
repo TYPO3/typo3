@@ -99,10 +99,7 @@ class SessionService implements SingletonInterface
 
     protected function getDefaultSessionHandler(): \SessionHandlerInterface
     {
-        return new FileSessionHandler(
-            $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolSessionHandler']['options']['sessionPath'] ?? Environment::getVarPath() . '/session',
-            $this->expireTimeInMinutes,
-        );
+        return new FileSessionHandler(null, $this->expireTimeInMinutes);
     }
 
     public function initializeSession()

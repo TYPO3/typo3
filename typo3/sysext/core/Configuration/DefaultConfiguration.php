@@ -1473,9 +1473,6 @@ return [
         'installToolPassword' => '',
         'installToolSessionHandler' => [
             'className' => \TYPO3\CMS\Install\Service\Session\FileSessionHandler::class,
-            'options' => [
-                'sessionPath' => \TYPO3\CMS\Core\Core\Environment::getVarPath() . '/session',
-            ],
         ],
         'contentSecurityPolicyReportingUrl' => '',
         // String (exclude).Enter lines of default page TSconfig.
