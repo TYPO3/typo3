@@ -33,7 +33,6 @@ use TYPO3\CMS\Scheduler\Exception\InvalidDateException;
 use TYPO3\CMS\Scheduler\SchedulerManagementAction;
 use TYPO3\CMS\Scheduler\Service\TaskService;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
-use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandAdditionalFieldProvider;
 
 /**
  * DataHandler hook to validate incoming task parameters and execution_details
@@ -203,7 +202,7 @@ final readonly class SchedulerTaskPersistenceValidator
             }
         }
         $provider = $this->taskService->getAdditionalFieldProviderForTask($taskType);
-        if ($provider !== null && (isset($parsedBody['parameters']) || $provider instanceof ExecuteSchedulableCommandAdditionalFieldProvider)) {
+        if ($provider !== null) {
             $parsedBody['parameters'] = $parsedBody['parameters'] ?? [];
             $parsedBody = array_merge($parsedBody['parameters'], $parsedBody);
             // Providers should add messages for failed validations on their own.

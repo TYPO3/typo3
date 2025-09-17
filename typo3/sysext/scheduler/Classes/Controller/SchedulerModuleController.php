@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
@@ -59,6 +60,7 @@ final class SchedulerModuleController
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly Context $context,
         protected readonly TaskService $taskService,
+        protected readonly PageRenderer $pageRenderer,
     ) {}
 
     /**
@@ -300,11 +302,14 @@ final class SchedulerModuleController
             $groups
         );
 
+        $this->pageRenderer->loadJavaScriptModule('@typo3/scheduler/new-scheduler-task-wizard-button.js');
+
         $view->assignMultiple([
             'groups' => $groups,
             'groupsWithoutTasks' => $this->getGroupsWithoutTasks($groups),
             'now' => $this->context->getAspect('date')->get('timestamp'),
             'errorClasses' => $data['errorClasses'],
+            'returnUrl' => $this->uriBuilder->buildUriFromRoute('scheduler_manage'),
             'errorClassesCollapsed' => (bool)($moduleData->get('task-group-missing', false)),
         ]);
         $view->setTitle(
@@ -337,25 +342,16 @@ final class SchedulerModuleController
         $languageService = $this->getLanguageService();
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
-        $params = [
+        $url = (string)$this->uriBuilder->buildUriFromRoute('ajax_new_scheduler_task_wizard', [
             'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
-            'edit' => [
-                'tx_scheduler_task' => [
-                    0 => 'new',
-                ],
-            ],
-            'defVals' => [
-                'tx_scheduler_task' => [
-                    'pid' => 0,
-                ],
-            ],
-        ];
+        ]);
 
-        $addButton = $buttonBar->makeLinkButton()
-            ->setTitle($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add'))
-            ->setShowLabelText(true)
-            ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL))
-            ->setHref((string)$this->uriBuilder->buildUriFromRoute('record_edit', $params));
+        $addButton = $buttonBar->makeFullyRenderedButton()->setHtmlSource(
+            '<typo3-scheduler-new-task-wizard-button url="' . $url . '" subject="' . htmlspecialchars($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add')) . '">'
+            . $this->iconFactory->getIcon('actions-plus', IconSize::SMALL) . htmlspecialchars($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add')) .
+            '</typo3-scheduler-new-task-wizard-button>'
+        );
+
         $buttonBar->addButton($addButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
     }
 

@@ -565,6 +565,12 @@
 			<trans-unit id="category">
 				<source>Category</source>
 			</trans-unit>
+			<trans-unit id="newSchedulerTask.filter.placeholder">
+				<source>Search for any kind of tasks</source>
+			</trans-unit>
+			<trans-unit id="newSchedulerTask.filter.noResults">
+				<source>Unfortunately no scheduler task matches your query, please try a different one.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

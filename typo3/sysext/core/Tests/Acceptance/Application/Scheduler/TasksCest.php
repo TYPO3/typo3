@@ -37,21 +37,25 @@ final class TasksCest
     public function createASchedulerTask(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $I->see('No tasks defined yet');
-        $I->click('//a[contains(@title, "New task")]', '.module-docheader');
-        $I->dontSeeElement('#task_SystemStatusUpdateNotificationEmail');
 
-        // first item on first tab (see fieldset) = task type
-        $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';
-        $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div.form-control-wrap:nth-of-type(1) > div.form-wizards-wrap:nth-of-type(1)';
-        $select = $formWizardsWrap . ' > div:nth-of-type(1) > select';
-        $I->selectOption($select, 'System Status Update [reports]');
-        $modalDialog->clickButtonInDialog('Save and refresh');
+        $I->click('//typo3-scheduler-new-task-wizard-button', '.module-docheader');
+        $modalDialog->canSeeDialog();
+
+        // Click on a specific task (Caching framework garbage collection)
+        $I->executeJS("document.querySelector('" . ModalDialog::$openedModalSelector . " typo3-backend-new-record-wizard').shadowRoot.querySelector('[data-identifier=\"reports\"]').click()");
+        $I->executeJS("document.querySelector('" . ModalDialog::$openedModalSelector . " typo3-backend-new-record-wizard').shadowRoot.querySelector('[data-identifier=\"reports_TYPO3_CMS_Reports_Task_SystemStatusUpdateTask\"]').click()");
         $I->switchToContentFrame();
+
         $I->waitForElement('#task_SystemStatusUpdateNotificationEmail');
         $I->fillField('#task_SystemStatusUpdateNotificationEmail', 'test@local.typo3.org');
-        $I->click('button[title="Save"]', '.module-docheader');
-        $I->waitForText('Edit Scheduler task');
-        $I->click('a[title="Close"]', '.module-docheader');
+        $I->click('.module-docheader a[title="Close"]');
+        $I->switchToWindow('typo3-backend');
+        $I->wait(1);
+        $I->waitForText('Save and close');
+        $I->click('Save and close');
+        $I->wait(1);
+
+        $I->switchToContentFrame();
     }
 
     public function canRunTask(ApplicationTester $I): void

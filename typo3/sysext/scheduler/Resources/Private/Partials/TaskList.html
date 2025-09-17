@@ -130,14 +130,10 @@
                     <div class="panel-actions">
                         <form name="tx_scheduler_form_group_toggle_hidden" id="tx_scheduler_form_group_toggle_hidden" method="post">
                             <input name="action[group][uid]" type="hidden" value="{group.uid}">
-                            <be:link.newRecord
-                                table="tx_scheduler_task"
-                                defaultValues="{tx_scheduler_task: {task_group: group.uid}}"
-                                class="btn btn-sm btn-default"
-                            >
+                            <typo3-scheduler-new-task-wizard-button class="btn btn-sm btn-default" url="{f:be.uri(route:'ajax_new_scheduler_task_wizard', parameters:'{returnUrl: returnUrl, defaultValues: {task_group: group.uid}}')}" subject="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add')}">
                                 <core:icon identifier="actions-plus" />
                                 <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add" />
-                            </be:link.newRecord>
+                            </typo3-scheduler-new-task-wizard-button>
                             <f:if condition="{group.uid}">
                                 <f:if condition="{group.hidden}">
                                     <f:then>
@@ -290,7 +286,7 @@
                                             <be:link.editRecord
                                                 uid="{task.uid}"
                                                 table="tx_scheduler_task"
-                                                returnUrl="{f:be.uri(route: 'scheduler_manage')}"
+                                                returnUrl="{returnUrl}"
                                                 title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}"
                                             >
                                                 <strong>{task.fullTitle}</strong>
@@ -435,7 +431,7 @@
                                                         uid="{task.uid}"
                                                         table="tx_scheduler_task"
                                                         class="btn btn-default"
-                                                        returnUrl="{f:be.uri(route: 'scheduler_manage')}"
+                                                        returnUrl="{returnUrl}"
                                                         title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}"
                                                     >
                                                         <core:icon identifier="actions-open" />
