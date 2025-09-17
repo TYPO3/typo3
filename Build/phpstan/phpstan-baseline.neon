@@ -1069,12 +1069,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Http/Response.php
 
 		-
-			message: '#^Access to an undefined property Psr\\Http\\Message\\StreamInterface\:\:\$stream\.$#'
-			identifier: property.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Http/SelfEmittableLazyOpenStream.php
-
-		-
 			message: '#^Method TYPO3\\CMS\\Core\\Http\\ServerRequest\:\:withParsedBody\(\) has InvalidArgumentException in PHPDoc @throws tag but it''s not thrown\.$#'
 			identifier: throws.unusedType
 			count: 1
