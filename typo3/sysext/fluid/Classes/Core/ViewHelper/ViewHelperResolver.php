@@ -75,7 +75,7 @@ class ViewHelperResolver extends \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperRes
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
             && $this->getBackendUser() instanceof BackendUserAuthentication
         ) {
-            if ($this->getBackendUser()->uc['AdminPanel']['preview_showFluidDebug'] ?? false) {
+            if ($this->getAdmPanelUserTsConfiguration()['override.']['preview.']['showFluidDebug'] ?? $this->getBackendUser()->uc['AdminPanel']['preview_showFluidDebug'] ?? false) {
                 $this->namespaces['f'][] = 'TYPO3\\CMS\\Fluid\\ViewHelpers\\Debug';
             }
         }
@@ -131,6 +131,11 @@ class ViewHelperResolver extends \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperRes
         }
         // Fall back to default ViewHelper resolving logic
         return new ViewHelperCollection($delegateClassName);
+    }
+
+    public function getAdmPanelUserTsConfiguration(): array
+    {
+        return $this->getBackendUser()->getTSConfig()['admPanel.'] ?? [];
     }
 
     protected function getBackendUser(): ?BackendUserAuthentication
