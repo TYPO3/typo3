@@ -45,6 +45,7 @@ use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\TypoScript\AST\CommentAwareAstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
@@ -185,7 +186,8 @@ class ServiceProvider extends AbstractServiceProvider
         return new Service\LanguagePackService(
             $container->get(EventDispatcherInterface::class),
             $container->get(RequestFactory::class),
-            $container->get(LogManager::class)->getLogger(Service\LanguagePackService::class)
+            $container->get(LogManager::class)->getLogger(Service\LanguagePackService::class),
+            $container->get(SystemResourcePublisherInterface::class),
         );
     }
 

@@ -1,11 +1,11 @@
 plugin.tx_seo {
   config {
-    xslFile = EXT:seo/Tests/Functional/Fixtures/XslFile1.xsl
+    xslFile = PKG:typo3/cms-seo:Resources/Public/Tests/Functional/Fixtures/XslFile1.xsl
 
     xmlSitemap {
       sitemaps {
         records {
-          config.xslFile = EXT:seo/Tests/Functional/Fixtures/XslFile3.xsl
+          config.xslFile = PKG:typo3/cms-seo:Resources/Public/Tests/Functional/Fixtures/XslFile3.xsl
         }
       }
     }

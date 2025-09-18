@@ -30,20 +30,19 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent;
-use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
+use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceException;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\DocType;
-use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Cache\NonceValueSubstitution;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Event\ModifyHrefLangTagsEvent;
-use TYPO3\CMS\Frontend\Page\FrontendUrlPrefix;
-use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use TYPO3\CMS\Frontend\Resource\PublicUrlPrefixer;
 
 /**
@@ -73,7 +72,8 @@ class RequestHandler implements RequestHandlerInterface
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ListenerProvider $listenerProvider,
         private readonly TimeTracker $timeTracker,
-        private readonly FilePathSanitizer $filePathSanitizer,
+        private readonly SystemResourceFactory $systemResourceFactory,
+        private readonly SystemResourcePublisherInterface $resourcePublisher,
         private readonly TypoScriptService $typoScriptService,
         private readonly Context $context,
         private readonly TypoScriptFrontendController $typoScriptFrontendController,
@@ -256,10 +256,10 @@ class RequestHandler implements RequestHandlerInterface
         }
         if ($typoScriptConfigArray['pageRendererTemplateFile'] ?? false) {
             try {
-                $file = $this->filePathSanitizer->sanitize($typoScriptConfigArray['pageRendererTemplateFile'], true);
-                $pageRenderer->setTemplateFile($file);
-            } catch (Exception) {
-                // Custom template is not set if sanitize() throws
+                $resource = $this->systemResourceFactory->createResource($typoScriptConfigArray['pageRendererTemplateFile']);
+                $pageRenderer->setTemplateFile((string)$resource);
+            } catch (SystemResourceException) {
+                // Custom template is not set if createResource() throws
             }
         }
         $headerComment = trim($typoScriptConfigArray['headerComment'] ?? '');
@@ -334,18 +334,12 @@ class RequestHandler implements RequestHandlerInterface
 
         if ($typoScriptPageArray['shortcutIcon'] ?? false) {
             try {
-                $favIcon = $this->filePathSanitizer->sanitize($typoScriptPageArray['shortcutIcon']);
-                $iconFileInfo = GeneralUtility::makeInstance(ImageInfo::class, Environment::getPublicPath() . '/' . $favIcon);
-                if ($iconFileInfo->isFile()) {
-                    $iconMimeType = $iconFileInfo->getMimeType();
-                    if ($iconMimeType) {
-                        $iconMimeType = ' type="' . $iconMimeType . '"';
-                        $pageRenderer->setIconMimeType($iconMimeType);
-                    }
-                    $absRefPrefix = GeneralUtility::makeInstance(FrontendUrlPrefix::class)->getUrlPrefix($request);
-                    $pageRenderer->setFavIcon(PathUtility::getAbsoluteWebPath($absRefPrefix . $favIcon));
+                $favIconResource = $this->systemResourceFactory->createPublicResource($typoScriptPageArray['shortcutIcon']);
+                if ($favIconResource instanceof SystemResourceInterface) {
+                    $pageRenderer->setIconMimeType(' type="' . $favIconResource->getMimeType() . '"');
                 }
-            } catch (Exception) {
+                $pageRenderer->setFavIcon((string)$this->resourcePublisher->generateUri($favIconResource, $request));
+            } catch (SystemResourceException) {
                 // FavIcon is not set if sanitize() throws
             }
         }
@@ -376,8 +370,8 @@ class RequestHandler implements RequestHandlerInterface
                 }
                 if (!($cssResourceConfig['external'] ?? false)) {
                     try {
-                        $cssResource = $this->filePathSanitizer->sanitize($cssResource, true);
-                    } catch (Exception) {
+                        $cssResource = (string)$this->systemResourceFactory->createResource($cssResource);
+                    } catch (SystemResourceException) {
                         continue;
                     }
                 }
@@ -408,8 +402,8 @@ class RequestHandler implements RequestHandlerInterface
                 }
                 if (!($cssResourceConfig['external'] ?? false)) {
                     try {
-                        $cssResource = $this->filePathSanitizer->sanitize($cssResource, true);
-                    } catch (Exception) {
+                        $cssResource = (string)$this->systemResourceFactory->createResource($cssResource);
+                    } catch (SystemResourceException) {
                         continue;
                     }
                 }
@@ -446,8 +440,8 @@ class RequestHandler implements RequestHandlerInterface
                 }
                 if (!($jsResourceConfig['external'] ?? false)) {
                     try {
-                        $jsResource = $this->filePathSanitizer->sanitize($jsResource, true);
-                    } catch (Exception) {
+                        $jsResource = (string)$this->systemResourceFactory->createResource($jsResource);
+                    } catch (SystemResourceException) {
                         continue;
                     }
                 }
@@ -485,8 +479,8 @@ class RequestHandler implements RequestHandlerInterface
                 }
                 if (!($jsResourceConfig['external'] ?? false)) {
                     try {
-                        $jsResource = $this->filePathSanitizer->sanitize($jsResource, true);
-                    } catch (Exception) {
+                        $jsResource = (string)$this->systemResourceFactory->createResource($jsResource);
+                    } catch (SystemResourceException) {
                         continue;
                     }
                 }
@@ -524,8 +518,8 @@ class RequestHandler implements RequestHandlerInterface
                 }
                 if (!($jsResourceConfig['external'] ?? false)) {
                     try {
-                        $jsResource = $this->filePathSanitizer->sanitize($jsResource, true);
-                    } catch (Exception) {
+                        $jsResource = (string)$this->systemResourceFactory->createResource($jsResource);
+                    } catch (SystemResourceException) {
                         continue;
                     }
                 }
@@ -562,8 +556,8 @@ class RequestHandler implements RequestHandlerInterface
                 }
                 if (!($jsResourceConfig['external'] ?? false)) {
                     try {
-                        $jsResource = $this->filePathSanitizer->sanitize($jsResource, true);
-                    } catch (Exception) {
+                        $jsResource = (string)$this->systemResourceFactory->createResource($jsResource);
+                    } catch (SystemResourceException) {
                         continue;
                     }
                 }
@@ -776,7 +770,7 @@ class RequestHandler implements RequestHandlerInterface
             $pageRenderer->addCssInlineBlock($inlineBlockName, $cssStyles, !empty($typoScriptConfigArray['compressCss'] ?? false));
         } else {
             $pageRenderer->addCssFile(
-                GeneralUtility::writeStyleSheetContentToTemporaryFile($cssStyles),
+                'PKG:typo3/app:' . Environment::getRelativePublicPath() . GeneralUtility::writeStyleSheetContentToTemporaryFile($cssStyles),
                 'stylesheet',
                 'all',
                 '',

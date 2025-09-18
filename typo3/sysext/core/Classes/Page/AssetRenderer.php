@@ -22,8 +22,9 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Page\Event\BeforeJavaScriptsRenderingEvent;
 use TYPO3\CMS\Core\Page\Event\BeforeStylesheetsRenderingEvent;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * @internal The AssetRenderer is used for the asset rendering and is not public API
@@ -34,6 +35,8 @@ readonly class AssetRenderer
     public function __construct(
         protected AssetCollector $assetCollector,
         protected EventDispatcherInterface $eventDispatcher,
+        protected SystemResourcePublisherInterface $resourcePublisher,
+        protected SystemResourceFactory $systemResourceFactory,
     ) {}
 
     public function renderInlineJavaScript($priority = false, ?ConsumableNonce $nonce = null): string
@@ -113,11 +116,7 @@ readonly class AssetRenderer
 
     private function getAbsoluteWebPath(string $file): string
     {
-        if (PathUtility::hasProtocolAndScheme($file)) {
-            return $file;
-        }
-        $file = GeneralUtility::getFileAbsFileName($file);
-        $file = GeneralUtility::createVersionNumberedFilename($file);
-        return PathUtility::getAbsoluteWebPath($file);
+        $resource = $this->systemResourceFactory->createPublicResource($file);
+        return (string)$this->resourcePublisher->generateUri($resource, null);
     }
 }

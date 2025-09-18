@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolvePublicResourceException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -34,6 +35,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * The sanitize method either returns a full URL (in case it's a valid http/https resource)
  * or a path relative to the public folder of the TYPO3 Frontend.
+ * @deprecated
  */
 class FilePathSanitizer
 {
@@ -51,6 +53,8 @@ class FilePathSanitizer
      */
     public function __construct()
     {
+        trigger_error('FilePathSanitizer is deprecated and will be removed with TYPO3 v15. Use SystemResource API instead', E_USER_DEPRECATED);
+
         $this->allowedPaths = [
             '_assets/',
             $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
@@ -116,7 +120,11 @@ class FilePathSanitizer
     private function makeRelative(string $absoluteFilePath, string $originalFilePath, bool $isExtensionPath): string
     {
         if ($isExtensionPath) {
-            return PathUtility::getPublicResourceWebPath($originalFilePath, false);
+            try {
+                return PathUtility::getPublicResourceWebPath($originalFilePath, false);
+            } catch (CanNotResolvePublicResourceException $e) {
+                throw new InvalidFileException('"' . $originalFilePath . '" is expected to be in public directory, but is not', 1760629137, $e);
+            }
         }
 
         if (!str_starts_with($absoluteFilePath, Environment::getPublicPath())) {

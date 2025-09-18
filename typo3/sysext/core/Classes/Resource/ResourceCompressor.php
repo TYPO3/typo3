@@ -18,6 +18,12 @@ namespace TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolveSystemResourceException;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\Publishing\UriGenerationOptions;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
+use TYPO3\CMS\Core\SystemResource\Type\PublicResourceInterface;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -60,6 +66,11 @@ class ResourceCompressor
 </FilesMatch>';
 
     protected bool $initialized = false;
+
+    public function __construct(
+        private readonly SystemResourceFactory $resourceFactory,
+        private readonly SystemResourcePublisherInterface $resourcePublisher,
+    ) {}
 
     protected function initialize(): void
     {
@@ -106,15 +117,14 @@ class ResourceCompressor
             if (!empty($fileOptions['excludeFromConcatenation'])) {
                 continue;
             }
-            $filenameFromMainDir = $this->getFilenameFromMainDir($fileOptions['file']);
             $type = isset($fileOptions['media']) ? strtolower($fileOptions['media']) : 'all';
             if (!isset($filesToIncludeByType[$type])) {
                 $filesToIncludeByType[$type] = [];
             }
             if (!empty($fileOptions['forceOnTop'])) {
-                array_unshift($filesToIncludeByType[$type], $filenameFromMainDir);
+                array_unshift($filesToIncludeByType[$type], $fileOptions['file']);
             } else {
-                $filesToIncludeByType[$type][] = $filenameFromMainDir;
+                $filesToIncludeByType[$type][] = $fileOptions['file'];
             }
             // remove the file from the incoming file array
             unset($cssFiles[$key]);
@@ -159,11 +169,10 @@ class ResourceCompressor
             if (!isset($filesToInclude[$fileOptions['section']])) {
                 $filesToInclude[$fileOptions['section']] = [];
             }
-            $filenameFromMainDir = $this->getFilenameFromMainDir($fileOptions['file']);
             if (!empty($fileOptions['forceOnTop'])) {
-                array_unshift($filesToInclude[$fileOptions['section']], $filenameFromMainDir);
+                array_unshift($filesToInclude[$fileOptions['section']], $fileOptions['file']);
             } else {
-                $filesToInclude[$fileOptions['section']][] = $filenameFromMainDir;
+                $filesToInclude[$fileOptions['section']][] = $fileOptions['file'];
             }
             if ($fileOptions['async'] ?? false) {
                 $concatenatedJsFileIsAsync = true;
@@ -202,7 +211,7 @@ class ResourceCompressor
      */
     protected function createMergedCssFile(array $filesToInclude)
     {
-        return $this->createMergedFile($filesToInclude, 'css');
+        return $this->createMergedFile($filesToInclude);
     }
 
     /**
@@ -235,33 +244,45 @@ class ResourceCompressor
         // we add up the filenames, filemtimes and filesizes to later build a checksum over
         // it and include it in the temporary file name
         $unique = '';
-        foreach ($filesToInclude as $key => $filename) {
-            if (GeneralUtility::isValidUrl($filename)) {
-                // check if it is possibly a local file with fully qualified URL
-                if (GeneralUtility::isOnCurrentHost($filename) &&
-                    str_starts_with(
-                        $filename,
-                        $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl()
-                    )
-                ) {
-                    // attempt to turn it into a local file path
-                    $localFilename = substr($filename, strlen($GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl()));
-                    if (@is_file(Environment::getPublicPath() . '/' . $localFilename)) {
-                        $filesToInclude[$key] = $localFilename;
+        foreach ($filesToInclude as $key => $fileToMerge) {
+            try {
+                $filename = null;
+                $resource = $this->resourceFactory->createPublicResource($fileToMerge);
+            } catch (CanNotResolveSystemResourceException) {
+                $resource = null;
+                $filename = $this->getFilenameFromMainDir($fileToMerge);
+            }
+            if ($resource instanceof SystemResourceInterface) {
+                $filesToInclude[$key] = $resource;
+                $unique .= $resource->getHash();
+            } else {
+                if (GeneralUtility::isValidUrl($filename)) {
+                    // check if it is possibly a local file with fully qualified URL
+                    if (GeneralUtility::isOnCurrentHost($filename) &&
+                        str_starts_with(
+                            $filename,
+                            $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl()
+                        )
+                    ) {
+                        // attempt to turn it into a local file path
+                        $localFilename = substr($filename, strlen($GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl()));
+                        if (@is_file(Environment::getPublicPath() . '/' . $localFilename)) {
+                            $filesToInclude[$key] = $localFilename;
+                        } else {
+                            $filesToInclude[$key] = $this->retrieveExternalFile($filename);
+                        }
                     } else {
                         $filesToInclude[$key] = $this->retrieveExternalFile($filename);
                     }
-                } else {
-                    $filesToInclude[$key] = $this->retrieveExternalFile($filename);
+                    $filename = $filesToInclude[$key];
                 }
-                $filename = $filesToInclude[$key];
-            }
-            $filenameAbsolute = Environment::getPublicPath() . '/' . $filename;
-            if (@file_exists($filenameAbsolute)) {
-                $fileStatus = stat($filenameAbsolute);
-                $unique .= $filenameAbsolute . $fileStatus['mtime'] . $fileStatus['size'];
-            } else {
-                $unique .= $filenameAbsolute;
+                $filenameAbsolute = Environment::getPublicPath() . '/' . $filename;
+                if (@file_exists($filenameAbsolute)) {
+                    $fileStatus = stat($filenameAbsolute);
+                    $unique .= $filenameAbsolute . $fileStatus['mtime'] . $fileStatus['size'];
+                } else {
+                    $unique .= $filenameAbsolute;
+                }
             }
         }
         $targetFile = $this->targetDirectory . 'merged-' . md5($unique) . '.' . $type;
@@ -269,17 +290,23 @@ class ResourceCompressor
         if (!file_exists(Environment::getPublicPath() . '/' . $targetFile)) {
             $concatenated = '';
             // concatenate all the files together
-            foreach ($filesToInclude as $filename) {
-                $filenameAbsolute = Environment::getPublicPath() . '/' . $filename;
-                $filename = PathUtility::stripPathSitePrefix($filenameAbsolute);
-                $contents = (string)file_get_contents($filenameAbsolute);
-                // remove any UTF-8 byte order mark (BOM) from files
-                if (str_starts_with($contents, "\xEF\xBB\xBF")) {
-                    $contents = substr($contents, 3);
+            foreach ($filesToInclude as $fileToMerge) {
+                if ($fileToMerge instanceof SystemResourceInterface && $fileToMerge instanceof PublicResourceInterface) {
+                    $contents = $fileToMerge->getContents();
+                    $fileUrl = ltrim((string)$this->resourcePublisher->generateUri($fileToMerge, null, new UriGenerationOptions(uriPrefix: '')), '/');
+                } else {
+                    $filename = $fileToMerge;
+                    $filenameAbsolute = Environment::getPublicPath() . '/' . $filename;
+                    $fileUrl = PathUtility::getAbsoluteWebPath($filenameAbsolute, false);
+                    $contents = (string)file_get_contents($filenameAbsolute);
+                    // remove any UTF-8 byte order mark (BOM) from files
+                    if (str_starts_with($contents, "\xEF\xBB\xBF")) {
+                        $contents = substr($contents, 3);
+                    }
                 }
                 // only fix paths if files aren't already in typo3temp (already processed)
-                if ($type === 'css' && !str_starts_with($filename, $this->targetDirectory)) {
-                    $contents = $this->cssFixRelativeUrlPaths($contents, $filename);
+                if ($type === 'css' && !str_starts_with($fileUrl, $this->targetDirectory)) {
+                    $contents = $this->cssFixRelativeUrlPaths($contents, $fileUrl);
                 }
                 $concatenated .= LF . $contents;
             }
@@ -325,30 +352,43 @@ class ResourceCompressor
      * removes comments and whitespaces
      * Adopted from https://github.com/drupal/drupal/blob/8.0.x/core/lib/Drupal/Core/Asset/CssOptimizer.php
      *
-     * @param string $filename Source filename, relative to requested page
+     * @param string $cssFile Source filename, relative to requested page
      * @return string Compressed filename, relative to requested page
      */
-    public function compressCssFile($filename)
+    public function compressCssFile($cssFile)
     {
         $this->initialize();
-        // generate the unique name of the file
-        $filenameAbsolute = Environment::getPublicPath() . '/' . $this->getFilenameFromMainDir($filename);
-        if (@file_exists($filenameAbsolute)) {
-            $fileStatus = stat($filenameAbsolute);
-            $unique = $filenameAbsolute . $fileStatus['mtime'] . $fileStatus['size'];
-        } else {
-            $unique = $filenameAbsolute;
+        try {
+            $resource = $this->resourceFactory->createPublicResource($cssFile);
+        } catch (CanNotResolveSystemResourceException) {
+            $resource = null;
         }
-        // make sure it is again the full filename
-        $filename = PathUtility::stripPathSitePrefix($filenameAbsolute);
+        if ($resource instanceof SystemResourceInterface) {
+            $filename = $resource->getNameWithoutExtension();
+            $fileContents = $resource->getContents();
+            $hash = $resource->getHash();
+            $cssUrl = ltrim((string)$this->resourcePublisher->generateUri($resource, null, new UriGenerationOptions(uriPrefix: '')), '/');
+        } else {
+            $filename = PathUtility::pathinfo($cssFile)['filename'];
+            $filenameAbsolute = Environment::getPublicPath() . '/' . $this->getFilenameFromMainDir($cssFile);
+            if (@file_exists($filenameAbsolute)) {
+                $fileContents = file_get_contents($filenameAbsolute);
+                $fileStatus = stat($filenameAbsolute);
+                $hash = md5($filenameAbsolute . $fileStatus['mtime'] . $fileStatus['size']);
+            } else {
+                $hash = md5($filenameAbsolute);
+                $fileContents = '';
+            }
+            // make sure it is again the full filename
+            $cssUrl = PathUtility::getAbsoluteWebPath($filenameAbsolute, false);
+        }
 
-        $pathinfo = PathUtility::pathinfo($filenameAbsolute);
-        $targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.css';
-        // only create it, if it doesn't exist, yet
-        if (!file_exists(Environment::getPublicPath() . '/' . $targetFile) || $this->createGzipped && !file_exists(Environment::getPublicPath() . '/' . $targetFile . $this->gzipFileExtension)) {
-            $contents = $this->compressCssString((string)file_get_contents($filenameAbsolute));
-            if (!str_contains($filename, $this->targetDirectory)) {
-                $contents = $this->cssFixRelativeUrlPaths($contents, $filename);
+        $targetFile = $this->targetDirectory . $filename . '-' . $hash . '.css';
+        if (!file_exists(Environment::getPublicPath() . '/' . $targetFile . ($this->createGzipped ? $this->gzipFileExtension : ''))
+        ) {
+            $contents = $this->compressCssString($fileContents);
+            if (!str_contains($cssUrl, $this->targetDirectory)) {
+                $contents = $this->cssFixRelativeUrlPaths($contents, $cssUrl);
             }
             $this->writeFileAndCompressed($targetFile, $contents);
         }
@@ -382,26 +422,38 @@ class ResourceCompressor
     /**
      * Compresses a javascript file
      *
-     * @param string $filename Source filename, relative to requested page
+     * @param string $jsFile Source filename, relative to requested page
      * @return string Filename of the compressed file, relative to requested page
      */
-    public function compressJsFile($filename)
+    public function compressJsFile($jsFile)
     {
         $this->initialize();
-        // generate the unique name of the file
-        $filenameAbsolute = Environment::getPublicPath() . '/' . $this->getFilenameFromMainDir($filename);
-        if (@file_exists($filenameAbsolute)) {
-            $fileStatus = stat($filenameAbsolute);
-            $unique = $filenameAbsolute . $fileStatus['mtime'] . $fileStatus['size'];
-        } else {
-            $unique = $filenameAbsolute;
+        try {
+            $resource = $this->resourceFactory->createResource($jsFile);
+        } catch (CanNotResolveSystemResourceException) {
+            $resource = null;
         }
-        $pathinfo = PathUtility::pathinfo($filename);
-        $targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.js';
+        if ($resource instanceof SystemResourceInterface) {
+            $filename = $resource->getNameWithoutExtension();
+            $fileContents = $resource->getContents();
+            $hash = $resource->getHash();
+        } else {
+            $filename = PathUtility::pathinfo($jsFile)['filename'];
+            $filenameAbsolute = Environment::getPublicPath() . '/' . $this->getFilenameFromMainDir($jsFile);
+            if (@file_exists($filenameAbsolute)) {
+                $fileContents = file_get_contents($filenameAbsolute);
+                $fileStatus = stat($filenameAbsolute);
+                $hash = md5($filenameAbsolute . $fileStatus['mtime'] . $fileStatus['size']);
+            } else {
+                $hash = md5($filenameAbsolute);
+                $fileContents = '';
+            }
+        }
+        $targetFile = $this->targetDirectory . $filename . '-' . $hash . '.js';
         // only create it, if it doesn't exist, yet
-        if (!file_exists(Environment::getPublicPath() . '/' . $targetFile) || $this->createGzipped && !file_exists(Environment::getPublicPath() . '/' . $targetFile . $this->gzipFileExtension)) {
-            $contents = (string)file_get_contents($filenameAbsolute);
-            $this->writeFileAndCompressed($targetFile, $contents);
+        if (!file_exists(Environment::getPublicPath() . '/' . $targetFile . ($this->createGzipped ? $this->gzipFileExtension : ''))
+        ) {
+            $this->writeFileAndCompressed($targetFile, $fileContents);
         }
         return $this->returnFileReference($targetFile);
     }
@@ -444,7 +496,8 @@ class ResourceCompressor
         }
         // build the file path relative to the public web path
         if (PathUtility::isExtensionPath($filename)) {
-            return PathUtility::getPublicResourceWebPath($filename, false);
+            return ltrim((string)PathUtility::getSystemResourceUri($filename, null, new UriGenerationOptions(uriPrefix: ''))
+                ->withQuery(''), '/');
         }
         return $filename;
     }

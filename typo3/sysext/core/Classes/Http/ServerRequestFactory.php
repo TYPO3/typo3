@@ -70,7 +70,8 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
             if (Environment::isCli()) {
                 throw new InvalidRequestUrlOnCliException(
                     'Usage of ' . __METHOD__ . ' on CLI is discouraged. In case you rely on the method, you have to fake a valid request URL using $_SERVER.',
-                    1701105725
+                    1701105725,
+                    $e,
                 );
             }
             throw $e;

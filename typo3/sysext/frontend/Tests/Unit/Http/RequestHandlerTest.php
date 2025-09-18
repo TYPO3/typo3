@@ -29,6 +29,8 @@ use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
@@ -39,7 +41,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Http\RequestHandler;
 use TYPO3\CMS\Frontend\Page\PageInformation;
-use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -171,6 +172,8 @@ final class RequestHandlerTest extends UnitTestCase
         $frontendTypoScript->setConfigArray([]);
         $pageInformation = new PageInformation();
         $pageInformation->setPageRecord([]);
+        $resourceFactory = $this->createMock(SystemResourceFactory::class);
+        $resourcePublisher = $this->createMock(SystemResourcePublisherInterface::class);
         $request = (new ServerRequest())
             ->withAttribute('frontend.typoscript', $frontendTypoScript)
             ->withAttribute('routing', new PageArguments(1, '0', []))
@@ -183,7 +186,8 @@ final class RequestHandlerTest extends UnitTestCase
                 new NoopEventDispatcher(),
                 new ListenerProvider(new Container()),
                 new TimeTracker(false),
-                new FilePathSanitizer(),
+                $resourceFactory,
+                $resourcePublisher,
                 new TypoScriptService(),
                 new Context(),
                 $frontendControllerMock,
@@ -334,6 +338,8 @@ final class RequestHandlerTest extends UnitTestCase
             ->withAttribute('routing', new PageArguments(1, '0', []))
             ->withAttribute('language', $siteLanguage)
             ->withAttribute('frontend.page.information', $pageInformation);
+        $resourceFactory = $this->createMock(SystemResourceFactory::class);
+        $resourcePublisher = $this->createMock(SystemResourcePublisherInterface::class);
         $subject = $this->getAccessibleMock(
             RequestHandler::class,
             ['getPageRenderer'],
@@ -341,7 +347,8 @@ final class RequestHandlerTest extends UnitTestCase
                 new NoopEventDispatcher(),
                 new ListenerProvider(new Container()),
                 new TimeTracker(false),
-                new FilePathSanitizer(),
+                $resourceFactory,
+                $resourcePublisher,
                 new TypoScriptService(),
                 new Context(),
                 $frontendControllerMock,
@@ -385,6 +392,8 @@ final class RequestHandlerTest extends UnitTestCase
             ->withAttribute('routing', new PageArguments(1, '0', []))
             ->withAttribute('language', $siteLanguage)
             ->withAttribute('frontend.page.information', $pageInformation);
+        $resourceFactory = $this->createMock(SystemResourceFactory::class);
+        $resourcePublisher = $this->createMock(SystemResourcePublisherInterface::class);
         $subject = $this->getAccessibleMock(
             RequestHandler::class,
             ['getPageRenderer'],
@@ -392,7 +401,8 @@ final class RequestHandlerTest extends UnitTestCase
                 new NoopEventDispatcher(),
                 new ListenerProvider(new Container()),
                 new TimeTracker(false),
-                new FilePathSanitizer(),
+                $resourceFactory,
+                $resourcePublisher,
                 new TypoScriptService(),
                 new Context(),
                 $frontendControllerMock,
@@ -502,6 +512,8 @@ final class RequestHandlerTest extends UnitTestCase
             ->withAttribute('routing', new PageArguments(1, '0', []))
             ->withAttribute('language', $siteLanguage)
             ->withAttribute('frontend.page.information', $pageInformation);
+        $resourceFactory = $this->createMock(SystemResourceFactory::class);
+        $resourcePublisher = $this->createMock(SystemResourcePublisherInterface::class);
         $subject = $this->getAccessibleMock(
             RequestHandler::class,
             ['getPageRenderer'],
@@ -509,7 +521,8 @@ final class RequestHandlerTest extends UnitTestCase
                 new NoopEventDispatcher(),
                 new ListenerProvider(new Container()),
                 new TimeTracker(false),
-                new FilePathSanitizer(),
+                $resourceFactory,
+                $resourcePublisher,
                 new TypoScriptService(),
                 new Context(),
                 $frontendControllerMock,

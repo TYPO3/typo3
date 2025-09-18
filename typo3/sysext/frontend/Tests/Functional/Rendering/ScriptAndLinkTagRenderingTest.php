@@ -31,27 +31,31 @@ final class ScriptAndLinkTagRenderingTest extends FunctionalTestCase
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en'],
     ];
 
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_resource_rendering',
+    ];
+
     /**
      * @var string[]
      */
     private array $definedResources = [
-        'forceOnTopCSS'         => '/path/to/forceOnTop.css',
-        'forceOnTopJS'          => '/path/to/forceOnTop.js',
-        'forceOnTopCSSLib'      => '/path/to/forceOnTopLib.css',
-        'forceOnTopJSLib'       => '/path/to/forceOnTopLib.js',
-        'forceOnTopJSLibFooter' => '/path/to/forceOnTopLibFooter.js',
+        'forceOnTopCSS'         => 'EXT:test_resource_rendering/Resources/Public/forceOnTop.css',
+        'forceOnTopJS'          => 'EXT:test_resource_rendering/Resources/Public/forceOnTop.js',
+        'forceOnTopCSSLib'      => 'EXT:test_resource_rendering/Resources/Public/forceOnTopLib.css',
+        'forceOnTopJSLib'       => 'EXT:test_resource_rendering/Resources/Public/forceOnTopLib.js',
+        'forceOnTopJSLibFooter' => 'EXT:test_resource_rendering/Resources/Public/forceOnTopLibFooter.js',
 
-        'alternateCSS'          => '/path/to/alternate.css',
-        'alternateJS'           => '/path/to/alternate.js',
-        'alternateCSSLib'       => '/path/to/alternateLib.css',
-        'alternateJSLib'        => '/path/to/alternateLib.js',
-        'alternateJSLibFooter'  => '/path/to/alternateLibFooter.js',
+        'alternateCSS'          => 'EXT:test_resource_rendering/Resources/Public/alternate.css',
+        'alternateJS'           => 'EXT:test_resource_rendering/Resources/Public/alternate.js',
+        'alternateCSSLib'       => 'EXT:test_resource_rendering/Resources/Public/alternateLib.css',
+        'alternateJSLib'        => 'EXT:test_resource_rendering/Resources/Public/alternateLib.js',
+        'alternateJSLibFooter'  => 'EXT:test_resource_rendering/Resources/Public/alternateLibFooter.js',
 
-        'dataCSS'               => '/path/to/data.css',
-        'dataJS'                => '/path/to/data.js',
-        'dataCSSLib'            => '/path/to/dataLib.css',
-        'dataJSLib'             => '/path/to/dataLib.js',
-        'dataJSLibFooter'       => '/path/to/dataLibFooter.js',
+        'dataCSS'               => 'EXT:test_resource_rendering/Resources/Public/data.css',
+        'dataJS'                => 'EXT:test_resource_rendering/Resources/Public/data.js',
+        'dataCSSLib'            => 'EXT:test_resource_rendering/Resources/Public/dataLib.css',
+        'dataJSLib'             => 'EXT:test_resource_rendering/Resources/Public/dataLib.js',
+        'dataJSLibFooter'       => 'EXT:test_resource_rendering/Resources/Public/dataLibFooter.js',
     ];
 
     protected function setUp(): void
@@ -91,23 +95,23 @@ final class ScriptAndLinkTagRenderingTest extends FunctionalTestCase
         $content = (string)$response->getBody();
 
         $expectations = [
-            'forceOnTopCSS'         => '<link rel="stylesheet" href="/path/to/forceOnTop.css" media="all">',
-            'forceOnTopCSSLib'      => '<link rel="stylesheet" href="/path/to/forceOnTopLib.css" media="all">',
-            'forceOnTopJS'          => '<script src="/path/to/forceOnTop.js"></script>',
-            'forceOnTopJSLib'       => '<script src="/path/to/forceOnTopLib.js"></script>',
-            'forceOnTopJSLibFooter' => '<script src="/path/to/forceOnTopLibFooter.js"></script>',
+            'forceOnTopCSS'         => '<link rel="stylesheet" href="/typo3conf/ext/test_resource_rendering/Resources/Public/forceOnTop.css" media="all">',
+            'forceOnTopCSSLib'      => '<link rel="stylesheet" href="/typo3conf/ext/test_resource_rendering/Resources/Public/forceOnTopLib.css" media="all">',
+            'forceOnTopJS'          => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/forceOnTop.js"></script>',
+            'forceOnTopJSLib'       => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/forceOnTopLib.js"></script>',
+            'forceOnTopJSLibFooter' => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/forceOnTopLibFooter.js"></script>',
 
-            'alternateCSS'          => '<link rel="alternate stylesheet" href="/path/to/alternate.css" media="print" title="Dummy">',
-            'alternateCSSLib'       => '<link rel="alternate stylesheet" href="/path/to/alternateLib.css" media="print" title="Dummy">',
-            'alternateJS'           => '<script src="/path/to/alternate.js" type="text/plain" defer="defer" nomodule="nomodule" integrity="4711" crossorigin="example.com"></script>',
-            'alternateJSLib'        => '<script src="/path/to/alternateLib.js" type="text/plain" defer="defer" nomodule="nomodule" integrity="4711" crossorigin="example.com"></script>',
-            'alternateJSLibFooter'  => '<script src="/path/to/alternateLibFooter.js" type="text/plain" defer="defer" nomodule="nomodule" integrity="4711" crossorigin="example.com"></script>',
+            'alternateCSS'          => '<link rel="alternate stylesheet" href="/typo3conf/ext/test_resource_rendering/Resources/Public/alternate.css" media="print" title="Dummy">',
+            'alternateCSSLib'       => '<link rel="alternate stylesheet" href="/typo3conf/ext/test_resource_rendering/Resources/Public/alternateLib.css" media="print" title="Dummy">',
+            'alternateJS'           => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/alternate.js" type="text/plain" defer="defer" nomodule="nomodule" integrity="4711" crossorigin="example.com"></script>',
+            'alternateJSLib'        => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/alternateLib.js" type="text/plain" defer="defer" nomodule="nomodule" integrity="4711" crossorigin="example.com"></script>',
+            'alternateJSLibFooter'  => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/alternateLibFooter.js" type="text/plain" defer="defer" nomodule="nomodule" integrity="4711" crossorigin="example.com"></script>',
 
-            'dataCSS'               => '<link rel="stylesheet" href="/path/to/data.css" media="all" somethingcustom="someValue" data-attribute="value">',
-            'dataCSSLib'            => '<link rel="stylesheet" href="/path/to/dataLib.css" media="all" somethingcustom="someValue" data-attribute="value">',
-            'dataJS'                => '<script src="/path/to/data.js" data-attribute="value"></script>',
-            'dataJSLib'             => '<script src="/path/to/dataLib.js" somethingcustom="someValue" data-attribute="value"></script>',
-            'dataJSLibFooter'       => '<script src="/path/to/dataLibFooter.js" somethingcustom="someValue" data-attribute="value"></script>',
+            'dataCSS'               => '<link rel="stylesheet" href="/typo3conf/ext/test_resource_rendering/Resources/Public/data.css" media="all" somethingcustom="someValue" data-attribute="value">',
+            'dataCSSLib'            => '<link rel="stylesheet" href="/typo3conf/ext/test_resource_rendering/Resources/Public/dataLib.css" media="all" somethingcustom="someValue" data-attribute="value">',
+            'dataJS'                => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/data.js" data-attribute="value"></script>',
+            'dataJSLib'             => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/dataLib.js" somethingcustom="someValue" data-attribute="value"></script>',
+            'dataJSLibFooter'       => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/dataLibFooter.js" somethingcustom="someValue" data-attribute="value"></script>',
         ];
 
         foreach ($expectations as $expectationHtml) {

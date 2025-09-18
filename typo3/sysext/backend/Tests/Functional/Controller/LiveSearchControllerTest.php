@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Search\Event\BeforeLiveSearchFormIsBuiltEvent;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -57,7 +58,9 @@ final class LiveSearchControllerTest extends FunctionalTestCase
         $listenerProvider = $container->get(ListenerProvider::class);
         $listenerProvider->addListener(BeforeLiveSearchFormIsBuiltEvent::class, 'modify-live-search-form-data-event-is-dispatched');
 
-        $request = (new ServerRequest('https://example.com/typo3/main'))
+        $request = (new ServerRequest('https://example.com/typo3/main'));
+        $request = $request
+            ->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/livesearch/form', ['packageName' => 'typo3/cms-backend', '_identifier' => 'livesearch_form']));
 
@@ -87,7 +90,9 @@ final class LiveSearchControllerTest extends FunctionalTestCase
         $listenerProvider = $container->get(ListenerProvider::class);
         $listenerProvider->addListener(BeforeLiveSearchFormIsBuiltEvent::class, 'modify-live-search-form-data-event-is-dispatched');
 
-        $request = (new ServerRequest('https://example.com/typo3/main'))
+        $request = (new ServerRequest('https://example.com/typo3/main'));
+        $request = $request
+            ->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/livesearch/form', ['packageName' => 'typo3/cms-backend', '_identifier' => 'livesearch_form']));
 
@@ -115,7 +120,9 @@ final class LiveSearchControllerTest extends FunctionalTestCase
         $listenerProvider = $container->get(ListenerProvider::class);
         $listenerProvider->addListener(BeforeLiveSearchFormIsBuiltEvent::class, 'modify-live-search-form-data-event-is-dispatched');
 
-        $request = (new ServerRequest('https://example.com/typo3/main'))
+        $request = (new ServerRequest('https://example.com/typo3/main'));
+        $request = $request
+            ->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/livesearch/form', ['packageName' => 'typo3/cms-backend', '_identifier' => 'livesearch_form']));
 
@@ -144,7 +151,9 @@ final class LiveSearchControllerTest extends FunctionalTestCase
         $listenerProvider = $container->get(ListenerProvider::class);
         $listenerProvider->addListener(BeforeLiveSearchFormIsBuiltEvent::class, 'modify-live-search-form-data-event-is-dispatched');
 
-        $request = (new ServerRequest('https://example.com/typo3/main'))
+        $request = (new ServerRequest('https://example.com/typo3/main'));
+        $request = $request
+            ->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/livesearch/form', ['packageName' => 'typo3/cms-backend', '_identifier' => 'livesearch_form']));
 

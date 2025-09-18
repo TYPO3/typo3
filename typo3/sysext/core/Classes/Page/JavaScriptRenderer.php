@@ -35,6 +35,8 @@ class JavaScriptRenderer
      */
     public static function create(?string $uri = null): self
     {
+        // @todo postpone creation of the URI to rendering, once a request is passed
+        //       and the new resource API can be used
         $uri ??= PathUtility::getAbsoluteWebPath(
             GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/JavaScript/java-script-item-handler.js')
         );

@@ -141,7 +141,7 @@ class DashboardInitializationService
     {
         foreach ($widgetInstance->getJsFiles() as $jsFile) {
             if (PathUtility::isExtensionPath($jsFile)) {
-                $jsFile = PathUtility::getPublicResourceWebPath($jsFile);
+                $jsFile = (string)PathUtility::getSystemResourceUri($jsFile);
             }
             $this->jsFiles[$jsFile] = $jsFile;
         }
@@ -155,7 +155,7 @@ class DashboardInitializationService
     {
         foreach ($widgetInstance->getCssFiles() as $cssFile) {
             if (PathUtility::isExtensionPath($cssFile)) {
-                $cssFile = PathUtility::getPublicResourceWebPath($cssFile);
+                $cssFile = (string)PathUtility::getSystemResourceUri($cssFile);
             }
             $this->cssFiles[$cssFile] = $cssFile;
         }

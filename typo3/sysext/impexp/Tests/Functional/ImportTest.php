@@ -158,18 +158,12 @@ final class ImportTest extends AbstractImportExportTestCase
         $subject->setPid(0);
         $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-softrefs.xml');
         $previewData = $subject->renderPreview();
-        //        file_put_contents(
-        //            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecordsWithSoftRefs.php',
-        //            str_replace(
-        //                ['array (', '),', ');'],
-        //                ['[', '],', '];'],
-        //                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
-        //        );
         self::assertEquals($renderPreviewImport, $previewData);
     }
 
     public static function addFilesSucceedsDataProvider(): array
     {
+        $fileMtimeHard = filemtime(__DIR__ . '/../../Resources/Public/Icons/status-reference-hard.png');
         return [
             ['dat' => [
                 'header' => [
@@ -190,7 +184,7 @@ final class ImportTest extends AbstractImportExportTestCase
                         'msg' => '',
                         'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="FILE" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-hard" data-identifier="status-reference-hard" aria-hidden="true">
 ' . "\t" . '<span class="icon-markup">
-<img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-hard.png" width="16" height="16" alt="" />
+<img src="/typo3/sysext/impexp/Resources/Public/Icons/status-reference-hard.png?' . $fileMtimeHard . '" width="16" height="16" alt="" />
 ' . "\t" . '</span>' . "\n\t\n" . '</span>',
                         'title' => 'filename.jpg',
                         'showDiffContent' => '',

@@ -22,6 +22,8 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException;
 use TYPO3\CMS\Core\Package\MetaData\PackageConstraint;
+use TYPO3\CMS\Core\Package\Resource\ResourceCollection;
+use TYPO3\CMS\Core\Package\Resource\ResourceCollectionInterface;
 
 /**
  * A Package representing the details of an extension and/or a composer package
@@ -142,6 +144,14 @@ class Package implements PackageInterface
                 $this->packageMetaData->addConstraint($constraint);
             }
         }
+    }
+
+    public function getResources(): ResourceCollectionInterface
+    {
+        return new ResourceCollection(
+            $this,
+            $this->getPackageIcon(),
+        );
     }
 
     /**

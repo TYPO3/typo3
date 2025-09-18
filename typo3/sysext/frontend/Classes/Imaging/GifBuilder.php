@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Context\FileProcessingAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Imaging\ImageResource;
-use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\Service\ConfigurationService;
@@ -33,7 +32,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 
 /**
  * GIFBUILDER
@@ -1227,11 +1225,8 @@ class GifBuilder
             }
         }
 
-        if (!is_null($conf['fontFile'] ?? null)) {
-            $conf['fontFile'] = $this->checkFile($conf['fontFile']);
-        }
         if (!($conf['fontFile'] ?? false)) {
-            $conf['fontFile'] = $this->checkFile('EXT:core/Resources/Private/Font/nimbus.ttf');
+            $conf['fontFile'] = 'EXT:core/Resources/Private/Font/nimbus.ttf';
         }
         if (!($conf['iterations'] ?? false)) {
             $conf['iterations'] = 1;
@@ -1282,15 +1277,6 @@ class GifBuilder
                             if (isset($conf['splitRendering.'][$cfgK . '.'][$pxKey])) {
                                 $conf['splitRendering.'][$cfgK . '.'][$pxKey] = round($conf['splitRendering.'][$cfgK . '.'][$pxKey] * ($conf['fontSize'] / $this->charRangeMap[$fontBaseName]['pixelSpace']));
                             }
-                        }
-                    }
-                }
-            }
-            if (is_array($conf['splitRendering.'] ?? null)) {
-                foreach ($conf['splitRendering.'] as $key => $value) {
-                    if (is_array($conf['splitRendering.'][$key])) {
-                        if (isset($conf['splitRendering.'][$key]['fontFile'])) {
-                            $conf['splitRendering.'][$key]['fontFile'] = $this->checkFile($conf['splitRendering.'][$key]['fontFile']);
                         }
                     }
                 }
@@ -1348,21 +1334,6 @@ class GifBuilder
             return $cObj->getImgResource($file, $fileArray);
         } finally {
             $context->setAspect('fileProcessing', new FileProcessingAspect($deferProcessing));
-        }
-    }
-
-    /**
-     * Returns the reference to a "resource" in TypoScript.
-     *
-     * @param string $file The resource value.
-     * @return string|null Returns the relative filepath or null if it's invalid
-     */
-    protected function checkFile(string $file): ?string
-    {
-        try {
-            return GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($file, true);
-        } catch (Exception $e) {
-            return null;
         }
     }
 

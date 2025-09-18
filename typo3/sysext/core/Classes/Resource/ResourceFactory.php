@@ -32,6 +32,8 @@ use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceException;
+use TYPO3\CMS\Core\SystemResource\Publishing\UriGenerationOptions;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -189,23 +191,16 @@ readonly class ResourceFactory implements SingletonInterface
                 return $this->getObjectFromCombinedIdentifier($input);
             }
             if ($prefix === 'EXT') {
-                $absoluteFilePath = GeneralUtility::getFileAbsFileName($input);
-                if (empty($absoluteFilePath)) {
-                    return null;
-                }
-                if (str_starts_with($absoluteFilePath, Environment::getPublicPath())) {
-                    $relativePath = PathUtility::stripPathSitePrefix($absoluteFilePath);
-                } else {
-                    try {
-                        // The second parameter needs to be false in order to have getFileObjectFromCombinedIdentifier()
-                        // use a non-absolute web path and detect this properly as FAL fallback storage.
-                        $relativePath = PathUtility::getPublicResourceWebPath($input, false);
-                    } catch (\Throwable $e) {
-                        throw new ResourceDoesNotExistException(sprintf('Tried to access a private resource file "%s" from fallback compatibility storage. This storage only handles public files.', $input), 1633777536);
+                try {
+                    $potentialPathRelativeToPublicDir = (string)PathUtility::getSystemResourceUri($input, null, new UriGenerationOptions(uriPrefix: ''))
+                        ->withQuery('');
+                    if (!file_exists(Environment::getPublicPath() . $potentialPathRelativeToPublicDir)) {
+                        throw new ResourceDoesNotExistException(sprintf('File "%s" does not exist in fallback compatibility storage.', $input), 1760532790);
                     }
+                    return $this->getFileObjectFromCombinedIdentifier($potentialPathRelativeToPublicDir);
+                } catch (SystemResourceException $e) {
+                    throw new ResourceDoesNotExistException(sprintf('Tried to access a private resource file "%s" from fallback compatibility storage. This storage only handles public files.', $input), 1633777536, $e);
                 }
-
-                return $this->getFileObjectFromCombinedIdentifier($relativePath);
             }
             return null;
         }

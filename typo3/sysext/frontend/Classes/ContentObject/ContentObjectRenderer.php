@@ -67,6 +67,8 @@ use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Service\FlexFormService;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\Text\TextCropper;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\BitSet;
@@ -76,7 +78,6 @@ use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
@@ -93,7 +94,6 @@ use TYPO3\CMS\Frontend\ContentObject\Exception\ExceptionHandlerInterface;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 use TYPO3\CMS\Frontend\Page\FrontendUrlPrefix;
-use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\Frontend\Typolink\LinkResult;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
@@ -3907,11 +3907,16 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $retVal = $this->getFileDataKey($key);
                         break;
                     case 'asset':
-                        $absoluteFilePath = GeneralUtility::getFileAbsFileName($key);
-                        if ($absoluteFilePath === '') {
-                            throw new \RuntimeException('Asset "' . $key . '" not found', 1670713983);
+                    case 'path':
+                        if ($type === 'path') {
+                            trigger_error('Using "path" is deprecated and will be removed with TYPO3 v15, please use "asset" instead', E_USER_DEPRECATED);
                         }
-                        $retVal = PathUtility::getAbsoluteWebPath(GeneralUtility::createVersionNumberedFilename($absoluteFilePath));
+                        try {
+                            $resource = GeneralUtility::makeInstance(SystemResourceFactory::class)->createPublicResource($key);
+                            $retVal = (string)GeneralUtility::makeInstance(SystemResourcePublisherInterface::class)->generateUri($resource, $this->getRequest());
+                        } catch (Exception) {
+                            $retVal = null;
+                        }
                         break;
                     case 'parameters':
                         $retVal = $this->parameters[$key] ?? null;
@@ -4008,14 +4013,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $language = $this->getRequest()->getAttribute('language') ?? $this->getRequest()->getAttribute('site')->getDefaultLanguage();
                         $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromSiteLanguage($language);
                         $retVal = $languageService->sL('LLL:' . $key);
-                        break;
-                    case 'path':
-                        try {
-                            $retVal = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($key);
-                        } catch (Exception) {
-                            // do nothing in case the file path is invalid
-                            $retVal = null;
-                        }
                         break;
                     case 'cobj':
                         switch ($key) {

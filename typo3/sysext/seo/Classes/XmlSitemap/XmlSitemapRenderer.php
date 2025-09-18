@@ -27,9 +27,15 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationCollection;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationMode;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyRegistry;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceKeyword;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolvePublicResourceException;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolveSystemResourceException;
+use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceDoesNotExistException;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
+use TYPO3\CMS\Core\SystemResource\Type\PublicResourceInterface;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Core\View\ViewInterface;
@@ -49,6 +55,8 @@ final readonly class XmlSitemapRenderer
         private ErrorController $errorController,
         private ViewFactoryInterface $viewFactory,
         private PolicyRegistry $policyRegistry,
+        private SystemResourceFactory $resourceFactory,
+        private SystemResourcePublisherInterface $resourcePublisher,
     ) {}
 
     /**
@@ -74,14 +82,14 @@ final readonly class XmlSitemapRenderer
         $view->assign('sitemapType', $sitemapType);
         $configConfiguration = $configurationArrayWithoutDots['config'] ?? [];
         if (!empty($sitemapName = ($request->getQueryParams()['tx_seo']['sitemap'] ?? null))) {
-            $xslPath = $this->getXslFilePath($configConfiguration, $sitemapType, $sitemapName);
-            $this->applyDynamicContentSecurityPolicy($xslPath);
-            $view->assign('xslFile', $this->getUriFromFilePath($xslPath));
+            $xslResource = $this->getXslResource($configConfiguration, $sitemapType, $sitemapName);
+            $this->applyDynamicContentSecurityPolicy($xslResource);
+            $view->assign('xslFile', (string)$this->resourcePublisher->generateUri($xslResource, $request));
             return $this->renderSitemap($request, $view, $configConfiguration, $sitemapType, $sitemapName);
         }
-        $xslPath = $this->getXslFilePath($configConfiguration, $sitemapType);
-        $this->applyDynamicContentSecurityPolicy($xslPath);
-        $view->assign('xslFile', $this->getUriFromFilePath($xslPath));
+        $xslResource = $this->getXslResource($configConfiguration, $sitemapType);
+        $this->applyDynamicContentSecurityPolicy($xslResource);
+        $view->assign('xslFile', (string)$this->resourcePublisher->generateUri($xslResource, $request));
         return $this->renderIndex($request, $view, $configConfiguration, $sitemapType);
     }
 
@@ -138,18 +146,21 @@ final readonly class XmlSitemapRenderer
         );
     }
 
-    private function getXslFilePath(array $configConfiguration, string $sitemapType, ?string $sitemapName = null): string
+    /**
+     * @throws CanNotResolvePublicResourceException
+     * @throws CanNotResolveSystemResourceException
+     */
+    private function getXslResource(array $configConfiguration, string $sitemapType, ?string $sitemapName = null): PublicResourceInterface & SystemResourceInterface
     {
-        $path = $configConfiguration[$sitemapType]['sitemaps'][$sitemapName ?? '']['config']['xslFile']
+        $resourceIdentifier = $configConfiguration[$sitemapType]['sitemaps'][$sitemapName ?? '']['config']['xslFile']
             ?? $configConfiguration[$sitemapType]['sitemaps']['xslFile']
             ?? $configConfiguration['xslFile']
             ?? 'EXT:seo/Resources/Public/CSS/Sitemap.xsl';
-        return GeneralUtility::getFileAbsFileName($path);
-    }
-
-    private function getUriFromFilePath(string $filePath): string
-    {
-        return PathUtility::getAbsoluteWebPath($filePath);
+        $xslResource = $this->resourceFactory->createPublicResource($resourceIdentifier);
+        if (!$xslResource instanceof SystemResourceInterface) {
+            throw new \InvalidArgumentException('Can not resolve xslFile "%s" to a system resource', 1761032332);
+        }
+        return $xslResource;
     }
 
     /**
@@ -158,13 +169,14 @@ final readonly class XmlSitemapRenderer
      *
      * The expected hash for the default XSLT styles is `sha256-d0ax6zoVJBeBpy4l3O2FJ6Y1L4SalCWw2x62uoJH15k=`.
      */
-    private function applyDynamicContentSecurityPolicy(string $xslPath): void
+    private function applyDynamicContentSecurityPolicy(SystemResourceInterface $xslResource): void
     {
-        if (!file_exists($xslPath)) {
+        try {
+            $dom = new \DOMDocument();
+            $dom->loadXML($xslResource->getContents());
+        } catch (SystemResourceDoesNotExistException) {
             return;
         }
-        $dom = new \DOMDocument();
-        $dom->load($xslPath);
         if (!$dom instanceof \DOMDocument) {
             return;
         }

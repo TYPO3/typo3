@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Utility;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\SubmoduleProviderInterface;
@@ -34,7 +35,7 @@ class ResourceUtility
      * @param array<string, string|ConsumableNonce> $attributes
      * @return array{js: string, css: string}
      */
-    public static function getAdditionalResourcesForModules(array $modules, array $attributes = []): array
+    public static function getAdditionalResourcesForModules(array $modules, array $attributes = [], ?ServerRequestInterface $request = null): array
     {
         $result = [
             'js' => '',
@@ -43,10 +44,10 @@ class ResourceUtility
         foreach ($modules as $module) {
             if ($module instanceof ResourceProviderInterface) {
                 foreach ($module->getJavaScriptFiles() as $file) {
-                    $result['js'] .= static::getJsTag($file, $attributes);
+                    $result['js'] .= static::getJsTag($file, $attributes, $request);
                 }
                 foreach ($module->getCssFiles() as $file) {
-                    $result['css'] .= static::getCssTag($file, $attributes);
+                    $result['css'] .= static::getCssTag($file, $attributes, $request);
                 }
             }
             if ($module instanceof SubmoduleProviderInterface) {
@@ -63,7 +64,7 @@ class ResourceUtility
      *
      * @param array<string, string|ConsumableNonce> $attributes
      */
-    protected static function getCssTag(string $cssFileLocation, array $attributes): string
+    protected static function getCssTag(string $cssFileLocation, array $attributes, ?ServerRequestInterface $request = null): string
     {
         return sprintf(
             '<link %s />',
@@ -71,7 +72,7 @@ class ResourceUtility
                 ...$attributes,
                 'rel' => 'stylesheet',
                 'media' => 'all',
-                'href' => PathUtility::getPublicResourceWebPath($cssFileLocation),
+                'href' => (string)PathUtility::getSystemResourceUri($cssFileLocation, $request),
             ], true)
         );
     }
@@ -81,13 +82,13 @@ class ResourceUtility
      *
      * @param array<string, string|ConsumableNonce> $attributes
      */
-    protected static function getJsTag(string $jsFileLocation, array $attributes): string
+    protected static function getJsTag(string $jsFileLocation, array $attributes, ?ServerRequestInterface $request = null): string
     {
         return sprintf(
             '<script %s></script>',
             GeneralUtility::implodeAttributes([
                 ...$attributes,
-                'src' => PathUtility::getPublicResourceWebPath($jsFileLocation),
+                'src' => (string)PathUtility::getSystemResourceUri($jsFileLocation, $request),
             ], true)
         );
     }
@@ -97,12 +98,12 @@ class ResourceUtility
      *
      * @param array<string, string|ConsumableNonce> $attributes
      */
-    public static function getResources(array $attributes = []): array
+    public static function getResources(array $attributes = [], ?ServerRequestInterface $request = null): array
     {
         $jsFileLocation = 'EXT:adminpanel/Resources/Public/JavaScript/admin-panel.js';
-        $js = self::getJsTag($jsFileLocation, $attributes);
+        $js = self::getJsTag($jsFileLocation, $attributes, $request);
         $cssFileLocation = 'EXT:adminpanel/Resources/Public/Css/adminpanel.css';
-        $css = self::getCssTag($cssFileLocation, $attributes);
+        $css = self::getCssTag($cssFileLocation, $attributes, $request);
 
         return [
             'css' => $css,

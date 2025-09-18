@@ -1,5 +1,5 @@
 plugin.tx_seo {
   config {
-    xslFile = EXT:seo/Tests/Functional/Fixtures/XslFile1.xsl
+    xslFile = PKG:typo3/cms-seo:Resources/Public/Tests/Functional/Fixtures/XslFile1.xsl
   }
 }

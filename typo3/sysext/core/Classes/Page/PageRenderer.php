@@ -34,6 +34,10 @@ use TYPO3\CMS\Core\Resource\ResourceCompressor;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceDoesNotExistException;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -133,6 +137,8 @@ class PageRenderer implements SingletonInterface
         protected readonly ResponseFactoryInterface $responseFactory,
         protected readonly StreamFactoryInterface $streamFactory,
         protected readonly IconRegistry $iconRegistry,
+        protected readonly SystemResourcePublisherInterface $resourcePublisher,
+        protected readonly SystemResourceFactory $systemResourceFactory,
     ) {
         $this->reset();
         $this->setMetaTag('name', 'generator', 'TYPO3 CMS');
@@ -155,6 +161,9 @@ class PageRenderer implements SingletonInterface
                 case 'responseFactory':
                 case 'streamFactory':
                 case 'iconRegistry':
+                case 'resourcePublisher':
+                case 'systemResourceFactory':
+                    break;
                 case 'nonce':
                     break;
                 case 'metaTagRegistry':
@@ -187,6 +196,8 @@ class PageRenderer implements SingletonInterface
                 case 'responseFactory':
                 case 'streamFactory':
                 case 'iconRegistry':
+                case 'resourcePublisher':
+                case 'systemResourceFactory':
                     // @todo: bodyContent is cached twice: once in 'content' of pageRow (see FE setPageCacheContent()),
                     //        and a second time because it is added using addBodyContent() as well during page generation.
                     //        An easy solution is to exclude it here, but a bigger overhaul of the entire 'marker' madness
@@ -220,7 +231,7 @@ class PageRenderer implements SingletonInterface
     {
         $this->locale = new Locale();
         $this->setDocType(DocType::html5);
-        $this->templateFile = 'EXT:core/Resources/Private/Templates/PageRenderer.html';
+        $this->templateFile = 'PKG:typo3/cms-core:Resources/Private/Templates/PageRenderer.html';
         $this->bodyContent = '';
         $this->jsFiles = [];
         $this->jsInline = [];
@@ -230,9 +241,7 @@ class PageRenderer implements SingletonInterface
         $this->inlineComments = [];
         $this->headerData = [];
         $this->footerData = [];
-        $this->javaScriptRenderer = JavaScriptRenderer::create(
-            $this->getStreamlinedFileName('EXT:core/Resources/Public/JavaScript/java-script-item-handler.js')
-        );
+        $this->javaScriptRenderer = JavaScriptRenderer::create();
     }
 
     /*****************************************************/
@@ -1405,13 +1414,14 @@ class PageRenderer implements SingletonInterface
      */
     protected function getTemplate(): string
     {
-        $templateFile = GeneralUtility::getFileAbsFileName($this->templateFile);
-        if (is_file($templateFile)) {
-            $template = (string)file_get_contents($templateFile);
-        } else {
-            $template = '';
+        $templateResource = $this->systemResourceFactory->createResource($this->templateFile);
+        try {
+            if ($templateResource instanceof SystemResourceInterface) {
+                return $templateResource->getContents();
+            }
+        } catch (SystemResourceDoesNotExistException) {
         }
-        return $template;
+        return '';
     }
 
     /**
@@ -1537,7 +1547,7 @@ class PageRenderer implements SingletonInterface
     protected function addGlobalCSSUrlsToInlineSettings()
     {
         $this->inlineSettings['cssUrls'] = [
-            'backend' => $this->getStreamlinedFileName('EXT:backend/Resources/Public/Css/backend.css'),
+            'backend' => $this->getPublicUrlForFile('EXT:backend/Resources/Public/Css/backend.css'),
         ];
     }
 
@@ -1597,7 +1607,7 @@ class PageRenderer implements SingletonInterface
             if ($properties['rel'] ?? false) {
                 $tagAttributes['rel'] = $properties['rel'];
             }
-            $tagAttributes['href'] = $this->getStreamlinedFileName($file);
+            $tagAttributes['href'] = $this->getPublicUrlForFile($file);
             if ($properties['media'] ?? false) {
                 $tagAttributes['media'] = $properties['media'];
             }
@@ -1660,7 +1670,7 @@ class PageRenderer implements SingletonInterface
         if (!empty($this->jsLibs)) {
             foreach ($this->jsLibs as $properties) {
                 $tagAttributes = [];
-                $tagAttributes['src'] = $this->getStreamlinedFileName($properties['file'] ?? '');
+                $tagAttributes['src'] = $this->getPublicUrlForFile($properties['file'] ?? '');
                 if ($properties['type'] ?? false) {
                     $tagAttributes['type'] = $properties['type'];
                 }
@@ -1722,7 +1732,7 @@ class PageRenderer implements SingletonInterface
         if (!empty($this->jsFiles)) {
             foreach ($this->jsFiles as $file => $properties) {
                 $tagAttributes = [];
-                $tagAttributes['src'] = $this->getStreamlinedFileName($file);
+                $tagAttributes['src'] = $this->getPublicUrlForFile($file);
                 if ($properties['type'] ?? false) {
                     $tagAttributes['type'] = $properties['type'];
                 }
@@ -2009,20 +2019,10 @@ class PageRenderer implements SingletonInterface
      * @param string $file the filename to process
      * @internal
      */
-    protected function getStreamlinedFileName(string $file): string
+    protected function getPublicUrlForFile(string $file): string
     {
-        if (PathUtility::isExtensionPath($file)) {
-            $file = PathUtility::getPublicResourceWebPath($file, false);
-        }
-        $file = GeneralUtility::createVersionNumberedFilename($file);
-
-        // Get an absolute web path of filename for backend disposal.
-        // Resolving the absolute path in the frontend will conflict with
-        // applying config.absRefPrefix in frontend rendering process.
-        if ($this->getApplicationType() === 'FE') {
-            return $file;
-        }
-        return PathUtility::getAbsoluteWebPath($file);
+        $resource = $this->systemResourceFactory->createPublicResource($file);
+        return (string)$this->resourcePublisher->generateUri($resource, null);
     }
 
     /*****************************************************/

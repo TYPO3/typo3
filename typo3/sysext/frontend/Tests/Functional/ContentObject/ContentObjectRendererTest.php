@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -1375,31 +1376,55 @@ And another one';
         self::assertEquals($subject, $enhanceStdWrapEvent->getContentObjectRenderer());
     }
 
+    #[Test]
     public function getDataWithTypeAssetReturnsVersionedUri(): void
     {
         $subject = new ContentObjectRenderer();
-        Environment::initialize(
-            Environment::getContext(),
-            true,
-            false,
-            Environment::getProjectPath(),
-            Environment::getPublicPath(),
-            Environment::getVarPath(),
-            Environment::getConfigPath(),
-            Environment::getPublicPath() . '/index.php',
-            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams->method('getSitePath')->willReturn('/');
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setConfigArray([
+            'absRefPrefix' => 'auto',
+        ]);
+        $request = new ServerRequest('https://www.example.com/', 'GET');
+        $subject->setRequest(
+            $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+                    ->withAttribute('normalizedParams', $normalizedParams)
+                    ->withAttribute('frontend.typoscript', $frontendTypoScript)
         );
-        $request = new ServerRequest('https://www.example.com', 'GET');
-        $GLOBALS['TYPO3_REQUEST'] = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
-
-        $testAssetName = 'HappyResourceUri.svg';
+        $testAssetName = 'typo3temp/assets/HappyResourceUri.svg';
         $this->testAsset = Environment::getPublicPath() . '/' . $testAssetName;
         touch($this->testAsset);
         $mtime = filemtime($this->testAsset);
         $GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'] = false;
         self::assertSame(
-            $testAssetName . '?' . $mtime,
-            $subject->getData('asset:' . $this->testAsset, [])
+            '/' . $testAssetName . '?' . $mtime,
+            $subject->getData('asset:' . $testAssetName, [])
         );
+    }
+
+    /**
+     * Checks if getData() works with type "path"
+     */
+    #[Test]
+    #[IgnoreDeprecations]
+    public function getDataWithTypePath(): void
+    {
+        $subject = new ContentObjectRenderer();
+        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams->method('getSitePath')->willReturn('/');
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setConfigArray([
+            'absRefPrefix' => 'auto',
+        ]);
+        $request = new ServerRequest('https://www.example.com/', 'GET');
+        $subject->setRequest(
+            $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+                    ->withAttribute('normalizedParams', $normalizedParams)
+                    ->withAttribute('frontend.typoscript', $frontendTypoScript)
+        );
+        $filenameIn = 'EXT:frontend/Resources/Public/Icons/Extension.svg';
+        $expectedUrl = '/typo3/sysext/frontend/Resources/Public/Icons/Extension.svg?' . filemtime(GeneralUtility::getFileAbsFileName($filenameIn));
+        self::assertEquals($expectedUrl, $subject->getData('path:' . $filenameIn, []));
     }
 }

@@ -66,8 +66,8 @@ final class ImageViewHelperTest extends FunctionalTestCase
             ],
             [
                 '<f:uri.image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" />',
-                1509741910,
-                'Unable to render image uri: File /typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers does not exist.',
+                1509741907,
+                'Unable to render image uri: Tried to access a private resource file "EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" from fallback compatibility storage. This storage only handles public files.',
             ],
             [
                 '<f:uri.image src="fileadmin/image.jpg" />',
@@ -115,8 +115,8 @@ final class ImageViewHelperTest extends FunctionalTestCase
             ],
             [
                 '<f:uri.image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" />',
-                1509741910,
-                'Unable to render image uri in "tt_content:123": File /typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers does not exist.',
+                1509741907,
+                'Unable to render image uri in "tt_content:123": Tried to access a private resource file "EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" from fallback compatibility storage. This storage only handles public files.',
             ],
             [
                 '<f:uri.image src="fileadmin/image.jpg" />',

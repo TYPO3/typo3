@@ -1735,4 +1735,18 @@ return [
             'Breaking-107482-EnvironmentGetComposerRootPathMethodsRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-107537-CreateVersionNumberedFileName.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\PathUtility::getPublicResourceWebPath' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-107537-getPublicResourcesWebPath.rst',
+        ],
+    ],
 ];

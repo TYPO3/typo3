@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\ViewHelpers;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\Publishing\UriGenerationOptions;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -34,6 +36,11 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 final class NormalizedUrlViewHelper extends AbstractViewHelper
 {
+    public function __construct(
+        private readonly SystemResourceFactory $systemResourceFactory,
+        private readonly SystemResourcePublisherInterface $resourcePublisher,
+    ) {}
+
     public function initializeArguments(): void
     {
         $this->registerArgument('pathOrUrl', 'string', 'Absolute path to file using EXT: syntax or URL.');
@@ -45,10 +52,12 @@ final class NormalizedUrlViewHelper extends AbstractViewHelper
     public function render(): string
     {
         $pathOrUrl = $this->renderChildren();
-        if (PathUtility::hasProtocolAndScheme($pathOrUrl)) {
-            return $pathOrUrl;
-        }
-        return GeneralUtility::locationHeaderUrl(PathUtility::getPublicResourceWebPath((string)$pathOrUrl));
+        $resource = $this->systemResourceFactory->createPublicResource($pathOrUrl);
+        return (string)$this->resourcePublisher->generateUri(
+            $resource,
+            $this->renderingContext->hasAttribute(ServerRequestInterface::class) ? $this->renderingContext->getAttribute(ServerRequestInterface::class) : null,
+            new UriGenerationOptions(absoluteUri: true),
+        );
     }
 
     /**

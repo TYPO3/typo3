@@ -54,15 +54,11 @@ abstract readonly class AbstractFormEngineAjaxController
      * Resolve a CSS file position, possibly prefixed with 'EXT:'
      *
      * @param string $stylesheetFile Given file, possibly prefixed with EXT:
-     * @return string Web root relative position to file
+     * @return string URL to file
      */
     protected function getRelativePathToStylesheetFile(string $stylesheetFile): string
     {
-        if (PathUtility::isExtensionPath($stylesheetFile)) {
-            $stylesheetFile = PathUtility::getPublicResourceWebPath($stylesheetFile, false);
-        }
-        $stylesheetFile = GeneralUtility::createVersionNumberedFilename($stylesheetFile);
-        return PathUtility::getAbsoluteWebPath($stylesheetFile);
+        return (string)PathUtility::getSystemResourceUri($stylesheetFile);
     }
 
     /**

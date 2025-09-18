@@ -62,7 +62,8 @@ class ReferrerEnforcer
                 http_build_query($queryParams, '', '&', PHP_QUERY_RFC3986)
             );
             $scriptUri = $this->resolveAbsoluteWebPath(
-                'EXT:core/Resources/Public/JavaScript/referrer-refresh.js'
+                'EXT:core/Resources/Public/JavaScript/referrer-refresh.js',
+                $request
             );
             $attributes = ['src' => $scriptUri];
             if ($nonce instanceof ConsumableNonce) {
@@ -95,9 +96,9 @@ class ReferrerEnforcer
         );
     }
 
-    protected function resolveAbsoluteWebPath(string $target): string
+    protected function resolveAbsoluteWebPath(string $target, ServerRequestInterface $request): string
     {
-        return PathUtility::getPublicResourceWebPath($target);
+        return (string)PathUtility::getSystemResourceUri($target, $request);
     }
 
     protected function resolveReferrerType(ServerRequestInterface $request, string $requestHost, string $requestDir): int

@@ -155,7 +155,7 @@ final class IconFactoryTest extends FunctionalTestCase
             $this->registeredSpinningIconIdentifier,
             SvgIconProvider::class,
             [
-                'source' => __DIR__ . '/Fixtures/file.svg',
+                'source' => 'EXT:core/Resources/Public/Icons/Extension.svg',
                 'spinning' => true,
             ]
         );

@@ -136,8 +136,8 @@ final class ResourceCompressorTest extends FunctionalTestCase
         return [
             // Get filename using EXT:
             [
-                'EXT:core/Tests/Functional/Resource/Fixtures/ResourceCompressor/Resources/Public/charset.css',
-                'typo3/sysext/core/Tests/Functional/Resource/Fixtures/ResourceCompressor/Resources/Public/charset.css',
+                'EXT:backend/Resources/Public/Css/backend.css',
+                'typo3/sysext/backend/Resources/Public/Css/backend.css',
             ],
             // Get filename using relative path
             [

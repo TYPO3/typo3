@@ -28,7 +28,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ShortcutButtonTest extends FunctionalTestCase
 {
-    private const FIXTURES_PATH_PATTERN = __DIR__ . '/../../../Fixtures/%s.html';
+    private const FIXTURES_PATH_PATTERN = __DIR__ . '/../../../Fixtures/%s.php';
 
     #[Test]
     public function isButtonValid(): void
@@ -64,7 +64,7 @@ final class ShortcutButtonTest extends FunctionalTestCase
             ->withAttribute('normalizedParams', NormalizedParams::createFromServerParams($serverParams));
 
         self::assertEquals(
-            $this->normalizeSpaces(file_get_contents(sprintf(self::FIXTURES_PATH_PATTERN, $expectedMarkupFile))),
+            $this->normalizeSpaces(require sprintf(self::FIXTURES_PATH_PATTERN, $expectedMarkupFile)),
             $this->normalizeSpaces($button->render())
         );
     }

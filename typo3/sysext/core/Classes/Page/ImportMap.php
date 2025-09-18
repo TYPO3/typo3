@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Mutation;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationCollection;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationMode;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyRegistry;
+use TYPO3\CMS\Core\SystemResource\Publishing\UriGenerationOptions;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -235,8 +236,8 @@ class ImportMap
         array $exclude,
         string $bust
     ): array {
-        $path = GeneralUtility::getFileAbsFileName($path);
-        if (!$path || @!is_dir($path)) {
+        $absolutePath = GeneralUtility::getFileAbsFileName($path);
+        if (!$absolutePath || @!is_dir($absolutePath)) {
             return [];
         }
         $exclude = array_map(
@@ -246,9 +247,9 @@ class ImportMap
 
         $fileIterator = new \RegexIterator(
             new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($path)
+                new \RecursiveDirectoryIterator($absolutePath)
             ),
-            '#^' . preg_quote($path, '#') . '(.+\.js)$#',
+            '#^' . preg_quote($absolutePath, '#') . '(.+\.js)$#',
             \RegexIterator::GET_MATCH
         );
 
@@ -256,6 +257,7 @@ class ImportMap
         foreach ($fileIterator as $match) {
             $fileName = $match[0];
             $specifier = $prefix . ($match[1] ?? '');
+            $resourceIdentifier = $path . ($match[1] ?? '');
 
             // @todo: Abstract into an iterator?
             foreach ($exclude as $excludedPath) {
@@ -264,9 +266,9 @@ class ImportMap
                 }
             }
 
-            $webPath = PathUtility::getAbsoluteWebPath($fileName, false) . '?bust=' . $bust;
-
-            $map[$specifier] = $webPath;
+            $url = ltrim((string)PathUtility::getSystemResourceUri($resourceIdentifier, null, new UriGenerationOptions(uriPrefix: ''))
+                ->withQuery('bust=' . $bust), '/');
+            $map[$specifier] = $url;
         }
 
         return $map;
@@ -281,8 +283,8 @@ class ImportMap
             if (str_ends_with($specifier, '/')) {
                 $path = is_array($address) ? ($address['path'] ?? '') : $address;
                 $exclude = is_array($address) ? ($address['exclude'] ?? []) : [];
-
-                $url = PathUtility::getPublicResourceWebPath($path, false);
+                $uri = PathUtility::getSystemResourceUri($path, null, new UriGenerationOptions(uriPrefix: ''))
+                    ->withQuery('');
                 $cacheBusted = preg_match('#[^/]@#', $path) === 1;
                 if ($bust !== null && !$cacheBusted) {
                     // Resolve recursive importmap in order to add a bust suffix
@@ -290,13 +292,14 @@ class ImportMap
                     $cacheBustingSpecifiers[] = $this->resolveRecursiveImportMap($specifier, $path, $exclude, $bust);
                 }
             } else {
-                $url = PathUtility::getPublicResourceWebPath($address, false);
+                $uri = PathUtility::getSystemResourceUri($address, null, new UriGenerationOptions(uriPrefix: ''))
+                    ->withQuery('');
                 $cacheBusted = preg_match('#[^/]@#', $address) === 1;
                 if ($bust !== null && !$cacheBusted) {
-                    $url .= '?bust=' . $bust;
+                    $uri = $uri->withQuery('bust=' . $bust);
                 }
             }
-            $imports[$specifier] = $url;
+            $imports[$specifier] = ltrim((string)$uri, '/');
         }
 
         return $imports + array_merge(...$cacheBustingSpecifiers);

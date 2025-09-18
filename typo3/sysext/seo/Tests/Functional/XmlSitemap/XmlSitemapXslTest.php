@@ -90,7 +90,7 @@ final class XmlSitemapXslTest extends AbstractTestCase
                     'EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript',
                 ],
                 '',
-                '\/typo3\/sysext\/seo\/Resources\/Public\/CSS\/Sitemap.xsl',
+                preg_quote('/typo3/sysext/seo/Resources/Public/CSS/Sitemap.xsl', '/') . '\?[0-9]+',
             ],
             [
                 [
@@ -98,7 +98,7 @@ final class XmlSitemapXslTest extends AbstractTestCase
                     'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl1.typoscript',
                 ],
                 '',
-                '\/typo3\/sysext\/seo\/Tests\/Functional\/Fixtures\/XslFile1.xsl',
+                preg_quote('/typo3/sysext/seo/Resources/Public/Tests/Functional/Fixtures/XslFile1.xsl', '/'),
             ],
             [
                 [
@@ -106,7 +106,7 @@ final class XmlSitemapXslTest extends AbstractTestCase
                     'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl2.typoscript',
                 ],
                 '',
-                '\/typo3\/sysext\/seo\/Tests\/Functional\/Fixtures\/XslFile2.xsl',
+                preg_quote('/typo3/sysext/seo/Resources/Public/Tests/Functional/Fixtures/XslFile2.xsl', '/'),
             ],
             [
                 [
@@ -115,7 +115,7 @@ final class XmlSitemapXslTest extends AbstractTestCase
                     'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl3.typoscript',
                 ],
                 '',
-                '\/typo3\/sysext\/seo\/Tests\/Functional\/Fixtures\/XslFile1.xsl',
+                preg_quote('/typo3/sysext/seo/Resources/Public/Tests/Functional/Fixtures/XslFile1.xsl', '/'),
             ],
             [
                 [
@@ -124,7 +124,7 @@ final class XmlSitemapXslTest extends AbstractTestCase
                     'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl3.typoscript',
                 ],
                 'records',
-                '\/typo3\/sysext\/seo\/Tests\/Functional\/Fixtures\/XslFile3.xsl',
+                preg_quote('/typo3/sysext/seo/Resources/Public/Tests/Functional/Fixtures/XslFile3.xsl', '/'),
             ],
             [
                 [
@@ -133,7 +133,7 @@ final class XmlSitemapXslTest extends AbstractTestCase
                     'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl3.typoscript',
                 ],
                 'pages',
-                '\/typo3\/sysext\/seo\/Tests\/Functional\/Fixtures\/XslFile1.xsl',
+                preg_quote('/typo3/sysext/seo/Resources/Public/Tests/Functional/Fixtures/XslFile1.xsl', '/'),
             ],
         ];
     }

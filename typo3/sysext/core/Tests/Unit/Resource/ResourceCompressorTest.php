@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\ResourceCompressor;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ResourceCompressorTest extends UnitTestCase
@@ -68,7 +70,14 @@ final class ResourceCompressorTest extends UnitTestCase
     #[Test]
     public function cssFixStatementsMovesStatementsToTopIfNeeded(string $input, string $expected): void
     {
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir']);
+        $subject = $this->getAccessibleMock(
+            ResourceCompressor::class,
+            ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir'],
+            [
+                $this->createMock(SystemResourceFactory::class),
+                $this->createMock(SystemResourcePublisherInterface::class),
+            ]
+        );
         $subject->_call('initialize');
         $result = $subject->_call('cssFixStatements', $input);
         $resultWithReadableLinefeed = str_replace(LF, 'LF', $result);
@@ -86,7 +95,14 @@ final class ResourceCompressorTest extends UnitTestCase
                 'compress' => true,
             ],
         ];
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir']);
+        $subject = $this->getAccessibleMock(
+            ResourceCompressor::class,
+            ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir'],
+            [
+                $this->createMock(SystemResourceFactory::class),
+                $this->createMock(SystemResourcePublisherInterface::class),
+            ]
+        );
         $subject->expects($this->once())
             ->method('compressCssFile')
             ->with($fileName)
@@ -110,7 +126,14 @@ final class ResourceCompressorTest extends UnitTestCase
                 'compress' => true,
             ],
         ];
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir']);
+        $subject = $this->getAccessibleMock(
+            ResourceCompressor::class,
+            ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir'],
+            [
+                $this->createMock(SystemResourceFactory::class),
+                $this->createMock(SystemResourcePublisherInterface::class),
+            ]
+        );
         $subject->expects($this->once())
             ->method('compressJsFile')
             ->with($fileName)
@@ -135,7 +158,14 @@ final class ResourceCompressorTest extends UnitTestCase
                 'media' => 'all',
             ],
         ];
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir']);
+        $subject = $this->getAccessibleMock(
+            ResourceCompressor::class,
+            ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir'],
+            [
+                $this->createMock(SystemResourceFactory::class),
+                $this->createMock(SystemResourcePublisherInterface::class),
+            ]
+        );
         $subject->expects($this->once())
             ->method('createMergedCssFile')
             ->willReturn($concatenatedFileName);
@@ -171,7 +201,14 @@ final class ResourceCompressorTest extends UnitTestCase
                 'media' => 'screen',
             ],
         ];
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir']);
+        $subject = $this->getAccessibleMock(
+            ResourceCompressor::class,
+            ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir'],
+            [
+                $this->createMock(SystemResourceFactory::class),
+                $this->createMock(SystemResourcePublisherInterface::class),
+            ]
+        );
         $subject->expects($this->exactly(2))
             ->method('createMergedCssFile')
             ->willReturn('merged_' . $allFileName, 'merged_' . $screenFileName1);
@@ -210,7 +247,14 @@ final class ResourceCompressorTest extends UnitTestCase
                 'media' => 'screen',
             ],
         ];
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir']);
+        $subject = $this->getAccessibleMock(
+            ResourceCompressor::class,
+            ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir'],
+            [
+                $this->createMock(SystemResourceFactory::class),
+                $this->createMock(SystemResourcePublisherInterface::class),
+            ]
+        );
         // Replace mocked method getFilenameFromMainDir by passthrough callback
         $subject->method('getFilenameFromMainDir')->willReturnArgument(0);
         $subject->expects($this->once())
@@ -243,7 +287,14 @@ final class ResourceCompressorTest extends UnitTestCase
                 'media' => 'screen',
             ],
         ];
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir']);
+        $subject = $this->getAccessibleMock(
+            ResourceCompressor::class,
+            ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir'],
+            [
+                $this->createMock(SystemResourceFactory::class),
+                $this->createMock(SystemResourcePublisherInterface::class),
+            ]
+        );
         $subject->method('getFilenameFromMainDir')->willReturnArgument(0);
         $subject->expects($this->once())
             ->method('createMergedCssFile')
@@ -271,7 +322,14 @@ final class ResourceCompressorTest extends UnitTestCase
                 'section' => 'top',
             ],
         ];
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'getJavaScriptFileType']);
+        $subject = $this->getAccessibleMock(
+            ResourceCompressor::class,
+            ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'getJavaScriptFileType'],
+            [
+                $this->createMock(SystemResourceFactory::class),
+                $this->createMock(SystemResourcePublisherInterface::class),
+            ]
+        );
         $subject->method('getJavaScriptFileType')->willReturn('');
         $subject->expects($this->once())
             ->method('createMergedJsFile')
@@ -395,7 +453,14 @@ final class ResourceCompressorTest extends UnitTestCase
     public function concatenateJsFileAddsAsyncPropertyIfAllFilesAreAsync(array $input, bool $expected): void
     {
         $concatenatedFileName = 'merged_foo.js';
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'getJavaScriptFileType']);
+        $subject = $this->getAccessibleMock(
+            ResourceCompressor::class,
+            ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'getJavaScriptFileType'],
+            [
+                $this->createMock(SystemResourceFactory::class),
+                $this->createMock(SystemResourcePublisherInterface::class),
+            ]
+        );
         $subject->method('getJavaScriptFileType')->willReturn('');
         $subject->expects($this->once())
             ->method('createMergedJsFile')
@@ -432,7 +497,14 @@ final class ResourceCompressorTest extends UnitTestCase
     #[Test]
     public function calcFunctionMustRetainWhitespaces(string $input, string $expected): void
     {
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir']);
+        $subject = $this->getAccessibleMock(
+            ResourceCompressor::class,
+            ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir'],
+            [
+                $this->createMock(SystemResourceFactory::class),
+                $this->createMock(SystemResourcePublisherInterface::class),
+            ]
+        );
         $subject->_call('initialize');
         $result = $subject->_call('compressCssString', $input);
         self::assertSame($expected, trim($result));
@@ -451,7 +523,14 @@ final class ResourceCompressorTest extends UnitTestCase
             ],
         ];
 
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir']);
+        $subject = $this->getAccessibleMock(
+            ResourceCompressor::class,
+            ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir'],
+            [
+                $this->createMock(SystemResourceFactory::class),
+                $this->createMock(SystemResourcePublisherInterface::class),
+            ]
+        );
         $result = $subject->concatenateJsFiles($testFileFixture);
 
         self::assertArrayNotHasKey($concatenatedFileName, $result);
@@ -471,7 +550,14 @@ final class ResourceCompressorTest extends UnitTestCase
             ],
         ];
 
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir']);
+        $subject = $this->getAccessibleMock(
+            ResourceCompressor::class,
+            ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir'],
+            [
+                $this->createMock(SystemResourceFactory::class),
+                $this->createMock(SystemResourcePublisherInterface::class),
+            ]
+        );
         $result = $subject->concatenateJsFiles($testFileFixture);
 
         self::assertArrayNotHasKey($concatenatedFileName, $result);

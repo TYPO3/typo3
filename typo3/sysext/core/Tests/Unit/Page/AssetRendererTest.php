@@ -24,6 +24,8 @@ use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\AssetRenderer;
 use TYPO3\CMS\Core\Page\Event\BeforeJavaScriptsRenderingEvent;
 use TYPO3\CMS\Core\Page\Event\BeforeStylesheetsRenderingEvent;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AssetRendererTest extends UnitTestCase
@@ -57,7 +59,9 @@ final class AssetRendererTest extends UnitTestCase
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcher->method('dispatch')->willReturnArgument(0);
         $assetCollector = new AssetCollector();
-        $assetRenderer = new AssetRenderer($assetCollector, $eventDispatcher);
+        $resourceFactory = $this->createMock(SystemResourceFactory::class);
+        $resourcePublisher = $this->createMock(SystemResourcePublisherInterface::class);
+        $assetRenderer = new AssetRenderer($assetCollector, $eventDispatcher, $resourcePublisher, $resourceFactory);
 
         $event = new $eventClassName(
             $assetCollector,

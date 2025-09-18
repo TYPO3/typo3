@@ -637,7 +637,7 @@ class EditDocumentController
                         // Traverse all new records and forge the content of ->editconf so we can continue to edit these records!
                         if ($tableName === 'pages'
                             && $this->retUrl !== (string)$this->uriBuilder->buildUriFromRoute('dummy')
-                            && $this->retUrl !== $this->getCloseUrl()
+                            && $this->retUrl !== $this->getCloseUrl($request)
                             && $this->returnNewPageId
                         ) {
                             $this->retUrl .= '&id=' . $tce->substNEWwithIDs[$key];
@@ -1613,7 +1613,7 @@ class EditDocumentController
      */
     protected function registerOpenInNewWindowButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group, ServerRequestInterface $request): void
     {
-        $closeUrl = $this->getCloseUrl();
+        $closeUrl = $this->getCloseUrl($request);
         if ($this->returnUrl !== $closeUrl) {
             // Generate a URL to the current edit form
             $arguments = $this->getUrlQueryParamsForCurrentRequest($request);
@@ -1643,7 +1643,7 @@ class EditDocumentController
      */
     protected function registerShortcutButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group, ServerRequestInterface $request): void
     {
-        if ($this->returnUrl !== $this->getCloseUrl()) {
+        if ($this->returnUrl !== $this->getCloseUrl($request)) {
             $arguments = $this->getUrlQueryParamsForCurrentRequest($request);
             $shortCutButton = $buttonBar->makeShortcutButton()
                 ->setRouteIdentifier('record_edit')
@@ -1839,9 +1839,9 @@ class EditDocumentController
      * Returns the URL (usually for the "returnUrl") which closes the current window.
      * Used when editing a record in a popup.
      */
-    protected function getCloseUrl(): string
+    protected function getCloseUrl(ServerRequestInterface $request): string
     {
-        return PathUtility::getPublicResourceWebPath('EXT:backend/Resources/Public/Html/Close.html');
+        return (string)PathUtility::getSystemResourceUri('EXT:backend/Resources/Public/Html/Close.html', $request);
     }
 
     /**

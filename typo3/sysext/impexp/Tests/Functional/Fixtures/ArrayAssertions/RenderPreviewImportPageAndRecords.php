@@ -13,6 +13,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+$fileMtimeSoft = filemtime(__DIR__ . '/../../../../Resources/Public/Icons/status-reference-soft.png');
+$fileMtimeApps = filemtime(__DIR__ . '/../../../../../core/Resources/Public/Icons/T3Icons/sprites/apps.svg');
+$fileMtimeMime = filemtime(__DIR__ . '/../../../../../core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg');
+$fileMtimeActions = filemtime(__DIR__ . '/../../../../../core/Resources/Public/Icons/T3Icons/sprites/actions.svg');
 return [
     'update' => false,
     'showDiff' => false,
@@ -25,7 +29,7 @@ return [
             'msg' => '',
             'preCode' => '<span title="pages:1" class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/apps.svg#apps-pagetree-page-default" /></svg>
+<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/apps.svg?' . $fileMtimeApps . '#apps-pagetree-page-default" /></svg>
 	</span>
 	
 </span>',
@@ -41,7 +45,7 @@ return [
             'msg' => '',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="tt_content:1" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-content-text" /></svg>
+<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-x-content-text" /></svg>
 	</span>
 	
 </span>',
@@ -57,7 +61,7 @@ return [
             'msg' => '',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft" aria-hidden="true">
 	<span class="icon-markup">
-<img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png" width="16" height="16" alt="" />
+<img src="/typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png?' . $fileMtimeSoft . '" width="16" height="16" alt="" />
 	</span>
 	
 </span>',
@@ -86,7 +90,7 @@ return [
             'title' => '<span title="/">typo3_image3.jpg</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 3"></span><span title="sys_file:2" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>
+<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
 	</span>
 	
 </span>',
@@ -101,7 +105,7 @@ return [
             'title' => '<span title="/">sys_file_storage:1</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 4"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-dialog-warning" data-identifier="status-dialog-warning" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-exclamation-triangle" /></svg>
+<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-exclamation-triangle" /></svg>
 	</span>
 	
 </span>',
@@ -115,7 +119,7 @@ return [
             'msg' => '',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="tt_content:2" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-content-text" /></svg>
+<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-x-content-text" /></svg>
 	</span>
 	
 </span>',
@@ -131,7 +135,7 @@ return [
             'msg' => '',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft" aria-hidden="true">
 	<span class="icon-markup">
-<img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png" width="16" height="16" alt="" />
+<img src="/typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png?' . $fileMtimeSoft . '" width="16" height="16" alt="" />
 	</span>
 	
 </span>',
@@ -160,7 +164,7 @@ return [
             'title' => '<span title="/">Empty.html</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 3"></span><span title="sys_file:4" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>
+<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
 	</span>
 	
 </span>',
@@ -174,7 +178,7 @@ return [
             'msg' => '',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="pages:2" class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/apps.svg#apps-pagetree-page-default" /></svg>
+<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/apps.svg?' . $fileMtimeApps . '#apps-pagetree-page-default" /></svg>
 	</span>
 	
 </span>',
@@ -193,7 +197,7 @@ return [
             'msg' => 'TABLE "sys_file" will be inserted on ROOT LEVEL! ',
             'preCode' => '<span title="sys_file:2" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-media-image" /></svg>
+<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-media-image" /></svg>
 	</span>
 	
 </span>',
@@ -210,7 +214,7 @@ return [
             'title' => '<span title="/">sys_file_storage:1</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-dialog-warning" data-identifier="status-dialog-warning" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-exclamation-triangle" /></svg>
+<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-exclamation-triangle" /></svg>
 	</span>
 	
 </span>',
@@ -224,7 +228,7 @@ return [
             'msg' => 'TABLE "sys_file" will be inserted on ROOT LEVEL! ',
             'preCode' => '<span title="sys_file:4" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-text-text" data-identifier="mimetypes-text-text" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-text-text" /></svg>
+<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-text-text" /></svg>
 	</span>
 	
 </span>',

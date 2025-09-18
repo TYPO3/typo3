@@ -2,8 +2,6 @@ config.absRefPrefix =
 page = PAGE
 page {
   includeCSS {
-    absoluteCSS = {$absoluteCSS}
-    relativeCSS = {$relativeCSS}
     extensionCSS = {$extensionCSS}
     externalCSS = {$externalCSS}
     externalCSS.external = 1
@@ -12,8 +10,6 @@ page {
   }
 
   includeJS {
-    absoluteJS = {$absoluteJS}
-    relativeJS = {$relativeJS}
     extensionJS = {$extensionJS}
     externalJS = {$externalJS}
     externalJS.external = 1
@@ -22,13 +18,13 @@ page {
   }
   # added so we can also test the inclusion of these types in FE
   includeCSSLibs {
-    relativeCSS = {$relativeCSS}
+    extensionCSS = {$extensionCSS}
   }
   includeJSLibs {
-    relativeJS = {$relativeJS}
+    extensionJS = {$extensionJS}
   }
   includeJSFooterlibs {
-    relativeJS = {$relativeJS}
+    extensionJS = {$extensionJS}
   }
   20 = IMAGE
   20 {
@@ -60,6 +56,5 @@ page {
     concatenateJs = 1
     compressCss = 1
     compressJs = 1
-    concatenateJsAndCss = 1
   }
 [end]

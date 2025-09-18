@@ -17,8 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Utility;
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileException;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolvePublicResourceException;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolveSystemResourceException;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\Publishing\UriGenerationOptions;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 
 /**
  * Class with helper functions for file paths.
@@ -94,24 +101,39 @@ class PathUtility
     /**
      * Dedicated method to resolve the path of public extension resources
      *
-     * @internal This method should not be used for now except for TYPO3 core. It may be removed or be changed any time
      * @param bool $prefixWithSitePath Don't use this argument. It is only used by TYPO3 in one place, which is subject to removal.
+     * @throws CanNotResolvePublicResourceException
+     * @throws CanNotResolveSystemResourceException
+     *
+     * @deprecated use system resource API instead
      */
     public static function getPublicResourceWebPath(string $resourcePath, bool $prefixWithSitePath = true): string
     {
+        trigger_error('PathUtility::getPublicResourceWebPath was marked @internal and is now deprecated and will be removed in v15. Use system resource API instead.', E_USER_DEPRECATED);
         if (!self::isExtensionPath($resourcePath)) {
             throw new InvalidFileException(sprintf('Given resource path "%s" must start with "EXT:", but does not.', $resourcePath), 1630089406);
         }
-        $absoluteFilePath = GeneralUtility::getFileAbsFileName($resourcePath);
-        if (!str_contains($resourcePath, 'Resources/Public')) {
-            if (!str_starts_with($absoluteFilePath, Environment::getPublicPath())) {
-                // This will be thrown in Composer mode, when extension are installed in vendor folder
-                throw new InvalidFileException(sprintf('Given file "%s" is expected to be in public directory, but is not.', $resourcePath), 1635268969);
-            }
-            trigger_error(sprintf('Public resource "%s" is not in extension\'s Resources/Public folder. This is deprecated and will not be supported any more in future TYPO3 versions.', $resourcePath), E_USER_DEPRECATED);
+        if ($prefixWithSitePath) {
+            return (string)self::getSystemResourceUri($resourcePath);
         }
+        return ltrim((string)self::getSystemResourceUri($resourcePath, null, new UriGenerationOptions(uriPrefix: ''))->withQuery(''), '/');
+    }
 
-        return self::getAbsoluteWebPath($absoluteFilePath, $prefixWithSitePath);
+    /**
+     * This method is used to replace all usages of getPublicResourceWebPath() in TYPO3 Core
+     * until these places are refactored to use the new resources API
+     *
+     * @internal Will be removed (or made private) before v14 LTS release
+     *
+     * @throws CanNotResolvePublicResourceException
+     * @throws CanNotResolveSystemResourceException
+     */
+    public static function getSystemResourceUri(string $resourceIdentifier, ?ServerRequestInterface $request = null, ?UriGenerationOptions $options = null): UriInterface
+    {
+        $resourceFactory = GeneralUtility::makeInstance(SystemResourceFactory::class);
+        $resource = $resourceFactory->createPublicResource($resourceIdentifier);
+        $resourcePublisher = GeneralUtility::makeInstance(SystemResourcePublisherInterface::class);
+        return $resourcePublisher->generateUri($resource, $request, $options);
     }
 
     /**

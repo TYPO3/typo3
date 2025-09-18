@@ -28,8 +28,8 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Service\Archive\ZipService;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Install\Service\Event\ModifyLanguagePackRemoteBaseUrlEvent;
 use TYPO3\CMS\Install\Service\Event\ModifyLanguagePacksEvent;
 
@@ -55,7 +55,8 @@ class LanguagePackService
     public function __construct(
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly RequestFactory $requestFactory,
-        protected readonly LoggerInterface $logger
+        protected readonly LoggerInterface $logger,
+        protected readonly SystemResourcePublisherInterface $resourcePublisher,
     ) {
         $this->locales = GeneralUtility::makeInstance(Locales::class);
         $this->registry = GeneralUtility::makeInstance(Registry::class);
@@ -152,8 +153,9 @@ class LanguagePackService
                 'title' => $title,
                 'type' => $package->getPackageMetaData()->getPackageType(),
             ];
-            if (!empty($package->getPackageIcon())) {
-                $extension['icon'] = PathUtility::getAbsoluteWebPath($package->getPackagePath() . $package->getPackageIcon());
+            $packageIcon = $package->getResources()->getPackageIcon();
+            if ($packageIcon !== null) {
+                $extension['icon'] = (string)$this->resourcePublisher->generateUri($packageIcon, null);
             }
             $extension['packs'] = [];
             foreach ($activeLanguages as $iso) {

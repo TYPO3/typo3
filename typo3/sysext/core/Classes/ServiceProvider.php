@@ -139,6 +139,9 @@ class ServiceProvider extends AbstractServiceProvider
             EventDispatcherInterface::class => self::provideFallbackEventDispatcher(...),
             Database\ConnectionPool::class => self::provideFallbackConnectionPool(...),
             EventDispatcher\ListenerProvider::class => self::extendEventListenerProvider(...),
+            SystemResource\SystemResourceFactory::class => self::provideFallbackSystemResourceFactory(...),
+            SystemResource\Publishing\SystemResourcePublisherInterface::class => self::provideFallbackSystemResourcePublisher(...),
+            SystemResource\Identifier\SystemResourceIdentifierFactory::class => self::provideFallbackSystemResourceIdentifierFactory(...),
         ] + parent::getExtensions();
     }
 
@@ -710,6 +713,35 @@ class ServiceProvider extends AbstractServiceProvider
         return $eventDispatcher ?? new EventDispatcher\EventDispatcher(
             new EventDispatcher\ListenerProvider($container)
         );
+    }
+
+    public static function provideFallbackSystemResourceIdentifierFactory(
+        ContainerInterface $container,
+        ?SystemResource\Identifier\SystemResourceIdentifierFactory $identifierFactory = null
+    ): SystemResource\Identifier\SystemResourceIdentifierFactory {
+        // Provide resource uri factory for the install tool when $identifierFactory is null (that means when we run without symfony DI)
+        return $identifierFactory ?? new SystemResource\Identifier\SystemResourceIdentifierFactory($container->get(PackageManager::class));
+    }
+
+    public static function provideFallbackSystemResourceFactory(
+        ContainerInterface $container,
+        ?SystemResource\SystemResourceFactory $resourceFactory = null
+    ): SystemResource\SystemResourceFactory {
+        // Provide a simplified resource factory for the install tool when $resourceFactory is null (that means when we run without symfony DI)
+        return $resourceFactory ?? new SystemResource\SystemResourceFactory(
+            $container->get(SystemResource\Identifier\SystemResourceIdentifierFactory::class),
+            $container->get(PackageManager::class),
+            null,
+            null,
+        );
+    }
+
+    public static function provideFallbackSystemResourcePublisher(
+        ContainerInterface $container,
+        ?SystemResource\Publishing\SystemResourcePublisherInterface $resourcePublisher = null
+    ): SystemResource\Publishing\SystemResourcePublisherInterface {
+        // Provide a simplified resource factory for the install tool when $resourcePublisher is null (that means when we run without symfony DI)
+        return $resourcePublisher ?? new SystemResource\Publishing\DefaultSystemResourcePublisher();
     }
 
     public static function configureCommands(ContainerInterface $container, Console\CommandRegistry $commandRegistry): Console\CommandRegistry

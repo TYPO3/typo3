@@ -15,14 +15,23 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceDoesNotExistException;
+use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceException;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
+use TYPO3\CMS\Core\SystemResource\Type\PublicResourceInterface;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 
 /**
  * Contains SVG content object.
  */
 class ScalableVectorGraphicsContentObject extends AbstractContentObject
 {
+    public function __construct(
+        protected readonly SystemResourceFactory $resourceFactory,
+        protected readonly SystemResourcePublisherInterface $resourcePublisher,
+    ) {}
+
     /**
      * Rendering the cObject, SVG
      *
@@ -41,12 +50,17 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
 
     protected function renderInline(array $conf): string
     {
-        $src = $this->resolveAbsoluteSourcePath($conf);
+        $resource = $this->resolveResource($conf);
         [$width, $height, $isDefaultWidth, $isDefaultHeight] = $this->getDimensions($conf);
 
-        $content = '';
-        if (file_exists($src)) {
-            $svgContent = (string)file_get_contents($src);
+        $content = $svgContent = '';
+        if ($resource instanceof SystemResourceInterface) {
+            try {
+                $svgContent = $resource->getContents();
+            } catch (SystemResourceDoesNotExistException) {
+            }
+        }
+        if ($svgContent !== '') {
             $svgContent = preg_replace('/<script[\s\S]*?>[\s\S]*?<\/script>/i', '', $svgContent) ?? '';
             $svgElement = simplexml_load_string($svgContent);
 
@@ -80,18 +94,16 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
      */
     protected function renderObject(array $conf): string
     {
-        $src = $this->resolveAbsoluteSourcePath($conf);
+        $resource = $this->resolveResource($conf);
         [$width, $height] = $this->getDimensions($conf);
-
-        $src = $src === '' ? null : PathUtility::getAbsoluteWebPath($src);
-
         $content = [];
-        if ($src) {
+        if ($resource !== null) {
+            $uri = $this->resourcePublisher->generateUri($resource, $this->request);
             $content[] = '<!--[if IE]>';
-            $content[] = '  <object src="' . htmlspecialchars($src) . '" classid="image/svg+xml" width="' . (int)$width . '" height="' . (int)$height . '">';
+            $content[] = '  <object src="' . htmlspecialchars($uri) . '" classid="image/svg+xml" width="' . (int)$width . '" height="' . (int)$height . '">';
             $content[] = '<![endif]-->';
             $content[] = '<!--[if !IE]>-->';
-            $content[] = '  <object data="' . htmlspecialchars($src) . '" type="image/svg+xml" width="' . (int)$width . '" height="' . (int)$height . '">';
+            $content[] = '  <object data="' . htmlspecialchars($uri) . '" type="image/svg+xml" width="' . (int)$width . '" height="' . (int)$height . '">';
             $content[] = '<!--<![endif]-->';
             $content[] = '</object>';
         }
@@ -102,10 +114,14 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
         return $content;
     }
 
-    protected function resolveAbsoluteSourcePath(array $conf): string
+    protected function resolveResource(array $conf): ?PublicResourceInterface
     {
-        $src = (string)$this->cObj->stdWrapValue('src', $conf);
-        return GeneralUtility::getFileAbsFileName($src);
+        try {
+            $resourceIdentifier = (string)$this->cObj->stdWrapValue('src', $conf);
+            return $this->resourceFactory->createPublicResource($resourceIdentifier);
+        } catch (SystemResourceException) {
+            return null;
+        }
     }
 
     protected function getDimensions(array $conf): array

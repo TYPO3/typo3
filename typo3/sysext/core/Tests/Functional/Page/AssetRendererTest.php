@@ -21,17 +21,31 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\AssetRenderer;
+use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Tests\Functional\Fixtures\DummyFileCreationService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class AssetRendererTest extends FunctionalTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
     protected array $configurationToUseInTestInstance = [
         'BE' => [
             'versionNumberInFilename' => false,
         ],
     ];
+
+    private DummyFileCreationService $file;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->file = new DummyFileCreationService($this->get(StorageRepository::class));
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        $this->file->cleanupCreatedFiles();
+    }
 
     public static function filesDataProvider(): array
     {
@@ -41,31 +55,20 @@ final class AssetRendererTest extends FunctionalTestCase
                     ['file1', 'fileadmin/foo.ext', [], []],
                 ],
                 'expectedMarkup' => [
-                    'css_no_prio' => '<link href="fileadmin/foo.ext" rel="stylesheet" >',
+                    'css_no_prio' => '<link href="/fileadmin/foo.ext?da39a3ee5e6b4b0d3255bfef95601890afd80709" rel="stylesheet" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script src="fileadmin/foo.ext"></script>',
+                    'js_no_prio' => '<script src="/fileadmin/foo.ext?da39a3ee5e6b4b0d3255bfef95601890afd80709"></script>',
                     'js_prio' => '',
                 ],
             ],
             '1 file from extension' => [
                 'files' => [
-                    ['file1', 'EXT:core/Resource/Public/foo.ext', [], []],
+                    ['file1', 'EXT:core/Resources/Public/foo.ext', [], []],
                 ],
                 'expectedMarkup' => [
-                    'css_no_prio' => '<link href="typo3/sysext/core/Resource/Public/foo.ext" rel="stylesheet" >',
+                    'css_no_prio' => '<link href="/typo3/sysext/core/Resources/Public/foo.ext" rel="stylesheet" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script src="typo3/sysext/core/Resource/Public/foo.ext"></script>',
-                    'js_prio' => '',
-                ],
-            ],
-            '1 file with suspicious source' => [
-                'files' => [
-                    ['file1', '"><script>alert(1)</script><x "', [], []],
-                ],
-                'expectedMarkup' => [
-                    'css_no_prio' => '<link href="%22%3E%3Cscript%3Ealert%281%29%3C/script%3E%3Cx%20%22" rel="stylesheet" >',
-                    'css_prio' => '',
-                    'js_no_prio' => '<script src="%22%3E%3Cscript%3Ealert%281%29%3C/script%3E%3Cx%20%22"></script>',
+                    'js_no_prio' => '<script src="/typo3/sysext/core/Resources/Public/foo.ext"></script>',
                     'js_prio' => '',
                 ],
             ],
@@ -105,25 +108,25 @@ final class AssetRendererTest extends FunctionalTestCase
             '2 files' => [
                 'files' => [
                     ['file1', 'fileadmin/foo.ext', [], []],
-                    ['file2', 'EXT:core/Resource/Public/foo.ext', [], []],
+                    ['file2', 'EXT:core/Resources/Public/foo.ext', [], []],
                 ],
                 'expectedMarkup' => [
-                    'css_no_prio' => '<link href="fileadmin/foo.ext" rel="stylesheet" >' . PHP_EOL . '<link href="typo3/sysext/core/Resource/Public/foo.ext" rel="stylesheet" >',
+                    'css_no_prio' => '<link href="/fileadmin/foo.ext?da39a3ee5e6b4b0d3255bfef95601890afd80709" rel="stylesheet" >' . PHP_EOL . '<link href="/typo3/sysext/core/Resources/Public/foo.ext" rel="stylesheet" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script src="fileadmin/foo.ext"></script>' . PHP_EOL . '<script src="typo3/sysext/core/Resource/Public/foo.ext"></script>',
+                    'js_no_prio' => '<script src="/fileadmin/foo.ext?da39a3ee5e6b4b0d3255bfef95601890afd80709"></script>' . PHP_EOL . '<script src="/typo3/sysext/core/Resources/Public/foo.ext"></script>',
                     'js_prio' => '',
                 ],
             ],
             '2 files with override' => [
                 'files' => [
                     ['file1', 'fileadmin/foo.ext', [], []],
-                    ['file2', 'EXT:core/Resource/Public/foo.ext', [], []],
-                    ['file1', 'EXT:core/Resource/Public/bar.ext', [], []],
+                    ['file2', 'EXT:core/Resources/Public/foo.ext', [], []],
+                    ['file1', 'EXT:core/Resources/Public/bar.ext', [], []],
                 ],
                 'expectedMarkup' => [
-                    'css_no_prio' => '<link href="typo3/sysext/core/Resource/Public/bar.ext" rel="stylesheet" >' . PHP_EOL . '<link href="typo3/sysext/core/Resource/Public/foo.ext" rel="stylesheet" >',
+                    'css_no_prio' => '<link href="/typo3/sysext/core/Resources/Public/bar.ext" rel="stylesheet" >' . PHP_EOL . '<link href="/typo3/sysext/core/Resources/Public/foo.ext" rel="stylesheet" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script src="typo3/sysext/core/Resource/Public/bar.ext"></script>' . PHP_EOL . '<script src="typo3/sysext/core/Resource/Public/foo.ext"></script>',
+                    'js_no_prio' => '<script src="/typo3/sysext/core/Resources/Public/bar.ext"></script>' . PHP_EOL . '<script src="/typo3/sysext/core/Resources/Public/foo.ext"></script>',
                     'js_prio' => '',
                 ],
             ],
@@ -132,9 +135,9 @@ final class AssetRendererTest extends FunctionalTestCase
                     ['file1', 'fileadmin/foo.ext', ['rel' => 'foo'], []],
                 ],
                 'expectedMarkup' => [
-                    'css_no_prio' => '<link rel="foo" href="fileadmin/foo.ext" >',
+                    'css_no_prio' => '<link rel="foo" href="/fileadmin/foo.ext?da39a3ee5e6b4b0d3255bfef95601890afd80709" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script rel="foo" src="fileadmin/foo.ext"></script>',
+                    'js_no_prio' => '<script rel="foo" src="/fileadmin/foo.ext?da39a3ee5e6b4b0d3255bfef95601890afd80709"></script>',
                     'js_prio' => '',
                 ],
             ],
@@ -143,9 +146,9 @@ final class AssetRendererTest extends FunctionalTestCase
                     ['file1', 'fileadmin/foo.ext', ['type' => 'module'], []],
                 ],
                 'expectedMarkup' => [
-                    'css_no_prio' => '<link type="module" href="fileadmin/foo.ext" rel="stylesheet" >',
+                    'css_no_prio' => '<link type="module" href="/fileadmin/foo.ext?da39a3ee5e6b4b0d3255bfef95601890afd80709" rel="stylesheet" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script type="module" src="fileadmin/foo.ext"></script>',
+                    'js_no_prio' => '<script type="module" src="/fileadmin/foo.ext?da39a3ee5e6b4b0d3255bfef95601890afd80709"></script>',
                     'js_prio' => '',
                 ],
             ],
@@ -155,9 +158,9 @@ final class AssetRendererTest extends FunctionalTestCase
                     ['file1', 'fileadmin/foo.ext', ['rel' => 'bar'], []],
                 ],
                 'expectedMarkup' => [
-                    'css_no_prio' => '<link rel="bar" another="keep on override" href="fileadmin/foo.ext" >',
+                    'css_no_prio' => '<link rel="bar" another="keep on override" href="/fileadmin/foo.ext?da39a3ee5e6b4b0d3255bfef95601890afd80709" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script rel="bar" another="keep on override" src="fileadmin/foo.ext"></script>',
+                    'js_no_prio' => '<script rel="bar" another="keep on override" src="/fileadmin/foo.ext?da39a3ee5e6b4b0d3255bfef95601890afd80709"></script>',
                     'js_prio' => '',
                 ],
             ],
@@ -167,9 +170,9 @@ final class AssetRendererTest extends FunctionalTestCase
                 ],
                 'expectedMarkup' => [
                     'css_no_prio' => '',
-                    'css_prio' => '<link href="fileadmin/foo.ext" rel="stylesheet" >',
+                    'css_prio' => '<link href="/fileadmin/foo.ext?da39a3ee5e6b4b0d3255bfef95601890afd80709" rel="stylesheet" >',
                     'js_no_prio' => '',
-                    'js_prio' => '<script src="fileadmin/foo.ext"></script>',
+                    'js_prio' => '<script src="/fileadmin/foo.ext?da39a3ee5e6b4b0d3255bfef95601890afd80709"></script>',
                 ],
             ],
             '1 file with options override' => [
@@ -178,20 +181,31 @@ final class AssetRendererTest extends FunctionalTestCase
                     ['file1', 'fileadmin/foo.ext', [], ['priority' => false]],
                 ],
                 'expectedMarkup' => [
-                    'css_no_prio' => '<link href="fileadmin/foo.ext" rel="stylesheet" >',
+                    'css_no_prio' => '<link href="/fileadmin/foo.ext?da39a3ee5e6b4b0d3255bfef95601890afd80709" rel="stylesheet" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script src="fileadmin/foo.ext"></script>',
+                    'js_no_prio' => '<script src="/fileadmin/foo.ext?da39a3ee5e6b4b0d3255bfef95601890afd80709"></script>',
                     'js_prio' => '',
                 ],
             ],
             '1 file with external option' => [
                 'files' => [
-                    ['file1', 'EXT:core/Resource/Public/foo.ext', [], ['external' => true]],
+                    ['file1', 'EXT:core/Resources/Public/foo.ext', [], ['external' => true]],
                 ],
                 'expectedMarkup' => [
-                    'css_no_prio' => '<link href="EXT:core/Resource/Public/foo.ext" rel="stylesheet" >',
+                    'css_no_prio' => '<link href="EXT:core/Resources/Public/foo.ext" rel="stylesheet" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script src="EXT:core/Resource/Public/foo.ext"></script>',
+                    'js_no_prio' => '<script src="EXT:core/Resources/Public/foo.ext"></script>',
+                    'js_prio' => '',
+                ],
+            ],
+            '1 temp file with external option' => [
+                'files' => [
+                    ['file1', '/typo3temp/bla/foo.ext', [], ['external' => true]],
+                ],
+                'expectedMarkup' => [
+                    'css_no_prio' => '<link href="/typo3temp/bla/foo.ext" rel="stylesheet" >',
+                    'css_prio' => '',
+                    'js_no_prio' => '<script src="/typo3temp/bla/foo.ext"></script>',
                     'js_prio' => '',
                 ],
             ],
@@ -202,6 +216,7 @@ final class AssetRendererTest extends FunctionalTestCase
     #[Test]
     public function styleSheets(array $files, array $expectedMarkup): void
     {
+        $this->file->ensureFilesExistInStorage('/foo.ext');
         $assetCollector = $this->get(AssetCollector::class);
         $assetRenderer = $this->get(AssetRenderer::class);
         foreach ($files as $file) {
@@ -216,6 +231,7 @@ final class AssetRendererTest extends FunctionalTestCase
     #[Test]
     public function javaScript(array $files, array $expectedMarkup): void
     {
+        $this->file->ensureFilesExistInStorage('/foo.ext');
         $assetCollector = $this->get(AssetCollector::class);
         $assetRenderer = $this->get(AssetRenderer::class);
         foreach ($files as $file) {
@@ -340,31 +356,5 @@ final class AssetRendererTest extends FunctionalTestCase
         }
         self::assertSame($expectedMarkup['css_no_prio'], $assetRenderer->renderInlineStyleSheets());
         self::assertSame($expectedMarkup['css_prio'], $assetRenderer->renderInlineStyleSheets(true));
-    }
-
-    public static function modifyAssetUriEventDataProvider(): array
-    {
-        return [
-            'no priority' => [
-                'source' => 'fileadmin/foo.ext',
-                'options' => ['priority' => false, 'anotherOption' => true],
-                'expectedMarkup' => [
-                    'css_no_prio' => '<link href="fileadmin/foo.ext?someSuffix" rel="stylesheet" >',
-                    'css_prio' => '',
-                    'js_no_prio' => '<script src="fileadmin/foo.ext?someSuffix"></script>',
-                    'js_prio' => '',
-                ],
-            ],
-            'priority' => [
-                'source' => 'fileadmin/foo.ext',
-                'options' => ['priority' => true, 'anotherOption' => true],
-                'expectedMarkup' => [
-                    'css_no_prio' => '',
-                    'css_prio' => '<link href="fileadmin/foo.ext?someSuffix" rel="stylesheet" >',
-                    'js_no_prio' => '',
-                    'js_prio' => '<script src="fileadmin/foo.ext?someSuffix"></script>',
-                ],
-            ],
-        ];
     }
 }

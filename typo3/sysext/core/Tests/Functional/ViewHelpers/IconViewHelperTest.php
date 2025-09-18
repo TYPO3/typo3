@@ -34,9 +34,16 @@ final class IconViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         $result = (new TemplateView($context))->render();
-
+        $fileMtimeActions = filemtime(__DIR__ . '/../../../Resources/Public/Icons/T3Icons/sprites/actions.svg');
         foreach ($expectedStrings as $expectedString) {
-            self::assertStringContainsString($expectedString, $result);
+            self::assertStringContainsString(
+                str_replace(
+                    'actions.svg#',
+                    'actions.svg?' . $fileMtimeActions . '#',
+                    $expectedString,
+                ),
+                $result,
+            );
         }
     }
 
@@ -47,36 +54,36 @@ final class IconViewHelperTest extends FunctionalTestCase
                 '<core:icon identifier="actions-search" size="small" state="default" />',
                 [
                     '<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-search" data-identifier="actions-search" aria-hidden="true">',
-                    '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-search" /></svg>',
+                    '<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-search" /></svg>',
                 ],
             ],
             'given size' => [
                 '<core:icon identifier="actions-search" size="large" state="default" />',
                 [
                     '<span class="t3js-icon icon icon-size-large icon-state-default icon-actions-search" data-identifier="actions-search" aria-hidden="true">',
-                    '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-search" /></svg>',
+                    '<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-search" /></svg>',
                 ],
             ],
             'given state' => [
                 '<core:icon identifier="actions-search" size="small" state="disabled" />',
                 [
                     '<span class="t3js-icon icon icon-size-small icon-state-disabled icon-actions-search" data-identifier="actions-search" aria-hidden="true">',
-                    '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-search" /></svg>',
+                    '<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-search" /></svg>',
                 ],
             ],
             'given overlay' => [
                 '<core:icon identifier="actions-search" size="large" state="default" overlay="actions-plus" />',
                 [
                     '<span class="t3js-icon icon icon-size-large icon-state-default icon-actions-search" data-identifier="actions-search" aria-hidden="true">',
-                    '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-search" /></svg>',
-                    '<span class="icon-overlay icon-actions-plus"><svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-plus" /></svg></span>',
+                    '<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-search" /></svg>',
+                    '<span class="icon-overlay icon-actions-plus"><svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-plus" /></svg></span>',
                 ],
             ],
             'title is passed' => [
                 '<core:icon identifier="actions-search" size="large" state="default" title="myTitle" />',
                 [
                     '<span title="myTitle" class="t3js-icon icon icon-size-large icon-state-default icon-actions-search" data-identifier="actions-search" aria-hidden="true">',
-                    '<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-search" /></svg>',
+                    '<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-search" /></svg>',
                 ],
             ],
         ];

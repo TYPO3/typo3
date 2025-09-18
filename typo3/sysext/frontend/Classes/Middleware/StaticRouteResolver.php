@@ -25,17 +25,14 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
-use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
-use TYPO3\CMS\Core\Resource\Exception\InvalidFileException;
-use TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException;
-use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Type\File\FileInfo;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
+use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceException;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 
 /**
  * Resolves static routes - can return configured content directly or load content from file / urls
@@ -45,7 +42,8 @@ class StaticRouteResolver implements MiddlewareInterface
     public function __construct(
         protected readonly RequestFactory $requestFactory,
         protected readonly LinkService $linkService,
-        protected readonly FilePathSanitizer $filePathSanitizer,
+        protected readonly SystemResourceFactory $systemResourceFactory,
+        protected readonly SystemResourcePublisherInterface $resourcePublisher,
     ) {}
 
     /**
@@ -171,20 +169,16 @@ class StaticRouteResolver implements MiddlewareInterface
                 }
 
                 try {
-                    $path = $this->filePathSanitizer->sanitize($routeConfig['asset']);
-                } catch (InvalidFileNameException|InvalidPathException|FileDoesNotExistException|InvalidFileException) {
-                    // We provide our own custom exception at this point
-                    $path = '';
+                    $resource = $this->systemResourceFactory->createResource($routeConfig['asset']);
+                    if (!$resource instanceof SystemResourceInterface) {
+                        throw new \InvalidArgumentException(sprintf('The asset "%s" (resolved to "%s") is not a system resource.', $routeConfig['asset'], $resource), 1758785685);
+                    }
+                } catch (SystemResourceException $e) {
+                    throw new \InvalidArgumentException(sprintf('Could not resolve asset "%s"', $routeConfig['asset']), 1721134960, $e);
                 }
 
-                if ($path === '') {
-                    throw new \InvalidArgumentException(sprintf('The asset "%s" (resolved to "%s") was invalid.', $routeConfig['asset'], $path), 1721134960);
-                }
-
-                $content = file_get_contents($path);
-                /** @var FileInfo $fileInfo */
-                $fileInfo = GeneralUtility::makeInstance(FileInfo::class, $path);
-                $contentType = $fileInfo->getMimeType();
+                $content = $resource->getContents();
+                $contentType = $resource->getMimeType();
                 break;
             default:
                 throw new \InvalidArgumentException(

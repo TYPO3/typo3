@@ -2679,5 +2679,10 @@ return [
             'Breaking-107791-ReportInterfacesRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Resource\FilePathSanitizer' => [
+        'restFiles' => [
+            'Deprecation-107537-FilePathSanitizer.rst',
+        ],
+    ],
 
 ];

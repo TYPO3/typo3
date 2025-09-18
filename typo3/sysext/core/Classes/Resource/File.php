@@ -17,13 +17,18 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource;
 
+use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
+use TYPO3\CMS\Core\SystemResource\Identifier\FalResourceIdentifier;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourceUriGeneratorInterface;
+use TYPO3\CMS\Core\SystemResource\Type\PublicResourceInterface;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * File representation in the file abstraction layer.
  */
-class File extends AbstractFile
+class File extends AbstractFile implements PublicResourceInterface, SystemResourceInterface
 {
     /**
      * Contains the names of all properties that have been update since the
@@ -365,5 +370,37 @@ class File extends AbstractFile
             $this->metaDataAspect = GeneralUtility::makeInstance(MetaDataAspect::class, $this);
         }
         return $this->metaDataAspect;
+    }
+
+    /***********************************
+     * System Resources implementation *
+     ***********************************/
+    public function getHash(): string
+    {
+        return $this->getSha1();
+    }
+
+    public function getPublicUri(SystemResourceUriGeneratorInterface $uriGenerator): UriInterface
+    {
+        return $uriGenerator->generateForFile($this);
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->getStorage()->isPublic();
+    }
+
+    public function getResourceIdentifier(): string
+    {
+        return (string)(new FalResourceIdentifier(
+            (string)$this->getStorage()->getUid(),
+            $this->getIdentifier(),
+            sprintf('File: uid: %d, identifier: %s', $this->getUid(), $this->getIdentifier()),
+        ));
+    }
+
+    public function __toString(): string
+    {
+        return $this->getResourceIdentifier();
     }
 }

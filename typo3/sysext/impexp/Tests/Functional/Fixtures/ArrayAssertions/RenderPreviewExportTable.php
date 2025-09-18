@@ -13,6 +13,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+$fileMtimeSoft = filemtime(__DIR__ . '/../../../../Resources/Public/Icons/status-reference-soft.png');
+$fileMtimeMime = filemtime(__DIR__ . '/../../../../../core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg');
+$fileMtimeActions = filemtime(__DIR__ . '/../../../../../core/Resources/Public/Icons/T3Icons/sprites/actions.svg');
+$fileMtimeOverlay = filemtime(__DIR__ . '/../../../../../core/Resources/Public/Icons/T3Icons/sprites/overlay.svg');
 return [
     'update' => false,
     'showDiff' => false,
@@ -28,7 +32,7 @@ return [
             'msg' => '',
             'preCode' => '<span title="tt_content:1" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-content-text" /></svg>
+<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-x-content-text" /></svg>
 	</span>
 	
 </span>',
@@ -44,7 +48,7 @@ return [
             'msg' => '',
             'preCode' => '<span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft" aria-hidden="true">
 	<span class="icon-markup">
-<img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png" width="16" height="16" alt="" />
+<img src="/typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png?' . $fileMtimeSoft . '" width="16" height="16" alt="" />
 	</span>
 	
 </span>',
@@ -73,7 +77,7 @@ return [
             'title' => '<span title="/">sys_file:2</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file:2" class="t3js-icon icon icon-size-small icon-state-default icon-status-dialog-warning" data-identifier="status-dialog-warning" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-exclamation-triangle" /></svg>
+<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-exclamation-triangle" /></svg>
 	</span>
 	
 </span>',
@@ -87,7 +91,7 @@ return [
             'msg' => '',
             'preCode' => '<span title="tt_content:2" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-content-text" /></svg>
+<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-x-content-text" /></svg>
 	</span>
 	
 </span>',
@@ -103,7 +107,7 @@ return [
             'msg' => '',
             'preCode' => '<span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft" aria-hidden="true">
 	<span class="icon-markup">
-<img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png" width="16" height="16" alt="" />
+<img src="/typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png?' . $fileMtimeSoft . '" width="16" height="16" alt="" />
 	</span>
 	
 </span>',
@@ -130,9 +134,9 @@ return [
             'msg' => '',
             'preCode' => '<span title="tt_content:3" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-content-text" /></svg>
+<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-x-content-text" /></svg>
 	</span>
-	<span class="icon-overlay icon-overlay-hidden"><svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/overlay.svg#overlay-hidden" /></svg></span>
+	<span class="icon-overlay icon-overlay-hidden"><svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/overlay.svg?' . $fileMtimeOverlay . '#overlay-hidden" /></svg></span>
 </span>',
             'title' => 'Test content 3',
             'active' => 'hidden',
@@ -146,7 +150,7 @@ return [
             'msg' => '',
             'preCode' => '<span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft" aria-hidden="true">
 	<span class="icon-markup">
-<img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png" width="16" height="16" alt="" />
+<img src="/typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png?' . $fileMtimeSoft . '" width="16" height="16" alt="" />
 	</span>
 	
 </span>',
@@ -175,7 +179,7 @@ return [
             'title' => '<span title="/">sys_file:3</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file:3" class="t3js-icon icon icon-size-small icon-state-default icon-status-dialog-warning" data-identifier="status-dialog-warning" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-exclamation-triangle" /></svg>
+<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-exclamation-triangle" /></svg>
 	</span>
 	
 </span>',

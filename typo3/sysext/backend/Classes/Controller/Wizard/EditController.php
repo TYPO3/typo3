@@ -74,17 +74,7 @@ class EditController
         private readonly FlexFormTools $flexFormTools,
         private readonly TcaSchemaFactory $tcaSchemaFactory,
         private readonly UriBuilder $uriBuilder,
-    ) {
-        $this->closeWindow = sprintf(
-            '<script %s></script>',
-            GeneralUtility::implodeAttributes([
-                'src' => PathUtility::getAbsoluteWebPath(
-                    GeneralUtility::getFileAbsFileName(self::JAVASCRIPT_HELPER)
-                ),
-                'data-action' => 'window.close',
-            ], true)
-        );
-    }
+    ) {}
 
     /**
      * Injects the request object for the current request or subrequest
@@ -92,6 +82,13 @@ class EditController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->closeWindow = sprintf(
+            '<script %s></script>',
+            GeneralUtility::implodeAttributes([
+                'src' => (string)PathUtility::getSystemResourceUri(self::JAVASCRIPT_HELPER, $request),
+                'data-action' => 'window.close',
+            ], true)
+        );
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 

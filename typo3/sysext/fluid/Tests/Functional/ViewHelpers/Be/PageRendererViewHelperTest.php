@@ -40,11 +40,11 @@ final class PageRendererViewHelperTest extends FunctionalTestCase
             ],
             'renderIncludesCssFile' => [
                 '<f:be.pageRenderer includeCssFiles="{0: \'EXT:backend/Resources/Public/Css/backend.css\'}" />',
-                'rel="stylesheet" href="typo3/sysext/backend/Resources/Public/Css/backend.css',
+                'rel="stylesheet" href="/typo3/sysext/backend/Resources/Public/Css/backend.css',
             ],
             'renderIncludesJsFile' => [
                 '<f:be.pageRenderer includeJsFiles="{0: \'EXT:backend/Resources/Public/JavaScript/backend.js\'}" />',
-                '<script src="typo3/sysext/backend/Resources/Public/JavaScript/backend.js',
+                '<script src="/typo3/sysext/backend/Resources/Public/JavaScript/backend.js',
             ],
             'renderIncludesInlineSettings' => [
                 '<f:be.pageRenderer addInlineSettings="{\'foo\': \'bar\'}" />',

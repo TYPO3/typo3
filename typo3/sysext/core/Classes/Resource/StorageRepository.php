@@ -347,11 +347,11 @@ class StorageRepository
      * If no match is found, uid 0 is returned which is a fallback storage pointing to fileadmin in public web path.
      *
      * The file identifier is adapted accordingly to match the new storage's base path.
-     *
+     * @internal absolutely do not call this method publicly, not even in TYPO3 core. It must only be used for legacy resource resolving
      * @param non-empty-string $localPath
      * @return int<0, max>
      */
-    protected function findBestMatchingStorageByLocalPath(string &$localPath): int
+    public function findBestMatchingStorageByLocalPath(string &$localPath): int
     {
         if ($this->localDriverStorageCache === null) {
             $this->initializeLocalStorageCache();

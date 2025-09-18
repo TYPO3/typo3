@@ -1596,21 +1596,6 @@ final class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * Checks if getData() works with type "path"
-     */
-    #[Test]
-    public function getDataWithTypePath(): void
-    {
-        $pageInformation = new PageInformation();
-        $pageInformation->setPageRecord([]);
-        $request = new ServerRequest('https://example.com');
-        $request = $request->withAttribute('frontend.page.information', $pageInformation);
-        $this->subject->setRequest($request);
-        $filenameIn = 'typo3/sysext/frontend/Public/Icons/Extension.svg';
-        self::assertEquals($filenameIn, $this->subject->getData('path:' . $filenameIn));
-    }
-
-    /**
      * Checks if getData() works with type "context"
      */
     #[Test]

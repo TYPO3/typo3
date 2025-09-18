@@ -2035,6 +2035,7 @@ class GeneralUtility
      */
     public static function createVersionNumberedFilename(string $file): string
     {
+        trigger_error('createVersionNumberedFilename is deprecated and will be removed in TYPO3 v15. Use the system resource API instead to resolve resources and generate (cache busting) URLs for those.', E_USER_DEPRECATED);
         $lookupFile = explode('?', $file);
         $path = $absoluteFilePath = $lookupFile[0];
         if (!PathUtility::isAbsolutePath($path)) {

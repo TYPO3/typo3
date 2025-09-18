@@ -80,7 +80,7 @@ class MainController
      */
     public function render(ServerRequestInterface $request, ResponseInterface $response): string
     {
-        $resources = ResourceUtility::getResources(['nonce' => $this->requestId->nonce]);
+        $resources = ResourceUtility::getResources(['nonce' => $this->requestId->nonce], $request);
 
         $backupRequest = null;
         $frontendTypoScript = $request->getAttribute('frontend.typoscript');
@@ -124,7 +124,7 @@ class MainController
                 $this->modules,
                 GeneralUtility::makeInstance(ModuleDataStorageCollection::class)
             );
-            $moduleResources = ResourceUtility::getAdditionalResourcesForModules($this->modules, ['nonce' => $this->requestId->nonce]);
+            $moduleResources = ResourceUtility::getAdditionalResourcesForModules($this->modules, ['nonce' => $this->requestId->nonce], $request);
             $settingsModules = array_filter($this->modules, static function (ModuleInterface $module): bool {
                 return $module instanceof PageSettingsProviderInterface;
             });

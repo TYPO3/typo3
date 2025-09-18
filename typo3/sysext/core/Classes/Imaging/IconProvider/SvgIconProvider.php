@@ -16,8 +16,6 @@
 namespace TYPO3\CMS\Core\Imaging\IconProvider;
 
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class provides icons that are classic <img> tags using vectors as source
@@ -47,10 +45,6 @@ class SvgIconProvider extends AbstractSvgIconProvider
         }
 
         $source = $options['source'];
-
-        if (PathUtility::isExtensionPath($source) || !PathUtility::isAbsolutePath($source)) {
-            $source = GeneralUtility::getFileAbsFileName($source);
-        }
 
         return $this->getInlineSvg($source);
     }

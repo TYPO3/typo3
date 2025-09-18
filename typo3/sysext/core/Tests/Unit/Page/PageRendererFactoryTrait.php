@@ -37,6 +37,8 @@ use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
 use TYPO3\CMS\Core\Resource\ResourceCompressor;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 
 /**
  * @internal Only for core internal testing.
@@ -51,10 +53,10 @@ trait PageRendererFactoryTrait
         $cacheManagerMock = $this->createMock(CacheManager::class);
         $cacheManagerMock->method('getCache')->with('l10n')->willReturn(new NullFrontend('l10n'));
         $cacheManager ??= $cacheManagerMock;
-
         $labelMapperMock = $this->createMock(TranslationDomainMapper::class);
         $labelMapperMock->method('mapDomainToFileName')->willReturnArgument(0);
-
+        $resourceFactory = $this->createMock(SystemResourceFactory::class);
+        $resourcePublisher = $this->createMock(SystemResourcePublisherInterface::class);
         return [
             new NullFrontend('assets'),
             new MarkerBasedTemplateService(
@@ -62,9 +64,12 @@ trait PageRendererFactoryTrait
                 new NullFrontend('runtime'),
             ),
             new MetaTagManagerRegistry(),
-            new AssetRenderer(new AssetCollector(), new NoopEventDispatcher()),
+            new AssetRenderer(new AssetCollector(), new NoopEventDispatcher(), $resourcePublisher, $resourceFactory),
             new AssetCollector(),
-            new ResourceCompressor(),
+            new ResourceCompressor(
+                $resourceFactory,
+                $resourcePublisher
+            ),
             new RelativeCssPathFixer(),
             new LanguageServiceFactory(
                 new Locales(),
@@ -77,6 +82,8 @@ trait PageRendererFactoryTrait
                 new NullFrontend('assets'),
                 'foobar',
             ),
+            $resourcePublisher,
+            $resourceFactory,
         ];
     }
 }

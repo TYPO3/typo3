@@ -27,13 +27,16 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 final class SvgImageViewHelperTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['filemetadata'];
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/svg_image_test',
+    ];
 
     protected array $pathsToProvideInTestInstance = [
-        'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest1.svg' => 'fileadmin/user_upload/FALImageViewHelperTest1.svg',
-        'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest2.svg' => 'fileadmin/user_upload/FALImageViewHelperTest2.svg',
-        'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest3.svg' => 'fileadmin/user_upload/FALImageViewHelperTest3.svg',
-        'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest4.svg' => 'fileadmin/user_upload/FALImageViewHelperTest4.svg',
-        'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest5.svg' => 'fileadmin/user_upload/FALImageViewHelperTest5.svg',
+        'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/svg_image_test/Resources/Public/Images/ImageViewHelperTest1.svg' => 'fileadmin/user_upload/FALImageViewHelperTest1.svg',
+        'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/svg_image_test/Resources/Public/Images/ImageViewHelperTest2.svg' => 'fileadmin/user_upload/FALImageViewHelperTest2.svg',
+        'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/svg_image_test/Resources/Public/Images/ImageViewHelperTest3.svg' => 'fileadmin/user_upload/FALImageViewHelperTest3.svg',
+        'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/svg_image_test/Resources/Public/Images/ImageViewHelperTest4.svg' => 'fileadmin/user_upload/FALImageViewHelperTest4.svg',
+        'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/svg_image_test/Resources/Public/Images/ImageViewHelperTest5.svg' => 'fileadmin/user_upload/FALImageViewHelperTest5.svg',
     ];
 
     protected array $additionalFoldersToCreate = [
@@ -107,7 +110,7 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
 
         $maximum = count($dimensionMap);
 
-        $storageDirOriginal = 'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers';
+        $storageDirOriginal = 'typo3conf/ext/svg_image_test/Resources/Public/Images';
         $storageDirTemp     = 'typo3temp/assets/_processed_/[0-9a-f]/[0-9a-f]';
         $storageDirFal      = 'fileadmin/user_upload';
         $storageDirFalTemp  = 'fileadmin/_processed_/[0-9a-f]/[0-9a-f]';
@@ -126,7 +129,7 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
             //# SECTION 1: Referenced via EXT: ###
             $expected[sprintf('no crop (%s)', $fn)] = [
                 sprintf(
-                    '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/%s" width="%d" height="%d" />',
+                    '<f:image src="EXT:svg_image_test/Resources/Public/Images/%s" width="%d" height="%d" />',
                     $fn,
                     $width,
                     $height,
@@ -144,7 +147,7 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
 
             $expected[sprintf('empty crop (%s)', $fn)] = [
                 sprintf(
-                    '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/%s" width="%d" height="%d" crop="null" />',
+                    '<f:image src="EXT:svg_image_test/Resources/Public/Images/%s" width="%d" height="%d" crop="null" />',
                     $fn,
                     $width,
                     $height,
@@ -162,7 +165,7 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
 
             $expected[sprintf('crop as array - forced 60px (%s)', $fn)] = [
                 sprintf(
-                    '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/%1$s" width="%2$d" height="%3$d" crop="{\'default\':{\'cropArea\':{\'width\':%4$s,\'height\':%4$s,\'x\':%5$s,\'y\':%5$s},\'selectedRatio\':\'1:1\',\'focusArea\':null}}" />',
+                    '<f:image src="EXT:svg_image_test/Resources/Public/Images/%1$s" width="%2$d" height="%3$d" crop="{\'default\':{\'cropArea\':{\'width\':%4$s,\'height\':%4$s,\'x\':%5$s,\'y\':%5$s},\'selectedRatio\':\'1:1\',\'focusArea\':null}}" />',
                     $fn,
                     $dimensionMap[$fn]['fixedCrop60px'][0], // width
                     $dimensionMap[$fn]['fixedCrop60px'][1], // height
@@ -181,7 +184,7 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
 
             $expected[sprintf('crop as array - no width/height (%s)', $fn)] = [
                 sprintf(
-                    '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/%1$s" crop="{\'default\':{\'cropArea\':{\'width\':%2$s,\'height\':%2$s,\'x\':%3$s,\'y\':%3$s},\'selectedRatio\':\'1:1\',\'focusArea\':null}}" />',
+                    '<f:image src="EXT:svg_image_test/Resources/Public/Images/%1$s" crop="{\'default\':{\'cropArea\':{\'width\':%2$s,\'height\':%2$s,\'x\':%3$s,\'y\':%3$s},\'selectedRatio\':\'1:1\',\'focusArea\':null}}" />',
                     $fn,
                     $dimensionMap[$fn]['relativeCrop80Percent'][2], // crop-string width/height
                     $dimensionMap[$fn]['relativeCrop80Percent'][3] // crop-string offset left/top
@@ -198,7 +201,7 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
 
             $expected[sprintf('force pixel-conversion, no crop (%s)', $fn)] = [
                 sprintf(
-                    '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/%s" width="%d" height="%d" fileExtension="png" />',
+                    '<f:image src="EXT:svg_image_test/Resources/Public/Images/%s" width="%d" height="%d" fileExtension="png" />',
                     $fn,
                     $width,
                     $height,
@@ -215,7 +218,7 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
 
             $expected[sprintf('force pixel-conversion, with crop (%s)', $fn)] = [
                 sprintf(
-                    '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/%1$s" fileExtension="png" width="%2$d" height="%3$d" crop="{\'default\':{\'cropArea\':{\'width\':%4$s,\'height\':%4$s,\'x\':%5$s,\'y\':%5$s},\'selectedRatio\':\'1:1\',\'focusArea\':null}}" />',
+                    '<f:image src="EXT:svg_image_test/Resources/Public/Images/%1$s" fileExtension="png" width="%2$d" height="%3$d" crop="{\'default\':{\'cropArea\':{\'width\':%4$s,\'height\':%4$s,\'x\':%5$s,\'y\':%5$s},\'selectedRatio\':\'1:1\',\'focusArea\':null}}" />',
                     $fn,
                     $dimensionMap[$fn]['relativeCrop80Percent'][0], // width
                     $dimensionMap[$fn]['relativeCrop80Percent'][1], // height

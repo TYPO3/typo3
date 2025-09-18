@@ -19,12 +19,13 @@ namespace TYPO3\CMS\Backend\Form\Utility;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
+use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceException;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * This is a static, internal and intermediate helper class for various
@@ -135,24 +136,23 @@ class FormEngineUtility
     public static function getIconHtml($icon, $alt = '', $title = '')
     {
         $icon = (string)$icon;
-        if (PathUtility::isAbsolutePath($icon)) {
-            $absoluteFilePath = $icon;
-        } else {
-            $absoluteFilePath = GeneralUtility::getFileAbsFileName($icon);
-        }
-        if (!empty($absoluteFilePath) && (is_file($absoluteFilePath)) || is_file(Environment::getPublicPath() . $absoluteFilePath)) {
+        try {
+            $resourceFactory = GeneralUtility::makeInstance(SystemResourceFactory::class);
+            $resource = $resourceFactory->createPublicResource($icon);
+            $resourcePublisher = GeneralUtility::makeInstance(SystemResourcePublisherInterface::class);
+            $iconUri = $resourcePublisher->generateUri($resource, null);
             return '<img'
                 . ' loading="lazy" '
-                . ' src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($absoluteFilePath)) . '"'
+                . ' src="' . htmlspecialchars((string)$iconUri) . '"'
                 . ' alt="' . htmlspecialchars($alt) . '" '
                 . ($title ? 'title="' . htmlspecialchars($title) . '"' : '')
                 . ' />';
+        } catch (SystemResourceException) {
+            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+            return $iconFactory
+                ->getIcon($icon, IconSize::SMALL)
+                ->setTitle($title)
+                ->render('inline');
         }
-
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        return $iconFactory
-            ->getIcon($icon, IconSize::SMALL)
-            ->setTitle($title)
-            ->render('inline');
     }
 }

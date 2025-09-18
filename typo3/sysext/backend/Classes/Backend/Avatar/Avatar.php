@@ -104,7 +104,7 @@ class Avatar
         }
         return GeneralUtility::makeInstance(
             Image::class,
-            PathUtility::getPublicResourceWebPath('EXT:core/Resources/Public/Icons/T3Icons/svgs/avatar/avatar-default.svg'),
+            (string)PathUtility::getSystemResourceUri('EXT:core/Resources/Public/Icons/T3Icons/svgs/avatar/avatar-default.svg'),
             $size,
             $size
         );

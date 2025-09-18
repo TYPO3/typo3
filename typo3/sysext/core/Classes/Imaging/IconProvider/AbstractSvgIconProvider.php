@@ -19,6 +19,9 @@ namespace TYPO3\CMS\Core\Imaging\IconProvider;
 
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconProviderInterface;
+use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceException;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -45,21 +48,13 @@ abstract class AbstractSvgIconProvider implements IconProviderInterface
      */
     protected function getPublicPath(string $source): string
     {
-        if (PathUtility::isExtensionPath($source)) {
-            return PathUtility::getPublicResourceWebPath($source);
-        }
-        // TODO: deprecate non extension resources in icon API
-        return PathUtility::getAbsoluteWebPath(PathUtility::isAbsolutePath($source) ? $source : GeneralUtility::getFileAbsFileName($source));
+        return (string)PathUtility::getSystemResourceUri($source);
     }
 
     protected function getInlineSvg(string $source): string
     {
-        if (!file_exists($source)) {
-            return '';
-        }
-
-        $svgContent = file_get_contents($source);
-        if ($svgContent === false) {
+        $svgContent = $this->getInlineSvgContents($source);
+        if ($svgContent === null) {
             return '';
         }
         $svgContent = (string)preg_replace('/<script[\s\S]*?>[\s\S]*?<\/script>/i', '', $svgContent);
@@ -71,5 +66,25 @@ abstract class AbstractSvgIconProvider implements IconProviderInterface
         // remove xml version tag
         $domXml = dom_import_simplexml($svgElement);
         return $domXml->ownerDocument->saveXML($domXml->ownerDocument->documentElement);
+    }
+
+    protected function getInlineSvgContents(string $source): ?string
+    {
+        try {
+            $resourceFactory = GeneralUtility::makeInstance(SystemResourceFactory::class);
+            $resource = $resourceFactory->createResource($source);
+            if ($resource instanceof SystemResourceInterface) {
+                return $resource->getContents();
+            }
+            return null;
+        } catch (SystemResourceException) {
+        }
+        if (PathUtility::isExtensionPath($source) || !PathUtility::isAbsolutePath($source)) {
+            $source = GeneralUtility::getFileAbsFileName($source);
+        }
+        if (!file_exists($source)) {
+            return null;
+        }
+        return file_get_contents($source) ?: null;
     }
 }

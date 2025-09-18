@@ -66,8 +66,8 @@ final class ImageViewHelperTest extends FunctionalTestCase
             ],
             [
                 '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" />',
-                1509741914,
-                'Unable to render image tag: File /typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers does not exist.',
+                1509741911,
+                'Unable to render image tag: Tried to access a private resource file "EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" from fallback compatibility storage. This storage only handles public files.',
             ],
             [
                 '<f:image src="fileadmin/image.jpg" />',
@@ -115,8 +115,8 @@ final class ImageViewHelperTest extends FunctionalTestCase
             ],
             [
                 '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" />',
-                1509741914,
-                'Unable to render image tag in "tt_content:123": File /typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers does not exist.',
+                1509741911,
+                'Unable to render image tag in "tt_content:123": Tried to access a private resource file "EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" from fallback compatibility storage. This storage only handles public files.',
             ],
             [
                 '<f:image src="fileadmin/image.jpg" />',

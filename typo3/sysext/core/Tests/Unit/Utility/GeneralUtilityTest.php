@@ -3620,6 +3620,7 @@ final class GeneralUtilityTest extends UnitTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function createVersionNumberedFilenameDoesNotResolveBackpathForAbsolutePathInBackend(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['versionNumberInFilename'] = true;
@@ -3637,6 +3638,7 @@ final class GeneralUtilityTest extends UnitTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function createVersionNumberedFilenameDoesNotResolveBackpathForAbsolutePath(): void
     {
         Environment::initialize(
@@ -3668,6 +3670,7 @@ final class GeneralUtilityTest extends UnitTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function createVersionNumberedFilenameKeepsInvalidAbsolutePathInFrontendAndAddsQueryString(): void
     {
         Environment::initialize(
@@ -3704,6 +3707,7 @@ final class GeneralUtilityTest extends UnitTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function createVersionNumberedFilenameResolvesAlreadyGivenAbsolutePathInBackend(): void
     {
         Environment::initialize(

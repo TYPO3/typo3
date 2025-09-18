@@ -20,6 +20,9 @@ namespace TYPO3\CMS\Fluid;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
+use TYPO3\CMS\Core\SystemResource\Identifier\SystemResourceIdentifierFactory;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 
 /**
@@ -50,6 +53,8 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return [
             ViewFactoryInterface::class => self::provideFallbackViewFactory(...),
+            ViewHelpers\ResourceViewHelper::class => self::provideFallbackResourceViewHelper(...),
+            ViewHelpers\Uri\ResourceViewHelper::class => self::provideFallbackResourceUriViewHelper(...),
         ] + parent::getExtensions();
     }
 
@@ -81,6 +86,28 @@ class ServiceProvider extends AbstractServiceProvider
         // Provide the default FluidViewFactory for the install tool when $viewFactory is null (that means when we run without symfony DI)
         return $viewFactory ?? new View\FluidViewFactory(
             $container->get(Core\Rendering\RenderingContextFactory::class),
+        );
+    }
+
+    public static function provideFallbackResourceUriViewHelper(
+        ContainerInterface $container,
+        ?ViewHelpers\Uri\ResourceViewHelper $resourceViewHelper = null
+    ): ViewHelpers\Uri\ResourceViewHelper {
+        // Provide the ResourceViewHelper for the install tool when $resourceViewHelper is null (that means when we run without symfony DI)
+        return $resourceViewHelper ?? new ViewHelpers\Uri\ResourceViewHelper(
+            $container->get(SystemResourceFactory::class),
+            $container->get(SystemResourcePublisherInterface::class),
+            $container->get(SystemResourceIdentifierFactory::class),
+        );
+    }
+
+    public static function provideFallbackResourceViewHelper(
+        ContainerInterface $container,
+        ?ViewHelpers\ResourceViewHelper $resourceViewHelper = null
+    ): ViewHelpers\ResourceViewHelper {
+        // Provide the ResourceViewHelper for the install tool when $resourceViewHelper is null (that means when we run without symfony DI)
+        return $resourceViewHelper ?? new ViewHelpers\ResourceViewHelper(
+            $container->get(SystemResourceFactory::class),
         );
     }
 }

@@ -196,6 +196,7 @@ final class ExportTest extends AbstractImportExportTestCase
 
     public static function addFilesSucceedsDataProvider(): array
     {
+        $fileMtime = filemtime(__DIR__ . '/../../Resources/Public/Icons/status-reference-hard.png');
         return [
             [
                 'dat' => [
@@ -219,7 +220,7 @@ final class ExportTest extends AbstractImportExportTestCase
                         'preCode' =>
                             '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="FILE" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-hard" data-identifier="status-reference-hard" aria-hidden="true">'
                             . "\n" . "\t" . '<span class="icon-markup">'
-                            . "\n" . '<img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-hard.png" width="16" height="16" alt="" />'
+                            . "\n" . '<img src="/typo3/sysext/impexp/Resources/Public/Icons/status-reference-hard.png?' . $fileMtime . '" width="16" height="16" alt="" />'
                             . "\n" . "\t" . '</span>' . "\n\t\n" . '</span>',
                         'title' => 'filename.jpg',
                         'showDiffContent' => '',

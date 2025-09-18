@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Package;
 
+use TYPO3\CMS\Core\Package\Resource\ResourceCollectionInterface;
+
 /**
  * Interface for a TYPO3 Package class
  */
@@ -30,6 +32,11 @@ interface PackageInterface
     public const PATTERN_MATCH_PACKAGEKEY = '/^[a-z0-9]+\.(?:[a-z0-9][\.a-z0-9]*)+$/i';
 
     public const PATTERN_MATCH_EXTENSIONKEY = '/^[0-9a-z_-]+$/i';
+
+    /**
+     * @internal
+     */
+    public function getResources(): ResourceCollectionInterface;
 
     /**
      * @internal

@@ -23,6 +23,8 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\RteCKEditor\Form\Element\Event\AfterGetExternalPluginsEvent;
@@ -82,6 +84,8 @@ class RichTextElement extends AbstractFormElement
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly UriBuilder $uriBuilder,
         private readonly Locales $locales,
+        private readonly SystemResourcePublisherInterface $resourcePublisher,
+        private readonly SystemResourceFactory $systemResourceFactory,
     ) {}
 
     /**
@@ -378,7 +382,14 @@ class RichTextElement extends AbstractFormElement
         foreach ($configuration as $key => $value) {
             if (is_array($value)) {
                 $configuration[$key] = $this->replaceAbsolutePathsToRelativeResourcesPath($value);
-            } elseif (is_string($value) && PathUtility::isExtensionPath(strtoupper($value))) {
+            } elseif (is_string($value)
+                && $value !== ''
+                // @todo: this check should vanish, once not every config key is iterated over
+                && (
+                    PathUtility::isExtensionPath(strtoupper($value))
+                    || str_starts_with($value, 'PKG:')
+                )
+            ) {
                 $configuration[$key] = $this->resolveUrlPath($value);
             }
         }
@@ -386,17 +397,12 @@ class RichTextElement extends AbstractFormElement
     }
 
     /**
-     * Resolves an EXT: syntax file to an absolute web URL
+     * Resolves system resources an absolute web URL
      */
     protected function resolveUrlPath(string $value): string
     {
-        if (str_contains($value, '?')) {
-            return PathUtility::getPublicResourceWebPath($value);
-        }
-        $value = GeneralUtility::getFileAbsFileName($value);
-        $value = GeneralUtility::createVersionNumberedFilename($value);
-        return PathUtility::getAbsoluteWebPath($value);
-
+        $resource = $this->systemResourceFactory->createPublicResource($value);
+        return (string)$this->resourcePublisher->generateUri($resource, null);
     }
 
     /**

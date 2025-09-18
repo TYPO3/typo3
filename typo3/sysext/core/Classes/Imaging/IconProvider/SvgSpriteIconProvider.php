@@ -18,8 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Imaging\IconProvider;
 
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * SvgSpriteIconProvider provides sprite icons and are rendered via <svg> tag
@@ -49,10 +47,6 @@ class SvgSpriteIconProvider extends AbstractSvgIconProvider
         }
 
         $source = $options['source'];
-
-        if (PathUtility::isExtensionPath($source) || !PathUtility::isAbsolutePath($source)) {
-            $source = GeneralUtility::getFileAbsFileName($source);
-        }
 
         return $this->getInlineSvg($source);
     }

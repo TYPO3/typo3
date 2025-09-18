@@ -1,6 +1,6 @@
 plugin.tx_seo {
   config {
-    xmlSitemap.sitemaps.xslFile = EXT:seo/Tests/Functional/Fixtures/XslFile2.xsl
+    xmlSitemap.sitemaps.xslFile = PKG:typo3/cms-seo:Resources/Public/Tests/Functional/Fixtures/XslFile2.xsl
   }
 }
 

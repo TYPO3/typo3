@@ -31,18 +31,12 @@ final readonly class FrontendUrlPrefix
     public function getUrlPrefix(ServerRequestInterface $request): string
     {
         $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')?->getConfigArray();
-        $absRefPrefix = trim($typoScriptConfigArray['absRefPrefix'] ?? '');
-        if (!empty($absRefPrefix)) {
-            if ($absRefPrefix === 'auto') {
-                $normalizedParams = $request->getAttribute('normalizedParams');
-                $absRefPrefix = $normalizedParams->getSitePath();
-            }
-        }
+        $normalizedParams = $request->getAttribute('normalizedParams');
         // TypoScript config.forceAbsoluteUrls overrides config.absRefPrefix
         if ($typoScriptConfigArray['forceAbsoluteUrls'] ?? false) {
-            $normalizedParams = $request->getAttribute('normalizedParams');
-            $absRefPrefix = $normalizedParams->getSiteUrl();
+            return $normalizedParams->getSiteUrl();
         }
-        return $absRefPrefix;
+        $absRefPrefix = trim($typoScriptConfigArray['absRefPrefix'] ?? '');
+        return $absRefPrefix === 'auto' ? $normalizedParams->getSitePath() : $absRefPrefix;
     }
 }

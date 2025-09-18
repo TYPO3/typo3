@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
@@ -65,6 +65,8 @@ class ListUtility implements SingletonInterface
      */
     protected $eventDispatcher;
 
+    protected SystemResourcePublisherInterface $resourcePublisher;
+
     /**
      * @var DependencyUtility
      */
@@ -95,6 +97,11 @@ class ListUtility implements SingletonInterface
         $this->dependencyUtility = $dependencyUtility;
     }
 
+    public function injectResourcePublisher(SystemResourcePublisherInterface $resourcePublisher)
+    {
+        $this->resourcePublisher = $resourcePublisher;
+    }
+
     /**
      * Returns the list of available, but not necessarily loaded extensions
      *
@@ -112,14 +119,14 @@ class ListUtility implements SingletonInterface
                 $installationType = $this->getInstallTypeForPackage($package);
                 if ($filter === '' || $filter === $installationType) {
                     $version = $package->getPackageMetaData()->getVersion();
-                    $icon = $package->getPackageIcon();
+                    $icon = $package->getResources()->getPackageIcon();
                     $extensionData = [
                         'packagePath' => $package->getPackagePath(),
                         'type' => $installationType,
                         'key' => $package->getPackageKey(),
                         'version' => $version,
                         'state' => str_starts_with($version, 'dev-') ? 'alpha' : 'stable',
-                        'icon' => $icon ? PathUtility::getAbsoluteWebPath($package->getPackagePath() . $icon) : '',
+                        'icon' => $icon ? (string)$this->resourcePublisher->generateUri($icon, null) : '',
                         'title' => $package->getPackageMetaData()->getTitle(),
                     ];
                     $this->availableExtensions[$package->getPackageKey()] = $extensionData;

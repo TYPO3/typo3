@@ -218,31 +218,33 @@ class BackendController
         // Extension Configuration to find the TYPO3 logo in the left corner
         $extConf = $this->extensionConfiguration->get('backend');
         $logoPath = '';
+        $logoUrl = '';
+        $logoWidth = 22;
+        $logoHeight = 22;
         if (!empty($extConf['backendLogo'])) {
-            $customBackendLogo = GeneralUtility::getFileAbsFileName(ltrim($extConf['backendLogo'], '/'));
-            if (!empty($customBackendLogo)) {
+            $configuredLogo = ltrim($extConf['backendLogo'], '/');
+            $customBackendLogo = GeneralUtility::getFileAbsFileName($configuredLogo);
+            if ($customBackendLogo !== '' && file_exists($logoPath)) {
                 $logoPath = $customBackendLogo;
+                $logoUrl = (string)PathUtility::getSystemResourceUri($configuredLogo, $request);
+                // set width/height for custom logo
+                $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $logoPath);
+                $logoWidth = $imageInfo->getWidth() ?: $logoWidth;
+                $logoHeight = $imageInfo->getHeight() ?: $logoHeight;
+
+                // High-resolution?
+                if (str_contains($logoPath, '@2x.')) {
+                    $logoWidth /= 2;
+                    $logoHeight /= 2;
+                }
             }
         }
         // if no custom logo was set or the path is invalid, use the original one
-        if (empty($logoPath) || !file_exists($logoPath)) {
-            $logoPath = GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Public/Images/typo3_logo_orange.svg');
-            $logoWidth = 22;
-            $logoHeight = 22;
-        } else {
-            // set width/height for custom logo
-            $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $logoPath);
-            $logoWidth = $imageInfo->getWidth() ?: 22;
-            $logoHeight = $imageInfo->getHeight() ?: 22;
-
-            // High-resolution?
-            if (str_contains($logoPath, '@2x.')) {
-                $logoWidth /= 2;
-                $logoHeight /= 2;
-            }
+        if ($logoPath === '') {
+            $logoUrl = (string)PathUtility::getSystemResourceUri('EXT:backend/Resources/Public/Images/typo3_logo_orange.svg', $request);
         }
         $view->assign('hasModules', (bool)$this->modules);
-        $view->assign('logoUrl', PathUtility::getAbsoluteWebPath($logoPath));
+        $view->assign('logoUrl', $logoUrl);
         $view->assign('logoWidth', $logoWidth);
         $view->assign('logoHeight', $logoHeight);
         $view->assign('applicationVersion', $this->typo3Version->getVersion());

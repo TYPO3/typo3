@@ -21,7 +21,13 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolvePublicResourceException;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolveSystemResourceException;
+use TYPO3\CMS\Core\SystemResource\Exception\InvalidSystemResourceIdentifierException;
+use TYPO3\CMS\Core\SystemResource\Identifier\PackageResourceIdentifier;
+use TYPO3\CMS\Core\SystemResource\Identifier\SystemResourceIdentifierFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -68,19 +74,31 @@ trait PageRendererBackendSetupTrait
      */
     protected function loadStylesheets(PageRenderer $pageRenderer): void
     {
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['stylesheets'] ?? [] as $path) {
-            $path = GeneralUtility::getFileAbsFileName($path);
-            if (!$path) {
+        // @todo this needs to be replaced with usage of the yet to be created
+        //       System Resource API that can handle folders
+        //       This will then remove the need to use internal SystemResourceIdentifierFactory here
+        $identifierFactory = GeneralUtility::makeInstance(SystemResourceIdentifierFactory::class);
+        $packageManager = GeneralUtility::makeInstance(PackageManager::class);
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['stylesheets'] ?? [] as $potentialResourceIdentifier) {
+            try {
+                $resourceIdentifier = $identifierFactory->create($potentialResourceIdentifier);
+            } catch (InvalidSystemResourceIdentifierException) {
                 continue;
             }
-            if (is_dir($path)) {
-                // Path like 'EXT:my_extension/Resources/Public/Css/Backend'
-                foreach (GeneralUtility::getFilesInDir($path, 'css', true) as $cssFile) {
-                    $pageRenderer->addCssFile($cssFile);
+            if (!$resourceIdentifier instanceof PackageResourceIdentifier) {
+                continue;
+            }
+            $package = $packageManager->getPackage($resourceIdentifier->getPackageKey());
+            $relativePath = $resourceIdentifier->getRelativePath();
+            $absolutePath = $package->getPackagePath() . $relativePath;
+            if (is_dir($absolutePath)) {
+                // Path like 'PKG:vendor/my-extension:Resources/Public/Css/Backend'
+                foreach (GeneralUtility::getFilesInDir($absolutePath, 'css') as $cssFile) {
+                    $pageRenderer->addCssFile((string)$resourceIdentifier->withRelativePath(rtrim($relativePath, '/') . '/' . $cssFile));
                 }
-            } elseif (file_exists($path)) {
-                // A single file 'EXT:my_extension/Resources/Public/Css/Backend/main.css' or just a single file
-                $pageRenderer->addCssFile($path);
+            } elseif (file_exists($absolutePath)) {
+                // A single file 'PKG:my_extension:Resources/Public/Css/Backend/main.css' or just a single file
+                $pageRenderer->addCssFile((string)$resourceIdentifier);
             }
         }
     }
@@ -94,29 +112,18 @@ trait PageRendererBackendSetupTrait
         if (!empty($backendFavicon)) {
             return $this->getUriForFileName($request, $backendFavicon);
         }
-        return PathUtility::getPublicResourceWebPath('EXT:backend/Resources/Public/Icons/favicon.ico');
+        return $this->getUriForFileName($request, 'EXT:backend/Resources/Public/Icons/favicon.ico');
     }
 
     /**
-     * Returns the uri of a relative reference, resolves the "EXT:" prefix
-     * (way of referring to files inside extensions) and checks that the file is inside
-     * the project root of the TYPO3 installation
+     * Returns the uri for a system resource
      *
-     * @param string $filename The input filename/filepath to evaluate
-     * @return string Returns the filename of $filename if valid, otherwise blank string.
+     * @throws CanNotResolvePublicResourceException
+     * @throws CanNotResolveSystemResourceException
      */
-    protected function getUriForFileName(ServerRequestInterface $request, string $filename): string
+    protected function getUriForFileName(ServerRequestInterface $request, string $resourceIdentifier): string
     {
-        if (PathUtility::hasProtocolAndScheme($filename)) {
-            return $filename;
-        }
-        $urlPrefix = '';
-        if (PathUtility::isExtensionPath($filename)) {
-            $filename = PathUtility::getPublicResourceWebPath($filename);
-        } elseif (!str_starts_with($filename, '/')) {
-            $urlPrefix = $this->getNormalizedParams($request)->getSitePath();
-        }
-        return $urlPrefix . $filename;
+        return (string)PathUtility::getSystemResourceUri($resourceIdentifier, $request);
     }
 
     protected function getNormalizedParams(ServerRequestInterface $request): NormalizedParams

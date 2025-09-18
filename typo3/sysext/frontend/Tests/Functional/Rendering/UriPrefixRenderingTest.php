@@ -44,25 +44,19 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
      * @var string[]
      */
     private array $definedResources = [
-        'absoluteCSS' => '/typo3/sysext/backend/Resources/Public/Css/backend.css',
-        'relativeCSS' => 'typo3/sysext/backend/Resources/Public/Css/backend.css',
         'extensionCSS' => 'EXT:rte_ckeditor/Resources/Public/Css/contents.css',
         'externalCSS' => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
-        'absoluteJS' => '/typo3/sysext/backend/Resources/Public/JavaScript/backend.js',
-        'relativeJS' => 'typo3/sysext/core/Resources/Public/JavaScript/Contrib/autosize.js',
         'extensionJS' => 'EXT:core/Resources/Public/JavaScript/Contrib/jquery.js',
         'externalJS' => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js',
-        'localImage' => 'typo3/sysext/frontend/Resources/Public/Icons/Extension.svg',
+        'localImage' => 'EXT:frontend/Resources/Public/Icons/Extension.svg',
     ];
 
     /**
      * @var string[]
      */
     private array $resolvedResources = [
-        'relativeCSS' => 'typo3/sysext/backend/Resources/Public/Css/backend.css',
         'extensionCSS' => 'typo3/sysext/rte_ckeditor/Resources/Public/Css/contents.css',
         'externalCSS' => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
-        'relativeJS' => 'typo3/sysext/core/Resources/Public/JavaScript/Contrib/autosize.js',
         'extensionJS' => 'typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery.js',
         'externalJS' => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js',
         'localImage' => 'typo3/sysext/frontend/Resources/Public/Icons/Extension.svg',
@@ -99,19 +93,15 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
             'none - none' => [
                 'none', 'none',
                 [
-                    'absolute' => '"{{CANDIDATE}}"',
                     'local' => '"{{CANDIDATE}}"',
-                    'relative' => '"{{CANDIDATE}}\?\d+"',
-                    'extension' => '"{{CANDIDATE}}\?\d+"',
+                    'extension' => '"/{{CANDIDATE}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
             ],
             'auto - none' => [
                 'auto', 'none',
                 [
-                    'absolute' => '"{{CANDIDATE}}"',
                     'local' => '"/{{CANDIDATE}}"',
-                    'relative' => '"/{{CANDIDATE}}\?\d+"',
                     'extension' => '"/{{CANDIDATE}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
@@ -119,9 +109,7 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
             'absolute-with-host - none' => [
                 'absolute-with-host', 'none',
                 [
-                    'absolute' => '"{{CANDIDATE}}"',
                     'local' => '"http://localhost/{{CANDIDATE}}"',
-                    'relative' => '"http://localhost/{{CANDIDATE}}\?\d+"',
                     'extension' => '"http://localhost/{{CANDIDATE}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
@@ -129,9 +117,7 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
             'absolute-without-host - none' => [
                 'absolute-without-host', 'none',
                 [
-                    'absolute' => '"{{CANDIDATE}}"',
                     'local' => '"/{{CANDIDATE}}"',
-                    'relative' => '"/{{CANDIDATE}}\?\d+"',
                     'extension' => '"/{{CANDIDATE}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
@@ -140,25 +126,17 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
             'none - concatenate' => [
                 'none', 'concatenate',
                 [
-                    '!absolute' => '{{CANDIDATE}}',
-                    '!relative' => '{{CANDIDATE}}',
                     '!extension' => '{{CANDIDATE}}',
-                    'absolute' => '"typo3temp/assets/compressed/merged-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'local' => '"{{CANDIDATE}}"',
-                    'relative' => '"typo3temp/assets/compressed/merged-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
-                    'extension' => '"typo3temp/assets/compressed/merged-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
+                    'extension' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
             ],
             'auto - concatenate' => [
                 'auto', 'concatenate',
                 [
-                    '!absolute' => '{{CANDIDATE}}',
-                    '!relative' => '{{CANDIDATE}}',
                     '!extension' => '{{CANDIDATE}}',
-                    'absolute' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'local' => '"/{{CANDIDATE}}"',
-                    'relative' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'extension' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
@@ -166,12 +144,8 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
             'absolute-with-host - concatenate' => [
                 'absolute-with-host', 'concatenate',
                 [
-                    '!absolute' => '{{CANDIDATE}}',
-                    '!relative' => '{{CANDIDATE}}',
                     '!extension' => '{{CANDIDATE}}',
-                    'absolute' => '"http://localhost/typo3temp/assets/compressed/merged-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'local' => '"http://localhost/{{CANDIDATE}}"',
-                    'relative' => '"http://localhost/typo3temp/assets/compressed/merged-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'extension' => '"http://localhost/typo3temp/assets/compressed/merged-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
@@ -179,12 +153,8 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
             'absolute-without-host - concatenate' => [
                 'absolute-without-host', 'concatenate',
                 [
-                    '!absolute' => '{{CANDIDATE}}',
-                    '!relative' => '{{CANDIDATE}}',
                     '!extension' => '{{CANDIDATE}}',
-                    'absolute' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'local' => '"/{{CANDIDATE}}"',
-                    'relative' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'extension' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
@@ -193,25 +163,17 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
             'none - compress' => [
                 'none', 'compress',
                 [
-                    '!absolute' => '{{CANDIDATE}}',
-                    '!relative' => '{{CANDIDATE}}',
                     '!extension' => '{{CANDIDATE}}',
-                    'absolute' => '"typo3temp/assets/compressed/{{CANDIDATE-FILENAME}}-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'local' => '"{{CANDIDATE}}"',
-                    'relative' => '"typo3temp/assets/compressed/{{CANDIDATE-FILENAME}}-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
-                    'extension' => '"typo3temp/assets/compressed/{{CANDIDATE-FILENAME}}-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
+                    'extension' => '"/typo3temp/assets/compressed/{{CANDIDATE-FILENAME}}-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
             ],
             'auto - compress' => [
                 'auto', 'compress',
                 [
-                    '!absolute' => '{{CANDIDATE}}',
-                    '!relative' => '{{CANDIDATE}}',
                     '!extension' => '{{CANDIDATE}}',
-                    'absolute' => '"/typo3temp/assets/compressed/{{CANDIDATE-FILENAME}}-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'local' => '"/{{CANDIDATE}}"',
-                    'relative' => '"/typo3temp/assets/compressed/{{CANDIDATE-FILENAME}}-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'extension' => '"/typo3temp/assets/compressed/{{CANDIDATE-FILENAME}}-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
@@ -219,12 +181,8 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
             'absolute-with-host - compress' => [
                 'absolute-with-host', 'compress',
                 [
-                    '!absolute' => '{{CANDIDATE}}',
-                    '!relative' => '{{CANDIDATE}}',
                     '!extension' => '{{CANDIDATE}}',
-                    'absolute' => '"http://localhost/typo3temp/assets/compressed/{{CANDIDATE-FILENAME}}-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'local' => '"http://localhost/{{CANDIDATE}}"',
-                    'relative' => '"http://localhost/typo3temp/assets/compressed/{{CANDIDATE-FILENAME}}-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'extension' => '"http://localhost/typo3temp/assets/compressed/{{CANDIDATE-FILENAME}}-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
@@ -232,12 +190,8 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
             'absolute-without-host - compress' => [
                 'absolute-without-host', 'compress',
                 [
-                    '!absolute' => '{{CANDIDATE}}',
-                    '!relative' => '{{CANDIDATE}}',
                     '!extension' => '{{CANDIDATE}}',
-                    'absolute' => '"/typo3temp/assets/compressed/{{CANDIDATE-FILENAME}}-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'local' => '"/{{CANDIDATE}}"',
-                    'relative' => '"/typo3temp/assets/compressed/{{CANDIDATE-FILENAME}}-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'extension' => '"/typo3temp/assets/compressed/{{CANDIDATE-FILENAME}}-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
@@ -246,25 +200,17 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
             'none - concatenate-and-compress' => [
                 'none', 'concatenate-and-compress',
                 [
-                    '!absolute' => '{{CANDIDATE}}',
-                    '!relative' => '{{CANDIDATE}}',
                     '!extension' => '{{CANDIDATE}}',
-                    'absolute' => '"typo3temp/assets/compressed/merged-[a-z0-9]+-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'local' => '"{{CANDIDATE}}"',
-                    'relative' => '"typo3temp/assets/compressed/merged-[a-z0-9]+-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
-                    'extension' => '"typo3temp/assets/compressed/merged-[a-z0-9]+-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
+                    'extension' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
             ],
             'auto - concatenate-and-compress' => [
                 'auto', 'concatenate-and-compress',
                 [
-                    '!absolute' => '{{CANDIDATE}}',
-                    '!relative' => '{{CANDIDATE}}',
                     '!extension' => '{{CANDIDATE}}',
-                    'absolute' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'local' => '"/{{CANDIDATE}}"',
-                    'relative' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'extension' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
@@ -272,12 +218,8 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
             'absolute-with-host - concatenate-and-compress' => [
                 'absolute-with-host', 'concatenate-and-compress',
                 [
-                    '!absolute' => '{{CANDIDATE}}',
-                    '!relative' => '{{CANDIDATE}}',
                     '!extension' => '{{CANDIDATE}}',
-                    'absolute' => '"http://localhost/typo3temp/assets/compressed/merged-[a-z0-9]+-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'local' => '"http://localhost/{{CANDIDATE}}"',
-                    'relative' => '"http://localhost/typo3temp/assets/compressed/merged-[a-z0-9]+-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'extension' => '"http://localhost/typo3temp/assets/compressed/merged-[a-z0-9]+-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
@@ -285,12 +227,8 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
             'absolute-without-host - concatenate-and-compress' => [
                 'absolute-without-host', 'concatenate-and-compress',
                 [
-                    '!absolute' => '{{CANDIDATE}}',
-                    '!relative' => '{{CANDIDATE}}',
                     '!extension' => '{{CANDIDATE}}',
-                    'absolute' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'local' => '"/{{CANDIDATE}}"',
-                    'relative' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'extension' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],

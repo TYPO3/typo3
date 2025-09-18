@@ -20,16 +20,21 @@ namespace TYPO3\CMS\Core\SystemResource\Http;
 use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Resource\File;
 
 /**
- * @internal
+ * This is subject to change during v14 development. Do not use.
+ * @internal Only to be used in TYPO3\CMS\Core\SystemResource namespace
  */
 class CacheBustingUri extends Uri
 {
     public static function fromFileSystemPath(string $absolutePathToPotentialFile, UriInterface $baseUri, ?ApplicationType $applicationType = null): UriInterface
     {
         try {
-            if (!file_exists($absolutePathToPotentialFile)) {
+            // The absolute path might be appended with a query string and/ or fragment
+            // therefore we remove it here before we check for file existence
+            $absolutePath = (new Uri($absolutePathToPotentialFile))->getPath();
+            if (!file_exists($absolutePath)) {
                 return $baseUri;
             }
         } catch (\Throwable) {
@@ -39,7 +44,7 @@ class CacheBustingUri extends Uri
         }
         $configAccessor = $applicationType?->isFrontend() ? 'FE' : 'BE';
         $rewriteFileName = (bool)($GLOBALS['TYPO3_CONF_VARS'][$configAccessor]['versionNumberInFilename'] ?? false);
-        $fileModificationTime = filemtime($absolutePathToPotentialFile);
+        $fileModificationTime = filemtime($absolutePath);
         if ($rewriteFileName) {
             $nameParts = explode('.', $baseUri->getPath());
             $fileExtension = array_pop($nameParts);
@@ -51,5 +56,11 @@ class CacheBustingUri extends Uri
         }
 
         return $uri;
+    }
+
+    public static function fromFile(File $file, UriInterface $baseUri): UriInterface
+    {
+        $query = $baseUri->getQuery();
+        return $baseUri->withQuery($query . ($query !== '' ? '&' : '') . $file->getSha1());
     }
 }

@@ -53,11 +53,7 @@ class BitmapIconProvider implements IconProviderInterface
      */
     protected function getPublicPath(string $source): string
     {
-        if (PathUtility::isExtensionPath($source)) {
-            return PathUtility::getPublicResourceWebPath($source);
-        }
-        // TODO: deprecate non extension resources in icon API
-        return PathUtility::getAbsoluteWebPath(PathUtility::isAbsolutePath($source) ? $source : GeneralUtility::getFileAbsFileName($source));
+        return (string)PathUtility::getSystemResourceUri($source);
     }
 
     /**
