@@ -40,27 +40,31 @@ Configuration:
     page {
       includeCSSLibs {
         someIncludeFile = fileadmin/someIncludeFile1
-        someIncludeFile.data-foo = includeCSSLibs
+        someIncludeFile.data.data-foo = includeCSSLibs
       }
       includeCSS {
         someIncludeFile = fileadmin/someIncludeFile2
-        someIncludeFile.data-foo = includeCSS
+        someIncludeFile.data.data-foo = includeCSS
       }
       includeJSLibs {
         someIncludeFile = fileadmin/someIncludeFile3
-        someIncludeFile.data-consent-type = marketing
+        someIncludeFile.data.data-consent-type = marketing
       }
       includeJS {
         someIncludeFile = fileadmin/someIncludeFile4
-        someIncludeFile.data-consent-type = essential
+        someIncludeFile.data.data-consent-type = essential
       }
       includeJSFooterlibs {
         someIncludeFile = fileadmin/someIncludeFile5
-        someIncludeFile.data-my-attribute = foo
+        someIncludeFile.data.data-my-attribute = foo
       }
       includeJSFooter {
         someIncludeFile = fileadmin/someIncludeFile6
-        someIncludeFile.data-foo = includeJSFooter
+        someIncludeFile.data.data-foo = includeJSFooter
+      }
+      includeJSFooter {
+        someIncludeFile = fileadmin/someIncludeFile7
+        someIncludeFile.data.foo = includeJSFooter
       }
     }
 
@@ -89,6 +93,7 @@ Resulting HTML of the above example:
     <body>
         <script src="/typo3conf/ext/myext/Resources/Public/someIncludeFile5" data-my-attribute="foo"></script>
         <script src="/typo3conf/ext/myext/Resources/Public/someIncludeFile6" data-foo="includeJSFooteribs"></script>
+        <script src="/typo3conf/ext/myext/Resources/Public/someIncludeFile7" foo="includeJSFooteribs"></script>
     </body>
 
 .. index:: Frontend, TypoScript, ext:frontend
