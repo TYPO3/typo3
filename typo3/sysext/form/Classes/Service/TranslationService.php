@@ -249,7 +249,7 @@ class TranslationService implements SingletonInterface
     }
 
     /**
-     * @return string|array
+     * @return string|array|null
      * @throws \InvalidArgumentException
      * @internal
      */
