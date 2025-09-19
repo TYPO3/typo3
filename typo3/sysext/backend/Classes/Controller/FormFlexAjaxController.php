@@ -24,10 +24,8 @@ use TYPO3\CMS\Backend\Form\Behavior\UpdateValueOnFieldChange;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\NodeFactory;
-use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Page\JavaScriptItems;
-use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -40,8 +38,6 @@ readonly class FormFlexAjaxController extends AbstractFormEngineAjaxController
 {
     public function __construct(
         private FormDataCompiler $formDataCompiler,
-        private TcaSchemaFactory $tcaSchemaFactory,
-        private FlexFormTools $flexFormTools,
         private NodeFactory $nodeFactory,
     ) {}
 
@@ -58,7 +54,6 @@ readonly class FormFlexAjaxController extends AbstractFormEngineAjaxController
         $tableName = $queryParameters['tableName'];
         $fieldName = $queryParameters['fieldName'];
         $recordTypeValue = $queryParameters['recordTypeValue'];
-        $dataStructureIdentifier = json_encode($queryParameters['dataStructureIdentifier']);
         $flexFormSheetName = $queryParameters['flexFormSheetName'];
         $flexFormFieldName = $queryParameters['flexFormFieldName'];
         $flexFormContainerName = $queryParameters['flexFormContainerName'];
@@ -66,9 +61,6 @@ readonly class FormFlexAjaxController extends AbstractFormEngineAjaxController
         // Prepare TCA and data values for a new section container using data providers
         // @todo Replace with a mutable schema
         $processedTca = $GLOBALS['TCA'][$tableName];
-        $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $this->tcaSchemaFactory->get($tableName));
-        $processedTca['columns'][$fieldName]['config']['ds'] = $dataStructure;
-        $processedTca['columns'][$fieldName]['config']['dataStructureIdentifier'] = $dataStructureIdentifier;
         // Get a new unique id for this container.
         $flexFormContainerIdentifier = StringUtility::getUniqueId();
         $flexSectionContainerPreparation = [
@@ -97,6 +89,7 @@ readonly class FormFlexAjaxController extends AbstractFormEngineAjaxController
         $formData = $this->formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
 
         $dataStructure = $formData['processedTca']['columns'][$fieldName]['config']['ds'];
+        $dataStructureIdentifier = $formData['processedTca']['columns'][$fieldName]['config']['dataStructureIdentifier'];
         $formData['fieldName'] = $fieldName;
         $formData['flexFormDataStructureArray'] = $dataStructure['sheets'][$flexFormSheetName]['ROOT']['el'][$flexFormFieldName]['children'][$flexFormContainerIdentifier];
         $formData['flexFormDataStructureIdentifier'] = $dataStructureIdentifier;

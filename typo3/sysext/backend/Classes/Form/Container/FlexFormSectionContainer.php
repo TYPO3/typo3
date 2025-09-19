@@ -45,7 +45,6 @@ class FlexFormSectionContainer extends AbstractContainer
     {
         $languageService = $this->getLanguageService();
 
-        $flexFormDataStructureIdentifier = $this->data['flexFormDataStructureIdentifier'];
         $flexFormDataStructureArray = $this->data['flexFormDataStructureArray'];
         $flexFormRowData = $this->data['flexFormRowData'];
         $flexFormFieldName = $this->data['flexFormFieldName'];
@@ -93,7 +92,6 @@ class FlexFormSectionContainer extends AbstractContainer
             $containerTemplateHtml[] =     'data-tablename="' . htmlspecialchars($this->data['tableName']) . '"';
             $containerTemplateHtml[] =     'data-fieldname="' . htmlspecialchars($this->data['fieldName']) . '"';
             $containerTemplateHtml[] =     'data-recordtypevalue="' . $this->data['recordTypeValue'] . '"';
-            $containerTemplateHtml[] =     'data-datastructureidentifier="' . htmlspecialchars($flexFormDataStructureIdentifier) . '"';
             $containerTemplateHtml[] =     'data-flexformsheetname="' . htmlspecialchars($flexFormSheetName) . '"';
             $containerTemplateHtml[] =     'data-flexformfieldname="' . htmlspecialchars($flexFormFieldName) . '"';
             $containerTemplateHtml[] =     'data-flexformcontainername="' . htmlspecialchars($flexFormContainerName) . '"';

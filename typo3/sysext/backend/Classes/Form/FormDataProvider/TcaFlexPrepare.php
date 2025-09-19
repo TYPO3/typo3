@@ -18,8 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidDataStructureException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaException;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaSchemaException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Schema\Exception\UndefinedSchemaException;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -62,8 +64,9 @@ readonly class TcaFlexPrepare implements FormDataProviderInterface
      */
     protected function initializeDataStructure(array $result, string $fieldName): array
     {
+        $dataStructureArray = ['sheets' => ['sDEF' => []]];
+
         if (!isset($result['processedTca']['columns'][$fieldName]['config']['dataStructureIdentifier'])) {
-            $dataStructureArray = ['sheets' => ['sDEF' => []]];
             try {
                 // Actually ['config']['ds'] might already contain the resolved data structure. However,
                 // since the references value might be a file path and a couple of events exist for flex
@@ -80,12 +83,19 @@ readonly class TcaFlexPrepare implements FormDataProviderInterface
                 $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
                 // Add the identifier to TCA to use it later during rendering
                 $result['processedTca']['columns'][$fieldName]['config']['dataStructureIdentifier'] = $dataStructureIdentifier;
-            } catch (InvalidTcaException|InvalidIdentifierException|UndefinedSchemaException) {
+            } catch (InvalidDataStructureException|InvalidIdentifierException|InvalidTcaException|UndefinedSchemaException) {
                 // Skip the data structure if it is invalid
             }
-        } else {
-            // Assume the data structure has been given from outside if the data structure identifier is already set.
+        } elseif (is_array($result['processedTca']['columns'][$fieldName]['config']['ds'] ?? false)) {
+            // Data structure has been given from outside
             $dataStructureArray = $result['processedTca']['columns'][$fieldName]['config']['ds'];
+        } else {
+            // Resolve data structure base on given dataStructureIdentifier
+            try {
+                $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($result['processedTca']['columns'][$fieldName]['config']['dataStructureIdentifier'], $this->tcaSchemaFactory->get($result['tableName']));
+            } catch (InvalidDataStructureException|InvalidIdentifierException|InvalidTcaSchemaException|UndefinedSchemaException) {
+                // Skip the data structure if it is invalid
+            }
         }
         if (!isset($dataStructureArray['meta']) || !is_array($dataStructureArray['meta'])) {
             $dataStructureArray['meta'] = [];

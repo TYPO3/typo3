@@ -141,7 +141,6 @@ class FlexFormSectionContainer {
       tableName: dataset.tablename,
       fieldName: dataset.fieldname,
       recordTypeValue: dataset.recordtypevalue,
-      dataStructureIdentifier: JSON.parse(dataset.datastructureidentifier),
       flexFormSheetName: dataset.flexformsheetname,
       flexFormFieldName: dataset.flexformfieldname,
       flexFormContainerName: dataset.flexformcontainername,
