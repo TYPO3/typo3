@@ -85,6 +85,7 @@ class TimingOptionsElement extends AbstractFormElement
         ];
         $runningType->data['parameterArray']['itemFormElValue'] = $executionDetails->isSingleRun() ? 1 : 2;
         $runningType->data['parameterArray']['fieldChangeFunc'] = [];
+        $runningType->data['parameterArray']['fieldConf'] = array_replace_recursive($runningType->data['parameterArray']['fieldConf'], $parameterArray['fieldConf']['config']['overrideFieldTca']['runningType'] ?? []);
         $subFieldResult = $runningType->render();
         $resultArray['javaScriptModules'] = array_merge($resultArray['javaScriptModules'], $subFieldResult['javaScriptModules']);
         $fieldsHtml .= '<div class="form-group col-sm-6 t3js-timing-options-runningType">' . str_replace('"form-check"', '"form-check form-inline me-2"', $subFieldResult['html']) . '</div>';
@@ -97,6 +98,7 @@ class TimingOptionsElement extends AbstractFormElement
         $multiple->data['parameterArray']['fieldConf']['config']['items'] = [];
         $multiple->data['parameterArray']['fieldChangeFunc'] = [];
         $multiple->data['parameterArray']['itemFormElValue'] = $executionDetails->isParallelExecutionAllowed();
+        $multiple->data['parameterArray']['fieldConf'] = array_replace_recursive($multiple->data['parameterArray']['fieldConf'], $parameterArray['fieldConf']['config']['overrideFieldTca']['multiple'] ?? []);
         $subFieldResult = $multiple->render();
         $resultArray['javaScriptModules'] = array_merge($resultArray['javaScriptModules'], $subFieldResult['javaScriptModules']);
         $fieldsHtml .= '<div class="form-group col-sm-6 t3js-timing-options-parallel">' . $subFieldResult['html'] . '</div>';
@@ -107,6 +109,7 @@ class TimingOptionsElement extends AbstractFormElement
         $start->data['parameterArray']['fieldConf']['label'] = htmlspecialchars($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:scheduledFrom'));
         $start->data['parameterArray']['itemFormElName'] .= '[start]';
         $start->data['parameterArray']['itemFormElValue'] = DateTimeFactory::createFromTimestamp($executionDetails->getStart() ?: $this->context->getPropertyFromAspect('date', 'timestamp'))->format(DateTimeFormat::ISO8601_LOCALTIME);
+        $start->data['parameterArray']['fieldConf'] = array_replace_recursive($start->data['parameterArray']['fieldConf'], $parameterArray['fieldConf']['config']['overrideFieldTca']['start'] ?? []);
         $subFieldResult = $start->render();
         $resultArray['javaScriptModules'] = array_merge($resultArray['javaScriptModules'], $subFieldResult['javaScriptModules']);
         $fieldsHtml .= '<div class="form-group col-sm-6 t3js-timing-options-start">' . $subFieldResult['html'] . '</div>';
@@ -117,6 +120,7 @@ class TimingOptionsElement extends AbstractFormElement
         $end->data['parameterArray']['fieldConf']['label'] = htmlspecialchars($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:scheduledUntil'));
         $end->data['parameterArray']['itemFormElName'] .= '[end]';
         $end->data['parameterArray']['itemFormElValue'] = $executionDetails->getEnd() ? DateTimeFactory::createFromTimestamp($executionDetails->getEnd())->format(DateTimeFormat::ISO8601_LOCALTIME) : null;
+        $end->data['parameterArray']['fieldConf'] = array_replace_recursive($end->data['parameterArray']['fieldConf'], $parameterArray['fieldConf']['config']['overrideFieldTca']['end'] ?? []);
         $subFieldResult = $end->render();
         $resultArray['javaScriptModules'] = array_merge($resultArray['javaScriptModules'], $subFieldResult['javaScriptModules']);
         $fieldsHtml .= '<div class="form-group col-sm-6 t3js-timing-options-end">' . $subFieldResult['html'] . '</div>';
@@ -129,15 +133,7 @@ class TimingOptionsElement extends AbstractFormElement
         $frequency->data['parameterArray']['itemFormElValue'] = $executionDetails->getCronCmd();
         $frequency->data['parameterArray']['fieldChangeFunc'] = [];
         $frequency->data['parameterArray']['fieldConf']['config']['size'] = 40;
-        $frequency->data['parameterArray']['fieldConf']['config']['valuePicker'] = [
-            'items' => [],
-        ];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['frequencyOptions'] ?? [] as $value => $label) {
-            $frequency->data['parameterArray']['fieldConf']['config']['valuePicker']['items'][] = [
-                'label' => htmlspecialchars($languageService->sL($label)),
-                'value' => $value,
-            ];
-        }
+        $frequency->data['parameterArray']['fieldConf'] = array_replace_recursive($frequency->data['parameterArray']['fieldConf'], $parameterArray['fieldConf']['config']['overrideFieldTca']['frequency'] ?? []);
         $subFieldResult = $frequency->render();
         $resultArray['javaScriptModules'] = array_merge($resultArray['javaScriptModules'], $subFieldResult['javaScriptModules']);
         $fieldsHtml .= '<div class="form-group t3js-timing-options-frequency">' . $subFieldResult['html'] . '</div>';

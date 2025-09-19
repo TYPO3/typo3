@@ -85,6 +85,20 @@ return [
             'config' => [
                 'type' => 'json',
                 'renderType' => 'schedulerTimingOptions',
+                'overrideFieldTca' => [
+                    'frequency' => [
+                        'config' => [
+                            'valuePicker' => [
+                                'items' => [
+                                    [ 'value' => '0 9,15 * * 1-5', 'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:command.example1' ],
+                                    [ 'value' => '0 */2 * * *', 'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:command.example2' ],
+                                    [ 'value' => '*/20 * * * *', 'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:command.example3' ],
+                                    [ 'value' => '0 7 * * 2', 'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:command.example4' ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
             ],
         ],
         'nextexecution' => [
