@@ -293,9 +293,6 @@ class TaskService
         }
         // Sort all items by group, and groups as well
         usort($config['items'], static function (SelectItem $a, SelectItem $b): int {
-            if ($a->getGroup() === 'scheduler') {
-                return -1;
-            }
             $groupComparison = strnatcasecmp($a->getGroup(), $b->getGroup());
             if ($groupComparison !== 0) {
                 return $groupComparison;
