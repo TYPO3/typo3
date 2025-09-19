@@ -110,7 +110,7 @@ final class SchedulerSetupCheckController
     {
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier('scheduler_availabletasks')
+            ->setRouteIdentifier('scheduler_setupcheck')
             ->setDisplayName($name);
         $buttonBar->addButton($shortcutButton);
     }
