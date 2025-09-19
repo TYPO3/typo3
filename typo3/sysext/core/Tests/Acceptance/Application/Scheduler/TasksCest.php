@@ -120,13 +120,4 @@ final class TasksCest
         $I->see('Scheduler setup check');
         $I->see('This screen checks if the requisites for running the Scheduler as a cron job are fulfilled');
     }
-
-    public function canSwitchToInformation(ApplicationTester $I): void
-    {
-        $I->selectOption('select[name=moduleMenu]', 'Available scheduler commands & tasks');
-        $I->waitForElementVisible('[data-module-name="scheduler_availabletasks"]');
-        $I->see('Available scheduler commands & tasks');
-        $I->canSeeNumberOfElements('[data-module-name="scheduler_availabletasks"] table tbody tr', [1, 10000]);
-        $I->selectOption('select[name=moduleMenu]', 'Scheduled tasks');
-    }
 }

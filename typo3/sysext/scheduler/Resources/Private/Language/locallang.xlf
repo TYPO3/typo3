@@ -15,9 +15,6 @@
 			<trans-unit id="function.check">
 				<source>Scheduler setup check</source>
 			</trans-unit>
-			<trans-unit id="function.info">
-				<source>Available scheduler commands &amp; tasks</source>
-			</trans-unit>
 			<trans-unit id="function.add">
 				<source>New task</source>
 			</trans-unit>
@@ -41,12 +38,6 @@
 			</trans-unit>
 			<trans-unit id="hdg.lastRun">
 				<source>Last run</source>
-			</trans-unit>
-			<trans-unit id="availableTasks.headline">
-				<source>Available tasks</source>
-			</trans-unit>
-			<trans-unit id="availableTasks.description">
-				<source>List of all available tasks in this TYPO3 installation.</source>
 			</trans-unit>
 			<trans-unit id="label.automatically">
 				<source>automatically</source>
@@ -113,9 +104,6 @@
 			</trans-unit>
 			<trans-unit id="label.manually">
 				<source>manually</source>
-			</trans-unit>
-			<trans-unit id="label.name">
-				<source>Name</source>
 			</trans-unit>
 			<trans-unit id="label.nextExecution">
 				<source>Next Execution</source>
@@ -287,9 +275,6 @@
 			</trans-unit>
 			<trans-unit id="msg.noLastRun">
 				<source>The Scheduler has never yet run or the information about the last run has been lost.</source>
-			</trans-unit>
-			<trans-unit id="msg.noTasksDefined">
-				<source>There are currently no task classes available at all. To be able to create new tasks, you must either enable the samples provided by the Scheduler or install some other extension that relies on the Scheduler.</source>
 			</trans-unit>
 			<trans-unit id="msg.invalidTaskType">
 				<source>The selected task type must be either "single execution" or "recurring execution".</source>
@@ -561,9 +546,6 @@
 			</trans-unit>
 			<trans-unit id="editableGroupName.button.edit.label">
 				<source>Edit group name</source>
-			</trans-unit>
-			<trans-unit id="category">
-				<source>Category</source>
 			</trans-unit>
 			<trans-unit id="newSchedulerTask.filter.placeholder">
 				<source>Search for any kind of tasks</source>

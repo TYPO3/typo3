@@ -30,17 +30,6 @@ return [
         ],
         'aliases' => ['system_txschedulerM1'],
     ],
-    'scheduler_availabletasks' => [
-        'parent' => 'scheduler',
-        'access' => 'admin',
-        'path' => '/module/system/scheduler/available-tasks',
-        'labels' => ['title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.info'],
-        'routes' => [
-            '_default' => [
-                'target' => \TYPO3\CMS\Scheduler\Controller\AvailableSchedulerTasksController::class . '::handle',
-            ],
-        ],
-    ],
     'scheduler_setupcheck' => [
         'parent' => 'scheduler',
         'access' => 'admin',
