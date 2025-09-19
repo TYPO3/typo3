@@ -404,6 +404,13 @@ return [
                             <required>1</required>
                         </config>
                     </input_1>
+                    <email_1>
+                        <label>email_1, type=email, required=1</label>
+                        <config>
+                            <type>email</type>
+                            <required>1</required>
+                        </config>
+                    </email_1>
                 </el>
             </ROOT>
         </sGeneral>
@@ -428,6 +435,13 @@ return [
                                             <required>1</required>
                                         </config>
                                     </input_1>
+                                    <email_1>
+                                        <label>email_1, type=email, required=1</label>
+                                        <config>
+                                            <type>email</type>
+                                            <required>1</required>
+                                        </config>
+                                    </email_1>
                                 </el>
                             </container_1>
                         </el>
