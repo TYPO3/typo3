@@ -18,8 +18,6 @@ namespace TYPO3\CMS\Frontend\Controller;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Cache\CacheEntry;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -61,10 +59,8 @@ use TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent;
  *             remaining internal usages that can be adapted without further .rst
  *             files. The class should vanish together with $GLOBALS['TSFE'] in v14.
  */
-class TypoScriptFrontendController implements LoggerAwareInterface
+class TypoScriptFrontendController
 {
-    use LoggerAwareTrait;
-
     /**
      * Use $request->getAttribute('frontend.page.information')->getId() instead.
      */
@@ -896,22 +892,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Logs access to deprecated TypoScript objects and properties.
-     *
-     * Dumps message to the TypoScript message log (admin panel) and the TYPO3 deprecation log.
-     *
-     * @param string $typoScriptProperty Deprecated object or property
-     * @param string $explanation Message or additional information
-     * @internal
-     */
-    public function logDeprecatedTyposcript(string $typoScriptProperty, string $explanation = ''): void
-    {
-        $explanationText = $explanation !== '' ? ' - ' . $explanation : '';
-        $this->getTimeTracker()->setTSlogMessage($typoScriptProperty . ' is deprecated.' . $explanationText, LogLevel::WARNING);
-        trigger_error('TypoScript property ' . $typoScriptProperty . ' is deprecated' . $explanationText, E_USER_DEPRECATED);
-    }
-
-    /**
      * Returns a unique md5 hash.
      * There is no special magic in this, the only point is that you don't have to call md5(uniqid()) which is slow and by this you are sure to get a unique string each time in a little faster way.
      *
@@ -922,61 +902,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function uniqueHash(string $str = ''): string
     {
         return md5($this->uniqueString . '_' . $str . $this->uniqueCounter++);
-    }
-
-    /**
-     * Sets the cache-flag to 1. Could be called from user-included php-files in order to ensure that a page is not cached.
-     *
-     * Use :php:`$request->getAttribute('frontend.cache.instruction')->disableCache()` instead.
-     *
-     * @param string $reason An optional reason to be written to the log.
-     */
-    public function set_no_cache(string $reason = ''): void
-    {
-        $warning = '';
-        $context = [];
-        if ($reason !== '') {
-            $warning = '$TSFE->set_no_cache() was triggered. Reason: {reason}.';
-            $context['reason'] = $reason;
-        } else {
-            $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-            if (isset($trace[0]['class'])) {
-                $context['class'] = $trace[0]['class'];
-                $warning = '$GLOBALS[\'TSFE\']->set_no_cache() was triggered by {class} on line {line}.';
-            }
-            if (isset($trace[0]['function'])) {
-                $context['function'] = $trace[0]['function'];
-                $warning = '$GLOBALS[\'TSFE\']->set_no_cache() was triggered by {class}->{function} on line {line}.';
-            }
-            if ($context === []) {
-                // Only store the filename, not the full path for safety reasons
-                $context['file'] = basename($trace[0]['file']);
-                $warning = '$GLOBALS[\'TSFE\']->set_no_cache() was triggered by {file} on line {line}.';
-            }
-            $context['line'] = $trace[0]['line'];
-        }
-        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter']) {
-            $warning .= ' However, $TYPO3_CONF_VARS[\'FE\'][\'disableNoCacheParameter\'] is set, so it will be ignored!';
-            $this->getTimeTracker()->setTSlogMessage($warning, LogLevel::NOTICE);
-        } else {
-            $warning .= ' Caching is disabled!';
-            /** @var ServerRequestInterface $request */
-            $request = $GLOBALS['TYPO3_REQUEST'];
-            $cacheInstruction = $request->getAttribute('frontend.cache.instruction');
-            $cacheInstruction->disableCache('EXT:frontend: Caching disabled using deprecated set_no_cache().');
-        }
-        $this->logger->notice($warning, $context);
-    }
-
-    /**
-     * Sets the default page cache timeout in seconds.
-     * Unused.
-     */
-    public function set_cache_timeout_default(int $seconds): void
-    {
-        if ($seconds > 0) {
-            $this->cacheTimeOutDefault = $seconds;
-        }
     }
 
     /**
