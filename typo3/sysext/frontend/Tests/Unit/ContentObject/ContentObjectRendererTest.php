@@ -139,7 +139,7 @@ final class ContentObjectRendererTest extends UnitTestCase
         $this->frontendControllerMock =
             $this->getAccessibleMock(
                 TypoScriptFrontendController::class,
-                ['sL'],
+                [],
                 [],
                 '',
                 false

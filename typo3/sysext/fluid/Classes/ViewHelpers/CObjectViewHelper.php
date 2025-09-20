@@ -154,7 +154,6 @@ final class CObjectViewHelper extends AbstractViewHelper
         } else {
             $tsfe = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
             $tsfe->initializePageRenderer($request);
-            $tsfe->initializeLanguageService($request);
         }
         $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class, $tsfe);
         $parent = $request->getAttribute('currentContentObject');

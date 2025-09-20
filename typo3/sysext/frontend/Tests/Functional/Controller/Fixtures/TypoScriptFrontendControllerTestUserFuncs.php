@@ -17,7 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\Controller\Fixtures;
 
-final class TypoScriptFrontendControllerTestUserFuncs
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+final readonly class TypoScriptFrontendControllerTestUserFuncs
 {
     /**
      * A USER_INT method referenced in PageWithUserInt.typoscript
@@ -32,16 +36,20 @@ final class TypoScriptFrontendControllerTestUserFuncs
     /**
      * A USER method referenced in PageWithUserObjectUsingSlWithoutLLL.typoscript
      */
-    public function slWithoutLLLCallback(): string
+    public function slWithoutLLLCallback($_, $__, ServerRequestInterface $request): string
     {
-        return $GLOBALS['TSFE']->sL('notprefixedWithLLL');
+        return GeneralUtility::makeInstance(LanguageServiceFactory::class)
+            ->createFromSiteLanguage($request->getAttribute('language'))
+            ->sL('notprefixedWithLLL');
     }
 
     /**
      * A USER method referenced in PageWithUserObjectUsingSlWithLLL.typoscript
      */
-    public function slWithLLLCallback(): string
+    public function slWithLLLCallback($_, $__, ServerRequestInterface $request): string
     {
-        return $GLOBALS['TSFE']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:mod_tx_cms_webinfo_page');
+        return GeneralUtility::makeInstance(LanguageServiceFactory::class)
+            ->createFromSiteLanguage($request->getAttribute('language'))
+            ->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:mod_tx_cms_webinfo_page');
     }
 }

@@ -27,8 +27,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Page\AssetCollector;
@@ -216,8 +214,6 @@ class TypoScriptFrontendController
      */
     public string $content = '';
 
-    protected LanguageService $languageService;
-
     protected ?PageRenderer $pageRenderer = null;
     protected FrontendInterface $pageCache;
 
@@ -271,17 +267,6 @@ class TypoScriptFrontendController
             $locale = $language->getLocale();
         }
         $this->pageRenderer->setLanguage($locale);
-    }
-
-    /**
-     * This is only needed for sL() to be initialized properly.
-     *
-     * @internal
-     */
-    public function initializeLanguageService(ServerRequestInterface $request): void
-    {
-        $language = $request->getAttribute('language') ?? $request->getAttribute('site')->getDefaultLanguage();
-        $this->languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromSiteLanguage($language);
     }
 
     /**
@@ -919,20 +904,6 @@ class TypoScriptFrontendController
                 $this->cacheTimeOutDefault,
                 $this->context
             );
-    }
-
-    /**
-     * Split Label function for front-end applications.
-     *
-     * $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)
-     *                        ->createFromSiteLanguage($request->getAttribute('language'))->sL() instead.
-     *
-     * @param string $input Key string. Accepts the "LLL:" prefix.
-     * @return string Label value, if any.
-     */
-    public function sL(string $input): string
-    {
-        return $this->languageService->sL($input);
     }
 
     /**

@@ -106,7 +106,6 @@ final readonly class TypoScriptFrontendInitialization implements MiddlewareInter
 
         $controller = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
         $controller->initializePageRenderer($request);
-        $controller->initializeLanguageService($request);
         $controller->id = $pageInformation->getId();
         $controller->page = $pageInformation->getPageRecord();
         $controller->contentPid = $pageInformation->getContentFromPid();
