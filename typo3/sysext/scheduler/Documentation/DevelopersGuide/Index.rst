@@ -16,5 +16,4 @@ a good basis to learn by example.
     :titlesonly:
     :glob:
 
-    CreatingTasks/Index
-    SchedulerApi/Index
+    */Index
