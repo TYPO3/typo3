@@ -425,7 +425,7 @@ class TypoScriptFrontendController
      */
     public function generatePage_postProcessing(ServerRequestInterface $request): void
     {
-        $this->setAbsRefPrefix();
+        $this->content = $this->setAbsRefPrefixInContent($this->content, $this->absRefPrefix);
         $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
         $usePageCache = $request->getAttribute('frontend.cache.instruction')->isCachingAllowed();
         $event = new AfterCacheableContentIsGeneratedEvent($request, $this, $this->newHash, $usePageCache);
@@ -580,7 +580,7 @@ class TypoScriptFrontendController
         );
         // Replace again, because header and footer data and page renderer replacements may introduce additional placeholders (see #44825)
         $this->recursivelyReplaceIntPlaceholdersInContent($request);
-        $this->setAbsRefPrefix();
+        $this->content = $this->setAbsRefPrefixInContent($this->content, $this->absRefPrefix);
         $this->getTimeTracker()->pull();
     }
 
@@ -845,12 +845,12 @@ class TypoScriptFrontendController
      * @see \TYPO3\CMS\Frontend\Http\RequestHandler
      * @see INTincScript()
      */
-    protected function setAbsRefPrefix(): void
+    protected function setAbsRefPrefixInContent(string $content, string $absRefPrefix): string
     {
-        if (!$this->absRefPrefix) {
-            return;
+        if ($absRefPrefix === '') {
+            return $content;
         }
-        $encodedAbsRefPrefix = htmlspecialchars($this->absRefPrefix, ENT_QUOTES | ENT_HTML5);
+        $encodedAbsRefPrefix = htmlspecialchars($absRefPrefix, ENT_QUOTES | ENT_HTML5);
         $search = [
             '"_assets/',
             '"typo3temp/',
@@ -869,11 +869,7 @@ class TypoScriptFrontendController
             $search[] = '"' . $directory;
             $replace[] = '"' . $encodedAbsRefPrefix . $directory;
         }
-        $this->content = str_replace(
-            $search,
-            $replace,
-            $this->content
-        );
+        return str_replace($search, $replace, $content);
     }
 
     /**
