@@ -6516,6 +6516,13 @@ return [
             'Breaking-107397-CircularDependencyBetweenProcessedFileAndTaskRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher->getTypoScriptFrontendController' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-107507-RemovedExtformAbstractFinisher-getTypoScriptFrontendController.rst',
+        ],
+    ],
     /** Note (leave this at the bottom):
      *  The FQCN object definitions here are not actually checked, only
      *  the method name itself. That means, never list generic method names
