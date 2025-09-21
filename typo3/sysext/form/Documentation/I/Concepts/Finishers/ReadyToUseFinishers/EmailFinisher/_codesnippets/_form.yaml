@@ -1,0 +1,14 @@
+identifier: example-form
+label: 'example'
+type: Form
+
+finishers:
+  -
+    identifier: EmailToReceiver
+    options:
+      subject: 'Your message'
+      recipients:
+        your.company@example.com: 'Your Company name'
+        ceo@example.com: 'CEO'
+      senderAddress: 'form@example.com'
+      senderName: 'form submitter'

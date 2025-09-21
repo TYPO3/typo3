@@ -1,5 +1,6 @@
 ..  include:: /Includes.rst.txt
 ..  _concepts-finishers-ready-to-use:
+..  _apireference-finisheroptions:
 
 ======================
 Ready-to-use finishers

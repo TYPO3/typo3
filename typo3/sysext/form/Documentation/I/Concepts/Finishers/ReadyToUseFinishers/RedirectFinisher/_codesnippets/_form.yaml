@@ -1,0 +1,10 @@
+identifier: example-form
+label: 'example'
+type: Form
+
+finishers:
+  -
+    identifier: Redirect
+    options:
+      pageUid: 1
+      additionalParameters: 'param1=value1&param2=value2'

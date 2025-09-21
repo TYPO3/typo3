@@ -1,0 +1,10 @@
+identifier: example-form
+label: 'example'
+type: Form
+
+finishers:
+  -
+    identifier: Confirmation
+    options:
+      contentElementUid: 42
+  #...

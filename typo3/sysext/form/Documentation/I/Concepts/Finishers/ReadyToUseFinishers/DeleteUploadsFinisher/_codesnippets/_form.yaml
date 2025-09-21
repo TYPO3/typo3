@@ -1,0 +1,13 @@
+identifier: example-form
+label: 'example'
+type: Form
+
+finishers:
+  -
+    identifier: EmailToSender
+    options:
+      subject: 'Your Message: {message}'
+  -
+    identifier: DeleteUploads
+    # Define the delete uploads finisher AFTER the email finisher
+# ...

@@ -1,0 +1,14 @@
+identifier: example-form
+label: 'example'
+type: Form
+
+finishers:
+  -
+    identifier: FlashMessage
+    options:
+      messageTitle: 'Merci'
+      messageCode: 201905041245
+      messageBody: 'Thx for using %s'
+      messageArguments:
+        - 'TYPO3'
+      severity: 0
