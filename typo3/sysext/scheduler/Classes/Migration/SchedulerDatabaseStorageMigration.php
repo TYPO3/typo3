@@ -172,7 +172,13 @@ class SchedulerDatabaseStorageMigration implements UpgradeWizardInterface
             ->from(self::TABLE_NAME)
             ->where(
                 $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, ParameterType::INTEGER)),
-                $queryBuilder->expr()->eq('tasktype', $queryBuilder->createNamedParameter(''))
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->eq(
+                        'tasktype',
+                        $queryBuilder->createNamedParameter('')
+                    ),
+                    $queryBuilder->expr()->isNull('tasktype')
+                )
             );
 
         return $queryBuilder;
