@@ -55,6 +55,10 @@ final class BookmarkCest
 
         $I->switchToContentFrame();
 
+        $I->selectOption('select[name=moduleMenu]', 'Scheduled tasks');
+        $I->waitForElementVisible('[data-module-name="scheduler_manage"]');
+        $I->see('Scheduled tasks');
+
         $I->click(self::$docHeaderBookmarkButtonSelector);
         $I->waitForElementVisible('.module-docheader .dropdown-menu');
         $I->click('.module-docheader .dropdown-menu button:nth-of-type(1)');
