@@ -2813,6 +2813,8 @@ td .table-fit{margin-bottom:0}
 .modal-body{flex:1 1 auto;overflow-y:auto;padding:var(--typo3-modal-padding);position:relative}
 .modal-body>:first-child{margin-top:0}
 .modal-body>:last-child{margin-bottom:0}
+@media (min-width:576px){
+.modal-body:has(typo3-backend-new-record-wizard[has-navigation]){height:100%;overflow:hidden}}
 .modal-footer{align-items:center;background-color:var(--typo3-modal-bg);border-end-end-radius:var(--typo3-modal-border-radius);border-end-start-radius:var(--typo3-modal-border-radius);border-top:var(--typo3-modal-border-width) solid var(--typo3-modal-border-color);display:flex;flex-shrink:0;flex-wrap:wrap;gap:var(--typo3-modal-footer-gap);justify-content:flex-end;padding:calc(var(--typo3-modal-padding)/2) var(--typo3-modal-padding)}
 .modal-footer .progress{flex-basis:100%;margin-inline:0}
 .modal-footer .modal-btn-group{display:flex;gap:.25rem;margin-inline:0}

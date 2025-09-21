@@ -167,6 +167,13 @@
     > *:last-child {
         margin-bottom: 0;
     }
+
+    &:has(typo3-backend-new-record-wizard[has-navigation]) {
+        @include media-breakpoint-up('sm') {
+            overflow: hidden;
+            height: 100%;
+        }
+    }
 }
 
 .modal-footer {
