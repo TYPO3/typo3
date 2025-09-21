@@ -21,24 +21,6 @@ manually (i.e. from the BE module) or automatically (i.e. from the
 command line).
 
 
-..  _information-screen:
-
-The information screen
-======================
-
-This screen shows a list of all available tasks in the current TYPO3
-installation. When the Scheduler has just been installed, this will be
-limited to the two base tasks provided by the extension. The screen
-shows the name and description of the task. Clicking on the "Add" icon
-on the right side of each row will open up the new task registration
-screen, with the task class already predefined.
-
-..  figure:: ../../Images/InformationScreen.png
-    :alt: Scheduler information screen
-
-    List of available tasks in the Scheduler's information screen
-
-
 ..  _scheduled-tasks-screen:
 
 The scheduled tasks screen

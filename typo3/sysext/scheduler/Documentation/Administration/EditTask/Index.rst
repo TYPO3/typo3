@@ -7,10 +7,47 @@
 Adding or editing a task
 ========================
 
+Administrators can add or edit scheduler tasks in the backend module
+:guilabel:`System > Scheduler`.
+
+When adding a new scheduler task a wizard will allow you to select a task
+type from several categories.
+
+..  seealso::
+    Developers can implement and register custom tasks:
+    `Creating a custom scheduler task <https://docs.typo3.org/permalink/typo3/cms-scheduler:creating-tasks>`_
+
+..  contents:: Table of contents
+
+..  _information-screen:
+..  _adding-editing-task-wizard:
+
+The scheduler task wizard
+=========================
+
+..  figure:: /Images/EmptySchedulerModule.png
+    :alt: Screenshot of an empty scheduler module, No tasks defined yet.
+
+    Click on "New task" to add a task
+
+..  figure:: /Images/TaskCreationWizard.png
+    :alt: Screenshot of the "New task" wizard in the scheduler backend module
+
+    Choose the task to be created
+
+..  seealso::
+    Developers can listen to event `ModifyNewSchedulerTaskWizardItemsEvent <https://docs.typo3.org/permalink/typo3/cms-scheduler:modifynewschedulertaskwizarditemsevent>`_
+    to influence the items displayed here.
+
+..  _adding-editing-task-form:
+
+The scheduler task form
+=======================
+
 When adding or editing a task, the following form will show up:
 
-..  figure:: ../../Images/AddingATask.png
-    :alt: Add task form
+..  figure:: /Images/AddingATask.png
+    :alt: Screenshot of the form to Create new Scheduler task on root level
 
     Adding a new scheduled task
 
@@ -20,14 +57,6 @@ available by moving the mouse over the field labels):
 -   A disabled task will be skipped by the command-line script. It may
     still be launched manually, as described above.
 
--   The class selector is available only when adding a new task. The class
-    cannot be changed when editing a task, since there's no sense in that.
-
-..  figure:: ../../Images/TaskConfigurationSelectClass.png
-    :alt: Select a class
-
-    Select the class of the scheduled task
-
 ..  versionadded:: 13.3
     Similar to editing regular content elements, it is now possible to save
     scheduler tasks being edited via keyboard shortcuts as well.
@@ -36,10 +65,28 @@ It is possible to invoke the :kbd:`Ctrl`/:kbd:`Cmd` + :kbd:`s` hotkey to save a
 scheduler task, altogether with the hotkey :kbd:`Ctrl`/:kbd:`Cmd` + :kbd:`Shift` + :kbd:`S`
 to save and close a scheduler task.
 
--   A task must have a start date. The end date is not mandatory, though.
-    A task without end date will run forever. Dates and times must be
-    entered in the server's time zone. The server's time appears at the
-    bottom of the form.
+..  _adding-editing-task-form-settings:
+
+Scheduler task settings
+=======================
+
+Some tasks allow additional settings to be made in the area :guilabel:`Settings`.
+These fields differ from task to task
+
+..  _adding-editing-task-form-timing:
+
+Task executions timing details
+==============================
+
+..  figure:: /Images/TaskExecutionDetails.png
+    :alt: Screenshot of tab "Timing" the scheduler task form
+
+    Choosing a frequency for a recurring task
+
+-   A task must have a start date. It defaults to the time of creation.
+    The server's time appears at the bottom of the form.
+
+-   Task can be run a single time or recurring.
 
 -   The frequency needs be entered only for recurring tasks.
     It can be either an integer number of seconds or a cron-like schedule expression.
@@ -49,29 +96,8 @@ to save and close a scheduler task.
     and :php:`\TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand`
     class references in the TYPO3 CMS source code for definitive rules.
 
--   Parallel executions are denied by default (see "Tasks execution"
-    above). They must be allowed explicitly.
-
--   At the bottom of the form (highlighted area) there may be one or more
-    additional fields. Those fields are specific to each task and will
-    change when a different class is selected.
-
-If there are some input errors, the form will reload upon submission
-and display the relevant error messages. When the input is finished
-and correct, the view switches back to the list view and displays a
-confirmation message.
-
-..  figure:: ../../Images/InputValidation.png
-    :alt: Input validation
-
-    Input validation failed when adding a new scheduled task or editing an existing one
-
-
-..  figure:: ../../Images/InputValidationOk.png
-    :alt: Input validation OK
-
-    Input validation succeeded when adding a new scheduled task or editing an existing one
-
+-   Parallel executions are denied for recurring tasks. They can be allowed by
+    checking "Allow Parallel Execution"
 
 If an error occurs when validating a cron definition, the
 Scheduler's built-in cron parser tries to provide an explanation about
