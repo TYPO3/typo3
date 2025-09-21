@@ -167,6 +167,7 @@ export class NewRecordWizard extends LitElement {
       :host {
         display: block;
         container-type: inline-size;
+        height: 100%;
       }
 
       .element {
@@ -175,6 +176,7 @@ export class NewRecordWizard extends LitElement {
         gap: var(--typo3-spacing);
         font-size: var(--typo3-component-font-size);
         line-height: var(--typo3-component-line-height);
+        height: 100%;
       }
 
       .main {
@@ -187,11 +189,13 @@ export class NewRecordWizard extends LitElement {
       @container (min-width: 500px) {
         .main {
           flex-direction: row;
+          overflow: hidden;
         }
       }
 
       .main > * {
         flex-grow: 1;
+        padding-inline-end: calc(var(--typo3-spacing) / 4);
       }
 
       .navigation {
@@ -203,6 +207,7 @@ export class NewRecordWizard extends LitElement {
         .navigation {
           flex-grow: 0;
           width: 200px;
+          overflow-block: auto;
         }
       }
 
@@ -311,6 +316,7 @@ export class NewRecordWizard extends LitElement {
 
       .content {
         container-type: inline-size;
+        overflow-block: auto;
       }
 
       .elementwizard-categories {
@@ -404,6 +410,7 @@ export class NewRecordWizard extends LitElement {
   @property({ type: Array, attribute: false }) messages: Message[] = [];
   @property({ type: Boolean, attribute: false }) toggleMenu: boolean = false;
   @property({ type: String }) storeName: string | null = null;
+  @property({ type: Boolean, reflect: true, attribute: 'has-navigation' }) hasNavigation = false;
 
   private recordUsageStore: RecordUsageStore;
 
@@ -514,6 +521,16 @@ export class NewRecordWizard extends LitElement {
       category.disabled = category.items.filter((item: Item): boolean => item.visible).length === 0;
     });
     this.selectAvailableCategory();
+  }
+
+  protected override willUpdate(): void {
+    const next = this.selectedCategory !== null
+              && this.displayMenu === true
+              && this.categories.items.length > 1;
+
+    if (this.hasNavigation !== next) {
+      this.hasNavigation = next;
+    }
   }
 
   protected override render(): TemplateResult {
