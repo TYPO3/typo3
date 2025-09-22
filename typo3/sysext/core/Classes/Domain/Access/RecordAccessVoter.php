@@ -71,7 +71,10 @@ class RecordAccessVoter
         // Records' starttime set AND is HIGHER than the current access time
         if ($schema->hasCapability(TcaSchemaCapability::RestrictionStartTime)) {
             $fieldName = $schema->getCapability(TcaSchemaCapability::RestrictionStartTime)->getFieldName();
-            if (isset($record[$fieldName]) && (int)$record[$fieldName] > $GLOBALS['SIM_ACCESS_TIME']) {
+            if (isset($record[$fieldName])
+                && (int)$record[$fieldName] > $GLOBALS['SIM_ACCESS_TIME']
+                && !$visibilityAspect->includeScheduledRecords()
+            ) {
                 return false;
             }
         }
@@ -81,6 +84,7 @@ class RecordAccessVoter
             if (isset($record[$fieldName])
                 && ((int)$record[$fieldName] !== 0)
                 && ((int)$record[$fieldName] < $GLOBALS['SIM_ACCESS_TIME'])
+                && !$visibilityAspect->includeScheduledRecords()
             ) {
                 return false;
             }

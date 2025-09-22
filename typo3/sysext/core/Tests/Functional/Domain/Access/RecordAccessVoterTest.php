@@ -135,6 +135,52 @@ final class RecordAccessVoterTest extends FunctionalTestCase
         ));
     }
 
+    #[Test]
+    public function accessGrantedRespectsIncludeScheduledRecordsForStarttime(): void
+    {
+        $GLOBALS['SIM_ACCESS_TIME'] = 42;
+
+        // Record with starttime in the future should be denied by default
+        $context = new Context();
+        self::assertFalse($this->subject->accessGranted(
+            'pages',
+            ['uid' => 1, 'starttime' => 50],
+            $context
+        ));
+
+        // Record with starttime in the future should be allowed when includeScheduledRecords is true
+        $context = new Context();
+        $context->setAspect('visibility', new VisibilityAspect(includeScheduledRecords: true));
+        self::assertTrue($this->subject->accessGranted(
+            'pages',
+            ['uid' => 1, 'starttime' => 50],
+            $context
+        ));
+    }
+
+    #[Test]
+    public function accessGrantedRespectsIncludeScheduledRecordsForEndtime(): void
+    {
+        $GLOBALS['SIM_ACCESS_TIME'] = 42;
+
+        // Record with endtime in the past should be denied by default
+        $context = new Context();
+        self::assertFalse($this->subject->accessGranted(
+            'pages',
+            ['uid' => 1, 'endtime' => 30],
+            $context
+        ));
+
+        // Record with endtime in the past should be allowed when includeScheduledRecords is true
+        $context = new Context();
+        $context->setAspect('visibility', new VisibilityAspect(includeScheduledRecords: true));
+        self::assertTrue($this->subject->accessGranted(
+            'pages',
+            ['uid' => 1, 'endtime' => 30],
+            $context
+        ));
+    }
+
     public static function groupAccessGrantedTestDataProvider(): \Generator
     {
         yield 'No enable field' => [
