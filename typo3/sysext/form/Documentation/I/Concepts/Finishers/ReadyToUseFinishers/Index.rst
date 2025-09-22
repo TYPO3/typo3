@@ -19,22 +19,22 @@ can be found in the `TYPO3 Extension Repository (TER) <https://extensions.typo3.
     :class: pb-4
     :card-height: 100
 
-    ..  card:: `Closure finisher <https://docs.typo3.org/permalink/typo3/cms-form:concepts-finishers-closurefinisher>`_
+    ..  card:: `Closure finisher <https://docs.typo3.org/permalink/typo3-cms-form:concepts-finishers-closurefinisher>`_
 
         Executes a custom PHP closure after a successful submission—use
         for ad-hoc logic without creating a full class.
 
-    ..  card:: `Confirmation finisher <https://docs.typo3.org/permalink/typo3/cms-form:concepts-finishers-confirmationfinisher>`_
+    ..  card:: `Confirmation finisher <https://docs.typo3.org/permalink/typo3-cms-form:concepts-finishers-confirmationfinisher>`_
 
         Renders a confirmation/thank-you message (or view) once the form
         is submitted.
 
-    ..  card:: `DeleteUploads finishers <https://docs.typo3.org/permalink/typo3/cms-form:concepts-finishers-deleteuploadsfinisher>`_
+    ..  card:: `DeleteUploads finishers <https://docs.typo3.org/permalink/typo3-cms-form:concepts-finishers-deleteuploadsfinisher>`_
 
         Removes files uploaded during the submission—handy after
         emailing them if you don’t want files kept on the server.
 
-    ..  card:: `DeleteUploads finishers <https://docs.typo3.org/permalink/typo3/cms-form:concepts-finishers-deleteuploadsfinisher>`_
+    ..  card:: `DeleteUploads finishers <https://docs.typo3.org/permalink/typo3-cms-form:concepts-finishers-deleteuploadsfinisher>`_
 
         Sends an email based on the submitted data; supports Fluid
         templates and placeholders for field values.
@@ -44,12 +44,12 @@ can be found in the `TYPO3 Extension Repository (TER) <https://extensions.typo3.
         Shows a flash message to the user after submit (e.g., success or
         info notice).
 
-    ..  card:: `Redirect finisher <https://docs.typo3.org/permalink/typo3/cms-form:concepts-finishers-redirectfinisher>`_
+    ..  card:: `Redirect finisher <https://docs.typo3.org/permalink/typo3-cms-form:concepts-finishers-redirectfinisher>`_
 
         Redirects to another page or route after submit; place it last
         since it stops subsequent finishers.
 
-    ..  card:: `SaveToDatabase finisher <https://docs.typo3.org/permalink/typo3/cms-form:concepts-finishers-savetodatabasefinisher>`_
+    ..  card:: `SaveToDatabase finisher <https://docs.typo3.org/permalink/typo3-cms-form:concepts-finishers-savetodatabasefinisher>`_
 
         Persists submitted form values to a database table according to
         your mapping/configuration.
