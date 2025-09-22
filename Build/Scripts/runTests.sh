@@ -628,7 +628,7 @@ IMAGE_MARIADB="docker.io/mariadb:${DBMS_VERSION}"
 IMAGE_MYSQL="docker.io/mysql:${DBMS_VERSION}"
 IMAGE_POSTGRES="docker.io/postgres:${DBMS_VERSION}-alpine"
 # Not a bug; render-guides has no "1.x" release yet.
-IMAGE_RSTRENDERING="ghcr.io/typo3-documentation/render-guides:0"
+IMAGE_RSTRENDERING="ghcr.io/typo3-documentation/render-guides:0.34"
 
 # Remove handled options and leaving the rest in the line, so it can be passed raw to commands
 shift $((OPTIND - 1))
