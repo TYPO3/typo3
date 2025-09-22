@@ -65,6 +65,7 @@ class RecordAccessVoter
         // Records' starttime set AND is HIGHER than the current access time
         if (isset($configuration['starttime'], $record[$configuration['starttime']])
             && (int)$record[$configuration['starttime']] > $GLOBALS['SIM_ACCESS_TIME']
+            && !$visibilityAspect->includeScheduledRecords()
         ) {
             return false;
         }
@@ -72,6 +73,7 @@ class RecordAccessVoter
         if (isset($configuration['endtime'], $record[$configuration['endtime']])
             && ((int)$record[$configuration['endtime']] !== 0)
             && ((int)$record[$configuration['endtime']] < $GLOBALS['SIM_ACCESS_TIME'])
+            && !$visibilityAspect->includeScheduledRecords()
         ) {
             return false;
         }
