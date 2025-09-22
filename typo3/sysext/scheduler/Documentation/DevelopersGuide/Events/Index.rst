@@ -19,7 +19,7 @@ ModifyNewSchedulerTaskWizardItemsEvent
 
 The PSR-14 event :php:`\TYPO3\CMS\Scheduler\Event\ModifyNewSchedulerTaskWizardItemsEvent`
 allows extensions to modify the items in the
-`scheduler task wizard <https://docs.typo3.org/permalink/typo3/cms-scheduler:adding-editing-task-wizard>`_.
+`scheduler task wizard <https://docs.typo3.org/permalink/typo3-cms-scheduler:adding-editing-task-wizard>`_.
 
 ..  seealso::
 

@@ -75,8 +75,8 @@ created or saved.
 ..  versionchanged:: 14.0
     The hooks `beforeFormCreate` and `beforeFormSave` have been removed in
     favor of the newly introduced events
-    `BeforeFormIsCreatedEvent <https://docs.typo3.org/permalink/typo3/cms-form:apireference-formeditor-events-beforeformiscreatedevent>`_
-    and `BeforeFormIsSavedEvent <https://docs.typo3.org/permalink/typo3/cms-form:apireference-formeditor-events-beforeformissavedevent>`_.
+    `BeforeFormIsCreatedEvent <https://docs.typo3.org/permalink/typo3-cms-form:apireference-formeditor-events-beforeformiscreatedevent>`_
+    and `BeforeFormIsSavedEvent <https://docs.typo3.org/permalink/typo3-cms-form:apireference-formeditor-events-beforeformissavedevent>`_.
 
 
 .. _apireference-formeditor-hooks-beforeformduplicate:

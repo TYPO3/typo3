@@ -25,7 +25,7 @@ utilized to load the finisher implementation.
 ..  literalinclude:: _codesnippets/_finishersDefinition.yaml
     :caption: EXT:my_site_package/Configuration/Form/CustomFormSetup.yaml
 
-The custom form definition has to be `registered <https://docs.typo3.org/permalink/typo3/cms-form:concepts-finishers-custom-extend-gui-configuration>`_.
+The custom form definition has to be `registered <https://docs.typo3.org/permalink/typo3-cms-form:concepts-finishers-custom-extend-gui-configuration>`_.
 
 If the finisher requires options, you can define those within the
 `options` property. The options will be used as default values and can
@@ -265,7 +265,7 @@ either a :file:`EXT:my_extension/ext_localconf.php` file:
 
 ..  seealso::
 
-    `YAML registration for the backend <https://docs.typo3.org/permalink/typo3/cms-form:concepts-configuration-yamlregistration-backend-addtyposcriptsetup>`_
+    `YAML registration for the backend <https://docs.typo3.org/permalink/typo3-cms-form:concepts-configuration-yamlregistration-backend-addtyposcriptsetup>`_
 
 ..  versionchanged:: 13.0
 

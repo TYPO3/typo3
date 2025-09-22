@@ -15,7 +15,7 @@ type from several categories.
 
 ..  seealso::
     Developers can implement and register custom tasks:
-    `Creating a custom scheduler task <https://docs.typo3.org/permalink/typo3/cms-scheduler:creating-tasks>`_
+    `Creating a custom scheduler task <https://docs.typo3.org/permalink/typo3-cms-scheduler:creating-tasks>`_
 
 ..  contents:: Table of contents
 
@@ -36,7 +36,7 @@ The scheduler task wizard
     Choose the task to be created
 
 ..  seealso::
-    Developers can listen to event `ModifyNewSchedulerTaskWizardItemsEvent <https://docs.typo3.org/permalink/typo3/cms-scheduler:modifynewschedulertaskwizarditemsevent>`_
+    Developers can listen to event `ModifyNewSchedulerTaskWizardItemsEvent <https://docs.typo3.org/permalink/typo3-cms-scheduler:modifynewschedulertaskwizarditemsevent>`_
     to influence the items displayed here.
 
 ..  _adding-editing-task-form:

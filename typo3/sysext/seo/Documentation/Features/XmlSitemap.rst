@@ -7,7 +7,7 @@ XML sitemap
 ===========
 
 :composer:`typo3/cms-seo` provides a ready to use XML sitemap that can be
-included via `Site sets <https://docs.typo3.org/permalink/typo3/cms-seo:configuration-site-sets>`_
+included via `Site sets <https://docs.typo3.org/permalink/typo3-cms-seo:configuration-site-sets>`_
 (recommended) or include in your TypoScript record.
 
 
