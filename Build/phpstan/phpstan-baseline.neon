@@ -2443,12 +2443,6 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/Mvc/Property/PropertyMappingConfiguration.php
 
 		-
-			message: '#^Parameter \#1 \$uid of method TYPO3\\CMS\\Core\\Resource\\ResourceFactory\:\:getStorageObject\(\) expects int\|null, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Mvc/Property/TypeConverter/UploadedFileReferenceConverter.php
-
-		-
 			message: '#^Instanceof between DateTime and DateTime will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1

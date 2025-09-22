@@ -4514,6 +4514,34 @@ return [
             'Breaking-92289-DecoupleLogicOfResourceFactoryIntoStorageRepository.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Resource\ResourceFactory->getDefaultStorage' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Important-107735-InternalMethodsRemovedFromResourceFactory.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\ResourceFactory->getStorageObject' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Important-107735-InternalMethodsRemovedFromResourceFactory.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\ResourceFactory->createFolderObject' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Important-107735-InternalMethodsRemovedFromResourceFactory.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\ResourceFactory->getFileObjectByStorageAndIdentifier' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Important-107735-InternalMethodsRemovedFromResourceFactory.rst',
+        ],
+    ],
     'TYPO3\CMS\Core\Domain\Repository\PageRepository->fixVersioningPid' => [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 2,

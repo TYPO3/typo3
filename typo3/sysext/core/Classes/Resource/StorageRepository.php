@@ -293,12 +293,13 @@ class StorageRepository
      * Creates an instance of the storage from given UID. The $recordData can
      * be supplied to increase performance.
      *
-     * @param int<0, max> $uid The uid of the storage to instantiate.
+     * @param int<0, max>|string $uid The uid of the storage to instantiate.
      * @param array $recordData<string, mixed> The record row from database.
      * @param non-empty-string|null $fileIdentifier Identifier for a file. Used for auto-detection of a storage, but only if $uid === 0 (Local default storage) is used
      */
-    public function getStorageObject(int $uid, array $recordData = [], ?string &$fileIdentifier = null): ResourceStorage
+    public function getStorageObject(int|string $uid, array $recordData = [], ?string &$fileIdentifier = null): ResourceStorage
     {
+        $uid = (int)$uid;
         if ($uid === 0 && $fileIdentifier !== null) {
             $uid = $this->findBestMatchingStorageByLocalPath($fileIdentifier);
         }

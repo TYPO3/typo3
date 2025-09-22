@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceInstructionTrait;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
@@ -70,42 +71,26 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
      */
     public const CONFIGURATION_FILE_VALIDATORS = 4;
 
-    /**
-     * @var string
-     */
-    protected $defaultUploadFolder = '1:/user_upload/';
+    protected string $defaultUploadFolder = '1:/user_upload/';
 
     /**
      * One of 'cancel', 'replace', 'rename'
-     *
-     * @var DuplicationBehavior
      */
-    protected $defaultConflictMode = DuplicationBehavior::RENAME;
+    protected DuplicationBehavior $defaultConflictMode = DuplicationBehavior::RENAME;
 
     /**
      * @var PseudoFileReference[]
      */
-    protected $convertedResources = [];
-
-    /**
-     * @var \TYPO3\CMS\Core\Resource\ResourceFactory
-     */
-    protected $resourceFactory;
-
-    /**
-     * @var HashService
-     */
-    protected $hashService;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
-     */
-    protected $persistenceManager;
+    protected array $convertedResources = [];
+    protected ResourceFactory $resourceFactory;
+    protected HashService $hashService;
+    protected PersistenceManagerInterface $persistenceManager;
+    protected StorageRepository $storageRepository;
 
     /**
      * @internal
      */
-    public function injectResourceFactory(ResourceFactory $resourceFactory)
+    public function injectResourceFactory(ResourceFactory $resourceFactory): void
     {
         $this->resourceFactory = $resourceFactory;
     }
@@ -113,7 +98,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
     /**
      * @internal
      */
-    public function injectHashService(HashService $hashService)
+    public function injectHashService(HashService $hashService): void
     {
         $this->hashService = $hashService;
     }
@@ -121,9 +106,17 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
     /**
      * @internal
      */
-    public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager)
+    public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager): void
     {
         $this->persistenceManager = $persistenceManager;
+    }
+
+    /**
+     * @internal
+     */
+    public function injectStorageRepository(StorageRepository $storageRepository): void
+    {
+        $this->storageRepository = $storageRepository;
     }
 
     /**
@@ -318,7 +311,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
             return $this->resourceFactory->getFolderObjectFromCombinedIdentifier($uploadFolderIdentifier);
         } catch (FolderDoesNotExistException $exception) {
             [$storageId, $storagePath] = explode(':', $uploadFolderIdentifier, 2);
-            $storage = $this->resourceFactory->getStorageObject($storageId);
+            $storage = $this->storageRepository->getStorageObject($storageId);
             $folderNames = GeneralUtility::trimExplode('/', $storagePath, true);
             $uploadFolder = $this->provideTargetFolder($storage->getRootLevelFolder(), ...$folderNames);
             $this->provideFolderInitialization($uploadFolder);

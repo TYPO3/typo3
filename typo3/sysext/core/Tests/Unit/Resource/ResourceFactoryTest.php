@@ -21,9 +21,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ResourceFactoryTest extends UnitTestCase
@@ -54,18 +52,6 @@ final class ResourceFactoryTest extends UnitTestCase
             unlink($file);
         }
         parent::tearDown();
-    }
-
-    #[Test]
-    public function createFolderCreatesObjectWithCorrectArguments(): void
-    {
-        $mockedMount = $this->createMock(ResourceStorage::class);
-        $path = StringUtility::getUniqueId('path_');
-        $name = StringUtility::getUniqueId('name_');
-        $folderObject = $this->subject->createFolderObject($mockedMount, $path, $name);
-        self::assertSame($mockedMount, $folderObject->getStorage());
-        self::assertEquals($path, $folderObject->getIdentifier());
-        self::assertEquals($name, $folderObject->getName());
     }
 
     /***********************************

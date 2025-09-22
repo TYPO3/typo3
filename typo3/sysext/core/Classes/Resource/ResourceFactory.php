@@ -48,37 +48,6 @@ readonly class ResourceFactory implements SingletonInterface
     ) {}
 
     /**
-     * Returns the Default Storage
-     *
-     * The Default Storage is considered to be the replacement for the fileadmin/ construct.
-     * It is automatically created with the setting fileadminDir from install tool.
-     * getDefaultStorage->getDefaultFolder() will get you fileadmin/user_upload/ in a standard
-     * TYPO3 installation.
-     *
-     * @internal It is recommended to use the StorageRepository in the future, and this is only kept as backwards-compat layer
-     */
-    public function getDefaultStorage(): ?ResourceStorage
-    {
-        return $this->storageRepository->getDefaultStorage();
-    }
-
-    /**
-     * Creates an instance of the storage from given UID. The $recordData can
-     * be supplied to increase performance.
-     *
-     * @param int|null $uid The uid of the storage to instantiate.
-     * @param array $recordData The record row from database.
-     * @param string|null $fileIdentifier Identifier for a file. Used for auto-detection of a storage, but only if $uid === 0 (Local default storage) is used
-     *
-     * @throws \InvalidArgumentException
-     * @internal It is recommended to use the StorageRepository in the future, and this is only kept as backwards-compat layer
-     */
-    public function getStorageObject($uid, array $recordData = [], ?string &$fileIdentifier = null): ResourceStorage
-    {
-        return $this->storageRepository->getStorageObject($uid, $recordData, $fileIdentifier);
-    }
-
-    /**
      * Creates an instance of the collection from given UID. The $recordData can be supplied to increase performance.
      *
      * @param int $uid The uid of the collection to instantiate.
@@ -131,20 +100,6 @@ readonly class ResourceFactory implements SingletonInterface
     }
 
     /**
-     * Creates a folder to directly access (a part of) a storage.
-     *
-     * @param ResourceStorage $storage The storage the folder belongs to
-     * @param string $identifier The path to the folder. Might also be a simple unique string, depending on the storage driver.
-     * @param string $name The name of the folder (e.g. the folder name)
-     * @return Folder
-     * @internal it is recommended to access the ResourceStorage object directly and access ->getFolder($identifier) this method is kept for backwards compatibility
-     */
-    public function createFolderObject(ResourceStorage $storage, string $identifier, string $name): Folder
-    {
-        return GeneralUtility::makeInstance(Folder::class, $storage, $identifier, $name);
-    }
-
-    /**
      * Creates an instance of the file given UID. The $fileData can be supplied
      * to increase performance.
      *
@@ -194,21 +149,6 @@ readonly class ResourceFactory implements SingletonInterface
         }
         return $this->storageRepository->getStorageObject($storageUid, [], $fileIdentifier)
             ->getFileByIdentifier($fileIdentifier);
-    }
-
-    /**
-     * Gets a file object from storage by file identifier
-     * If the file is outside the process folder, it gets indexed and returned as file object afterward
-     * If the file is within processing folder, the file object will be directly returned
-     *
-     * @internal It is recommended to use the StorageRepository in the future, and this is only kept as backwards-compat layer
-     */
-    public function getFileObjectByStorageAndIdentifier(ResourceStorage|int $storage, ?string &$fileIdentifier): File|ProcessedFile|null
-    {
-        if (!($storage instanceof ResourceStorage)) {
-            $storage = $this->storageRepository->getStorageObject($storage, [], $fileIdentifier);
-        }
-        return $storage->getFileByIdentifier($fileIdentifier);
     }
 
     /**

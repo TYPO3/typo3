@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Resource\FileReference as CoreFileReference;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceInstructionTrait;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -58,6 +59,7 @@ class FileHandlingService implements SingletonInterface
     public function __construct(
         protected readonly ReflectionService $reflectionService,
         protected readonly ResourceFactory $resourceFactory,
+        protected readonly StorageRepository $storageRepository,
         protected readonly DataMapFactory $dataMapFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly HashService $hashService,
@@ -416,7 +418,7 @@ class FileHandlingService implements SingletonInterface
             }
 
             [$storageId, $storagePath] = explode(':', $uploadFolderIdentifier, 2);
-            $storage = $this->resourceFactory->getStorageObject((int)$storageId);
+            $storage = $this->storageRepository->getStorageObject((int)$storageId);
 
             if (!$storage->hasFolder($storagePath)) {
                 $folder = $storage->createFolder($storagePath);
