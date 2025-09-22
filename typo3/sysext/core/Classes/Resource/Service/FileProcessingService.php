@@ -62,6 +62,9 @@ class FileProcessingService
         // Find an entry in the DB or create a new ProcessedFile which can then be added (see ->add below)
         $processedFile = $this->processedFileRepository->findOneByOriginalFileAndTaskTypeAndConfiguration($originalFile, $taskType, $configuration);
 
+        // Make sure to work with the sanitized configuration from now on!
+        $configuration = $processedFile->getProcessingConfiguration();
+
         // Pre-process the file
         $event = $this->eventDispatcher->dispatch(
             new BeforeFileProcessingEvent($driver, $processedFile, $fileObject, $taskType, $configuration)

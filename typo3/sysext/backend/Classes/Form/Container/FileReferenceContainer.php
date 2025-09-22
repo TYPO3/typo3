@@ -236,7 +236,7 @@ class FileReferenceContainer extends AbstractContainer
                         }
                         $processedImage = $fileObject->process(
                             ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
-                            array_merge(['maxWidth' => '145', 'maxHeight' => '45'], $imageSetup)
+                            array_merge(['maxWidth' => 145, 'maxHeight' => 45], $imageSetup)
                         );
                         // Only use a thumbnail if the processing process was successful by checking if image width is set
                         if ($processedImage->getProperty('width')) {
