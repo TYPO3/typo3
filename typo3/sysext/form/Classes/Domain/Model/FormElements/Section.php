@@ -22,7 +22,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Domain\Model\FormElements;
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 
 /**
@@ -48,17 +47,7 @@ class Section extends AbstractSection implements FormElementInterface
      *
      * @internal
      */
-    public function initializeFormElement()
-    {
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'] ?? [] as $className) {
-            $hookObj = GeneralUtility::makeInstance($className);
-            if (method_exists($hookObj, 'initializeFormElement')) {
-                $hookObj->initializeFormElement(
-                    $this
-                );
-            }
-        }
-    }
+    public function initializeFormElement() {}
 
     public function setOptions(array $options, bool $resetValidators = false)
     {

@@ -15,23 +15,16 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Form\Domain\Model\FormElements;
+namespace TYPO3\CMS\Form\Event;
 
-use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 
 /**
- * A generic file upload form element
- *
- * Scope: frontend
+ * Listeners to this Event will be able to modify the renderable (form element) before being finally added to the form
  */
-class FileUpload extends AbstractFormElement
+final class BeforeRenderableIsAddedToFormEvent
 {
-    /**
-     * Initializes the Form Element by setting the data type to an Extbase File Reference
-     * @internal
-     */
-    public function initializeFormElement()
-    {
-        $this->setDataType(FileReference::class);
-    }
+    public function __construct(
+        public RenderableInterface $renderable
+    ) {}
 }

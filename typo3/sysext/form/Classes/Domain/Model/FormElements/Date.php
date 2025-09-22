@@ -35,7 +35,6 @@ class Date extends AbstractFormElement implements StringableFormElementInterface
     public function initializeFormElement()
     {
         $this->setDataType(\DateTime::class);
-        parent::initializeFormElement();
     }
 
     /**

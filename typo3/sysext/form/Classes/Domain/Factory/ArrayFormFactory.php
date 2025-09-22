@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Factory;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -31,6 +32,7 @@ use TYPO3\CMS\Form\Domain\Exception\UnknownCompositRenderableException;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Model\FormElements\AbstractSection;
 use TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface;
+use TYPO3\CMS\Form\Event\BeforeRenderableIsAddedToFormEvent;
 
 /**
  * A factory that creates a FormDefinition from an array
@@ -40,6 +42,10 @@ use TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface;
 #[Autoconfigure(public: true, shared: false)]
 class ArrayFormFactory extends AbstractFormFactory
 {
+    public function __construct(
+        private readonly EventDispatcherInterface $eventDispatcher,
+    ) {}
+
     /**
      * Build a form definition, depending on some configuration.
      *
@@ -132,6 +138,6 @@ class ArrayFormFactory extends AbstractFormFactory
             }
         }
 
-        return $renderable;
+        return $this->eventDispatcher->dispatch(new BeforeRenderableIsAddedToFormEvent($renderable))->renderable;
     }
 }

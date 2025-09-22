@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Form\Tests\Unit\Domain\FormElements;
 
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
@@ -131,27 +130,6 @@ final class AbstractFormElementTest extends UnitTestCase
     public function constructMustNotThrowExceptionWhenIdentifierIsNonEmptyString(): void
     {
         new TestingFormElement();
-    }
-
-    #[Test]
-    public function initializeFormElementExpectedCallInitializeFormObjectHooks(): void
-    {
-        $formElement = new TestingFormElement();
-        $secondFormElementMock = $this->createMock(TestingFormElement::class);
-
-        $secondFormElementMock->
-        expects($this->once())
-            ->method('initializeFormElement')
-            ->with($formElement);
-
-        $secondFormElementMockClassName = \get_class($secondFormElementMock);
-        GeneralUtility::addInstance($secondFormElementMockClassName, $secondFormElementMock);
-
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'] = [
-            $secondFormElementMockClassName,
-        ];
-
-        $formElement->initializeFormElement();
     }
 
     #[Test]

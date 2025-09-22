@@ -22,7 +22,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Domain\Model\FormElements;
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable;
@@ -72,17 +71,7 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
     /**
      * Override this method in your custom FormElements if needed
      */
-    public function initializeFormElement()
-    {
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'] ?? [] as $className) {
-            $hookObj = GeneralUtility::makeInstance($className);
-            if (method_exists($hookObj, 'initializeFormElement')) {
-                $hookObj->initializeFormElement(
-                    $this
-                );
-            }
-        }
-    }
+    public function initializeFormElement() {}
 
     /**
      * Get the global unique identifier of the element

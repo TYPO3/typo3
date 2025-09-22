@@ -1266,4 +1266,10 @@ return [
             'Feature-107436-SymfonyTranslationIntegration.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'ext/form\'][\'initializeFormElement\']' => [
+        'restFiles' => [
+            'Breaking-107518-RemovedInitializeFormElementHook.rst',
+            'Feature-107518-IntroducePSR14BeforeRenderableIsAddedToFormEvent.rst',
+        ],
+    ],
 ];
