@@ -89,6 +89,16 @@ grunt scss ts html:
     - Build/Scripts/runTests.sh -s lintTypescript
     - Build/Scripts/runTests.sh -s lintHtml
 
+documentation:
+  stage: integrity
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s checkRstRenderingAll
+
 phpstan php 8.1 locked:
   stage: integrity
   tags:
