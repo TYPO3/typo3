@@ -43,12 +43,11 @@ final class LocalizationFactoryTest extends UnitTestCase
 
         $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides'] = ['foo' => 'bar'];
 
-        $result = (new LocalizationFactory($translatorMock, $cacheFrontendMock, $this->createMock(FrontendInterface::class), new LabelFileResolver($packageManagerMock)))
-            ->getParsedData(__DIR__ . '/Fixtures/locallang.invalid', 'default');
+        $result = (new LocalizationFactory($translatorMock, $cacheFrontendMock, new LabelFileResolver($packageManagerMock)))
+            ->getParsedData(__DIR__ . '/Fixtures/locallang.invalid', 'en');
 
         // Should return empty structure when file not found
-        self::assertNotEmpty($result);
-        self::assertArrayHasKey('en', $result);
+        self::assertEmpty($result);
     }
 
     #[Test]
@@ -74,12 +73,11 @@ final class LocalizationFactoryTest extends UnitTestCase
             'label1' => 'This is label #1',
         ])->willReturn(null);
 
-        $result = (new LocalizationFactory($translatorMock, $cacheFrontendMock, $this->createMock(FrontendInterface::class), new LabelFileResolver($packageManagerMock)))
-            ->getParsedData('EXT:core/Tests/Unit/Localization/Fixtures/locallang.xlf', 'default');
+        $result = (new LocalizationFactory($translatorMock, $cacheFrontendMock, new LabelFileResolver($packageManagerMock)))
+            ->getParsedData('EXT:core/Tests/Unit/Localization/Fixtures/locallang.xlf', 'en');
 
         // Verify we get the expected structure
         self::assertNotEmpty($result);
-        self::assertArrayHasKey('en', $result);
     }
 
     #[Test]
@@ -102,7 +100,7 @@ final class LocalizationFactoryTest extends UnitTestCase
 
         $translatorMock->method('getCatalogue')->willReturn($catalogue);
 
-        $factory = new LocalizationFactory($translatorMock, $cacheFrontendMock, $cacheFrontendMock, new LabelFileResolver($packageManagerMock));
+        $factory = new LocalizationFactory($translatorMock, $cacheFrontendMock, new LabelFileResolver($packageManagerMock));
 
         // Create a test file that exists
         $testFile = __DIR__ . '/Fixtures/locallang.xlf';

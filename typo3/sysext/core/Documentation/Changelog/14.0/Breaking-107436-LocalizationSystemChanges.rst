@@ -30,7 +30,11 @@ method has a modified signature and behavior:
     public function getParsedData($fileReference, $languageKey, $_ = null, $__ = null, $isLocalizationOverride = false)
 
     // After
-    public function getParsedData(string $fileReference, string $languageKey, bool $isLocalizationOverride = false): array
+    public function getParsedData(string $fileReference, string $languageKey): array
+
+In addition, it only returns the parsed and combined localization data
+instead of the "default" data as well, which can be loaded via
+:php:`getParsedData($fileReference, 'en')`.
 
 **Language Key Changes**
 
@@ -57,7 +61,7 @@ Impact
 ======
 
 Code calling :php:`LocalizationFactory::getParsedData()` with the old signature
-or expecting "default" as a resulting language key will break:
+or expecting a multi-dimensional array as a resulting language key will break:
 
 - The method now requires strict type parameters
 - The method now returns "en" instead of "default" for English translations
@@ -91,10 +95,10 @@ types are matching:
 .. code-block:: php
 
     // Before
-    $data = $factory->getParsedData($fileReference, $languageKey, null, null, false);
+    $data = $factory->getParsedData($fileReference, $languageKey, null, null, false)[$languageKey];
 
     // After
-    $data = $factory->getParsedData($fileReference, $languageKey, false);
+    $data = $factory->getParsedData($fileReference, $languageKey);
 
 **Custom Parser Migration**
 

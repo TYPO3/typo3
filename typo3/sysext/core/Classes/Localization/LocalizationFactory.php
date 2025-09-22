@@ -25,29 +25,22 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  * This class acts currently as facade around SymfonyTranslator.
  * User-land code should use LanguageService for the time being, and this class should not be exposed directly.
  *
+ * Ideally, consider using a runtime cache if needed, if not using LanguageService.
+ *
  * Hand in the locale to load, or english ("default").
  *
  * What it does:
  * - Caches on a system-level cache
- * - Caches on a runtime memory cache ($this->data) per file
  * - Handles loading default (= english) before translated files
  * - Handles file name juggling of translated files.
  * - Handles localization overrides via $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides']
  */
-class LocalizationFactory
+readonly class LocalizationFactory
 {
-    /**
-     * In-memory store for parsed data to avoid re-parsing within the same request.
-     *
-     * @var array<string, array<string, array<string, array<int, array<string, string>>>>>
-     */
-    protected array $dataStore = [];
-
     public function __construct(
-        protected readonly Translator $translator,
-        protected readonly FrontendInterface $systemCache,
-        protected readonly FrontendInterface $runtimeCache,
-        protected readonly LabelFileResolver $labelFileResolver,
+        protected Translator $translator,
+        protected FrontendInterface $systemCache,
+        protected LabelFileResolver $labelFileResolver,
     ) {
         foreach ($GLOBALS['TYPO3_CONF_VARS']['LANG']['loader'] ?? [] as $key => $loader) {
             if (class_exists($loader)) {
@@ -63,45 +56,29 @@ class LocalizationFactory
      * @param string $fileReference Input is a file-reference (see \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName). That file is expected to be a supported locallang file format
      * @param string $languageKey Language key
      *
-     * @return array<string, array<string, array<int, array<string, string>>>>
+     * @return array<string, array<int, array<string, string>>>
      */
     public function getParsedData(string $fileReference, string $languageKey): array
     {
         $languageKey = $languageKey === 'default' ? 'en' : $languageKey;
         $systemCacheIdentifier = md5($fileReference . $languageKey);
 
-        // Check if the default language is processed before processing any other language
-        if (!$this->hasData($fileReference, 'en') && $languageKey !== 'en') {
-            $this->getParsedData($fileReference, 'en');
-        }
-
-        // If the content is parsed (runtime cache), use it
-        if ($this->hasData($fileReference, $languageKey)) {
-            return $this->getData($fileReference);
-        }
-
         // If the content is in system cache, put it in runtime cache and use it
-        $data = $this->systemCache->get($systemCacheIdentifier);
-        if ($data !== false) {
-            $this->setData($fileReference, $languageKey, $data);
-            return $this->getData($fileReference);
+        $labels = $this->systemCache->get($systemCacheIdentifier);
+        if (is_array($labels)) {
+            return $labels;
         }
 
         try {
             $labels = $this->loadWithSymfonyTranslator($fileReference, $languageKey);
         } catch (FileNotFoundException) {
-            // Source localization file not found, set empty data as there could be an override
-            $this->setData($fileReference, $languageKey, []);
-            $labels = $this->getData($fileReference);
+            $labels = [];
         }
 
-        // Save parsed data in runtime cache
-        $this->setData($fileReference, $languageKey, $labels[$languageKey] ?? []);
-
         // Cache processed data
-        $this->systemCache->set($systemCacheIdentifier, $this->getDataByLanguage($fileReference, $languageKey));
+        $this->systemCache->set($systemCacheIdentifier, $labels);
 
-        return $this->getData($fileReference);
+        return $labels;
     }
 
     /**
@@ -114,43 +91,11 @@ class LocalizationFactory
         foreach ($overrideFiles as $overrideFile) {
             $catalogue = $this->getMessageCatalogue($overrideFile, $languageKey);
             $fallbackCatalogue = $this->getMessageCatalogue($overrideFile, $languageKey, false);
-            $overrideLabels = $this->convertCatalogueToLegacyFormat($catalogue, $languageKey, $fallbackCatalogue);
+            $overrideLabels = $this->convertCatalogueToLegacyFormat($catalogue, $fallbackCatalogue);
             ArrayUtility::mergeRecursiveWithOverrule($labels, $overrideLabels, true, false);
         }
 
         return $labels;
-    }
-
-    /**
-     * Check if data is available for the given file reference and language
-     */
-    protected function hasData(string $fileReference, string $languageKey): bool
-    {
-        return is_array($this->dataStore[$fileReference][$languageKey] ?? null);
-    }
-
-    /**
-     * Get all data for a file reference
-     */
-    protected function getData(string $fileReference): array
-    {
-        return $this->dataStore[$fileReference] ?? [];
-    }
-
-    /**
-     * Get data for a specific language
-     */
-    protected function getDataByLanguage(string $fileReference, string $languageKey): array
-    {
-        return $this->dataStore[$fileReference][$languageKey] ?? [];
-    }
-
-    /**
-     * Set data for a file reference and language
-     */
-    protected function setData(string $fileReference, string $languageKey, array $data): void
-    {
-        $this->dataStore[$fileReference][$languageKey] = $data;
     }
 
     /**
@@ -161,7 +106,7 @@ class LocalizationFactory
         $catalogue = $this->getMessageCatalogue($fileReference, $languageKey);
         $fallbackCatalogue = $this->getMessageCatalogue($fileReference, $languageKey, false);
 
-        $labels = $this->convertCatalogueToLegacyFormat($catalogue, $languageKey, $fallbackCatalogue);
+        $labels = $this->convertCatalogueToLegacyFormat($catalogue, $fallbackCatalogue);
         return $this->applyLocalizationOverrides($fileReference, $languageKey, $labels);
     }
 
@@ -181,17 +126,17 @@ class LocalizationFactory
     /**
      * Convert Symfony MessageCatalogue to TYPO3's legacy format
      */
-    protected function convertCatalogueToLegacyFormat(MessageCatalogueInterface $catalogue, string $languageKey, MessageCatalogueInterface $fallbackCatalogue): array
+    protected function convertCatalogueToLegacyFormat(MessageCatalogueInterface $catalogue, MessageCatalogueInterface $fallbackCatalogue): array
     {
         $result = [];
         foreach ($fallbackCatalogue->all() as $translations) {
             foreach ($translations as $key => $value) {
                 // Check if this is a plural form (contains ICU format)
                 if (str_contains($value, '{0, plural,')) {
-                    $result[$languageKey][$key] = $this->parseIcuPlural($value);
+                    $result[$key] = $this->parseIcuPlural($value);
                 } else {
                     // Regular translation
-                    $result[$languageKey][$key] = $value;
+                    $result[$key] = $value;
                 }
             }
         }
@@ -199,10 +144,10 @@ class LocalizationFactory
             foreach ($translations as $key => $value) {
                 // Check if this is a plural form (contains ICU format)
                 if (str_contains($value, '{0, plural,')) {
-                    $result[$languageKey][$key] = $this->parseIcuPlural($value);
+                    $result[$key] = $this->parseIcuPlural($value);
                 } else {
                     // Regular translation
-                    $result[$languageKey][$key] = $value ?: $fallbackCatalogue->get($key);
+                    $result[$key] = $value ?: $fallbackCatalogue->get($key);
                 }
             }
         }

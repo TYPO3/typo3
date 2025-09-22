@@ -259,27 +259,26 @@ class LanguageService
             return $cacheEntry;
         }
 
-        // Load the default
-        $mainLanguageKey = $this->getTypo3LanguageKey();
         // Get english first
-        $localLanguage = $this->localizationFactory->getParsedData($fileRef, 'en');
+        $allLabels = [
+            'en' => $this->localizationFactory->getParsedData($fileRef, 'en'),
+        ];
+        $mainLanguageKey = $this->getTypo3LanguageKey();
         if ($mainLanguageKey !== 'en') {
-            $localLanguage[$mainLanguageKey] = $localLanguage['en'];
+            $allLabels[$mainLanguageKey] = $allLabels['en'];
             $allLocales = array_merge([$mainLanguageKey], $this->locale->getDependencies());
             $allLocales = array_unique($allLocales);
             $allLocales = array_reverse($allLocales);
             foreach ($allLocales as $locale) {
+                // Merge current language labels onto labels from previous language
+                // This way we have a labels with fallback applied
                 $labels = $this->localizationFactory->getParsedData($fileRef, $locale);
-                if (isset($labels[$locale])) {
-                    // Merge current language labels onto labels from previous language
-                    // This way we have a labels with fallback applied
-                    ArrayUtility::mergeRecursiveWithOverrule($localLanguage[$mainLanguageKey], $labels[$locale], true, false);
-                }
+                ArrayUtility::mergeRecursiveWithOverrule($allLabels[$mainLanguageKey], $labels, true, false);
             }
         }
 
-        $this->runtimeCache->set($cacheIdentifier, $localLanguage);
-        return $localLanguage;
+        $this->runtimeCache->set($cacheIdentifier, $allLabels);
+        return $allLabels;
     }
 
     /**
