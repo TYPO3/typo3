@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Schema\Capability\RootLevelCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Security\RawValue;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -232,27 +233,28 @@ class SuggestWizardController
         if (is_array($wizardConfig[$queryTable] ?? null)) {
             ArrayUtility::mergeRecursiveWithOverrule($config, $wizardConfig[$queryTable]);
         }
+
         $globalSuggestTsConfig = $TSconfig['TCEFORM.']['suggest.'] ?? [];
         $currentFieldSuggestTsConfig = $TSconfig['TCEFORM.'][$table . '.'][$field . '.']['suggest.'] ?? [];
 
         // merge the configurations of different "levels" to get the working configuration for this table and
         // field (i.e., go from the most general to the most special configuration)
         if (is_array($globalSuggestTsConfig['default.'] ?? null)) {
-            ArrayUtility::mergeRecursiveWithOverrule($config, $globalSuggestTsConfig['default.']);
+            ArrayUtility::mergeRecursiveWithOverrule($config, $this->substituteRawValues($globalSuggestTsConfig['default.']));
         }
 
         if (is_array($globalSuggestTsConfig[$queryTable . '.'] ?? null)) {
-            ArrayUtility::mergeRecursiveWithOverrule($config, $globalSuggestTsConfig[$queryTable . '.']);
+            ArrayUtility::mergeRecursiveWithOverrule($config, $this->substituteRawValues($globalSuggestTsConfig[$queryTable . '.']));
         }
 
         // use $table instead of $queryTable here because we overlay a config
         // for the input-field here, not for the queried table
         if (is_array($currentFieldSuggestTsConfig['default.'] ?? null)) {
-            ArrayUtility::mergeRecursiveWithOverrule($config, $currentFieldSuggestTsConfig['default.']);
+            ArrayUtility::mergeRecursiveWithOverrule($config, $this->substituteRawValues($currentFieldSuggestTsConfig['default.']));
         }
 
         if (is_array($currentFieldSuggestTsConfig[$queryTable . '.'] ?? null)) {
-            ArrayUtility::mergeRecursiveWithOverrule($config, $currentFieldSuggestTsConfig[$queryTable . '.']);
+            ArrayUtility::mergeRecursiveWithOverrule($config, $this->substituteRawValues($currentFieldSuggestTsConfig[$queryTable . '.']));
         }
 
         return $config;
@@ -288,6 +290,18 @@ class SuggestWizardController
         }
 
         return $queryTables;
+    }
+
+    /**
+     * Wraps user functions in the configuration array as a `RawValue` object,
+     * to be asserted later when actually calling `GeneralUtility::callUserFunction`.
+     */
+    protected function substituteRawValues(array $config): array
+    {
+        if (!empty($config['renderFunc'])) {
+            $config['renderFunc'] = new RawValue($config['renderFunc']);
+        }
+        return $config;
     }
 
     /**

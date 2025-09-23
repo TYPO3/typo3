@@ -21,6 +21,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
@@ -125,6 +126,7 @@ class Bootstrap
      * @param ServerRequestInterface $request the incoming server request
      * @return string $content The processed content
      */
+    #[AsAllowedCallable]
     public function run(string $content, array $configuration, ServerRequestInterface $request): string
     {
         $request = $this->initialize($configuration, $request);

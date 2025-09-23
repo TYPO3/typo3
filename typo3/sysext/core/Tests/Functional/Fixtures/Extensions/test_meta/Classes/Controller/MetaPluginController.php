@@ -17,12 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3Tests\TestMeta\Controller;
 
+use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Tests\TestMeta\PageTitle\CustomPageTitleProvider;
 
 class MetaPluginController
 {
+    #[AsAllowedCallable]
     public function setMetaData(string $content, array $configuration): string
     {
         $pageId = $GLOBALS['TYPO3_REQUEST']->getQueryParams()['id'];

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\UserFunctions\ExtensionConfiguration;
 
+use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
+
 /**
  * User function 1
  *
@@ -31,6 +33,7 @@ final class User1
      * @param mixed $tsObj
      * @return string
      */
+    #[AsAllowedCallable]
     public function user_1(&$params, &$tsObj)
     {
         $out = '';

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Functional\Http\Fixtures;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -27,6 +28,7 @@ final readonly class RequestHandlerTestUserFuncs
     /**
      * A USER_INT method referenced in PageWithUserInt.typoscript
      */
+    #[AsAllowedCallable]
     public function userIntCallback(): string
     {
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
@@ -38,6 +40,7 @@ final readonly class RequestHandlerTestUserFuncs
     /**
      * A USER method referenced in PageWithUserObjectUsingSlWithoutLLL.typoscript
      */
+    #[AsAllowedCallable]
     public function slWithoutLLLCallback($_, $__, ServerRequestInterface $request): string
     {
         return GeneralUtility::makeInstance(LanguageServiceFactory::class)
@@ -48,6 +51,7 @@ final readonly class RequestHandlerTestUserFuncs
     /**
      * A USER method referenced in PageWithUserObjectUsingSlWithLLL.typoscript
      */
+    #[AsAllowedCallable]
     public function slWithLLLCallback($_, $__, ServerRequestInterface $request): string
     {
         return GeneralUtility::makeInstance(LanguageServiceFactory::class)

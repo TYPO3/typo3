@@ -68,6 +68,8 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Security\AllowedCallableAssertion;
+use TYPO3\CMS\Core\Security\RawValue;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\SystemResource\Publishing\UriGenerationOptions;
 use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
@@ -4251,13 +4253,23 @@ class ContentObjectRenderer
      * @param mixed $content The content payload to pass the function
      * @return mixed The return content from the function call. Should probably be a string.
      */
-    public function callUserFunction($funcName, $conf, $content)
+    public function callUserFunction(string|RawValue $funcName, $conf, $content)
     {
+        if ($funcName instanceof RawValue) {
+            $isTrusted = $funcName->trusted;
+            $funcName = $funcName->value;
+        } else {
+            $isTrusted = false;
+        }
+        $invokableAssertion = GeneralUtility::makeInstance(AllowedCallableAssertion::class);
         // Split parts
         $parts = explode('->', $funcName);
         if (count($parts) === 2) {
             // Check whether PHP class is available
             if (class_exists($parts[0])) {
+                if (!$isTrusted) {
+                    $invokableAssertion->assertCallable($parts);
+                }
                 if ($this->container->has($parts[0])) {
                     $classObj = $this->container->get($parts[0]);
                 } else {
@@ -4278,6 +4290,9 @@ class ContentObjectRenderer
                 $this->timeTracker->setTSlogMessage('Class "' . $parts[0] . '" did not exist', LogLevel::ERROR);
             }
         } elseif (function_exists($funcName)) {
+            if (!$isTrusted) {
+                $invokableAssertion->assertCallable($funcName);
+            }
             $content = $funcName($content, $conf, $this->getRequest()->withAttribute('currentContentObject', $this));
         } else {
             $this->timeTracker->setTSlogMessage('Function "' . $funcName . '" did not exist', LogLevel::ERROR);

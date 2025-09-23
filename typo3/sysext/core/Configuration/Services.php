@@ -12,6 +12,7 @@ use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 
 return static function (ContainerConfigurator $container, ContainerBuilder $containerBuilder) {
@@ -98,6 +99,21 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
         }
     );
 
+    // notice: static method references cannot be analyzed this way, those are
+    // resolved during runtime in `AllowedCallableAssertion` using reflection
+    $containerBuilder->registerAttributeForAutoconfiguration(
+        AsAllowedCallable::class,
+        static function (ChildDefinition $definition, AsAllowedCallable $attribute, \Reflector $reflector): void {
+            // @todo user functions are `'ClassName->methodName'`, class-based `__invoke()` is not supported yet
+            if (!$reflector instanceof \ReflectionMethod) {
+                return;
+            }
+            $definition->addTag(AsAllowedCallable::TAG_NAME, [
+                'method' => $reflector->getName(),
+            ]);
+        }
+    );
+
     $containerBuilder->addCompilerPass(new DependencyInjection\SingletonPass('typo3.singleton'));
     $containerBuilder->addCompilerPass(new DependencyInjection\LoggerAwarePass('psr.logger_aware'));
     $containerBuilder->addCompilerPass(new DependencyInjection\LoggerInterfacePass());
@@ -109,5 +125,6 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
     $containerBuilder->addCompilerPass(new DependencyInjection\ConsoleCommandPass('console.command'));
     $containerBuilder->addCompilerPass(new DependencyInjection\MessageHandlerPass('messenger.message_handler'));
     $containerBuilder->addCompilerPass(new DependencyInjection\MessengerMiddlewarePass('messenger.middleware'));
+    $containerBuilder->addCompilerPass(new DependencyInjection\AllowedCallablePass(AsAllowedCallable::TAG_NAME));
     $containerBuilder->addCompilerPass(new DependencyInjection\AutowireInjectMethodsPass());
 };

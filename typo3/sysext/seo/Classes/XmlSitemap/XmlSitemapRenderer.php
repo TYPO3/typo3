@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Seo\XmlSitemap;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\HashValue;
@@ -64,6 +65,7 @@ final readonly class XmlSitemapRenderer
      * @param array $typoScriptConfiguration TypoScript configuration specified in USER Content Object
      * @throws InvalidConfigurationException
      */
+    #[AsAllowedCallable]
     public function render(string $_, array $typoScriptConfiguration, ServerRequestInterface $request): string
     {
         $settingsTree = $request->getAttribute('frontend.typoscript')->getSetupTree()->getChildByName('plugin')->getChildByName('tx_seo');

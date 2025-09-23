@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -39,6 +40,7 @@ class LinkHandlingController
         $this->cObj = $cObj;
     }
 
+    #[AsAllowedCallable]
     public function mainAction(mixed $_, array $__, ServerRequestInterface $request): string
     {
         if (!$request instanceof InternalRequest) {
@@ -57,6 +59,7 @@ class LinkHandlingController
     /**
      * @param array|null $configuration
      */
+    #[AsAllowedCallable]
     public function dumpPageArgumentsAction(?string $content, ?array $configuration = null): string
     {
         /** @var ServerRequestInterface $request */

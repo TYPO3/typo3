@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\DataProcessing;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
@@ -383,6 +384,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
     /**
      * This UserFunc gets the link and the target
      */
+    #[AsAllowedCallable]
     public function replacePlaceholderInRenderedMenuItem(array $menuItem): array
     {
         $link = $this->jsonEncode($menuItem['linkHREF'] instanceof LinkResultInterface ? $menuItem['linkHREF']->getUrl() : '');
@@ -401,6 +403,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
      * @throws \InvalidArgumentException
      * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
+    #[AsAllowedCallable]
     public function getFieldAsJson(string $content, array $conf): string
     {
         // Support of stdWrap for parameters

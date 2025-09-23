@@ -35,6 +35,8 @@ use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Package\Exception as PackageException;
+use TYPO3\CMS\Core\Security\AllowedCallableAssertion;
+use TYPO3\CMS\Core\Security\RawValue;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\SystemResource\Http\CacheBustingUri;
 
@@ -2699,14 +2701,26 @@ class GeneralUtility
      * @param non-empty-string|\Closure $funcName Function/Method reference or Closure.
      * @param mixed $params Parameters to be pass along (typically an array) (REFERENCE!)
      * @param object|null $ref Reference to be passed along (typically "$this" - being a reference to the calling object)
+     * @param bool $assertAllowedCallable If true, asserts the target callable has the `#[AsAllowedCallable]` PHP attribute
      * @return mixed Content from method/function call
      * @throws \InvalidArgumentException
      */
-    public static function callUserFunction(string|\Closure $funcName, mixed &$params, ?object $ref = null): mixed
+    public static function callUserFunction(string|\Closure|RawValue $funcName, mixed &$params, ?object $ref = null, bool $assertAllowedCallable = false): mixed
     {
         // Check if we're using a closure and invoke it directly.
         if (is_a($funcName, \Closure::class)) {
             return call_user_func_array($funcName, [&$params, &$ref]);
+        }
+        if ($funcName instanceof RawValue) {
+            $isTrusted = $funcName->trusted;
+            $funcName = $funcName->value;
+        } else {
+            $isTrusted = false;
+        }
+        if ($assertAllowedCallable === false) {
+            $invokableAssertion = null;
+        } else {
+            $invokableAssertion = self::makeInstance(AllowedCallableAssertion::class);
         }
         $funcName = trim($funcName);
         $parts = explode('->', $funcName);
@@ -2721,6 +2735,9 @@ class GeneralUtility
                 $callable = [$classObj, $methodName];
                 if (is_callable($callable)) {
                     // Call method:
+                    if (!$isTrusted) {
+                        $invokableAssertion?->assertCallable($callable);
+                    }
                     $content = call_user_func_array($callable, [&$params, &$ref]);
                 } else {
                     throw new \InvalidArgumentException('No method name \'' . $parts[1] . '\' in class ' . $parts[0], 1294585865);
@@ -2730,6 +2747,9 @@ class GeneralUtility
             }
         } elseif (function_exists($funcName) && is_callable($funcName)) {
             // It's a function
+            if (!$isTrusted) {
+                $invokableAssertion?->assertCallable($funcName);
+            }
             $content = call_user_func_array($funcName, [&$params, &$ref]);
         } else {
             // Usually this will be annotated by static code analysis tools, but there's no native "not empty string" type

@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Frontend\DataProcessing;
 
+use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectFactory;
@@ -492,6 +493,7 @@ class MenuProcessor implements DataProcessorInterface
      *
      * @return string JSON encoded data
      */
+    #[AsAllowedCallable]
     public function getDataAsJson()
     {
         return $this->jsonEncode($this->cObj->data);
@@ -504,6 +506,7 @@ class MenuProcessor implements DataProcessorInterface
      * @param array $conf
      * @return string JSON encoded content
      */
+    #[AsAllowedCallable]
     public function jsonEncodeUserFunc($content, $conf)
     {
         $content = $this->jsonEncode($content);
@@ -528,6 +531,7 @@ class MenuProcessor implements DataProcessorInterface
      * @param array $conf
      * @return array
      */
+    #[AsAllowedCallable]
     public function replacePlaceholderInRenderedMenuItem($menuItem, $conf)
     {
         $link = $this->jsonEncode($menuItem['linkHREF'] instanceof LinkResultInterface ? $menuItem['linkHREF']->getUrl() : '');

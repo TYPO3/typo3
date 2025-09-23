@@ -370,7 +370,10 @@ final class AstConstantCommentVisitor implements AstVisitorInterface
                             'fieldName' => $nodeName,
                             'fieldValue' => $currentValue,
                         ];
-                        $parsedCommentArray['html'] = (string)GeneralUtility::callUserFunction($userFunction, $userFunctionParams);
+                        $parsedCommentArray['html'] = (string)GeneralUtility::callUserFunction(
+                            $userFunction,
+                            $userFunctionParams
+                        );
                     }
                 } elseif ($partValue === 'comment') {
                     $parsedCommentArray['type'] = 'comment';
