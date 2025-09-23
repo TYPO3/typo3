@@ -106,11 +106,6 @@ final readonly class TypoScriptFrontendInitialization implements MiddlewareInter
 
         $controller = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
         $controller->initializePageRenderer($request);
-        $controller->id = $pageInformation->getId();
-        $controller->page = $pageInformation->getPageRecord();
-        $controller->contentPid = $pageInformation->getContentFromPid();
-        $controller->rootLine = $pageInformation->getRootLine();
-        $controller->config['rootLine'] = $pageInformation->getLocalRootLine();
         // Update SYS_LASTCHANGED at the very last, when page record was finally resolved.
         // Is also called when a translated page is in use, so the register reflects
         // the state of the translated page, not the page in the default language.

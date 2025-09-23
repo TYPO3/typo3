@@ -3868,7 +3868,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $retVal = $this->getValueFromRecursiveData(GeneralUtility::trimExplode('|', $key), $this->getRequest());
                         break;
                     case 'tsfe':
-                        // @todo: This needs a bigger cleanup / deprecation when TypoScriptFrontendController continues to remove properties.
                         $valueParts = GeneralUtility::trimExplode('|', $key);
                         if (($valueParts[0] ?? '') === 'fe_user') {
                             $frontendUser = $this->getRequest()->getAttribute('frontend.user');
@@ -3883,8 +3882,20 @@ class ContentObjectRenderer implements LoggerAwareInterface
                                     $this->getRequest()->getQueryParams(),
                                     GeneralUtility::makeInstance(Context::class)
                                 );
-                        } else {
-                            $retVal = $this->getValueFromRecursiveData($valueParts, $this->getTypoScriptFrontendController());
+                        } elseif (($valueParts[0] ?? '') === 'id') {
+                            $retVal = $this->getRequest()->getAttribute('frontend.page.information')->getId();
+                        } elseif (($valueParts[0] ?? '') === 'contentPid') {
+                            $retVal = $this->getRequest()->getAttribute('frontend.page.information')->getContentFromPid();
+                        } elseif (($valueParts[0] ?? '') === 'rootLine') {
+                            array_shift($valueParts);
+                            $retVal = $this->getValueFromRecursiveData($valueParts, $this->getRequest()->getAttribute('frontend.page.information')->getRootLine());
+                        } elseif (($valueParts[0] ?? '') === 'page') {
+                            array_shift($valueParts);
+                            $retVal = $this->getValueFromRecursiveData($valueParts, $this->getRequest()->getAttribute('frontend.page.information')->getPageRecord());
+                        } elseif (($valueParts[0] ?? '') === 'config' && ($valueParts[1] ?? '') === 'rootLine') {
+                            array_shift($valueParts);
+                            array_shift($valueParts);
+                            $retVal = $this->getValueFromRecursiveData($valueParts, $this->getRequest()->getAttribute('frontend.page.information')->getLocalRootLine());
                         }
                         break;
                     case 'getenv':

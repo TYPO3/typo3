@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Page\AssetCollector;
@@ -59,33 +58,6 @@ use TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent;
  */
 class TypoScriptFrontendController
 {
-    /**
-     * Use $request->getAttribute('frontend.page.information')->getId() instead.
-     */
-    public int $id;
-
-    /**
-     * Use $request->getAttribute('frontend.page.information')->getRootLine() instead.
-     *
-     * @var array<int, array<string, mixed>>
-     */
-    public array $rootLine = [];
-
-    /**
-     * Use $request->getAttribute('frontend.page.information')->getPageRecord() instead.
-     */
-    public ?array $page = [];
-
-    /**
-     * Available as @internal $request->getAttribute('frontend.page.information')->getContentFromPid().
-     */
-    public int $contentPid = 0;
-
-    /**
-     * Create own instance using GeneralUtility::makeInstance(PageRepository::class).
-     */
-    public PageRepository $sys_page;
-
     /**
      * A central data array consisting of various keys, initialized and
      * processed at various places in the class.
@@ -241,7 +213,6 @@ class TypoScriptFrontendController
      */
     public function __construct()
     {
-        $this->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $this->context = GeneralUtility::makeInstance(Context::class);
         $this->uniqueString = md5(microtime());
         $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
@@ -316,7 +287,7 @@ class TypoScriptFrontendController
 
         // Respect the page cache when content of pid is shown
         if ($pageId !== $pageInformation->getContentFromPid()) {
-            $cacheDataCollector->addCacheTags(new CacheTag('pageId_' . $this->contentPid, $lifetime));
+            $cacheDataCollector->addCacheTags(new CacheTag('pageId_' . $pageInformation->getContentFromPid(), $lifetime));
         }
         if (!empty($pageRecord['cache_tags'])) {
             $tags = GeneralUtility::trimExplode(',', $pageRecord['cache_tags'], true);
