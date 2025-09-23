@@ -1860,9 +1860,6 @@ export function renderRequiredValidatorEditor(
 
   if (-1 !== getFormEditorApp().getIndexFromPropertyCollectionElement(validatorIdentifier, 'validators')) {
     $('input[type="checkbox"]', $(editorHtml)).prop('checked', true);
-    if (getUtility().isNonEmptyString(propertyPath)) {
-      getCurrentlySelectedFormElement().set(propertyPath, propertyValue);
-    }
     showValidationErrorMessage();
   }
 
