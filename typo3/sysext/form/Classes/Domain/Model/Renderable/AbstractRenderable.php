@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Model\Renderable;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -30,6 +31,7 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Form\Domain\Model\Exception\FormDefinitionConsistencyException;
 use TYPO3\CMS\Form\Domain\Model\Exception\ValidatorPresetNotFoundException;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
+use TYPO3\CMS\Form\Event\BeforeRenderableIsRemovedFromFormEvent;
 
 /**
  * Convenience base class which implements common functionality for most
@@ -339,13 +341,11 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      */
     public function onRemoveFromParentRenderable()
     {
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRemoveFromParentRenderable'] ?? [] as $className) {
-            $hookObj = GeneralUtility::makeInstance($className);
-            if (method_exists($hookObj, 'beforeRemoveFromParentRenderable')) {
-                $hookObj->beforeRemoveFromParentRenderable(
-                    $this
-                );
-            }
+        $event = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+            new BeforeRenderableIsRemovedFromFormEvent($this)
+        );
+        if ($event->isPropagationStopped()) {
+            return;
         }
 
         try {

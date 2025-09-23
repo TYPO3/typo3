@@ -1272,4 +1272,10 @@ return [
             'Feature-107518-IntroducePSR14BeforeRenderableIsAddedToFormEvent.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'ext/form\'][\'beforeRemoveFromParentRenderable\']' => [
+        'restFiles' => [
+            'Breaking-107528-RemovedBeforeRemoveFromParentRenderableHook.rst',
+            'Feature-107528-IntroducePSR14BeforeRenderableIsRemovedFromFormEvent.rst',
+        ],
+    ],
 ];
