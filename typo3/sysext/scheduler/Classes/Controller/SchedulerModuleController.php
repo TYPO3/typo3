@@ -293,7 +293,7 @@ final class SchedulerModuleController
     {
         $languageService = $this->getLanguageService();
         $data = $this->taskRepository->getGroupedTasks();
-        $allTaskTypes = $this->taskService->getAllTaskTypes();
+        $hasAvailableTaskTypes = $this->taskService->getAllTaskTypes() !== [];
 
         $groups = $data['taskGroupsWithTasks'] ?? [];
         $groups = array_map(
@@ -307,6 +307,7 @@ final class SchedulerModuleController
         $view->assignMultiple([
             'groups' => $groups,
             'groupsWithoutTasks' => $this->getGroupsWithoutTasks($groups),
+            'hasAvailableTaskTypes' => $hasAvailableTaskTypes,
             'now' => $this->context->getAspect('date')->get('timestamp'),
             'errorClasses' => $data['errorClasses'],
             'returnUrl' => $this->uriBuilder->buildUriFromRoute('scheduler_manage'),
@@ -318,8 +319,12 @@ final class SchedulerModuleController
         );
         $view->makeDocHeaderModuleMenu();
         $this->addDocHeaderReloadButton($view);
-        if (!empty($allTaskTypes)) {
-            $this->addDocHeaderAddTaskButton($view, $request);
+        if ($hasAvailableTaskTypes) {
+            $addTaskUrl = (string)$this->uriBuilder->buildUriFromRoute('ajax_new_scheduler_task_wizard', [
+                'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
+            ]);
+            $view->assign('addTaskUrl', $addTaskUrl);
+            $this->addDocHeaderAddTaskButton($view, $addTaskUrl);
             $this->addDocHeaderAddTaskGroupButton($view);
         }
         $this->addDocHeaderShortcutButton($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.scheduler'));
@@ -337,14 +342,10 @@ final class SchedulerModuleController
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
     }
 
-    protected function addDocHeaderAddTaskButton(ModuleTemplate $moduleTemplate, ServerRequestInterface $request): void
+    protected function addDocHeaderAddTaskButton(ModuleTemplate $moduleTemplate, string $url): void
     {
         $languageService = $this->getLanguageService();
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-
-        $url = (string)$this->uriBuilder->buildUriFromRoute('ajax_new_scheduler_task_wizard', [
-            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
-        ]);
 
         $addButton = $buttonBar->makeFullyRenderedButton()->setHtmlSource(
             '<typo3-scheduler-new-task-wizard-button url="' . $url . '" subject="' . htmlspecialchars($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add')) . '">'

@@ -36,7 +36,8 @@ final class TasksCest
 
     public function createASchedulerTask(ApplicationTester $I, ModalDialog $modalDialog): void
     {
-        $I->see('No tasks defined yet');
+        $I->see('No tasks found');
+        $I->see('There are currently no configured tasks found. You can create a new one.');
 
         $I->click('//typo3-scheduler-new-task-wizard-button', '.module-docheader');
         $modalDialog->canSeeDialog();
@@ -110,7 +111,8 @@ final class TasksCest
         $modalDialog->clickButtonInDialog('OK');
         $I->switchToContentFrame();
         $I->see('The task was successfully deleted.');
-        $I->see('No tasks defined yet');
+        $I->see('No tasks found');
+        $I->see('There are currently no configured tasks found. You can create a new one.');
     }
 
     public function canSwitchToSetupCheck(ApplicationTester $I): void

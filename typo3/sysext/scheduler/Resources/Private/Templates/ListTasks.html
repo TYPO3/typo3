@@ -36,7 +36,19 @@
             <f:render partial="TaskList" arguments="{_all}" />
         </f:then>
         <f:else>
-            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}" message="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noTasks')}" />
+            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}" title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noTasks')}">
+                <f:if condition="{hasAvailableTaskTypes}">
+                    <f:then>
+                        <p><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noTasks.createNew"/></p>
+                        <typo3-scheduler-new-task-wizard-button class="btn btn-primary" url="{addTaskUrl}" subject="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add')}">
+                            <core:icon identifier="actions-plus" size="small" /> {f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add')}
+                        </typo3-scheduler-new-task-wizard-button>
+                    </f:then>
+                    <f:else>
+                        <p><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noTasks.nonAvailable"/></p>
+                    </f:else>
+                </f:if>
+            </f:be.infobox>
         </f:else>
     </f:if>
 

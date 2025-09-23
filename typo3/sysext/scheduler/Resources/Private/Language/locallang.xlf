@@ -280,7 +280,13 @@
 				<source>The selected task type must be either "single execution" or "recurring execution".</source>
 			</trans-unit>
 			<trans-unit id="msg.noTasks">
-				<source>No tasks defined yet.</source>
+				<source>No tasks found</source>
+			</trans-unit>
+			<trans-unit id="msg.noTasks.createNew">
+				<source>There are currently no configured tasks found. You can create a new one.</source>
+			</trans-unit>
+			<trans-unit id="msg.noTasks.nonAvailable">
+				<source>There are currently no tasks available in the system to be configured.</source>
 			</trans-unit>
 			<trans-unit id="msg.notExecuted">
 				<source>Task "%s" with uid "%s" has not been executed.</source>

@@ -36,7 +36,8 @@ final class SchedulerTaskWizardCest
 
     public function canOpenTaskWizardModal(ApplicationTester $I, ModalDialog $modalDialog): void
     {
-        $I->see('No tasks defined yet');
+        $I->see('No tasks found');
+        $I->see('There are currently no configured tasks found. You can create a new one.');
 
         // Click the "New task" button which should open the wizard
         $I->click('//typo3-scheduler-new-task-wizard-button', '.module-docheader');
@@ -90,6 +91,10 @@ final class SchedulerTaskWizardCest
 
         // Should return to scheduler list with new task
         $I->see('Fileadmin garbage collection');
+
+        // Delete Task again
+        $I->click('//button[contains(@title, "Delete")]');
+        $modalDialog->clickButtonInDialog('OK');
     }
 
     public function wizardSearchFunctionality(ApplicationTester $I, ModalDialog $modalDialog): void
@@ -163,6 +168,18 @@ final class SchedulerTaskWizardCest
         // Should see both tasks in list
         $I->see('Fileadmin garbage collection');
         $I->see('File Abstraction Layer: Extract metadata in storage');
+
+        // Delete Tasks again
+        $I->click('//button[contains(@title, "Delete")]');
+        $modalDialog->clickButtonInDialog('OK');
+        $I->wait(1);
+        $I->switchToContentFrame();
+        $I->dontSee('Fileadmin garbage collection');
+        $I->see('File Abstraction Layer: Extract metadata in storage');
+        $I->click('//button[contains(@title, "Delete")]');
+        $modalDialog->clickButtonInDialog('OK');
+        $I->wait(1);
+        $I->switchToContentFrame();
 
         // Check recently used
         $I->click('//typo3-scheduler-new-task-wizard-button', '.module-docheader');
