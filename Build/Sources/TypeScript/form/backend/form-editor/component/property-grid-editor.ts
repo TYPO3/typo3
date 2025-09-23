@@ -118,8 +118,7 @@ export class PropertyGridEditor extends LitElement {
               type="text"
               @change=${(event: Event) => this.handleChange(event, 'label', entry)}
               @keyup=${(event: Event) => this.handleChange(event, 'label', entry)}
-              @paste=${(event: Event) => this.handleChange(event, 'label', entry)}
-              @focusout=${(event: FocusEvent) => this.handleFocusOut(event, 'label', entry)}
+              @focusout=${(event: FocusEvent) => this.handleFocusOut(event, entry)}
               .value=${live(entry.label)}
             />
           </div>
@@ -131,8 +130,6 @@ export class PropertyGridEditor extends LitElement {
               type="text"
               @change=${(event: Event) => this.handleChange(event, 'value', entry)}
               @keyup=${(event: Event) => this.handleChange(event, 'value', entry)}
-              @paste=${(event: Event) => this.handleChange(event, 'value', entry)}
-              @focusout=${(event: FocusEvent) => this.handleFocusOut(event, 'value', entry)}
               .value=${live(entry.value)}
             />
           </div>
@@ -143,7 +140,6 @@ export class PropertyGridEditor extends LitElement {
                 class="form-check-input"
                 type="checkbox"
                 @change=${(event: Event) => this.handleChange(event, 'selected', entry)}
-                @focusout=${(event: FocusEvent) => this.handleFocusOut(event, 'selected', entry)}
                 .checked=${live(entry.selected)}
               />
               <label for="${entry.id}-selected" class="form-check-label">${this.labelSelected}</label>
@@ -179,8 +175,8 @@ export class PropertyGridEditor extends LitElement {
     `;
   }
 
-  protected handleFocusOut(event: FocusEvent, property: string, entry: PropertyGridEditorEntry): void {
-    if (this.enableLabelAsFallbackValue && property === 'label' && entry.value === '') {
+  protected handleFocusOut(event: FocusEvent, entry: PropertyGridEditorEntry): void {
+    if (this.enableLabelAsFallbackValue && entry.value === '') {
       this.setEntryProperty(entry, 'value', entry.label);
     }
   }
