@@ -63,13 +63,34 @@ class CachingFrameworkGarbageCollectionTask extends AbstractTask
     public function getTaskParameters(): array
     {
         return [
-            'selectedBackends' => $this->selectedBackends,
+            'cache_backends' => implode(',', $this->selectedBackends),
         ];
     }
 
     public function setTaskParameters(array $parameters): void
     {
-        $this->selectedBackends = $parameters['selectedBackends'] ?? [];
+        $selectedBackends = $parameters['selectedBackends'] ?? $parameters['cache_backends'] ?? [];
+        if (!is_array($selectedBackends)) {
+            $selectedBackends = GeneralUtility::trimExplode(',', $selectedBackends, true);
+        }
+        $this->selectedBackends = $selectedBackends;
     }
 
+    /**
+     * Get all registered caching framework backends
+     */
+    public function getRegisteredBackends(array &$config): void
+    {
+        $backends = [];
+        $cacheConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'];
+        foreach ($cacheConfigurations ?? [] as $cacheConfiguration) {
+            $backend = (string)($cacheConfiguration['backend'] ?? Typo3DatabaseBackend::class);
+            if (!in_array($backend, $backends, true)) {
+                $backends[] = $backend;
+            }
+        }
+        foreach ($backends as $backend) {
+            $config['items'][] = ['value' => $backend, 'label' => $backend];
+        }
+    }
 }

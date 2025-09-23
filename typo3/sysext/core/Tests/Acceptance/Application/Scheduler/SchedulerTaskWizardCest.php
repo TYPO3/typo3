@@ -155,7 +155,7 @@ final class SchedulerTaskWizardCest
         $I->click('//typo3-scheduler-new-task-wizard-button', '.module-docheader');
         $modalDialog->canSeeDialog();
         $I->executeJS("document.querySelector('" . ModalDialog::$openedModalSelector . " typo3-backend-new-record-wizard').shadowRoot.querySelector('[data-identifier=\"scheduler\"]').click()");
-        $I->executeJS("document.querySelector('" . ModalDialog::$openedModalSelector . " typo3-backend-new-record-wizard').shadowRoot.querySelector('[data-identifier=\"scheduler_TYPO3_CMS_Scheduler_Task_FileStorageExtractionTask\"]').click()");
+        $I->executeJS("document.querySelector('" . ModalDialog::$openedModalSelector . " typo3-backend-new-record-wizard').shadowRoot.querySelector('[data-identifier=\"scheduler_TYPO3_CMS_Scheduler_Task_FileStorageIndexingTask\"]').click()");
         $I->switchToContentFrame();
         $I->click('.module-docheader a[title="Close"]');
         $I->switchToWindow('typo3-backend');
@@ -167,7 +167,7 @@ final class SchedulerTaskWizardCest
 
         // Should see both tasks in list
         $I->see('Fileadmin garbage collection');
-        $I->see('File Abstraction Layer: Extract metadata in storage');
+        $I->see('File Abstraction Layer: Update storage index');
 
         // Delete Tasks again
         $I->click('//button[contains(@title, "Delete")]');
@@ -175,7 +175,7 @@ final class SchedulerTaskWizardCest
         $I->wait(1);
         $I->switchToContentFrame();
         $I->dontSee('Fileadmin garbage collection');
-        $I->see('File Abstraction Layer: Extract metadata in storage');
+        $I->see('File Abstraction Layer: Update storage index');
         $I->click('//button[contains(@title, "Delete")]');
         $modalDialog->clickButtonInDialog('OK');
         $I->wait(1);
@@ -186,6 +186,6 @@ final class SchedulerTaskWizardCest
         $modalDialog->canSeeDialog();
         $I->executeJS("document.querySelector('" . ModalDialog::$openedModalSelector . " typo3-backend-new-record-wizard').shadowRoot.querySelector('[data-identifier=\"recently-used\"]').click()");
         $I->see('Fileadmin garbage collection');
-        $I->see('File Abstraction Layer: Extract metadata in storage');
+        $I->see('File Abstraction Layer: Update storage index');
     }
 }

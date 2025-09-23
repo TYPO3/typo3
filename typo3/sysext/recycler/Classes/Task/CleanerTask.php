@@ -50,7 +50,7 @@ class CleanerTask extends AbstractTask
     public function execute()
     {
         $success = true;
-        $tables = $this->getTcaTables();
+        $tables = $this->tcaTables;
         $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
         foreach ($tables as $table) {
             if (!$schemaFactory->has($table)) {
@@ -112,60 +112,63 @@ class CleanerTask extends AbstractTask
     {
         $message = sprintf(
             $this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskDescriptionTables'),
-            implode(', ', $this->getTcaTables())
+            implode(', ', $this->tcaTables)
         );
 
         $message .= '; ';
 
         $message .= sprintf(
             $this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskDescriptionDays'),
-            $this->getPeriod()
+            $this->period
         );
 
         return $message;
     }
 
-    /**
-     * Sets the period after which a row is hard-deleted
-     */
-    public function setPeriod(int $period): void
-    {
-        $this->period = $period;
-    }
-
-    /**
-     * Returns the period after which a row is hard-deleted
-     */
-    public function getPeriod(): int
-    {
-        return $this->period;
-    }
-
-    /**
-     * @return int
-     */
     public function getPeriodAsTimestamp(): int
     {
-        $timeStamp = strtotime('-' . $this->getPeriod() . ' days');
+        $timeStamp = strtotime('-' . $this->period . ' days');
         if ($timeStamp === false) {
             throw new \InvalidArgumentException('Period must be an integer.', 1623097600);
         }
         return $timeStamp;
     }
 
-    /**
-     * Sets the TCA-tables which are cleaned
-     */
-    public function setTcaTables(array $tcaTables): void
+    public function getTaskParameters(): array
     {
+        return [
+            'selected_tables' => implode(',', $this->tcaTables),
+            'number_of_days' => $this->period,
+        ];
+    }
+
+    public function setTaskParameters(array $parameters): void
+    {
+        $tcaTables = $parameters['RecyclerCleanerTCA'] ?? $parameters['selected_tables'] ?? [];
+        if (is_string($tcaTables)) {
+            $tcaTables = GeneralUtility::trimExplode(',', $tcaTables, true);
+        }
         $this->tcaTables = $tcaTables;
+        $this->period = (int)($parameters['RecyclerCleanerPeriod'] ?? $parameters['number_of_days'] ?? 180);
     }
 
     /**
-     * Returns the TCA-tables which are cleaned
+     * TCA Item Provider
      */
-    public function getTcaTables(): array
+    public function getAllTcaTables(array &$config): void
     {
-        return $this->tcaTables;
+        $options = [];
+        $tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
+        foreach ($tcaSchemaFactory->all() as $table => $schema) {
+            if (!$schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
+                continue;
+            }
+            $tableTitle = $schema->getTitle($this->getLanguageService()->sL(...));
+            $config['items'][] = [
+                'label' => $tableTitle . ' (' . $table . ')',
+                'value' => $table,
+            ];
+        }
+        ksort($options);
     }
 }

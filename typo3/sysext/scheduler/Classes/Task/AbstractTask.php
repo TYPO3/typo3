@@ -127,7 +127,9 @@ abstract class AbstractTask implements LoggerAwareInterface
     }
 
     /**
-     * This method returns the title of the scheduler task
+     * This method returns the title of the scheduler task.
+     * Unused since TYPO3 v14.0, can be deprecated and removed once we migrate task registration away from TYPO3_CONF_VARS.
+     * Note by benni in 2025: This method will cease to exist at some point, as the title is loaded from TCA eventually.
      *
      * @return string
      */
@@ -138,6 +140,8 @@ abstract class AbstractTask implements LoggerAwareInterface
 
     /**
      * This method returns the description of the scheduler task
+     * Unused since TYPO3 v14.0, can be deprecated and removed once we migrate task registration away from TYPO3_CONF_VARS.
+     * Note by benni in 2025: This method will cease to exist at some point, as the description is loaded from TCA eventually.
      *
      * @return string
      */
@@ -338,6 +342,11 @@ abstract class AbstractTask implements LoggerAwareInterface
         return $parameters;
     }
 
+    /**
+     * Used to fill fields of this class, e.g. also when instantiating this class when no parameters are
+     * given but native DB fields are coming in.
+     * @param array $parameters
+     */
     public function setTaskParameters(array $parameters): void
     {
         foreach ($parameters as $key => $value) {

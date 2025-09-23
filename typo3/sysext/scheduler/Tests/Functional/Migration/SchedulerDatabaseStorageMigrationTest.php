@@ -24,7 +24,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class SchedulerDatabaseStorageMigrationTest extends FunctionalTestCase
 {
-    protected array $coreExtensionsToLoad = ['scheduler'];
+    protected array $coreExtensionsToLoad = [
+        'extensionmanager',
+        'recycler',
+        'scheduler',
+    ];
 
     #[Test]
     public function schedulerTasksAreMigrated(): void

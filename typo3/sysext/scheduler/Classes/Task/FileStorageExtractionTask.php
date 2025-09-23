@@ -68,25 +68,21 @@ class FileStorageExtractionTask extends AbstractTask
         return $success;
     }
 
-    /**
-     * Gets the indexer
-     *
-     * @return \TYPO3\CMS\Core\Resource\Index\Indexer
-     */
-    protected function getIndexer(ResourceStorage $storage)
+    protected function getIndexer(ResourceStorage $storage): Indexer
     {
         return GeneralUtility::makeInstance(Indexer::class, $storage);
     }
+
     public function getTaskParameters(): array
     {
         return [
-            'storageUid' => $this->storageUid,
-            'maxFileCount' => $this->maxFileCount,
+            'file_storage' => $this->storageUid,
+            'max_file_count' => $this->maxFileCount,
         ];
     }
     public function setTaskParameters(array $parameters): void
     {
-        $this->storageUid = (int)($parameters['storageUid'] ?? -1);
-        $this->maxFileCount = (int)($parameters['maxFileCount'] ?? 100);
+        $this->storageUid = (int)($parameters['storageUid'] ?? $parameters['file_storage'] ?? -1);
+        $this->maxFileCount = (int)($parameters['maxFileCount'] ?? $parameters['max_file_count'] ?? 100);
     }
 }

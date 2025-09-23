@@ -30,7 +30,7 @@ final class CleanerTaskTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/Fixtures/pages.csv');
         $subject = new CleanerTask();
-        $subject->setTcaTables(['pages']);
+        $subject->setTaskParameters(['selected_tables' => 'pages']);
         $result = $subject->execute();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/Assertion/pages_deleted.csv');
         self::assertTrue($result);
@@ -41,7 +41,6 @@ final class CleanerTaskTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/Fixtures/pages.csv');
         $subject = new CleanerTask();
-        $subject->setTcaTables(['pages']);
         $utcTimeZone = new \DateTimeZone('UTC');
 
         // this is when the test was created. One of the fixtures (uid 4) has this date
@@ -50,7 +49,7 @@ final class CleanerTaskTest extends FunctionalTestCase
         $difference = $creationDate->diff(new \DateTime('today', $utcTimeZone), true);
         // let's set the amount of days one higher than the reference date
         $period = (int)$difference->format('%a') + 1;
-        $subject->setPeriod($period);
+        $subject->setTaskParameters(['selected_tables' => 'pages', 'number_of_days' => $period]);
         $result = $subject->execute();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/Assertion/pages_deleted_with_period.csv');
         self::assertTrue($result);
@@ -60,7 +59,7 @@ final class CleanerTaskTest extends FunctionalTestCase
     public function taskFailsOnError(): void
     {
         $subject = new CleanerTask();
-        $subject->setTcaTables(['not_existing_table']);
+        $subject->setTaskParameters(['selected_tables' => 'not_existing_table']);
         $result = $subject->execute();
         self::assertFalse($result);
     }

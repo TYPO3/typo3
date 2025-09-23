@@ -62,12 +62,12 @@ class FileStorageIndexingTask extends AbstractTask
     public function getTaskParameters(): array
     {
         return [
-            'storageUid' => $this->storageUid,
+            'file_storage' => $this->storageUid,
         ];
     }
 
     public function setTaskParameters(array $parameters): void
     {
-        $this->storageUid = $parameters['storageUid'] ?? 0;
+        $this->storageUid = $parameters['storageUid'] ?? $parameters['file_storage'] ?? 0;
     }
 }

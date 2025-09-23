@@ -17,11 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Scheduler\Service;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\Field\NoneFieldType;
 use TYPO3\CMS\Core\Schema\Struct\SelectItem;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
@@ -35,10 +36,11 @@ use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask;
  * @internal This is not a public API method, do not use in own extensions
  */
 #[Autoconfigure(public: true)]
-class TaskService
+readonly class TaskService
 {
     public function __construct(
-        protected readonly CommandRegistry $commandRegistry,
+        protected CommandRegistry $commandRegistry,
+        protected TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -53,50 +55,60 @@ class TaskService
      *
      * The name of the class itself is used as the key of the list array
      */
-    protected function getAvailableTaskTypes(): array
+    protected function getAvailableTaskTypes(bool $includeNativeTypes = true): array
     {
         $languageService = $this->getLanguageService();
         $list = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'] ?? [] as $className => $registrationInformation) {
-            $title = isset($registrationInformation['title']) ? $languageService->sL($registrationInformation['title']) : '';
-            $description = isset($registrationInformation['description']) ? $languageService->sL($registrationInformation['description']) : '';
+            $title = isset($registrationInformation['title']) ? ($languageService?->sL($registrationInformation['title']) ?? $registrationInformation['title']) : '';
+            $description = isset($registrationInformation['description']) ? ($languageService?->sL($registrationInformation['description']) ?? $registrationInformation['description']) : '';
             $list[$className] = [
                 'className' => $className,
                 'extension' => $registrationInformation['extension'],
+                'icon' => $registrationInformation['icon'] ?? '',
                 'title' => $title,
                 'description' => $description,
                 'provider' => $registrationInformation['additionalFields'] ?? '',
+                'isNativeTask' => false,
+                'additionalFields' => [],
             ];
+        }
+        if ($includeNativeTypes) {
+            $schema = $this->tcaSchemaFactory->get('tx_scheduler_task');
+            $defaultFields = ['tasktype', 'task_group', 'description', 'parameters', 'execution_details', 'nextexecution', 'lastexecution_context', 'lastexecution_time', 'lastexecution_failure', 'disable'];
+            // Loop over TCA items, and check if the task type is registered via TCA
+            foreach ($schema->getField('tasktype')->getConfiguration()['items'] ?? [] as $item) {
+                if (is_array($item) && $item['value'] !== 'div') {
+                    $taskType = $item['value'];
+
+                    $additionalFields = [];
+                    if ($schema->hasSubSchema($taskType)) {
+                        $subSchema = $schema->getSubSchema($taskType);
+                        $additionalFields = $subSchema->getFields(fn($field) => !in_array($field->getName(), $defaultFields, true) && $field instanceof NoneFieldType === false);
+                        $additionalFields = $additionalFields->getNames();
+                    }
+
+                    $list[$taskType] = [
+                        'taskType' => $taskType,
+                        'className' => $taskType,
+                        'extension' => $item['group'] ?? '',
+                        'icon' => $item['icon'] ?? '',
+                        'title' => $languageService?->sL($item['label'] ?? '') ?? $item['label'] ?? '',
+                        'description' => $languageService?->sL($item['description'] ?? '') ?? $item['description'] ?? '',
+                        'provider' => '',
+                        'isNativeTask' => true,
+                        'additionalFields' => $additionalFields,
+                    ];
+                }
+            }
         }
         return $list;
     }
 
-    public function hasTaskType(string $taskType): bool
-    {
-        return isset($this->getAvailableTaskTypes()[$taskType]);
-    }
-
-    /**
-     * If the "command" task is registered, create a list of available commands to be rendered.
-     *
-     * @return Command[]
-     */
-    public function getRegisteredCommands(): array
-    {
-        $commands = [];
-        if (array_key_exists(ExecuteSchedulableCommandTask::class, $this->getAvailableTaskTypes())) {
-            foreach ($this->commandRegistry->getSchedulableCommands() as $commandIdentifier => $command) {
-                $commands[$commandIdentifier] = $command;
-            }
-            ksort($commands);
-        }
-        return $commands;
-    }
-
-    public function getAllTaskTypes(): array
+    public function getAllTaskTypes(bool $includeNativeTypes = true): array
     {
         $taskTypes = [];
-        foreach ($this->getAvailableTaskTypes() as $taskType => $registrationInformation) {
+        foreach ($this->getAvailableTaskTypes($includeNativeTypes) as $taskType => $registrationInformation) {
             $data = [
                 'className' => $registrationInformation['className'],
                 'taskType' => $taskType,
@@ -105,11 +117,14 @@ class TaskService
                 'fullTitle' => $registrationInformation['title'] . ' [' . $registrationInformation['extension'] . ']',
                 'description' => $registrationInformation['description'],
                 'provider' => $registrationInformation['provider'] ?? '',
+                'isNativeTask' => $registrationInformation['isNativeTask'],
+                'additionalFields' => $registrationInformation['additionalFields'],
             ];
             if ($registrationInformation['className'] === ExecuteSchedulableCommandTask::class) {
                 foreach ($this->commandRegistry->getSchedulableCommands() as $commandIdentifier => $command) {
                     $commandData = $data;
                     $commandData['category'] = explode(':', $commandIdentifier)[0];
+                    $commandData['taskType'] = $commandIdentifier;
                     $commandData['title'] = $command->getName();
                     $commandData['description'] = $command->getDescription();
                     // Used for select dropdown and on InfoScreen
@@ -135,6 +150,41 @@ class TaskService
         return $categorizedTaskTypes;
     }
 
+    public function getTaskDetailsFromTask(AbstractTask $taskObject): ?array
+    {
+        $allTaskTypes = $this->getAllTaskTypes();
+        if (isset($allTaskTypes[$taskObject->getTaskType()])) {
+            return $allTaskTypes[$taskObject->getTaskType()];
+        }
+        if (isset($allTaskTypes[get_class($taskObject)])) {
+            return $allTaskTypes[get_class($taskObject)];
+        }
+        foreach ($allTaskTypes as $taskInformation) {
+            if ($taskInformation['className'] === get_class($taskObject)) {
+                return $taskInformation;
+            }
+        }
+        return null;
+    }
+
+    public function getTaskDetailsFromTaskType(string $taskType): ?array
+    {
+        $allTaskTypes = $this->getAllTaskTypes();
+        if (isset($allTaskTypes[$taskType])) {
+            return $allTaskTypes[$taskType];
+        }
+        foreach ($allTaskTypes as $taskInformation) {
+            if ($taskInformation['className'] === $taskType) {
+                return $taskInformation;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Native fields are added / managed via FormEngine + dataHandler,
+     * so this only returns additional fields from the task object that are needed.
+     */
     public function getFieldsForRecord(AbstractTask $task): array
     {
         try {
@@ -148,15 +198,22 @@ class TaskService
             $task->setDisabled(true);
             $executionTime = 0;
         }
-        return [
+        $fields = [
             'nextexecution' => $executionTime,
             'disable' => (int)$task->isDisabled(),
             'description' => $task->getDescription(),
             'task_group' => $task->getTaskGroup(),
             'tasktype' => $task->getTaskType(),
-            'parameters' => $task->getTaskParameters(),
             'execution_details' => $task->getExecution()->toArray(),
         ];
+        $taskDetails = $this->getTaskDetailsFromTask($task);
+        // Put the parameters in a separate field
+        if (($taskDetails['isNativeTask'] ?? false)) {
+            $fields = array_merge($fields, $task->getTaskParameters());
+        } else {
+            $fields['parameters'] = $task->getTaskParameters();
+        }
+        return $fields;
     }
 
     public function getAdditionalFieldProviderForTask(string $taskType): ?AdditionalFieldProviderInterface
@@ -211,7 +268,7 @@ class TaskService
                 'code' => $fieldInfo['code'] ?? '',
                 'cshKey' => $fieldInfo['cshKey'] ?? '',
                 'cshLabel' => $fieldInfo['cshLabel'] ?? '',
-                'langLabel' => $this->getLanguageService()->sL($fieldInfo['label'] ?? ''),
+                'langLabel' => $this->getLanguageService()?->sL($fieldInfo['label'] ?? ''),
                 'browser' => $fieldInfo['browser'] ?? '',
                 'browserParams' => ($inputName ? $inputName . '|||' . 'pages' . '|' : ''),
                 'pageTitle' => $fieldInfo['pageTitle'] ?? '',
@@ -279,9 +336,9 @@ class TaskService
     /**
      * Used in FormEngine and Backend listings
      */
-    public function getTaskTypesForTcaItems(array &$config): array
+    public function getTaskTypesForTcaItems(array &$config, mixed $_ = null, bool $includeNativeItems = false): array
     {
-        $taskTypes = $this->getAllTaskTypes();
+        $taskTypes = $this->getAllTaskTypes($includeNativeItems);
         foreach ($taskTypes as $taskType => $taskInformation) {
             $config['items'][] = new SelectItem(
                 type: 'select',
@@ -302,8 +359,8 @@ class TaskService
         return $config;
     }
 
-    private function getLanguageService(): LanguageService
+    private function getLanguageService(): ?LanguageService
     {
-        return $GLOBALS['LANG'];
+        return $GLOBALS['LANG'] ?? null;
     }
 }

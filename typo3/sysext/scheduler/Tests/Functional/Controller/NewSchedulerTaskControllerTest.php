@@ -76,7 +76,7 @@ final class NewSchedulerTaskControllerTest extends FunctionalTestCase
                 $event->addWizardItem('test_custom_task', [
                     'title' => 'Custom Test Task',
                     'description' => 'A custom task added by event listener',
-                    'iconIdentifier' => 'content-test',
+                    'icon' => 'content-test',
                     'taskType' => 'CustomTestTask',
                     'taskClass' => 'TYPO3\\CMS\\Test\\CustomTestTask',
                 ]);
@@ -110,7 +110,7 @@ final class NewSchedulerTaskControllerTest extends FunctionalTestCase
                 $hasTaskItems = true;
                 self::assertArrayHasKey('title', $item);
                 self::assertArrayHasKey('description', $item);
-                self::assertArrayHasKey('iconIdentifier', $item);
+                self::assertArrayHasKey('icon', $item);
                 self::assertArrayHasKey('taskClass', $item);
             }
         }

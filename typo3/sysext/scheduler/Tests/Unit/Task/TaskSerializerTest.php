@@ -24,6 +24,7 @@ use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Scheduler\Service\TaskService;
 use TYPO3\CMS\Scheduler\Task\TaskSerializer;
 use TYPO3\CMS\Scheduler\Tests\Unit\Task\Fixtures\TestTask;
@@ -72,7 +73,8 @@ final class TaskSerializerTest extends UnitTestCase
         $subject = new TaskSerializer(
             $container,
             new TaskService(
-                $this->createMock(CommandRegistry::class)
+                $this->createMock(CommandRegistry::class),
+                $this->createMock(TcaSchemaFactory::class),
             ),
         );
         $result = $subject->deserialize($data);

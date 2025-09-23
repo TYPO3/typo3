@@ -28,13 +28,10 @@
                     <form name="tx_scheduler_form_group" id="tx_scheduler_form_group" method="post">
                         <input name="action[group][uid]" type="hidden" value="{group.uid}">
                         <div class="btn-group" role="group">
-                            <be:link.newRecord table="tx_scheduler_task" defaultValues="{tx_scheduler_task: {task_group: group.uid}}"
-                                class="btn btn-sm btn-default"
-                                title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add')}"
-                            >
+                            <typo3-scheduler-new-task-wizard-button class="btn btn-sm btn-default" url="{f:be.uri(route:'ajax_new_scheduler_task_wizard', parameters:'{returnUrl: returnUrl, defaultValues: {task_group: group.uid}}')}" subject="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add')}">
                                 <core:icon identifier="actions-plus" />
                                 <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add" />
-                            </be:link.newRecord>
+                            </typo3-scheduler-new-task-wizard-button>
                         </div>
                         <div class="btn-group" role="group">
                             <f:if condition="{group.hidden}">

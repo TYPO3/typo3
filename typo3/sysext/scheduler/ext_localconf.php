@@ -2,57 +2,19 @@
 
 declare(strict_types=1);
 
-use TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionAdditionalFieldProvider;
-use TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask;
+use TYPO3\CMS\Scheduler\Form\Element\AdditionalSchedulerFieldsElement;
+use TYPO3\CMS\Scheduler\Form\Element\RegisteredExtractors;
+use TYPO3\CMS\Scheduler\Form\Element\TaskTypeInfoElement;
+use TYPO3\CMS\Scheduler\Form\Element\TimingOptionsElement;
+use TYPO3\CMS\Scheduler\Hooks\SchedulerTaskPersistenceValidator;
 use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask;
-use TYPO3\CMS\Scheduler\Task\FileStorageExtractionAdditionalFieldProvider;
-use TYPO3\CMS\Scheduler\Task\FileStorageExtractionTask;
-use TYPO3\CMS\Scheduler\Task\FileStorageIndexingAdditionalFieldProvider;
-use TYPO3\CMS\Scheduler\Task\FileStorageIndexingTask;
 use TYPO3\CMS\Scheduler\Task\IpAnonymizationAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Task\IpAnonymizationTask;
-use TYPO3\CMS\Scheduler\Task\OptimizeDatabaseTableAdditionalFieldProvider;
-use TYPO3\CMS\Scheduler\Task\OptimizeDatabaseTableTask;
-use TYPO3\CMS\Scheduler\Task\RecyclerGarbageCollectionAdditionalFieldProvider;
-use TYPO3\CMS\Scheduler\Task\RecyclerGarbageCollectionTask;
 use TYPO3\CMS\Scheduler\Task\TableGarbageCollectionAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask;
 
 defined('TYPO3') or die();
-
-// Add caching framework garbage collection task
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][CachingFrameworkGarbageCollectionTask::class] = [
-    'extension' => 'scheduler',
-    'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:cachingFrameworkGarbageCollection.name',
-    'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:cachingFrameworkGarbageCollection.description',
-    'additionalFields' => CachingFrameworkGarbageCollectionAdditionalFieldProvider::class,
-];
-
-// Add task to index file in a storage
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][FileStorageIndexingTask::class] = [
-    'extension' => 'scheduler',
-    'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:fileStorageIndexing.name',
-    'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:fileStorageIndexing.description',
-    'additionalFields' => FileStorageIndexingAdditionalFieldProvider::class,
-];
-
-// Add task for extracting metadata from files in a storage
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][FileStorageExtractionTask::class] = [
-    'extension' => 'scheduler',
-    'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:fileStorageExtraction.name',
-    'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:fileStorageExtraction.description',
-    'additionalFields' => FileStorageExtractionAdditionalFieldProvider::class,
-
-];
-
-// Add recycler directory cleanup task
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][RecyclerGarbageCollectionTask::class] = [
-    'extension' => 'scheduler',
-    'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:recyclerGarbageCollection.name',
-    'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:recyclerGarbageCollection.description',
-    'additionalFields' => RecyclerGarbageCollectionAdditionalFieldProvider::class,
-];
 
 // Add execute schedulable command task
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][ExecuteSchedulableCommandTask::class] = [
@@ -114,25 +76,29 @@ if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][Ip
     ];
 }
 
-// Add task for optimizing database tables
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][OptimizeDatabaseTableTask::class] = [
-    'extension' => 'scheduler',
-    'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:optimizeDatabaseTable.name',
-    'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:optimizeDatabaseTable.description',
-    'additionalFields' => OptimizeDatabaseTableAdditionalFieldProvider::class,
-];
-
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1746714036] = [
     'nodeName' => 'schedulerTimingOptions',
     'priority' => 40,
-    'class' => \TYPO3\CMS\Scheduler\Form\Element\TimingOptionsElement::class,
+    'class' => TimingOptionsElement::class,
 ];
 
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1746714037] = [
     'nodeName' => 'schedulerAdditionalFields',
     'priority' => 40,
-    'class' => \TYPO3\CMS\Scheduler\Form\Element\AdditionalSchedulerFieldsElement::class,
+    'class' => AdditionalSchedulerFieldsElement::class,
+];
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1758189546] = [
+    'nodeName' => 'taskTypeInfo',
+    'priority' => 40,
+    'class' => TaskTypeInfoElement::class,
+];
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1758791054] = [
+    'nodeName' => 'registeredExtractors',
+    'priority' => 40,
+    'class' => RegisteredExtractors::class,
 ];
 
 // Register hook for datamap
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \TYPO3\CMS\Scheduler\Hooks\SchedulerTaskPersistenceValidator::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = SchedulerTaskPersistenceValidator::class;

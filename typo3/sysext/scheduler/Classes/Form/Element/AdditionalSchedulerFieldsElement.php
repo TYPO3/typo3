@@ -54,33 +54,29 @@ class AdditionalSchedulerFieldsElement extends AbstractFormElement
     public function render(): array
     {
         $resultArray = $this->initializeResultArray();
+        $selectedTaskType = $this->data['databaseRow']['tasktype'][0] ?? '';
+        if ($selectedTaskType === '') {
+            return $resultArray;
+        }
         $parameterArray = $this->data['parameterArray'];
-        // Existing values
         $itemValue = $parameterArray['itemFormElValue'];
         $itemName = $parameterArray['itemFormElName'];
-        $selectedTaskType = $this->data['databaseRow']['tasktype'][0] ?? '';
-
         $additionalFields = [];
-        if (!$selectedTaskType) {
-            // "new", we have to select the first one
-            $allTaskTypes = $this->taskService->getAllTaskTypes();
-            reset($allTaskTypes);
-            $selectedTaskType = key($allTaskTypes);
+        if ($this->data['command'] === 'new') {
             $this->schedulerModule->setCurrentAction(SchedulerManagementAction::ADD);
         } else {
             $this->schedulerModule->setCurrentAction(SchedulerManagementAction::EDIT);
         }
-        // selected item
         $fieldProvider = $this->taskService->getAdditionalFieldProviderForTask($selectedTaskType);
         if ($fieldProvider) {
-            $post = array_merge($itemValue, ['taskType' => $selectedTaskType]);
+            $taskInfo = array_merge(is_array($itemValue) ? $itemValue : [], ['taskType' => $selectedTaskType]);
             try {
                 $taskObject = $this->taskRepository->findByUid((int)$this->data['databaseRow']['uid']);
             } catch (\OutOfBoundsException $e) {
                 // This happens for new tasks when 'uid' is set to "0" because we have a Task Type from defVals
                 $taskObject = $this->taskService->createNewTask($selectedTaskType);
             }
-            $additionalFields = $fieldProvider->getAdditionalFields($post, $taskObject, $this->schedulerModule);
+            $additionalFields = $fieldProvider->getAdditionalFields($taskInfo, $taskObject, $this->schedulerModule);
             $additionalFields = $this->taskService->prepareAdditionalFields($selectedTaskType, $additionalFields);
         }
 

@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Scheduler;
+use TYPO3\CMS\Scheduler\Service\TaskService;
 
 /**
  * CLI command for EXT:scheduler to execute tasks
@@ -42,6 +43,7 @@ class SchedulerExecuteCommand extends Command
     public function __construct(
         protected readonly Context $context,
         protected readonly SchedulerTaskRepository $taskRepository,
+        protected readonly TaskService $taskService,
         protected Scheduler $scheduler,
     ) {
         parent::__construct();
@@ -106,8 +108,9 @@ class SchedulerExecuteCommand extends Command
                 $uid = (int)$taskUid;
                 $task = $this->taskRepository->findByUid($uid);
                 $additionalInformation = $task->getAdditionalInformation() === '' ? '' : ' (' . $task->getAdditionalInformation() . ')';
+                $taskDetails = $this->taskService->getTaskDetailsFromTask($task);
                 $space = str_repeat(' ', $numLength - strlen((string)$task->getTaskUid()));
-                $this->io->writeln('[ <fg=green>TASK:' . $task->getTaskUid() . $space . '</> ] Running "' . $task->getTaskTitle() . $additionalInformation . '"');
+                $this->io->writeln('[ <fg=green>TASK:' . $task->getTaskUid() . $space . '</> ] Running "' . $taskDetails['title'] . $additionalInformation . '"');
                 $this->scheduler->executeTask($task);
             } catch (\Throwable $exception) {
                 $this->io->writeln($exception->getMessage());

@@ -1,5 +1,7 @@
 <?php
 
+use TYPO3\CMS\Scheduler\Service\TaskService;
+
 return [
     'ctrl' => [
         'label' => 'tasktype',
@@ -13,6 +15,7 @@ return [
             // @todo, TYPO3.icons needs to introduce tx_scheduler_task and use the current icon for "tx_scheduler_task_group"
             'default' => 'mimetypes-x-tx_scheduler_task_group',
         ],
+        'type' => 'tasktype',
         'hideTable' => true, // Disabled for now until sorting and grouping is usable in list module
         'adminOnly' => true, // Only admin users can edit
         'groupName' => 'system',
@@ -24,11 +27,10 @@ return [
     'columns' => [
         'tasktype' => [
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_tca.xlf:tx_scheduler_task.tasktype',
-            'onChange' => 'reload',
             'config' => [
                 'type' => 'select',
-                'renderType' => 'selectSingle',
-                'itemsProcFunc' => \TYPO3\CMS\Scheduler\Service\TaskService::class . '->getTaskTypesForTcaItems',
+                'renderType' => 'taskTypeInfo',
+                'itemsProcFunc' => TaskService::class . '->getTaskTypesForTcaItems',
                 // Always select the first tasktype
                 'items' => [],
                 'default' => '',
@@ -140,6 +142,36 @@ return [
         'serialized_executions' => [
             'config' => [
                 'type' => 'passthrough',
+            ],
+        ],
+        'number_of_days' => [
+            'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:tx_scheduler_task.number_of_days',
+            'config' => [
+                'type' => 'number',
+                'default' => 0,
+            ],
+        ],
+        'selected_tables' => [
+            'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:tx_scheduler_task.selected_tables',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
+                'size' => 10,
+                'minitems' => 1,
+                'maxitems' => 100,
+                'items' => [],
+            ],
+        ],
+        'file_storage' => [
+            'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:tx_scheduler_task.file_storage',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'foreign_table' => 'sys_file_storage',
+                'size' => 1,
+                'minitems' => 1,
+                'maxitems' => 1,
+                'items' => [],
             ],
         ],
     ],

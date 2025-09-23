@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Scheduler\Migration;
 
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\ParameterType;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 use TYPO3\CMS\Install\Updates\DatabaseUpdatedPrerequisite;
 use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
+use TYPO3\CMS\Scheduler\Service\TaskService;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Scheduler\Task\TaskSerializer;
 
@@ -61,22 +63,42 @@ class SchedulerDatabaseStorageMigration implements UpgradeWizardInterface
     public function executeUpdate(): bool
     {
         $connection = $this->getConnectionPool()->getConnectionForTable(self::TABLE_NAME);
+        $table = $this->getConnectionPool()->getConnectionForTable(self::TABLE_NAME)->createSchemaManager()->introspectSchema()->getTable(self::TABLE_NAME);
         $taskSerializer = GeneralUtility::makeInstance(TaskSerializer::class);
+        $taskService = GeneralUtility::makeInstance(TaskService::class);
         $hasFailures = false;
         foreach ($this->getRecordsToUpdate() as $record) {
             try {
-                // unserialize() will only give a E_NOTICE and false result, not throw an error. Silence this
-                // (for tests) and operate on the "false". If future PHP promotes this to an exception, the Throwable
-                // catch will kick in.
-                $taskObject = @unserialize($record['serialized_task_object']);
+                // Base migration was already done, but not the migration to additional fields, so we'll do this now
+                if (!empty($record['tasktype'])) {
+                    $taskObject = $taskSerializer->deserialize($record);
+                } else {
+                    // unserialize() will only give a E_NOTICE and false result, not throw an error. Silence this
+                    // (for tests) and operate on the "false". If future PHP promotes this to an exception, the Throwable
+                    // catch will kick in.
+                    $taskObject = @unserialize($record['serialized_task_object']);
+                }
                 if ($taskObject instanceof AbstractTask) {
+                    $fieldsToUpdate = [
+                        'tasktype' => $taskObject->getTaskType(),
+                        'execution_details' => $taskObject->getExecution()?->toArray(),
+                    ];
+                    $taskDetails = $taskService->getTaskDetailsFromTask($taskObject);
+                    $taskParameters = $taskObject->getTaskParameters();
+                    if ($taskDetails['isNativeTask'] ?? false) {
+                        // map native types to real fields, and do not use the parameters' value.
+                        if (is_array($taskDetails['additionalFields'] ?? false) && $taskDetails['additionalFields'] !== []) {
+                            foreach ($taskDetails['additionalFields'] as $additionalFieldName) {
+                                $fieldsToUpdate[$additionalFieldName] = $taskParameters[$additionalFieldName] ?? null;
+                            }
+                        }
+                        $fieldsToUpdate['parameters'] = null;
+                    } else {
+                        $fieldsToUpdate['parameters'] = $taskParameters;
+                    }
                     $connection->update(
                         self::TABLE_NAME,
-                        [
-                            'tasktype' => $taskObject->getTaskType(),
-                            'parameters' => $taskObject->getTaskParameters(),
-                            'execution_details' => $taskObject->getExecution()?->toArray(),
-                        ],
+                        array_filter($fieldsToUpdate, static fn($column) => $table->hasColumn($column), ARRAY_FILTER_USE_KEY),
                         ['uid' => (int)$record['uid']]
                     );
                 } elseif ($taskObject instanceof \__PHP_Incomplete_Class) {
@@ -129,20 +151,8 @@ class SchedulerDatabaseStorageMigration implements UpgradeWizardInterface
                     $hasFailures = true;
                 }
             } catch (\Throwable) {
-                $className = $taskSerializer->extractClassName($record['serialized_task_object']);
-                if ($className) {
-                    $connection->update(
-                        self::TABLE_NAME,
-                        [
-                            'tasktype' => $className,
-                        ],
-                        ['uid' => (int)$record['uid']]
-                    );
-                } else {
-                    // We have a problem here if $className is empty, we don't change something here,
-                    // so the upgrade wizard will show up again, and people know there is a problem.
-                    $hasFailures = true;
-                }
+                // Mark wizard as failed so the upgrade wizard will show up again, and people know there is a problem.
+                $hasFailures = true;
             }
         }
 
@@ -165,23 +175,49 @@ class SchedulerDatabaseStorageMigration implements UpgradeWizardInterface
 
     protected function getPreparedQueryBuilder(): QueryBuilder
     {
+        $nativeTaskTypesWithAdditionalFields = $this->getAllNativeTaskTypesWithAdditionalFields();
+
         $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable(self::TABLE_NAME);
-        // This is done by intention, so the upgrade wizard continues to work even if we introduce TCA for tx_scheduler_task
+        // This is done by intention, so the upgrade wizard continues to work even if we introduce further TCA details for tx_scheduler_task
         $queryBuilder->getRestrictions()->removeAll();
         $queryBuilder
             ->from(self::TABLE_NAME)
             ->where(
                 $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, ParameterType::INTEGER)),
                 $queryBuilder->expr()->or(
-                    $queryBuilder->expr()->eq(
-                        'tasktype',
-                        $queryBuilder->createNamedParameter('')
+                    // Find all where the task type is empty (legacy serialized storage)
+                    // OR where we have a native task type, that contains additional fields we can migrate
+                    $queryBuilder->expr()->or(
+                        $queryBuilder->expr()->eq(
+                            'tasktype',
+                            $queryBuilder->createNamedParameter('')
+                        ),
+                        $queryBuilder->expr()->isNull('tasktype')
                     ),
-                    $queryBuilder->expr()->isNull('tasktype')
+                    $queryBuilder->expr()->and(
+                        $queryBuilder->expr()->in(
+                            'tasktype',
+                            $queryBuilder->createNamedParameter(array_keys($nativeTaskTypesWithAdditionalFields), ArrayParameterType::STRING)
+                        ),
+                        $queryBuilder->expr()->isNotNull('parameters'),
+                    )
                 )
             );
 
         return $queryBuilder;
+    }
+
+    protected function getAllNativeTaskTypesWithAdditionalFields(): array
+    {
+        $taskService = GeneralUtility::makeInstance(TaskService::class);
+        $allTaskInformation = $taskService->getAllTaskTypes();
+        $nativeTaskTypesWithAdditionalFields = [];
+        foreach ($allTaskInformation as $taskType => $taskInformation) {
+            if ($taskInformation['isNativeTask'] ?? false) {
+                $nativeTaskTypesWithAdditionalFields[$taskType] = $taskInformation['additionalFields'] ?? [];
+            }
+        }
+        return $nativeTaskTypesWithAdditionalFields;
     }
 
     protected function getConnectionPool(): ConnectionPool

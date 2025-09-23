@@ -3295,12 +3295,6 @@ parameters:
 			path: ../../typo3/sysext/reactions/Classes/Http/Middleware/ReactionResolver.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between int and false will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/recycler/Classes/Task/CleanerFieldProvider.php
-
-		-
 			message: '#^Parameter \#1 \$array \(list\<TYPO3\\CMS\\Redirects\\RedirectUpdate\\RedirectSourceInterface\>\) of array_values is already a list, call has no effect\.$#'
 			identifier: arrayValues.list
 			count: 1

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -96,12 +98,12 @@ class RecyclerGarbageCollectionTask extends AbstractTask
     public function getTaskParameters(): array
     {
         return [
-            'numberOfDays' => $this->numberOfDays,
+            'number_of_days' => $this->numberOfDays,
         ];
     }
 
     public function setTaskParameters(array $parameters): void
     {
-        $this->numberOfDays = (int)($parameters['numberOfDays'] ?? 0);
+        $this->numberOfDays = (int)($parameters['numberOfDays'] ?? $parameters['number_of_days'] ?? 0);
     }
 }

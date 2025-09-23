@@ -101,14 +101,14 @@ final readonly class SchedulerTaskPersistenceValidator
         if ($isNewTask) {
             $task = $this->taskService->createNewTask($taskType);
             $this->taskService->setTaskDataFromRequest($task, $incomingFieldArray);
-            $incomingFieldArray = $this->taskService->getFieldsForRecord($task);
+            $incomingFieldArray = array_replace_recursive($this->taskService->getFieldsForRecord($task), $incomingFieldArray);
             $incomingFieldArray['parameters'] = $incomingFieldArray['parameters'] ?? [];
             $incomingFieldArray['pid'] = 0;
         } else {
             // Now let's transform our data
             $task = $this->taskRepository->findByUid((int)$id);
             $this->taskService->setTaskDataFromRequest($task, $incomingFieldArray);
-            $incomingFieldArray = $this->taskService->getFieldsForRecord($task);
+            $incomingFieldArray = array_replace_recursive($this->taskService->getFieldsForRecord($task), $incomingFieldArray);
             if ($changedTaskType) {
                 $incomingFieldArray['parameters'] = [];
                 $incomingFieldArray['tasktype'] = $taskType;

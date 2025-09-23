@@ -33,6 +33,15 @@
 			<trans-unit id="tx_scheduler_task.lastexecution_context">
 				<source>Last run via</source>
 			</trans-unit>
+			<trans-unit id="tx_scheduler_task.number_of_days">
+				<source>Handle entries older than given number of days</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task.selected_tables">
+				<source>Database tables</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task.file_storage">
+				<source>File storage</source>
+			</trans-unit>
 			<trans-unit id="tx_scheduler_task_group">
 				<source>Scheduler task group</source>
 			</trans-unit>

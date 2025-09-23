@@ -399,6 +399,9 @@
 			<trans-unit id="msg.group.delete.failed">
 				<source>Failed to delete scheduler group.</source>
 			</trans-unit>
+			<trans-unit id="msg.invalidTaskType">
+				<source>Invalid Task type</source>
+			</trans-unit>
 
 			<trans-unit id="none">
 				<source>None</source>

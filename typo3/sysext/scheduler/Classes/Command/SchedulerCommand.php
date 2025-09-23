@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Scheduler;
+use TYPO3\CMS\Scheduler\Service\TaskService;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Scheduler\Validation\Validator\TaskValidator;
 
@@ -60,7 +61,8 @@ class SchedulerCommand extends Command
 
     public function __construct(
         protected readonly Scheduler $scheduler,
-        protected readonly SchedulerTaskRepository $taskRepository
+        protected readonly SchedulerTaskRepository $taskRepository,
+        protected readonly TaskService $taskService,
     ) {
         parent::__construct();
     }
@@ -181,9 +183,10 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
                 try {
                     $this->executeOrStopTask($task);
                 } catch (\Exception $e) {
+                    $taskDetails = $this->taskService->getTaskDetailsFromTask($task);
                     $messages = [
                         $e->getMessage() . PHP_EOL,
-                        'Exception in scheduler task #' . $task->getTaskUid() . ' (' . $task->getTaskType() . ' - ' . $task->getTaskTitle() . ')',
+                        'Exception in scheduler task #' . $task->getTaskUid() . ' (' . $task->getTaskType() . ' - ' . $taskDetails['title'] . ')',
                     ];
                     $messages[] = 'File: ' . $e->getFile() . ':' . $e->getLine();
                     $this->io->getErrorStyle()->error($messages);

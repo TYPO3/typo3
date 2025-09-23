@@ -51,6 +51,11 @@ final readonly class FieldCollection implements \ArrayAccess, \IteratorAggregate
         throw new \InvalidArgumentException('Fields cannot be unset.', 1712539280);
     }
 
+    public function getNames(): array
+    {
+        return array_keys($this->fieldDefinitions);
+    }
+
     /**
      * @return \Traversable|FieldTypeInterface[]
      */

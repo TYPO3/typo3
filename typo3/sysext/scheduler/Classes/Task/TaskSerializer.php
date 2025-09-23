@@ -43,34 +43,46 @@ class TaskSerializer
      * and either returns a valid Task or throws an InvalidTaskException, which
      * holds information about the broken task.
      *
+     * First, find the task object, from the registry
+     * Second, recreate the execution object,
+     * Then fill all the data of the new task object from the rest of the row.
+     *
      * @throws InvalidTaskException
      */
     public function deserialize(array $row): AbstractTask
     {
         $taskType = $row['tasktype'] ?? '';
         if (!empty($taskType)) {
-            // First, find the task object, from the registry
-            // Second, recreate the execution object,
-            // Then fill all the data of the new task object from the rest of the row
-            if ($this->taskService->hasTaskType($taskType)) {
+            $taskInformation = $this->taskService->getTaskDetailsFromTaskType($taskType);
+            if (is_array($taskInformation)) {
+                $className = $taskInformation['className'];
                 try {
-                    $taskObject = $this->container->get($taskType);
+                    $taskObject = $this->container->get($className);
                 } catch (ServiceNotFoundException) {
-                    $taskObject = GeneralUtility::makeInstance($taskType);
+                    $taskObject = GeneralUtility::makeInstance($className);
                 }
-            } elseif (isset($this->taskService->getRegisteredCommands()[$taskType])) {
-                /** @var ExecuteSchedulableCommandTask $taskObject */
-                $taskObject = GeneralUtility::makeInstance(ExecuteSchedulableCommandTask::class);
-                $taskObject->setTaskType($taskType);
             } else {
                 throw new InvalidTaskException('Task type ' . $taskType . ' not found. Probably not registered?', 1742584362);
             }
+
             if (!$taskObject instanceof AbstractTask) {
                 throw new InvalidTaskException('The deserialized task in not an instance of AbstractTask', 1642954501);
             }
+            if ($taskObject instanceof ExecuteSchedulableCommandTask) {
+                $taskObject->setTaskType($taskType);
+            }
             $taskObject->setTaskUid((int)$row['uid']);
             $taskObject->setTaskGroup((int)$row['task_group']);
-            $taskObject->setTaskParameters(json_decode($row['parameters'] ?? '', true) ?: []);
+            $taskParameters = json_decode($row['parameters'] ?? '', true) ?: [];
+            // Set additional fields from the row with the parameters stored
+            // in the parameters field for native types.
+            if ($taskInformation['isNativeTask'] ?? false) {
+                // If there are native registered fields, they take precedence over the values.
+                foreach ($taskInformation['additionalFields'] ?? [] as $additionalFieldName) {
+                    $taskParameters[$additionalFieldName] = $taskParameters[$additionalFieldName] ?? $row[$additionalFieldName] ?? null;
+                }
+            }
+            $taskObject->setTaskParameters($taskParameters);
             $taskObject->setDescription((string)$row['description']);
             $taskObject->setExecutionTime((int)$row['nextexecution']);
             $taskObject->setTaskGroup((int)$row['task_group']);

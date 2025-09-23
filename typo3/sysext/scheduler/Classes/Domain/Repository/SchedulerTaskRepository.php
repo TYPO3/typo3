@@ -207,8 +207,6 @@ readonly class SchedulerTaskRepository
      */
     public function getGroupedTasks(): array
     {
-        $allTaskTypes = $this->taskService->getAllTaskTypes();
-
         // Get all registered tasks
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::TABLE_NAME);
         $queryBuilder->getRestrictions()->removeAll();
@@ -261,13 +259,13 @@ readonly class SchedulerTaskRepository
                 continue;
             }
 
-            if (!isset($allTaskTypes[$taskObject->getTaskType()])) {
+            $taskInformation = $this->taskService->getTaskDetailsFromTask($taskObject);
+            if ($taskInformation === null) {
                 $taskData['errorMessage'] = 'The task ' . $taskObject->getTaskType() . ' is not a registered task';
                 $errorClasses[] = $taskData;
                 continue;
             }
 
-            $taskInformation = $allTaskTypes[$taskObject->getTaskType()];
             if ($taskObject instanceof ProgressProviderInterface) {
                 $taskData['progress'] = round((float)$taskObject->getProgress(), 2);
             }
