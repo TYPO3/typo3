@@ -378,21 +378,20 @@ class SlugService implements LoggerAwareInterface
             $defaults[$columnName] = $columnConfig['config']['default'];
         }
         $connection = $this->connectionPool->getConnectionForTable($tableName);
-        $table = $connection->getSchemaInformation()->introspectTable($tableName);
-        foreach ($table->getColumns() as $column) {
-            $columnName = $column->getName();
-            if ($columnName === 'uid' || $column->getAutoincrement() === true) {
+        $tableColumnInfos = $connection->getSchemaInformation()->listTableColumnInfos($tableName);
+        foreach ($tableColumnInfos as $columnName => $columnInfo) {
+            if ($columnName === 'uid' || $columnInfo->autoincrement === true) {
                 // Autoincrement fields and therefore the default TYPO3 `uid` column
                 // should be not provided in a data array to ensure the behaviour
                 // kicks correctly in.
                 continue;
             }
             if (array_key_exists($columnName, $defaults)) {
-                // Already having TCA default value, which weigths higher.
+                // Already having TCA default value, which weights higher.
                 continue;
             }
-            $columnDefaultValue = $column->getDefault();
-            if ($columnDefaultValue === null && $column->getNotnull() === false) {
+            $columnDefaultValue = $columnInfo->default;
+            if ($columnDefaultValue === null && $columnInfo->notNull === false) {
                 // No need to set null as default value for a nullable column.
                 continue;
             }

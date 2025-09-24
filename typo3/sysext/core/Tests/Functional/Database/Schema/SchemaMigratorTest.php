@@ -1231,7 +1231,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertSame('a', $defaultValue);
     }
 
-    public static function introspectTableDoctrineTypeDataSets(): \Generator
+    public static function tableColumnDoctrineTypeDataSets(): \Generator
     {
         yield 'char => StringType' => [
             'createTableDDL' => "CREATE TABLE a_test_table (test_field CHAR(100) NOT NULL DEFAULT '');",
@@ -1267,9 +1267,9 @@ final class SchemaMigratorTest extends FunctionalTestCase
         ];
     }
 
-    #[DataProvider('introspectTableDoctrineTypeDataSets')]
+    #[DataProvider('tableColumnDoctrineTypeDataSets')]
     #[Test]
-    public function introspectTableReturnsExpectedTypeForField(
+    public function doctrineSchemaManagerReturnsExpectedTypeForField(
         string $createTableDDL,
         string $tableName,
         string $fieldName,
@@ -1293,16 +1293,60 @@ final class SchemaMigratorTest extends FunctionalTestCase
         if ($expectedLength !== null) {
             self::assertSame($expectedLength, $table->getColumn($fieldName)->getLength());
         }
+    }
+
+    #[DataProvider('tableColumnDoctrineTypeDataSets')]
+    #[Test]
+    public function schemaInformationGetTableInfoReturnsExpectedTypeForField(
+        string $createTableDDL,
+        string $tableName,
+        string $fieldName,
+        string $expectedType,
+        ?int $expectedLength,
+        ?bool $expectedFixed,
+    ): void {
+        $subject = $this->createSchemaMigrator();
+        $result = $subject->install($this->createSqlReader()->getCreateTableStatementArray($createTableDDL));
+        $this->verifyMigrationResult($result);
+        $this->verifyCleanDatabaseState($createTableDDL);
+
         $schemaInfo = (new ConnectionPool())->getConnectionForTable($tableName)->getSchemaInformation();
-        self::assertTrue($schemaInfo->introspectSchema()->hasTable($tableName));
-        $table = $schemaInfo->introspectTable($tableName);
-        self::assertTrue($table->hasColumn($fieldName));
-        self::assertSame($expectedType, $table->getColumn($fieldName)->getType()::class);
+        $tableInfo = $schemaInfo->getTableInfo($tableName);
+        self::assertTrue($tableInfo->hasColumnInfo($fieldName));
+        self::assertSame($expectedType, $tableInfo->getColumnInfo($fieldName)->getType()::class);
         if ($expectedFixed !== null) {
-            self::assertSame($expectedFixed, $table->getColumn($fieldName)->getFixed());
+            self::assertSame($expectedFixed, $tableInfo->getColumnInfo($fieldName)->fixed);
         }
         if ($expectedLength !== null) {
-            self::assertSame($expectedLength, $table->getColumn($fieldName)->getLength());
+            self::assertSame($expectedLength, $tableInfo->getColumnInfo($fieldName)->length);
+        }
+    }
+
+    #[DataProvider('tableColumnDoctrineTypeDataSets')]
+    #[Test]
+    public function schemaInformationListTableColumnInfosReturnsExpectedTypeForField(
+        string $createTableDDL,
+        string $tableName,
+        string $fieldName,
+        string $expectedType,
+        ?int $expectedLength,
+        ?bool $expectedFixed,
+    ): void {
+        $subject = $this->createSchemaMigrator();
+        $result = $subject->install($this->createSqlReader()->getCreateTableStatementArray($createTableDDL));
+        $this->verifyMigrationResult($result);
+        $this->verifyCleanDatabaseState($createTableDDL);
+
+        $schemaInfo = (new ConnectionPool())->getConnectionForTable($tableName)->getSchemaInformation();
+        $tableColumnInfos = $schemaInfo->listTableColumnInfos($tableName);
+        self::assertArrayHasKey($fieldName, $tableColumnInfos);
+        $columnInfo = $tableColumnInfos[$fieldName];
+        self::assertSame($expectedType, $columnInfo->getType()::class);
+        if ($expectedFixed !== null) {
+            self::assertSame($expectedFixed, $columnInfo->fixed);
+        }
+        if ($expectedLength !== null) {
+            self::assertSame($expectedLength, $columnInfo->length);
         }
     }
 

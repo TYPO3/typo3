@@ -352,7 +352,7 @@ For each website you need a TypoScript record on the main page of your website (
         $databaseConnection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
         if (
             // availableWidgets is only available if typo3/cms-dashboard is installed
-            $databaseConnection->getSchemaInformation()->introspectTable($table)->hasColumn('availableWidgets')
+            $databaseConnection->getSchemaInformation()->getTableInfo($table)->hasColumnInfo('availableWidgets')
             && isset($permissionPreset['availableWidgets'])
             && is_array($permissionPreset['availableWidgets'])
         ) {

@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Database\Query\BulkInsertQuery;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Schema\SchemaInformation;
+use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterface
@@ -413,17 +414,17 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
     {
         // If types are incoming already (meaning they're hand over to insert() for instance), don't auto-set them.
         $setAllTypes = $types === [];
-        $tableDetails = $this->getSchemaInformation()->introspectTable($tableName);
+        $tableInfo = $this->getSchemaInformation()->getTableInfo($tableName);
         $databasePlatform = $this->getDatabasePlatform();
-        array_walk($data, function (mixed &$value, string $key) use ($tableDetails, $setAllTypes, &$types, $databasePlatform): void {
+        array_walk($data, function (mixed &$value, string $key) use ($tableInfo, $setAllTypes, &$types, $databasePlatform): void {
             $typeName = ($types[$key] ?? '');
             if (!$setAllTypes && is_string($typeName) && $typeName !== '' && Type::hasType($typeName)) {
                 $types[$key] = Type::getType($typeName)->getBindingType();
             } elseif ($typeName instanceof Type) {
                 $types[$key] = $typeName->getBindingType();
             }
-            if ($tableDetails->hasColumn($key)) {
-                $type = $tableDetails->getColumn($key)->getType();
+            if ($tableInfo->hasColumnInfo($key)) {
+                $type = $tableInfo->getColumnInfo($key)->getType();
                 if ($setAllTypes) {
                     $types[$key] = $type->getBindingType();
                 }
@@ -439,7 +440,8 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
     {
         return new SchemaInformation(
             $this,
-            GeneralUtility::makeInstance(CacheManager::class)->getCache('database_schema')
+            GeneralUtility::makeInstance(CacheManager::class)->getCache('database_schema'),
+            GeneralUtility::makeInstance(PackageDependentCacheIdentifier::class),
         );
     }
 

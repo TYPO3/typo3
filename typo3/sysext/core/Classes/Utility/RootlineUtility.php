@@ -1401,17 +1401,14 @@ class RootlineUtility
      */
     protected function getPagesFields(): array
     {
+        // @todo SchemaInformation uses persisted cache only so keep additional runtime cache layer for now.
+        // @todo Consider to add additional runtime cache directly to SchemaInformation and remove it here.
         if ($this->runtimeCache->has('rootline-localcache-pagesfields')) {
             return $this->runtimeCache->get('rootline-localcache-pagesfields');
         }
-        $fieldNames = [];
-        $columns = GeneralUtility::makeInstance(ConnectionPool::class)
+        $fieldNames = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('pages')
-            ->getSchemaInformation()->introspectTable('pages')
-            ->getColumns();
-        foreach ($columns as $column) {
-            $fieldNames[] = $column->getName();
-        }
+            ->getSchemaInformation()->listTableColumnNames('pages');
         $this->runtimeCache->set('rootline-localcache-pagesfields', $fieldNames);
         return $fieldNames;
     }
