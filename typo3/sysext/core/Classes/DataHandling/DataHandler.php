@@ -8218,11 +8218,11 @@ class DataHandler
         }
         // If the current record exists (which it should...), begin comparison:
         $currentRecord = BackendUtility::convertDatabaseRowValuesToPhp($table, $currentRecord);
-        $tableDetails = $connection->getSchemaInformation()->introspectTable($table);
+        $tableInfo = $connection->getSchemaInformation()->getTableInfo($table);
         $columnRecordTypes = [];
         foreach ($currentRecord as $columnName => $_) {
             $columnRecordTypes[$columnName] = '';
-            $type = $tableDetails->getColumn($columnName)->getType();
+            $type = $tableInfo->getColumnInfo($columnName)?->getType();
             if ($type instanceof IntegerType) {
                 $columnRecordTypes[$columnName] = 'int';
             } elseif ($type instanceof JsonType) {

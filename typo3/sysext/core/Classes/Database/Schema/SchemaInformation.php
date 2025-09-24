@@ -18,9 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\Table;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Database\Schema\Information\ColumnInfo;
+use TYPO3\CMS\Core\Database\Schema\Information\TableInfo;
+use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 
 /**
  * This wrapper of SchemaManager contains some internal caches to avoid performance issues for recurring calls to
@@ -34,19 +35,19 @@ final class SchemaInformation
 
     public function __construct(
         private readonly Connection $connection,
-        private readonly FrontendInterface $cache
+        private readonly FrontendInterface $cache,
+        private readonly PackageDependentCacheIdentifier $packageDependentCacheIdentifier,
     ) {
-        $this->connectionIdentifier = sprintf(
-            '%s-%s',
-            str_replace(
+        $this->connectionIdentifier = $this->packageDependentCacheIdentifier
+            ->withPrefix(str_replace(
                 ['.', ':', '/', '\\', '!', '?'],
                 '_',
                 (string)($connection->getParams()['dbname'] ?? 'generic')
-            ),
+            ))
             // hash connection params, which holds various information like host,
             // port etc. to get a descriptive hash for this connection.
-            hash('xxh3', serialize($connection->getParams()))
-        );
+            ->withAdditionalHashedIdentifier(serialize($connection->getParams()))
+            ->toString();
     }
 
     /**
@@ -57,47 +58,70 @@ final class SchemaInformation
      */
     public function listTableNames(): array
     {
-        $tableNames = [];
-        $tables = $this->introspectSchema()->getTables();
-        array_walk($tables, static function (Table $table) use (&$tableNames): void {
-            $tableNames[] = $table->getName();
-        });
-        return $tableNames;
+        $identifier = $this->connectionIdentifier . '-tablenames';
+        $tableNames = $this->cache->get($identifier);
+        if (is_array($tableNames)) {
+            return $tableNames;
+        }
+        return $this->buildTableNames();
     }
 
     /**
-     * Similar to doctrine DBAL/AbstractSchemaManager, but with a cache-layer.
-     * This is used core internally to auto-add types, for instance in Connection::insert().
-     *
-     * Creates one cache entry in core cache per configured connection.
+     * @param string $tableName
+     * @return array<string, ColumnInfo>
      */
-    public function introspectSchema(): Schema
+    public function listTableColumnInfos(string $tableName): array
     {
-        $identifier = $this->connectionIdentifier . '-schema';
-        $schema = $this->cache->get($identifier);
-        if ($schema instanceof Schema) {
-            return $schema;
-        }
-        $schema = $this->connection->createSchemaManager()->introspectSchema();
-        $this->cache->set($identifier, $schema);
-        return $schema;
+        return $this->getTableInfo($tableName)->getColumnInfos();
     }
 
     /**
-     * Similar to doctrine DBAL/AbstractSchemaManager, but with a cache-layer.
-     * This is used core internally to auto-add types, for instance in Connection::insert().
-     *
-     * Creates one cache entry in core cache per table.
+     * @param string $tableName
+     * @return string[]
      */
-    public function introspectTable(string $tableName): Table
+    public function listTableColumnNames(string $tableName): array
     {
-        $identifier = $this->connectionIdentifier . '-table-' . $tableName;
-        $table = $this->cache->get($identifier);
-        if ($table instanceof Table) {
-            return $table;
+        return $this->getTableInfo($tableName)->getColumnNames();
+    }
+
+    public function getTableInfo(string $tableName): TableInfo
+    {
+        $identifier = $this->connectionIdentifier . '-tableinfo-' . $tableName;
+        $tableInfo = $this->cache->get($identifier);
+        if ($tableInfo instanceof TableInfo) {
+            return $tableInfo;
         }
-        $table = $this->connection->createSchemaManager()->introspectTable($tableName);
-        $this->cache->set($identifier, $table);
-        return $table;
+        return $this->buildTableInformation($tableName);
+    }
+
+    /**
+     * @return string[]
+     */
+    private function buildTableNames(): array
+    {
+        $identifier = $this->connectionIdentifier . '-tablenames';
+        $names = array_values($this->connection->createSchemaManager()->listTableNames());
+        $this->cache->set($identifier, $names);
+        return $names;
+    }
+
+    private function buildTableInformation(string $tableName): TableInfo
+    {
+        $identifier = $this->connectionIdentifier . '-tableinfo-' . $tableName;
+        // Transform doctrine columns into ColumnInfo and add to new associative array using column name with
+        // unmodified casing as array keys and not the lowercased from doctrine dbal associative array, which
+        // leads to comparison issues in the core using the names. We need the untouched casing.
+        $columns = $this->connection->createSchemaManager()->listTableColumns($tableName);
+        $columnInfos = [];
+        foreach ($columns as $column) {
+            $columnInfo = ColumnInfo::convertFromDoctrineColumn($column);
+            $columnInfos[$columnInfo->name] = $columnInfo;
+        }
+        $tableInfo = new TableInfo(
+            name: $tableName,
+            columnInfos: $columnInfos,
+        );
+        $this->cache->set($identifier, $tableInfo);
+        return $tableInfo;
     }
 }
