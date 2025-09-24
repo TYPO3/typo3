@@ -367,14 +367,14 @@ final class PageRepositoryTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function getWorkspaceVersionReturnsTheCorrectMethod(): void
+    public function getPage_noCheckReturnsTheCorrectMethod(): void
     {
         $wsid = 987654321;
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect($wsid));
         $subject = new PageRepository($context);
 
-        $pageRec = $subject->getWorkspaceVersionOfRecord('pages', 11);
+        $pageRec = $subject->getPage_noCheck(11);
 
         self::assertEquals(11, $pageRec['uid']);
         self::assertEquals(0, $pageRec['t3ver_oid']);

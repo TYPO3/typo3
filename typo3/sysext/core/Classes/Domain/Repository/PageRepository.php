@@ -1741,7 +1741,7 @@ class PageRepository implements LoggerAwareInterface
                 ->executeQuery()
                 ->fetchAssociative();
         }
-        $wsAlt = $this->getWorkspaceVersionOfRecord($table, (int)$row['uid'], $fields, $bypassEnableFieldsCheck);
+        $wsAlt = $this->getWorkspaceVersionOfRecord($table, $row, $bypassEnableFieldsCheck);
         if (!$wsAlt) {
             return;
         }
@@ -1775,7 +1775,7 @@ class PageRepository implements LoggerAwareInterface
             }
             return;
         }
-        // No version found, then check if online version is dummy-representation
+        // No version found, then check if online version is a dummy-representation
         // Notice, that unless $bypassEnableFieldsCheck is TRUE, the $row is unset if
         // enablefields for BOTH the version AND the online record deselects it. See
         // note for $bypassEnableFieldsCheck
@@ -1789,16 +1789,15 @@ class PageRepository implements LoggerAwareInterface
      * Select the version of a record for a workspace
      *
      * @param string $table Table name to select from
-     * @param int $uid Record uid for which to find workspace version.
-     * @param array $fields Fields to select, `*` is the default - If a custom list is set, make sure the list
-     *                       contains the `uid` field. It's mandatory for further processing of the result row.
+     * @param array $liveRecord Record for which to find a workspace version.
      * @param bool $bypassEnableFieldsCheck If TRUE, enableFields are not checked for.
      * @return array|int|bool If found, return record, otherwise other value: Returns 1 if version was sought for but not found, returns -1/-2 if record (offline/online) existed but had enableFields that would disable it. Returns FALSE if not in workspace or no versioning for record. Notice, that the enablefields of the online record is also tested.
      * @see BackendUtility::getWorkspaceVersionOfRecord()
      * @internal this is a rather low-level method, it is recommended to use versionOL instead()
      */
-    public function getWorkspaceVersionOfRecord(string $table, int $uid, array $fields = ['*'], bool $bypassEnableFieldsCheck = false): array|int|bool
+    public function getWorkspaceVersionOfRecord(string $table, array $liveRecord, bool $bypassEnableFieldsCheck = false): array|int|bool
     {
+        $uid = (int)$liveRecord['uid'];
         $workspace = (int)$this->context->getPropertyFromAspect('workspace', 'id');
         // No look up in database because versioning not enabled / or workspace not offline
         if ($workspace === 0) {
@@ -1814,8 +1813,10 @@ class PageRepository implements LoggerAwareInterface
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-        $newrow = $queryBuilder
-            ->select(...$fields)
+        $fields = $this->purgeComputedProperties($liveRecord);
+
+        $versionedRecord = $queryBuilder
+            ->select(...array_keys($fields))
             ->from($table)
             ->where(
                 $queryBuilder->expr()->eq(
@@ -1844,53 +1845,20 @@ class PageRepository implements LoggerAwareInterface
             ->executeQuery()
             ->fetchAssociative();
 
-        // If version found, check if it could have been selected with enableFields on
-        // as well:
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-        $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context));
-        // Remove the workspace restriction because we are testing a version record
-        $queryBuilder->getRestrictions()->removeByType(WorkspaceRestriction::class);
-        $queryBuilder->select('uid')
-            ->from($table)
-            ->setMaxResults(1);
-
-        if (is_array($newrow)) {
-            $queryBuilder->where(
-                $queryBuilder->expr()->eq(
-                    't3ver_wsid',
-                    $queryBuilder->createNamedParameter($workspace, Connection::PARAM_INT)
-                ),
-                $queryBuilder->expr()->or(
-                    // t3ver_state=1 does not contain a t3ver_oid, and returns itself
-                    $queryBuilder->expr()->and(
-                        $queryBuilder->expr()->eq(
-                            'uid',
-                            $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
-                        ),
-                        $queryBuilder->expr()->eq(
-                            't3ver_state',
-                            $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT)
-                        )
-                    ),
-                    $queryBuilder->expr()->eq(
-                        't3ver_oid',
-                        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
-                    )
-                )
-            );
-            if ($bypassEnableFieldsCheck || $queryBuilder->executeQuery()->fetchOne()) {
+        /** @var RecordAccessVoter $accessVoter */
+        $accessVoter = GeneralUtility::makeInstance(RecordAccessVoter::class);
+        // If version found, check if the versioned record has access ("enableFields")
+        if (is_array($versionedRecord)) {
+            if ($bypassEnableFieldsCheck || $accessVoter->accessGranted($table, $versionedRecord, $this->context)) {
                 // Return offline version, tested for its enableFields.
-                return $newrow;
+                return $versionedRecord;
             }
-            // Return -1 because offline version was de-selected due to its enableFields.
+            // Return -1 because offline version did not have granted access.
             return -1;
         }
         // OK, so no workspace version was found. Then check if online version can be
         // selected with full enable fields and if so, return 1:
-        $queryBuilder->where(
-            $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
-        );
-        if ($bypassEnableFieldsCheck || $queryBuilder->executeQuery()->fetchOne()) {
+        if ($bypassEnableFieldsCheck || $accessVoter->accessGranted($table, $liveRecord, $this->context)) {
             // Means search was done, but no version found.
             return 1;
         }
@@ -2121,7 +2089,7 @@ class PageRepository implements LoggerAwareInterface
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
         $queryBuilder
-            ->select('uid', 'hidden', 'starttime', 'endtime')
+            ->select('*')
             ->from('pages')
             ->setMaxResults(1);
 
@@ -2164,7 +2132,7 @@ class PageRepository implements LoggerAwareInterface
             // Fetch overlay of page if in workspace and check if it is hidden
             $backupContext = clone $this->context;
             $this->context->setAspect('visibility', new VisibilityAspect());
-            $targetPage = $this->getWorkspaceVersionOfRecord('pages', (int)$page['uid']);
+            $targetPage = $this->getWorkspaceVersionOfRecord('pages', $page);
             // Also checks if the workspace version is NOT hidden but the live version is in fact still hidden
             $result = $targetPage === -1 || $targetPage === -2 || (is_array($targetPage) && $targetPage['hidden'] == 0 && $page['hidden'] == 1);
             $this->context = $backupContext;
