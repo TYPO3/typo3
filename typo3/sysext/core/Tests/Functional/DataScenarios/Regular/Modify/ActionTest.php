@@ -776,6 +776,57 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function createPageAndContentAndHide(): void
+    {
+        parent::createPageAndContentAndHide();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createPageAndContentAndHide.csv');
+
+        // first, assert that page cannot be opened without using backend user (since it's hidden)
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())
+                ->withPageId($this->recordIds['newPageId'])
+        );
+        self::assertSame(404, $response->getStatusCode());
+
+        // then, assert if preview is possible using a backend user
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId($this->recordIds['newPageId']),
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)
+        );
+        $responseSections = ResponseContent::fromString((string)$response->getBody())
+            ->getSections();
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
+    }
+
+    #[Test]
+    public function showPageAndContentInTheFuture(): void
+    {
+        parent::showPageAndContentInTheFuture();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/showPageAndContentInTheFuture.csv');
+
+        // first, assert that page cannot be opened without using backend user (since it's hidden)
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())
+                ->withPageId(self::VALUE_PageId)
+        );
+        self::assertSame(404, $response->getStatusCode());
+
+        // then, assert if preview is possible using a backend user
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageId),
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)
+        );
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('The Future Starts Now'));
+    }
+
+    #[Test]
     public function modifyPage(): void
     {
         parent::modifyPage();
