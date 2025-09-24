@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -107,6 +108,13 @@ final class WorkspacePreview implements MiddlewareInterface
                     $setCookieOnCurrentRequest = $request->getQueryParams()[self::PREVIEW_KEY] ?? false;
                 }
             }
+        }
+
+        // Will be overridden by the PreviewSimulator if needed, but at least hidden/scheduled pages are shown
+        // when a workspace preview is active. This can be removed once PageResolverMiddleware does not
+        // consider the visibility aspect anymore.
+        if ($this->context->getPropertyFromAspect('workspace', 'isOffline', false)) {
+            $this->context->setAspect('visibility', new VisibilityAspect(true, false, false, true));
         }
 
         // If keyword is set to "LIVE", then ensure that there is no workspace preview, but keep the BE User logged in.

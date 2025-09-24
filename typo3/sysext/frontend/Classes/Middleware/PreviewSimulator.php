@@ -79,7 +79,18 @@ class PreviewSimulator implements MiddlewareInterface
             $this->context->setAspect('frontend.preview', new PreviewAspect($isPreview));
 
             if ($showHiddenPages || $rootlineRequiresPreviewFlag) {
-                $newAspect = new VisibilityAspect(true, $visibilityAspect->includeHiddenContent(), $visibilityAspect->includeDeletedRecords(), $visibilityAspect->includeScheduledRecords());
+                // @todo: We should implement RecordAccessVoter->isRecordScheduled() once we have the full record (also in workspace)
+                // Note: this also renders all hidden and scheduled content on the page. We do not have a different solution to detect this other than
+                // "If the page is hidden, we assume the editor wants to see everything on it, including hidden content and scheduled content / pages"
+                $newAspect = new VisibilityAspect(true, true, $visibilityAspect->includeDeletedRecords(), true);
+                $this->context->setAspect('visibility', $newAspect);
+            } elseif ($isOfflineWorkspace) {
+                // See WorkspacePreview middleware
+                // We currently need to "re-set" this properly, as it is possible that the workspace preview does not load
+                // this information properly.
+                // @todo: this should be gone completely, as we now fall back to a state that was modified in the WorkspacePreview
+                //        middleware. In the mid-termin, we should evaluate the returned values as is right here.
+                $newAspect = new VisibilityAspect(false, $visibilityAspect->includeHiddenContent(), $visibilityAspect->includeDeletedRecords(), $simulatingDate);
                 $this->context->setAspect('visibility', $newAspect);
             }
         }
@@ -94,7 +105,6 @@ class PreviewSimulator implements MiddlewareInterface
     protected function checkIfRootlineRequiresPreview(int $pageId): bool
     {
         $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageId, '', $this->context);
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $this->context);
         $groupRestricted = false;
         $timeRestricted = false;
         $hidden = false;
@@ -123,6 +133,10 @@ class PreviewSimulator implements MiddlewareInterface
 
     /**
      * Checks if the page is hidden in the active workspace + language setup.
+     *
+     * @todo: In the midterm, the pageRepository method should not be evaluated here, but we should rather
+     *        work with full records at this point, dealing with values in RecordAccessVoter at this very place
+     *        already.
      */
     protected function checkIfPageIsHidden(int $pageId, ServerRequestInterface $request): bool
     {

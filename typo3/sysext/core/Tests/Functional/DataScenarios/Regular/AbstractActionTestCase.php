@@ -432,6 +432,27 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
     }
 
+    public function createPageAndContentAndHide(): void
+    {
+        $newTableIds = $this->actionService->createNewRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_Page => ['title' => 'Testing #1'],
+                self::TABLE_Content => ['pid' => '__previousUid', 'header' => 'Testing #1'],
+            ]
+        );
+        $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][0];
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+        $this->actionService->modifyRecord(self::TABLE_Page, $this->recordIds['newPageId'], ['hidden' => '1']);
+        $this->actionService->modifyRecord(self::TABLE_Content, $this->recordIds['newContentId'], ['hidden' => '1']);
+    }
+
+    public function showPageAndContentInTheFuture(): void
+    {
+        $this->actionService->modifyRecord(self::TABLE_Page, self::VALUE_PageId, ['title' => 'Testing #1', 'starttime' => date('U', strtotime('2034-08-26 12:00:00'))]);
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, ['header' => 'The Future Starts Now', 'starttime' => date('U', strtotime('2034-08-26 12:00:00'))]);
+    }
+
     public function modifyPage(): void
     {
         $this->actionService->modifyRecord(self::TABLE_Page, self::VALUE_PageId, ['title' => 'Testing #1']);
