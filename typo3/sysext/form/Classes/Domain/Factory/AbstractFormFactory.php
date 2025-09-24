@@ -21,8 +21,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Factory;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
+use TYPO3\CMS\Form\Event\AfterFormIsBuiltEvent;
 
 /**
  * Base class for custom *Form Factories*. A Form Factory is responsible for building
@@ -52,21 +54,15 @@ use TYPO3\CMS\Form\Domain\Model\FormDefinition;
  */
 abstract class AbstractFormFactory implements FormFactoryInterface
 {
-    /**
-     * Helper to be called by every AbstractFormFactory after everything has been built to call the "afterBuildingFinished"
-     * hook on all form elements.
-     */
-    protected function triggerFormBuildingFinished(FormDefinition $form)
+    protected ?EventDispatcherInterface $eventDispatcher = null;
+
+    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
-        foreach ($form->getRenderablesRecursively() as $renderable) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'] ?? [] as $className) {
-                $hookObj = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObj, 'afterBuildingFinished')) {
-                    $hookObj->afterBuildingFinished(
-                        $renderable
-                    );
-                }
-            }
-        }
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
+    protected function triggerFormBuildingFinished(FormDefinition $form): FormDefinition
+    {
+        return $this->eventDispatcher->dispatch(new AfterFormIsBuiltEvent($form))->form;
     }
 }

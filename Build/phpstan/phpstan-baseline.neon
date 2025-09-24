@@ -2374,19 +2374,13 @@ parameters:
 			message: '#^Call to an undefined method TYPO3\\CMS\\Form\\Domain\\Model\\Renderable\\RenderableInterface\:\:getRootForm\(\)\.$#'
 			identifier: method.notFound
 			count: 1
-			path: ../../typo3/sysext/form/Classes/EventListener/BeforeRenderableIsValidatedEventListener.php
+			path: ../../typo3/sysext/form/Classes/EventListener/ValidateAdvancedPasswordRenderable.php
 
 		-
 			message: '#^Property TYPO3\\CMS\\Form\\Mvc\\Property\\Exception\\TypeConverterException\:\:\$error \(TYPO3\\CMS\\Extbase\\Error\\Error\) in empty\(\) is not falsy\.$#'
 			identifier: empty.property
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Mvc/Property/Exception/TypeConverterException.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Form\\Domain\\Model\\Renderable\\RenderableInterface\:\:getRootForm\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Mvc/Property/PropertyMappingConfiguration.php
 
 		-
 			message: '#^Instanceof between DateTime and DateTime will always evaluate to true\.$#'

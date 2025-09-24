@@ -23,7 +23,7 @@ use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Form\Event\BeforeRenderableIsValidatedEvent;
 use TYPO3\CMS\Form\Service\TranslationService;
 
-class BeforeRenderableIsValidatedEventListener
+class ValidateAdvancedPasswordRenderable
 {
     #[AsEventListener('form-framework/validate-advanced-password')]
     public function __invoke(BeforeRenderableIsValidatedEvent $event): void

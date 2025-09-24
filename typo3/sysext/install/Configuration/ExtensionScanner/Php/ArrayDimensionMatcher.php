@@ -1311,4 +1311,10 @@ return [
             'Feature-107568-IntroducePSR14BeforeRenderableIsValidatedEvent.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'ext/form\'][\'afterBuildingFinished\']' => [
+        'restFiles' => [
+            'Breaking-98239-RemovedAfterBuildingFinishedHook.rst',
+            'Feature-98239-IntroducePSR14AfterFormIsBuiltEvent.rst',
+        ],
+    ],
 ];

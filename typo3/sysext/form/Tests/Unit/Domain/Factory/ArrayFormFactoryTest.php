@@ -35,7 +35,8 @@ final class ArrayFormFactoryTest extends UnitTestCase
         $this->expectExceptionCode(1329289436);
 
         $section = new Section('test', 'page');
-        $arrayFormFactory = $this->getAccessibleMock(ArrayFormFactory::class, null, [new NoopEventDispatcher()]);
+        $arrayFormFactory = $this->getAccessibleMock(ArrayFormFactory::class, null);
+        $arrayFormFactory->injectEventDispatcher(new NoopEventDispatcher());
 
         $request = new ServerRequest();
         $arrayFormFactory->_call('addNestedRenderable', [], $section, $request);
@@ -51,7 +52,8 @@ final class ArrayFormFactoryTest extends UnitTestCase
             'identifier' => 'test-3',
             'type' => 'Foo',
         ];
-        $arrayFormFactory = $this->getAccessibleMock(ArrayFormFactory::class, null, [new NoopEventDispatcher()]);
+        $arrayFormFactory = $this->getAccessibleMock(ArrayFormFactory::class, null);
+        $arrayFormFactory->injectEventDispatcher(new NoopEventDispatcher());
         $request = new ServerRequest();
         $result = $arrayFormFactory->_call('addNestedRenderable', $configuration, $section, $request);
         self::assertSame($unknownElement, $result);

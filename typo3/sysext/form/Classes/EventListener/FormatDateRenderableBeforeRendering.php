@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Form\EventListener;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Form\Event\BeforeRenderableIsRenderedEvent;
 
-class BeforeRenderableIsRenderedEventListener
+class FormatDateRenderableBeforeRendering
 {
     #[AsEventListener('form-framework/format-date-before-rendered')]
     public function __invoke(BeforeRenderableIsRenderedEvent $event): void

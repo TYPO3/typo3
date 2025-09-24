@@ -21,7 +21,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Factory;
 
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -42,10 +41,6 @@ use TYPO3\CMS\Form\Event\BeforeRenderableIsAddedToFormEvent;
 #[Autoconfigure(public: true, shared: false)]
 class ArrayFormFactory extends AbstractFormFactory
 {
-    public function __construct(
-        private readonly EventDispatcherInterface $eventDispatcher,
-    ) {}
-
     /**
      * Build a form definition, depending on some configuration.
      *
@@ -89,9 +84,7 @@ class ArrayFormFactory extends AbstractFormFactory
         unset($configuration['identifier']);
         $form->setOptions($configuration);
 
-        $this->triggerFormBuildingFinished($form);
-
-        return $form;
+        return $this->triggerFormBuildingFinished($form);
     }
 
     /**

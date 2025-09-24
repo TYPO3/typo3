@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Property;
+namespace TYPO3\CMS\Form\Tests\Unit\Domain\FormElements;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -33,7 +33,7 @@ use TYPO3\CMS\Form\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
 use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-final class PropertyMappingConfigurationTest extends UnitTestCase
+final class FileUploadTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
@@ -73,20 +73,11 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
             ->willReturn($this->processingRule);
 
         // File Upload
-        $this->fileUpload = $this->getMockBuilder(FileUpload::class)
-            ->onlyMethods(['getProperties', 'getRootForm', 'getIdentifier'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->fileUpload = $this->getAccessibleMock(FileUpload::class, ['getRootForm', 'getProperties'], ['foo', 'FileUpload']);
 
         $this->fileUpload
             ->method('getRootForm')
             ->willReturn($this->rootForm);
-
-        $this->fileUpload
-            ->method('getIdentifier')
-            ->willReturn('foobar');
-
-        $this->propertyMappingConfiguration = new PropertyMappingConfiguration($this->createMock(ValidatorResolver::class));
     }
 
     /**
@@ -111,9 +102,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
             ->method('setTypeConverterOptions')
             ->with(UploadedFileReferenceConverter::class);
 
-        // Property Mapping Configuration
-        $propertyMappingConfiguration = new PropertyMappingConfiguration($this->createMock(ValidatorResolver::class));
-        $propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
+        $this->fileUpload->initializeFormElement();
     }
 
     #[Test]
@@ -151,8 +140,9 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
             MimeTypeValidator::class,
             ['allowedMimeTypes' => ['text/plain', 'application/x-www-form-urlencoded']]
         )->willReturn($mimeTypeValidator);
-        $propertyMappingConfiguration = new PropertyMappingConfiguration($validatorResolver);
-        $propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
+        GeneralUtility::setSingletonInstance(ValidatorResolver::class, $validatorResolver);
+
+        $this->fileUpload->initializeFormElement();
     }
 
     #[Test]
@@ -184,7 +174,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
                 return $this->extbasePropertyMappingConfiguration;
             });
 
-        $this->propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
+        $this->fileUpload->initializeFormElement();
     }
 
     #[Test]
@@ -220,7 +210,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
                 return $this->extbasePropertyMappingConfiguration;
             });
 
-        $this->propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
+        $this->fileUpload->initializeFormElement();
     }
 
     #[Test]
@@ -250,7 +240,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
                 return $this->extbasePropertyMappingConfiguration;
             });
 
-        $this->propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
+        $this->fileUpload->initializeFormElement();
     }
 
     #[Test]
@@ -280,7 +270,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
                 return $this->extbasePropertyMappingConfiguration;
             });
 
-        $this->propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
+        $this->fileUpload->initializeFormElement();
     }
 
     #[Test]
@@ -311,6 +301,6 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
                 return $this->extbasePropertyMappingConfiguration;
             });
 
-        $this->propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
+        $this->fileUpload->initializeFormElement();
     }
 }
