@@ -5516,7 +5516,7 @@ class DataHandler
                     $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
                 }
                 $queryBuilder
-                    ->select('uid')
+                    ->select('*')
                     ->from($table)
                     // order by uid is needed here to process possible live records first - overlays always
                     // have a higher uid. Otherwise dbms like postgres may return rows in arbitrary order,
