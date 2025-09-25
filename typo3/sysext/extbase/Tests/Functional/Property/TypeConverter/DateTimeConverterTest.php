@@ -72,7 +72,10 @@ final class DateTimeConverterTest extends FunctionalTestCase
         $propertyMapperConfiguration->setTypeConverterOption(
             DateTimeConverter::class,
             DateTimeConverter::CONFIGURATION_DATE_FORMAT,
-            \DateTimeInterface::RFC7231
+            // \DateTimeInterface::RFC7231 is deprecated since PHP8.5 and direct format is used
+            // to avoid deprecation errors during testing - and ignore deprecation should be
+            // kept to silence expected own deprecations only.
+            'D, d M Y H:i:s \G\M\T',
         );
 
         $propertyMapper = $this->get(PropertyMapper::class);
