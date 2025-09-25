@@ -69,13 +69,13 @@ class CleanUpLocalProcessedFilesService
             $storageBasePath = PathUtility::stripPathSitePrefix($this->getAbsoluteBasePath($storage->getConfiguration()));
             foreach ($storage->getProcessingFolders() as $folder) {
                 foreach ($this->getFilesOfFolderRecursive($folder) as $splFileInfo) {
-                    if ($splFileInfo->getRealPath() === false) {
+                    if (!$splFileInfo->isFile()) {
                         continue;
                     }
 
                     // prepare identifier for proper lookup
                     $filePath = '/' . mb_substr(
-                        PathUtility::stripPathSitePrefix($splFileInfo->getRealPath()),
+                        PathUtility::stripPathSitePrefix($splFileInfo->getPathname()),
                         mb_strlen(trim($storageBasePath, '/') . '/')
                     );
 
