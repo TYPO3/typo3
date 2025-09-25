@@ -2182,8 +2182,6 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $flexFormTools = $this->get(FlexFormTools::class);
         $reflection = new \ReflectionClass($flexFormTools);
         $method = $reflection->getMethod('getRecordTypeSpecificFieldConfig');
-        $method->setAccessible(true);
-
         $result = $method->invoke($flexFormTools, $rawTca, 'special_type', 'aFieldName');
 
         $expected = [
@@ -2229,8 +2227,6 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $flexFormTools = $this->get(FlexFormTools::class);
         $reflection = new \ReflectionClass($flexFormTools);
         $method = $reflection->getMethod('getRecordTypeSpecificFieldConfig');
-        $method->setAccessible(true);
-
         $result = $method->invoke($flexFormTools, $rawTca, 'special_type', 'aFieldName');
 
         self::assertSame([], $result);
@@ -2267,8 +2263,6 @@ final class FlexFormToolsTest extends FunctionalTestCase
         $flexFormTools = $this->get(FlexFormTools::class);
         $reflection = new \ReflectionClass($flexFormTools);
         $method = $reflection->getMethod('getRecordTypeSpecificFieldConfig');
-        $method->setAccessible(true);
-
         $result = $method->invoke($flexFormTools, $rawTca, 'special_type', 'aFieldName');
 
         $expected = [
