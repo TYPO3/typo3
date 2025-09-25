@@ -20,14 +20,10 @@ namespace TYPO3\CMS\Backend;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Backend\Module\ModuleFactory;
 use TYPO3\CMS\Backend\Module\ModuleRegistry;
-use TYPO3\CMS\Backend\Routing\Route;
-use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
-use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
-use TYPO3\CMS\Core\Routing\RequestContextFactory;
 
 /**
  * @internal
@@ -58,7 +54,6 @@ class ServiceProvider extends AbstractServiceProvider
     public function getExtensions(): array
     {
         return [
-            Router::class => self::configureBackendRouter(...),
             ListenerProvider::class => self::addEventListeners(...),
         ] + parent::getExtensions();
     }
@@ -80,39 +75,6 @@ class ServiceProvider extends AbstractServiceProvider
         }
 
         return self::new($container, ModuleRegistry::class, [$modulesFromPackages]);
-    }
-
-    public static function configureBackendRouter(ContainerInterface $container, ?Router $router = null): Router
-    {
-        $router = $router ?? self::new($container, Router::class, [
-            $container->get(RequestContextFactory::class),
-            $container->get(BackendEntryPointResolver::class),
-        ]);
-        $cache = $container->get('cache.core');
-
-        $cacheIdentifier = $container->get(PackageDependentCacheIdentifier::class)->withPrefix('BackendRoutes')->toString();
-        $routesFromPackages = $cache->require($cacheIdentifier);
-        if ($routesFromPackages === false) {
-            $routesFromPackages = $container->get('backend.routes')->getArrayCopy();
-            $cache->set($cacheIdentifier, 'return ' . var_export($routesFromPackages, true) . ';');
-        }
-
-        foreach ($routesFromPackages as $name => $options) {
-            $path = $options['path'];
-            $methods = $options['methods'] ?? [];
-            $aliases = $options['aliases'] ?? [];
-            unset($options['path'], $options['methods'], $options['aliases']);
-            $route = new Route($path, $options);
-            if (count($methods) > 0) {
-                $route->setMethods($methods);
-            }
-            $router->addRoute($name, $route, $aliases);
-        }
-
-        // Add routes from all modules
-        $container->get(ModuleRegistry::class)->registerRoutesForModules($router);
-
-        return $router;
     }
 
     public static function getBackendRoutes(ContainerInterface $container): \ArrayObject

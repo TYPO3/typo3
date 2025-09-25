@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Backend\Routing;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use TYPO3\CMS\Backend\Routing\Exception\MethodNotAllowedException;
@@ -23,7 +24,6 @@ use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Routing\RequestContextFactory;
 use TYPO3\CMS\Core\Routing\RouteCollection;
-use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * Implementation of a class for adding routes, collecting throughout the Bootstrap
@@ -36,7 +36,11 @@ use TYPO3\CMS\Core\SingletonInterface;
  *
  * The architecture is inspired by the Symfony Routing Component.
  */
-class Router implements SingletonInterface
+#[Autoconfigure(
+    public: true,
+    configurator: '@' . RouterConfigurator::class,
+)]
+class Router
 {
     /**
      * All routes used in the TYPO3 Backend
