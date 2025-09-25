@@ -3744,7 +3744,7 @@ class DataHandler
                         foreach ($rows as $row) {
                             // Skip localized records that will be processed in
                             // copyL10nOverlayRecords() on copying the default language record
-                            $transOrigPointer = $row[$transOrigPointerField] ?? 0;
+                            $transOrigPointer = $row[$transOrigPointerField ?? ''] ?? 0;
                             if (!empty($languageField)
                                 && $row[$languageField] > 0
                                 && $transOrigPointer > 0

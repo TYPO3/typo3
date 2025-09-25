@@ -145,7 +145,7 @@ class SlugHelper
             if ($schema->isLanguageAware()) {
                 $languageFieldName = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
             }
-            $languageId = (int)($recordData[$languageFieldName] ?? 0);
+            $languageId = (int)($recordData[$languageFieldName ?? ''] ?? 0);
             $parentPageRecord = $this->resolveParentPageRecord($pid, $languageId);
             if (is_array($parentPageRecord)) {
                 // If the parent page has a slug, use that instead of "re-generating" the slug from the parents' page title

@@ -59,8 +59,8 @@ final class ModifyNewContentElementWizardItemsEvent
      */
     public function setWizardItem(string $identifier, array $configuration, array $position = []): void
     {
-        if (isset($this->wizardItems[$position['before'] ?? null])
-            || isset($this->wizardItems[$position['after'] ?? null])
+        if (isset($this->wizardItems[$position['before'] ?? ''])
+            || isset($this->wizardItems[$position['after'] ?? ''])
         ) {
             // Always unset an existing item if valid positioning is requested
             unset($this->wizardItems[$identifier]);

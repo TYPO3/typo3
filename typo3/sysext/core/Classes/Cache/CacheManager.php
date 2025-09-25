@@ -113,7 +113,9 @@ class CacheManager implements SingletonInterface
      */
     public function registerCache(FrontendInterface $cache, array $groups = [])
     {
-        $identifier = $cache->getIdentifier();
+        // PHPStan ignore required taking phpdoc-block into account, but it is not ensured and may be also null.
+        /** @phpstan-ignore nullCoalesce.expr */
+        $identifier = $cache->getIdentifier() ?? '';
         if (isset($this->caches[$identifier])) {
             throw new DuplicateIdentifierException('A cache with identifier "' . $identifier . '" has already been registered.', 1203698223);
         }
