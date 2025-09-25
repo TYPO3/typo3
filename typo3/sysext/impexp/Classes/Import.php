@@ -739,7 +739,7 @@ class Import extends ImportExport
             $this->flatInversePageTree($this->dat['header']['pagetree'], $pageList);
             foreach ($pageList as $pageUid => $_) {
                 $pid = $this->dat['header']['records']['pages'][$pageUid]['pid'] ?? null;
-                $pid = $this->importNewIdPids[$pid] ?? $this->pid;
+                $pid = $this->importNewIdPids[$pid ?? ''] ?? $this->pid;
                 $this->addSingle($importData, 'pages', (int)$pageUid, $pid);
                 unset($remainingPages[$pageUid]);
             }

@@ -55,13 +55,13 @@ class CropVariantCollection
                         $id = key($persistedCollectionConfig);
                         next($persistedCollectionConfig);
                     }
-                    if (isset($persistedCollectionConfig[$id]['cropArea'])) {
+                    if (isset($persistedCollectionConfig[$id ?? '']['cropArea'])) {
                         $cropVariantConfig['cropArea'] = $persistedCollectionConfig[$id]['cropArea'];
                     }
-                    if (isset($persistedCollectionConfig[$id]['focusArea'], $cropVariantConfig['focusArea'])) {
+                    if (isset($persistedCollectionConfig[$id ?? '']['focusArea'], $cropVariantConfig['focusArea'])) {
                         $cropVariantConfig['focusArea'] = $persistedCollectionConfig[$id]['focusArea'];
                     }
-                    if (isset($persistedCollectionConfig[$id]['selectedRatio'], $cropVariantConfig['allowedAspectRatios'][$persistedCollectionConfig[$id]['selectedRatio']])) {
+                    if (isset($persistedCollectionConfig[$id ?? '']['selectedRatio'], $cropVariantConfig['allowedAspectRatios'][$persistedCollectionConfig[$id ?? '']['selectedRatio']])) {
                         $cropVariantConfig['selectedRatio'] = $persistedCollectionConfig[$id]['selectedRatio'];
                     }
                 }

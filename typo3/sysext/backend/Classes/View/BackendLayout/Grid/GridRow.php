@@ -36,7 +36,7 @@ class GridRow extends AbstractGridObject
 
     public function addColumn(GridColumn $column): void
     {
-        $this->columns[$column->getColumnNumber()] = $column;
+        $this->columns[$column->getColumnNumber() ?? ''] = $column;
     }
 
     /**

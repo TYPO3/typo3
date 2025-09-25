@@ -1751,20 +1751,20 @@ abstract class AbstractMenuContentObject
                     }
                 }
                 $uid = $row['uid'] ?? null;
-                $result[$uid] = $basePageRow;
-                $result[$uid]['title'] = $row['header'];
-                $result[$uid]['nav_title'] = $row['header'];
+                $result[$uid ?? ''] = $basePageRow;
+                $result[$uid ?? '']['title'] = $row['header'];
+                $result[$uid ?? '']['nav_title'] = $row['header'];
                 // Prevent false exclusion in filterMenuPages, thus: Always show tt_content records
-                $result[$uid]['nav_hide'] = 0;
-                $result[$uid]['subtitle'] = $row['subheader'] ?? '';
-                $result[$uid]['starttime'] = $row['starttime'] ?? '';
-                $result[$uid]['endtime'] = $row['endtime'] ?? '';
-                $result[$uid]['fe_group'] = $row['fe_group'] ?? '';
-                $result[$uid]['media'] = $row['media'] ?? '';
-                $result[$uid]['header_layout'] = $row['header_layout'] ?? '';
-                $result[$uid]['bodytext'] = $row['bodytext'] ?? '';
-                $result[$uid]['image'] = $row['image'] ?? '';
-                $result[$uid]['sectionIndex_uid'] = $uid;
+                $result[$uid ?? '']['nav_hide'] = 0;
+                $result[$uid ?? '']['subtitle'] = $row['subheader'] ?? '';
+                $result[$uid ?? '']['starttime'] = $row['starttime'] ?? '';
+                $result[$uid ?? '']['endtime'] = $row['endtime'] ?? '';
+                $result[$uid ?? '']['fe_group'] = $row['fe_group'] ?? '';
+                $result[$uid ?? '']['media'] = $row['media'] ?? '';
+                $result[$uid ?? '']['header_layout'] = $row['header_layout'] ?? '';
+                $result[$uid ?? '']['bodytext'] = $row['bodytext'] ?? '';
+                $result[$uid ?? '']['image'] = $row['image'] ?? '';
+                $result[$uid ?? '']['sectionIndex_uid'] = $uid;
             }
         }
 
