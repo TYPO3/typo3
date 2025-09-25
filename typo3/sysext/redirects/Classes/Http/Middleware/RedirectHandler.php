@@ -137,7 +137,7 @@ class RedirectHandler implements MiddlewareInterface
         if (
             !$relativeCheck
             && $uri->getScheme()
-            && isset($portDefaultSchemaMap[$uri->getPort()])
+            && isset($portDefaultSchemaMap[$uri->getPort() ?? ''])
             && $uri->getScheme() === $portDefaultSchemaMap[$uri->getPort()]
         ) {
             $uri = $uri->withPort(null);

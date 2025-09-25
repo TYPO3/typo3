@@ -2295,7 +2295,7 @@ class DatabaseIntegrityController
             reset($arr);
             $key = key($arr);
             $retArr[] = $key;
-            if (isset($arr[$key])) {
+            if (isset($arr[$key ?? ''])) {
                 $arr = $arr[$key];
             } else {
                 break;

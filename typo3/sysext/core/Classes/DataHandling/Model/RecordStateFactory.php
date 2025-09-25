@@ -82,7 +82,7 @@ class RecordStateFactory
     {
         return array_map(
             static function (?string $aspectFieldName) use ($data): int {
-                return (int)($data[$aspectFieldName] ?? 0);
+                return (int)($data[$aspectFieldName ?? ''] ?? 0);
             },
             $this->resolveAspectFieldNames()
         );

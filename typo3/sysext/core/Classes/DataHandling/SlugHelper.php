@@ -139,7 +139,7 @@ class SlugHelper
         $prefix = '';
         if ($this->tableName === 'pages' && ($this->configuration['generatorOptions']['prefixParentPageSlug'] ?? false)) {
             $languageFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['languageField'] ?? null;
-            $languageId = (int)($recordData[$languageFieldName] ?? 0);
+            $languageId = (int)($recordData[$languageFieldName ?? ''] ?? 0);
             $parentPageRecord = $this->resolveParentPageRecord($pid, $languageId);
             if (is_array($parentPageRecord)) {
                 // If the parent page has a slug, use that instead of "re-generating" the slug from the parents' page title

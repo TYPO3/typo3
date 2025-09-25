@@ -168,7 +168,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
                 }
                 $key = ObjectAccess::getPropertyPath($value, (string)$this->arguments['optionValueField']);
                 $value = ObjectAccess::getPropertyPath($value, (string)$this->arguments['optionLabelField']);
-                $options[$key] = $value;
+                $options[$key ?? ''] = $value;
                 continue;
             }
             if ($this->hasArgument('optionValueField')) {
@@ -203,7 +203,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
                 // @todo use $this->persistenceManager->isNewObject() once it is implemented
                 $value = $this->persistenceManager->getIdentifierByObject($value);
             }
-            $options[$key] = $value;
+            $options[$key ?? ''] = $value;
         }
         if ($this->arguments['sortByOptionLabel']) {
             asort($options, SORT_LOCALE_STRING);
