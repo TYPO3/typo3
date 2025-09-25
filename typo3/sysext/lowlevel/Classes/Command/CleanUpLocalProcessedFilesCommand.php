@@ -81,7 +81,7 @@ class CleanUpLocalProcessedFilesCommand extends Command
 
             /** @var \SplFileInfo $file */
             foreach ($files as $file) {
-                $path = PathUtility::stripPathSitePrefix($file->getRealPath());
+                $path = PathUtility::stripPathSitePrefix($file->getPathname());
                 $output->writeln('[FILE] Would delete ' . $path);
             }
         }
@@ -155,8 +155,8 @@ class CleanUpLocalProcessedFilesCommand extends Command
         $success = [];
 
         foreach ($files as $file) {
-            $path = PathUtility::stripPathSitePrefix($file->getRealPath());
-            if (unlink($file->getRealPath()) === false) {
+            $path = PathUtility::stripPathSitePrefix($file->getPathname());
+            if (unlink($file->getPathname()) === false) {
                 $error[] = $file;
                 $isVerbose ? $output->writeln('[FILE] Failed to delete ' . $path) : $progressBar->advance();
             } else {

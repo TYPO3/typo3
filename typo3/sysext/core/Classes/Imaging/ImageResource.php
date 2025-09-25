@@ -46,8 +46,8 @@ class ImageResource
             width: $imageInfo->getWidth(),
             height: $imageInfo->getHeight(),
             extension: $imageInfo->getExtension(),
-            fullPath: $imageInfo->getRealPath(),
-            publicUrl: PathUtility::stripPathSitePrefix($imageInfo->getRealPath()),
+            fullPath: $imageInfo->getPathname(),
+            publicUrl: PathUtility::getAbsoluteWebPath($imageInfo->getPathname()),
         );
     }
 
