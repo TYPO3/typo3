@@ -20,12 +20,14 @@ namespace TYPO3\CMS\Backend\Http;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireInline;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Http\AbstractApplication;
+use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
 
 /**
  * Entry point for the TYPO3 Backend (HTTP requests)
@@ -33,6 +35,13 @@ use TYPO3\CMS\Core\Http\AbstractApplication;
 class Application extends AbstractApplication
 {
     public function __construct(
+        #[AutowireInline(
+            class: MiddlewareDispatcher::class,
+            arguments: [
+                '$kernel' => '@' . RequestHandler::class,
+                '$middlewares' => '@backend.middlewares',
+            ],
+        )]
         RequestHandlerInterface $requestHandler,
         protected readonly Context $context,
     ) {

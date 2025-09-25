@@ -101,7 +101,6 @@ class ServiceProvider extends AbstractServiceProvider
             Controller\LoginController::class => self::getLoginController(...),
             Controller\MaintenanceController::class => self::getMaintenanceController(...),
             Controller\SettingsController::class => self::getSettingsController(...),
-            Controller\ServerResponseCheckController::class => self::getServerResponseCheckController(...),
             Controller\UpgradeController::class => self::getUpgradeController(...),
             Command\LanguagePackCommand::class => self::getLanguagePackCommand(...),
             Command\UpgradeWizardRunCommand::class => self::getUpgradeWizardRunCommand(...),
@@ -353,13 +352,6 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(AstTraverser::class),
             $container->get(FormProtectionFactory::class),
             $container->get(ConfigurationManager::class),
-        );
-    }
-
-    public static function getServerResponseCheckController(ContainerInterface $container): Controller\ServerResponseCheckController
-    {
-        return new Controller\ServerResponseCheckController(
-            $container->get(HashService::class),
         );
     }
 

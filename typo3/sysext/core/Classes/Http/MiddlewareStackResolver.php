@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Http;
 
 use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend as PhpFrontendCache;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
@@ -49,7 +51,9 @@ class MiddlewareStackResolver
     public function __construct(
         ContainerInterface $container,
         DependencyOrderingService $dependencyOrderingService,
+        #[Autowire(service: 'cache.core')]
         PhpFrontendCache $cache,
+        #[Autowire(expression: 'service("package-dependent-cache-identifier").toString()')]
         string $baseCacheIdentifier
     ) {
         $this->container = $container;
@@ -65,9 +69,9 @@ class MiddlewareStackResolver
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
      * @throws \TYPO3\CMS\Core\Exception
      */
-    public function resolve(string $stackName): array
+    public function resolve(string $stackName): \ArrayObject
     {
-        return $this->getFromCache($stackName) ?? $this->computeMiddlewareStack($stackName);
+        return new \ArrayObject($this->getFromCache($stackName) ?? $this->computeMiddlewareStack($stackName));
     }
 
     protected function getFromCache(string $stackName): ?array
@@ -144,6 +148,7 @@ class MiddlewareStackResolver
         return 'middlewares_' . $stackName . $this->baseCacheIdentifier;
     }
 
+    #[AsEventListener('typo3-core/middlewares')]
     public function warmupCaches(CacheWarmupEvent $event): void
     {
         if ($event->hasGroup('system')) {

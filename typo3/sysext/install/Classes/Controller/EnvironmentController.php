@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\InformationStatus;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -124,7 +125,9 @@ class EnvironmentController extends AbstractController
         foreach ($databaseMessages as $message) {
             $messageQueue->enqueue($message);
         }
-        $serverResponseMessages = (new ServerResponseCheck(false))->getStatus();
+        $container = $this->lateBootService->getContainer();
+        $uriBuilder = $container->get(UriBuilder::class);
+        $serverResponseMessages = (new ServerResponseCheck($uriBuilder, false))->getStatus();
         foreach ($serverResponseMessages as $message) {
             $messageQueue->enqueue($message);
         }

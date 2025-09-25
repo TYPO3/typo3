@@ -12,6 +12,12 @@ services:
   TYPO3\CMS\Frontend\:
     resource: '../Classes/*'
 
+  frontend.middlewares:
+    class: ArrayObject
+    factory: ['@TYPO3\CMS\Core\Http\MiddlewareStackResolver', 'resolve']
+    arguments: ['frontend']
+    public: true
+
   TYPO3\CMS\Frontend\ContentObject\ContentObjectFactory:
     public: true
     arguments: [!tagged_locator { tag: 'frontend.contentobject', index_by: 'identifier' }]

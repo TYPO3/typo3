@@ -7,6 +7,14 @@ services:
   TYPO3\CMS\Core\:
     resource: '../Classes/*'
 
+  TYPO3\CMS\Core\Http\Application:
+
+  core.middlewares:
+    class: ArrayObject
+    factory: ['@TYPO3\CMS\Core\Http\MiddlewareStackResolver', 'resolve']
+    arguments: ['core']
+    public: true
+
   TYPO3\CMS\Core\Command\ExtensionListCommand:
     tags:
       - name: 'console.command'

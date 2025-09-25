@@ -26,7 +26,7 @@ class HttpMiddlewareStackProvider extends AbstractProvider
     public function getConfiguration(): array
     {
         $configurationArray = [];
-        foreach (['frontend', 'backend'] as $stackName) {
+        foreach (['frontend', 'backend', 'core'] as $stackName) {
             // reversing the array allows the admin to read the stack from top to bottom
             $configurationArray[$stackName] = array_reverse((array)$this->container->get($stackName . '.middlewares'));
         }

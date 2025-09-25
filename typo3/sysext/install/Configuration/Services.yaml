@@ -21,6 +21,9 @@ services:
   TYPO3\CMS\Install\Controller\EntryPointRedirectController:
     tags: ['backend.controller']
 
+  TYPO3\CMS\Install\Controller\ServerResponseCheckController:
+    tags: ['backend.controller']
+
   TYPO3\CMS\Install\Service\Typo3tempFileService:
     public: true
 
@@ -44,6 +47,11 @@ services:
 
   TYPO3\CMS\Install\Service\UpgradeWizardsService:
     public: true
+
+  TYPO3\CMS\Install\SystemEnvironment\ServerResponse\ServerResponseCheck:
+    public: true
+    arguments:
+      $useMarkup: true
 
   TYPO3\CMS\Install\Updates\UpgradeWizardRegistry:
     arguments:

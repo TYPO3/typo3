@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Module;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -25,6 +26,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * @internal only to be used within TYPO3 Core
  */
+#[Autoconfigure(public: true)]
 class ModuleFactory
 {
     public function __construct(

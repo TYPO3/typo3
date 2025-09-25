@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Http;
 
 use Psr\Http\Server\RequestHandlerInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireInline;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 
 /**
@@ -26,6 +27,13 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 class Application extends AbstractApplication
 {
     public function __construct(
+        #[AutowireInline(
+            class: MiddlewareDispatcher::class,
+            arguments: [
+                '$kernel' => '@' . RequestHandler::class,
+                '$middlewares' => '@core.middlewares',
+            ],
+        )]
         RequestHandlerInterface $requestHandler,
         protected readonly ConfigurationManager $configurationManager,
     ) {

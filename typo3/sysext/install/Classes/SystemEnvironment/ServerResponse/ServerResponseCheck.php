@@ -45,11 +45,6 @@ class ServerResponseCheck implements CheckInterface
     protected const WRAP_NESTED = 2;
 
     /**
-     * @var bool
-     */
-    protected $useMarkup;
-
-    /**
      * @var FlashMessageQueue
      */
     protected $messageQueue;
@@ -69,10 +64,10 @@ class ServerResponseCheck implements CheckInterface
      */
     protected $fileDeclarations;
 
-    public function __construct(bool $useMarkup = true)
-    {
-        $this->useMarkup = $useMarkup;
-
+    public function __construct(
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly bool $useMarkup = true,
+    ) {
         $fileName = bin2hex(random_bytes(4));
         $folderName = bin2hex(random_bytes(4));
         $this->assetLocation = new FileLocation(sprintf('/typo3temp/assets/%s.tmp/', $folderName));
@@ -219,7 +214,7 @@ class ServerResponseCheck implements CheckInterface
         $randomHost = $random->generateRandomHexString(10) . '.random.example.org';
         $time = (string)time();
         $hashService = GeneralUtility::makeInstance(HashService::class);
-        $url = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute(
+        $url = $this->uriBuilder->buildUriFromRoute(
             'install.server-response-check.host',
             ['src-time' => $time, 'src-hash' => $hashService->hmac($time, 'server-response-check')],
             UriBuilder::ABSOLUTE_URL

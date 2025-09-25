@@ -86,12 +86,8 @@ class ServiceProvider extends AbstractServiceProvider
             EventDispatcher\EventDispatcher::class => self::getEventDispatcher(...),
             EventDispatcher\ListenerProvider::class => self::getEventListenerProvider(...),
             FormProtection\FormProtectionFactory::class => self::getFormProtectionFactory(...),
-            Http\Application::class => self::getHttpApplication(...),
-            Http\RequestHandler::class => self::getHttpRequestHandler(...),
             Http\Client\GuzzleClientFactory::class => self::getGuzzleClientFactory(...),
-            Http\MiddlewareStackResolver::class => self::getMiddlewareStackResolver(...),
             Http\RequestFactory::class => self::getRequestFactory(...),
-            Http\Security\ReferrerEnforcer::class => self::getReferrerEnforcer(...),
             Imaging\IconFactory::class => self::getIconFactory(...),
             Imaging\IconRegistry::class => self::getIconRegistry(...),
             Localization\LabelFileResolver::class => self::getLabelFileResolver(...),
@@ -127,7 +123,6 @@ class ServiceProvider extends AbstractServiceProvider
             'middlewares' => self::getMiddlewares(...),
             'cache.assets' => self::getAssetsCache(...),
             'cache.runtime' => self::getRuntimeCache(...),
-            'core.middlewares' => self::getCoreMiddlewares(...),
             'content.security.policies' => self::getContentSecurityPolicies(...),
         ];
     }
@@ -322,7 +317,6 @@ class ServiceProvider extends AbstractServiceProvider
         );
 
         $cacheWarmers = [
-            Http\MiddlewareStackResolver::class,
             Imaging\IconRegistry::class,
             Package\PackageManager::class,
         ];
@@ -609,27 +603,6 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Routing\BackendEntryPointResolver::class);
     }
 
-    public static function getHttpApplication(ContainerInterface $container): Http\Application
-    {
-        $requestHandler = new Http\MiddlewareDispatcher(
-            $container->get(Http\RequestHandler::class),
-            $container->get('core.middlewares'),
-        );
-
-        return self::new($container, Http\Application::class, [
-            $requestHandler,
-            $container->get(Configuration\ConfigurationManager::class),
-        ]);
-    }
-
-    public static function getHttpRequestHandler(ContainerInterface $container): Http\RequestHandler
-    {
-        return new Http\RequestHandler(
-            $container,
-            $container->get(Routing\BackendEntryPointResolver::class),
-        );
-    }
-
     public static function getRequestContextFactory(ContainerInterface $container): Routing\RequestContextFactory
     {
         return self::new($container, Routing\RequestContextFactory::class, [
@@ -663,21 +636,6 @@ class ServiceProvider extends AbstractServiceProvider
         );
     }
 
-    public static function getReferrerEnforcer(ContainerInterface $container): Http\Security\ReferrerEnforcer
-    {
-        return self::new($container, Http\Security\ReferrerEnforcer::class);
-    }
-
-    public static function getMiddlewareStackResolver(ContainerInterface $container): Http\MiddlewareStackResolver
-    {
-        return new Http\MiddlewareStackResolver(
-            $container,
-            $container->get(Service\DependencyOrderingService::class),
-            $container->get('cache.core'),
-            $container->get(Package\Cache\PackageDependentCacheIdentifier::class)->toString(),
-        );
-    }
-
     public static function getMiddlewares(ContainerInterface $container): \ArrayObject
     {
         return new \ArrayObject();
@@ -701,11 +659,6 @@ class ServiceProvider extends AbstractServiceProvider
             $cacheBackend = $defaultBackend;
         }
         return Bootstrap::createCache('runtime', false, $cacheBackend);
-    }
-
-    public static function getCoreMiddlewares(ContainerInterface $container): \ArrayObject
-    {
-        return new \ArrayObject($container->get(Http\MiddlewareStackResolver::class)->resolve('core'));
     }
 
     public static function getHashService(): HashService

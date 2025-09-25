@@ -49,7 +49,7 @@ final class MiddlewareStackResolverTest extends UnitTestCase
             'secondMiddleware' => 'anotherClassName',
             'firstMiddleware' => 'aClassName',
         ];
-        self::assertEquals($expected, $subject->resolve('testStack'));
+        self::assertEquals($expected, $subject->resolve('testStack')->getArrayCopy());
     }
 
     #[Test]
@@ -69,7 +69,7 @@ final class MiddlewareStackResolverTest extends UnitTestCase
         );
         // empty array expected
         $expected = [];
-        self::assertEquals($expected, $subject->resolve('testStack'));
+        self::assertEquals($expected, $subject->resolve('testStack')->getArrayCopy());
     }
 
     #[Test]
@@ -95,7 +95,7 @@ final class MiddlewareStackResolverTest extends UnitTestCase
             // firstMiddleware is missing, RequestMiddlewares.php of Package2 sets disables=true on firstMiddleware
             'secondMiddleware' => 'anotherClassName',
         ];
-        self::assertEquals($expected, $subject->resolve('testStack'));
+        self::assertEquals($expected, $subject->resolve('testStack')->getArrayCopy());
     }
 
     #[Test]
@@ -122,6 +122,6 @@ final class MiddlewareStackResolverTest extends UnitTestCase
             'firstMiddleware' => 'replacedClassName',
             'secondMiddleware' => 'anotherClassName',
         ];
-        self::assertEquals($expected, $subject->resolve('testStack'));
+        self::assertEquals($expected, $subject->resolve('testStack')->getArrayCopy());
     }
 }

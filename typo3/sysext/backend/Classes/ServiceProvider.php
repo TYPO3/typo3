@@ -18,29 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend;
 
 use Psr\Container\ContainerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Backend\Http\Application;
-use TYPO3\CMS\Backend\Http\RequestHandler;
-use TYPO3\CMS\Backend\Http\RouteDispatcher;
 use TYPO3\CMS\Backend\Module\ModuleFactory;
-use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Module\ModuleRegistry;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessFactory;
-use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessStorage;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
-use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
-use TYPO3\CMS\Core\Configuration\Features;
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
-use TYPO3\CMS\Core\Exception as CoreException;
-use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
-use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
-use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
-use TYPO3\CMS\Core\Http\Security\ReferrerEnforcer;
-use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
@@ -64,14 +47,7 @@ class ServiceProvider extends AbstractServiceProvider
     public function getFactories(): array
     {
         return [
-            Application::class => self::getApplication(...),
-            RequestHandler::class => self::getRequestHandler(...),
-            RouteDispatcher::class => self::getRouteDispatcher(...),
-            UriBuilder::class => self::getUriBuilder(...),
-            ModuleProvider::class => self::getModuleProvider(...),
-            ModuleFactory::class => self::getModuleFactory(...),
             ModuleRegistry::class => self::getModuleRegistry(...),
-            'backend.middlewares' => self::getBackendMiddlewares(...),
             'backend.routes' => self::getBackendRoutes(...),
             'backend.routes.warmer' => self::getBackendRoutesWarmer(...),
             'backend.modules' => self::getBackendModules(...),
@@ -85,65 +61,6 @@ class ServiceProvider extends AbstractServiceProvider
             Router::class => self::configureBackendRouter(...),
             ListenerProvider::class => self::addEventListeners(...),
         ] + parent::getExtensions();
-    }
-
-    public static function getApplication(ContainerInterface $container): Application
-    {
-        $requestHandler = new MiddlewareDispatcher(
-            $container->get(RequestHandler::class),
-            $container->get('backend.middlewares'),
-            $container
-        );
-        return self::new($container, Application::class, [
-            $requestHandler,
-            $container->get(Context::class),
-        ]);
-    }
-
-    public static function getRequestHandler(ContainerInterface $container): RequestHandler
-    {
-        return new RequestHandler(
-            $container->get(RouteDispatcher::class),
-            $container->get(UriBuilder::class),
-            $container->get(ListenerProvider::class)
-        );
-    }
-
-    public static function getRouteDispatcher(ContainerInterface $container): RouteDispatcher
-    {
-        return self::new($container, RouteDispatcher::class, [
-            $container->get(FormProtectionFactory::class),
-            $container->get(EventDispatcherInterface::class),
-            $container->get(AccessFactory::class),
-            $container->get(AccessStorage::class),
-            $container->get(Features::class),
-            $container->get(ReferrerEnforcer::class),
-            $container,
-        ]);
-    }
-
-    public static function getUriBuilder(ContainerInterface $container): UriBuilder
-    {
-        return self::new($container, UriBuilder::class, [
-            $container->get(Router::class),
-            $container->get(FormProtectionFactory::class),
-            $container->get(RequestContextFactory::class),
-        ]);
-    }
-
-    public static function getModuleProvider(ContainerInterface $container): ModuleProvider
-    {
-        return self::new($container, ModuleProvider::class, [
-            $container->get(ModuleRegistry::class),
-        ]);
-    }
-
-    public static function getModuleFactory(ContainerInterface $container): ModuleFactory
-    {
-        return self::new($container, ModuleFactory::class, [
-            $container->get(IconRegistry::class),
-            $container->get(EventDispatcherInterface::class),
-        ]);
     }
 
     public static function getModuleRegistry(ContainerInterface $container): ModuleRegistry
@@ -163,15 +80,6 @@ class ServiceProvider extends AbstractServiceProvider
         }
 
         return self::new($container, ModuleRegistry::class, [$modulesFromPackages]);
-    }
-
-    /**
-     * @throws InvalidDataException
-     * @throws CoreException
-     */
-    public static function getBackendMiddlewares(ContainerInterface $container): \ArrayObject
-    {
-        return new \ArrayObject($container->get(MiddlewareStackResolver::class)->resolve('backend'));
     }
 
     public static function configureBackendRouter(ContainerInterface $container, ?Router $router = null): Router
