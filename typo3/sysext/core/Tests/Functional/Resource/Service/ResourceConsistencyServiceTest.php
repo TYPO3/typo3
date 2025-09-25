@@ -44,7 +44,6 @@ final class ResourceConsistencyServiceTest extends FunctionalTestCase
 
         $this->subject = $this->get(ResourceConsistencyService::class);
         $this->subjectShallValidate = (new \ReflectionObject($this->subject))->getMethod('shallValidate');
-        $this->subjectShallValidate->setAccessible(true);
 
         $this->storages = [
             1 => $this->createMockedStorage(1),
