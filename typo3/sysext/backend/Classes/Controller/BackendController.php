@@ -175,7 +175,6 @@ class BackendController
             'modulesInformation' => GeneralUtility::jsonEncodeForHtmlAttribute($this->getModulesInformation(), false),
             'startupModule' => $this->getStartupModule($request),
             'entryPoint' => $this->backendEntryPointResolver->getPathFromRequest($request),
-            'installToolPath' => $request->getAttribute('normalizedParams')->getSitePath() . '?__typo3_install',
             'stateTracker' => (string)$this->uriBuilder->buildUriFromRoute('state-tracker'),
             'sitename' => $title,
             'sitenameFirstInBackendTitle' => ($backendUser->uc['backendTitleFormat'] ?? '') === 'sitenameFirst',
