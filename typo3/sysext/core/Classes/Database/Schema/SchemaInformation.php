@@ -35,6 +35,7 @@ final class SchemaInformation
 
     public function __construct(
         private readonly Connection $connection,
+        private readonly FrontendInterface $runtime,
         private readonly FrontendInterface $cache,
         private readonly PackageDependentCacheIdentifier $packageDependentCacheIdentifier,
     ) {
@@ -59,8 +60,16 @@ final class SchemaInformation
     public function listTableNames(): array
     {
         $identifier = $this->connectionIdentifier . '-tablenames';
+        // Level 1 cache
+        $tableNames = $this->runtime->get($identifier);
+        if (is_array($tableNames)) {
+            return $tableNames;
+        }
+        // Level 2 cache
         $tableNames = $this->cache->get($identifier);
         if (is_array($tableNames)) {
+            // Retrieved from level 2, set to level 1 cache.
+            $this->runtime->set($identifier, $tableNames);
             return $tableNames;
         }
         return $this->buildTableNames();
@@ -87,8 +96,16 @@ final class SchemaInformation
     public function getTableInfo(string $tableName): TableInfo
     {
         $identifier = $this->connectionIdentifier . '-tableinfo-' . $tableName;
+        $tableInfo = $this->runtime->get($identifier);
+        // Level 1 cache
+        if ($tableInfo instanceof TableInfo) {
+            return $tableInfo;
+        }
+        // Level 2 cache
         $tableInfo = $this->cache->get($identifier);
         if ($tableInfo instanceof TableInfo) {
+            // Retrieved from level 2, set to level 1 cache.
+            $this->runtime->set($identifier, $tableInfo);
             return $tableInfo;
         }
         return $this->buildTableInformation($tableName);
@@ -101,6 +118,9 @@ final class SchemaInformation
     {
         $identifier = $this->connectionIdentifier . '-tablenames';
         $names = array_values($this->connection->createSchemaManager()->listTableNames());
+        // Level 1 cache
+        $this->runtime->set($identifier, $names);
+        // Level 2 cache
         $this->cache->set($identifier, $names);
         return $names;
     }
@@ -121,6 +141,9 @@ final class SchemaInformation
             name: $tableName,
             columnInfos: $columnInfos,
         );
+        // Level 1 cache
+        $this->runtime->set($identifier, $tableInfo);
+        // Level 2 cache
         $this->cache->set($identifier, $tableInfo);
         return $tableInfo;
     }

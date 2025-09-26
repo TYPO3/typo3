@@ -325,6 +325,7 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Database\ConnectionPool::class),
             $container->get(Database\Schema\Parser\Parser::class),
             new DefaultTcaSchema(),
+            $container->get('cache.runtime'),
         ]);
     }
 

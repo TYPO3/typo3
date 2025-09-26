@@ -158,7 +158,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
 
     private function createSchemaMigrator(): SchemaMigrator
     {
-        return new class ($this->get(ConnectionPool::class), $this->get(Parser::class), new DefaultTcaSchema()) extends SchemaMigrator {
+        return new class ($this->get(ConnectionPool::class), $this->get(Parser::class), new DefaultTcaSchema(), $this->get('cache.runtime')) extends SchemaMigrator {
             protected function ensureTableDefinitionForAllTCAManagedTables(array $tables): array
             {
                 // Do not create tables for any TCA tables (should be empty anyways).

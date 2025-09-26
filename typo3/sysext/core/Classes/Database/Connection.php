@@ -440,6 +440,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
     {
         return new SchemaInformation(
             $this,
+            GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime'),
             GeneralUtility::makeInstance(CacheManager::class)->getCache('database_schema'),
             GeneralUtility::makeInstance(PackageDependentCacheIdentifier::class),
         );
