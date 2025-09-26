@@ -1278,4 +1278,9 @@ return [
             'Feature-107528-IntroducePSR14BeforeRenderableIsRemovedFromFormEvent.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'scheduler\'][\'tasks\'][\'TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask\'][\'options\'][\'tables\']' => [
+        'restFiles' => [
+            'Deprecation-107550-TableGarbageCollectionTaskConfigurationViaGlobals.rst',
+        ],
+    ],
 ];

@@ -144,6 +144,9 @@
 			<trans-unit id="label.tableGarbageCollection.allTables">
 				<source>Clean all available tables</source>
 			</trans-unit>
+			<trans-unit id="label.tableGarbageCollection.allTables.description">
+				<source>Note: Entries from all available tables are deleted based on the tabels specific "expirePeriod" option.</source>
+			</trans-unit>
 			<trans-unit id="label.tableGarbageCollection.table">
 				<source>Table to clean up</source>
 			</trans-unit>
@@ -401,6 +404,9 @@
 			</trans-unit>
 			<trans-unit id="msg.invalidTaskType">
 				<source>Invalid Task type</source>
+			</trans-unit>
+			<trans-unit id="msg.defaultExpirePeriod">
+				<source>Default expire period of %d days, configured for selected table "%s", will be used.</source>
 			</trans-unit>
 
 			<trans-unit id="none">

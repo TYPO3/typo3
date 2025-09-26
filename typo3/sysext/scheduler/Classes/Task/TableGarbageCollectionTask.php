@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,6 +20,7 @@ namespace TYPO3\CMS\Scheduler\Task;
 use Doctrine\DBAL\Exception as DBALException;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -26,8 +29,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This task deletes rows from tables older than the given number of days.
  *
  * Available tables must be registered in
- * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables']
- * See ext_localconf.php of scheduler extension for an example
+ * $GLOBALS['TCA']['tx_scheduler_task']['types'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['taskOptions']['tables']
+ * See scheduler_table_garbage_collection_task.php of scheduler extension for an example
+ *
  * @internal This class is a specific scheduler task implementation is not considered part of the Public TYPO3 API.
  */
 class TableGarbageCollectionTask extends AbstractTask
@@ -40,7 +44,7 @@ class TableGarbageCollectionTask extends AbstractTask
     /**
      * @var int Number of days
      */
-    public $numberOfDays = 180;
+    public $numberOfDays = 0;
 
     /**
      * @var string Table to clean up
@@ -55,7 +59,7 @@ class TableGarbageCollectionTask extends AbstractTask
      */
     public function execute()
     {
-        $tableConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][self::class]['options']['tables'];
+        $tableConfigurations = $this->getTableConfiguration();
         $tableHandled = false;
         foreach ($tableConfigurations as $tableName => $configuration) {
             if ($this->allTables || $tableName === $this->table) {
@@ -77,7 +81,7 @@ class TableGarbageCollectionTask extends AbstractTask
      * @param array $configuration Clean up configuration
      * @return bool TRUE if cleanup was successful
      */
-    protected function handleTable($table, array $configuration)
+    protected function handleTable(string $table, array $configuration): bool
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $queryBuilder->delete($table);
@@ -92,7 +96,11 @@ class TableGarbageCollectionTask extends AbstractTask
             );
         } elseif (!empty($configuration['dateField'])) {
             if (!$this->allTables) {
-                $deleteTimestamp = strtotime('-' . $this->numberOfDays . 'days');
+                $numberOfDays = $this->numberOfDays;
+                if (isset($configuration['expirePeriod']) && $numberOfDays <= 0) {
+                    $numberOfDays = (int)$configuration['expirePeriod'];
+                }
+                $deleteTimestamp = strtotime('-' . $numberOfDays . 'days');
             } else {
                 if (!isset($configuration['expirePeriod'])) {
                     throw new \RuntimeException(self::class . ' misconfiguration: No expirePeriod defined for table ' . $table, 1308355095);
@@ -125,9 +133,9 @@ class TableGarbageCollectionTask extends AbstractTask
     public function getAdditionalInformation()
     {
         if ($this->allTables) {
-            $message = $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.additionalInformationAllTables');
+            $message = $this->getLanguageService()?->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.additionalInformationAllTables');
         } else {
-            $message = sprintf($this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.additionalInformationTable'), $this->table);
+            $message = sprintf($this->getLanguageService()?->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.additionalInformationTable'), $this->table);
         }
         return $message;
     }
@@ -135,16 +143,41 @@ class TableGarbageCollectionTask extends AbstractTask
     public function getTaskParameters(): array
     {
         return [
-            'allTables' => $this->allTables,
-            'numberOfDays' => $this->numberOfDays,
-            'table' => $this->table,
+            'all_tables' => $this->allTables,
+            'number_of_days' => $this->numberOfDays,
+            'selected_tables' => $this->table,
         ];
     }
 
     public function setTaskParameters(array $parameters): void
     {
-        $this->allTables = (bool)($parameters['allTables'] ?? false);
-        $this->numberOfDays = (int)($parameters['numberOfDays'] ?? 180);
-        $this->table = (string)($parameters['table'] ?? '');
+        $this->allTables = (bool)($parameters['allTables'] ?? $parameters['all_tables'] ?? false);
+        $this->numberOfDays = (int)($parameters['numberOfDays'] ?? $parameters['number_of_days'] ?? 0);
+        $this->table = (string)($parameters['table'] ?? $parameters['selected_tables'] ?? '');
+    }
+
+    public function getCleanableTables(array &$config): void
+    {
+        foreach ($this->getTableConfiguration() as $tableName => $tableConfiguration) {
+            $config['items'][] = [
+                'label' => $tableName . (($tableConfiguration['expirePeriod'] ?? false) ? ' [expirePeriod: ' . $tableConfiguration['expirePeriod'] . ']' : '') . (($tableConfiguration['dateField'] ?? false) ? ' [dateField: ' . $tableConfiguration['dateField'] . ']' : ''),
+                'value' => $tableName,
+            ];
+        }
+    }
+
+    public function getTableConfiguration(): array
+    {
+        $tableConfiguration = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('tx_scheduler_task.' . self::class)->getRawConfiguration()['taskOptions']['tables'] ?? [];
+
+        $tableConfigurationFromConfVars = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][self::class]['options']['tables'] ?? [];
+        if (!empty($tableConfigurationFromConfVars)) {
+            trigger_error('Usage of $GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'scheduler\'][\'tasks\'][' . self::class . '][\'options\'][\'tables\'] to define table options is deprecated and will stop working in TYPO3 v15. Use $tca[\'tx_scheduler_task\'][\'types\'][' . self::class . '][\'taskOptions\'][\'tables\'] instead.', E_USER_DEPRECATED);
+            if (is_array($tableConfigurationFromConfVars)) {
+                $tableConfiguration = array_replace_recursive($tableConfiguration, $tableConfigurationFromConfVars);
+            }
+        }
+
+        return $tableConfiguration;
     }
 }
