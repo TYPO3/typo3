@@ -90,7 +90,8 @@ final readonly class SchedulerTaskPersistenceValidator
             $taskType = $incomingFieldArray['tasktype'];
             $this->schedulerModuleController->setCurrentAction(SchedulerManagementAction::ADD);
         }
-        if (!$this->isSubmittedTaskDataValid($dataHandler, $id, $incomingFieldArray, $taskType)) {
+        $decodedAndExtractedFieldArray = $this->decodeValues($incomingFieldArray);
+        if (!$this->isSubmittedTaskDataValid($dataHandler, $id, $decodedAndExtractedFieldArray, $taskType)) {
             // Custom AdditionalFieldProvider may have added error messages via the FlashMessageQueue (as recommended)
             // which is needed to render them properly in FormEngine via $dataHandler->printLogErrorMessages();
             $this->convertErrorMessagesToDataHandlerLog($dataHandler, $id);
@@ -98,7 +99,6 @@ final readonly class SchedulerTaskPersistenceValidator
             $incomingFieldArray = false;
             return;
         }
-        $incomingFieldArray['tasktype'] = $taskType;
         if ($isNewTask) {
             try {
                 $task = $this->taskService->createNewTask($taskType);
@@ -108,15 +108,15 @@ final readonly class SchedulerTaskPersistenceValidator
                 $incomingFieldArray = false;
                 return;
             }
-            $this->taskService->setTaskDataFromRequest($task, $incomingFieldArray);
-            $incomingFieldArray = array_replace_recursive($this->taskService->getFieldsForRecord($task), $incomingFieldArray);
+            $this->taskService->setTaskDataFromRequest($task, $decodedAndExtractedFieldArray);
+            $incomingFieldArray = array_replace_recursive($incomingFieldArray, $this->taskService->getFieldsForRecord($task));
             $incomingFieldArray['parameters'] = $incomingFieldArray['parameters'] ?? [];
             $incomingFieldArray['pid'] = 0;
         } else {
             // Now let's transform our data
             $task = $this->taskRepository->findByUid((int)$id);
-            $this->taskService->setTaskDataFromRequest($task, $incomingFieldArray);
-            $incomingFieldArray = array_replace_recursive($this->taskService->getFieldsForRecord($task), $incomingFieldArray);
+            $this->taskService->setTaskDataFromRequest($task, $decodedAndExtractedFieldArray);
+            $incomingFieldArray = array_replace_recursive($incomingFieldArray, $this->taskService->getFieldsForRecord($task));
             if ($changedTaskType) {
                 $incomingFieldArray['parameters'] = [];
                 $incomingFieldArray['tasktype'] = $taskType;
@@ -163,11 +163,10 @@ final readonly class SchedulerTaskPersistenceValidator
 
     protected function isSubmittedTaskDataValid(DataHandler $dataHandler, string|int $taskId, array $parsedBody, string $taskType): bool
     {
-        $parsedBody['taskType'] = $taskType;
-        $startTime = $parsedBody['execution_details']['start'] ?? 0;
-        $endTime = $parsedBody['execution_details']['end'] ?? 0;
-        $frequency = $parsedBody['execution_details']['frequency'] ?? $parsedBody['execution_details']['cronCmd'] ?? '';
-        $runningType = (int)($parsedBody['execution_details']['runningType'] ?? ($frequency ? AbstractTask::TYPE_RECURRING : AbstractTask::TYPE_SINGLE));
+        $startTime = $parsedBody['start'] ?? 0;
+        $endTime = $parsedBody['end'] ?? 0;
+        $frequency = $parsedBody['frequency'] ?? $parsedBody['cronCmd'] ?? '';
+        $runningType = (int)($parsedBody['runningType'] ?? ($frequency ? AbstractTask::TYPE_RECURRING : AbstractTask::TYPE_SINGLE));
         $result = true;
         if ($runningType !== AbstractTask::TYPE_SINGLE && $runningType !== AbstractTask::TYPE_RECURRING) {
             $result = false;
@@ -211,8 +210,6 @@ final readonly class SchedulerTaskPersistenceValidator
         }
         $provider = $this->taskService->getAdditionalFieldProviderForTask($taskType);
         if ($provider !== null) {
-            $parsedBody['parameters'] = $parsedBody['parameters'] ?? [];
-            $parsedBody = array_merge($parsedBody['parameters'], $parsedBody);
             // Providers should add messages for failed validations on their own.
             $result = $result && $provider->validateAdditionalFields($parsedBody, $this->schedulerModuleController);
         }
@@ -240,6 +237,28 @@ final readonly class SchedulerTaskPersistenceValidator
             throw new InvalidDateException($e->getMessage(), 1747813335);
         }
         return $value;
+    }
+
+    protected function decodeValues(array $fieldArray): array
+    {
+        foreach (['execution_details', 'parameters'] as $possibleEncodedValueKey) {
+            $value = $fieldArray[$possibleEncodedValueKey] ?? [];
+            if (is_string($value) && $value !== '') {
+                try {
+                    $value = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
+                    $fieldArray[$possibleEncodedValueKey] = $value;
+                } catch (\JsonException) {
+                    // Skip failed decoding
+                }
+            }
+            if (is_array($value) && $value !== []) {
+                // Extract "values" so additional field providers can directly
+                // access the values without going via the json field.
+                $fieldArray = array_merge($value, $fieldArray);
+            }
+        }
+
+        return $fieldArray;
     }
 
     protected function getLanguageService(): LanguageService

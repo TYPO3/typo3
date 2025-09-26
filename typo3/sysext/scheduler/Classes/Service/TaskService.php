@@ -65,7 +65,7 @@ readonly class TaskService
             $description = isset($registrationInformation['description']) ? ($languageService?->sL($registrationInformation['description']) ?? $registrationInformation['description']) : '';
             $list[$className] = [
                 'className' => $className,
-                'extension' => $registrationInformation['extension'],
+                'extension' => $registrationInformation['extension'] ?? '',
                 'icon' => $registrationInformation['icon'] ?? '',
                 'title' => $title,
                 'description' => $description,
@@ -224,9 +224,7 @@ readonly class TaskService
         ];
         $taskDetails = $this->getTaskDetailsFromTask($task);
         // Put the parameters in a separate field
-        if (($taskDetails['isNativeTask'] ?? false)) {
-            $fields = array_merge($fields, $task->getTaskParameters());
-        } else {
+        if (!($taskDetails['isNativeTask'] ?? false)) {
             $fields['parameters'] = $task->getTaskParameters();
         }
         return $fields;
@@ -298,8 +296,6 @@ readonly class TaskService
 
     public function setTaskDataFromRequest(AbstractTask $task, array $incomingData): AbstractTask
     {
-        $incomingData = array_merge($incomingData, $incomingData['execution_details'] ?? []);
-        $incomingData = array_merge($incomingData['parameters'] ?? [], $incomingData);
         $endTime = $incomingData['end'] ?? '';
         $frequency = $incomingData['frequency'] ?? $incomingData['cronCmd'] ?? '';
         $runningType = (int)($incomingData['runningType'] ?? ($frequency ? AbstractTask::TYPE_RECURRING : AbstractTask::TYPE_SINGLE));

@@ -93,11 +93,11 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
      */
     public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule): bool
     {
-        if (!isset($this->schedulableCommands[$submittedData['taskType'] ?? null])) {
+        if (!isset($this->schedulableCommands[$submittedData['tasktype'] ?? null])) {
             return false;
         }
 
-        $command = $this->schedulableCommands[$submittedData['taskType']];
+        $command = $this->schedulableCommands[$submittedData['tasktype']];
 
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
 
@@ -166,8 +166,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task): bool
     {
-        // @todo: "taskType" can be removed soon
-        $taskType = $submittedData['taskType'] ?? $submittedData['tasktype'];
+        $taskType = $submittedData['tasktype'];
         $command = $this->schedulableCommands[$taskType];
 
         /** @var ExecuteSchedulableCommandTask $task */
