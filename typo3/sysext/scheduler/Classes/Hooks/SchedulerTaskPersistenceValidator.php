@@ -30,6 +30,7 @@ use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Exception\InvalidDateException;
+use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
 use TYPO3\CMS\Scheduler\SchedulerManagementAction;
 use TYPO3\CMS\Scheduler\Service\TaskService;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
@@ -99,7 +100,14 @@ final readonly class SchedulerTaskPersistenceValidator
         }
         $incomingFieldArray['tasktype'] = $taskType;
         if ($isNewTask) {
-            $task = $this->taskService->createNewTask($taskType);
+            try {
+                $task = $this->taskService->createNewTask($taskType);
+            } catch (InvalidTaskException $e) {
+                // Task can not be further processed since task type is not valid
+                $dataHandler->log('tx_scheduler_task', $id, 1, null, SystemLogErrorClassification::WARNING, 'Task can not be further processed since task type ' . $taskType . ' is not valid');
+                $incomingFieldArray = false;
+                return;
+            }
             $this->taskService->setTaskDataFromRequest($task, $incomingFieldArray);
             $incomingFieldArray = array_replace_recursive($this->taskService->getFieldsForRecord($task), $incomingFieldArray);
             $incomingFieldArray['parameters'] = $incomingFieldArray['parameters'] ?? [];

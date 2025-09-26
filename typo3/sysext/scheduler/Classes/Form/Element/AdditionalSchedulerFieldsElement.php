@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
+use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
 use TYPO3\CMS\Scheduler\SchedulerManagementAction;
 use TYPO3\CMS\Scheduler\Service\TaskService;
 
@@ -72,9 +73,14 @@ class AdditionalSchedulerFieldsElement extends AbstractFormElement
             $taskInfo = array_merge(is_array($itemValue) ? $itemValue : [], ['taskType' => $selectedTaskType]);
             try {
                 $taskObject = $this->taskRepository->findByUid((int)$this->data['databaseRow']['uid']);
-            } catch (\OutOfBoundsException $e) {
+            } catch (\OutOfBoundsException) {
                 // This happens for new tasks when 'uid' is set to "0" because we have a Task Type from defVals
-                $taskObject = $this->taskService->createNewTask($selectedTaskType);
+                try {
+                    $taskObject = $this->taskService->createNewTask($selectedTaskType);
+                } catch (InvalidTaskException) {
+                    // Given task type is not registered - skip this element
+                    return $resultArray;
+                }
             }
             $additionalFields = $fieldProvider->getAdditionalFields($taskInfo, $taskObject, $this->schedulerModule);
             $additionalFields = $this->taskService->prepareAdditionalFields($selectedTaskType, $additionalFields);

@@ -53,8 +53,8 @@ class TaskSerializer
     {
         $taskType = $row['tasktype'] ?? '';
         if (!empty($taskType)) {
-            $taskInformation = $this->taskService->getTaskDetailsFromTaskType($taskType);
-            if (is_array($taskInformation)) {
+            if ($this->taskService->isTaskTypeRegistered($taskType)) {
+                $taskInformation = $this->taskService->getTaskDetailsFromTaskType($taskType);
                 $className = $taskInformation['className'];
                 try {
                     $taskObject = $this->container->get($className);

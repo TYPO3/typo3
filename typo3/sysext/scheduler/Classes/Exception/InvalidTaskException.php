@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Scheduler\Exception;
 use TYPO3\CMS\Scheduler\Exception;
 
 /**
- * Thrown if a Task could not be successfully unserialized or the unserialized
- * Task is not an instance of AbstractTask.
+ * Thrown if a Task could not be successfully unserialized, the unserialized
+ * Task is not an instance of AbstractTask or is not registered at all.
  */
 class InvalidTaskException extends Exception {}

@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 use TYPO3\CMS\Scheduler\Exception\InvalidDateException;
+use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
 use TYPO3\CMS\Scheduler\Execution;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask;
@@ -181,6 +182,21 @@ readonly class TaskService
         return null;
     }
 
+    public function isTaskTypeRegistered(string $taskType): bool
+    {
+        $allTaskTypes = $this->getAllTaskTypes();
+        if (isset($allTaskTypes[$taskType])) {
+            return true;
+        }
+        foreach ($allTaskTypes as $taskInformation) {
+            if ($taskInformation['className'] === $taskType) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Native fields are added / managed via FormEngine + dataHandler,
      * so this only returns additional fields from the task object that are needed.
@@ -218,7 +234,7 @@ readonly class TaskService
 
     public function getAdditionalFieldProviderForTask(string $taskType): ?AdditionalFieldProviderInterface
     {
-        $taskInformation = $this->getAllTaskTypes()[$taskType];
+        $taskInformation = $this->getTaskDetailsFromTaskType($taskType);
         $provider = null;
         if (!empty($taskInformation['provider'])) {
             /** @var AdditionalFieldProviderInterface $provider */
@@ -229,10 +245,11 @@ readonly class TaskService
 
     public function createNewTask(string $taskType): AbstractTask
     {
+        if (!$this->isTaskTypeRegistered($taskType)) {
+            throw new InvalidTaskException('Can not create task for unknown type ' . $taskType . '.', 1758885935);
+        }
         /** @var AbstractTask $task */
-        $task = GeneralUtility::makeInstance(
-            $this->getAllTaskTypes()[$taskType]['className']
-        );
+        $task = GeneralUtility::makeInstance($this->getTaskDetailsFromTaskType($taskType)['className']);
         if ($task instanceof ExecuteSchedulableCommandTask) {
             $task->setTaskType($taskType);
         }
@@ -241,11 +258,10 @@ readonly class TaskService
 
     public function getHumanReadableTaskName(AbstractTask $task): string
     {
-        $taskInformation = $this->getAllTaskTypes()[$task->getTaskType()] ?? null;
-        if (!is_array($taskInformation)) {
+        if (!$this->isTaskTypeRegistered($task->getTaskType())) {
             throw new \RuntimeException('Task Type ' . $task->getTaskType() . ' not found in list of registered tasks', 1641658569);
         }
-        return $taskInformation['fullTitle'];
+        return $this->getAllTaskTypes()[$task->getTaskType()]['fullTitle'];
     }
 
     /**
