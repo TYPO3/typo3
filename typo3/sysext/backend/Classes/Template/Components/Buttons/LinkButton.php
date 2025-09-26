@@ -127,6 +127,7 @@ class LinkButton extends AbstractButton
         $attributes = [
             'role' => $this->getRole(),
             'href' => $this->getHref(),
+            // @see SplitButton - hard-coded replacement for this hard-coded class-list
             'class' => 'btn btn-sm btn-default ' . $this->getClasses(),
             'title' => $this->getTitle(),
         ];
