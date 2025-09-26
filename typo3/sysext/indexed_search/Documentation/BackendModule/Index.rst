@@ -22,7 +22,7 @@ view search statistics and remove listings from the search index.
     editor account your permissions might not be sufficient.
 
     If you have an administrator account see
-    `Trouble shooting: Backend module "Indexing" does not show <https://docs.typo3.org/permalink/typo3-cms-indexed-search:module-trouble-shooting>`_.
+    `Trouble shooting: Backend module "Indexing" does not show <https://docs.typo3.org/permalink/typo3/cms-indexed-search:module-trouble-shooting>`_.
 
 ..  contents:: Table of contents
 
@@ -85,6 +85,6 @@ editor account, your permissions might not be sufficient.
 If you have an administrator account and still cannot see the module
 check the following:
 
-*   Is indexed search `installed <https://docs.typo3.org/permalink/typo3-cms-indexed-search:installation>`_?
+*   Is indexed search `installed <https://docs.typo3.org/permalink/typo3/cms-indexed-search:installation>`_?
 *   Did you delete the cache and reload the backend?
 *   Was the module disabled via TSconfig?

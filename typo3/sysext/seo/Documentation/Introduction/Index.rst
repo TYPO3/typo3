@@ -26,4 +26,4 @@ your SEO journey.
     behaviour when needed in edge cases.
 
 For a list of the features provided by this extension see
-`Features of the TYPO3 system extension "seo" <https://docs.typo3.org/permalink/typo3-cms-seo:features>`_.
+`Features of the TYPO3 system extension "seo" <https://docs.typo3.org/permalink/typo3/cms-seo:features>`_.
