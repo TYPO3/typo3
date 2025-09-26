@@ -29,7 +29,7 @@ Finisher execution order
 
 ..  important::
     Finishers are executed in the order defined in your form definition. The
-    `Redirect finisher <https://docs.typo3.org/permalink/typo3-cms-form:concepts-finishers-redirectfinisher>`_
+    `Redirect finisher <https://docs.typo3.org/permalink/typo3/cms-form:concepts-finishers-redirectfinisher>`_
     stops the execution of all finishers.
 
 This is especially important when you are using the redirect finisher. Make sure this
@@ -38,7 +38,7 @@ execution of all subsequent finishers in order to perform the redirect. In
 other words, finishers defined after the redirect finisher will never be
 executed.
 
-If you are using the `Redirect finisher <https://docs.typo3.org/permalink/typo3-cms-form:concepts-finishers-redirectfinisher>`_
+If you are using the `Redirect finisher <https://docs.typo3.org/permalink/typo3/cms-form:concepts-finishers-redirectfinisher>`_
 it **should** be defined last. All finisher coming after it will be ignored.
 
 ..  literalinclude:: ReadyToUseFinishers/RedirectFinisher/_codesnippets/_example-redirect.yaml

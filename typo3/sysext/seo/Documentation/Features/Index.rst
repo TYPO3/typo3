@@ -23,16 +23,16 @@ fields that can be used to improve visibility of a TYPO3 site in search engines:
 Additional tabs "SEO" and "Social media" in the page properties
 ===============================================================
 
-After `Installation <https://docs.typo3.org/permalink/typo3-cms-seo:installation>`_
+After `Installation <https://docs.typo3.org/permalink/typo3/cms-seo:installation>`_
 two additional tabs are available in the page properties.
 
 SEO
     This tab contains additional fields for the
-    `title tag <https://docs.typo3.org/permalink/typo3-cms-seo:seo-page-title-provider>`_
+    `title tag <https://docs.typo3.org/permalink/typo3/cms-seo:seo-page-title-provider>`_
     in the HTML header, for the description meta tag, for robots instruction, the
-    `Canonical URL <https://docs.typo3.org/permalink/typo3-cms-seo:canonical-url>`_
+    `Canonical URL <https://docs.typo3.org/permalink/typo3/cms-seo:canonical-url>`_
     and for priorities used in the
-    `XML Sitemap <https://docs.typo3.org/permalink/typo3-cms-seo:xml-sitemap>`_.
+    `XML Sitemap <https://docs.typo3.org/permalink/typo3/cms-seo:xml-sitemap>`_.
 Social media
     This tab contains additional fields to manage data for the
     Open Graph (Facebook) meta tags and the X / Twitter Cards.
@@ -57,7 +57,7 @@ use the widget.
 If you created the use groups manually you users need to have "Dashboard" in
 their allowed modules and "Pages missing Meta Description" in the
 allowed dashboard widgets list:
-`Dashboard manual, permissions of widgets <https://docs.typo3.org/permalink/typo3-cms-dashboard:permission-handling-of-widgets>`_
+`Dashboard manual, permissions of widgets <https://docs.typo3.org/permalink/typo3/cms-dashboard:permission-handling-of-widgets>`_
 
 ..  _xml-sitemap:
 
@@ -65,10 +65,10 @@ XML Sitemap
 ===========
 
 The extension :composer:`typo3/cms-seo` comes with the site set
-`typo3/seo-sitemap <https://docs.typo3.org/permalink/typo3-cms-seo:configuration-site-sets>`_,
+`typo3/seo-sitemap <https://docs.typo3.org/permalink/typo3/cms-seo:configuration-site-sets>`_,
 which you can use to provide an XML sitemap like `https://example.org/sitemap.xml`.
 
-See chapter `XML sitemap <https://docs.typo3.org/permalink/typo3-cms-seo:xmlsitemap>`_
+See chapter `XML sitemap <https://docs.typo3.org/permalink/typo3/cms-seo:xmlsitemap>`_
 for details.
 
 ..  _canonical-url:

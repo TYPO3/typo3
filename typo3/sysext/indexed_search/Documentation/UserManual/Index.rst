@@ -18,7 +18,7 @@ Adding the search plugin to a page
 ..  tip::
     If you do not see the plugin as described here, you might not have the
     permissions to insert the plugin yourself, `indexed_search` may not be
-    `installed <https://docs.typo3.org/permalink/typo3-cms-indexed-search:installation>`_
+    `installed <https://docs.typo3.org/permalink/typo3/cms-indexed-search:installation>`_
     or perhaps your site is using a different search engine like ke_search,
     Solr or Elastic Search. Talk to your site administrator.
 
@@ -52,7 +52,7 @@ Indexed search plugin trouble shooting for TYPO3 backend editors
 
         If you see this message instead of a search plugin, your administrator might not
         yet have included the
-        `Site set "Indexed Search" <https://docs.typo3.org/permalink/typo3-cms-indexed-search:site-set>`_
+        `Site set "Indexed Search" <https://docs.typo3.org/permalink/typo3/cms-indexed-search:site-set>`_
         or there might be something wrong with the TypoScript. Try to delete the caches
         if you have permissions to do so.
 
@@ -142,4 +142,4 @@ If you have extended permissions as an editor, you might have the backend module
 can view which pages are indexed and delete pages from the index if necessary.
 
 Please refer to chapter
-`Monitoring indexed content <https://docs.typo3.org/permalink/typo3-cms-indexed-search:monitoring-indexed-content>`_.
+`Monitoring indexed content <https://docs.typo3.org/permalink/typo3/cms-indexed-search:monitoring-indexed-content>`_.
