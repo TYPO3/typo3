@@ -24,6 +24,8 @@ use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
@@ -45,6 +47,8 @@ class SchemaMigrator
         private readonly Parser $parser,
         private readonly DefaultTcaSchema $defaultTcaSchema,
         private readonly TcaSchemaFactory $tcaSchemaFactory,
+        #[Autowire(service: 'cache.runtime')]
+        private readonly FrontendInterface $runtime,
     ) {}
 
     /**
@@ -484,5 +488,6 @@ class SchemaMigrator
     protected function flushDatabaseSchemaCache(): void
     {
         Bootstrap::createCache('database_schema')->flush();
+        $this->runtime->flush();
     }
 }

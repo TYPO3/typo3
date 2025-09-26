@@ -41,7 +41,7 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 class RootlineUtility
 {
     // Note that having a nesting depth of 100 is quite high, but defined to be more on a "safe" side here. Main goal
-    // is to mitigate unforeseen recursion which are not covered by the anchestor guard (checking page uid in path).
+    // is to mitigate unforeseen recursion which are not covered by the ancestor guard (checking page uid in path).
     private const MAX_CTE_TRAVERSAL_LEVELS = 100;
 
     /** @internal */
@@ -1396,16 +1396,10 @@ class RootlineUtility
      */
     protected function getPagesFields(): array
     {
-        // @todo SchemaInformation uses persisted cache only so keep additional runtime cache layer for now.
-        // @todo Consider to add additional runtime cache directly to SchemaInformation and remove it here.
-        if ($this->runtimeCache->has('rootline-localcache-pagesfields')) {
-            return $this->runtimeCache->get('rootline-localcache-pagesfields');
-        }
-        $fieldNames = GeneralUtility::makeInstance(ConnectionPool::class)
+        // SchemaInformation provides a 2-level cache (runtime and persisted), no need to cache this here in the class.
+        return GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('pages')
             ->getSchemaInformation()->listTableColumnNames('pages');
-        $this->runtimeCache->set('rootline-localcache-pagesfields', $fieldNames);
-        return $fieldNames;
     }
 
     protected function createQueryBuilder(string $tableName): QueryBuilder

@@ -176,6 +176,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
             $this->get(Parser::class),
             $defaultTcaSchemaMock,
             $tcaSchemaFactory,
+            $this->get('cache.runtime'),
         );
     }
 
