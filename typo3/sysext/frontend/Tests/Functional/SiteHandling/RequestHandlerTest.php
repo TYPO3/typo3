@@ -51,7 +51,6 @@ final class RequestHandlerTest extends AbstractTestCase
 
     protected function setUp(): void
     {
-        $this->configurationToUseInTestInstance['SYS']['features']['security.frontend.enforceContentSecurityPolicy'] = true;
         $this->configurationToUseInTestInstance['FE']['debug'] = true;
         parent::setUp();
 
@@ -66,17 +65,26 @@ final class RequestHandlerTest extends AbstractTestCase
             static::failIfArrayIsNotEmpty($writer->getErrors());
             $this->setUpFrontendRootPage(
                 1000,
-                [
-                    'EXT:frontend/Tests/Functional/SiteHandling/Fixtures/RequestHandler.typoscript',
-                ],
-                [
-                    'title' => 'ACME Root',
-                ]
+                ['EXT:frontend/Tests/Functional/SiteHandling/Fixtures/RequestHandler.typoscript'],
+                ['title' => 'ACME Root']
+            );
+            $this->setUpFrontendRootPage(
+                1200,
+                ['EXT:frontend/Tests/Functional/SiteHandling/Fixtures/RequestHandler.typoscript'],
+                ['title' => 'ACME Features']
             );
         });
         $this->writeSiteConfiguration(
-            'website-local',
-            $this->buildSiteConfiguration(1000, 'https://website.local/')
+            'website-default',
+            $this->buildSiteConfiguration(1000, 'https://website.local/default/'),
+        );
+        $this->writeSiteConfiguration(
+            'website-csp-enabled',
+            $this->buildSiteConfiguration(1200, 'https://website.local/csp-enabled/'),
+            csp: [
+                'enforce' => true,
+                'report' => true,
+            ],
         );
     }
 
@@ -87,9 +95,24 @@ final class RequestHandlerTest extends AbstractTestCase
     }
 
     #[Test]
+    public function nonceAttributesAreNotAssignedWhenCspIsDisabled(): void
+    {
+        $response = $this->executeFrontendSubRequest(new InternalRequest('https://website.local/default/welcome'));
+        $dom = new \DOMDocument();
+        $dom->loadHTML((string)$response->getBody());
+        $xpath = new \DOMXPath($dom);
+        $nonceAttrs = $xpath->query('//*[@nonce]');
+
+        self::assertStringStartsWith('max-age=', $response->getHeaderLine('Cache-Control'));
+        self::assertSame('public', $response->getHeaderLine('Pragma'));
+        self::assertEmpty($response->getHeaderLine('Content-Security-Policy'));
+        self::assertCount(0, $nonceAttrs);
+    }
+
+    #[Test]
     public function nonceAttributesForAssetsAreUpdated(): void
     {
-        $firstResponse = $this->executeFrontendSubRequest(new InternalRequest('https://website.local/welcome'));
+        $firstResponse = $this->executeFrontendSubRequest(new InternalRequest('https://website.local/csp-enabled/features'));
         $firstCspHeader = $firstResponse->getHeaderLine('Content-Security-Policy');
         $dom = new \DOMDocument();
         $dom->loadHTML((string)$firstResponse->getBody());
@@ -101,8 +124,10 @@ final class RequestHandlerTest extends AbstractTestCase
         self::assertSame($firstScriptNonce, $firstLinkNonce);
         self::assertStringContainsString(sprintf("'nonce-%s'", $firstScriptNonce), $firstCspHeader);
         self::assertEmpty($firstResponse->getHeaderLine('X-TYPO3-Debug-Cache'));
+        self::assertNotEmpty($firstResponse->getHeaderLine('Content-Security-Policy-Report-Only'));
+        self::assertSame('private, no-store', $firstResponse->getHeaderLine('Cache-Control'));
 
-        $secondResponse = $this->executeFrontendSubRequest(new InternalRequest('https://website.local/welcome'));
+        $secondResponse = $this->executeFrontendSubRequest(new InternalRequest('https://website.local/csp-enabled/features'));
         $secondCspHeader = $secondResponse->getHeaderLine('Content-Security-Policy');
         $dom = new \DOMDocument();
         $dom->loadHTML((string)$secondResponse->getBody());
@@ -115,6 +140,8 @@ final class RequestHandlerTest extends AbstractTestCase
         self::assertNotSame($firstScriptNonce, $secondScriptNonce);
         self::assertStringContainsString(sprintf("'nonce-%s'", $secondScriptNonce), $secondCspHeader);
         self::assertStringStartsWith('Cached page generated', $secondResponse->getHeaderLine('X-TYPO3-Debug-Cache'));
+        self::assertNotEmpty($secondResponse->getHeaderLine('Content-Security-Policy-Report-Only'));
+        self::assertSame('private, no-store', $secondResponse->getHeaderLine('Cache-Control'));
     }
 
     #[Test]
@@ -126,6 +153,6 @@ final class RequestHandlerTest extends AbstractTestCase
             ->with(self::isArray())
             ->willReturnCallback(static fn(array $context) => $context['content'] ?? null);
         GeneralUtility::addInstance(NonceValueSubstitution::class, $nonceValueSubstitutionMock);
-        $this->executeFrontendSubRequest(new InternalRequest('https://website.local/welcome'));
+        $this->executeFrontendSubRequest(new InternalRequest('https://website.local/csp-enabled/features'));
     }
 }
