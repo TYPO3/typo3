@@ -71,7 +71,7 @@ readonly class DataStructureIdentifierListener
         protected FlashMessageService $flashMessageService,
         #[Autowire(lazy: true)]
         protected ExtbaseConfigurationManagerInterface $extbaseConfigurationManager,
-        #[Autowire(lazy: true)]
+        #[Autowire(lazy: ExtFormConfigurationManagerInterface::class)]
         protected ExtFormConfigurationManagerInterface $extFormConfigurationManager,
     ) {}
 
