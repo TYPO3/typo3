@@ -78,3 +78,20 @@ phpstan php 8.2 pre-merge:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s phpstan -p 8.2
 
+documentation rendering pre-merge:
+  stage: main
+  tags:
+    - metal2
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "schedule" && $CI_COMMIT_BRANCH != "13.4"
+      changes:
+        # detect only changes in last commit
+        compare_to: 'HEAD~1'
+        paths:
+          # respect changes for runTests.sh, as we do not know if documentation rendering is changed,
+          # for example the used docker image or similar.
+          - Build/Scripts/runTests.sh
+          # Execute documentation rending in case any file in a documentation subfolder is changed.
+          - typo3/sysext/*/Documentation/**/*
+  script:
+    - Build/Scripts/runTests.sh -s checkRstRenderingAll
