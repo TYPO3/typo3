@@ -145,7 +145,7 @@
 				<source>Clean all available tables</source>
 			</trans-unit>
 			<trans-unit id="label.tableGarbageCollection.allTables.description">
-				<source>Note: Entries from all available tables are deleted based on the tabels specific "expirePeriod" option.</source>
+				<source>Note: Entries from all available tables are deleted based on the table-specific "expirePeriod" option.</source>
 			</trans-unit>
 			<trans-unit id="label.tableGarbageCollection.table">
 				<source>Table to clean up</source>
