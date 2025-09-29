@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Modules\Debug;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Adminpanel\Log\InMemoryLogWriter;
@@ -63,7 +64,7 @@ class Log extends AbstractSubModule implements DataProviderInterface, ModuleSett
         );
     }
 
-    public function getDataToStore(ServerRequestInterface $request): ModuleData
+    public function getDataToStore(ServerRequestInterface $request, ResponseInterface $response): ModuleData
     {
         $maxLevel = LogLevel::normalizeLevel(\Psr\Log\LogLevel::DEBUG);
         $levels = [];

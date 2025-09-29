@@ -91,6 +91,7 @@ namespace PHPSTORM_META {
         'frontend.cache.collector',
         'frontend.cache.instruction',
         'frontend.page.information',
+        'frontent.page.parts',
     );
     override(\Psr\Http\Message\ServerRequestInterface::getAttribute(), map([
         'frontend.user' => \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class,
@@ -105,6 +106,7 @@ namespace PHPSTORM_META {
         'frontend.cache.collector' => \TYPO3\CMS\Core\Cache\CacheDataCollector::class,
         'frontend.cache.instruction' => \TYPO3\CMS\Frontend\Cache\CacheInstruction::class,
         'frontend.page.information' => \TYPO3\CMS\Frontend\Page\PageInformation::class,
+        'frontend.page.parts' => \TYPO3\CMS\Frontend\Page\PageParts::class,
     ]));
 
     expectedArguments(

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Modules\Debug;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
@@ -50,7 +51,7 @@ class Events extends AbstractSubModule implements DataProviderInterface
         );
     }
 
-    public function getDataToStore(ServerRequestInterface $request): ModuleData
+    public function getDataToStore(ServerRequestInterface $request, ResponseInterface $response): ModuleData
     {
         return new ModuleData($this->eventDispatcher->getDispatchedEvents());
     }

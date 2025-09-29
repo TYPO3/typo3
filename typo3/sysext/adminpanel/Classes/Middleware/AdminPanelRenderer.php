@@ -50,7 +50,7 @@ readonly class AdminPanelRenderer implements MiddlewareInterface
             $contents = $response->getBody()->getContents();
             $content = str_ireplace(
                 '</body>',
-                $mainController->render($request) . '</body>',
+                $mainController->render($request, $response) . '</body>',
                 $contents
             );
             $body = new Stream('php://temp', 'rw');

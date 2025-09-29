@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\ModuleApi;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -28,5 +29,5 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 interface DataProviderInterface
 {
-    public function getDataToStore(ServerRequestInterface $request): ModuleData;
+    public function getDataToStore(ServerRequestInterface $request, ResponseInterface $response): ModuleData;
 }

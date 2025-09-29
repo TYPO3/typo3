@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Modules\Debug;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Adminpanel\Log\DoctrineSqlLoggingMiddleware;
@@ -59,7 +60,7 @@ class QueryInformation extends AbstractSubModule implements DataProviderInterfac
         );
     }
 
-    public function getDataToStore(ServerRequestInterface $request): ModuleData
+    public function getDataToStore(ServerRequestInterface $request, ResponseInterface $response): ModuleData
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $connection = $connectionPool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);

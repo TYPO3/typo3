@@ -114,6 +114,8 @@ class RequestHandler implements RequestHandlerInterface
         $this->resetGlobalsToCurrentRequest($request);
 
         // Generate page
+        $pageParts = $request->getAttribute('frontend.page.parts');
+        $content = $pageParts->getContent();
         if ($controller->isGeneratePage()) {
             $this->timeTracker->push('Page generation');
 
@@ -134,9 +136,9 @@ class RequestHandler implements RequestHandlerInterface
             $this->timeTracker->incStackPointer();
             $this->timeTracker->push('Page generation PAGE object');
 
-            $controller->content = $this->generatePageContent($controller, $request);
+            $content = $this->generatePageContent($controller, $request);
 
-            $this->timeTracker->pull($this->timeTracker->LR ? $controller->content : '');
+            $this->timeTracker->pull($this->timeTracker->LR ? $content : '');
             $this->timeTracker->decStackPointer();
 
             // In case the nonce value was actually consumed during the rendering process, add a
@@ -155,7 +157,7 @@ class RequestHandler implements RequestHandlerInterface
                 ];
             }
 
-            $controller->generatePage_postProcessing($request);
+            $content = $controller->generatePage_postProcessing($request, $content);
             $this->timeTracker->pull();
         }
 
@@ -173,15 +175,16 @@ class RequestHandler implements RequestHandlerInterface
                 );
             }
             $this->timeTracker->push('Non-cached objects');
-            $controller->INTincScript($request);
+            $content = $controller->INTincScript($request, $content);
             $this->timeTracker->pull();
         }
 
+        $content = $this->displayPreviewInfoMessage($request, $content);
+
         // Create a default Response object and add headers and body to it
         $response = new Response();
-        $response = $controller->applyHttpHeadersToResponse($request, $response);
-        $this->displayPreviewInfoMessage($request, $controller);
-        $response->getBody()->write($controller->content);
+        $response = $controller->applyHttpHeadersToResponse($request, $response, $content);
+        $response->getBody()->write($content);
         return $response;
     }
 
@@ -874,14 +877,13 @@ class RequestHandler implements RequestHandlerInterface
      *
      * @internal this method might get moved to a PSR-15 middleware at some point
      */
-    protected function displayPreviewInfoMessage(ServerRequestInterface $request, TypoScriptFrontendController $controller)
+    protected function displayPreviewInfoMessage(ServerRequestInterface $request, string $content): string
     {
         $isInWorkspace = $this->context->getPropertyFromAspect('workspace', 'isOffline', false);
-        $isInPreviewMode = $this->context->hasAspect('frontend.preview')
-            && $this->context->getPropertyFromAspect('frontend.preview', 'isPreview');
+        $isInPreviewMode = $this->context->hasAspect('frontend.preview') && $this->context->getPropertyFromAspect('frontend.preview', 'isPreview');
         $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
         if (!$isInPreviewMode || $isInWorkspace || ($typoScriptConfigArray['disablePreviewNotification'] ?? false)) {
-            return;
+            return $content;
         }
         if ($typoScriptConfigArray['message_preview'] ?? '') {
             $message = $typoScriptConfigArray['message_preview'];
@@ -906,8 +908,9 @@ class RequestHandler implements RequestHandlerInterface
             $message = '<div id="typo3-preview-info" style="' . implode(';', $styles) . '">' . htmlspecialchars($label) . '</div>';
         }
         if (!empty($message)) {
-            $controller->content = str_ireplace('</body>', $message . '</body>', $controller->content);
+            $content = str_ireplace('</body>', $message . '</body>', $content);
         }
+        return $content;
     }
 
     protected function getLanguageService(): LanguageService

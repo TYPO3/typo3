@@ -180,12 +180,6 @@ class TypoScriptFrontendController
      */
     public ContentObjectRenderer $cObj;
 
-    /**
-     * All page content is accumulated in this variable. See RequestHandler
-     * @internal
-     */
-    public string $content = '';
-
     protected ?PageRenderer $pageRenderer = null;
     protected FrontendInterface $pageCache;
 
@@ -394,12 +388,13 @@ class TypoScriptFrontendController
      *
      * @internal
      */
-    public function generatePage_postProcessing(ServerRequestInterface $request): void
+    public function generatePage_postProcessing(ServerRequestInterface $request, string $content): string
     {
-        $this->content = $this->setAbsRefPrefixInContent($this->content, $this->absRefPrefix);
+        $content = $this->setAbsRefPrefixInContent($content, $this->absRefPrefix);
         $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
         $usePageCache = $request->getAttribute('frontend.cache.instruction')->isCachingAllowed();
-        $event = new AfterCacheableContentIsGeneratedEvent($request, $this, $this->newHash, $usePageCache);
+        $event = new AfterCacheableContentIsGeneratedEvent($request, $content, $this->newHash, $usePageCache);
+        $content = $event->getContent();
         $event = $eventDispatcher->dispatch($event);
 
         // Processing if caching is enabled
@@ -410,7 +405,7 @@ class TypoScriptFrontendController
             // and coming from PageInformation->getLocalRootLine().
             $this->setPageCacheContent(
                 $request,
-                $this->content,
+                $content,
                 $this->config['INTincScript'] ?? [],
                 $this->config['INTincScript_ext'] ?? [],
                 $this->config['pageTitleCache'] ?? [],
@@ -418,6 +413,7 @@ class TypoScriptFrontendController
             );
         }
         $this->setSysLastChanged($request);
+        return $content;
     }
 
     /**
@@ -518,7 +514,7 @@ class TypoScriptFrontendController
      *
      * @internal
      */
-    public function INTincScript(ServerRequestInterface $request): void
+    public function INTincScript(ServerRequestInterface $request, string $content): string
     {
         $this->additionalHeaderData = $this->config['INTincScript_ext']['additionalHeaderData'] ?? [];
         $this->additionalFooterData = $this->config['INTincScript_ext']['additionalFooterData'] ?? [];
@@ -533,12 +529,13 @@ class TypoScriptFrontendController
             GeneralUtility::makeInstance(AssetCollector::class)->updateState($assetCollectorState);
         }
 
-        $this->recursivelyReplaceIntPlaceholdersInContent($request);
+        $content = $this->recursivelyReplaceIntPlaceholdersInContent($request, $content);
         $this->getTimeTracker()->push('Substitute header section');
         $this->INTincScript_loadJSCode();
         $this->generatePageTitle($request);
 
-        $this->content = str_replace(
+        $content = $this->pageRenderer->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($content, $this->config['INTincScript_ext']['divKey'] ?? '');
+        $content = str_replace(
             [
                 '<!--HD_' . ($this->config['INTincScript_ext']['divKey'] ?? '') . '-->',
                 '<!--FD_' . ($this->config['INTincScript_ext']['divKey']  ?? '') . '-->',
@@ -547,49 +544,47 @@ class TypoScriptFrontendController
                 implode(LF, $this->additionalHeaderData),
                 implode(LF, $this->additionalFooterData),
             ],
-            $this->pageRenderer->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($this->content, $this->config['INTincScript_ext']['divKey'] ?? '')
+            $content
         );
         // Replace again, because header and footer data and page renderer replacements may introduce additional placeholders (see #44825)
-        $this->recursivelyReplaceIntPlaceholdersInContent($request);
-        $this->content = $this->setAbsRefPrefixInContent($this->content, $this->absRefPrefix);
+        $content = $this->recursivelyReplaceIntPlaceholdersInContent($request, $content);
+        $content = $this->setAbsRefPrefixInContent($content, $this->absRefPrefix);
         $this->getTimeTracker()->pull();
+        return $content;
     }
 
     /**
-     * Replaces INT placeholders (COA_INT and USER_INT) in $this->content
-     * In case the replacement adds additional placeholders, it loops
-     * until no new placeholders are found any more.
+     * Replace INT placeholders (COA_INT and USER_INT) in content. In case the replacement adds
+     * additional placeholders, it loops until no new placeholders are found anymore.
      */
-    protected function recursivelyReplaceIntPlaceholdersInContent(ServerRequestInterface $request): void
+    protected function recursivelyReplaceIntPlaceholdersInContent(ServerRequestInterface $request, string $content): string
     {
         do {
             $nonCacheableData = $this->config['INTincScript'];
-            $this->processNonCacheableContentPartsAndSubstituteContentMarkers($nonCacheableData, $request);
+            $content = $this->processNonCacheableContentPartsAndSubstituteContentMarkers($nonCacheableData, $request, $content);
             // Check if there were new items added to INTincScript during the previous execution:
             // array_diff_assoc throws notices if values are arrays but not strings. We suppress this here.
             $nonCacheableData = @array_diff_assoc($this->config['INTincScript'], $nonCacheableData);
             $reprocess = count($nonCacheableData) > 0;
         } while ($reprocess);
+        return $content;
     }
 
     /**
      * Processes the INTinclude-scripts and substitute in content.
-     *
-     * Takes $this->content, and splits the content by <!--INT_SCRIPT.12345 --> and then puts the content
-     * back together.
+     * Takes content and splits it content by <!--INT_SCRIPT.12345 --> and then puts the content back together.
      *
      * @param array $nonCacheableData $GLOBALS['TSFE']->config['INTincScript'] or part of it
-     * @see INTincScript()
      */
-    protected function processNonCacheableContentPartsAndSubstituteContentMarkers(array $nonCacheableData, ServerRequestInterface $request): void
+    protected function processNonCacheableContentPartsAndSubstituteContentMarkers(array $nonCacheableData, ServerRequestInterface $request, string $incomingContent): string
     {
         $timeTracker = $this->getTimeTracker();
         $timeTracker->push('Split content');
         // Splits content with the key.
-        $contentSplitByUncacheableMarkers = explode('<!--INT_SCRIPT.', $this->content);
-        $this->content = '';
+        $contentSplitByUncacheableMarkers = explode('<!--INT_SCRIPT.', $incomingContent);
         $timeTracker->setTSlogMessage('Parts: ' . count($contentSplitByUncacheableMarkers), LogLevel::INFO);
         $timeTracker->pull();
+        $content = '';
         foreach ($contentSplitByUncacheableMarkers as $counter => $contentPart) {
             // If the split had a comment-end after 32 characters it's probably a split-string
             if (substr($contentPart, 32, 3) === '-->') {
@@ -608,27 +603,28 @@ class TypoScriptFrontendController
                             default => '',
                         };
                     }
-                    $this->content .= $nonCacheableContent;
-                    $this->content .= substr($contentPart, 35);
+                    $content .= $nonCacheableContent;
+                    $content .= substr($contentPart, 35);
                     $timeTracker->pull($nonCacheableContent);
                 } else {
-                    $this->content .= substr($contentPart, 35);
+                    $content .= substr($contentPart, 35);
                 }
             } elseif ($counter) {
                 // If it's not the first entry (which would be "0" of the array keys), then re-add the INT_SCRIPT part
-                $this->content .= '<!--INT_SCRIPT.' . $contentPart;
+                $content .= '<!--INT_SCRIPT.' . $contentPart;
             } else {
-                $this->content .= $contentPart;
+                $content .= $contentPart;
             }
         }
-        // invokes permanent, general handlers
+        // Invoke permanent, general handlers. This has been implemented for nonce handling.
         foreach ($nonCacheableData as $item) {
             if (empty($item['permanent']) || empty($item['target'])) {
                 continue;
             }
-            $parameters = array_merge($item['parameters'] ?? [], ['content' => $this->content]);
-            $this->content = GeneralUtility::callUserFunction($item['target'], $parameters) ?? $this->content;
+            $parameters = array_merge($item['parameters'] ?? [], ['content' => $content]);
+            $content = GeneralUtility::callUserFunction($item['target'], $parameters) ?? $content;
         }
+        return $content;
     }
 
     /**
@@ -670,7 +666,7 @@ class TypoScriptFrontendController
      *
      * @internal
      */
-    public function applyHttpHeadersToResponse(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function applyHttpHeadersToResponse(ServerRequestInterface $request, ResponseInterface $response, string $content): ResponseInterface
     {
         $response = $response->withHeader('Content-Type', $this->contentType);
         $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
@@ -687,7 +683,7 @@ class TypoScriptFrontendController
         }
 
         // Set cache related headers to client (used to enable proxy / client caching!)
-        $headers = $this->getCacheHeaders($request);
+        $headers = $this->getCacheHeaders($request, $content);
         foreach ($headers as $header => $value) {
             $response = $response->withHeader($header, $value);
         }
@@ -710,7 +706,7 @@ class TypoScriptFrontendController
     /**
      * Get cache headers good for client/reverse proxy caching.
      */
-    protected function getCacheHeaders(ServerRequestInterface $request): array
+    protected function getCacheHeaders(ServerRequestInterface $request, string $content): array
     {
         // Even though we "could" tell the clients to cache the page, we tell clients not to cache this page
         // by default.
@@ -741,7 +737,7 @@ class TypoScriptFrontendController
             ) {
                 $headers = [
                     'Expires' => gmdate('D, d M Y H:i:s T', (min($GLOBALS['EXEC_TIME'] + $lifetime, PHP_INT_MAX))),
-                    'ETag' => '"' . md5($this->content) . '"',
+                    'ETag' => '"' . md5($content) . '"',
                     // Do not cache for private caches, but store in shared caches
                     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#:~:text=Age%3A%20100-,s%2Dmaxage,-The%20s%2Dmaxage
                     'Cache-Control' => 'max-age=0, s-maxage=' . $lifetime,
@@ -750,7 +746,7 @@ class TypoScriptFrontendController
             } elseif ($sendCacheHeadersToClient) {
                 $headers = [
                     'Expires' => gmdate('D, d M Y H:i:s T', (min($GLOBALS['EXEC_TIME'] + $lifetime, PHP_INT_MAX))),
-                    'ETag' => '"' . md5($this->content) . '"',
+                    'ETag' => '"' . md5($content) . '"',
                     'Cache-Control' => 'max-age=' . $lifetime,
                     'Pragma' => 'public',
                 ];
@@ -812,9 +808,6 @@ class TypoScriptFrontendController
 
     /**
      * Converts relative paths in the HTML source to absolute paths for fileadmin/, typo3conf/ext/ and media/ folders.
-     *
-     * @see \TYPO3\CMS\Frontend\Http\RequestHandler
-     * @see INTincScript()
      */
     protected function setAbsRefPrefixInContent(string $content, string $absRefPrefix): string
     {

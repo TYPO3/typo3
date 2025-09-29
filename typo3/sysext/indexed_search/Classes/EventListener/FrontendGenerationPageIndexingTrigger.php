@@ -107,7 +107,7 @@ final readonly class FrontendGenerationPageIndexingTrigger
             // The creation date of the TYPO3 page
             'crdate' => $pageRecord['crdate'],
             'rootline_uids' => [],
-            'content' => $tsfe->content,
+            'content' => $event->getContent(),
             // Alternative title for indexing
             'indexedDocTitle' => $this->pageTitleProviderManager->getTitle($request),
             // Most recent modification time (seconds) of the content on the page. Used to evaluate whether it should be re-indexed.

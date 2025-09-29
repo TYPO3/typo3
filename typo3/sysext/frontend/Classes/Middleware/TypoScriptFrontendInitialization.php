@@ -34,6 +34,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 use TYPO3\CMS\Frontend\Page\PageInformationCreationFailedException;
 use TYPO3\CMS\Frontend\Page\PageInformationFactory;
+use TYPO3\CMS\Frontend\Page\PageParts;
 
 /**
  * Create and fill PageInformation object and attach as
@@ -114,6 +115,8 @@ final readonly class TypoScriptFrontendInitialization implements MiddlewareInter
             $controller->register['SYS_LASTCHANGED'] = (int)$pageInformation->getPageRecord()['SYS_LASTCHANGED'];
         }
         $request = $request->withAttribute('frontend.controller', $controller);
+        $pageParts = new PageParts();
+        $request = $request->withAttribute('frontend.page.parts', $pageParts);
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $GLOBALS['TSFE'] = $controller;
 

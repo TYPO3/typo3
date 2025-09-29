@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Modules\Info;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
@@ -44,7 +45,7 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
         private readonly ViewFactoryInterface $viewFactory,
     ) {}
 
-    public function getDataToStore(ServerRequestInterface $request): ModuleData
+    public function getDataToStore(ServerRequestInterface $request, ResponseInterface $response): ModuleData
     {
         $frontendUserAspect = $this->context->getAspect('frontend.user');
         return new ModuleData(
@@ -66,7 +67,7 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
                         'username' => $frontendUserAspect->get('username') ?: '',
                     ],
                     'imagesOnPage' => $this->collectImagesOnPage($request),
-                    'documentSize' => $this->collectDocumentSize($request),
+                    'documentSize' => $this->collectDocumentSize($request, $response),
                 ],
             ]
         );
@@ -136,12 +137,11 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
     /**
      * Gets the document size from the current page in a human-readable format
      */
-    protected function collectDocumentSize(ServerRequestInterface $request): string
+    protected function collectDocumentSize(ServerRequestInterface $request, ResponseInterface $response): string
     {
         $documentSize = 0;
         if (!$request->getAttribute('frontend.cache.instruction')->isCachingAllowed()) {
-            $tsfe = $request->getAttribute('frontend.controller');
-            $documentSize = mb_strlen($tsfe->content, 'UTF-8');
+            $documentSize = (int)$response->getBody()->getSize();
         }
         return GeneralUtility::formatSize($documentSize);
     }

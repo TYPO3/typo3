@@ -124,7 +124,8 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
             $controller->config['INTincScript'] = $pageCacheRow['INTincScript'];
             $controller->config['INTincScript_ext'] = $pageCacheRow['INTincScript_ext'];
             $controller->config['pageTitleCache'] = $pageCacheRow['pageTitleCache'];
-            $controller->content = $pageCacheRow['content'];
+            $pageParts = $request->getAttribute('frontend.page.parts');
+            $pageParts->setContent($pageCacheRow['content']);
             $controller->setContentType($pageCacheRow['contentType']);
             $controller->cacheGenerated = $pageCacheRow['tstamp'];
             $controller->pageContentWasLoadedFromCache = true;

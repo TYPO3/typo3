@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Event;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Event that allows to enhance or change content (also depending on enabled caching).
@@ -29,7 +28,7 @@ final class AfterCacheableContentIsGeneratedEvent
 {
     public function __construct(
         private readonly ServerRequestInterface $request,
-        private readonly TypoScriptFrontendController $controller,
+        private string $content,
         private readonly string $cacheIdentifier,
         private bool $usePageCache
     ) {}
@@ -39,9 +38,14 @@ final class AfterCacheableContentIsGeneratedEvent
         return $this->request;
     }
 
-    public function getController(): TypoScriptFrontendController
+    public function getContent(): string
     {
-        return $this->controller;
+        return $this->content;
+    }
+
+    public function setContent(string $content): void
+    {
+        $this->content = $content;
     }
 
     public function isCachingEnabled(): bool

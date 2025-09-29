@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ContentProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
@@ -67,7 +68,7 @@ class SubModuleFixture implements ModuleInterface, ContentProviderInterface, Mod
      */
     public function onSubmit(array $configurationToSave, ServerRequestInterface $request): void {}
 
-    public function getDataToStore(ServerRequestInterface $request): ModuleData
+    public function getDataToStore(ServerRequestInterface $request, ResponseInterface $response): ModuleData
     {
         return new ModuleData(['foo' => 'bar']);
     }

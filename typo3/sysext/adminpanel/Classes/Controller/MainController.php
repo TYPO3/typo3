@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Adminpanel\ModuleApi\ConfigurableInterface;
@@ -77,7 +78,7 @@ class MainController
      *
      * @see \TYPO3\CMS\Adminpanel\Middleware\AdminPanelRenderer
      */
-    public function render(ServerRequestInterface $request): string
+    public function render(ServerRequestInterface $request, ResponseInterface $response): string
     {
         $resources = ResourceUtility::getResources(['nonce' => $this->requestId->nonce]);
 
@@ -87,7 +88,7 @@ class MainController
             // @todo: This is a hack: The admin panel is the only extension that starts
             //        a Fluid view in 'fully cached' scenarios. f:translate() now triggers
             //        the extbase configuration manager in FE, which fetches TS setup from
-            //        the Request attribute, which is *usally* always available, *except*
+            //        the Request attribute, which is *usually* always available, *except*
             //        in fully cached scenarios.
             //        See https://review.typo3.org/c/Packages/TYPO3.CMS/+/80732
             //        We still want extbase to crash if it tries to fetch TS setup when it
@@ -119,6 +120,7 @@ class MainController
         if (StateUtility::isOpen()) {
             $data = $this->storeDataPerModule(
                 $request,
+                $response,
                 $this->modules,
                 GeneralUtility::makeInstance(ModuleDataStorageCollection::class)
             );
@@ -197,7 +199,7 @@ class MainController
     /**
      * @param array<string, ModuleInterface> $modules
      */
-    protected function storeDataPerModule(ServerRequestInterface $request, array $modules, ModuleDataStorageCollection $data): ModuleDataStorageCollection
+    protected function storeDataPerModule(ServerRequestInterface $request, ResponseInterface $response, array $modules, ModuleDataStorageCollection $data): ModuleDataStorageCollection
     {
         foreach ($modules as $module) {
             if (
@@ -207,11 +209,11 @@ class MainController
                     || (!($module instanceof ConfigurableInterface))
                 )
             ) {
-                $data->addModuleData($module, $module->getDataToStore($request));
+                $data->addModuleData($module, $module->getDataToStore($request, $response));
             }
 
             if ($module instanceof SubmoduleProviderInterface) {
-                $this->storeDataPerModule($request, $module->getSubModules(), $data);
+                $this->storeDataPerModule($request, $response, $module->getSubModules(), $data);
             }
         }
         return $data;
