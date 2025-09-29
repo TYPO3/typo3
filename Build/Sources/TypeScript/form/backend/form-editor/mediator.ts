@@ -465,6 +465,7 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('view/stage/abstract/render/postProcess', (): void => {
     getViewModel().renderUndoRedo();
+    getViewModel().addAbstractViewValidationResults();
   });
 
   /**
@@ -496,6 +497,7 @@ function subscribeEvents(): void {
         getViewModel().renderAbstractStageArea(false);
       }
       getViewModel().renderPagination();
+      getViewModel().addAbstractViewValidationResults();
       getViewModel().renderInspectorEditors();
     }
   });
@@ -555,6 +557,7 @@ function subscribeEvents(): void {
     getViewModel().renderPagination();
     getViewModel().setPreviewMode(false);
     getViewModel().renderAbstractStageArea();
+    getViewModel().addAbstractViewValidationResults();
     getViewModel().renderInspectorEditors();
   });
 
