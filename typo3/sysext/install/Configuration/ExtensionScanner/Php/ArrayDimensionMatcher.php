@@ -1283,4 +1283,9 @@ return [
             'Deprecation-107550-TableGarbageCollectionTaskConfigurationViaGlobals.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'scheduler\'][\'tasks\'][\'TYPO3\CMS\Scheduler\Task\IpAnonymizationTask\'][\'options\'][\'tables\']' => [
+        'restFiles' => [
+            'Deprecation-107562-IpAnonymizationTaskConfigurationViaGlobals.rst',
+        ],
+    ],
 ];

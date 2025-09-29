@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Scheduler\Task;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\IpAnonymizationUtility;
 
@@ -57,7 +58,7 @@ class IpAnonymizationTask extends AbstractTask
      */
     public function execute()
     {
-        $configuration = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][self::class]['options']['tables'][$this->table] ?? [];
+        $configuration = $this->getTableConfiguration()[$this->table] ?? [];
         if (empty($configuration)) {
             throw new \RuntimeException(self::class . ' misconfiguration: ' . $this->table . ' does not exist in configuration', 1524502548);
         }
@@ -138,11 +139,6 @@ class IpAnonymizationTask extends AbstractTask
         return true;
     }
 
-    /**
-     * This method returns the selected table as additional information
-     *
-     * @return string Information to display
-     */
     public function getAdditionalInformation()
     {
         return sprintf($this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.ipAnonymization.additionalInformationTable'), $this->table, $this->numberOfDays);
@@ -151,16 +147,41 @@ class IpAnonymizationTask extends AbstractTask
     public function getTaskParameters(): array
     {
         return [
-            'numberOfDays' => $this->numberOfDays,
-            'mask' => $this->mask,
-            'table' => $this->table,
+            'number_of_days' => $this->numberOfDays,
+            'ip_mask' => $this->mask,
+            'selected_tables' => $this->table,
         ];
     }
 
     public function setTaskParameters(array $parameters): void
     {
-        $this->numberOfDays = $parameters['numberOfDays'] ?? 180;
-        $this->mask = $parameters['mask'] ?? 2;
-        $this->table = $parameters['table'] ?? '';
+        $this->table = (string)($parameters['table'] ?? $parameters['selected_tables'] ?? '');
+        $this->numberOfDays = (int)($parameters['numberOfDays'] ?? $parameters['number_of_days'] ?? 180);
+        $this->mask = (int)($parameters['mask'] ?? $parameters['ip_mask'] ?? 2);
+    }
+
+    public function getAnonymizableTables(array &$config): void
+    {
+        foreach ($this->getTableConfiguration() as $tableName => $tableConfiguration) {
+            $config['items'][] = [
+                'label' => $tableName . (($tableConfiguration['ipField'] ?? false) ? ' [ipField: ' . $tableConfiguration['ipField'] . ']' : '') . (($tableConfiguration['dateField'] ?? false) ? ' [dateField: ' . $tableConfiguration['dateField'] . ']' : ''),
+                'value' => $tableName,
+            ];
+        }
+    }
+
+    public function getTableConfiguration(): array
+    {
+        $tableConfiguration = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('tx_scheduler_task.' . self::class)->getRawConfiguration()['taskOptions']['tables'] ?? [];
+
+        $tableConfigurationFromConfVars = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][self::class]['options']['tables'] ?? [];
+        if (!empty($tableConfigurationFromConfVars)) {
+            trigger_error('Usage of $GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'scheduler\'][\'tasks\'][' . self::class . '][\'options\'][\'tables\'] to define table options is deprecated and will stop working in TYPO3 v15. Use $tca[\'tx_scheduler_task\'][\'types\'][' . self::class . '][\'taskOptions\'][\'tables\'] instead.', E_USER_DEPRECATED);
+            if (is_array($tableConfigurationFromConfVars)) {
+                $tableConfiguration = array_replace_recursive($tableConfiguration, $tableConfigurationFromConfVars);
+            }
+        }
+
+        return $tableConfiguration;
     }
 }

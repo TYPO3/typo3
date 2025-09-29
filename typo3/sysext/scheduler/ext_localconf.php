@@ -10,8 +10,6 @@ use TYPO3\CMS\Scheduler\Form\FieldInformation\ExpirePeriodInformation;
 use TYPO3\CMS\Scheduler\Hooks\SchedulerTaskPersistenceValidator;
 use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask;
-use TYPO3\CMS\Scheduler\Task\IpAnonymizationAdditionalFieldProvider;
-use TYPO3\CMS\Scheduler\Task\IpAnonymizationTask;
 
 defined('TYPO3') or die();
 
@@ -22,28 +20,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][ExecuteSchedulab
     'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:executeSchedulableCommandTask.name',
     'additionalFields' => ExecuteSchedulableCommandAdditionalFieldProvider::class,
 ];
-
-// Save any previous option array for ip anonymization task
-// to temporary variable so it can be pre-populated by other
-// extensions and LocalConfiguration/AdditionalConfiguration
-$ipAnonymizeCollectionTaskOptions = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][IpAnonymizationTask::class]['options'] ?? [];
-$ipAnonymizeCollectionTaskOptions['tables'] = $ipAnonymizeCollectionTaskOptions['tables'] ?? [];
-// Add ip anonymization task
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][IpAnonymizationTask::class] = [
-    'extension' => 'scheduler',
-    'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:ipAnonymization.name',
-    'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:ipAnonymization.description',
-    'additionalFields' => IpAnonymizationAdditionalFieldProvider::class,
-    'options' => $ipAnonymizeCollectionTaskOptions,
-];
-unset($ipAnonymizeCollectionTaskOptions);
-
-if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][IpAnonymizationTask::class]['options']['tables']['sys_log'] ?? false)) {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][IpAnonymizationTask::class]['options']['tables']['sys_log'] = [
-        'dateField' => 'tstamp',
-        'ipField' => 'IP',
-    ];
-}
 
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1746714036] = [
     'nodeName' => 'schedulerTimingOptions',
