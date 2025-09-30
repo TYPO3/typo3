@@ -34,4 +34,9 @@ class ColumnMapFactoryEntityFixture
      * @var ObjectStorage<ColumnMapFactoryEntityFixture>
      */
     public ObjectStorage $hasMany;
+
+    /**
+     * Note: We do not use int[] here as this would be resolved via "builtInType"
+     */
+    public array $hasManyStatic;
 }
