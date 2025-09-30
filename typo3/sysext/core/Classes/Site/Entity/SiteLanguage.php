@@ -178,6 +178,11 @@ class SiteLanguage
         ]);
     }
 
+    public function getConfiguration(): array
+    {
+        return $this->toArray();
+    }
+
     public function getLanguageId(): int
     {
         return $this->languageId;

@@ -1,0 +1,11 @@
+page = PAGE
+page.config.disableAllHeaderCode = 1
+page.10 = PAGEVIEW
+page.10.paths.10 = EXT:frontend/Tests/Functional/DataProcessing/Fixtures/Site/
+page.10.dataProcessing.10 = database-query
+page.10.dataProcessing.10.as = mainContent
+page.10.dataProcessing.10.table = tt_content
+page.10.dataProcessing.10.select.where = colPos=0
+page.10.dataProcessing.10.dataProcessing.10 = record-transformation
+page.10.dataProcessing.20 = TYPO3\CMS\Frontend\DataProcessing\SiteProcessor
+page.10.dataProcessing.20.as = site
