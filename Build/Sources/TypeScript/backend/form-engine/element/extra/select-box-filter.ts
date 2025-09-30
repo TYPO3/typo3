@@ -71,7 +71,10 @@ class SelectBoxFilter {
       this.availableOptions = this.selectElement.querySelectorAll('option');
     }
 
-    const matchFilter = new RegExp(filterText, 'i');
+    // Escape filter text to prevent RegExp() exceptions
+    const escapedFilterText = filterText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+    const matchFilter = new RegExp(escapedFilterText, 'i');
     this.availableOptions.forEach((option: HTMLOptionElement): void => {
       option.hidden = filterText.length > 0 && option.textContent.match(matchFilter) === null;
       SelectBoxFilter.toggleOptGroup(option);
