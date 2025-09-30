@@ -360,6 +360,46 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             'expectedColumnMap' => $expectedColumnMap,
         ];
 
+        $columnName = 'has_many_static';
+        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
+        $expectedColumnMap = new ColumnMap($columnName);
+        $expectedColumnMap->setType(TableColumnType::SELECT);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_MANY);
+        yield 'setRelations detects select with MultipleSideBySide as toMany relation based on maxitems' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'select',
+                    'renderType' => 'selectMultipleSideBySide',
+                    'items' => [
+                        ['One', 1],
+                        ['Two', 2],
+                        ['Three', 3],
+                    ],
+                    'maxitems' => 2,
+                ],
+            ],
+            'propertyName' => $propertyName,
+            'expectedColumnMap' => $expectedColumnMap,
+        ];
+        yield 'setRelations detects select with MultipleSideBySide as toMany relation based on relationship declaration' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'select',
+                    'renderType' => 'selectMultipleSideBySide',
+                    'items' => [
+                        ['One', 1],
+                        ['Two', 2],
+                        ['Three', 3],
+                    ],
+                    'relationship' => 'oneToMany',
+                ],
+            ],
+            'propertyName' => $propertyName,
+            'expectedColumnMap' => $expectedColumnMap,
+        ];
+
         $columnName = 'has_and_belongs_to_many';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         $expectedColumnMap = new ColumnMap($columnName);

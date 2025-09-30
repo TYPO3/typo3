@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Schema\Field\DateTimeFieldType;
 use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 use TYPO3\CMS\Core\Schema\Field\FolderFieldType;
 use TYPO3\CMS\Core\Schema\Field\RelationalFieldTypeInterface;
+use TYPO3\CMS\Core\Schema\Field\StaticSelectFieldType;
 use TYPO3\CMS\Core\Schema\RelationshipType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
@@ -114,12 +115,19 @@ readonly class ColumnMapFactory
 
         // @todo we should get rid of the "maxitems" and "renderType" cases here and rely purely on
         //       the evaluated relationship type -> to be consistent with all non extbase components.
-        if ($field instanceof RelationalFieldTypeInterface
-            && $field->getRelationshipType()->hasMany()
-            && (
-                !$field->isType(TableColumnType::GROUP, TableColumnType::SELECT)
-                || ($field->isType(TableColumnType::GROUP) && (!isset($columnConfiguration['maxitems']) || $columnConfiguration['maxitems'] > 1))
-                || ($field->isType(TableColumnType::SELECT) && (($columnConfiguration['renderType'] ?? '') !== 'selectSingle' || (int)($columnConfiguration['maxitems'] ?? 0) > 1))
+        if (
+            (
+                $field instanceof RelationalFieldTypeInterface
+                && $field->getRelationshipType()->hasMany()
+                && (
+                    !$field->isType(TableColumnType::GROUP, TableColumnType::SELECT)
+                    || ($field->isType(TableColumnType::GROUP) && (!isset($columnConfiguration['maxitems']) || $columnConfiguration['maxitems'] > 1))
+                    || ($field->isType(TableColumnType::SELECT) && (($columnConfiguration['renderType'] ?? '') !== 'selectSingle' || (int)($columnConfiguration['maxitems'] ?? 0) > 1))
+                )
+            )
+            || (
+                $field instanceof StaticSelectFieldType
+                && (int)($columnConfiguration['maxitems'] ?? 0) > 1 // @todo: Get rid of the "maxitems" and rely purely on the relationship type
             )
         ) {
             $columnMap->setTypeOfRelation(Relation::HAS_MANY);
