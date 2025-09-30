@@ -43,7 +43,8 @@ class LockBackendCommand extends Command
             ->addArgument(
                 'redirect',
                 InputArgument::OPTIONAL,
-                'If set, a locked TYPO3 Backend will redirect to URI specified with this argument. The URI is saved as a string in the lockfile that is specified in the system configuration.'
+                'If set, a locked TYPO3 Backend will redirect to URI specified with this argument. The URI is saved as a string in the lockfile that is specified in the system configuration.',
+                ''
             );
     }
 
@@ -57,17 +58,20 @@ class LockBackendCommand extends Command
         if ($this->lockService->isLocked()) {
             $io->note('A lock file already exists. Overwriting it.');
         }
-        $output = 'Wrote lock file to "' . $this->lockService->getAbsolutePathToLockFile() . '"';
-        if ($input->getArgument('redirect')) {
-            $redirectUriFromLockFileContent = $input->getArgument('redirect');
+        $lockFile = $this->lockService->getAbsolutePathToLockFile();
+        $redirectUriFromLockFileContent = $input->getArgument('redirect');
+        if ($redirectUriFromLockFileContent) {
             $redirectUriFromLockFileContent = is_string($redirectUriFromLockFileContent) ? $redirectUriFromLockFileContent : '';
-            $output .= LF . 'with target URI "' . $redirectUriFromLockFileContent . '".';
-        } else {
-            $redirectUriFromLockFileContent = '';
-            $output .= '.';
         }
-        $this->lockService->lockBackend($redirectUriFromLockFileContent);
-        $io->success($output);
+        if (!$this->lockService->lockBackend($redirectUriFromLockFileContent)) {
+            $io->error('Failed to create lock file "' . $lockFile . '".');
+            return Command::FAILURE;
+        }
+        $message = 'Wrote lock file to "' . $lockFile . '"';
+        if ($redirectUriFromLockFileContent !== '') {
+            $message .= LF . 'with target URI "' . $redirectUriFromLockFileContent . '".';
+        }
+        $io->success($message);
         return Command::SUCCESS;
     }
 }
