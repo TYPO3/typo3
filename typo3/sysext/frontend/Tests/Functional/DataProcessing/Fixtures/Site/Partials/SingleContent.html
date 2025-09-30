@@ -1,0 +1,13 @@
+<f:switch expression="{record.recordType}">
+    <f:case value="text">
+        <h3>{record.header}</h3>
+        <p>{record.bodytext}</p>
+    </f:case>
+    <f:case value="test_carousel">
+        <h3>{record.header}</h3>
+        <p>Carousel Items will show up: {record.carousel_items}</p>
+        <f:for each="{record.carousel_items}" as="carouselItem">
+            <h4>{carouselItem.header}</h4>
+        </f:for>
+    </f:case>
+</f:switch>
