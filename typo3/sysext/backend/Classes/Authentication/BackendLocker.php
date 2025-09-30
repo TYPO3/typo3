@@ -28,6 +28,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This class encapsulates the logic to check for the existence of the lock file,
  * thus nobody needs to know it's a file and where to put it outside of this class.
  * It also enables future refactoring to support other means of backend un/locking.
+ *
+ * @internal
  */
 class BackendLocker
 {
@@ -36,9 +38,9 @@ class BackendLocker
         return @is_file($this->getAbsolutePathToLockFile());
     }
 
-    public function lockBackend(string $redirectUriFromFileContent): void
+    public function lockBackend(string $redirectUriFromFileContent): bool
     {
-        GeneralUtility::writeFile($this->getAbsolutePathToLockFile(), $redirectUriFromFileContent, true);
+        return GeneralUtility::writeFile($this->getAbsolutePathToLockFile(), $redirectUriFromFileContent, true);
     }
 
     public function unlock(): void
