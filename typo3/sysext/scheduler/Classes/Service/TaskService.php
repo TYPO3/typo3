@@ -80,18 +80,21 @@ readonly class TaskService
             // Loop over TCA items, and check if the task type is registered via TCA
             foreach ($schema->getField('tasktype')->getConfiguration()['items'] ?? [] as $item) {
                 if (is_array($item) && $item['value'] !== 'div') {
-                    $taskType = $item['value'];
+                    $taskType = $className = $item['value'];
 
                     $additionalFields = [];
                     if ($schema->hasSubSchema($taskType)) {
                         $subSchema = $schema->getSubSchema($taskType);
+                        if ($subSchema->getRawConfiguration()['taskOptions']['className'] ?? false) {
+                            $className = $subSchema->getRawConfiguration()['taskOptions']['className'];
+                        }
                         $additionalFields = $subSchema->getFields(fn($field) => !in_array($field->getName(), $defaultFields, true) && $field instanceof NoneFieldType === false);
                         $additionalFields = $additionalFields->getNames();
                     }
 
                     $list[$taskType] = [
                         'taskType' => $taskType,
-                        'className' => $taskType,
+                        'className' => $className,
                         'extension' => $item['group'] ?? '',
                         'icon' => $item['icon'] ?? '',
                         'title' => $languageService?->sL($item['label'] ?? '') ?? $item['label'] ?? '',
@@ -110,7 +113,7 @@ readonly class TaskService
     {
         $taskTypes = [];
         foreach ($this->getAvailableTaskTypes($includeNativeTypes) as $taskType => $registrationInformation) {
-            $data = [
+            $taskTypes[$taskType] = [
                 'className' => $registrationInformation['className'],
                 'taskType' => $taskType,
                 'category' => $registrationInformation['extension'],
@@ -121,21 +124,6 @@ readonly class TaskService
                 'isNativeTask' => $registrationInformation['isNativeTask'],
                 'additionalFields' => $registrationInformation['additionalFields'],
             ];
-            if ($registrationInformation['className'] === ExecuteSchedulableCommandTask::class) {
-                foreach ($this->commandRegistry->getSchedulableCommands() as $commandIdentifier => $command) {
-                    $commandData = $data;
-                    $commandData['category'] = explode(':', $commandIdentifier)[0];
-                    $commandData['taskType'] = $commandIdentifier;
-                    $commandData['title'] = $command->getName();
-                    $commandData['description'] = $command->getDescription();
-                    // Used for select dropdown and on InfoScreen
-                    $commandData['fullTitle'] = $command->getDescription() . ' [' . $command->getName() . ']';
-                    $commandData['isCliCommand'] = true;
-                    $taskTypes[$commandIdentifier] = $commandData;
-                }
-            } else {
-                $taskTypes[$taskType] = $data;
-            }
         }
         ksort($taskTypes);
         return $taskTypes;
@@ -294,7 +282,7 @@ readonly class TaskService
         return $currentAdditionalFields;
     }
 
-    public function setTaskDataFromRequest(AbstractTask $task, array $incomingData): AbstractTask
+    public function setTaskDataFromRequest(AbstractTask $task, array $incomingData): void
     {
         $endTime = $incomingData['end'] ?? '';
         $frequency = $incomingData['frequency'] ?? $incomingData['cronCmd'] ?? '';
@@ -319,7 +307,6 @@ readonly class TaskService
         $task->setTaskGroup((int)($incomingData['task_group'] ?? 0));
         $provider = $this->getAdditionalFieldProviderForTask($task->getTaskType());
         $provider?->saveAdditionalFields($incomingData, $task);
-        return $task;
     }
 
     /**
@@ -346,7 +333,8 @@ readonly class TaskService
     }
 
     /**
-     * Used in FormEngine and Backend listings
+     * Used in FormEngine. Actually, this is only needed to task types can be "validated" by form data providers.
+     * There is no possibility to "select" a task type in FormEngine. The field is a readonly information.
      */
     public function getTaskTypesForTcaItems(array &$config, mixed $_ = null, bool $includeNativeItems = false): array
     {

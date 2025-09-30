@@ -1,0 +1,67 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:for each="{fields.arguments}" key="name" as="field">
+    <fieldset class="form-section">
+        <div class="form-group t3js-formengine-validation-marker t3js-formengine-palette-field">
+            <label for="arguments_{name}" class="form-label t3js-formengine-label">{field.label}<f:if condition="{renderDebug}"> <code>[{name}]</code></f:if></label>
+            <div class="formengine-field-item t3js-formengine-field-item">
+                <f:if condition="{field.description}">
+                    <div class="form-description">{field.description}</div>
+                </f:if>
+                <div class="form-control-wrap">
+                    <div class="form-wizards-wrap">
+                        <div class="form-wizards-item-element">
+                            <input type="text" name="{itemName}[arguments][{name}]" value="{field.value}" class="form-control form-control-clearable t3js-clearable" id="arguments_{name}"{f:if(condition: field.required, then: 'required="required"')}/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</f:for>
+<f:for each="{fields.options}" key="name" as="field">
+    <fieldset class="form-section">
+        <div class="form-group t3js-formengine-validation-marker t3js-formengine-palette-field">
+            <label for="arguments_{name}" class="form-label t3js-formengine-label">{field.label}<f:if condition="{renderDebug}"> <code>[{name}]</code></f:if></label>
+            <div class="formengine-field-item t3js-formengine-field-item">
+                <f:if condition="{field.description}">
+                    <div class="form-description">{field.description}</div>
+                </f:if>
+                    <f:if condition="{field.valueOption}">
+                        <f:then>
+                            <div class="form-check t3-form-field-eval-null-checkbox">
+                                <input type="checkbox" class="form-check-input" id="options_{name}" name="{itemName}[options][{name}]"{f:if(condition: field.enabled, then: ' checked="checked"')}>
+                                <label class="form-check-label" for="options_{name}">
+                                    <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.addOptionToCommand" />
+                                </label>
+                            </div>
+                        </f:then>
+                        <f:else>
+                            <div class="form-check form-switch">
+                                <input type="checkbox" class="form-check-input" id="options_{name}" name="{itemName}[options][{name}]"{f:if(condition: field.enabled, then: ' checked="checked"')}>
+                                <label class="form-check-label" for="options_{name}">
+                                    <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.setOptionForCommand" />
+                                </label>
+                            </div>
+                        </f:else>
+                    </f:if>
+                <f:if condition="{field.valueOption}">
+                    <div class="form-control-wrap">
+                        <div class="form-wizards-wrap">
+                            <div class="form-wizards-item-element">
+                                <input type="text" name="{itemName}[optionValues][{name}]" value="{field.value}" class="form-control form-control-clearable t3js-clearable" id="options_{name}_values"/>
+                            </div>
+                        </div>
+                    </div>
+                </f:if>
+            </div>
+        </div>
+    </fieldset>
+</f:for>
+
+<input type="hidden" name="{itemName}[commandIdentifier]" value="{taskType}" />
+
+</html>

@@ -222,6 +222,12 @@
 			<trans-unit id="label.addOptionToCommand">
 				<source>Add option</source>
 			</trans-unit>
+			<trans-unit id="label.setOptionForCommand">
+				<source>Set option</source>
+			</trans-unit>
+			<trans-unit id="label.runOnCli">
+				<source>Run on CLI</source>
+			</trans-unit>
 			<trans-unit id="msg.cliScript">
 				<source>The script to execute the Scheduler from the command line is: &lt;strong&gt;"%s scheduler:run"&lt;/strong&gt;.</source>
 			</trans-unit>
@@ -522,6 +528,12 @@
 			</trans-unit>
 			<trans-unit id="label.ipAnonymization.mask.2">
 				<source>Last 2 bytes for IPv4 / Interface &amp; SLA ID for IPv6</source>
+			</trans-unit>
+			<trans-unit id="label.schedulableCommand.command_configuration">
+				<source>Command configuration</source>
+			</trans-unit>
+			<trans-unit id="label.schedulableCommand.command_configuration.description">
+				<source>Configure available arguments and options for the command.</source>
 			</trans-unit>
 			<trans-unit id="command.example1">
 				<source>Every day-of-week from Monday through Friday at 09:00 and 15:00</source>

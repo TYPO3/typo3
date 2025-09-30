@@ -27,6 +27,7 @@ use TYPO3\CMS\Install\Updates\DatabaseUpdatedPrerequisite;
 use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 use TYPO3\CMS\Scheduler\Service\TaskService;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
+use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask;
 use TYPO3\CMS\Scheduler\Task\TaskSerializer;
 
 /**
@@ -85,8 +86,10 @@ class SchedulerDatabaseStorageMigration implements UpgradeWizardInterface
                     ];
                     $taskDetails = $taskService->getTaskDetailsFromTask($taskObject);
                     $taskParameters = $taskObject->getTaskParameters();
-                    if ($taskDetails['isNativeTask'] ?? false) {
-                        // map native types to real fields, and do not use the parameters' value.
+                    if (($taskDetails['isNativeTask'] ?? false) && $taskDetails['className'] !== ExecuteSchedulableCommandTask::class) {
+                        // map native types to real fields, and do not use the parameters' value. Only
+                        // exception to this are console commands, which are native types but use the
+                        // parameters as well, because they have dynamic configuration (arguments, options).
                         if (is_array($taskDetails['additionalFields'] ?? false) && $taskDetails['additionalFields'] !== []) {
                             foreach ($taskDetails['additionalFields'] as $additionalFieldName) {
                                 $fieldsToUpdate[$additionalFieldName] = $taskParameters[$additionalFieldName] ?? null;
@@ -213,7 +216,9 @@ class SchedulerDatabaseStorageMigration implements UpgradeWizardInterface
         $allTaskInformation = $taskService->getAllTaskTypes();
         $nativeTaskTypesWithAdditionalFields = [];
         foreach ($allTaskInformation as $taskType => $taskInformation) {
-            if ($taskInformation['isNativeTask'] ?? false) {
+            if (($taskInformation['isNativeTask'] ?? false) && $taskInformation['className'] !== ExecuteSchedulableCommandTask::class) {
+                // Native tasks can define "additionalFields". However, console commands, which are
+                // native tasks as well, do not define real fields but use the "parameters" feature.
                 $nativeTaskTypesWithAdditionalFields[$taskType] = $taskInformation['additionalFields'] ?? [];
             }
         }

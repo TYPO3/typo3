@@ -76,7 +76,19 @@ class CommandRegistry implements CommandLoaderInterface, SingletonInterface
     }
 
     /**
+     * Get the configuration form all commands which are schedulable.
+     */
+    public function getSchedulableCommandsConfiguration(): array
+    {
+        return array_filter(
+            $this->commandConfigurations,
+            static fn(array $configuration): bool => ($configuration['schedulable'] ?? true)
+        );
+    }
+
+    /**
      * Get all commands which are allowed for scheduling recurring commands.
+     * @todo Not used by core. Consider deprecating!
      */
     public function getSchedulableCommands(): \Generator
     {

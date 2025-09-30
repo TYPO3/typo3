@@ -73,7 +73,7 @@ final class ConsoleCommandPassTest extends UnitTestCase
         self::assertTrue($commandRegistry->has('test:cmd'));
         self::assertEquals(['test:cmd'], $commandRegistry->getNames());
         self::assertEquals('Dummy description including new as word', $commandRegistry->filter()['test:cmd']['description'] ?? '');
-        $commandRegistry->getCommandByIdentifier('test:cmd');
+        $commandRegistry->get('test:cmd');
     }
 
     #[Test]

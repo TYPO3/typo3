@@ -17,12 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Scheduler\Task;
 
+use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use TYPO3\CMS\Core\Console\CommandRegistry;
-use TYPO3\CMS\Core\Console\UnknownCommandException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -55,16 +55,6 @@ class ExecuteSchedulableCommandTask extends AbstractTask
      */
     protected $defaults = [];
 
-    public function setCommandIdentifier(string $commandIdentifier)
-    {
-        $this->commandIdentifier = $commandIdentifier;
-    }
-
-    public function getCommandIdentifier(): string
-    {
-        return $this->commandIdentifier;
-    }
-
     /**
      * This is the main method that is called when a task is executed
      * It MUST be implemented by all classes inheriting from this one
@@ -80,8 +70,8 @@ class ExecuteSchedulableCommandTask extends AbstractTask
     {
         try {
             $commandRegistry = GeneralUtility::makeInstance(CommandRegistry::class);
-            $schedulableCommand = $commandRegistry->getCommandByIdentifier($this->commandIdentifier);
-        } catch (UnknownCommandException $e) {
+            $schedulableCommand = $commandRegistry->get($this->commandIdentifier);
+        } catch (CommandNotFoundException $e) {
             throw new \RuntimeException(
                 sprintf(
                     $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.unregisteredCommand'),
@@ -109,8 +99,8 @@ class ExecuteSchedulableCommandTask extends AbstractTask
     {
         try {
             $commandRegistry = GeneralUtility::makeInstance(CommandRegistry::class);
-            $schedulableCommand = $commandRegistry->getCommandByIdentifier($this->commandIdentifier);
-        } catch (UnknownCommandException $e) {
+            $schedulableCommand = $commandRegistry->get($this->commandIdentifier);
+        } catch (CommandNotFoundException $e) {
             return sprintf(
                 $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.unregisteredCommand'),
                 $this->commandIdentifier
@@ -145,19 +135,9 @@ class ExecuteSchedulableCommandTask extends AbstractTask
         return $this->arguments;
     }
 
-    public function setArguments(array $arguments)
-    {
-        $this->arguments = $arguments;
-    }
-
     public function getOptions(): array
     {
         return $this->options;
-    }
-
-    public function setOptions(array $options)
-    {
-        $this->options = $options;
     }
 
     public function getOptionValues(): array
@@ -165,15 +145,7 @@ class ExecuteSchedulableCommandTask extends AbstractTask
         return $this->optionValues;
     }
 
-    public function setOptionValues(array $optionValues)
-    {
-        $this->optionValues = $optionValues;
-    }
-
-    /**
-     * @param mixed $argumentValue
-     */
-    public function addDefaultValue(string $argumentName, $argumentValue)
+    public function addDefaultValue(string $argumentName, mixed $argumentValue): void
     {
         if (is_bool($argumentValue)) {
             $argumentValue = (int)$argumentValue;
@@ -197,6 +169,7 @@ class ExecuteSchedulableCommandTask extends AbstractTask
     {
         return $this->commandIdentifier;
     }
+
     public function setTaskType(string $taskType): void
     {
         $this->commandIdentifier = $taskType;
@@ -214,8 +187,68 @@ class ExecuteSchedulableCommandTask extends AbstractTask
     public function setTaskParameters(array $parameters): void
     {
         $this->commandIdentifier = $parameters['commandIdentifier'] ?? $this->commandIdentifier;
-        $this->arguments = $parameters['arguments'] ?? [];
-        $this->options = $parameters['options'] ?? [];
-        $this->optionValues = $parameters['optionValues'] ?? [];
+        $this->arguments = $this->processArguments($parameters);
+        $processedOptions = $this->processOptions($parameters);
+        $this->options = $processedOptions['options'] ?? [];
+        $this->optionValues = $processedOptions['optionValues'] ?? [];
+    }
+
+    protected function processArguments(array $paremeters): array
+    {
+        if (!is_array($paremeters['arguments'] ?? false)) {
+            return [];
+        }
+        try {
+            $commandRegistry = GeneralUtility::makeInstance(CommandRegistry::class);
+            $command = $commandRegistry->get($this->commandIdentifier);
+        } catch (CommandNotFoundException) {
+            return [];
+        }
+        $arguments = [];
+        foreach ($paremeters['arguments'] as $argumentName => $argumentValue) {
+            try {
+                $argumentDefinition = $command->getDefinition()->getArgument($argumentName);
+            } catch (InvalidArgumentException) {
+                continue;
+            }
+            if ($argumentDefinition->isArray() && is_string($argumentValue)) {
+                $argumentValue = GeneralUtility::trimExplode(',', $argumentValue, true);
+            }
+            $arguments[$argumentName] = $argumentValue;
+        }
+        return $arguments;
+    }
+
+    protected function processOptions(array $parameters): array
+    {
+        if (!is_array($parameters['options'] ?? false)) {
+            return [];
+        }
+        try {
+            $commandRegistry = GeneralUtility::makeInstance(CommandRegistry::class);
+            $command = $commandRegistry->get($this->commandIdentifier);
+        } catch (CommandNotFoundException) {
+            return [];
+        }
+        $options = [];
+        $optionValues = [];
+        foreach ($command->getDefinition()->getOptions() as $optionDefinition) {
+            $optionEnabled = $parameters['options'][$optionDefinition->getName()] ?? false;
+            $options[$optionDefinition->getName()] = (bool)$optionEnabled;
+            if ($optionDefinition->isValueRequired() || $optionDefinition->isValueOptional() || $optionDefinition->isArray()) {
+                $optionValue = $parameters['optionValues'][$optionDefinition->getName()] ?? $optionDefinition->getDefault();
+                if ($optionDefinition->isArray() && is_string($optionValue)) {
+                    // Do not remove empty array values.
+                    // One empty array element indicates the existence of one occurrence of an array option (InputOption::VALUE_IS_ARRAY) without a value.
+                    // Empty array elements are also required for command options like "-vvv" (can be entered as ",,").
+                    $optionValue = GeneralUtility::trimExplode(',', $optionValue);
+                }
+            } else {
+                // boolean flag: option value must be true if option is added or false otherwise
+                $optionValue = (bool)$optionEnabled;
+            }
+            $optionValues[$optionDefinition->getName()] = $optionValue;
+        }
+        return ['options' => $options, 'optionValues' => $optionValues];
     }
 }

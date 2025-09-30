@@ -19,12 +19,14 @@ namespace TYPO3\CMS\Scheduler\Hooks;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
@@ -45,8 +47,10 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 final readonly class SchedulerTaskPersistenceValidator
 {
     private FlashMessageQueue $flashMessageQueue;
+
     public function __construct(
         private TaskService $taskService,
+        private CommandRegistry $commandRegistry,
         private SchedulerTaskRepository $taskRepository,
         private SchedulerModuleController $schedulerModuleController,
         FlashMessageService $flashMessageService,
@@ -212,6 +216,47 @@ final readonly class SchedulerTaskPersistenceValidator
         if ($provider !== null) {
             // Providers should add messages for failed validations on their own.
             $result = $result && $provider->validateAdditionalFields($parsedBody, $this->schedulerModuleController);
+        }
+        if ($this->commandRegistry->has($taskType)
+            && (is_array($parsedBody['arguments'] ?? false) || is_array($parsedBody['options'] ?? false))
+        ) {
+            // If this is a registered console command, validate given arguments / options
+            $command = $this->commandRegistry->get($taskType);
+            foreach ($command->getDefinition()->getArguments() as $argument) {
+                foreach (($parsedBody['arguments'] ?? []) as $argumentName => $argumentValue) {
+                    if ($argument->getName() !== $argumentName) {
+                        continue;
+                    }
+                    if ($argument->isRequired() && trim($argumentValue) === '') {
+                        $this->addErrorMessage($dataHandler, $taskId, sprintf(
+                            $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.mandatoryArgumentMissing'),
+                            $argumentName
+                        ));
+                        $result = false;
+                    }
+                }
+            }
+            foreach ($command->getDefinition()->getOptions() as $optionDefinition) {
+                $optionEnabled = $parsedBody['options'][$optionDefinition->getName()] ?? false;
+                $optionValue = $parsedBody['optionValues'][$optionDefinition->getName()] ?? $optionDefinition->getDefault();
+                if ($optionEnabled && $optionDefinition->isValueRequired()) {
+                    if ($optionDefinition->isArray()) {
+                        $testValues = is_array($optionValue) ? $optionValue : GeneralUtility::trimExplode(',', $optionValue, false);
+                    } else {
+                        $testValues = [$optionValue];
+                    }
+                    foreach ($testValues as $testValue) {
+                        if ($testValue === null || trim($testValue) === '') {
+                            // An option that requires a value is used with an empty value
+                            $this->addErrorMessage($dataHandler, $taskId, sprintf(
+                                $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.mandatoryArgumentMissing'),
+                                $optionDefinition->getName()
+                            ));
+                            $result = false;
+                        }
+                    }
+                }
+            }
         }
         return $result;
     }
