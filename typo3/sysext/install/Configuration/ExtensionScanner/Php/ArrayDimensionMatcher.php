@@ -1299,4 +1299,10 @@ return [
             'Feature-107569-IntroducePSR14BeforeRenderableIsRenderedEvent.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'ext/form\'][\'afterInitializeCurrentPage\']' => [
+        'restFiles' => [
+            'Breaking-107566-RemovedAfterInitializeCurrentPageHook.rst',
+            'Feature-107566-IntroducePSR14AfterCurrentPageIsResolvedEvent.rst',
+        ],
+    ],
 ];

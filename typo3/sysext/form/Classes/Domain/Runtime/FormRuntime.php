@@ -22,6 +22,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Domain\Runtime;
 
 use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
@@ -56,6 +57,7 @@ use TYPO3\CMS\Form\Domain\Renderer\RendererInterface;
 use TYPO3\CMS\Form\Domain\Runtime\Exception\PropertyMappingException;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime\FormSession;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime\Lifecycle\AfterFormStateInitializedInterface;
+use TYPO3\CMS\Form\Event\AfterCurrentPageIsResolvedEvent;
 use TYPO3\CMS\Form\Exception as FormException;
 use TYPO3\CMS\Form\Mvc\Validation\EmptyValidator;
 use TYPO3\CMS\Form\Security\HashScope;
@@ -165,6 +167,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         protected readonly HashService $hashService,
         protected readonly ValidatorResolver $validatorResolver,
         private readonly Context $context,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
         $this->response = new Response();
     }
@@ -259,7 +262,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     /**
      * Initializes the current page data based on the current request, also modifiable by a hook
      */
-    protected function initializeCurrentPageFromRequest()
+    protected function initializeCurrentPageFromRequest(): void
     {
         // If there was no previous form submissions or if the current request
         // can't be processed (no POST request and/or cached) then display the first
@@ -270,26 +273,44 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             if (!$this->currentPage->isEnabled()) {
                 throw new FormException('Disabling the first page is not allowed', 1527186844);
             }
-
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'] ?? [] as $className) {
-                $hookObj = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObj, 'afterInitializeCurrentPage')) {
-                    $this->currentPage = $hookObj->afterInitializeCurrentPage(
-                        $this,
-                        $this->currentPage,
-                        null,
-                        $this->request->getArguments()
-                    );
-                }
-            }
+            $this->dispatchCurrentPageInitializedEvent();
             return;
         }
 
         $this->lastDisplayedPage = $this->formDefinition->getPageByIndex($this->formState->getLastDisplayedPageIndex());
+        $currentPageIndex = $this->determineCurrentPageIndex();
+
+        if ($this->isLastPage($currentPageIndex)) {
+            $this->currentPage = null;
+        } else {
+            $this->currentPage = $this->formDefinition->getPageByIndex($currentPageIndex);
+            if (!$this->currentPage->isEnabled()) {
+                if ($currentPageIndex === 0) {
+                    throw new FormException('Disabling the first page is not allowed', 1527186845);
+                }
+                if ($this->userWentBackToPreviousStep()) {
+                    $this->currentPage = $this->getPreviousEnabledPage();
+                } else {
+                    $this->currentPage = $this->getNextEnabledPage();
+                }
+            }
+        }
+        $this->dispatchCurrentPageInitializedEvent($this->lastDisplayedPage);
+    }
+
+    private function isLastPage(int $currentPageIndex): bool
+    {
+        return $currentPageIndex >= count($this->formDefinition->getPages());
+    }
+
+    /**
+     * Get the current page index by resolving the request
+     */
+    private function determineCurrentPageIndex(): int
+    {
         /** @var ExtbaseRequestParameters $extbaseRequestParameters */
         $extbaseRequestParameters = $this->request->getAttribute('extbase');
         $currentPageIndex = (int)$extbaseRequestParameters->getInternalArgument('__currentPage');
-
         if ($this->userWentBackToPreviousStep()) {
             if ($currentPageIndex < $this->lastDisplayedPage->getIndex()) {
                 $currentPageIndex = $this->lastDisplayedPage->getIndex();
@@ -299,37 +320,23 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
                 $currentPageIndex = $this->lastDisplayedPage->getIndex() + 1;
             }
         }
+        return $currentPageIndex;
+    }
 
-        if ($currentPageIndex >= count($this->formDefinition->getPages())) {
-            // Last Page
-            $this->currentPage = null;
-        } else {
-            $this->currentPage = $this->formDefinition->getPageByIndex($currentPageIndex);
-
-            if (!$this->currentPage->isEnabled()) {
-                if ($currentPageIndex === 0) {
-                    throw new FormException('Disabling the first page is not allowed', 1527186845);
-                }
-
-                if ($this->userWentBackToPreviousStep()) {
-                    $this->currentPage = $this->getPreviousEnabledPage();
-                } else {
-                    $this->currentPage = $this->getNextEnabledPage();
-                }
-            }
-        }
-
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'] ?? [] as $className) {
-            $hookObj = GeneralUtility::makeInstance($className);
-            if (method_exists($hookObj, 'afterInitializeCurrentPage')) {
-                $this->currentPage = $hookObj->afterInitializeCurrentPage(
-                    $this,
-                    $this->currentPage,
-                    $this->lastDisplayedPage,
-                    $this->request->getArguments()
-                );
-            }
-        }
+    /**
+     * Dispatches the AfterCurrentPageIsInitializedEvent event and sets the current page
+     */
+    private function dispatchCurrentPageInitializedEvent(?Page $lastDisplayedPage = null): void
+    {
+        $event = $this->eventDispatcher->dispatch(
+            new AfterCurrentPageIsResolvedEvent(
+                $this->currentPage,
+                $this,
+                $lastDisplayedPage,
+                $this->request,
+            )
+        );
+        $this->currentPage = $event->currentPage;
     }
 
     /**

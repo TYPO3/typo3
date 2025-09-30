@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Form\Tests\Functional\Domain\Runtime;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
@@ -26,12 +27,14 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
+use TYPO3\CMS\Form\Event\AfterCurrentPageIsResolvedEvent;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FormRuntimeTest extends FunctionalTestCase
 {
+    public const AFTER_CURRENT_PAGE_IS_RESOLVED_LISTENER_KEY = 'after-current-page-is-resolved-listener';
     protected array $coreExtensionsToLoad = [
         'form',
     ];
@@ -72,6 +75,32 @@ final class FormRuntimeTest extends FunctionalTestCase
         $this->expectExceptionCode(1326096024);
 
         $formRuntime->render();
+    }
+
+    #[Test]
+    public function afterCurrentPageIsResolvedEventIsTriggered(): void
+    {
+        $container = $this->get('service_container');
+        $state = [
+            self::AFTER_CURRENT_PAGE_IS_RESOLVED_LISTENER_KEY => null,
+        ];
+        $container->set(
+            self::AFTER_CURRENT_PAGE_IS_RESOLVED_LISTENER_KEY,
+            static function (AfterCurrentPageIsResolvedEvent $event) use (&$state): void {
+                $state[self::AFTER_CURRENT_PAGE_IS_RESOLVED_LISTENER_KEY] = $event;
+                $event->currentPage = null;
+            }
+        );
+
+        $eventListener = $container->get(ListenerProvider::class);
+        $eventListener->addListener(AfterCurrentPageIsResolvedEvent::class, self::AFTER_CURRENT_PAGE_IS_RESOLVED_LISTENER_KEY);
+
+        $formDefinition = $this->buildFormDefinition();
+        $formRuntime = $formDefinition->bind($this->request);
+        $formRuntime->render();
+
+        self::assertInstanceOf(AfterCurrentPageIsResolvedEvent::class, $state[self::AFTER_CURRENT_PAGE_IS_RESOLVED_LISTENER_KEY]);
+        self::assertNull($formRuntime->getCurrentPage());
     }
 
     private function buildExtbaseRequest(): Request
