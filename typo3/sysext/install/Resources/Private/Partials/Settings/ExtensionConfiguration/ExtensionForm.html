@@ -38,7 +38,7 @@
                                     aria-controls="category-{extensionKey}-{categoryName}"
                                     role="tab"
                                 >
-                                    {categoryName}
+                                    {category.label}
                                 </button>
                             </li>
                         </f:if>
@@ -50,7 +50,7 @@
                     <div class="tab-content">
                         <f:for each="{extensionData}" as="subcategories" key="categoryName" iteration="iterator">
                             <div role="tabpanel" class="tab-pane {f:if(condition:'{iterator.isFirst}', then:'active')}" id="{i:format.noSpace(value:'category-{extensionKey}-{categoryName}')}">
-                                <f:for each="{subcategories}" as="subcategory">
+                                <f:for each="{subcategories.items}" as="subcategory">
                                     <div class="form-section">
                                         <f:for each="{subcategory.items}" as="configurationItem" iteration="itemIterator">
                                             <f:if condition="{itemIterator.isFirst}">

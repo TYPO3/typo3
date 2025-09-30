@@ -452,13 +452,18 @@ class SettingsController extends AbstractController
                     }
                 }
                 $displayConstants = [];
+                foreach ( $astConstantCommentVisitor->getCategories() as $category => $details ) {
+                    if ( $details['usageCount'] > 0 ) {
+                        $displayConstants[$category]['label'] = $details['label'];
+                    }
+                }
                 foreach ($constants as $constant) {
-                    $displayConstants[$constant['cat']][$constant['subcat_sorting_first']]['label'] = $constant['subcat_label'];
-                    $displayConstants[$constant['cat']][$constant['subcat_sorting_first']]['items'][$constant['subcat_sorting_second']] = $constant;
+                    $displayConstants[$constant['cat']]['items'][$constant['subcat_sorting_first']]['label'] = $constant['subcat_label'];
+                    $displayConstants[$constant['cat']]['items'][$constant['subcat_sorting_first']]['items'][$constant['subcat_sorting_second']] = $constant;
                 }
                 foreach ($displayConstants as &$constantCategory) {
-                    ksort($constantCategory);
-                    foreach ($constantCategory as &$constantDetailItems) {
+                    ksort($constantCategory['items']);
+                    foreach ($constantCategory['items'] as &$constantDetailItems) {
                         ksort($constantDetailItems['items']);
                     }
                 }
