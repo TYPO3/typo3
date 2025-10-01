@@ -1275,7 +1275,7 @@ class DatabaseRecordList
                 $icon = $this->iconFactory
                     ->getIconForRecord($table, $rowArray, IconSize::SMALL)
                     ->setTitle(BackendUtility::getRecordIconAltText($record, $table, false))
-                    ->render();
+                    ->render('inline');
                 $theData[$fCol] = ''
                     . ($indent ? '<span class="indent indent-inline-block" style="--indent-level: ' . $indent . '"></span> ' : '')
                     . (($this->clickMenuEnabled && !$this->isRecordDeletePlaceholder($record)) ? BackendUtility::wrapClickMenuOnIcon($icon, $table, $record->getUid()) : $icon);
