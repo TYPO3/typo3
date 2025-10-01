@@ -28,7 +28,7 @@ Example:
 
     declare(strict_types=1);
 
-    namespace Vendor\myExtension\Domain\Model;
+    namespace Vendor\MyExtension\Domain\Model;
 
     use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 

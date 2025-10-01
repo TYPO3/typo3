@@ -20,7 +20,7 @@ Impact
 
 Using the old configuration method will trigger a PHP deprecation warning.
 The functionality continues to work for now, with the deprecated configuration
-being merged with the new TCA-based configuration automaticcaly.
+being merged with the new TCA-based configuration automatically.
 
 Affected installations
 ======================

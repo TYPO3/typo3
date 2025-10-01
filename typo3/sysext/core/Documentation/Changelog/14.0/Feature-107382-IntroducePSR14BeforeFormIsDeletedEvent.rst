@@ -26,7 +26,7 @@ The event provides the following public properties:
   to prevent the deletion of the form.
 
 The new event is stoppable. As soon as :php:`$preventDeletion` is set to
-:php:`true`, no further listener get's called.
+:php:`true`, no further listener gets called.
 
 Example
 =======

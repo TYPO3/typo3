@@ -6,7 +6,7 @@
 Breaking: #107403 - Remove LocalPreviewHelper + LocalCropScaleMaskHelper
 ========================================================================
 
-See :issue:`104703`
+See :issue:`107403`
 
 Description
 ===========
@@ -48,7 +48,7 @@ Remove any references to :php:`\TYPO3\CMS\Core\Resource\Processing\LocalPreviewH
 or :php:`\TYPO3\CMS\Core\Resource\Processing\LocalCropScaleMaskHelper`
 from your code.
 
-Utilize the `\TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor` processor
+Utilize the :php:`\TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor` processor
 directly instead or implement a custom image processor that is executed before
 this processor with custom functionality.
 

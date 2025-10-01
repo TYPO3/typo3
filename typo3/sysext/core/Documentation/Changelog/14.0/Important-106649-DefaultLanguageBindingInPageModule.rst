@@ -13,7 +13,7 @@ Description
 
 The Page module now always uses **default language binding**
 (:typoscript:`mod.web_layout.defLangBinding`) when displaying
-localized content in the language comparion mode.
+localized content in the language comparison mode.
 
 Default language binding makes editing translations easier: Editors can see
 what they’re translating next to the default language. It additionally prevents
