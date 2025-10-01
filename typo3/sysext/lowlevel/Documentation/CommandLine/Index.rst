@@ -93,7 +93,7 @@ you don't have to run the tests all over again.
 -   `[base command] cleanup:flexforms`
 
     -   After the "deleted" tool since we cannot clean-up deleted records and to
-        make sure nothing unimportant is cleaned up.
+        make sure nothing important is cleaned up.
 
 
 Nightly reports of problems in the system
