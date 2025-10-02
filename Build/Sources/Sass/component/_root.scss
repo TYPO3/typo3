@@ -311,7 +311,6 @@
     --typo3-input-border-width: 1px;
     --typo3-input-border-radius: var(--typo3-component-border-radius);
     --typo3-input-color: var(--typo3-text-color-base);
-    --typo3-input-placeholder-color: color-mix(in srgb, var(--typo3-input-color), transparent 30%);
     --typo3-input-bg: var(--typo3-surface-container-lowest);
     --typo3-input-group-addon-bg: color-mix(in srgb, var(--typo3-input-bg), var(--typo3-input-color) 10%);
     --typo3-input-border-color: var(--typo3-state-default-border-color);
