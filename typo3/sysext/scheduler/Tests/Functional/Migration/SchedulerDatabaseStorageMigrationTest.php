@@ -26,6 +26,8 @@ final class SchedulerDatabaseStorageMigrationTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = [
         'extensionmanager',
+        'info',
+        'linkvalidator',
         'recycler',
         'scheduler',
     ];

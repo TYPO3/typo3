@@ -23,11 +23,15 @@ use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
 use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\Linkvalidator\Event\ModifyValidatorTaskEmailEvent;
 use TYPO3\CMS\Linkvalidator\Linktype\LinktypeRegistry;
@@ -36,7 +40,6 @@ use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
- * This class provides Scheduler plugin implementation
  * @internal This class is a specific Scheduler task implementation and is not part of the TYPO3's Core API.
  */
 class ValidatorTask extends AbstractTask
@@ -121,153 +124,6 @@ class ValidatorTask extends AbstractTask
     protected $taskNeedsUpdate = false;
 
     /**
-     * Get the value of the protected property email
-     *
-     * @return string Email address to which an email report is sent
-     */
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
-
-    /**
-     * Set the value of the private property email.
-     *
-     * @param string $email Email address to which an email report is sent
-     */
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-        return $this;
-    }
-
-    /**
-     * Get the value of the protected property emailOnBrokenLinkOnly
-     *
-     * @return bool Whether to send an email, if new broken links were found
-     */
-    public function getEmailOnBrokenLinkOnly(): bool
-    {
-        return $this->emailOnBrokenLinkOnly;
-    }
-
-    /**
-     * Set the value of the private property emailOnBrokenLinkOnly
-     *
-     * @param bool $emailOnBrokenLinkOnly Only send an email, if new broken links were found
-     */
-    public function setEmailOnBrokenLinkOnly(bool $emailOnBrokenLinkOnly): self
-    {
-        $this->emailOnBrokenLinkOnly = $emailOnBrokenLinkOnly;
-        return $this;
-    }
-
-    /**
-     * Get the value of the protected property page
-     *
-     * @return int UID of the start page for this task
-     */
-    public function getPage(): int
-    {
-        return $this->page;
-    }
-
-    /**
-     * Set the value of the private property page
-     *
-     * @param int $page UID of the start page for this task.
-     */
-    public function setPage(int $page): self
-    {
-        $this->page = $page;
-        return $this;
-    }
-
-    /**
-     * Get the value of the protected property languages
-     *
-     * @return string Languages to fetch broken links
-     */
-    public function getLanguages(): string
-    {
-        return $this->languages;
-    }
-
-    /**
-     * Set the value of the private property languages
-     *
-     * @param string $languages Languages to fetch broken links
-     */
-    public function setLanguages(string $languages): self
-    {
-        $this->languages = $languages;
-        return $this;
-    }
-
-    /**
-     * Get the value of the protected property depth
-     *
-     * @return int Level of pages the task should check
-     */
-    public function getDepth(): int
-    {
-        return $this->depth;
-    }
-
-    /**
-     * Set the value of the private property depth
-     *
-     * @param int $depth Level of pages the task should check
-     */
-    public function setDepth(int $depth): self
-    {
-        $this->depth = $depth;
-        return $this;
-    }
-
-    /**
-     * Get the value of the protected property emailTemplateName
-     *
-     * @return string Template name to be used for the email
-     */
-    public function getEmailTemplateName(): string
-    {
-        return $this->emailTemplateName;
-    }
-
-    /**
-     * Set the value of the private property emailTemplateName
-     *
-     * @param string $emailTemplateName Template name to be used for the email
-     */
-    public function setEmailTemplateName(string $emailTemplateName): self
-    {
-        $this->emailTemplateName = $emailTemplateName;
-        return $this;
-    }
-
-    /**
-     * Get the value of the protected property configuration
-     *
-     * @return string specific TSconfig for this task
-     */
-    public function getConfiguration(): string
-    {
-        return $this->configuration;
-    }
-
-    /**
-     * Set the value of the private property configuration
-     *
-     * @param string $configuration specific TSconfig for this task
-     */
-    public function setConfiguration(string $configuration): self
-    {
-        $this->configuration = $configuration;
-        return $this;
-    }
-
-    /**
      * Function execute from the Scheduler
      *
      * @return bool TRUE on successful execution, FALSE on error
@@ -283,7 +139,7 @@ class ValidatorTask extends AbstractTask
         $successfullyExecuted = true;
         $linkAnalyzerResult = $this->getLinkAnalyzerResult();
 
-        if ($this->getEmail() !== '' &&
+        if ($this->email !== '' &&
             $linkAnalyzerResult->getTotalBrokenLinksCount() > 0
             && (!$this->emailOnBrokenLinkOnly || $linkAnalyzerResult->isDifferentToLastResult())
         ) {
@@ -445,7 +301,7 @@ class ValidatorTask extends AbstractTask
         }
 
         try {
-            // TODO: DI should be used to inject the MailerInterface
+            // TODO: DI should be used to inject the MailerInterface - can be done in v16 once the serialized task migration is done
             GeneralUtility::makeInstance(MailerInterface::class)->send($fluidEmail);
         } catch (TransportExceptionInterface $e) {
             return false;
@@ -470,14 +326,70 @@ class ValidatorTask extends AbstractTask
             }
         }
         $lang = $this->getLanguageService();
-        $depth = $this->depth;
         $additionalInformation[] = $lang->sL($this->languageFile . ':tasks.validate.page') . ': ' . $pageLabel;
         $additionalInformation[] = $lang->sL($this->languageFile . ':tasks.validate.depth') . ': '
-            . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_' . ($depth === 999 ? 'infi' : $depth));
+            . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_' . ($this->depth === 999 ? 'infi' : $this->depth));
         $additionalInformation[] = $lang->sL($this->languageFile . ':tasks.validate.email') . ': '
-            . $this->getEmail();
+            . $this->email;
 
         return implode(', ', $additionalInformation);
+    }
+
+    public function getTaskParameters(): array
+    {
+        return [
+            'tx_linkvalidator_configuration' => $this->configuration,
+            'tx_linkvalidator_depth' => $this->depth,
+            'tx_linkvalidator_page' => $this->page,
+            'tx_linkvalidator_languages' => $this->languages,
+            'tx_linkvalidator_email' => $this->email,
+            'tx_linkvalidator_email_on_broken_link_only' => $this->emailOnBrokenLinkOnly,
+            'tx_linkvalidator_email_template_name' => $this->emailTemplateName,
+        ];
+    }
+
+    public function setTaskParameters(array $parameters): void
+    {
+        $this->configuration = (string)($parameters['configuration'] ?? $parameters['tx_linkvalidator_configuration'] ?? '');
+        $this->depth = (int)($parameters['depth'] ?? $parameters['tx_linkvalidator_depth'] ?? 0);
+        $this->page = $this->extractPageId($parameters);
+        $this->languages = (string)($parameters['languages'] ?? $parameters['tx_linkvalidator_languages'] ?? '');
+        $this->email = (string)($parameters['email'] ?? $parameters['tx_linkvalidator_email'] ?? '');
+        $this->emailOnBrokenLinkOnly = (bool)($parameters['emailOnBrokenLinkOnly'] ?? $parameters['tx_linkvalidator_email_on_broken_link_only'] ?? true);
+        $this->emailTemplateName = (string)($parameters['emailTemplateName'] ?? $parameters['tx_linkvalidator_email_template_name'] ?? '');
+    }
+
+    public function validateTaskParameters(array $parameters): bool
+    {
+        $isValid = true;
+        $lang = $this->getLanguageService();
+        $email = (string)($parameters['email'] ?? '');
+        if ($email !== '') {
+            $emailList = GeneralUtility::trimExplode((str_contains($email, ',')) ? ',' : LF, $email);
+            foreach ($emailList as $emailAdd) {
+                if (!GeneralUtility::validEmail($emailAdd)) {
+                    $isValid = false;
+                    GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->addMessage(
+                        GeneralUtility::makeInstance(FlashMessage::class, $lang?->sL($this->languageFile . ':tasks.validate.invalidEmail'), '', ContextualFeedbackSeverity::ERROR)
+                    );
+                }
+            }
+        }
+        $page = $this->extractPageId($parameters);
+        $row = BackendUtility::getRecord('pages', $page, '*', '', false);
+        if ($row === null) {
+            $isValid = false;
+            GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->addMessage(
+                GeneralUtility::makeInstance(FlashMessage::class, $lang?->sL($this->languageFile . ':tasks.validate.invalidPage'), '', ContextualFeedbackSeverity::ERROR)
+            );
+        }
+        if ((int)($parameters['depth'] ?? 0) < 0) {
+            $isValid = false;
+            GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->addMessage(
+                GeneralUtility::makeInstance(FlashMessage::class, $lang?->sL($this->languageFile . ':tasks.validate.invalidDepth'), '', ContextualFeedbackSeverity::ERROR)
+            );
+        }
+        return $isValid;
     }
 
     /**
@@ -528,7 +440,7 @@ class ValidatorTask extends AbstractTask
     }
 
     /**
-     * Check if both template files (html and txt) exist under at least one template path
+     * Check if both template files (HTML and txt) exist under at least one template path
      */
     protected function templateFilesExist(array $templatePaths): bool
     {
@@ -540,5 +452,18 @@ class ValidatorTask extends AbstractTask
             }
         }
         return false;
+    }
+
+    protected function extractPageId(array $parameters): int
+    {
+        $page = $parameters['page'] ?? $parameters['tx_linkvalidator_page'] ?? 0;
+        if (MathUtility::canBeInterpretedAsInteger($page)) {
+            return (int)$page;
+        }
+        if (is_string($page)) {
+            return (int)str_replace('pages_', '', $page);
+        }
+        // array or something else
+        return 0;
     }
 }

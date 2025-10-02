@@ -117,6 +117,7 @@ readonly class TaskService
                 'className' => $registrationInformation['className'],
                 'taskType' => $taskType,
                 'category' => $registrationInformation['extension'],
+                'icon' => $registrationInformation['icon'],
                 'title' => $registrationInformation['title'],
                 'fullTitle' => $registrationInformation['title'] . ' [' . $registrationInformation['extension'] . ']',
                 'description' => $registrationInformation['description'],

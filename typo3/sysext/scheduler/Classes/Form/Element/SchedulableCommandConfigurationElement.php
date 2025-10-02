@@ -107,7 +107,9 @@ class SchedulableCommandConfigurationElement extends AbstractFormElement
             $html[] =     '<div class="form-wizards-wrap">';
             $html[] =         $this->renderCommandConfiguration(array_merge($argumentFields, $optionFields), $selectedTaskType, $itemName);
             $html[] =     '</div>';
-            $html[] =     $this->getRunOnCliInfo($taskObject, $command);
+            if ($this->data['command'] === 'edit') {
+                $html[] = $this->getRunOnCliInfo($taskObject, $command);
+            }
             $html[] = '</div>';
 
             $resultArray['html'] = $this->wrapWithFieldsetAndLegend(implode(LF, $html));

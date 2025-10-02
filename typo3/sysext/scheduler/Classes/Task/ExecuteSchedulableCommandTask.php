@@ -23,6 +23,9 @@ use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use TYPO3\CMS\Core\Console\CommandRegistry;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -191,6 +194,59 @@ class ExecuteSchedulableCommandTask extends AbstractTask
         $processedOptions = $this->processOptions($parameters);
         $this->options = $processedOptions['options'] ?? [];
         $this->optionValues = $processedOptions['optionValues'] ?? [];
+    }
+
+    public function validateTaskParameters(array $parameters): bool
+    {
+        $result = true;
+        $commandRegistry = GeneralUtility::makeInstance(CommandRegistry::class);
+        $flashMessageQueue = GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier();
+        if ($commandRegistry->has($this->getTaskType())
+            && (is_array($parameters['arguments'] ?? false) || is_array($parameters['options'] ?? false))
+        ) {
+            // If this is a registered console command, validate given arguments / options
+            $command = $commandRegistry->get($this->getTaskType());
+            foreach ($command->getDefinition()->getArguments() as $argument) {
+                foreach (($parameters['arguments'] ?? []) as $argumentName => $argumentValue) {
+                    if ($argument->getName() !== $argumentName) {
+                        continue;
+                    }
+                    if ($argument->isRequired() && trim($argumentValue) === '') {
+                        $flashMessageQueue->addMessage(
+                            GeneralUtility::makeInstance(FlashMessage::class, sprintf(
+                                $this->getLanguageService()?->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.mandatoryArgumentMissing'),
+                                $argumentName
+                            ), '', ContextualFeedbackSeverity::ERROR)
+                        );
+                        $result = false;
+                    }
+                }
+            }
+            foreach ($command->getDefinition()->getOptions() as $optionDefinition) {
+                $optionEnabled = $parameters['options'][$optionDefinition->getName()] ?? false;
+                $optionValue = $parameters['optionValues'][$optionDefinition->getName()] ?? $optionDefinition->getDefault();
+                if ($optionEnabled && $optionDefinition->isValueRequired()) {
+                    if ($optionDefinition->isArray()) {
+                        $testValues = is_array($optionValue) ? $optionValue : GeneralUtility::trimExplode(',', $optionValue, false);
+                    } else {
+                        $testValues = [$optionValue];
+                    }
+                    foreach ($testValues as $testValue) {
+                        if ($testValue === null || trim($testValue) === '') {
+                            // An option that requires a value is used with an empty value
+                            $flashMessageQueue->addMessage(
+                                GeneralUtility::makeInstance(FlashMessage::class, sprintf(
+                                    $this->getLanguageService()?->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.mandatoryArgumentMissing'),
+                                    $optionDefinition->getName()
+                                ), '', ContextualFeedbackSeverity::ERROR)
+                            );
+                            $result = false;
+                        }
+                    }
+                }
+            }
+        }
+        return $result;
     }
 
     protected function processArguments(array $paremeters): array

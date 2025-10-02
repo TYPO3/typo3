@@ -3235,12 +3235,6 @@ parameters:
 			path: ../../typo3/sysext/linkvalidator/Classes/Linktype/ExternalLinktype.php
 
 		-
-			message: '#^PHPDoc tag @var with type array\<string, string\> is not subtype of native type array\{0\: string, 1\: string, 2\: string, 3\: string, 4\: string, 999\: string\}\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: ../../typo3/sysext/linkvalidator/Classes/Task/ValidatorTaskAdditionalFieldProvider.php
-
-		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 2

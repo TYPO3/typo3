@@ -19,14 +19,12 @@ namespace TYPO3\CMS\Scheduler\Hooks;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
@@ -50,7 +48,6 @@ final readonly class SchedulerTaskPersistenceValidator
 
     public function __construct(
         private TaskService $taskService,
-        private CommandRegistry $commandRegistry,
         private SchedulerTaskRepository $taskRepository,
         private SchedulerModuleController $schedulerModuleController,
         FlashMessageService $flashMessageService,
@@ -94,15 +91,6 @@ final readonly class SchedulerTaskPersistenceValidator
             $taskType = $incomingFieldArray['tasktype'];
             $this->schedulerModuleController->setCurrentAction(SchedulerManagementAction::ADD);
         }
-        $decodedAndExtractedFieldArray = $this->decodeValues($incomingFieldArray);
-        if (!$this->isSubmittedTaskDataValid($dataHandler, $id, $decodedAndExtractedFieldArray, $taskType)) {
-            // Custom AdditionalFieldProvider may have added error messages via the FlashMessageQueue (as recommended)
-            // which is needed to render them properly in FormEngine via $dataHandler->printLogErrorMessages();
-            $this->convertErrorMessagesToDataHandlerLog($dataHandler, $id);
-            // Setting this to a "non-array" will skip further persistence chain
-            $incomingFieldArray = false;
-            return;
-        }
         if ($isNewTask) {
             try {
                 $task = $this->taskService->createNewTask($taskType);
@@ -112,13 +100,25 @@ final readonly class SchedulerTaskPersistenceValidator
                 $incomingFieldArray = false;
                 return;
             }
+        } else {
+            $task = $this->taskRepository->findByUid((int)$id);
+        }
+        $decodedAndExtractedFieldArray = $this->decodeValues($incomingFieldArray);
+        if (!$this->isSubmittedTaskDataValid($dataHandler, $id, $decodedAndExtractedFieldArray, $task)) {
+            // Custom AdditionalFieldProvider may have added error messages via the FlashMessageQueue (as recommended)
+            // which is needed to render them properly in FormEngine via $dataHandler->printLogErrorMessages();
+            $this->convertErrorMessagesToDataHandlerLog($dataHandler, $id);
+            // Setting this to a "non-array" will skip further persistence chain
+            $incomingFieldArray = false;
+            return;
+        }
+        // Now let's transform our data
+        if ($isNewTask) {
             $this->taskService->setTaskDataFromRequest($task, $decodedAndExtractedFieldArray);
             $incomingFieldArray = array_replace_recursive($incomingFieldArray, $this->taskService->getFieldsForRecord($task));
             $incomingFieldArray['parameters'] = $incomingFieldArray['parameters'] ?? [];
             $incomingFieldArray['pid'] = 0;
         } else {
-            // Now let's transform our data
-            $task = $this->taskRepository->findByUid((int)$id);
             $this->taskService->setTaskDataFromRequest($task, $decodedAndExtractedFieldArray);
             $incomingFieldArray = array_replace_recursive($incomingFieldArray, $this->taskService->getFieldsForRecord($task));
             if ($changedTaskType) {
@@ -165,7 +165,7 @@ final readonly class SchedulerTaskPersistenceValidator
         );
     }
 
-    protected function isSubmittedTaskDataValid(DataHandler $dataHandler, string|int $taskId, array $parsedBody, string $taskType): bool
+    protected function isSubmittedTaskDataValid(DataHandler $dataHandler, string|int $taskId, array $parsedBody, AbstractTask $task): bool
     {
         $startTime = $parsedBody['start'] ?? 0;
         $endTime = $parsedBody['end'] ?? 0;
@@ -212,53 +212,12 @@ final readonly class SchedulerTaskPersistenceValidator
                 }
             }
         }
-        $provider = $this->taskService->getAdditionalFieldProviderForTask($taskType);
+        $provider = $this->taskService->getAdditionalFieldProviderForTask($task->getTaskType());
         if ($provider !== null) {
             // Providers should add messages for failed validations on their own.
             $result = $result && $provider->validateAdditionalFields($parsedBody, $this->schedulerModuleController);
         }
-        if ($this->commandRegistry->has($taskType)
-            && (is_array($parsedBody['arguments'] ?? false) || is_array($parsedBody['options'] ?? false))
-        ) {
-            // If this is a registered console command, validate given arguments / options
-            $command = $this->commandRegistry->get($taskType);
-            foreach ($command->getDefinition()->getArguments() as $argument) {
-                foreach (($parsedBody['arguments'] ?? []) as $argumentName => $argumentValue) {
-                    if ($argument->getName() !== $argumentName) {
-                        continue;
-                    }
-                    if ($argument->isRequired() && trim($argumentValue) === '') {
-                        $this->addErrorMessage($dataHandler, $taskId, sprintf(
-                            $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.mandatoryArgumentMissing'),
-                            $argumentName
-                        ));
-                        $result = false;
-                    }
-                }
-            }
-            foreach ($command->getDefinition()->getOptions() as $optionDefinition) {
-                $optionEnabled = $parsedBody['options'][$optionDefinition->getName()] ?? false;
-                $optionValue = $parsedBody['optionValues'][$optionDefinition->getName()] ?? $optionDefinition->getDefault();
-                if ($optionEnabled && $optionDefinition->isValueRequired()) {
-                    if ($optionDefinition->isArray()) {
-                        $testValues = is_array($optionValue) ? $optionValue : GeneralUtility::trimExplode(',', $optionValue, false);
-                    } else {
-                        $testValues = [$optionValue];
-                    }
-                    foreach ($testValues as $testValue) {
-                        if ($testValue === null || trim($testValue) === '') {
-                            // An option that requires a value is used with an empty value
-                            $this->addErrorMessage($dataHandler, $taskId, sprintf(
-                                $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.mandatoryArgumentMissing'),
-                                $optionDefinition->getName()
-                            ));
-                            $result = false;
-                        }
-                    }
-                }
-            }
-        }
-        return $result;
+        return $result && (!method_exists($task, 'validateTaskParameters') || $task->validateTaskParameters($parsedBody));
     }
 
     /**

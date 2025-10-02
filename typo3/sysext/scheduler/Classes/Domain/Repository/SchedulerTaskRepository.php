@@ -37,6 +37,8 @@ use TYPO3\CMS\Scheduler\Validation\Validator\TaskValidator;
 
 /**
  * Repository class to fetch tasks available in the systems ready to be executed
+ *
+ * @internal not part of public TYPO3 Core API
  */
 #[Autoconfigure(public: true)]
 readonly class SchedulerTaskRepository
@@ -120,7 +122,7 @@ readonly class SchedulerTaskRepository
     /**
      * Fetches a task object from the db with the given $uid. The object representing
      * the next due task is returned.
-     * If there are no due tasks the method throws an exception.
+     * If there are no tasks due, the method throws an exception.
      *
      * @param int $uid Primary key of a task
      * @throws \OutOfBoundsException
@@ -141,7 +143,6 @@ readonly class SchedulerTaskRepository
      * Fetch and unserialize a task object from the db. Returns the object representing the
      * next due task is returned. If there are no due tasks, the method throws an exception.
      *
-     * @return AbstractTask|null The fetched task object
      * @throws \UnexpectedValueException
      */
     public function findNextExecutableTask(): ?AbstractTask
@@ -203,7 +204,7 @@ readonly class SchedulerTaskRepository
     }
 
     /**
-     * @internal This will get split up into errored classes
+     * @todo This will get split up into errored classes
      */
     public function getGroupedTasks(): array
     {
