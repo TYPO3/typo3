@@ -362,6 +362,7 @@ final class NewContentElementControllerTest extends UnitTestCase
                         'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header.description',
                         'value' => 'header',
                         'icon' => 'content-header',
+                        'iconOverlay' => 'content-text',
                         'group' => 'default',
                     ],
                     [
@@ -388,6 +389,7 @@ final class NewContentElementControllerTest extends UnitTestCase
                 'elements.' => [
                     'header.' => [
                         'iconIdentifier' => 'content-header',
+                        'iconOverlay' => 'content-text',
                         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header',
                         'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header.description',
                         'defaultValues' => [
@@ -396,6 +398,7 @@ final class NewContentElementControllerTest extends UnitTestCase
                     ],
                     'text.' => [
                         'iconIdentifier' => 'content-text',
+                        'iconOverlay' => null,
                         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text',
                         'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text.description',
                         'defaultValues' => [

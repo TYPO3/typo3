@@ -327,6 +327,7 @@ class NewContentElementController
             $itemDescription = $selectItem->getDescription();
             $wizardEntry = [
                 'iconIdentifier' => $selectItem->getIcon(),
+                'iconOverlay' => $selectItem->getIconOverlay(),
                 'title' => $selectItem->getLabel(),
                 'description' => $itemDescription['description'] ?? ($itemDescription ?? ''),
             ];

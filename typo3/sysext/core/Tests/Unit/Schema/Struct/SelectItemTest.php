@@ -29,19 +29,19 @@ final class SelectItemTest extends UnitTestCase
         yield 'only required fields' => [
             ['label' => 'foo', 'value' => 'bar'],
             'select',
-            ['label' => 'foo', 'value' => 'bar', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'foo', 'value' => 'bar', 'icon' => null, 'iconOverlay' => null, 'group' => null, 'description' => null],
         ];
 
         yield 'all fields' => [
-            ['label' => 'foo', 'value' => 'bar', 'icon' => 'myIcon', 'group' => 'myGroup', 'description' => 'myDescription'],
+            ['label' => 'foo', 'value' => 'bar', 'icon' => 'myIcon', 'iconOverlay' => 'myIconOverlay', 'group' => 'myGroup', 'description' => 'myDescription'],
             'select',
-            ['label' => 'foo', 'value' => 'bar', 'icon' => 'myIcon', 'group' => 'myGroup', 'description' => 'myDescription'],
+            ['label' => 'foo', 'value' => 'bar', 'icon' => 'myIcon', 'iconOverlay' => 'myIconOverlay', 'group' => 'myGroup', 'description' => 'myDescription'],
         ];
 
         yield 'integer as value' => [
-            ['label' => 'foo', 'value' => 1, 'icon' => 'myIcon', 'group' => 'myGroup', 'description' => 'myDescription'],
+            ['label' => 'foo', 'value' => 1, 'icon' => 'myIcon', 'iconOverlay' => 'myIconOverlay', 'group' => 'myGroup', 'description' => 'myDescription'],
             'select',
-            ['label' => 'foo', 'value' => 1, 'icon' => 'myIcon', 'group' => 'myGroup', 'description' => 'myDescription'],
+            ['label' => 'foo', 'value' => 1, 'icon' => 'myIcon', 'iconOverlay' => 'myIconOverlay', 'group' => 'myGroup', 'description' => 'myDescription'],
         ];
 
         yield 'checkbox fields' => [
@@ -59,7 +59,7 @@ final class SelectItemTest extends UnitTestCase
         yield 'legacy indexed array keys' => [
             ['foo', 'bar', 'myIcon', 'myGroup', 'myDescription'],
             'select',
-            ['label' => 'foo', 'value' => 'bar', 'icon' => 'myIcon', 'group' => 'myGroup', 'description' => 'myDescription'],
+            ['label' => 'foo', 'value' => 'bar', 'icon' => 'myIcon', 'iconOverlay' => null, 'group' => 'myGroup', 'description' => 'myDescription'],
         ];
     }
 
@@ -85,12 +85,12 @@ final class SelectItemTest extends UnitTestCase
     {
         yield 'only required fields' => [
             ['label' => 'foo', 'value' => 'bar'],
-            ['icon' => false, 'group' => false, 'description' => false],
+            ['icon' => false, 'iconOverlay' => false, 'group' => false, 'description' => false],
         ];
 
         yield 'all fields' => [
-            ['label' => 'foo', 'value' => 'bar', 'icon' => 'myIcon', 'group' => 'myGroup', 'description' => 'myDescription'],
-            ['icon' => true, 'group' => true, 'description' => true],
+            ['label' => 'foo', 'value' => 'bar', 'icon' => 'myIcon', 'iconOverlay' => 'myIconOverlay', 'group' => 'myGroup', 'description' => 'myDescription'],
+            ['icon' => true, 'iconOverlay' => true, 'group' => true, 'description' => true],
         ];
     }
 
@@ -101,6 +101,7 @@ final class SelectItemTest extends UnitTestCase
         $selectionItem = SelectItem::fromTcaItemArray($item);
 
         self::assertSame($expected['icon'], $selectionItem->hasIcon());
+        self::assertSame($expected['iconOverlay'], $selectionItem->hasIconOverlay());
         self::assertSame($expected['group'], $selectionItem->hasGroup());
         self::assertSame($expected['description'], $selectionItem->hasDescription());
     }
@@ -115,6 +116,7 @@ final class SelectItemTest extends UnitTestCase
             icon: 'myIcon',
             group: 'myGroup',
             description: 'my description',
+            iconOverlay: 'myIconOverlay',
         );
 
         self::assertSame('foo', $selectionItem['label']);
@@ -122,6 +124,7 @@ final class SelectItemTest extends UnitTestCase
         self::assertSame('myIcon', $selectionItem['icon']);
         self::assertSame('myGroup', $selectionItem['group']);
         self::assertSame('my description', $selectionItem['description']);
+        self::assertSame('myIconOverlay', $selectionItem['iconOverlay']);
     }
 
     #[Test]
@@ -157,12 +160,14 @@ final class SelectItemTest extends UnitTestCase
         $selectionItem['icon'] = 'myIcon';
         $selectionItem['group'] = 'myGroup';
         $selectionItem['description'] = 'my description';
+        $selectionItem['iconOverlay'] = 'myIconOverlay';
 
         self::assertSame('oof', $selectionItem->getLabel());
         self::assertSame('rab', $selectionItem->getValue());
         self::assertSame('myIcon', $selectionItem->getIcon());
         self::assertSame('myGroup', $selectionItem->getGroup());
         self::assertSame('my description', $selectionItem->getDescription());
+        self::assertSame('myIconOverlay', $selectionItem->getIconOverlay());
     }
 
     #[Test]
@@ -243,6 +248,7 @@ final class SelectItemTest extends UnitTestCase
         self::assertFalse(isset($selectionItem['icon']));
         self::assertFalse(isset($selectionItem['group']));
         self::assertFalse(isset($selectionItem['description']));
+        self::assertFalse(isset($selectionItem['iconOverlay']));
     }
 
     #[Test]

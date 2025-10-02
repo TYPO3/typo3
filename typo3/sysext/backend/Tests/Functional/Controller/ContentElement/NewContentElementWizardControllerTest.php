@@ -35,10 +35,12 @@ final class NewContentElementWizardControllerTest extends FunctionalTestCase
                 'value' => 'element_a',
                 'group' => 'default',
                 'icon' => 'content-header',
+                'iconOverlay' => 'content-text',
             ],
             'creationOptions' => [],
             'expected' => [
                 'iconIdentifier' => 'content-header',
+                'iconOverlay' => 'content-text',
                 'title' => 'Element A',
                 'description' => '',
                 'defaultValues' => [
@@ -53,10 +55,12 @@ final class NewContentElementWizardControllerTest extends FunctionalTestCase
                 'value' => 'element_a',
                 'group' => 'undefined',
                 'icon' => 'content-header',
+                'iconOverlay' => 'content-text',
             ],
             'creationOptions' => [],
             'expected' => [
                 'iconIdentifier' => 'content-header',
+                'iconOverlay' => 'content-text',
                 'title' => 'Element A',
                 'description' => '',
                 'defaultValues' => [
@@ -71,10 +75,12 @@ final class NewContentElementWizardControllerTest extends FunctionalTestCase
                 'value' => 'element_a',
                 'group' => null,
                 'icon' => 'content-header',
+                'iconOverlay' => 'content-text',
             ],
             'creationOptions' => [],
             'expected' => [
                 'iconIdentifier' => 'content-header',
+                'iconOverlay' => 'content-text',
                 'title' => 'Element A',
                 'description' => '',
                 'defaultValues' => [
@@ -89,6 +95,7 @@ final class NewContentElementWizardControllerTest extends FunctionalTestCase
                 'value' => 'element_a',
                 'group' => 'default',
                 'icon' => 'content-header',
+                'iconOverlay' => 'content-text',
             ],
             'creationOptions' => [
                 'defaultValues' => [
@@ -98,6 +105,7 @@ final class NewContentElementWizardControllerTest extends FunctionalTestCase
             ],
             'expected' => [
                 'iconIdentifier' => 'content-header',
+                'iconOverlay' => 'content-text',
                 'title' => 'Element A',
                 'description' => '',
                 'defaultValues' => [
@@ -152,9 +160,11 @@ final class NewContentElementWizardControllerTest extends FunctionalTestCase
                 'value' => 'plugin_a',
                 'group' => 'plugins',
                 'icon' => 'content-plugin',
+                'iconOverlay' => 'content-text',
             ],
             'expected' => [
                 'iconIdentifier' => 'content-plugin',
+                'iconOverlay' => 'content-text',
                 'title' => 'Plugin A',
                 'description' => '',
                 'defaultValues' => [
