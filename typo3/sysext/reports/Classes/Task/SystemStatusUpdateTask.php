@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -19,6 +21,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,7 +42,7 @@ class SystemStatusUpdateTask extends AbstractTask
      *
      * @var string
      */
-    protected $notificationEmail;
+    protected $notificationEmail = '';
 
     /**
      * Checkbox for to send all types of notification, not only problems
@@ -61,30 +65,10 @@ class SystemStatusUpdateTask extends AbstractTask
         $systemStatus = $statusReport->getDetailedSystemStatus();
         $highestSeverity = $statusReport->getHighestSeverity($systemStatus);
         $registry->set('tx_reports', 'status.highestSeverity', $highestSeverity);
-        if (($highestSeverity > ContextualFeedbackSeverity::OK->value) || $this->getNotificationAll()) {
+        if (($highestSeverity > ContextualFeedbackSeverity::OK->value) || $this->notificationAll) {
             $this->sendNotificationEmail($systemStatus);
         }
         return true;
-    }
-
-    /**
-     * Gets the notification email addresses.
-     *
-     * @return string Notification email addresses.
-     */
-    public function getNotificationEmail()
-    {
-        return $this->notificationEmail;
-    }
-
-    /**
-     * Sets the notification email address.
-     *
-     * @param string $notificationEmail Notification email address.
-     */
-    public function setNotificationEmail($notificationEmail)
-    {
-        $this->notificationEmail = $notificationEmail;
     }
 
     /**
@@ -92,12 +76,12 @@ class SystemStatusUpdateTask extends AbstractTask
      *
      * @param Status[][] $systemStatus Array of statuses
      */
-    protected function sendNotificationEmail(array $systemStatus)
+    protected function sendNotificationEmail(array $systemStatus): void
     {
         $systemIssues = [];
         foreach ($systemStatus as $statusProvider) {
             foreach ($statusProvider as $status) {
-                if ($this->getNotificationAll() || ($status->getSeverity()->value > ContextualFeedbackSeverity::OK->value)) {
+                if ($this->notificationAll || ($status->getSeverity()->value > ContextualFeedbackSeverity::OK->value)) {
                     $systemIssues[] = (string)$status . CRLF . $status->getMessage() . CRLF . CRLF;
                 }
             }
@@ -108,7 +92,7 @@ class SystemStatusUpdateTask extends AbstractTask
             $sendEmailsTo[] = new Address($notificationEmail);
         }
         $subject = sprintf($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTask_email_subject'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
-        $message = sprintf($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:' . ($this->getNotificationAll() ? 'status_allNotification' : 'status_problemNotification')), '', '');
+        $message = sprintf($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:' . ($this->notificationAll ? 'status_allNotification' : 'status_problemNotification')), '', '');
         $message .= CRLF . CRLF;
         $message .= $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTask_email_site') . ': ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         $message .= CRLF . CRLF;
@@ -139,13 +123,41 @@ class SystemStatusUpdateTask extends AbstractTask
         GeneralUtility::makeInstance(MailerInterface::class)->send($email);
     }
 
-    public function getNotificationAll(): bool
+    public function getAdditionalInformation()
     {
-        return $this->notificationAll;
+        return sprintf($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateAdditionalInformation'), preg_replace('#\s+#', ', ', trim($this->notificationEmail)));
     }
 
-    public function setNotificationAll(bool $notificationAll)
+    public function getTaskParameters(): array
     {
-        $this->notificationAll = $notificationAll;
+        return [
+            'tx_reports_notification_email' => $this->notificationEmail,
+            'tx_reports_notification_all' => $this->notificationAll,
+        ];
+    }
+
+    public function setTaskParameters(array $parameters): void
+    {
+        $this->notificationEmail = $parameters['notificationEmail'] ?? $parameters['tx_reports_notification_email'] ?? '';
+        $this->notificationAll = (bool)($parameters['notificationAll'] ?? $parameters['tx_reports_notification_all'] ?? false);
+    }
+
+    public function validateTaskParameters(array $parameters): bool
+    {
+        $validInput = true;
+        $notificationEmails = GeneralUtility::trimExplode(LF, $parameters['tx_reports_notification_email'] ?? '', true);
+        foreach ($notificationEmails as $notificationEmail) {
+            if (!GeneralUtility::validEmail($notificationEmail)) {
+                $validInput = false;
+                break;
+            }
+        }
+        if (!$validInput || empty($parameters['tx_reports_notification_email'] ?? '')) {
+            GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->addMessage(
+                GeneralUtility::makeInstance(FlashMessage::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTaskField_notificationEmails_invalid'), '', ContextualFeedbackSeverity::ERROR)
+            );
+            $validInput = false;
+        }
+        return $validInput;
     }
 }

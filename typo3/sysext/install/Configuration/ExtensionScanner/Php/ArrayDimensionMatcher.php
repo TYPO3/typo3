@@ -1288,4 +1288,9 @@ return [
             'Deprecation-107562-IpAnonymizationTaskConfigurationViaGlobals.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'scheduler\'][\'tasks\']' => [
+        'restFiles' => [
+            'Deprecation-98453-SchedulerTaskRegistrationViaSCOPTIONS.rst',
+        ],
+    ],
 ];

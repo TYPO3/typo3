@@ -224,6 +224,10 @@ readonly class TaskService
         $taskInformation = $this->getTaskDetailsFromTaskType($taskType);
         $provider = null;
         if (!empty($taskInformation['provider'])) {
+            trigger_error(
+                $taskInformation['provider'] . ' is using AdditionalFieldProviderInterface, which is deprecated and will be removed in TYPO3 v15.0. Use native TCA-based scheduler tasks instead.',
+                E_USER_DEPRECATED
+            );
             /** @var AdditionalFieldProviderInterface $provider */
             $provider = GeneralUtility::makeInstance($taskInformation['provider']);
         }

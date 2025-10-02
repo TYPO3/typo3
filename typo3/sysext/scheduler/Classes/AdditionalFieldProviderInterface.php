@@ -20,6 +20,7 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * Interface for classes who want to provide additional fields when adding a task
+ * @deprecated will be removed in TYPO3 v15.0 - use native Task Types and additional fields via TCA instead.
  */
 interface AdditionalFieldProviderInterface
 {

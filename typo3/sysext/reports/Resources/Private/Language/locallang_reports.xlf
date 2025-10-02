@@ -192,14 +192,11 @@
 			<trans-unit id="status_updateTaskDescription">
 				<source>Runs a system status check and sends notifications if problems have been found.</source>
 			</trans-unit>
-			<trans-unit id="status_updateTaskField_notificationEmail">
-				<source>Notification Email Address</source>
+			<trans-unit id="status_updateAdditionalInformation">
+				<source>Send notification to: %s</source>
 			</trans-unit>
 			<trans-unit id="status_updateTaskField_notificationEmails">
 				<source>Notification Email Addresses (one per line)</source>
-			</trans-unit>
-			<trans-unit id="status_updateTaskField_notificationEmail_invalid">
-				<source>Empty or invalid notification email address.</source>
 			</trans-unit>
 			<trans-unit id="status_updateTaskField_notificationEmails_invalid">
 				<source>Empty or invalid notification email addresses.</source>

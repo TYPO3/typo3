@@ -3277,12 +3277,6 @@ parameters:
 			path: ../../typo3/sysext/reports/Classes/Report/Status/ConfigurationStatus.php
 
 		-
-			message: '#^Instanceof between TYPO3\\CMS\\Reports\\Task\\SystemStatusUpdateTask and TYPO3\\CMS\\Reports\\Task\\SystemStatusUpdateTask will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/reports/Classes/Task/SystemStatusUpdateTaskNotificationEmailField.php
-
-		-
 			message: '#^Negated boolean expression is always true\.$#'
 			identifier: booleanNot.alwaysTrue
 			count: 1

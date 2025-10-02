@@ -47,8 +47,8 @@ final class TasksCest
         $I->executeJS("document.querySelector('" . ModalDialog::$openedModalSelector . " typo3-backend-new-record-wizard').shadowRoot.querySelector('[data-identifier=\"reports_TYPO3_CMS_Reports_Task_SystemStatusUpdateTask\"]').click()");
         $I->switchToContentFrame();
 
-        $I->waitForElement('#task_SystemStatusUpdateNotificationEmail');
-        $I->fillField('#task_SystemStatusUpdateNotificationEmail', 'test@local.typo3.org');
+        $I->waitForElementVisible('#EditDocumentController');
+        $I->fillField('//textarea[contains(@data-formengine-input-name, "data[tx_scheduler_task]") and contains(@data-formengine-input-name, "[tx_reports_notification_email]")]', 'test@local.typo3.org');
         $I->click('.module-docheader a[title="Close"]');
         $I->switchToWindow('typo3-backend');
         $I->wait(1);
@@ -71,9 +71,9 @@ final class TasksCest
     public function canEditTask(ApplicationTester $I): void
     {
         $I->click('//a[contains(@title, "Edit")]');
-        $I->waitForText('Edit Scheduler task "System Status Update [reports]" on root level');
-        $I->seeInField('#task_SystemStatusUpdateNotificationEmail', 'test@local.typo3.org');
-        $I->fillField('#task_SystemStatusUpdateNotificationEmail', 'foo@local.typo3.org');
+        $I->waitForText('Edit Scheduler task "System Status Update" on root level');
+        $I->seeInField('//textarea[contains(@data-formengine-input-name, "data[tx_scheduler_task]") and contains(@data-formengine-input-name, "[tx_reports_notification_email]")]', 'test@local.typo3.org');
+        $I->fillField('//textarea[contains(@data-formengine-input-name, "data[tx_scheduler_task]") and contains(@data-formengine-input-name, "[tx_reports_notification_email]")]', 'foo@local.typo3.org');
         $I->click('button[title="Save"]', '.module-docheader');
         $I->waitForText('Edit Scheduler task');
         $I->click('a[title="Close"]', '.module-docheader');

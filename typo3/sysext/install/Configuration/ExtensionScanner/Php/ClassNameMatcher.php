@@ -2654,5 +2654,15 @@ return [
             'Breaking-107229-RemovedSupportOfAnnotationsInExtbase.rst',
         ],
     ],
+    'TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider' => [
+        'restFiles' => [
+            'Deprecation-98453-SchedulerTaskRegistrationViaSCOPTIONS.rst',
+        ],
+    ],
+    'TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface' => [
+        'restFiles' => [
+            'Deprecation-98453-SchedulerTaskRegistrationViaSCOPTIONS.rst',
+        ],
+    ],
 
 ];

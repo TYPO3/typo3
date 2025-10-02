@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Base class for providers of additional fields
+ * @deprecated will be removed in TYPO3 v15.0 - use native Task Types and additional fields via TCA instead.
  */
 abstract class AbstractAdditionalFieldProvider implements AdditionalFieldProviderInterface
 {

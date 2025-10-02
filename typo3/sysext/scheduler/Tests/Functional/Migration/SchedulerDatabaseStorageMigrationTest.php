@@ -29,6 +29,7 @@ final class SchedulerDatabaseStorageMigrationTest extends FunctionalTestCase
         'info',
         'linkvalidator',
         'recycler',
+        'reports',
         'scheduler',
     ];
 
