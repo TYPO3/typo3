@@ -135,6 +135,7 @@ class NewContentElementController
                 $item = [
                     'identifier' => $wizardKey,
                     'icon' => $wizardItem['iconIdentifier'] ?? '',
+                    'iconOverlay' => $wizardItem['iconOverlay'] ?? '',
                     'label' => $wizardItem['title'] ?? '',
                     'description' => $wizardItem['description'] ?? '',
                     'defaultValues' => $defaultValues,

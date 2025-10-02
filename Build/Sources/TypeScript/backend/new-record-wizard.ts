@@ -44,6 +44,7 @@ class Item {
     public readonly label: string,
     public readonly description: string,
     public readonly icon: string,
+    public readonly iconOverlay: string | null,
     public readonly url: string | null,
     public readonly requestType: RequestType,
     public readonly defaultValues: Array<any>,
@@ -58,6 +59,7 @@ class Item {
       data.label,
       data.description,
       data.icon,
+      data.iconOverlay,
       data.url ?? null,
       data.requestType ?? 'location',
       data.defaultValues ?? [],
@@ -129,6 +131,7 @@ interface DataItemInterface {
   label: string;
   description: string;
   icon: string;
+  iconOverlay: string | null;
   url: string | null,
   requestType: RequestType,
   defaultValues: Array<any> | undefined,
@@ -604,7 +607,7 @@ export class NewRecordWizard extends LitElement {
         @click="${(event: PointerEvent): void => { event.preventDefault(); this.handleItemClick(item); }}"
       >
         <div class="item-icon">
-          <typo3-backend-icon identifier="${item.icon || 'empty-empty'}" size="medium"></typo3-backend-icon>
+          <typo3-backend-icon identifier="${item.icon || 'empty-empty'}" overlay="${item.iconOverlay}" size="medium"></typo3-backend-icon>
         </div>
         <div class="item-body">
           <div class="item-body-label">${item.label}</div>
