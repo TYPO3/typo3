@@ -1308,13 +1308,13 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
                 ['label' => 'foo', 'value' => 'foo'],
                 ['label' => 'bar', 'value' => 'bar'],
                 ['label' => 'baz', 'value' => 'baz'],
-                ['label' => 'myLabel', 'value' => 'myValue', 'icon' => 'apps-pagetree-folder-contains', 'group' => 'custom', 'description' => 'foobar'],
+                ['label' => 'myLabel', 'value' => 'myValue', 'icon' => 'apps-pagetree-folder-contains', 'iconOverlay' => null, 'group' => 'custom', 'description' => 'foobar'],
             ],
         ];
         yield 'before field' => [
             'before:foo',
             [
-                ['label' => 'myLabel', 'value' => 'myValue', 'icon' => 'apps-pagetree-folder-contains', 'group' => 'custom', 'description' => 'foobar'],
+                ['label' => 'myLabel', 'value' => 'myValue', 'icon' => 'apps-pagetree-folder-contains', 'iconOverlay' => null, 'group' => 'custom', 'description' => 'foobar'],
                 ['label' => 'foo', 'value' => 'foo'],
                 ['label' => 'bar', 'value' => 'bar'],
                 ['label' => 'baz', 'value' => 'baz'],
@@ -1324,7 +1324,7 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
             'after:foo',
             [
                 ['label' => 'foo', 'value' => 'foo'],
-                ['label' => 'myLabel', 'value' => 'myValue', 'icon' => 'apps-pagetree-folder-contains', 'group' => 'custom', 'description' => 'foobar'],
+                ['label' => 'myLabel', 'value' => 'myValue', 'icon' => 'apps-pagetree-folder-contains', 'iconOverlay' => null, 'group' => 'custom', 'description' => 'foobar'],
                 ['label' => 'bar', 'value' => 'bar'],
                 ['label' => 'baz', 'value' => 'baz'],
             ],
@@ -1333,7 +1333,7 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
             'replace:bar',
             [
                 ['label' => 'foo', 'value' => 'foo'],
-                ['label' => 'myLabel', 'value' => 'myValue', 'icon' => 'apps-pagetree-folder-contains', 'group' => 'custom', 'description' => 'foobar'],
+                ['label' => 'myLabel', 'value' => 'myValue', 'icon' => 'apps-pagetree-folder-contains', 'iconOverlay' => null, 'group' => 'custom', 'description' => 'foobar'],
                 ['label' => 'baz', 'value' => 'baz'],
             ],
         ];
@@ -1376,6 +1376,7 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
                 'label' => 'label',
                 'value' => $extKey,
                 'icon' => null,
+                'iconOverlay' => null,
                 'group' => 'plugins',
                 'description' => null,
             ],
@@ -1394,6 +1395,7 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
                 'label' => 'label',
                 'value' => 'felogin',
                 'icon' => 'content-form-login',
+                'iconOverlay' => null,
                 'group' => 'plugins',
                 'description' => null,
             ],
@@ -1416,6 +1418,7 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
                 'label' => 'label',
                 'value' => 'felogin',
                 'icon' => 'content-form-login',
+                'iconOverlay' => null,
                 'group' => 'plugins',
                 'description' => null,
             ],

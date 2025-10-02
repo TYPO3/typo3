@@ -37,10 +37,12 @@ final class NewContentElementControllerTest extends FunctionalTestCase
                 'value' => 'element_a',
                 'group' => 'default',
                 'icon' => 'content-header',
+                'iconOverlay' => 'actions-approve',
             ],
             'creationOptions' => [],
             'expected' => [
                 'iconIdentifier' => 'content-header',
+                'iconOverlay' => 'actions-approve',
                 'title' => 'Element A',
                 'description' => '',
                 'defaultValues' => [
@@ -55,10 +57,12 @@ final class NewContentElementControllerTest extends FunctionalTestCase
                 'value' => 'element_a',
                 'group' => 'undefined',
                 'icon' => 'content-header',
+                'iconOverlay' => 'actions-approve',
             ],
             'creationOptions' => [],
             'expected' => [
                 'iconIdentifier' => 'content-header',
+                'iconOverlay' => 'actions-approve',
                 'title' => 'Element A',
                 'description' => '',
                 'defaultValues' => [
@@ -73,10 +77,12 @@ final class NewContentElementControllerTest extends FunctionalTestCase
                 'value' => 'element_a',
                 'group' => null,
                 'icon' => 'content-header',
+                'iconOverlay' => 'actions-approve',
             ],
             'creationOptions' => [],
             'expected' => [
                 'iconIdentifier' => 'content-header',
+                'iconOverlay' => 'actions-approve',
                 'title' => 'Element A',
                 'description' => '',
                 'defaultValues' => [
@@ -91,6 +97,7 @@ final class NewContentElementControllerTest extends FunctionalTestCase
                 'value' => 'element_a',
                 'group' => 'default',
                 'icon' => 'content-header',
+                'iconOverlay' => 'actions-approve',
             ],
             'creationOptions' => [
                 'defaultValues' => [
@@ -100,6 +107,7 @@ final class NewContentElementControllerTest extends FunctionalTestCase
             ],
             'expected' => [
                 'iconIdentifier' => 'content-header',
+                'iconOverlay' => 'actions-approve',
                 'title' => 'Element A',
                 'description' => '',
                 'defaultValues' => [
@@ -155,6 +163,7 @@ final class NewContentElementControllerTest extends FunctionalTestCase
                 'elements.' => [
                     'header.' => [
                         'iconIdentifier' => 'content-header',
+                        'iconOverlay' => 'actions-approve',
                         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header',
                         'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header.description',
                         'defaultValues' => [
@@ -163,6 +172,7 @@ final class NewContentElementControllerTest extends FunctionalTestCase
                     ],
                     'text.' => [
                         'iconIdentifier' => 'content-text',
+                        'iconOverlay' => 'actions-approve',
                         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text',
                         'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text.description',
                         'defaultValues' => [
@@ -208,6 +218,7 @@ final class NewContentElementControllerTest extends FunctionalTestCase
                 'elements.' => [
                     'header.' => [
                         'iconIdentifier' => 'content-header',
+                        'iconOverlay' => 'actions-approve',
                         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header',
                         'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header.description',
                         'defaultValues' => [
@@ -216,6 +227,7 @@ final class NewContentElementControllerTest extends FunctionalTestCase
                     ],
                     'text.' => [
                         'iconIdentifier' => 'content-text',
+                        'iconOverlay' => 'actions-approve',
                         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text',
                         'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text.description',
                         'defaultValues' => [
@@ -279,6 +291,7 @@ final class NewContentElementControllerTest extends FunctionalTestCase
                         'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header.description',
                         'value' => 'header',
                         'icon' => 'content-header',
+                        'iconOverlay' => 'actions-approve',
                         'group' => 'default',
                     ],
                     [
@@ -286,6 +299,7 @@ final class NewContentElementControllerTest extends FunctionalTestCase
                         'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text.description',
                         'value' => 'text',
                         'icon' => 'content-text',
+                        'iconOverlay' => 'actions-approve',
                         'group' => 'default',
                     ],
                 ],
@@ -305,6 +319,7 @@ final class NewContentElementControllerTest extends FunctionalTestCase
                 'elements.' => [
                     'header.' => [
                         'iconIdentifier' => 'content-header',
+                        'iconOverlay' => 'actions-approve',
                         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header',
                         'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header.description',
                         'defaultValues' => [
@@ -313,6 +328,7 @@ final class NewContentElementControllerTest extends FunctionalTestCase
                     ],
                     'text.' => [
                         'iconIdentifier' => 'content-text',
+                        'iconOverlay' => 'actions-approve',
                         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text',
                         'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text.description',
                         'defaultValues' => [
