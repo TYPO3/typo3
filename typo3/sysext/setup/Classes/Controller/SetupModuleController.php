@@ -271,7 +271,7 @@ class SetupModuleController
                 $contextData = new ContextData(
                     loginMode: 'BE',
                     currentPasswordHash: $this->getBackendUser()->user['password'],
-                    newUserFullName: $be_user_data['realName']
+                    newUserFullName: $be_user_data['realName'] ?? $this->getBackendUser()->user['realName']
                 );
                 $contextData->setData('currentUsername', $this->getBackendUser()->user['username']);
                 $event = $this->eventDispatcher->dispatch(
