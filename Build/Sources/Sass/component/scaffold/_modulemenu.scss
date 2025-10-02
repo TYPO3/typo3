@@ -124,7 +124,7 @@
 //
 // Indicator
 //
-.modulemenu-group > button:not(:disabled) {
+.modulemenu-group > button:not([disabled]) {
     .modulemenu-indicator {
         display: none;
         position: relative;
@@ -185,7 +185,7 @@
     gap: 1px;
 }
 
-button[aria-expanded="true"]:not(:disabled) {
+button[aria-expanded="true"]:not([disabled]) {
     .modulemenu-indicator {
         &:before {
             transform: rotate(-45deg);

@@ -285,7 +285,7 @@ export class NewRecordWizard extends LitElement {
         outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-component-active-border-color), transparent 25%);
       }
 
-      .navigation-item:disabled {
+      .navigation-item[disabled] {
         cursor: not-allowed;
         color: var(--typo3-component-disabled-color);
         background: var(--typo3-component-disabled-bg);

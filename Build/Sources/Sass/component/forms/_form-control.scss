@@ -55,7 +55,7 @@
     &[type="file"] {
         overflow: hidden; // prevent pseudo element button overlap
 
-        &:not(:disabled):not([readonly]) {
+        &:not([disabled]):not([readonly]) {
             cursor: pointer;
         }
     }
@@ -76,18 +76,18 @@
     }
 
     &::placeholder {
-        color: var(--typo3-input-placeholder-color);
+        color: var(--typo3-form-control-placeholder-color);
         opacity: 1;
     }
 
-    &:read-only,
-    &:disabled {
+    &[readonly],
+    &[disabled] {
         --typo3-form-control-color: color-mix(in srgb, var(--typo3-form-control-disabled-color), transparent calc((1 - var(--typo3-input-disabled-opacity)) * 100%));
         --typo3-form-control-bg: var(--typo3-form-control-disabled-bg);
         --typo3-form-control-border-color: var(--typo3-form-control-disabled-border-color);
     }
 
-    &:disabled {
+    &[disabled] {
         cursor: not-allowed;
     }
 
@@ -122,7 +122,7 @@
         transition: var(--typo3-form-control-transition);
     }
 
-    &:hover:not(:disabled):not([readonly])::file-selector-button {
+    &:hover:not([disabled]):not([readonly])::file-selector-button {
         background-color: color-mix(in srgb, var(--typo3-form-control-bg), var(--typo3-form-control-color) 15%);
     }
 }

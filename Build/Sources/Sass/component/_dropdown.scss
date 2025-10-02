@@ -196,6 +196,7 @@
         text-decoration: none;
     }
 
+    &.focus,
     &:focus {
         color: var(--typo3-dropdown-item-focus-color);
         background-color: var(--typo3-dropdown-item-focus-bg);
@@ -209,7 +210,7 @@
         outline: 1px solid var(--typo3-dropdown-item-active-border-color);
     }
 
-    &:disabled,
+    &[disabled],
     &.disabled {
         color: var(--typo3-dropdown-item-disabled-color);
         background-color: var(--typo3-dropdown-item-disabled-bg);

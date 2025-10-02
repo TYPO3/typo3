@@ -119,7 +119,7 @@
         outline: 1px solid;
     }
 
-    &:disabled,
+    &[disabled],
     &-disabled {
         .node-content {
             opacity: .5;

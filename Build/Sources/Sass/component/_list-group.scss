@@ -78,7 +78,7 @@
     }
 
     &.disabled,
-    &:disabled {
+    &[disabled] {
         --typo3-list-group-color: var(--typo3-list-group-disabled-color);
         --typo3-list-group-bg: var(--typo3-list-group-disabled-bg);
         --typo3-list-group-border-color: var(--typo3-list-group-disabled-border-color);
