@@ -761,8 +761,8 @@ final class ExpressionBuilderTest extends UnitTestCase
     {
         $this->connectionMock->method('getDatabasePlatform')->willReturn(new MockPlatform());
 
-        self::expectException(\RuntimeException::class);
-        self::expectExceptionCode(1722105672);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1722105672);
 
         (new ExpressionBuilder($this->connectionMock))->castText('1 * 10', 'virtual_identifier');
     }

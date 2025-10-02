@@ -42,14 +42,14 @@ final class RequestBuilderDefaultValuesTest extends UnitTestCase
     #[Test]
     public function fromConfigurationThrowsExceptionIfConfigurationMissesExtensionName(): void
     {
-        self::expectExceptionCode(1289843275);
+        $this->expectExceptionCode(1289843275);
         RequestBuilderDefaultValues::fromConfiguration([]);
     }
 
     #[Test]
     public function fromConfigurationThrowsExceptionIfConfigurationMissesPluginName(): void
     {
-        self::expectExceptionCode(1289843277);
+        $this->expectExceptionCode(1289843277);
         RequestBuilderDefaultValues::fromConfiguration([
             'extensionName' => 'news',
         ]);
@@ -58,7 +58,7 @@ final class RequestBuilderDefaultValuesTest extends UnitTestCase
     #[Test]
     public function fromConfigurationThrowsExceptionIfConfigurationMissesControllerConfigurations(): void
     {
-        self::expectExceptionCode(1316104317);
+        $this->expectExceptionCode(1316104317);
         RequestBuilderDefaultValues::fromConfiguration([
             'extensionName' => 'news',
             'pluginName' => 'list',

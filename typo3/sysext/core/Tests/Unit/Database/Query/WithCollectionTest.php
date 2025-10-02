@@ -86,9 +86,9 @@ final class WithCollectionTest extends UnitTestCase
         $withCollection = new WithCollection();
         $withCollection->set($rightCycleWith, $leftCycleWith);
 
-        self::expectException(\UnexpectedValueException::class);
-        self::expectExceptionCode(1381960494);
-        self::expectExceptionMessageMatches('/^Your dependencies have cycles. That will not work out. Cycles found: /');
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1381960494);
+        $this->expectExceptionMessageMatches('/^Your dependencies have cycles. That will not work out. Cycles found: /');
 
         $reflectionClass->getMethod('getSortedParts')->invoke($withCollection);
     }

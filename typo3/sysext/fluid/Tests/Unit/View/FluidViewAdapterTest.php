@@ -114,7 +114,7 @@ final class FluidViewAdapterTest extends UnitTestCase
             }
         };
 
-        self::expectException(\RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $subject = new FluidViewAdapter($view);
         $subject->render();
     }

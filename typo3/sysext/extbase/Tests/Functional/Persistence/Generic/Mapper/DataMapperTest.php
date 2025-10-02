@@ -603,8 +603,8 @@ final class DataMapperTest extends FunctionalTestCase
     #[Test]
     public function createEmptyObjectThrowsInvalidClassExceptionIfClassNameDoesNotImplementDomainObjectInterface(): void
     {
-        self::expectException(InvalidClassException::class);
-        self::expectExceptionCode(1234386924);
+        $this->expectException(InvalidClassException::class);
+        $this->expectExceptionCode(1234386924);
         $subject = $this->get(DataMapper::class);
         // Reflection since the method is protected
         $subjectReflection = new \ReflectionObject($subject);
@@ -614,9 +614,9 @@ final class DataMapperTest extends FunctionalTestCase
     #[Test]
     public function createEmptyObjectInstantiatesWithoutCallingTheConstructorButCallsInitializeObject(): void
     {
-        self::expectException(\RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         // 1680071491 is thrown, but not 1680071490!
-        self::expectExceptionCode(1680071491);
+        $this->expectExceptionCode(1680071491);
         $subject = $this->get(DataMapper::class);
         $subjectReflection = new \ReflectionObject($subject);
         $subjectReflection->getMethod('createEmptyObject')->invoke($subject, HydrationFixtureEntity::class);
