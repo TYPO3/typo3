@@ -202,7 +202,7 @@ class NumberElement extends AbstractFormElement
             $valueSliderHtml[] = '<div class="slider-wrapper">';
             $valueSliderHtml[] = '<input ' . GeneralUtility::implodeAttributes($rangeAttributes, true) . '>';
             $valueSliderHtml[] = '</div>';
-            $valueSliderHtml[] = '</typo3-formengine-valuepicker>';
+            $valueSliderHtml[] = '</typo3-formengine-valueslider>';
 
             $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/field-wizard/value-slider.js');
         }
