@@ -22,10 +22,10 @@
 		"doctrine/instantiator": "^1.5 || ^2.0",
 		"phpdocumentor/reflection-docblock": "^5.4.1",
 		"phpdocumentor/type-resolver": "^1.8.2",
-		"symfony/dependency-injection": "^7.2",
-		"symfony/property-access": "^7.2",
-		"symfony/property-info": "^7.2",
-		"symfony/validator": "^7.2",
+		"symfony/dependency-injection": "^7.3",
+		"symfony/property-access": "^7.3",
+		"symfony/property-info": "^7.3",
+		"symfony/validator": "^7.3",
 		"typo3/cms-core": "14.0.*@dev"
 	},
 	"suggest": {

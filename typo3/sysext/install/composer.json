@@ -22,8 +22,8 @@
 		"doctrine/dbal": "4.2.*",
 		"guzzlehttp/promises": "^2.0.3",
 		"nikic/php-parser": "^5.4.0",
-		"symfony/finder": "^7.2",
-		"symfony/http-foundation": "^7.2",
+		"symfony/finder": "^7.3",
+		"symfony/http-foundation": "^7.3",
 		"typo3/cms-core": "14.0.*@dev",
 		"typo3/cms-extbase": "14.0.*@dev",
 		"typo3/cms-fluid": "14.0.*@dev"
