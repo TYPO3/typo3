@@ -1323,8 +1323,8 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     #[Test]
     public function leftPadWithEmptyStringPaddingValueThrowsInvalidArgumentException(): void
     {
-        self::expectExceptionCode(1709658914);
-        self::expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1709658914);
+        $this->expectException(\InvalidArgumentException::class);
 
         $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
         $queryBuilder->expr()->leftPad('uid', 10, '');
@@ -1333,8 +1333,8 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     #[Test]
     public function leftPadWithMultiCharacterPaddingValueThrowsInvalidArgumentException(): void
     {
-        self::expectExceptionCode(1709659006);
-        self::expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1709659006);
+        $this->expectException(\InvalidArgumentException::class);
 
         $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
         $queryBuilder->expr()->leftPad('uid', 10, '..');
@@ -1343,8 +1343,8 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     #[Test]
     public function rightPadWithEmptyStringPaddingValueThrowsInvalidArgumentException(): void
     {
-        self::expectExceptionCode(1709664589);
-        self::expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1709664589);
+        $this->expectException(\InvalidArgumentException::class);
 
         $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
         $queryBuilder->expr()->rightPad('uid', 10, '');
@@ -1353,8 +1353,8 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     #[Test]
     public function rightPadWithMultiCharacterPaddingValueThrowsInvalidArgumentException(): void
     {
-        self::expectExceptionCode(1709664598);
-        self::expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1709664598);
+        $this->expectException(\InvalidArgumentException::class);
 
         $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
         $queryBuilder->expr()->rightPad('uid', 10, '..');

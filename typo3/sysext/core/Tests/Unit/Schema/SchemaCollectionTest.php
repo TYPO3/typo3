@@ -45,7 +45,7 @@ final class SchemaCollectionTest extends UnitTestCase
     {
         $schema = new TcaSchema('example', new FieldCollection([]), []);
         $subject = new SchemaCollection([]);
-        self::expectExceptionCode(1712539286);
+        $this->expectExceptionCode(1712539286);
         $subject['example'] = $schema;
     }
 
@@ -54,7 +54,7 @@ final class SchemaCollectionTest extends UnitTestCase
     {
         $schema = new TcaSchema('example', new FieldCollection([]), []);
         $subject = new SchemaCollection(['example' => $schema]);
-        self::expectExceptionCode(1712539285);
+        $this->expectExceptionCode(1712539285);
         unset($subject['example']);
     }
 }

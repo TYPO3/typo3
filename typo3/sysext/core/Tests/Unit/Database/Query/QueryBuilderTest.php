@@ -1479,8 +1479,8 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function deleteQueryWithJoinsThrowsQueryExceptionOnExecution(): void
     {
-        self::expectException(QueryException::class);
-        self::expectExceptionCode(1734984009);
+        $this->expectException(QueryException::class);
+        $this->expectExceptionCode(1734984009);
         $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
         $queryBuilder
@@ -1492,8 +1492,8 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function updateQueryWithJoinsThrowsQueryExceptionOnExecution(): void
     {
-        self::expectException(QueryException::class);
-        self::expectExceptionCode(1734984009);
+        $this->expectException(QueryException::class);
+        $this->expectExceptionCode(1734984009);
         $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
         $queryBuilder
             ->update('tt_content')

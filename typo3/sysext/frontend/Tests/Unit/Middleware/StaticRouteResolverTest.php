@@ -215,8 +215,8 @@ final class StaticRouteResolverTest extends UnitTestCase
             ],
         ]);
 
-        self::expectException(\InvalidArgumentException::class);
-        self::expectExceptionCode($exceptionCode);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode($exceptionCode);
 
         $request = new ServerRequest('https://example.com/' . $route);
         $request = $request->withAttribute('site', $site);

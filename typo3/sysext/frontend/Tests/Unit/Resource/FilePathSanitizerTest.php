@@ -187,14 +187,14 @@ final class FilePathSanitizerTest extends UnitTestCase
     #[Test]
     public function sanitizeThrowsExceptionWithFileNameContainingOnlySpaces(): void
     {
-        self::expectException(InvalidFileNameException::class);
+        $this->expectException(InvalidFileNameException::class);
         (new FilePathSanitizer())->sanitize('  ');
     }
 
     #[Test]
     public function sanitizeThrowsExceptionWithInvalidFileName(): void
     {
-        self::expectException(InvalidPathException::class);
+        $this->expectException(InvalidPathException::class);
         (new FilePathSanitizer())->sanitize('something/../else');
     }
 
