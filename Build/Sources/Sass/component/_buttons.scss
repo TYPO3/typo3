@@ -72,9 +72,9 @@
         box-shadow: inset 0 0 1000px 0 color-mix(in srgb, var(--typo3-btn-color), transparent 90%);
     }
 
-    &:disabled,
+    &[disabled],
     &.disabled,
-    fieldset:disabled & {
+    fieldset[disabled] & {
         --typo3-btn-color: var(--typo3-btn-disabled-color);
         --typo3-btn-bg: var(--typo3-btn-disabled-bg);
         --typo3-btn-border-color: var(--typo3-btn-disabled-border-color);

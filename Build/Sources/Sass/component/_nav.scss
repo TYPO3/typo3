@@ -45,7 +45,7 @@
 
     // Disabled state lightens text
     &.disabled,
-    &:disabled {
+    &[disabled] {
         color: var(--typo3-nav-link-disabled-color);
         pointer-events: none;
         cursor: default;

@@ -115,13 +115,10 @@
         }
     }
 
-    &:disabled {
+    &[disabled] {
         cursor: not-allowed;
         opacity: var(--typo3-form-check-disabled-opacity);
-    }
 
-    &[disabled],
-    &:disabled {
         ~ .form-check-label {
             cursor: default;
             opacity: var(--typo3-form-check-disabled-opacity);
@@ -170,8 +167,7 @@
     clip: rect(0, 0, 0, 0);
     pointer-events: none;
 
-    &[disabled],
-    &:disabled {
+    &[disabled] {
         + .btn {
             pointer-events: none;
             filter: none;
