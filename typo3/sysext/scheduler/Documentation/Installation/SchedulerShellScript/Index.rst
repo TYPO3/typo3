@@ -28,6 +28,8 @@ time, type the following command.
 See also `TYPO3 Explained: Run a command from the command
 line <https://docs.typo3.org/permalink/t3coreapi:symfony-console-commands-cli>`_.
 
+..  _scheduler-shell-script-help:
+
 Show help
 =========
 
@@ -135,4 +137,3 @@ information:
 
             # Run task with uid 42, with detailed stack traces
             typo3/sysext/core/bin/typo3 scheduler:run --task=42 -vv
-

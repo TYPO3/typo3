@@ -48,7 +48,6 @@ delivered by any extension.
     Installation/SchedulerShellScript/Index
     DevelopersGuide/Index
     KnownProblems/Index
-    AppendixA/Index
 
 ..  Meta Menu
 

@@ -2,23 +2,30 @@
 
 ..  include:: /Includes.rst.txt
 ..  _manually-executing-a-task:
+..  _executing-a-task-on-next-cronjob:
 
 ===========================================================
 Manually executing a task from the Scheduler backend module
 ===========================================================
 
-As mentioned above, it is possible to manually execute one or more
-registered tasks from the BE module. When the selected tasks have
-finished running, feedback is given about success or failure of each
-task's run. There's one important thing to note: if the task was
-overdue, a new execution date will be calculated. If the task was
-**not** overdue, the previously calculated next execution date stays.
+You can manually execute tasks from the BE module. After execution, each
+task shows success or failure.
 
-A single task can be started by pressing the appropriate button in
-the row of the task. Multiple tasks can be started by selecting the
-checkboxes on the left side of the task row and then pressing the
-appropriate button beneath the task list.
+*   If a task was overdue, a new execution date is calculated.
+*   If it was not overdue, the existing next execution date remains.
 
-There is one button for directly starting the task and another button
-for starting the task with the next cron job.
+Running tasks:
 
+*   To run a single task, press the button in its row.
+*   To run multiple tasks, select their checkboxes and press the button below the list.
+
+There are two options:
+
+*   Run the task immediately. (Button 2 in the screenshot)
+*   Schedule the task. (Button 1 in the screenshot) The selected tasks will
+    then run on the next cron job.
+
+..  figure:: /Images/ManualExecution.png
+    :alt: Scheduler backend module with the buttons "Run task on next cron job" (1) and "Run task" (2) highlighted
+
+    Button 2 runs the task immediately, while button 1 schedules it fot the next cronjob run

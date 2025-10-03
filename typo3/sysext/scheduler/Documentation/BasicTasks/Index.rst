@@ -20,60 +20,20 @@ The Scheduler comes by default with several tasks:
     the database. See related section below for more information on
     configuration.
 
-..  _table-garbage-collection-task:
+Most TYPO3 console command can also be executed via scheduler.
 
-Table garbage collection task
-=============================
+The following tasks provide configuration options that need dedicated chapters:
 
-The table garbage collection task can take a more elaborate
-configuration which is detailed below.
+..  toctree::
+    :glob:
+    :titlesonly:
 
-The task can be registered to clean up a particular table, in which
-case you simply choose the table and the minimum age of the records to
-delete from the task configuration screen.
-
-..  figure:: /Images/TableGarbageCollectionTaskConfiguration.png
-    :alt: Table Garbage Collection task configuration
-
-    Configuring the table garbage collection task
-
-
-It's also possible to clean up all configured table by
-checking the "Clean all available tables" box. The configuration for
-the tables to clean up is stored in
-:php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables']`.
-The syntax is the following:
-
--   option :php:`expireField` can be used to point to a table field
-    containing an expiry timestamp. This timestamp will then be used to
-    decide whether a record has expired or not. If its timestamp is in the
-    past, the record will be deleted.
-
--   if a table has no expiry field, one can use a combination of a date
-    field and an expiry period to decide which records should be deleted.
-    The corresponding options are :php:`dateField` and :php:`expirePeriod`.
-    The expiry period is expressed in days.
-
-..  _table-garbage-collection-task-example:
-
-Example
-=======
-
-..  literalinclude:: _additional.php.inc
-    :language: php
-    :caption: config/system/additional.php | typo3conf/system/additional.php
-
-The first part of the configuration indicates that records older than
-180 days should be removed from table :code:`tx_realurl_errorlog` ,
-based on the timestamp field called "tstamp". The second part
-indicates that old records should be removed from table
-:code:`tx_realurl_uniqalias` directly based on the field "expire"
-which contains expiration dates for each record.
+    *
 
 ..  _other-tasks:
 
-Custom tasks
-============
+Providing custom tasks from your extension
+==========================================
 
 More tasks are provided by system extensions, such as the Extension
 Manager, which defines one for updating the available extensions list.

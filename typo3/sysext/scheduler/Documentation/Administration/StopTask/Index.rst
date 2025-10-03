@@ -7,21 +7,17 @@
 Stopping a task in the Scheduler backend module
 ===============================================
 
-As was explained above, a task is marked as being executed while it is
-running. If the process running the task crashes or is killed for some
-reason, the task will stay marked as being executed. This will be
-cleaned up automatically according to the maximum lifetime parameter
-(also described previously), but this may be inconvenient in some
-circumstances.
+A task is marked as "running" while it runs. If the process crashes or
+is killed, the task may remain marked as "running". This is usually
+cleaned up automatically based on the maximum lifetime parameter,
+but manual cleanup may sometimes be needed.
 
-..  figure:: ../../Images/StoppingATask.png
+..  figure:: /Images/StoppingATask.png
     :alt: Stopping a task
 
     Stopping a running task from the main screen
 
-In such cases it is possible to use the "stop" button to
-clean up marked executions for the given task. This will make it
-possible to run this task again. However please note that this will
-**not** kill a corresponding still running or continuously hanging
-process.
+Use the **stop** button to clear the execution mark for a task.
+This allows the task to run again.
 
+Note: This does **not** terminate an actual running or hanging process.

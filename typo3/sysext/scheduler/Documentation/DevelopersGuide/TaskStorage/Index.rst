@@ -1,4 +1,5 @@
 ..  include:: /Includes.rst.txt
+..  _technical-background:
 ..  _scheduler-task-storage:
 
 ======================
@@ -12,6 +13,8 @@ Scheduler task storage
 The scheduler tasks displayed in backend module :guilabel:`System > Scheduler`
 are stored in the **database** table :sql:`tx_scheduler_task`. Task groups are
 stored in table :sql:`tx_scheduler_task_group`.
+
+..  contents:: Table of contents
 
 ..  _scheduler-task-storage-fields:
 
@@ -34,6 +37,13 @@ The database table :sql:`tx_scheduler_task` contains the following fields:
 
 Additionally it stores some information on the last and next execution of the
 task, and fields for a description and the group.
+
+..  _serialized-objects:
+..  _save-task-state:
+..  _serialized-objects_migration:
+
+Migration from serialized task objects
+======================================
 
 ..  attention::
 

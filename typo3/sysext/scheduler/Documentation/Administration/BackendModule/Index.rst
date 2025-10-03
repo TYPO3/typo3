@@ -7,6 +7,8 @@
 The "Scheduler" backend module
 ==============================
 
+..  contents:: Table of contents
+
 ..  _setup-check-screen:
 
 The setup check screen
@@ -31,7 +33,7 @@ empty and just offer a link to add a new task. When such registered
 tasks exists, this screen will show a list with various pieces of
 information.
 
-..  figure:: ../../Images/BackendModuleMainView.png
+..  figure:: /Images/BackendModuleMainView.png
     :alt: Scheduler main screen
 
     Main screen of the Scheduler BE module
@@ -42,7 +44,7 @@ but may still be executed from the BE module.
 
 A late task will appear with an orange label sign near the task name:
 
-..  figure:: ../../Images/LateTask.png
+..  figure:: /Images/LateTask.png
     :alt: A late task in the Scheduler main screen
 
     A late task in the main screen of the Scheduler BE module
@@ -116,4 +118,3 @@ task was not deleted beforehand. In such a case, this task stays but
 the Scheduler doesn't know how to handle it anymore. The solution is
 either to install the related extension again or delete the registered
 task.
-

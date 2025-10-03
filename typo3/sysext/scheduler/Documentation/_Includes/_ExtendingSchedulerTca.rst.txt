@@ -1,0 +1,6 @@
+..  warning::
+    If your extension overrides the TCA of the scheduler extension, it **must**
+    be loaded **after** :composer:`typo3/cms-scheduler`, otherwise the
+    configuration might take no effect.
+
+    See `Extension loading order <https://docs.typo3.org/permalink/t3coreapi:extension-loading-order>`_

@@ -22,5 +22,3 @@ one for actually managing the tasks.
     GroupTask/Index
     StopTask/Index
     ManualExecution/Index
-    ExecuteNextCronjob/Index
-

@@ -7,88 +7,116 @@
 Creating a custom scheduler task
 ================================
 
-..  seealso::
-    The preferred method for creating a scheduler task is as a Symfony command.
-    :ref:`Read about how to create and use Symfony commands in TYPO3 here. <t3coreapi:symfony-console-commands>`.
+..  important::
+    ..  versionchanged:: 14.0
+        Custom scheduler tasks can be registered as TCA types in table
+        `tx_scheduler_task`.
+
+        See also: `Changelog Feature: #107526 - Custom TCA types for scheduler tasks <https://docs.typo3.org/permalink/changelog:feature-107526-1747816234>`_.
 
 ..  contents:: Table of contents
 
-..  _creating-tasks-registration:
+..  toctree::
+    :glob:
+    :titlesonly:
 
-Scheduler task registration
-===========================
+    *
 
-Custom scheduler tasks can be registered in
-:file:`EXT:my_extension/ext_localconf.php` in the TYPO3 configuration value
-:php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']`:
+..  seealso::
+    Symfony console commands can also be executed as scheduler task:
+    See :ref:`Create and use Symfony commands in TYPO3 <t3coreapi:symfony-console-commands>`.
 
-..  literalinclude:: _codesnippets/_ext_localconf.php.inc
-    :language: php
-    :caption: EXT:my_extension/ext_localconf.php
+..  _creating-tasks-implementation:
 
-..  _serialized-objects:
+Implementation of a custom scheduler task
+=========================================
 
-Working with serialized objects
-===============================
-
-When a task is registered with the Scheduler the corresponding object
-instance is serialized and stored in the database (see Appendix A for
-more details). This is not a very common practice. There are
-advantages but also some pitfalls, so please read this section
-carefully.
-
-A serialized object may happen to be "out of sync" with its class if
-the class changes some of its variables or methods. If a variable's
-name is changed or if variables are added or removed, the serialized
-object will not reflect these changes. The same goes if a method is
-renamed, added or deleted. Problems will also arise if the number or
-order of arguments used to call a method are changed. In such cases
-weird errors may appear, which can be very difficult to track. The
-only solution is to delete the registered task and register it anew.
-
-To minimize such risks it is worth to consider implementing the
-business logic in a separate class, so that the task class itself
-changes as little as possible. The :code:`execute()` should be as
-simple as possible. Consider the following:
+All scheduler task implementations **must** extend
+:php:`\TYPO3\CMS\Scheduler\Task\AbstractTask`.
 
 ..  literalinclude:: _codesnippets/_MyTask.php.inc
     :language: php
     :caption: packages/my_extension/Classes/MyTask.php
 
-In such a setup the :code:`execute()` is kept to the strict minimum
-and the operations themselves are handled by a separate class.
+A custom task implementation **must** override the method `execute(): bool`.
+It is the main method that is called when a task is executed.
+This method Should return `true` on successful execution, `false` on error.
 
-Also remember that the constructor is **not** called when
-unserializing an object. If some operations need to be run upon
-unserialization, implement a :code:`__wakeup()` method instead.
+..  note::
+    There is no error handling by default, errors and failures are expected
+    to be handled and logged by the client implementation.
 
-..  _save-task-state:
+Method `getAdditionalInformation()` **should** be implemented to provide
+additional information in the schedulers backend module.
 
-Saving a task's state
-=====================
+Scheduler task implementations that provide `additional fields <https://docs.typo3.org/permalink/typo3/cms-scheduler:additional-fields>`_
+**should** implement additional methods, expecially `getTaskParameters()`.
 
-The task's state is saved automatically at the **start** of its
-execution. If you need to save a task's state at some point **during**
-its execution, you can simply call the task's own :code:`save()`
-method.
+..  _creating-tasks-registration:
+
+Scheduler task registration and configuration
+=============================================
+
+..  deprecated:: 14.0
+    Registering tasks and additional field providers via
+    :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']` has
+    been deprecated.
+
+Custom scheduler tasks can be registered via TCA overrides, for example in
+:file:`EXT:my_extension/Configuration/TCA/Overrides/tx_scheduler_my_task.php`
+
+..  literalinclude:: _codesnippets/_tx_scheduler_my_task.php.inc
+    :language: php
+    :caption: EXT:my_extension/Configuration/TCA/Overrides/tx_scheduler_my_task.php
+
+..  include:: /_Includes/_ExtendingSchedulerTca.rst.txt
 
 ..  _additional-fields:
 
 Providing additional fields for scheduler task
 ==============================================
 
+..  deprecated:: 14.0
+    Registering tasks and additional field providers via
+    :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']` has
+    been deprecated.
+
+    The :php-short:`\TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface` and
+    :php-short:`\TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider` have also
+    been deprecated.
+
+    Tasks in general and additional fields for tasks are registered via TCA
+    instead.
+
+    See also: `Migrating tasks with AdditionalFieldProviders to TCA registration <https://docs.typo3.org/permalink/typo3/cms-scheduler:additional-fields-migration>`_
+
+Additional fields for scheduler tasks are handled via FormEngine and can be
+configured via TCA.
+
 If the task should provide additional fields for configuration options in
 the backend module, you need to implement a second class, extending
 :php-short:`\TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider`.
 
-This class needs to be configured in the scheduler task registration:
+The task needs to be registered via TCA override:
 
-..  literalinclude:: _codesnippets/_ext_localconf-additional.php.inc
+..  literalinclude:: _codesnippets/_scheduler_my_task_type-additional.php.inc
     :language: php
-    :caption: EXT:my_extension/ext_localconf.php
+    :caption: EXT:my_extension/Configuration/TCA/Overrides/scheduler_my_task_type.php
 
-And implemented to provide the desired fields and their validation:
+And implemented the following methods in your scheduler task if needed:
 
-..  literalinclude:: _codesnippets/_MyTaskAdditional.php.inc
+..  literalinclude:: _codesnippets/_MyTaskWithAdditionalFields.php.inc
     :language: php
     :caption: packages/my_extension/Classes/MyTask.php
+
+..  note::
+    Method `getTaskParameters()` should be implemented when
+    `migrating tasks <https://docs.typo3.org/permalink/typo3/cms-scheduler:additional-fields-migration>`_
+
+    For native TCA tasks, this method is typically no longer needed in custom
+    tasks after the migration has been done, since field values are then stored
+    directly in database columns.
+
+..  seealso::
+    There are additional examples in described in the
+    `Changelog Feature: #107526 - Custom TCA types for scheduler tasks <https://docs.typo3.org/permalink/changelog:feature-107526-1747816234>`_.
