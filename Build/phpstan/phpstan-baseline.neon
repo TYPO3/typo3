@@ -633,7 +633,7 @@ parameters:
 		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
-			count: 11
+			count: 10
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
@@ -2431,6 +2431,12 @@ parameters:
 			path: ../../typo3/sysext/filelist/Classes/FileList.php
 
 		-
+			message: '#^Parameter \#1 \$array \(list\<TYPO3Fluid\\Fluid\\Schema\\ViewHelperMetadata\>\) of array_values is already a list, call has no effect\.$#'
+			identifier: arrayValues.list
+			count: 1
+			path: ../../typo3/sysext/fluid/Classes/Command/SchemaCommand.php
+
+		-
 			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
@@ -2727,6 +2733,12 @@ parameters:
 		-
 			message: '#^Negated boolean expression is always false\.$#'
 			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 

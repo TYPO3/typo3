@@ -2990,7 +2990,7 @@ class DataHandler
      * @param array $dataStructure Data structure for the form (might be sheets or not). Only values in the data array which has a configuration in the data structure will be processed.
      * @param array $pParams A set of parameters to pass through for the calling of the evaluation functions
      * @param string $callBackFunc Optional call back function, see checkValue_flex_procInData_travDS()  DEPRECATED, use \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools instead for traversal!
-     * @return array The modified 'data' part.
+     * @return ?array The modified 'data' part.
      * @see checkValue_flex_procInData_travDS()
      * @internal should only be used from within DataHandler
      */
