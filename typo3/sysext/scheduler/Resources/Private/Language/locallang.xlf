@@ -482,7 +482,7 @@
 				<source>Table garbage collection</source>
 			</trans-unit>
 			<trans-unit id="tableGarbageCollection.description">
-				<source>Task to delete old entries from specific tables like sys_log. Use $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']['tables'] to configure tables. Refer to the manual for more details.</source>
+				<source>Task to delete old entries from specific tables like sys_log.</source>
 			</trans-unit>
 			<trans-unit id="recyclerGarbageCollection.name">
 				<source>Fileadmin garbage collection</source>
@@ -506,7 +506,7 @@
 				<source>Anonymize IP addresses in database tables</source>
 			</trans-unit>
 			<trans-unit id="ipAnonymization.description">
-				<source>This task anonymizes the IP addresses to enforce the privacy of the persisted data.</source>
+				<source>This task anonymizes the IP addresses from specific tables like sys_log to enforce the privacy of the persisted data.</source>
 			</trans-unit>
 			<trans-unit id="label.ipAnonymization.table">
 				<source>Table to anonymize</source>

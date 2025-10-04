@@ -30,7 +30,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Available tables must be registered in
  * $GLOBALS['TCA']['tx_scheduler_task']['types'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['taskOptions']['tables']
- * See scheduler_table_garbage_collection_task.php of scheduler extension for an example
+ *
+ * See scheduler_table_garbage_collection_task.php of scheduler extension for an example.
  *
  * @internal This class is a specific scheduler task implementation is not considered part of the Public TYPO3 API.
  */
