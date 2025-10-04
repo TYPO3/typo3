@@ -3,9 +3,9 @@
 ..  include:: /Includes.rst.txt
 ..  _base-tasks:
 
-=========================================
-The base tasks provided by the TYPO3 Core
-=========================================
+==========================================
+The basic tasks provided by the TYPO3 Core
+==========================================
 
 The Scheduler comes by default with several tasks:
 
@@ -32,7 +32,7 @@ The task can be registered to clean up a particular table, in which
 case you simply choose the table and the minimum age of the records to
 delete from the task configuration screen.
 
-..  figure:: ../../Images/TableGarbageCollectionTaskConfiguration.png
+..  figure:: /Images/TableGarbageCollectionTaskConfiguration.png
     :alt: Table Garbage Collection task configuration
 
     Configuring the table garbage collection task

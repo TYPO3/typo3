@@ -5,14 +5,11 @@
 Installation & Setup
 ====================
 
-
 ..  toctree::
-   :maxdepth: 5
-   :titlesonly:
-   :glob:
+    :maxdepth: 5
+    :titlesonly:
+    :glob:
 
-   Installing/Index
-   SetupCheck/Index
-   CronJob/Index
-   BaseTasks/Index
-
+    Installing/Index
+    SetupCheck/Index
+    CronJob/Index

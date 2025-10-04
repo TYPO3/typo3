@@ -43,6 +43,7 @@ delivered by any extension.
     Introduction/Index
     Overview/Index
     Installation/Index
+    BasicTasks/Index
     Administration/Index
     Installation/SchedulerShellScript/Index
     DevelopersGuide/Index
