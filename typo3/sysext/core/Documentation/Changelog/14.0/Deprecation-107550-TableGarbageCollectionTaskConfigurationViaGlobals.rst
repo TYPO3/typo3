@@ -43,7 +43,7 @@ Before (deprecated):
 ..  code-block:: php
 
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables'] = [
-        'my_table' => [
+        'tx_myextension_my_table' => [
             'dateField' => 'tstamp',
             'expirePeriod' => 90,
         ],
@@ -54,15 +54,13 @@ After (new method):
 ..  code-block:: php
 
     if (isset($GLOBALS['TCA']['tx_scheduler_task'])) {
-        $GLOBALS['TCA']['tx_scheduler_task']['types'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['taskOptions']['tables'] = [
-            'my_table' => [
-                'dateField' => 'tstamp',
-                'expirePeriod' => 90,
-            ],
+        $GLOBALS['TCA']['tx_scheduler_task']['types'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['taskOptions']['tables']['tx_myextension_my_table'] = [
+            'dateField' => 'tstamp',
+            'expirePeriod' => 90,
         ];
     }
 
-It's also possible to modify the tables added by TYPO3, e.g. changing the
+It is also possible to modify the tables added by TYPO3, for example changing the
 :php:`expirePeriod` of :sql:`sys_log`:
 
 ..  code-block:: php
