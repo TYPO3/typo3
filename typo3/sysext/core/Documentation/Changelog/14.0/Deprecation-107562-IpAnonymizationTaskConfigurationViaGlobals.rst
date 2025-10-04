@@ -36,17 +36,15 @@ Migration
 
 Instead of configuring tables via :php:`$GLOBALS['TYPO3_CONF_VARS']`, tables
 should now be configured in TCA using the :php:`taskOptions` configuration of the
-corresponding record type within :file:`Configuration/TCA/Overrides`:
+corresponding record type within :file:`Configuration/TCA/Overrides/`:
 
 Before (deprecated):
 
 ..  code-block:: php
 
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\IpAnonymizationTask::class]['options']['tables'] = [
-        'my_table' => [
-            'dateField' => 'tstamp',
-            'ipField' => 'private_ip',
-        ],
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\IpAnonymizationTask::class]['options']['tables']['tx_myextension_my_table'] = [
+        'dateField' => 'tstamp',
+        'ipField' => 'private_ip',
     ];
 
 After (new method):
@@ -54,15 +52,13 @@ After (new method):
 ..  code-block:: php
 
     if (isset($GLOBALS['TCA']['tx_scheduler_task'])) {
-        $GLOBALS['TCA']['tx_scheduler_task']['types'][\TYPO3\CMS\Scheduler\Task\IpAnonymizationTask::class]['taskOptions']['tables'] = [
-            'my_table' => [
-                'dateField' => 'tstamp',
-                'ipField' => 'private_ip',
-            ],
+        $GLOBALS['TCA']['tx_scheduler_task']['types'][\TYPO3\CMS\Scheduler\Task\IpAnonymizationTask::class]['taskOptions']['tables']['tx_myextension_my_table'] = [
+            'dateField' => 'tstamp',
+            'ipField' => 'private_ip',
         ];
     }
 
-It's also possible to modify the tables added by TYPO3, e.g. changing the
+It is also possible to modify the tables added by TYPO3, for example changing the
 :php:`dateField` of :sql:`sys_log`:
 
 ..  code-block:: php
