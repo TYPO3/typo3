@@ -24,6 +24,14 @@ UX Improvements
 * **Search functionality**: Users can search and filter available tasks
 * **Visual task representation**: Each task displays with proper icons, titles, and descriptions
 
+.. tip::
+
+	Using the :php:`iconOverlay` option on task type registration, an icon
+	overlay can be added, which is then displayed in the wizard. This can
+	be useful for similar task types that use the same "base" `icon`, but
+	still have to be differentiated.
+
+
 Technical Improvements
 ----------------------
 

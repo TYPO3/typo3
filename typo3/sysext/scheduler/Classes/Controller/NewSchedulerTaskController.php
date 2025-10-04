@@ -83,6 +83,7 @@ class NewSchedulerTaskController
                     'description' => $taskInfo['description'],
                     // @todo change once tx_scheduler_task get's icons
                     'icon' => $taskInfo['icon'] ?? 'mimetypes-x-tx_scheduler_task_group',
+                    'iconOverlay' => $taskInfo['iconOverlay'] ?? '',
                     'taskType' => $taskType,
                     'taskClass' => $taskInfo['className'],
                 ];
@@ -117,6 +118,7 @@ class NewSchedulerTaskController
                 $item = [
                     'identifier' => $wizardKey,
                     'icon' => $wizardItem['icon'] ?? 'mimetypes-x-tx_scheduler_task_group',
+                    'iconOverlay' => $wizardItem['iconOverlay'] ?? '',
                     'label' => $wizardItem['title'] ?? '',
                     'description' => $wizardItem['description'] ?? '',
                     'taskType' => $wizardItem['taskType'],

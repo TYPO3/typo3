@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Scheduler\Controller\NewSchedulerTaskController;
 use TYPO3\CMS\Scheduler\Event\ModifyNewSchedulerTaskWizardItemsEvent;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -66,6 +67,14 @@ final class NewSchedulerTaskControllerTest extends FunctionalTestCase
         $eventReference = null;
         $capturedWizardItems = null;
 
+        foreach ($GLOBALS['TCA']['tx_scheduler_task']['columns']['tasktype']['config']['items'] as &$config) {
+            if (str_contains($config['value'], 'CachingFrameworkGarbageCollectionTask')) {
+                $config['iconOverlay'] = 'caching-overlay';
+            }
+        }
+        unset($config);
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
         $container = $this->get('service_container');
         $container->set(
             'test-wizard-event-listener',
@@ -77,6 +86,7 @@ final class NewSchedulerTaskControllerTest extends FunctionalTestCase
                     'title' => 'Custom Test Task',
                     'description' => 'A custom task added by event listener',
                     'icon' => 'content-test',
+                    'iconOverlay' => 'content-test-overlay',
                     'taskType' => 'CustomTestTask',
                     'taskClass' => 'TYPO3\\CMS\\Test\\CustomTestTask',
                 ]);
@@ -108,10 +118,19 @@ final class NewSchedulerTaskControllerTest extends FunctionalTestCase
             }
             if (isset($item['taskType']) && str_contains($item['taskType'], 'CachingFrameworkGarbageCollectionTask')) {
                 $hasTaskItems = true;
-                self::assertArrayHasKey('title', $item);
+                self::assertEquals('Caching framework garbage collection', $item['title']);
                 self::assertArrayHasKey('description', $item);
                 self::assertArrayHasKey('icon', $item);
+                self::assertEquals('caching-overlay', $item['iconOverlay']);
                 self::assertArrayHasKey('taskClass', $item);
+            }
+            if (isset($item['taskType']) && str_contains($item['taskType'], 'CustomTestTask')) {
+                $hasTaskItems = true;
+                self::assertEquals('Custom Test Task', $item['title']);
+                self::assertEquals('A custom task added by event listener', $item['description']);
+                self::assertEquals('content-test', $item['icon']);
+                self::assertEquals('content-test-overlay', $item['iconOverlay']);
+                self::assertEquals('TYPO3\\CMS\\Test\\CustomTestTask', $item['taskClass']);
             }
         }
 

@@ -72,6 +72,7 @@ TCA configuration in :file:`Configuration/TCA/Overrides/file_storage_indexing_ta
             'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:fileStorageIndexing.description',
             'value' => \TYPO3\CMS\Scheduler\Task\FileStorageIndexingTask::class,
             'icon' => 'mimetypes-x-tx_scheduler_task_group',
+            'iconOverlay' => 'content-clock',
             'group' => 'scheduler',
         ],
         '
@@ -141,6 +142,7 @@ TCA configuration with custom field overrides in :file:`Configuration/TCA/Overri
                 'description' => 'LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskDescription',
                 'value' => \TYPO3\CMS\Recycler\Task\CleanerTask::class,
                 'icon' => 'mimetypes-x-tx_scheduler_task_group',
+                'iconOverlay' => 'content-clock',
                 'group' => 'recycler',
             ],
             '
@@ -267,6 +269,7 @@ Example custom task TCA registration in :file:`Configuration/TCA/Overrides/tx_sc
             'description' => 'Description of what this task does',
             'value' => \MyVendor\MyExtension\Task\CustomTask::class,
             'icon' => 'my-custom-icon',
+            'iconOverlay' => 'my-custom-icon-overlay',
             'group' => 'my_extension',
         ],
         '

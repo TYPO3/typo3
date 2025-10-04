@@ -97,6 +97,7 @@ readonly class TaskService
                         'className' => $className,
                         'extension' => $item['group'] ?? '',
                         'icon' => $item['icon'] ?? '',
+                        'iconOverlay' => $item['iconOverlay'] ?? '',
                         'title' => $languageService?->sL($item['label'] ?? '') ?? $item['label'] ?? '',
                         'description' => $languageService?->sL($item['description'] ?? '') ?? $item['description'] ?? '',
                         'provider' => '',
@@ -118,6 +119,8 @@ readonly class TaskService
                 'taskType' => $taskType,
                 'category' => $registrationInformation['extension'],
                 'icon' => $registrationInformation['icon'],
+                // @todo Remove null coalescing once definition via $GLOBALS['TYPO3_CONF_VARS'] is removed
+                'iconOverlay' => $registrationInformation['iconOverlay'] ?? '',
                 'title' => $registrationInformation['title'],
                 'fullTitle' => $registrationInformation['title'] . ' [' . $registrationInformation['extension'] . ']',
                 'description' => $registrationInformation['description'],
