@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Default implementation for the ResponseInterface of the PSR-7 standard.
@@ -30,20 +29,9 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class Response extends Message implements ResponseInterface
 {
-    /**
-     * The HTTP status code of the response
-     */
     protected int $statusCode;
-
-    /**
-     * The reason phrase of the response
-     */
     protected string $reasonPhrase = '';
 
-    /**
-     * The standardized and other important HTTP Status Codes
-     * @var array
-     */
     protected array $availableStatusCodes = [
         // INFORMATIONAL CODES
         100 => 'Continue',
@@ -117,24 +105,20 @@ class Response extends Message implements ResponseInterface
     ];
 
     /**
-     * Constructor for generating new responses
-     *
-     * @param StreamInterface|string|null $body
      * @throws \InvalidArgumentException if any of the given arguments are given
      */
-    public function __construct($body = 'php://temp', int $statusCode = 200, array $headers = [], string $reasonPhrase = '')
-    {
-        // Build a streamable object for the body
-        if ($body !== null && !is_string($body) && !is_resource($body) && !$body instanceof StreamInterface) {
-            throw new \InvalidArgumentException('Body must be a string stream resource identifier, a stream resource, or a StreamInterface instance', 1436717277);
-        }
-
-        if ($body !== null && !$body instanceof StreamInterface) {
+    public function __construct(
+        StreamInterface|string|null $body = 'php://temp',
+        int $statusCode = 200,
+        array $headers = [],
+        string $reasonPhrase = ''
+    ) {
+        if (is_string($body)) {
             $body = new Stream($body, 'rw');
         }
         $this->body = $body;
 
-        if (MathUtility::canBeInterpretedAsInteger($statusCode) === false || !array_key_exists((int)$statusCode, $this->availableStatusCodes)) {
+        if (!array_key_exists($statusCode, $this->availableStatusCodes)) {
             throw new \InvalidArgumentException('The given status code is not a valid HTTP status code.', 1436717278);
         }
         $this->statusCode = $statusCode;
@@ -146,12 +130,8 @@ class Response extends Message implements ResponseInterface
     }
 
     /**
-     * Gets the response status code.
-     *
-     * The status code is a 3-digit integer result code of the server's attempt
+     * Gets the response status code. The status code is a 3-digit integer result code of the server's attempt
      * to understand and satisfy the request.
-     *
-     * @return int Status code.
      */
     public function getStatusCode(): int
     {
@@ -161,31 +141,27 @@ class Response extends Message implements ResponseInterface
     /**
      * Return an instance with the specified status code and, optionally, reason phrase.
      *
-     * If no reason phrase is specified, implementations MAY choose to default
-     * to the RFC 7231 or IANA recommended reason phrase for the response's
-     * status code.
+     * If no reason phrase is specified, implementations MAY choose to default to the RFC 7231 or IANA recommended
+     * reason phrase for the response's status code.
      *
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * updated status and reason phrase.
+     * This method MUST be implemented in such a way as to retain the immutability of the message, and MUST return an
+     * instance that has the updated status and reason phrase.
      *
      * @link https://tools.ietf.org/html/rfc7231#section-6
      * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      *
      * @param int $code The 3-digit integer result code to set.
-     * @param string $reasonPhrase The reason phrase to use with the
-     *     provided status code; if none is provided, implementations MAY
-     *     use the defaults as suggested in the HTTP specification.
-     * @return static
+     * @param string $reasonPhrase The reason phrase to use with the provided status code; if none is provided,
+     *    implementations MAY use the defaults as suggested in the HTTP specification.
      * @throws \InvalidArgumentException For invalid status code arguments.
      */
     public function withStatus(int $code, string $reasonPhrase = ''): ResponseInterface
     {
-        if (!array_key_exists((int)$code, $this->availableStatusCodes)) {
+        if (!array_key_exists($code, $this->availableStatusCodes)) {
             throw new \InvalidArgumentException('The given status code is not a valid HTTP status code', 1436717279);
         }
         $clonedObject = clone $this;
-        $clonedObject->statusCode = (int)$code;
+        $clonedObject->statusCode = $code;
         $clonedObject->reasonPhrase = $reasonPhrase !== '' ? $reasonPhrase : $this->availableStatusCodes[$code];
         return $clonedObject;
     }
@@ -193,15 +169,12 @@ class Response extends Message implements ResponseInterface
     /**
      * Gets the response reason phrase associated with the status code.
      *
-     * Because a reason phrase is not a required element in a response
-     * status line, the reason phrase value MAY be null. Implementations MAY
-     * choose to return the default RFC 7231 recommended reason phrase (or those
-     * listed in the IANA HTTP Status Code Registry) for the response's
-     * status code.
+     * Because a reason phrase is not a required element in a response  status line, the reason phrase value MAY be
+     * null. Implementations MAY choose to return the default RFC 7231 recommended reason phrase (or those listed
+     * in the IANA HTTP Status Code Registry) for the response's status code.
      *
      * @link https://tools.ietf.org/html/rfc7231#section-6
      * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
-     * @return string Reason phrase; must return an empty string if none present.
      */
     public function getReasonPhrase(): string
     {

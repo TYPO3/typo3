@@ -80,7 +80,7 @@ final class ResponseTest extends UnitTestCase
     #[Test]
     public function constructorRaisesExceptionForInvalidStream(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\TypeError::class);
         new Response(['TOTALLY INVALID']);
     }
 
@@ -132,8 +132,7 @@ final class ResponseTest extends UnitTestCase
     #[Test]
     public function constructorRaisesExceptionForInvalidBody($body): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1436717277);
+        $this->expectException(\TypeError::class);
         new Response($body);
     }
 

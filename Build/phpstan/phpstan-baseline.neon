@@ -961,18 +961,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Http/Request.php
 
 		-
-			message: '#^Instanceof between Psr\\Http\\Message\\StreamInterface and Psr\\Http\\Message\\StreamInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Http/Response.php
-
-		-
-			message: '#^Result of && is always false\.$#'
-			identifier: booleanAnd.alwaysFalse
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Http/Response.php
-
-		-
 			message: '#^Method TYPO3\\CMS\\Core\\Http\\ServerRequest\:\:withParsedBody\(\) has InvalidArgumentException in PHPDoc @throws tag but it''s not thrown\.$#'
 			identifier: throws.unusedType
 			count: 1
