@@ -328,17 +328,14 @@ readonly class SchedulerTaskRepository
                 ->get(self::TABLE_NAME)
                 ->getCapability(TcaSchemaCapability::RestrictionDisabledField)
                 ->getFieldName();
-            // Forcibly set the disabled flag to 1 in the database,
-            // so that the task does not come up again and again for execution
-            $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-            $dataHandler->start([
-                self::TABLE_NAME => [
-                    $row['uid'] => [
-                        $fieldName => 1,
-                    ],
-                ],
-            ], []);
-            $dataHandler->process_datamap();
+            if ((bool)$row[$fieldName] !== true) {
+                // Forcibly set the disabled flag to 1 in the database (if not already set), so that the
+                // task does not come up again and again for execution. Execute a simple update statement
+                // to avoid triggering any DH hook again, which would lead to an infinity loop.
+                GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionForTable(self::TABLE_NAME)
+                    ->update(self::TABLE_NAME, [$fieldName => 1], ['uid' => (int)$row['uid']]);
+            }
             // Throw an exception to raise the problem
             // @todo: This should most likely be changed to a specific exception.
             throw new \UnexpectedValueException('Could not unserialize task', 1255083671);
