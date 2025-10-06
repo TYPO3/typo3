@@ -58,6 +58,9 @@ class EnvironmentStatusReport implements StatusProviderInterface, ExtendedStatus
      */
     public function getDetailedStatus()
     {
+        if (Environment::isCli()) {
+            return [];
+        }
         return $this->getStatusInternal(true);
     }
 
