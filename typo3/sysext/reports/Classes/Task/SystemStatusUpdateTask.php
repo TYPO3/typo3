@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Reports\Task;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Mime\Address;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -92,12 +93,16 @@ class SystemStatusUpdateTask extends AbstractTask
         foreach ($notificationEmails as $notificationEmail) {
             $sendEmailsTo[] = new Address($notificationEmail);
         }
-        $subject = sprintf($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTask_email_subject'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
-        $message = sprintf($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:' . ($this->notificationAll ? 'status_allNotification' : 'status_problemNotification')), '', '');
+        $subject = sprintf($this->getLanguageService()->sL('reports.reports:status_updateTask_email_subject'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
+        $message = sprintf($this->getLanguageService()->sL('reports.reports:' . ($this->notificationAll ? 'status_allNotification' : 'status_problemNotification')), '', '');
+        if (Environment::isCli()) {
+            $message .= CRLF . CRLF;
+            $message .= $this->getLanguageService()->sL('reports.reports:status_problem_notification_cli_disclaimer');
+        }
         $message .= CRLF . CRLF;
-        $message .= $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTask_email_site') . ': ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+        $message .= $this->getLanguageService()->sL('reports.reports:status_updateTask_email_site') . ': ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         $message .= CRLF . CRLF;
-        $message .= $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTask_email_issues') . ': ' . CRLF;
+        $message .= $this->getLanguageService()->sL('reports.reports:status_updateTask_email_issues') . ': ' . CRLF;
         $message .= implode(CRLF, $systemIssues);
         $message .= CRLF . CRLF;
 
@@ -126,7 +131,7 @@ class SystemStatusUpdateTask extends AbstractTask
 
     public function getAdditionalInformation()
     {
-        return sprintf($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateAdditionalInformation'), preg_replace('#\s+#', ', ', trim($this->notificationEmail)));
+        return sprintf($this->getLanguageService()->sL('reports.reports:status_updateAdditionalInformation'), preg_replace('#\s+#', ', ', trim($this->notificationEmail)));
     }
 
     public function getTaskParameters(): array
@@ -155,7 +160,7 @@ class SystemStatusUpdateTask extends AbstractTask
         }
         if (!$validInput || empty($parameters['tx_reports_notification_email'] ?? '')) {
             GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->addMessage(
-                GeneralUtility::makeInstance(FlashMessage::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTaskField_notificationEmails_invalid'), '', ContextualFeedbackSeverity::ERROR)
+                GeneralUtility::makeInstance(FlashMessage::class, $this->getLanguageService()->sL('reports.reports:status_updateTaskField_notificationEmails_invalid'), '', ContextualFeedbackSeverity::ERROR)
             );
             $validInput = false;
         }
