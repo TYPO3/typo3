@@ -43,16 +43,18 @@ enum SourceKeyword: string implements SourceInterface
 
     public function isApplicable(Directive $directive): bool
     {
-        // temporary, internal \WeakMap
-        $onlyApplicableTo = new \WeakMap();
-        $onlyApplicableTo[self::reportSample] = [
-            Directive::ScriptSrc, Directive::ScriptSrcAttr, Directive::ScriptSrcElem,
-            Directive::StyleSrc, Directive::StyleSrcAttr, Directive::StyleSrcElem,
-        ];
-        $onlyApplicableTo[self::strictDynamic] = [
-            Directive::ScriptSrc, Directive::ScriptSrcAttr, Directive::ScriptSrcElem,
-        ];
+        $onlyApplicableTo = self::onlyApplicableToMap();
         return !isset($onlyApplicableTo[$this]) || in_array($directive, $onlyApplicableTo[$this], true);
+    }
+
+    /**
+     * @return list<Directive>
+     * @internal
+     */
+    public function getApplicableDirectives(): array
+    {
+        $onlyApplicableTo = self::onlyApplicableToMap();
+        return $onlyApplicableTo[$this] ?? [];
     }
 
     public function applySourceImplications(SourceCollection $sources): ?SourceCollection
@@ -65,5 +67,40 @@ enum SourceKeyword: string implements SourceInterface
             }
         }
         return null;
+    }
+
+    /**
+     * @return \WeakMap<self, list<Directive>>
+     */
+    private static function onlyApplicableToMap(): \WeakMap
+    {
+        /** @var \WeakMap<self, list<Directive>> $map temporary, internal \WeakMap */
+        $map = new \WeakMap();
+        $map[self::reportSample] = [
+            ...Directive::ScriptSrc->getFamily(),
+            ...Directive::StyleSrc->getFamily(),
+        ];
+        $map[self::strictDynamic] = [
+            ...Directive::ScriptSrc->getFamily(),
+        ];
+        $map[self::unsafeHashes] = [
+            Directive::DefaultSrc,
+            ...Directive::ScriptSrc->getFamily(),
+            ...Directive::StyleSrc->getFamily(),
+        ];
+        $map[self::unsafeInline] = [
+            Directive::DefaultSrc,
+            ...Directive::ScriptSrc->getFamily(),
+            ...Directive::StyleSrc->getFamily(),
+        ];
+        // `'nonce-*'` cannot be used in
+        //  + `script-src-attr` (e.g. `onclick="alert(123)"`),
+        //  + `style-src-attr` (e.g. `style="color: #fff`)
+        $map[self::nonceProxy] = [
+            Directive::DefaultSrc,
+            Directive::ScriptSrc, Directive::ScriptSrcElem,
+            Directive::StyleSrc, Directive::StyleSrcElem,
+        ];
+        return $map;
     }
 }
