@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Frontend\Cache;
 
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
+
 /**
  * Substitutes a cached nonce value with the actual nonce value that
  * is valid for the current request, and which is issued as HTTP CSP
@@ -28,7 +30,12 @@ class NonceValueSubstitution
     public function substituteNonce(array $context): ?string
     {
         $currentNonce = $GLOBALS['TYPO3_REQUEST']?->getAttribute('nonce');
-        if ($currentNonce === null || empty($context['content']) || empty($context['nonce'])) {
+        if (!$currentNonce instanceof ConsumableNonce
+            || empty($context['content'])
+            || empty($context['nonce'])
+            || $currentNonce->value === $context['nonce']
+            || !str_contains($context['content'], $context['nonce'])
+        ) {
             return null;
         }
         return str_replace($context['nonce'], $currentNonce->consume(), $context['content']);
