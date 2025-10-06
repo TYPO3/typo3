@@ -46,6 +46,25 @@ final class PageParts
      */
     private string $content = '';
 
+    /**
+     * "Last change" is page record "SYS_LASTCHANGED", initialized with pages record "tstamp", whichever is higher.
+     * This value is later modified by ContentObjectRenderer when records are rendered. The pages record column
+     * "SYS_LASTCHANGED" is then written to the highest value at the end of FE rendering.
+     * The main goal of pages "SYS_LASTCHANGED" is to have a DB field on pages that "knows" when a record that is
+     * displayed on the page is last changed. This information is for instance used in the ext:seo sitemap XML.
+     *
+     * This approach is flawed for multimple reasons: The "last updated" value can only be "gathered" during FE
+     * rendering since BE does not necessarily know all elements rendered on a page when for example a news plugin
+     * fetches record from "elsewhere", e.g. a record storage page. This means the "final" value of pages "SYS_LASTCHANGED"
+     * is only ready after all content elements have been rendered. It also relies on such a plugin actively taking
+     * care of updating $lastChanged here (@see ContentObjectRenderer->lastChanged()). Rendering a "Last updated"
+     * value on a page thus only works when it is output at the end (or as USER_INT which are calculated in the end).
+     * Additionally, a plugin like the ext:seo pages sitemap (which only gives a list of pages but does not actually
+     * render all pages) can only render a correct value after a page containing a "just changed" content element
+     * has been FE rendered at least once to have the newest "SYS_LASTCHANGED" value in DB.
+     */
+    private int $lastChanged = 0;
+
     public function setContent(string $content): void
     {
         $this->content = $content;
@@ -54,5 +73,15 @@ final class PageParts
     public function getContent(): string
     {
         return $this->content;
+    }
+
+    public function setLastChanged(int $timestamp): void
+    {
+        $this->lastChanged = $timestamp;
+    }
+
+    public function getLastChanged(): int
+    {
+        return $this->lastChanged;
     }
 }

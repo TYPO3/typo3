@@ -27,6 +27,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Event\ModifyRecordsAfterFetchingContentEvent;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageInformation;
+use TYPO3\CMS\Frontend\Page\PageParts;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ContentContentObjectTest extends FunctionalTestCase
@@ -59,7 +60,8 @@ final class ContentContentObjectTest extends FunctionalTestCase
         $pageInformation->setContentFromPid(1);
         $request = (new ServerRequest())
             ->withAttribute('frontend.page.information', $pageInformation)
-            ->withAttribute('frontend.cache.collector', new CacheDataCollector());
+            ->withAttribute('frontend.cache.collector', new CacheDataCollector())
+            ->withAttribute('frontend.page.parts', new PageParts());
         $contentObjectRenderer->setRequest($request);
         $subject = $contentObjectRenderer->getContentObject('CONTENT');
         $result = $subject->render(['table' => 'tt_content']);

@@ -338,14 +338,15 @@ class TypoScriptFrontendController
             return;
         }
         $pageInformation = $request->getAttribute('frontend.page.information');
+        $pageParts = $request->getAttribute('frontend.page.parts');
         $pageRecord = $pageInformation->getPageRecord();
-        if ($pageRecord['SYS_LASTCHANGED'] < (int)($this->register['SYS_LASTCHANGED'] ?? 0)) {
+        if ($pageRecord['SYS_LASTCHANGED'] < $pageParts->getLastChanged()) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
             $pageId = $pageRecord['_LOCALIZED_UID'] ?? $pageInformation->getId();
             $connection->update(
                 'pages',
                 [
-                    'SYS_LASTCHANGED' => (int)$this->register['SYS_LASTCHANGED'],
+                    'SYS_LASTCHANGED' => $pageParts->getLastChanged(),
                 ],
                 [
                     'uid' => (int)$pageId,

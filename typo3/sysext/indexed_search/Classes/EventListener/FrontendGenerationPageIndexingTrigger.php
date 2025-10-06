@@ -58,8 +58,8 @@ final readonly class FrontendGenerationPageIndexingTrigger
         $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
         $pageArguments = $request->getAttribute('routing');
         $pageInformation = $request->getAttribute('frontend.page.information');
+        $pageParts = $request->getAttribute('frontend.page.parts');
         $pageRecord = $pageInformation->getPageRecord();
-        $tsfe = $request->getAttribute('frontend.controller');
 
         // Determine if page should be indexed, and if so, configure and initialize indexer
         if (!($typoScriptConfigArray['index_enable'] ?? false)) {
@@ -111,7 +111,7 @@ final readonly class FrontendGenerationPageIndexingTrigger
             // Alternative title for indexing
             'indexedDocTitle' => $this->pageTitleProviderManager->getTitle($request),
             // Most recent modification time (seconds) of the content on the page. Used to evaluate whether it should be re-indexed.
-            'mtime' => $tsfe->register['SYS_LASTCHANGED'] ?? $pageRecord['SYS_LASTCHANGED'],
+            'mtime' => $pageParts->getLastChanged(),
             // Whether to index external documents like PDF, DOC etc.
             'index_externals' => $typoScriptConfigArray['index_externals'] ?? true,
             // Length of description text (max 250, default 200)

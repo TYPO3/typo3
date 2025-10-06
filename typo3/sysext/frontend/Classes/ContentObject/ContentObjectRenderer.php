@@ -1044,20 +1044,19 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Therefore you should call this function with the last-changed timestamp of any element you display.
      *
      * @param RecordInterface|int|string|float|null $item a record objet or a Unix timestamp (number of seconds since 1970)
-     * @see TypoScriptFrontendController::setSysLastChanged()
      */
-    public function lastChanged(RecordInterface|int|string|float|null $item)
+    public function lastChanged(RecordInterface|int|string|float|null $item): void
     {
         if (MathUtility::canBeInterpretedAsInteger($item)) {
             $item = (int)$item;
         } elseif ($item instanceof Record) {
             $item = $item->getSystemProperties()->getLastUpdatedAt()->getTimestamp();
         } else {
-            $item = 0;
+            return;
         }
-        $tsfe = $this->getTypoScriptFrontendController();
-        if ($item > (int)($tsfe->register['SYS_LASTCHANGED'] ?? 0)) {
-            $tsfe->register['SYS_LASTCHANGED'] = $item;
+        $pageParts = $this->getRequest()->getAttribute('frontend.page.parts');
+        if ($item > $pageParts->getLastChanged()) {
+            $pageParts->setLastChanged($item);
         }
     }
 
@@ -3921,8 +3920,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $retVal = $this->parameters[$key] ?? null;
                         break;
                     case 'register':
-                        $tsfe = $this->getTypoScriptFrontendController();
-                        $retVal = $tsfe->register[$key] ?? null;
+                        if ($key === 'SYS_LASTCHANGED') {
+                            // b/w compat layer: SYS_LASTCHANGED has been a register entry until TYPO3 v14. It is now part
+                            // of a request attribute. The register access via TS should continue to work, though.
+                            $retVal = $this->getRequest()->getAttribute('frontend.page.parts')->getLastChanged();
+                        } else {
+                            $tsfe = $this->getTypoScriptFrontendController();
+                            $retVal = $tsfe->register[$key] ?? null;
+                        }
                         break;
                     case 'global':
                         $retVal = $this->getGlobal($key);

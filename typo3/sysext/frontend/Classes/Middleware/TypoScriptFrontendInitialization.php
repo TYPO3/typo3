@@ -107,15 +107,15 @@ final readonly class TypoScriptFrontendInitialization implements MiddlewareInter
 
         $controller = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
         $controller->initializePageRenderer($request);
-        // Update SYS_LASTCHANGED at the very last, when page record was finally resolved.
-        // Is also called when a translated page is in use, so the register reflects
-        // the state of the translated page, not the page in the default language.
-        $controller->register['SYS_LASTCHANGED'] = (int)$pageInformation->getPageRecord()['tstamp'];
-        if ($controller->register['SYS_LASTCHANGED'] < (int)$pageInformation->getPageRecord()['SYS_LASTCHANGED']) {
-            $controller->register['SYS_LASTCHANGED'] = (int)$pageInformation->getPageRecord()['SYS_LASTCHANGED'];
-        }
         $request = $request->withAttribute('frontend.controller', $controller);
         $pageParts = new PageParts();
+        // Init "last changed" with "tstamp" of the page record, or SYS_LASTCHANGED if it is lower.
+        // See the attribute property comment for details.
+        $lastChanged = (int)$pageInformation->getPageRecord()['tstamp'];
+        if ($lastChanged < (int)$pageInformation->getPageRecord()['SYS_LASTCHANGED']) {
+            $lastChanged = (int)$pageInformation->getPageRecord()['SYS_LASTCHANGED'];
+        }
+        $pageParts->setLastChanged($lastChanged);
         $request = $request->withAttribute('frontend.page.parts', $pageParts);
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $GLOBALS['TSFE'] = $controller;
