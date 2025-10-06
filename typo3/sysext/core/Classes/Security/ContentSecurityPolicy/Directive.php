@@ -52,6 +52,7 @@ enum Directive: string
     case TrustedTypes = 'trusted-types';
     case UpgradeInsecureRequests = 'upgrade-insecure-requests';
     case WorkerSrc = 'worker-src';
+
     private const STAND_ALONE = [
         self::Sandbox,
         self::TrustedTypes,
@@ -64,6 +65,21 @@ enum Directive: string
     public function getAncestors(): array
     {
         return self::ancestorMap()[$this] ?? [];
+    }
+
+    /**
+     * @return list<self>
+     * @internal
+     */
+    public function getFamily(): array
+    {
+        $family = [$this];
+        foreach (self::ancestorMap() as $child => $ancestors) {
+            if (in_array($this, $ancestors, true)) {
+                $family[] = $child;
+            }
+        }
+        return $family;
     }
 
     /**
