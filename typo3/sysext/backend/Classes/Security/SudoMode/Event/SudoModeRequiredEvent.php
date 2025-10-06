@@ -23,7 +23,7 @@ final class SudoModeRequiredEvent
 {
     private bool $verificationRequired = true;
 
-    public function __construct(readonly private AccessClaim $claim) {}
+    public function __construct(private readonly AccessClaim $claim) {}
 
     public function getClaim(): AccessClaim
     {

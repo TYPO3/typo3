@@ -23,7 +23,7 @@ use TYPO3Tests\ParentChildTranslation\Domain\Repository\MainRepository;
 
 final class MainController extends ActionController
 {
-    public function __construct(readonly MainRepository $mainRepository) {}
+    public function __construct(public readonly MainRepository $mainRepository) {}
 
     public function listAction(): ResponseInterface
     {
