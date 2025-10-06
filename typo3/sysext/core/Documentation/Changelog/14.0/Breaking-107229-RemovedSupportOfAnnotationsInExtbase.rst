@@ -17,6 +17,13 @@ provide the same functionality with better performance and native language
 support. This also avoids using a third-party library (in this case
 :composer:`doctrine/annotations`).
 
+..  important::
+
+    Note that usage of PHPDoc annotations like :php:`@var`, :php:`@return`
+    and others are unaffected by this change, as they do not require specific
+    Doctrine annotation parsing. Especially explicit parameter type annotations
+    like :php:`@var ObjectStorage<FileReference>` are still fully supported.
+
 Extbase made heavy use of annotation parsing, which can be detected via code
 such as this, where the annotation namespace was imported:
 
@@ -36,13 +43,6 @@ such as this, where the annotation namespace was imported:
 Since PHP 8.2 is used as minimum requirement in TYPO3, the
 well-established PHP attributes should be used instead. All Extbase-related
 annotations are already usable as PHP attributes since TYPO3 v12.
-
-..  hint::
-
-    Note that usage of PHPDoc annotations like :php:`@param`, :php:`@return`
-    and others are unaffected by this change, as they do not require specific
-    Doctrine annotation parsing. Especially explicit parameter type annotations
-    like :php:`@param ObjectStorage<MyModel>` are still fully supported.
 
 
 Impact
