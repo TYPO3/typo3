@@ -1,0 +1,259 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    xmlns:co="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Before">
+    <f:asset.module identifier="@typo3/backend/element/combobox-element.js"/>
+</f:section>
+
+<f:section name="Content">
+
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
+
+    <div class="styleguide-content">
+
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.combobox.headline" /></h1>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.combobox.section.default.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <f:render
+                partial="Backend/Form/Combobox"
+                arguments="{
+                    identifier: 'inputFormComboboxDefault',
+                    type: 'text',
+                    value: '_top',
+                    fieldLabel: 'Form label',
+                    options: {
+                        0: {
+                            label: 'Top',
+                            value: '_top',
+                            icon: 'actions-window'
+                        },
+                        1: {
+                            label: 'New Window',
+                            value: '_blank',
+                            icon: 'actions-window-open'
+                        }
+                    }
+                }"
+            />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.combobox.section.placeholder.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <f:render
+                partial="Backend/Form/Combobox"
+                arguments="{
+                    identifier: 'inputFormComboboxPlaceholder',
+                    type: 'text',
+                    fieldLabel: 'Input field with a placeholder and a form label with many words to fill the space and test the length',
+                    placeholder: 'Please insert your value here',
+                    options: {
+                        0: {
+                            label: 'Top',
+                            value: '_top',
+                            icon: 'actions-window'
+                        },
+                        1: {
+                            label: 'New Window',
+                            value: '_blank',
+                            icon: 'actions-window-open'
+                        }
+                    }
+                }"
+            />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.combobox.section.disabled.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <f:render
+                partial="Backend/Form/Combobox"
+                arguments="{
+                    identifier: 'inputFormComboboxDisabled',
+                    type: 'text',
+                    fieldLabel: 'Form label',
+                    placeholder: 'This form field is disabled',
+                    disabled: 1,
+                    options: {
+                        0: {
+                            label: 'Top',
+                            value: '_top',
+                            icon: 'actions-window'
+                        },
+                        1: {
+                            label: 'New Window',
+                            value: '_blank',
+                            icon: 'actions-window-open'
+                        }
+                    }
+                }"
+            />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.combobox.section.readonly.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <f:render
+                partial="Backend/Form/Combobox"
+                arguments="{
+                    identifier: 'inputFormComboboxReadonly',
+                    type: 'text',
+                    value: '_top',
+                    fieldLabel: 'Form label',
+                    placeholder: 'This form field is readonly',
+                    readonly: 1,
+                    options: {
+                        0: {
+                            label: 'Top',
+                            value: '_top',
+                            icon: 'actions-window'
+                        },
+                        1: {
+                            label: 'New Window',
+                            value: '_blank',
+                            icon: 'actions-window-open'
+                        }
+                    }
+                }"
+            />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.combobox.section.additionalText.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <f:render
+                partial="Backend/Form/Combobox"
+                arguments="{
+                    identifier: 'inputFormComboboxDefaultAdditionalText',
+                    type: 'text',
+                    fieldLabel: 'Form label',
+                    formText: 'Additional text is displayed below the form field.',
+                    options: {
+                        0: {
+                            label: 'Top',
+                            value: '_top',
+                            icon: 'actions-window'
+                        },
+                        1: {
+                            label: 'New Window',
+                            value: '_blank',
+                            icon: 'actions-window-open'
+                        }
+                    }
+                }"
+            />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.combobox.section.state.headline" /></h2>
+        <f:variable name="codeSnippetState">
+            .has-change
+            .has-error
+            .has-success
+            .has-warning
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetState}">
+            <f:render
+                partial="Backend/Form/Combobox"
+                arguments="{
+                    identifier: 'inputFormComboboxHasChange',
+                    type: 'text',
+                    fieldLabel: 'Has change',
+                    placeholder: 'placeholder has change',
+                    additionalClass: 'has-change',
+                    options: {
+                        0: {
+                            label: 'Top',
+                            value: '_top',
+                            icon: 'actions-window'
+                        },
+                        1: {
+                            label: 'New Window',
+                            value: '_blank',
+                            icon: 'actions-window-open'
+                        }
+                    }
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Combobox"
+                arguments="{
+                    identifier: 'inputFormComboboxHasError',
+                    type: 'text',
+                    fieldLabel: 'Has error',
+                    placeholder: 'placeholder has error',
+                    additionalClass: 'has-error',
+                    options: {
+                        0: {
+                            label: 'Top',
+                            value: '_top',
+                            icon: 'actions-window'
+                        },
+                        1: {
+                            label: 'New Window',
+                            value: '_blank',
+                            icon: 'actions-window-open'
+                        }
+                    }
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Combobox"
+                arguments="{
+                    identifier: 'inputFormComboboxHasSuccess',
+                    type: 'text',
+                    fieldLabel: 'Has success',
+                    placeholder: 'placeholder has success',
+                    additionalClass: 'has-success',
+                    options: {
+                        0: {
+                            label: 'Top',
+                            value: '_top',
+                            icon: 'actions-window'
+                        },
+                        1: {
+                            label: 'New Window',
+                            value: '_blank',
+                            icon: 'actions-window-open'
+                        }
+                    }
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Combobox"
+                arguments="{
+                    identifier: 'inputFormComboboxHasWarning',
+                    type: 'text',
+                    fieldLabel: 'Has warning',
+                    placeholder: 'placeholder has warning',
+                    additionalClass: 'has-warning',
+                    options: {
+                        0: {
+                            label: 'Top',
+                            value: '_top',
+                            icon: 'actions-window'
+                        },
+                        1: {
+                            label: 'New Window',
+                            value: '_blank',
+                            icon: 'actions-window-open'
+                        }
+                    }
+                }"
+            />
+        </sg:example>
+
+    </div>
+
+</f:section>
+
+</html>

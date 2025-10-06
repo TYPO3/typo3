@@ -50,6 +50,7 @@ final class ComponentsController
         'buttons',
         'cards',
         'checkboxes',
+        'comboboxes',
         'developerTools',
         'dropdown',
         'flashMessages',
@@ -90,6 +91,7 @@ final class ComponentsController
             'buttons' => $this->renderButtonsView($request),
             'cards' => $this->renderCardsView($request),
             'checkboxes' => $this->renderCheckboxesView($request),
+            'comboboxes' => $this->renderComboboxesView($request),
             'developerTools' => $this->renderDeveloperToolsView($request),
             'dropdown' => $this->renderDropdownView($request),
             'flashMessages' => $this->renderFlashMessagesView($request),
@@ -181,6 +183,17 @@ final class ComponentsController
             'routeIdentifier' => 'styleguide_components',
         ]);
         return $view->renderResponse('Backend/Components/Checkboxes');
+    }
+
+    private function renderComboboxesView(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->createModuleTemplate($request, 'comboboxes');
+        $view->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'comboboxes',
+            'routeIdentifier' => 'styleguide_components',
+        ]);
+        return $view->renderResponse('Backend/Components/Comboboxes');
     }
 
     private function renderDeveloperToolsView(ServerRequestInterface $request): ResponseInterface

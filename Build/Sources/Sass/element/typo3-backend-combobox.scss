@@ -1,0 +1,127 @@
+//
+// CSS for custom element:
+// <typo3-backend-combobox>
+//
+typo3-backend-combobox {
+    display: block;
+    width: 100%;
+    --typo3-form-combobox-padding-x: var(--typo3-input-padding-x);
+    --typo3-form-combobox-icon-size: 16px;
+    --typo3-form-combobox-listbox-zindex: var(--typo3-zindex-dropdown);
+    --typo3-form-combobox-listbox-min-width: 10rem;
+    --typo3-form-combobox-listbox-padding: 2px;
+    --typo3-form-combobox-listbox-font-size: var(--typo3-component-font-size);
+    --typo3-form-combobox-listbox-line-height: var(--typo3-component-line-height);
+    --typo3-form-combobox-listbox-color: var(--typo3-component-color);
+    --typo3-form-combobox-listbox-bg: var(--typo3-component-bg);
+    --typo3-form-combobox-listbox-border-color: var(--typo3-component-border-color);
+    --typo3-form-combobox-listbox-border-radius: var(--typo3-component-border-radius);
+    --typo3-form-combobox-listbox-border-width: var(--typo3-component-border-width);
+    --typo3-form-combobox-listbox-box-shadow: var(--typo3-component-box-shadow);
+    --typo3-form-combobox-option-indicator: var(--typo3-text-color-primary);
+    --typo3-form-combobox-option-color: var(--typo3-component-color);
+    --typo3-form-combobox-option-hover-color: var(--typo3-list-item-hover-color);
+    --typo3-form-combobox-option-hover-bg: var(--typo3-list-item-hover-bg);
+    --typo3-form-combobox-option-focus-color: var(--typo3-list-item-focus-color);
+    --typo3-form-combobox-option-focus-bg: var(--typo3-list-item-focus-bg);
+    --typo3-form-combobox-option-disabled-color: var(--typo3-list-item-disabled-color);
+    --typo3-form-combobox-option-disabled-bg: transparent;
+    --typo3-form-combobox-option-padding-x: var(--typo3-list-item-padding-x);
+    --typo3-form-combobox-option-padding-y: var(--typo3-list-item-padding-y);
+
+    // Hide choice elements until component is ready
+    typo3-backend-combobox-choice:not([slot="choices"]) {
+        display: none;
+    }
+
+    // Add CSS variable that child components can use
+    &[data-has-value] {
+        --typo3-form-combobox-controls-width: calc(var(--typo3-form-combobox-icon-size) * 2 + var(--typo3-form-combobox-padding-x) * 2 + .5rem);
+    }
+
+    &:not([data-has-value]) {
+        --typo3-form-combobox-controls-width: calc(var(--typo3-form-combobox-icon-size) + var(--typo3-form-combobox-padding-x) * 2);
+    }
+
+    .form-control {
+        padding-inline-end: var(--typo3-form-combobox-controls-width, calc(var(--typo3-form-combobox-icon-size) + var(--typo3-form-combobox-padding-x) * 2));
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    }
+
+    &::part(indicator) {
+        opacity: .6;
+    }
+
+    &::part(listbox) {
+        z-index: var(--typo3-form-combobox-listbox-zindex);
+        max-height: 200px;
+        overflow-y: auto;
+        padding: var(--typo3-form-combobox-listbox-padding);
+        margin: 0;
+        font-size: var(--typo3-form-combobox-listbox-font-size);
+        line-height: var(--typo3-form-combobox-listbox-line-height);
+        color: var(--typo3-form-combobox-listbox-color);
+        background-color: var(--typo3-form-combobox-listbox-bg);
+        border: var(--typo3-form-combobox-listbox-border-width) solid var(--typo3-form-combobox-listbox-border-color);
+        border-radius: var(--typo3-form-combobox-listbox-border-radius);
+        box-shadow: var(--typo3-form-combobox-listbox-box-shadow);
+        min-width: var(--typo3-form-combobox-listbox-min-width);
+    }
+}
+
+typo3-backend-combobox-choice {
+    color: var(--typo3-form-combobox-option-color);
+    border-radius: calc(var(--typo3-form-combobox-listbox-border-radius) - var(--typo3-form-combobox-listbox-padding));
+    padding: var(--typo3-form-combobox-option-padding-y) var(--typo3-form-combobox-option-padding-x);
+    background-color: transparent;
+    cursor: pointer;
+
+    & + & {
+        margin-top: 1px;
+    }
+
+    &:hover {
+        color: var(--typo3-form-combobox-option-hover-color);
+        background-color: var(--typo3-form-combobox-option-hover-bg);
+    }
+
+    &[disabled] {
+        color: var(--typo3-form-combobox-option-disabled-color);
+        pointer-events: none;
+        background-color: var(--typo3-form-combobox-option-disabled-bg);
+        cursor: not-allowed;
+    }
+
+    &[aria-selected="true"] {
+        color: var(--typo3-form-combobox-option-focus-color);
+        background-color: var(--typo3-form-combobox-option-focus-bg);
+    }
+
+    &::part(icon) {
+        margin-inline-end: .5rem;
+        flex-shrink: 0;
+    }
+
+    &::part(content) {
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &::part(indicator) {
+        color: var(--typo3-form-combobox-option-indicator);
+        margin-inline-end: .25rem;
+        min-width: var(--typo3-form-combobox-icon-size);
+    }
+}

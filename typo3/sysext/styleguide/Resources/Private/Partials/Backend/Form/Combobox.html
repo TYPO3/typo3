@@ -1,0 +1,27 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<div class="form-group{f:if(condition: additionalClass, then: ' {additionalClass}')}">
+    <label for="{identifier}" class="form-label">{f:if(condition: fieldLabel, then: fieldLabel, else: 'Field label')}</label>
+    <f:if condition="{formDescription}"><div class="form-description">{formDescription}</div></f:if>
+    <typo3-backend-combobox>
+        <input
+            type="{type}"
+            class="form-control"
+            id="{identifier}"
+            {f:if(condition: value, then: 'value="{value}"')}
+            {f:if(condition: placeholder, then: 'placeholder="{placeholder}"')}
+            {f:if(condition: formText, then: 'aria-describedby="form-text-{identifier}"')}
+            {f:if(condition: disabled, then: 'disabled')}
+            {f:if(condition: readonly, then: 'readonly')}
+        >
+        <f:for each="{options}" as="option">
+        <typo3-backend-combobox-choice value="{option.value}" icon="{option.icon}">{option.label}</typo3-backend-combobox-choice>
+        </f:for>
+    </typo3-backend-combobox>
+    <f:if condition="{formText}"><div id="form-text-{identifier}" class="form-text">{formText}</div></f:if>
+</div>
+
+</html>

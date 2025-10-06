@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Application\FormEngine;
 
 use Codeception\Attribute\DataProvider;
 use Codeception\Example;
-use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverKeys;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
@@ -122,11 +121,10 @@ final class ElementsBasicEmailCest extends AbstractElementsBasicCest
     public function canSelectValueFromValuePicker(ApplicationTester $I): void
     {
         $formSection = $this->getFormSectionByFieldLabel($I, 'email_5');
-        $select = $formSection->findElement(WebDriverBy::xpath('.//*/typo3-formengine-valuepicker/select'));
         $input = $this->getInputField($formSection);
-        // Select second option from value picker.
-        $select->sendKeys(WebDriverKeys::ARROW_DOWN);
-        $select->sendKeys(WebDriverKeys::ARROW_DOWN);
+        $input->click();
+        $input->sendKeys(WebDriverKeys::ARROW_DOWN);
+        $input->sendKeys(WebDriverKeys::ENTER);
         $I->seeInField($input, 'info@example.org');
     }
 }

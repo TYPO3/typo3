@@ -180,7 +180,6 @@ return [
             'description' => 'valuePicker',
             'config' => [
                 'type' => 'input',
-                'size' => 20,
                 'eval' => 'trim',
                 'valuePicker' => [
                     'items' => [
@@ -786,6 +785,20 @@ return [
                 'readOnly' => 1,
             ],
         ],
+        'number_8' => [
+            'label' => 'number_8',
+            'description' => 'valuePicker',
+            'config' => [
+                'type' => 'number',
+                'valuePicker' => [
+                    'items' => [
+                        [ 'value' => 1998, 'label' => 'First TYPO3 Release'],
+                        [ 'value' => 2006, 'label' => 'First TYPO3 Developer Days'],
+                        [ 'value' => 2024, 'label' => 'First TYPO3 Surfcamp'],
+                    ],
+                ],
+            ],
+        ],
 
         'email_1' => [
             'label' => 'email_1',
@@ -827,6 +840,7 @@ return [
                 'valuePicker' => [
                     'items' => [
                         ['label' => 'Example email', 'value' => 'info@example.org'],
+                        ['label' => 'Another email', 'value' => 'info@another.org'],
                     ],
                 ],
             ],
@@ -1807,6 +1821,71 @@ backend_layout {
                                 </ROOT>
                             </sLink>
 
+                            <sNumber>
+                                <ROOT>
+                                    <type>array</type>
+                                    <sheetTitle>number</sheetTitle>
+                                    <el>
+                                        <number_1>
+                                            <label>number_1</label>
+                                            <description>number_1 valuePicker</description>
+                                            <config>
+                                                <type>number</type>
+                                                <default>1998</default>
+                                                <valuePicker>
+                                                    <items>
+                                                        <numIndex index="0">
+                                                            <label>First TYPO3 Release</label>
+                                                            <value>1998</value>
+                                                        </numIndex>
+                                                        <numIndex index="1">
+                                                            <label>First TYPO3 Developer Days</label>
+                                                            <value>2006</value>
+                                                        </numIndex>
+                                                        <numIndex index="2">
+                                                            <label>First TYPO3 Surfcamp</label>
+                                                            <value>2024</value>
+                                                        </numIndex>
+                                                    </items>
+                                                </valuePicker>
+                                                <range>
+                                                    <lower>1998</lower>
+                                                    <upper>2024</upper>
+                                                </range>
+                                            </config>
+                                        </number_1>
+                                    </el>
+                                </ROOT>
+                            </sNumber>
+
+                            <sEmail>
+                                <ROOT>
+                                    <type>array</type>
+                                    <sheetTitle>email</sheetTitle>
+                                    <el>
+                                        <email_1>
+                                            <label>email_1</label>
+                                            <description>email_1 valuePicker</description>
+                                            <config>
+                                                <type>email</type>
+                                                <valuePicker>
+                                                    <items>
+                                                        <numIndex index="0">
+                                                            <label>Example email</label>
+                                                            <value>info@example.org</value>
+                                                        </numIndex>
+                                                        <numIndex index="1">
+                                                            <label>Another email</label>
+                                                            <value>info@another.org</value>
+                                                        </numIndex>
+                                                    </items>
+                                                </valuePicker>
+                                            </config>
+                                        </email_1>
+                                    </el>
+                                </ROOT>
+                            </sEmail>
+
                             <sCheck>
                                 <ROOT>
                                     <type>array</type>
@@ -1956,7 +2035,7 @@ backend_layout {
                 --div--;color,
                     color_1,color_2,color_3,color_4,color_5,color_palpreset,
                 --div--;number,
-                    number_1, number_2, number_3, number_4, number_5, number_7,
+                    number_1, number_2, number_3, number_4, number_5, number_7,number_8,
                 --div--;email,
                     email_1, email_2, email_3, email_4, email_5,
                 --div--;text,

@@ -61,6 +61,9 @@
 			<trans-unit id="action.checkboxes">
 				<source>Checkboxes</source>
 			</trans-unit>
+			<trans-unit id="action.comboboxes">
+				<source>Comboboxes</source>
+			</trans-unit>
 			<trans-unit id="action.colorTokens">
 				<source>Color Tokens</source>
 			</trans-unit>
@@ -363,6 +366,29 @@
 			</trans-unit>
 			<trans-unit id="component.checkbox.section.toggle.headline">
 				<source>Toggle</source>
+			</trans-unit>
+
+			<!-- Component: Combobox -->
+			<trans-unit id="component.combobox.headline">
+				<source>Comboboxes</source>
+			</trans-unit>
+			<trans-unit id="component.combobox.section.default.headline">
+				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="component.combobox.section.placeholder.headline">
+				<source>Placeholder</source>
+			</trans-unit>
+			<trans-unit id="component.combobox.section.disabled.headline">
+				<source>Disabled</source>
+			</trans-unit>
+			<trans-unit id="component.combobox.section.readonly.headline">
+				<source>Readonly</source>
+			</trans-unit>
+			<trans-unit id="component.combobox.section.additionalText.headline">
+				<source>Additional text</source>
+			</trans-unit>
+			<trans-unit id="component.combobox.section.state.headline">
+				<source>State</source>
 			</trans-unit>
 
 			<!-- Component: Dropdown -->

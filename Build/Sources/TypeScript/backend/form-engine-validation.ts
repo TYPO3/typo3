@@ -120,6 +120,8 @@ export default class FormEngineValidation {
 
     // add the attribute so that acceptance tests can know when the field initialization has completed
     humanReadableField.dataset.formengineInputInitialized = 'true';
+    /* @internal `formengine:input:initialized` is an internal event and may vanish at any time, do not rely on it in custom code */
+    humanReadableField.dispatchEvent(new Event('formengine:input:initialized'));
   }
 
   public static registerCustomEvaluation(name: string, handler: CustomEvaluationCallback): void {
