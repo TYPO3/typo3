@@ -415,7 +415,7 @@ module.exports = function (grunt) {
         'taboverride',
       ],
       backend: [
-        'alwan',
+        { name: 'alwan', src: 'node_modules/alwan/dist/js/esm/alwan.min.js' },
         'crelt',
         { name: 'lodash-es', bundle: true },
         'mark.js',
