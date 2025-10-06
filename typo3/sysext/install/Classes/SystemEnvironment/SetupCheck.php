@@ -72,6 +72,9 @@ class SetupCheck implements CheckInterface
                 ContextualFeedbackSeverity::WARNING
             ));
         } else {
+            if (Environment::isCli()) {
+                return;
+            }
             $verifyHostHeader = new VerifyHostHeader($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] ?? '');
             if ($verifyHostHeader->isAllowedHostHeaderValue($_SERVER['HTTP_HOST'], $_SERVER)) {
                 $this->messageQueue->enqueue(new FlashMessage(

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\SystemEnvironment;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
@@ -621,6 +622,9 @@ class Check implements CheckInterface
      */
     protected function checkWindowsApacheThreadStackSize()
     {
+        if (Environment::isCli()) {
+            return;
+        }
         if ($this->isWindowsOs()
             && str_starts_with($_SERVER['SERVER_SOFTWARE'], 'Apache')
         ) {

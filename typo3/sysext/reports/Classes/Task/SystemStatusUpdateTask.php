@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Reports\Task;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Mime\Address;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Registry;
@@ -109,6 +110,10 @@ class SystemStatusUpdateTask extends AbstractTask
         }
         $subject = sprintf($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTask_email_subject'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
         $message = sprintf($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:' . ($this->getNotificationAll() ? 'status_allNotification' : 'status_problemNotification')), '', '');
+        if (Environment::isCli()) {
+            $message .= CRLF . CRLF;
+            $message .= $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_problem_notification_cli_disclaimer');
+        }
         $message .= CRLF . CRLF;
         $message .= $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTask_email_site') . ': ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         $message .= CRLF . CRLF;

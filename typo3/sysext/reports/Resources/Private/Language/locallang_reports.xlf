@@ -264,6 +264,9 @@
 			<trans-unit id="status_imageprocessing_avif_available_and_configured">
 				<source>Support for AVIF image generation is configured in $TYPO3_CONF_VARS[GFX][imagefile_ext] and ImageMagick/GraphicsMagick supports generation of AVIF image files - all fine!</source>
 			</trans-unit>
+			<trans-unit id="status_problem_notification_cli_disclaimer">
+				<source>This report was generated from the Command Line Interface (CLI) context. The PHP settings and modules might differ from the ones defined for the webserver process, for example when using a different php.ini file. In case of problems, always compare the report with the one generated via the backend report module.</source>
+                        </trans-unit>
 		</body>
 	</file>
 </xliff>
