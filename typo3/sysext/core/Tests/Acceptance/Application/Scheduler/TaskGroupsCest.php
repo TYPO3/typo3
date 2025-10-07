@@ -85,10 +85,8 @@ final class TaskGroupsCest
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForText('Edit Scheduler task group');
 
-        // Find the value picker element and interact with its select dropdown
-        $valuePickerSelect = 'typo3-formengine-valuepicker[linked-field="[data-formengine-input-name=\\"data[tx_scheduler_task_group][1][color]\\"]"] select';
-        $I->waitForElement($valuePickerSelect);
-        $I->selectOption($valuePickerSelect, 'TYPO3 Orange');
+        $I->click('//input[contains(@data-formengine-input-name, "data[tx_scheduler_task_group]") and contains(@data-formengine-input-name, "[color]")]');
+        $I->click('//button[contains(@aria-label, "Color swatch: TYPO3 orange")]');
 
         $I->fillField('textarea[data-formengine-input-name="data[tx_scheduler_task_group][1][description]"]', $groupDescription);
 
@@ -97,7 +95,7 @@ final class TaskGroupsCest
         $I->waitForText('Edit Scheduler task group');
         $I->click('.module-docheader a[title="Close"]');
 
-        $I->seeElement('//div[contains(@class, "panel")][contains(., "' . $this->groupName . '")][contains(@style, "border-left") and contains(@style, "#FF8700")]');
+        $I->seeElement('//div[contains(@class, "panel")][contains(., "' . $this->groupName . '")][contains(@style, "border-left") and contains(@style, "#ff8700")]');
         $I->see($groupDescription, '//div[contains(@class, "panel-title")][contains(., "' . $this->groupName . '")]//p[contains(@class, "text-variant")]');
     }
 

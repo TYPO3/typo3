@@ -134,23 +134,6 @@ class ColorElement extends AbstractFormElement
             $attributes['placeholder'] = trim($config['placeholder']);
         }
 
-        $valuePickerHtml = [];
-        if (is_array($config['valuePicker']['items'] ?? false)) {
-            $valuePickerConfiguration = [
-                'linked-field' => '[data-formengine-input-name="' . $itemName . '"]',
-            ];
-            $valuePickerHtml[] = '<typo3-formengine-valuepicker ' . GeneralUtility::implodeAttributes($valuePickerConfiguration, true) . '>';
-            $valuePickerHtml[] = '<select class="form-select form-control-adapt">';
-            $valuePickerHtml[] = '<option></option>';
-            foreach ($config['valuePicker']['items'] as $item) {
-                $valuePickerHtml[] = '<option value="' . htmlspecialchars($item['value']) . '">' . htmlspecialchars($languageService->sL($item['label'])) . '</option>';
-            }
-            $valuePickerHtml[] = '</select>';
-            $valuePickerHtml[] = '</typo3-formengine-valuepicker>';
-
-            $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/field-wizard/value-picker.js');
-        }
-
         $fieldWizardResult = $this->renderFieldWizard();
         $fieldWizardHtml = $fieldWizardResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
@@ -159,24 +142,45 @@ class ColorElement extends AbstractFormElement
         $fieldControlHtml = $fieldControlResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldControlResult, false);
 
+        $colorDefinitions = array_map(
+            static fn(array $colorDefinition): array => [
+                'color' => $colorDefinition['value'],
+                'label' => $colorDefinition['label'] !== null ?
+                    sprintf('%s (%s)', $colorDefinition['label'], $colorDefinition['value']) :
+                    $colorDefinition['value'],
+            ],
+            array_filter(
+                $tsConfig['colorPalettes.']['colors.'] ?? [],
+                static fn(mixed $colorDefinition) => is_array($colorDefinition) && trim($colorDefinition['value'] ?? '') !== '',
+            ),
+        );
+
         $configuredPalette =
             $tsConfig['TCEFORM.'][$table . '.'][$fieldName . '.']['colorPalette']
             ?? $tsConfig['TCEFORM.'][$table . '.']['colorPalette']
             ?? $tsConfig['TCEFORM.']['colorPalette']
             ?? null;
-        if ($configuredPalette === null) {
-            // No palette defined in TCEFORM, fall back to all colors
-            $colorDefinitions = array_map(static function (array $colorDefinition): string {
-                return $colorDefinition['value'] ?? '';
-            }, array_values($tsConfig['colorPalettes.']['colors.'] ?? []));
-        } else {
+        if ($configuredPalette !== null) {
             $colorsInPalette = GeneralUtility::trimExplode(',', $tsConfig['colorPalettes.']['palettes.'][$configuredPalette] ?? '', true);
-            $colorDefinitions = array_map(static function (string $colorIdentifier) use ($tsConfig): string {
-                return $tsConfig['colorPalettes.']['colors.'][$colorIdentifier . '.']['value'] ?? '';
-            }, $colorsInPalette);
+            $colorDefinitions = array_map(
+                static fn(string $colorIdentifier): array => $colorDefinitions[$colorIdentifier . '.'],
+                array_filter(
+                    array_combine($colorsInPalette, $colorsInPalette),
+                    static fn(string $colorIdentifier) => isset($colorDefinitions[$colorIdentifier . '.'])
+                )
+            );
         }
+        if (is_array($config['valuePicker']['items'] ?? false)) {
+            foreach ($config['valuePicker']['items'] as $item) {
+                $colorDefinitions[] = [
+                    'color' => $item['value'],
+                    'label' => $item['label'],
+                ];
+            }
+        }
+
         $colorPickerAttribute = [
-            'swatches' => implode(';', array_unique(array_filter($colorDefinitions))),
+            'swatches' => json_encode(array_values($colorDefinitions)),
             'opacity' => $opacityEnabled,
             'color' => htmlspecialchars((string)$itemValue),
         ];
@@ -193,7 +197,6 @@ class ColorElement extends AbstractFormElement
         $mainFieldHtml[] =      '<div class="form-wizards-item-aside form-wizards-item-aside--field-control">';
         $mainFieldHtml[] =          '<div class="btn-group">';
         $mainFieldHtml[] =              $fieldControlHtml;
-        $mainFieldHtml[] =              implode(LF, $valuePickerHtml);
         $mainFieldHtml[] =          '</div>';
         $mainFieldHtml[] =      '</div>';
         if (!empty($fieldWizardHtml)) {
