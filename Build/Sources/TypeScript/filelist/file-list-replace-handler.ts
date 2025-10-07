@@ -17,7 +17,7 @@ import { until } from 'lit/directives/until';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ResourceInterface } from '@typo3/backend/resource/resource';
 import { FileListActionEvent, type FileListActionDetail } from '@typo3/filelist/file-list-actions';
-import { default as Modal, ModalElement } from '@typo3/backend/modal';
+import { default as Modal, type ModalElement } from '@typo3/backend/modal';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import Notification from '@typo3/backend/notification';
