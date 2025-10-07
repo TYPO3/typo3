@@ -22,6 +22,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Page\Event\BeforeJavaScriptsRenderingEvent;
 use TYPO3\CMS\Core\Page\Event\BeforeStylesheetsRenderingEvent;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -44,7 +45,7 @@ readonly class AssetRenderer
 
         $template = '<script%attributes%>%source%</script>';
         $assets = $this->assetCollector->getInlineJavaScripts($priority);
-        return $this->render($assets, $template, $nonce);
+        return $this->render($assets, $template, true, Directive::ScriptSrcElem, $nonce);
     }
 
     public function renderJavaScript($priority = false, ?ConsumableNonce $nonce = null): string
@@ -61,7 +62,7 @@ readonly class AssetRenderer
             }
             $assetData['attributes']['src'] = $assetData['source'];
         }
-        return $this->render($assets, $template, $nonce);
+        return $this->render($assets, $template, false, Directive::ScriptSrcElem, $nonce);
     }
 
     public function renderInlineStyleSheets($priority = false, ?ConsumableNonce $nonce = null): string
@@ -72,7 +73,7 @@ readonly class AssetRenderer
 
         $template = '<style%attributes%>%source%</style>';
         $assets = $this->assetCollector->getInlineStyleSheets($priority);
-        return $this->render($assets, $template, $nonce);
+        return $this->render($assets, $template, true, Directive::StyleSrcElem, $nonce);
     }
 
     public function renderStyleSheets(bool $priority = false, string $endingSlash = '', ?ConsumableNonce $nonce = null): string
@@ -90,16 +91,21 @@ readonly class AssetRenderer
             $assetData['attributes']['href'] = $assetData['source'];
             $assetData['attributes']['rel'] = $assetData['attributes']['rel'] ?? 'stylesheet';
         }
-        return $this->render($assets, $template, $nonce);
+        return $this->render($assets, $template, false, Directive::StyleSrcElem, $nonce);
     }
 
-    protected function render(array $assets, string $template, ?ConsumableNonce $nonce = null): string
-    {
+    protected function render(
+        array $assets,
+        string $template,
+        bool $isInline,
+        Directive $directive,
+        ?ConsumableNonce $nonce = null
+    ): string {
         $results = [];
         foreach ($assets as $assetData) {
             $attributes = $assetData['attributes'];
             if ($nonce !== null && !empty($assetData['options']['useNonce'])) {
-                $attributes['nonce'] = $nonce->consume();
+                $attributes['nonce'] = $isInline ? $nonce->consumeInline($directive) : $nonce->consumeStatic($directive);
             }
             $attributesString = count($attributes) ? ' ' . GeneralUtility::implodeAttributes($attributes, true) : '';
             $results[] = str_replace(

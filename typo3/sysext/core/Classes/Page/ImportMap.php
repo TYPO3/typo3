@@ -140,7 +140,7 @@ class ImportMap
             'type' => 'importmap',
         ];
         if ($nonce !== null) {
-            $attributes['nonce'] = (string)$nonce;
+            $attributes['nonce'] = $nonce instanceof ConsumableNonce ? $nonce->consumeInline(Directive::ScriptSrcElem) : $nonce;
         } else {
             $this->policyRegistry?->appendMutationCollection(
                 new MutationCollection(

@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -86,7 +87,7 @@ class ReferrerEnforcer
             );
             $attributes = ['src' => $scriptUri];
             if ($nonce instanceof ConsumableNonce) {
-                $attributes['nonce'] = $nonce->consume();
+                $attributes['nonce'] = $nonce->consumeStatic(Directive::ScriptSrcElem);
             }
             // simulating navigate event by clicking anchor link
             // since meta-refresh won't change `document.referrer` in e.g. Firefox

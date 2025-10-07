@@ -38,6 +38,6 @@ class NonceValueSubstitution
         ) {
             return null;
         }
-        return str_replace($context['nonce'], $currentNonce->consume(), $context['content']);
+        return str_replace($context['nonce'], $currentNonce->consumeInline(self::class), $context['content']);
     }
 }

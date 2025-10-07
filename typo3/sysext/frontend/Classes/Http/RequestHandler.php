@@ -33,6 +33,9 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Middleware\PolicyBag;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Middleware\ResponseService;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyProvider;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
@@ -76,6 +79,8 @@ class RequestHandler implements RequestHandlerInterface
         private readonly FilePathSanitizer $filePathSanitizer,
         private readonly TypoScriptService $typoScriptService,
         private readonly Context $context,
+        private readonly ResponseService $responseService,
+        private readonly PolicyProvider $policyProvider,
     ) {}
 
     /**
@@ -117,6 +122,8 @@ class RequestHandler implements RequestHandlerInterface
         $nonce = $request->getAttribute('nonce');
         $nonce = $nonce instanceof ConsumableNonce ? $nonce : null;
         $this->getPageRenderer()->setNonce($nonce);
+        $policyBag = $request->getAttribute('csp.policyBag');
+        $policyBag = $policyBag instanceof PolicyBag ? $policyBag : null;
 
         // Generate page
         if ($controller->isGeneratePage()) {
@@ -143,17 +150,29 @@ class RequestHandler implements RequestHandlerInterface
             // In case the nonce value was actually consumed during the rendering process, add a
             // permanent substitution of the current value (that will be cached), with a future
             // value (that will be generated and issued in the HTTP CSP header).
-            // Besides that, the same handling is triggered in case there are other uncached items
-            // already - this is due to the fact that the `PageRenderer` state has been serialized
-            // before and note executed via `$pageRenderer->render()` and did not consume any nonce values
-            // (see serialization in `generatePageContent()`).
-            if ($nonce !== null && (count($nonce) > 0 || $controller->isINTincScript())) {
-                // nonce was consumed
-                $controller->config['INTincScript'][] = [
-                    'target' => NonceValueSubstitution::class . '->substituteNonce',
-                    'parameters' => ['nonce' => $nonce->value],
-                    'permanent' => true,
-                ];
+            // Side-note: Nonce values that are consumed in non-cacheable parts (USER_INT/COA_INT)
+            // are not handled here, since it would require writing the caches at the very end of
+            // the whole frontend rendering process.
+            if ($nonce !== null) {
+                // prepare the policy in any case (even if nonce was not consumed)
+                // (`AvoidContentSecurityPolicyNonceEventListener` adjusts the behavior)
+                if ($policyBag !== null) {
+                    $this->policyProvider->prepare($policyBag, $request, $controller->content);
+                }
+                // register nonce substitution if explicitly enabled, otherwise (if undefined)
+                // use it if nonce value was consumed or any non-cached content elements exist
+                if ($policyBag?->behavior->useNonce
+                    ?? (count($nonce) > 0 || $controller->isINTincScript())
+                ) {
+                    $controller->config['INTincScript'][] = [
+                        'target' => NonceValueSubstitution::class . '->substituteNonce',
+                        'parameters' => ['nonce' => $nonce->value],
+                        'permanent' => true,
+                    ];
+                }
+                if ($policyBag?->behavior->useNonce === false) {
+                    $controller->content = $this->responseService->dropNonceFromHtml($controller->content, $nonce);
+                }
             }
 
             $controller->generatePage_postProcessing($request);

@@ -44,6 +44,7 @@ final class NonceViewHelper extends AbstractViewHelper
 
     public function render(): string
     {
-        return $this->requestId->nonce->consume();
+        // `inline` is guessed here, it might be `static` as well in templates
+        return $this->requestId->nonce->consumeInline(self::class);
     }
 }

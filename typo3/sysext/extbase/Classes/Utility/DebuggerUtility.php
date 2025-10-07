@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Utility;
 
 use TYPO3\CMS\Core\Core\RequestId;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
@@ -652,7 +653,11 @@ class DebuggerUtility
 
         $style = '';
         if (!$plainText && self::$stylesheetEchoed === false) {
-            $style = self::html('style', ['nonce' => self::resolveNonceValue()], static fn(): string => $css)();
+            $style = self::html(
+                'style',
+                ['nonce' => self::resolveNonceValue(Directive::StyleSrcElem)],
+                static fn(): string => $css
+            )();
             self::$stylesheetEchoed = true;
         }
         if ($plainText) {
@@ -686,9 +691,9 @@ class DebuggerUtility
         return '';
     }
 
-    protected static function resolveNonceValue(): string
+    protected static function resolveNonceValue(Directive $directive): string
     {
-        return GeneralUtility::makeInstance(RequestId::class)->nonce->consume();
+        return GeneralUtility::makeInstance(RequestId::class)->nonce->consumeInline($directive);
     }
 
     protected static function styled(
