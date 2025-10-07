@@ -2560,13 +2560,9 @@ class ResourceStorage implements ResourceStorageInterface
         // This removes _xx if appended to the file
         $theTempFileBody = preg_replace('/_[0-9][0-9]$/', '', $origFileInfo['filename']);
         $theOrigExt = ($origFileInfo['extension'] ?? '') ? '.' . $origFileInfo['extension'] : '';
-        for ($a = 1; $a <= $maxNumber + 1; $a++) {
+        for ($a = 1; $a <= $maxNumber; $a++) {
             // First we try to append numbers
-            if ($a <= $maxNumber) {
-                $insert = '_' . sprintf('%02d', $a);
-            } else {
-                $insert = '_' . substr(md5(StringUtility::getUniqueId()), 0, 6);
-            }
+            $insert = '_' . sprintf('%02d', $a);
             $theTestFile = $theTempFileBody . $insert . $theOrigExt;
             // The destinations file
             $theDestFile = $theTestFile;
@@ -2575,6 +2571,19 @@ class ResourceStorage implements ResourceStorageInterface
                 return $theDestFile;
             }
         }
+
+        $tries = 0;
+        do {
+            $insert = '_' . substr(md5(StringUtility::getUniqueId()), 0, 6);
+            $theDestFile = $theTempFileBody . $insert . $theOrigExt;
+
+            if ($folder->hasFile($theDestFile) || $folder->hasFolder($theDestFile)) {
+                continue;
+            }
+
+            return $theDestFile;
+        } while ($tries++ < 99);
+
         throw new \RuntimeException('Last possible name "' . $theDestFile . '" is already taken.', 1325194291);
     }
 
