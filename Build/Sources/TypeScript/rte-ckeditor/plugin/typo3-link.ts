@@ -254,6 +254,7 @@ export class Typo3UnlinkCommand extends Core.Command {
         writer.removeAttribute('linkTarget', range);
         writer.removeAttribute('linkTitle', range);
         writer.removeAttribute('linkRel', range);
+        writer.removeAttribute('linkDataRteError', range);
       }
     });
   }
