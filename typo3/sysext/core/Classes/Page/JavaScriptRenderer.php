@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Page;
 
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -128,7 +129,7 @@ class JavaScriptRenderer
             $globalAssignments = $this->mergeGlobalAssignments($this->items->getGlobalAssignments());
             if ($globalAssignments !== []) {
                 $scriptTags[] = $this->createScriptElement(
-                    ['nonce' => (string)$nonce],
+                    ['nonce' => $nonce instanceof ConsumableNonce ? $nonce->consumeInline(Directive::ScriptSrcElem) : (string)$nonce],
                     sprintf('Object.assign(globalThis, %s)', $this->jsonEncode($globalAssignments))
                 );
             }

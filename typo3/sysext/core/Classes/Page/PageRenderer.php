@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
 use TYPO3\CMS\Core\Resource\ResourceCompressor;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceDoesNotExistException;
@@ -1440,7 +1441,7 @@ class PageRenderer implements SingletonInterface
         // adds a nonce hint/work-around for lit-elements (which is only applied automatically in ShadowDOM)
         // see https://lit.dev/docs/api/ReactiveElement/#ReactiveElement.styles)
         if ($this->applyNonceHint && $this->nonce !== null) {
-            $this->javaScriptRenderer->addGlobalAssignment(['litNonce' => $this->nonce->consume()]);
+            $this->javaScriptRenderer->addGlobalAssignment(['litNonce' => $this->nonce->consumeInline(Directive::ScriptSrcElem)]);
         }
 
         // @todo hookup with PSR-7 request/response
@@ -1477,7 +1478,7 @@ class PageRenderer implements SingletonInterface
                             json_encode($assignments)
                         )
                     ),
-                    $this->nonce !== null ? ['nonce' => $this->nonce->consume()] : []
+                    $this->nonce !== null ? ['nonce' => $this->nonce->consumeInline(Directive::ScriptSrcElem)] : []
                 );
             }
         }
@@ -1616,7 +1617,7 @@ class PageRenderer implements SingletonInterface
             }
             // use nonce if given
             if ($this->nonce !== null) {
-                $tagAttributes['nonce'] = $this->nonce->consume();
+                $tagAttributes['nonce'] = $this->nonce->consumeStatic(Directive::StyleSrcElem);
             }
             $tagAttributes = array_merge($tagAttributes, $properties['tagAttributes'] ?? []);
             $tag = '<link ' . GeneralUtility::implodeAttributes($tagAttributes, true, true) . $this->endingSlash . '>';
@@ -1652,7 +1653,7 @@ class PageRenderer implements SingletonInterface
         }
         $cssItems = array_filter($cssItems);
         foreach ($cssItems as $useNonce => $items) {
-            $attributes = $useNonce && $this->nonce !== null ? ['nonce' => $this->nonce->consume()] : [];
+            $attributes = $useNonce && $this->nonce !== null ? ['nonce' => $this->nonce->consumeInline(Directive::StyleSrcElem)] : [];
             $cssItems[$useNonce] = $this->wrapInlineStyle(implode('', $items), $attributes);
         }
         return implode(LF, $cssItems);
@@ -1691,7 +1692,7 @@ class PageRenderer implements SingletonInterface
                 }
                 // use nonce if given
                 if ($this->nonce !== null) {
-                    $tagAttributes['nonce'] = $this->nonce->consume();
+                    $tagAttributes['nonce'] = $this->nonce->consumeStatic(Directive::ScriptSrcElem);
                 }
                 $tagAttributes = array_merge($tagAttributes, $properties['tagAttributes'] ?? []);
                 $tag = '<script ' . GeneralUtility::implodeAttributes($tagAttributes, true, true) . '></script>';
@@ -1753,7 +1754,7 @@ class PageRenderer implements SingletonInterface
                 }
                 // use nonce if given
                 if ($this->nonce !== null) {
-                    $tagAttributes['nonce'] = $this->nonce->consume();
+                    $tagAttributes['nonce'] = $this->nonce->consumeStatic(Directive::ScriptSrcElem);
                 }
                 $tagAttributes = array_merge($tagAttributes, $properties['tagAttributes'] ?? []);
                 $tag = '<script ' . GeneralUtility::implodeAttributes($tagAttributes, true, true) . '></script>';
@@ -1812,11 +1813,11 @@ class PageRenderer implements SingletonInterface
         $regularItems = array_filter($regularItems);
         $footerItems = array_filter($footerItems);
         foreach ($regularItems as $useNonce => $items) {
-            $attributes = $useNonce && $this->nonce !== null ? ['nonce' => $this->nonce->consume()] : [];
+            $attributes = $useNonce && $this->nonce !== null ? ['nonce' => $this->nonce->consumeInline(Directive::ScriptSrcElem)] : [];
             $regularItems[$useNonce] = $this->wrapInlineScript(implode('', $items), $attributes);
         }
         foreach ($footerItems as $useNonce => $items) {
-            $attributes = $useNonce && $this->nonce !== null ? ['nonce' => $this->nonce->consume()] : [];
+            $attributes = $useNonce && $this->nonce !== null ? ['nonce' => $this->nonce->consumeInline(Directive::ScriptSrcElem)] : [];
             $footerItems[$useNonce] = $this->wrapInlineScript(implode('', $items), $attributes);
         }
         $regularCode = implode(LF, $regularItems);
@@ -2156,7 +2157,7 @@ class PageRenderer implements SingletonInterface
         }
         // use nonce if given - special case, since content is created from a static file
         if ($this->nonce !== null) {
-            $tagAttributes['nonce'] = $this->nonce->consume();
+            $tagAttributes['nonce'] = $this->nonce->consumeInline(Directive::StyleSrcElem);
         }
         $tagAttributes = array_merge($tagAttributes, $properties['tagAttributes'] ?? []);
         return $this->wrapInlineStyle($cssInlineFix, $tagAttributes);

@@ -37,7 +37,7 @@ final class ConsumableNonceTest extends UnitTestCase
     {
         $subject = new ConsumableNonce();
         for ($i = 0; $i < $consumption; $i++) {
-            $subject->consume();
+            $subject->consumeInline();
         }
         self::assertCount($consumption, $subject);
     }
@@ -48,6 +48,20 @@ final class ConsumableNonceTest extends UnitTestCase
         $value = str_repeat('a', 40);
         $subject = new ConsumableNonce($value);
         self::assertSame($value, $subject->value);
-        self::assertSame($value, $subject->consume());
+        self::assertSame($value, $subject->consumeInline());
+    }
+
+    #[Test]
+    public function consumptionAndReservationAreRecognized(): void
+    {
+        $subject = new ConsumableNonce();
+        $subject->consumeInline();
+        $subject->consumeStatic();
+        $subject->consumeInline();
+        $subject->consumeStatic();
+        $subject->consumeInline();
+        self::assertCount(5, $subject);
+        self::assertSame(3, $subject->countInline());
+        self::assertSame(2, $subject->countStatic());
     }
 }

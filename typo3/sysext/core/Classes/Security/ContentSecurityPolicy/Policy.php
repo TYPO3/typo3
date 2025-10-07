@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Configuration\Behavior;
 use TYPO3\CMS\Core\Type\Map;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -190,14 +191,34 @@ class Policy
         return isset($this->directives[$directive]);
     }
 
+    public function get(Directive $directive): ?SourceCollection
+    {
+        return $this->directives[$directive] ?? null;
+    }
+
     /**
      * Prepares the policy for finally being serialized and issued as HTTP header.
      * This step aims to optimize several combinations, or adjusts directives when 'strict-dynamic' is used.
      */
-    public function prepare(): self
+    public function prepare(ConsumableNonce $nonce, ?Behavior $behavior = null): self
     {
+        $nonceProxyDirectives = SourceKeyword::nonceProxy->getApplicableDirectives();
+
         $directives = clone $this->directives;
         $comparator = [$this, 'compareSources'];
+        /**
+         * @var Directive $directive
+         * @var SourceCollection $collection
+         */
+        foreach ($directives as $directive => $collection) {
+            if (!in_array($directive, $nonceProxyDirectives, true)) {
+                continue;
+            }
+            $containsNonceProxy = $collection->contains(SourceKeyword::nonceProxy);
+            if ($behavior?->useNonce === false && $containsNonceProxy) {
+                $directives[$directive] = $collection->without(SourceKeyword::nonceProxy);
+            }
+        }
         foreach ($directives as $directive => $collection) {
             foreach ($directive->getAncestors() as $ancestorDirective) {
                 $ancestorCollection = $directives[$ancestorDirective] ?? null;
@@ -213,7 +234,11 @@ class Policy
         foreach ($directives as $directive => $collection) {
             // applies implicit changes to sources in case 'strict-dynamic' is used for applicable directives
             if ($collection->contains(SourceKeyword::strictDynamic) && SourceKeyword::strictDynamic->isApplicable($directive)) {
-                $directives[$directive] = SourceKeyword::strictDynamic->applySourceImplications($collection) ?? $collection;
+                if ($behavior?->useNonce === false) {
+                    $directives[$directive] = $collection->without(SourceKeyword::strictDynamic, SourceKeyword::nonceProxy);
+                } else {
+                    $directives[$directive] = SourceKeyword::strictDynamic->applySourceImplications($collection) ?? $collection;
+                }
             }
         }
         $target = clone $this;
@@ -227,11 +252,11 @@ class Policy
      * @param ConsumableNonce $nonce used to substitute `SourceKeyword::nonceProxy` items during compilation
      * @param ?FrontendInterface $cache to be used for storing compiled CSP aspects (disabled in install tool)
      */
-    public function compile(ConsumableNonce $nonce, ?FrontendInterface $cache = null): string
+    public function compile(ConsumableNonce $nonce, ?Behavior $behavior = null, ?FrontendInterface $cache = null): string
     {
         $policyParts = [];
         $service = GeneralUtility::makeInstance(ModelService::class, $cache);
-        foreach ($this->prepare()->directives as $directive => $collection) {
+        foreach ($this->prepare($nonce, $behavior)->directives as $directive => $collection) {
             $directiveParts = $service->compileSources($nonce, $collection);
             if ($directiveParts !== [] || $directive->isStandAlone()) {
                 array_unshift($directiveParts, $directive->value);

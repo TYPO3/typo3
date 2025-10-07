@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Security\ContentSecurityPolicy;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Configuration\Behavior;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\HashProxy;
@@ -215,6 +216,15 @@ final class PolicyTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function nonceProxyIsOmittedIfAvoidedViaBehavior(): void
+    {
+        $this->nonce->consume();
+        $behavior = new Behavior(useNonce: false);
+        $policy = (new Policy(SourceKeyword::self, SourceKeyword::nonceProxy));
+        self::assertSame("default-src 'self'", $policy->compile($this->nonce, $behavior));
+    }
+
+    #[Test]
     public function nonceProxyIsOmittedIfNotConsumed(): void
     {
         $policy = (new Policy(SourceKeyword::self, SourceKeyword::nonceProxy));
@@ -235,6 +245,17 @@ final class PolicyTest extends FunctionalTestCase
             "default-src 'self'; script-src 'self' 'strict-dynamic' 'nonce-{$this->nonce->value}'",
             $policy->compile($this->nonce)
         );
+    }
+
+    #[Test]
+    public function strictDynamicIsOmittedIfDroppedViaBehavior(): void
+    {
+        $this->nonce->consume();
+        $behavior = new Behavior(useNonce: false);
+        $policy = (new Policy(SourceKeyword::self, SourceKeyword::strictDynamic))
+            ->extend(Directive::ScriptSrc, SourceKeyword::strictDynamic)
+            ->extend(Directive::StyleSrc, SourceKeyword::strictDynamic);
+        self::assertSame("default-src 'self'; script-src 'self'", $policy->compile($this->nonce, $behavior));
     }
 
     #[Test]

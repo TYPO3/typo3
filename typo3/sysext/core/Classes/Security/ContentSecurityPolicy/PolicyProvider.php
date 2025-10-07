@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -29,6 +30,8 @@ use TYPO3\CMS\Core\Middleware\AbstractContentSecurityPolicyReporter;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Configuration\DispositionConfiguration;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Event\PolicyMutatedEvent;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Event\PolicyPreparedEvent;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Middleware\PolicyBag;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -39,19 +42,46 @@ use TYPO3\CMS\Core\Site\SiteFinder;
  * @internal
  */
 #[Autoconfigure(public: true)]
-final class PolicyProvider
+final readonly class PolicyProvider
 {
     protected const REPORTING_URI = '@http-reporting';
 
     public function __construct(
-        private readonly RequestId $requestId,
-        private readonly SiteFinder $siteFinder,
-        private readonly PolicyRegistry $policyRegistry,
-        private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly MutationRepository $mutationRepository,
-        private readonly BackendEntryPointResolver $backendEntryPointResolver,
-        private readonly HashService $hashService,
+        private RequestId $requestId,
+        private SiteFinder $siteFinder,
+        private PolicyRegistry $policyRegistry,
+        private EventDispatcherInterface $eventDispatcher,
+        private MutationRepository $mutationRepository,
+        private BackendEntryPointResolver $backendEntryPointResolver,
+        private HashService $hashService,
     ) {}
+
+    public function prepare(
+        PolicyBag $policyBag,
+        ServerRequestInterface $request,
+        null|string|ResponseInterface $response,
+    ): void {
+        foreach ($policyBag->dispositionMap as $disposition => $configuration) {
+            if ($policyBag->hasPolicy($disposition)) {
+                continue;
+            }
+            $policy = $this->provideFor($policyBag->scope, $disposition, $request);
+            if (!$policy->isEmpty()) {
+                $reportingUrl = $this->getReportingUrlFor(
+                    $policyBag->scope,
+                    $request,
+                    $policyBag->dispositionMap[$disposition]
+                );
+                if ($reportingUrl !== null) {
+                    $policy = $policy->report(UriValue::fromUri($reportingUrl));
+                }
+            }
+            $policyBag->setPolicy($disposition, $policy);
+        }
+        $this->eventDispatcher->dispatch(
+            new PolicyPreparedEvent($policyBag, $request, $response)
+        );
+    }
 
     /**
      * Provides the complete, dynamically mutated policy to be used in HTTP responses.

@@ -64,7 +64,8 @@ readonly class MainController
         $adminPanelModuleConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
         $modules = $this->moduleLoader->validateSortAndInitializeModules($adminPanelModuleConfiguration);
 
-        $resources = $this->resourceUtility->getResources(['nonce' => $this->requestId->nonce], $request);
+        $nonce = $this->requestId->nonce;
+        $resources = $this->resourceUtility->getResources(['nonce' => $nonce->consumeStatic()], $request);
 
         $backupRequest = null;
         $frontendTypoScript = $request->getAttribute('frontend.typoscript');
@@ -108,7 +109,7 @@ readonly class MainController
                 $modules,
                 new ModuleDataStorageCollection()
             );
-            $moduleResources = $this->resourceUtility->getAdditionalResourcesForModules($modules, ['nonce' => $this->requestId->nonce], $request);
+            $moduleResources = $this->resourceUtility->getAdditionalResourcesForModules($modules, ['nonce' => $nonce->consumeStatic()], $request);
             $settingsModules = array_filter($modules, static function (ModuleInterface $module): bool {
                 return $module instanceof PageSettingsProviderInterface;
             });

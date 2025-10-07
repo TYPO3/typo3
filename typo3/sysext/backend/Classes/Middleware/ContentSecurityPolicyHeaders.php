@@ -25,10 +25,14 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\RequestId;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Configuration\Behavior;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Configuration\DispositionConfiguration;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Disposition;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Middleware\PolicyBag;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Middleware\ResponseService;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyProvider;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
-use TYPO3\CMS\Core\Security\ContentSecurityPolicy\UriValue;
+use TYPO3\CMS\Core\Type\Map;
 
 /**
  * Adds Content-Security-Policy headers to response.
@@ -43,14 +47,25 @@ final readonly class ContentSecurityPolicyHeaders implements MiddlewareInterface
         #[Autowire(service: 'cache.assets')]
         private FrontendInterface $cache,
         private PolicyProvider $policyProvider,
+        private ResponseService $responseService,
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $request = $request->withAttribute('nonce', $this->requestId->nonce);
-        $response = $handler->handle($request);
-
         $scope = Scope::backend();
+        $nonce = $this->requestId->nonce;
+        $request = $request->withAttribute('nonce', $nonce);
+        $response = $handler->handle($request);
+        $behavior = new Behavior();
+        $disposition = Disposition::enforce;
+        $dispositionMap = new Map();
+        $dispositionMap[$disposition] = new DispositionConfiguration(
+            true,
+            true,
+            $GLOBALS['TYPO3_CONF_VARS'][$scope->type->abbreviate()]['contentSecurityPolicyReportingUrl'],
+        );
+        $policyBag = new PolicyBag($scope, $dispositionMap, $behavior, $nonce);
+
         if ($response->hasHeader('Content-Security-Policy') || $response->hasHeader('Content-Security-Policy-Report-Only')) {
             $this->logger->info('Content-Security-Policy not enforced due to existence of custom header', [
                 'scope' => (string)$scope,
@@ -58,18 +73,17 @@ final readonly class ContentSecurityPolicyHeaders implements MiddlewareInterface
             ]);
             return $response;
         }
-
-        $policy = $this->policyProvider->provideFor($scope, Disposition::enforce, $request);
+        $this->policyProvider->prepare($policyBag, $request, $response);
+        $policy = $policyBag->getPolicy($disposition);
         if ($policy->isEmpty()) {
             return $response;
         }
-        $reportingUri = $this->policyProvider->getReportingUrlFor($scope, $request);
-        if ($reportingUri !== null) {
-            $policy = $policy->report(UriValue::fromUri($reportingUri));
+        if ($behavior->useNonce === false) {
+            $response = $this->responseService->dropNonceFromHtmlResponse($response, $nonce);
         }
         return $response->withHeader(
-            Disposition::enforce->getHttpHeaderName(),
-            $policy->compile($this->requestId->nonce, $this->cache)
+            $disposition->getHttpHeaderName(),
+            $policy->compile($this->requestId->nonce, $behavior, $this->cache)
         );
     }
 }
