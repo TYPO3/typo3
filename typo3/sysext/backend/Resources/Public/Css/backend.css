@@ -2962,9 +2962,9 @@ to{transform:rotate(1turn)}}
 .alwan{--bg:#fff;--fg:#333;--outer-bc:#ccc;--bc:#ccc;--btn-bg-hover:#f0f0f0;--thumb-bg:#fff;--thumb-bg-hover:#f0f0f0;--label-color:#555;--input-bg:#fafafa;--input-bg-hover:#f0f0f0;--input-bc-hover:#a8a8a8;--swatches-bg:#f5f5f5;background:var(--bg);border:1px solid var(--outer-bc);max-width:260px;overflow:hidden;width:260px}
 .alwan *{box-sizing:border-box}
 .alwan>div{width:260px}
-.alwan:not(.alwan--open){visibility:hidden}
-.alwan:not(.alwan--open).alwan--block{border:0;height:0;overflow:hidden}
-.alwan:not(.alwan--block){border:0;box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12);left:0;overflow:auto;position:fixed;top:0;width:100%;z-index:999999}
+.alwan__popover-container{height:0;transform:translate(0);width:0}
+.alwan__popover-container>.alwan{border:0;box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12);height:auto;left:0;overflow:auto;position:fixed;top:0;z-index:999999}
+.alwan:not(.alwan--open){height:0;overflow:hidden;visibility:hidden}
 .alwan.alwan--dark{--bg:#111;--fg:#ccc;--outer-bc:#aaa;--bc:#34373a;--btn-bg-hover:#444;--thumb-bg:#151515;--thumb-bg-hover:#242424;--label-color:#d8d8d8;--input-bg:#181818;--input-bg-hover:#272727;--input-bc-hover:#484b4d;--swatches-bg:#151515}
 .alwan__container{align-items:center;border-top:1px solid var(--bc);display:flex;padding:10px 15px;position:relative}
 .alwan__container>*{width:100%}

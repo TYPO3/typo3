@@ -30,6 +30,8 @@ to be used in FormEngine via page TSconfig.
       colors {
         typo3 {
           value = #ff8700
+          # label can be optionally supplied
+          label = TYPO3 orange
         }
         blue {
           value = #0080c9
@@ -39,6 +41,7 @@ to be used in FormEngine via page TSconfig.
         }
         valid {
           value = #5abc55
+          label = Valid
         }
         error {
           value = #dd123d

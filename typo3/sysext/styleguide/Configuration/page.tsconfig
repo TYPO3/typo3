@@ -7,18 +7,23 @@ colorPalettes {
   colors {
     styleguideTypo3 {
       value = #ff8700
+      label = TYPO3 orange
     }
     styleguideBlue {
       value = #0080c9
+      label = Blue
     }
     styleguideDarkgrey {
       value = #515151
+      label = Dark grey
     }
     styleguideValid {
       value = #5abc55
+      label = Valid
     }
     styleguideError {
       value = #dd123d
+      label = Error
     }
   }
 
