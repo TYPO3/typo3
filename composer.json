@@ -123,7 +123,7 @@
 		"phpstan/phpstan-phpunit": "^2.0.6",
 		"phpunit/phpunit": "^11.5.33",
 		"sebastian/recursion-context": "^6.0.3",
-		"sokil/php-isocodes-db-i18n": "^4.0.26",
+		"sokil/php-isocodes-db-i18n": "^4.0.27",
 		"typo3/testing-framework": "dev-main",
 		"webmozart/assert": "^1.11.0"
 	},
