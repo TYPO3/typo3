@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ff25702d4796f5747861f06a0b52f635",
+    "content-hash": "28316de9586b3ab5cc9b0c2311b3e001",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -9098,16 +9098,16 @@
         },
         {
             "name": "sokil/php-isocodes-db-i18n",
-            "version": "4.0.26",
+            "version": "4.0.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sokil/php-isocodes-db-i18n.git",
-                "reference": "cf690869ae4673e17f81d9c87ffdb997fc4f5160"
+                "reference": "8854934be5f7fb7d7a1c93db938791c5135e2db6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sokil/php-isocodes-db-i18n/zipball/cf690869ae4673e17f81d9c87ffdb997fc4f5160",
-                "reference": "cf690869ae4673e17f81d9c87ffdb997fc4f5160",
+                "url": "https://api.github.com/repos/sokil/php-isocodes-db-i18n/zipball/8854934be5f7fb7d7a1c93db938791c5135e2db6",
+                "reference": "8854934be5f7fb7d7a1c93db938791c5135e2db6",
                 "shasum": ""
             },
             "require": {
@@ -9132,9 +9132,9 @@
             "description": "Database and internationalisation filed for ISO country, subdivision, language, currency and script definitions and their translations. Based on pythons pycountry and Debian's iso-codes.",
             "support": {
                 "issues": "https://github.com/sokil/php-isocodes-db-i18n/issues",
-                "source": "https://github.com/sokil/php-isocodes-db-i18n/tree/4.0.26"
+                "source": "https://github.com/sokil/php-isocodes-db-i18n/tree/4.0.27"
             },
-            "time": "2025-07-02T18:13:02+00:00"
+            "time": "2025-10-06T17:14:31+00:00"
         },
         {
             "name": "symfony/css-selector",
