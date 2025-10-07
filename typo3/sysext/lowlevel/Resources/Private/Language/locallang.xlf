@@ -93,18 +93,12 @@
 				<source>Here you can check the integrity of the database tables configured by the $TCA. For instance all records must belong to a page record. You can also get a view of the total pagetree including deleted pages. Finally you've got access to a global database search facility.</source>
 			</trans-unit>
 
-			<trans-unit id="module.dbint.docheader.viewmode">
-				<source>Module action</source>
-			</trans-unit>
 			<trans-unit id="search.submit">
 				<source>Search All Records</source>
 				<note>Label of submit button to search within the database (raw search in all fields)</note>
 			</trans-unit>
 			<trans-unit id="search">
 				<source>Search</source>
-			</trans-unit>
-			<trans-unit id="recordStatistics">
-				<source>Record Statistics</source>
 			</trans-unit>
 			<trans-unit id="totalPageTree">
 				<source>Total Page Tree</source>
@@ -321,12 +315,6 @@
 			</trans-unit>
 			<trans-unit id="tree_description">
 				<source>This shows all pages in the system in one large tree. Beware that this will probably result in a very long document which will also take some time for the server to compute!</source>
-			</trans-unit>
-			<trans-unit id="records">
-				<source>Records Statistics</source>
-			</trans-unit>
-			<trans-unit id="records_description">
-				<source>This shows some statistics for the records in the database. This runs through the entire page-tree and therefore it will also load the server heavily!</source>
 			</trans-unit>
 			<trans-unit id="search_whole_database">
 				<source>Search whole Database</source>

@@ -18,11 +18,6 @@ Access this module in the TYPO3 backend under :guilabel:`System > DB Check`.
     :class: pb-4
     :card-height: 100
 
-    ..  card:: :ref:`Record statistics <module-db-check-Records-Statistics>`
-
-        Gives you an overview of how many pages of which type and how many
-        records of any table are present in the current system.
-
     ..  card:: :ref:`Full Search <module-db-check-full-search>`
 
         Search the complete database or specific table / field combinations
@@ -33,5 +28,4 @@ Access this module in the TYPO3 backend under :guilabel:`System > DB Check`.
     :hidden:
     :titlesonly:
 
-    DbCheck/RecordsStatistics
     DbCheck/FullSearch

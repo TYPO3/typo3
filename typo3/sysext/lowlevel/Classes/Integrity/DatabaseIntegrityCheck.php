@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @TODO: in this library. Further it would be nice with a facility to not only
  * @TODO: analyze but also clean up!
  * @see \TYPO3\CMS\Lowlevel\Controller\DatabaseIntegrityController::relationsAction()
- * @see \TYPO3\CMS\Lowlevel\Controller\DatabaseIntegrityController::recordStatisticsAction()
  */
 #[Autoconfigure(public: true)]
 class DatabaseIntegrityCheck

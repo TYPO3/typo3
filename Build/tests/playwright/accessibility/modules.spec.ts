@@ -26,7 +26,7 @@ test.describe('modules', () => {
     },
     'mod_reports': {
       'label': 'the reports module',
-      'route': 'module/system/reports',
+      'route': 'module/system/reports?action=detail&report=status',
     },
     'mod_indexed_search': {
       'label': 'the index engine statistics module',

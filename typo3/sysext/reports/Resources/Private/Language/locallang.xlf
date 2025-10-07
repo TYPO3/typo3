@@ -30,6 +30,12 @@
 			<trans-unit id="link.openModuleWithTitle">
 				<source>Open %1s</source>
 			</trans-unit>
+			<trans-unit id="recordStatistics.title">
+				<source>Record Statistics</source>
+			</trans-unit>
+			<trans-unit id="recordStatistics.description">
+				<source>This shows some statistics for the records in the database. This runs through the entire page-tree and therefore it will also load the server heavily!</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
