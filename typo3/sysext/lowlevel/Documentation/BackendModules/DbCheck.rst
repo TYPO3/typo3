@@ -29,15 +29,9 @@ Access this module in the TYPO3 backend under :guilabel:`System > DB Check`.
         and offers you detail and edit links to jump directly to the records
         found.
 
-    ..  card:: :ref:`Manage Reference Index <module-db-check-Manage-Reference-Index>`
-
-        Can be used on smaller installations to check or update the
-        reference index.
-
 ..  toctree::
     :hidden:
     :titlesonly:
 
     DbCheck/RecordsStatistics
     DbCheck/FullSearch
-    DbCheck/ManageReferenceIndex

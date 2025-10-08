@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
@@ -39,6 +40,7 @@ use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\ClearCacheService;
 use TYPO3\CMS\Install\Service\ClearTableService;
@@ -807,6 +809,65 @@ class MaintenanceController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'status' => $messageQueue,
+        ]);
+    }
+
+    /**
+     * Show reference index card
+     */
+    public function referenceIndexAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->initializeView($request);
+        $view->assignMultiple([
+            'referenceIndexToken' => $this->formProtectionFactory->createFromRequest($request)->generateToken('installTool', 'referenceIndexUpdate'),
+            'binaryPath' => ExtensionManagementUtility::extPath('core', 'bin/typo3'),
+        ]);
+        return new JsonResponse([
+            'success' => true,
+            'html' => $view->render('Maintenance/ReferenceIndex'),
+            'buttons' => [
+                [
+                    'btnClass' => 'btn-default t3js-referenceIndex-check',
+                    'text' => 'Check Reference Index',
+                ],
+                [
+                    'btnClass' => 'btn-default t3js-referenceIndex-update',
+                    'text' => 'Update Reference Index',
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * Check or update reference index
+     */
+    public function referenceIndexUpdateAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $isCheckOnly = (bool)($request->getParsedBody()['install']['checkOnly'] ?? false);
+
+        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false, true);
+        $result = $container->get(ReferenceIndex::class)->updateIndex($isCheckOnly);
+
+        $messageQueue = new FlashMessageQueue('install');
+        if (!empty($result['errors'])) {
+            foreach ($result['errors'] as $error) {
+                $messageQueue->enqueue(new FlashMessage(
+                    $error,
+                    'Reference Index Issue',
+                    ContextualFeedbackSeverity::WARNING
+                ));
+            }
+        } else {
+            $messageQueue->enqueue(new FlashMessage(
+                $isCheckOnly ? 'Reference index check completed successfully' : 'Reference index has been updated successfully',
+                $isCheckOnly ? 'Check Complete' : 'Update Complete'
+            ));
+        }
+
+        return new JsonResponse([
+            'success' => true,
+            'status' => $messageQueue,
+            'result' => $result,
         ]);
     }
 }

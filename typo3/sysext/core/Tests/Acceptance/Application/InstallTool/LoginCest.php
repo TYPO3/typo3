@@ -48,10 +48,11 @@ final class LoginCest extends AbstractCest
         $I->see('Remove Temporary Assets', 'h2.card-title');
         $I->see('Rebuild PHP Autoload Information', 'h2.card-title');
         $I->see('Clear Persistent Database Tables', 'h2.card-title');
+        $I->see('Check and Update Reference Index', 'h2.card-title');
         $I->see('Create Administrative User', 'h2.card-title');
         $I->see('Reset Backend User Preferences', 'h2.card-title');
         $I->see('Manage Language Packs', 'h2.card-title');
-        $I->seeNumberOfElements('.card', 8);
+        $I->seeNumberOfElements('.card', 9);
 
         $I->amGoingTo('assert page Settings contains the 6 expected cards');
         $I->click('Settings');

@@ -35,7 +35,6 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -56,11 +55,9 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\CsvUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck;
 
@@ -248,11 +245,9 @@ class DatabaseIntegrityController
                 $moduleTemplate->setTitle($title, $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch'));
                 return $this->searchAction($moduleTemplate, $request);
             case 'records':
+            default:
                 $moduleTemplate->setTitle($title, $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:recordStatistics'));
                 return $this->recordStatisticsAction($moduleTemplate, $request);
-            default:
-                $moduleTemplate->setTitle($title, $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:manageRefIndex'));
-                return $this->referenceIndexAction($moduleTemplate, $request);
         }
     }
 
@@ -271,7 +266,6 @@ class DatabaseIntegrityController
         // Values NOT in this array will not be saved in the settings-array for the module.
         $this->MOD_MENU = [
             'function' => [
-                'refindex' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:manageRefIndex'),
                 'records' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:recordStatistics'),
                 'search' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch'),
             ],
@@ -399,28 +393,6 @@ class DatabaseIntegrityController
             $menu->addMenuItem($item);
         }
         $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
-    }
-
-    /**
-     * Check and update reference index.
-     */
-    protected function referenceIndexAction(ModuleTemplate $view, ServerRequestInterface $request): ResponseInterface
-    {
-        $isUpdate = $request->getParsedBody()['update'] ?? false;
-        $isCheckOnly = (bool)($request->getParsedBody()['checkOnly'] ?? false);
-        $referenceIndexResult = [];
-        if ($isUpdate || $isCheckOnly) {
-            $referenceIndexResult = GeneralUtility::makeInstance(ReferenceIndex::class)->updateIndex($isCheckOnly);
-        }
-        $readmeLocation = ExtensionManagementUtility::extPath('lowlevel', 'README.rst');
-        $view->assignMultiple([
-            'ReadmeLink' => PathUtility::getAbsoluteWebPath($readmeLocation),
-            'ReadmeLocation' => $readmeLocation,
-            'binaryPath' => ExtensionManagementUtility::extPath('core', 'bin/typo3'),
-            'referenceIndexResult' => $referenceIndexResult,
-        ]);
-
-        return $view->renderResponse('ReferenceIndex');
     }
 
     /**

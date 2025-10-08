@@ -115,9 +115,6 @@
 			<trans-unit id="findFilename">
 				<source>Find filename</source>
 			</trans-unit>
-			<trans-unit id="manageRefIndex">
-				<source>Manage Reference Index</source>
-			</trans-unit>
 			<trans-unit id="rawSearch">
 				<source>Raw search in all fields</source>
 			</trans-unit>
@@ -138,45 +135,6 @@
 			</trans-unit>
 			<trans-unit id="xmlExport">
 				<source>XML Export</source>
-			</trans-unit>
-			<trans-unit id="clickToUpdateRefIndex">
-				<source>Click here to update reference index</source>
-			</trans-unit>
-			<trans-unit id="updateNow">
-				<source>Update now!</source>
-			</trans-unit>
-			<trans-unit id="clickToTestRefIndex">
-				<source>Click here to test reference index</source>
-			</trans-unit>
-			<trans-unit id="referenceIndex_description">
-				<source>TYPO3's reference index keeps track of the relations between records. As it can happen that the reference index contains outdated values, you can check and update it here.</source>
-			</trans-unit>
-			<trans-unit id="referenceIndex_buttonUpdate">
-				<source>Update reference index</source>
-			</trans-unit>
-			<trans-unit id="referenceIndex_buttonCheck">
-				<source>Check reference index</source>
-			</trans-unit>
-			<trans-unit id="checkNow">
-				<source>Check now!</source>
-			</trans-unit>
-			<trans-unit id="checkScript_headline">
-				<source>Using the command line interface</source>
-			</trans-unit>
-			<trans-unit id="checkScript">
-				<source>You can also run the check as a shell script using CLI if the processing takes longer than the PHP max_execution_time allows.</source>
-			</trans-unit>
-			<trans-unit id="checkScript_check_description">
-				<source>To check the reference index use:</source>
-			</trans-unit>
-			<trans-unit id="checkScript_update_description">
-				<source>To update the reference index use:</source>
-			</trans-unit>
-			<trans-unit id="checkScript_moreDetails">
-				<source>For more details see:</source>
-			</trans-unit>
-			<trans-unit id="updateRefIndex">
-				<source>Update reference index</source>
 			</trans-unit>
 
 			<trans-unit id="fullSearch.flashMessage.noResultsFoundMessage">
@@ -381,9 +339,6 @@
 			</trans-unit>
 			<trans-unit id="refindex_description">
 				<source>Allows you to maintain the reference index kept by TYPO3.</source>
-			</trans-unit>
-			<trans-unit id="refindex_ok">
-				<source>Index integrity was perfect!</source>
 			</trans-unit>
 		</body>
 	</file>

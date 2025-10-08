@@ -61,6 +61,15 @@
         </div>
     </div>
     <div class="card card-size-small">
+        <f:render partial="Card/Header" arguments="{ title: 'Check and Update Reference Index', subtitle: 'Database', icon: 'EXT:install/Resources/Public/Icons/modules/install-database-analyze.svg'}" />
+        <div class="card-body">
+            <p class="card-text">The reference index tracks all database relations. Check for issues or rebuild the entire index.</p>
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-default" data-import="@typo3/install/module/maintenance/reference-index.js">Manage reference index&hellip;</button>
+        </div>
+    </div>
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Create Administrative User', subtitle: 'Backend Users', icon: 'EXT:install/Resources/Public/Icons/modules/install-create-admin.svg'}" />
         <div class="card-body">
             <p class="card-text">Create new administrative users and grant them system maintainer privileges (optional).</p>

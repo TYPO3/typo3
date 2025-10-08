@@ -100,25 +100,6 @@ final class DbCheckModuleCest
         $I->see('styleguide demo group 1', '.card-title');
     }
 
-    public function seeManageReferenceIndex(ApplicationTester $I): void
-    {
-        $this->goToPageAndSeeHeadline($I, 'Manage Reference Index', 'Manage Reference Index');
-
-        $I->click('Check reference index');
-        $I->waitForElement('.callout-warning');
-
-        $I->click('Update reference index');
-        $I->waitForElement('.callout-warning');
-
-        $I->click('Check reference index');
-        $I->waitForElement('.callout-success');
-        $I->see('Index integrity was perfect!', '.callout-success');
-
-        $I->click('Update reference index');
-        $I->waitForElement('.callout-success');
-        $I->see('Index integrity was perfect!', '.callout-success');
-    }
-
     private function goToPageAndSeeHeadline(ApplicationTester $I, string $select, string $headline): void
     {
         $I->selectOption('select[name=DatabaseJumpMenu]', $select);
