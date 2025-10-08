@@ -63,11 +63,24 @@ final class StreamTest extends UnitTestCase
         self::assertFalse($subject->isReadable());
     }
 
-    #[Test]
-    public function isWritableReturnsFalseIfStreamIsNotWritable(): void
+    public static function isWritableDetectsTheActualStreamModeDataProvider(): \Generator
     {
-        $subject = new Stream('php://memory', 'r');
-        self::assertFalse($subject->isWritable());
+        yield 'r' => ['r', false];
+        yield 'w' => ['w', true];
+        yield 'a' => ['w', true];
+        yield 'r+' => ['r+', true];
+        yield 'w+' => ['w+', true];
+        yield 'a+' => ['a+', true];
+        yield 'rw' => ['rw', true];
+        yield 'rw+' => ['rw+', true];
+    }
+
+    #[Test]
+    #[DataProvider('isWritableDetectsTheActualStreamModeDataProvider')]
+    public function isWritableDetectsTheActualStreamMode(string $mode, bool $expectation): void
+    {
+        $subject = new Stream('php://memory', $mode);
+        self::assertSame($expectation, $subject->isWritable());
     }
 
     #[Test]

@@ -225,7 +225,8 @@ class Stream implements StreamInterface
             return false;
         }
         $uri = $this->getMetadata('uri');
-        return is_writable($uri);
+        $mode = $this->getMetadata('mode');
+        return is_writable($uri) || strpbrk($mode, 'aw+') !== false;
     }
 
     /**
