@@ -649,7 +649,7 @@ export class Tree extends LitElement {
             draggable="true"
             title="${this.getNodeTitle(node)}"
             aria-owns="${ifDefined(node.hasChildren ? 'group-identifier-' + this.getNodeIdentifier(node) : null)}"
-            aria-expanded="${ifDefined(node.hasChildren ? (node.__expanded ? '1' : '0') : null)}"
+            aria-expanded="${ifDefined(node.hasChildren ? (node.__expanded ? 'true' : 'false') : null)}"
             aria-level="${(this.getNodeDepth(node) + 1)}"
             aria-setsize="${this.getNodeSetsize(node)}"
             aria-posinset="${this.getNodePositionInSet(node)}"
