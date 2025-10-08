@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Form\Hooks;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
-use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Service\TranslationService;
 
@@ -56,21 +55,5 @@ class FormElementHooks
         }
 
         return $elementValue;
-    }
-
-    /**
-     * This is a hook that is invoked by the rendering system **before**
-     * the corresponding element is rendered.
-     */
-    public function beforeRendering(FormRuntime $formRuntime, RootRenderableInterface $renderable)
-    {
-        if ($renderable->getType() === 'Date') {
-            $date = $formRuntime[$renderable->getIdentifier()];
-            if ($date instanceof \DateTime) {
-                // @see https://www.w3.org/TR/2011/WD-html-markup-20110405/input.date.html#input.date.attrs.value
-                // 'Y-m-d' = https://tools.ietf.org/html/rfc3339#section-5.6 -> full-date
-                $formRuntime[$renderable->getIdentifier()] = $date->format('Y-m-d');
-            }
-        }
     }
 }

@@ -1293,4 +1293,10 @@ return [
             'Deprecation-98453-SchedulerTaskRegistrationViaSCOPTIONS.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'ext/form\'][\'beforeRendering\']' => [
+        'restFiles' => [
+            'Breaking-107569-RemovedBeforeRenderingHook.rst',
+            'Feature-107569-IntroducePSR14BeforeRenderableIsRenderedEvent.rst',
+        ],
+    ],
 ];

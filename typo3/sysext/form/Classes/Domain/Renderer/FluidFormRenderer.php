@@ -21,12 +21,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Renderer;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Fluid\View\FluidViewAdapter;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
+use TYPO3\CMS\Form\Event\BeforeRenderableIsRenderedEvent;
 use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
 
 /**
@@ -131,6 +132,7 @@ class FluidFormRenderer extends AbstractElementRenderer
 {
     public function __construct(
         protected readonly ViewFactoryInterface $viewFactory,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {}
 
     /**
@@ -174,12 +176,7 @@ class FluidFormRenderer extends AbstractElementRenderer
                 ->getViewHelperVariableContainer()
                 ->addOrUpdate(RenderRenderableViewHelper::class, 'formRuntime', $this->formRuntime);
         }
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'] ?? [] as $className) {
-            $hookObj = GeneralUtility::makeInstance($className);
-            if (method_exists($hookObj, 'beforeRendering')) {
-                $hookObj->beforeRendering($this->formRuntime, $this->formRuntime->getFormDefinition());
-            }
-        }
+        $this->eventDispatcher->dispatch(new BeforeRenderableIsRenderedEvent($this->formRuntime->getFormDefinition(), $this->formRuntime));
         return $view->render($this->formRuntime->getTemplateName());
     }
 }

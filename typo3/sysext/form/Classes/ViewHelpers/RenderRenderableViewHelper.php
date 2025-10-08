@@ -21,10 +21,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\ViewHelpers;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
+use TYPO3\CMS\Form\Event\BeforeRenderableIsRenderedEvent;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -42,6 +43,10 @@ final class RenderRenderableViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
+    public function __construct(
+        private readonly EventDispatcherInterface $eventDispatcher,
+    ) {}
+
     public function initializeArguments(): void
     {
         $this->registerArgument('renderable', RootRenderableInterface::class, 'A RenderableInterface instance', true);
@@ -54,17 +59,9 @@ final class RenderRenderableViewHelper extends AbstractViewHelper
             ->getViewHelperVariableContainer()
             ->get(self::class, 'formRuntime');
         $renderable = $this->arguments['renderable'];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'] ?? [] as $className) {
-            $hookObj = GeneralUtility::makeInstance($className);
-            if (method_exists($hookObj, 'beforeRendering')) {
-                $hookObj->beforeRendering(
-                    $formRuntime,
-                    $renderable
-                );
-            }
-        }
+        $this->eventDispatcher->dispatch(new BeforeRenderableIsRenderedEvent($renderable, $formRuntime));
         $content = '';
-        if ($renderable instanceof FormRuntime || $renderable instanceof RenderableInterface && $renderable->isEnabled()) {
+        if ($renderable instanceof FormRuntime || ($renderable instanceof RenderableInterface && $renderable->isEnabled())) {
             $content = $this->renderChildren();
         }
         // Wrap every renderable with a span with an identifier path data attribute if previewMode is active
