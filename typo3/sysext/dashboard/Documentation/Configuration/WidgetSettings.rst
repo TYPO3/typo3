@@ -1,8 +1,46 @@
 .. include:: /Includes.rst.txt
 
-..  _adjust-settings-of-widget:
+..  _settings:
 
 =====================================
+Adjust settings of registered widgets
+=====================================
+
+..  versionadded:: 14.0
+    `Configurable Dashboard Widgets <https://docs.typo3.org/permalink/changelog:feature-107036-1738837673>`_
+    have been introduced with TYPO3 14.0.
+
+..  contents:: Table of contents
+
+..  _adjust-settings-of-widget-why:
+..  _configurable-widgets:
+
+Configurable dashboard widgets
+------------------------------
+
+..  versionadded:: 14.0
+
+Dashboard widgets can be configured on a per-instance level using the Settings
+API. This allows widget authors to define configurable settings that editors
+can modify directly from the dashboard interface, making widgets more
+flexible and user-friendly.
+
+Examples are URLs for RSS feeds, limits on displayed items, or categories for
+filtering content.
+
+Each widget instance maintains its own configuration, enabling multiple
+instances of the same widget type with different settings on the same or
+different dashboards.
+
+Configurable widgets display a `settings (cog) icon <https://docs.typo3.org/permalink/typo3/cms-dashboard:widgets-configuration>`_
+and allow editors to configure the widget in a modal dialog.
+
+Extension authors can implement :php-short:`\TYPO3\CMS\Dashboard\Widgets\WidgetRendererInterface`
+to make their widgets configurable:
+`Configurable dashboard widget implementation <https://docs.typo3.org/permalink/typo3/cms-dashboard:configurable-widget-implementation>`_.
+
+..  _adjust-settings-of-widget:
+
 Adjust settings of registered widgets
 =====================================
 
@@ -19,13 +57,3 @@ the extension has to define a dependency to EXT:dashboard.
 
 Afterwards the widget can be registered again, with different options. See
 :ref:`register-new-widget` to get an in depth example of how to register a widget.
-
-..  _adjust-settings-of-widget-why:
-
-Why not adjust specific settings?
----------------------------------
-
-There is no documented way to adjust specific settings,
-as this would result in a situation where multiple extensions are loaded in different order
-changing settings of widgets.
-That would lead to a complex system.

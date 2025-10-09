@@ -103,6 +103,30 @@ Widgets are grouped in tabs and can be added by clicking on them.
 
    Wizard to select a new widget that will be added to the active dashboard.
 
+..  _widgets-configuration:
+
+Widget configuration
+====================
+
+..  versionadded:: 14.0
+    `Configurable Dashboard Widgets <https://docs.typo3.org/permalink/changelog:feature-107036-1738837673>`_
+    have been introduced with TYPO3 14.0.
+
+*   Dashboard widgets display a settings (cog) icon when they support configuration
+*   Clicking the settings icon opens a modal dialog with configurable options
+*   Settings are applied immediately after saving, with the widget content
+    refreshing automatically
+*   Each widget can be configured independently per user / per instance
+
+
+..  figure:: /Images/DashboardConfiguration.png
+    :alt: Screenshot of the dashboard widget "RSS Feed" with the location of the settings (cog) icon
+
+    Click the settings (cog) icon to configure a feed
+
+Extension authors can make their widgets configurable:
+`Configurable dashboard widget implementation <https://docs.typo3.org/permalink/typo3/cms-dashboard:configurable-widget-implementation>`_.
+
 ..  _moving-widgets:
 
 Moving Widgets

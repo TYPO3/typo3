@@ -6,6 +6,12 @@
 Implement new widget
 ====================
 
+..  versionadded:: 14.0
+    `Configurable Dashboard Widgets <https://docs.typo3.org/permalink/changelog:feature-107036-1738837673>`_
+    have been introduced with TYPO3 14.0.
+
+    See also
+
 .. php:namespace:: TYPO3\CMS\Dashboard\Widgets
 
 .. seealso::
