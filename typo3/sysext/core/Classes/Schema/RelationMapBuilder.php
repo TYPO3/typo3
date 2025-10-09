@@ -64,7 +64,9 @@ final readonly class RelationMapBuilder
         // @todo: FlexFormTools should not be used here, as it should only work with real records.
         $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
         $resolvedDataStructures = [];
-        foreach ($tcaConfig['ds'] as $dataStructureKey => $dataStructure) {
+        // It might happen that fields are defined without a data structure "ds" configuration,
+        // for example when their handling is based on PSR-14 DataStructureIdentifier* events.
+        foreach ($tcaConfig['ds'] ?? [] as $dataStructureKey => $dataStructure) {
             $dataStructureIdentifier = [
                 'type' => 'tca',
                 'tableName' => $tableName,
