@@ -11,4 +11,5 @@ Scheduler. The process pid could be retrieved, but that may not work
 on all platforms. And can the process be killed afterwards? Anyway it
 may not be safe to do that.
 
-
+..  seealso::
+    `How to handle a truly “hung” task <https://docs.typo3.org/permalink/typo3/cms-scheduler:kill-task>`_

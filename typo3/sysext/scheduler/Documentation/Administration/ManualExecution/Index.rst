@@ -29,3 +29,28 @@ There are two options:
     :alt: Scheduler backend module with the buttons "Run task on next cron job" (1) and "Run task" (2) highlighted
 
     Button 2 runs the task immediately, while button 1 schedules it fot the next cronjob run
+
+..  _manually-executing-a-task-cli:
+
+Manually executing a task from the console
+==========================================
+
+..  tabs::
+
+    ..  group-tab:: Composer mode
+
+        ..  code-block:: bash
+
+            # Note the id of the task
+            vendor/bin/typo3 scheduler:list
+
+            vendor/bin/typo3 scheduler:execute --task=<taskUid>
+
+    ..  group-tab:: Classic mode
+
+        ..  code-block:: bash
+
+            # Find the id of the task
+            typo3/sysext/core/bin/typo3 scheduler:list
+
+            typo3/sysext/core/bin/typo3 scheduler:execute --task=<taskUid>

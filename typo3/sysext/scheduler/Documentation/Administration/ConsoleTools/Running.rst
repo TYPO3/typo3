@@ -28,6 +28,8 @@ time, type the following command.
 See also `TYPO3 Explained: Run a command from the command
 line <https://docs.typo3.org/permalink/t3coreapi:symfony-console-commands-cli>`_.
 
+..  contents:: Table of contents
+
 ..  _scheduler-shell-script-help:
 
 Show help
@@ -90,8 +92,8 @@ The tasks will be executed in the order in which the parameters are provided.
 
 ..  _scheduler-shell-script-options-f:
 
-`-f`
-----
+`--force (-f)`
+--------------
 
 To run a task even if it is disabled (or not scheduled to be run yet),
 you need to provide the force option:
@@ -103,24 +105,24 @@ you need to provide the force option:
         ..  code-block:: bash
 
             # Run task with uid 42, even if disabled
-            vendor/bin/typo3 scheduler:run --task=42 -f
+            vendor/bin/typo3 scheduler:run --task=42 --force
 
     ..  group-tab:: Classic installation
 
         ..  code-block:: bash
 
             # Run task with uid 42, even if disabled
-            typo3/sysext/core/bin/typo3 scheduler:run --task=42 -f
+            typo3/sysext/core/bin/typo3 scheduler:run --task=42 --force
 
 This will also run the task with uid 42 if it is disabled.
 
 ..  _scheduler-shell-script-options-v:
 
-`-v`
-----
+`--verbose (-v)`
+----------------
 
-A single -v flag will output errors only. Two -vv flags will also output additional
-information:
+A single `-v` flag will output errors only. Two `-vv` flags will also output
+additional information:
 
 ..  tabs::
 
