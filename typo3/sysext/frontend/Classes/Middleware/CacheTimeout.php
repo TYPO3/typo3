@@ -32,7 +32,7 @@ class CacheTimeout implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-        $config = $request->getAttribute('frontend.controller')?->config['config'] ?? [];
+        $config = $request->getAttribute('frontend.typoscript')?->getConfigArray() ?? [];
         if ($config['cache_clearAtMidnight'] ?? false) {
             // @todo: We should probably decide to deprecate or remove cache_clearAtMidnight
             //        altogether since it is a flawed concept based on server timezone

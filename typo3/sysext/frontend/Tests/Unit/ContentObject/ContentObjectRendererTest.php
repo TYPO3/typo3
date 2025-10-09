@@ -146,7 +146,6 @@ final class ContentObjectRendererTest extends UnitTestCase
                 false
             );
         $this->frontendControllerMock->_set('context', new Context());
-        $this->frontendControllerMock->config = [];
 
         $this->cacheManagerMock = $this->getMockBuilder(CacheManager::class)->disableOriginalConstructor()->getMock();
         GeneralUtility::setSingletonInstance(CacheManager::class, $this->cacheManagerMock);

@@ -181,7 +181,6 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
             $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
 
             // b/w compat
-            $controller->config['config'] = $frontendTypoScript->getConfigArray();
             $GLOBALS['TYPO3_REQUEST'] = $request;
 
             $response = $handler->handle($request);
