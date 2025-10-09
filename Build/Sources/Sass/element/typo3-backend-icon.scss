@@ -1,0 +1,35 @@
+//
+// Default size styles for typo3-backend-icon web component
+// These styles are applied before the JavaScript component loads
+// to prevent layout shift and ensure consistent sizing
+//
+typo3-backend-icon {
+    width: var(--icon-size, 1em);
+    height: var(--icon-size, 1em);
+
+    // Size variants matching icon size CSS variables
+    &[size="small"] {
+        width: var(--icon-size-small, 16px);
+        height: var(--icon-size-small, 16px);
+    }
+
+    &[size="default"] {
+        width: var(--icon-size, 1em);
+        height: var(--icon-size, 1em);
+    }
+
+    &[size="medium"] {
+        width: var(--icon-size-medium, 32px);
+        height: var(--icon-size-medium, 32px);
+    }
+
+    &[size="large"] {
+        width: var(--icon-size-large, 48px);
+        height: var(--icon-size-large, 48px);
+    }
+
+    &[size="mega"] {
+        width: var(--icon-size-mega, 64px);
+        height: var(--icon-size-mega, 64px);
+    }
+}
