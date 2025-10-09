@@ -3531,6 +3531,12 @@ typo3-backend-draggable-resizable .ui-resizable-handle{z-index:90}
 typo3-backend-editable-page-title{display:block;text-overflow:ellipsis;white-space:nowrap;--input-border-color:var(--typo3-state-default-border-color);--input-hover-border-color:var(--typo3-state-default-hover-border-color);--input-focus-border-color:var(--typo3-state-default-focus-border-color);--button-hover-color:var(--typo3-state-default-focus-color);--button-hover-bg:var(--typo3-state-default-hover-bg);--button-hover-border-color:var(--typo3-state-default-focus-border-color);--button-focus-color:var(--typo3-state-default-focus-color);--button-focus-bg:var(--typo3-state-default-focus-bg);--button-focus-border-color:var(--typo3-state-default-focus-border-color)}
 typo3-backend-formengine-char-counter{display:flex;inset-inline-start:0;position:absolute;top:100%;z-index:5}
 typo3-backend-formengine-char-counter .form-hint{--typo3-formhint-box-shadow:var(--typo3-component-box-shadow-tooltip);margin-top:.5rem}
+typo3-backend-icon{height:var(--icon-size,1em);width:var(--icon-size,1em)}
+typo3-backend-icon[size=small]{height:var(--icon-size-small,16px);width:var(--icon-size-small,16px)}
+typo3-backend-icon[size=default]{height:var(--icon-size,1em);width:var(--icon-size,1em)}
+typo3-backend-icon[size=medium]{height:var(--icon-size-medium,32px);width:var(--icon-size-medium,32px)}
+typo3-backend-icon[size=large]{height:var(--icon-size-large,48px);width:var(--icon-size-large,48px)}
+typo3-backend-icon[size=mega]{height:var(--icon-size-mega,64px);width:var(--icon-size-mega,64px)}
 typo3-backend-security-csp-reports .infolist-container{container-type:inline-size}
 typo3-backend-security-csp-reports .infolist{display:flex;flex-direction:column;gap:var(--typo3-spacing)}
 typo3-backend-security-csp-reports .infolist-info{display:none}
