@@ -349,40 +349,9 @@ final class NewContentElementControllerTest extends UnitTestCase
     }
 
     #[Test]
-    public function contentElementWizardsAreLinkedTogetherWithAfterPosition(): void
+    public function contentElementWizardsAreLoadedFromTca(): void
     {
-        $GLOBALS['TCA']['tt_content']['ctrl']['type'] = 'CType';
-        $GLOBALS['TCA']['tt_content']['columns']['CType'] = [
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    [
-                        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header',
-                        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header.description',
-                        'value' => 'header',
-                        'icon' => 'content-header',
-                        'iconOverlay' => 'content-text',
-                        'group' => 'default',
-                    ],
-                    [
-                        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text',
-                        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text.description',
-                        'value' => 'text',
-                        'icon' => 'content-text',
-                        'group' => 'default',
-                    ],
-                ],
-                'itemGroups' => [
-                    'default' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.default',
-                    'lists' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.lists',
-                    'menu' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.menu',
-                    'forms' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.forms',
-                    'special' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.special',
-                    'plugins' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.plugins',
-                ],
-            ],
-        ];
+        $this->fillDefaultContentTypeTCA();
         $expected = [
             'default.' => [
                 'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.default',
@@ -409,23 +378,18 @@ final class NewContentElementControllerTest extends UnitTestCase
             ],
             'lists.' => [
                 'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.lists',
-                'contentElementAfter' => 'default',
             ],
             'menu.' => [
                 'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.menu',
-                'contentElementAfter' => 'lists',
             ],
             'forms.' => [
                 'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.forms',
-                'contentElementAfter' => 'menu',
             ],
             'special.' => [
                 'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.special',
-                'contentElementAfter' => 'forms',
             ],
             'plugins.' => [
                 'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.plugins',
-                'contentElementAfter' => 'special',
             ],
         ];
         $result = (new \ReflectionClass(NewContentElementController::class))
@@ -440,8 +404,9 @@ final class NewContentElementControllerTest extends UnitTestCase
     }
 
     #[Test]
-    public function contentElementWizardsAreOrderedByContentElementAfter(): void
+    public function contentElementWizardsAreOrderedByTcaItemGroupsOrder(): void
     {
+        $this->fillDefaultContentTypeTCA();
         $wizards = [
             'default.' => [
                 'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.default',
@@ -466,33 +431,18 @@ final class NewContentElementControllerTest extends UnitTestCase
             ],
             'forms.' => [
                 'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.forms',
-                'contentElementAfter' => [
-                    'menu.',
-                ],
             ],
             'menu.' => [
                 'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.menu',
-                'contentElementAfter' => [
-                    'lists.',
-                ],
             ],
             'plugins.' => [
                 'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.plugins',
-                'contentElementAfter' => [
-                    'special.',
-                ],
             ],
             'lists.' => [
                 'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.lists',
-                'contentElementAfter' => [
-                    'default.',
-                ],
             ],
             'special.' => [
                 'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.special',
-                'contentElementAfter' => [
-                    'forms.',
-                ],
             ],
         ];
         $expected = [
@@ -557,5 +507,139 @@ final class NewContentElementControllerTest extends UnitTestCase
                 [$wizards, new DependencyOrderingService()]
             );
         self::assertSame($expected, $result);
+    }
+
+    #[Test]
+    public function contentElementWizardsAreOrderedByTcaItemGroupsOrderWhenGroupsAreRemoved(): void
+    {
+        $this->fillDefaultContentTypeTCA();
+        $wizards = [
+            'default.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.default',
+                'elements.' => [
+                    'header.' => [
+                        'iconIdentifier' => 'content-header',
+                        'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header',
+                        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header.description',
+                        'defaultValues' => [
+                            'CType' => 'header',
+                        ],
+                    ],
+                    'text.' => [
+                        'iconIdentifier' => 'content-text',
+                        'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text',
+                        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text.description',
+                        'defaultValues' => [
+                            'CType' => 'text',
+                        ],
+                    ],
+                ],
+            ],
+            'menu.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.menu',
+            ],
+            'forms.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.forms',
+            ],
+            'plugins.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.plugins',
+            ],
+            // Group "lists" was removed e.g. by pageTS config.
+            'special.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.special',
+            ],
+        ];
+        $expected = [
+            'default.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.default',
+                'elements.' => [
+                    'header.' => [
+                        'iconIdentifier' => 'content-header',
+                        'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header',
+                        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header.description',
+                        'defaultValues' => [
+                            'CType' => 'header',
+                        ],
+                    ],
+                    'text.' => [
+                        'iconIdentifier' => 'content-text',
+                        'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text',
+                        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text.description',
+                        'defaultValues' => [
+                            'CType' => 'text',
+                        ],
+                    ],
+                ],
+            ],
+            'menu.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.menu',
+                'after' => [
+                    'default.',
+                ],
+            ],
+            'forms.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.forms',
+                'after' => [
+                    'menu.',
+                ],
+            ],
+            'special.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.special',
+                'after' => [
+                    'forms.',
+                ],
+            ],
+            'plugins.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.plugins',
+                'after' => [
+                    'special.',
+                ],
+            ],
+        ];
+        $result = (new \ReflectionClass(NewContentElementController::class))
+            ->getMethod('orderWizards')
+            ->invokeArgs(
+                $this->createMock(
+                    NewContentElementController::class
+                ),
+                [$wizards, new DependencyOrderingService()]
+            );
+        self::assertSame($expected, $result);
+    }
+
+    protected function fillDefaultContentTypeTCA(): void
+    {
+        $GLOBALS['TCA']['tt_content']['ctrl']['type'] = 'CType';
+        $GLOBALS['TCA']['tt_content']['columns']['CType'] = [
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    [
+                        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header',
+                        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header.description',
+                        'value' => 'header',
+                        'icon' => 'content-header',
+                        'iconOverlay' => 'content-text',
+                        'group' => 'default',
+                    ],
+                    [
+                        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text',
+                        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text.description',
+                        'value' => 'text',
+                        'icon' => 'content-text',
+                        'group' => 'default',
+                    ],
+                ],
+                'itemGroups' => [
+                    'default' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.default',
+                    'lists' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.lists',
+                    'menu' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.menu',
+                    'forms' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.forms',
+                    'special' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.special',
+                    'plugins' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.plugins',
+                ],
+            ],
+        ];
     }
 }
