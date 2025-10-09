@@ -38,7 +38,7 @@ Migration
 The :php:`{actionUri}` variable is not available any more and should be removed
 from the template.
 
-.. code-block:: html
+..  code-block:: html
 
     // Before
     <f:form action="login" actionUri="{actionUri}" target="_top" fieldNamePrefix="">
@@ -48,7 +48,7 @@ from the template.
 
 The evaluation of the :php:`noRedirect` variable must be added to the template.
 
- .. code-block:: html
+..  code-block:: html
 
     // Before
     <div class="felogin-hidden">
