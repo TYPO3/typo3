@@ -59,7 +59,7 @@ final class ToolbarItemProvider
         if (!$this->schedulerWasExecuted()) {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             // Display system message if the Scheduler has never yet run
-            $moduleIdentifier = 'scheduler_setupcheck';
+            $moduleIdentifier = 'scheduler';
             $systemInformationToolbarItem->addSystemMessage(
                 sprintf(
                     $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:systemmessage.noLastRun'),

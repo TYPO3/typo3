@@ -13,7 +13,7 @@
 				<source>Scheduled tasks</source>
 			</trans-unit>
 			<trans-unit id="function.check">
-				<source>Scheduler setup check</source>
+				<source>Setup check</source>
 			</trans-unit>
 			<trans-unit id="function.add">
 				<source>New task</source>

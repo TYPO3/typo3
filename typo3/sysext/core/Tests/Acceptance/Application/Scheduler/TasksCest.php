@@ -64,7 +64,7 @@ final class TasksCest
         // run the task
         $I->click('button[name="action[execute]"]');
         $I->waitForText('Task "System Status Update [reports]" with uid');
-        $I->seeElement('[data-module-name="scheduler_manage"] tr[data-task-disabled="true"]');
+        $I->seeElement('[data-module-name="scheduler"] tr[data-task-disabled="true"]');
         $I->see('disabled');
     }
 
@@ -82,15 +82,15 @@ final class TasksCest
     public function canEnableAndDisableTask(ApplicationTester $I): void
     {
         $I->click('//button[contains(@title, "Enable")]', '#tx_scheduler_form_0');
-        $I->dontSeeElement('[data-module-name="scheduler_manage"] tr[data-task-disabled="true"]');
+        $I->dontSeeElement('[data-module-name="scheduler"] tr[data-task-disabled="true"]');
         $I->dontSee('disabled');
         // Give tooltips some time to fully init
         $I->wait(1);
         $I->moveMouseOver('//button[contains(@title, "Disable")]');
         $I->wait(1);
         $I->click('//button[contains(@title, "Disable")]');
-        $I->waitForElementVisible('[data-module-name="scheduler_manage"]');
-        $I->seeElement('[data-module-name="scheduler_manage"] tr[data-task-disabled="true"]');
+        $I->waitForElementVisible('[data-module-name="scheduler"]');
+        $I->seeElement('[data-module-name="scheduler"] tr[data-task-disabled="true"]');
         $I->see('disabled');
     }
 
@@ -115,11 +115,11 @@ final class TasksCest
         $I->see('There are currently no configured tasks found. You can create a new one.');
     }
 
-    public function canSwitchToSetupCheck(ApplicationTester $I): void
+    public function canSeeSetupCheck(ApplicationTester $I, ModalDialog $modalDialog): void
     {
-        $I->selectOption('select[name=moduleMenu]', 'Scheduler setup check');
-        $I->waitForElementVisible('[data-module-name="scheduler_setupcheck"]');
-        $I->see('Scheduler setup check');
+        $I->click('//typo3-scheduler-setup-check-button', '.module-docheader');
+        $modalDialog->canSeeDialog();
+        $I->see('Setup check');
         $I->see('This screen checks if the requisites for running the Scheduler as a cron job are fulfilled');
     }
 }

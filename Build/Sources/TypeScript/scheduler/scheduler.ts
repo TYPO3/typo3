@@ -35,15 +35,15 @@ class Scheduler {
   private static storeCollapseState(table: string, isCollapsed: boolean): void {
     let storedModuleData = {};
 
-    if (PersistentStorage.isset('moduleData.scheduler_manage')) {
-      storedModuleData = PersistentStorage.get('moduleData.scheduler_manage');
+    if (PersistentStorage.isset('moduleData.scheduler')) {
+      storedModuleData = PersistentStorage.get('moduleData.scheduler');
     }
 
     const collapseConfig: Record<string, number> = {};
     collapseConfig[table] = isCollapsed ? 1 : 0;
 
     storedModuleData = { ...storedModuleData, ...collapseConfig };
-    PersistentStorage.set('moduleData.scheduler_manage', storedModuleData);
+    PersistentStorage.set('moduleData.scheduler', storedModuleData);
   }
 
 

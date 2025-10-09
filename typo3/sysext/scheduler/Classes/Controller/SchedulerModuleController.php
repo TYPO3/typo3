@@ -26,14 +26,17 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Execution;
 use TYPO3\CMS\Scheduler\Scheduler;
@@ -61,6 +64,7 @@ final class SchedulerModuleController
         protected readonly Context $context,
         protected readonly TaskService $taskService,
         protected readonly PageRenderer $pageRenderer,
+        protected readonly Registry $registry,
     ) {}
 
     /**
@@ -100,6 +104,20 @@ final class SchedulerModuleController
             }
         }
         return $this->renderListTasksView($view, $moduleData, $request);
+    }
+
+    /**
+     * AJAX endpoint for setup check modal content.
+     */
+    public function setupCheckAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->moduleTemplateFactory->create($request);
+        $view->assign('dateFormat', [
+            'day' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?? 'd-m-y',
+            'time' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] ?? 'H:i',
+        ]);
+        $this->addSetupCheckInformation($view);
+        return $view->renderResponse('CheckScreen');
     }
 
     /**
@@ -303,6 +321,7 @@ final class SchedulerModuleController
         );
 
         $this->pageRenderer->loadJavaScriptModule('@typo3/scheduler/new-scheduler-task-wizard-button.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/scheduler/setup-check-button.js');
 
         $view->assignMultiple([
             'groups' => $groups,
@@ -310,7 +329,7 @@ final class SchedulerModuleController
             'hasAvailableTaskTypes' => $hasAvailableTaskTypes,
             'now' => $this->context->getAspect('date')->get('timestamp'),
             'errorClasses' => $data['errorClasses'],
-            'returnUrl' => $this->uriBuilder->buildUriFromRoute('scheduler_manage'),
+            'returnUrl' => $this->uriBuilder->buildUriFromRoute('scheduler'),
             'errorClassesCollapsed' => (bool)($moduleData->get('task-group-missing', false)),
         ]);
         $view->setTitle(
@@ -326,6 +345,7 @@ final class SchedulerModuleController
             $view->assign('addTaskUrl', $addTaskUrl);
             $this->addDocHeaderAddTaskButton($view, $addTaskUrl);
             $this->addDocHeaderAddTaskGroupButton($view);
+            $this->addDocHeaderSetupCheckButton($view);
         }
         $this->addDocHeaderShortcutButton($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.scheduler'));
         return $view->renderResponse('ListTasks');
@@ -338,7 +358,7 @@ final class SchedulerModuleController
         $reloadButton = $buttonBar->makeLinkButton()
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
             ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL))
-            ->setHref((string)$this->uriBuilder->buildUriFromRoute('scheduler_manage'));
+            ->setHref((string)$this->uriBuilder->buildUriFromRoute('scheduler'));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
     }
 
@@ -368,11 +388,24 @@ final class SchedulerModuleController
         $buttonBar->addButton($addButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
     }
 
+    private function addDocHeaderSetupCheckButton(ModuleTemplate $moduleTemplate): void
+    {
+        $languageService = $this->getLanguageService();
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $setupCheckUrl = (string)$this->uriBuilder->buildUriFromRoute('ajax_scheduler_setup_check');
+        $setupCheckButton = $buttonBar->makeFullyRenderedButton()->setHtmlSource(
+            '<typo3-scheduler-setup-check-button url="' . $setupCheckUrl . '" subject="' . htmlspecialchars($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.check')) . '">'
+            . $this->iconFactory->getIcon('actions-window-cog', IconSize::SMALL) . ' ' . htmlspecialchars($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.check')) .
+            '</typo3-scheduler-setup-check-button>'
+        );
+        $buttonBar->addButton($setupCheckButton, ButtonBar::BUTTON_POSITION_RIGHT, 0);
+    }
+
     protected function addDocHeaderShortcutButton(ModuleTemplate $moduleTemplate, string $name): void
     {
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier('scheduler_manage')
+            ->setRouteIdentifier('scheduler')
             ->setDisplayName($name);
         $buttonBar->addButton($shortcutButton);
     }
@@ -418,6 +451,77 @@ final class SchedulerModuleController
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($groupId)))
             ->set('hidden', $hidden)
             ->executeStatement();
+    }
+
+    private function addSetupCheckInformation(ViewInterface $view): void
+    {
+        $languageService = $this->getLanguageService();
+        // Display information about the last automated run, as stored in the system registry.
+        $lastRun = $this->registry->get('tx_scheduler', 'lastRun');
+        $lastRunMessageLabel = 'msg.noLastRun';
+        $lastRunMessageLabelArguments = [];
+        $lastRunSeverity = ContextualFeedbackSeverity::WARNING->value;
+        if (is_array($lastRun)) {
+            if (empty($lastRun['end']) || empty($lastRun['start']) || empty($lastRun['type'])) {
+                $lastRunMessageLabel = 'msg.incompleteLastRun';
+                $lastRunSeverity = ContextualFeedbackSeverity::WARNING->value;
+            } else {
+                $lastRunMessageLabelArguments = [
+                    $lastRun['type'] === 'manual'
+                        ? $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.manually')
+                        : $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.automatically'),
+                    date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $lastRun['start']),
+                    date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $lastRun['start']),
+                    date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $lastRun['end']),
+                    date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $lastRun['end']),
+                ];
+                $lastRunMessageLabel = 'msg.lastRun';
+                $lastRunSeverity = ContextualFeedbackSeverity::INFO->value;
+            }
+        }
+
+        // Information about cli script.
+        $script = $this->determineExecutablePath();
+        $isExecutableMessageLabel = 'msg.cliScriptNotExecutable';
+        $isExecutableSeverity = ContextualFeedbackSeverity::ERROR->value;
+        $composerMode = !$script && Environment::isComposerMode();
+        if (!$composerMode) {
+            // Check if CLI script is executable or not. Skip this check if running Windows since executable detection
+            // is not reliable on this platform, the script will always appear as *not* executable.
+            $isExecutable = Environment::isWindows() ? true : ($script && is_executable($script));
+            if ($isExecutable) {
+                $isExecutableMessageLabel = 'msg.cliScriptExecutable';
+                $isExecutableSeverity = ContextualFeedbackSeverity::OK->value;
+            }
+        }
+
+        $view->assignMultiple([
+            'composerMode' => $composerMode,
+            'script' => $script,
+            'lastRunMessageLabel' => $lastRunMessageLabel,
+            'lastRunMessageLabelArguments' => $lastRunMessageLabelArguments,
+            'lastRunSeverity' => $lastRunSeverity,
+            'isExecutableMessageLabel' => $isExecutableMessageLabel,
+            'isExecutableSeverity' => $isExecutableSeverity,
+        ]);
+    }
+
+    private function determineExecutablePath(): ?string
+    {
+        if (!Environment::isComposerMode()) {
+            return GeneralUtility::getFileAbsFileName('EXT:core/bin/typo3');
+        }
+        $composerJsonFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/composer.json';
+        if (!file_exists($composerJsonFile) || !($jsonContent = file_get_contents($composerJsonFile))) {
+            return null;
+        }
+        $jsonConfig = @json_decode($jsonContent, true);
+        if (empty($jsonConfig) || !is_array($jsonConfig)) {
+            return null;
+        }
+        $vendorDir = trim($jsonConfig['config']['vendor-dir'] ?? 'vendor', '/');
+        $binDir = trim($jsonConfig['config']['bin-dir'] ?? $vendorDir . '/bin', '/');
+        return sprintf('%s/%s/typo3', getenv('TYPO3_PATH_COMPOSER_ROOT'), $binDir);
     }
 
     protected function getLanguageService(): LanguageService

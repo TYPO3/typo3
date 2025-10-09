@@ -55,8 +55,7 @@ final class BookmarkCest
 
         $I->switchToContentFrame();
 
-        $I->selectOption('select[name=moduleMenu]', 'Scheduled tasks');
-        $I->waitForElementVisible('[data-module-name="scheduler_manage"]');
+        $I->waitForElementVisible('[data-module-name="scheduler"]');
         $I->see('Scheduled tasks');
 
         $I->click(self::$docHeaderBookmarkButtonSelector);
