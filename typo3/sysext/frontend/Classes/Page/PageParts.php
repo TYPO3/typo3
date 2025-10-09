@@ -65,6 +65,18 @@ final class PageParts
      */
     private int $lastChanged = 0;
 
+    /**
+     * Becomes the HTTP Response header 'Content-Type'.
+     * This is obviously Response and not Response body-stream related, but we currently "park" it here for
+     * applications like Extbase that need to reset to something like application/json.
+     *
+     * @todo: This should be remodeled. This should be part of a construct that gathers page parts and
+     *        Response related details to finally compile a Response in the end. "Parking" that information
+     *        here is a temporary measure on the way to a better solution where for instance single
+     *        cObj return a data object instead of a string.
+     */
+    private string $httpContentType = 'text/html; charset=utf-8';
+
     public function setContent(string $content): void
     {
         $this->content = $content;
@@ -83,5 +95,15 @@ final class PageParts
     public function getLastChanged(): int
     {
         return $this->lastChanged;
+    }
+
+    public function setHttpContentType(string $contentType): void
+    {
+        $this->httpContentType = $contentType;
+    }
+
+    public function getHttpContentType(): string
+    {
+        return $this->httpContentType;
     }
 }

@@ -172,12 +172,6 @@ class TypoScriptFrontendController
     protected FrontendInterface $pageCache;
 
     /**
-     * Content type HTTP header being sent in the request.
-     * @todo Ticket: #63642 Should be refactored to a request/response model later
-     */
-    protected string $contentType = 'text/html; charset=utf-8';
-
-    /**
      * The context for keeping the current state, mostly related to current page information,
      * backend user / frontend user access, workspaceId
      */
@@ -220,14 +214,6 @@ class TypoScriptFrontendController
             $locale = $language->getLocale();
         }
         $this->pageRenderer->setLanguage($locale);
-    }
-
-    /**
-     * @internal Must only be used by TYPO3 core
-     */
-    public function setContentType(string $contentType): void
-    {
-        $this->contentType = $contentType;
     }
 
     /**
@@ -285,7 +271,7 @@ class TypoScriptFrontendController
         $cacheData = [
             'page_id' => $pageId,
             'content' => $content,
-            'contentType' => $this->contentType,
+            'contentType' => $request->getAttribute('frontend.page.parts')->getHttpContentType(),
             'INTincScript' => $INTincScript,
             'INTincScript_ext' => $INTincScript_ext,
             'pageTitleCache' => $pageTitleCache,
@@ -663,7 +649,8 @@ class TypoScriptFrontendController
      */
     public function applyHttpHeadersToResponse(ServerRequestInterface $request, ResponseInterface $response, string $content): ResponseInterface
     {
-        $response = $response->withHeader('Content-Type', $this->contentType);
+        $pageParts = $request->getAttribute('frontend.page.parts');
+        $response = $response->withHeader('Content-Type', $pageParts->getHttpContentType());
         $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
         if (empty($typoScriptConfigArray['disableLanguageHeader'])) {
             // Set header for content language unless disabled

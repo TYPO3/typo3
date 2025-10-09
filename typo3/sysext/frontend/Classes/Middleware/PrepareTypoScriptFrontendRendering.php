@@ -126,7 +126,7 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
             $controller->config['pageTitleCache'] = $pageCacheRow['pageTitleCache'];
             $pageParts = $request->getAttribute('frontend.page.parts');
             $pageParts->setContent($pageCacheRow['content']);
-            $controller->setContentType($pageCacheRow['contentType']);
+            $pageParts->setHttpContentType($pageCacheRow['contentType']);
             $controller->cacheGenerated = $pageCacheRow['tstamp'];
             $controller->pageContentWasLoadedFromCache = true;
             $pageContentWasLoadedFromCache = true;

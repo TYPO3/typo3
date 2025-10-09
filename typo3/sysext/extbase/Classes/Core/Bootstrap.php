@@ -29,7 +29,6 @@ use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Service\CacheService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Creates a request and dispatches it to the controller which was specified
@@ -163,11 +162,9 @@ class Bootstrap
             $this->clearCacheOnError($request);
         }
 
-        // If TypoScriptFrontendController has been properly set up and this is a json response,
-        // we let TypoScriptFrontendController know we have a specific Content-Type.
-        $typoScriptFrontendController = $request->getAttribute('frontend.controller');
-        if ($typoScriptFrontendController instanceof TypoScriptFrontendController && $response->hasHeader('Content-Type')) {
-            $typoScriptFrontendController->setContentType($response->getHeaderLine('Content-Type'));
+        if ($response->hasHeader('Content-Type')) {
+            // Typically used when extbase for instance created a json response.
+            $request->getAttribute('frontend.page.parts')->setHttpContentType($response->getHeaderLine('Content-Type'));
             // Do not send the header directly (see below)
             $response = $response->withoutHeader('Content-Type');
         }
