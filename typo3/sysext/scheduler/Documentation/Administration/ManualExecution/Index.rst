@@ -22,3 +22,27 @@ appropriate button beneath the task list.
 There is one button for directly starting the task and another button
 for starting the task with the next cron job.
 
+..  _manually-executing-a-task-cli:
+
+Manually executing a task from the console
+==========================================
+
+..  tabs::
+
+    ..  group-tab:: Composer mode
+
+        ..  code-block:: bash
+
+            # Note the id of the task
+            vendor/bin/typo3 scheduler:list
+
+            vendor/bin/typo3 scheduler:execute --task=<taskUid>
+
+    ..  group-tab:: Classic mode
+
+        ..  code-block:: bash
+
+            # Find the id of the task
+            typo3/sysext/core/bin/typo3 scheduler:list
+
+            typo3/sysext/core/bin/typo3 scheduler:execute --task=<taskUid>

@@ -1,4 +1,4 @@
-:navigation-title: Backend administration
+:navigation-title: Administration
 
 ..  include:: /Includes.rst.txt
 ..  _administration:
@@ -23,4 +23,4 @@ one for actually managing the tasks.
     StopTask/Index
     ManualExecution/Index
     ExecuteNextCronjob/Index
-
+    ConsoleTools/Index

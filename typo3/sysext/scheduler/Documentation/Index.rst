@@ -45,7 +45,6 @@ delivered by any extension.
     Installation/Index
     BasicTasks/Index
     Administration/Index
-    Installation/SchedulerShellScript/Index
     DevelopersGuide/Index
     KnownProblems/Index
     AppendixA/Index
