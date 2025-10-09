@@ -23,6 +23,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Event\CacheFlushEvent;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -44,9 +45,13 @@ class CacheFlushCommand extends Command
     protected function configure(): void
     {
         $this->setDescription('Flush TYPO3 caches.');
-        $this->setHelp('This command can be used to clear the caches, for example after code updates in local development and after deployments.');
+        $this->setHelp(
+            'Clears TYPO3 caches. '
+            . 'Useful after code changes during development or after deployments. '
+            . 'You can flush a specific cache group (system, pages, di) or all caches.'
+        );
         $this->setDefinition([
-            new InputOption('group', 'g', InputOption::VALUE_OPTIONAL, 'The cache group to flush (system, pages, di or all)', 'all'),
+            new InputOption('group', 'g', InputOption::VALUE_OPTIONAL, 'Cache group to flush (system, pages, di, or all).', 'all'),
         ]);
     }
 
@@ -55,10 +60,14 @@ class CacheFlushCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $io = new SymfonyStyle($input, $output);
         $group = $input->getOption('group') ?? 'all';
 
         $this->flushDependencyInjectionCaches($group);
         if ($group === 'di') {
+            if ($output->isVerbose()) {
+                $io->success('Dependency Injection caches flushed.');
+            }
             return Command::SUCCESS;
         }
 
@@ -75,9 +84,19 @@ class CacheFlushCommand extends Command
         $eventDispatcher->dispatch($event);
 
         if (count($event->getErrors()) > 0) {
+            $io->error('Errors occurred while flushing caches.');
+            foreach ($event->getErrors() as $error) {
+                $io->error($error);
+            }
             return Command::FAILURE;
         }
-
+        if ($output->isVerbose()) {
+            if ($group === 'all') {
+                $io->success('All caches flushed.');
+            } else {
+                $io->success(sprintf('Caches for group "%s" flushed.', $group));
+            }
+        }
         return Command::SUCCESS;
     }
 
