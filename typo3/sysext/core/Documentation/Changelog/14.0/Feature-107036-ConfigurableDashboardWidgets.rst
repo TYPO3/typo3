@@ -74,8 +74,10 @@ which allows to defining settings in their widget renderer:
     :caption: EXT:my_extension/Classes/Widgets/ConfigurableWidget.php
 
     <?php
-    use TYPO3\CMS\Core\Settings\SettingDefinition;
+    use TYPO3\CMS\Dashboard\Widgets\WidgetContext;
     use TYPO3\CMS\Dashboard\Widgets\WidgetRendererInterface;
+    use TYPO3\CMS\Dashboard\Widgets\WidgetResult;
+    use TYPO3\CMS\Core\Settings\SettingDefinition;
 
     class ConfigurableWidget implements WidgetRendererInterface
     {
@@ -101,7 +103,7 @@ which allows to defining settings in their widget renderer:
 
         public function renderWidget(WidgetContext $context): WidgetResult
         {
-            $settings = $context->getSettings();
+            $settings = $context->settings;
             $title = $settings->get('title');
             $limit = $settings->get('limit');
 
