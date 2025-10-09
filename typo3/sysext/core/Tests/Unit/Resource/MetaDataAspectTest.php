@@ -19,8 +19,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
@@ -34,24 +34,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class MetaDataAspectTest extends UnitTestCase
 {
-    protected bool $resetSingletonInstances = true;
-    protected ResourceStorage&MockObject $storageMock;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $metaDataRepository = new MetaDataRepository(new NoopEventDispatcher());
-        GeneralUtility::setSingletonInstance(MetaDataRepository::class, $metaDataRepository);
-        $this->storageMock = $this->createMock(ResourceStorage::class);
-        $this->storageMock->method('getUid')->willReturn(12);
-    }
-
-    protected function tearDown(): void
-    {
-        GeneralUtility::purgeInstances();
-        parent::tearDown();
-    }
-
     #[Test]
     public function knownMetaDataIsAdded(): void
     {
@@ -59,7 +41,11 @@ final class MetaDataAspectTest extends UnitTestCase
             'width' => 4711,
             'title' => 'Lorem ipsum meta sit amet',
         ];
-        $file = new File([], $this->storageMock, $metaData);
+
+        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock->method('getUid')->willReturn(12);
+
+        $file = new File([], $storageMock, $metaData);
 
         self::assertSame($metaData, $file->getMetaData()->get());
     }
@@ -71,7 +57,11 @@ final class MetaDataAspectTest extends UnitTestCase
             'width' => 4711,
             'title' => 'Lorem ipsum meta sit amet',
         ];
-        $file = new File([], $this->storageMock, $metaData);
+
+        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock->method('getUid')->willReturn(12);
+
+        $file = new File([], $storageMock, $metaData);
         $file->getMetaData()->add([
             'height' => 900,
             'description' => 'This file is presented by TYPO3',
@@ -92,7 +82,10 @@ final class MetaDataAspectTest extends UnitTestCase
     {
         $metaData = ['foo' => 'bar'];
 
-        $file = new File(['uid' => 12], $this->storageMock);
+        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock->method('getUid')->willReturn(12);
+
+        $file = new File(['uid' => 12], $storageMock);
 
         $metaDataAspectMock = $this->getMockBuilder(MetaDataAspect::class)
             ->setConstructorArgs([$file])
@@ -111,7 +104,12 @@ final class MetaDataAspectTest extends UnitTestCase
         $this->expectException(InvalidUidException::class);
         $this->expectExceptionCode(1381590731);
 
-        $file = new File(['uid' => -3], $this->storageMock);
+        $metaDataRepository = new MetaDataRepository(new NoopEventDispatcher(), $this->createMock(ConnectionPool::class), new Context());
+        GeneralUtility::addInstance(MetaDataRepository::class, $metaDataRepository);
+        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock->method('getUid')->willReturn(12);
+
+        $file = new File(['uid' => -3], $storageMock);
         $file->getMetaData()->get();
     }
 
@@ -125,23 +123,26 @@ final class MetaDataAspectTest extends UnitTestCase
             'description' => 'Yipp yipp yipp',
         ];
 
-        $file = new File(['uid' => 12], $this->storageMock);
+        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock->method('getUid')->willReturn(12);
+
+        $file = new File(['uid' => 12], $storageMock);
 
         $connectionMock = $this->createMock(Connection::class);
         $connectionMock->method('insert')->with(self::anything())->willReturn(1);
         $connectionMock->method('lastInsertId')->willReturn('5');
         $connectionPoolMock = $this->createMock(ConnectionPool::class);
         $connectionPoolMock->method('getConnectionForTable')->with(self::anything())->willReturn($connectionMock);
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
         $metaDataRepositoryMock = $this->getMockBuilder(MetaDataRepository::class)
             ->onlyMethods(['findByFileUid', 'getTableFields', 'update'])
-            ->setConstructorArgs([new NoopEventDispatcher()])
+            ->setConstructorArgs([new NoopEventDispatcher(), $connectionPoolMock, new Context()])
             ->getMock();
         $metaDataRepositoryMock->method('findByFileUid')->willReturn([]);
         $metaDataRepositoryMock->method('getTableFields')->willReturn(['title' => 'sometype']);
         $metaDataRepositoryMock->expects($this->never())->method('update');
-        GeneralUtility::setSingletonInstance(MetaDataRepository::class, $metaDataRepositoryMock);
+        GeneralUtility::addInstance(MetaDataRepository::class, $metaDataRepositoryMock);
+        GeneralUtility::addInstance(MetaDataRepository::class, $metaDataRepositoryMock);
 
         $file->getMetaData()->add($metaData)->save();
 
@@ -164,25 +165,29 @@ final class MetaDataAspectTest extends UnitTestCase
         $metaData = ['uid' => 12, 'foo' => 'bar'];
         $updatedMetadata = array_merge($metaData, ['testproperty' => 'testvalue']);
 
-        $file = new File(['uid' => 12], $this->storageMock);
+        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock->method('getUid')->willReturn(12);
+
+        $file = new File(['uid' => 12], $storageMock);
 
         $eventDispatcherMock = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
         $eventDispatcherMock->expects($this->atLeastOnce())->method('dispatch')->with(self::anything())->willReturnArgument(0);
-
-        $metaDataRepositoryMock = $this->getMockBuilder(MetaDataRepository::class)
-            ->onlyMethods(['createMetaDataRecord', 'getTableFields'])
-            ->setConstructorArgs([$eventDispatcherMock])
-            ->getMock();
 
         $connectionMock = $this->createMock(Connection::class);
         $connectionMock->method('update')->with('sys_file_metadata', self::anything())->willReturn(1);
         $connectionPoolMock = $this->createMock(ConnectionPool::class);
         $connectionPoolMock->method('getConnectionForTable')->with(self::anything())->willReturn($connectionMock);
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
+
+        $metaDataRepositoryMock = $this->getMockBuilder(MetaDataRepository::class)
+            ->onlyMethods(['createMetaDataRecord', 'getTableFields'])
+            ->setConstructorArgs([$eventDispatcherMock, $connectionPoolMock, new Context()])
+            ->getMock();
 
         $metaDataRepositoryMock->method('createMetaDataRecord')->willReturn($metaData);
         $metaDataRepositoryMock->method('getTableFields')->willReturn(array_flip(['foo', 'testproperty']));
-        GeneralUtility::setSingletonInstance(MetaDataRepository::class, $metaDataRepositoryMock);
+        GeneralUtility::addInstance(MetaDataRepository::class, $metaDataRepositoryMock);
+        GeneralUtility::addInstance(MetaDataRepository::class, $metaDataRepositoryMock);
+        GeneralUtility::addInstance(MetaDataRepository::class, $metaDataRepositoryMock);
 
         $metaDataAspectMock = $this->getMockBuilder(MetaDataAspect::class)
             ->setConstructorArgs([$file])
@@ -237,7 +242,10 @@ final class MetaDataAspectTest extends UnitTestCase
     #[Test]
     public function propertyIsFetchedProperly(array $metaData, array $has, array $get): void
     {
-        $file = new File([], $this->storageMock, $metaData);
+        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageMock->method('getUid')->willReturn(12);
+
+        $file = new File([], $storageMock, $metaData);
 
         self::assertSame($has['expected'], isset($file->getMetaData()[$has['property']]));
         self::assertSame($get['expected'], $file->getMetaData()[$get['property']] ?? null);

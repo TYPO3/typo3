@@ -38,8 +38,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal this is a list of Event Listeners, and not part of TYPO3 Core API.
  */
-final class FileDeletionAspect
+final readonly class FileDeletionAspect
 {
+    public function __construct(
+        private ConnectionPool $connectionPool,
+        private MetaDataRepository $metaDataRepository,
+        private ProcessedFileRepository $processedFileRepository,
+    ) {}
+
     #[AsEventListener('delete-processed-files-after-add')]
     public function cleanupProcessedFilesPostFileAdd(AfterFileAddedEvent $event): void
     {
@@ -68,24 +74,22 @@ final class FileDeletionAspect
             $this->cleanupProcessedFiles($fileObject);
             $this->cleanupCategoryReferences($fileObject);
             $this->getFileIndexRepository()->remove($fileObject->getUid());
-            $this->getMetaDataRepository()->removeByFileUid($fileObject->getUid());
+            $this->metaDataRepository->removeByFileUid($fileObject->getUid());
 
             // remove all references
-            GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file_reference')
-                ->delete(
-                    'sys_file_reference',
-                    [
-                        'uid_local' => $fileObject->getUid(),
-                    ]
-                );
+            $this->connectionPool->getConnectionForTable('sys_file_reference')->delete(
+                'sys_file_reference',
+                [
+                    'uid_local' => $fileObject->getUid(),
+                ]
+            );
         } elseif ($fileObject instanceof ProcessedFile) {
-            GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file_processedfile')
-                ->delete(
-                    'sys_file_processedfile',
-                    [
-                        'uid' => $fileObject->getUid(),
-                    ]
-                );
+            $this->connectionPool->getConnectionForTable('sys_file_processedfile')->delete(
+                'sys_file_processedfile',
+                [
+                    'uid' => $fileObject->getUid(),
+                ]
+            );
         }
     }
 
@@ -104,14 +108,13 @@ final class FileDeletionAspect
             return;
         }
 
-        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_category_record_mm')
-            ->delete(
-                'sys_category_record_mm',
-                [
-                    'uid_foreign' => $metaDataUid,
-                    'tablenames' => 'sys_file_metadata',
-                ]
-            );
+        $this->connectionPool->getConnectionForTable('sys_category_record_mm')->delete(
+            'sys_category_record_mm',
+            [
+                'uid_foreign' => $metaDataUid,
+                'tablenames' => 'sys_file_metadata',
+            ]
+        );
     }
 
     /**
@@ -123,8 +126,7 @@ final class FileDeletionAspect
         if (!$fileObject instanceof File) {
             return;
         }
-
-        foreach ($this->getProcessedFileRepository()->findAllByOriginalFile($fileObject) as $processedFile) {
+        foreach ($this->processedFileRepository->findAllByOriginalFile($fileObject) as $processedFile) {
             if ($processedFile->exists()) {
                 $processedFile->delete(true);
             }
@@ -135,15 +137,5 @@ final class FileDeletionAspect
     private function getFileIndexRepository(): FileIndexRepository
     {
         return GeneralUtility::makeInstance(FileIndexRepository::class);
-    }
-
-    private function getMetaDataRepository(): MetaDataRepository
-    {
-        return GeneralUtility::makeInstance(MetaDataRepository::class);
-    }
-
-    private function getProcessedFileRepository(): ProcessedFileRepository
-    {
-        return GeneralUtility::makeInstance(ProcessedFileRepository::class);
     }
 }

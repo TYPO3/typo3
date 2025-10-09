@@ -72,6 +72,7 @@ class ElementInformationController
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
         protected readonly VisibleSchemaFieldsCollector $visibleSchemaFieldsCollector,
         private readonly SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
+        private readonly MetaDataRepository $metaDataRepository,
     ) {}
 
     /**
@@ -314,8 +315,7 @@ class ElementInformationController
                 ];
 
                 // show the metadata of a file as well
-                $metaDataRepository = GeneralUtility::makeInstance(MetaDataRepository::class);
-                $metaData = $metaDataRepository->findByFileUid($this->row['uid'] ?? 0);
+                $metaData = $this->metaDataRepository->findByFileUid((int)($this->row['uid'] ?? 0));
 
                 // If there is no metadata record, skip it
                 if ($metaData !== []) {

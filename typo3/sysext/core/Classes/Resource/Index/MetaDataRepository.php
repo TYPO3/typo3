@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Resource\Index;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -29,7 +30,6 @@ use TYPO3\CMS\Core\Resource\Event\EnrichFileMetaDataEvent;
 use TYPO3\CMS\Core\Resource\Exception\InvalidUidException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileType;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -39,23 +39,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Every access to table sys_file_metadata which is not handled by DataHandler
  * has to use this Repository class
  */
-class MetaDataRepository implements SingletonInterface
+#[Autoconfigure(public: true)]
+readonly class MetaDataRepository
 {
-    /**
-     * @var string
-     */
-    protected $tableName = 'sys_file_metadata';
-
     public function __construct(
-        protected readonly EventDispatcherInterface $eventDispatcher,
+        private EventDispatcherInterface $eventDispatcher,
+        private ConnectionPool $connectionPool,
+        private Context $context,
     ) {}
 
     /**
      * Returns array of meta-data properties
-     *
-     * @return array
      */
-    public function findByFile(File $file)
+    public function findByFile(File $file): array
     {
         $record = $this->findByFileUid($file->getUid());
 
@@ -91,22 +87,20 @@ class MetaDataRepository implements SingletonInterface
      * @return array<string, string> $metaData
      * @throws InvalidUidException
      */
-    public function findByFileUid($uid)
+    public function findByFileUid(int $uid): array
     {
-        $uid = (int)$uid;
         if ($uid <= 0) {
             throw new InvalidUidException('Metadata can only be retrieved for indexed files. UID: "' . $uid . '"', 1381590731);
         }
 
-        $context = GeneralUtility::makeInstance(Context::class);
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->tableName);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file_metadata');
         $queryBuilder->getRestrictions()
             ->add(GeneralUtility::makeInstance(RootLevelRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $context->getAspect('workspace')->getId()));
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->context->getAspect('workspace')->getId()));
 
         $record = $queryBuilder
             ->select('*')
-            ->from($this->tableName)
+            ->from('sys_file_metadata')
             ->where(
                 $queryBuilder->expr()->eq('file', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
                 $queryBuilder->expr()->in('sys_language_uid', $queryBuilder->createNamedParameter([0, -1], Connection::PARAM_INT_ARRAY))
@@ -126,14 +120,11 @@ class MetaDataRepository implements SingletonInterface
 
     /**
      * Create empty
-     *
-     * @param int $fileUid
-     * @return array
      */
-    public function createMetaDataRecord($fileUid, array $additionalFields = [])
+    public function createMetaDataRecord(int $fileUid, array $additionalFields = []): array
     {
         $emptyRecord = [
-            'file' => (int)$fileUid,
+            'file' => $fileUid,
             'pid' => 0,
             'crdate' => $GLOBALS['EXEC_TIME'],
             'tstamp' => $GLOBALS['EXEC_TIME'],
@@ -142,9 +133,9 @@ class MetaDataRepository implements SingletonInterface
         $additionalFields = array_intersect_key($additionalFields, $this->getTableFields());
         $emptyRecord = array_merge($emptyRecord, $additionalFields);
 
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->tableName);
+        $connection = $this->connectionPool->getConnectionForTable('sys_file_metadata');
         $connection->insert(
-            $this->tableName,
+            'sys_file_metadata',
             $emptyRecord,
             ['l10n_diffsource' => Connection::PARAM_LOB]
         );
@@ -164,7 +155,7 @@ class MetaDataRepository implements SingletonInterface
      * @return array The updated database record - or just $metaDataFromDatabase if no update was done
      * @internal
      */
-    public function update($fileUid, array $updateData, ?array $metaDataFromDatabase = null): array
+    public function update(int $fileUid, array $updateData, ?array $metaDataFromDatabase = null): array
     {
         // backwards compatibility layer
         $metaDataFromDatabase ??= $this->findByFileUid($fileUid);
@@ -184,9 +175,8 @@ class MetaDataRepository implements SingletonInterface
         }
 
         $updateRow['tstamp'] = time();
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->tableName);
-        $connection->update(
-            $this->tableName,
+        $this->connectionPool->getConnectionForTable('sys_file_metadata')->update(
+            'sys_file_metadata',
             $updateRow,
             [
                 'uid' => (int)$metaDataFromDatabase['uid'],
@@ -203,18 +193,15 @@ class MetaDataRepository implements SingletonInterface
      *
      * @param int $fileUid
      */
-    public function removeByFileUid($fileUid)
+    public function removeByFileUid(int $fileUid): void
     {
-        GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable($this->tableName)
-            ->delete(
-                $this->tableName,
-                [
-                    'file' => (int)$fileUid,
-                ]
-            );
-
-        $this->eventDispatcher->dispatch(new AfterFileMetaDataDeletedEvent((int)$fileUid));
+        $this->connectionPool->getConnectionForTable('sys_file_metadata')->delete(
+            'sys_file_metadata',
+            [
+                'file' => $fileUid,
+            ]
+        );
+        $this->eventDispatcher->dispatch(new AfterFileMetaDataDeletedEvent($fileUid));
     }
 
     /**
@@ -224,9 +211,9 @@ class MetaDataRepository implements SingletonInterface
      */
     protected function getTableFields(): array
     {
-        return GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable($this->tableName)
+        return $this->connectionPool
+            ->getConnectionForTable('sys_file_metadata')
             ->getSchemaInformation()
-            ->listTableColumnInfos($this->tableName);
+            ->listTableColumnInfos('sys_file_metadata');
     }
 }

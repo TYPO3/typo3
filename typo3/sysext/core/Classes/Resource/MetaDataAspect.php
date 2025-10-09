@@ -166,6 +166,6 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
 
     protected function loadFromRepository(): array
     {
-        return $this->getMetaDataRepository()->findByFileUid((int)$this->file->getUid());
+        return $this->getMetaDataRepository()->findByFileUid($this->file->getUid());
     }
 }

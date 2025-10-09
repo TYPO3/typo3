@@ -45,6 +45,7 @@ readonly class FileDumpController
         protected ResponseFactoryInterface $responseFactory,
         protected HashService $hashService,
         private FileNameValidator $fileNameValidator,
+        private ProcessedFileRepository $processedFileRepository,
     ) {}
 
     /**
@@ -207,8 +208,7 @@ readonly class FileDumpController
             }
         } elseif (isset($parameters['p'])) {
             try {
-                $processedFileRepository = GeneralUtility::makeInstance(ProcessedFileRepository::class);
-                $file = $processedFileRepository->findByUid((int)$parameters['p']);
+                $file = $this->processedFileRepository->findByUid((int)$parameters['p']);
                 if ($file->isDeleted() || !$this->isFileValid($file->getOriginalFile())) {
                     $file = null;
                 }

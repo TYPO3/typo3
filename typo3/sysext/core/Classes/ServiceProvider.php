@@ -495,6 +495,8 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return self::new($container, Resource\Index\MetaDataRepository::class, [
             $container->get(EventDispatcherInterface::class),
+            $container->get(Database\ConnectionPool::class),
+            $container->get(Context\Context::class),
         ]);
     }
 
@@ -508,6 +510,9 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Resource\ProcessedFileRepository::class, [
             $container->get(ResourceFactory::class),
             $container->get(Resource\Processing\TaskTypeRegistry::class),
+            $container->get(Log\LogManager::class)->getLogger(Resource\ProcessedFileRepository::class),
+            $container->get(Database\ConnectionPool::class),
+            $container->get(Context\Context::class),
         ]);
     }
 
