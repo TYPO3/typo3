@@ -35,10 +35,10 @@ use TYPO3\CMS\Core\Settings\SettingsInterface;
 final readonly class WidgetContext
 {
     public function __construct(
-        public readonly string $identifier,
-        public readonly array $rawData,
-        public readonly WidgetConfigurationInterface $configuration,
-        public readonly SettingsInterface $settings,
-        public readonly ServerRequestInterface $request,
+        public string $identifier,
+        public array $rawData,
+        public WidgetConfigurationInterface $configuration,
+        public SettingsInterface $settings,
+        public ServerRequestInterface $request,
     ) {}
 }
