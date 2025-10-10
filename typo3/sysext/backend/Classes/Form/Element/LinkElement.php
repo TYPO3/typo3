@@ -171,6 +171,7 @@ class LinkElement extends AbstractFormElement
             $valuePickerConfiguration = [
                 'mode' => $config['valuePicker']['mode'] ?? 'replace',
                 'linked-field' => '[data-formengine-input-name="' . $itemName . '"]',
+                'class' => 'form-control-clearable-wrapper',
             ];
             $valuePickerAttributes = array_merge(
                 [
@@ -183,7 +184,7 @@ class LinkElement extends AbstractFormElement
             $valuePickerHtml[] = '<select ' . GeneralUtility::implodeAttributes($valuePickerAttributes, true) . '>';
             $valuePickerHtml[] = '<option></option>';
             foreach ($config['valuePicker']['items'] as $item) {
-                $valuePickerHtml[] = '<option value="' . htmlspecialchars($item[1]) . '">' . htmlspecialchars($languageService->sL($item[0])) . '</option>';
+                $valuePickerHtml[] = '<option value="' . htmlspecialchars($item['value']) . '">' . htmlspecialchars($languageService->sL($item['label'])) . '</option>';
             }
             $valuePickerHtml[] = '</select>';
             $valuePickerHtml[] = '</typo3-formengine-valuepicker>';
@@ -226,7 +227,7 @@ class LinkElement extends AbstractFormElement
         $expansionHtml[] =      '</div>';
         if (!empty($valuePickerHtml) || !empty($fieldControlHtml)) {
             $expansionHtml[] =      '<div class="form-wizards-item-aside form-wizards-item-aside--field-control">';
-            $expansionHtml[] =          '<div class="btn-group">';
+            $expansionHtml[] =          '<div class="input-group">';
             $expansionHtml[] =              implode(LF, $valuePickerHtml);
             $expansionHtml[] =              $fieldControlHtml;
             $expansionHtml[] =          '</div>';

@@ -569,6 +569,19 @@ return [
                 ],
             ],
         ],
+        'link_6' => [
+            'label' => 'link_6',
+            'description' => 'valuePicker',
+            'config' => [
+                'type' => 'link',
+                'valuePicker' => [
+                    'items' => [
+                        [ 'label' => 'TYPO3.org', 'value' => 'https://typo3.org' ],
+                        [ 'label' => 'TYPO3.com', 'value' => 'https://typo3.com' ],
+                    ],
+                ],
+            ],
+        ],
 
         'password_1' => [
             'label' => 'password_1',
@@ -1807,6 +1820,25 @@ backend_layout {
                                                 </appearance>
                                             </config>
                                         </link_1>
+                                        <link_2>
+                                            <label>link_2</label>
+                                            <description>valuePicker</description>
+                                            <config>
+                                                <type>link</type>
+                                                <valuePicker>
+                                                    <items>
+                                                        <numIndex index="0">
+                                                            <label>TYPO3.org</label>
+                                                            <value>https://typo3.org</value>
+                                                        </numIndex>
+                                                        <numIndex index="1">
+                                                            <label>TYPO3.com</label>
+                                                            <value>https://typo3.com</value>
+                                                        </numIndex>
+                                                    </items>
+                                                </valuePicker>
+                                            </config>
+                                        </link_2>
                                     </el>
                                 </ROOT>
                             </sLink>
@@ -1954,7 +1986,7 @@ backend_layout {
                     inputdatetime_26, inputdatetime_27, inputdatetime_28, inputdatetime_29, inputdatetime_30,
                     inputdatetime_31, inputdatetime_32, inputdatetime_33, inputdatetime_35,
                 --div--;link,
-                    link_1,link_2,link_3,link_4,link_5,
+                    link_1,link_2,link_3,link_4,link_5,link_6,
                 --div--;password,
                     password_1,password_2,password_3,password_8,password_4,password_5,password_6,password_7,
                 --div--;color,
