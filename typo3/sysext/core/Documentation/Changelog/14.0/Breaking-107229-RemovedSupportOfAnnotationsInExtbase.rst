@@ -14,8 +14,14 @@ Description
 Extbase no longer supports PHP annotations for Models, DTOs, and controller
 actions. Use PHP attributes (e.g. :php:`#[Extbase\Validate]`) instead, which
 provide the same functionality with better performance and native language
-support. This also avoids using a third-party library (in this case
-:composer:`doctrine/annotations`).
+support.
+
+..  note::
+
+    With this change, the third-party library :composer:`doctrine/annotations`
+    is no longer required by Extbase. The library itself suggests switching to
+    PHP attributes since `version 1.14.0 <https://github.com/doctrine/annotations/commit/cbc5a5188d9eecf2e878a201351d414a1bb3bee3>`__
+    and is `marked as abandoned <https://github.com/doctrine/annotations/commit/a64d7f063e1602bbbc8e70a07b6b5f555b8c98a7>`__.
 
 ..  important::
 
