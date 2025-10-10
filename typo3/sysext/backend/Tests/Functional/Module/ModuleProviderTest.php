@@ -169,4 +169,162 @@ final class ModuleProviderTest extends FunctionalTestCase
         self::assertTrue($moduleProvider->accessGranted('sub_module_with_alias', $user));
         self::assertTrue($moduleProvider->accessGranted('sub_module_alias', $user));
     }
+
+    #[Test]
+    public function modulesWithDependsOnSubmodulesAreFilteredCorrectly(): void
+    {
+        // Create a main module
+        $mainModule = $this->get(ModuleFactory::class)->createModule(
+            'main_module',
+            []
+        );
+
+        // Create a second-level module that depends on having submodules
+        $secondLevelModule = $this->get(ModuleFactory::class)->createModule(
+            'second_level_module',
+            [
+                'parent' => 'main_module',
+                'dependsOnSubmodules' => true,
+            ]
+        );
+
+        // Create third-level modules
+        $thirdLevelModule1 = $this->get(ModuleFactory::class)->createModule(
+            'third_level_module_1',
+            [
+                'parent' => 'second_level_module',
+                'access' => 'user',
+            ]
+        );
+
+        $thirdLevelModule2 = $this->get(ModuleFactory::class)->createModule(
+            'third_level_module_2',
+            [
+                'parent' => 'second_level_module',
+                'access' => 'user',
+            ]
+        );
+
+        $moduleRegistry = new ModuleRegistry([$mainModule, $secondLevelModule, $thirdLevelModule1, $thirdLevelModule2]);
+        $moduleProvider = new ModuleProvider($moduleRegistry);
+
+        $user = new BackendUserAuthentication();
+        $user->workspace = 0;
+        $user->groupData['modules'] = 'third_level_module_1,third_level_module_2';
+
+        // Test getModuleForMenu - with submodules, the second level module should be included
+        $menuModule = $moduleProvider->getModuleForMenu('main_module', $user);
+        self::assertNotNull($menuModule);
+        self::assertTrue($menuModule->hasSubModule('second_level_module'));
+        $secondLevelMenuItem = $moduleProvider->getModuleForMenu('second_level_module', $user);
+        self::assertNotNull($secondLevelMenuItem);
+        self::assertTrue($secondLevelMenuItem->hasSubModule('third_level_module_1'));
+        self::assertTrue($secondLevelMenuItem->hasSubModule('third_level_module_2'));
+
+        // Test getModulesForModuleMenu
+        $moduleMenuItems = $moduleProvider->getModulesForModuleMenu($user);
+        self::assertArrayHasKey('main_module', $moduleMenuItems);
+        $mainMenuItem = $moduleMenuItems['main_module'];
+        self::assertTrue($mainMenuItem->hasSubModule('second_level_module'));
+    }
+
+    #[Test]
+    public function modulesWithDependsOnSubmodulesAreHiddenWhenNoSubmodulesExist(): void
+    {
+        // Create a main module
+        $mainModule = $this->get(ModuleFactory::class)->createModule(
+            'main_module',
+            []
+        );
+
+        // Create a second-level module that depends on having submodules (but has none)
+        $secondLevelModule = $this->get(ModuleFactory::class)->createModule(
+            'second_level_module',
+            [
+                'parent' => 'main_module',
+                'dependsOnSubmodules' => true,
+            ]
+        );
+
+        // Create another second-level module (without dependsOnSubmodules)
+        $anotherSecondLevelModule = $this->get(ModuleFactory::class)->createModule(
+            'another_second_level_module',
+            [
+                'parent' => 'main_module',
+                'access' => 'user',
+            ]
+        );
+
+        $moduleRegistry = new ModuleRegistry([$mainModule, $secondLevelModule, $anotherSecondLevelModule]);
+        $moduleProvider = new ModuleProvider($moduleRegistry);
+
+        $user = new BackendUserAuthentication();
+        $user->workspace = 0;
+        $user->groupData['modules'] = 'another_second_level_module';
+
+        // Test getModuleForMenu - without submodules, the second level module should NOT be included
+        $menuModule = $moduleProvider->getModuleForMenu('main_module', $user);
+        self::assertNotNull($menuModule);
+        self::assertFalse($menuModule->hasSubModule('second_level_module'), 'Module with dependsOnSubmodules=true should be hidden when it has no submodules');
+        self::assertTrue($menuModule->hasSubModule('another_second_level_module'));
+
+        // Test getModulesForModuleMenu
+        $moduleMenuItems = $moduleProvider->getModulesForModuleMenu($user);
+        self::assertArrayHasKey('main_module', $moduleMenuItems);
+        $mainMenuItem = $moduleMenuItems['main_module'];
+        self::assertFalse($mainMenuItem->hasSubModule('second_level_module'), 'Module with dependsOnSubmodules=true should be hidden when it has no submodules');
+        self::assertTrue($mainMenuItem->hasSubModule('another_second_level_module'));
+    }
+
+    #[Test]
+    public function modulesWithDependsOnSubmodulesAreHiddenWhenAllSubmodulesAreDenied(): void
+    {
+        // Create a main module
+        $mainModule = $this->get(ModuleFactory::class)->createModule(
+            'main_module',
+            []
+        );
+
+        // Create a second-level module that depends on having submodules
+        $secondLevelModule = $this->get(ModuleFactory::class)->createModule(
+            'second_level_module',
+            [
+                'parent' => 'main_module',
+                'dependsOnSubmodules' => true,
+            ]
+        );
+
+        // Create third-level modules that the user doesn't have access to
+        $thirdLevelModule1 = $this->get(ModuleFactory::class)->createModule(
+            'third_level_module_1',
+            [
+                'parent' => 'second_level_module',
+                'access' => 'user',
+            ]
+        );
+
+        $thirdLevelModule2 = $this->get(ModuleFactory::class)->createModule(
+            'third_level_module_2',
+            [
+                'parent' => 'second_level_module',
+                'access' => 'user',
+            ]
+        );
+
+        $moduleRegistry = new ModuleRegistry([$mainModule, $secondLevelModule, $thirdLevelModule1, $thirdLevelModule2]);
+        $moduleProvider = new ModuleProvider($moduleRegistry);
+
+        $user = new BackendUserAuthentication();
+        $user->workspace = 0;
+        // User has no access to any third-level modules
+        $user->groupData['modules'] = '';
+
+        // When all submodules are denied access, the second level module should not appear
+        $menuModule = $moduleProvider->getModuleForMenu('main_module', $user);
+        // The main module itself should not be returned if it has no accessible submodules
+        self::assertNull($menuModule);
+
+        $moduleMenuItems = $moduleProvider->getModulesForModuleMenu($user);
+        self::assertArrayNotHasKey('main_module', $moduleMenuItems);
+    }
 }

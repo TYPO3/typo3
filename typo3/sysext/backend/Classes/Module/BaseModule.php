@@ -47,6 +47,7 @@ abstract class BaseModule
     protected array $aliases = [];
     protected bool $inheritNavigationComponent = true;
     protected array $routeOptions = [];
+    protected bool $dependsOnSubmodules = false;
 
     final protected function __construct(string $identifier)
     {
@@ -181,6 +182,11 @@ abstract class BaseModule
         return $this->aliases;
     }
 
+    public function getDependsOnSubmodules(): bool
+    {
+        return $this->dependsOnSubmodules;
+    }
+
     abstract public function getDefaultRouteOptions(): array;
 
     public function getDefaultModuleData(): array
@@ -257,6 +263,10 @@ abstract class BaseModule
         }
         if (is_array($configuration['routeOptions'] ?? null)) {
             $obj->routeOptions = $configuration['routeOptions'];
+        }
+
+        if (isset($configuration['dependsOnSubmodules'])) {
+            $obj->dependsOnSubmodules = (bool)$configuration['dependsOnSubmodules'];
         }
 
         return $obj;

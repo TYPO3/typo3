@@ -41,22 +41,39 @@
                         </div>
                     </f:if>
                     <div class="card-footer">
-                        <a
-                            href="#"
-                            data-dispatch-action="TYPO3.ModuleMenu.showModule"
-                            data-dispatch-args-list="{subModule.identifier}"
-                            class="btn btn-default"
-                        >
-                            <f:if condition="{subModule.title}">
-                                <f:then>
-                                    <f:variable name="submoduleTitle"><f:translate key="{subModule.title}">{subModule.title}</f:translate></f:variable>
-                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:link.openModuleWithTitle" arguments="{0: submoduleTitle}" />
-                                </f:then>
-                                <f:else>
-                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:link.openModule" />
-                                </f:else>
-                            </f:if>
-                        </a>
+                        <f:if condition="{subModule.dependsOnSubmodules} && !{subModule.subModules}">
+                            <f:then>
+                                <p class="text-muted">
+                                    <f:if condition="{subModule.title}">
+                                        <f:then>
+                                            <f:variable name="submoduleTitle"><f:translate key="{subModule.title}">{subModule.title}</f:translate></f:variable>
+                                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:noSubModulesWithTitle" arguments="{0: submoduleTitle}" />
+                                        </f:then>
+                                        <f:else>
+                                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:noSubModules" />
+                                        </f:else>
+                                    </f:if>
+                                </p>
+                            </f:then>
+                            <f:else>
+                                <a
+                                    href="#"
+                                    data-dispatch-action="TYPO3.ModuleMenu.showModule"
+                                    data-dispatch-args-list="{subModule.identifier}"
+                                    class="btn btn-default"
+                                >
+                                    <f:if condition="{subModule.title}">
+                                        <f:then>
+                                            <f:variable name="submoduleTitle"><f:translate key="{subModule.title}">{subModule.title}</f:translate></f:variable>
+                                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:link.openModuleWithTitle" arguments="{0: submoduleTitle}" />
+                                        </f:then>
+                                        <f:else>
+                                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:link.openModule" />
+                                        </f:else>
+                                    </f:if>
+                                </a>
+                            </f:else>
+                        </f:if>
                     </div>
                 </div>
             </f:for>

@@ -125,6 +125,21 @@ class ModuleProvider
             if (in_array($subModuleIdentifier, $hideModules, true)) {
                 continue;
             }
+            // Skip submodules that depend on their own submodules if they don't have any accessible ones
+            if ($subModule->getDependsOnSubmodules()) {
+                $hasAccessibleSubmodules = false;
+                foreach ($subModule->getSubModules() as $thirdLevelIdentifier => $thirdLevelModule) {
+                    if (!in_array($thirdLevelIdentifier, $hideModules, true)
+                        && $this->accessGranted($thirdLevelIdentifier, $user, $respectWorkspaceRestrictions)
+                    ) {
+                        $hasAccessibleSubmodules = true;
+                        break;
+                    }
+                }
+                if (!$hasAccessibleSubmodules) {
+                    continue;
+                }
+            }
             $subMenuItem = new MenuModule(clone $subModule);
             $menuItem->addSubModule($subMenuItem);
         }
@@ -171,6 +186,22 @@ class ModuleProvider
                     || !($subModule->getAppearance()['renderInModuleMenu'] ?? true)
                 ) {
                     continue;
+                }
+                // Skip submodules that depend on their own submodules if they don't have any accessible ones
+                if ($subModule->getDependsOnSubmodules()) {
+                    $hasAccessibleSubmodules = false;
+                    foreach ($subModule->getSubModules() as $thirdLevelIdentifier => $thirdLevelModule) {
+                        if (!in_array($thirdLevelIdentifier, $hideModules, true)
+                            && ($thirdLevelModule->getAppearance()['renderInModuleMenu'] ?? true)
+                            && $this->accessGranted($thirdLevelIdentifier, $user, $respectWorkspaceRestrictions)
+                        ) {
+                            $hasAccessibleSubmodules = true;
+                            break;
+                        }
+                    }
+                    if (!$hasAccessibleSubmodules) {
+                        continue;
+                    }
                 }
                 $subMenuItem = new MenuModule(clone $subModule);
                 $menuItem->addSubModule($subMenuItem);

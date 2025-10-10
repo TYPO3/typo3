@@ -99,6 +99,12 @@
 			<trans-unit id="link.openModuleWithTitle">
 				<source>Open %1s module</source>
 			</trans-unit>
+			<trans-unit id="noSubModules">
+				<source>There are currently no functions available for this module.</source>
+			</trans-unit>
+			<trans-unit id="noSubModulesWithTitle">
+				<source>There are currently no functions available for the %1s module.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

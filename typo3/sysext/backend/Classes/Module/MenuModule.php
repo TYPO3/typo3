@@ -164,6 +164,11 @@ class MenuModule implements ModuleInterface
         return $this->module->getAliases();
     }
 
+    public function getDependsOnSubmodules(): bool
+    {
+        return $this->module->getDependsOnSubmodules();
+    }
+
     public function isCollapsed(): bool
     {
         return $this->isCollapsed;
