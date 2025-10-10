@@ -155,7 +155,7 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
 
         // The alt-attribute is mandatory to have valid html-code, therefore add it even if it is empty
         if (empty($this->additionalArguments['alt'])) {
-            $this->tag->addAttribute('alt', $alt);
+            $this->tag->addAttribute('alt', $alt ?? '');
         }
         if (empty($this->additionalArguments['title']) && !empty($title)) {
             $this->tag->addAttribute('title', $title);
