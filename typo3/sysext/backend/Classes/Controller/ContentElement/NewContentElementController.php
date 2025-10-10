@@ -253,7 +253,6 @@ class NewContentElementController
         foreach ($wizards as $groupKey => $wizardGroup) {
             $wizards[$groupKey] = $this->prepareDependencyOrdering($wizards[$groupKey], 'before');
             $wizards[$groupKey] = $this->prepareDependencyOrdering($wizards[$groupKey], 'after');
-            $wizards[$groupKey] = $this->prepareDependencyOrdering($wizards[$groupKey], 'contentElementAfter');
         }
         $orderedWizards = $this->orderWizards($wizards);
         foreach ($orderedWizards as $groupKey => $wizardGroup) {
@@ -292,14 +291,8 @@ class NewContentElementController
         $items = $fieldConfig['items'] ?? [];
         $itemGroups = $fieldConfig['itemGroups'] ?? [];
         $groupedWizardItems = [];
-        // Auto-set positional information based on TCA itemGroups sorting.
-        $lastGroup = null;
         foreach (array_keys($itemGroups) as $groupIdentifier) {
             $groupedWizardItems[$groupIdentifier . '.']['header'] = $itemGroups[$groupIdentifier];
-            if ($lastGroup !== null) {
-                $groupedWizardItems[$groupIdentifier . '.']['contentElementAfter'] = $lastGroup;
-            }
-            $lastGroup = $groupIdentifier;
         }
         foreach ($items as $item) {
             $selectItem = SelectItem::fromTcaItemArray($item);
@@ -386,13 +379,25 @@ class NewContentElementController
                 $wizards[$group]['pageTsAfter'] = $wizard['after'];
                 unset($wizards[$group]['after']);
             }
-            if (isset($wizard['contentElementAfter'])) {
-                $wizards[$group]['after'] = $wizard['contentElementAfter'];
-                unset($wizards[$group]['contentElementAfter']);
-            }
         }
         // No order defined by pageTS. Use TCA sorting.
         if (!$hasAtLeastOnePositionalArgument) {
+            $schema = $this->tcaSchemaFactory->get('tt_content');
+            // Foreign table support for TypeInformation is not supported in tt_content
+            $typeField = $schema->getSubSchemaTypeInformation()->getFieldName();
+            $fieldConfig = $schema->hasField($typeField) ? $schema->getField($typeField)->getConfiguration() : [];
+            $itemGroups = $fieldConfig['itemGroups'] ?? [];
+            // Auto-set positional information based on TCA itemGroups sorting.
+            $lastGroup = null;
+            foreach (array_keys($itemGroups) as $groupIdentifier) {
+                if (!array_key_exists($groupIdentifier . '.', $wizards)) {
+                    continue;
+                }
+                if ($lastGroup !== null) {
+                    $wizards[$groupIdentifier . '.']['after'] = [$lastGroup . '.'];
+                }
+                $lastGroup = $groupIdentifier;
+            }
             return $this->dependencyOrderingService->orderByDependencies($wizards);
         }
         // Override order by pageTsConfig.
