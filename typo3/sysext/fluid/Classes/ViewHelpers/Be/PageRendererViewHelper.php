@@ -52,7 +52,7 @@ final class PageRendererViewHelper extends AbstractViewHelper
         $this->registerArgument('addInlineSettings', 'array', 'Adds Javascript Inline Setting');
     }
 
-    public function render(): void
+    public function render(): string
     {
         $pageRenderer = self::getPageRenderer();
         $pageTitle = $this->arguments['pageTitle'];
@@ -102,6 +102,7 @@ final class PageRendererViewHelper extends AbstractViewHelper
                 $pageRenderer->addInlineLanguageLabelArray($addJsInlineLabels);
             }
         }
+        return '';
     }
 
     private static function getPageRenderer(): PageRenderer

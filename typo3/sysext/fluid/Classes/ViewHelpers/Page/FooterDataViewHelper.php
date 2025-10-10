@@ -46,8 +46,9 @@ final class FooterDataViewHelper extends AbstractViewHelper
 {
     public function __construct(private readonly PageRenderer $pageRenderer) {}
 
-    public function render(): void
+    public function render(): string
     {
         $this->pageRenderer->addFooterData($this->renderChildren());
+        return '';
     }
 }

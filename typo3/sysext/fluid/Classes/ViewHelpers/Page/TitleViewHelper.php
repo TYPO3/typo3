@@ -33,11 +33,12 @@ final class TitleViewHelper extends AbstractViewHelper
 {
     public function __construct(private readonly RecordTitleProvider $pageTitleProvider) {}
 
-    public function render(): void
+    public function render(): string
     {
         $title = $this->renderChildren();
         if ($title !== null) {
             $this->pageTitleProvider->setTitle((string)$title);
         }
+        return '';
     }
 }
