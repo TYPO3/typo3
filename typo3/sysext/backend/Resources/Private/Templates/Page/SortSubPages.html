@@ -21,7 +21,7 @@
             <f:be.infobox
                 title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:notAvailableInWorkspace.title')}"
                 message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:notAvailableInWorkspace.message')}"
-                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
+                state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}"
             />
         </f:then>
         <f:else>
@@ -31,7 +31,7 @@
                         <f:be.infobox
                             title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:hasInvisiblePage.title')}"
                             message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:hasInvisiblePage.message')}"
-                            state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
+                            state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}"
                         />
                     </f:if>
 
@@ -151,7 +151,7 @@
                     <f:be.infobox
                         title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:noSubpages.title')}"
                         message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf:noSubpages.message')}"
-                        state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
+                        state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}"
                     />
                 </f:else>
             </f:if>

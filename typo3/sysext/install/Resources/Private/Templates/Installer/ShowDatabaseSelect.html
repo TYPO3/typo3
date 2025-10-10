@@ -11,7 +11,7 @@
             <f:for each="{errors}" as="error">
                 <f:be.infobox
                     title="Exception"
-                    state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR')}"
+                    state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR')}"
                 >
                     {error}
                 </f:be.infobox>

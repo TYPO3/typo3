@@ -17,7 +17,7 @@
     <f:if condition="{pages}">
         <f:then>
             <f:if condition="{duplicatedRootPages}">
-                <f:be.infobox title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.duplicatedRootPage')}" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_WARNING')}">
+                <f:be.infobox title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.duplicatedRootPage')}" state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING')}">
                     <ul>
                         <f:for each="{duplicatedRootPages}" key="rootPage" as="duplicateSites">
                             <li>
@@ -37,7 +37,7 @@
                 </f:be.infobox>
             </f:if>
             <f:if condition="{duplicatedEntryPoints}">
-                <f:be.infobox title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.duplicatedEntryPoints')}" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_WARNING')}">
+                <f:be.infobox title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.duplicatedEntryPoints')}" state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING')}">
                     <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.duplicatedEntryPoints.listing" />
                     <ul>
                     <f:for each="{duplicatedEntryPoints}" key="item" as="schemes">
@@ -196,7 +196,7 @@
             </div>
         </f:then>
         <f:else>
-            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.noPages.title')}">
+            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.noPages.title')}">
                 <p><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.noPages.message"/></p>
                 <p>
                     <be:link.documentation identifier="t3start:create-root-page" class="btn btn-default">

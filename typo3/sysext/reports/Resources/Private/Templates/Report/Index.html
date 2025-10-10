@@ -12,7 +12,7 @@
         <h1><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang.xlf:reports_overview" /></h1>
 
         <f:if condition="!{reports}">
-            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}" title="{f:translate(key:'LLL:EXT:reports/Resources/Private/Language/locallang.xlf:noReportsTitle')}">
+            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}" title="{f:translate(key:'LLL:EXT:reports/Resources/Private/Language/locallang.xlf:noReportsTitle')}">
                 <f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang.xlf:noReportsMessage" />
             </f:be.infobox>
         </f:if>

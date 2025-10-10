@@ -8,7 +8,7 @@
 </f:if>
 
 <f:section name="infobox">
-    <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR')}" title="{title}">
+    <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR')}" title="{title}">
         <ul class="alert-message">
             <f:for each="{site.invalidSets}" as="invalidSet">
                 <li><f:translate key="{invalidSet.error.label}" arguments="{0: invalidSet.name, 1: invalidSet.context}"/></li>

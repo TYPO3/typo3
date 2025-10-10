@@ -13,7 +13,7 @@
         <f:if condition="{sites -> f:count()} == 0">
             <f:be.infobox
                 title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.noSiteSettingsExists.title')}"
-                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
+                state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}"
             >
                 <p>{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.noSiteSettingsExists.message')}</p>
                 <p>

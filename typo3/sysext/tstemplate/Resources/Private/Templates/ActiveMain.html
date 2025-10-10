@@ -113,7 +113,7 @@
     <f:if condition="!{constantAst.children} && !{setupAst.children}">
         <f:be.infobox
             message="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:infobox.message.noTypoScriptFound')}"
-            state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
+            state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}"
         />
     </f:if>
 </f:section>

@@ -89,7 +89,7 @@
             </div>
             <f:if condition="{errors -> f:count()} > 0">
                 <div role="tabpanel" class="tab-pane" id="export-errors">
-                    <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR')}" disableIcon="true">
+                    <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR')}" disableIcon="true">
                         <f:for each="{errors}" as="error">
                             <p>{error}</p>
                         </f:for>

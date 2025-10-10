@@ -17,7 +17,7 @@
             <h1><f:translate key="extensionComposerStatus.title" arguments="{0: extensionKey}" /></h1>
             <f:be.infobox title="{f:translate(key: 'extensionComposerStatus.deficit.{deficit}', arguments: '{0: \'{extensionKey}\'}')}"
                 message="{f:translate(key: 'extensionComposerStatus.deficit.information')}"
-                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_WARNING')}" />
+                state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING')}" />
             <f:if condition="{composerManifestMarkup}">
                 <f:then>
                     <div class="row">
@@ -33,14 +33,14 @@
                 <f:else>
                     <f:be.infobox title="{f:translate(key: 'extensionComposerStatus.manifest.error')}"
                         message="{f:translate(key: 'extensionComposerStatus.manifest.error.message')}"
-                        state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR')}" />
+                        state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR')}" />
                 </f:else>
             </f:if>
         </f:then>
         <f:else>
             <f:be.infobox title="{f:translate(key: 'extensionComposerStatus.nothingToUpdate.title')}"
                 message="{f:translate(key: 'extensionComposerStatus.nothingToUpdate.message.single', arguments: '{0: \'{extensionKey}\'}')}"
-                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}" />
+                state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}" />
         </f:else>
     </f:if>
 </f:section>

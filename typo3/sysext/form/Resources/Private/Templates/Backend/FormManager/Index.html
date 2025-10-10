@@ -207,7 +207,7 @@
         </f:then>
         <f:else if="{hasForms}">
             <f:be.infobox
-                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
+                state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}"
                 title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found.title')}"
             >
                 <p><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found_by_search_term.message" arguments="{0: searchTerm}" /></p>
@@ -218,7 +218,7 @@
         </f:else>
         <f:else>
             <f:be.infobox
-                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
+                state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}"
                 title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found.title')}"
             >
                 <p><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found.message" /></p>

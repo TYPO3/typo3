@@ -24,7 +24,7 @@
             </f:if>
         </f:then>
         <f:else>
-            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR')}">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission')}</f:be.infobox>
+            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR')}">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission')}</f:be.infobox>
         </f:else>
     </f:if>
 </f:section>
@@ -79,7 +79,7 @@
     </div>
 
     <f:if condition="{missingFile}">
-        <f:be.infobox title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing')}" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_WARNING')}">{missingFile}</f:be.infobox>
+        <f:be.infobox title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing')}" state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING')}">{missingFile}</f:be.infobox>
     </f:if>
     <f:if condition="{fileRenderer}">
         <p>

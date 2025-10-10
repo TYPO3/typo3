@@ -16,7 +16,7 @@
         <f:else>
             <f:be.infobox
                 title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:filemount.infobox.noFilemountFound.title')}"
-                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
+                state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}"
             >
                 <p><f:translate key="filemount.infobox.noFilemountFound.message" /></p>
                 <backend:link.newRecord

@@ -56,9 +56,9 @@ use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 
 /**
  * The Web > Page module.
@@ -349,14 +349,14 @@ class PageLayoutController
                     . '<button type="button" class="btn btn-primary" data-dispatch-action="TYPO3.ModuleMenu.showModule" data-dispatch-args-list="web_list">'
                         . $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:goToListModule')
                     . '</button>',
-                'state' => InfoboxViewHelper::STATE_INFO,
+                'state' => ContextualFeedbackSeverity::INFO,
             ];
         }
         if ($currentDocumentType === PageRepository::DOKTYPE_SHORTCUT) {
             $shortcutMode = (int)$this->pageinfo['shortcut_mode'];
             $targetPage = [];
             $message = '';
-            $state = InfoboxViewHelper::STATE_ERROR;
+            $state = ContextualFeedbackSeverity::ERROR;
             if ($shortcutMode || $this->pageinfo['shortcut']) {
                 switch ($shortcutMode) {
                     case PageRepository::SHORTCUT_MODE_NONE:
@@ -378,7 +378,7 @@ class PageLayoutController
                             $message = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsMisconfiguredOrNotAccessibleRandomInternalLinkMessage');
                         } else {
                             $message = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsRandomInternalLinkMessage');
-                            $state = InfoboxViewHelper::STATE_INFO;
+                            $state = ContextualFeedbackSeverity::INFO;
                         }
                         break;
                 }
@@ -389,11 +389,10 @@ class PageLayoutController
                     $linkedPath = '<a href="' . htmlspecialchars((string)$linkToPid) . '">' . htmlspecialchars($path) . '</a>';
                     $message .= sprintf(htmlspecialchars($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsInternalLinkMessage')), $linkedPath);
                     $message .= ' (' . htmlspecialchars($languageService->sL(BackendUtility::getLabelFromItemlist('pages', 'shortcut_mode', (string)$shortcutMode, $this->pageinfo))) . ')';
-                    $state = InfoboxViewHelper::STATE_INFO;
+                    $state = ContextualFeedbackSeverity::INFO;
                 }
             } else {
                 $message = htmlspecialchars($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsMisconfiguredInternalLinkMessage'));
-                $state = InfoboxViewHelper::STATE_ERROR;
             }
             $infoBoxes[] = [
                 'message' => $message,
@@ -404,7 +403,7 @@ class PageLayoutController
             if (empty($this->pageinfo['url'])) {
                 $infoBoxes[] = [
                     'message' => $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsMisconfiguredExternalLinkMessage'),
-                    'state' => InfoboxViewHelper::STATE_ERROR,
+                    'state' => ContextualFeedbackSeverity::ERROR,
                 ];
             } else {
                 $externalUrl = $this->resolveExternalUrl($this->pageinfo, $request);
@@ -413,7 +412,7 @@ class PageLayoutController
                     $externalUrlHtml = '<a href="' . $externalUrl . '" target="_blank" rel="noreferrer">' . $externalUrl . '</a>';
                     $infoBoxes[] = [
                         'message' => sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsExternalLinkMessage'), $externalUrlHtml),
-                        'state' => InfoboxViewHelper::STATE_INFO,
+                        'state' => ContextualFeedbackSeverity::INFO,
                     ];
                 }
             }
@@ -424,7 +423,7 @@ class PageLayoutController
             if ($contentPage === null) {
                 $infoBoxes[] = [
                     'message' => sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content_from_pid_invalid_title'), $this->pageinfo['content_from_pid']),
-                    'state' => InfoboxViewHelper::STATE_ERROR,
+                    'state' => ContextualFeedbackSeverity::ERROR,
                 ];
             } else {
                 $linkToPid = $this->uriBuilder->buildUriFromRoute('web_layout', ['id' => $this->pageinfo['content_from_pid']]);
@@ -432,7 +431,7 @@ class PageLayoutController
                 $link = '<a href="' . htmlspecialchars((string)$linkToPid) . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->pageinfo['content_from_pid'] . ')</a>';
                 $infoBoxes[] = [
                     'message' => sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content_from_pid_title'), $link),
-                    'state' => InfoboxViewHelper::STATE_INFO,
+                    'state' => ContextualFeedbackSeverity::INFO,
                 ];
             }
         } else {
@@ -440,7 +439,7 @@ class PageLayoutController
             if (!empty($links)) {
                 $infoBoxes[] = [
                     'message' => sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content_on_pid_title'), $links),
-                    'state' => InfoboxViewHelper::STATE_INFO,
+                    'state' => ContextualFeedbackSeverity::INFO,
                 ];
             }
         }

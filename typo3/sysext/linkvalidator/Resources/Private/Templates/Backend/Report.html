@@ -47,7 +47,7 @@
                         <f:be.infobox
                             title="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.no.broken.links.title')}"
                             message="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.no.broken.links')}"
-                            state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_OK')}"
+                            state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK')}"
                         />
                     </f:else>
                 </f:if>
@@ -57,7 +57,7 @@
             <h1><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:overview.headline" /></h1>
             <f:be.infobox
                 message="{f:translate(key:'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:info.noPageSelected.message')}"
-                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
+                state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}"
             />
         </f:else>
     </f:if>

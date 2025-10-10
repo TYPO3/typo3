@@ -73,7 +73,7 @@
 
     <f:if condition="{templateRecord.type} == 'site'">
         <f:be.infobox
-            state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
+            state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}"
             title="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:infoTypoScriptRecordFromSite.title')}"
         >
             <p>

@@ -55,7 +55,7 @@
                         <f:else>
                             <f:be.infobox
                                 message="{f:translate(key:'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:info.noContent.message')}"
-                                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_NOTICE')}"
+                                state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::NOTICE')}"
                             />
                         </f:else>
                     </f:if>
@@ -63,7 +63,7 @@
                 <f:else>
                     <f:be.infobox
                         message="{f:translate(key:'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:info.noPageSelected.message')}"
-                        state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
+                        state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}"
                     />
                 </f:else>
             </f:if>
@@ -72,7 +72,7 @@
             <f:be.infobox
                 title="{f:translate(key:'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:error.noAccess.title')}"
                 message="{f:translate(key:'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:error.noAccess.message')}"
-                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR')}"
+                state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR')}"
             />
         </f:else>
     </f:if>

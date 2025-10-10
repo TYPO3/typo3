@@ -34,7 +34,7 @@
 
     <f:if condition="{configurationStatus.featureDisabled.backend} || {configurationStatus.featureDisabled.frontend}">
         <f:be.infobox
-            state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
+            state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}"
             title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf:module.callout.featureDisabled.title')}"
         >
             <p>
@@ -52,7 +52,7 @@
 
     <f:if condition="{configurationStatus.customReporting.BE} || {configurationStatus.customReporting.FE}">
         <f:be.infobox
-            state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
+            state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}"
             title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf:module.callout.customReporting.title')}"
         >
             <p>

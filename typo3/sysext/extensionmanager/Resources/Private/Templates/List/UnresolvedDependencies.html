@@ -17,7 +17,7 @@
         <f:form.hidden name="extensionKey" value="{extension.extensionKey}" />
 
         <f:render partial="List/UnresolvedDependencies" arguments="{_all}" />
-        <f:be.infobox title="{f:translate(key: 'dependencyCheck.unresolvedDependencies.title')}" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_WARNING')}">
+        <f:be.infobox title="{f:translate(key: 'dependencyCheck.unresolvedDependencies.title')}" state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING')}">
             <f:render partial="List/UnresolvedDependenciesMessage" />
         </f:be.infobox>
         <f:link.action action="{returnAction.action}" controller="{returnAction.controller}" class="btn btn-default onClickMaskExtensionManager">

@@ -29,16 +29,16 @@
                                     </div>
                                 </f:if>
                                 <noscript>
-                                    <f:be.infobox message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.javascript')}" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR')}" />
+                                    <f:be.infobox message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.javascript')}" state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR')}" />
                                 </noscript>
                                 <div class="hidden t3js-login-error-nocookies">
-                                    <f:be.infobox message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.cookies')}" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR')}" />
+                                    <f:be.infobox message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.cookies')}" state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR')}" />
                                 </div>
                                 <div class="hidden t3js-login-error-noreferrer">
-                                    <f:be.infobox message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.referrer')}" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR')}" />
+                                    <f:be.infobox message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.referrer')}" state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR')}" />
                                 </div>
                                 <div class="hidden t3js-login-warning-password-whitespace">
-                                    <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_WARNING')}">
+                                    <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING')}">
                                         <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.warning.whitespace-around-password" />
                                         <button class="btn btn-link text-decoration-underline t3js-login-warning-password-whitespace-action" role="button">
                                             <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.warning.whitespace-around-password.action-link" />

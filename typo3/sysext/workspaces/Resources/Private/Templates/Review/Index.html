@@ -25,7 +25,7 @@
                 <f:render partial="WorkingTable" arguments="{_all}" />
             </f:then>
             <f:else if="{isAdmin} && {customWorkspaceExists} != 1">
-                <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}" title="{f:translate(key: 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:admin.noWorkspaceSetup.title')}">
+                <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}" title="{f:translate(key: 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:admin.noWorkspaceSetup.title')}">
                     <p><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:admin.noWorkspaceSetup.message"/></p>
                     <be:link.newRecord class="btn btn-primary" table="sys_workspace" pid="0" returnUrl="{f:be.uri(route: 'workspaces_admin')}">
                         <f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:admin.noWorkspaceSetup.buttonCreate"/>
@@ -33,10 +33,10 @@
                 </f:be.infobox>
             </f:else>
             <f:else if="{pageUid} == 0">
-                <f:be.infobox message="{f:translate(key: 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:moduleOnPageIdZero')}" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}" />
+                <f:be.infobox message="{f:translate(key: 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:moduleOnPageIdZero')}" state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}" />
             </f:else>
             <f:else>
-                <f:be.infobox message="{f:translate(key: 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:editorInLive')}" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}" />
+                <f:be.infobox message="{f:translate(key: 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:editorInLive')}" state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}" />
             </f:else>
         </f:if>
     </main>

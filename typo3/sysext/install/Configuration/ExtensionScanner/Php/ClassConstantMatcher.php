@@ -629,4 +629,29 @@ return [
             'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_NOTICE' => [
+        'restFiles' => [
+            'Deprecation-107648-InfoboxViewHelperStateConstants.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO' => [
+        'restFiles' => [
+            'Deprecation-107648-InfoboxViewHelperStateConstants.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_OK' => [
+        'restFiles' => [
+            'Deprecation-107648-InfoboxViewHelperStateConstants.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_WARNING' => [
+        'restFiles' => [
+            'Deprecation-107648-InfoboxViewHelperStateConstants.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR' => [
+        'restFiles' => [
+            'Deprecation-107648-InfoboxViewHelperStateConstants.rst',
+        ],
+    ],
 ];
