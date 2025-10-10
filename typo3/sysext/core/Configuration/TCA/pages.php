@@ -416,10 +416,6 @@ return [
                         'value' => \TYPO3\CMS\Core\Domain\Repository\PageRepository::SHORTCUT_MODE_FIRST_SUBPAGE,
                     ],
                     [
-                        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.shortcut_mode.I.2',
-                        'value' => \TYPO3\CMS\Core\Domain\Repository\PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE,
-                    ],
-                    [
                         'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.shortcut_mode.I.3',
                         'value' => \TYPO3\CMS\Core\Domain\Repository\PageRepository::SHORTCUT_MODE_PARENT_PAGE,
                     ],

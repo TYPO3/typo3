@@ -1347,7 +1347,7 @@ abstract class AbstractMenuContentObject
             return true;
         }
         try {
-            $page = $this->sys_page->resolveShortcutPage($page, false, $this->disableGroupAccessCheck);
+            $page = $this->sys_page->resolveShortcutPage($page, $this->disableGroupAccessCheck);
             if (isset($page['_SHORTCUT_ORIGINAL_PAGE_UID'])) {
                 $shortcutPage = (int)($page['uid'] ?? 0);
                 if (in_array($shortcutPage, $this->alwaysActivePIDlist, true)) {

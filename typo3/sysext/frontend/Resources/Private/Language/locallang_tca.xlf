@@ -270,9 +270,6 @@
 			<trans-unit id="pages.shortcut_mode.I.1">
 				<source>First subpage of selected/current page</source>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_mode.I.2">
-				<source>Random subpage of selected/current page</source>
-			</trans-unit>
 			<trans-unit id="pages.shortcut_mode.I.3">
 				<source>Parent page of selected/current page</source>
 			</trans-unit>

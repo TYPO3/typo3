@@ -288,17 +288,11 @@
 			<trans-unit id="pageIsInternalLinkMessage">
 				<source>Page is a link to the following page: %s</source>
 			</trans-unit>
-			<trans-unit id="pageIsRandomInternalLinkMessage">
-				<source>Page is a link to a random subpage.</source>
-			</trans-unit>
 			<trans-unit id="pageIsMisconfiguredInternalLinkMessage">
 				<source>Page is configured to be a link but there is actually no valid target defined.</source>
 			</trans-unit>
 			<trans-unit id="pageIsMisconfiguredOrNotAccessibleInternalLinkMessage">
 				<source>Page is configured to be a link but there is actually no target defined which is accessible in the frontend.</source>
-			</trans-unit>
-			<trans-unit id="pageIsMisconfiguredOrNotAccessibleRandomInternalLinkMessage">
-				<source>Page is configured to be a link to a random subpage but there is actually no subpage which is accessible in the frontend.</source>
 			</trans-unit>
 			<trans-unit id="pageIsMisconfiguredFirstSubpageMessage">
 				<source>Page is configured to be a link to the first subpage but there is actually no such page accessible in the frontend.</source>

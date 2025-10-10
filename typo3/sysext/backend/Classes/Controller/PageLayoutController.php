@@ -355,7 +355,6 @@ class PageLayoutController
         if ($currentDocumentType === PageRepository::DOKTYPE_SHORTCUT) {
             $shortcutMode = (int)$this->pageinfo['shortcut_mode'];
             $targetPage = [];
-            $message = '';
             $state = ContextualFeedbackSeverity::ERROR;
             if ($shortcutMode || $this->pageinfo['shortcut']) {
                 switch ($shortcutMode) {
@@ -372,18 +371,12 @@ class PageLayoutController
                         $targetPage = $this->getTargetPageIfVisible($this->pageRepository->getPage((int)$this->pageinfo['pid'], true));
                         $message = $targetPage === [] ? $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsMisconfiguredParentPageMessage') : '';
                         break;
-                    case PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE:
-                        $possibleTargetPages = $this->pageRepository->getMenu($this->pageinfo['uid'], '*', 'sorting', 'AND hidden = 0', true, true);
-                        if ($possibleTargetPages === []) {
-                            $message = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsMisconfiguredOrNotAccessibleRandomInternalLinkMessage');
-                        } else {
-                            $message = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsRandomInternalLinkMessage');
-                            $state = ContextualFeedbackSeverity::INFO;
-                        }
+                    default:
+                        $message = htmlspecialchars($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsMisconfiguredInternalLinkMessage'));
                         break;
                 }
                 $message = htmlspecialchars($message);
-                if ($targetPage !== [] && $shortcutMode !== PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE) {
+                if ($targetPage !== []) {
                     $linkToPid = $this->uriBuilder->buildUriFromRoute('web_layout', ['id' => $targetPage['uid']]);
                     $path = BackendUtility::getRecordPath($targetPage['uid'], $backendUser->getPagePermsClause(Permission::PAGE_SHOW), 1000);
                     $linkedPath = '<a href="' . htmlspecialchars((string)$linkToPid) . '">' . htmlspecialchars($path) . '</a>';

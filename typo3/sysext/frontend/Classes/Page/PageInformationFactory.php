@@ -224,7 +224,7 @@ final readonly class PageInformationFactory
             $pageRecord = $pageInformation->getPageRecord();
             $pageInformation->setOriginalShortcutPageRecord($pageRecord);
             try {
-                $pageRecord = $pageRepository->resolveShortcutPage($pageRecord, true);
+                $pageRecord = $pageRepository->resolveShortcutPage($pageRecord);
             } catch (ShortcutTargetPageNotFoundException) {
                 $response = $this->errorController->pageNotFoundAction(
                     $request,

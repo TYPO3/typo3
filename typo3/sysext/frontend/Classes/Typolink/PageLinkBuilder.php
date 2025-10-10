@@ -518,7 +518,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
     protected function resolveShortcutPage(array $page, PageRepository $pageRepository, bool $disableGroupAccessCheck): array
     {
         try {
-            $page = $pageRepository->resolveShortcutPage($page, false, $disableGroupAccessCheck);
+            $page = $pageRepository->resolveShortcutPage($page, $disableGroupAccessCheck);
         } catch (\Exception $e) {
             // Keep the existing page record if shortcut could not be resolved
         }

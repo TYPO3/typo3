@@ -87,7 +87,6 @@ class PageRepository implements LoggerAwareInterface
      */
     public const SHORTCUT_MODE_NONE = 0;
     public const SHORTCUT_MODE_FIRST_SUBPAGE = 1;
-    public const SHORTCUT_MODE_RANDOM_SUBPAGE = 2;
     public const SHORTCUT_MODE_PARENT_PAGE = 3;
 
     /**
@@ -1032,23 +1031,22 @@ class PageRepository implements LoggerAwareInterface
         $shortcutMode = (int)($page['shortcut_mode'] ?? 0);
 
         if ($dokType === self::DOKTYPE_SHORTCUT && (($shortcut = (int)($page['shortcut'] ?? 0)) || $shortcutMode)) {
-            if ($shortcutMode === self::SHORTCUT_MODE_NONE) {
+            if ($shortcutMode === self::SHORTCUT_MODE_NONE && $shortcut) {
                 // No shortcut_mode set, so target is directly set in $page['shortcut']
                 $searchField = 'uid';
                 $searchUid = $shortcut;
-            } elseif ($shortcutMode === self::SHORTCUT_MODE_FIRST_SUBPAGE || $shortcutMode === self::SHORTCUT_MODE_RANDOM_SUBPAGE) {
-                // Check subpages - first subpage or random subpage
-                $searchField = 'pid';
-                // If a shortcut mode is set and no valid page is given to select subpages
-                // from use the actual page.
-                $searchUid = $shortcut ?: $page['uid'];
             } elseif ($shortcutMode === self::SHORTCUT_MODE_PARENT_PAGE) {
                 // Shortcut to parent page
                 $searchField = 'uid';
                 $searchUid = $page['pid'];
+            } elseif ($shortcutMode === self::SHORTCUT_MODE_FIRST_SUBPAGE || $shortcutMode) {
+                // Check subpages if first subpage or an invalid shortcut mode
+                $searchField = 'pid';
+                // If a shortcut mode is set and no valid page is given to select subpages
+                // from use the actual page.
+                $searchUid = $shortcut ?: $page['uid'];
             } else {
-                $searchField = '';
-                $searchUid = 0;
+                return [];
             }
 
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
@@ -1078,7 +1076,7 @@ class PageRepository implements LoggerAwareInterface
     }
 
     /**
-     * Get page shortcut; Finds the records pointed to by input value $SC (the shortcut value)
+     * Get page shortcut; Finds the records pointed to by $shortcutFieldValue
      *
      * @param string $shortcutFieldValue The value of the "shortcut" field from the pages record
      * @param int $shortcutMode The shortcut mode: 1 will select first subpage, 2 a random subpage, 3 the parent page; default is the page pointed to by $SC
@@ -1086,71 +1084,42 @@ class PageRepository implements LoggerAwareInterface
      * @param int $iteration Safety feature which makes sure that the function is calling itself recursively max 20 times (since this function can find shortcuts to other shortcuts to other shortcuts...)
      * @param array $pageLog An array filled with previous page uids tested by the function - new page uids are evaluated against this to avoid going in circles.
      * @param bool $disableGroupCheck If true, the group check is disabled when fetching the target page (needed e.g. for menu generation)
-     * @param bool $resolveRandomPageShortcuts If true (default) this will also resolve shortcut to random subpages. In case of linking from a page to a shortcut page, we do not want to cache the "random" logic.
      *
      * @throws \RuntimeException
      * @throws ShortcutTargetPageNotFoundException
-     * @return mixed Returns the page record of the page that the shortcut pointed to. If $resolveRandomPageShortcuts = false, and the shortcut page is configured to point to a random shortcut then an empty array is returned
+     * @return mixed Returns the page record of the page that the shortcut pointed to.
      * @internal
      */
-    protected function getPageShortcut($shortcutFieldValue, $shortcutMode, $thisUid, $iteration = 20, $pageLog = [], $disableGroupCheck = false, bool $resolveRandomPageShortcuts = true)
+    protected function getPageShortcut($shortcutFieldValue, $shortcutMode, $thisUid, $iteration = 20, $pageLog = [], $disableGroupCheck = false)
     {
         // @todo: Simplify! page['shortcut'] is maxitems 1 and not a comma separated list of values!
-        $idArray = GeneralUtility::intExplode(',', $shortcutFieldValue);
-        if ($resolveRandomPageShortcuts === false && (int)$shortcutMode === self::SHORTCUT_MODE_RANDOM_SUBPAGE) {
-            return [];
-        }
+        $shortcutId = GeneralUtility::intExplode(',', $shortcutFieldValue)[0];
         // Find $page record depending on shortcut mode:
-        switch ($shortcutMode) {
-            case self::SHORTCUT_MODE_FIRST_SUBPAGE:
-            case self::SHORTCUT_MODE_RANDOM_SUBPAGE:
-                $excludedDoktypes = [
-                    self::DOKTYPE_SPACER,
-                    self::DOKTYPE_SYSFOLDER,
-                    self::DOKTYPE_BE_USER_SECTION,
-                ];
-                $savedWhereGroupAccess = '';
-                // "getMenu()" does not allow to hand over $disableGroupCheck, for this reason it is manually disabled and re-enabled afterwards.
-                if ($disableGroupCheck) {
-                    $savedWhereGroupAccess = $this->where_groupAccess;
-                    $this->where_groupAccess = '';
-                }
-                $pageArray = $this->getMenu($idArray[0] ?: (int)$thisUid, '*', 'sorting', 'AND pages.doktype NOT IN (' . implode(', ', $excludedDoktypes) . ')');
-                if ($disableGroupCheck) {
-                    $this->where_groupAccess = $savedWhereGroupAccess;
-                }
-                $pO = 0;
-                if ($shortcutMode == self::SHORTCUT_MODE_RANDOM_SUBPAGE && !empty($pageArray)) {
-                    $pO = (int)random_int(0, count($pageArray) - 1);
-                }
-                $c = 0;
-                $page = [];
-                foreach ($pageArray as $pV) {
-                    if ($c === $pO) {
-                        $page = $pV;
-                        break;
-                    }
-                    $c++;
-                }
-                if (empty($page)) {
-                    $message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a subpage. However, this page has no accessible subpages.';
-                    throw new ShortcutTargetPageNotFoundException($message, 1301648328);
-                }
-                break;
-            case self::SHORTCUT_MODE_PARENT_PAGE:
-                $parent = $this->getPage(($idArray[0] ?: (int)$thisUid), $disableGroupCheck);
-                $page = $this->getPage((int)$parent['pid'], $disableGroupCheck);
-                if (empty($page)) {
-                    $message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to its parent page. However, the parent page is not accessible.';
-                    throw new ShortcutTargetPageNotFoundException($message, 1301648358);
-                }
-                break;
-            default:
-                $page = $this->getPage($idArray[0], $disableGroupCheck);
-                if (empty($page)) {
-                    $message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a page, which is not accessible (ID ' . $idArray[0] . ').';
-                    throw new ShortcutTargetPageNotFoundException($message, 1301648404);
-                }
+        if ($shortcutMode === self::SHORTCUT_MODE_PARENT_PAGE) {
+            $parent = $this->getPage(($shortcutId ?: (int)$thisUid), $disableGroupCheck);
+            $page = $this->getPage((int)$parent['pid'], $disableGroupCheck);
+            if (empty($page)) {
+                $message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to its parent page. However, the parent page is not accessible.';
+                throw new ShortcutTargetPageNotFoundException($message, 1301648358);
+            }
+        } elseif ($shortcutMode === self::DOKTYPE_SHORTCUT || ($shortcutMode !== self::SHORTCUT_MODE_FIRST_SUBPAGE && $shortcutId)) {
+            $page = $this->getPage($shortcutId, $disableGroupCheck);
+            if (empty($page)) {
+                $message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a page, which is not accessible (ID ' . $shortcutId . ').';
+                throw new ShortcutTargetPageNotFoundException($message, 1301648404);
+            }
+        } else {
+            $excludedDoktypes = [
+                self::DOKTYPE_SPACER,
+                self::DOKTYPE_SYSFOLDER,
+                self::DOKTYPE_BE_USER_SECTION,
+            ];
+            $pageArray = $this->getMenu($shortcutId ?: (int)$thisUid, '*', 'sorting', 'AND pages.doktype NOT IN (' . implode(', ', $excludedDoktypes) . ')', true, $disableGroupCheck);
+            $page = reset($pageArray);
+            if (empty($page)) {
+                $message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a subpage. However, this page has no accessible subpages.';
+                throw new ShortcutTargetPageNotFoundException($message, 1301648328);
+            }
         }
         // Check if shortcut page was a shortcut itself, if so look up recursively
         if ((int)$page['doktype'] === self::DOKTYPE_SHORTCUT) {
@@ -1178,7 +1147,7 @@ class PageRepository implements LoggerAwareInterface
      *
      * @throws ShortcutTargetPageNotFoundException
      */
-    public function resolveShortcutPage(array $page, bool $resolveRandomSubpages = false, bool $disableGroupAccessCheck = false): array
+    public function resolveShortcutPage(array $page, bool $disableGroupAccessCheck = false): array
     {
         if ((int)($page['doktype'] ?? 0) !== self::DOKTYPE_SHORTCUT) {
             return $page;
@@ -1188,11 +1157,9 @@ class PageRepository implements LoggerAwareInterface
 
         $cacheIdentifier = 'shortcuts_resolved_' . ($disableGroupAccessCheck ? '1' : '0') . '_' . $page['uid'] . '_' . $this->context->getPropertyFromAspect('language', 'id', 0) . '_' . $page['sys_language_uid'];
         // Only use the runtime cache if we do not support the random subpages functionality
-        if ($resolveRandomSubpages === false) {
-            $cachedResult = $this->getRuntimeCache()->get($cacheIdentifier);
-            if (is_array($cachedResult)) {
-                return $cachedResult;
-            }
+        $cachedResult = $this->getRuntimeCache()->get($cacheIdentifier);
+        if (is_array($cachedResult)) {
+            return $cachedResult;
         }
         $shortcut = $this->getPageShortcut(
             $shortcutTarget,
@@ -1200,8 +1167,7 @@ class PageRepository implements LoggerAwareInterface
             $page['uid'],
             20,
             [],
-            $disableGroupAccessCheck,
-            $resolveRandomSubpages
+            $disableGroupAccessCheck
         );
         if (!empty($shortcut)) {
             $shortcutOriginalPageUid = (int)$page['uid'];
@@ -1209,9 +1175,7 @@ class PageRepository implements LoggerAwareInterface
             $page['_SHORTCUT_ORIGINAL_PAGE_UID'] = $shortcutOriginalPageUid;
         }
 
-        if ($resolveRandomSubpages === false) {
-            $this->getRuntimeCache()->set($cacheIdentifier, $page);
-        }
+        $this->getRuntimeCache()->set($cacheIdentifier, $page);
 
         return $page;
     }

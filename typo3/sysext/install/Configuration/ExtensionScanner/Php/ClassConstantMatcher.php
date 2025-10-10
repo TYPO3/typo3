@@ -654,4 +654,9 @@ return [
             'Deprecation-107648-InfoboxViewHelperStateConstants.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Domain\Repository\PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE' => [
+        'restFiles' => [
+            'Breaking-107654-RemoveRandomSubpageOptionOfDoktypeShortcut.rst',
+        ],
+    ],
 ];
