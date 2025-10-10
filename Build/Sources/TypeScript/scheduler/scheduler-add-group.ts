@@ -22,6 +22,7 @@ import { lll } from '@typo3/core/lit-helper';
 /**
  * Module: @typo3/scheduler/scheduler-add-groups
  * @exports @typo3/scheduler/scheduler-add-groups
+ * @todo Migrate to web component and tranlsate labels + use custom css for the "Edit whole record" text
  */
 class SchedulerAddGroups {
   selector: string = '.t3js-create-group';
@@ -39,6 +40,9 @@ class SchedulerAddGroups {
           <form name="scheduler-create-group" @submit=${this.createGroup}>
             <label class="form-label" for="actionCreateGroup">Group name</label>
             <input class="form-control" id="actionCreateGroup" required="" name="action[createGroup]" autofocus type="text">
+            <div class="form-text mt-3">
+              <button type="button" class="btn btn-link btn btn-link border-0 text-decoration-underline" @click="${this.editWholeRecord}">Edit</button> the whole record to add a custom color and description.
+            </div>
           </form>
         `;
 
@@ -113,6 +117,30 @@ class SchedulerAddGroups {
 
         Modal.dismiss();
       });
+  }
+
+  private editWholeRecord(e: Event): void {
+    e.preventDefault();
+
+    // Get the current input value (group name) if entered
+    const input: HTMLInputElement = Modal.currentModal.querySelector('input[name="action[createGroup]"]');
+    const groupName = input ? input.value.trim() : '';
+
+    // Build FormEngine URL for creating a new task group record
+    const formEngineUrl = new URL(top.TYPO3.settings.FormEngine.moduleUrl, window.location.origin);
+    formEngineUrl.searchParams.set('edit[tx_scheduler_task_group][0]', 'new');
+
+    // If a group name was entered, forward it as defVals
+    if (groupName) {
+      formEngineUrl.searchParams.set('defVals[tx_scheduler_task_group][groupName]', groupName);
+    }
+
+    // Set return URL to current page
+    formEngineUrl.searchParams.set('returnUrl', window.location.href);
+
+    // Dismiss modal and navigate to FormEngine
+    Modal.dismiss();
+    window.location.href = formEngineUrl.toString();
   }
 }
 

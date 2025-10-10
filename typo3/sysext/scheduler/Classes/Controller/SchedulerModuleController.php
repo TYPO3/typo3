@@ -320,6 +320,13 @@ final class SchedulerModuleController
             $groups
         );
 
+        // Move "not assigned to group" to the end
+        if (array_key_exists('uid', $groups[0] ?? []) && $groups[0]['uid'] === null) {
+            $groupWithoutTaskGroup = $groups[0];
+            unset($groups[0]);
+            $groups[0] = $groupWithoutTaskGroup;
+        }
+
         $this->pageRenderer->loadJavaScriptModule('@typo3/scheduler/new-scheduler-task-wizard-button.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/scheduler/setup-check-button.js');
 

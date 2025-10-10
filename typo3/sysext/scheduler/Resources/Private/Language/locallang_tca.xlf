@@ -48,6 +48,42 @@
 			<trans-unit id="tx_scheduler_task_group.groupName">
 				<source>Group name</source>
 			</trans-unit>
+			<trans-unit id="tx_scheduler_task_group.color">
+				<source>Color</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task_group.color.typo3Orange">
+				<source>TYPO3 Orange</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task_group.color.white">
+				<source>White</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task_group.color.gray">
+				<source>Gray</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task_group.color.black">
+				<source>Black</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task_group.color.blue">
+				<source>Blue</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task_group.color.purple">
+				<source>Purple</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task_group.color.teal">
+				<source>Teal</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task_group.color.green">
+				<source>Green</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task_group.color.magenta">
+				<source>Magenta</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task_group.color.yellow">
+				<source>Yellow</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task_group.color.red">
+				<source>Red</source>
+			</trans-unit>
 			<trans-unit id="tx_scheduler_task_group.description">
 				<source>Description</source>
 			</trans-unit>

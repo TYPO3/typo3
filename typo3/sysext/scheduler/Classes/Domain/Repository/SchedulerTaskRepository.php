@@ -216,6 +216,7 @@ readonly class SchedulerTaskRepository
                 'g.groupName AS taskGroupName',
                 'g.description AS taskGroupDescription',
                 'g.uid AS taskGroupId',
+                'g.color AS taskGroupColor',
                 'g.deleted AS isTaskGroupDeleted',
                 'g.hidden AS isTaskGroupHidden',
             )
@@ -301,6 +302,7 @@ readonly class SchedulerTaskRepository
                     'uid' => $row['taskGroupId'],
                     'groupName' => $row['taskGroupName'],
                     'description' => $row['taskGroupDescription'],
+                    'color' => $row['taskGroupColor'],
                     'hidden' => $row['isTaskGroupHidden'],
                     'tasks' => [],
                 ];

@@ -76,6 +76,31 @@ final class TaskGroupsCest
         $I->seeElement('//div[contains(@class, "panel-heading")][contains(., "' . $this->groupName . '")]/following::div//*[contains(@class, "badge-secondary")]');
     }
 
+    public function editGroupColorAndDescription(ApplicationTester $I): void
+    {
+        $groupDescription = 'This is a test description for the group';
+
+        $I->click('//div[contains(@class, "panel-heading")]//strong[contains(., "' . $this->groupName . '")]');
+
+        $I->waitForElementNotVisible('#t3js-ui-block');
+        $I->waitForText('Edit Scheduler task group');
+
+        // Find the value picker element and interact with its select dropdown
+        $valuePickerSelect = 'typo3-formengine-valuepicker[linked-field="[data-formengine-input-name=\\"data[tx_scheduler_task_group][1][color]\\"]"] select';
+        $I->waitForElement($valuePickerSelect);
+        $I->selectOption($valuePickerSelect, 'TYPO3 Orange');
+
+        $I->fillField('textarea[data-formengine-input-name="data[tx_scheduler_task_group][1][description]"]', $groupDescription);
+
+        $I->click('button[title="Save"]', '.module-docheader');
+        $I->waitForElementNotVisible('#t3js-ui-block');
+        $I->waitForText('Edit Scheduler task group');
+        $I->click('a[title="Close"]', '.module-docheader');
+
+        $I->seeElement('//div[contains(@class, "panel")][contains(., "' . $this->groupName . '")][contains(@style, "border-left") and contains(@style, "#FF8700")]');
+        $I->see($groupDescription, '//div[contains(@class, "panel-title")][contains(., "' . $this->groupName . '")]//p[contains(@class, "text-muted")]');
+    }
+
     public function removeGroup(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $I->amGoingTo('remove tasks from group');
@@ -90,5 +115,20 @@ final class TaskGroupsCest
         $modalDialog->canSeeDialog();
         $modalDialog->clickButtonInDialog('OK');
         $I->dontSeeElement('//table//td[contains(., "' . $this->groupName . '")]');
+    }
+
+    public function createGroupViaEditButton(ApplicationTester $I, ModalDialog $modalDialog): void
+    {
+        $newGroupName = 'Group via Edit';
+
+        $I->click('.t3js-create-group', '.module-docheader');
+        $modalDialog->canSeeDialog();
+        $I->fillField('input[name="action[createGroup]"]', $newGroupName);
+        $I->click('Edit', $modalDialog::$openedModalSelector);
+
+        $I->switchToContentFrame();
+        $I->waitForElementNotVisible('#t3js-ui-block');
+        $I->waitForText('Create new Scheduler task group');
+        $I->seeInField('//input[contains(@data-formengine-input-name, "[tx_scheduler_task_group][NEW") and contains(@data-formengine-input-name, "[groupName]")]', $newGroupName);
     }
 }

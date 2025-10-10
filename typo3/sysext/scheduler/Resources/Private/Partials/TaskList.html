@@ -103,6 +103,7 @@
             class="panel panel-default scheduler-panel"
             data-multi-record-selection-identifier="task-group-{groupKey}"
             {f:if(condition: '{group.uid}', then: 'data-task-group-id="{group.uid}"')}
+            {f:if(condition: '{group.color}', then: 'style="border-left: 4px solid {group.color};"')}
         >
             <div class="panel-heading multi-record-selection-panel">
                 <div class="panel-heading-row">
@@ -114,17 +115,16 @@
                     <div class="panel-title">
                         <f:if condition="!{group.uid}">
                             <f:then>
-                                {f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.noGroup')}
+                                <i>{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.noGroup')}</i>
                             </f:then>
                             <f:else>
-                                <typo3-scheduler-editable-group-name
-                                    groupName="{group.groupName}"
-                                    groupId="{group.uid}"
-                                    editable="true"
-                                >
-                                    {group.groupName}
-                                </typo3-scheduler-editable-group-name>
+                                <be:link.editRecord uid="{group.uid}" table="tx_scheduler_task_group" fields="groupName,color,description" returnUrl="{be:moduleLink(route: 'scheduler')}" class="btn btn-link">
+                                    <strong>{group.groupName}</strong>
+                                </be:link.editRecord>
                             </f:else>
+                        </f:if>
+                        <f:if condition="{group.description}">
+                            <p class="text-muted mb-0">{group.description}</p>
                         </f:if>
                     </div>
                     <div class="panel-actions">
