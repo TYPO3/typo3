@@ -178,6 +178,9 @@ class ContainerBuilder
 
     protected function createCacheIdentifier(PackageManager $packageManager, string $additionalIdentifier): string
     {
-        return $this->cacheIdentifiers[$additionalIdentifier] = (new PackageDependentCacheIdentifier($packageManager))->withPrefix('DependencyInjectionContainer')->toString();
+        return $this->cacheIdentifiers[$additionalIdentifier] = (new PackageDependentCacheIdentifier($packageManager))
+            ->withPrefix('DependencyInjectionContainer')
+            ->withAdditionalHashedIdentifier('PHP-' . PHP_MAJOR_VERSION . '-' . PHP_MINOR_VERSION)
+            ->toString();
     }
 }
