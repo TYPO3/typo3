@@ -23,13 +23,15 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
 final class TemplateCest
 {
-    public function _before(ApplicationTester $I): void
+    public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
 
         $I->switchToMainFrame();
         $I->see('TypoScript');
         $I->click('TypoScript');
+        // make sure page trees are collapsed and wanted one is accessible
+        $pageTree->openPath(['styleguide TCA demo']);
         $I->switchToContentFrame();
     }
 
