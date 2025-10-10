@@ -775,12 +775,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Cache/Backend/TransientMemoryBackend.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Core\\Cache\\Backend\\TransientMemoryBackend\:\:set\(\) has TYPO3\\CMS\\Core\\Cache\\Exception in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Cache/Backend/TransientMemoryBackend.php
-
-		-
 			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -789,12 +783,6 @@ parameters:
 		-
 			message: '#^Instanceof between TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface and TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Cache/Backend/Typo3DatabaseBackend.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend\:\:throwExceptionIfFrontendDoesNotExist\(\) has TYPO3\\CMS\\Core\\Cache\\Exception in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Cache/Backend/Typo3DatabaseBackend.php
 
@@ -833,12 +821,6 @@ parameters:
 			identifier: new.static
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Collection/AbstractRecordCollection.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Core\\Compatibility\\PseudoSiteTcaDisplayCondition\:\:isInPseudoSite\(\) has InvalidArgumentException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Compatibility/PseudoSiteTcaDisplayCondition.php
 
 		-
 			message: '#^Offset string does not exist on null\.$#'
@@ -1261,12 +1243,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Schema/Parser/Parser.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Core\\Database\\Schema\\SqlReader\:\:__construct\(\) has InvalidArgumentException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Schema/SqlReader.php
-
-		-
 			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Package\\PackageInterface\:\:getServiceProvider\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -1381,22 +1357,10 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Http/Message.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Core\\Http\\Message\:\:withBody\(\) has InvalidArgumentException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Http/Message.php
-
-		-
 			message: '#^Method TYPO3\\CMS\\Core\\Http\\NormalizedParams\:\:createFromServerParams\(\) should return static\(TYPO3\\CMS\\Core\\Http\\NormalizedParams\) but returns TYPO3\\CMS\\Core\\Http\\NormalizedParams\.$#'
 			identifier: return.type
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Http/NormalizedParams.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Core\\Http\\Request\:\:withMethod\(\) has InvalidArgumentException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Http/Request.php
 
 		-
 			message: '#^Instanceof between Psr\\Http\\Message\\StreamInterface and Psr\\Http\\Message\\StreamInterface will always evaluate to true\.$#'
@@ -1405,16 +1369,16 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Http/Response.php
 
 		-
-			message: '#^Result of && is always false\.$#'
-			identifier: booleanAnd.alwaysFalse
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Http/Response.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Core\\Http\\ServerRequest\:\:withParsedBody\(\) has InvalidArgumentException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
 			count: 1
-			path: ../../typo3/sysext/core/Classes/Http/ServerRequest.php
+			path: ../../typo3/sysext/core/Classes/Http/Response.php
 
 		-
 			message: '#^Parameter &\$consumed by\-ref type of method TYPO3\\CMS\\Core\\IO\\CsvStreamFilter\:\:filter\(\) expects int, \(float\|int\) given\.$#'
@@ -1663,22 +1627,10 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Imaging/ImageManipulation/Area.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Core\\Imaging\\ImageManipulation\\CropVariant\:\:addCoverArea\(\) has TYPO3\\CMS\\Core\\Imaging\\ImageManipulation\\InvalidConfigurationException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Imaging/ImageManipulation/CropVariant.php
-
-		-
 			message: '#^Property TYPO3\\CMS\\Core\\Imaging\\ImageManipulation\\CropVariant\:\:\$allowedAspectRatios \(array\<TYPO3\\CMS\\Core\\Imaging\\ImageManipulation\\Ratio\>\) on left side of \?\? is not nullable\.$#'
 			identifier: nullCoalesce.property
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Imaging/ImageManipulation/CropVariant.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Core\\LinkHandling\\FileLinkHandler\:\:resolveHandlerData\(\) has TYPO3\\CMS\\Core\\Resource\\Exception\\FileDoesNotExistException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/LinkHandling/FileLinkHandler.php
 
 		-
 			message: '#^Negated boolean expression is always false\.$#'
@@ -3115,18 +3067,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Database/ConnectionTest.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Core\\Tests\\Unit\\Database\\Mocks\\MockPlatform\:\:getReservedKeywordsClass\(\) has Doctrine\\DBAL\\Exception in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Mocks/MockPlatform.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Core\\Tests\\Unit\\Database\\Mocks\\MockPlatform\:\:getVarcharTypeDeclarationSQLSnippet\(\) has Doctrine\\DBAL\\Exception in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Mocks/MockPlatform.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression'' and TYPO3\\CMS\\Core\\Database\\Query\\Expression\\CompositeExpression will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 2
@@ -3613,12 +3553,6 @@ parameters:
 			path: ../../typo3/sysext/dashboard/Classes/Controller/WidgetAjaxController.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Annotation\\IgnoreValidation\:\:__construct\(\) has InvalidArgumentException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Annotation/IgnoreValidation.php
-
-		-
 			message: '#^Instanceof between TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer and TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
@@ -3775,78 +3709,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapper.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:_and\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:_or\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:ascending\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:bindVariable\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:comparison\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:descending\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:equiJoinCondition\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:lowerCase\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:not\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:propertyValue\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:selector\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:upperCase\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
 			message: '#^Call to function is_int\(\) with int will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 2
@@ -3861,12 +3723,6 @@ parameters:
 		-
 			message: '#^Instanceof between TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface and TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Query.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Query\:\:getQuerySettings\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Query.php
 
@@ -4005,12 +3861,6 @@ parameters:
 		-
 			message: '#^Method TYPO3\\CMS\\Extbase\\Reflection\\ObjectAccess\:\:createAccessor\(\) should return Symfony\\Component\\PropertyAccess\\PropertyAccessor but returns Symfony\\Component\\PropertyAccess\\PropertyAccessorInterface\.$#'
 			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Reflection/ObjectAccess.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Reflection\\ObjectAccess\:\:getGettableProperties\(\) has InvalidArgumentException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Reflection/ObjectAccess.php
 
@@ -5131,13 +4981,13 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/ViewHelpers/RenderFormValueViewHelper.php
 
 		-
-			message: '#^Call to an undefined method DOMNode\:\:getAttribute\(\)\.$#'
+			message: '#^Call to an undefined method DOMNameSpaceNode\|DOMNode\:\:getAttribute\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: ../../typo3/sysext/form/Tests/Functional/Framework/FormHandling/FormDataFactory.php
 
 		-
-			message: '#^Parameter \#1 \$node of method TYPO3\\CMS\\Form\\Tests\\Functional\\Framework\\FormHandling\\FormDataFactory\:\:isHoneypot\(\) expects DOMElement, DOMNode given\.$#'
+			message: '#^Parameter \#1 \$node of method TYPO3\\CMS\\Form\\Tests\\Functional\\Framework\\FormHandling\\FormDataFactory\:\:isHoneypot\(\) expects DOMElement, DOMNameSpaceNode\|DOMNode given\.$#'
 			identifier: argument.type
 			count: 1
 			path: ../../typo3/sysext/form/Tests/Functional/Framework/FormHandling/FormDataFactory.php
@@ -5619,18 +5469,6 @@ parameters:
 		-
 			message: '#^Instanceof between TYPO3\\CMS\\Core\\TypoScript\\TemplateService and TYPO3\\CMS\\Core\\TypoScript\\TemplateService will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Controller/TypoScriptFrontendController.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController\:\:releaseLocks\(\) has InvalidArgumentException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Controller/TypoScriptFrontendController.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController\:\:releaseLocks\(\) has RuntimeException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/Controller/TypoScriptFrontendController.php
 
