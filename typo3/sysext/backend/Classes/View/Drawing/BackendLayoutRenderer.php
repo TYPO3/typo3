@@ -43,7 +43,7 @@ use TYPO3\CMS\Core\View\ViewInterface;
  * which renders the Resources/Private/PageLayout/PageLayout template
  * with necessary assigned template variables.
  *
- * @internal this is experimental and subject to change in TYPO3 v10 / v11
+ * @internal
  */
 class BackendLayoutRenderer
 {

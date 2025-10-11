@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @see GridColumnItem
  * @see LanguageColumn
  *
- * @internal this is experimental and subject to change in TYPO3 v10 / v11
+ * @internal
  */
 abstract class AbstractGridObject
 {

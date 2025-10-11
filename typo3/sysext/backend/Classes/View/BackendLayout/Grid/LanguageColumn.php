@@ -42,7 +42,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Accessed from Fluid templates - generated from within BackendLayout when
  * "page" module is in "languages" mode.
  *
- * @internal this is experimental and subject to change in TYPO3 v10 / v11
+ * @internal
  */
 class LanguageColumn extends AbstractGridObject
 {

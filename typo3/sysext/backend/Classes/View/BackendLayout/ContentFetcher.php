@@ -50,7 +50,7 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  * - Capable of returning records for a given column in a given (optional) language
  * - Capable of returning translation data (brief info about translation consistency)
  *
- * @internal this is experimental and subject to change in TYPO3 v10 / v11
+ * @internal
  */
 #[Autoconfigure(public: true)]
 readonly class ContentFetcher

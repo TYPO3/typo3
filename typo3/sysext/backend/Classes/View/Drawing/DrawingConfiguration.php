@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Corresponds to legacy public properties from PageLayoutView.
  *
- * @internal this is experimental and subject to change in TYPO3 v10 / v11
+ * @internal
  */
 class DrawingConfiguration
 {

@@ -25,7 +25,7 @@ namespace TYPO3\CMS\Backend\View\BackendLayout\Grid;
  *
  * Accessed in Fluid templates.
  *
- * @internal this is experimental and subject to change in TYPO3 v10 / v11
+ * @internal
  */
 class GridRow extends AbstractGridObject
 {
