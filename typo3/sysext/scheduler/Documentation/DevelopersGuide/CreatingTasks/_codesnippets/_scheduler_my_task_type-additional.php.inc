@@ -41,6 +41,7 @@ if (isset($GLOBALS['TCA']['tx_scheduler_task'])) {
             'description' => 'Some description or LLL:EXT reference',
             'value' => MyTask::class,
             'icon' => 'mimetypes-x-tx_scheduler_task_group',
+            'iconOverlay' => 'content-clock',
             'group' => 'my_extension',
         ],
         '

@@ -14,6 +14,7 @@ if (isset($GLOBALS['TCA']['tx_scheduler_task'])) {
             'description' => 'Description of what this task does',
             'value' => MyTask::class,
             'icon' => 'my-custom-icon',
+            'iconOverlay' => 'content-clock',
             'group' => 'my_extension',
         ],
         $GLOBALS['TCA']['tx_scheduler_task']['0']['showitem'],

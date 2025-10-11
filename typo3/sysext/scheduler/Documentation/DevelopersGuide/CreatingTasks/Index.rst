@@ -69,6 +69,13 @@ Custom scheduler tasks can be registered via TCA overrides, for example in
     :language: php
     :caption: EXT:my_extension/Configuration/TCA/Overrides/tx_scheduler_my_task.php
 
+..  tip::
+
+    Using the :php:`iconOverlay` option on task type registration, an icon
+    overlay can be added, which is then displayed in the wizard. This can
+    be useful for similar task types that use the same "base" `icon`, but
+    still have to be differentiated.
+
 ..  include:: /_Includes/_ExtendingSchedulerTca.rst.txt
 
 ..  _additional-fields:
