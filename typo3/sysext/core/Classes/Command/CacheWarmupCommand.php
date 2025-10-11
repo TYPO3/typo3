@@ -49,7 +49,18 @@ class CacheWarmupCommand extends Command
     protected function configure(): void
     {
         $this->setDescription('Warmup TYPO3 caches.');
-        $this->setHelp('This command is useful for deployments to warmup caches during release preparation.');
+        $this->setHelp(
+            <<<'EOF'
+This command is useful for deployments to warmup caches during release preparation.
+
+<fg=yellow>
+Cache warming does not work if the PHP version used to execute the command differs from
+the PHP version used in the web context.
+
+See: https://docs.typo3.org/permalink/changelog:important-107649-1760090777
+</>
+EOF
+        );
         $this->setDefinition([
             new InputOption('group', 'g', InputOption::VALUE_OPTIONAL, 'The cache group to warmup (system, pages, di or all)', 'all'),
         ]);
