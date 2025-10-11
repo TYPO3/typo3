@@ -41,8 +41,6 @@ use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
  * - does not handle Extbase specialities
  * - does not handle HeaderAssets and FooterAssets
  * - does not handle "templateName.", "template." and "file." resolving from cObject
- *
- * @internal this cObject is considered experimental until TYPO3 v13 LTS
  */
 final class PageViewContentObject extends AbstractContentObject
 {
