@@ -2374,7 +2374,7 @@ parameters:
 			message: '#^Call to an undefined method TYPO3\\CMS\\Form\\Domain\\Model\\Renderable\\RenderableInterface\:\:getRootForm\(\)\.$#'
 			identifier: method.notFound
 			count: 1
-			path: ../../typo3/sysext/form/Classes/Hooks/FormElementHooks.php
+			path: ../../typo3/sysext/form/Classes/EventListener/BeforeRenderableIsValidatedEventListener.php
 
 		-
 			message: '#^Property TYPO3\\CMS\\Form\\Mvc\\Property\\Exception\\TypeConverterException\:\:\$error \(TYPO3\\CMS\\Extbase\\Error\\Error\) in empty\(\) is not falsy\.$#'

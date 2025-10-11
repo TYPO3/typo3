@@ -58,6 +58,7 @@ use TYPO3\CMS\Form\Domain\Runtime\Exception\PropertyMappingException;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime\FormSession;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime\Lifecycle\AfterFormStateInitializedInterface;
 use TYPO3\CMS\Form\Event\AfterCurrentPageIsResolvedEvent;
+use TYPO3\CMS\Form\Event\BeforeRenderableIsValidatedEvent;
 use TYPO3\CMS\Form\Exception as FormException;
 use TYPO3\CMS\Form\Mvc\Validation\EmptyValidator;
 use TYPO3\CMS\Form\Security\HashScope;
@@ -559,19 +560,14 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             }
         };
 
-        $value = null;
-
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'] ?? [] as $className) {
-            $hookObj = GeneralUtility::makeInstance($className);
-            if (method_exists($hookObj, 'afterSubmit')) {
-                $value = $hookObj->afterSubmit(
-                    $this,
-                    $page,
-                    $value,
-                    $requestArguments
-                );
-            }
-        }
+        $this->eventDispatcher->dispatch(
+            new BeforeRenderableIsValidatedEvent(
+                null,
+                $this,
+                $page,
+                $this->request,
+            )
+        );
 
         foreach ($page->getElementsRecursively() as $element) {
             if (!$this->isRenderableEnabled($element)) {
@@ -584,17 +580,15 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
                 $value = null;
             }
 
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'] ?? [] as $className) {
-                $hookObj = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObj, 'afterSubmit')) {
-                    $value = $hookObj->afterSubmit(
-                        $this,
-                        $element,
-                        $value,
-                        $requestArguments
-                    );
-                }
-            }
+            $event = $this->eventDispatcher->dispatch(
+                new BeforeRenderableIsValidatedEvent(
+                    $value,
+                    $this,
+                    $element,
+                    $this->request,
+                )
+            );
+            $value = $event->value;
 
             $this->formState->setFormValue($element->getIdentifier(), $value);
             $registerPropertyPaths($element->getIdentifier());

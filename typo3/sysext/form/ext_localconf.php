@@ -6,7 +6,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\CMS\Form\Controller\FormFrontendController;
 use TYPO3\CMS\Form\Evaluation\EmailOrFormElementIdentifier;
-use TYPO3\CMS\Form\Hooks\FormElementHooks;
 use TYPO3\CMS\Form\Hooks\ImportExportHook;
 use TYPO3\CMS\Form\Mvc\Property\PropertyMappingConfiguration;
 
@@ -27,8 +26,6 @@ module.tx_form {
     }
 }
 ');
-
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'][1489772699] = FormElementHooks::class;
 
 // FE file upload processing
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'][1489772699] = PropertyMappingConfiguration::class;

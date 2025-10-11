@@ -1305,4 +1305,10 @@ return [
             'Feature-107566-IntroducePSR14AfterCurrentPageIsResolvedEvent.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'ext/form\'][\'afterSubmit\']' => [
+        'restFiles' => [
+            'Breaking-107568-RemovedAfterSubmitHook.rst',
+            'Feature-107568-IntroducePSR14BeforeRenderableIsValidatedEvent.rst',
+        ],
+    ],
 ];

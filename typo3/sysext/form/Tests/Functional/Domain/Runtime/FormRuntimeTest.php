@@ -18,16 +18,24 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Functional\Domain\Runtime;
 
 use PHPUnit\Framework\Attributes\Test;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
+use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
+use TYPO3\CMS\Form\Domain\Model\FormElements\Page;
+use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Event\AfterCurrentPageIsResolvedEvent;
+use TYPO3\CMS\Form\Event\BeforeRenderableIsValidatedEvent;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -35,6 +43,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class FormRuntimeTest extends FunctionalTestCase
 {
     public const AFTER_CURRENT_PAGE_IS_RESOLVED_LISTENER_KEY = 'after-current-page-is-resolved-listener';
+    public const BEFORE_RENDERABLE_IS_VALIDATED_LISTENER_KEY = 'before-renderable-is-validated-listener';
+
     protected array $coreExtensionsToLoad = [
         'form',
     ];
@@ -101,6 +111,54 @@ final class FormRuntimeTest extends FunctionalTestCase
 
         self::assertInstanceOf(AfterCurrentPageIsResolvedEvent::class, $state[self::AFTER_CURRENT_PAGE_IS_RESOLVED_LISTENER_KEY]);
         self::assertNull($formRuntime->getCurrentPage());
+    }
+
+    #[Test]
+    public function beforeRenderableIsValidatedEventIsTriggered(): void
+    {
+        $container = $this->get('service_container');
+        $state = [
+            self::BEFORE_RENDERABLE_IS_VALIDATED_LISTENER_KEY => null,
+        ];
+        $expectedValue = 'foo';
+        $container->set(
+            self::BEFORE_RENDERABLE_IS_VALIDATED_LISTENER_KEY,
+            static function (BeforeRenderableIsValidatedEvent $event) use (&$state, $expectedValue): void {
+                $state[self::BEFORE_RENDERABLE_IS_VALIDATED_LISTENER_KEY] = $event;
+                if ($event->renderable->getIdentifier() !== 'text-1') {
+                    return;
+                }
+                $event->value = $expectedValue;
+            }
+        );
+
+        $eventListener = $container->get(ListenerProvider::class);
+        $eventListener->addListener(BeforeRenderableIsValidatedEvent::class, self::BEFORE_RENDERABLE_IS_VALIDATED_LISTENER_KEY);
+
+        $subject = $this->getAccessibleMock(FormRuntime::class, null, [
+            $container,
+            $this->createMock(ExtbaseConfigurationManagerInterface::class),
+            new HashService(),
+            $this->createMock(ValidatorResolver::class),
+            $this->createMock(Context::class),
+            $this->get(EventDispatcherInterface::class),
+        ]);
+        $page = new Page('page-1');
+        $page->addElement(new GenericFormElement('text-1', 'Text'));
+
+        $subject->setRequest($this->request);
+        $subject->setFormDefinition($this->buildFormDefinition());
+
+        $subject->_call(
+            'initializeFormStateFromRequest',
+        );
+        $subject->_call(
+            'mapAndValidatePage',
+            $page,
+        );
+
+        self::assertInstanceOf(BeforeRenderableIsValidatedEvent::class, $state[self::BEFORE_RENDERABLE_IS_VALIDATED_LISTENER_KEY]);
+        self::assertEquals($expectedValue, $subject->getElementValue('text-1'));
     }
 
     private function buildExtbaseRequest(): Request
