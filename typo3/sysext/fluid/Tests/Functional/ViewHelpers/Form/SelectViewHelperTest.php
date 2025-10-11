@@ -467,7 +467,7 @@ EOT;
 
         // Mock persistence manager for our domain objects and set into container
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->method('getIdentifierByObject')->willReturn(null);
+        $mockPersistenceManager->method('isNewObject')->willReturn(true);
         $container = $this->get('service_container');
         $container->set(PersistenceManager::class, $mockPersistenceManager);
 

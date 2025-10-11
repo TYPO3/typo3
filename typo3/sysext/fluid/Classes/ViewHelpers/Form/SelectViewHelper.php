@@ -180,8 +180,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
                         throw new Exception('Identifying value for object of class "' . get_debug_type($value) . '" was an object.', 1247827428);
                     }
                 }
-            } elseif ($this->persistenceManager->getIdentifierByObject($value) !== null) {
-                // @todo use $this->persistenceManager->isNewObject() once it is implemented
+            } elseif (!$this->persistenceManager->isNewObject($value)) {
                 $key = $this->persistenceManager->getIdentifierByObject($value);
             } elseif (is_object($value) && method_exists($value, '__toString')) {
                 $key = (string)$value;
@@ -199,8 +198,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
                 }
             } elseif (is_object($value) && method_exists($value, '__toString')) {
                 $value = (string)$value;
-            } elseif ($this->persistenceManager->getIdentifierByObject($value) !== null) {
-                // @todo use $this->persistenceManager->isNewObject() once it is implemented
+            } elseif (!$this->persistenceManager->isNewObject($value)) {
                 $value = $this->persistenceManager->getIdentifierByObject($value);
             }
             $options[$key ?? ''] = $value;
@@ -265,8 +263,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
             if ($this->hasArgument('optionValueField')) {
                 return ObjectAccess::getPropertyPath($valueElement, $this->arguments['optionValueField']);
             }
-            // @todo use $this->persistenceManager->isNewObject() once it is implemented
-            if ($this->persistenceManager->getIdentifierByObject($valueElement) !== null) {
+            if (!$this->persistenceManager->isNewObject($valueElement)) {
                 if ($valueElement instanceof DomainObjectInterface) {
                     // We prefer to use the `getUid()` method because this returns the properly overlaid identifier (defaultLanguageRecordUid).
                     // Otherwise, an identifier would contain '[defaultLanguageRecordUid]_[localizedRecordUid]'. This in turn
