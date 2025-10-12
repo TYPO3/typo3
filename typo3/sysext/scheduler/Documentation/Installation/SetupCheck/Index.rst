@@ -7,14 +7,15 @@
 Checking the setup of the scheduler extension
 =============================================
 
-After installing the Scheduler, go to its BE module and call up the
-"Setup check" screen which runs a couple of basic checks on your
-installation. It will probably look something like this:
+The scheduler check provides useful information for setting up cronjobs.
+
+..  figure:: /Images/SetupCheckButton.png
+    :alt: The TYPO3 Backend module "Scheduler" with Button "Setup check" highlighted
+
+    Click on the button :guilabel:`Setup check` to open the popup
 
 ..  figure:: /Images/SetupCheck.png
-    :alt: Screenshot of the Scheduler backend module, option "Scheduler setup check" chosen
-
-    Checking the setup of the Scheduler
+    :alt: The "Setup check" modal popup in module "Scheduler"
 
 The first message shows when the scheduler was last run. If it was never run
 there will be a warning displayed.
