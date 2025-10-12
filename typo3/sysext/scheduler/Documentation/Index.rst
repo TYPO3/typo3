@@ -41,7 +41,6 @@ delivered by any extension.
     :titlesonly:
 
     Introduction/Index
-    Overview/Index
     Installation/Index
     BasicTasks/Index
     Administration/Index
