@@ -1,5 +1,6 @@
 .. include:: /Includes.rst.txt
 
+..  _custom-reports-more:
 ..  _custom-reports:
 
 ============================
@@ -12,10 +13,8 @@ called :guilabel:`Status`.
 The status report itself is extendable and shows status messages like a system
 environment check and the status of the installed extensions.
 
-.. versionchanged:: 12.0
-    Reports and status are  automatically registered through the service
-    configuration, based on the implemented interface. See section
-    :ref:`migration` for more information.
+Reports and status are automatically registered through the service
+configuration, based on the implemented interface.
 
 ..  _register-custom-report:
 
@@ -34,7 +33,6 @@ Alternatively, one can manually tag a custom report with the
 
 .. include:: /CodeSnippets/Manual/RegisterReport.rst.txt
 
-
 ..  _register-custom-status:
 
 Register a custom status
@@ -50,14 +48,3 @@ Alternatively, one can manually tag a custom report with the
 :yaml:`reports.status` tag:
 
 .. include:: /CodeSnippets/Manual/RegisterStatus.rst.txt
-
-
-..  _custom-reports-more:
-
-More about custom reports
-=========================
-
-.. toctree::
-    :titlesonly:
-
-    Migration
