@@ -1,12 +1,13 @@
-.. include:: /Includes.rst.txt
+:navigation-title: Scheduler task
 
+.. include:: /Includes.rst.txt
 ..  _scheduler-task:
 
-==============
-Scheduler task
-==============
+=====================================
+Scheduler task "System Status Update"
+=====================================
 
-If the system extension :ref:`scheduler is installed <ext_scheduler:installation>`,
+If the system extension :composer:`typo3/cms-scheduler` is installed,
 you can create automatic reports with the help of a scheduler task.
 
 To create a task for the reports functionality go to
@@ -20,9 +21,9 @@ The remaining settings are standard task settings provided by the scheduler
 extension.
 
 .. figure:: /Images/SchedulerTask.png
-   :class: with-shadow
+   :alt: TYPO3 Backend module "Scheduler", "New task" popup, Category "Reports"
 
-   Create a :guilabel:`System Status Update` task in :guilabel:`System > Scheduler`
+   Create a :guilabel:`System Status Update` task in module :guilabel:`System > Scheduler`
 
 ..  _scheduler-task-mail:
 
