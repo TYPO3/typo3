@@ -9,6 +9,14 @@ Module System > DB Check
 
 Access this module in the TYPO3 backend under :guilabel:`System > DB Check`.
 
+..  versionchanged:: 14.0
+    The "Record statistics" submodule was moved into the module
+    :guilabel:`System > Reports`, submodule
+    `Record Statistics <https://docs.typo3.org/permalink/typo3/cms-reports:introduction>`_.
+
+    The module is provided by the optional system extension
+    :composer:`typo3/cms-reports`.
+
 ..  include:: /Images/AutomaticScreenshots/Modules/DB_Check.rst.txt
 
 ..  card-grid::

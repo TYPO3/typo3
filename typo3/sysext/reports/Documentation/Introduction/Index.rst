@@ -6,6 +6,8 @@
 Introduction
 ============
 
+..  contents:: Table of contents
+
 ..  _what-does-it-do:
 
 What does it do?
@@ -44,3 +46,24 @@ and more.
     Thus, if no problems are pointed out - it does not necessarily mean
     that there are no security issues. But, on the other hand, if security
     problems are pointed out, you most certainly should fix them.
+
+..  _record-statistics:
+
+Record Statistics
+=================
+
+..  versionchanged:: 14.0
+    The record statistics have been moved from module :guilabel:`System > DB Check`,
+    provided by the system extension :composer:`typo3/cms-lowlevel` into the
+    module :guilabel:`System > Reports` of this extension :composer:`typo3/cms-reports`.
+
+Backend users with administrator permissions can find this module at
+:guilabel:`System > Reports > Records Statistics`.
+
+This module gives an overview of the count of records of different types.
+
+..  figure:: /Images/RecordStatistics.png
+    :alt: The TYPO3 backend module "Reports" with submodule "Record Statistics"
+
+The records are counted installation-wide. Soft-deleted (flag `deleted = 1`)
+records are ignored.
