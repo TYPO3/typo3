@@ -56,10 +56,10 @@ final class Inline1nCest
     public function hideAndUnhideInline1nInlineElement(ApplicationTester $I): void
     {
         $I->click('button span[data-identifier="actions-edit-hide"]', '[data-field-name^="[tx_styleguide_inline_1n_inline_1_child]["]');
-        $I->waitForElement('[data-field-name^="[tx_styleguide_inline_1n_inline_1_child]["].t3-form-field-container-inline-hidden');
+        $I->waitForElement('[data-field-name^="[tx_styleguide_inline_1n_inline_1_child]["].panel-hidden');
         $I->waitForElement('[data-field-name^="[tx_styleguide_inline_1n_inline_1_child]["] button span[data-identifier="actions-edit-unhide"]');
         $I->click('button span[data-identifier="actions-edit-unhide"]', '[data-field-name^="[tx_styleguide_inline_1n_inline_1_child]["]');
-        $I->waitForElementNotVisible('[data-field-name^="[tx_styleguide_inline_1n_inline_1_child]["].t3-form-field-container-inline-hidden', 2);
+        $I->waitForElementNotVisible('[data-field-name^="[tx_styleguide_inline_1n_inline_1_child]["].panel-hidden', 2);
     }
 
     public function createInline1nInlineElement(ApplicationTester $I): void
@@ -159,7 +159,7 @@ final class Inline1nCest
 
         // Hide the inline element.
         $I->click('button span[data-identifier="actions-edit-hide"]', '[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["]');
-        $I->waitForElement('[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["].t3-form-field-container-inline-hidden');
+        $I->waitForElement('[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["].panel-hidden');
         $I->waitForElement('[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["] button span[data-identifier="actions-edit-unhide"]');
 
         // Save the inline element.
@@ -168,7 +168,7 @@ final class Inline1nCest
 
         // Unhide the previously hidden inline element.
         $I->click('button span[data-identifier="actions-edit-unhide"]', '[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["]');
-        $I->waitForElementNotVisible('[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["].t3-form-field-container-inline-hidden', 2);
+        $I->waitForElementNotVisible('[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["].panel-hidden', 2);
     }
 
     private function fillFieldByLabel(ApplicationTester $I, $fieldLabel, $testValue): void

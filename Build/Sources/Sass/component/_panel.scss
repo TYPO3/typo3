@@ -116,6 +116,10 @@
     overflow: hidden;
     border-radius: var(--typo3-panel-border-radius-inner-top) var(--typo3-panel-border-radius-inner-top) 0 0;
 
+    &:last-child {
+        border-radius: var(--typo3-panel-border-radius-inner-top);
+    }
+
     .panel-progress-bar {
         display: block;
         height: 100%;
@@ -126,6 +130,30 @@
 .panel-has-progress {
     > .panel-progress {
         display: block;
+    }
+}
+
+//
+// Progress Component
+// <typo3-backend-progress-bar>
+//
+.panel {
+    &:has(typo3-backend-progress-bar) {
+        min-height: 5px;
+    }
+
+    > typo3-backend-progress-bar {
+        --progress-border-radius: var(--typo3-panel-border-radius-inner-top) var(--typo3-panel-border-radius-inner-top) 0 0;
+        --progress-bar-height: 3px;
+        position: absolute;
+        top: 0;
+        inset-inline-start: 0;
+        width: 100%;
+        z-index: 1;
+
+        &:last-child {
+            --progress-border-radius: var(--typo3-panel-border-radius-inner-top);
+        }
     }
 }
 
@@ -168,7 +196,7 @@
     outline-offset: 0;
     margin: 0;
 
-    &:not(:last-child):not(.collapsed):not(:has(.collapsed)):not(:has(+ .collapse)) {
+    &:not(:last-child):not(.collapsed):not(:has(.collapsed)):not(:has(+ .collapse)):not(:has(.form-irre-header-button[aria-expanded="false"])):not(:has(.form-file-header-button[aria-expanded="false"])) {
         --typo3-panel-border-radius-inner-bottom: 0;
     }
 
@@ -182,6 +210,8 @@
     }
 
     .caret {
+        width: var(--icon-size-small);
+        flex-shrink: 0;
         --typo3-caret-color: var(--typo3-panel-header-color);
     }
 
@@ -229,6 +259,7 @@
 //
 .panel-title {
     font-size: var(--typo3-font-size);
+    line-height: 1.2;
     margin-top: 0;
     margin-bottom: 0;
     flex-grow: 1;
@@ -248,11 +279,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .panel-actions {
     display: flex;
+    flex-shrink: 0;
     align-items: center;
+    justify-content: end;
     flex-wrap: wrap;
     gap: .25rem;
 }
@@ -292,8 +326,7 @@
 // Collapse
 //
 .panel-collapse {
-    overflow: hidden;
-
+    .form-section:not(.hide):not(:has(~ .form-section:not(.hide))), // hack for FormEngine sections
     &:last-child {
         border-end-start-radius: var(--typo3-panel-border-radius-inner-bottom);
         border-end-end-radius: var(--typo3-panel-border-radius-inner-bottom);
@@ -393,6 +426,23 @@
 
 .panel-breaking {
     @extend .panel-danger;
+}
+
+//
+// Hidden and Placeholder States
+//
+.panel-hidden,
+.panel-placeholder {
+    > .panel-heading {
+        background-color: transparent;
+    }
+    opacity: .5;
+    border-style: dashed;
+
+    &:hover,
+    &:focus-within {
+        opacity: 1;
+    }
 }
 
 //

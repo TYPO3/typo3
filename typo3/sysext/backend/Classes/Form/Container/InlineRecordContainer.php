@@ -137,10 +137,10 @@ class InlineRecordContainer extends AbstractContainer
         } else {
             // Render header row and content (if expanded)
             if ($data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
-                $classes[] = 't3-form-field-container-inline-placeHolder';
+                $classes[] = 'panel-placeholder';
             }
             if (!empty($hiddenField) && isset($record[$hiddenField]) && (int)$record[$hiddenField]) {
-                $classes[] = 't3-form-field-container-inline-hidden';
+                $classes[] = 'panel-hidden';
             }
             if ($isNewRecord) {
                 $classes[] = 'inlineIsNewRecord';
