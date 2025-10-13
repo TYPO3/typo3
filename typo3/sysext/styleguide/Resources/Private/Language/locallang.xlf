@@ -597,6 +597,9 @@
 			<trans-unit id="component.panels.progress.headline">
 				<source>Progress</source>
 			</trans-unit>
+			<trans-unit id="component.panels.progressComponent.headline">
+				<source>Progress Component</source>
+			</trans-unit>
 			<trans-unit id="component.panels.header.headline">
 				<source>Header</source>
 			</trans-unit>

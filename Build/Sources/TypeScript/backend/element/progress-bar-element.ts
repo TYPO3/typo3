@@ -64,6 +64,18 @@ export class ProgressBarElement extends LitElement {
       border-radius: var(--progress-border-radius);
     }
 
+    .value {
+      display: block;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
     .track {
       background: var(--progress-track-color);
       inset: 0;
@@ -103,7 +115,6 @@ export class ProgressBarElement extends LitElement {
     .bar {
       position: absolute;
       height: var(--progress-bar-height);
-      border-radius: var(--progress-border-radius);
     }
 
     .label {
@@ -140,7 +151,9 @@ export class ProgressBarElement extends LitElement {
           aria-describedby=${isLabelDefined ? labelIdentifier : nothing}
         >
           <div class="track"></div>
-          <div class=${classes} style=${styles}></div>
+          <div class=${classes} style=${styles}>
+            ${!isIndeterminate ? html`<span class="value">${this.value}%</span>` : nothing}
+          </div>
         </div>
         ${isLabelDefined ? html`<div class="label" id=${labelIdentifier}>${this.label}</div>` : nothing}
       </div>

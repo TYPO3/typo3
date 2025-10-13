@@ -434,7 +434,7 @@ class InlineControlContainer {
         FormEngineValidation.markFieldAsChanged(hiddenValueCheckBox);
       }
 
-      const hiddenClass = 't3-form-field-container-inline-hidden';
+      const hiddenClass = 'panel-hidden';
       const isHidden = recordContainer.classList.contains(hiddenClass);
       let toggleIcon: string;
 

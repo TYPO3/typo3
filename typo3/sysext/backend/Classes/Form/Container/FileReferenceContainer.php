@@ -137,10 +137,10 @@ class FileReferenceContainer extends AbstractContainer
 
         // Render header row and content (if expanded)
         if ($this->data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
-            $classes[] = 't3-form-field-container-files-placeHolder';
+            $classes[] = 'panel-placeholder';
         }
         if ($record[$hiddenFieldName] ?? false) {
-            $classes[] = 't3-form-field-container-files-hidden';
+            $classes[] = 'panel-hidden';
         }
         if ($isNewRecord) {
             $classes[] = 'isNewFileReference';

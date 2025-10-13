@@ -367,7 +367,7 @@ final class ComponentsController
             'actions' => $this->allowedActions,
             'currentAction' => 'panels',
             'routeIdentifier' => 'styleguide_components',
-            'variants' => ['primary', 'secondary', 'info', 'success', 'warning', 'danger', 'notice', 'default'],
+            'variants' => ['primary', 'secondary', 'info', 'success', 'warning', 'danger', 'notice', 'default', 'hidden', 'placeholder'],
         ]);
         return $view->renderResponse('Backend/Components/Panels');
     }

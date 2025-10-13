@@ -69,25 +69,6 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
 }
 
 //
-// TCEforms Inline-Relational-Record-Editing
-//
-.t3-form-field-container-inline-hidden,
-.t3-form-field-container-inline-placeHolder,
-.t3-form-field-container-files-hidden,
-.t3-form-field-container-files-placeHolder {
-    & > .panel-heading {
-        background-color: transparent;
-    }
-    opacity: .5;
-    border-style: dashed;
-
-    &:hover,
-    &:focus-within {
-        opacity: 1;
-    }
-}
-
-//
 // TCEforms Sections
 //
 .t3-form-field-disable {

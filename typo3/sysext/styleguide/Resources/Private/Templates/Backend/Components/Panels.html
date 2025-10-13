@@ -7,6 +7,10 @@
 
 <f:layout name="Module" />
 
+<f:section name="Before">
+    <f:asset.module identifier="@typo3/backend/element/progress-bar-element.js"/>
+</f:section>
+
 <f:section name="Content">
 
     <f:render
@@ -232,6 +236,40 @@
                 <div class="panel-progress">
                     <div class="panel-progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"><span class="visually-hidden">100%</span></div>
                 </div>
+                <div class="panel-heading">
+                    <h2 class="panel-title">Panel Title</h2>
+                </div>
+            </div>
+        </sg:colorScheme>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.panels.progressComponent.headline" /></h2>
+        <sg:colorScheme>
+            <div class="panel panel-default">
+                <typo3-backend-progress-bar></typo3-backend-progress-bar>
+                <div class="panel-heading">
+                    <h2 class="panel-title">Panel Title</h2>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <typo3-backend-progress-bar value="25" max="100"></typo3-backend-progress-bar>
+                <div class="panel-heading">
+                    <h2 class="panel-title">Panel Title</h2>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <typo3-backend-progress-bar value="50" max="100"></typo3-backend-progress-bar>
+                <div class="panel-heading">
+                    <h2 class="panel-title">Panel Title</h2>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <typo3-backend-progress-bar value="75" max="100"></typo3-backend-progress-bar>
+                <div class="panel-heading">
+                    <h2 class="panel-title">Panel Title</h2>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <typo3-backend-progress-bar value="100" max="100"></typo3-backend-progress-bar>
                 <div class="panel-heading">
                     <h2 class="panel-title">Panel Title</h2>
                 </div>
