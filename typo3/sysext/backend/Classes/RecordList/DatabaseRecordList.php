@@ -2002,8 +2002,8 @@ class DatabaseRecordList
                 if ($cellOutput !== '') {
                     $icon = $this->iconFactory->getIcon('actions-menu-alternative', IconSize::SMALL);
                     $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.more');
-                    $output .= ' <div class="btn-group dropdown" title="' . htmlspecialchars($title) . '">' .
-                        '<a href="#actions_' . $table . '_' . $record->getUid() . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' . $icon->render() . '</a>' .
+                    $output .= ' <div class="btn-group dropdown">' .
+                        '<a title="' . htmlspecialchars($title) . '" href="#actions_' . $table . '_' . $record->getUid() . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' . $icon->render() . '</a>' .
                         '<ul id="actions_' . $table . '_' . $record->getUid() . '" class="dropdown-menu">' . $cellOutput . '</ul>' .
                         '</div>';
                 } else {

@@ -988,8 +988,8 @@ class FileList
 
         if ($cellOutput !== '') {
             $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.more');
-            $output .= '<div class="btn-group dropdown" title="' . htmlspecialchars($title) . '" >'
-                . '<a href="#actions_' . $resourceView->resource->getHashedIdentifier() . '" class="btn btn-sm btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">'
+            $output .= '<div class="btn-group dropdown">'
+                . '<a title="' . htmlspecialchars($title) . '" href="#actions_' . $resourceView->resource->getHashedIdentifier() . '" class="btn btn-sm btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">'
                 . $this->iconFactory->getIcon('actions-menu-alternative', IconSize::SMALL)->render()
                 . '</a>'
                 . '<ul id="actions_' . $resourceView->resource->getHashedIdentifier() . '" class="dropdown-menu">' . $cellOutput . '</ul>'
