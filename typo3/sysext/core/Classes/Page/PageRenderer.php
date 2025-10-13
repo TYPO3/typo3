@@ -60,14 +60,12 @@ class PageRenderer implements SingletonInterface
      */
     protected Locale $locale;
 
-    // Arrays containing associative array for the included files
+    // Arrays containing associative arrays for the included files
     /**
      * @var array<string, array>
      */
     protected array $jsFiles = [];
-    protected array $jsFooterFiles = [];
     protected array $jsLibs = [];
-    protected array $jsFooterLibs = [];
 
     /**
      * @var array<string, array>
@@ -101,7 +99,6 @@ class PageRenderer implements SingletonInterface
      * @var array<string, array>
      */
     protected array $jsInline = [];
-    protected array $jsFooterInline = [];
 
     /**
      * @var array<string, array>
@@ -227,9 +224,7 @@ class PageRenderer implements SingletonInterface
         $this->templateFile = 'EXT:core/Resources/Private/Templates/PageRenderer.html';
         $this->bodyContent = '';
         $this->jsFiles = [];
-        $this->jsFooterFiles = [];
         $this->jsInline = [];
-        $this->jsFooterInline = [];
         $this->jsLibs = [];
         $this->cssFiles = [];
         $this->cssInline = [];
@@ -1888,10 +1883,12 @@ class PageRenderer implements SingletonInterface
         }
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['jsConcatenateHandler'])) {
             // use external concatenation routine
+            // @todo: $jsFooterFiles can be removed once the hook is adapted / replaced
+            $jsFooterFiles = [];
             $params = [
                 'jsLibs' => &$this->jsLibs,
                 'jsFiles' => &$this->jsFiles,
-                'jsFooterFiles' => &$this->jsFooterFiles,
+                'jsFooterFiles' => &$jsFooterFiles,
                 'headerData' => &$this->headerData,
                 'footerData' => &$this->footerData,
             ];
@@ -1899,7 +1896,6 @@ class PageRenderer implements SingletonInterface
         } else {
             $this->jsLibs = $this->resourceCompressor->concatenateJsFiles($this->jsLibs);
             $this->jsFiles = $this->resourceCompressor->concatenateJsFiles($this->jsFiles);
-            $this->jsFooterFiles = $this->resourceCompressor->concatenateJsFiles($this->jsFooterFiles);
         }
     }
 
@@ -1978,12 +1974,14 @@ class PageRenderer implements SingletonInterface
         }
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['jsCompressHandler'])) {
             // Use external compression routine
+            // @todo: $jsFooterFiles and $jsFooterInline and $jsFooterLibs can be removed once the hook is adapted / replaced
+            $jsFooterFiles = $jsFooterInline = [];
             $params = [
                 'jsInline' => &$this->jsInline,
-                'jsFooterInline' => &$this->jsFooterInline,
+                'jsFooterInline' => &$jsFooterInline,
                 'jsLibs' => &$this->jsLibs,
                 'jsFiles' => &$this->jsFiles,
-                'jsFooterFiles' => &$this->jsFooterFiles,
+                'jsFooterFiles' => &$jsFooterFiles,
                 'headerData' => &$this->headerData,
                 'footerData' => &$this->footerData,
             ];
@@ -1997,7 +1995,6 @@ class PageRenderer implements SingletonInterface
             }
             $this->jsLibs = $this->resourceCompressor->compressJsFiles($this->jsLibs);
             $this->jsFiles = $this->resourceCompressor->compressJsFiles($this->jsFiles);
-            $this->jsFooterFiles = $this->resourceCompressor->compressJsFiles($this->jsFooterFiles);
         }
     }
 
@@ -2043,17 +2040,19 @@ class PageRenderer implements SingletonInterface
         if (!$hooks) {
             return;
         }
+        // @todo: $jsFooterFiles and $jsFooterInline and $jsFooterLibs can be removed once the hook is adapted / replaced
+        $jsFooterFiles = $jsFooterLibs = $jsFooterInline = [];
         $params = [
             'jsLibs' => &$this->jsLibs,
-            'jsFooterLibs' => &$this->jsFooterLibs,
+            'jsFooterLibs' => &$jsFooterLibs,
             'jsFiles' => &$this->jsFiles,
-            'jsFooterFiles' => &$this->jsFooterFiles,
+            'jsFooterFiles' => &$jsFooterFiles,
             'cssLibs' => &$this->cssLibs,
             'cssFiles' => &$this->cssFiles,
             'headerData' => &$this->headerData,
             'footerData' => &$this->footerData,
             'jsInline' => &$this->jsInline,
-            'jsFooterInline' => &$this->jsFooterInline,
+            'jsFooterInline' => &$jsFooterInline,
             'cssInline' => &$this->cssInline,
         ];
         foreach ($hooks as $hook) {
@@ -2070,17 +2069,19 @@ class PageRenderer implements SingletonInterface
         if (!$hooks) {
             return;
         }
+        // @todo: $jsFooterFiles and $jsFooterInline and $jsFooterLibs can be removed once the hook is adapted / replaced
+        $jsFooterFiles = $jsFooterLibs = $jsFooterInline = [];
         $params = [
             'jsLibs' => &$this->jsLibs,
-            'jsFooterLibs' => &$this->jsFooterLibs,
+            'jsFooterLibs' => &$jsFooterLibs,
             'jsFiles' => &$this->jsFiles,
-            'jsFooterFiles' => &$this->jsFooterFiles,
+            'jsFooterFiles' => &$jsFooterFiles,
             'cssLibs' => &$this->cssLibs,
             'cssFiles' => &$this->cssFiles,
             'headerData' => &$this->headerData,
             'footerData' => &$this->footerData,
             'jsInline' => &$this->jsInline,
-            'jsFooterInline' => &$this->jsFooterInline,
+            'jsFooterInline' => &$jsFooterInline,
             'cssInline' => &$this->cssInline,
         ];
         foreach ($hooks as $hook) {
