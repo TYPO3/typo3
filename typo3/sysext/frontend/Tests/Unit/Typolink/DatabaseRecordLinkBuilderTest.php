@@ -184,6 +184,7 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
                 $this->createMock(TcaSchemaFactory::class),
                 new NullFrontend('testing'),
                 new TypoLinkCodecService(new NoopEventDispatcher()),
+                new NoopEventDispatcher(),
             ]
         );
         $databaseRecordLinkBuilder->method('getPageTsConfig')->willReturn($pageTsConfig);
