@@ -1,0 +1,17 @@
+"be_users",,,,,,,,
+,"uid","pid","username","usergroup","deleted","admin","options","TSconfig"
+,1,0,"admin",,0,1,0,""
+,2,0,"editor",,0,0,3,""
+,3,0,"admin_with_label",,0,1,0,"options.folderTree.label.1:/ {
+  label = Main Storage
+  color = #ff0000
+}
+"
+,4,0,"admin_with_default_color",,0,1,0,"options.folderTree.label.2:/ {
+  label = User Upload Storage
+}
+"
+,5,0,"admin_with_empty_label",,0,1,0,"options.folderTree.label.1:/ {
+  label =
+}
+"

@@ -37,6 +37,18 @@ export class FileStorageTree extends Tree
   }
 
   protected override getNodeTitle(node: TreeNodeInterface): string {
-    return decodeURIComponent(node.name);
+    let baseNodeTitle = decodeURIComponent(node.name);
+
+    const labels = this.getNodeLabels(node);
+    if (labels.length) {
+      baseNodeTitle += '; ' + labels.map(label => label.label).join('; ');
+    }
+
+    const statusInformation = this.getNodeStatusInformation(node);
+    if (statusInformation.length) {
+      baseNodeTitle += '; ' + statusInformation.map(information => information.label).join('; ');
+    }
+
+    return baseNodeTitle;
   }
 }

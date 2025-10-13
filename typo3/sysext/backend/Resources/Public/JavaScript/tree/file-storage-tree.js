@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import{Tree as t}from"@typo3/backend/tree/tree.js";class s extends t{constructor(){super(),this.settings.defaultProperties={hasChildren:!1,nameSourceField:"title",type:"sys_file",prefix:"",suffix:"",locked:!1,loaded:!1,overlayIcon:"",selectable:!0,expanded:!1,checked:!1}}getNodeTitle(e){return decodeURIComponent(e.name)}}export{s as FileStorageTree};
+import{Tree as o}from"@typo3/backend/tree/tree.js";class i extends o{constructor(){super(),this.settings.defaultProperties={hasChildren:!1,nameSourceField:"title",type:"sys_file",prefix:"",suffix:"",locked:!1,loaded:!1,overlayIcon:"",selectable:!0,expanded:!1,checked:!1}}getNodeTitle(e){let t=decodeURIComponent(e.name);const s=this.getNodeLabels(e);s.length&&(t+="; "+s.map(l=>l.label).join("; "));const a=this.getNodeStatusInformation(e);return a.length&&(t+="; "+a.map(l=>l.label).join("; ")),t}}export{i as FileStorageTree};

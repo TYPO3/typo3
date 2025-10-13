@@ -17,9 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller\FileStorage;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Controller\Event\AfterFileStorageTreeItemsPreparedEvent;
 use TYPO3\CMS\Backend\Dto\Tree\FileTreeItem;
+use TYPO3\CMS\Backend\Dto\Tree\Label\Label;
 use TYPO3\CMS\Backend\Dto\Tree\TreeItem;
 use TYPO3\CMS\Backend\Tree\FileStorageTreeProvider;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -38,17 +42,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[AsController]
 class TreeController
 {
     protected IconFactory $iconFactory;
     protected FileStorageTreeProvider $treeProvider;
     protected ResourceFactory $resourceFactory;
+    protected EventDispatcherInterface $eventDispatcher;
 
     public function __construct(?IconFactory $iconFactory = null)
     {
         $this->iconFactory = $iconFactory ?? GeneralUtility::makeInstance(IconFactory::class);
         $this->treeProvider = GeneralUtility::makeInstance(FileStorageTreeProvider::class);
         $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
     }
 
     /**
@@ -65,10 +72,7 @@ class TreeController
         } else {
             $items = $this->treeProvider->getRootNodes($this->getBackendUser());
         }
-        $items = array_map(function (array $item): FileTreeItem {
-            return $this->prepareItemForOutput($item);
-        }, $items);
-        return new JsonResponse($items);
+        return new JsonResponse($this->getPreparedItemsForOutput($request, $items));
     }
 
     /**
@@ -166,51 +170,63 @@ class TreeController
         }
 
         ksort($items);
-        $finalItems = [];
         $items = array_values($items);
-        foreach ($items as $item) {
-            $finalItems[] = $this->prepareItemForOutput($item);
-        }
-        return new JsonResponse($finalItems);
+        return new JsonResponse($this->getPreparedItemsForOutput($request, $items));
     }
 
     /**
-     * Adds information for the JSON result to be rendered.
+     * Adds information for the JSON result to be rendered. Additionally, dispatches event for modification.
      */
-    protected function prepareItemForOutput(array $item): FileTreeItem
+    protected function getPreparedItemsForOutput(ServerRequestInterface $request, array $items): array
     {
-        $folder = $item['resource'];
-        $isStorage = $item['recordType'] !== 'sys_file';
-        if ($isStorage && !$folder->getStorage()->isOnline()) {
-            $item['name'] .= ' (' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.isOffline') . ')';
+        foreach ($items as &$item) {
+            $folder = $item['resource'];
+            $isStorage = $item['recordType'] !== 'sys_file';
+            $item['resourceType'] = $isStorage ? 'storage' : 'folder';
+            if ($isStorage && !$folder->getStorage()->isOnline()) {
+                $item['name'] .= ' (' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.isOffline') . ')';
+            }
+            $icon = $this->iconFactory->getIconForResource($folder, IconSize::SMALL, null, $isStorage ? ['mount-root' => true] : []);
+            $item['icon'] = $icon->getIdentifier();
+            $item['overlayIcon'] = $icon->getOverlayIcon() ? $icon->getOverlayIcon()->getIdentifier() : '';
+
+            $tsConfigLabels = $this->getBackendUser()->getTSConfig()['options.']['folderTree.']['label.'] ?? [];
+            if (trim($tsConfigLabels[$folder->getCombinedIdentifier() . '.']['label'] ?? '') !== '') {
+                $item['labels'][] = new Label(
+                    label: (string)($tsConfigLabels[$folder->getCombinedIdentifier() . '.']['label']),
+                    color: (string)($tsConfigLabels[$folder->getCombinedIdentifier() . '.']['color'] ?? '#ff8722'),
+                );
+            }
         }
-        $icon = $this->iconFactory->getIconForResource($folder, IconSize::SMALL, null, $isStorage ? ['mount-root' => true] : []);
-        $item['icon'] = $icon->getIdentifier();
-        $item['overlayIcon'] = $icon->getOverlayIcon() ? $icon->getOverlayIcon()->getIdentifier() : '';
 
-        $treeItem = new FileTreeItem(
-            item: new TreeItem(
-                identifier: $item['identifier'],
-                parentIdentifier: (string)($item['parentIdentifier'] ?? ''),
-                recordType: (string)($item['recordType'] ?? ''),
-                name: (string)($item['name'] ?? ''),
-                prefix: (string)($item['prefix'] ?? ''),
-                suffix: (string)($item['suffix'] ?? ''),
-                tooltip: (string)($item['tooltip'] ?? ''),
-                depth: (int)($item['depth'] ?? 0),
-                hasChildren: (bool)($item['hasChildren'] ?? false),
-                loaded: (bool)($item['loaded'] ?? false),
-                icon: $item['icon'],
-                overlayIcon: $item['overlayIcon'],
-                statusInformation: (array)($item['statusInformation'] ?? []),
-                labels: (array)($item['labels'] ?? []),
-            ),
-            pathIdentifier: (string)($item['pathIdentifier'] ?? ''),
-            storage: (int)($item['storage'] ?? 0),
-            resourceType: $isStorage ? 'storage' : 'folder',
+        return array_map(
+            static function (array $item): FileTreeItem {
+                return new FileTreeItem(
+                    item: new TreeItem(
+                        identifier: $item['identifier'],
+                        parentIdentifier: (string)($item['parentIdentifier'] ?? ''),
+                        recordType: (string)($item['recordType'] ?? ''),
+                        name: (string)($item['name'] ?? ''),
+                        prefix: (string)($item['prefix'] ?? ''),
+                        suffix: (string)($item['suffix'] ?? ''),
+                        tooltip: (string)($item['tooltip'] ?? ''),
+                        depth: (int)($item['depth'] ?? 0),
+                        hasChildren: (bool)($item['hasChildren'] ?? false),
+                        loaded: (bool)($item['loaded'] ?? false),
+                        icon: $item['icon'],
+                        overlayIcon: $item['overlayIcon'],
+                        statusInformation: (array)($item['statusInformation'] ?? []),
+                        labels: (array)($item['labels'] ?? []),
+                    ),
+                    pathIdentifier: (string)($item['pathIdentifier'] ?? ''),
+                    storage: (int)($item['storage'] ?? 0),
+                    resourceType: $item['resourceType'],
+                );
+            },
+            $this->eventDispatcher->dispatch(
+                new AfterFileStorageTreeItemsPreparedEvent($request, $items)
+            )->getItems()
         );
-
-        return $treeItem;
     }
 
     protected function getBackendUser(): BackendUserAuthentication
