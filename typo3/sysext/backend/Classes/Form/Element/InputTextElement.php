@@ -180,7 +180,6 @@ class InputTextElement extends AbstractFormElement
         $valuePickerHtml = [];
         if (is_array($config['valuePicker']['items'] ?? false)) {
             $valuePickerConfiguration = [
-                'mode' => $config['valuePicker']['mode'] ?? 'replace',
                 'linked-field' => '[data-formengine-input-name="' . $itemName . '"]',
             ];
             $valuePickerAttributes = array_merge(

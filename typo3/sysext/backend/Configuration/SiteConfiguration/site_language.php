@@ -69,7 +69,6 @@ return [
                 'size' => 20,
                 'placeholder' => 'en-US',
                 'valuePicker' => [
-                    'mode' => '',
                     'items' => \TYPO3\CMS\Backend\Configuration\TCA\UserFunctions::getAllSystemLocales(),
                 ],
             ],

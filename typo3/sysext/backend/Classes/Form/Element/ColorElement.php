@@ -137,7 +137,6 @@ class ColorElement extends AbstractFormElement
         $valuePickerHtml = [];
         if (is_array($config['valuePicker']['items'] ?? false)) {
             $valuePickerConfiguration = [
-                'mode' => 'replace',
                 'linked-field' => '[data-formengine-input-name="' . $itemName . '"]',
             ];
             $valuePickerHtml[] = '<typo3-formengine-valuepicker ' . GeneralUtility::implodeAttributes($valuePickerConfiguration, true) . '>';

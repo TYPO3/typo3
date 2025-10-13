@@ -4251,4 +4251,74 @@ final class TcaMigrationTest extends UnitTestCase
         ];
         self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
     }
+
+    #[Test]
+    public static function removeValuePickerModeFromConfiguration(): void
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'color',
+                            'valuePicker' => [
+                                'mode' => 'prepend',
+                                'items' => [
+                                    [ 'label' => 'typo3 orange', 'value' => '#FF8700'],
+                                ],
+                            ],
+                        ],
+                    ],
+                    'bColumn' => [
+                        'config' => [
+                            'type' => 'input',
+                        ],
+                    ],
+                    'cColumn' => [
+                        'config' => [
+                            'type' => 'input',
+                            'valuePicker' => [
+                                'items' => [
+                                    [ 'label' => 'label', 'value' => 'value'],
+                                ],
+                                'mode' => 'append',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'color',
+                            'valuePicker' => [
+                                'items' => [
+                                    [ 'label' => 'typo3 orange', 'value' => '#FF8700'],
+                                ],
+                            ],
+                        ],
+                    ],
+                    'bColumn' => [
+                        'config' => [
+                            'type' => 'input',
+                        ],
+                    ],
+                    'cColumn' => [
+                        'config' => [
+                            'type' => 'input',
+                            'valuePicker' => [
+                                'items' => [
+                                    [ 'label' => 'label', 'value' => 'value'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
+    }
 }

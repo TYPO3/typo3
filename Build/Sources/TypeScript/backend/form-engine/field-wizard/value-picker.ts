@@ -11,17 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-enum InsertModes {
-  append = 'append',
-  replace = 'replace',
-  prepend = 'prepend'
-}
-
 /**
  * Module @typo3/backend/form-engine/field-wizard/value-picker
  *
  * @example
- * <typo3-formengine-valuepicker mode="prepend" linked-field="css-selector">
+ * <typo3-formengine-valuepicker linked-field="css-selector">
  *   <select>
  * </typo3-formengine-valuepicker>
  *
@@ -69,12 +63,10 @@ export class ValuePicker extends HTMLElement {
     if (this.linkedField === null || this.valuePicker === null || this.initialValueSet) {
       return;
     }
-    if (this.getInsertMode() === InsertModes.replace) {
-      const formEngineInputField = (document.getElementsByName(this.linkedField.dataset.formengineInputName)[0] ?? null) as HTMLInputElement|HTMLTextAreaElement;
-      if (formEngineInputField !== null) {
-        this.selectValue(formEngineInputField.value);
-        this.initialValueSet = true;
-      }
+    const formEngineInputField = (document.getElementsByName(this.linkedField.dataset.formengineInputName)[0] ?? null) as HTMLInputElement|HTMLTextAreaElement;
+    if (formEngineInputField !== null) {
+      this.selectValue(formEngineInputField.value);
+      this.initialValueSet = true;
     }
   }
 
@@ -87,35 +79,16 @@ export class ValuePicker extends HTMLElement {
     if (this.valuePicker === null) {
       return;
     }
-    if (this.getInsertMode() === InsertModes.replace) {
-      this.selectValue(this.linkedField.value);
-    } else {
-      this.valuePicker.selectedIndex = 0;
-    }
+    this.selectValue(this.linkedField.value);
   };
 
   private selectValue (value: string): void {
     this.valuePicker.selectedIndex = Array.from(this.valuePicker.options).findIndex((option): boolean => option.value === value);
   }
 
-  private getInsertMode (): InsertModes {
-    return this.getAttribute('mode') as InsertModes ?? InsertModes.replace;
-  }
-
   private setValue (): void {
     const selectedValue = this.valuePicker.options[this.valuePicker.selectedIndex].value;
-
-    switch (this.getInsertMode()) {
-      case InsertModes.append:
-        this.linkedField.value += selectedValue;
-        break;
-      case InsertModes.prepend:
-        this.linkedField.value = selectedValue + this.linkedField.value;
-        break;
-      default:
-        this.linkedField.value = selectedValue;
-        break;
-    }
+    this.linkedField.value = selectedValue;
     this.linkedField.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
   }
 }

@@ -169,7 +169,6 @@ class LinkElement extends AbstractFormElement
         $valuePickerHtml = [];
         if (is_array($config['valuePicker']['items'] ?? false)) {
             $valuePickerConfiguration = [
-                'mode' => $config['valuePicker']['mode'] ?? 'replace',
                 'linked-field' => '[data-formengine-input-name="' . $itemName . '"]',
                 'class' => 'form-control-clearable-wrapper',
             ];

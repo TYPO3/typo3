@@ -29,7 +29,6 @@ return [
                 'size' => 8,
                 'default' => 404,
                 'valuePicker' => [
-                    'mode' => '',
                     'items' => [
                         ['label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorCode.404', 'value' => '404'],
                         ['label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorCode.403', 'value' => '403'],

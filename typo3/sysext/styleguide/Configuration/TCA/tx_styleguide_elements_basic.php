@@ -192,42 +192,6 @@ return [
                 ],
             ],
         ],
-        'input_35' => [
-            'label' => 'input_35',
-            'description' => 'valuePicker append',
-            'config' => [
-                'type' => 'input',
-                'size' => 20,
-                'eval' => 'trim',
-                'valuePicker' => [
-                    'mode' => 'append',
-                    'items' => [
-                        [ 'label' => 'Spring', 'value' => 'spring'],
-                        [ 'label' => 'Summer', 'value' => 'summer'],
-                        [ 'label' => 'Autumn', 'value' => 'autumn'],
-                        [ 'label' => 'Winter', 'value' => 'winter'],
-                    ],
-                ],
-            ],
-        ],
-        'input_36' => [
-            'label' => 'input_36',
-            'description' => 'valuePicker prepend',
-            'config' => [
-                'type' => 'input',
-                'size' => 20,
-                'eval' => 'trim',
-                'valuePicker' => [
-                    'mode' => 'prepend',
-                    'items' => [
-                        [ 'label' => 'spring', 'value' => 'Spring'],
-                        [ 'label' => 'summer', 'value' => 'Summer'],
-                        [ 'label' => 'autumn', 'value' => 'Autumn'],
-                        [ 'label' => 'winter', 'value' => 'Winter'],
-                    ],
-                ],
-            ],
-        ],
         'input_40' => [
             'label' => 'input_40',
             'description' => 'readOnly',

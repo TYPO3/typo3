@@ -96,6 +96,7 @@ class TcaMigration
         $tcaProcessingResult = $this->removeFieldSearchConfigOptions($tcaProcessingResult);
         $tcaProcessingResult = $this->removeSearchFieldsControlOption($tcaProcessingResult);
         $tcaProcessingResult = $this->migrateSingleDataStructureConfiguration($tcaProcessingResult);
+        $tcaProcessingResult = $this->removeValuePickerMode($tcaProcessingResult);
 
         return $tcaProcessingResult;
     }
@@ -1805,6 +1806,33 @@ class TcaMigration
                 }
             }
         }
+        return $tcaProcessingResult->withTca($tca);
+    }
+
+    /**
+     * Removes [config][valuePicker][mode]
+     */
+    protected function removeValuePickerMode(TcaProcessingResult $tcaProcessingResult): TcaProcessingResult
+    {
+        $tca = $tcaProcessingResult->getTca();
+        foreach ($tca as $table => $tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (!isset($fieldConfig['config']['valuePicker']['mode'])) {
+                    continue;
+                }
+
+                unset($tca[$table]['columns'][$fieldName]['config']['valuePicker']['mode']);
+
+                $tcaProcessingResult = $tcaProcessingResult->withAdditionalMessages('The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines'
+                    . ' a "mode" in its "valuePicker" configuration. This is not evaluated anymore and is therefore removed.'
+                    . ' Please adjust your TCA accordingly.');
+            }
+        }
+
         return $tcaProcessingResult->withTca($tca);
     }
 }
