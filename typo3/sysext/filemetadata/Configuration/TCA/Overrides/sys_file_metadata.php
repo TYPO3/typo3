@@ -11,7 +11,7 @@ $tca = [
             'showitem' => '
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
                     fileinfo, title, description, ranking, keywords,
-                    --palette--;;25, --palette--;;language,
+                    --palette--;;20, --palette--;;language,
                 --div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
                     creator, creator_tool, publisher, source, copyright,
                     --palette--;;40,
@@ -25,7 +25,7 @@ $tca = [
             'showitem' => '
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
                     fileinfo, title, description, ranking, keywords,
-                    --palette--;;25, --palette--;;language,
+                    --palette--;;20, --palette--;;language,
                 --div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
                     creator, creator_tool, publisher, source, copyright, language,
                     --palette--;;40,
@@ -58,7 +58,7 @@ $tca = [
             'showitem' => '
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
                     fileinfo, title, description, ranking, keywords,
-                    --palette--;;25, --palette--;;language,
+                    --palette--;;20, --palette--;;language,
                 --div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
                     creator, creator_tool, publisher, source, copyright, language,
                     --palette--;;60,
@@ -74,7 +74,7 @@ $tca = [
             'showitem' => '
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
                     fileinfo, title, description, ranking, keywords,
-                    --palette--;;25, --palette--;;language,
+                    --palette--;;20, --palette--;;language,
                 --div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
                     creator, creator_tool, publisher, source, copyright, language,
                     --palette--;;60,
@@ -90,7 +90,7 @@ $tca = [
             'showitem' => '
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
                     fileinfo, title, description, ranking, keywords,
-                    --palette--;;25, --palette--;;language,
+                    --palette--;;20, --palette--;;language,
                 --div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
                     creator, creator_tool, publisher, source, copyright, language,
                     --palette--;;40,
