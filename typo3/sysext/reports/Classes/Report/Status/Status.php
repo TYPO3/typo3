@@ -40,10 +40,7 @@ class Status implements RequestAwareReportInterface
     public function __construct(
         protected readonly BackendViewFactory $backendViewFactory,
         protected readonly StatusRegistry $statusRegistry
-    ) {
-        // This needs to be kept during v12 as backwards-compatibility for people still using getLL() in their status reports
-        $this->getLanguageService()->includeLLFile('EXT:reports/Resources/Private/Language/locallang_reports.xlf');
-    }
+    ) {}
 
     /**
      * Takes care of creating / rendering the status report

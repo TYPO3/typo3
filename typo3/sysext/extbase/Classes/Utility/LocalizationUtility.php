@@ -18,9 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Utility;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -63,12 +60,11 @@ class LocalizationUtility
             $key = array_pop($keyParts);
             $languageFilePath = implode(':', $keyParts);
         } else {
-            $languageFilePath = static::getLanguageFilePath($extensionName);
+            $languageFilePath = 'EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Private/Language/locallang.xlf';
         }
-        $locale = self::getLocale($languageKey);
-        $languageService = self::buildLanguageService($locale, $languageFilePath);
-        $overrideLabels = [];
         $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? null;
+        $locale = self::getLocale($languageKey, $request);
+        $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create($locale);
         if (!empty($extensionName) && $request instanceof ServerRequestInterface) {
             $typoScript = $request->getAttribute('frontend.typoscript');
             if ($typoScript instanceof FrontendTypoScript) {
@@ -81,52 +77,18 @@ class LocalizationUtility
             }
         }
 
-        $resolvedLabel = $languageService->sL('LLL:' . $languageFilePath . ':' . $key);
-        $value = $resolvedLabel !== '' ? $resolvedLabel : null;
-
-        // Check if a value was explicitly set to "" via TypoScript, if so, we need to ensure that this is "" and not null
-        if ($overrideLabels !== []) {
-            $languageKey = $locale->getName();
-            // @todo: probably cannot handle "de-DE" and "de" fallbacks
-            if ($value === null && isset($overrideLabels[$languageKey][$key])) {
-                $value = '';
-            }
+        try {
+            return $languageService->translate($key, $languageFilePath, $arguments ?? []);
+        } catch (\ValueError $e) {
+            return sprintf('Error: could not translate key "%s" with value "%s" and %d argument(s)!', $key, $e->getMessage(), count($arguments));
         }
-
-        if (is_array($arguments) && $arguments !== [] && $value !== null) {
-            // This unrolls arguments from $arguments - instead of calling vsprintf which receives arguments as an array.
-            // The reason is that only sprintf() will return an error message if the number of arguments does not match
-            // the number of placeholders in the format string. Whereas, vsprintf would silently return nothing.
-            return sprintf($value, ...array_values($arguments)) ?: sprintf('Error: could not translate key "%s" with value "%s" and %d argument(s)!', $key, $value, count($arguments));
-        }
-        return $value;
-    }
-
-    protected static function buildLanguageService(Locale $locale, string $languageFilePath): LanguageService
-    {
-        $languageKeyHash = sha1(json_encode(array_merge([(string)$locale], $locale->getDependencies(), [$languageFilePath])));
-        $cache = self::getRuntimeCache();
-        if (!$cache->get($languageKeyHash)) {
-            $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create($locale);
-            $languageService->includeLLFile($languageFilePath);
-            $cache->set($languageKeyHash, $languageService);
-        }
-        return $cache->get($languageKeyHash);
-    }
-
-    /**
-     * Returns the default path and filename for an extension
-     */
-    protected static function getLanguageFilePath(string $extensionName): string
-    {
-        return 'EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Private/Language/locallang.xlf';
     }
 
     /**
      * Resolves the currently active locale.
      * Using the Locales factory, as it handles dependencies (e.g. "de-AT" falls back to "de").
      */
-    protected static function getLocale(Locale|string|null $localeOrLanguageKey): Locale
+    protected static function getLocale(Locale|string|null $localeOrLanguageKey, ?ServerRequestInterface $request): Locale
     {
         if ($localeOrLanguageKey instanceof Locale) {
             return $localeOrLanguageKey;
@@ -135,23 +97,17 @@ class LocalizationUtility
         if (is_string($localeOrLanguageKey)) {
             return $localeFactory->createLocale($localeOrLanguageKey);
         }
-        return $localeFactory->createLocaleFromRequest($GLOBALS['TYPO3_REQUEST'] ?? null);
+        return $localeFactory->createLocaleFromRequest($request);
     }
 
     /**
      * Allow plugin.tx_myextension._LOCAL_LANG and plugin.tx_myextension_myplugin._LOCAL_LANG
      */
-    protected static function getPluginName(?ServerRequestInterface $request = null): string
+    protected static function getPluginName(?ServerRequestInterface $request): string
     {
-        $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? null;
         if ($request instanceof Request) {
             return strtolower($request->getPluginName());
         }
         return '';
-    }
-
-    protected static function getRuntimeCache(): FrontendInterface
-    {
-        return GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
     }
 }

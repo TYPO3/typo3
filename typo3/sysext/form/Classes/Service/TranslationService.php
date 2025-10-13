@@ -19,10 +19,7 @@ namespace TYPO3\CMS\Form\Service;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -48,15 +45,11 @@ class TranslationService implements SingletonInterface
 {
     /**
      * Key of the language to use
-     *
-     * @var string
      */
     protected string $languageKey = '';
 
     public function __construct(
         protected readonly LanguageServiceFactory $languageServiceFactory,
-        #[Autowire(service: 'cache.runtime')]
-        protected readonly FrontendInterface $runtimeCache,
         protected readonly Locales $locales
     ) {}
 
@@ -101,9 +94,7 @@ class TranslationService implements SingletonInterface
             $this->setLanguageKeys($language);
         }
 
-        $languageService = $this->buildLanguageService($this->languageKey, $locallangPathAndFilename ?? '');
-
-        $overrideLabels = [];
+        $languageService = $this->languageServiceFactory->create($this->languageKey);
         $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
         if (!empty($locallangPathAndFilename) && $request instanceof ServerRequestInterface) {
             $typoScript = $request->getAttribute('frontend.typoscript');
@@ -115,22 +106,10 @@ class TranslationService implements SingletonInterface
             }
         }
 
-        $resolvedLabel = $languageService->sL('LLL:' . $locallangPathAndFilename . ':' . $key);
-        $value = $resolvedLabel !== '' ? $resolvedLabel : null;
-
-        // Check if a value was explicitly set to ""
-        if ($overrideLabels !== []) {
-            if ($value === null && isset($overrideLabels[$this->languageKey])) {
-                $value = '';
-            }
-        }
-
-        if (is_array($arguments) && !empty($arguments) && $value !== null) {
-            $value = vsprintf($value, $arguments);
-        } elseif ($value === null) {
+        $value = $languageService->translate($key, $locallangPathAndFilename, $arguments ?? []);
+        if ($value === null) {
             $value = $defaultValue;
         }
-
         return $value;
     }
 
@@ -500,19 +479,6 @@ class TranslationService implements SingletonInterface
             }
         }
         return $translatedValue;
-    }
-
-    protected function buildLanguageService(string $languageKey, $languageFilePath): LanguageService
-    {
-        $languageKeyHash = sha1($languageKey . '_' . $languageFilePath);
-        if (!$this->runtimeCache->get($languageKeyHash)) {
-            $languageService = $this->languageServiceFactory->create($languageKey);
-            if ($languageFilePath) {
-                $languageService->includeLLFile($languageFilePath);
-            }
-            $this->runtimeCache->set($languageKeyHash, $languageService);
-        }
-        return $this->runtimeCache->get($languageKeyHash);
     }
 
     /**

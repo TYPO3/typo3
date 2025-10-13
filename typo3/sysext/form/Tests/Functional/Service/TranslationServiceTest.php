@@ -38,7 +38,6 @@ final class TranslationServiceTest extends FunctionalTestCase
         parent::setUp();
         $this->subject = new TranslationService(
             $this->get(LanguageServiceFactory::class),
-            $this->get('cache.runtime'),
             new Locales()
         );
     }

@@ -57,11 +57,6 @@ class LanguageService
     /**
      * @var string[][]
      */
-    protected array $labels = [];
-
-    /**
-     * @var string[][]
-     */
     protected array $overrideLabels = [];
 
     /**
@@ -101,14 +96,14 @@ class LanguageService
      * @param string $index Label key
      * @param array $localLanguage $LOCAL_LANG array to get label key from
      */
-    protected function getLLL(string $index, array $localLanguage): string
+    protected function getLLL(string $index, array $localLanguage, bool $returnNullIfNotSet = false): ?string
     {
         if (isset($localLanguage[$this->lang][$index])) {
             $value = is_string($localLanguage[$this->lang][$index])
                 ? $localLanguage[$this->lang][$index]
                 : $localLanguage[$this->lang][$index][0];
         } else {
-            $value = '';
+            $value = $returnNullIfNotSet ? null : '';
         }
         return $value;
     }
@@ -173,11 +168,6 @@ class LanguageService
             return $input;
         }
 
-        $cacheIdentifier = 'labels_' . (string)$this->locale . '_' . md5($input);
-        $cacheEntry = $this->runtimeCache->get($cacheIdentifier);
-        if ($cacheEntry !== false) {
-            return $cacheEntry;
-        }
         // Remove the LLL: prefix
         $restStr = substr(trim($input), 4);
         $extensionPrefix = '';
@@ -186,35 +176,50 @@ class LanguageService
             $restStr = substr(trim($restStr), 4);
             $extensionPrefix = 'EXT:';
         }
-        $output = '';
         $parts = explode(':', trim($restStr));
         if (isset($parts[1])) {
-            $parts[0] = $extensionPrefix . $parts[0];
-            $labelsFromFile = $this->readLLfile($parts[0]);
-            if (is_array($this->overrideLabels[$parts[0]] ?? null)) {
-                $labelsFromFile = array_replace_recursive($labelsFromFile, $this->overrideLabels[$parts[0]]);
-            }
-            $output = $this->getLLL($parts[1], $labelsFromFile);
+            return (string)$this->translate($parts[1], $extensionPrefix . $parts[0]);
         }
-        $this->runtimeCache->set($cacheIdentifier, $output);
-        return $output;
+        return '';
     }
 
     /**
-     * Includes locallang file (and possibly additional localized version, if configured for)
-     * Read language labels will be merged with $LOCAL_LANG.
+     * This is different from sL() as it can also return null, and expects a domain (can be a file reference as well),
+     * NULL is returned then the "id" is wrong.
      *
-     * @param string $fileRef $fileRef is a file-reference
-     * @return array returns the loaded label file
-     * @internal do not rely on this method as it is only used for internal purposes in TYPO3 v13.0.
+     * @internal for the time being, there might be $locale added a later point, as well as $quantity and $defaultValue
      */
-    public function includeLLFile(string $fileRef): array
+    public function translate(string $id, string $domain, array $arguments = []): ?string
     {
-        $localLanguage = $this->readLLfile($fileRef);
-        if (!empty($localLanguage)) {
-            $this->labels = array_replace_recursive($this->labels, $localLanguage);
+        $cacheIdentifier = 'labels_' . (string)$this->locale . '_' . md5($domain . ':' . $id);
+        $result = $this->runtimeCache->get($cacheIdentifier);
+        if (!is_string($result) && !is_null($result)) {
+            $labelsFromDomain = $this->readLLfile($domain);
+            if (is_array($this->overrideLabels[$domain] ?? null)) {
+                $labelsFromDomain = array_replace_recursive($labelsFromDomain, $this->overrideLabels[$domain]);
+            }
+            $result = $this->getLLL($id, $labelsFromDomain, true);
+            // Check if a value was explicitly set to "" via TypoScript, if so, we need to ensure that this is "" and not null
+            if (isset($this->overrideLabels[$domain][$id]) && $this->overrideLabels[$domain][$id] === '') {
+                $result = '';
+            }
+            $this->runtimeCache->set($cacheIdentifier, $result);
         }
-        return $localLanguage;
+        if ($result === '' || $result === null) {
+            return $result;
+        }
+        if ($arguments !== []) {
+            try {
+                // We use vsprintf() over sprintf() here on purpose.
+                // The reason is that only sprintf() will return an error message if the number of arguments does not match
+                // the number of placeholders in the format string. Whereas, vsprintf would silently return nothing.
+                return vsprintf($result, array_values($arguments));
+            } catch (\ValueError $e) {
+                // @todo: we could at some point add a logger or a custom exception if needed, and hand over the $result differently
+                return new \ValueError($result, 123, $e);
+            }
+        }
+        return $result;
     }
 
     /**
@@ -238,10 +243,10 @@ class LanguageService
      * @return array<string, string>
      * @internal not part of TYPO3 Core API for the time being.
      */
-    public function getLabelsFromResource(string $fileRef): array
+    public function getLabelsFromResource(string $fileReferenceOrDomain): array
     {
         $labelArray = [];
-        $labelsFromFile = $this->readLLfile($fileRef);
+        $labelsFromFile = $this->readLLfile($fileReferenceOrDomain);
         foreach ($labelsFromFile['en'] as $key => $value) {
             $labelArray[$key] = $this->getLLL($key, $labelsFromFile);
         }
@@ -249,14 +254,16 @@ class LanguageService
     }
 
     /**
-     * Includes a locallang file and returns the $LOCAL_LANG array found inside.
+     * Includes a locallang file and returns the labels found inside.
      *
-     * @param string $fileRef Input is a file-reference to be a 'local_lang' file containing a $LOCAL_LANG array
+     * @param string $fileReferenceOrDomain Input is a file-reference to be a 'local_lang' file containing a $LOCAL_LANG array
      * @return array value of $LOCAL_LANG found in the included file, empty if none found
      */
-    protected function readLLfile(string $fileRef): array
+    protected function readLLfile(string $fileReferenceOrDomain): array
     {
-        $cacheIdentifier = 'labels_file_' . md5($fileRef . (string)$this->locale);
+        // Translate a possible domain into a fileReference
+
+        $cacheIdentifier = 'labels_file_' . md5($fileReferenceOrDomain . (string)$this->locale);
         $cacheEntry = $this->runtimeCache->get($cacheIdentifier);
         if (is_array($cacheEntry)) {
             return $cacheEntry;
@@ -264,7 +271,7 @@ class LanguageService
 
         // Get english first
         $allLabels = [
-            'en' => $this->localizationFactory->getParsedData($fileRef, 'en'),
+            'en' => $this->localizationFactory->getParsedData($fileReferenceOrDomain, 'en'),
         ];
         $mainLanguageKey = $this->getTypo3LanguageKey();
         if ($mainLanguageKey !== 'en') {
@@ -275,7 +282,7 @@ class LanguageService
             foreach ($allLocales as $locale) {
                 // Merge current language labels onto labels from previous language
                 // This way we have a labels with fallback applied
-                $labels = $this->localizationFactory->getParsedData($fileRef, $locale);
+                $labels = $this->localizationFactory->getParsedData($fileReferenceOrDomain, $locale);
                 ArrayUtility::mergeRecursiveWithOverrule($allLabels[$mainLanguageKey], $labels, true, false);
             }
         }
