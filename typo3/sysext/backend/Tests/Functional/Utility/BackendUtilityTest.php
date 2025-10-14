@@ -66,42 +66,6 @@ final class BackendUtilityTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function givenPageIdCanBeExpanded(): void
-    {
-        $this->backendUser->groupData['webmounts'] = '1';
-
-        BackendUtility::openPageTree(5, false);
-
-        $expectedSiteHash = [
-            '1_5' => '1',
-            '1_1' => '1',
-            '1_0' => '1',
-        ];
-        $actualSiteHash = $this->backendUser->uc['BackendComponents']['States']['Pagetree']['stateHash'];
-        self::assertSame($expectedSiteHash, $actualSiteHash);
-    }
-
-    #[Test]
-    public function otherBranchesCanBeClosedWhenOpeningPage(): void
-    {
-        $this->backendUser->groupData['webmounts'] = '1';
-
-        BackendUtility::openPageTree(5, false);
-        BackendUtility::openPageTree(4, true);
-
-        //the complete branch of uid => 5 should be closed here
-        $expectedSiteHash = [
-            '1_4' => '1',
-            '1_3' => '1',
-            '1_2' => '1',
-            '1_1' => '1',
-            '1_0' => '1',
-        ];
-        $actualSiteHash = $this->backendUser->uc['BackendComponents']['States']['Pagetree']['stateHash'];
-        self::assertSame($expectedSiteHash, $actualSiteHash);
-    }
-
-    #[Test]
     public function getProcessedValueForLanguage(): void
     {
         self::assertEquals(

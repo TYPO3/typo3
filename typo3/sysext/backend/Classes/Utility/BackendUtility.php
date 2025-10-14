@@ -520,43 +520,6 @@ class BackendUtility
     }
 
     /**
-     * Opens the page tree to the specified page id
-     *
-     * @param int $pid Page id.
-     * @param bool $clearExpansion If set, then other open branches are closed.
-     * @internal should only be used from within TYPO3 Core
-     */
-    public static function openPageTree($pid, $clearExpansion)
-    {
-        $beUser = static::getBackendUserAuthentication();
-        // Get current expansion data:
-        if ($clearExpansion) {
-            $expandedPages = [];
-        } else {
-            $expandedPages = $beUser->uc['BackendComponents']['States']['Pagetree']['stateHash'] ?? [];
-        }
-        // Get rootline:
-        $rL = self::BEgetRootLine($pid);
-        // First, find out what mount index to use (if more than one Page Tree Entry Point exists):
-        $mountIndex = 0;
-        $mountKeys = $beUser->getWebmounts();
-
-        foreach ($rL as $rLDat) {
-            if (isset($mountKeys[$rLDat['uid']])) {
-                $mountIndex = $mountKeys[$rLDat['uid']];
-                break;
-            }
-        }
-        // Traverse rootline and open paths:
-        foreach ($rL as $rLDat) {
-            $expandedPages[$mountIndex . '_' . $rLDat['uid']] = '1';
-        }
-        // Write back:
-        $beUser->uc['BackendComponents']['States']['Pagetree']['stateHash'] = $expandedPages;
-        $beUser->writeUC();
-    }
-
-    /**
      * Returns the path (visually) of a page $uid, fx. "/First page/Second page/Another subpage"
      * Each part of the path will be limited to $titleLimit characters
      * Deleted pages are filtered out.

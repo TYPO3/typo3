@@ -35,7 +35,6 @@ use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Controller providing data to the file storage tree.
@@ -43,20 +42,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class TreeController
+readonly class TreeController
 {
-    protected IconFactory $iconFactory;
-    protected FileStorageTreeProvider $treeProvider;
-    protected ResourceFactory $resourceFactory;
-    protected EventDispatcherInterface $eventDispatcher;
-
-    public function __construct(?IconFactory $iconFactory = null)
-    {
-        $this->iconFactory = $iconFactory ?? GeneralUtility::makeInstance(IconFactory::class);
-        $this->treeProvider = GeneralUtility::makeInstance(FileStorageTreeProvider::class);
-        $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
-    }
+    public function __construct(
+        protected IconFactory $iconFactory,
+        protected FileStorageTreeProvider $treeProvider,
+        protected ResourceFactory $resourceFactory,
+        protected EventDispatcherInterface $eventDispatcher,
+    ) {}
 
     /**
      * Loads data for the first time, or when expanding a folder.
