@@ -40,6 +40,7 @@ final class InlineContentElementLocalizeSynchronizeCest
         $I->waitForElement('.t3js-modal.show');
         $I->wait(3);
         $I->waitForElementNotVisible('div#nprogess');
+        $I->executeJS("document.querySelector('typo3-backend-new-record-wizard').shadowRoot.querySelector('button[data-identifier=\"default\"]').click()");
         $I->executeJS("document.querySelector('typo3-backend-new-record-wizard').shadowRoot.querySelector('button[data-identifier=\"default_image\"]').click()");
         $I->switchToContentFrame();
         $I->waitForText('Create new Page Content on page "staticdata"', 3, 'h1');

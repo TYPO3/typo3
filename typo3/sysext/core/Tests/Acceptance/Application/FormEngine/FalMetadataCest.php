@@ -53,6 +53,7 @@ final class FalMetadataCest
         $I->waitForElement('.t3js-modal.show');
         $I->wait(3);
         $I->waitForElementNotVisible('div#nprogess');
+        $I->executeJS("document.querySelector('typo3-backend-new-record-wizard').shadowRoot.querySelector('button[data-identifier=\"default\"]').click()");
         $I->executeJS("document.querySelector('typo3-backend-new-record-wizard').shadowRoot.querySelector('button[data-identifier=\"default_textpic\"]').click()");
         $I->switchToContentFrame();
         $I->waitForText('Create new Page Content on page');
@@ -147,6 +148,7 @@ final class FalMetadataCest
         $I->waitForElement('.t3js-modal.show');
         $I->wait(3);
         $I->waitForElementNotVisible('div#nprogess');
+        $I->executeJS("document.querySelector('typo3-backend-new-record-wizard').shadowRoot.querySelector('button[data-identifier=\"default\"]').click()");
         $I->executeJS("document.querySelector('typo3-backend-new-record-wizard').shadowRoot.querySelector('button[data-identifier=\"default_textpic\"]').click()");
         $I->switchToContentFrame();
         $I->waitForText('Create new Page Content on page');
