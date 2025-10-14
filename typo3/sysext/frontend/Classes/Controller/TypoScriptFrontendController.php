@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\CMS\Frontend\Cache\MetaDataState;
@@ -149,14 +150,6 @@ class TypoScriptFrontendController
     public string $currentRecord = '';
 
     /**
-     * Used to generate page-unique keys. Point is that uniqid() functions is very
-     * slow, so a unique key is made based on this, see function uniqueHash()
-     */
-    protected int $uniqueCounter = 0;
-
-    protected string $uniqueString = '';
-
-    /**
      * Page content render object.
      *
      * @internal Still used is some cases.
@@ -190,7 +183,6 @@ class TypoScriptFrontendController
     public function __construct()
     {
         $this->context = GeneralUtility::makeInstance(Context::class);
-        $this->uniqueString = md5(microtime());
         $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
         $this->pageCache = $cacheManager->getCache('pages');
     }
@@ -618,7 +610,7 @@ class TypoScriptFrontendController
     {
         // Prepare code and placeholders for additional header and footer files (and make sure that this isn't called twice)
         if ($this->isINTincScript() && (!isset($this->config['INTincScript_ext']) || $this->config['INTincScript_ext'] === [])) {
-            $substituteHash = $this->uniqueHash();
+            $substituteHash = md5(StringUtility::getUniqueId());
             $this->config['INTincScript_ext']['divKey'] = $substituteHash;
             // Storing the header-data array
             $this->config['INTincScript_ext']['additionalHeaderData'] = $this->additionalHeaderData;
@@ -816,19 +808,6 @@ class TypoScriptFrontendController
             $replace[] = '"' . $encodedAbsRefPrefix . $directory;
         }
         return str_replace($search, $replace, $content);
-    }
-
-    /**
-     * Returns a unique md5 hash.
-     * There is no special magic in this, the only point is that you don't have to call md5(uniqid()) which is slow and by this you are sure to get a unique string each time in a little faster way.
-     *
-     * @param string $str Some string to include in what is hashed. Not significant at all.
-     * @return string MD5 hash of ->uniqueString, input string and uniqueCounter
-     * @internal
-     */
-    public function uniqueHash(string $str = ''): string
-    {
-        return md5($this->uniqueString . '_' . $str . $this->uniqueCounter++);
     }
 
     /**

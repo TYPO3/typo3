@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Contains COA_INT class object.
@@ -38,7 +39,7 @@ class ContentObjectArrayInternalContentObject extends AbstractContentObject
         }
 
         $frontendController = $this->getTypoScriptFrontendController();
-        $substKey = 'INT_SCRIPT.' . $frontendController->uniqueHash();
+        $substKey = 'INT_SCRIPT.' . md5(StringUtility::getUniqueId());
         $content = '<!--' . $substKey . '-->';
         $frontendController->config['INTincScript'][$substKey] = [
             'conf' => $conf,

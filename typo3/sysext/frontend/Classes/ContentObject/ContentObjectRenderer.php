@@ -2336,7 +2336,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_postUserFuncInt($content = '', $conf = [])
     {
-        $substKey = 'INT_SCRIPT.' . $this->getTypoScriptFrontendController()->uniqueHash();
+        $substKey = 'INT_SCRIPT.' . md5(StringUtility::getUniqueId());
         $this->getTypoScriptFrontendController()->config['INTincScript'][$substKey] = [
             'content' => $content,
             'postUserFunc' => $conf['postUserFuncInt'],

@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject;
 
+use TYPO3\CMS\Core\Utility\StringUtility;
+
 /**
  * Contains USER_INT class object.
  */
@@ -30,7 +32,7 @@ class UserInternalContentObject extends AbstractContentObject
     {
         $this->cObj->setUserObjectType(ContentObjectRenderer::OBJECTTYPE_USER_INT);
         $tsfe = $this->getTypoScriptFrontendController();
-        $substKey = 'INT_SCRIPT.' . $tsfe->uniqueHash();
+        $substKey = 'INT_SCRIPT.' . md5(StringUtility::getUniqueId());
         $content = '<!--' . $substKey . '-->';
         $tsfe->config['INTincScript'][$substKey] = [
             'conf' => $conf,

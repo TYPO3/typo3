@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\ContentObject;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Core\Bootstrap;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -51,7 +52,7 @@ class ExtbasePluginContentObject extends AbstractContentObject
             $conf['userFunc'] = Bootstrap::class . '->run';
             $this->cObj->setUserObjectType(ContentObjectRenderer::OBJECTTYPE_USER_INT);
             $tsfe = $this->getTypoScriptFrontendController();
-            $substKey = 'INT_SCRIPT.' . $tsfe->uniqueHash();
+            $substKey = 'INT_SCRIPT.' . md5(StringUtility::getUniqueId());
             $content = '<!--' . $substKey . '-->';
             $tsfe->config['INTincScript'][$substKey] = [
                 'conf' => $conf,
