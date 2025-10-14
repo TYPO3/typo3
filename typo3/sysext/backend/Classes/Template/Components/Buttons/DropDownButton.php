@@ -55,6 +55,7 @@ class DropDownButton implements ButtonInterface
     protected ?string $title = null;
     protected array $items = [];
     protected bool $showLabelText = false;
+    protected bool $disabled = false;
 
     public function getIcon(): ?Icon
     {
@@ -98,6 +99,17 @@ class DropDownButton implements ButtonInterface
     public function setShowLabelText(bool $showLabelText): self
     {
         $this->showLabelText = $showLabelText;
+        return $this;
+    }
+
+    public function isDisabled(): bool
+    {
+        return $this->disabled;
+    }
+
+    public function setDisabled(bool $disabled): self
+    {
+        $this->disabled = $disabled;
         return $this;
     }
 
@@ -171,6 +183,9 @@ class DropDownButton implements ButtonInterface
         ];
         if ($this->getTitle()) {
             $attributes['title'] = $this->getTitle();
+        }
+        if ($this->isDisabled()) {
+            $attributes['disabled'] = 'disabled';
         }
 
         $labelText = '';

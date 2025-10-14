@@ -70,6 +70,8 @@ class ShortcutButton implements ButtonInterface, PositionInterface
 
     protected bool $copyUrlToClipboard = true;
 
+    protected bool $disabled = false;
+
     /**
      * Gets the route identifier for the shortcut.
      */
@@ -127,6 +129,23 @@ class ShortcutButton implements ButtonInterface, PositionInterface
     public function setCopyUrlToClipboard(bool $copyUrlToClipboard): self
     {
         $this->copyUrlToClipboard = $copyUrlToClipboard;
+        return $this;
+    }
+
+    /**
+     * Check if button is disabled
+     */
+    public function isDisabled(): bool
+    {
+        return $this->disabled;
+    }
+
+    /**
+     * Set if button needs to be disabled
+     */
+    public function setDisabled(bool $disabled): ShortcutButton
+    {
+        $this->disabled = $disabled;
         return $this;
     }
 
@@ -217,7 +236,12 @@ class ShortcutButton implements ButtonInterface, PositionInterface
             } else {
                 $shortcutButton->setIcon($iconFactory->getIcon('actions-system-shortcut-new', IconSize::SMALL));
                 $shortcutButton->setLabel($confirmationText);
-                $shortcutButton->setAttributes($this->getDispatchActionAttrs($routeIdentifier, $encodedArguments, $confirmationText));
+                $shortcutButton->setAttributes(
+                    array_merge(
+                        $this->getDispatchActionAttrs($routeIdentifier, $encodedArguments, $confirmationText),
+                        $this->isDisabled() ? ['disabled' => 'disabled'] : []
+                    )
+                );
             }
             return (string)$shortcutButton;
         }
@@ -263,6 +287,7 @@ class ShortcutButton implements ButtonInterface, PositionInterface
         $dropdownButton = GeneralUtility::makeInstance(DropDownButton::class);
         $dropdownButton->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.share'));
         $dropdownButton->setIcon($iconFactory->getIcon('actions-share-alt', IconSize::SMALL));
+        $dropdownButton->setDisabled($this->isDisabled());
         foreach ($dropdownItems as $dropdownItem) {
             $dropdownButton->addItem($dropdownItem);
         }
