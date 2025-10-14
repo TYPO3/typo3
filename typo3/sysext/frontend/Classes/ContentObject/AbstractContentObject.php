@@ -50,7 +50,7 @@ abstract class AbstractContentObject
 
     public function getContentObjectRenderer(): ContentObjectRenderer
     {
-        return $this->cObj ?? $this->getTypoScriptFrontendController()->cObj;
+        return $this->cObj;
     }
 
     public function setRequest(ServerRequestInterface $request): void

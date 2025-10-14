@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Mvc\Configuration;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -53,7 +54,7 @@ readonly class ConfigurationManager implements ExtFormConfigurationManagerInterf
      * * sort by array keys, if all keys within the current nesting level are numerical keys
      * * resolve possible TypoScript settings in FE mode
      */
-    public function getYamlConfiguration(array $typoScriptSettings, bool $isFrontend): array
+    public function getYamlConfiguration(array $typoScriptSettings, bool $isFrontend, ?ServerRequestInterface $request = null): array
     {
         $yamlSettingsFilePaths = isset($typoScriptSettings['yamlConfigurations'])
             ? ArrayUtility::sortArrayWithIntegerKeys($typoScriptSettings['yamlConfigurations'])
@@ -70,7 +71,10 @@ readonly class ConfigurationManager implements ExtFormConfigurationManagerInterf
         if (is_array($typoScriptSettings['yamlSettingsOverrides'] ?? null) && !empty($typoScriptSettings['yamlSettingsOverrides'])) {
             $yamlSettingsOverrides = $typoScriptSettings['yamlSettingsOverrides'];
             if ($isFrontend) {
-                $yamlSettingsOverrides = $this->typoScriptService->resolvePossibleTypoScriptConfiguration($yamlSettingsOverrides);
+                if ($request === null) {
+                    throw new \RuntimeException('Frontend rendering an ext:form requires the request being hand over', 1760451538);
+                }
+                $yamlSettingsOverrides = $this->typoScriptService->resolvePossibleTypoScriptConfiguration($yamlSettingsOverrides, $request);
             }
             ArrayUtility::mergeRecursiveWithOverrule($yamlSettings, $yamlSettingsOverrides);
         }

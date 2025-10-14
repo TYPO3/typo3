@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FluidStyledContent\ViewHelpers\Link;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -39,6 +40,10 @@ final class ClickEnlargeViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
+    public function __construct(
+        private readonly TypoScriptService $typoScriptService,
+    ) {}
+
     public function initializeArguments(): void
     {
         $this->registerArgument('image', FileInterface::class, 'The original image file', true);
@@ -54,29 +59,23 @@ final class ClickEnlargeViewHelper extends AbstractViewHelper
     {
         /** @var FileInterface $image */
         $image = $this->arguments['image'];
-        self::getContentObjectRenderer()->setCurrentFile($image);
+        $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
+        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $contentObjectRenderer->setRequest($request);
+        $contentObjectRenderer->start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages');
+        $contentObjectRenderer->setCurrentFile($image);
         $objDataBackup = null;
         if ($this->renderingContext->getVariableProvider()->exists('data')) {
-            $objDataBackup = self::getContentObjectRenderer()->data;
-            self::getContentObjectRenderer()->data = $this->renderingContext->getVariableProvider()->get('data');
+            $objDataBackup = $contentObjectRenderer->data;
+            $contentObjectRenderer->data = $this->renderingContext->getVariableProvider()->get('data');
         }
-        $configuration = self::getTypoScriptService()->convertPlainArrayToTypoScriptArray($this->arguments['configuration']);
+        $configuration = $this->typoScriptService->convertPlainArrayToTypoScriptArray($this->arguments['configuration']);
         $content = $this->renderChildren();
         $configuration['enable'] = true;
-        $result = self::getContentObjectRenderer()->imageLinkWrap((string)$content, $image, $configuration);
+        $result = $contentObjectRenderer->imageLinkWrap((string)$content, $image, $configuration);
         if ($objDataBackup) {
-            self::getContentObjectRenderer()->data = $objDataBackup;
+            $contentObjectRenderer->data = $objDataBackup;
         }
         return $result;
-    }
-
-    private static function getContentObjectRenderer(): ContentObjectRenderer
-    {
-        return $GLOBALS['TSFE']->cObj;
-    }
-
-    private static function getTypoScriptService(): TypoScriptService
-    {
-        return GeneralUtility::makeInstance(TypoScriptService::class);
     }
 }

@@ -81,10 +81,6 @@ final class CObjectViewHelper extends AbstractViewHelper
         $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
         $contentObjectRenderer = self::getContentObjectRenderer($request);
         $contentObjectRenderer->setRequest($request);
-        $tsfeBackup = null;
-        if (!isset($GLOBALS['TSFE']) || !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)) {
-            $tsfeBackup = self::simulateFrontendEnvironment();
-        }
         $currentValue = null;
         if (is_object($data)) {
             $data = $data instanceof RecordInterface ? ($data->getRawRecord()?->toArray(true) ?? $data->toArray()) : ObjectAccess::getGettableProperties($data);
@@ -116,11 +112,7 @@ final class CObjectViewHelper extends AbstractViewHelper
                 1540246570
             );
         }
-        $content = self::renderContentObject($contentObjectRenderer, $setup, $typoscriptObjectPath, $lastSegment);
-        if (!isset($GLOBALS['TSFE']) || !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)) {
-            self::resetFrontendEnvironment($tsfeBackup);
-        }
-        return $content;
+        return self::renderContentObject($contentObjectRenderer, $setup, $typoscriptObjectPath, $lastSegment);
     }
 
     /**
@@ -161,25 +153,6 @@ final class CObjectViewHelper extends AbstractViewHelper
             $contentObjectRenderer->setParent($parent->data, $parent->currentRecord);
         }
         return $contentObjectRenderer;
-    }
-
-    /**
-     * \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->cObjGetSingle() relies on $GLOBALS['TSFE']
-     */
-    private static function simulateFrontendEnvironment(): ?TypoScriptFrontendController
-    {
-        $tsfeBackup = $GLOBALS['TSFE'] ?? null;
-        $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        return $tsfeBackup;
-    }
-
-    /**
-     * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
-     */
-    private static function resetFrontendEnvironment(?TypoScriptFrontendController $tsfeBackup): void
-    {
-        $GLOBALS['TSFE'] = $tsfeBackup;
     }
 
     /**

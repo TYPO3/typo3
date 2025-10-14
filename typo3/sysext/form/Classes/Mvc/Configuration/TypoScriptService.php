@@ -17,16 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Mvc\Configuration;
 
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService as CoreTypoScriptService;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Utilities to manage and convert TypoScript
  *
  * Scope: frontend
  */
-#[Autoconfigure()]
 readonly class TypoScriptService
 {
     public function __construct(
@@ -39,10 +39,14 @@ readonly class TypoScriptService
      *
      * @internal
      */
-    public function resolvePossibleTypoScriptConfiguration(array $configuration = []): array
+    public function resolvePossibleTypoScriptConfiguration(array $configuration, ServerRequestInterface $request): array
     {
         $configuration = $this->coreTypoScriptService->convertPlainArrayToTypoScriptArray($configuration);
-        $configuration = $this->resolveTypoScriptConfiguration($configuration);
+        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $contentObjectRenderer->setRequest($request);
+        // @todo: Setting request to COR is probably important, but setting page record here *may* not be needed in this case?
+        $contentObjectRenderer->start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages');
+        $configuration = $this->resolveTypoScriptConfiguration($configuration, $contentObjectRenderer);
         return $this->coreTypoScriptService->convertTypoScriptArrayToPlainArray($configuration);
     }
 
@@ -59,27 +63,22 @@ readonly class TypoScriptService
      *   ]
      * ]
      */
-    protected function resolveTypoScriptConfiguration(array $configuration = []): array
+    protected function resolveTypoScriptConfiguration(array $configuration, ContentObjectRenderer $contentObjectRenderer): array
     {
         foreach ($configuration as $key => $value) {
             $keyWithoutDot = rtrim((string)$key, '.');
             if (isset($configuration[$keyWithoutDot]) && isset($configuration[$keyWithoutDot . '.'])) {
-                $value = $this->getTypoScriptFrontendController()->cObj->cObjGetSingle(
+                $value = $contentObjectRenderer->cObjGetSingle(
                     $configuration[$keyWithoutDot],
                     $configuration[$keyWithoutDot . '.'],
                     $keyWithoutDot
                 );
                 $configuration[$keyWithoutDot] = $value;
             } elseif (!isset($configuration[$keyWithoutDot]) && isset($configuration[$keyWithoutDot . '.'])) {
-                $configuration[$keyWithoutDot] = $this->resolveTypoScriptConfiguration($value);
+                $configuration[$keyWithoutDot] = $this->resolveTypoScriptConfiguration($value, $contentObjectRenderer);
             }
             unset($configuration[$keyWithoutDot . '.']);
         }
         return $configuration;
-    }
-
-    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
     }
 }

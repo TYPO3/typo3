@@ -86,8 +86,8 @@ final class RenderViewHelper extends AbstractViewHelper
             $extbaseConfigurationManager->setRequest($request);
             $typoScriptSettings = $extbaseConfigurationManager->getConfiguration(ExtbaseConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'form');
             $extFormConfigurationManager = GeneralUtility::makeInstance(ExtFormConfigurationManagerInterface::class);
-            $formSettings = $extFormConfigurationManager->getYamlConfiguration($typoScriptSettings, true);
-            $formConfiguration = $this->formPersistenceManager->load($persistenceIdentifier, $formSettings, $typoScriptSettings);
+            $formSettings = $extFormConfigurationManager->getYamlConfiguration($typoScriptSettings, true, $request);
+            $formConfiguration = $this->formPersistenceManager->load($persistenceIdentifier, $formSettings, $typoScriptSettings, $request);
             ArrayUtility::mergeRecursiveWithOverrule($formConfiguration, $overrideConfiguration);
             $overrideConfiguration = $formConfiguration;
             $overrideConfiguration['persistenceIdentifier'] = $persistenceIdentifier;

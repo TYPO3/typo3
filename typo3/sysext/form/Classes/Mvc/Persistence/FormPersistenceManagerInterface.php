@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Mvc\Persistence;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
 
@@ -38,12 +39,11 @@ interface FormPersistenceManagerInterface
     /**
      * Load the array form representation identified by $persistenceIdentifier, and return it.
      *
-     * @param array $typoScriptSettings FE TS "plugin.tx_form.settings" - Given when rendering a form
-     *                                  as plugin using FormFrontendController or formvh:render,
-     *                                  empty array in all BE usages. Intended to override details like
-     *                                  labels of single forms.
+     * @param ?array $typoScriptSettings FE TS "plugin.tx_form.settings" - Given when rendering a form
+     *        as plugin using FormFrontendController or formvh:render, empty array in all BE usages.
+     *        Intended to override details like labels of single forms.
      */
-    public function load(string $persistenceIdentifier, array $formSettings, array $typoScriptSettings): array;
+    public function load(string $persistenceIdentifier, array $formSettings, ?array $typoScriptSettings = null, ?ServerRequestInterface $request = null): array;
 
     /**
      * Save the array form representation identified by $persistenceIdentifier

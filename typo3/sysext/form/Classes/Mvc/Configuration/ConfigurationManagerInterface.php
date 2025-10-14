@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Mvc\Configuration;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 /**
  * Scope: frontend / backend
  * @internal
  */
 interface ConfigurationManagerInterface
 {
-    public function getYamlConfiguration(array $typoScriptSettings, bool $isFrontend): array;
+    public function getYamlConfiguration(array $typoScriptSettings, bool $isFrontend, ?ServerRequestInterface $request = null): array;
 }

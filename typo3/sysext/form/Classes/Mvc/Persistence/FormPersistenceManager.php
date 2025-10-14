@@ -22,6 +22,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Mvc\Persistence;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Yaml\Exception\ParseException;
@@ -74,7 +75,7 @@ readonly class FormPersistenceManager implements FormPersistenceManagerInterface
      * let event listeners modify it, override it by TypoScript settings, and
      * return it. Only files with the extension .yaml or .form.yaml are loaded.
      */
-    public function load(string $persistenceIdentifier, array $formSettings, array $typoScriptSettings): array
+    public function load(string $persistenceIdentifier, array $formSettings, ?array $typoScriptSettings = null, ?ServerRequestInterface $request = null): array
     {
         $cacheKey = 'ext-form-load-' . hash('xxh3', $persistenceIdentifier);
         if ($this->runtimeCache->has($cacheKey)) {
@@ -102,12 +103,10 @@ readonly class FormPersistenceManager implements FormPersistenceManagerInterface
         $formDefinition = $this->eventDispatcher
             ->dispatch(new AfterFormDefinitionLoadedEvent($formDefinition, $persistenceIdentifier, $cacheKey))
             ->getFormDefinition();
-        if (empty($typoScriptSettings['formDefinitionOverrides'][$formDefinition['identifier']] ?? null)) {
-            return $formDefinition;
+        if ($request !== null && !empty($typoScriptSettings['formDefinitionOverrides'][$formDefinition['identifier']] ?? null)) {
+            $formDefinitionOverrides = $this->typoScriptService->resolvePossibleTypoScriptConfiguration($typoScriptSettings['formDefinitionOverrides'][$formDefinition['identifier']], $request);
+            ArrayUtility::mergeRecursiveWithOverrule($formDefinition, $formDefinitionOverrides);
         }
-        $formDefinitionOverrides = $this->typoScriptService
-            ->resolvePossibleTypoScriptConfiguration($typoScriptSettings['formDefinitionOverrides'][$formDefinition['identifier']]);
-        ArrayUtility::mergeRecursiveWithOverrule($formDefinition, $formDefinitionOverrides);
         return $formDefinition;
     }
 

@@ -151,7 +151,7 @@ readonly class DataStructureIdentifierListener
             $isFrontend = true;
         }
         $typoScriptSettings = $this->extbaseConfigurationManager->getConfiguration(ExtbaseConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'form');
-        $formSettings = $this->extFormConfigurationManager->getYamlConfiguration($typoScriptSettings, $isFrontend);
+        $formSettings = $this->extFormConfigurationManager->getYamlConfiguration($typoScriptSettings, $isFrontend, $isFrontend ? $request : null);
         try {
             // Add list of existing forms to drop down if we find our key in the identifier
             $formIsAccessible = false;
@@ -187,7 +187,7 @@ readonly class DataStructureIdentifierListener
             // If a specific form is selected and if finisher override is active, add finisher sheets
             if (!empty($identifier['ext-form-persistenceIdentifier']) && $formIsAccessible) {
                 $persistenceIdentifier = $identifier['ext-form-persistenceIdentifier'];
-                $formDefinition = $this->formPersistenceManager->load($persistenceIdentifier, $formSettings, []);
+                $formDefinition = $this->formPersistenceManager->load($persistenceIdentifier, $formSettings);
                 $translationFile = 'LLL:EXT:form/Resources/Private/Language/Database.xlf';
                 $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.overrideFinishers'] = [
                     'label' => $translationFile . ':tt_content.pi_flexform.formframework.overrideFinishers',

@@ -39,7 +39,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Extbase\Utility\FrontendSimulatorUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -115,9 +114,7 @@ final readonly class BackendConfigurationManager
                 // and apply the stdWrap to the storagePid
                 // Use makeInstance here since extbase Bootstrap always setContentObject(null) in Backend, no need to call getContentObject().
                 $conf = $this->typoScriptService->convertPlainArrayToTypoScriptArray($frameworkConfiguration['persistence']);
-                FrontendSimulatorUtility::simulateFrontendEnvironment(GeneralUtility::makeInstance(ContentObjectRenderer::class));
-                $frameworkConfiguration['persistence']['storagePid'] = $GLOBALS['TSFE']->cObj->stdWrapValue('storagePid', $conf);
-                FrontendSimulatorUtility::resetFrontendEnvironment();
+                $frameworkConfiguration['persistence']['storagePid'] = GeneralUtility::makeInstance(ContentObjectRenderer::class)->stdWrapValue('storagePid', $conf);
             }
 
             if (!empty($frameworkConfiguration['persistence']['recursive'])) {

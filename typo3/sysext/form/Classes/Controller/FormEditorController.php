@@ -98,7 +98,7 @@ class FormEditorController extends ActionController
         ) {
             throw new PersistenceManagerException('Edit an extension formDefinition is not allowed.', 1478265661);
         }
-        $formDefinition = $this->formPersistenceManager->load($formPersistenceIdentifier, $formSettings, []);
+        $formDefinition = $this->formPersistenceManager->load($formPersistenceIdentifier, $formSettings);
         if ($prototypeName === null) {
             $prototypeName = $formDefinition['prototypeName'] ?? 'standard';
         } else {

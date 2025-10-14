@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 use TYPO3\CMS\Frontend\Cache\CacheInstruction;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageInformationFactory;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
@@ -350,7 +351,7 @@ readonly class RedirectService
             return null;
         }
         $builderType = $GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']];
-        $controller = $this->bootFrontendController($site, $queryParams, $originalRequest);
+        $contentObjectRenderer = $this->bootFrontendController($site, $queryParams, $originalRequest);
         if ($builderType && is_subclass_of($builderType, TypolinkBuilderInterface::class)) {
             /** @var TypolinkBuilderInterface $linkBuilder */
             $linkBuilder = GeneralUtility::makeInstance($builderType);
@@ -365,7 +366,7 @@ readonly class RedirectService
             if ($redirectRecord['keep_query_parameters']) {
                 $configuration['additionalParams'] = HttpUtility::buildQueryString($queryParams, '&');
             }
-            $request = $originalRequest->withAttribute('currentContentObject', $controller->cObj);
+            $request = $originalRequest->withAttribute('currentContentObject', $contentObjectRenderer);
             try {
                 $result = $linkBuilder->buildLink($linkDetails, $configuration, $request);
                 $this->cleanupTSFE();
@@ -393,10 +394,10 @@ readonly class RedirectService
                 if ($redirectRecord['keep_query_parameters']) {
                     $configuration['additionalParams'] = HttpUtility::buildQueryString($queryParams, '&');
                 }
-                $result = $linkBuilder->_build($linkDetails, '', '', $configuration, $originalRequest, $controller->cObj);
+                $result = $linkBuilder->_build($linkDetails, '', '', $configuration, $originalRequest, $contentObjectRenderer);
                 $this->cleanupTSFE();
                 return new Uri($result->getUrl());
-            } catch (UnableToLinkException $e) {
+            } catch (UnableToLinkException) {
                 $this->cleanupTSFE();
                 return null;
             }
@@ -410,7 +411,6 @@ readonly class RedirectService
      *
      * - TSFE->sys_page
      * - TSFE->config
-     * - TSFE->cObj
      *
      * So a link to a page can be generated.
      *
@@ -420,7 +420,7 @@ readonly class RedirectService
      *        is quite unfortunate here and should be sorted out differently by further refactoring the link building
      *        and reducing TSFE dependencies.
      */
-    protected function bootFrontendController(SiteInterface $site, array $queryParams, ServerRequestInterface $originalRequest): TypoScriptFrontendController
+    protected function bootFrontendController(SiteInterface $site, array $queryParams, ServerRequestInterface $originalRequest): ContentObjectRenderer
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('frontend.preview', new PreviewAspect());
@@ -456,11 +456,13 @@ readonly class RedirectService
             null
         );
         $newRequest = $originalRequest->withAttribute('frontend.typoscript', $frontendTypoScript);
-        $controller->newCObj($newRequest);
+        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class, $controller);
+        $contentObjectRenderer->setRequest($newRequest);
+        $contentObjectRenderer->start($newRequest->getAttribute('frontend.page.information')->getPageRecord(), 'pages');
         if (!isset($GLOBALS['TSFE']) || !$GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
             $GLOBALS['TSFE'] = $controller;
         }
-        return $controller;
+        return $contentObjectRenderer;
     }
 
     private function getExpressionMatcherVariables(SiteInterface $site, ServerRequestInterface $request, TypoScriptFrontendController $controller): array

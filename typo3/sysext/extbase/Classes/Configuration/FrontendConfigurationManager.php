@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Event\Configuration\BeforeFlexFormConfigurationOverrideEvent;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * A general purpose configuration manager used in frontend mode.
@@ -81,7 +82,10 @@ final readonly class FrontendConfigurationManager
         if (!empty($frameworkConfiguration['persistence']['storagePid'])) {
             if (is_array($frameworkConfiguration['persistence']['storagePid'])) {
                 $conf = $this->typoScriptService->convertPlainArrayToTypoScriptArray($frameworkConfiguration['persistence']);
-                $frameworkConfiguration['persistence']['storagePid'] = $GLOBALS['TSFE']->cObj->stdWrapValue('storagePid', $conf);
+                $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+                $contentObjectRenderer->setRequest($request);
+                $contentObjectRenderer->start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages');
+                $frameworkConfiguration['persistence']['storagePid'] = $contentObjectRenderer->stdWrapValue('storagePid', $conf);
             }
             if (!empty($frameworkConfiguration['persistence']['recursive'])) {
                 $storagePids = $this->getRecursiveStoragePids(

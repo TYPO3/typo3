@@ -227,12 +227,15 @@ class RequestHandler implements RequestHandlerInterface
     protected function generatePageBodyContent(TypoScriptFrontendController $controller, ServerRequestInterface $request): string
     {
         $typoScriptPageSetupArray = $request->getAttribute('frontend.typoscript')->getPageArray();
-        $pageContent = $controller->cObj->cObjGet($typoScriptPageSetupArray) ?: '';
+        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class, $controller);
+        $contentObjectRenderer->setRequest($request);
+        $contentObjectRenderer->start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages');
+        $pageContent = $contentObjectRenderer->cObjGet($typoScriptPageSetupArray) ?: '';
         if ($typoScriptPageSetupArray['wrap'] ?? false) {
-            $pageContent = $controller->cObj->wrap($pageContent, $typoScriptPageSetupArray['wrap']);
+            $pageContent = $contentObjectRenderer->wrap($pageContent, $typoScriptPageSetupArray['wrap']);
         }
         if ($typoScriptPageSetupArray['stdWrap.'] ?? false) {
-            $pageContent = $controller->cObj->stdWrap($pageContent, $typoScriptPageSetupArray['stdWrap.']);
+            $pageContent = $contentObjectRenderer->stdWrap($pageContent, $typoScriptPageSetupArray['stdWrap.']);
         }
         return $pageContent;
     }
@@ -319,11 +322,15 @@ class RequestHandler implements RequestHandlerInterface
             }
         }
 
-        $pageRenderer->setHtmlTag($this->generateHtmlTag($htmlTagAttributes, $typoScriptConfigArray, $controller->cObj));
+        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class, $controller);
+        $contentObjectRenderer->setRequest($request);
+        $contentObjectRenderer->start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages');
+
+        $pageRenderer->setHtmlTag($this->generateHtmlTag($htmlTagAttributes, $typoScriptConfigArray, $contentObjectRenderer));
 
         $headTag = $typoScriptPageArray['headTag'] ?? '<head>';
         if (isset($typoScriptPageArray['headTag.'])) {
-            $headTag = $controller->cObj->stdWrap($headTag, $typoScriptPageArray['headTag.']);
+            $headTag = $contentObjectRenderer->stdWrap($headTag, $typoScriptPageArray['headTag.']);
         }
         $pageRenderer->setHeadTag($headTag);
 
@@ -352,7 +359,7 @@ class RequestHandler implements RequestHandlerInterface
             foreach ($typoScriptSetupArray['plugin.'] as $key => $iCSScode) {
                 if (is_array($iCSScode)) {
                     if (($iCSScode['_CSS_DEFAULT_STYLE'] ?? false) && empty($typoScriptConfigArray['removeDefaultCss'])) {
-                        $cssDefaultStyle = $controller->cObj->stdWrapValue('_CSS_DEFAULT_STYLE', $iCSScode);
+                        $cssDefaultStyle = $contentObjectRenderer->stdWrapValue('_CSS_DEFAULT_STYLE', $iCSScode);
                         $stylesFromPlugins .= '/* default styles for extension "' . substr($key, 0, -1) . '" */' . LF . $cssDefaultStyle . LF;
                     }
                 }
@@ -367,7 +374,7 @@ class RequestHandler implements RequestHandlerInterface
                     continue;
                 }
                 $cssResourceConfig = $additionalAttributes = $typoScriptPageArray['includeCSS.'][$key . '.'] ?? [];
-                if (isset($cssResourceConfig['if.']) && !$controller->cObj->checkIf($cssResourceConfig['if.'])) {
+                if (isset($cssResourceConfig['if.']) && !$contentObjectRenderer->checkIf($cssResourceConfig['if.'])) {
                     continue;
                 }
                 if (!($cssResourceConfig['external'] ?? false)) {
@@ -399,7 +406,7 @@ class RequestHandler implements RequestHandlerInterface
                     continue;
                 }
                 $cssResourceConfig = $additionalAttributes = $typoScriptPageArray['includeCSSLibs.'][$key . '.'] ?? [];
-                if (isset($cssResourceConfig['if.']) && !$controller->cObj->checkIf($cssResourceConfig['if.'])) {
+                if (isset($cssResourceConfig['if.']) && !$contentObjectRenderer->checkIf($cssResourceConfig['if.'])) {
                     continue;
                 }
                 if (!($cssResourceConfig['external'] ?? false)) {
@@ -425,7 +432,7 @@ class RequestHandler implements RequestHandlerInterface
                 );
             }
         }
-        $style = $controller->cObj->cObjGet($typoScriptPageArray['cssInline.'] ?? null, 'cssInline.');
+        $style = $contentObjectRenderer->cObjGet($typoScriptPageArray['cssInline.'] ?? null, 'cssInline.');
         if (trim($style)) {
             $this->addCssToPageRenderer($request, $style, true, 'additionalTSFEInlineStyle');
         }
@@ -437,7 +444,7 @@ class RequestHandler implements RequestHandlerInterface
                     continue;
                 }
                 $jsResourceConfig = $additionalAttributes = $typoScriptPageArray['includeJSLibs.'][$key . '.'] ?? [];
-                if (isset($jsResourceConfig['if.']) && !$controller->cObj->checkIf($jsResourceConfig['if.'])) {
+                if (isset($jsResourceConfig['if.']) && !$contentObjectRenderer->checkIf($jsResourceConfig['if.'])) {
                     continue;
                 }
                 if (!($jsResourceConfig['external'] ?? false)) {
@@ -476,7 +483,7 @@ class RequestHandler implements RequestHandlerInterface
                     continue;
                 }
                 $jsResourceConfig = $additionalAttributes = $typoScriptPageArray['includeJSFooterlibs.'][$key . '.'] ?? [];
-                if (isset($jsResourceConfig['if.']) && !$controller->cObj->checkIf($jsResourceConfig['if.'])) {
+                if (isset($jsResourceConfig['if.']) && !$contentObjectRenderer->checkIf($jsResourceConfig['if.'])) {
                     continue;
                 }
                 if (!($jsResourceConfig['external'] ?? false)) {
@@ -515,7 +522,7 @@ class RequestHandler implements RequestHandlerInterface
                     continue;
                 }
                 $jsResourceConfig = $typoScriptPageArray['includeJS.'][$key . '.'] ?? [];
-                if (isset($jsResourceConfig['if.']) && !$controller->cObj->checkIf($jsResourceConfig['if.'])) {
+                if (isset($jsResourceConfig['if.']) && !$contentObjectRenderer->checkIf($jsResourceConfig['if.'])) {
                     continue;
                 }
                 if (!($jsResourceConfig['external'] ?? false)) {
@@ -553,7 +560,7 @@ class RequestHandler implements RequestHandlerInterface
                     continue;
                 }
                 $jsResourceConfig = $typoScriptPageArray['includeJSFooter.'][$key . '.'] ?? [];
-                if (isset($jsResourceConfig['if.']) && !$controller->cObj->checkIf($jsResourceConfig['if.'])) {
+                if (isset($jsResourceConfig['if.']) && !$contentObjectRenderer->checkIf($jsResourceConfig['if.'])) {
                     continue;
                 }
                 if (!($jsResourceConfig['external'] ?? false)) {
@@ -588,10 +595,10 @@ class RequestHandler implements RequestHandlerInterface
 
         // Header and footer data
         if (is_array($typoScriptPageArray['headerData.'] ?? false)) {
-            $pageRenderer->addHeaderData($controller->cObj->cObjGet($typoScriptPageArray['headerData.'], 'headerData.'));
+            $pageRenderer->addHeaderData($contentObjectRenderer->cObjGet($typoScriptPageArray['headerData.'], 'headerData.'));
         }
         if (is_array($typoScriptPageArray['footerData.'] ?? false)) {
-            $pageRenderer->addFooterData($controller->cObj->cObjGet($typoScriptPageArray['footerData.'], 'footerData.'));
+            $pageRenderer->addFooterData($contentObjectRenderer->cObjGet($typoScriptPageArray['footerData.'], 'footerData.'));
         }
 
         $controller->generatePageTitle($request);
@@ -604,11 +611,11 @@ class RequestHandler implements RequestHandlerInterface
         }
 
         $this->generateHrefLangTags($controller, $request, $pageRenderer);
-        $this->generateMetaTagHtml($typoScriptPageArray['meta.'] ?? [], $controller->cObj);
+        $this->generateMetaTagHtml($typoScriptPageArray['meta.'] ?? [], $contentObjectRenderer);
 
         // Javascript inline and inline footer code
-        $inlineJS = implode(LF, $controller->cObj->cObjGetSeparated($typoScriptPageArray['jsInline.'] ?? null, 'jsInline.'));
-        $inlineFooterJs = implode(LF, $controller->cObj->cObjGetSeparated($typoScriptPageArray['jsFooterInline.'] ?? null, 'jsFooterInline.'));
+        $inlineJS = implode(LF, $contentObjectRenderer->cObjGetSeparated($typoScriptPageArray['jsInline.'] ?? null, 'jsInline.'));
+        $inlineFooterJs = implode(LF, $contentObjectRenderer->cObjGetSeparated($typoScriptPageArray['jsFooterInline.'] ?? null, 'jsFooterInline.'));
 
         // Needs to be called after all cObjGet() calls in order to get all headerData and footerData and replacements
         $controller->INTincScript_loadJSCode();
@@ -652,7 +659,7 @@ class RequestHandler implements RequestHandlerInterface
                     continue;
                 }
                 $languageFileConfig = $typoScriptPageArray['inlineLanguageLabelFiles.'][$key . '.'] ?? [];
-                if (isset($languageFileConfig['if.']) && !$controller->cObj->checkIf($languageFileConfig['if.'])) {
+                if (isset($languageFileConfig['if.']) && !$contentObjectRenderer->checkIf($languageFileConfig['if.'])) {
                     continue;
                 }
                 $pageRenderer->addInlineLanguageLabelFile(
@@ -694,7 +701,7 @@ class RequestHandler implements RequestHandlerInterface
             if ($typoScriptPageArray['bodyTag'] ?? false) {
                 $bodyTag = $typoScriptPageArray['bodyTag'];
             } elseif ($typoScriptPageArray['bodyTagCObject'] ?? false) {
-                $bodyTag = $controller->cObj->cObjGetSingle($typoScriptPageArray['bodyTagCObject'], $typoScriptPageArray['bodyTagCObject.'] ?? [], 'bodyTagCObject');
+                $bodyTag = $contentObjectRenderer->cObjGetSingle($typoScriptPageArray['bodyTagCObject'], $typoScriptPageArray['bodyTagCObject.'] ?? [], 'bodyTagCObject');
             }
             if (trim($typoScriptPageArray['bodyTagAdd'] ?? '')) {
                 $bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim($typoScriptPageArray['bodyTagAdd']) . '>';

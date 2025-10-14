@@ -149,18 +149,6 @@ class TypoScriptFrontendController
      */
     public string $currentRecord = '';
 
-    /**
-     * Page content render object.
-     *
-     * @internal Still used is some cases.
-     *
-     * Use instead:
-     * $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $this);
-     * $cObj->setRequest($request);
-     * $cObj->start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages');
-     */
-    public ContentObjectRenderer $cObj;
-
     protected ?PageRenderer $pageRenderer = null;
     protected FrontendInterface $pageCache;
 
@@ -350,9 +338,6 @@ class TypoScriptFrontendController
 
         $docType = DocType::createFromConfigurationKey($typoScriptConfigArray['doctype']);
         $this->pageRenderer->setDocType($docType);
-
-        // Global content object
-        $this->newCObj($request);
     }
 
     /**
@@ -403,8 +388,12 @@ class TypoScriptFrontendController
             return '';
         }
 
+        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class, $this);
+        $contentObjectRenderer->setRequest($request);
+        $contentObjectRenderer->start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages');
+
         // Check for a custom pageTitleSeparator, and perform stdWrap on it
-        $pageTitleSeparator = (string)$this->cObj->stdWrapValue('pageTitleSeparator', $typoScriptConfigArray);
+        $pageTitleSeparator = (string)$contentObjectRenderer->stdWrapValue('pageTitleSeparator', $typoScriptConfigArray);
         if ($pageTitleSeparator !== '' && $pageTitleSeparator === ($typoScriptConfigArray['pageTitleSeparator'] ?? '')) {
             $pageTitleSeparator .= ' ';
         }
@@ -431,7 +420,7 @@ class TypoScriptFrontendController
                 'pageTitle' => $titleTagContent,
                 'pageTitle.' => $typoScriptConfigArray['pageTitle.'],
             ];
-            $titleTagContent = $this->cObj->stdWrapValue('pageTitle', $pageTitleStdWrapArray);
+            $titleTagContent = $contentObjectRenderer->stdWrapValue('pageTitle', $pageTitleStdWrapArray);
         }
 
         if ($titleTagContent !== '') {
@@ -765,19 +754,6 @@ class TypoScriptFrontendController
     {
         $isCachingAllowed = $request->getAttribute('frontend.cache.instruction')->isCachingAllowed();
         return $isCachingAllowed && !$this->isINTincScript() && !$this->context->getAspect('frontend.user')->isUserOrGroupSet();
-    }
-
-    /**
-     * Creates an instance of ContentObjectRenderer in $this->cObj
-     * This instance is used to start the rendering of the TypoScript template structure
-     *
-     * @internal
-     */
-    public function newCObj(ServerRequestInterface $request): void
-    {
-        $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $this);
-        $this->cObj->setRequest($request);
-        $this->cObj->start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages');
     }
 
     /**

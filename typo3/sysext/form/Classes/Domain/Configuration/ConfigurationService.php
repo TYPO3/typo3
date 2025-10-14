@@ -478,12 +478,13 @@ class ConfigurationService
         // @todo: This is needed for extFormConfigurationManager to apply stdWrap on TS configuration.
         //        Find a way to get rid of this.
         $isFrontend = false;
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface) {
-            $isFrontend = ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend();
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        if ($request instanceof ServerRequestInterface) {
+            $isFrontend = ApplicationType::fromRequest($request)->isFrontend();
         }
         // @todo: Note this code relies on the fact that the request has been set to ExtbaseConfigurationManagerInterface already.
         $typoScriptSettings = $this->extbaseConfigurationManager->getConfiguration(ExtbaseConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'form');
-        return $this->extFormConfigurationManager->getYamlConfiguration($typoScriptSettings, $isFrontend);
+        return $this->extFormConfigurationManager->getYamlConfiguration($typoScriptSettings, $isFrontend, $isFrontend ? $request : null);
     }
 
     /**

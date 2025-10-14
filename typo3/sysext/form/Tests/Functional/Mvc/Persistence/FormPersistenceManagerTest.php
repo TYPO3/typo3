@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Crypto\HashService;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -33,6 +34,7 @@ use TYPO3\CMS\Form\Mvc\Persistence\Exception\NoUniqueIdentifierException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
 use TYPO3\CMS\Form\Slot\FilePersistenceSlot;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FormPersistenceManagerTest extends FunctionalTestCase
@@ -57,7 +59,7 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
             $this->createMock(EventDispatcherInterface::class),
             $this->createMock(TypoScriptService::class)
         );
-        $subject->load('-1:/user_uploads/_example.php', [], []);
+        $subject->load('-1:/user_uploads/_example.php', []);
     }
 
     #[Test]
@@ -79,7 +81,7 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
                 'allowedExtensionPaths' => [],
             ],
         ];
-        $subject->load('EXT:form/Resources/Forms/_example.form.yaml', $formSettings, []);
+        $subject->load('EXT:form/Resources/Forms/_example.form.yaml', $formSettings);
     }
 
     #[Test]
@@ -110,7 +112,7 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
             ],
         ];
         $subject = $this->get(FormPersistenceManager::class);
-        $result = $subject->load('EXT:form/Tests/Functional/Mvc/Persistence/Fixtures/Simple.form.yaml', $formSettings, []);
+        $result = $subject->load('EXT:form/Tests/Functional/Mvc/Persistence/Fixtures/Simple.form.yaml', $formSettings);
         self::assertSame($expected, $result);
     }
 
@@ -157,8 +159,11 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
                 ],
             ],
         ];
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = (new ServerRequest())->withAttribute('frontend.page.information', $pageInformation);
         $subject = $this->get(FormPersistenceManager::class);
-        $result = $subject->load('EXT:form/Tests/Functional/Mvc/Persistence/Fixtures/Simple.form.yaml', $formSettings, $typoScriptSettings);
+        $result = $subject->load('EXT:form/Tests/Functional/Mvc/Persistence/Fixtures/Simple.form.yaml', $formSettings, $typoScriptSettings, $request);
         self::assertSame($expected, $result);
     }
 
@@ -232,23 +237,11 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
                 ],
             ],
         ];
-        $evaluatedFormTypoScript = [
-            'renderables' => [
-                0 => [
-                    'renderables' => [
-                        0 => [
-                            'label' => 'Label override',
-                        ],
-                    ],
-                ],
-            ],
-        ];
-        $typoScriptServiceMock = $this->createMock(TypoScriptService::class);
-        $typoScriptServiceMock->method('resolvePossibleTypoScriptConfiguration')
-            ->with($typoScriptSettings['formDefinitionOverrides']['ext-form-identifier'])
-            ->willReturn($evaluatedFormTypoScript);
         $yamlSourceMock = $this->createMock(YamlSource::class);
         $yamlSourceMock->method('load')->willReturn($formDefinitionYaml);
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = (new ServerRequest())->withAttribute('frontend.page.information', $pageInformation);
         $subject = new FormPersistenceManager(
             $yamlSourceMock,
             $this->get(StorageRepository::class),
@@ -256,9 +249,9 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
             $this->get(ResourceFactory::class),
             $this->createMock(FrontendInterface::class),
             $this->get(EventDispatcherInterface::class),
-            $typoScriptServiceMock
+            $this->get(TypoScriptService::class),
         );
-        $result = $subject->load('EXT:form/Tests/Functional/Mvc/Persistence/Fixtures/Simple.form.yaml', $formSettings, $typoScriptSettings);
+        $result = $subject->load('EXT:form/Tests/Functional/Mvc/Persistence/Fixtures/Simple.form.yaml', $formSettings, $typoScriptSettings, $request);
         self::assertSame($expected, $result);
     }
 

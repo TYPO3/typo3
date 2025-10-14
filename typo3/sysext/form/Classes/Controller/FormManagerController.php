@@ -206,7 +206,7 @@ class FormManagerController extends ActionController
         if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier, $formSettings)) {
             throw new PersistenceManagerException(sprintf('Read of "%s" is not allowed', $formPersistenceIdentifier), 1614500659);
         }
-        $formToDuplicate = $this->formPersistenceManager->load($formPersistenceIdentifier, $formSettings, []);
+        $formToDuplicate = $this->formPersistenceManager->load($formPersistenceIdentifier, $formSettings);
         $formToDuplicate['label'] = $formName;
         $formToDuplicate['identifier'] = $this->formPersistenceManager->getUniqueIdentifier($formSettings, $this->convertFormNameToIdentifier($formName));
         $formPersistenceIdentifier = $this->formPersistenceManager->getUniquePersistenceIdentifier($formToDuplicate['identifier'], $savePath, $formSettings);
