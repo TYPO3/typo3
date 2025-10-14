@@ -109,5 +109,4 @@ config {
   concatenateJs = 0
   compressCss = 0
   compressJs = 0
-  concatenateJsAndCss = 0
 }

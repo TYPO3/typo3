@@ -143,7 +143,7 @@ final readonly class DefaultFactory
             }
         } else {
             // This is when the public path is a subfolder (e.g. public/ or web/)
-            $publicPath = substr(Environment::getPublicPath(), strlen(Environment::getProjectPath()) + 1);
+            $publicPath = rtrim(Environment::getRelativePublicPath(), '/');
 
             $publicPathSubStructure = [
                 [

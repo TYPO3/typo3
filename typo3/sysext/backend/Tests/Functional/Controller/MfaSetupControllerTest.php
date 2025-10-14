@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Crypto\HashService;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -74,8 +75,11 @@ final class MfaSetupControllerTest extends FunctionalTestCase
         );
         $this->subject->injectMfaProviderRegistry($this->get(MfaProviderRegistry::class));
         $this->hashService = new HashService();
+        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams->method('getSitePath')->willReturn('/');
         $this->request = (new ServerRequest('https://example.com/typo3/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('normalizedParams', $normalizedParams)
             ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
     }
 

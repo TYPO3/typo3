@@ -31,8 +31,8 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -166,7 +166,12 @@ final class PasswordResetTest extends FunctionalTestCase
             new SessionManager(),
             $this->createRateLimiterFactory(),
         );
-        $subject->initiateReset(new ServerRequest(), new Context(), $emailAddress);
+        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams->method('getSitePath')->willReturn('/');
+        $request = (new ServerRequest('https://localhost/typo3/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('normalizedParams', $normalizedParams);
+        $subject->initiateReset($request, new Context(), $emailAddress);
         self::assertEquals('warning', $logger->records[0]['level']);
         self::assertEquals($emailAddress, $logger->records[0]['context']['email']);
     }
@@ -204,9 +209,11 @@ final class PasswordResetTest extends FunctionalTestCase
             new SessionManager(),
             $this->createRateLimiterFactory(),
         );
-        $uri = new Uri('https://localhost/typo3/');
-        $request = new ServerRequest($uri);
-        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams->method('getSitePath')->willReturn('/');
+        $request = (new ServerRequest('https://localhost/typo3/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('normalizedParams', $normalizedParams);
         $subject->initiateReset($request, new Context(), $emailAddress);
         self::assertEquals('info', $logger->records[0]['level']);
         self::assertEquals($emailAddress, $logger->records[0]['context']['email']);
@@ -278,9 +285,11 @@ final class PasswordResetTest extends FunctionalTestCase
             new SessionManager(),
             $this->createRateLimiterFactory(),
         );
-        $uri = new Uri('https://localhost/typo3/');
-        $request = new ServerRequest($uri);
-        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams->method('getSitePath')->willReturn('/');
+        $request = (new ServerRequest('https://localhost/typo3/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('normalizedParams', $normalizedParams);
         $subject->initiateReset($request, new Context(), $emailAddress); // 1st successful password reset
         $subject->initiateReset($request, new Context(), $emailAddress); // 2nd successful password reset
         $subject->initiateReset($request, new Context(), $emailAddress); // 3rd successful password reset

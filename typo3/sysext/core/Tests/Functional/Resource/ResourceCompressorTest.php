@@ -38,7 +38,7 @@ final class ResourceCompressorTest extends FunctionalTestCase
     #[Test]
     public function initializeCreatesTargetDirectory(): void
     {
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, null);
+        $subject = $this->getAccessibleMock(originalClassName: ResourceCompressor::class, methods: null, callOriginalConstructor: false);
         $subject->_call('initialize');
         self::assertFileExists($this->instancePath . '/typo3temp/assets/compressed');
     }
@@ -47,7 +47,7 @@ final class ResourceCompressorTest extends FunctionalTestCase
     public function initializeCreatesHtaccessFileIfSet(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['generateApacheHtaccess'] = true;
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, null);
+        $subject = $this->getAccessibleMock(originalClassName: ResourceCompressor::class, methods: null, callOriginalConstructor: false);
         $subject->_call('initialize');
         $htaccessPath = $this->instancePath . '/typo3temp/assets/compressed/.htaccess';
         self::assertStringEqualsFile($htaccessPath, $subject->_get('htaccessTemplate'));
@@ -57,7 +57,7 @@ final class ResourceCompressorTest extends FunctionalTestCase
     public function initializeDoesNotCreateHtaccessFileIfSetToFalse(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['generateApacheHtaccess'] = false;
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, null);
+        $subject = $this->getAccessibleMock(originalClassName: ResourceCompressor::class, methods: null, callOriginalConstructor: false);
         $subject->_call('initialize');
         $htaccessPath = $this->instancePath . '/typo3temp/assets/compressed/.htaccess';
         self::assertFileDoesNotExist($htaccessPath);
@@ -74,7 +74,7 @@ final class ResourceCompressorTest extends FunctionalTestCase
                 'forceOnTop' => false,
             ],
         ];
-        $subject = new ResourceCompressor();
+        $subject = $this->get(ResourceCompressor::class);
         $concatFiles = $subject->concatenateCssFiles($files);
         $mergedFile = array_pop($concatFiles);
         self::assertStringEqualsFile(
@@ -122,7 +122,7 @@ final class ResourceCompressorTest extends FunctionalTestCase
     public function compressCssFileContent(string $cssFile, string $expected): void
     {
         $cssContent = file_get_contents($cssFile);
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir']);
+        $subject = $this->getAccessibleMock(originalClassName: ResourceCompressor::class, methods: ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir'], callOriginalConstructor: false);
         $subject->_call('initialize');
         $compressedCss = $subject->_call('compressCssString', $cssContent);
         // we have to fix relative paths, if we aren't working on a file in our target directory
@@ -167,7 +167,7 @@ final class ResourceCompressorTest extends FunctionalTestCase
             Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        $subject = $this->getAccessibleMock(ResourceCompressor::class, null);
+        $subject = $this->getAccessibleMock(originalClassName: ResourceCompressor::class, methods: null, callOriginalConstructor: false);
         $subject->_call('initialize');
         $relativeToRootPath = $subject->_call('getFilenameFromMainDir', $filename);
         self::assertSame($expected, $relativeToRootPath);

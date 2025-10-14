@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Information\Typo3Information;
@@ -74,8 +75,11 @@ final class ResetPasswordControllerTest extends FunctionalTestCase
             $this->get(BackendViewFactory::class),
         );
 
+        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams->method('getSitePath')->willReturn('/');
         $this->request = (new ServerRequest('https://example.com/typo3/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('normalizedParams', $normalizedParams)
             ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
 
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();

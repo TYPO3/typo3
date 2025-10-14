@@ -76,6 +76,11 @@ class Environment
     /**
      * @var string
      */
+    protected static $relativePublicPath;
+
+    /**
+     * @var string
+     */
     protected static $currentScript;
 
     /**
@@ -116,6 +121,10 @@ class Environment
         self::$context = $context;
         self::$projectPath = $projectPath;
         self::$publicPath = $publicPath;
+        self::$relativePublicPath = '';
+        if ($projectPath !== $publicPath) {
+            self::$relativePublicPath = substr($publicPath, strlen($projectPath) + 1) . '/';
+        }
         self::$varPath = $varPath;
         self::$configPath = $configPath;
         self::$currentScript = $currentScript;
@@ -171,6 +180,16 @@ class Environment
     public static function getPublicPath(): string
     {
         return self::$publicPath;
+    }
+
+    /**
+     * The public web folder where index.php (= the frontend application) is put, relative to project path, WITH trailing slash.
+     * For non-composer installations, this is empty
+     * @internal do not use outside of TYPO3 Core.
+     */
+    public static function getRelativePublicPath(): string
+    {
+        return self::$relativePublicPath;
     }
 
     /**

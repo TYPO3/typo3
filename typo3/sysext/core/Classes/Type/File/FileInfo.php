@@ -51,7 +51,7 @@ class FileInfo extends \SplFileInfo implements TypeInterface
             }
         }
 
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Type\File\FileInfo::class]['mimeTypeGuessers'] ?? [] as $mimeTypeGuesser) {
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FileInfo::class]['mimeTypeGuessers'] ?? [] as $mimeTypeGuesser) {
             $hookParameters = [
                 'mimeType' => &$mimeType,
                 'targetFileName' => $targetFileName === '' ? null : $targetFileName,

@@ -32,12 +32,7 @@ class WebServerConfigurationFileService
     public function __construct()
     {
         $this->webServer = $this->getWebServer();
-
-        if (Environment::getPublicPath() === Environment::getProjectPath()) {
-            $this->publicPath = Environment::getPublicPath();
-        } else {
-            $this->publicPath = substr(Environment::getPublicPath(), strlen(Environment::getProjectPath()) + 1);
-        }
+        $this->publicPath = Environment::getPublicPath();
     }
 
     public function addWebServerSpecificBackendRoutingRewriteRules(): bool
