@@ -1295,7 +1295,8 @@ class EditDocumentController
             ->setClasses('t3js-editform-close')
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
             ->setShowLabelText(true)
-            ->setIcon($this->iconFactory->getIcon('actions-close', IconSize::SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-close', IconSize::SMALL))
+            ->setDisabled(true);
         $buttonBar->addButton($closeButton, $position, $group);
     }
 
@@ -1310,7 +1311,8 @@ class EditDocumentController
             ->setName('_savedok')
             ->setShowLabelText(true)
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
-            ->setValue('1');
+            ->setValue('1')
+            ->setDisabled(true);
         $buttonBar->addButton($saveButton, $position, $group);
     }
 
@@ -1335,7 +1337,8 @@ class EditDocumentController
                         ->setIcon($this->iconFactory->getIcon('actions-view', IconSize::SMALL))
                         ->setShowLabelText(true)
                         ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.viewDoc'))
-                        ->setClasses('t3js-editform-view');
+                        ->setClasses('t3js-editform-view')
+                        ->setDisabled(true);
                     if (!$this->isSavedRecord && $this->firstEl['table'] === 'pages') {
                         $viewButton->setDataAttributes(['is-new' => '']);
                     }
@@ -1375,7 +1378,8 @@ class EditDocumentController
                 ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL))
                 ->setShowLabelText(true)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.newDoc'))
-                ->setClasses('t3js-editform-new');
+                ->setClasses('t3js-editform-new')
+                ->setDisabled(true);
             if (!$this->isSavedRecord) {
                 $newButton->setDataAttributes(['is-new' => '']);
             }
@@ -1414,7 +1418,8 @@ class EditDocumentController
                 ->setShowLabelText(true)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.duplicateDoc'))
                 ->setIcon($this->iconFactory->getIcon('actions-document-duplicates-select', IconSize::SMALL))
-                ->setClasses('t3js-editform-duplicate');
+                ->setClasses('t3js-editform-duplicate')
+                ->setDisabled(true);
             if (!$this->isSavedRecord) {
                 $duplicateButton->setDataAttributes(['is-new' => '']);
             }
@@ -1504,7 +1509,8 @@ class EditDocumentController
                 ->setHref($deleteUrl)
                 ->setIcon($this->iconFactory->getIcon('actions-edit-delete', IconSize::SMALL))
                 ->setShowLabelText(true)
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteItem'));
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteItem'))
+                ->setDisabled(true);
             $buttonBar->addButton($deleteButton, $position, $group);
         }
     }
@@ -1524,6 +1530,7 @@ class EditDocumentController
                 'type' => 'button',
                 'data-dispatch-action' => 'TYPO3.InfoWindow.showItem',
                 'data-dispatch-args-list' => $this->firstEl['table'] . ',' . $this->firstEl['uid'],
+                'disabled' => 'disabled',
             ]);
             $button->setIcon($this->iconFactory->getIcon('actions-document-info', IconSize::SMALL));
             $buttonBar->addButton($button, $position, $group);
@@ -1547,7 +1554,8 @@ class EditDocumentController
             $historyButton = $buttonBar->makeLinkButton()
                 ->setHref($historyUrl)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:recordHistory'))
-                ->setIcon($this->iconFactory->getIcon('actions-document-history-open', IconSize::SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-document-history-open', IconSize::SMALL))
+                ->setDisabled(true);
             $buttonBar->addButton($historyButton, $position, $group);
         }
     }
@@ -1564,7 +1572,8 @@ class EditDocumentController
                 ->setHref($this->R_URI . '&columnsOnly=')
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:editWholeRecord'))
                 ->setShowLabelText(true)
-                ->setIcon($this->iconFactory->getIcon('actions-open', IconSize::SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-open', IconSize::SMALL))
+                ->setDisabled(true);
 
             $buttonBar->addButton($columnsOnlyButton, $position, $group);
         }
@@ -1594,7 +1603,8 @@ class EditDocumentController
                         md5($this->R_URI), // windowName,
                         'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1', // windowFeatures
                     ]),
-                ]);
+                ])
+                ->setDisabled(true);
             $buttonBar->addButton($openInNewWindowButton, $position, $group);
         }
     }
@@ -1609,7 +1619,8 @@ class EditDocumentController
             $shortCutButton = $buttonBar->makeShortcutButton()
                 ->setRouteIdentifier('record_edit')
                 ->setDisplayName($this->getShortcutTitle($request))
-                ->setArguments($arguments);
+                ->setArguments($arguments)
+                ->setDisabled(true);
             $buttonBar->addButton($shortCutButton, $position, $group);
         }
     }
