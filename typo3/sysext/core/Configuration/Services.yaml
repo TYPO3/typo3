@@ -52,6 +52,13 @@ services:
         command: 'extension:setup'
         schedulable: false
 
+  TYPO3\CMS\Core\Command\TranslationDomainListCommand:
+    tags:
+      - name: 'console.command'
+        command: 'language:domain:list'
+        description: 'Lists all translation domains and their label resource file locations'
+        schedulable: false
+
   TYPO3\CMS\Core\Package\UnitTestPackageManager:
     autoconfigure: false
 

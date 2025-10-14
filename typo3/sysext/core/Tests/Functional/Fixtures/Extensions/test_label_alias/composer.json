@@ -1,0 +1,19 @@
+{
+	"name": "typo3tests/test-label-alias",
+	"type": "typo3-cms-extension",
+	"description": "Test extension for translation domain alias functionality",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "14.0.*@dev"
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\TestLabelAlias\\": "Classes/"
+		}
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_label_alias"
+		}
+	}
+}

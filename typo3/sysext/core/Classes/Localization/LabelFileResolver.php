@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Localization;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
+use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -33,6 +34,9 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * - Detecting resource override files via $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides']
  * - Determining file loading order without merging content
  *
+ * This class does not handle reading of file contents, and also returns the full path,
+ * so it does not care about caching. Should be handled at a more outer stage.
+ *
  * @internal not part of TYPO3's public API.
  */
 #[Autoconfigure(public: true)]
@@ -41,6 +45,93 @@ readonly class LabelFileResolver
     public function __construct(
         protected PackageManager $packageManager,
     ) {}
+
+    /**
+     * Find all label files in a package, but also find overrides.
+     * All files are returned in the order they should be loaded.
+     */
+    public function getAllLabelFilesOfPackage(string $packageKey): array
+    {
+        $result = [];
+        try {
+            $packagePath = $this->packageManager->getPackage($packageKey)->getPackagePath();
+        } catch (UnknownPackageException) {
+            throw new \InvalidArgumentException(sprintf('Package with key "%s" not found', $packageKey), 1760479988);
+        }
+        $directoriesToSearch = [
+            'Resources/Private/Language/',
+            'Configuration/Sets/',
+        ];
+        $allowedFileExtensions = $this->getSupportedExtensions();
+        $allowedFileExtensions = implode(',', $allowedFileExtensions);
+        foreach ($directoriesToSearch as $searchPath) {
+            $searchPath = $packagePath . $searchPath;
+            $files = GeneralUtility::getAllFilesAndFoldersInPath([], $searchPath, $allowedFileExtensions, true);
+            foreach ($files as $file) {
+                $fileName = PathUtility::basename($file);
+                $locale = $this->getLocaleFromLanguageFile($fileName);
+                if ($locale === null) {
+                    $locale = 'en';
+                }
+                $relativeFilePath = substr($file, strlen($packagePath));
+                $fileReference = 'EXT:' . $packageKey . '/' . $relativeFilePath;
+                try {
+                    $orderedFiles = $this->getOrderedFileResources($fileReference, $locale);
+                    if (isset($orderedFiles[$locale]) && $orderedFiles[$locale] !== []) {
+                        if (!isset($result[$locale])) {
+                            $result[$locale] = [];
+                        }
+                        $result[$locale] = array_merge($result[$locale], $orderedFiles[$locale]);
+                    }
+                    if ($locale !== 'en' && isset($orderedFiles['en']) && $orderedFiles['en'] !== []) {
+                        if (!isset($result['en'])) {
+                            $result['en'] = [];
+                        }
+                        $result['en'] = array_merge($result['en'], $orderedFiles['en']);
+                    }
+                } catch (FileNotFoundException $e) {
+                }
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * If a file is called "de_AT.locallang.xlf", this method returns "de_AT".
+     * If there is no suffix, NULL is returned.
+     */
+    public function getLocaleFromLanguageFile(string $fileName): ?string
+    {
+        if (preg_match('/^[a-z]{2}([_-][A-z]{2})?\./', $fileName)) {
+            return substr($fileName, 0, strpos($fileName, '.'));
+        }
+        return null;
+    }
+
+    /**
+     * Finds the actual files needed to resolve a file resource.
+     * This should be used later-on directly in LocalizationFactory.
+     */
+    protected function getOrderedFileResources(string $fileReference, string $locale): array
+    {
+        $result = [];
+        if ($locale !== 'en') {
+            $result['en'] = $this->getOrderedFileResources($fileReference, 'en')['en'];
+        } else {
+            $result[$locale] = [];
+        }
+        try {
+            $baseFile = $this->resolveFileReference($fileReference, $locale, $locale !== 'en');
+            $result[$locale][] = $baseFile;
+        } catch (FileNotFoundException $e) {
+
+        }
+        $overrideFiles = $this->getOverrideFilePaths($fileReference, $locale);
+        if ($overrideFiles !== []) {
+            $result[$locale] = array_merge($result[$locale], $overrideFiles);
+        }
+        return $result;
+    }
 
     public function resolveFileReference(string $fileReference, string $locale, bool $useDefault = true): string
     {
@@ -120,10 +211,7 @@ readonly class LabelFileResolver
         throw new FileNotFoundException(sprintf('Source localization file (%s) not found', $fileReference), 1306410755);
     }
 
-    /**
-     * Get file reference without extension
-     */
-    protected function getFileReferenceWithoutExtension(string $fileReference): string
+    public function getFileReferenceWithoutExtension(string $fileReference): string
     {
         return preg_replace('/\\.[a-z0-9]+$/i', '', $fileReference) ?? $fileReference;
     }

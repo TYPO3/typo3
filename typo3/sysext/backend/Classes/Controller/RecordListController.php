@@ -625,7 +625,7 @@ class RecordListController
         }
         // If any languages are left, make selector:
         if (!empty($availableTranslations)) {
-            $label = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:new_language'));
+            $label = htmlspecialchars($this->getLanguageService()->sL('backend.layout:new_language'));
             $output = '<option value="">' . $label . '</option>';
             foreach ($availableTranslations as $languageUid => $languageTitle) {
                 // Build localize command URL to DataHandler (tce_db)

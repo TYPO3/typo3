@@ -115,9 +115,14 @@ class LanguageService
      *
      * ```
      * 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0'
+     * 'LLL:core.messages:labels.depth_0'
+     * 'core.messages:labels.depth_0'  // LLL: prefix is optional
      * ```
      *
-     * This looks up the given .xlf file path in the 'core' extension for label labels.depth_0
+     * This looks up the given .xlf file path or translation domain in the 'core' extension for label labels.depth_0
+     *
+     * The LLL: prefix is optional. If the input contains a colon (:), it will be treated as a label reference.
+     * If no colon is found, the input string is returned as-is (constant non-localizable label).
      *
      * Only the plain string contents of a language key, like "Record title: %s" are returned.
      * Placeholder interpolation must be performed separately, for example via `sprintf()`, like
@@ -163,24 +168,47 @@ class LanguageService
         if ($input === '') {
             return $input;
         }
-        // Use a constant non-localizable label
-        if (!str_starts_with(trim($input), 'LLL:')) {
-            return $input;
+
+        $trimmedInput = trim($input);
+        $hasLLLPrefix = str_starts_with($trimmedInput, 'LLL:');
+        $restStr = $trimmedInput;
+
+        // Remove the LLL: prefix if present
+        if ($hasLLLPrefix) {
+            $restStr = substr($trimmedInput, 4);
         }
 
-        // Remove the LLL: prefix
-        $restStr = substr(trim($input), 4);
         $extensionPrefix = '';
-        // ll-file referred to is found in an extension
+        // Check if ll-file is referred to by extension path (EXT:)
         if (PathUtility::isExtensionPath(trim($restStr))) {
             $restStr = substr(trim($restStr), 4);
             $extensionPrefix = 'EXT:';
         }
-        $parts = explode(':', trim($restStr));
+
+        $parts = explode(':', trim($restStr), 2);
         if (isset($parts[1])) {
-            return (string)$this->translate($parts[1], $extensionPrefix . $parts[0]);
+            // Handle both domain references and file paths
+            if ($extensionPrefix === '') {
+                // This could be a domain reference (e.g., "core.tabs:general")
+                // The file path resolution happens in LocalizationFactory
+                $fileReference = $parts[0];
+            } else {
+                // Traditional EXT: file path
+                $fileReference = $extensionPrefix . $parts[0];
+            }
+            $result = (string)$this->translate($parts[1], $fileReference);
+            if ($hasLLLPrefix) {
+                return $result;
+            }
+            // If LLL: prefix was not used, we return the input as-is if no translation was found
+            return $result !== '' ? $result : $input;
+
         }
-        return '';
+
+        // No colon found
+        // If LLL: prefix was used, return empty string (original behavior for invalid references)
+        // Otherwise, return input as-is (constant non-localizable label)
+        return $hasLLLPrefix ? '' : $input;
     }
 
     /**
@@ -262,7 +290,6 @@ class LanguageService
     protected function readLLfile(string $fileReferenceOrDomain): array
     {
         // Translate a possible domain into a fileReference
-
         $cacheIdentifier = 'labels_file_' . md5($fileReferenceOrDomain . (string)$this->locale);
         $cacheEntry = $this->runtimeCache->get($cacheIdentifier);
         if (is_array($cacheEntry)) {

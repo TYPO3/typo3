@@ -184,3 +184,11 @@ services:
         identifier: 'doctrineDbalDriverMiddlewares'
         label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:doctrineDbalDriverMiddlewares'
         after: 'expressionlanguage'
+
+  lowlevel.configuration.module.provider.translation-domain-list:
+    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\TranslationDomainListProvider'
+    tags:
+      - name: 'lowlevel.configuration.module.provider'
+        identifier: 'translationDomainList'
+        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:translationDomainList'
+        after: 'expressionlanguage'

@@ -67,6 +67,9 @@
 			<trans-unit id="symfonyExpressionLanguage">
 				<source>Symfony Expression Language Providers</source>
 			</trans-unit>
+			<trans-unit id="translationDomainList">
+				<source>Translation Domain List</source>
+			</trans-unit>
 			<trans-unit id="doctrineDbalDriverMiddlewares">
 				<source>Doctrine DBAL Driver Middlewares</source>
 			</trans-unit>

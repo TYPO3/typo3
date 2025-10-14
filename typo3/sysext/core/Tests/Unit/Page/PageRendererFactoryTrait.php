@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Localization\LabelFileResolver;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Localization\TranslationDomainMapper;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\AssetCollector;
@@ -50,6 +51,10 @@ trait PageRendererFactoryTrait
         $cacheManagerMock = $this->createMock(CacheManager::class);
         $cacheManagerMock->method('getCache')->with('l10n')->willReturn(new NullFrontend('l10n'));
         $cacheManager ??= $cacheManagerMock;
+
+        $labelMapperMock = $this->createMock(TranslationDomainMapper::class);
+        $labelMapperMock->method('mapDomainToFileName')->willReturnArgument(0);
+
         return [
             new NullFrontend('assets'),
             new MarkerBasedTemplateService(
@@ -63,7 +68,7 @@ trait PageRendererFactoryTrait
             new RelativeCssPathFixer(),
             new LanguageServiceFactory(
                 new Locales(),
-                new LocalizationFactory(new Translator('en'), $cacheManager->getCache('l10n'), new LabelFileResolver($packageManager)),
+                new LocalizationFactory(new Translator('en'), $cacheManager->getCache('l10n'), $labelMapperMock, new LabelFileResolver($packageManager)),
                 new NullFrontend('null')
             ),
             new ResponseFactory(),

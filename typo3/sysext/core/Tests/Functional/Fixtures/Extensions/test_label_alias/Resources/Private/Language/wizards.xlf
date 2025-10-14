@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns="urn:oasis:names:tc:xliff:document:1.0">
+	<file source-language="en" datatype="plaintext" original="EXT:test_label_alias/Resources/Private/Language/wizards.xlf" date="2025-10-14T00:00:00Z" product-name="test_label_alias">
+		<header/>
+		<body>
+			<trans-unit id="title" resname="title">
+				<source>Wizards Title (new file)</source>
+			</trans-unit>
+			<trans-unit id="description" resname="description">
+				<source>This is the new wizards.xlf file</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

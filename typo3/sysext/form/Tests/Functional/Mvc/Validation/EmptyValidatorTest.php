@@ -26,6 +26,10 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class EmptyValidatorTest extends FunctionalTestCase
 {
+    protected array $coreExtensionsToLoad = [
+        'form',
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();

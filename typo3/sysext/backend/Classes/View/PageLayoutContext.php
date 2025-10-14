@@ -305,7 +305,7 @@ class PageLayoutContext
         // If any languages are left, make selector:
         $options = [];
         if (!empty($availableTranslations)) {
-            $options[] = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:new_language');
+            $options[] = $this->getLanguageService()->sL('backend.layout:new_language');
             foreach ($availableTranslations as $languageUid => $languageTitle) {
                 // Build localize command URL to DataHandler (tce_db)
                 // which redirects to FormEngine (record_edit)

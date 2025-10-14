@@ -28,7 +28,7 @@ class CacheWarmer
 {
     public function __construct(
         protected readonly PackageManager $packageManager,
-        protected readonly Locales $locales,
+        protected readonly LabelFileResolver $labelFileResolver,
         protected readonly LocalizationFactory $localizationFactory
     ) {}
 
@@ -36,21 +36,12 @@ class CacheWarmer
     public function warmupCaches(CacheWarmupEvent $event): void
     {
         if ($event->hasGroup('system')) {
-            $languages = $this->locales->getActiveLanguages();
             $packages = $this->packageManager->getActivePackages();
             foreach ($packages as $package) {
-                $dir = $package->getPackagePath() . 'Resources/Private/Language';
-                if (!is_dir($dir)) {
-                    continue;
-                }
-                $recursiveIterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir));
-                // Search for all files with suffix *.xlf and  without a dot in the file basename
-                $fileIterator = new \RegexIterator($recursiveIterator, '#^.+/[^.]+\.xlf$#', \RegexIterator::GET_MATCH);
-                $shorthand = 'EXT:' . $package->getPackageKey() . '/Resources/Private/Language';
-                foreach ($fileIterator as $match) {
-                    $fileReference = str_replace($dir, $shorthand, $match[0]);
-                    foreach ($languages as $language) {
-                        // @todo: Force cache renewal
+                $resources = $this->labelFileResolver->getAllLabelFilesOfPackage($package->getPackageKey());
+                foreach ($resources as $language => $filesForLocale) {
+                    // @todo: Force cache renewal
+                    foreach ($filesForLocale as $fileReference) {
                         $this->localizationFactory->getParsedData($fileReference, $language);
                     }
                 }

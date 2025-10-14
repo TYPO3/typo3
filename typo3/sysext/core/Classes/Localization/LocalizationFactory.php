@@ -34,12 +34,19 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  * - Handles loading default (= english) before translated files
  * - Handles file name juggling of translated files.
  * - Handles localization overrides via $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides']
+ *
+ * This class only deals with full files, "resources" a.k.a. "translation domains" right now. It does not care about
+ * the actual identifier WITHIN this label bag.
+ *
+ * The main issue with this class is that it does not resolve proper dependencies, thus the fallback logic
+ * is marode. You can see this when checking for ArrayUtility both here and in LanguageService.
  */
 readonly class LocalizationFactory
 {
     public function __construct(
         protected Translator $translator,
         protected FrontendInterface $systemCache,
+        protected TranslationDomainMapper $translationDomainMapper,
         protected LabelFileResolver $labelFileResolver,
     ) {
         foreach ($GLOBALS['TYPO3_CONF_VARS']['LANG']['loader'] ?? [] as $key => $loader) {
@@ -61,6 +68,7 @@ readonly class LocalizationFactory
     public function getParsedData(string $fileReference, string $languageKey): array
     {
         $languageKey = $languageKey === 'default' ? 'en' : $languageKey;
+        $fileReference = $this->translationDomainMapper->mapDomainToFileName($fileReference);
         $systemCacheIdentifier = md5($fileReference . $languageKey);
 
         // If the content is in system cache, put it in runtime cache and use it
@@ -87,11 +95,11 @@ readonly class LocalizationFactory
     protected function applyLocalizationOverrides(string $fileReference, string $languageKey, array $labels): array
     {
         $overrideFiles = $this->labelFileResolver->getOverrideFilePaths($fileReference, $languageKey);
-
+        $domainName = $this->translationDomainMapper->mapFileNameToDomain($fileReference);
         foreach ($overrideFiles as $overrideFile) {
-            $catalogue = $this->getMessageCatalogue($overrideFile, $languageKey);
-            $fallbackCatalogue = $this->getMessageCatalogue($overrideFile, $languageKey, false);
-            $overrideLabels = $this->convertCatalogueToLegacyFormat($catalogue, $fallbackCatalogue);
+            $catalogue = $this->getMessageCatalogue($overrideFile, $languageKey, $domainName);
+            $fallbackCatalogue = $this->getMessageCatalogue($overrideFile, $languageKey, $domainName, false);
+            $overrideLabels = $this->convertCatalogueToLegacyFormat($catalogue, $fallbackCatalogue, $domainName);
             ArrayUtility::mergeRecursiveWithOverrule($labels, $overrideLabels, true, false);
         }
 
@@ -103,52 +111,49 @@ readonly class LocalizationFactory
      */
     protected function loadWithSymfonyTranslator(string $fileReference, string $languageKey): array
     {
-        $catalogue = $this->getMessageCatalogue($fileReference, $languageKey);
-        $fallbackCatalogue = $this->getMessageCatalogue($fileReference, $languageKey, false);
+        $domainName = $this->translationDomainMapper->mapFileNameToDomain($fileReference);
+        $catalogue = $this->getMessageCatalogue($fileReference, $languageKey, $domainName);
+        $fallbackCatalogue = $this->getMessageCatalogue($fileReference, $languageKey, $domainName, false);
 
-        $labels = $this->convertCatalogueToLegacyFormat($catalogue, $fallbackCatalogue);
+        $labels = $this->convertCatalogueToLegacyFormat($catalogue, $fallbackCatalogue, $domainName);
         return $this->applyLocalizationOverrides($fileReference, $languageKey, $labels);
     }
 
     /**
      * Load translations of one resource using Symfony Translator
      */
-    protected function getMessageCatalogue(string $fileReference, string $locale, bool $useDefault = true): MessageCatalogueInterface
+    protected function getMessageCatalogue(string $fileReference, string $locale, string $domainName, bool $useDefault = true): MessageCatalogueInterface
     {
         $actualSourcePath = $this->labelFileResolver->resolveFileReference($fileReference, $locale, $useDefault);
         // @todo: we need to be more flexible with the file ending here.
         $fileExtension = (string)pathinfo($actualSourcePath, PATHINFO_EXTENSION);
         // Add the resource to Symfony Translator
-        $this->translator->addResource($fileExtension ?: 'xlf', $actualSourcePath, $locale, 'messages');
+        $this->translator->addResource($fileExtension ?: 'xlf', $actualSourcePath, $locale, $domainName);
         return $this->translator->getCatalogue($locale);
     }
 
     /**
      * Convert Symfony MessageCatalogue to TYPO3's legacy format
      */
-    protected function convertCatalogueToLegacyFormat(MessageCatalogueInterface $catalogue, MessageCatalogueInterface $fallbackCatalogue): array
+    protected function convertCatalogueToLegacyFormat(MessageCatalogueInterface $catalogue, MessageCatalogueInterface $fallbackCatalogue, string $domain): array
     {
         $result = [];
-        foreach ($fallbackCatalogue->all() as $translations) {
-            foreach ($translations as $key => $value) {
-                // Check if this is a plural form (contains ICU format)
-                if (str_contains($value, '{0, plural,')) {
-                    $result[$key] = $this->parseIcuPlural($value);
-                } else {
-                    // Regular translation
-                    $result[$key] = $value;
-                }
+        foreach ($fallbackCatalogue->all($domain) as $key => $value) {
+            // Check if this is a plural form (contains ICU format)
+            if (str_contains($value, '{0, plural,')) {
+                $result[$key] = $this->parseIcuPlural($value);
+            } else {
+                // Regular translation
+                $result[$key] = $value;
             }
         }
-        foreach ($catalogue->all() as $translations) {
-            foreach ($translations as $key => $value) {
-                // Check if this is a plural form (contains ICU format)
-                if (str_contains($value, '{0, plural,')) {
-                    $result[$key] = $this->parseIcuPlural($value);
-                } else {
-                    // Regular translation
-                    $result[$key] = $value ?: $fallbackCatalogue->get($key);
-                }
+        foreach ($catalogue->all($domain) as $key => $value) {
+            // Check if this is a plural form (contains ICU format)
+            if (str_contains($value, '{0, plural,')) {
+                $result[$key] = $this->parseIcuPlural($value);
+            } else {
+                // Regular translation
+                $result[$key] = $value ?: $fallbackCatalogue->get($key, $domain);
             }
         }
 

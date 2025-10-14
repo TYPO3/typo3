@@ -1,0 +1,14 @@
+{
+	"name": "typo3tests/test-translation-domain",
+	"type": "typo3-cms-extension",
+	"description": "A test extension for translation domain mapping",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "14.0.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_translation_domain"
+		}
+	}
+}

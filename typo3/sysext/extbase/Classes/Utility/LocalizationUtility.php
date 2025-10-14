@@ -60,7 +60,7 @@ class LocalizationUtility
             $key = array_pop($keyParts);
             $languageFilePath = implode(':', $keyParts);
         } else {
-            $languageFilePath = 'EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Private/Language/locallang.xlf';
+            $languageFilePath = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '.messages';
         }
         $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? null;
         $locale = self::getLocale($languageKey, $request);

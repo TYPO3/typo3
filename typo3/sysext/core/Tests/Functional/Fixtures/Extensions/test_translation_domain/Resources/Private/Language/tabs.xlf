@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns="urn:oasis:names:tc:xliff:document:1.0">
+	<file source-language="en" datatype="plaintext" original="EXT:test_translation_domain/Resources/Private/Language/tabs.xlf" date="2025-10-14T00:00:00Z" product-name="test_translation_domain">
+		<header/>
+		<body>
+			<trans-unit id="conflict.test" resname="conflict.test">
+				<source>From tabs.xlf</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
