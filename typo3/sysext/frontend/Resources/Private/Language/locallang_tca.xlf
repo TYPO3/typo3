@@ -6,8 +6,14 @@
 			<trans-unit id="mod_tx_cms_webinfo_page">
 				<source>Pagetree Overview</source>
 			</trans-unit>
+			<trans-unit id="mod_tx_cms_webinfo_page.description">
+				<source>View page records and settings in a tree structure with detailed metadata.</source>
+			</trans-unit>
 			<trans-unit id="mod_tx_cms_webinfo_lang">
 				<source>Localization Overview</source>
+			</trans-unit>
+			<trans-unit id="mod_tx_cms_webinfo_lang.description">
+				<source>Check translation status and manage localized content for pages.</source>
 			</trans-unit>
 			<trans-unit id="pages.palettes.standard">
 				<source>Page</source>

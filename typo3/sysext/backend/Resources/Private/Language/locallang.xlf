@@ -195,6 +195,18 @@
 			<trans-unit id="editdocument.moduleMenu.dropdown.label">
 				<source>Record language</source>
 			</trans-unit>
+			<trans-unit id="moduleMenu.dropdown.overview">
+				<source>Module overview</source>
+			</trans-unit>
+			<trans-unit id="submoduleOverview.openModule">
+				<source>Open module</source>
+			</trans-unit>
+			<trans-unit id="submoduleOverview.noAccess.title">
+				<source>No modules available</source>
+			</trans-unit>
+			<trans-unit id="submoduleOverview.noAccess.message">
+				<source>There are no submodules available or you do not have access to any of them. Please contact your administrator if you believe this is an error.</source>
+			</trans-unit>
 			<trans-unit id="theme">
 				<source>Theme</source>
 			</trans-unit>

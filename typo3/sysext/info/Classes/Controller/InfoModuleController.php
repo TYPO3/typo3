@@ -122,6 +122,14 @@ class InfoModuleController
     {
         $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
 
+        $goBack = $buttonBar
+            ->makeLinkButton()
+            ->setHref((string)$this->uriBuilder->buildUriFromRoute('web_info', ['id' => $this->id]))
+            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL))
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+            ->setShowLabelText(true);
+        $buttonBar->addButton($goBack);
+
         if ($this->id) {
             // View
             $previewUriBuilder = PreviewUriBuilder::create($this->pageinfo);
@@ -137,7 +145,7 @@ class InfoModuleController
                     ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
                     ->setIcon($this->iconFactory->getIcon('actions-view-page', IconSize::SMALL))
                     ->setShowLabelText(true);
-                $buttonBar->addButton($viewButton);
+                $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
             }
         }
 

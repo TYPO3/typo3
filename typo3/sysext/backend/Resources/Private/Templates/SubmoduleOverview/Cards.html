@@ -1,0 +1,75 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module"/>
+
+<f:section name="Content">
+    <f:if condition="{currentModule}">
+        <f:then>
+            <h1>{f:translate(key: currentModule.title, default: currentModule.title)}</h1>
+            <f:if condition="{currentModule.shortDescription}">
+                <f:then>
+                    <p>{f:translate(key: currentModule.shortDescription, default: currentModule.shortDescription)}</p>
+                </f:then>
+                <f:else if="{currentModule.description}">
+                    <p>{f:translate(key: currentModule.description, default: currentModule.description)}</p>
+                </f:else>
+            </f:if>
+            <f:if condition="{submodules}">
+                <f:then>
+                    <div class="card-container">
+                        <f:for each="{submodules}" as="subModule">
+                            <div class="card card-size-small">
+                                <div class="card-header">
+                                    <div class="card-header-content">
+                                        <div class="card-icon">
+                                            <core:icon identifier="{subModule.iconIdentifier}" size="small"/>
+                                        </div>
+                                        <div class="card-header-text">
+                                            <h2 class="card-title">{f:translate(key: subModule.title, default: subModule.title)}</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <f:if condition="{subModule.shortDescription}">
+                                        <f:then>
+                                            <p class="card-text">{f:translate(key: subModule.shortDescription, default: subModule.shortDescription)}</p>
+                                        </f:then>
+                                        <f:else if="{subModule.description}">
+                                            <p class="card-text">{f:translate(key: subModule.description, default: subModule.description)}</p>
+                                        </f:else>
+                                    </f:if>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="{f:be.uri(route: subModule.identifier, parameters: additionalParameters)}" class="btn btn-default">
+                                        <core:icon identifier="actions-play" size="small" />
+                                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:submoduleOverview.openModule" />
+                                    </a>
+                                </div>
+                            </div>
+                        </f:for>
+                    </div>
+                </f:then>
+                <f:else>
+                    <f:be.infobox
+                        title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:submoduleOverview.noAccess.title')}"
+                        message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:submoduleOverview.noAccess.message')}"
+                        state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}"
+                    />
+                </f:else>
+            </f:if>
+        </f:then>
+        <f:else>
+            <f:be.infobox
+                title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:module.noAccess.title')}"
+                state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR')}"
+            />
+        </f:else>
+    </f:if>
+</f:section>
+
+</html>

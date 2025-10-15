@@ -33,25 +33,32 @@ final class InfoModuleCest
         $I->click('[data-modulemenu-identifier="web_info"]');
         $pageTree->openPath(['styleguide TCA demo']);
         $I->switchToContentFrame();
+        $I->see('Info', 'h1');
+        $I->see('Page related information, eg. hit statistics, change log, record counts');
     }
 
     private function infoMenuDataProvider(): array
     {
         return [
-            ['option' => 'Pagetree Overview', 'expect' => 'Pagetree Overview'],
-            ['option' => 'Localization Overview', 'expect' => 'Localization Overview'],
+            ['title' => 'Pagetree Overview', 'description' => 'View page records and settings in a tree structure with detailed metadata.'],
+            ['title' => 'Localization Overview', 'description' => 'Check translation status and manage localized content for pages.'],
         ];
     }
 
     #[DataProvider('infoMenuDataProvider')]
     public function seeInfoSubModules(ApplicationTester $I, Example $exampleData): void
     {
-        $I->amGoingTo('select ' . $exampleData['option'] . ' in dropdown');
-        $I->waitForElementVisible('.t3-js-jumpMenuBox');
-        $I->wait(1);
-        $I->selectOption('.t3-js-jumpMenuBox', $exampleData['option']);
-        $I->wait(1);
-        $I->waitForText($exampleData['expect']);
-        $I->see($exampleData['expect'], 'h1');
+        $I->amGoingTo('see card for ' . $exampleData['title']);
+        $I->waitForElementVisible('.card-container');
+        $I->see($exampleData['title'], '.card-title');
+        $I->see($exampleData['description'], '.card-text');
+        $I->see('Open module', '.card-footer');
+
+        $I->amGoingTo('open ' . $exampleData['title'] . ' module via card button');
+        // Find the card containing the specific title and click its "Open module" button
+        $cardSelector = '//div[@class="card card-size-small" and .//h2[contains(text(), "' . $exampleData['title'] . '")]]';
+        $I->click('.btn', $cardSelector);
+        $I->waitForText($exampleData['title']);
+        $I->see($exampleData['title'], 'h1');
     }
 }

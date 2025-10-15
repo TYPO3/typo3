@@ -50,10 +50,25 @@ class Module extends BaseModule implements ModuleInterface
             }
         } elseif ($this->hasSubModules()) {
             // In case no routes are defined but the module has submodules,
-            // fall back and use the first submodules' route options instead.
-            $submodules = $this->getSubModules();
-            $firstSubModule = reset($submodules);
-            $defaultRouteOptions = $firstSubModule->getDefaultRouteOptions();
+            // check if we should show the submodule overview or fall back to the first submodule.
+            if ($this->hasSubmoduleOverview()) {
+                // Show card-based overview of all submodules
+                $defaultRouteOptions['_default'] = array_replace_recursive(
+                    $this->routeOptions,
+                    [
+                        'target' => \TYPO3\CMS\Backend\Controller\SubmoduleOverviewController::class . '::handleRequest',
+                        'module' => $this,
+                        'packageName' => $this->packageName,
+                        'absolutePackagePath' => $this->absolutePackagePath,
+                        'access' => $this->access,
+                    ]
+                );
+            } else {
+                // Fall back and use the first submodules' route options instead.
+                $submodules = $this->getSubModules();
+                $firstSubModule = reset($submodules);
+                $defaultRouteOptions = $firstSubModule->getDefaultRouteOptions();
+            }
         }
 
         if (!isset($defaultRouteOptions['_default'])) {

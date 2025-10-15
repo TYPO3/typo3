@@ -158,4 +158,10 @@ interface ModuleInterface
      * Return a list of identifiers that are aliases to this module
      */
     public function getAliases(): array;
+
+    /**
+     * Whether this module should display a card-based overview of its submodules
+     * instead of automatically routing to the first available submodule.
+     */
+    public function hasSubmoduleOverview(): bool;
 }

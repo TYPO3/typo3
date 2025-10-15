@@ -292,6 +292,10 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
         if ($menuModule === null) {
             return $this;
         }
+        if (!$menuModule->hasSubModules()) {
+            return $this;
+        }
+
         $menu = $this->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('moduleMenu');
         $menu->setLabel(
@@ -299,6 +303,23 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
                 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:moduleMenu.dropdown.label'
             )
         );
+
+        // Add "Overview" link to the module menu in case a submodule overview exists
+        if ($menuModule->hasSubmoduleOverview()) {
+            $item = $menu
+                ->makeMenuItem()
+                ->setHref(
+                    (string)$this->uriBuilder->buildUriFromRoute(
+                        $menuModule->getIdentifier(),
+                        $additionalQueryParams,
+                    )
+                )
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:moduleMenu.dropdown.overview'));
+            if ($menuModule->getIdentifier() === $currentModule->getIdentifier()) {
+                $item->setActive(true);
+            }
+            $menu->addMenuItem($item);
+        }
 
         foreach ($menuModule->getSubModules() as $module) {
             $item = $menu

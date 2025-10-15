@@ -1,6 +1,5 @@
 <?php
 
-use TYPO3\CMS\Info\Controller\InfoModuleController;
 use TYPO3\CMS\Info\Controller\PageInformationController;
 use TYPO3\CMS\Info\Controller\TranslationStatusController;
 
@@ -18,11 +17,7 @@ return [
         'appearance' => [
             'dependsOnSubmodules' => true,
         ],
-        'routes' => [
-            '_default' => [
-                'target' => InfoModuleController::class . '::handleRequest',
-            ],
-        ],
+        'showSubmoduleOverview' => true,
     ],
     'web_info_overview' => [
         'parent' => 'web_info',
@@ -31,6 +26,7 @@ return [
         'iconIdentifier' => 'module-info',
         'labels' => [
             'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:mod_tx_cms_webinfo_page',
+            'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:mod_tx_cms_webinfo_page.description',
         ],
         'routes' => [
             '_default' => [
@@ -50,6 +46,7 @@ return [
         'iconIdentifier' => 'module-info',
         'labels' => [
             'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:mod_tx_cms_webinfo_lang',
+            'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:mod_tx_cms_webinfo_lang.description',
         ],
         'routes' => [
             '_default' => [
