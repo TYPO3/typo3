@@ -1,9 +1,14 @@
 <html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
 
-<a href="#" class="toolbar-item-link t3js-topbar-button-search" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.search')}">
+<button
+    class="toolbar-item-link t3js-topbar-button-search"
+    title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.search')}"
+    aria-haspopup="dialog"
+>
     <f:render partial="ToolbarItems/ToolbarItem" arguments="{
         title: 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.search',
         icon: '{core:icon(identifier: \'apps-toolbar-menu-search\', size: \'small\', alternativeMarkupIdentifier: \'inline\')}'
     }" />
-</a>
+</button>
+
 </html>
