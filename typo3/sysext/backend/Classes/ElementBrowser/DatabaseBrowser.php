@@ -211,7 +211,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         $pointer = (int)($request->getParsedBody()['pointer'] ?? $request->getQueryParams()['pointer'] ?? 0);
 
         $dbList->start(
-            $this->expandPage,
+            (int)$this->expandPage,
             $selectedTable,
             MathUtility::forceIntegerInRange($pointer, 0, 100000),
             $searchWord,
