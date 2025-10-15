@@ -975,7 +975,9 @@ class EditDocumentController
             $view->assign('moduleContextId', $file->getParentFolder()->getCombinedIdentifier());
         } elseif ($this->pageinfo !== []) {
             $view->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
-            $view->assign('moduleContextId', $this->pageinfo['uid'] ?? '');
+            $l10nParent = (int)($this->pageinfo['l10n_parent'] ?? 0);
+            $pageUid =  $this->pageinfo['uid'] ?? '';
+            $view->assign('moduleContextId', $l10nParent !== 0 ? $l10nParent : $pageUid);
         }
     }
 
