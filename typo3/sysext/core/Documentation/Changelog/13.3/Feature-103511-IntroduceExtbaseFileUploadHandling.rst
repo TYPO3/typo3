@@ -119,7 +119,7 @@ Example:
         $mimeTypeValidator = GeneralUtility::makeInstance(MimeTypeValidator::class);
         $mimeTypeValidator->setOptions(['allowedMimeTypes' => ['image/jpeg']]);
         $fileExtensionValidator = GeneralUtility::makeInstance(FileExtensionValidator::class);
-        $fileExtensionValidator->setOptions(['allowedFileExtensions' => ['jpg', 'jpeg']);
+        $fileExtensionValidator->setOptions(['allowedFileExtensions' => ['jpg', 'jpeg']]);
 
         $fileHandlingServiceConfiguration = $this->arguments->getArgument('myArgument')->getFileHandlingServiceConfiguration();
         $fileHandlingServiceConfiguration->addFileUploadConfiguration(
