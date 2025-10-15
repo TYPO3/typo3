@@ -17,10 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Domain;
 
+use TYPO3\CMS\Core\Domain\Exception\RecordPropertyNotFoundException;
+use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
+
 /**
  * @internal not part of public API, as this needs to be streamlined and proven
  */
-class Page implements \ArrayAccess
+class Page implements RecordInterface, \ArrayAccess
 {
     use PropertyTrait;
 
@@ -36,13 +39,29 @@ class Page implements \ArrayAccess
     ];
 
     protected array $specialProperties = [];
+    protected RawRecord $rawRecord;
+    protected ComputedProperties $computedProperties;
 
     public function __construct(array $properties)
     {
+        $translationSource = null;
+        $localizedUid = null;
+        $requestedOverlayLanguageId = null;
+
         foreach ($properties as $propertyName => $propertyValue) {
             if (in_array($propertyName, $this->specialPropertyNames)) {
                 if ($propertyName === '_TRANSLATION_SOURCE' && !$propertyValue instanceof Page) {
-                    $this->specialProperties[$propertyName] = new Page($propertyValue);
+                    $translationSource = new Page($propertyValue);
+                    $this->specialProperties[$propertyName] = $translationSource;
+                } elseif ($propertyName === '_TRANSLATION_SOURCE') {
+                    $translationSource = $propertyValue;
+                    $this->specialProperties[$propertyName] = $propertyValue;
+                } elseif ($propertyName === '_LOCALIZED_UID') {
+                    $localizedUid = $propertyValue;
+                    $this->specialProperties[$propertyName] = $propertyValue;
+                } elseif ($propertyName === '_REQUESTED_OVERLAY_LANGUAGE') {
+                    $requestedOverlayLanguageId = $propertyValue;
+                    $this->specialProperties[$propertyName] = $propertyValue;
                 } else {
                     $this->specialProperties[$propertyName] = $propertyValue;
                 }
@@ -50,8 +69,104 @@ class Page implements \ArrayAccess
                 $this->properties[$propertyName] = $propertyValue;
             }
         }
+
+        // Create computed properties from special properties
+        $this->computedProperties = new ComputedProperties(
+            versionedUid: null,
+            localizedUid: $localizedUid,
+            requestedOverlayLanguageId: $requestedOverlayLanguageId,
+            translationSource: $translationSource
+        );
+
+        // Determine record type for pages (based on doktype)
+        $recordType = isset($this->properties['doktype']) ? (string)$this->properties['doktype'] : null;
+        $fullType = $recordType !== null ? 'pages.' . $recordType : 'pages';
+
+        // Create RawRecord
+        $this->rawRecord = new RawRecord(
+            uid: (int)($this->properties['uid'] ?? 0),
+            pid: (int)($this->properties['pid'] ?? 0),
+            properties: $this->properties,
+            computedProperties: $this->computedProperties,
+            fullType: $fullType
+        );
     }
 
+    // RecordInterface methods
+    public function getUid(): int
+    {
+        return $this->rawRecord->getUid();
+    }
+
+    public function getPid(): int
+    {
+        return $this->rawRecord->getPid();
+    }
+
+    public function getFullType(): string
+    {
+        return $this->rawRecord->getFullType();
+    }
+
+    public function getRecordType(): ?string
+    {
+        return $this->rawRecord->getRecordType();
+    }
+
+    public function getMainType(): string
+    {
+        return $this->rawRecord->getMainType();
+    }
+
+    public function getRawRecord(): RawRecord
+    {
+        return $this->rawRecord;
+    }
+
+    public function getComputedProperties(): ComputedProperties
+    {
+        return $this->computedProperties;
+    }
+
+    public function has(string $id): bool
+    {
+        if (array_key_exists($id, $this->properties)) {
+            return true;
+        }
+
+        if (in_array($id, ['uid', 'pid'], true)) {
+            return true;
+        }
+
+        if (array_key_exists($id, $this->specialProperties)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function get(string $id): mixed
+    {
+        if (array_key_exists($id, $this->properties)) {
+            return $this->properties[$id];
+        }
+
+        if ($id === 'uid') {
+            return $this->rawRecord->getUid();
+        }
+
+        if ($id === 'pid') {
+            return $this->rawRecord->getPid();
+        }
+
+        if (array_key_exists($id, $this->specialProperties)) {
+            return $this->specialProperties[$id];
+        }
+
+        throw new RecordPropertyNotFoundException('Record property "' . $id . '" is not available.', 1725892141);
+    }
+
+    // Page-specific methods
     public function getLanguageId(): int
     {
         return $this->specialProperties['_language'] ?? $this->properties['sys_language_uid'];
