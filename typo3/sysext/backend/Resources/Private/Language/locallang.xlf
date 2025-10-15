@@ -210,6 +210,9 @@
 			<trans-unit id="toggleColorScheme">
 				<source>Toggle color scheme between light and dark mode</source>
 			</trans-unit>
+			<trans-unit id="colorSchemeToggleDisabled">
+				<source>Due to your current accessibility settings, the color scheme cannot be changed.</source>
+			</trans-unit>
 			<trans-unit id="colorScheme.auto">
 				<source>Auto detect</source>
 			</trans-unit>

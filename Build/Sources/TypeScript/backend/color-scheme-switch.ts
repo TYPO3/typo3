@@ -27,27 +27,37 @@ interface ColorSchemeOption {
 export class ColorSchemeSwitchElement extends LitElement {
   @property({ type: String }) activeColorScheme: ColorScheme = null;
   @property({ type: Array }) colorSchemes: ColorSchemeOption[] = null;
-  @property({ type: String }) label: string;
+  @property({ type: String }) toggleLabel: string;
+  @property({ type: String }) disabledLabel: string;
 
   @state() advancedOptionsExpanded: boolean = false;
   @state() autoDetect: ColorScheme|null = null;
+  @state() enabled: boolean|null = null;
 
-  private mql: MediaQueryList|null = null;
+  private colorSchemeMql: MediaQueryList|null = null;
+  private forcedColorsMql: MediaQueryList|null = null;
 
   public override connectedCallback(): void {
     super.connectedCallback();
-    this.mql = window.matchMedia('(prefers-color-scheme: dark)');
-    this.mediaQueryListener(this.mql);
-    this.mql.addEventListener('change', this.mediaQueryListener);
+    this.colorSchemeMql = window.matchMedia('(prefers-color-scheme: dark)');
+    this.forcedColorsMql = window.matchMedia('(forced-colors: active)');
+    this.colorSchemeMediaQueryListener(this.colorSchemeMql);
+    this.forcedColorsMediaQueryListener(this.forcedColorsMql);
+    this.colorSchemeMql.addEventListener('change', this.colorSchemeMediaQueryListener);
+    this.forcedColorsMql.addEventListener('change', this.forcedColorsMediaQueryListener);
   }
 
   public override disconnectedCallback(): void {
     super.disconnectedCallback();
-    this.mql.removeEventListener('change', this.mediaQueryListener);
-    this.mql = null;
+    this.colorSchemeMql.removeEventListener('change', this.colorSchemeMediaQueryListener);
+    this.forcedColorsMql.removeEventListener('change', this.forcedColorsMediaQueryListener);
+    this.colorSchemeMql = null;
+    this.forcedColorsMql = null;
   }
 
-  protected readonly mediaQueryListener = (mql: MediaQueryList|MediaQueryListEvent) => this.autoDetect = mql.matches ? 'dark' : 'light';
+  protected readonly colorSchemeMediaQueryListener = (mql: MediaQueryList|MediaQueryListEvent) => this.autoDetect = mql.matches ? 'dark' : 'light';
+
+  protected readonly forcedColorsMediaQueryListener = (mql: MediaQueryList|MediaQueryListEvent) => this.enabled = !mql.matches;
 
   protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
@@ -66,7 +76,8 @@ export class ColorSchemeSwitchElement extends LitElement {
         <button
             type="button"
             class="btn btn-default"
-            title=${this.label}
+            title=${this.enabled ? this.toggleLabel : this.disabledLabel}
+            ?disabled=${!this.enabled}
             @click=${(e: Event) => this.toggle(e)}
         >
           <typo3-backend-icon identifier=${this.getIcon(this.activeColorScheme ?? 'auto')} size="small"></typo3-backend-icon>
@@ -79,6 +90,7 @@ export class ColorSchemeSwitchElement extends LitElement {
             class="btn btn-default ${this.advancedOptionsExpanded ? 'active' : ''}"
             aria-haspopup="true"
             aria-expanded=${this.advancedOptionsExpanded ? 'true' : 'false'}
+            ?disabled=${!this.enabled}
             @click=${(e: Event) => { e.stopPropagation(); this.advancedOptionsExpanded = !this.advancedOptionsExpanded; }}
             >
           <span class="visually-hidden">Show more options</span>

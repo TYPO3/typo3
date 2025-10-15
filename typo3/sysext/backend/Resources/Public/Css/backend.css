@@ -3511,6 +3511,7 @@ typo3-backend-color-scheme-switch .btn-group .btn:first-child+.btn{flex:0 0 auto
 typo3-backend-color-scheme-switch .dropdown-item{-webkit-padding-start:calc(.75rem + 1px);padding-inline-start:calc(.75rem + 1px);-webkit-padding-end:calc(.75rem + 1px);padding-inline-end:calc(.75rem + 1px)}
 typo3-backend-color-scheme-switch .dropdown-item-column-title-info{color:var(--typo3-text-color-variant);font-style:italic;-webkit-margin-start:.25rem;margin-inline-start:.25rem}
 typo3-backend-color-scheme-switch .dropdown-item-columns{align-items:center;gap:calc(var(--typo3-spacing)*2/3);justify-content:flex-start}
+typo3-backend-color-scheme-switch .btn[disabled]{pointer-events:unset}
 
 /*!
  * CSS copied from jQuery UI Resizable 1.11.4 (http://jqueryui.com)
