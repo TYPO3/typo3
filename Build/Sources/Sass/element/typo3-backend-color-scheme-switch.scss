@@ -45,4 +45,8 @@ typo3-backend-color-scheme-switch {
             gap: calc(var(--typo3-spacing) * 2 / 3);
         }
     }
+
+    .btn[disabled] {
+        pointer-events: unset;
+    }
 }

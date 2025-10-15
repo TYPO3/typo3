@@ -58,7 +58,8 @@
 <f:if condition="{colorSchemeSwitchEnabled}">
     <hr class="dropdown-divider" aria-hidden="true">
     <typo3-backend-color-scheme-switch
-        label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:toggleColorScheme')}"
+        togglelabel="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:toggleColorScheme')}"
+        disabledlabel="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:colorSchemeToggleDisabled')}"
         colorschemes="{colorSchemes -> f:format.json()}" activeColorScheme="{activeColorScheme}"
     ></typo3-backend-color-scheme-switch>
 </f:if>
