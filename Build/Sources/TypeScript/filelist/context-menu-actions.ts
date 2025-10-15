@@ -106,13 +106,6 @@ class ContextMenuActions {
     }
   }
 
-  public static uploadFile(table: string, uid: string, dataset: DOMStringMap): void {
-    const actionUrl: string = dataset.actionUrl;
-    top.TYPO3.Backend.ContentContainer.setUrl(
-      actionUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
-    );
-  }
-
   public static createFolder(table: string, uid: string, dataset: DOMStringMap): void {
     top.TYPO3.Backend.ContentContainer.get().document.dispatchEvent(new CustomEvent(fileListOpenElementBrowser, {
       detail: {
@@ -124,10 +117,13 @@ class ContextMenuActions {
   }
 
   public static createFile(table: string, uid: string, dataset: DOMStringMap): void {
-    const actionUrl: string = dataset.actionUrl;
-    top.TYPO3.Backend.ContentContainer.setUrl(
-      actionUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
-    );
+    top.TYPO3.Backend.ContentContainer.get().document.dispatchEvent(new CustomEvent(fileListOpenElementBrowser, {
+      detail: {
+        actionUrl: dataset.actionUrl,
+        identifier: dataset.identifier,
+        mode: dataset.mode,
+      }
+    }));
   }
 
   public static downloadFile(table: string, uid: string, dataset: DOMStringMap): void {

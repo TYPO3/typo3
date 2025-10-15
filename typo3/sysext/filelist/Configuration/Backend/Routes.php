@@ -18,18 +18,6 @@ return [
         'target' => \TYPO3\CMS\Filelist\Controller\File\EditFileController::class . '::mainAction',
     ],
 
-    // Create a new file
-    'file_create' => [
-        'path' => '/file/create-file',
-        'target' => \TYPO3\CMS\Filelist\Controller\File\CreateFileController::class . '::mainAction',
-    ],
-
-    // Upload new files
-    'file_upload' => [
-        'path' => '/file/upload',
-        'target' => \TYPO3\CMS\Filelist\Controller\File\FileUploadController::class . '::mainAction',
-    ],
-
     'file_download' => [
         'path' => '/file/download',
         'methods' => ['POST'],

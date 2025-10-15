@@ -288,6 +288,7 @@ class FileList
      */
     protected function renderList(ResourceCollectionPaginator $paginator, array $resourceViews, ViewInterface $view): string
     {
+        $view->assign('mode', $this->mode->value);
         $view->assign('tableHeader', $this->renderListTableHeader());
         $view->assign('tableBackwardNavigation', $this->renderListTableForwardBackwardNavigation($paginator, NavigationDirection::BACKWARD));
         $view->assign('tableBody', $this->renderListTableBody($resourceViews));
@@ -934,7 +935,6 @@ class FileList
             'replace' => $this->createControlReplace($resourceView),
             'rename' => $this->createControlRename($resourceView),
             'download' => $this->createControlDownload($resourceView),
-            'upload' => $this->createControlUpload($resourceView),
             'info' => $this->createControlInfo($resourceView),
             'delete' => $this->createControlDelete($resourceView),
             'copy' => $this->createControlCopy($resourceView),
@@ -1136,22 +1136,6 @@ class FileList
             'data-filelist-action-url' => $this->uriBuilder->buildUriFromRoute('file_download'),
         ]);
         $button->setIcon($this->iconFactory->getIcon('actions-download', IconSize::SMALL));
-
-        return $button;
-    }
-
-    protected function createControlUpload(ResourceView $resourceView): ?ButtonInterface
-    {
-        if (!$resourceView->resource->getStorage()->checkUserActionPermission('add', 'File')
-            || !$resourceView->resource instanceof Folder
-            || !$resourceView->canWrite()) {
-            return null;
-        }
-
-        $button = GeneralUtility::makeInstance(LinkButton::class);
-        $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.upload'));
-        $button->setHref($this->uriBuilder->buildUriFromRoute('file_upload', ['target' => $resourceView->getIdentifier(), 'returnUrl' => $this->createModuleUri()]));
-        $button->setIcon($this->iconFactory->getIcon('actions-edit-upload', IconSize::SMALL));
 
         return $button;
     }

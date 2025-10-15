@@ -17,8 +17,8 @@ namespace TYPO3\CMS\Filelist\LinkHandler;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Backend\View\FolderUtilityRenderer;
 use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
+use TYPO3\CMS\Backend\View\ResourceUtilityRenderer;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -121,9 +121,10 @@ class FileLinkHandler extends AbstractResourceLinkHandler
             $markup[] = $this->filelist->render($searchDemand, $this->view);
 
             // Render the file upload and folder creation form
-            $folderUtilityRenderer = GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this);
-            $markup[] = $folderUtilityRenderer->uploadForm($request, $this->selectedFolder);
-            $markup[] = $folderUtilityRenderer->createFolder($request, $this->selectedFolder);
+            $resourceUtilityRenderer = GeneralUtility::makeInstance(ResourceUtilityRenderer::class, $this);
+            $markup[] = $resourceUtilityRenderer->uploadForm($request, $this->selectedFolder);
+            $markup[] = $resourceUtilityRenderer->addOnlineMedia($request, $this->selectedFolder);
+            $markup[] = $resourceUtilityRenderer->createFolder($request, $this->selectedFolder);
 
             $contentHtml = implode(PHP_EOL, $markup);
         }

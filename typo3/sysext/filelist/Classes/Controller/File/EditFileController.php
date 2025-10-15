@@ -152,7 +152,7 @@ class EditFileController
         $formData = $this->formEngineData;
         $formData['databaseRow']['data'] = $file->getContents();
         $formData['databaseRow']['target'] = $file->getUid();
-        $formData['databaseRow']['redirect'] = (string)$this->uriBuilder->buildUriFromRoute('file_edit', ['target' => $combinedIdentifier]);
+        $formData['databaseRow']['redirect'] = (string)$this->uriBuilder->buildUriFromRoute('file_edit', ['target' => $combinedIdentifier, 'returnUrl' => $returnUrl]);
         $formData['processedTca']['columns']['data'] = $dataColumnDefinition;
 
         $formData = $this->eventDispatcher->dispatch(
@@ -191,11 +191,11 @@ class EditFileController
             ->setIcon($this->iconFactory->getIcon('actions-document-save', IconSize::SMALL));
         $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
 
-        // Cancel button
+        // Close button
         $closeButton = $buttonBar->makeLinkButton()
             ->setShowLabelText(true)
             ->setHref($returnUrl)
-            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'))
+            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.close'))
             ->setIcon($this->iconFactory->getIcon('actions-close', IconSize::SMALL));
         $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
     }

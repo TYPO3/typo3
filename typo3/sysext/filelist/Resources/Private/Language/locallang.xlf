@@ -114,11 +114,11 @@
 			<trans-unit id="download">
 				<source>Download</source>
 			</trans-unit>
-			<trans-unit id="actions.create_folder">
-				<source>Create Folder</source>
+			<trans-unit id="actions.new_folder">
+				<source>New Folder</source>
 			</trans-unit>
-			<trans-unit id="actions.create_file">
-				<source>Create File</source>
+			<trans-unit id="actions.new_file">
+				<source>New File</source>
 			</trans-unit>
 			<trans-unit id="translations">
 				<source>Translations</source>

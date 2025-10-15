@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Filelist\ElementBrowser\CreateFileBrowser;
 use TYPO3\CMS\Filelist\ElementBrowser\CreateFolderBrowser;
 
 /**
@@ -64,18 +65,13 @@ class FileProvider extends AbstractProvider
             'iconIdentifier' => 'actions-edit-rename',
             'callbackAction' => 'renameFile',
         ],
-        'upload' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.upload',
-            'iconIdentifier' => 'actions-edit-upload',
-            'callbackAction' => 'uploadFile',
-        ],
         'new' => [
-            'label' => 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.create_folder',
+            'label' => 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.new_folder',
             'iconIdentifier' => 'actions-folder-add',
             'callbackAction' => 'createFolder',
         ],
         'newFile' => [
-            'label' => 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.create_file',
+            'label' => 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.new_file',
             'iconIdentifier' => 'actions-file-add',
             'callbackAction' => 'createFile',
         ],
@@ -190,7 +186,6 @@ class FileProvider extends AbstractProvider
                 // just for folders
             case 'new':
             case 'newFile':
-            case 'upload':
                 $canRender = $this->canCreateNew();
                 break;
             case 'newFileMount':
@@ -448,6 +443,12 @@ class FileProvider extends AbstractProvider
                 'data-mode' => CreateFolderBrowser::IDENTIFIER,
             ];
         }
+        if ($itemName === 'newFile' && $this->isFolder()) {
+            $attributes += [
+                'data-identifier' => $this->record->getCombinedIdentifier(),
+                'data-mode' => CreateFileBrowser::IDENTIFIER,
+            ];
+        }
         if ($itemName === 'pasteInto' && $this->backendUser->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE)) {
             $elArr = $this->clipboard->elFromTable('_FILE');
             $selItem = reset($elArr);
@@ -494,14 +495,11 @@ class FileProvider extends AbstractProvider
             case 'edit':
                 $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('file_edit');
                 break;
-            case 'upload':
-                $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('file_upload');
-                break;
             case 'new':
                 $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('wizard_element_browser');
                 break;
             case 'newFile':
-                $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('file_create');
+                $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('wizard_element_browser');
                 break;
             case 'updateOnlineMedia':
                 $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('file_update_online_media');

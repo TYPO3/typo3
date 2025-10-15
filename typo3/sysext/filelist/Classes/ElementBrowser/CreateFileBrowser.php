@@ -19,20 +19,22 @@ namespace TYPO3\CMS\Filelist\ElementBrowser;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\ResourceUtilityRenderer;
+use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Filelist\Matcher\Matcher;
+use TYPO3\CMS\Filelist\Matcher\ResourceFileTypeMatcher;
 use TYPO3\CMS\Filelist\Matcher\ResourceFolderTypeMatcher;
 use TYPO3\CMS\Filelist\Type\Mode;
 
 /**
- * Browser to create one or more folders. This is used with type=folder to select folders.
+ * Browser to create new files. This is used with mode=create_file in the ElementBrowser.
  *
  * @internal
  */
-class CreateFolderBrowser extends AbstractResourceBrowser
+class CreateFileBrowser extends AbstractResourceBrowser
 {
-    public const IDENTIFIER = 'create_folder';
+    public const IDENTIFIER = 'create_file';
     protected string $identifier = self::IDENTIFIER;
 
     protected function initialize(ServerRequestInterface $request): void
@@ -41,24 +43,50 @@ class CreateFolderBrowser extends AbstractResourceBrowser
         $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/resource-creation.js');
     }
 
+    protected function initializeDragUploader(): void
+    {
+        $lang = $this->getLanguageService();
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/drag-uploader.js');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf', 'file_upload');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf', 'file_download');
+        $this->pageRenderer->addInlineLanguageLabelArray([
+            'type.file' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:file'),
+            'permissions.read' => $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:read'),
+            'permissions.write' => $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:write'),
+            'online_media.update.success' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.update.success'),
+            'online_media.update.error' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.update.error'),
+            'labels.contextMenu.open' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open'),
+        ]);
+        $defaultDuplicationBehavior = DuplicationBehavior::getDefaultDuplicationBehaviour($this->getBackendUser());
+        $this->view->assign('dragUploader', [
+            'fileDenyPattern' => $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] ?? null,
+            'maxFileSize' => GeneralUtility::getMaxUploadFileSize() * 1024,
+            'defaultDuplicationBehaviourAction' => $defaultDuplicationBehavior->value,
+        ]);
+    }
+
     protected function initVariables(ServerRequestInterface $request): void
     {
         parent::initVariables($request);
         $this->resourceDisplayMatcher = GeneralUtility::makeInstance(Matcher::class);
         $this->resourceDisplayMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFolderTypeMatcher::class));
+        $this->resourceDisplayMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFileTypeMatcher::class));
     }
 
     public function render(): string
     {
         $this->initSelectedFolder();
+        $this->initializeDragUploader();
         $contentHtml = '';
 
         if ($this->selectedFolder !== null) {
             $markup = [];
 
-            // Build the folder creation form
+            // Build the file creation and upload forms
             $resourceUtilityRenderer = GeneralUtility::makeInstance(ResourceUtilityRenderer::class, $this);
-            $markup[] = $resourceUtilityRenderer->createFolder($this->getRequest(), $this->selectedFolder);
+            $markup[] = $resourceUtilityRenderer->createDragUpload($this->selectedFolder);
+            $markup[] = $resourceUtilityRenderer->addOnlineMedia($this->getRequest(), $this->selectedFolder);
+            $markup[] = $resourceUtilityRenderer->createRegularFile($this->getRequest(), $this->selectedFolder);
 
             // Create the filelist
             $this->filelist->start(
@@ -86,7 +114,7 @@ class CreateFolderBrowser extends AbstractResourceBrowser
         }
 
         $contentOnly = (bool)($this->getRequest()->getQueryParams()['contentOnly'] ?? false);
-        $this->pageRenderer->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:createFolder'));
+        $this->pageRenderer->setTitle($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.new_file'));
         $this->view->assign('selectedFolder', $this->selectedFolder);
         $this->view->assign('content', $contentHtml);
         $this->view->assign('contentOnly', $contentOnly);

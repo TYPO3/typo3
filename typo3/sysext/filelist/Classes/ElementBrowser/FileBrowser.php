@@ -20,8 +20,8 @@ namespace TYPO3\CMS\Filelist\ElementBrowser;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\ElementBrowser\Event\IsFileSelectableEvent;
-use TYPO3\CMS\Backend\View\FolderUtilityRenderer;
 use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
+use TYPO3\CMS\Backend\View\ResourceUtilityRenderer;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -161,9 +161,10 @@ class FileBrowser extends AbstractResourceBrowser
             $markup[] = $this->filelist->render($searchDemand, $this->view);
 
             // Build the file upload and folder creation form
-            $folderUtilityRenderer = GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this);
-            $markup[] = $folderUtilityRenderer->uploadForm($this->getRequest(), $this->selectedFolder, $this->fileExtensionFilter);
-            $markup[] = $folderUtilityRenderer->createFolder($this->getRequest(), $this->selectedFolder);
+            $resourceUtilityRenderer = GeneralUtility::makeInstance(ResourceUtilityRenderer::class, $this);
+            $markup[] = $resourceUtilityRenderer->uploadForm($this->getRequest(), $this->selectedFolder, $this->fileExtensionFilter);
+            $markup[] = $resourceUtilityRenderer->addOnlineMedia($this->getRequest(), $this->selectedFolder, $this->fileExtensionFilter);
+            $markup[] = $resourceUtilityRenderer->createFolder($this->getRequest(), $this->selectedFolder);
 
             $contentHtml = implode('', $markup);
         }

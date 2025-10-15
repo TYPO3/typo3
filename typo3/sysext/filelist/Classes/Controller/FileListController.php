@@ -401,7 +401,6 @@ class FileListController implements LoggerAwareInterface
             $this->view->assignMultiple([
                 'listHtml' => $this->filelist->render($searchDemand, $fileListView),
                 'listUrl' => $this->filelist->createModuleUri(),
-                'fileUploadUrl' => $this->getFileUploadUrl(),
                 'totalItems' => $this->filelist->totalItems,
             ]);
 
@@ -648,18 +647,21 @@ class FileListController implements LoggerAwareInterface
             ]));
         $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
-        // Upload button (only if upload to this directory is allowed)
-        if ($this->folderObject
-            && $this->folderObject->checkActionPermission('write')
+        // New file button
+        if ($this->folderObject && $this->folderObject->checkActionPermission('write')
             && $this->folderObject->getStorage()->checkUserActionPermission('add', 'File')
         ) {
-            $uploadButton = $buttonBar->makeLinkButton()
-                ->setHref($this->getFileUploadUrl())
-                ->setClasses('t3js-drag-uploader-trigger')
+            $newButton = $buttonBar->makeLinkButton()
+                ->setClasses('t3js-element-browser')
+                ->setHref((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser'))
+                ->setDataAttributes([
+                    'identifier' => $this->folderObject->getCombinedIdentifier(),
+                    'mode' => \TYPO3\CMS\Filelist\ElementBrowser\CreateFileBrowser::IDENTIFIER,
+                ])
                 ->setShowLabelText(true)
-                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.upload'))
-                ->setIcon($this->iconFactory->getIcon('actions-edit-upload', IconSize::SMALL));
-            $buttonBar->addButton($uploadButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+                ->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.new_file'))
+                ->setIcon($this->iconFactory->getIcon('actions-file-add', IconSize::SMALL));
+            $buttonBar->addButton($newButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         }
 
         // New folder button
@@ -672,27 +674,9 @@ class FileListController implements LoggerAwareInterface
                     'mode' => CreateFolderBrowser::IDENTIFIER,
                 ])
                 ->setShowLabelText(true)
-                ->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.create_folder'))
+                ->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.new_folder'))
                 ->setIcon($this->iconFactory->getIcon('actions-folder-add', IconSize::SMALL));
             $buttonBar->addButton($newButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
-        }
-
-        // New file button
-        if ($this->folderObject && $this->folderObject->checkActionPermission('write')
-            && $this->folderObject->getStorage()->checkUserActionPermission('add', 'File')
-        ) {
-            $newButton = $buttonBar->makeLinkButton()
-                ->setHref((string)$this->uriBuilder->buildUriFromRoute(
-                    'file_create',
-                    [
-                        'target' => $this->folderObject->getCombinedIdentifier(),
-                        'returnUrl' => $this->filelist->createModuleUri(),
-                    ]
-                ))
-                ->setShowLabelText(true)
-                ->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.create_file'))
-                ->setIcon($this->iconFactory->getIcon('actions-file-add', IconSize::SMALL));
-            $buttonBar->addButton($newButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
         }
 
         // Add paste button if clipboard is initialized
@@ -774,20 +758,6 @@ class FileListController implements LoggerAwareInterface
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $defaultFlashMessageQueue->enqueue($flashMessage);
-    }
-
-    /**
-     * Returns the URL for uploading files
-     */
-    protected function getFileUploadUrl(): string
-    {
-        return (string)$this->uriBuilder->buildUriFromRoute(
-            'file_upload',
-            [
-                'target' => $this->folderObject->getCombinedIdentifier(),
-                'returnUrl' => $this->filelist->createModuleUri(),
-            ]
-        );
     }
 
     protected function getLanguageService(): LanguageService

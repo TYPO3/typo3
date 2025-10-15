@@ -41,10 +41,12 @@ final class FileOperationsCest
 
         // Create file
         $I->amGoingTo('create a file with content');
-        $I->click('.module-docheader .btn[title="Create File"]');
-        $I->wait(0.2);
-        $I->see('Create File', 'h1');
-        $I->fillField('#newfile', $fileName);
+        $I->click('.module-docheader .btn[title="New File"]');
+        $modalDialog->canSeeDialog();
+        $I->switchToWindow('typo3-backend');
+        $I->switchToIFrame('modal_frame');
+        $I->see('Create new textfile', 'h4');
+        $I->fillField('input[name="data[newfile][0][data]"]', $fileName);
         $I->wait(0.2);
         $I->click('Create file');
         $I->see('File created:', $flashMessageSelector);
@@ -58,9 +60,15 @@ final class FileOperationsCest
         $I->executeJS("console.assert(document.querySelector('" . $codeMirrorSelector . "').getContent() === 'Some Text')");
         $I->see('File saved to', $flashMessageSelector);
 
-        // Save file
+        // Close file
         $I->amGoingTo('close the file and return to the list view');
-        $I->click('.module-docheader .btn[title="Cancel"]');
+        $I->click('.module-docheader .btn[title="Close"]');
+        $I->switchToWindow('typo3-backend');
+        $I->switchToIFrame('modal_frame');
+        $modalDialog->canSeeDialog();
+        $I->click('.t3js-modal-close');
+        $I->waitForElementNotVisible('.modal-dialog');
+        $I->switchToContentFrame();
         $I->see($fileName, '[data-multi-record-selection-element="true"]');
 
         // Delete file

@@ -17,7 +17,7 @@ import type { ResourceInterface } from '@typo3/backend/resource/resource';
 import { FileListActionEvent, type FileListActionDetail } from '@typo3/filelist/file-list-actions';
 import InfoWindow from '@typo3/backend/info-window';
 
-class CreateFolder {
+class ResourceCreation {
   constructor() {
     new RegularEvent(FileListActionEvent.primary, (event: CustomEvent): void => {
       event.preventDefault();
@@ -66,4 +66,4 @@ class CreateFolder {
   }
 }
 
-export default new CreateFolder();
+export default new ResourceCreation();
