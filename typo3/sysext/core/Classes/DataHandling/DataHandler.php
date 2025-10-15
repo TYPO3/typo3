@@ -1357,7 +1357,7 @@ class DataHandler
             'datetime' => $this->checkValueForDatetime($value, $tcaFieldConf),
             'email' => $this->checkValueForEmail((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $checkField),
             'flex' => $field ? $this->checkValueForFlex($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $tscPID, $field) : [],
-            'inline' => $this->checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, $additionalData) ?: [],
+            'inline' => $this->checkValueForInline($res, (string)$value, $tcaFieldConf, $table, $id, $status, $field, $additionalData) ?: [],
             'file' => $this->checkValueForFile($res, (string)$value, $tcaFieldConf, $table, $id, $field, $additionalData),
             'input' => $this->checkValueForInput($value, $tcaFieldConf, $table, $id, $realPid, $field),
             'language' => $this->checkValueForLanguage((int)$value, $table, $field),
@@ -2532,7 +2532,7 @@ class DataHandler
      * @param string $value The value to set.
      * @param array $tcaFieldConf Field configuration from TCA
      * @param string $table Table name
-     * @param int $id UID of record
+     * @param int|string $id UID of record
      * @param string $status 'update' or 'new' flag
      * @param string $field Field name
      * @param array|null $additionalData Additional data to be forwarded to sub-processors
