@@ -7,7 +7,7 @@ use TYPO3\CMS\Recycler\Controller\RecyclerModuleController;
  */
 return [
     'recycler' => [
-        'parent' => 'web',
+        'parent' => 'content',
         'access' => 'user',
         'workspaces' => 'live',
         'path' => '/module/web/recycler',

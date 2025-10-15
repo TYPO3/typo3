@@ -9,7 +9,7 @@ use TYPO3\CMS\Info\Controller\TranslationStatusController;
  */
 return [
     'web_info' => [
-        'parent' => 'web',
+        'parent' => 'content',
         'access' => 'user',
         'path' => '/module/web/info',
         'iconIdentifier' => 'module-info',

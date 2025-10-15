@@ -7,7 +7,7 @@ use TYPO3\CMS\IndexedSearch\Controller\AdministrationController;
  */
 return [
     'manage_search_index' => [
-        'parent' => 'web',
+        'parent' => 'content',
         'access' => 'user',
         'iconIdentifier' => 'module-indexed_search',
         'labels' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_mod.xlf',

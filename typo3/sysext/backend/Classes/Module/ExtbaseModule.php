@@ -32,9 +32,9 @@ class ExtbaseModule extends BaseModule implements ModuleInterface
     protected array $controllerActions;
 
     /**
-     * Extbase modules always need a parent, use "web" as default
+     * Extbase modules always need a parent, use "content" as default
      */
-    protected string $parent = 'web';
+    protected string $parent = 'content';
 
     /**
      * Access is restricted to "admin" by default for extbase modules

@@ -8,7 +8,7 @@ use TYPO3\CMS\Form\Controller\FormManagerController;
  */
 return [
     'web_FormFormbuilder' => [
-        'parent' => 'web',
+        'parent' => 'content',
         'access' => 'user',
         'iconIdentifier' => 'module-form',
         'inheritNavigationComponentFromMainModule' => false,

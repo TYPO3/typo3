@@ -36,8 +36,8 @@ final class CategoryTreeCest
 
     public function checkIfCategoryListIsAvailable(ApplicationTester $I): void
     {
-        // A sub-element of web module is show
-        $I->waitForElementVisible('[data-modulemenu-identifier="web"] + .modulemenu-group-container .modulemenu-action');
+        // A sub-element of content module is show
+        $I->waitForElementVisible('[data-modulemenu-identifier="content"] + .modulemenu-group-container .modulemenu-action');
         $I->click('[data-modulemenu-identifier="web_list"]');
         $I->switchToContentFrame();
         $I->waitForElement('#recordlist-sys_category');
@@ -46,8 +46,8 @@ final class CategoryTreeCest
 
     public function editCategoryItem(ApplicationTester $I): void
     {
-        // A sub-element of web module is show
-        $I->waitForElementVisible('[data-modulemenu-identifier="web"] + .modulemenu-group-container .modulemenu-action');
+        // A sub-element of content module is show
+        $I->waitForElementVisible('[data-modulemenu-identifier="content"] + .modulemenu-group-container .modulemenu-action');
         $I->click('[data-modulemenu-identifier="web_list"]');
         $I->switchToContentFrame();
         // Collapse all tables to ensure sys_category table fits into window

@@ -7,7 +7,7 @@ use TYPO3\CMS\Linkvalidator\Controller\LinkValidatorController;
  */
 return [
     'web_linkvalidator' => [
-        'parent' => 'web',
+        'parent' => 'content',
         'position' => ['after' => 'web_info'],
         'access' => 'user',
         'workspaces' => 'live',

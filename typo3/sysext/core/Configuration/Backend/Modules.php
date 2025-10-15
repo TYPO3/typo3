@@ -4,10 +4,11 @@
  * Configuration of the main modules (having no parent and no path)
  */
 return [
-    'web' => [
-        'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web.xlf',
+    'content' => [
+        'labels' => 'LLL:EXT:core/Resources/Private/Language/Modules/content.xlf',
         'iconIdentifier' => 'modulegroup-web',
         'navigationComponent' => '@typo3/backend/tree/page-tree-element',
+        'aliases' => ['web'],
     ],
     'file' => [
         'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf',

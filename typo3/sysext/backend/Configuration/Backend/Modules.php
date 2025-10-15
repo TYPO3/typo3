@@ -15,7 +15,7 @@ use TYPO3\CMS\Backend\Security\ContentSecurityPolicy\CspModuleController;
  */
 return [
     'web_layout' => [
-        'parent' => 'web',
+        'parent' => 'content',
         'position' => ['before' => '*'],
         'access' => 'user',
         'path' => '/module/web/layout',
@@ -33,7 +33,7 @@ return [
         ],
     ],
     'web_list' => [
-        'parent' => 'web',
+        'parent' => 'content',
         'position' => ['after' => 'page_preview'],
         'access' => 'user',
         'path' => '/module/web/list',

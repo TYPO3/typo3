@@ -7,7 +7,7 @@ use TYPO3\CMS\Viewpage\Controller\ViewModuleController;
  */
 return [
     'page_preview' => [
-        'parent' => 'web',
+        'parent' => 'content',
         'position' => ['after' => 'web_layout'],
         'access' => 'user',
         'path' => '/module/web/viewpage',
