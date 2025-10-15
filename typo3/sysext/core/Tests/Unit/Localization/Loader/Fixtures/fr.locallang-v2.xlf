@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en" trgLang="fr">
+	<file id="f1" original="EXT:core/Tests/Unit/Localization/Loader/Fixtures/fr.locallang-v2.xlf">
+		<unit id="label1">
+			<segment>
+				<source>This is label #1</source>
+				<target>Ceci est le libellé no. 1</target>
+			</segment>
+		</unit>
+		<unit id="label2">
+			<segment>
+				<source>This is label #2</source>
+				<target state="final">Ceci est le libellé no. 2 [approved]</target>
+			</segment>
+		</unit>
+		<unit id="label3">
+			<segment>
+				<source>This is label #3</source>
+				<target state="translated">Ceci est le libellé no. 3 [not approved]</target>
+			</segment>
+		</unit>
+	</file>
+</xliff>

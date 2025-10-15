@@ -26,7 +26,7 @@ final class XliffLoaderTest extends UnitTestCase
 {
     public static function canLoadXliffDataProvider(): \Generator
     {
-        yield 'Can load default language' => [
+        yield 'Can load default language (XLIFF 1.2)' => [
             'languageKey' => 'en',
             'fixture' => 'locallang.xlf',
             'expectedMessages' => [
@@ -36,7 +36,7 @@ final class XliffLoaderTest extends UnitTestCase
             ],
             'requireApprovedLocalizations' => false,
         ];
-        yield 'Can load French translation with approved only' => [
+        yield 'Can load French translation with approved only (XLIFF 1.2)' => [
             'languageKey' => 'fr',
             'fixture' => 'fr.locallang.xlf',
             'expectedMessages' => [
@@ -45,13 +45,70 @@ final class XliffLoaderTest extends UnitTestCase
             ],
             'requireApprovedLocalizations' => true,
         ];
-        yield 'Can load French translation with non-approved' => [
+        yield 'Can load French translation with non-approved (XLIFF 1.2)' => [
             'languageKey' => 'fr',
             'fixture' => 'fr.locallang.xlf',
             'expectedMessages' => [
                 'label1' => 'Ceci est le libellé no. 1',
                 'label2' => 'Ceci est le libellé no. 2 [approved]',
                 'label3' => 'Ceci est le libellé no. 3 [not approved]',
+            ],
+            'requireApprovedLocalizations' => false,
+        ];
+        yield 'Can load default language (XLIFF 2.0)' => [
+            'languageKey' => 'en',
+            'fixture' => 'locallang-v2.xlf',
+            'expectedMessages' => [
+                'label1' => 'This is label #1',
+                'label2' => 'This is label #2',
+                'label3' => 'This is label #3',
+            ],
+            'requireApprovedLocalizations' => false,
+        ];
+        yield 'Can load French translation with approved only (XLIFF 2.0)' => [
+            'languageKey' => 'fr',
+            'fixture' => 'fr.locallang-v2.xlf',
+            'expectedMessages' => [
+                'label1' => 'Ceci est le libellé no. 1',
+                'label2' => 'Ceci est le libellé no. 2 [approved]',
+            ],
+            'requireApprovedLocalizations' => true,
+        ];
+        yield 'Can load French translation with non-approved (XLIFF 2.0)' => [
+            'languageKey' => 'fr',
+            'fixture' => 'fr.locallang-v2.xlf',
+            'expectedMessages' => [
+                'label1' => 'Ceci est le libellé no. 1',
+                'label2' => 'Ceci est le libellé no. 2 [approved]',
+                'label3' => 'Ceci est le libellé no. 3 [not approved]',
+            ],
+            'requireApprovedLocalizations' => false,
+        ];
+        yield 'Can load German translation with target only and approved only (XLIFF 2.0)' => [
+            'languageKey' => 'de',
+            'fixture' => 'de.locallang-v2.xlf',
+            'expectedMessages' => [
+                'label1' => 'Das ist Kennung Nummer 1',
+                'label2' => 'Das ist Kennung Nummer 2 [approved]',
+            ],
+            'requireApprovedLocalizations' => true,
+        ];
+        yield 'Can load French translation with target only and non-approved (XLIFF 2.0)' => [
+            'languageKey' => 'de',
+            'fixture' => 'de.locallang-v2.xlf',
+            'expectedMessages' => [
+                'label1' => 'Das ist Kennung Nummer 1',
+                'label2' => 'Das ist Kennung Nummer 2 [approved]',
+                'label3' => 'Das ist Kennung Nummer 3 [not approved]',
+            ],
+            'requireApprovedLocalizations' => false,
+        ];
+        yield 'Can load default language (XLIFF 2.1)' => [
+            'languageKey' => 'en',
+            'fixture' => 'locallang-v21.xlf',
+            'expectedMessages' => [
+                'label1' => 'This is label #1',
+                'label2' => 'This is label #2',
             ],
             'requireApprovedLocalizations' => false,
         ];

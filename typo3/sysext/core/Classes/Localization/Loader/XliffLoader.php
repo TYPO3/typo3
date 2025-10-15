@@ -85,6 +85,47 @@ final readonly class XliffLoader implements LoaderInterface
     private function parseXliffFromRoot(\SimpleXMLElement $root, string $locale, string $domain): MessageCatalogue
     {
         $catalogue = new MessageCatalogue($locale);
+        $version = $this->getXliffVersion($root);
+
+        if ($version === '2.0') {
+            $this->parseXliff2($root, $catalogue, $locale, $domain);
+        } else {
+            // Default to XLIFF 1.2 parsing
+            $this->parseXliff1($root, $catalogue, $locale, $domain);
+        }
+
+        return $catalogue;
+    }
+
+    /**
+     * Detect XLIFF version from the root element
+     */
+    private function getXliffVersion(\SimpleXMLElement $root): string
+    {
+        $namespaces = $root->getNamespaces(true);
+
+        // Check if XLIFF 2.x namespace is present (matches 2.0, 2.1, 2.2, etc.)
+        foreach ($namespaces as $namespace) {
+            if (str_starts_with($namespace, 'urn:oasis:names:tc:xliff:document:2.')) {
+                return '2.0';
+            }
+        }
+
+        // Check version attribute
+        $version = (string)$root['version'];
+        if (str_starts_with($version, '2.')) {
+            return '2.0';
+        }
+
+        // Default to 1.2
+        return '1.2';
+    }
+
+    /**
+     * Parse XLIFF 1.2 format
+     */
+    private function parseXliff1(\SimpleXMLElement $root, MessageCatalogue $catalogue, string $locale, string $domain): void
+    {
         $bodyOfFileTag = $root->file->body;
         $requireApprovedLocalizations = (bool)($GLOBALS['TYPO3_CONF_VARS']['LANG']['requireApprovedLocalizations'] ?? true);
 
@@ -137,7 +178,113 @@ final readonly class XliffLoader implements LoaderInterface
                 }
             }
         }
-        return $catalogue;
+    }
+
+    /**
+     * Parse XLIFF 2.0 format
+     */
+    private function parseXliff2(\SimpleXMLElement $root, MessageCatalogue $catalogue, string $locale, string $domain): void
+    {
+        $requireApprovedLocalizations = (bool)($GLOBALS['TYPO3_CONF_VARS']['LANG']['requireApprovedLocalizations'] ?? true);
+
+        $ns = $root->getDocNamespaces();
+        $ns = reset($ns) ?: 'urn:oasis:names:tc:xliff:document:2.0';
+        // Register the XLIFF 2.0 namespace
+        $root->registerXPathNamespace('xliff', $ns);
+
+        // Get all file elements
+        $files = $root->xpath('//xliff:file');
+        if ($files === false) {
+            return;
+        }
+
+        foreach ($files as $file) {
+            $file->registerXPathNamespace('xliff', $ns);
+
+            // Get all unit elements within this file
+            $units = $file->xpath('.//xliff:unit');
+            if ($units === false) {
+                continue;
+            }
+
+            foreach ($units as $unit) {
+                $unit->registerXPathNamespace('xliff', $ns);
+                $unitId = (string)$unit['id'];
+
+                // Check if this is a plural unit (contains multiple segments)
+                $segments = $unit->xpath('.//xliff:segment');
+                if ($segments === false) {
+                    continue;
+                }
+
+                if (count($segments) === 1) {
+                    // Regular translation unit
+                    $segment = $segments[0];
+                    $segment->registerXPathNamespace('xliff', $ns);
+
+                    $source = $segment->xpath('.//xliff:source');
+                    $target = $segment->xpath('.//xliff:target');
+
+                    if ($locale === 'en') {
+                        // Default language from XLIFF template
+                        $translation = ($target !== false && isset($target[0])) ? (string)$target[0] : (string)$source[0];
+                        $catalogue->set($unitId, $translation, $domain);
+                    } else {
+                        // Check approval state (XLIFF 2.0 uses 'state' attribute on target)
+                        $approved = 'yes';
+                        if ($target !== false && isset($target[0])) {
+                            $state = (string)$target[0]['state'];
+                            // XLIFF 2.0 states: initial, translated, reviewed, final
+                            // We consider 'final' as approved, others depend on config
+                            if ($state === 'initial' || $state === 'translated') {
+                                $approved = 'no';
+                            }
+                        }
+
+                        if (!$requireApprovedLocalizations || $approved === 'yes') {
+                            if ($target !== false && isset($target[0])) {
+                                $catalogue->set($unitId, (string)$target[0], $domain);
+                            }
+                        }
+                    }
+                } else {
+                    // Plural forms (multiple segments)
+                    $parsedTranslationElement = [];
+                    $formIndex = 0;
+
+                    foreach ($segments as $segment) {
+                        $segment->registerXPathNamespace('xliff', $ns);
+
+                        $source = $segment->xpath('.//xliff:source');
+                        $target = $segment->xpath('.//xliff:target');
+
+                        if ($locale === 'en') {
+                            $translation = ($target !== false && isset($target[0])) ? (string)$target[0] : (string)$source[0];
+                            $parsedTranslationElement[$formIndex] = $translation;
+                        } else {
+                            $approved = 'yes';
+                            if ($target !== false && isset($target[0])) {
+                                $state = (string)$target[0]['state'];
+                                if ($state === 'initial' || $state === 'translated') {
+                                    $approved = 'no';
+                                }
+                            }
+
+                            if (!$requireApprovedLocalizations || $approved === 'yes') {
+                                if ($target !== false && isset($target[0])) {
+                                    $parsedTranslationElement[$formIndex] = (string)$target[0];
+                                }
+                            }
+                        }
+                        $formIndex++;
+                    }
+
+                    if ($parsedTranslationElement !== []) {
+                        $catalogue->set($unitId, $this->convertToIcuPlural(array_values($parsedTranslationElement)), $domain);
+                    }
+                }
+            }
+        }
     }
 
     /**

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="2.1" xmlns="urn:oasis:names:tc:xliff:document:2.1" srcLang="en">
+	<file id="f1" original="EXT:core/Tests/Unit/Localization/Loader/Fixtures/locallang-v21.xlf">
+		<unit id="label1">
+			<segment>
+				<source>This is label #1</source>
+			</segment>
+		</unit>
+		<unit id="label2">
+			<segment>
+				<source>This is label #2</source>
+			</segment>
+		</unit>
+	</file>
+</xliff>

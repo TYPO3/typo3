@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en" trgLang="de">
+	<file id="f1" original="EXT:core/Tests/Unit/Localization/Loader/Fixtures/de.locallang-v2.xlf">
+		<unit id="label1">
+			<segment>
+				<target>Das ist Kennung Nummer 1</target>
+			</segment>
+		</unit>
+		<unit id="label2">
+			<segment>
+				<target state="final">Das ist Kennung Nummer 2 [approved]</target>
+			</segment>
+		</unit>
+		<unit id="label3">
+			<segment>
+				<target state="translated">Das ist Kennung Nummer 3 [not approved]</target>
+			</segment>
+		</unit>
+	</file>
+</xliff>
