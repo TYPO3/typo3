@@ -501,6 +501,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return self::new($container, Resource\Index\FileIndexRepository::class, [
             $container->get(EventDispatcherInterface::class),
+            $container->get(Database\ConnectionPool::class),
         ]);
     }
 
@@ -534,6 +535,7 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Resource\ResourceFactory::class, [
             $container->get(Resource\StorageRepository::class),
             $container->get('cache.runtime'),
+            $container->get(Resource\Index\FileIndexRepository::class),
         ]);
     }
 

@@ -137,22 +137,12 @@ abstract class AbstractOnlineMediaHelper implements OnlineMediaHelperInterface
         return $path;
     }
 
-    /**
-     * Returns an instance of the FileIndexRepository
-     *
-     * @return FileIndexRepository
-     */
-    protected function getFileIndexRepository()
+    protected function getFileIndexRepository(): FileIndexRepository
     {
         return GeneralUtility::makeInstance(FileIndexRepository::class);
     }
 
-    /**
-     * Returns the ResourceFactory
-     *
-     * @return ResourceFactory
-     */
-    protected function getResourceFactory()
+    protected function getResourceFactory(): ResourceFactory
     {
         return GeneralUtility::makeInstance(ResourceFactory::class);
     }

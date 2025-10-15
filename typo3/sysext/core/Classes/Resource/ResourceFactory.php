@@ -45,6 +45,7 @@ readonly class ResourceFactory implements SingletonInterface
         protected StorageRepository $storageRepository,
         #[Autowire(service: 'cache.runtime')]
         protected FrontendInterface $runtimeCache,
+        private FileIndexRepository $fileIndexRepository,
     ) {}
 
     /**
@@ -116,7 +117,7 @@ readonly class ResourceFactory implements SingletonInterface
         if ($fileObject === null) {
             // Fetches data in case $fileData is empty
             if (empty($fileData)) {
-                $fileData = $this->getFileIndexRepository()->findOneByUid($uid);
+                $fileData = $this->fileIndexRepository->findOneByUid($uid);
                 if ($fileData === false) {
                     throw new FileDoesNotExistException('No file found for given UID: ' . $uid, 1317178604);
                 }
@@ -368,11 +369,6 @@ readonly class ResourceFactory implements SingletonInterface
                 ->fetchAssociative();
         }
         return $fileReferenceData;
-    }
-
-    protected function getFileIndexRepository(): FileIndexRepository
-    {
-        return GeneralUtility::makeInstance(FileIndexRepository::class);
     }
 
     protected function collectionCacheIdentifier(int $uid): string

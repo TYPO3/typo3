@@ -93,9 +93,6 @@ class ExtractorService
         return false;
     }
 
-    /**
-     * Returns an instance of the FileIndexRepository
-     */
     protected function getExtractorRegistry(): ExtractorRegistry
     {
         return GeneralUtility::makeInstance(ExtractorRegistry::class);

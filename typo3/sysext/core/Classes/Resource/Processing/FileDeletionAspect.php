@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * The aspect cleans up database records, processed files and file references
@@ -44,6 +43,7 @@ final readonly class FileDeletionAspect
         private ConnectionPool $connectionPool,
         private MetaDataRepository $metaDataRepository,
         private ProcessedFileRepository $processedFileRepository,
+        private FileIndexRepository $fileIndexRepository,
     ) {}
 
     #[AsEventListener('delete-processed-files-after-add')]
@@ -73,7 +73,7 @@ final readonly class FileDeletionAspect
         if ($fileObject instanceof File) {
             $this->cleanupProcessedFiles($fileObject);
             $this->cleanupCategoryReferences($fileObject);
-            $this->getFileIndexRepository()->remove($fileObject->getUid());
+            $this->fileIndexRepository->remove($fileObject->getUid());
             $this->metaDataRepository->removeByFileUid($fileObject->getUid());
 
             // remove all references
@@ -132,10 +132,5 @@ final readonly class FileDeletionAspect
             }
             $this->removeFromRepository($processedFile);
         }
-    }
-
-    private function getFileIndexRepository(): FileIndexRepository
-    {
-        return GeneralUtility::makeInstance(FileIndexRepository::class);
     }
 }
