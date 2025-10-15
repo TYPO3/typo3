@@ -42,18 +42,7 @@ class ContentContentObject extends AbstractContentObject
             return '';
         }
 
-        $frontendController = $this->getTypoScriptFrontendController();
         $theValue = '';
-        $originalRec = $frontendController->currentRecord;
-        // If the currentRecord is set, we register, that this record has invoked this function.
-        // It should not be allowed to do this again then!!
-        if ($originalRec) {
-            if (isset($frontendController->recordRegister[$originalRec])) {
-                ++$frontendController->recordRegister[$originalRec];
-            } else {
-                $frontendController->recordRegister[$originalRec] = 1;
-            }
-        }
         $conf['table'] = trim((string)$this->cObj->stdWrapValue('table', $conf));
         $conf['select.'] = !empty($conf['select.']) ? $conf['select.'] : [];
         $renderObjName = ($conf['renderObj'] ?? false) ? $conf['renderObj'] : '<' . $conf['table'];
@@ -100,22 +89,19 @@ class ContentContentObject extends AbstractContentObject
             if ($records !== []) {
                 $this->timeTracker->setTSlogMessage('NUMROWS: ' . count($records));
 
-                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $frontendController);
+                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $this->getTypoScriptFrontendController());
                 $cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
                 $this->cObj->currentRecordNumber = 0;
 
                 foreach ($records as $row) {
                     $registerField = $conf['table'] . ':' . ($row['uid'] ?? 0);
-                    if (!($frontendController->recordRegister[$registerField] ?? false)) {
-                        $this->cObj->currentRecordNumber++;
-                        $cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
-                        $frontendController->currentRecord = $registerField;
-                        $this->cObj->lastChanged($row['tstamp'] ?? 0);
-                        $cObj->setRequest($this->request);
-                        $cObj->start($row, $conf['table']);
-                        $tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
-                        $cobjValue .= $tmpValue;
-                    }
+                    $this->cObj->currentRecordNumber++;
+                    $cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
+                    $this->cObj->lastChanged($row['tstamp'] ?? 0);
+                    $cObj->setRequest($this->request);
+                    $cObj->start($row, $conf['table']);
+                    $tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
+                    $cobjValue .= $tmpValue;
                 }
             }
             if ($slideCollectReverse) {
@@ -147,11 +133,6 @@ class ContentContentObject extends AbstractContentObject
         }
         if (isset($conf['stdWrap.'])) {
             $theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
-        }
-        // Restore
-        $frontendController->currentRecord = $originalRec;
-        if ($originalRec) {
-            --$frontendController->recordRegister[$originalRec];
         }
         return $theValue;
     }

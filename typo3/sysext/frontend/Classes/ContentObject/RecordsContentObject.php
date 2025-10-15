@@ -53,18 +53,8 @@ class RecordsContentObject extends AbstractContentObject
         // Reset items and data
         $this->itemArray = [];
         $this->data = [];
-        $frontendController = $this->getTypoScriptFrontendController();
 
         $theValue = '';
-        $originalRec = $frontendController->currentRecord;
-        // If the currentRecord is set, we register that this record has invoked this function.
-        // It should not be allowed to do this again then.
-        if ($originalRec) {
-            if (!($frontendController->recordRegister[$originalRec] ?? false)) {
-                $frontendController->recordRegister[$originalRec] = 0;
-            }
-            ++$frontendController->recordRegister[$originalRec];
-        }
 
         $tables = (string)$this->cObj->stdWrapValue('tables', $conf ?? []);
         if ($tables !== '') {
@@ -89,7 +79,7 @@ class RecordsContentObject extends AbstractContentObject
                 $this->collectRecordsFromCategories($categories, $tablesArray, $relationField);
             }
             if (!empty($this->itemArray)) {
-                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $frontendController);
+                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $this->getTypoScriptFrontendController());
                 $cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
                 $this->cObj->currentRecordNumber = 0;
                 $pageRepository = $this->getPageRepository();
@@ -110,14 +100,12 @@ class RecordsContentObject extends AbstractContentObject
                     // Might be unset during the overlay process
                     if (is_array($row)
                         && $this->isRecordsPageAccessible($val['table'], $row, $conf ?? [])
-                        && !($frontendController->recordRegister[$val['table'] . ':' . $val['id']] ?? false)
                     ) {
                         $renderObjName = ($conf['conf.'][$val['table']] ?? false) ? $conf['conf.'][$val['table']] : '<' . $val['table'];
                         $renderObjKey = ($conf['conf.'][$val['table']] ?? false) ? 'conf.' . $val['table'] : '';
                         $renderObjConf = ($conf['conf.'][$val['table'] . '.'] ?? false) ? $conf['conf.'][$val['table'] . '.'] : [];
                         $this->cObj->currentRecordNumber++;
                         $cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
-                        $frontendController->currentRecord = $val['table'] . ':' . $val['id'];
                         $this->cObj->lastChanged($row['tstamp'] ?? 0);
                         $cObj->setRequest($this->request);
                         $cObj->start($row, $val['table']);
@@ -133,11 +121,6 @@ class RecordsContentObject extends AbstractContentObject
         }
         if (isset($conf['stdWrap.'])) {
             $theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
-        }
-        // Restore
-        $frontendController->currentRecord = $originalRec;
-        if ($originalRec) {
-            --$frontendController->recordRegister[$originalRec];
         }
         return $theValue;
     }

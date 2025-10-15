@@ -316,7 +316,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
     /**
      * This is set to the [table]:[uid] of the record delivered in the $data-array, if the cObjects CONTENT or RECORD is in operation.
-     * Note that $GLOBALS['TSFE']->currentRecord is set to an equal value but always indicating the latest record rendered.
      *
      * @var string
      */

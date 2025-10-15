@@ -131,24 +131,6 @@ class TypoScriptFrontendController
      */
     public string $absRefPrefix = '';
 
-    /**
-     * Used by RecordContentObject and ContentContentObject to ensure the a records is NOT
-     * rendered twice through it!
-     *
-     * @internal
-     */
-    public array $recordRegister = [];
-
-    /**
-     * This is set to the [table]:[uid] of the latest record rendered. Note that
-     * class ContentObjectRenderer has an equal value, but that is pointing to the
-     * record delivered in the $data-array of the ContentObjectRenderer instance, if
-     * the cObjects CONTENT or RECORD created that instance
-     *
-     * @internal
-     */
-    public string $currentRecord = '';
-
     protected ?PageRenderer $pageRenderer = null;
     protected FrontendInterface $pageCache;
 
