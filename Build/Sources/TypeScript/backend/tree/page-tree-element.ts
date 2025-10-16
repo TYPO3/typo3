@@ -496,6 +496,7 @@ class PageTreeToolbar extends TreeToolbar {
                   draggable="true"
                   data-tree-icon="${item.icon}"
                   data-node-type="${item.nodeType}"
+                  aria-hidden="true"
                   @dragstart="${(event: DragEvent) => { this.handleDragStart(event, item); }}"
                 >
                   <typo3-backend-icon identifier="${item.icon}" size="small"></typo3-backend-icon>
