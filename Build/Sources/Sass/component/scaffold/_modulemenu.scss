@@ -122,9 +122,23 @@
 }
 
 //
+// Action without icon (level 3+)
+//
+.modulemenu-action-no-icon {
+    // Maintain the same min-height as items with icons
+    min-height: calc(var(--modulemenu-icon-size) + (var(--modulemenu-action-padding) * 2) + (var(--modulemenu-action-border-width) *2));
+
+    .modulemenu-name {
+        // For third-level modules without icons, no margin
+        margin: 0;
+    }
+}
+
+//
 // Indicator
 //
-.modulemenu-group > button:not([disabled]) {
+.modulemenu-group > button:not([disabled]),
+.modulemenu-group > a[data-modulemenu-collapsible="true"] {
     .modulemenu-indicator {
         display: none;
         position: relative;
@@ -134,6 +148,7 @@
         width: 16px;
         margin: 8px;
         color: inherit;
+        cursor: pointer;
 
         &:before,
         &:after {
@@ -173,6 +188,15 @@
     list-style: none;
     padding: 0;
     margin: 0;
+
+    // Add indentation for level 2 and 3
+    [data-modulemenu-level="2"] & {
+        padding-inline-start: 1rem;
+    }
+
+    [data-modulemenu-level="3"] & {
+        padding-inline-start: 2rem;
+    }
 }
 
 .modulemenu-group-spacer {
@@ -185,7 +209,8 @@
     gap: 1px;
 }
 
-button[aria-expanded="true"]:not([disabled]) {
+button[aria-expanded="true"]:not([disabled]),
+a[aria-expanded="true"][data-modulemenu-collapsible="true"] {
     .modulemenu-indicator {
         &:before {
             transform: rotate(-45deg);

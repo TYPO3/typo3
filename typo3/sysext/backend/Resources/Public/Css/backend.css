@@ -2131,17 +2131,21 @@ body{min-height:100%}
 .modulemenu-name{flex-grow:1;-webkit-margin-start:1em;height:1px;margin-inline-start:1em;overflow:hidden;padding:0;position:absolute;text-overflow:ellipsis;width:1px;clip:rect(0,0,0,0);white-space:nowrap}
 @container (min-width: 60px){
 .modulemenu-name{margin:0;position:static;-webkit-margin-start:1em;height:auto;margin-inline-start:1em;width:auto}}
-.modulemenu-group>button:not([disabled]) .modulemenu-indicator{color:inherit;display:none;flex-grow:0;flex-shrink:0;height:16px;margin:8px;position:relative;width:16px}
-.modulemenu-group>button:not([disabled]) .modulemenu-indicator:after,.modulemenu-group>button:not([disabled]) .modulemenu-indicator:before{border-top:1px solid;content:"";height:0;position:absolute;top:50%;transition:transform .25s ease-in-out;width:6px}
-.modulemenu-group>button:not([disabled]) .modulemenu-indicator:before{inset-inline-start:3px;transform:rotate(45deg)}
-.modulemenu-group>button:not([disabled]) .modulemenu-indicator:after{inset-inline-end:3px;transform:rotate(-45deg)}
+.modulemenu-action-no-icon{min-height:calc(var(--modulemenu-icon-size) + var(--modulemenu-action-padding)*2 + var(--modulemenu-action-border-width)*2)}
+.modulemenu-action-no-icon .modulemenu-name{margin:0}
+.modulemenu-group>a[data-modulemenu-collapsible=true] .modulemenu-indicator,.modulemenu-group>button:not([disabled]) .modulemenu-indicator{color:inherit;cursor:pointer;display:none;flex-grow:0;flex-shrink:0;height:16px;margin:8px;position:relative;width:16px}
+.modulemenu-group>a[data-modulemenu-collapsible=true] .modulemenu-indicator:after,.modulemenu-group>a[data-modulemenu-collapsible=true] .modulemenu-indicator:before,.modulemenu-group>button:not([disabled]) .modulemenu-indicator:after,.modulemenu-group>button:not([disabled]) .modulemenu-indicator:before{border-top:1px solid;content:"";height:0;position:absolute;top:50%;transition:transform .25s ease-in-out;width:6px}
+.modulemenu-group>a[data-modulemenu-collapsible=true] .modulemenu-indicator:before,.modulemenu-group>button:not([disabled]) .modulemenu-indicator:before{inset-inline-start:3px;transform:rotate(45deg)}
+.modulemenu-group>a[data-modulemenu-collapsible=true] .modulemenu-indicator:after,.modulemenu-group>button:not([disabled]) .modulemenu-indicator:after{inset-inline-end:3px;transform:rotate(-45deg)}
 @container (min-width: 60px){
 .modulemenu-indicator{display:block!important}}
 .modulemenu-group-container{display:grid;gap:1px;list-style:none;margin:0;padding:0}
+[data-modulemenu-level="2"] .modulemenu-group-container{-webkit-padding-start:1rem;padding-inline-start:1rem}
+[data-modulemenu-level="3"] .modulemenu-group-container{-webkit-padding-start:2rem;padding-inline-start:2rem}
 .modulemenu-group-spacer{border-top:1px dashed color-mix(in srgb,currentColor,transparent 75%);margin:0}
 .modulemenu-group{display:grid;gap:1px}
-button[aria-expanded=true]:not([disabled]) .modulemenu-indicator:before{transform:rotate(-45deg)}
-button[aria-expanded=true]:not([disabled]) .modulemenu-indicator:after{transform:rotate(45deg)}
+a[aria-expanded=true][data-modulemenu-collapsible=true] .modulemenu-indicator:before,button[aria-expanded=true]:not([disabled]) .modulemenu-indicator:before{transform:rotate(-45deg)}
+a[aria-expanded=true][data-modulemenu-collapsible=true] .modulemenu-indicator:after,button[aria-expanded=true]:not([disabled]) .modulemenu-indicator:after{transform:rotate(45deg)}
 .h1,h1,typo3-backend-editable-page-title{font-family:var(--typo3-header-font-family);font-variant:normal;font-weight:400}
 .h1:not(:first-child):not([class]),.h2:not(:first-child):not([class]),.h3:not(:first-child):not([class]),.headline-spaced.h1,.headline-spaced.h2,.headline-spaced.h3,h1.headline-spaced,h1:not(:first-child):not([class]),h2.headline-spaced,h2:not(:first-child):not([class]),h3.headline-spaced,h3:not(:first-child):not([class]),typo3-backend-editable-page-title.headline-spaced,typo3-backend-editable-page-title:not(:first-child):not([class]){margin-top:calc(var(--typo3-spacing)*2)}
 .h1,.h2,.h3,.h4,.h5,.h6{font-family:inherit}

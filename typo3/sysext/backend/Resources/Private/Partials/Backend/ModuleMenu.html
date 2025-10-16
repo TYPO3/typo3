@@ -29,9 +29,9 @@
                 data-modulemenu-level="1"
                 {f:if(condition: module.subModules, then: 'class="modulemenu-group modulemenu-group-{f:if(condition: module.collapsed, then: \'collapsed\', else: \'expanded\')}"')}
             >
-                <f:render section="Button" arguments="{module: module, showChildren: module.subModules, tabIndex: '{f:if(condition: iterator.isFirst, then: \'0\', else: \'-1\')}'}" />
+                <f:render section="Button" arguments="{module: module, showChildren: module.subModules, level: 1, tabIndex: '{f:if(condition: iterator.isFirst, then: \'0\', else: \'-1\')}'}" />
                 <f:if condition="{module.subModules}">
-                    <f:render section="Menu" arguments="{modules: module.subModules, parent: module}" />
+                    <f:render section="Menu" arguments="{modules: module.subModules, parent: module, level: 2}" />
                 </f:if>
             </li>
         </f:for>
@@ -49,8 +49,33 @@
         class="modulemenu-group-container collapse {f:if(condition: '{parent}', then: '{f:if(condition: parent.collapsed, else: \'show\')}')}"
     >
         <f:for each="{modules}" as="module">
-            <li role="presentation" data-modulemenu-level="2">
-                <f:render section="Button" arguments="{module: module, tabIndex: '-1'}" />
+            <li
+                role="presentation"
+                data-modulemenu-level="{level}"
+                {f:if(condition: module.subModules, then: 'class="modulemenu-group modulemenu-group-{f:if(condition: module.collapsed, then: \'collapsed\', else: \'expanded\')}"')}
+            >
+                <f:render section="Button" arguments="{module: module, showChildren: module.subModules, level: level, tabIndex: '-1'}" />
+                <f:if condition="{module.subModules}">
+                    <f:render section="SubMenu" arguments="{modules: module.subModules, parent: module}" />
+                </f:if>
+            </li>
+        </f:for>
+    </ul>
+</f:section>
+
+<f:section name="SubMenu">
+    <ul
+        id="modulemenu-group-{parent.identifier}"
+        role="menu"
+        aria-orientation="vertical"
+        <f:if condition="{parent.title}">
+            aria-label="{f:translate(key: parent.title, default: parent.title)}"
+        </f:if>
+        class="modulemenu-group-container collapse {f:if(condition: '{parent}', then: '{f:if(condition: parent.collapsed, else: \'show\')}')}"
+    >
+        <f:for each="{modules}" as="module">
+            <li role="presentation" data-modulemenu-level="3">
+                <f:render section="Button" arguments="{module: module, showChildren: 0, level: 3, tabIndex: '-1'}" />
             </li>
         </f:for>
     </ul>
@@ -73,13 +98,15 @@
         </f:if>
         role="menuitem"
         title="{moduleTitle}"
-        class="modulemenu-action"
+        class="modulemenu-action {f:if(condition: '{level} > 2', then: 'modulemenu-action-no-icon')}"
         tabindex="{tabIndex}"
         data-modulemenu-identifier="{module.identifier}"
         data-modulemenu-collapsible="{f:if(condition: showChildren, then: 'true', else: 'false')}"
         {f:if(condition: showChildren, then: 'aria-controls="modulemenu-group-{module.identifier}" aria-haspopup="menu" aria-expanded="{f:if(condition: module.collapsed, then: \'false\', else: \'true\')}"')}
     >
-        <span class="modulemenu-icon" aria-hidden="true"><core:icon size="medium" identifier="{module.iconIdentifier}" alternativeMarkupIdentifier="inline" /></span>
+        <f:if condition="{level} < 3">
+            <span class="modulemenu-icon" aria-hidden="true"><core:icon size="medium" identifier="{module.iconIdentifier}" alternativeMarkupIdentifier="inline" /></span>
+        </f:if>
         <span class="modulemenu-name">{moduleTitle}</span>
         <span class="modulemenu-indicator" aria-hidden="true"></span>
     </{f:if(condition: module.shouldBeLinked, then: 'a', else: 'button')}>

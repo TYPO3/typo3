@@ -135,7 +135,7 @@ class ModuleProvider
         bool $respectWorkspaceRestrictions = true
     ): array {
         $moduleMenuItems = [];
-        $moduleMenuState = json_decode($user->uc['modulemenu'] ?? '{}', true);
+        $moduleMenuState = $this->getModuleMenuState($user);
 
         // Before preparing the modules for the menu, check if we need to hide some of them (defined in TSconfig)
         $hideModules = GeneralUtility::trimExplode(',', $user->getTSConfig()['options.']['hideModules'] ?? '', true);
@@ -284,6 +284,7 @@ class ModuleProvider
         bool $respectWorkspaceRestrictions,
         bool $checkRenderInModuleMenu = false
     ): void {
+        $moduleMenuState = $this->getModuleMenuState($user);
         foreach ($module->getSubModules() as $subModuleIdentifier => $subModule) {
             if (in_array($subModuleIdentifier, $hideModules, true)
                 || ($checkRenderInModuleMenu && !($subModule->getAppearance()['renderInModuleMenu'] ?? true))
@@ -296,7 +297,7 @@ class ModuleProvider
             ) {
                 continue;
             }
-            $subMenuItem = new MenuModule(clone $subModule);
+            $subMenuItem = new MenuModule(clone $subModule, isset($moduleMenuState[$subModuleIdentifier]));
             $menuItem->addSubModule($subMenuItem);
             // Recursively build deeper levels
             if ($subModule->hasSubModules()) {
@@ -346,5 +347,10 @@ class ModuleProvider
         $alias = array_search($identifier, $this->moduleRegistry->getModuleAliases(), true);
 
         return $alias !== false && $user->check('modules', $alias);
+    }
+
+    protected function getModuleMenuState(BackendUserAuthentication $user): array
+    {
+        return json_decode($user->uc['modulemenu'] ?? '{}', true);
     }
 }
