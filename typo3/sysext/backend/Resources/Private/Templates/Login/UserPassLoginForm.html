@@ -12,48 +12,42 @@
     <div class="form-group t3js-login-username-section" id="t3-login-username-section">
         <div class="form-control-wrap">
             <div class="form-control-holder">
-                <div class="input-group">
-                    <input
-                        type="text"
-                        id="t3-username"
-                        name="username"
-                        value="{presetUsername}"
-                        aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.username')}"
-                        placeholder="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.username')}"
-                        class="form-control form-control-clearable input-login t3js-clearable t3js-capslockwarning t3js-login-username-field"
-                        autofocus="autofocus"
-                        autocomplete="username"
-                        required="required"
-                        spellcheck="false"
-                        data-capslockwarning-title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.capslock')}"
-                        data-capslockwarning-message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.capslockStatus')}"
-                        data-clearable-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.inputfield.clearButton.title')}"
-                    />
-                </div>
+                <label class="form-label" for="t3-username"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.username" /></label>
+                <input
+                    type="text"
+                    id="t3-username"
+                    name="username"
+                    value="{presetUsername}"
+                    class="form-control form-control-clearable input-login t3js-clearable t3js-capslockwarning t3js-login-username-field"
+                    autofocus="autofocus"
+                    autocomplete="username"
+                    required="required"
+                    spellcheck="false"
+                    data-capslockwarning-title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.capslock')}"
+                    data-capslockwarning-message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.capslockStatus')}"
+                    data-clearable-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.inputfield.clearButton.title')}"
+                />
             </div>
         </div>
     </div>
     <div class="form-group t3js-login-password-section" id="t3-login-password-section">
         <div class="form-control-wrap">
             <div class="form-control-holder">
-                <div class="input-group">
-                    <input
-                        type="password"
-                        id="t3-password"
-                        name="p_field"
-                        value="{presetPassword}"
-                        aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.password')}"
-                        placeholder="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.password')}"
-                        class="form-control input-login t3js-clearable t3js-capslockwarning t3js-login-password-field"
-                        autocomplete="current-password"
-                        required="required"
-                        spellcheck="false"
-                        data-capslockwarning-title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.capslock')}"
-                        data-capslockwarning-message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.capslockStatus')}"
-                        data-clearable-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.inputfield.clearButton.title')}"
-                        data-passwordtoggle-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.togglePassword')}"
-                    />
-                </div>
+                <label class="form-label" for="t3-password"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.password" /></label>
+                <input
+                    type="password"
+                    id="t3-password"
+                    name="p_field"
+                    value="{presetPassword}"
+                    class="form-control input-login t3js-clearable t3js-capslockwarning t3js-login-password-field"
+                    autocomplete="current-password"
+                    required="required"
+                    spellcheck="false"
+                    data-capslockwarning-title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.capslock')}"
+                    data-capslockwarning-message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.capslockStatus')}"
+                    data-clearable-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.inputfield.clearButton.title')}"
+                    data-passwordtoggle-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.togglePassword')}"
+                />
             </div>
         </div>
     </div>
