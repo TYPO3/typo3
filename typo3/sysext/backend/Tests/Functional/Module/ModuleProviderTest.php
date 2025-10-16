@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Module\ModuleFactory;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Module\ModuleRegistry;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ModuleProviderTest extends FunctionalTestCase
@@ -169,4 +170,152 @@ final class ModuleProviderTest extends FunctionalTestCase
         self::assertTrue($moduleProvider->accessGranted('sub_module_with_alias', $user));
         self::assertTrue($moduleProvider->accessGranted('sub_module_alias', $user));
     }
+
+    #[Test]
+    public function deepNestedModulesAreFilteredRecursivelyInGetModule(): void
+    {
+        // Test recursive access filtering at 5 levels deep
+        $level1 = $this->get(ModuleFactory::class)->createModule('level1', []);
+        $level2 = $this->get(ModuleFactory::class)->createModule('level2', ['parent' => 'level1']);
+        $level3Accessible = $this->get(ModuleFactory::class)->createModule('level3_accessible', ['parent' => 'level2']);
+        $level3Denied = $this->get(ModuleFactory::class)->createModule('level3_denied', ['parent' => 'level2', 'access' => 'user']);
+        $level4Accessible = $this->get(ModuleFactory::class)->createModule('level4_accessible', ['parent' => 'level3_accessible']);
+        $level4Denied = $this->get(ModuleFactory::class)->createModule('level4_denied', ['parent' => 'level3_accessible', 'access' => 'admin']);
+        $level5Accessible = $this->get(ModuleFactory::class)->createModule('level5_accessible', ['parent' => 'level4_accessible', 'access' => 'user']);
+        $level5Denied = $this->get(ModuleFactory::class)->createModule('level5_denied', ['parent' => 'level4_accessible', 'access' => 'user']);
+
+        $moduleRegistry = new ModuleRegistry([
+            $level1, $level2, $level3Accessible, $level3Denied,
+            $level4Accessible, $level4Denied, $level5Accessible, $level5Denied,
+        ]);
+        $moduleProvider = new ModuleProvider($moduleRegistry);
+
+        $user = new BackendUserAuthentication();
+        $user->workspace = 0;
+        $user->groupData['modules'] = 'level5_accessible'; // Only access to level5_accessible
+
+        // Get the top-level module with user context - should recursively filter all levels
+        $module = $moduleProvider->getModule('level1', $user);
+        self::assertNotNull($module);
+
+        // Level 2 should be present
+        self::assertTrue($module->hasSubModule('level2'));
+        $level2Module = $module->getSubModule('level2');
+
+        // Level 3: accessible should be present, denied should be removed
+        self::assertTrue($level2Module->hasSubModule('level3_accessible'));
+        self::assertFalse($level2Module->hasSubModule('level3_denied'), 'level3_denied should be removed due to user access restrictions');
+
+        $level3Module = $level2Module->getSubModule('level3_accessible');
+
+        // Level 4: accessible should be present, denied (admin only) should be removed
+        self::assertTrue($level3Module->hasSubModule('level4_accessible'));
+        self::assertFalse($level3Module->hasSubModule('level4_denied'), 'level4_denied should be removed due to admin access requirement');
+
+        $level4Module = $level3Module->getSubModule('level4_accessible');
+
+        // Level 5: accessible should be present, denied should be removed
+        self::assertTrue($level4Module->hasSubModule('level5_accessible'));
+        self::assertFalse($level4Module->hasSubModule('level5_denied'), 'level5_denied should be removed due to user access restrictions');
+    }
+
+    #[Test]
+    public function deepNestedModulesAreFilteredRecursivelyInGetModules(): void
+    {
+        // Test recursive filtering in getModules() with grouped=true
+        $main1 = $this->get(ModuleFactory::class)->createModule('main1', []);
+        $main2 = $this->get(ModuleFactory::class)->createModule('main2', []);
+        $sub1 = $this->get(ModuleFactory::class)->createModule('sub1', ['parent' => 'main1']);
+        $sub2 = $this->get(ModuleFactory::class)->createModule('sub2', ['parent' => 'main2', 'access' => 'admin']);
+        $subsub1 = $this->get(ModuleFactory::class)->createModule('subsub1', ['parent' => 'sub1']);
+        $subsub2 = $this->get(ModuleFactory::class)->createModule('subsub2', ['parent' => 'sub1', 'access' => 'user']);
+        $subsubsub1 = $this->get(ModuleFactory::class)->createModule('subsubsub1', ['parent' => 'subsub1', 'access' => 'user']);
+        $subsubsub2 = $this->get(ModuleFactory::class)->createModule('subsubsub2', ['parent' => 'subsub1', 'access' => 'user']);
+
+        $moduleRegistry = new ModuleRegistry([
+            $main1, $main2, $sub1, $sub2, $subsub1, $subsub2, $subsubsub1, $subsubsub2,
+        ]);
+        $moduleProvider = new ModuleProvider($moduleRegistry);
+
+        $user = new BackendUserAuthentication();
+        $user->workspace = 0;
+        $user->groupData['modules'] = 'subsubsub1'; // Only access to subsubsub1
+
+        $modules = $moduleProvider->getModules($user, true, true);
+
+        // main1 should be present
+        self::assertArrayHasKey('main1', $modules);
+        $main1Module = $modules['main1'];
+
+        // main2 should be present (even though sub2 is admin-only)
+        self::assertArrayHasKey('main2', $modules);
+        $main2Module = $modules['main2'];
+
+        // sub1 should be present, but sub2 (admin) should be removed from main2
+        self::assertTrue($main1Module->hasSubModule('sub1'));
+        self::assertFalse($main2Module->hasSubModule('sub2'), 'sub2 should be removed due to admin access requirement');
+
+        $sub1Module = $main1Module->getSubModule('sub1');
+
+        // subsub1 should be present, subsub2 (user without access) should be removed
+        self::assertTrue($sub1Module->hasSubModule('subsub1'));
+        self::assertFalse($sub1Module->hasSubModule('subsub2'), 'subsub2 should be removed due to user access restrictions');
+
+        $subsub1Module = $sub1Module->getSubModule('subsub1');
+
+        // subsubsub1 should be present (user has access), subsubsub2 should be removed
+        self::assertTrue($subsub1Module->hasSubModule('subsubsub1'));
+        self::assertFalse($subsub1Module->hasSubModule('subsubsub2'), 'subsubsub2 should be removed due to user access restrictions');
+    }
+
+    #[Test]
+    public function deepNestedModulesWithHideModulesInTSConfigAreFilteredInMenuMethods(): void
+    {
+        // Test that TSConfig hideModules works recursively at all levels
+        $main = $this->get(ModuleFactory::class)->createModule('main', []);
+        $level2 = $this->get(ModuleFactory::class)->createModule('level2', ['parent' => 'main']);
+        $level3a = $this->get(ModuleFactory::class)->createModule('level3a', ['parent' => 'level2']);
+        $level3b = $this->get(ModuleFactory::class)->createModule('level3b', ['parent' => 'level2']);
+        $level4a = $this->get(ModuleFactory::class)->createModule('level4a', ['parent' => 'level3a']);
+        $level4b = $this->get(ModuleFactory::class)->createModule('level4b', ['parent' => 'level3b']);
+
+        $moduleRegistry = new ModuleRegistry([$main, $level2, $level3a, $level3b, $level4a, $level4b]);
+        $moduleProvider = new ModuleProvider($moduleRegistry);
+
+        // Set TSConfig via database
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->get(ConnectionPool::class)
+            ->getConnectionForTable('be_users')
+            ->update(
+                'be_users',
+                ['TSconfig' => 'options.hideModules = level3b,level4a'],
+                ['uid' => 1]
+            );
+        $user = $this->setUpBackendUser(1);
+        $user->workspace = 0;
+
+        // Test getModuleForMenu
+        $menuModule = $moduleProvider->getModuleForMenu('main', $user);
+        self::assertNotNull($menuModule);
+        self::assertTrue($menuModule->hasSubModule('level2'));
+
+        $level2Menu = $menuModule->getSubModule('level2');
+        // level3a should be present, level3b should be hidden by TSConfig
+        self::assertTrue($level2Menu->hasSubModule('level3a'));
+        self::assertFalse($level2Menu->hasSubModule('level3b'), 'level3b should be hidden by TSConfig');
+
+        $level3aMenu = $level2Menu->getSubModule('level3a');
+        // level4a should be hidden by TSConfig
+        self::assertFalse($level3aMenu->hasSubModule('level4a'), 'level4a should be hidden by TSConfig');
+
+        // Test getModulesForModuleMenu
+        $moduleMenuItems = $moduleProvider->getModulesForModuleMenu($user);
+        self::assertArrayHasKey('main', $moduleMenuItems);
+        $mainMenuItem = $moduleMenuItems['main'];
+        self::assertTrue($mainMenuItem->hasSubModule('level2'));
+        $level2MenuItem = $mainMenuItem->getSubModule('level2');
+        self::assertTrue($level2MenuItem->hasSubModule('level3a'));
+        self::assertFalse($level2MenuItem->hasSubModule('level3b'), 'level3b should be hidden by TSConfig in module menu');
+    }
+
 }
