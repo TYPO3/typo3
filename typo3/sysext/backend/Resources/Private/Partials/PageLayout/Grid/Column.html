@@ -25,7 +25,9 @@
     data-colpos="{colpos}" data-language-uid="{column.context.siteLanguage.languageId}"
     class="{columnClasses -> f:spaceless()}"
     role="group" aria-labelledby="{columnIdentifier}">
-    <f:render partial="PageLayout/Grid/ColumnHeader" arguments="{_all}" />
+    <f:alias map="{columnHeaderLevel: 2}">
+        <f:render partial="PageLayout/Grid/ColumnHeader" arguments="{_all}" />
+    </f:alias>
     <f:if condition="{column.active} || {column.unused}">
         <div data-colpos="{colpos}" data-language-uid="{column.context.siteLanguage.languageId}" class="t3-page-ce-wrapper">
             <f:for each="{column.items}" as="item">

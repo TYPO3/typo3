@@ -89,7 +89,9 @@
                                 <td valign="top"
                                     data-colpos="{column.columnNumber}" data-language-uid="{column.context.siteLanguage.languageId}"
                                     class="t3-grid-cell t3-page-column t3js-page-column {f:if(condition: column.identifierCleaned, then: 't3-grid-cell-{column.identifierCleaned}')}">
-                                    <f:render partial="PageLayout/Grid/ColumnHeader" arguments="{_all}" />
+                                    <f:alias map="{columnHeaderLevel: 3}">
+                                        <f:render partial="PageLayout/Grid/ColumnHeader" arguments="{_all}" />
+                                    </f:alias>
                                 </td>
                             </f:for>
                         </tr>

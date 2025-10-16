@@ -82,12 +82,16 @@
 }
 
 .t3-page-column-header {
-    font-weight: $font-weight-bold;
     margin: var(--pagemodule-element-spacing) var(--pagemodule-grid-inner-spacing);
     // duplicate offset for edit icon, inverted in .t3-page-column-header-icons
     margin-inline-end: calc(var(--pagemodule-grid-inner-spacing) * 2);
     position: relative;
     text-align: start;
+}
+
+.t3-page-column-header,
+.t3-page-column-title, {
+    font-weight: $font-weight-bold;
     font-size: var(--pagemodule-grid-cell-header-size);
 }
 
