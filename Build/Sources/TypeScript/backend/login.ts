@@ -168,7 +168,11 @@ class BackendLogin {
    */
   private async initializeEvents(): Promise<void> {
     await DocumentService.ready();
-    new RegularEvent('submit', this.handleSubmit.bind(this)).bindTo(document.querySelector(this.options.loginForm));
+
+    const loginForm: HTMLFormElement = document.querySelector(this.options.loginForm);
+    if (loginForm !== null) {
+      new RegularEvent('submit', this.handleSubmit.bind(this)).bindTo(loginForm);
+    }
 
     (document.querySelectorAll('.t3js-clearable') as NodeListOf<HTMLInputElement>).forEach(
       (clearableField: HTMLInputElement) => clearableField.clearable(),
