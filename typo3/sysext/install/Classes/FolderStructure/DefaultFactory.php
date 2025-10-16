@@ -87,6 +87,11 @@ final readonly class DefaultFactory
                                         'type' => DirectoryNode::class,
                                         'targetPermission' => $directoryPermission,
                                     ],
+                                    [
+                                        'name' => 'transient',
+                                        'type' => DirectoryNode::class,
+                                        'targetPermission' => $directoryPermission,
+                                    ],
                                 ],
                             ],
                         ],
