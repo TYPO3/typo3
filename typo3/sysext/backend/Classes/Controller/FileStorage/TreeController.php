@@ -61,7 +61,7 @@ readonly class TreeController
             $currentDepth = (int)($request->getQueryParams()['depth'] ?? 1);
             $parentIdentifier = rawurldecode($parentIdentifier);
             $folder = $this->resourceFactory->getFolderObjectFromCombinedIdentifier($parentIdentifier);
-            $items = $this->treeProvider->getSubfoldersRecursively($folder, $currentDepth + 1);
+            $items = $this->treeProvider->getSubfolders($folder, $currentDepth + 1);
         } else {
             $items = $this->treeProvider->getRootNodes($this->getBackendUser());
         }

@@ -100,9 +100,9 @@ readonly class FileStorageTreeProvider
             $item['expanded'] = true;
             $item['loaded'] = true;
             $items[] = $item;
-            // If the mount is expanded, go down:
             if ($resourceStorage->isBrowsable()) {
-                $childItems = $this->getSubfoldersRecursively($rootLevelFolder, 1);
+                // Handle sub folders if the mount is browsable.
+                $childItems = $this->getSubfolders($rootLevelFolder, 1);
                 array_push($items, ...$childItems);
             }
         }
@@ -180,25 +180,22 @@ readonly class FileStorageTreeProvider
         return $foundFolders;
     }
 
-    public function getSubfoldersRecursively(Folder $folderObject, int $currentDepth, ?array $subFolders = null): array
+    public function getSubfolders(Folder $folderObject, int $currentDepth): array
     {
         $items = [];
-        if ($folderObject instanceof InaccessibleFolder) {
-            $subFolders = [];
-        } else {
-            $subFolders = is_array($subFolders) ? $subFolders : $folderObject->getSubfolders();
+        $subFolders = [];
+        if (!$folderObject instanceof InaccessibleFolder) {
+            $subFolders = $folderObject->getSubfolders();
             $subFolders = ListUtility::resolveSpecialFolderNames($subFolders);
             uksort($subFolders, strnatcasecmp(...));
         }
-
         foreach ($subFolders as $subFolderName => $subFolder) {
             $subFolderName = (string)$subFolderName; // Enforce string cast in case $subFolderName contains numeric chars only
+            $children = [];
             if (!($subFolder instanceof InaccessibleFolder)) {
+                // Get children to determine if that folder can be expanded again, 'hasChildren true' then renders expand triangle
                 $children = $subFolder->getSubfolders();
-            } else {
-                $children = [];
             }
-
             $items[] = array_merge(
                 $this->prepareFolderInformation($subFolder, $subFolderName, $folderObject, $children),
                 [
@@ -207,11 +204,6 @@ readonly class FileStorageTreeProvider
                     'loaded' => false,
                 ]
             );
-
-            if (!empty($children)) {
-                $childItems = $this->getSubfoldersRecursively($subFolder, $currentDepth + 1, $children);
-                array_push($items, ...$childItems);
-            }
         }
         return $items;
     }
