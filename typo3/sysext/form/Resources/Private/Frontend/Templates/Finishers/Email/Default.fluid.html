@@ -1,3 +1,6 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers">
 <f:layout name="SystemEmail" />
 <f:section name="Title">{title}</f:section>
 <f:section name="Main">
@@ -6,10 +9,10 @@
             <tr>
                 <f:if condition="{formValue.isSection}">
                     <f:then>
-                        <td colspan="2"><b>{formvh:translateElementProperty(element: formValue.element, property: 'label')}</b></td>
+                        <td colspan="2"><b>{formvh:translateElementProperty(element: formValue.element, property: 'label', languageKey: languageKey)}</b></td>
                     </f:then>
                     <f:else>
-                        <td valign="top" align="left">{formvh:translateElementProperty(element: formValue.element, property: 'label')}</td>
+                        <td valign="top" align="left">{formvh:translateElementProperty(element: formValue.element, property: 'label', languageKey: languageKey)}</td>
                         <td valign="top" align="left">
                             <f:if condition="{formValue.value}">
                                 <f:then>
@@ -43,3 +46,4 @@
         </formvh:renderAllFormValues>
     </table>
 </f:section>
+</html>

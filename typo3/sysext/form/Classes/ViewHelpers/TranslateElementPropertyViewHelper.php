@@ -39,6 +39,7 @@ final class TranslateElementPropertyViewHelper extends AbstractViewHelper
         $this->registerArgument('element', RootRenderableInterface::class, 'Form Element to translate', true);
         $this->registerArgument('property', 'mixed', 'Property to translate');
         $this->registerArgument('renderingOptionProperty', 'mixed', 'Property to translate');
+        $this->registerArgument('languageKey', 'string', 'Language key ("da" for example) or "default" to use. Also a Locale object is possible. If empty, use current locale from the request.');
     }
 
     /**
@@ -65,7 +66,7 @@ final class TranslateElementPropertyViewHelper extends AbstractViewHelper
         $formRuntime = $this->renderingContext
             ->getViewHelperVariableContainer()
             ->get(RenderRenderableViewHelper::class, 'formRuntime');
-        return $this->translationService->translateFormElementValue($element, $propertyParts, $formRuntime);
+        return $this->translationService->translateFormElementValue($element, $propertyParts, $formRuntime, $this->arguments['languageKey']);
     }
 
     private static function assertArgumentTypes(array $arguments): void

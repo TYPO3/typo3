@@ -30,7 +30,6 @@ use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Event\BeforeEmailFinisherInitializedEvent;
-use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
 
 /**
@@ -119,12 +118,6 @@ class EmailFinisher extends AbstractFinisher
 
         $formRuntime = $this->finisherContext->getFormRuntime();
 
-        $translationService = GeneralUtility::makeInstance(TranslationService::class);
-        if (is_string($this->options['translation']['language'] ?? null) && $this->options['translation']['language'] !== '') {
-            $languageBackup = $translationService->getLanguage();
-            $translationService->setLanguage($this->options['translation']['language']);
-        }
-
         $mail = $this
             ->initializeFluidEmail($formRuntime)
             ->from(new Address($senderAddress, $senderName))
@@ -145,8 +138,8 @@ class EmailFinisher extends AbstractFinisher
             $mail->bcc(...$blindCarbonCopyRecipients);
         }
 
-        if (!empty($languageBackup)) {
-            $translationService->setLanguage($languageBackup);
+        if (is_string($this->options['translation']['language'] ?? null) && $this->options['translation']['language'] !== '') {
+            $mail->assign('languageKey', $this->options['translation']['language']);
         }
 
         if ($attachUploads) {
