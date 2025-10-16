@@ -101,9 +101,16 @@ class Clearable {
         // This is a temporary solution thanks to the date picker. Do not rely on it.
         this.dispatchEvent(new CustomEvent('typo3:internal:clear'));
         toggleClearButtonVisibility();
+        this.focus();
       });
       wrap.appendChild(clearButton);
 
+      this.addEventListener('blur', (e: FocusEvent) => {
+        // Maintain focus when indicator is clicked
+        if (this.parentNode.contains(e.relatedTarget as Node)) {
+          this.focus();
+        }
+      });
       this.addEventListener('focus', toggleClearButtonVisibility);
       this.addEventListener('keyup', toggleClearButtonVisibility);
 

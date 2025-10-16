@@ -145,7 +145,6 @@ class DatetimeElement extends AbstractFormElement
             'class' => implode(' ', [
                 'form-control',
                 'form-control-clearable',
-                't3js-clearable',
             ]),
             'data-input-type' => 'datetimepicker',
             'data-date-type' => $format,
