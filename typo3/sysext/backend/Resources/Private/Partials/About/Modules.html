@@ -41,7 +41,7 @@
                         </div>
                     </f:if>
                     <div class="card-footer">
-                        <f:if condition="{subModule.dependsOnSubmodules} && !{subModule.subModules}">
+                        <f:if condition="{subModule.appearance.dependsOnSubmodules} && !{subModule.subModules}">
                             <f:then>
                                 <p class="text-muted">
                                     <f:if condition="{subModule.title}">

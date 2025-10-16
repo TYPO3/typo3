@@ -12,7 +12,7 @@ Description
 ===========
 
 Backend modules can now declare a dependency on their submodules using the new
-:php:`dependsOnSubmodules` configuration option. When enabled, a module will
+:php:`appearance['dependsOnSubmodules']` configuration option. When enabled, a module will
 automatically hide itself from the module menu if none of its submodules are
 available to the current user.
 
@@ -32,7 +32,9 @@ Example configuration:
             'iconIdentifier' => 'module-info',
             'labels' => 'LLL:EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf',
             'navigationComponent' => '@typo3/backend/tree/page-tree-element',
-            'dependsOnSubmodules' => true,
+            'appearance' => [
+                'dependsOnSubmodules' => true,
+            ],
             'routes' => [
                 '_default' => [
                     'target' => InfoModuleController::class . '::handleRequest',
@@ -63,7 +65,7 @@ Impact
 ======
 
 Module menus become more intuitive and user-focused. Container modules equipped
-with :php:`dependsOnSubmodules` intelligently adapt to the current context,
+with :php:`appearance['dependsOnSubmodules']` intelligently adapt to the current context,
 appearing only when they offer actionable functionality to the user.
 
 The :guilabel:`Web > Info` module leverages this feature to seamlessly vanish

@@ -158,10 +158,4 @@ interface ModuleInterface
      * Return a list of identifiers that are aliases to this module
      */
     public function getAliases(): array;
-
-    /**
-     * Whether this module should only be visible when it has submodules.
-     * Used for second-level modules that act as containers.
-     */
-    public function getDependsOnSubmodules(): bool;
 }

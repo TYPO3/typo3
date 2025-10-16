@@ -185,7 +185,9 @@ final class ModuleProviderTest extends FunctionalTestCase
             'second_level_module',
             [
                 'parent' => 'main_module',
-                'dependsOnSubmodules' => true,
+                'appearance' => [
+                    'dependsOnSubmodules' => true,
+                ],
             ]
         );
 
@@ -243,7 +245,9 @@ final class ModuleProviderTest extends FunctionalTestCase
             'second_level_module',
             [
                 'parent' => 'main_module',
-                'dependsOnSubmodules' => true,
+                'appearance' => [
+                    'dependsOnSubmodules' => true,
+                ],
             ]
         );
 
@@ -291,7 +295,9 @@ final class ModuleProviderTest extends FunctionalTestCase
             'second_level_module',
             [
                 'parent' => 'main_module',
-                'dependsOnSubmodules' => true,
+                'appearance' => [
+                    'dependsOnSubmodules' => true,
+                ],
             ]
         );
 
@@ -483,11 +489,15 @@ final class ModuleProviderTest extends FunctionalTestCase
         $main = $this->get(ModuleFactory::class)->createModule('main', []);
         $level2 = $this->get(ModuleFactory::class)->createModule('level2', [
             'parent' => 'main',
-            'dependsOnSubmodules' => true,
+            'appearance' => [
+                'dependsOnSubmodules' => true,
+            ],
         ]);
         $level3 = $this->get(ModuleFactory::class)->createModule('level3', [
             'parent' => 'level2',
-            'dependsOnSubmodules' => true,
+            'appearance' => [
+                'dependsOnSubmodules' => true,
+            ],
         ]);
         $level4accessible = $this->get(ModuleFactory::class)->createModule('level4accessible', [
             'parent' => 'level3',

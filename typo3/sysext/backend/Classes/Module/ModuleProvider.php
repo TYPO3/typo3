@@ -291,7 +291,9 @@ class ModuleProvider
                 continue;
             }
             // Skip submodules that depend on their own submodules if they don't have any accessible ones
-            if ($subModule->getDependsOnSubmodules() && !$this->hasAccessibleSubModules($subModule, $hideModules, $user, $respectWorkspaceRestrictions, $checkRenderInModuleMenu)) {
+            if (($subModule->getAppearance()['dependsOnSubmodules'] ?? false)
+                && !$this->hasAccessibleSubModules($subModule, $hideModules, $user, $respectWorkspaceRestrictions, $checkRenderInModuleMenu)
+            ) {
                 continue;
             }
             $subMenuItem = new MenuModule(clone $subModule);
@@ -321,7 +323,7 @@ class ModuleProvider
                 continue;
             }
             // If this submodule is accessible, return true
-            if (!$subModule->getDependsOnSubmodules()) {
+            if (!($subModule->getAppearance()['dependsOnSubmodules'] ?? false)) {
                 return true;
             }
             // If it depends on submodules, check recursively

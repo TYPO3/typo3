@@ -15,7 +15,9 @@ return [
         'iconIdentifier' => 'module-info',
         'labels' => 'LLL:EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf',
         'navigationComponent' => '@typo3/backend/tree/page-tree-element',
-        'dependsOnSubmodules' => true,
+        'appearance' => [
+            'dependsOnSubmodules' => true,
+        ],
         'routes' => [
             '_default' => [
                 'target' => InfoModuleController::class . '::handleRequest',
