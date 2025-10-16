@@ -69,6 +69,7 @@ class Clearable {
 
       this.classList.add('form-control-clearable');
 
+      const isFocused: boolean = document.activeElement === this;
       const wrap = document.createElement('div');
       wrap.classList.add('form-control-clearable-wrapper');
       this.parentNode.insertBefore(wrap, this);
@@ -108,6 +109,11 @@ class Clearable {
 
       toggleClearButtonVisibility();
       this.isClearable = true;
+
+      // Make sure to maintain focus
+      if (isFocused) {
+        this.focus();
+      }
     };
   }
 }
