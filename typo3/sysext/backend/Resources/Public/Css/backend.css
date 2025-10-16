@@ -3930,7 +3930,8 @@ td.permission-column-group{-webkit-padding-start:0;padding-inline-start:0;white-
 .t3-page-columns{border:0;min-width:100%}
 .t3-page-column{max-width:300px;min-width:150px}
 .t3-page-column-lang-name .h2,.t3-page-column-lang-name h2{margin:0}
-.t3-page-column-header{font-weight:700;margin:var(--pagemodule-element-spacing) var(--pagemodule-grid-inner-spacing);-webkit-margin-end:calc(var(--pagemodule-grid-inner-spacing)*2);font-size:var(--pagemodule-grid-cell-header-size);margin-inline-end:calc(var(--pagemodule-grid-inner-spacing)*2);position:relative;text-align:start}
+.t3-page-column-header{margin:var(--pagemodule-element-spacing) var(--pagemodule-grid-inner-spacing);-webkit-margin-end:calc(var(--pagemodule-grid-inner-spacing)*2);margin-inline-end:calc(var(--pagemodule-grid-inner-spacing)*2);position:relative;text-align:start}
+.t3-page-column-header,.t3-page-column-title{font-size:var(--pagemodule-grid-cell-header-size);font-weight:700}
 .t3-page-column-header-icons{bottom:0;inset-inline-end:calc(var(--pagemodule-grid-inner-spacing)*-1);opacity:.3;position:absolute;transition:opacity .15s ease-in}
 @media (prefers-reduced-motion:reduce){
 .t3-page-column-header-icons{transition:none}}
