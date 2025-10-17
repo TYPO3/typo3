@@ -123,8 +123,9 @@ class QueryHelper
         ];
 
         // Check if the tableName is quoted
-        if ($matchQuotingStartCharacters[$input[0]] ?? false) {
-            $quoteCharacter .= $matchQuotingStartCharacters[$input[0]];
+        $firstCharOfInputValue = $input[0] ?? '';
+        if ($matchQuotingStartCharacters[$firstCharOfInputValue] ?? false) {
+            $quoteCharacter .= $matchQuotingStartCharacters[$firstCharOfInputValue];
             $input = substr($input, 1);
             $tableName = strtok($input, $quoteCharacter);
         } else {
@@ -149,7 +150,7 @@ class QueryHelper
         // Catch the edge case that the table name is unquoted and the
         // table alias is actually quoted. This will not work in the case
         // that the quoted table alias contains whitespace.
-        $firstCharacterOfTableAlias = $tableAlias[0] ?? null;
+        $firstCharacterOfTableAlias = $tableAlias[0] ?? '';
         if ($matchQuotingStartCharacters[$firstCharacterOfTableAlias] ?? false) {
             $tableAlias = substr((string)$tableAlias, 1, -1);
         }
