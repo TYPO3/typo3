@@ -178,6 +178,18 @@ Additional options of the email finisher
 These additional options can be set directly in the form definition YAML or
 programmatically in the options array but **not** from the backend editor:
 
+..  _apireference-finisheroptions-emailfinisher-options-translation-propertiesExcludedFromTranslation:
+
+..  confval:: Properties excluded from translation [translation.propertiesExcludedFromTranslation]
+    :name: emailfinisher-translation-propertiesExcludedFromTranslation
+    :type: array
+    :required: false
+    :default: `undefined`
+
+    If not set, the finisher options are translated depending on the current frontend language (if translations exists).
+    This option allows you to force translations for a given language isocode, e.g 'da' or 'de'.
+    Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.l be skipped for all specified finisher options.
+
 ..  _apireference-finisheroptions-emailfinisher-options-translation-translationfiles:
 
 ..  confval:: translation.translationFiles

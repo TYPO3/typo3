@@ -186,6 +186,35 @@ options.statusCode
       The HTTP status code for the redirect. Default is "303 See Other".
 
 
+.. _prototypes.prototypeIdentifier.finishersdefinition.redirect.options.translation.propertiesExcludedFromTranslation:
+
+options.translation.propertiesExcludedFromTranslation
+-----------------------------------------------------
+
+:aspect:`Option path`
+      prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.options.translation.propertiesExcludedFromTranslation
+
+:aspect:`Data type`
+      array
+
+:aspect:`Needed by`
+      Frontend
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value`
+      undefined
+
+:aspect:`Good to know`
+      - :ref:`"Redirect finisher"<apireference-finisheroptions-redirectfinisher>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
+
+:aspect:`Description`
+      Localization from translation files will be skipped for all specified finisher options.
+
+
 .. _prototypes.prototypeIdentifier.finishersdefinition.redirect.options.translation.translationfiles:
 
 options.translation.translationFiles
