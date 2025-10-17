@@ -86,6 +86,26 @@ programmatically in the options array but **not** from the backend editor:
 
     The HTTP status code for the redirect. Default is "303 See Other".
 
+..  confval:: translation.propertiesExcludedFromTranslation
+    :name: redirectfinisher-translation-propertiesExcludedFromTranslation
+    :type: array
+    :default: `[]`
+
+    Defines a list of finisher option properties that should be excluded from
+    translation.
+
+    When specified, the listed properties are not processed by the
+    :php-short:`\TYPO3\CMS\Form\Service\TranslationService` during translation
+    of finisher options. This prevents their values from being replaced by
+    translated equivalents, even if translations exist for those options.
+
+    This option is usually generated automatically as soon as FlexForm overrides
+    are in place and normally does not need to be set manually in the form
+    definition.
+
+    See `Skip translation of overridden form finisher options <https://docs.typo3.org/permalink/typo3/cms-form:concepts-finishers-confirmationfinisher-yaml-propertiesexcludedfromtranslation>`_
+    for an example.
+
 ..  _concepts-finishers-redirectfinisher-yaml:
 
 Redirect finisher in the YAML form definition

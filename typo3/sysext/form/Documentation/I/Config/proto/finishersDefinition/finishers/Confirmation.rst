@@ -205,6 +205,35 @@ options.templateRootPaths
       Used to define several paths for templates, which will be tried in reversed order (the paths are searched from bottom to top).
 
 
+.. _prototypes.prototypeIdentifier.finishersdefinition.confirmation.options.translation.propertiesExcludedFromTranslation:
+
+options.translation.propertiesExcludedFromTranslation
+-----------------------------------------------------
+
+:aspect:`Option path`
+      prototypes.<prototypeIdentifier>.finishersDefinition.Confirmation.options.translation.propertiesExcludedFromTranslation
+
+:aspect:`Data type`
+      array
+
+:aspect:`Needed by`
+      Frontend
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value`
+      undefined
+
+:aspect:`Good to know`
+      - :ref:`"Confirmation finisher"<apireference-finisheroptions-confirmationfinisher>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+      - :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
+
+:aspect:`Description`
+      Localization from translation files will be skipped for all specified finisher options.
+
+
 .. _prototypes.prototypeIdentifier.finishersdefinition.confirmation.options.translation.translationfiles:
 
 options.translation.translationFiles

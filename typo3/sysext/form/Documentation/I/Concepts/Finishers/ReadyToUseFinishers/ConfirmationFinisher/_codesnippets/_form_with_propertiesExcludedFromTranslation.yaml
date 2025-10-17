@@ -1,0 +1,17 @@
+identifier: example-form
+label: 'example'
+type: Form
+
+finishers:
+  -
+    options:
+      identifier: EmailToSender
+      subject: 'Email to sender'
+      recipients:
+        recipient@example.org: 'Some Name'
+      translation:
+        propertiesExcludedFromTranslation:
+          - subject
+          - recipients
+          - format
+  # ...

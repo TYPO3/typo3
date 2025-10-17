@@ -327,6 +327,16 @@ files based on the following order:
 *   `<formDefinitionIdentifier>.finisher.<finisherIdentifier>.<optionName>`
 *   `finisher.<finisherIdentifier>.<optionName>`
 
+The translation order is as follows:
+
+1.  Default value from form definition
+2.  Overridden value within a FlexForm (if any)
+3.  Localized value provided by translation files (if any)
+
+With the option :yaml:`translation.propertiesExcludedFromTranslation`, the
+last (third) step can be skipped. That way, the FlexForm value will be
+preferred. For an example see
+`Skip translation of overridden form finisher options <https://docs.typo3.org/permalink/typo3/cms-form:concepts-finishers-confirmationfinisher-yaml-propertiesexcludedfromtranslation>`_.
 
 Example
 ~~~~~~~
