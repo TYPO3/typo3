@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Localization;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Translation\MessageCatalogueInterface;
 use Symfony\Component\Translation\Translator;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -45,7 +46,10 @@ readonly class LocalizationFactory
 {
     public function __construct(
         protected Translator $translator,
+        #[Autowire(service: 'cache.l10n')]
         protected FrontendInterface $systemCache,
+        #[Autowire(service: 'cache.runtime')]
+        protected FrontendInterface $runtimeCache,
         protected TranslationDomainMapper $translationDomainMapper,
         protected LabelFileResolver $labelFileResolver,
     ) {
@@ -125,10 +129,14 @@ readonly class LocalizationFactory
     protected function getMessageCatalogue(string $fileReference, string $locale, string $domainName, bool $useDefault = true): MessageCatalogueInterface
     {
         $actualSourcePath = $this->labelFileResolver->resolveFileReference($fileReference, $locale, $useDefault);
-        // @todo: we need to be more flexible with the file ending here.
-        $fileExtension = (string)pathinfo($actualSourcePath, PATHINFO_EXTENSION);
-        // Add the resource to Symfony Translator
-        $this->translator->addResource($fileExtension ?: 'xlf', $actualSourcePath, $locale, $domainName);
+        // Add the resource to Symfony Translator, if not added yet.
+        $cacheIdentifier = 'symfony-translator-localization-factory-' . md5($actualSourcePath . '-' . $locale . '-' . $domainName);
+        if (!$this->runtimeCache->has($cacheIdentifier)) {
+            // @todo: we need to be more flexible with the file ending here.
+            $fileExtension = (string)pathinfo($actualSourcePath, PATHINFO_EXTENSION);
+            $this->translator->addResource($fileExtension ?: 'xlf', $actualSourcePath, $locale, $domainName);
+            $this->runtimeCache->set($cacheIdentifier, true);
+        }
         return $this->translator->getCatalogue($locale);
     }
 

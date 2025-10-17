@@ -68,7 +68,7 @@ trait PageRendererFactoryTrait
             new RelativeCssPathFixer(),
             new LanguageServiceFactory(
                 new Locales(),
-                new LocalizationFactory(new Translator('en'), $cacheManager->getCache('l10n'), $labelMapperMock, new LabelFileResolver($packageManager)),
+                new LocalizationFactory(new Translator('en'), $cacheManager->getCache('l10n'), new NullFrontend('runtime'), $labelMapperMock, new LabelFileResolver($packageManager)),
                 new NullFrontend('null')
             ),
             new ResponseFactory(),

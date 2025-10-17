@@ -417,6 +417,7 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Localization\LocalizationFactory::class, [
             $container->get(SymfonyTranslator::class),
             $container->get(Cache\CacheManager::class)->getCache('l10n'),
+            $container->get(Cache\CacheManager::class)->getCache('runtime'),
             $container->get(Localization\TranslationDomainMapper::class),
             $container->get(Localization\LabelFileResolver::class),
         ]);
