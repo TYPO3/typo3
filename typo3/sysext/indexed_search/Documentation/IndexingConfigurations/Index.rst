@@ -150,8 +150,8 @@ the Setup field like this:
 ..  code-block:: typoscript
     :caption: packages/my_site_package/Configuration/Sets/MySet/setup.typoscript
 
-    plugin.tx_indexedsearch.search.defaultFreeIndexUidList = 0,6,7,8
-    plugin.tx_indexedsearch.blind.freeIndexUid = 0
+    plugin.tx_indexedsearch.settings.defaultFreeIndexUidList = 0,6,7,8
+    plugin.tx_indexedsearch.settings.blind.freeIndexUid = 0
 
 The "defaultFreeIndexUidList" is uid numbers of indexing
 configurations to show in the categorization! The order determines
