@@ -73,7 +73,7 @@ class TcaColumnsProcessFieldLabels implements FormDataProviderInterface
             if ($aShowItemFieldArray['fieldName'] === '--palette--') {
                 // showitem references to a palette field. unpack the palette and process
                 // label overrides that may be in there.
-                if (!isset($result['processedTca']['palettes'][$aShowItemFieldArray['paletteName']]['showitem'])) {
+                if (!isset($result['processedTca']['palettes'][$aShowItemFieldArray['paletteName'] ?? '']['showitem'])) {
                     // No palette with this name found? Skip it.
                     continue;
                 }
