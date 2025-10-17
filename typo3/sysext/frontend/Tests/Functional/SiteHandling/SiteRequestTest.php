@@ -476,15 +476,11 @@ final class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @todo Response body cannot be asserted since PageContentErrorHandler::handlePageError executes request via HTTP (not internally)
-     */
     #[DataProvider('restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider')]
     #[Test]
     public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPageErrorHandling(string $uri, int $frontendUserId): void
     {
-        self::markTestSkipped('Skipped until PageContentErrorHandler::handlePageError does not use HTTP anymore');
-        $this->writeSiteConfiguration( // @phpstan-ignore deadCode.unreachable
+        $this->writeSiteConfiguration(
             'website-local',
             $this->buildSiteConfiguration(1000, 'https://website.local/'),
             [],
@@ -495,10 +491,17 @@ final class SiteRequestTest extends AbstractTestCase
             new InternalRequest($uri),
             (new InternalRequestContext())->withFrontendUserId($frontendUserId)
         );
+        $responseStructure = ResponseContent::fromString(
+            (string)$response->getBody()
+        );
 
         self::assertSame(
             403,
             $response->getStatusCode()
+        );
+        self::assertSame(
+            'Page forbidden',
+            $responseStructure->getScopePath('page/title')
         );
     }
 
@@ -616,16 +619,11 @@ final class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @todo Response body cannot be asserted since PageContentErrorHandler::handlePageError executes request via HTTP (not internally)
-     */
     #[DataProvider('restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider')]
     #[Test]
     public function restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPageErrorHandling(string $uri, int $frontendUserId): void
     {
-        self::markTestSkipped('Skipped until PageContentErrorHandler::handlePageError does not use HTTP anymore');
-
-        $this->writeSiteConfiguration( // @phpstan-ignore deadCode.unreachable
+        $this->writeSiteConfiguration(
             'website-local',
             $this->buildSiteConfiguration(1000, 'https://website.local/'),
             [],
@@ -636,10 +634,17 @@ final class SiteRequestTest extends AbstractTestCase
             new InternalRequest($uri),
             (new InternalRequestContext())->withFrontendUserId($frontendUserId)
         );
+        $responseStructure = ResponseContent::fromString(
+            (string)$response->getBody()
+        );
 
         self::assertSame(
             403,
             $response->getStatusCode()
+        );
+        self::assertSame(
+            'Page forbidden',
+            $responseStructure->getScopePath('page/title')
         );
     }
 
@@ -760,16 +765,11 @@ final class SiteRequestTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @todo Response body cannot be asserted since PageContentErrorHandler::handlePageError executes request via HTTP (not internally)
-     */
     #[DataProvider('pageRenderingStopsWithInvalidCacheHashDataProvider')]
     #[Test]
     public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingPageErrorHandling(string $uri): void
     {
-        self::markTestSkipped('Skipped until PageContentErrorHandler::handlePageError does not use HTTP anymore');
-
-        $this->writeSiteConfiguration( // @phpstan-ignore deadCode.unreachable
+        $this->writeSiteConfiguration(
             'website-local',
             $this->buildSiteConfiguration(1000, 'https://website.local/'),
             [],
@@ -777,10 +777,17 @@ final class SiteRequestTest extends AbstractTestCase
         );
 
         $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
+        $responseStructure = ResponseContent::fromString(
+            (string)$response->getBody()
+        );
 
         self::assertSame(
             404,
             $response->getStatusCode()
+        );
+        self::assertSame(
+            'Page not found',
+            $responseStructure->getScopePath('page/title')
         );
     }
 

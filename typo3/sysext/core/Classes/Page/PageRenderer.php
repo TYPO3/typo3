@@ -1114,8 +1114,10 @@ class PageRenderer implements SingletonInterface
 
     /**
      * Reset all vars to initial values
+     *
+     * @internal This method should be used within TYPO3 Core only.
      */
-    protected function reset(ServerRequestInterface $request): void
+    public function reset(ServerRequestInterface $request): void
     {
         $this->locale = new Locale();
         $this->setDocType(DocType::html5, $request);
