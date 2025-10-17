@@ -1,0 +1,18 @@
+page = PAGE
+page.10 = TEXT
+page.10.value = contentOfRequestedPage
+page.headerData.10 = TEXT
+page.headerData.10.value = <meta name="marker" content="headerDataOfRequestedPage">
+page.footerData.10 = TEXT
+page.footerData.10.value = <!-- footerDataOfRequestedPage -->
+
+[page["uid"] == 404]
+page.10.value = contentOfNotFoundPage
+page.headerData.10.value = <meta name="marker" content="headerDataOfNotFoundPage">
+page.footerData.10.value = <!-- footerDataOfNotFoundPage -->
+[global]
+
+[page["uid"] == 100]
+page.20 = USER_INT
+page.20.userFunc = TYPO3\CMS\Core\Tests\Functional\Error\PageErrorHandler\Fixtures\PageContentErrorHandlerUserFuncs->propagateNotFoundResponse
+[global]

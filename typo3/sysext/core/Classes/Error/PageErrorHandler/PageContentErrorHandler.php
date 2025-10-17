@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -49,6 +50,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
     protected LinkService $link;
     protected RequestFactoryInterface $requestFactory;
     protected GuzzleClientFactory $guzzleClientFactory;
+    protected PageRenderer $pageRenderer;
 
     /**
      * PageContentErrorHandler constructor.
@@ -70,6 +72,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
         $this->link = $container->get(LinkService::class);
         $this->requestFactory = $container->get(RequestFactoryInterface::class);
         $this->guzzleClientFactory = $container->get(GuzzleClientFactory::class);
+        $this->pageRenderer = $container->get(PageRenderer::class);
     }
 
     public function handlePageError(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface
@@ -129,6 +132,9 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
         }
 
         $request = $request->withAttribute('originalRequest', $originalRequest);
+
+        // Reset page renderer as it might contain content from current rendering request.
+        $this->pageRenderer->reset($request);
 
         return $this->application->handle($request);
     }
