@@ -99,7 +99,7 @@ class SessionService implements SingletonInterface
 
     protected function getDefaultSessionHandler(): \SessionHandlerInterface
     {
-        return new FileSessionHandler(null, $this->expireTimeInMinutes);
+        return new FileSessionHandler($this->expireTimeInMinutes);
     }
 
     public function initializeSession()

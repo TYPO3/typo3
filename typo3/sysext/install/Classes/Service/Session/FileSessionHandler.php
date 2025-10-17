@@ -46,8 +46,8 @@ class FileSessionHandler implements \SessionHandlerInterface
     private HashService $hashService;
 
     public function __construct(
-        ?string $sessionPath,
         int $expirationTimeInMinutes,
+        ?string $sessionPath = null,
     ) {
         $this->hashService = new HashService();
         $this->sessionPath = rtrim($sessionPath ?? Environment::getVarPath() . '/session', '/') . '/';
