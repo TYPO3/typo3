@@ -276,6 +276,10 @@ button.dropdown-item,
         padding-inline-start: 1em;
     }
 
+    &-column-nowrap {
+        white-space: nowrap;
+    }
+
     &-status {
         display: flex;
         width: var(--icon-size-small);

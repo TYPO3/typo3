@@ -83,6 +83,7 @@
         opacity: .5;
         transition: all .2s ease-in-out;
 
+        &:focus,
         &:hover {
             opacity: 1;
         }

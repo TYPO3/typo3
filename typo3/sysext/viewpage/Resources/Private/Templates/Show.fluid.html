@@ -14,20 +14,25 @@
     <div class="viewpage-item">
         <div class="viewpage-topbar t3js-viewpage-topbar">
             <div class="viewpage-topbar-orientation t3js-viewpage-topbar-orientation">
-                <a href="#" class="t3js-change-orientation">
+                <button type="button" class="btn btn-link t3js-change-orientation">
                     <core:icon identifier="actions-device-orientation-change" size="small" />
-                </a>
+                    <span class="visually-hidden">{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:rotateScreen')}</span>
+                </button>
             </div>
             <div class="viewpage-topbar-preset">
-                <span class="dropdown">
-                    <button type="button" id="viewpage-topbar-preset-button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        <span class="t3js-viewpage-current-label">
-                            {current.label}
-                        </span>
+                <div class="dropdown">
+                    <button
+                        type="button"
+                        id="viewpage-topbar-preset-button"
+                        class="btn btn-link dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                    >
+                        <span class="visually-hidden">{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:selectScreenResolution')}:</span>
+                        <span class="t3js-viewpage-current-label">{current.label}</span>
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="viewpage-topbar-preset-button">
-                        <li>
-                            <a href="#" class="dropdown-item t3js-preset-maximized t3js-change-preset" data-key="maximized" data-label="{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:maximized')}" data-width data-height>
+                    <ul class="dropdown-menu" role="menu" aria-label="{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:selectScreenResolution')}">
+                        <li role="presentation">
+                            <button type="button" role="menuitem" class="dropdown-item t3js-preset-maximized t3js-change-preset" data-key="maximized" data-label="{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:maximized')}" data-width data-height>
                                 <span class="dropdown-item-columns">
                                     <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
                                         <core:icon identifier="actions-fullscreen" size="small" />
@@ -35,14 +40,18 @@
                                     <span class="dropdown-item-column dropdown-item-column-title">
                                         {f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:maximized')}
                                     </span>
-                                    <span class="dropdown-item-column dropdown-item-column-value">
-                                        100%/100%
+                                    <span class="dropdown-item-column dropdown-item-column-nowrap dropdown-item-column-value">
+                                        <span class="visually-hidden">{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:width')}</span>
+                                        100%
+                                        <span aria-hidden="true">/</span>
+                                        <span class="visually-hidden">{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:height')}</span>
+                                        100%
                                     </span>
                                 </span>
-                            </a>
+                            </button>
                         </li>
-                        <li>
-                            <a href="#" class="dropdown-item t3js-preset-custom t3js-change-preset" data-key="custom" data-label="{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:custom')}" data-width="{custom.width}" data-height="{custom.height}">
+                        <li role="presentation">
+                            <button type="button" role="menuitem" class="dropdown-item t3js-preset-custom t3js-change-preset" data-key="custom" data-label="{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:custom')}" data-width="{custom.width}" data-height="{custom.height}">
                                 <span class="dropdown-item-columns">
                                     <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
                                         <core:icon identifier="actions-expand" size="small" />
@@ -50,20 +59,30 @@
                                     <span class="dropdown-item-column dropdown-item-column-title t3js-preset-custom-label">
                                         {f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:custom')}
                                     </span>
-                                    <span class="dropdown-item-column dropdown-item-column-value">
-                                        <span class="t3js-preset-custom-width">{custom.width}</span>px/<span class="t3js-preset-custom-height">{custom.height}</span>px
+                                    <span class="dropdown-item-column dropdown-item-column-nowrap dropdown-item-column-value">
+                                        <span class="t3js-preset-custom-width">{custom.width}</span>px
+                                        <span class="visually-hidden">{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:width')}</span>
+                                        <span aria-hidden="true">/</span>
+                                        <span class="t3js-preset-custom-height">{custom.height}</span>px
+                                        <span class="visually-hidden">{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:height')}</span>
                                     </span>
                                 </span>
-                            </a>
+                            </button>
                         </li>
                         <f:for each="{presetGroups}" as="presetGroup" iteration="presetGroupIteration">
                             <f:if condition="{presetGroup}">
-                                <li><hr class="dropdown-divider"></li>
+                                <li role="presentation"><hr role="separator" class="dropdown-divider"></li>
                                 <f:for each="{presetGroup}" as="preset">
-                                    <li>
-                                        <a href="#" class="dropdown-item t3js-change-preset" data-key="{preset.key}" data-label="{preset.label}" data-width="{preset.width}" data-height="{preset.height}">
-
-
+                                    <li role="presentation">
+                                        <button
+                                            type="button"
+                                            role="menuitem"
+                                            class="dropdown-item t3js-change-preset"
+                                            data-key="{preset.key}"
+                                            data-label="{preset.label}"
+                                            data-width="{preset.width}"
+                                            data-height="{preset.height}"
+                                        >
                                             <span class="dropdown-item-columns">
                                                 <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
                                                     <f:switch expression="{preset.type}">
@@ -76,22 +95,26 @@
                                                 <span class="dropdown-item-column dropdown-item-column-title">
                                                     {preset.label}
                                                 </span>
-                                                <span class="dropdown-item-column dropdown-item-column-value">
-                                                    {f:if(condition: preset.width, then: '{preset.width}px', else: '100%')}/{f:if(condition: preset.height, then: '{preset.height}px', else: '100%')}
+                                                <span class="dropdown-item-column dropdown-item-column-nowrap dropdown-item-column-value">
+                                                    {f:if(condition: preset.width, then: '{preset.width}px', else: '100%')}
+                                                    <span class="visually-hidden">{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:width')}</span>
+                                                    <span aria-hidden="true">/</span>
+                                                    {f:if(condition: preset.height, then: '{preset.height}px', else: '100%')}
+                                                    <span class="visually-hidden">{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:height')}</span>
                                                 </span>
                                             </span>
-                                        </a>
+                                        </button>
                                     </li>
                                 </f:for>
                             </f:if>
                         </f:for>
                     </ul>
-                </span>
+                </div>
             </div>
-            <div class="viewpage-topbar-size">
-                <input class="t3js-viewpage-input-width" type="number" name="width" min="300" max="9999" step="1" value="{current.width}">
-                x
-                <input class="t3js-viewpage-input-height" type="number" name="height" min="300" max="9999" step="1" value="{current.height}">
+            <div role="group" class="viewpage-topbar-size" aria-label="{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:setCustomScreenResolution')}">
+                <input class="t3js-viewpage-input-width" type="number" name="width" min="300" max="9999" step="1" value="{current.width}" aria-label="{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:width')}">
+                <span aria-hidden="true">x</span>
+                <input class="t3js-viewpage-input-height" type="number" name="height" min="300" max="9999" step="1" value="{current.height}" aria-label="{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:height')}">
             </div>
         </div>
         <div class="viewpage-resizeable t3js-viewpage-resizeable" style="width:{current.width}px;height:{current.height}px;">
