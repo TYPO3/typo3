@@ -107,8 +107,8 @@ class ManagementController
                     [
                         'idField' => 'uid',
                         'tableName' => 'sys_redirect',
-                        'title' => $languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_reactions.xlf:labels.delete.title'),
-                        'content' => $languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_reactions.xlf:labels.delete.message'),
+                        'title' => $languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:labels.delete.title'),
+                        'content' => $languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:labels.delete.message'),
                         'ok' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
                         'cancel' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'),
                         'returnUrl' => $requestUri,
