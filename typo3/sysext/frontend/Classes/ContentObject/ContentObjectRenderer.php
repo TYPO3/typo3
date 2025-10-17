@@ -3205,7 +3205,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     do {
                         $len = strcspn(substr($theValue, $pointer + $len_p), '<');
                         $len_p += $len + 1;
-                        $endChar = ord(strtolower(substr($theValue, $pointer + $len_p, 1)));
+                        $ordValue = strtolower(substr($theValue, $pointer + $len_p, 1));
+                        $endChar = empty($ordValue) ? 0 : ord($ordValue);
+                        unset($ordValue);
                         $c--;
                     } while ($c > 0 && $endChar && ($endChar < 97 || $endChar > 122) && $endChar != 47);
                     $len = $len_p - 1;
