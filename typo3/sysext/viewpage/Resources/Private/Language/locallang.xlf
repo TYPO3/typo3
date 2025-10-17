@@ -3,6 +3,18 @@
   <file source-language="en" datatype="plaintext" original="EXT:viewpage/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="viewpage">
     <header/>
     <body>
+      <trans-unit id="rotateScreen">
+        <source>Rotate screen</source>
+      </trans-unit>
+      <trans-unit id="selectScreenResolution">
+        <source>Select screen resolution</source>
+      </trans-unit>
+      <trans-unit id="setCustomScreenResolution">
+        <source>Set custom screen resolution</source>
+      </trans-unit>
+      <trans-unit id="height">
+        <source>Height</source>
+      </trans-unit>
       <trans-unit id="width">
         <source>Width</source>
       </trans-unit>

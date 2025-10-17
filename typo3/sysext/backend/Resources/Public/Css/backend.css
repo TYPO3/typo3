@@ -1787,6 +1787,7 @@ a:not([href]):not([class]),a:not([href]):not([class]):hover{color:inherit;text-d
 .dropdown-item-column-title{flex-grow:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .dropdown-item-column-text{flex-grow:1}
 .dropdown-item-column-value{-webkit-padding-start:1em;padding-inline-start:1em}
+.dropdown-item-column-nowrap{white-space:nowrap}
 .dropdown-item-status{align-items:center;display:flex;justify-content:center}
 .dropdown-item-status,.dropdown-item-status:after{height:var(--icon-size-small);width:var(--icon-size-small)}
 .dropdown-item-status:after{content:"";display:block;-webkit-mask-position:center center;mask-position:center center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:contain;mask-size:contain}
@@ -3840,7 +3841,7 @@ td.permission-column-group .input-group select{min-width:100px}
 .viewpage-item iframe{border-radius:0 0 var(--viewpage-item-radius) var(--viewpage-item-radius);display:block}
 .viewpage-topbar{align-items:center;display:flex;flex-direction:row;flex-shrink:0;height:var(--viewpage-topbar-height);justify-content:space-between;padding:.75em 1em}
 .viewpage-topbar-orientation a{color:inherit;opacity:.5;transition:all .2s ease-in-out}
-.viewpage-topbar-orientation a:hover{opacity:1}
+.viewpage-topbar-orientation a:focus,.viewpage-topbar-orientation a:hover{opacity:1}
 .viewpage-topbar-size{direction:ltr}
 .viewpage-topbar-size input{background-color:transparent;border:0;border-bottom:1px solid var(--typo3-state-primary-border-color);color:inherit;padding-left:0;padding-right:0;transition:all .5s ease-in-out}
 .viewpage-topbar-size input:focus,.viewpage-topbar-size input:hover{border-bottom-color:var(--typo3-state-primary-focus-border-color);outline:0}
