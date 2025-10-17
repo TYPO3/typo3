@@ -100,7 +100,7 @@ final readonly class DateTimeFactory
             return null;
         }
 
-        $emptyFormat = QueryHelper::getDateTimeFormats()[$persistenceType]['empty'] ?? null;
+        $emptyFormat = QueryHelper::getDateTimeFormats()[$persistenceType  ?? '']['empty'] ?? null;
         // A regular empty value is null for nullable fields
         $emptyValue = $isNullable ? null : ($emptyFormat ?? 0);
         // A legacy empty value is "0000-00-00" or "0000-00-00 00:00:00" stored
