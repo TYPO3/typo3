@@ -106,10 +106,10 @@ readonly class YamlSource
             }
         } else {
             $byteCount = @file_put_contents($fileToSave, $header . LF . $yaml);
-
             if ($byteCount === false) {
                 $error = error_get_last();
-                throw new FileWriteException($error['message'], 1512582929);
+                $errorMessage = $error['message'] ?? 'Check that the file exists and can be written.';
+                throw new FileWriteException($errorMessage, 1512582929);
             }
         }
     }
