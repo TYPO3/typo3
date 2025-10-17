@@ -11,9 +11,6 @@ See :issue:`104027`
 Description
 ===========
 
-Description
-===========
-
 A new optional argument :html:`module` has been added to the following ViewHelpers:
 
 - :html:`<be:link.editRecord>`
