@@ -284,7 +284,7 @@ Example:
     public function initializeCreateAction(): void
     {
         $argument = $this->arguments->getArgument('myArgument');
-        $configuration = $argument->getFileHandlingServiceConfiguration()->getConfigurationForProperty('file');
+        $configuration = $argument->getFileHandlingServiceConfiguration()->getFileUploadConfigurationForProperty('file');
         $configuration?->setUploadFolder($this->settings['uploadFolder'] ?? '1:/fallback_folder');
     }
 
