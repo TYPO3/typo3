@@ -3,12 +3,11 @@
 	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mod_file.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="mlang_labels_tablabel">
-				<source>File administration on the server</source>
-			</trans-unit>
-			<trans-unit id="mlang_tabs_tab">
-				<source>File</source>
-			</trans-unit>
+			<!--
+			@todo: The remaining labels in this file should be migrated to more appropriate locations in a future patch:
+			      - sys_file_storage.* labels could move to a dedicated file for file storage configuration
+			      - role_folder_* labels could move to a file for folder/file management
+			-->
 			<trans-unit id="sys_file_storage.isOffline">
 				<source>offline</source>
 			</trans-unit>

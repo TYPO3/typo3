@@ -7,7 +7,7 @@ use TYPO3\CMS\Filelist\Controller\FileListController;
  */
 return [
     'media_management' => [
-        'parent' => 'file',
+        'parent' => 'media',
         'access' => 'user',
         'path' => '/module/file/list',
         'iconIdentifier' => 'module-filelist',

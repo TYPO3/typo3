@@ -61,6 +61,28 @@ nobody outside the TYPO3 ecosystem understood what "Web" meant in this context.
     ];
 
 
+File => Media
+-------------
+
+The top-level :guilabel:`File` module has been renamed to :guilabel:`Media`.
+
+**Rationale:** The term "Media" clearly indicates the module's purpose of
+managing digital media files (images, videos, documents, audio files, etc.)
+within the CMS. The term "File" was too generic and technical, while "Media"
+is widely understood and commonly used in content management systems to refer
+to digital content assets.
+
+**Migration:** Update module parent references from :php:`'file'` to
+:php:`'media'`:
+
+..  code-block:: php
+
+    return [
+        'my_module' => [
+            'parent' => 'media',  // Previously: 'file'
+        ],
+    ];
+
 Impact
 ======
 

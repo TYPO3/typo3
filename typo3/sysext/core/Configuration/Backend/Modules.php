@@ -10,10 +10,11 @@ return [
         'navigationComponent' => '@typo3/backend/tree/page-tree-element',
         'aliases' => ['web'],
     ],
-    'file' => [
-        'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf',
+    'media' => [
+        'labels' => 'LLL:EXT:core/Resources/Private/Language/Modules/media.xlf',
         'iconIdentifier' => 'modulegroup-file',
         'navigationComponent' => '@typo3/backend/tree/file-storage-tree-container',
+        'aliases' => ['file'],
     ],
     'site' => [
         'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_site.xlf',
