@@ -1903,12 +1903,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerArgumentTest.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Extbase\\\\Http\\\\ForwardResponse'' and TYPO3\\CMS\\Extbase\\Http\\ForwardResponse will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Validation/ActionControllerValidationTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Mapper\\\\DataMap'' and TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMap will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 2

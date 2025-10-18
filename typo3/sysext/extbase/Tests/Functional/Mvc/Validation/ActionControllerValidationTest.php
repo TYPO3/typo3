@@ -160,7 +160,6 @@ final class ActionControllerValidationTest extends FunctionalTestCase
                 /** @var Result $validationResult */
                 $validationResult = $response->getArgumentsValidationResult();
 
-                self::assertInstanceOf(ForwardResponse::class, $response);
                 self::assertCount(1, $validationResult->forProperty('blog.title')->getErrors());
                 self::assertCount(1, $validationResult->forProperty('blog.description')->getErrors());
                 self::assertCount(1, $validationResult->forProperty('blogPost.title')->getErrors());
