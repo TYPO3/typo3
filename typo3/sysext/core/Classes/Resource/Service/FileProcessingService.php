@@ -45,13 +45,13 @@ use TYPO3\CMS\Core\Resource\Processing\TaskTypeRegistry;
  * Task object (which is created from the TaskTypeRegistry when needed for processing).
  */
 #[Autoconfigure(public: true)]
-class FileProcessingService
+readonly class FileProcessingService
 {
     public function __construct(
-        protected readonly EventDispatcherInterface $eventDispatcher,
-        protected readonly ProcessedFileRepository $processedFileRepository,
-        protected readonly ProcessorRegistry $processorRegistry,
-        protected readonly TaskTypeRegistry $taskTypeRegistry,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected ProcessedFileRepository $processedFileRepository,
+        protected ProcessorRegistry $processorRegistry,
+        protected TaskTypeRegistry $taskTypeRegistry,
     ) {}
 
     public function processFile(File|FileReference $fileObject, string $taskType, DriverInterface $driver, array $configuration): ProcessedFile
