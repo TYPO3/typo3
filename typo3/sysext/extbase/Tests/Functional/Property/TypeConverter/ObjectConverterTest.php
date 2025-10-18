@@ -70,7 +70,6 @@ final class ObjectConverterTest extends FunctionalTestCase
             true
         );
 
-        /** @var Cat $object */
         $object = $propertyMapper->convert(
             ['name' => 'John Doe', '__type' => Cat::class],
             Animal::class,
@@ -278,6 +277,7 @@ final class ObjectConverterTest extends FunctionalTestCase
     public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertyTypeCannotBeDerivedFromExistingConstructorArgument(): void
     {
         $class = new class () {
+            // @phpstan-ignore-next-line
             public function __construct($name = null) {}
         };
 
@@ -329,7 +329,8 @@ final class ObjectConverterTest extends FunctionalTestCase
         $this->expectExceptionMessage('Exception while property mapping at property path "": Property "name" having a value of type "string" could not be set in target object of type "');
 
         $class = new class () {
-            private $name;
+            // @phpstan-ignore-next-line
+            private string $name;
         };
 
         $propertyMapper = $this->get(PropertyMapper::class);

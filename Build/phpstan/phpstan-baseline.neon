@@ -1969,24 +1969,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Property/PropertyMapperTest.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3Tests\\\\TypeConverterTest\\\\Domain\\\\Model\\\\Cat'' and TYPO3Tests\\TypeConverterTest\\Domain\\Model\\Cat will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Property/TypeConverter/ObjectConverterTest.php
-
-		-
-			message: '#^Constructor of an anonymous class has an unused parameter \$name\.$#'
-			identifier: constructor.unusedParameter
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Property/TypeConverter/ObjectConverterTest.php
-
-		-
-			message: '#^Property class@anonymous/extbase/Tests/Functional/Property/TypeConverter/ObjectConverterTest\.php\:331\:\:\$name is unused\.$#'
-			identifier: property.unused
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Property/TypeConverter/ObjectConverterTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SplObjectStorage'' and iterable\<TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface\>&SplObjectStorage will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 5
