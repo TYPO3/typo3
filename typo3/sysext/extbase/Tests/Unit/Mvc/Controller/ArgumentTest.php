@@ -47,14 +47,6 @@ final class ArgumentTest extends UnitTestCase
     }
 
     #[Test]
-    public function constructingArgumentWithInvalidNameThrowsException(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1187951688);
-        new Argument(new \ArrayObject(), 'Text');
-    }
-
-    #[Test]
     public function passingDataTypeToConstructorReallySetsTheDataType(): void
     {
         self::assertEquals('string', $this->simpleValueArgument->getDataType(), 'The specified data type has not been set correctly.');
@@ -73,16 +65,12 @@ final class ArgumentTest extends UnitTestCase
         return [
             [''],
             ['as'],
-            [5],
         ];
     }
 
-    /**
-     * @param string|int $invalidShortName
-     */
     #[DataProvider('invalidShortNames')]
     #[Test]
-    public function shortNameShouldThrowExceptionIfInvalid($invalidShortName): void
+    public function shortNameShouldThrowExceptionIfInvalid(string $invalidShortName): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1195824959);

@@ -29,15 +29,14 @@ use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
  */
 class Argument
 {
-    /**
-     * @var MvcPropertyMappingConfiguration
-     */
-    protected $propertyMappingConfiguration;
-
-    /**
-     * Configuration for the file handling service
-     */
+    protected MvcPropertyMappingConfiguration $propertyMappingConfiguration;
     protected FileHandlingServiceConfiguration $fileHandlingServiceConfiguration;
+    protected string $name = '';
+    protected string $shortName = '';
+    protected string $dataType = '';
+    protected bool $isRequired = false;
+    protected mixed $value = null;
+    private bool $hasBeenValidated = false;
 
     /**
      * Uploaded files for the argument
@@ -46,78 +45,27 @@ class Argument
     protected array $uploadedFiles = [];
 
     /**
-     * Name of this argument
-     *
-     * @var string
-     */
-    protected $name = '';
-
-    /**
-     * Short name of this argument
-     *
-     * @var string
-     */
-    protected $shortName;
-
-    /**
-     * Data type of this argument's value
-     *
-     * @var string
-     */
-    protected $dataType;
-
-    /**
-     * TRUE if this argument is required
-     *
-     * @var bool
-     */
-    protected $isRequired = false;
-
-    /**
-     * Actual value of this argument
-     *
-     * @var mixed|null
-     */
-    protected $value;
-
-    /**
      * Default value. Used if argument is optional.
-     *
-     * @var mixed
      */
-    protected $defaultValue;
+    protected mixed $defaultValue = null;
 
     /**
      * A custom validator, used supplementary to the base validation
-     *
-     * @var ValidatorInterface
      */
-    protected $validator;
+    protected ?ValidatorInterface $validator = null;
 
     /**
      * The validation results. This can be asked if the argument has errors.
-     *
-     * @var Result
      */
-    protected $validationResults;
-
-    /**
-     * @var bool
-     */
-    private $hasBeenValidated = false;
+    protected Result $validationResults;
 
     /**
      * Constructs this controller argument
      *
-     * @param string $name Name of this argument
-     * @param string $dataType The data type of this argument
-     * @throws \InvalidArgumentException if $name is not a string or empty
+     * @throws \InvalidArgumentException if $name is empty string
      */
-    public function __construct($name, $dataType)
+    public function __construct(string $name, string $dataType)
     {
-        if (!is_string($name)) {
-            throw new \InvalidArgumentException('$name must be of type string, ' . gettype($name) . ' given.', 1187951688);
-        }
         if ($name === '') {
             throw new \InvalidArgumentException('$name must be a non-empty string.', 1232551853);
         }
@@ -129,137 +77,76 @@ class Argument
         $this->fileHandlingServiceConfiguration = GeneralUtility::makeInstance(FileHandlingServiceConfiguration::class);
     }
 
-    /**
-     * Returns the name of this argument
-     *
-     * @return string This argument's name
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * Sets the short name of this argument.
-     *
-     * @param string $shortName A "short name" - a single character
-     * @return Argument $this
      * @throws \InvalidArgumentException if $shortName is not a character
      */
-    public function setShortName($shortName)
+    public function setShortName(string $shortName): Argument
     {
-        if ($shortName !== null && (!is_string($shortName) || strlen($shortName) !== 1)) {
+        if (strlen($shortName) !== 1) {
             throw new \InvalidArgumentException('$shortName must be a single character or NULL', 1195824959);
         }
         $this->shortName = $shortName;
         return $this;
     }
 
-    /**
-     * Returns the short name of this argument
-     *
-     * @return string This argument's short name
-     */
-    public function getShortName()
+    public function getShortName(): string
     {
         return $this->shortName;
     }
 
-    /**
-     * Returns the data type of this argument's value
-     *
-     * @return string The data type
-     */
-    public function getDataType()
+    public function getDataType(): string
     {
         return $this->dataType;
     }
 
-    /**
-     * Marks this argument to be required
-     *
-     * @param bool $required TRUE if this argument should be required
-     * @return Argument $this
-     */
-    public function setRequired($required)
+    public function setRequired(bool $required): Argument
     {
-        $this->isRequired = (bool)$required;
+        $this->isRequired = $required;
         return $this;
     }
 
-    /**
-     * Returns TRUE if this argument is required
-     *
-     * @return bool TRUE if this argument is required
-     */
-    public function isRequired()
+    public function isRequired(): bool
     {
         return $this->isRequired;
     }
 
-    /**
-     * Sets the default value of the argument
-     *
-     * @param mixed $defaultValue Default value
-     * @return Argument $this
-     */
-    public function setDefaultValue($defaultValue)
+    public function setDefaultValue(mixed $defaultValue): Argument
     {
         $this->defaultValue = $defaultValue;
         return $this;
     }
 
-    /**
-     * Returns the default value of this argument
-     *
-     * @return mixed The default value
-     */
-    public function getDefaultValue()
+    public function getDefaultValue(): mixed
     {
         return $this->defaultValue;
     }
 
     /**
      * Sets a custom validator which is used supplementary to the base validation
-     *
-     * @param ValidatorInterface $validator The actual validator object
-     * @return Argument Returns $this (used for fluent interface)
      */
-    public function setValidator(ValidatorInterface $validator)
+    public function setValidator(ValidatorInterface $validator): Argument
     {
         $this->validator = $validator;
         return $this;
     }
 
-    /**
-     * Returns the set validator
-     *
-     * @return ValidatorInterface|null The set validator, NULL if none was set
-     */
-    public function getValidator()
+    public function getValidator(): ?ValidatorInterface
     {
         return $this->validator;
     }
 
-    /**
-     * Sets the value of this argument.
-     *
-     * @param mixed $rawValue The value of this argument
-     *
-     * @return Argument
-     */
-    public function setValue($rawValue)
+    public function setValue(mixed $rawValue): Argument
     {
         $this->value = $rawValue;
         return $this;
     }
 
-    /**
-     * Returns the value of this argument
-     *
-     * @return mixed The value of this argument - if none was set, NULL is returned
-     */
-    public function getValue()
+    public function getValue(): mixed
     {
         if ($this->value === null) {
             return $this->defaultValue;
@@ -269,10 +156,8 @@ class Argument
 
     /**
      * Return the Property Mapping Configuration used for this argument; can be used by the initialize*action to modify the Property Mapping.
-     *
-     * @return MvcPropertyMappingConfiguration
      */
-    public function getPropertyMappingConfiguration()
+    public function getPropertyMappingConfiguration(): MvcPropertyMappingConfiguration
     {
         return $this->propertyMappingConfiguration;
     }
@@ -306,10 +191,8 @@ class Argument
 
     /**
      * Returns a string representation of this argument's value
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string)$this->value;
     }

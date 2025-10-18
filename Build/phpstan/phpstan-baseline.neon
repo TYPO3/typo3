@@ -1735,18 +1735,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
 
 		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 2
-			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/Argument.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/Argument.php
-
-		-
 			message: '#^Offset non\-empty\-string on array\{\} on left side of \?\? does not exist\.$#'
 			identifier: nullCoalesce.offset
 			count: 1
@@ -2001,12 +1989,6 @@ parameters:
 		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Controller\\\\FileHandlingServiceConfiguration'' and TYPO3\\CMS\\Extbase\\Mvc\\Controller\\FileHandlingServiceConfiguration will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/ArgumentTest.php
-
-		-
-			message: '#^Parameter \#1 \$name of class TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument constructor expects string, ArrayObject\<\*NEVER\*, \*NEVER\*\> given\.$#'
-			identifier: argument.type
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/ArgumentTest.php
 
