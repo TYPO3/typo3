@@ -14,7 +14,7 @@ Description
 Using the legacy form template / partial variants residing in
 :file:`EXT:form/Resources/Private/Frontend/Templates` and
 :file:`EXT:form/Resources/Private/Frontend/Partials`
-is deprecated. The legacy templates will be removed in v13.
+is deprecated. The legacy templates will be removed in v14.
 
 Impact
 ======
