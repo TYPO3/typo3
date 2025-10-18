@@ -6558,6 +6558,20 @@ return [
             'Breaking-107578-EventAfterCacheableContentIsGeneratedEventChanged.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Event\ShouldUseCachedPageDataIfAvailableEvent->getController' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-107831-RemovedTypoScriptFrontendController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent->getController' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-107831-RemovedTypoScriptFrontendController.rst',
+        ],
+    ],
     'TYPO3\CMS\Backend\Template\Components\DocHeaderComponent->setMetaInformation' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,

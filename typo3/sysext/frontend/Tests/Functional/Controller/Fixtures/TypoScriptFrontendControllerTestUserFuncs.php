@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Controller\Fixtures;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 final readonly class TypoScriptFrontendControllerTestUserFuncs
@@ -28,8 +29,9 @@ final readonly class TypoScriptFrontendControllerTestUserFuncs
      */
     public function userIntCallback(): string
     {
-        $GLOBALS['TSFE']->additionalHeaderData[] = 'headerDataFromUserInt';
-        $GLOBALS['TSFE']->additionalFooterData[] = 'footerDataFromUserInt';
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer->addHeaderData('headerDataFromUserInt');
+        $pageRenderer->addFooterData('footerDataFromUserInt');
         return 'userIntContent';
     }
 

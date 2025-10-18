@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\FrontendLogin\Configuration\RedirectConfiguration;
 use TYPO3\CMS\FrontendLogin\Redirect\RedirectHandler;
 use TYPO3\CMS\FrontendLogin\Redirect\RedirectMode;
@@ -46,12 +45,8 @@ final class RedirectHandlerTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->redirectModeHandler = $this->createMock(RedirectModeHandler::class);
         $this->redirectUrlValidator = $this->createMock(RedirectUrlValidator::class);
-
-        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
-
         $this->subject = new RedirectHandler(
             $this->redirectModeHandler,
             $this->redirectUrlValidator,

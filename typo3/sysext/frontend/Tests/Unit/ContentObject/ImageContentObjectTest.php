@@ -38,7 +38,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Event\ModifyImageSourceCollectionEvent;
 use TYPO3\CMS\Frontend\ContentObject\ImageContentObject;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -52,9 +51,7 @@ final class ImageContentObjectTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
-        $GLOBALS['TSFE'] = $tsfe;
-        $contentObjectRenderer = new ContentObjectRenderer($tsfe);
+        $contentObjectRenderer = new ContentObjectRenderer();
 
         $container = new Container();
         $container->set(EventDispatcherInterface::class, new NoopEventDispatcher());

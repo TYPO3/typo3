@@ -90,7 +90,6 @@ use TYPO3\CMS\Frontend\ContentObject\ScalableVectorGraphicsContentObject;
 use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 use TYPO3\CMS\Frontend\ContentObject\UserContentObject;
 use TYPO3\CMS\Frontend\ContentObject\UserInternalContentObject;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\TestSanitizerBuilder;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
@@ -105,7 +104,6 @@ final class ContentObjectRendererTest extends UnitTestCase
     protected bool $backupEnvironment = true;
 
     private ContentObjectRenderer&MockObject&AccessibleObjectInterface $subject;
-    private TypoScriptFrontendController&MockObject&AccessibleObjectInterface $frontendControllerMock;
     private CacheManager&MockObject $cacheManagerMock;
 
     /**
@@ -137,15 +135,6 @@ final class ContentObjectRendererTest extends UnitTestCase
         parent::setUp();
 
         $GLOBALS['SIM_ACCESS_TIME'] = 1534278180;
-        $this->frontendControllerMock =
-            $this->getAccessibleMock(
-                TypoScriptFrontendController::class,
-                [],
-                [],
-                '',
-                false
-            );
-        $this->frontendControllerMock->_set('context', new Context());
 
         $this->cacheManagerMock = $this->getMockBuilder(CacheManager::class)->disableOriginalConstructor()->getMock();
         GeneralUtility::setSingletonInstance(CacheManager::class, $this->cacheManagerMock);
@@ -153,7 +142,7 @@ final class ContentObjectRendererTest extends UnitTestCase
         $this->subject = $this->getAccessibleMock(
             ContentObjectRenderer::class,
             ['getResourceFactory', 'getEnvironmentVariable'],
-            [$this->frontendControllerMock]
+            []
         );
 
         $logger = new NullLogger();
@@ -2991,7 +2980,6 @@ content="benni">',
             [
                 'calculateCacheKey',
                 'getRequest',
-                'getTypoScriptFrontendController',
             ]
         );
         $subject
@@ -3718,7 +3706,6 @@ content="benni">',
                 'calculateCacheKey',
                 'calculateCacheTags',
                 'calculateCacheLifetime',
-                'getTypoScriptFrontendController',
             ]
         );
         $subject->expects($this->exactly($times))->method('calculateCacheKey')->with($confCache)->willReturn($key);
@@ -5539,7 +5526,6 @@ content="benni">',
      * @param string $expected The expected value.
      * @param string $input The input value.
      * @param array $conf Properties: lang.xy.
-     * @param string $language For $TSFE->config[config][language].
      */
     #[DataProvider('stdWrap_langDataProvider')]
     #[Test]

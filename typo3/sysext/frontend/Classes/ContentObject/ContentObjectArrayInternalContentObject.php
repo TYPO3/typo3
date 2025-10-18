@@ -37,22 +37,18 @@ class ContentObjectArrayInternalContentObject extends AbstractContentObject
             $this->getTimeTracker()->setTSlogMessage('No elements in this content object array (COA_INT).', LogLevel::WARNING);
             return '';
         }
-
-        $frontendController = $this->getTypoScriptFrontendController();
         $substKey = 'INT_SCRIPT.' . md5(StringUtility::getUniqueId());
-        $content = '<!--' . $substKey . '-->';
-        $frontendController->config['INTincScript'][$substKey] = [
+        $pageParts = $this->request->getAttribute('frontend.page.parts');
+        $pageParts->addNotCachedContentElement([
+            'substKey' => $substKey,
             'conf' => $conf,
             'cObj' => serialize($this->cObj),
             'type' => 'COA',
-        ];
-        return $content;
+        ]);
+        return '<!--' . $substKey . '-->';
     }
 
-    /**
-     * @return TimeTracker
-     */
-    protected function getTimeTracker()
+    protected function getTimeTracker(): TimeTracker
     {
         return GeneralUtility::makeInstance(TimeTracker::class);
     }

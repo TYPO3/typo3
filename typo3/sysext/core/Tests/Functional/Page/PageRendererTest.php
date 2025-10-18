@@ -62,8 +62,6 @@ final class PageRendererTest extends FunctionalTestCase
     #[Test]
     public function pageRendererRendersInsertsMainContentStringsInOutput(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $subject = $this->createPageRenderer();
         $subject->setLanguage(new Locale());
 
@@ -285,8 +283,6 @@ final class PageRendererTest extends FunctionalTestCase
     #[Test]
     public function pageRendererRendersNomoduleJavascript(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $subject = $this->createPageRenderer();
         $subject->setLanguage(new Locale());
 
@@ -367,8 +363,6 @@ final class PageRendererTest extends FunctionalTestCase
     #[Test]
     public function pageRendererRendersDataAttributeInScriptTags(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $subject = $this->createPageRenderer();
         $subject->setLanguage(new Locale());
 
@@ -425,8 +419,6 @@ final class PageRendererTest extends FunctionalTestCase
     #[Test]
     public function pageRendererRendersDataAttributeInCssTags(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $subject = $this->createPageRenderer();
         $subject->setLanguage(new Locale());
 
@@ -457,8 +449,6 @@ final class PageRendererTest extends FunctionalTestCase
     #[Test]
     public function pageRendererRendersCDataBasedOnDocType(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $subject = $this->createPageRenderer();
         $subject->setLanguage(new Locale());
 

@@ -19,7 +19,9 @@ namespace TYPO3\CMS\Frontend\Typolink;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Page\FrontendUrlPrefix;
 
 /**
  * Abstract class to provide proper helper for most types necessary
@@ -90,7 +92,7 @@ abstract class AbstractTypolinkBuilder
                 // absRefPrefix has been prepended to $url beforehand
                 // so we only modify the path if no absRefPrefix has been set
                 // otherwise we would destroy the path
-                if ($this->getAbsRefPrefix($request) === '') {
+                if (GeneralUtility::makeInstance(FrontendUrlPrefix::class)->getUrlPrefix($request) === '') {
                     $normalizedParams = $request->getAttribute('normalizedParams');
                     // @todo: This fallback should vanish mid-term: typolink has a dependency to ServerRequest
                     //        and should expect the normalizedParams argument is properly set as well. When for
@@ -167,22 +169,5 @@ abstract class AbstractTypolinkBuilder
             }
         }
         return $target;
-    }
-
-    protected function getAbsRefPrefix(ServerRequestInterface $request): string
-    {
-        $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')?->getConfigArray();
-        $absRefPrefix = trim($typoScriptConfigArray['absRefPrefix'] ?? '');
-        // calculate the absolute path prefix
-        if ($absRefPrefix === 'auto') {
-            $normalizedParams = $request->getAttribute('normalizedParams');
-            $absRefPrefix = $normalizedParams->getSitePath();
-        }
-        // config.forceAbsoluteUrls will override absRefPrefix
-        if ($typoScriptConfigArray['forceAbsoluteUrls'] ?? false) {
-            $normalizedParams = $request->getAttribute('normalizedParams');
-            $absRefPrefix = $normalizedParams->getSiteUrl();
-        }
-        return $absRefPrefix;
     }
 }

@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
@@ -141,13 +140,7 @@ final class CObjectViewHelper extends AbstractViewHelper
 
     private static function getContentObjectRenderer(ServerRequestInterface $request): ContentObjectRenderer
     {
-        if (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
-            $tsfe = $GLOBALS['TSFE'];
-        } else {
-            $tsfe = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
-            $tsfe->initializePageRenderer($request);
-        }
-        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class, $tsfe);
+        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $parent = $request->getAttribute('currentContentObject');
         if ($parent instanceof ContentObjectRenderer) {
             $contentObjectRenderer->setParent($parent->data, $parent->currentRecord);

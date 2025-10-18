@@ -46,7 +46,6 @@ use TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObjectRendererInitialized
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterGetDataResolvedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterImageResourceResolvedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Event\EnhanceStdWrapEvent;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
@@ -1201,8 +1200,7 @@ And another one';
             'crop' => '{"default":{"cropArea":{"x":0,"y":0,"width":1,"height":1},"selectedRatio":"NaN","focusArea":null}}',
         ];
         $fileReference = new FileReference($fileReferenceData);
-        $typoScriptFrontendController = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
-        $subject = new ContentObjectRenderer($typoScriptFrontendController);
+        $subject = new ContentObjectRenderer();
         $subject->setCurrentFile($fileReference);
         $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);

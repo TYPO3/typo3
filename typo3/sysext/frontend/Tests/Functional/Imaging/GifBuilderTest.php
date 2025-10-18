@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -39,7 +38,6 @@ final class GifBuilderTest extends FunctionalTestCase
         $this->setUpBackendUser(1);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin');
     }
 

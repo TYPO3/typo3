@@ -21,8 +21,9 @@ use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Event that allows to enhance or change content (also depending on enabled caching).
- * Think of $this->isCachingEnabled() as the same as $TSFE->no_cache.
  * Depending on disable or enabling caching, the cache is then not stored in the pageCache.
+ *
+ * Until TYPO3 v13, the flag "isCachingEnabled" was available in $TSFE->no_cache.
  */
 final class AfterCacheableContentIsGeneratedEvent
 {

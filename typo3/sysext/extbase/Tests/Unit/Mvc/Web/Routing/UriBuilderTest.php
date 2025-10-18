@@ -108,7 +108,6 @@ final class UriBuilderTest extends UnitTestCase
     public function uriForPrefixesArgumentsWithExtensionAndPluginNameAndSetsControllerArgument(): void
     {
         $expectedArguments = ['foo' => 'bar', 'baz' => ['extbase' => 'fluid'], 'controller' => 'SomeController', 'route' => 'SomePlugin'];
-        $GLOBALS['TSFE'] = null;
         $mockRequest = $this->createMock(Request::class);
         $mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $mockExtensionService = $this->createMock(ExtensionService::class);

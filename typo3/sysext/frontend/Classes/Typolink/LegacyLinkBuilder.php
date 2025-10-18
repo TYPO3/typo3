@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Frontend\Typolink;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Page\FrontendUrlPrefix;
 
 /**
  * Builds a TypoLink to a file (relative to fileadmin/ or something)
@@ -34,7 +36,8 @@ class LegacyLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuild
             $linkLocation = $linkDetails['file'];
             // Setting title if blank value to link
             $linkText = $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, rawurldecode($linkLocation));
-            $linkLocation = (!str_starts_with($linkLocation, '/') ? $this->getAbsRefPrefix($request) : '') . $linkLocation;
+            $absRefPrefix = GeneralUtility::makeInstance(FrontendUrlPrefix::class)->getUrlPrefix($request);
+            $linkLocation = (!str_starts_with($linkLocation, '/') ? $absRefPrefix : '') . $linkLocation;
             $url = $linkLocation;
             $url = $this->forceAbsoluteUrl($url, $configuration, $request);
             $target = $target ?: $this->resolveTargetAttribute($configuration, 'fileTarget', $request->getAttribute('currentContentObject'));

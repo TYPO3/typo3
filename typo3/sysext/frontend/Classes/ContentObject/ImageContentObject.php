@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\Event\ModifyImageSourceCollectionEvent;
+use TYPO3\CMS\Frontend\Page\FrontendUrlPrefix;
 
 /**
  * Contains IMAGE class object.
@@ -62,7 +63,6 @@ class ImageContentObject extends AbstractContentObject
      */
     protected function cImage($file, array $conf): string
     {
-        $tsfe = $this->getTypoScriptFrontendController();
         $imageResource = $this->cObj->getImgResource($file, $conf['file.'] ?? []);
         if ($imageResource === null) {
             return '';
@@ -70,7 +70,8 @@ class ImageContentObject extends AbstractContentObject
         // $info['originalFile'] will be set, when the file is processed by FAL.
         // In that case the URL is final and we must not add a prefix
         if ($imageResource->getOriginalFile() === null && is_file($imageResource->getFullPath())) {
-            $source = $tsfe->absRefPrefix . str_replace('%2F', '/', rawurlencode($imageResource->getPublicUrl()));
+            $absRefPrefix = GeneralUtility::makeInstance(FrontendUrlPrefix::class)->getUrlPrefix($this->request);
+            $source = $absRefPrefix . str_replace('%2F', '/', rawurlencode($imageResource->getPublicUrl()));
         } else {
             $source = $imageResource->getPublicUrl();
         }
@@ -159,7 +160,6 @@ class ImageContentObject extends AbstractContentObject
             }
 
             // apply option split to configurations
-            $tsfe = $this->getTypoScriptFrontendController();
             $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
             $srcLayoutOptionSplitted = $typoScriptService->explodeConfigurationForOptionSplit((array)$conf['layout.'][$layoutKey . '.'], count($activeSourceCollections));
             $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
@@ -212,10 +212,9 @@ class ImageContentObject extends AbstractContentObject
                     $sourceConfiguration['height'] = $imageResource->getHeight();
 
                     $urlPrefix = '';
-                    // Prepend 'absRefPrefix' to file path only if file was not processed
-                    // by FAL, e.g. GIFBUILDER
+                    // Prepend 'absRefPrefix' to file path only if file was not processed by FAL, e.g. GIFBUILDER
                     if ($imageResource->getOriginalFile() === null && is_file($imageResource->getFullPath())) {
-                        $urlPrefix = $tsfe->absRefPrefix;
+                        $urlPrefix = GeneralUtility::makeInstance(FrontendUrlPrefix::class)->getUrlPrefix($this->request);
                     }
 
                     $sourceConfiguration['src'] = htmlspecialchars($urlPrefix . $imageResource->getPublicUrl());

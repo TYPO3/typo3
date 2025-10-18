@@ -60,7 +60,7 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
                     'groupList' => implode(',', $frontendUserAspect->getGroupIds()),
                     'noCache' => !$request->getAttribute('frontend.cache.instruction')->isCachingAllowed(),
                     'noCacheReasons' => $request->getAttribute('frontend.cache.instruction')->getDisabledCacheReasons(),
-                    'countUserInt' => count($request->getAttribute('frontend.controller')->config['INTincScript'] ?? []),
+                    'countUserInt' => count($request->getAttribute('frontend.page.parts')->getNotCachedContentElementRegistry()),
                     'totalParsetime' => $this->timeTracker->getParseTime(),
                     'feUser' => [
                         'uid' => $frontendUserAspect->get('id') ?: 0,

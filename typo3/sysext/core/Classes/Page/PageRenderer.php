@@ -187,6 +187,11 @@ class PageRenderer implements SingletonInterface
                 case 'responseFactory':
                 case 'streamFactory':
                 case 'iconRegistry':
+                    // @todo: bodyContent is cached twice: once in 'content' of pageRow (see FE setPageCacheContent()),
+                    //        and a second time because it is added using addBodyContent() as well during page generation.
+                    //        An easy solution is to exclude it here, but a bigger overhaul of the entire 'marker' madness
+                    //        is what is *really* needed. Also see the various 'cached' and 'uncached' render methods.
+                    break;
                 case 'nonce':
                     break;
                 case 'metaTagRegistry':

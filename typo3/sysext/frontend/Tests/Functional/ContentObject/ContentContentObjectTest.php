@@ -22,10 +22,8 @@ use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Cache\CacheDataCollector;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Event\ModifyRecordsAfterFetchingContentEvent;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\CMS\Frontend\Page\PageParts;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -53,8 +51,7 @@ final class ContentContentObjectTest extends FunctionalTestCase
         $eventListener = $container->get(ListenerProvider::class);
         $eventListener->addListener(ModifyRecordsAfterFetchingContentEvent::class, 'modify-records-after-fetching-content-listener');
 
-        $typoScriptFrontendController = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
-        $contentObjectRenderer = new ContentObjectRenderer($typoScriptFrontendController);
+        $contentObjectRenderer = new ContentObjectRenderer();
         $pageInformation = new PageInformation();
         $pageInformation->setId(1);
         $pageInformation->setContentFromPid(1);

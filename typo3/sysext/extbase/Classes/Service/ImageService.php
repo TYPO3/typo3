@@ -175,8 +175,7 @@ class ImageService implements SingletonInterface
     }
 
     /**
-     * Set compatibility values to frontend controller object
-     * in case we are in frontend environment.
+     * Set compatibility values in case we are in frontend environment.
      */
     protected function setCompatibilityValues(ProcessedFile $processedImage): void
     {

@@ -28,11 +28,16 @@ use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Localization\Locale;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Locking\ResourceMutex;
+use TYPO3\CMS\Core\Page\AssetCollector;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScriptFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Cache\MetaDataState;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Event\AfterTypoScriptDeterminedEvent;
@@ -81,6 +86,8 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
             ->dispatch(new ShouldUseCachedPageDataIfAvailableEvent($request, $isCachingAllowed))
             ->shouldUseCachedPageData();
         $pageCacheIdentifier = $this->createPageCacheIdentifier($request, $frontendTypoScript);
+        $cacheDataCollector = $request->getAttribute('frontend.cache.collector');
+        $cacheDataCollector->setPageCacheIdentifier($pageCacheIdentifier);
 
         $pageCacheRow = null;
         if (!$isUsingPageCacheAllowed) {
@@ -117,23 +124,34 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
             }
         }
 
-        $controller = $request->getAttribute('frontend.controller');
-        $controller->newHash = $pageCacheIdentifier;
-        $pageContentWasLoadedFromCache = false;
+        $pageParts = $request->getAttribute('frontend.page.parts');
         if (is_array($pageCacheRow)) {
-            $controller->config['INTincScript'] = $pageCacheRow['INTincScript'];
-            $controller->config['INTincScript_ext'] = $pageCacheRow['INTincScript_ext'];
-            $controller->config['pageTitleCache'] = $pageCacheRow['pageTitleCache'];
-            $pageParts = $request->getAttribute('frontend.page.parts');
+            $pageParts->setPageContentWasLoadedFromCache();
+            $pageParts->setPageCacheGeneratedTimestamp($pageCacheRow['pageCacheGeneratedTimestamp']);
+            $pageParts->setPageCacheExpireTimestamp($pageCacheRow['pageCacheExpireTimestamp']);
+
+            foreach ($pageCacheRow['INTincScript'] as $intIncScript) {
+                $pageParts->addNotCachedContentElement($intIncScript);
+            }
+            $pageParts->setPageTitle($pageCacheRow['pageTitleCache']);
             $pageParts->setContent($pageCacheRow['content']);
             $pageParts->setHttpContentType($pageCacheRow['contentType']);
-            $controller->cacheGenerated = $pageCacheRow['tstamp'];
-            $controller->pageContentWasLoadedFromCache = true;
-            $pageContentWasLoadedFromCache = true;
+            $pageParts->setPageRendererSubstitutionHash($pageCacheRow['pageRendererSubstitutionHash']);
+
+            if ($pageCacheRow['pageRendererState'] ?? false) {
+                $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+                $pageRendererState = unserialize($pageCacheRow['pageRendererState'], ['allowed_classes' => [Locale::class]]);
+                $pageRenderer->updateState($pageRendererState);
+            }
+            if ($pageCacheRow['assetCollectorState'] ?? false) {
+                $assetCollectorState = unserialize($pageCacheRow['assetCollectorState'], ['allowed_classes' => false]);
+                $assetCollector = GeneralUtility::makeInstance(AssetCollector::class);
+                $assetCollector->updateState($assetCollectorState);
+            }
 
             // Restore the current tags and add them to the CacheTageCollector
             $cacheDataCollector = $request->getAttribute('frontend.cache.collector');
-            $lifetime = $pageCacheRow['expires'] - $GLOBALS['EXEC_TIME'];
+            $lifetime = $pageParts->getPageCacheExpireTimestamp() - $GLOBALS['EXEC_TIME'];
             $cacheTags = array_map(fn(string $cacheTag) => new CacheTag($cacheTag, $lifetime), $pageCacheRow['cacheTags'] ?? []);
             $cacheDataCollector->addCacheTags(...$cacheTags);
 
@@ -141,10 +159,24 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
             if (is_array($pageCacheRow['metaDataState'] ?? null)) {
                 GeneralUtility::makeInstance(MetaDataState::class)->updateState($pageCacheRow['metaDataState']);
             }
+        } else {
+            // Init FE PageRenderer defaults when this page needs to be generated
+            $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+            $pageRenderer->setTemplateFile('EXT:frontend/Resources/Private/Templates/MainPage.html');
+            $language = $request->getAttribute('language') ?? $request->getAttribute('site')->getDefaultLanguage();
+            if ($language->hasCustomTypo3Language()) {
+                $locale = GeneralUtility::makeInstance(Locales::class)->createLocale($language->getTypo3Language());
+            } else {
+                $locale = $language->getLocale();
+            }
+            $pageRenderer->setLanguage($locale);
+            $pageParts->setPageRendererSubstitutionHash(md5(StringUtility::getUniqueId()));
+            $pageParts->setPageCacheGeneratedTimestamp($GLOBALS['EXEC_TIME']);
         }
+        unset($pageCacheRow);
 
         try {
-            $needsFullSetup = !$pageContentWasLoadedFromCache || $controller->isINTincScript();
+            $needsFullSetup = !$pageParts->hasPageContentBeenLoadedFromCache() || $pageParts->hasNotCachedContentElements();
             $pageType = $request->getAttribute('routing')->getPageType();
             $frontendTypoScript = $this->frontendTypoScriptFactory->createSetupConfigOrFullSetup(
                 $needsFullSetup,
@@ -165,13 +197,6 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
                 );
             }
             $setupConfigAst = $frontendTypoScript->getConfigTree();
-            if ($pageContentWasLoadedFromCache && ($setupConfigAst->getChildByName('debug')?->getValue() || !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']))) {
-                // Prepare X-TYPO3-Debug-Cache HTTP header
-                $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
-                $timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
-                $controller->debugInformationHeader = 'Cached page generated ' . date($dateFormat . ' ' . $timeFormat, $controller->cacheGenerated)
-                    . '. Expires ' . date($dateFormat . ' ' . $timeFormat, $pageCacheRow['expires']);
-            }
             if ($setupConfigAst->getChildByName('no_cache')?->getValue()) {
                 // Disable cache if config.no_cache is set!
                 $cacheInstruction = $request->getAttribute('frontend.cache.instruction');
@@ -210,7 +235,6 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
             'localRootLine' => $localRootline,
             'site' => $request->getAttribute('site'),
             'siteLanguage' => $request->getAttribute('language'),
-            'tsfe' => $request->getAttribute('frontend.controller'),
         ];
     }
 

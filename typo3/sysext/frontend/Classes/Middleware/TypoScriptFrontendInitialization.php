@@ -26,12 +26,10 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 use TYPO3\CMS\Frontend\ContentObject\RegisterStack;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 use TYPO3\CMS\Frontend\Page\PageInformationCreationFailedException;
 use TYPO3\CMS\Frontend\Page\PageInformationFactory;
@@ -105,11 +103,8 @@ final readonly class TypoScriptFrontendInitialization implements MiddlewareInter
             throw new PageInformationCreationFailedException($response, 1705656657);
         }
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
-
-        $controller = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
-        $controller->initializePageRenderer($request);
+        // @todo: Next step is to merge TypoScriptFrontendInitialization with PrepareTypoScriptFrontendRendering
         $request = $request->withAttribute('frontend.register.stack', new RegisterStack());
-        $request = $request->withAttribute('frontend.controller', $controller);
         $pageParts = new PageParts();
         // Init "last changed" with "tstamp" of the page record, or SYS_LASTCHANGED if it is lower.
         // See the attribute property comment for details.
@@ -120,7 +115,6 @@ final readonly class TypoScriptFrontendInitialization implements MiddlewareInter
         $pageParts->setLastChanged($lastChanged);
         $request = $request->withAttribute('frontend.page.parts', $pageParts);
         $GLOBALS['TYPO3_REQUEST'] = $request;
-        $GLOBALS['TSFE'] = $controller;
 
         return $handler->handle($request);
     }

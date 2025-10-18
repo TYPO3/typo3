@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Contains an abstract class for all tslib content class implementations.
@@ -66,23 +65,6 @@ abstract class AbstractContentObject
         // Also makes sure the request in a Fluid RenderingContext also has the current
         // content object available.
         $this->request = $this->request->withAttribute('currentContentObject', $cObj);
-    }
-
-    protected function hasTypoScriptFrontendController(): bool
-    {
-        return $this->cObj?->getTypoScriptFrontendController() instanceof TypoScriptFrontendController;
-    }
-
-    /**
-     * @throws ContentRenderingException
-     */
-    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
-    {
-        if (!$this->hasTypoScriptFrontendController()) {
-            throw new ContentRenderingException('TypoScriptFrontendController is not available.', 1655723512);
-        }
-
-        return $this->cObj->getTypoScriptFrontendController();
     }
 
     protected function getPageRepository(): PageRepository

@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent;
 use TYPO3\CMS\Core\Resource\Exception;
@@ -43,6 +42,7 @@ use TYPO3\CMS\Frontend\Cache\NonceValueSubstitution;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Event\ModifyHrefLangTagsEvent;
+use TYPO3\CMS\Frontend\Page\FrontendUrlPrefix;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use TYPO3\CMS\Frontend\Resource\PublicUrlPrefixer;
 
@@ -76,6 +76,7 @@ class RequestHandler implements RequestHandlerInterface
         private readonly FilePathSanitizer $filePathSanitizer,
         private readonly TypoScriptService $typoScriptService,
         private readonly Context $context,
+        private readonly TypoScriptFrontendController $typoScriptFrontendController,
     ) {}
 
     /**
@@ -109,22 +110,25 @@ class RequestHandler implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $controller = $request->getAttribute('frontend.controller');
-
         $this->resetGlobalsToCurrentRequest($request);
 
-        // forward `ConsumableNonce` containing a nonce to `PageRenderer`
+        // Forward `ConsumableNonce` containing a nonce to `PageRenderer`
         $nonce = $request->getAttribute('nonce');
         $nonce = $nonce instanceof ConsumableNonce ? $nonce : null;
         $this->getPageRenderer()->setNonce($nonce);
 
+        // Make sure all FAL resources are prefixed with absPrefPrefix
+        $this->listenerProvider->addListener(
+            GeneratePublicUrlForResourceEvent::class,
+            PublicUrlPrefixer::class,
+            'prefixWithAbsRefPrefix'
+        );
+
         // Generate page
         $pageParts = $request->getAttribute('frontend.page.parts');
         $content = $pageParts->getContent();
-        if ($controller->isGeneratePage()) {
+        if (!$pageParts->hasPageContentBeenLoadedFromCache()) {
             $this->timeTracker->push('Page generation');
-
-            $controller->preparePageContentGeneration($request);
 
             // Make sure all FAL resources are prefixed with absPrefPrefix
             $this->listenerProvider->addListener(
@@ -133,11 +137,15 @@ class RequestHandler implements RequestHandlerInterface
                 'prefixWithAbsRefPrefix'
             );
 
+            $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
+            $docType = DocType::createFromConfigurationKey($typoScriptConfigArray['doctype'] ?? '');
+            $this->getPageRenderer()->setDocType($docType);
+
             // Content generation
             $this->timeTracker->incStackPointer();
             $this->timeTracker->push('Page generation PAGE object');
 
-            $content = $this->generatePageContent($controller, $request);
+            $content = $this->generatePageContent($request);
 
             $this->timeTracker->pull($this->timeTracker->LR ? $content : '');
             $this->timeTracker->decStackPointer();
@@ -149,34 +157,24 @@ class RequestHandler implements RequestHandlerInterface
             // already - this is due to the fact that the `PageRenderer` state has been serialized
             // before and note executed via `$pageRenderer->render()` and did not consume any nonce values
             // (see serialization in `generatePageContent()`).
-            if ($nonce !== null && (count($nonce) > 0 || $controller->isINTincScript())) {
+            if ($nonce !== null && (count($nonce) > 0 || $pageParts->hasNotCachedContentElements())) {
                 // nonce was consumed
-                $controller->config['INTincScript'][] = [
+                $pageParts->addNotCachedContentElement([
+                    'substKey' => null,
                     'target' => NonceValueSubstitution::class . '->substituteNonce',
                     'parameters' => ['nonce' => $nonce->value],
                     'permanent' => true,
-                ];
+                ]);
             }
 
-            $content = $controller->generatePage_postProcessing($request, $content);
+            $content = $this->typoScriptFrontendController->generatePage_postProcessing($request, $content);
             $this->timeTracker->pull();
         }
 
         // Render non-cached page parts by replacing placeholders which are taken from cache or added during page generation
-        if ($controller->isINTincScript()) {
-            if (!$controller->isGeneratePage()) {
-                // When the page was generated, this was already called. Avoid calling this twice.
-                $controller->preparePageContentGeneration($request);
-
-                // Make sure all FAL resources are prefixed with absPrefPrefix
-                $this->listenerProvider->addListener(
-                    GeneratePublicUrlForResourceEvent::class,
-                    PublicUrlPrefixer::class,
-                    'prefixWithAbsRefPrefix'
-                );
-            }
+        if ($pageParts->hasNotCachedContentElements()) {
             $this->timeTracker->push('Non-cached objects');
-            $content = $controller->INTincScript($request, $content);
+            $content = $this->typoScriptFrontendController->INTincScript($request, $content);
             $this->timeTracker->pull();
         }
 
@@ -184,7 +182,7 @@ class RequestHandler implements RequestHandlerInterface
 
         // Create a default Response object and add headers and body to it
         $response = new Response();
-        $response = $controller->applyHttpHeadersToResponse($request, $response, $content);
+        $response = $this->typoScriptFrontendController->applyHttpHeadersToResponse($request, $response, $content);
         $response->getBody()->write($content);
         return $response;
     }
@@ -193,28 +191,25 @@ class RequestHandler implements RequestHandlerInterface
      * Generates the main body part for the page, and if "config.disableAllHeaderCode" is not active, triggers
      * pageRenderer to evaluate includeCSS, headTag etc. TypoScript processing to populate the pageRenderer.
      */
-    protected function generatePageContent(TypoScriptFrontendController $controller, ServerRequestInterface $request): string
+    protected function generatePageContent(ServerRequestInterface $request): string
     {
         // Generate the main content between the <body> tags
-        // This has to be done first, as some additional TSFE-related code could have been written
-        $pageContent = $this->generatePageBodyContent($controller, $request);
+        // This has to be done first, as some additional frontend related code could have been written?!
+        $pageContent = $this->generatePageBodyContent($request);
         // If 'disableAllHeaderCode' is set, all the pageRenderer settings are not evaluated
         $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
         if ($typoScriptConfigArray['disableAllHeaderCode'] ?? false) {
             return $pageContent;
         }
         // Now, populate pageRenderer with all additional data
-        $this->processHtmlBasedRenderingSettings($controller, $request);
+        $this->processHtmlBasedRenderingSettings($request);
         $pageRenderer = $this->getPageRenderer();
         // Add previously generated page content within the <body> tag afterwards
         $pageRenderer->addBodyContent(LF . $pageContent);
-        if ($controller->isINTincScript()) {
-            // Store the serialized pageRenderer state in configuration
-            $controller->config['INTincScript_ext']['pageRendererState'] = serialize($pageRenderer->getState());
-            // Store the serialized AssetCollector state in configuration
-            $controller->config['INTincScript_ext']['assetCollectorState'] = serialize(GeneralUtility::makeInstance(AssetCollector::class)->getState());
+        $pageParts = $request->getAttribute('frontend.page.parts');
+        if ($pageParts->hasNotCachedContentElements()) {
             // Render complete page, keep placeholders for JavaScript and CSS
-            return $pageRenderer->renderPageWithUncachedObjects($controller->config['INTincScript_ext']['divKey'] ?? '');
+            return $pageRenderer->renderPageWithUncachedObjects($pageParts->getPageRendererSubstitutionHash());
         }
         // Render complete page
         return $pageRenderer->render();
@@ -225,10 +220,10 @@ class RequestHandler implements RequestHandlerInterface
      * render everything that can be cached, otherwise put placeholders for COA_INT/USER_INT objects
      * in the content that is processed later-on.
      */
-    protected function generatePageBodyContent(TypoScriptFrontendController $controller, ServerRequestInterface $request): string
+    protected function generatePageBodyContent(ServerRequestInterface $request): string
     {
         $typoScriptPageSetupArray = $request->getAttribute('frontend.typoscript')->getPageArray();
-        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class, $controller);
+        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $contentObjectRenderer->setRequest($request);
         $contentObjectRenderer->start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages');
         $pageContent = $contentObjectRenderer->cObjGet($typoScriptPageSetupArray) ?: '';
@@ -248,7 +243,7 @@ class RequestHandler implements RequestHandlerInterface
      * PageRenderer is now populated with all <head> data and additional JavaScript/CSS/FooterData/HeaderData that can be cached.
      * Once finished, the content is added to the >addBodyContent() functionality.
      */
-    protected function processHtmlBasedRenderingSettings(TypoScriptFrontendController $controller, ServerRequestInterface $request): void
+    protected function processHtmlBasedRenderingSettings(ServerRequestInterface $request): void
     {
         $pageRenderer = $this->getPageRenderer();
         $typoScript = $request->getAttribute('frontend.typoscript');
@@ -323,7 +318,7 @@ class RequestHandler implements RequestHandlerInterface
             }
         }
 
-        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class, $controller);
+        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $contentObjectRenderer->setRequest($request);
         $contentObjectRenderer->start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages');
 
@@ -347,7 +342,8 @@ class RequestHandler implements RequestHandlerInterface
                         $iconMimeType = ' type="' . $iconMimeType . '"';
                         $pageRenderer->setIconMimeType($iconMimeType);
                     }
-                    $pageRenderer->setFavIcon(PathUtility::getAbsoluteWebPath($controller->absRefPrefix . $favIcon));
+                    $absRefPrefix = GeneralUtility::makeInstance(FrontendUrlPrefix::class)->getUrlPrefix($request);
+                    $pageRenderer->setFavIcon(PathUtility::getAbsoluteWebPath($absRefPrefix . $favIcon));
                 }
             } catch (Exception) {
                 // FavIcon is not set if sanitize() throws
@@ -602,7 +598,7 @@ class RequestHandler implements RequestHandlerInterface
             $pageRenderer->addFooterData($contentObjectRenderer->cObjGet($typoScriptPageArray['footerData.'], 'footerData.'));
         }
 
-        $controller->generatePageTitle($request);
+        $this->typoScriptFrontendController->generatePageTitle($request);
 
         // @internal hook for EXT:seo, will be gone soon, do not use it in your own extensions
         $_params = ['request' => $request];
@@ -611,15 +607,12 @@ class RequestHandler implements RequestHandlerInterface
             GeneralUtility::callUserFunction($_funcRef, $_params, $_ref);
         }
 
-        $this->generateHrefLangTags($controller, $request, $pageRenderer);
+        $this->generateHrefLangTags($request, $pageRenderer);
         $this->generateMetaTagHtml($typoScriptPageArray['meta.'] ?? [], $contentObjectRenderer);
 
         // Javascript inline and inline footer code
         $inlineJS = implode(LF, $contentObjectRenderer->cObjGetSeparated($typoScriptPageArray['jsInline.'] ?? null, 'jsInline.'));
         $inlineFooterJs = implode(LF, $contentObjectRenderer->cObjGetSeparated($typoScriptPageArray['jsFooterInline.'] ?? null, 'jsFooterInline.'));
-
-        // Needs to be called after all cObjGet() calls in order to get all headerData and footerData and replacements
-        $controller->INTincScript_loadJSCode();
 
         $compressJs = (bool)($typoScriptConfigArray['compressJs'] ?? false);
         if (($typoScriptConfigArray['removeDefaultJS'] ?? 'external') === 'external') {
@@ -685,14 +678,6 @@ class RequestHandler implements RequestHandlerInterface
         }
         if ($typoScriptConfigArray['concatenateJs'] ?? false) {
             $pageRenderer->enableConcatenateJavascript();
-        }
-        // Add header data block
-        if ($controller->additionalHeaderData) {
-            $pageRenderer->addHeaderData(implode(LF, $controller->additionalHeaderData));
-        }
-        // Add footer data block
-        if ($controller->additionalFooterData) {
-            $pageRenderer->addFooterData(implode(LF, $controller->additionalFooterData));
         }
         // Header complete, now the body tag is added so the regular content can be applied later-on
         if ($typoScriptConfigArray['disableBodyTag'] ?? false) {
@@ -785,11 +770,12 @@ class RequestHandler implements RequestHandlerInterface
     protected function addCssToPageRenderer(ServerRequestInterface $request, string $cssStyles, bool $excludeFromConcatenation, string $inlineBlockName): void
     {
         $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
+        $pageRenderer = $this->getPageRenderer();
         // This option is enabled by default on purpose
         if (empty($typoScriptConfigArray['inlineStyle2TempFile'] ?? true)) {
-            $this->getPageRenderer()->addCssInlineBlock($inlineBlockName, $cssStyles, !empty($typoScriptConfigArray['compressCss'] ?? false));
+            $pageRenderer->addCssInlineBlock($inlineBlockName, $cssStyles, !empty($typoScriptConfigArray['compressCss'] ?? false));
         } else {
-            $this->getPageRenderer()->addCssFile(
+            $pageRenderer->addCssFile(
                 GeneralUtility::writeStyleSheetContentToTemporaryFile($cssStyles),
                 'stylesheet',
                 'all',
@@ -859,7 +845,7 @@ class RequestHandler implements RequestHandlerInterface
         return $htmlTag;
     }
 
-    protected function generateHrefLangTags(TypoScriptFrontendController $controller, ServerRequestInterface $request, PageRenderer $pageRenderer): void
+    protected function generateHrefLangTags(ServerRequestInterface $request, PageRenderer $pageRenderer): void
     {
         $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
         if ($typoScriptConfigArray['disableHrefLang'] ?? false) {
@@ -876,7 +862,7 @@ class RequestHandler implements RequestHandlerInterface
                     'href' => $href,
                 ], true), $endingSlash);
             }
-            $controller->additionalHeaderData[] = implode(LF, $data);
+            $pageRenderer->addHeaderData(implode(LF, $data));
         }
     }
 

@@ -74,9 +74,6 @@ final class ImageScriptServiceTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
-        $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->absRefPrefix = '/prefix/';
-
         $file = $this->createMock(File::class);
         $file->expects($this->once())->method('getPublicUrl')->willReturn($imageUri);
 
@@ -98,8 +95,6 @@ final class ImageScriptServiceTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
-        $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->absRefPrefix = '/prefix/';
 
         $file = $this->createMock(File::class);
         $file->expects($this->once())->method('getPublicUrl')->willReturn($imageUri);

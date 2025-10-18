@@ -79,7 +79,7 @@ class RecordsContentObject extends AbstractContentObject
                 $this->collectRecordsFromCategories($categories, $tablesArray, $relationField);
             }
             if (!empty($this->itemArray)) {
-                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $this->getTypoScriptFrontendController());
+                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
                 $cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
                 $this->cObj->currentRecordNumber = 0;
                 $pageRepository = $this->getPageRepository();

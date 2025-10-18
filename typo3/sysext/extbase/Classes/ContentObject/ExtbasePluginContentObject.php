@@ -47,18 +47,19 @@ class ExtbasePluginContentObject extends AbstractContentObject
         // Rendering is deferred, as the action should not be cached, we pump this now to TSFE to be executed later-on
         if ($this->cObj->doConvertToUserIntObject) {
             $this->cObj->doConvertToUserIntObject = false;
-            // @todo: this should be removed in the future in TSFE to allow more "uncacheables" than USER_INTs
+            // @todo: this should be removed in the future when FE chains allows more "uncacheables" than USER_INTs
             // also, the handleFrontendRequest() should return the full response in the future
             $conf['userFunc'] = Bootstrap::class . '->run';
             $this->cObj->setUserObjectType(ContentObjectRenderer::OBJECTTYPE_USER_INT);
-            $tsfe = $this->getTypoScriptFrontendController();
+            $pageParts = $request->getAttribute('frontend.page.parts');
             $substKey = 'INT_SCRIPT.' . md5(StringUtility::getUniqueId());
             $content = '<!--' . $substKey . '-->';
-            $tsfe->config['INTincScript'][$substKey] = [
+            $pageParts->addNotCachedContentElement([
+                'substKey' => $substKey,
                 'conf' => $conf,
                 'cObj' => serialize($this->cObj),
                 'type' => 'FUNC',
-            ];
+            ]);
         } elseif (isset($conf['stdWrap.'])) {
             // Only executed when the element is not converted to USER_INT
             $content = $this->cObj->stdWrap($content, $conf['stdWrap.']);

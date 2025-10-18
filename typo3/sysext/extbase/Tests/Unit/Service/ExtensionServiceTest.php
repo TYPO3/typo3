@@ -46,7 +46,6 @@ final class ExtensionServiceTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['TSFE'] = new \stdClass();
         $this->extensionService = new ExtensionService();
         $this->mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $this->extensionService->injectConfigurationManager($this->mockConfigurationManager);

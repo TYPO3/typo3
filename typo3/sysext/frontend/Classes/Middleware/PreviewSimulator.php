@@ -126,7 +126,7 @@ class PreviewSimulator implements MiddlewareInterface
             }
         } catch (\Exception) {
             // if the rootline cannot be resolved (404 because of delete placeholder in workspaces for example)
-            // we do not want to fail here but rather continue handling the request to trigger the TSFE 404 handling
+            // we do not want to fail here but rather continue handling the request to trigger the middleware 404 handling
         }
         return $groupRestricted || $timeRestricted || $hidden;
     }

@@ -83,7 +83,8 @@ readonly class CanonicalGenerator
                 'rel' => 'canonical',
                 'href' => $href,
             ], true) . ($this->pageRenderer->getDocType()->isXmlCompliant() ? '/' : '') . '>' . LF;
-            $request->getAttribute('frontend.controller')->additionalHeaderData[] = $canonical;
+            $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+            $pageRenderer->addHeaderData($canonical);
             return $canonical;
         }
         return '';
@@ -91,9 +92,8 @@ readonly class CanonicalGenerator
 
     protected function checkForCanonicalLink(ServerRequestInterface $request): string
     {
-        $typoScriptFrontendController = $request->getAttribute('frontend.controller');
         $pageRecord = $request->getAttribute('frontend.page.information')->getPageRecord();
-        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $typoScriptFrontendController);
+        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $cObj->setRequest($request);
         $cObj->start($pageRecord, 'pages');
         if (!empty($pageRecord['canonical_link'])) {
@@ -118,7 +118,7 @@ readonly class CanonicalGenerator
                 if (!empty($targetPageRecord['canonical_link'])) {
                     $targetPid = $targetPageRecord['canonical_link'];
                 }
-                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $request->getAttribute('frontend.controller'));
+                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
                 $cObj->setRequest($request);
                 $cObj->start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages');
                 return $cObj->createUrl([
@@ -146,7 +146,7 @@ readonly class CanonicalGenerator
         $pageInformation = clone $pageInformation;
         $pageInformation->setMountPoint('');
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
-        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $request->getAttribute('frontend.controller'));
+        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $cObj->setRequest($request);
         $cObj->start($pageInformation->getPageRecord(), 'pages');
         return $cObj->createUrl([

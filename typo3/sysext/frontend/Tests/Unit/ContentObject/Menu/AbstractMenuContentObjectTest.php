@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu\Fixtures\AbstractMenuContentObjectFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -337,8 +336,6 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         $subject->request = $request;
         $cObjectMock = $this->createMock(ContentObjectRenderer::class);
         $cObjectMock->expects($this->once())->method('stdWrapValue')->with('excludeUidList', ['excludeUidList' => $excludeUidList])->willReturn($excludeUidList);
-        $typoScriptFrontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
-        $cObjectMock->method('getTypoScriptFrontendController')->willReturn($typoScriptFrontendControllerMock);
         $subject->parent_cObj = $cObjectMock;
         $pageRepository = $this->createMock(PageRepository::class);
         $pageRepository->expects($this->once())->method('getMenu')->willReturn($menuItems);

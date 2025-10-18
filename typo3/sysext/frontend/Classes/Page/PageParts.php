@@ -24,6 +24,10 @@ namespace TYPO3\CMS\Frontend\Page;
  * This object is attached as "frontend.page.parts" attribute to the frontend
  * application request object.
  *
+ * Note most of the data accumulated here is part of the page cache row, so the
+ * state is either generated from scratch during first page rendering, or recreated
+ * from cache upon consecutive renderings.
+ *
  * This data object is highly experimental and marked as @internal since it
  * will likely change when the rendering and cache related parts of the frontend
  * middleware chain see further refactorings.
@@ -77,6 +81,30 @@ final class PageParts
      */
     private string $httpContentType = 'text/html; charset=utf-8';
 
+    /**
+     * Registry of "not cached" elements, typically COA_INT, USER_INT and uncached extbase plugins. Each
+     * entry contains state needed to render the element, most contain a placeholder name to be substituted
+     * within the content (due to the current FE rendering structure), and the rendering definition of the
+     * element. See the single consumers for details.
+     */
+    private array $notCachedContentElementRegistry = [];
+
+    /**
+     * Data the final page title is generated from.
+     */
+    private array $pageTitle = [];
+
+    /**
+     * Unique string for PageRenderer to substitute placeholders with final data.
+     */
+    private string $pageRendererSubstitutionHash = '';
+
+    private bool $pageContentWasLoadedFromCache = false;
+
+    private int $pageCacheGeneratedTimestamp;
+
+    private ?int $pageCacheExpiresTimestamp = null;
+
     public function setContent(string $content): void
     {
         $this->content = $content;
@@ -105,5 +133,70 @@ final class PageParts
     public function getHttpContentType(): string
     {
         return $this->httpContentType;
+    }
+
+    public function addNotCachedContentElement(array $data): void
+    {
+        $this->notCachedContentElementRegistry[] = $data;
+    }
+
+    public function hasNotCachedContentElements(): bool
+    {
+        return !empty($this->notCachedContentElementRegistry);
+    }
+
+    public function getNotCachedContentElementRegistry(): array
+    {
+        return $this->notCachedContentElementRegistry;
+    }
+
+    public function setPageTitle(array $pageTitle): void
+    {
+        $this->pageTitle = $pageTitle;
+    }
+
+    public function getPageTitle(): array
+    {
+        return $this->pageTitle;
+    }
+
+    public function setPageRendererSubstitutionHash(string $hash): void
+    {
+        $this->pageRendererSubstitutionHash = $hash;
+    }
+
+    public function getPageRendererSubstitutionHash(): string
+    {
+        return $this->pageRendererSubstitutionHash;
+    }
+
+    public function setPageContentWasLoadedFromCache(): void
+    {
+        $this->pageContentWasLoadedFromCache = true;
+    }
+
+    public function hasPageContentBeenLoadedFromCache(): bool
+    {
+        return $this->pageContentWasLoadedFromCache;
+    }
+
+    public function setPageCacheGeneratedTimestamp(int $timestamp): void
+    {
+        $this->pageCacheGeneratedTimestamp = $timestamp;
+    }
+
+    public function getPageCacheGeneratedTimestamp(): int
+    {
+        return $this->pageCacheGeneratedTimestamp;
+    }
+
+    public function setPageCacheExpireTimestamp(int $timestamp): void
+    {
+        $this->pageCacheExpiresTimestamp = $timestamp;
+    }
+
+    public function getPageCacheExpireTimestamp(): ?int
+    {
+        return $this->pageCacheExpiresTimestamp;
     }
 }

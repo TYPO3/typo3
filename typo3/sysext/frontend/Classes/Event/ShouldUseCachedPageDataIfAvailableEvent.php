@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Event;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Event to allow listeners to disable the loading of cached page data when a page is requested.
@@ -30,14 +29,6 @@ final class ShouldUseCachedPageDataIfAvailableEvent
         private readonly ServerRequestInterface $request,
         private bool $shouldUseCachedPageData
     ) {}
-
-    /**
-     * @todo: deprecate
-     */
-    public function getController(): TypoScriptFrontendController
-    {
-        return $this->request->getAttribute('frontend.controller');
-    }
 
     public function getRequest(): ServerRequestInterface
     {

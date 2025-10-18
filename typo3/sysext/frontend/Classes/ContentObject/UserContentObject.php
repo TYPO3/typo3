@@ -38,7 +38,7 @@ class UserContentObject extends AbstractContentObject
         }
         $content = '';
         if ($this->cObj->getUserObjectType() === false) {
-            // Come here only if we are not called from $TSFE->processNonCacheableContentPartsAndSubstituteContentMarkers()!
+            // Render this if we are a delayed non cached object
             $this->cObj->setUserObjectType(ContentObjectRenderer::OBJECTTYPE_USER);
         }
         $tempContent = $this->cObj->callUserFunction($conf['userFunc'] ?? '', $conf, '');

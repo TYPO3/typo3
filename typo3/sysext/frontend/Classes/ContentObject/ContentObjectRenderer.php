@@ -91,8 +91,8 @@ use TYPO3\CMS\Frontend\ContentObject\Event\BeforeStdWrapFunctionsInitializedEven
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ExceptionHandlerInterface;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
+use TYPO3\CMS\Frontend\Page\FrontendUrlPrefix;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\Frontend\Typolink\LinkResult;
@@ -380,18 +380,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
     protected $stdWrapRecursionLevel = 0;
 
     /**
-     * @var TypoScriptFrontendController|null
-     */
-    protected $typoScriptFrontendController;
-
-    /**
      * Request pointer, if injected. Use getRequest() instead of reading this property directly.
      */
     private ?ServerRequestInterface $request = null;
 
-    public function __construct(?TypoScriptFrontendController $typoScriptFrontendController = null, ?ContainerInterface $container = null)
+    public function __construct(?ContainerInterface $container = null)
     {
-        $this->typoScriptFrontendController = $typoScriptFrontendController;
         $this->container = $container;
     }
 
@@ -410,7 +404,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function __sleep()
     {
         $vars = get_object_vars($this);
-        unset($vars['typoScriptFrontendController'], $vars['logger'], $vars['container'], $vars['request']);
+        unset($vars['logger'], $vars['container'], $vars['request']);
         if ($this->currentFile instanceof FileReference) {
             $this->currentFile = 'FileReference:' . $this->currentFile->getUid();
         } elseif ($this->currentFile instanceof File) {
@@ -428,9 +422,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function __wakeup()
     {
-        if (isset($GLOBALS['TSFE'])) {
-            $this->typoScriptFrontendController = $GLOBALS['TSFE'];
-        }
         if (is_string($this->currentFile)) {
             [$objectType, $identifier] = explode(':', $this->currentFile, 2);
             try {
@@ -945,7 +936,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
             foreach (str_split($parametersEncoded, 64) as $index => $chunk) {
                 $params .= '&parameters' . rawurlencode('[') . $index . rawurlencode(']') . '=' . rawurlencode($chunk);
             }
-            $url = $this->getTypoScriptFrontendController()->absRefPrefix . 'index.php?eID=tx_cms_showpic&file=' . $file->getUid() . $params;
+            $absRefPrefix = GeneralUtility::makeInstance(FrontendUrlPrefix::class)->getUrlPrefix($this->getRequest());
+            $url = $absRefPrefix . 'index.php?eID=tx_cms_showpic&file=' . $file->getUid() . $params;
             $directImageLink = $this->stdWrapValue('directImageLink', $conf ?? []);
             if ($directImageLink) {
                 $imgResourceConf = [
@@ -2336,15 +2328,16 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function stdWrap_postUserFuncInt($content = '', $conf = [])
     {
         $substKey = 'INT_SCRIPT.' . md5(StringUtility::getUniqueId());
-        $this->getTypoScriptFrontendController()->config['INTincScript'][$substKey] = [
+        $pageParts = $this->getRequest()->getAttribute('frontend.page.parts');
+        $pageParts->addNotCachedContentElement([
+            'substKey' => $substKey,
             'content' => $content,
             'postUserFunc' => $conf['postUserFuncInt'],
             'conf' => $conf['postUserFuncInt.'],
             'type' => 'POSTUSERFUNC',
             'cObj' => serialize($this),
-        ];
-        $content = '<!--' . $substKey . '-->';
-        return $content;
+        ]);
+        return '<!--' . $substKey . '-->';
     }
 
     /**
@@ -5476,14 +5469,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
             return $schemaFactory->get($table);
         }
         return null;
-    }
-
-    /**
-     * @internal this is set to public so extensions such as EXT:solr can use the method in tests.
-     */
-    public function getTypoScriptFrontendController(): ?TypoScriptFrontendController
-    {
-        return $this->typoScriptFrontendController ?: $GLOBALS['TSFE'] ?? null;
     }
 
     /**

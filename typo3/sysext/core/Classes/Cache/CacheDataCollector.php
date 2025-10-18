@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Core\Cache;
 
 final class CacheDataCollector implements CacheDataCollectorInterface
 {
+    private ?string $pageCacheIdentifier = null;
+
     /**
      * @var CacheTag[]
      */
@@ -30,6 +32,19 @@ final class CacheDataCollector implements CacheDataCollectorInterface
      * @var CacheEntry[]
      */
     private array $cacheEntries = [];
+
+    public function setPageCacheIdentifier(string $identifier): void
+    {
+        $this->pageCacheIdentifier = $identifier;
+    }
+
+    public function getPageCacheIdentifier(): string
+    {
+        if ($this->pageCacheIdentifier === null) {
+            throw new \LogicException('Page cache identifier has not been set. Broken call chain.', 1761315963);
+        }
+        return $this->pageCacheIdentifier;
+    }
 
     /**
      * @return CacheTag[]

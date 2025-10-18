@@ -19,29 +19,27 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LogLevel;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\CacheEntry;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Localization\Locale;
-use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
-use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\CMS\Frontend\Cache\MetaDataState;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
 use TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent;
+use TYPO3\CMS\Frontend\Page\FrontendUrlPrefix;
 
 /**
  * Main controller class of the TypoScript based frontend.
@@ -49,165 +47,35 @@ use TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent;
  * This is prepared in Frontend middlewares and the content rendering is
  * ultimately called in \TYPO3\CMS\Frontend\Http\RequestHandler.
  *
- * When calling a Frontend page, an instance of this object is available
- * as $GLOBALS['TSFE'], even though the core development strives to get
- * rid of this in the future.
- *
  * @deprecated since TYPO3 v13, will vanish during v14 development. There are some
  *             remaining internal usages that can be adapted without further .rst
- *             files. The class should vanish together with $GLOBALS['TSFE'] in v14.
+ *             files.
  */
-class TypoScriptFrontendController
+#[Autoconfigure(public: true)]
+readonly class TypoScriptFrontendController
 {
-    /**
-     * A central data array consisting of various keys, initialized and
-     * processed at various places in the class.
-     *
-     * This array is cached along with the rendered page content and contains
-     * for instance a list of INT identifiers used to calculate 'dynamic' page
-     * parts when a page is retrieved from cache.
-     *
-     * Remaining core @internal uses:
-     *  'INTincScript': (internal) List of INT instructions
-     *  'INTincScript_ext': (internal) Further state for INT instructions
-     *  'pageTitleCache': (internal)
-     *
-     * Use $request->getAttribute('frontend.typoscript')->getConfigArray() instead.
-     *
-     * @var array<string, mixed>
-     */
-    public array $config = [];
-
-    /**
-     * Is set to the time-to-live time of cached pages. Default is 60*60*24, which is 24 hours.
-     */
-    protected int $cacheTimeOutDefault = 0;
-
-    /**
-     * Set if cached content was fetched from the cache.
-     *
-     * @internal Used by a middleware. Will be removed.
-     */
-    public bool $pageContentWasLoadedFromCache = false;
-
-    /**
-     * @internal Used by a middleware. Will be removed.
-     */
-    public int $cacheGenerated = 0;
-
-    /**
-     * This hash is unique to the page id, involved TS templates, TS condition verdicts, and
-     * some other parameters that influence page render result. Used to get/set page cache.
-     * @internal
-     */
-    public string $newHash = '';
-
-    /**
-     * Eg. insert JS-functions in this array ($additionalHeaderData) to include them
-     * once. Use associative keys.
-     *
-     * Keys in use:
-     *
-     * used to accumulate additional HTML-code for the header-section,
-     * <head>...</head>. Insert either associative keys (like
-     * additionalHeaderData['myStyleSheet'], see reserved keys above) or num-keys
-     * (like additionalHeaderData[] = '...')
-     *
-     * @internal
-     */
-    public array $additionalHeaderData = [];
-
-    /**
-     * Used to accumulate additional HTML-code for the footer-section of the template
-     * @internal
-     */
-    public array $additionalFooterData = [];
-
-    /**
-     * Absolute Reference prefix.
-     *
-     * @internal Used by content generation and link builders. Will be
-     *           modeled differently in TYPO3 v14.
-     */
-    public string $absRefPrefix = '';
-
-    protected ?PageRenderer $pageRenderer = null;
-    protected FrontendInterface $pageCache;
-
-    /**
-     * The context for keeping the current state, mostly related to current page information,
-     * backend user / frontend user access, workspaceId
-     */
-    protected Context $context;
-
-    /**
-     * If debug mode is enabled, this contains the information if a page is fetched from cache,
-     * and sent as HTTP Response Header.
-     * @internal Used by a middleware. Will be removed.
-     */
-    public ?string $debugInformationHeader = null;
-
-    /**
-     * @internal Extensions should usually not need to create own instances of TSFE
-     */
-    public function __construct()
-    {
-        $this->context = GeneralUtility::makeInstance(Context::class);
-        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
-        $this->pageCache = $cacheManager->getCache('pages');
-    }
-
-    /**
-     * @internal
-     */
-    public function initializePageRenderer(ServerRequestInterface $request): void
-    {
-        if ($this->pageRenderer !== null) {
-            return;
-        }
-        $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $this->pageRenderer->setTemplateFile('EXT:frontend/Resources/Private/Templates/MainPage.html');
-        // As initPageRenderer could be called in constructor and for USER_INTs, this information is only set
-        // once - in order to not override any previous settings of PageRenderer.
-        $language = $request->getAttribute('language') ?? $request->getAttribute('site')->getDefaultLanguage();
-        if ($language->hasCustomTypo3Language()) {
-            $locale = GeneralUtility::makeInstance(Locales::class)->createLocale($language->getTypo3Language());
-        } else {
-            $locale = $language->getLocale();
-        }
-        $this->pageRenderer->setLanguage($locale);
-    }
-
-    /**
-     * Returns TRUE if the page content should be generated.
-     *
-     * @internal
-     */
-    public function isGeneratePage(): bool
-    {
-        return !$this->pageContentWasLoadedFromCache;
-    }
+    public function __construct(
+        private Context $context,
+        #[Autowire(service: 'cache.pages')]
+        private FrontendInterface $pageCache,
+    ) {}
 
     /**
      * Sets cache content; Inserts the content string into the pages cache.
      *
      * @param ServerRequestInterface $request
      * @param string $content The content to store in the HTML field of the cache table
-     * @param array $INTincScript
-     * @param array $INTincScript_ext
-     * @param array $pageTitleCache
-     *
      * @see PrepareTypoScriptFrontendRendering
      */
     protected function setPageCacheContent(
         ServerRequestInterface $request,
         string $content,
         array $INTincScript,
-        array $INTincScript_ext,
         array $pageTitleCache,
         array $metaDataState = [],
     ): void {
         $pageInformation = $request->getAttribute('frontend.page.information');
+        $pageParts = $request->getAttribute('frontend.page.parts');
         $pageId = $pageInformation->getId();
         $pageRecord = $pageInformation->getPageRecord();
 
@@ -235,9 +103,11 @@ class TypoScriptFrontendController
             'content' => $content,
             'contentType' => $request->getAttribute('frontend.page.parts')->getHttpContentType(),
             'INTincScript' => $INTincScript,
-            'INTincScript_ext' => $INTincScript_ext,
+            'pageRendererSubstitutionHash' => $pageParts->getPageRendererSubstitutionHash(),
+            'pageRendererState' => serialize(GeneralUtility::makeInstance(PageRenderer::class)->getState()),
+            'assetCollectorState' => serialize(GeneralUtility::makeInstance(AssetCollector::class)->getState()),
             'pageTitleCache' => $pageTitleCache,
-            'tstamp' => $GLOBALS['EXEC_TIME'],
+            'pageCacheGeneratedTimestamp' => $GLOBALS['EXEC_TIME'],
             'metaDataState' => $metaDataState,
         ];
 
@@ -251,11 +121,11 @@ class TypoScriptFrontendController
                     $pageCacheTags = array_map(fn(CacheTag $cacheTag) => $cacheTag->name, $cacheDataCollector->getCacheTags());
 
                     $content['cacheTags'] = $pageCacheTags;
-                    $content['expires'] = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
-                    $this->pageCache->set($this->newHash, $content, $pageCacheTags, $cacheTimeout);
+                    $content['pageCacheExpireTimestamp'] = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
+                    $this->pageCache->set($cacheDataCollector->getPageCacheIdentifier(), $content, $pageCacheTags, $cacheTimeout);
 
                     // Event for cache post processing (eg. writing static files)
-                    $event = new AfterCachedPageIsPersistedEvent($request, $this, $this->newHash, $content, $cacheTimeout);
+                    $event = new AfterCachedPageIsPersistedEvent($request, $cacheDataCollector->getPageCacheIdentifier(), $content, $cacheTimeout);
                     GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);
                 }
             )
@@ -298,31 +168,6 @@ class TypoScriptFrontendController
     }
 
     /**
-     * Sets up TypoScript "config." options and set properties in $TSFE.
-     *
-     * @internal
-     */
-    public function preparePageContentGeneration(ServerRequestInterface $request): void
-    {
-        $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
-        // calculate the absolute path prefix
-        if (!empty($this->absRefPrefix = trim($typoScriptConfigArray['absRefPrefix']))) {
-            if ($this->absRefPrefix === 'auto') {
-                $normalizedParams = $request->getAttribute('normalizedParams');
-                $this->absRefPrefix = $normalizedParams->getSitePath();
-            }
-        }
-        // config.forceAbsoluteUrls will override absRefPrefix
-        if ($typoScriptConfigArray['forceAbsoluteUrls'] ?? false) {
-            $normalizedParams = $request->getAttribute('normalizedParams');
-            $this->absRefPrefix = $normalizedParams->getSiteUrl();
-        }
-
-        $docType = DocType::createFromConfigurationKey($typoScriptConfigArray['doctype']);
-        $this->pageRenderer->setDocType($docType);
-    }
-
-    /**
      * Does processing of the content after the page content was generated.
      * This includes caching the page, indexing the page (if configured) and setting sysLastChanged
      *
@@ -330,10 +175,14 @@ class TypoScriptFrontendController
      */
     public function generatePage_postProcessing(ServerRequestInterface $request, string $content): string
     {
-        $content = $this->setAbsRefPrefixInContent($content, $this->absRefPrefix);
+        $absRefPrefix = GeneralUtility::makeInstance(FrontendUrlPrefix::class)->getUrlPrefix($request);
+        $content = $this->setAbsRefPrefixInContent($content, $absRefPrefix);
         $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
         $usePageCache = $request->getAttribute('frontend.cache.instruction')->isCachingAllowed();
-        $event = new AfterCacheableContentIsGeneratedEvent($request, $content, $this->newHash, $usePageCache);
+        $cacheDataCollector = $request->getAttribute('frontend.cache.collector');
+        $pageParts = $request->getAttribute('frontend.page.parts');
+
+        $event = new AfterCacheableContentIsGeneratedEvent($request, $content, $cacheDataCollector->getPageCacheIdentifier(), $usePageCache);
         $content = $event->getContent();
         $event = $eventDispatcher->dispatch($event);
 
@@ -346,9 +195,8 @@ class TypoScriptFrontendController
             $this->setPageCacheContent(
                 $request,
                 $content,
-                $this->config['INTincScript'] ?? [],
-                $this->config['INTincScript_ext'] ?? [],
-                $this->config['pageTitleCache'] ?? [],
+                $pageParts->getNotCachedContentElementRegistry(),
+                $pageParts->getPageTitle(),
                 $metaDataState,
             );
         }
@@ -370,7 +218,7 @@ class TypoScriptFrontendController
             return '';
         }
 
-        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class, $this);
+        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $contentObjectRenderer->setRequest($request);
         $contentObjectRenderer->start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages');
 
@@ -380,12 +228,11 @@ class TypoScriptFrontendController
             $pageTitleSeparator .= ' ';
         }
 
+        $pageParts = $request->getAttribute('frontend.page.parts');
         $titleProvider = GeneralUtility::makeInstance(PageTitleProviderManager::class);
-        if (!empty($this->config['pageTitleCache'])) {
-            $titleProvider->setPageTitleCache($this->config['pageTitleCache']);
-        }
+        $titleProvider->setPageTitleCache($pageParts->getPageTitle());
         $pageTitle = $titleProvider->getTitle($request);
-        $this->config['pageTitleCache'] = $titleProvider->getPageTitleCache();
+        $pageParts->setPageTitle($titleProvider->getPageTitleCache());
 
         $titleTagContent = $this->printTitle(
             $request,
@@ -406,7 +253,8 @@ class TypoScriptFrontendController
         }
 
         if ($titleTagContent !== '') {
-            $this->pageRenderer->setTitle($titleTagContent);
+            $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+            $pageRenderer->setTitle($titleTagContent);
         }
         return (string)$titleTagContent;
     }
@@ -460,39 +308,18 @@ class TypoScriptFrontendController
      */
     public function INTincScript(ServerRequestInterface $request, string $content): string
     {
-        $this->additionalHeaderData = $this->config['INTincScript_ext']['additionalHeaderData'] ?? [];
-        $this->additionalFooterData = $this->config['INTincScript_ext']['additionalFooterData'] ?? [];
-        if (empty($this->config['INTincScript_ext']['pageRendererState'])) {
-            $this->initializePageRenderer($request);
-        } else {
-            $pageRendererState = unserialize($this->config['INTincScript_ext']['pageRendererState'], ['allowed_classes' => [Locale::class]]);
-            $this->pageRenderer->updateState($pageRendererState);
-        }
-        if (!empty($this->config['INTincScript_ext']['assetCollectorState'])) {
-            $assetCollectorState = unserialize($this->config['INTincScript_ext']['assetCollectorState'], ['allowed_classes' => false]);
-            GeneralUtility::makeInstance(AssetCollector::class)->updateState($assetCollectorState);
-        }
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 
         $content = $this->recursivelyReplaceIntPlaceholdersInContent($request, $content);
         $this->getTimeTracker()->push('Substitute header section');
-        $this->INTincScript_loadJSCode();
         $this->generatePageTitle($request);
 
-        $content = $this->pageRenderer->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($content, $this->config['INTincScript_ext']['divKey'] ?? '');
-        $content = str_replace(
-            [
-                '<!--HD_' . ($this->config['INTincScript_ext']['divKey'] ?? '') . '-->',
-                '<!--FD_' . ($this->config['INTincScript_ext']['divKey']  ?? '') . '-->',
-            ],
-            [
-                implode(LF, $this->additionalHeaderData),
-                implode(LF, $this->additionalFooterData),
-            ],
-            $content
-        );
+        $pageParts = $request->getAttribute('frontend.page.parts');
+        $content = $pageRenderer->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($content, $pageParts->getPageRendererSubstitutionHash());
         // Replace again, because header and footer data and page renderer replacements may introduce additional placeholders (see #44825)
         $content = $this->recursivelyReplaceIntPlaceholdersInContent($request, $content);
-        $content = $this->setAbsRefPrefixInContent($content, $this->absRefPrefix);
+        $absRefPrefix = GeneralUtility::makeInstance(FrontendUrlPrefix::class)->getUrlPrefix($request);
+        $content = $this->setAbsRefPrefixInContent($content, $absRefPrefix);
         $this->getTimeTracker()->pull();
         return $content;
     }
@@ -503,12 +330,13 @@ class TypoScriptFrontendController
      */
     protected function recursivelyReplaceIntPlaceholdersInContent(ServerRequestInterface $request, string $content): string
     {
+        $pageParts = $request->getAttribute('frontend.page.parts');
         do {
-            $nonCacheableData = $this->config['INTincScript'];
+            $nonCacheableData = $pageParts->getNotCachedContentElementRegistry();
             $content = $this->processNonCacheableContentPartsAndSubstituteContentMarkers($nonCacheableData, $request, $content);
             // Check if there were new items added to INTincScript during the previous execution:
             // array_diff_assoc throws notices if values are arrays but not strings. We suppress this here.
-            $nonCacheableData = @array_diff_assoc($this->config['INTincScript'], $nonCacheableData);
+            $nonCacheableData = @array_diff_assoc($pageParts->getNotCachedContentElementRegistry(), $nonCacheableData);
             $reprocess = count($nonCacheableData) > 0;
         } while ($reprocess);
         return $content;
@@ -518,7 +346,7 @@ class TypoScriptFrontendController
      * Processes the INTinclude-scripts and substitute in content.
      * Takes content and splits it content by <!--INT_SCRIPT.12345 --> and then puts the content back together.
      *
-     * @param array $nonCacheableData $GLOBALS['TSFE']->config['INTincScript'] or part of it
+     * @param array $nonCacheableData
      */
     protected function processNonCacheableContentPartsAndSubstituteContentMarkers(array $nonCacheableData, ServerRequestInterface $request, string $incomingContent): string
     {
@@ -533,17 +361,24 @@ class TypoScriptFrontendController
             // If the split had a comment-end after 32 characters it's probably a split-string
             if (substr($contentPart, 32, 3) === '-->') {
                 $nonCacheableKey = 'INT_SCRIPT.' . substr($contentPart, 0, 32);
-                if (is_array($nonCacheableData[$nonCacheableKey] ?? false)) {
-                    $label = 'Include ' . $nonCacheableData[$nonCacheableKey]['type'];
+                $nonCacheableConfig = [];
+                foreach ($nonCacheableData as $nonCacheableDataKey => $nonCacheableDataValues) {
+                    if ($nonCacheableDataValues['substKey'] === $nonCacheableKey) {
+                        $nonCacheableConfig = $nonCacheableDataValues;
+                        break;
+                    }
+                }
+                if (!empty($nonCacheableConfig)) {
+                    $label = 'Include ' . $nonCacheableConfig['type'];
                     $timeTracker->push($label);
                     $nonCacheableContent = '';
-                    $contentObjectRendererForNonCacheable = unserialize($nonCacheableData[$nonCacheableKey]['cObj']);
+                    $contentObjectRendererForNonCacheable = unserialize($nonCacheableConfig['cObj']);
                     if ($contentObjectRendererForNonCacheable instanceof ContentObjectRenderer) {
                         $contentObjectRendererForNonCacheable->setRequest($request);
-                        $nonCacheableContent = match ($nonCacheableData[$nonCacheableKey]['type']) {
-                            'COA' => $contentObjectRendererForNonCacheable->cObjGetSingle('COA', $nonCacheableData[$nonCacheableKey]['conf']),
-                            'FUNC' => $contentObjectRendererForNonCacheable->cObjGetSingle('USER', $nonCacheableData[$nonCacheableKey]['conf']),
-                            'POSTUSERFUNC' => $contentObjectRendererForNonCacheable->callUserFunction($nonCacheableData[$nonCacheableKey]['postUserFunc'], $nonCacheableData[$nonCacheableKey]['conf'], $nonCacheableData[$nonCacheableKey]['content']),
+                        $nonCacheableContent = match ($nonCacheableConfig['type']) {
+                            'COA' => $contentObjectRendererForNonCacheable->cObjGetSingle('COA', $nonCacheableConfig['conf']),
+                            'FUNC' => $contentObjectRendererForNonCacheable->cObjGetSingle('USER', $nonCacheableConfig['conf']),
+                            'POSTUSERFUNC' => $contentObjectRendererForNonCacheable->callUserFunction($nonCacheableConfig['postUserFunc'], $nonCacheableConfig['conf'], $nonCacheableConfig['content']),
                             default => '',
                         };
                     }
@@ -572,40 +407,6 @@ class TypoScriptFrontendController
     }
 
     /**
-     * Loads the JavaScript/CSS code for INTincScript, if there are non-cacheable content objects
-     * it prepares the placeholders, otherwise populates options directly.
-     *
-     * @internal this method should be renamed as it does not only handle JS, but all additional header data
-     */
-    public function INTincScript_loadJSCode(): void
-    {
-        // Prepare code and placeholders for additional header and footer files (and make sure that this isn't called twice)
-        if ($this->isINTincScript() && (!isset($this->config['INTincScript_ext']) || $this->config['INTincScript_ext'] === [])) {
-            $substituteHash = md5(StringUtility::getUniqueId());
-            $this->config['INTincScript_ext']['divKey'] = $substituteHash;
-            // Storing the header-data array
-            $this->config['INTincScript_ext']['additionalHeaderData'] = $this->additionalHeaderData;
-            // Storing the footer-data array
-            $this->config['INTincScript_ext']['additionalFooterData'] = $this->additionalFooterData;
-            // Clearing the array
-            $this->additionalHeaderData = ['<!--HD_' . $substituteHash . '-->'];
-            // Clearing the array
-            $this->additionalFooterData = ['<!--FD_' . $substituteHash . '-->'];
-        }
-    }
-
-    /**
-     * Determines if there are any INTincScripts to include = "non-cacheable" parts
-     *
-     * @return bool Returns TRUE if scripts are found
-     * @internal
-     */
-    public function isINTincScript(): bool
-    {
-        return !empty($this->config['INTincScript']) && is_array($this->config['INTincScript']);
-    }
-
-    /**
      * Add HTTP headers to the response object.
      *
      * @internal
@@ -614,8 +415,8 @@ class TypoScriptFrontendController
     {
         $pageParts = $request->getAttribute('frontend.page.parts');
         $response = $response->withHeader('Content-Type', $pageParts->getHttpContentType());
-        $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
-        if (empty($typoScriptConfigArray['disableLanguageHeader'])) {
+        $typoScriptConfigTree = $request->getAttribute('frontend.typoscript')->getConfigTree();
+        if (empty($typoScriptConfigTree->getChildByName('disableLanguageHeader')?->getValue())) {
             // Set header for content language unless disabled
             // @todo: Check when/if there are scenarios where attribute 'language' is not yet set in $request.
             $language = $request->getAttribute('language') ?? $request->getAttribute('site')->getDefaultLanguage();
@@ -623,8 +424,14 @@ class TypoScriptFrontendController
         }
 
         // Add a Response header to show debug information if a page was fetched from cache
-        if ($this->debugInformationHeader) {
-            $response = $response->withHeader('X-TYPO3-Debug-Cache', $this->debugInformationHeader);
+        if ($pageParts->hasPageContentBeenLoadedFromCache() && ($typoScriptConfigTree->getChildByName('debug')?->getValue() || !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']))) {
+            // Prepare X-TYPO3-Debug-Cache HTTP header
+            $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
+            $timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
+            $response = $response->withHeader(
+                'X-TYPO3-Debug-Cache',
+                'Cached page generated ' . date($dateFormat . ' ' . $timeFormat, $pageParts->getPageCacheGeneratedTimestamp()) . '. Expires ' . date($dateFormat . ' ' . $timeFormat, $pageParts->getPageCacheExpireTimestamp())
+            );
         }
 
         // Set cache related headers to client (used to enable proxy / client caching!)
@@ -706,7 +513,7 @@ class TypoScriptFrontendController
                 if (!$request->getAttribute('frontend.cache.instruction')->isCachingAllowed()) {
                     $reasonMsg[] = 'Caching disabled.';
                 }
-                if ($this->isINTincScript()) {
+                if ($request->getAttribute('frontend.page.parts')->hasNotCachedContentElements()) {
                     $reasonMsg[] = '*_INT object(s) on page.';
                 }
                 if ($this->context->getPropertyFromAspect('frontend.user', 'isLoggedIn', false)) {
@@ -723,7 +530,7 @@ class TypoScriptFrontendController
      *
      * Rules are:
      * no_cache cannot be set: If it is, the page might contain dynamic content and should never be cached.
-     * There can be no USER_INT objects on the page ("isINTincScript()") because they implicitly indicate dynamic content
+     * There can be no USER_INT objects on the page because they implicitly indicate dynamic content
      * There can be no logged-in user because user sessions are based on a cookie and thereby does not offer client caching a
      * chance to know if the user is logged in. Actually, there will be a reverse problem here; If a page will somehow change
      * when a user is logged in he may not see it correctly if the non-login version sent a cache-header! So do NOT use cache
@@ -735,7 +542,8 @@ class TypoScriptFrontendController
     public function isStaticCacheble(ServerRequestInterface $request): bool
     {
         $isCachingAllowed = $request->getAttribute('frontend.cache.instruction')->isCachingAllowed();
-        return $isCachingAllowed && !$this->isINTincScript() && !$this->context->getAspect('frontend.user')->isUserOrGroupSet();
+        $pageParts = $request->getAttribute('frontend.page.parts');
+        return $isCachingAllowed && !$pageParts->hasNotCachedContentElements() && !$this->context->getAspect('frontend.user')->isUserOrGroupSet();
     }
 
     /**
@@ -776,13 +584,7 @@ class TypoScriptFrontendController
         $pageInformation = $request->getAttribute('frontend.page.information');
         $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
         return GeneralUtility::makeInstance(CacheLifetimeCalculator::class)
-            ->calculateLifetimeForPage(
-                $pageInformation->getId(),
-                $pageInformation->getPageRecord(),
-                $typoScriptConfigArray,
-                $this->cacheTimeOutDefault,
-                $this->context
-            );
+            ->calculateLifetimeForPage($pageInformation->getId(), $pageInformation->getPageRecord(), $typoScriptConfigArray, $this->context);
     }
 
     /**

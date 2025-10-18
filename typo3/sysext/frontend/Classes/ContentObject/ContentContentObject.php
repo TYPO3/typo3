@@ -89,7 +89,7 @@ class ContentContentObject extends AbstractContentObject
             if ($records !== []) {
                 $this->timeTracker->setTSlogMessage('NUMROWS: ' . count($records));
 
-                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $this->getTypoScriptFrontendController());
+                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
                 $cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
                 $this->cObj->currentRecordNumber = 0;
 

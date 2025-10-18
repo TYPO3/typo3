@@ -25,7 +25,6 @@ use TYPO3\CMS\Frontend\ContentObject\CaseContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CaseContentObjectTest extends UnitTestCase
@@ -37,13 +36,9 @@ final class CaseContentObjectTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->onlyMethods([])
-            ->disableOriginalConstructor()
-            ->getMock();
 
         $request = new ServerRequest();
-        $contentObjectRenderer = new ContentObjectRenderer($tsfe);
+        $contentObjectRenderer = new ContentObjectRenderer();
         $contentObjectRenderer->setRequest($request);
         $cObjectFactoryMock = $this->getMockBuilder(ContentObjectFactory::class)->disableOriginalConstructor()->getMock();
 

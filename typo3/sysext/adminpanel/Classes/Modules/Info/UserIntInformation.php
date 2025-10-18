@@ -55,7 +55,7 @@ class UserIntInformation extends AbstractSubModule implements DataProviderInterf
     {
         return new ModuleData(
             [
-                'userIntInfo' => $this->getUserIntInfo(),
+                'userIntInfo' => $this->getUserIntInfo($request),
             ]
         );
     }
@@ -73,22 +73,26 @@ class UserIntInformation extends AbstractSubModule implements DataProviderInterf
         return $view->render('Modules/Info/UserInt');
     }
 
-    protected function getUserIntInfo(): array
+    protected function getUserIntInfo(ServerRequestInterface $request): array
     {
         $userIntInfo = [];
-        $intScripts = $GLOBALS['TSFE']->config['INTincScript'] ?? [];
-
-        foreach ($intScripts as $intScriptName => $intScriptConf) {
-            $info = isset($intScriptConf['type']) ? ['TYPE' => $intScriptConf['type']] : [];
+        $intScripts = $request->getAttribute('frontend.page.parts')->getNotCachedContentElementRegistry();
+        foreach ($intScripts as $intScriptConf) {
+            $info = [];
+            if (isset($intScriptConf['type'])) {
+                $info['TYPE'] = $intScriptConf['type'];
+            }
+            if (isset($intScriptConf['substKey'])) {
+                $info['substKey'] = $intScriptConf['substKey'];
+            }
             foreach (($intScriptConf['conf'] ?? []) as $key => $conf) {
                 if (is_array($conf)) {
                     $conf = ArrayUtility::flatten($conf);
                 }
                 $info[$key] = $conf;
             }
-            $userIntInfo[$intScriptName] = $info;
+            $userIntInfo[] = $info;
         }
-
         return $userIntInfo;
     }
 }

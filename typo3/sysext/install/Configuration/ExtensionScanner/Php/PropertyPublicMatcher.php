@@ -1169,4 +1169,34 @@ return [
             'Breaking-106118-PropertyDataHandler-storeLogMessagesRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->config' => [
+        'restFiles' => [
+            'Breaking-107831-RemovedTypoScriptFrontendController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->pageContentWasLoadedFromCache' => [
+        'restFiles' => [
+            'Breaking-107831-RemovedTypoScriptFrontendController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cacheGenerated' => [
+        'restFiles' => [
+            'Breaking-107831-RemovedTypoScriptFrontendController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->newHash' => [
+        'restFiles' => [
+            'Breaking-107831-RemovedTypoScriptFrontendController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->absRefPrefix' => [
+        'restFiles' => [
+            'Breaking-107831-RemovedTypoScriptFrontendController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->debugInformationHeader' => [
+        'restFiles' => [
+            'Breaking-107831-RemovedTypoScriptFrontendController.rst',
+        ],
+    ],
 ];

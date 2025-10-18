@@ -11,10 +11,6 @@ services:
 
   TYPO3\CMS\Frontend\:
     resource: '../Classes/*'
-    # glob for services that have been previously available as
-    # container entries and have been removed in the mean time
-    # (e.g. because factories are to be used instead)
-    exclude: '../Classes/{Frontend/Controller/TypoScriptFrontendController.php}'
 
   TYPO3\CMS\Frontend\ContentObject\ContentObjectFactory:
     public: true
@@ -23,8 +19,6 @@ services:
   TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer:
     public: true
     shared: false
-    arguments:
-      $typoScriptFrontendController: null
 
   TYPO3\CMS\Frontend\DataProcessing\DataProcessorRegistry:
     arguments: [!tagged_locator { tag: 'data.processor', index_by: 'identifier' }]

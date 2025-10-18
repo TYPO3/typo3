@@ -20,8 +20,9 @@ namespace TYPO3\CMS\Frontend\Resource;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\FrontendUrlPrefix;
 
 #[Autoconfigure(public: true)]
 class PublicUrlPrefixer
@@ -35,8 +36,8 @@ class PublicUrlPrefixer
 
     public function prefixWithAbsRefPrefix(GeneratePublicUrlForResourceEvent $event): void
     {
-        $controller = $this->getCurrentFrontendController();
-        if (self::$isProcessingUrl || !$controller) {
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        if (self::$isProcessingUrl || !$request) {
             return;
         }
         $resource = $event->getResource();
@@ -52,7 +53,8 @@ class PublicUrlPrefixer
             if (!$originalUrl || PathUtility::hasProtocolAndScheme($originalUrl)) {
                 return;
             }
-            $event->setPublicUrl($controller->absRefPrefix . $originalUrl);
+            $absRefPrefix = GeneralUtility::makeInstance(FrontendUrlPrefix::class)->getUrlPrefix($request);
+            $event->setPublicUrl($absRefPrefix . $originalUrl);
         } finally {
             self::$isProcessingUrl = false;
         }
@@ -61,10 +63,5 @@ class PublicUrlPrefixer
     private function isLocalResource(ResourceInterface $resource): bool
     {
         return $resource->getStorage()->getDriverType() === 'Local';
-    }
-
-    private function getCurrentFrontendController(): ?TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'] ?? null;
     }
 }

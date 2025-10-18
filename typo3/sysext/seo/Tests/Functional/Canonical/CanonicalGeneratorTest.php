@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\CMS\Seo\Canonical\CanonicalGenerator;
 use TYPO3\CMS\Seo\Event\ModifyUrlForCanonicalTagEvent;
@@ -170,7 +169,6 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
         $eventListener->addListener(ModifyUrlForCanonicalTagEvent::class, 'modify-url-for-canonical-tag-listener');
 
         $request = new ServerRequest('https://example.com');
-        $request = $request->withAttribute('frontend.controller', $this->createMock(TypoScriptFrontendController::class));
         $pageInformation = new PageInformation();
         $pageInformation->setId(123);
         $pageRecord = [

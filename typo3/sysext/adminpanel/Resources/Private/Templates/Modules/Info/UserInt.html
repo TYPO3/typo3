@@ -2,8 +2,8 @@
 
 <f:if condition="{userIntInfo -> f:count()} > 0">
     <f:then>
-        <f:for each="{userIntInfo}" as="info" key="label">
-            <f:render partial="Data/TableKeyValue" arguments="{label: label, data: info, languageKey: languageKey}" debug="false"/>
+        <f:for each="{userIntInfo}" as="info">
+            <f:render partial="Data/TableKeyValue" arguments="{label: info.substKey, data: info, languageKey: languageKey}" debug="false"/>
         </f:for>
     </f:then>
     <f:else>

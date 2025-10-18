@@ -31,15 +31,15 @@ class UserInternalContentObject extends AbstractContentObject
     public function render($conf = [])
     {
         $this->cObj->setUserObjectType(ContentObjectRenderer::OBJECTTYPE_USER_INT);
-        $tsfe = $this->getTypoScriptFrontendController();
         $substKey = 'INT_SCRIPT.' . md5(StringUtility::getUniqueId());
-        $content = '<!--' . $substKey . '-->';
-        $tsfe->config['INTincScript'][$substKey] = [
+        $pageParts = $this->request->getAttribute('frontend.page.parts');
+        $pageParts->addNotCachedContentElement([
+            'substKey' => $substKey,
             'conf' => $conf,
             'cObj' => serialize($this->cObj),
             'type' => 'FUNC',
-        ];
+        ]);
         $this->cObj->setUserObjectType(false);
-        return $content;
+        return '<!--' . $substKey . '-->';
     }
 }

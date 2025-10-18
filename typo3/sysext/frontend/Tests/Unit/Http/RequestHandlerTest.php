@@ -152,7 +152,6 @@ final class RequestHandlerTest extends UnitTestCase
         GeneralUtility::addInstance(ContentObjectRenderer::class, $contentObjectRendererMock);
         $frontendControllerMock = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $frontendControllerMock->expects($this->once())->method('generatePageTitle')->willReturn('');
-        $frontendControllerMock->expects($this->once())->method('INTincScript_loadJSCode');
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
         $typo3InformationMock->expects($this->once())->method('getInlineHeaderComment')->willReturn('dummy');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
@@ -187,10 +186,11 @@ final class RequestHandlerTest extends UnitTestCase
                 new FilePathSanitizer(),
                 new TypoScriptService(),
                 new Context(),
+                $frontendControllerMock,
             ],
         );
         $subject->method('getPageRenderer')->willReturn($pageRendererMock);
-        $subject->_call('processHtmlBasedRenderingSettings', $frontendControllerMock, $request);
+        $subject->_call('processHtmlBasedRenderingSettings', $request);
         $pageRendererMock->expects($this->never())->method('setMetaTag')->with($expectedTags['type'], $expectedTags['name'], $expectedTags['content'])->willThrowException(new \InvalidArgumentException('', 1666309039));
     }
 
@@ -313,7 +313,6 @@ final class RequestHandlerTest extends UnitTestCase
         $contentObjectRendererMock->method('stdWrap')->with(self::anything())->willReturn($stdWrapResult);
         $frontendControllerMock = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $frontendControllerMock->expects($this->once())->method('generatePageTitle')->willReturn('');
-        $frontendControllerMock->expects($this->once())->method('INTincScript_loadJSCode');
         GeneralUtility::addInstance(ContentObjectRenderer::class, $contentObjectRendererMock);
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
         $typo3InformationMock->expects($this->once())->method('getInlineHeaderComment')->willReturn('dummy');
@@ -345,10 +344,11 @@ final class RequestHandlerTest extends UnitTestCase
                 new FilePathSanitizer(),
                 new TypoScriptService(),
                 new Context(),
+                $frontendControllerMock,
             ],
         );
         $subject->method('getPageRenderer')->willReturn($pageRendererMock);
-        $subject->_call('processHtmlBasedRenderingSettings', $frontendControllerMock, $request);
+        $subject->_call('processHtmlBasedRenderingSettings', $request);
     }
 
     #[Test]
@@ -362,7 +362,6 @@ final class RequestHandlerTest extends UnitTestCase
         $contentObjectRendererMock->method('stdWrap')->with(self::anything())->willReturn($stdWrapResult);
         $frontendControllerMock = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $frontendControllerMock->method('generatePageTitle')->willReturn('');
-        $frontendControllerMock->expects($this->once())->method('INTincScript_loadJSCode');
         GeneralUtility::addInstance(ContentObjectRenderer::class, $contentObjectRendererMock);
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
         $typo3InformationMock->expects($this->once())->method('getInlineHeaderComment')->willReturn('dummy');
@@ -396,10 +395,11 @@ final class RequestHandlerTest extends UnitTestCase
                 new FilePathSanitizer(),
                 new TypoScriptService(),
                 new Context(),
+                $frontendControllerMock,
             ],
         );
         $subject->method('getPageRenderer')->willReturn($pageRendererMock);
-        $subject->_call('processHtmlBasedRenderingSettings', $frontendControllerMock, $request);
+        $subject->_call('processHtmlBasedRenderingSettings', $request);
     }
 
     public static function generateMultipleMetaTagsDataProvider(): array
@@ -467,7 +467,6 @@ final class RequestHandlerTest extends UnitTestCase
         $contentObjectRendererMock->method('stdWrap')->with(self::anything())->willReturn($stdWrapResult);
         $frontendControllerMock = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $frontendControllerMock->expects($this->once())->method('generatePageTitle')->willReturn('');
-        $frontendControllerMock->expects($this->once())->method('INTincScript_loadJSCode');
         GeneralUtility::addInstance(ContentObjectRenderer::class, $contentObjectRendererMock);
         $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
         $typo3InformationMock->expects($this->once())->method('getInlineHeaderComment')->willReturn('This website is...');
@@ -513,10 +512,11 @@ final class RequestHandlerTest extends UnitTestCase
                 new FilePathSanitizer(),
                 new TypoScriptService(),
                 new Context(),
+                $frontendControllerMock,
             ],
         );
         $subject->method('getPageRenderer')->willReturn($pageRendererMock);
-        $subject->_call('processHtmlBasedRenderingSettings', $frontendControllerMock, $request);
+        $subject->_call('processHtmlBasedRenderingSettings', $request);
     }
 
     /**

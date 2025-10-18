@@ -100,7 +100,7 @@ class CacheLifetimeCalculator
     /**
      * Get the cache lifetime in seconds for the given page.
      */
-    public function calculateLifetimeForPage(int $pageId, array $pageRecord, array $renderingInstructions, int $defaultCacheTimoutInSeconds, Context $context): int
+    public function calculateLifetimeForPage(int $pageId, array $pageRecord, array $renderingInstructions, Context $context): int
     {
         $cachedCacheLifetimeIdentifier = 'cacheLifeTimeForPage_' . $pageId;
         $cachedCacheLifetime = $this->runtimeCache->get($cachedCacheLifetimeIdentifier);
@@ -111,9 +111,8 @@ class CacheLifetimeCalculator
             // Cache period was set for the page:
             $cacheTimeout = (int)$pageRecord['cache_timeout'];
         } else {
-            // Cache period was set via TypoScript "config.cache_period",
-            // otherwise it's the default of 24 hours
-            $cacheTimeout = $defaultCacheTimoutInSeconds ?: (int)($renderingInstructions['cache_period'] ?? self::defaultCacheTimeout);
+            // Cache period was set via TypoScript "config.cache_period", otherwise it's the default of 24 hours
+            $cacheTimeout = (int)($renderingInstructions['cache_period'] ?? self::defaultCacheTimeout);
         }
 
         $cacheTimeout = $this->calculateLifetimeForRow('pages', $pageRecord, $cacheTimeout);

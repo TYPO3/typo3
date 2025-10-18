@@ -45,13 +45,12 @@ final class RequestBuilderTest extends FunctionalTestCase
     {
         parent::setUp();
         // Some tests need GeneralUtility::getIndpEnv('SCRIPT_NAME') to return correct value instead of
-        // 'vendor/phpunit/phpunit/phpunit', used eg. in TypoScriptFrontendController. To manipulate/set it
+        // 'vendor/phpunit/phpunit/phpunit. To manipulate/set it
         // before creating request from globals, the global must be set. Thus the framework state has to be
         // saved/reset and later restored. Similar requirement is needed when emitting frontend requests with
         // the testing-framework. This is done globally for the testcase, so reset can be cleanly done even if
         // a test has failed.
         // @see FunctionalTestCase::retrieveFrontendSubRequestResult()
-        // @todo: Get rid of getIndpEnv var usage in TSFE
         FrameworkState::push();
         FrameworkState::reset();
         $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
@@ -64,7 +63,6 @@ final class RequestBuilderTest extends FunctionalTestCase
         // This is to clean-up manipulated framework state for testing
         // purposes even on failures, thus done globally for the testcase.
         // @see FunctionalTestCase::retrieveFrontendSubRequestResult()
-        // @todo: Get rid of getIndpEnv var usage in TSFE
         FrameworkState::pop();
         parent::tearDown();
     }
@@ -218,12 +216,6 @@ final class RequestBuilderTest extends FunctionalTestCase
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_SERVER['HTTP_HOST'] = 'https://example.com/';
         $_SERVER['SERVER_NAME'] = 'https://example.com/';
-        // Needed for GeneralUtility::getIndpEnv('SCRIPT_NAME') to return correct value instead of
-        // 'vendor/phpunit/phpunit/phpunit', used eg. in TypoScriptFrontendController absRefPrefix='auto
-        // and other places.
-        // @see FunctionalTestCase::retrieveFrontendSubRequestResult()
-        // @todo: Get rid of getIndpEnv var usage in TSFE
-        $_SERVER['SCRIPT_NAME'] = '/typo3/index.php';
 
         $mainRequest = ServerRequestFactory::fromGlobals()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $normalizedParams = NormalizedParams::createFromRequest($mainRequest);
@@ -287,12 +279,6 @@ final class RequestBuilderTest extends FunctionalTestCase
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_SERVER['HTTP_HOST'] = 'https://example.com/';
         $_SERVER['SERVER_NAME'] = 'https://example.com/';
-        // Needed for GeneralUtility::getIndpEnv('SCRIPT_NAME') to return correct value instead of
-        // 'vendor/phpunit/phpunit/phpunit', used eg. in TypoScriptFrontendController absRefPrefix='auto
-        // and other places.
-        // @see FunctionalTestCase::retrieveFrontendSubRequestResult()
-        // @todo: Get rid of getIndpEnv var usage in TSFE
-        $_SERVER['SCRIPT_NAME'] = '/typo3/index.php';
 
         $mainRequest = ServerRequestFactory::fromGlobals()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $normalizedParams = NormalizedParams::createFromRequest($mainRequest);

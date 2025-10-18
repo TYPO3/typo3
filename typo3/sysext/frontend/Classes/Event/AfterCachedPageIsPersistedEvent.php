@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Event;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Event that is used directly after all cached content is stored in the page cache.
@@ -32,7 +31,6 @@ final readonly class AfterCachedPageIsPersistedEvent
 {
     public function __construct(
         private ServerRequestInterface $request,
-        private TypoScriptFrontendController $controller,
         private string $cacheIdentifier,
         private array $cacheData,
         private int $cacheLifetime
@@ -41,11 +39,6 @@ final readonly class AfterCachedPageIsPersistedEvent
     public function getRequest(): ServerRequestInterface
     {
         return $this->request;
-    }
-
-    public function getController(): TypoScriptFrontendController
-    {
-        return $this->controller;
     }
 
     public function getCacheIdentifier(): string

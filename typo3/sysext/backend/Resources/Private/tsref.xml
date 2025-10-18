@@ -421,7 +421,7 @@ config.inlineStyle2TempFile = 1]]></description>
 ]]></default>
         </property>
         <property name="linkVars" type="string">
-            <description><![CDATA[HTTP_GET_VARS, which should be passed on with links in TYPO3. This is compiled into a string stored in $GLOBALS["TSFE"]->linkVars
+            <description><![CDATA[HTTP_GET_VARS, which should be passed on with links in TYPO3. This is compiled into a string.
 
 The values are rawurlencoded in PHP.
 
@@ -4833,7 +4833,7 @@ Special keyword: "total" is substituted with count(*)]]></description>
 ]]></default>
         </property>
         <property name="languageField" type="string">
-            <description><![CDATA[If set, this points to the field in the record which holds a reference to a site language. And if set, the records returned by the select-function will be selected only if the value of this field matches the $GLOBALS["TSFE"]->sys_language_uid (which is set by the config.sys_language_uid option)]]></description>
+            <description><![CDATA[If set, this points to the field in the record which holds a reference to a site language. And if set, the records returned by the select-function will be selected only if the value of this field matches the frontend language which is set by the config.sys_language_uid option]]></description>
             <default><![CDATA[
 ]]></default>
         </property>
