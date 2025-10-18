@@ -36,7 +36,6 @@ final class FileConverterTest extends FunctionalTestCase
 
         $propertyMapper = $this->get(PropertyMapper::class);
 
-        /** @var File $file */
         $file = $propertyMapper->convert(
             1,
             File::class

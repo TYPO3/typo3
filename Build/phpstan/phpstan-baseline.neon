@@ -1969,12 +1969,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Property/PropertyMapperTest.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Extbase\\\\Domain\\\\Model\\\\File'' and TYPO3\\CMS\\Extbase\\Domain\\Model\\File will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Property/TypeConverter/FileConverterTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3Tests\\\\TypeConverterTest\\\\Domain\\\\Model\\\\Cat'' and TYPO3Tests\\TypeConverterTest\\Domain\\Model\\Cat will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
