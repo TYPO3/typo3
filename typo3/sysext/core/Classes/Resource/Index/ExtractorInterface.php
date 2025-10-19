@@ -15,12 +15,14 @@
 
 namespace TYPO3\CMS\Core\Resource\Index;
 
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Resource\File;
 
 /**
  * An Interface for MetaData extractors the FAL Indexer uses
  */
+#[AutoconfigureTag('metadata.extractor')]
 interface ExtractorInterface
 {
     /**

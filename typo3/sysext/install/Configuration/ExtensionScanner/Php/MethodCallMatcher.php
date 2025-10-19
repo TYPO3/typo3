@@ -6656,11 +6656,13 @@ return [
             'Deprecation-107824-ButtonBarMakeMethods.rst',
         ],
     ],
-    /** Note (leave this at the bottom):
-     *  The FQCN object definitions here are not actually checked, only
-     *  the method name itself. That means, never list generic method names
-     *  in this scanner definition.
-     */
+    'TYPO3\CMS\Core\Resource\Index\ExtractorRegistry->registerExtractionService' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-107783-RegistrationOfMetadataExtractorsViaRegisterExtractionService.rst',
+        ],
+    ],
     'TYPO3\CMS\Core\Imaging\GraphicalFunctions->gif_or_jpg' => [
         'numberOfMandatoryArguments' => 3,
         'maximumNumberOfArguments' => 3,
@@ -6668,4 +6670,9 @@ return [
             'Deprecation-93981-GraphicalFunctionsGifOrJpg.rst',
         ],
     ],
+    /** Note (leave this at the bottom):
+     *  The FQCN object definitions here are not actually checked, only
+     *  the method name itself. That means, never list generic method names
+     *  in this scanner definition.
+     */
 ];

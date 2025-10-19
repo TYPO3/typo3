@@ -323,6 +323,7 @@
 			"TYPO3Tests\\TestLogger\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_logger/Classes/",
 			"TYPO3Tests\\TestLabelAlias\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_label_alias/Classes/",
 			"TYPO3Tests\\TestMeta\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_meta/Classes/",
+			"TYPO3Tests\\TestMetadataExtraction\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_metadata_extraction/Classes/",
 			"TYPO3Tests\\TestTcaEvent\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_tca_event/Classes/",
 			"TYPO3Tests\\TestTyposcriptAstFunctionEvent\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_typoscript_ast_function_event/Classes/",
 			"TYPO3Tests\\TestTyposcriptPagetsconfigfactory\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_typoscript_pagetsconfigfactory/Classes/",

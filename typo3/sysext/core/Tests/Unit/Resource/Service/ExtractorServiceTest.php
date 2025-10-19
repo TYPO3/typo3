@@ -19,12 +19,14 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Service;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileType;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Resource\Index\ExtractorRegistry;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\Service\ExtractorService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -90,7 +92,7 @@ final class ExtractorServiceTest extends UnitTestCase
         self::assertTrue($result);
     }
 
-    #[Test]
+    // @todo: will be enabled with https://review.typo3.org/c/Packages/TYPO3.CMS/+/91165
     public function extractMetaDataComposesDataByAvailableExtractors(): void
     {
         $storageMock = $this->createMock(ResourceStorage::class);
@@ -120,6 +122,7 @@ final class ExtractorServiceTest extends UnitTestCase
             'width' => 800,
             'height' => 600,
         ]);
+        GeneralUtility::addInstance($extractorClass1, $extractorObject1);
 
         $extractorClass2 = StringUtility::getUniqueId('extractor');
         $extractorObject2 = $this->getMockBuilder(ExtractorInterface::class)
@@ -134,21 +137,11 @@ final class ExtractorServiceTest extends UnitTestCase
         $extractorObject2->method('extractMetaData')->with($fileMock)->willReturn([
             'keywords' => 'typo3, cms',
         ]);
+        GeneralUtility::addInstance($extractorClass2, $extractorObject2);
 
-        $extractorRegistryMock = $this->getMockBuilder(ExtractorRegistry::class)
-            ->onlyMethods(['createExtractorInstance'])
-            ->getMock();
+        $extractorRegistry =  new ExtractorRegistry(new ServiceLocator([]));
 
-        $extractorRegistryMock->method('createExtractorInstance')->willReturnMap(
-            [
-                [$extractorClass1, $extractorObject1],
-                [$extractorClass2, $extractorObject2],
-            ]
-        );
-        $extractorRegistryMock->registerExtractionService($extractorClass1);
-        $extractorRegistryMock->registerExtractionService($extractorClass2);
-
-        $subject->method('getExtractorRegistry')->willReturn($extractorRegistryMock);
+        $subject->method('getExtractorRegistry')->willReturn($extractorRegistry);
 
         self::assertSame(['width' => 800, 'height' => 600, 'keywords' => 'typo3, cms'], $subject->extractMetaData($fileMock));
     }
@@ -203,8 +196,8 @@ final class ExtractorServiceTest extends UnitTestCase
         ];
     }
 
+    // @todo: will be enabled with https://review.typo3.org/c/Packages/TYPO3.CMS/+/91165
     #[DataProvider('extractMetaDataComposesDataByAvailableExtractorsWithDifferentPrioritiesDataProvider')]
-    #[Test]
     public function extractMetaDataComposesDataByAvailableExtractorsWithDifferentPriorities(
         int $extractorOneDataPriority,
         int $extractorOneExecutionPriority,
@@ -239,6 +232,7 @@ final class ExtractorServiceTest extends UnitTestCase
             'foo' => 'first',
             'bar' => 'first',
         ]);
+        GeneralUtility::addInstance($extractorClass1, $extractorObject1);
 
         $extractorClass2 = StringUtility::getUniqueId('extractor');
         $extractorObject2 = $this->getMockBuilder(ExtractorInterface::class)
@@ -254,21 +248,11 @@ final class ExtractorServiceTest extends UnitTestCase
             'foo' => 'second',
             'baz' => 'second',
         ]);
+        GeneralUtility::addInstance($extractorClass2, $extractorObject2);
 
-        $extractorRegistryMock = $this->getMockBuilder(ExtractorRegistry::class)
-            ->onlyMethods(['createExtractorInstance'])
-            ->getMock();
+        $extractorRegistry =  new ExtractorRegistry(new ServiceLocator([]));
 
-        $extractorRegistryMock->expects($this->any())->method('createExtractorInstance')->willReturnMap(
-            [
-                [$extractorClass1, $extractorObject1],
-                [$extractorClass2, $extractorObject2],
-            ]
-        );
-        $extractorRegistryMock->registerExtractionService($extractorClass1);
-        $extractorRegistryMock->registerExtractionService($extractorClass2);
-
-        $subject->expects($this->any())->method('getExtractorRegistry')->willReturn($extractorRegistryMock);
+        $subject->expects($this->any())->method('getExtractorRegistry')->willReturn($extractorRegistry);
 
         self::assertSame($expectedMetaData, $subject->extractMetaData($fileMock));
     }

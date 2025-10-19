@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,72 +17,44 @@
 
 namespace TYPO3\CMS\Core\Resource\Index;
 
-use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 
 /**
  * Registry for MetaData extraction Services
  */
-class ExtractorRegistry implements SingletonInterface
+#[Autoconfigure(public: true)]
+readonly class ExtractorRegistry
 {
-    /**
-     * Registered ClassNames
-     * @var array
-     */
-    protected $extractors = [];
+    public function __construct(
+        #[AutowireLocator('metadata.extractor')]
+        private ServiceLocator $extractors
+    ) {}
 
     /**
-     * Instance Cache for Extractors
-     *
-     * @var ExtractorInterface[]
-     */
-    protected $instances;
-
-    /**
-     * Allows to register MetaData extraction to the FAL Indexer
-     *
-     * @param string $className
-     * @throws \InvalidArgumentException
-     */
-    public function registerExtractionService($className)
-    {
-        if (!class_exists($className)) {
-            throw new \InvalidArgumentException('The class "' . $className . '" you are registering is not available', 1422705270);
-        }
-        if (!in_array(ExtractorInterface::class, class_implements($className) ?: [])) {
-            throw new \InvalidArgumentException('The extractor needs to implement the ExtractorInterface', 1422705271);
-        }
-        $this->extractors[] = $className;
-    }
-
-    /**
-     * Get all registered extractors
+     * Get all registered extractor instances.
      *
      * @return ExtractorInterface[]
      */
-    public function getExtractors()
+    public function getExtractors(): array
     {
-        if ($this->instances === null) {
-            $this->instances = [];
-            foreach ($this->extractors as $className) {
-                $object = $this->createExtractorInstance($className);
-                $this->instances[] = $object;
-            }
-
-            if (count($this->instances) > 1) {
-                usort($this->instances, [$this, 'compareExtractorPriority']);
-            }
+        // @todo Isn't there an option to get the services ordered automatically by the ServiceLocator?
+        $extractors = [];
+        foreach ($this->extractors as $extractor) {
+            $extractors[] = $extractor;
         }
-        return $this->instances;
+        usort($extractors, [$this, 'compareExtractorPriority']);
+        return $extractors;
+
     }
 
     /**
-     * Get Extractors which work for a special driver
+     * Get Extractors which work for a specific driver.
      *
-     * @param string $driverType
      * @return ExtractorInterface[]
      */
-    public function getExtractorsWithDriverSupport($driverType)
+    public function getExtractorsWithDriverSupport(string $driverType): array
     {
         return array_filter(
             $this->getExtractors(),
@@ -92,6 +66,17 @@ class ExtractorRegistry implements SingletonInterface
     }
 
     /**
+     * @deprecated no-op. Will be removed with TYPO3 v15, classes implementing ExtractorInterface are registered automatically.
+     */
+    public function registerExtractionService(): void
+    {
+        trigger_error(
+            'ExtractorRegistry::registerExtractionService has been deprecated in TYPO3 v14 and will be removed in TYPO3 v15. Implementing the ExtractorInterface automatically registers the class.',
+            E_USER_DEPRECATED
+        );
+    }
+
+    /**
      * Compare the priority of two Extractor classes.
      * Is used for sorting array of Extractor instances by priority.
      * We want the result to be ordered from high to low so a higher
@@ -99,19 +84,8 @@ class ExtractorRegistry implements SingletonInterface
      *
      * @return int -1 a > b, 0 a == b, 1 a < b
      */
-    protected function compareExtractorPriority(ExtractorInterface $extractorA, ExtractorInterface $extractorB)
+    private function compareExtractorPriority(ExtractorInterface $extractorA, ExtractorInterface $extractorB): int
     {
         return $extractorB->getExecutionPriority() - $extractorA->getExecutionPriority();
-    }
-
-    /**
-     * Create an instance of a Metadata Extractor
-     *
-     * @param string $className
-     * @return ExtractorInterface
-     */
-    protected function createExtractorInstance($className)
-    {
-        return GeneralUtility::makeInstance($className);
     }
 }

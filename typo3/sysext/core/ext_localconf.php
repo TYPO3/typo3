@@ -13,9 +13,7 @@ use TYPO3\CMS\Core\Hooks\UpdateFileIndexEntry;
 use TYPO3\CMS\Core\MetaTag\EdgeMetaTagManager;
 use TYPO3\CMS\Core\MetaTag\Html5MetaTagManager;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
-use TYPO3\CMS\Core\Resource\Index\ExtractorRegistry;
 use TYPO3\CMS\Core\Resource\MimeTypeCompatibilityTypeGuesser;
-use TYPO3\CMS\Core\Resource\OnlineMedia\Metadata\Extractor;
 use TYPO3\CMS\Core\Resource\Rendering\AudioTagRenderer;
 use TYPO3\CMS\Core\Resource\Rendering\RendererRegistry;
 use TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer;
@@ -56,10 +54,6 @@ unset($rendererRegistry);
 $textExtractorRegistry = GeneralUtility::makeInstance(TextExtractorRegistry::class);
 $textExtractorRegistry->registerTextExtractor(PlainTextExtractor::class);
 unset($textExtractorRegistry);
-
-$extractorRegistry = GeneralUtility::makeInstance(ExtractorRegistry::class);
-$extractorRegistry->registerExtractionService(Extractor::class);
-unset($extractorRegistry);
 
 // Register base authentication service
 ExtensionManagementUtility::addService(
