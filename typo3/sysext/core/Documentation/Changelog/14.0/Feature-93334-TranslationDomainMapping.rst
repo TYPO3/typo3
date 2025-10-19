@@ -29,10 +29,10 @@ Example:
 .. code-block:: php
 
     // Domain-based reference
-    $GLOBALS['LANG']->sL('backend.toolbar:save');
+    $languageService->sL('backend.toolbar:save');
 
     // Equivalent file-based reference (existing syntax, still supported)
-    $GLOBALS['LANG']->sL('LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:save');
+    $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:save');
 
 ..  note::
 
@@ -59,7 +59,7 @@ Format
 .. code-block:: php
    :caption: Example usage of "package.resource:identifier"
 
-    $GLOBALS['LANG']->sL('backend.toolbar:save');
+    $languageService->sL('backend.toolbar:save');
     // Resolves to: EXT:backend/Resources/Private/Language/locallang_toolbar.xlf and
     // returns the translated "save" identifier.
 
@@ -153,14 +153,18 @@ domain-based and file-based references are supported:
 
 .. code-block:: php
 
+    $languageService = $this->languageServiceFactory->createFromSiteLanguage(
+        $request->getAttribute('language')
+    );
+
     // Domain-based reference
-    $label = $GLOBALS['LANG']->sL('backend.toolbar:menu.item');
+    $label = $languageService->sL('backend.toolbar:menu.item');
 
     // Another domain-based reference
-    $label = $GLOBALS['LANG']->sL('backend.messages:button.save');
+    $label = $languageService->sL('backend.messages:button.save');
 
     // Traditional file reference (still supported)
-    $label = $GLOBALS['LANG']->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:button.save');
+    $label = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:button.save');
 
 Domain-based references are shorter and expose less implementation detail
 compared to full file paths.
