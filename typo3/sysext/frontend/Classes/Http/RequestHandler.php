@@ -113,13 +113,14 @@ class RequestHandler implements RequestHandlerInterface
 
         $this->resetGlobalsToCurrentRequest($request);
 
+        // forward `ConsumableNonce` containing a nonce to `PageRenderer`
+        $nonce = $request->getAttribute('nonce');
+        $nonce = $nonce instanceof ConsumableNonce ? $nonce : null;
+        $this->getPageRenderer()->setNonce($nonce);
+
         // Generate page
         if ($controller->isGeneratePage()) {
             $this->timeTracker->push('Page generation');
-
-            // forward `ConsumableNonce` containing a nonce to `PageRenderer`
-            $nonce = $request->getAttribute('nonce');
-            $this->getPageRenderer()->setNonce($nonce);
 
             $controller->preparePageContentGeneration($request);
 
@@ -146,7 +147,7 @@ class RequestHandler implements RequestHandlerInterface
             // already - this is due to the fact that the `PageRenderer` state has been serialized
             // before and note executed via `$pageRenderer->render()` and did not consume any nonce values
             // (see serialization in `generatePageContent()`).
-            if ($nonce instanceof ConsumableNonce && (count($nonce) > 0 || $controller->isINTincScript())) {
+            if ($nonce !== null && (count($nonce) > 0 || $controller->isINTincScript())) {
                 // nonce was consumed
                 $controller->config['INTincScript'][] = [
                     'target' => NonceValueSubstitution::class . '->substituteNonce',
