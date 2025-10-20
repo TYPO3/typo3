@@ -15,10 +15,13 @@
 
 namespace TYPO3\CMS\Backend\View\BackendLayout;
 
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+
 /**
  * Interface for classes which hook into BackendLayoutDataProvider
  * to provide additional backend layouts from various sources.
  */
+#[AutoconfigureTag('page_layout.data_provider')]
 interface DataProviderInterface
 {
     /**
@@ -34,4 +37,19 @@ interface DataProviderInterface
      * @return BackendLayout|null
      */
     public function getBackendLayout($identifier, $pageId);
+
+    /**
+     * Returns the unique identifier for this backend layout data provider.
+     *
+     * This identifier is used to build combined identifiers in the format
+     * "providerIdentifier__layoutIdentifier" (e.g., "my_provider__my_layout").
+     *
+     * Requirements:
+     * - Must be a non-empty string
+     * - Must not contain double underscores "__" (reserved as separator)
+     * - Must be unique across all registered backend layout data providers
+     *
+     * @return non-empty-string The unique identifier for this data provider
+     */
+    public function getIdentifier(): string;
 }

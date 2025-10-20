@@ -1317,4 +1317,10 @@ return [
             'Feature-98239-IntroducePSR14AfterFormIsBuiltEvent.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'BackendLayoutDataProvider\']' => [
+        'restFiles' => [
+            'Breaking-107784-RemoveBackendLayoutDataProviderRegistrationViaGLOBALS.rst',
+            'Feature-107784-AutoconfigureBackendLayoutDataProviders.rst',
+        ],
+    ],
 ];

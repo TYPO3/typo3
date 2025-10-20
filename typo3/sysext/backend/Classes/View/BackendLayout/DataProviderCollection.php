@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\View\BackendLayout;
 
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -26,39 +27,54 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class DataProviderCollection implements SingletonInterface
 {
     /**
-     * @var DataProviderInterface[]
+     * @var array<non-empty-string, DataProviderInterface>
      */
     protected array $dataProviders = [];
     protected array $results = [];
 
     /**
-     * Adds a data provider to this collection.
+     * @param iterable<DataProviderInterface> $dataProviders
      */
-    public function add(string $identifier, string|object $classNameOrObject): void
+    public function __construct(
+        #[AutowireIterator('page_layout.data_provider')]
+        iterable $dataProviders = [],
+    ) {
+        foreach ($dataProviders as $dataProvider) {
+            $this->validateDataProvider($dataProvider);
+            $identifier = $dataProvider->getIdentifier();
+
+            if (isset($this->dataProviders[$identifier])) {
+                throw new \LogicException(
+                    sprintf(
+                        'A backend layout data provider with identifier "%s" is already registered.',
+                        $identifier
+                    ),
+                    1762361129,
+                );
+            }
+
+            $this->dataProviders[$identifier] = $dataProvider;
+        }
+    }
+
+    protected function validateDataProvider(mixed $dataProvider): void
     {
-        if (str_contains($identifier, '__')) {
-            throw new \UnexpectedValueException(
-                'Identifier "' . $identifier . '" must not contain "__"',
-                1381597629
-            );
-        }
-
-        if (is_object($classNameOrObject)) {
-            $className = get_class($classNameOrObject);
-            $dataProvider = $classNameOrObject;
-        } else {
-            $className = $classNameOrObject;
-            $dataProvider = GeneralUtility::makeInstance($classNameOrObject);
-        }
-
-        if (!$dataProvider instanceof DataProviderInterface) {
+        if (!($dataProvider instanceof DataProviderInterface)) {
             throw new \LogicException(
-                $className . ' must implement interface ' . DataProviderInterface::class,
-                1381269811
+                sprintf(
+                    'Data provider must implement interface %s, %s given.',
+                    DataProviderInterface::class,
+                    \get_debug_type($dataProvider),
+                ),
+                1381269811,
             );
         }
 
-        $this->dataProviders[$identifier] = $dataProvider;
+        $identifier = $dataProvider->getIdentifier();
+
+        if (str_contains($identifier, '__')) {
+            throw new \UnexpectedValueException('Identifier "' . $identifier . '" must not contain "__"', 1381597629);
+        }
     }
 
     /**

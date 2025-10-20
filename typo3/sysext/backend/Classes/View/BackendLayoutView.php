@@ -21,7 +21,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext;
-use TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Page\PageLayoutResolver;
@@ -38,19 +37,11 @@ class BackendLayoutView implements SingletonInterface
     protected array $selectedCombinedIdentifier = [];
     protected array $selectedBackendLayout = [];
 
-    /**
-     * Create this object and initialize data providers.
-     */
     public function __construct(
         private readonly DataProviderCollection $dataProviderCollection,
         private readonly TypoScriptStringFactory $typoScriptStringFactory,
         private readonly PageLayoutResolver $pageLayoutResolver,
-    ) {
-        $this->dataProviderCollection->add('default', DefaultDataProvider::class);
-        foreach ((array)($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider'] ?? []) as $identifier => $className) {
-            $this->dataProviderCollection->add($identifier, $className);
-        }
-    }
+    ) {}
 
     /**
      * Gets backend layout items to be shown in the forms engine.

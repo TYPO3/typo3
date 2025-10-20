@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\View\BackendLayout;
 
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
@@ -34,7 +33,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal Specific DataProviderInterface implementation, not considered public API.
  */
-#[Autoconfigure(public: true)]
 readonly class DefaultDataProvider implements DataProviderInterface
 {
     private const DEFAULT_COLUMNS_LAYOUT = '
@@ -99,6 +97,11 @@ readonly class DefaultDataProvider implements DataProviderInterface
             $backendLayout = $this->createBackendLayout($data);
         }
         return $backendLayout;
+    }
+
+    public function getIdentifier(): string
+    {
+        return 'default';
     }
 
     /**

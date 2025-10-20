@@ -61,7 +61,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  * 	}
  * }
  *
- * @internal Do not extend, change providers using $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider']
+ * @internal Specific DataProviderInterface implementation, not considered public API.
  */
 final class PageTsBackendLayoutDataProvider implements DataProviderInterface
 {
@@ -92,6 +92,11 @@ final class PageTsBackendLayoutDataProvider implements DataProviderInterface
             return $this->createBackendLayout($this->backendLayouts[$identifier]);
         }
         return null;
+    }
+
+    public function getIdentifier(): string
+    {
+        return 'pagets';
     }
 
     /**

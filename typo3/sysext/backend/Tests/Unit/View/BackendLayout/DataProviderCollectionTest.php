@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\View\BackendLayout;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection;
+use TYPO3\CMS\Backend\View\BackendLayout\DataProviderInterface;
 use TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -29,37 +30,44 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class DataProviderCollectionTest extends UnitTestCase
 {
-    protected DataProviderCollection $dataProviderCollection;
-
-    /**
-     * Sets up this test case.
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->dataProviderCollection = new DataProviderCollection();
-    }
-
     #[Test]
-    public function invalidIdentifierIsRecognizedOnAdding(): void
+    public function constructorRecognizesInvalidIdentifier(): void
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1381597629);
-        $identifier = StringUtility::getUniqueId('identifier__');
-        $dataProviderMock = $this->getMockBuilder(\stdClass::class)->getMock();
 
-        $this->dataProviderCollection->add($identifier, get_class($dataProviderMock));
+        $identifier = StringUtility::getUniqueId('identifier__');
+        $dataProviderMock = $this->createMock(DataProviderInterface::class);
+        $dataProviderMock->method('getIdentifier')->willReturn($identifier);
+
+        new DataProviderCollection([$dataProviderMock]);
     }
 
     #[Test]
-    public function invalidInterfaceIsRecognizedOnAdding(): void
+    public function constructorRecognizesDuplicateIdentifier(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(1762361129);
+
+        $identifier = 'duplicate_provider';
+        $dataProviderMock1 = $this->createMock(DataProviderInterface::class);
+        $dataProviderMock1->method('getIdentifier')->willReturn($identifier);
+        $dataProviderMock2 = $this->createMock(DataProviderInterface::class);
+        $dataProviderMock2->method('getIdentifier')->willReturn($identifier);
+
+        new DataProviderCollection([$dataProviderMock1, $dataProviderMock2]);
+    }
+
+    #[Test]
+    public function constructorRecognizesInvalidInterface(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1381269811);
-        $identifier = StringUtility::getUniqueId('identifier');
-        $dataProviderMock = $this->getMockBuilder(\stdClass::class)->getMock();
 
-        $this->dataProviderCollection->add($identifier, get_class($dataProviderMock));
+        $dataProviderMock = $this->createMock(\stdClass::class);
+
+        /* @phpstan-ignore argument.type */
+        new DataProviderCollection([$dataProviderMock]);
     }
 
     #[Test]
@@ -67,19 +75,14 @@ final class DataProviderCollectionTest extends UnitTestCase
     {
         $backendLayoutIdentifier = StringUtility::getUniqueId('identifier');
 
-        $dataProviderMock = $this->getMockBuilder(DefaultDataProvider::class)
-            ->onlyMethods(['getBackendLayout'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $backendLayoutMock = $this->getMockBuilder(BackendLayout::class)
-            ->onlyMethods(['getIdentifier'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $backendLayoutMock = $this->createMock(BackendLayout::class);
         $backendLayoutMock->method('getIdentifier')->willReturn($backendLayoutIdentifier);
+        $dataProviderMock = $this->createMock(DefaultDataProvider::class);
+        $dataProviderMock->method('getIdentifier')->willReturn('default');
         $dataProviderMock->expects($this->once())->method('getBackendLayout')->willReturn($backendLayoutMock);
 
-        $this->dataProviderCollection->add('default', $dataProviderMock);
-        $providedBackendLayout = $this->dataProviderCollection->getBackendLayout($backendLayoutIdentifier, 123);
+        $subject = new DataProviderCollection([$dataProviderMock]);
+        $providedBackendLayout = $subject->getBackendLayout($backendLayoutIdentifier, 123);
 
         self::assertNotNull($providedBackendLayout);
         self::assertEquals($backendLayoutIdentifier, $providedBackendLayout->getIdentifier());
@@ -91,19 +94,14 @@ final class DataProviderCollectionTest extends UnitTestCase
         $dataProviderIdentifier = StringUtility::getUniqueId('custom');
         $backendLayoutIdentifier = StringUtility::getUniqueId('identifier');
 
-        $dataProviderMock = $this->getMockBuilder(DefaultDataProvider::class)
-            ->onlyMethods(['getBackendLayout'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $backendLayoutMock = $this->getMockBuilder(BackendLayout::class)
-            ->onlyMethods(['getIdentifier'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $backendLayoutMock = $this->createMock(BackendLayout::class);
         $backendLayoutMock->method('getIdentifier')->willReturn($backendLayoutIdentifier);
+        $dataProviderMock = $this->createMock(DefaultDataProvider::class);
+        $dataProviderMock->method('getIdentifier')->willReturn($dataProviderIdentifier);
         $dataProviderMock->expects($this->once())->method('getBackendLayout')->willReturn($backendLayoutMock);
 
-        $this->dataProviderCollection->add($dataProviderIdentifier, $dataProviderMock);
-        $providedBackendLayout = $this->dataProviderCollection->getBackendLayout($dataProviderIdentifier . '__' . $backendLayoutIdentifier, 123);
+        $subject = new DataProviderCollection([$dataProviderMock]);
+        $providedBackendLayout = $subject->getBackendLayout($dataProviderIdentifier . '__' . $backendLayoutIdentifier, 123);
 
         self::assertNotNull($providedBackendLayout);
         self::assertEquals($backendLayoutIdentifier, $providedBackendLayout->getIdentifier());
