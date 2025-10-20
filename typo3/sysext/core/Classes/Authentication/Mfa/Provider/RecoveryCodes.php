@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Authentication\Mfa\Provider;
 
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
-use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -51,7 +50,7 @@ class RecoveryCodes
     /**
      * Generate given amount of plain recovery codes with the given length
      *
-     * @return string[]
+     * @return list<non-empty-string>
      */
     public function generatePlainRecoveryCodes(int $length = 8, int $quantity = 8): array
     {
@@ -62,23 +61,18 @@ class RecoveryCodes
             );
         }
 
+        /** @var list<non-empty-string> $codes */
         $codes = [];
-        $random = GeneralUtility::makeInstance(Random::class);
-
         while ($quantity >= 1 && count($codes) < $quantity) {
-            $number = (int)hexdec($random->generateRandomHexString(16));
-            // We only want to work with positive integers
-            if ($number < 0) {
-                continue;
+            $code = '';
+            for ($i = 0; $i < $length; $i++) {
+                $code .= (string)random_int(0, 9);
             }
-            // Create a $length long string from the random number
-            $code = str_pad((string)($number % (10 ** $length)), $length, '0', STR_PAD_LEFT);
             // Prevent duplicate codes which is however very unlikely to happen
             if (!in_array($code, $codes, true)) {
                 $codes[] = $code;
             }
         }
-
         return $codes;
     }
 
