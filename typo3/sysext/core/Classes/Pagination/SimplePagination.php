@@ -88,4 +88,9 @@ final class SimplePagination implements PaginationInterface
     {
         return range($this->getFirstPageNumber(), $this->getLastPageNumber());
     }
+
+    public function getPaginator(): PaginatorInterface
+    {
+        return $this->paginator;
+    }
 }
