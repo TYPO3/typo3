@@ -222,15 +222,22 @@ abstract class BaseModule
             $obj->component = (string)$configuration['component'];
         }
 
-        if (is_array($configuration['labels'] ?? null)) {
-            $obj->title = (string)($configuration['labels']['title'] ?? '');
-            $obj->description = (string)($configuration['labels']['description'] ?? '');
-            $obj->shortDescription = (string)($configuration['labels']['shortDescription'] ?? '');
-        } elseif (str_starts_with((string)($configuration['labels'] ?? ''), 'LLL:')) {
-            $labelsFile = $configuration['labels'];
+        $labelInformation = $configuration['labels'] ?? false;
+        if (is_array($labelInformation)) {
+            $obj->title = (string)($labelInformation['title'] ?? '');
+            $obj->description = (string)($labelInformation['description'] ?? '');
+            $obj->shortDescription = (string)($labelInformation['shortDescription'] ?? '');
+        } elseif (str_starts_with((string)$labelInformation, 'LLL:')) {
+            $labelsFile = $labelInformation;
             $obj->title = $labelsFile . ':mlang_tabs_tab';
             $obj->description = $labelsFile . ':mlang_labels_tabdescr';
             $obj->shortDescription = $labelsFile . ':mlang_labels_tablabel';
+        } elseif (is_string($labelInformation) && !str_contains($labelInformation, ':') && str_contains($labelInformation, '.')) {
+            // New File Format. Uses "backend.modules.<modulename>" (for example "backend.modules.preview") as identifier,
+            // which results in "backend.modules.preview:title" etc.
+            $obj->title = $labelInformation . ':title';
+            $obj->description = $labelInformation . ':description';
+            $obj->shortDescription = $labelInformation . ':short_description';
         }
 
         if (is_array($configuration['position'] ?? false)) {

@@ -131,11 +131,13 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
         $moduleProviderMock = $this->createMock(ModuleProvider::class);
         $moduleFactory = new ModuleFactory($this->createMock(IconRegistry::class), new NoopEventDispatcher());
         $moduleProviderMock->method('getUserModules')->willReturn([
+            // Short-form language domain variant
             'aModule' => $moduleFactory->createModule('aModule', [
                 'iconIdentifier' => 'a-module',
-                'labels' => 'LLL:EXT:a-module/locallang',
+                'labels' => 'a-module.modules.sub',
                 'packageName' => 'typo3/cms-testing',
             ]),
+            // Legacy long-form language domain variant
             'bModule' => $moduleFactory->createModule('bModule', [
                 'iconIdentifier' => 'b-module',
                 'labels' => 'LLL:EXT:b-module/locallang',
@@ -147,12 +149,12 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
         ];
         $expected['items'] = [
             0 => [
-                'label' => 'LLL:EXT:a-module/locallang:mlang_tabs_tab',
+                'label' => 'a-module.modules.sub:title',
                 'value' => 'aModule',
                 'icon' => 'a-module',
                 'description' => [
-                    'title' => 'LLL:EXT:a-module/locallang:mlang_labels_tablabel',
-                    'description' => 'LLL:EXT:a-module/locallang:mlang_labels_tabdescr',
+                    'title' => 'a-module.modules.sub:short_description',
+                    'description' => 'a-module.modules.sub:description',
                 ],
             ],
             1 => [

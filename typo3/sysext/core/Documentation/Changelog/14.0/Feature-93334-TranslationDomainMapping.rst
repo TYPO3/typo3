@@ -242,6 +242,112 @@ Event listener implementation:
         }
     }
 
+Backend modules
+===============
+
+Previously, backend module labels (including their title and description) were
+defined in a file like this:
+
+..  code-block:: xml
+    :caption: EXT:my_extension/Resources/Private/Language/locallang_mod.xlf
+    :emphasize-lines: 6,9,12
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+        <file source-language="en" datatype="plaintext" original="EXT:my_extension/Resources/Private/Language/locallang_mod.xlf" date="2038-10-28T13:37:37Z" product-name="mymodule">
+            <header/>
+            <body>
+                <trans-unit id="mlang_labels_tablabel">
+                    <source>My module</source>
+                </trans-unit>
+                <trans-unit id="mlang_labels_tabdescr">
+                    <source>Shows my module.</source>
+                </trans-unit>
+                <trans-unit id="mlang_tabs_tab">
+                    <source>My label</source>
+                </trans-unit>
+            </body>
+        </file>
+    </xliff>
+
+and utilized via the module definition:
+
+..  code-block:: php
+    :caption: EXT:my_extension/Configuration/Backend/Modules.php
+    :emphasize-lines: 9
+
+    <?php
+    return [
+        'my_module' => [
+            'parent' => 'web',
+            'position' => ['after' => 'web_list'],
+            'access' => 'user',
+            'path' => '/module/my-module',
+            'iconIdentifier' => 'my-module-icon',
+            'labels' => 'LLL:EXT:my_extension/Resources/Private/Language/locallang_mod.xlf',
+            'aliases' => ['web_MyModule'],
+            'routes' => [
+                '_default' => [
+                    'target' => MyController::class . '::handleRequest',
+                ],
+            ],
+        ],
+    ];
+
+Now, labels can use more speaking identifiers:
+
+..  code-block:: xml
+    :caption: EXT:my_extension/Resources/Private/Language/Module/mymodule.xlf
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+        <file source-language="en" datatype="plaintext" original="EXT:my_extension/Resources/Private/Language/Modules/mymodule.xlf" date="2026-11-05T16:22:37Z" product-name="mymodule">
+            <header/>
+            <body>
+                <trans-unit id="short_description">
+                    <source>My module</source>
+                </trans-unit>
+                <trans-unit id="description">
+                    <source>Shows my module.</source>
+                </trans-unit>
+                <trans-unit id="title">
+                    <source>My label</source>
+                </trans-unit>
+            </body>
+        </file>
+    </xliff>
+
+..  code-block:: php
+    :caption: EXT:my_extension/Configuration/Backend/Modules.php
+    :emphasize-lines: 10
+
+    <?php
+    return [
+        'my_module' => [
+            'parent' => 'web',
+            'position' => ['after' => 'web_list'],
+            'access' => 'user',
+            'path' => '/module/my-module',
+            'iconIdentifier' => 'my-module-icon',
+            'labels' => 'my_extension.modules.my_module',
+            'aliases' => ['web_MyModule'],
+            'routes' => [
+                '_default' => [
+                    'target' => MyController::class . '::handleRequest',
+                ],
+            ],
+        ],
+    ];
+
+To summarize, the key changes are:
+
+#.  Use a speaking XLIFF file inside :directory:`/Resources/Private/Languages/Modules` (best practice, could be any sub-directory)
+#.  Use understandable XLIFF identifiers:
+    - "title" instead of "mlang_tabs_tab"
+    - "short_description" instead of "mlang_labels_tablabel"
+    - "description" instead of "mlang_labels_tabdescr"
+#.  Use short-form identifiers ("my_extension.modules.my_module" instead of "LLL:EXT:my_extension/Resources/Private/Language/locallang_mod.xlf")
+    inside the :file:`Backend/Modules.php` registration.
 
 Impact
 ======
