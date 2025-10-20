@@ -83,12 +83,9 @@ class LoggerInterfacePass extends AbstractRecursivePass
 
     protected function getParameterChannelName(\ReflectionParameter $parameter): ?string
     {
-        // Attribute channel definition is only supported on PHP 8 and later.
-        if (class_exists('\ReflectionAttribute', false)) {
-            $attributes = $parameter->getAttributes(Channel::class, \ReflectionAttribute::IS_INSTANCEOF);
-            foreach ($attributes as $channel) {
-                return $channel->newInstance()->name;
-            }
+        $attributes = $parameter->getAttributes(Channel::class, \ReflectionAttribute::IS_INSTANCEOF);
+        if ($attributes !== []) {
+            return $attributes[0]->newInstance()->name;
         }
 
         return null;
@@ -96,12 +93,9 @@ class LoggerInterfacePass extends AbstractRecursivePass
 
     protected function getClassChannelName(\ReflectionClass $class): ?string
     {
-        // Attribute channel definition is only supported on PHP 8 and later.
-        if (class_exists('\ReflectionAttribute', false)) {
-            $attributes = $class->getAttributes(Channel::class, \ReflectionAttribute::IS_INSTANCEOF);
-            foreach ($attributes as $channel) {
-                return $channel->newInstance()->name;
-            }
+        $attributes = $class->getAttributes(Channel::class, \ReflectionAttribute::IS_INSTANCEOF);
+        if ($attributes !== []) {
+            return $attributes[0]->newInstance()->name;
         }
 
         if ($class->getParentClass() !== false) {
