@@ -433,12 +433,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Authentication/BackendUserAuthentication.php
 
 		-
-			message: '#^Call to function in_array\(\) with arguments non\-empty\-string, array\{\} and true will always evaluate to false\.$#'
-			identifier: function.impossibleType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Authentication/Mfa/Provider/RecoveryCodes.php
-
-		-
 			message: '#^Strict comparison using \=\=\= between TYPO3\\CMS\\Core\\Authentication\\Mfa\\MfaViewType\:\:AUTH and TYPO3\\CMS\\Core\\Authentication\\Mfa\\MfaViewType\:\:AUTH will always evaluate to true\.$#'
 			identifier: identical.alwaysTrue
 			count: 1
