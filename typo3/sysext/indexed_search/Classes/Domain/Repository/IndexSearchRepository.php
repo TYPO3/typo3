@@ -174,7 +174,7 @@ class IndexSearchRepository
         }
 
         $this->sortOrder = (string)($searchData['sortOrder'] ?? '');
-        $this->descendingSortOrderFlag = (bool)($searchData['desc'] ?? false);
+        $this->descendingSortOrderFlag = (bool)($searchData['sortDesc'] ?? false);
         $this->resultpagePointer = (int)($searchData['pointer'] ?? 0);
         if (is_numeric($searchData['numberOfResults'] ?? null)) {
             $this->numberOfResults = (int)$searchData['numberOfResults'];
