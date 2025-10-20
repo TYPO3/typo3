@@ -244,6 +244,14 @@ final class LocalizationUtilityTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function translateThrowsExceptionWithEmptyExtensionNameIfKeyHasWrongDomainPrefix(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1498144052);
+        LocalizationUtility::translate('core.form.tabs:', '');
+    }
+
+    #[Test]
     public function translateWillReturnLabelsFromTsEvenIfNoXlfFileExists(): void
     {
         $request = new ServerRequest();

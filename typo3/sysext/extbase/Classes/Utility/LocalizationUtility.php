@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Localization\TranslationDomainMapper;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -34,8 +35,8 @@ class LocalizationUtility
      * Returns the localized label of the LOCAL_LANG key, $key.
      *
      * @param string $key The key from the LOCAL_LANG array for which to return the value.
-     * @param string|null $extensionName The name of the extension
-     * @param array|null $arguments The arguments of the extension, being passed over to sprintf
+     * @param string|null $extensionName The name of the extension or domain name (such as "myextension.messages")
+     * @param array|null $arguments The arguments of the label, being passed over to sprintf
      * @param Locale|string|null $languageKey The language key or null for using the current language from the system
      * @return string|null The value from LOCAL_LANG or null if no translation was found.
      */
@@ -47,20 +48,32 @@ class LocalizationUtility
             return null;
         }
 
-        // Validate extension name for plain keys
-        if (!str_starts_with($key, 'LLL:') && empty($extensionName)) {
-            throw new \InvalidArgumentException(
-                'Parameter $extensionName cannot be empty if a fully-qualified key is not specified.',
-                1498144052
-            );
-        }
+        $languageFilePath = null;
         if (str_starts_with($key, 'LLL:')) {
             $keyParts = explode(':', $key);
             unset($keyParts[0]);
             $key = array_pop($keyParts);
             $languageFilePath = implode(':', $keyParts);
-        } else {
-            $languageFilePath = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '.messages';
+        } elseif ($extensionName) {
+            if (str_contains($extensionName, '.')) {
+                // We assume this is a valid domain now
+                $languageFilePath = $extensionName;
+            } else {
+                $languageFilePath = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '.messages';
+            }
+        } elseif (str_contains($key, ':')) {
+            [$possibleDomain, $possibleId] = explode(':', $key, 2);
+            $domainMapper = GeneralUtility::makeInstance(TranslationDomainMapper::class);
+            if ($domainMapper->isValidDomainName($possibleDomain) && $domainMapper->mapDomainToFileName($possibleDomain) !== $possibleDomain) {
+                $languageFilePath = $possibleDomain;
+                $key = trim($possibleId);
+            }
+        }
+        if ($languageFilePath === null || $key === '') {
+            throw new \InvalidArgumentException(
+                'Parameter $extensionName cannot be empty if a fully-qualified key is not specified.',
+                1498144052
+            );
         }
         $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? null;
         $locale = self::getLocale($languageKey, $request);

@@ -136,6 +136,26 @@ final class TranslateViewHelperTest extends FunctionalTestCase
                 '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:shortcut.title" arguments="{0: \"a\", 1: \"b\", 2: \"c\", 3: 13}"/>',
                 'ab on page &quot;c&quot; [13]',
             ],
+            'translation domain syntax for existing label with combined syntax and LLL prefix' => [
+                '<f:translate key="LLL:test_translate.messages:form.legend" />',
+                'Search form',
+            ],
+            'translation domain syntax for existing label with combined syntax' => [
+                '<f:translate key="test_translate.messages:form.legend" />',
+                'Search form',
+            ],
+            'translation domain attribute with extension name for existing label' => [
+                '<f:translate key="form.legend" domain="test_translate" />',
+                'Search form',
+            ],
+            'translation domain attribute with valid domain for existing label' => [
+                '<f:translate key="form.legend" domain="test_translate.messages" />',
+                'Search form',
+            ],
+            'valid translation domain in extensionName attribute for existing label' => [
+                '<f:translate key="form.legend" extensionName="test_translate.messages" />',
+                'Search form',
+            ],
             'empty string on invalid extension' => [
                 '<f:translate key="LLL:EXT:i_am_invalid/Resources/Private/Language/locallang.xlf:dummy" />',
                 '',
