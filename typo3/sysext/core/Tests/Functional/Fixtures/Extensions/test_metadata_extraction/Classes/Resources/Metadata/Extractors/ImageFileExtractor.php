@@ -21,16 +21,16 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileType;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 
-class TextFileExtractor3 implements ExtractorInterface
+class ImageFileExtractor implements ExtractorInterface
 {
     public function getFileTypeRestrictions(): array
     {
-        return [FileType::TEXT];
+        return [FileType::IMAGE];
     }
 
     public function getDriverRestrictions(): array
     {
-        return ['aDriverRestriction'];
+        return [];
     }
 
     public function getPriority(): int
@@ -40,15 +40,12 @@ class TextFileExtractor3 implements ExtractorInterface
 
     public function getExecutionPriority(): int
     {
-        return 20; // same as TextFileExtractor1
+        return 100; // higher than TextFileExtractor1
     }
 
     public function canProcess(File $file): bool
     {
-        if ($file->getExtension() === 'txt' && $file->getSize() > 0) {
-            return true;
-        }
-        return false;
+        return true;
     }
 
     public function extractMetaData(File $file, array $previousExtractedData = []): array

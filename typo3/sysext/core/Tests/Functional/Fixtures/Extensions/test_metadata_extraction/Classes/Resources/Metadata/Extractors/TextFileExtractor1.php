@@ -45,19 +45,13 @@ class TextFileExtractor1 implements ExtractorInterface
 
     public function canProcess(File $file): bool
     {
-        if ($file->getExtension() === 'txt' && $file->getSize() > 0) {
-            return true;
-        }
-        return false;
+        return true;
     }
 
     public function extractMetaData(File $file, array $previousExtractedData = []): array
     {
         $metadata = [];
-        $metadata['title'] = $file->getNameWithoutExtension();
-        $metadata['size'] = $file->getSize();
-        $metadata['extension'] = $file->getExtension();
-
+        $metadata['title'] = 'aStaticTitle';
         return $metadata;
     }
 }

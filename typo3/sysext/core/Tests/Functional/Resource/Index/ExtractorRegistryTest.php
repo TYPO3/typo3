@@ -20,9 +20,9 @@ namespace TYPO3\CMS\Core\Tests\Functional\Resource\Index;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\Index\ExtractorRegistry;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Tests\TestMetadataExtraction\Resources\Metadata\Extractors\ImageFileExtractor;
 use TYPO3Tests\TestMetadataExtraction\Resources\Metadata\Extractors\TextFileExtractor1;
 use TYPO3Tests\TestMetadataExtraction\Resources\Metadata\Extractors\TextFileExtractor2;
-use TYPO3Tests\TestMetadataExtraction\Resources\Metadata\Extractors\TextFileExtractor3;
 
 final class ExtractorRegistryTest extends FunctionalTestCase
 {
@@ -47,7 +47,7 @@ final class ExtractorRegistryTest extends FunctionalTestCase
     {
         $subject = $this->get(ExtractorRegistry::class);
         $extractors = $subject->getExtractors();
-        self::assertInstanceOf(TextFileExtractor2::class, $extractors[0]); // prio 100
+        self::assertInstanceOf(ImageFileExtractor::class, $extractors[0]); // prio 100
         self::assertInstanceOf(TextFileExtractor1::class, $extractors[1]); // prio 10
     }
 
@@ -57,7 +57,7 @@ final class ExtractorRegistryTest extends FunctionalTestCase
         $subject = $this->get(ExtractorRegistry::class);
         $extractors = $subject->getExtractors();
         self::assertInstanceOf(TextFileExtractor1::class, $extractors[1]); // prio 10
-        self::assertInstanceOf(TextFileExtractor3::class, $extractors[2]); // prio 10, same as 1
+        self::assertInstanceOf(TextFileExtractor2::class, $extractors[2]); // prio 10, same as 1
     }
 
     #[Test]
@@ -66,9 +66,9 @@ final class ExtractorRegistryTest extends FunctionalTestCase
         $subject = $this->get(ExtractorRegistry::class);
         $extractors = $subject->getExtractorsWithDriverSupport('aDriverRestriction');
         // 1 and 2 are returned since they have no restriction
-        self::assertInstanceOf(TextFileExtractor2::class, $extractors[0]); // no restriction
+        self::assertInstanceOf(ImageFileExtractor::class, $extractors[0]); // no restriction
         self::assertInstanceOf(TextFileExtractor1::class, $extractors[1]); // no restriction
-        self::assertInstanceOf(TextFileExtractor3::class, $extractors[2]); // matching restriction
+        self::assertInstanceOf(TextFileExtractor2::class, $extractors[2]); // matching restriction
     }
 
     #[Test]
@@ -78,7 +78,7 @@ final class ExtractorRegistryTest extends FunctionalTestCase
         $extractors = $subject->getExtractorsWithDriverSupport('doesNotMatchExtractor3');
         $extractor3Found = false;
         foreach ($extractors as $extractor) {
-            if ($extractor instanceof TextFileExtractor3) {
+            if ($extractor instanceof TextFileExtractor2) {
                 $extractor3Found = true;
             }
         }

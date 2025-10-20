@@ -30,34 +30,29 @@ class TextFileExtractor2 implements ExtractorInterface
 
     public function getDriverRestrictions(): array
     {
-        return [];
+        return ['aDriverRestriction'];
     }
 
     public function getPriority(): int
     {
-        return 10;
+        return 100; // higher than TextFileExtractor1
     }
 
     public function getExecutionPriority(): int
     {
-        return 100; // higher than TextFileExtractor1
+        return 20; // same as TextFileExtractor1
     }
 
     public function canProcess(File $file): bool
     {
-        if ($file->getExtension() === 'txt' && $file->getSize() > 0) {
-            return true;
-        }
-        return false;
+        return true;
     }
 
     public function extractMetaData(File $file, array $previousExtractedData = []): array
     {
         $metadata = [];
         $metadata['title'] = $file->getNameWithoutExtension();
-        $metadata['size'] = $file->getSize();
         $metadata['extension'] = $file->getExtension();
-
         return $metadata;
     }
 }

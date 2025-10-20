@@ -46,7 +46,7 @@ final class IndexerTest extends UnitTestCase
         $fileMock->method('getType')->willReturn(FileType::TEXT->value);
         $fileMock->method('getStorage')->willReturn($mockStorage);
 
-        $extractorServiceMock = $this->getMockBuilder(ExtractorService::class)->getMock();
+        $extractorServiceMock = $this->createMock(ExtractorService::class);
         $extractorServiceMock->expects($this->once())->method('extractMetaData')->with($fileMock);
         $subject->method('getExtractorService')->willReturn($extractorServiceMock);
 
