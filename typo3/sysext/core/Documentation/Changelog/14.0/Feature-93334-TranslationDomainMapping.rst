@@ -223,16 +223,27 @@ Event listener implementation:
     use TYPO3\CMS\Core\Attribute\AsEventListener;
     use TYPO3\CMS\Core\Localization\Event\BeforeLabelResourceResolvedEvent;
 
-    final readonly class CustomDomainResolver
+    final readonly class CustomTranslationDomainResolver
     {
         #[AsEventListener(identifier: 'my-extension/custom-domain-names')]
         public function __invoke(BeforeLabelResourceResolvedEvent $event): void
         {
             // Shorten domain names for specific extension
-            if ($event->extensionKey === 'my_extension') {
-                $resourcePart = explode('.', $event->domain, 2)[1] ?? '';
-                $event->domain = 'myext.' . $resourcePart;
+            if ($event->packageKey !== 'my_extension') {
+                return;
             }
+    
+            // Shorten the domain name by replacing the package prefix
+            $event->domains = array_map(
+                static function (string $domain): string {
+                    $parts = explode('.', $domain, 2);
+                    if (($parts[0] ?? '') === 'my_extension') {
+                        $domain = 'myext' . (isset($parts[1]) ? '.' . $parts[1] : '');
+                    }
+                    return $domain;
+                },
+                $event->domains
+            );
         }
     }
 
