@@ -211,9 +211,9 @@ Event: :php:`TYPO3\CMS\Core\Localization\Event\BeforeLabelResourceResolvedEvent`
 
 The event provides these public properties:
 
-*  :php:`fileName` - The file path being processed
-*  :php:`extensionKey` - The extension key
-*  :php:`domain` - The generated domain name (can be modified)
+*   :php:`$packageKey` — The extension key (read-only).
+*   :php:`$domains` — An associative array mapping domain names to label files
+    (modifiable): :php:`array<string, string>`.
 
 Example
 -------
@@ -227,18 +227,21 @@ Event listener implementation:
     use TYPO3\CMS\Core\Attribute\AsEventListener;
     use TYPO3\CMS\Core\Localization\Event\BeforeLabelResourceResolvedEvent;
 
-    final readonly class CustomDomainResolver
+    final readonly class CustomTranslationDomainResolver
     {
         #[AsEventListener(identifier: 'my-extension/custom-domain-names')]
         public function __invoke(BeforeLabelResourceResolvedEvent $event): void
         {
-            // Shorten domain names for specific extension
-            if ($event->extensionKey === 'my_extension') {
-                $resourcePart = explode('.', $event->domain, 2)[1] ?? '';
-                $event->domain = 'myext.' . $resourcePart;
+            if ($event->packageKey !== 'my_extension') {
+                return;
             }
+
+            // Use file my_messages.xlf even if locallang.xlf is found
+            $event->domains['my_extension.messages'] =
+                'EXT:my_extension/Resources/Private/Language/my_messages.xlf';
         }
     }
+
 
 Impact
 ======
