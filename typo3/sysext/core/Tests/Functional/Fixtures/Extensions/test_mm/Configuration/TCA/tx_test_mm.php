@@ -34,15 +34,15 @@ return [
     'types' => [
         '1' => [
             'showitem' => '
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+                --div--;core.form.tabs:general,
                     title, parent, group_mm_1_local, select_mm_1_local,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
+                --div--;core.form.tabs:language,
                     --palette--;;language,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                --div--;core.form.tabs:access,
                     hidden,--palette--;;timeRestriction,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                --div--;core.form.tabs:notes,
                     description,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+                --div--;core.form.tabs:extended,
             ',
         ],
     ],

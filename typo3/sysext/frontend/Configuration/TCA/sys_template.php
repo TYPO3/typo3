@@ -147,15 +147,15 @@ return [
     ],
     'types' => [
         '1' => ['showitem' => '
-            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+            --div--;core.form.tabs:general,
                 title, constants, config,
-            --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.tabs.options,
+            --div--;core.form.tabs:advancedoptions,
                 clear, root, include_static_file, basedOn, includeStaticAfterBasedOn, static_file_mode,
-            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+            --div--;core.form.tabs:access,
                 hidden,--palette--;;timeRestriction,
-            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+            --div--;core.form.tabs:notes,
                 description,
-            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+            --div--;core.form.tabs:extended,
         '],
     ],
     'palettes' => [

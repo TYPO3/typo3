@@ -125,7 +125,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
                 ],
                 'types' => [
                     '0' => [
-                        'showitem' => '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,header,text;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.ALT.bulletlist_formlabel',
+                        'showitem' => '--div--;core.form.tabs:general,header,text;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.ALT.bulletlist_formlabel',
                     ],
                 ],
                 'columns' => [
@@ -154,7 +154,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
                 ],
                 'types' => [
                     '0' => [
-                        'showitem' => '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,--palette--;;palette_1',
+                        'showitem' => '--div--;core.form.tabs:general,--palette--;;palette_1',
                     ],
                 ],
                 'columns' => [

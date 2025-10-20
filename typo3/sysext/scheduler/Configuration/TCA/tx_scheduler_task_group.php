@@ -62,13 +62,10 @@ return [
     'types' => [
         '1' => [
             'showitem' => '
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
-                    groupName, color,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
-                    hidden,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
-                    description,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+                --div--;core.form.tabs:general, groupName, color,
+                --div--;core.form.tabs:access, hidden,
+                --div--;core.form.tabs:notes, description,
+                --div--;core.form.tabs:extended,
             ',
         ],
     ],

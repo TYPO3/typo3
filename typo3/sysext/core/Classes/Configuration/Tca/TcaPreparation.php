@@ -407,9 +407,13 @@ readonly class TcaPreparation
         // Build list of values (fields and palettes) which should be removed
         // from custom palettes, because they will be added automatically.
         $listOfValuesToRemove = [
+            '--div--;core.form.tabs:general',
             '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general',
+            '--div--;core.form.tabs:language',
             '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language',
+            '--div--;core.form.tabs:access',
             '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access',
+            '--div--;core.form.tabs:notes',
             '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes',
             '--palette--;;general',
             '--palette--;;language',
@@ -478,7 +482,7 @@ readonly class TcaPreparation
             // Add language field either using the "language" palette or manually,
             // in case the palette does not exist or does not contain the field.
             if ($languageField !== '') {
-                $showItemParts[] = '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language';
+                $showItemParts[] = '--div--;core.form.tabs:language';
                 $languagePaletteItems = $this->removeCustomFieldLabels(GeneralUtility::trimExplode(',', $tca['tt_content']['palettes']['language']['showitem'] ?? '', true), $listOfValuesToRemove);
                 if (in_array($languageField, $languagePaletteItems, true)
                     && ($transOrigPointerField === '' || in_array($transOrigPointerField, $languagePaletteItems, true))
@@ -495,7 +499,7 @@ readonly class TcaPreparation
             // Add enable fields either using the "hidden" amd "access" palettes or
             // manually, in case the palettes do not exist or do not contain the fields.
             if ($enablecolumns !== [] || $editlock !== '') {
-                $showItemParts[] = '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access';
+                $showItemParts[] = '--div--;core.form.tabs:access';
                 if (isset($enablecolumns['disabled'])) {
                     $hiddenPaletteParts = $this->removeCustomFieldLabels(GeneralUtility::trimExplode(',', $tca['tt_content']['palettes']['hidden']['showitem'] ?? '', true), $listOfValuesToRemove);
                     if (in_array($enablecolumns['disabled'], $hiddenPaletteParts, true)) {
@@ -531,7 +535,7 @@ readonly class TcaPreparation
 
             // Add description column if defined
             if ($descriptionColumn !== '') {
-                $showItemParts[] = '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,' . $descriptionColumn;
+                $showItemParts[] = '--div--;core.form.tabs:notes,' . $descriptionColumn;
             }
 
             // Add extended tab at the end - if it exists
@@ -548,7 +552,7 @@ readonly class TcaPreparation
         $extendedParts = [];
         $addFields = false;
         foreach ($showItemFiltered as $key => $part) {
-            if ($part === '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended') {
+            if ($part === '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended' || $part === '--div--;core.form.tabs:extended') {
                 $extendedParts[] = $part;
                 $addFields = true;
                 unset($showItemFiltered[$key]);

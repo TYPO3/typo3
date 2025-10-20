@@ -96,11 +96,11 @@ return [
     ],
     'types' => [
         '0' => ['showitem' => '
-            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+            --div--;core.form.tabs:general,
                 title,responsible_persons,
-            --div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:tabs.notification_settings,
+            --div--;workspaces.db:tabs.notification_settings,
                 --palette--;;stage, notification_defaults, default_mailcomment,
-            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+            --div--;core.form.tabs:extended,
         '],
     ],
 ];

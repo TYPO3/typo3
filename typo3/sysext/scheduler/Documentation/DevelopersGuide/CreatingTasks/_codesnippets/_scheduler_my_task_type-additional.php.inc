@@ -45,7 +45,7 @@ if (isset($GLOBALS['TCA']['tx_scheduler_task'])) {
             'group' => 'my_extension',
         ],
         '
-            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+            --div--;core.form.tabs:general,
                 tasktype,
                 task_group,
                 description,
@@ -55,9 +55,9 @@ if (isset($GLOBALS['TCA']['tx_scheduler_task'])) {
                 execution_details,
                 nextexecution,
                 --palette--;;lastexecution,
-            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+            --div--;core.form.tabs:access,
                 disable,
-            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,',
+            --div--;core.form.tabs:extended,',
         [],
         '',
         'tx_scheduler_task'

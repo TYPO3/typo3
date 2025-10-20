@@ -12,10 +12,10 @@ defined('TYPO3') or die();
     ],
     '
         header;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.ALT.div_formlabel,
-    --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+    --div--;core.form.tabs:appearance,
         --palette--;;frames,
         --palette--;;appearanceLinks,
-    --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+    --div--;core.form.tabs:categories,
         categories',
     [
         'creationOptions' => [

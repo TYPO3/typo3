@@ -28,9 +28,9 @@ return [
     'types' => [
         '1' => [
             'showitem' => '
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+                --div--;core.form.tabs:general,
                 --palette--;;config,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                --div--;core.form.tabs:access,
                 --palette--;;access',
         ],
     ],

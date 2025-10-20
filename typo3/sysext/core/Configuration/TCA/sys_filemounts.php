@@ -50,13 +50,13 @@ return [
     ],
     'types' => [
         '0' => ['showitem' => '
-            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+            --div--;core.form.tabs:general,
                 title, identifier, read_only,
-            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+            --div--;core.form.tabs:access,
                 hidden,
-            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+            --div--;core.form.tabs:notes,
                 description,
-            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+            --div--;core.form.tabs:extended,
         '],
     ],
 ];

@@ -820,8 +820,8 @@ class ExtensionManagementUtility
 
         $showItemList = trim($showItemList, ', ');
         // Add the extended tab if not already added manually at the very end.
-        if ($showItemList !== '' && !str_contains($showItemList, '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended')) {
-            $showItemList .= ',--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended';
+        if ($showItemList !== '' && !str_contains($showItemList, '--div--;core.form.tabs:extended') && !str_contains($showItemList, '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended')) {
+            $showItemList .= ',--div--;core.form.tabs:extended';
         }
         if ($showItemList !== '') {
             $showItemList .= ',';
@@ -881,7 +881,7 @@ class ExtensionManagementUtility
             // Add flexform to showitem list
             self::addToAllTCAtypes(
                 'tt_content',
-                '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:plugin, pi_flexform',
+                '--div--;core.form.tabs:plugin, pi_flexform',
                 $selectItem->getValue(),
                 'after:palette:headers'
             );

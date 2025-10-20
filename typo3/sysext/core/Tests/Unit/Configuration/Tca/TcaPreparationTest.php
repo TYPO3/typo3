@@ -878,19 +878,19 @@ final class TcaPreparationTest extends UnitTestCase
             '
                     --palette--;;general,
                     --palette--;;headers,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                --div--;core.form.tabs:appearance,
                     --palette--;;frames,
                     --palette--;;appearanceLinks,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                --div--;core.form.tabs:categories,
                     categories,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
+                --div--;core.form.tabs:language,
                     --palette--;;language,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                --div--;core.form.tabs:access,
                     --palette--;;hidden,
                     --palette--;;access,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                --div--;core.form.tabs:notes,
                     rowDescription,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended
+                --div--;core.form.tabs:extended
             ',
         ];
         yield 'General palette with label already exists' => [
@@ -900,12 +900,12 @@ final class TcaPreparationTest extends UnitTestCase
                         'showitem' => '
                             --palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general;general,
                             --palette--;;headers,
-                        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                        --div--;core.form.tabs:appearance,
                             --palette--;;frames,
                             --palette--;;appearanceLinks,
-                        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                        --div--;core.form.tabs:categories,
                             categories,
-                        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+                        --div--;core.form.tabs:extended,
                     ',
                     ],
                 ],
@@ -913,19 +913,19 @@ final class TcaPreparationTest extends UnitTestCase
             '
                     --palette--;;general,
                     --palette--;;headers,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                --div--;core.form.tabs:appearance,
                     --palette--;;frames,
                     --palette--;;appearanceLinks,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                --div--;core.form.tabs:categories,
                     categories,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
+                --div--;core.form.tabs:language,
                     --palette--;;language,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                --div--;core.form.tabs:access,
                     --palette--;;hidden,
                     --palette--;;access,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                --div--;core.form.tabs:notes,
                     rowDescription,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended
+                --div--;core.form.tabs:extended
             ',
         ];
         yield 'Missing general palette' => [
@@ -938,19 +938,19 @@ final class TcaPreparationTest extends UnitTestCase
                     CType;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType_formlabel,
                     colPos;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos_formlabel,
                     --palette--;;headers,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                --div--;core.form.tabs:appearance,
                     --palette--;;frames,
                     --palette--;;appearanceLinks,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                --div--;core.form.tabs:categories,
                     categories,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
+                --div--;core.form.tabs:language,
                     --palette--;;language,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                --div--;core.form.tabs:access,
                     --palette--;;hidden,
                     --palette--;;access,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                --div--;core.form.tabs:notes,
                     rowDescription,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended
+                --div--;core.form.tabs:extended
             ',
         ];
         yield 'General palette with wrong field names' => [
@@ -968,19 +968,19 @@ final class TcaPreparationTest extends UnitTestCase
                     CType;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType_formlabel,
                     colPos;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos_formlabel,
                     --palette--;;headers,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                --div--;core.form.tabs:appearance,
                     --palette--;;frames,
                     --palette--;;appearanceLinks,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                --div--;core.form.tabs:categories,
                     categories,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
+                --div--;core.form.tabs:language,
                     --palette--;;language,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                --div--;core.form.tabs:access,
                     --palette--;;hidden,
                     --palette--;;access,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                --div--;core.form.tabs:notes,
                     rowDescription,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended
+                --div--;core.form.tabs:extended
             ',
         ];
         yield 'LanguageField not set' => [
@@ -992,17 +992,17 @@ final class TcaPreparationTest extends UnitTestCase
             '
                     --palette--;;general,
                     --palette--;;headers,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                --div--;core.form.tabs:appearance,
                     --palette--;;frames,
                     --palette--;;appearanceLinks,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                --div--;core.form.tabs:categories,
                     categories,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                --div--;core.form.tabs:access,
                     --palette--;;hidden,
                     --palette--;;access,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                --div--;core.form.tabs:notes,
                     rowDescription,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended
+                --div--;core.form.tabs:extended
             ',
         ];
         yield 'language palette defines different fields' => [
@@ -1016,20 +1016,20 @@ final class TcaPreparationTest extends UnitTestCase
             '
                     --palette--;;general,
                     --palette--;;headers,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                --div--;core.form.tabs:appearance,
                     --palette--;;frames,
                     --palette--;;appearanceLinks,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                --div--;core.form.tabs:categories,
                     categories,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
+                --div--;core.form.tabs:language,
                     sys_language_uid,
                     l18n_parent,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                --div--;core.form.tabs:access,
                     --palette--;;hidden,
                     --palette--;;access,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                --div--;core.form.tabs:notes,
                     rowDescription,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended
+                --div--;core.form.tabs:extended
             ',
         ];
         yield 'unusual language field used and transOrigPointerField not set' => [
@@ -1047,19 +1047,19 @@ final class TcaPreparationTest extends UnitTestCase
             '
                     --palette--;;general,
                     --palette--;;headers,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                --div--;core.form.tabs:appearance,
                     --palette--;;frames,
                     --palette--;;appearanceLinks,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                --div--;core.form.tabs:categories,
                     categories,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
+                --div--;core.form.tabs:language,
                     custom_language_field,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                --div--;core.form.tabs:access,
                     --palette--;;hidden,
                     --palette--;;access,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                --div--;core.form.tabs:notes,
                     rowDescription,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended
+                --div--;core.form.tabs:extended
             ',
         ];
         yield 'additional fields are kept in the extended tab at the end' => [
@@ -1068,12 +1068,12 @@ final class TcaPreparationTest extends UnitTestCase
                     'header' => [
                         'showitem' => '
                                 --palette--;;headers,
-                            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                            --div--;core.form.tabs:appearance,
                                 --palette--;;frames,
                                 --palette--;;appearanceLinks,
-                            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                            --div--;core.form.tabs:categories,
                                 categories,
-                            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+                            --div--;core.form.tabs:extended,
                                 custom_field,
                                 --custom_field;LLL:EXT:extension/Resources/Private/Language/locallang.xlf:custom_field_label,
                         ',
@@ -1083,19 +1083,19 @@ final class TcaPreparationTest extends UnitTestCase
             '
                     --palette--;;general,
                     --palette--;;headers,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                --div--;core.form.tabs:appearance,
                     --palette--;;frames,
                     --palette--;;appearanceLinks,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                --div--;core.form.tabs:categories,
                     categories,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
+                --div--;core.form.tabs:language,
                     --palette--;;language,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                --div--;core.form.tabs:access,
                     --palette--;;hidden,
                     --palette--;;access,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                --div--;core.form.tabs:notes,
                     rowDescription,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+                --div--;core.form.tabs:extended,
                     custom_field,
                     --custom_field;LLL:EXT:extension/Resources/Private/Language/locallang.xlf:custom_field_label
             ',
@@ -1106,10 +1106,10 @@ final class TcaPreparationTest extends UnitTestCase
                     'header' => [
                         'showitem' => '
                                 --palette--;;headers,
-                            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                            --div--;core.form.tabs:appearance,
                                 --palette--;;frames,
                                 --palette--;;appearanceLinks,
-                            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+                            --div--;core.form.tabs:extended,
                         ',
                     ],
                 ],
@@ -1117,17 +1117,17 @@ final class TcaPreparationTest extends UnitTestCase
             '
                     --palette--;;general,
                     --palette--;;headers,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                --div--;core.form.tabs:appearance,
                     --palette--;;frames,
                     --palette--;;appearanceLinks,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
+                --div--;core.form.tabs:language,
                     --palette--;;language,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                --div--;core.form.tabs:access,
                     --palette--;;hidden,
                     --palette--;;access,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                --div--;core.form.tabs:notes,
                     rowDescription,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended
+                --div--;core.form.tabs:extended
             ',
         ];
         yield 'duplicate system fields and palettes are removed' => [
@@ -1136,12 +1136,12 @@ final class TcaPreparationTest extends UnitTestCase
                     'header' => [
                         'showitem' => '
                                 --palette--;;headers,
-                            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                            --div--;core.form.tabs:appearance,
                                 --palette--;;frames,
                                 --palette--;;appearanceLinks,
-                            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                            --div--;core.form.tabs:categories,
                                 categories,
-                            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+                            --div--;core.form.tabs:extended,
                                 --palette--;;general,
                                 colPos,
                                 sys_language_uid,
@@ -1153,19 +1153,19 @@ final class TcaPreparationTest extends UnitTestCase
             '
                     --palette--;;general,
                     --palette--;;headers,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                --div--;core.form.tabs:appearance,
                     --palette--;;frames,
                     --palette--;;appearanceLinks,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                --div--;core.form.tabs:categories,
                     categories,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
+                --div--;core.form.tabs:language,
                     --palette--;;language,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                --div--;core.form.tabs:access,
                     --palette--;;hidden,
                     --palette--;;access,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                --div--;core.form.tabs:notes,
                     rowDescription,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended
+                --div--;core.form.tabs:extended
             ',
         ];
         yield 'access tab and palette are added for editlock field only' => [
@@ -1177,18 +1177,18 @@ final class TcaPreparationTest extends UnitTestCase
             '
                     --palette--;;general,
                     --palette--;;headers,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                --div--;core.form.tabs:appearance,
                     --palette--;;frames,
                     --palette--;;appearanceLinks,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                --div--;core.form.tabs:categories,
                     categories,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
+                --div--;core.form.tabs:language,
                     --palette--;;language,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                --div--;core.form.tabs:access,
                     --palette--;;access,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                --div--;core.form.tabs:notes,
                     rowDescription,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended
+                --div--;core.form.tabs:extended
             ',
         ];
         yield 'starttime field is added only' => [
@@ -1208,18 +1208,18 @@ final class TcaPreparationTest extends UnitTestCase
             '
                     --palette--;;general,
                     --palette--;;headers,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                --div--;core.form.tabs:appearance,
                     --palette--;;frames,
                     --palette--;;appearanceLinks,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                --div--;core.form.tabs:categories,
                     categories,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
+                --div--;core.form.tabs:language,
                     --palette--;;language,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                --div--;core.form.tabs:access,
                     starttime,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                --div--;core.form.tabs:notes,
                     rowDescription,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended
+                --div--;core.form.tabs:extended
             ',
         ];
         yield 'access tab adds hidden palette only' => [
@@ -1236,18 +1236,18 @@ final class TcaPreparationTest extends UnitTestCase
             '
                     --palette--;;general,
                     --palette--;;headers,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                --div--;core.form.tabs:appearance,
                     --palette--;;frames,
                     --palette--;;appearanceLinks,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                --div--;core.form.tabs:categories,
                     categories,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
+                --div--;core.form.tabs:language,
                     --palette--;;language,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                --div--;core.form.tabs:access,
                     --palette--;;hidden,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                --div--;core.form.tabs:notes,
                     rowDescription,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended
+                --div--;core.form.tabs:extended
             ',
         ];
         yield 'notes tab is omitted' => [
@@ -1259,17 +1259,17 @@ final class TcaPreparationTest extends UnitTestCase
             '
                     --palette--;;general,
                     --palette--;;headers,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                --div--;core.form.tabs:appearance,
                     --palette--;;frames,
                     --palette--;;appearanceLinks,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                --div--;core.form.tabs:categories,
                     categories,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
+                --div--;core.form.tabs:language,
                     --palette--;;language,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                --div--;core.form.tabs:access,
                     --palette--;;hidden,
                     --palette--;;access,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended
+                --div--;core.form.tabs:extended
             ',
         ];
         yield 'custom label is removed' => [
@@ -1278,14 +1278,14 @@ final class TcaPreparationTest extends UnitTestCase
                     'header' => [
                         'showitem' => '
                                 --palette--;;headers,
-                            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                            --div--;core.form.tabs:appearance,
                                 --palette--;;frames,
                                 --palette--;;appearanceLinks,
-                            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                            --div--;core.form.tabs:categories,
                                 categories,
-                            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                            --div--;core.form.tabs:notes,
                                 rowDescription;LLL:EXT:extension/Resources/Private/Language/locallang.xlf:customLabel,
-                            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+                            --div--;core.form.tabs:extended,
 
                         ',
                     ],
@@ -1294,19 +1294,19 @@ final class TcaPreparationTest extends UnitTestCase
             '
                     --palette--;;general,
                     --palette--;;headers,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                --div--;core.form.tabs:appearance,
                     --palette--;;frames,
                     --palette--;;appearanceLinks,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                --div--;core.form.tabs:categories,
                     categories,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
+                --div--;core.form.tabs:language,
                     --palette--;;language,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                --div--;core.form.tabs:access,
                     --palette--;;hidden,
                     --palette--;;access,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                --div--;core.form.tabs:notes,
                     rowDescription,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended
+                --div--;core.form.tabs:extended
             ',
         ];
         yield 'custom first tab is kept' => [
@@ -1314,16 +1314,16 @@ final class TcaPreparationTest extends UnitTestCase
                 'types' => [
                     'header' => [
                         'showitem' => '
-                            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:custom-label,
+                            --div--;core.form.tabs:custom-label,
                                 --palette--;;headers,
                                 bodytext,
                                 --palette--;;custom-palette
-                            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                            --div--;core.form.tabs:appearance,
                                 --palette--;;frames,
                                 --palette--;;appearanceLinks,
-                            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                            --div--;core.form.tabs:categories,
                                 categories,
-                            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+                            --div--;core.form.tabs:extended,
                                 custom_field,
                                 --custom_field;LLL:EXT:extension/Resources/Private/Language/locallang.xlf:custom_field_label,
                         ',
@@ -1331,24 +1331,24 @@ final class TcaPreparationTest extends UnitTestCase
                 ],
             ],
             '
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:custom-label,
+                --div--;core.form.tabs:custom-label,
                     --palette--;;general,
                     --palette--;;headers,
                     bodytext,
                     --palette--;;custom-palette
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                --div--;core.form.tabs:appearance,
                     --palette--;;frames,
                     --palette--;;appearanceLinks,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                --div--;core.form.tabs:categories,
                     categories,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
+                --div--;core.form.tabs:language,
                     --palette--;;language,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                --div--;core.form.tabs:access,
                     --palette--;;hidden,
                     --palette--;;access,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                --div--;core.form.tabs:notes,
                     rowDescription,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+                --div--;core.form.tabs:extended,
                     custom_field,
                     --custom_field;LLL:EXT:extension/Resources/Private/Language/locallang.xlf:custom_field_label
             ',
@@ -1361,16 +1361,16 @@ final class TcaPreparationTest extends UnitTestCase
                 'types' => [
                     'header' => [
                         'showitem' => '
-                            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:custom-label,
+                            --div--;core.form.tabs:custom-label,
                                 --palette--;;headers,
                                 bodytext,
                                 --palette--;;custom-palette,
-                            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                            --div--;core.form.tabs:appearance,
                                 --palette--;;frames,
                                 --palette--;;appearanceLinks,
-                            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                            --div--;core.form.tabs:categories,
                                 categories,
-                            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+                            --div--;core.form.tabs:extended,
                                 custom_field,
                                 --custom_field;LLL:EXT:extension/Resources/Private/Language/locallang.xlf:custom_field_label,
                         ',
@@ -1381,25 +1381,25 @@ final class TcaPreparationTest extends UnitTestCase
                 ],
             ],
             '
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:custom-label,
+                --div--;core.form.tabs:custom-label,
                     recordType,
                    colPos;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos_formlabel,
                     --palette--;;headers,
                     bodytext,
                     --palette--;;custom-palette,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                --div--;core.form.tabs:appearance,
                     --palette--;;frames,
                     --palette--;;appearanceLinks,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                --div--;core.form.tabs:categories,
                     categories,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
+                --div--;core.form.tabs:language,
                     --palette--;;language,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                --div--;core.form.tabs:access,
                     --palette--;;hidden,
                     --palette--;;access,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                --div--;core.form.tabs:notes,
                     rowDescription,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+                --div--;core.form.tabs:extended,
                     custom_field,
                     --custom_field;LLL:EXT:extension/Resources/Private/Language/locallang.xlf:custom_field_label
             ',
@@ -1533,12 +1533,12 @@ final class TcaPreparationTest extends UnitTestCase
                 'header' => [
                     'showitem' => '
                             --palette--;;headers,
-                        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+                        --div--;core.form.tabs:appearance,
                             --palette--;;frames,
                             --palette--;;appearanceLinks,
-                        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+                        --div--;core.form.tabs:categories,
                             categories,
-                        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+                        --div--;core.form.tabs:extended,
                     ',
                 ],
             ],

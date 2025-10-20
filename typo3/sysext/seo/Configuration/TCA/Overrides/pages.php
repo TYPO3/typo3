@@ -255,12 +255,12 @@ $GLOBALS['TCA']['pages'] = array_replace_recursive($GLOBALS['TCA']['pages'], $tc
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
     'pages',
     '
-    --div--;LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.tabs.seo,
+    --div--;core.form.tabs:seo,
         --palette--;;seo,
         --palette--;;robots,
         --palette--;;canonical,
         --palette--;;sitemap,
-    --div--;LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.tabs.socialmedia,
+    --div--;core.form.tabs:socialmedia,
         --palette--;;opengraph,
         --palette--;;twittercards',
     (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT,

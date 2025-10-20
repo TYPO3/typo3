@@ -20,7 +20,7 @@ return [
     ],
     'types' => [
         '1' => ['showitem' => 'title, child, squeeze,
-        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language, sys_language_uid, l10n_parent, l10n_diffsource, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden',
+        --div--;core.form.tabs:language, sys_language_uid, l10n_parent, l10n_diffsource, --div--;core.form.tabs:access, hidden',
         ],
     ],
     'columns' => [

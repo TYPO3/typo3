@@ -4,7 +4,7 @@
 		  product-name="seo">
 		<header/>
 		<body>
-			<trans-unit id="pages.tabs.seo">
+			<trans-unit id="pages.tabs.seo" x-unused-since="14.0">
 				<source>SEO</source>
 			</trans-unit>
 			<trans-unit id="pages.palettes.seo">
@@ -70,7 +70,7 @@
 			<trans-unit id="pages.canonical_link.description">
 				<source>A canonical URL is the URL of a page that search engines are advised to choose as the most representative from a set of duplicate pages. Often called deduplication, this process helps search engines show only one version of the otherwise duplicate content in its search results. TYPO3 automatically sets this to the most likely URL of the page if not set explicitly - which is most likely the URL of the page itself. If set here, the page will be removed from the XML sitemap.</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.socialmedia">
+			<trans-unit id="pages.tabs.socialmedia" x-unused-since="14.0">
 				<source>Social media</source>
 			</trans-unit>
 			<trans-unit id="pages.palettes.sitemap">

@@ -1266,15 +1266,15 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
         ];
         yield 'spaces and commas are removed' => [
             ', aField, ',
-            'aField,--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,',
+            'aField,--div--;core.form.tabs:extended,',
         ];
         yield 'extended div is added' => [
             'fieldX, --palette--;;foo, fieldX1, fieldY',
-            'fieldX, --palette--;;foo, fieldX1, fieldY,--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,',
+            'fieldX, --palette--;;foo, fieldX1, fieldY,--div--;core.form.tabs:extended,',
         ];
         yield 'extended is not added if already somewhere in place' => [
-            'fieldX, --palette--;;foo, fieldX1, fieldY,--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended, anotherField,',
-            'fieldX, --palette--;;foo, fieldX1, fieldY,--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended, anotherField,',
+            'fieldX, --palette--;;foo, fieldX1, fieldY,--div--;core.form.tabs:extended, anotherField,',
+            'fieldX, --palette--;;foo, fieldX1, fieldY,--div--;core.form.tabs:extended, anotherField,',
         ];
     }
 

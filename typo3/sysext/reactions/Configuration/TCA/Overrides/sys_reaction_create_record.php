@@ -73,10 +73,10 @@ $GLOBALS['TCA']['sys_reaction']['palettes']['createRecord'] = [
 
 $GLOBALS['TCA']['sys_reaction']['types'][\TYPO3\CMS\Reactions\Reaction\CreateRecordReaction::getType()] = [
     'showitem' => '
-        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+        --div--;core.form.tabs:general,
         --palette--;;config,
         --palette--;;createRecord,
-        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+        --div--;core.form.tabs:access,
         --palette--;;access',
     'columnsOverrides' => [
         'impersonate_user' => [

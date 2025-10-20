@@ -93,11 +93,11 @@ return [
     ],
     'types' => [
         '0' => ['showitem' => '
-            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+            --div--;core.form.tabs:general,
                 category, subject,message,position,
-            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+            --div--;core.form.tabs:access,
                 personal,
-            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+            --div--;core.form.tabs:extended,
         '],
     ],
 ];

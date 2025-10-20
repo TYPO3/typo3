@@ -153,13 +153,13 @@
 			<trans-unit id="be_users.languageItemGroups.unavailable">
 				<source>Unavailable Languages</source>
 			</trans-unit>
-			<trans-unit id="be_users.tabs.permissions">
+			<trans-unit id="be_users.tabs.permissions" x-unused-since="14.0">
 				<source>Module Permissions</source>
 			</trans-unit>
-			<trans-unit id="be_users.tabs.mounts_and_workspaces">
+			<trans-unit id="be_users.tabs.mounts_and_workspaces" x-unused-since="14.0">
 				<source>Mounts</source>
 			</trans-unit>
-			<trans-unit id="be_users.tabs.options">
+			<trans-unit id="be_users.tabs.options" x-unused-since="14.0">
 				<source>Options</source>
 			</trans-unit>
 			<trans-unit id="be_users.tabs.extended">
@@ -168,10 +168,10 @@
 			<trans-unit id="be_users.tabs.access">
 				<source>Access</source>
 			</trans-unit>
-			<trans-unit id="be_users.tabs.personal_data">
+			<trans-unit id="be_users.tabs.personal_data" x-unused-since="14.0">
 				<source>Personal Data</source>
 			</trans-unit>
-			<trans-unit id="be_users.tabs.permissionRecords">
+			<trans-unit id="be_users.tabs.permissionRecords" x-unused-since="14.0">
 				<source>Record Permissions</source>
 			</trans-unit>
 			<trans-unit id="be_users.palettes.account">
@@ -222,13 +222,13 @@
 			<trans-unit id="be_groups.subgroup">
 				<source>Inherit settings from groups</source>
 			</trans-unit>
-			<trans-unit id="be_groups.tabs.record_permissions">
+			<trans-unit id="be_groups.tabs.record_permissions" x-unused-since="14.0">
 				<source>Record Permissions</source>
 			</trans-unit>
-			<trans-unit id="be_groups.tabs.module_permissions">
+			<trans-unit id="be_groups.tabs.module_permissions" x-unused-since="14.0">
 				<source>Module Permissions</source>
 			</trans-unit>
-			<trans-unit id="be_groups.tabs.mounts_and_workspaces">
+			<trans-unit id="be_groups.tabs.mounts_and_workspaces" x-unused-since="14.0">
 				<source>Mounts</source>
 			</trans-unit>
 			<trans-unit id="be_groups.palettes.authentication">
@@ -315,7 +315,7 @@
 			<trans-unit id="be_groups.fileoper_perms_diroper_perms_delete">
 				<source>Directory: Delete recursively (rm -Rf)</source>
 			</trans-unit>
-			<trans-unit id="be_groups.tabs.options">
+			<trans-unit id="be_groups.tabs.options" x-unused-since="14.0">
 				<source>Options</source>
 			</trans-unit>
 			<trans-unit id="be_groups.tabs.extended">
@@ -657,7 +657,7 @@
 			<trans-unit id="sys_category.tabs.category">
 				<source>Categories</source>
 			</trans-unit>
-			<trans-unit id="sys_category.tabs.items">
+			<trans-unit id="sys_category.tabs.items" x-unused-since="14.0">
 				<source>Items</source>
 			</trans-unit>
 		</body>

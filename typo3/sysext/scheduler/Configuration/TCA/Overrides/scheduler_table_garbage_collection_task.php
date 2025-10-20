@@ -29,7 +29,7 @@ ExtensionManagementUtility::addRecordType(
         'group' => 'scheduler',
     ],
     '
-        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+        --div--;core.form.tabs:general,
             tasktype,
             task_group,
             description,
@@ -40,9 +40,9 @@ ExtensionManagementUtility::addRecordType(
             execution_details,
             nextexecution,
             --palette--;;lastexecution,
-        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+        --div--;core.form.tabs:access,
             disable,
-        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,',
+        --div--;core.form.tabs:extended,',
     [
         'columnsOverrides' => [
             'selected_tables' => [

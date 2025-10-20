@@ -45,6 +45,51 @@
 			<trans-unit id="plugin">
 				<source>Plugin</source>
 			</trans-unit>
+			<trans-unit id="metadata">
+				<source>Metadata</source>
+			</trans-unit>
+			<trans-unit id="resources">
+				<source>Resources</source>
+			</trans-unit>
+			<trans-unit id="seo">
+				<source>SEO</source>
+			</trans-unit>
+			<trans-unit id="socialmedia">
+				<source>Social Media</source>
+			</trans-unit>
+			<trans-unit id="options">
+				<source>Options</source>
+			</trans-unit>
+			<trans-unit id="audio">
+				<source>Audio</source>
+			</trans-unit>
+			<trans-unit id="video">
+				<source>Video</source>
+			</trans-unit>
+			<trans-unit id="camera">
+				<source>Camera</source>
+			</trans-unit>
+			<trans-unit id="permissions">
+				<source>Permissions</source>
+			</trans-unit>
+			<trans-unit id="mounts">
+				<source>Mounts</source>
+			</trans-unit>
+			<trans-unit id="personaldata">
+				<source>Personal Data</source>
+			</trans-unit>
+			<trans-unit id="items">
+				<source>Items</source>
+			</trans-unit>
+			<trans-unit id="recordpermissions">
+				<source>Record Permissions</source>
+			</trans-unit>
+			<trans-unit id="modulepermissions">
+				<source>Module Permissions</source>
+			</trans-unit>
+			<trans-unit id="advancedoptions">
+				<source>Advanced Options</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

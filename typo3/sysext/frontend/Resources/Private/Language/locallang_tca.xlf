@@ -411,7 +411,7 @@
 			<trans-unit id="fe_users.usergroup">
 				<source>Groups</source>
 			</trans-unit>
-			<trans-unit id="fe_users.tabs.personalData">
+			<trans-unit id="fe_users.tabs.personalData" x-unused-since="14.0">
 				<source>Personal Data</source>
 			</trans-unit>
 			<trans-unit id="fe_users.tabs.access">
@@ -513,7 +513,7 @@
 			<trans-unit id="sys_template.tabs.files">
 				<source>Resources</source>
 			</trans-unit>
-			<trans-unit id="sys_template.tabs.options">
+			<trans-unit id="sys_template.tabs.options" x-unused-since="14.0">
 				<source>Advanced Options</source>
 			</trans-unit>
 			<trans-unit id="sys_template.tabs.access">

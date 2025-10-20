@@ -70,7 +70,7 @@ return [
     ],
     'types' => [
         1 => [
-            'showitem' => '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,title,record_collection,--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,--palette--;;hidden,--palette--;;access',
+            'showitem' => '--div--;core.form.tabs:general,title,record_collection,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access',
         ],
     ],
 ];

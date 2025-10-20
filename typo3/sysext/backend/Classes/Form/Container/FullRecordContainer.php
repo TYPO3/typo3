@@ -50,12 +50,12 @@ class FullRecordContainer extends AbstractContainer
         // Streamline the fields array
         // First, make sure there is always a --div-- definition for the first element
         if (!str_starts_with($fieldsArray[0], '--div--')) {
-            array_unshift($fieldsArray, '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general');
+            array_unshift($fieldsArray, '--div--;core.form.tabs:general');
         }
         // If first tab has no label definition, add "general" label
         $firstTabHasLabel = count(GeneralUtility::trimExplode(';', $fieldsArray[0])) > 1;
         if (!$firstTabHasLabel) {
-            $fieldsArray[0] = '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general';
+            $fieldsArray[0] = '--div--;core.form.tabs:general';
         }
         // If there are at least two --div-- definitions, inner container will be a TabContainer, else a NoTabContainer
         $tabCount = 0;

@@ -107,15 +107,15 @@ return [
     'types' => [
         '0' => [
             'showitem' => '
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+                --div--;core.form.tabs:general,
                         name, driver, configuration, is_default, auto_extract_metadata, processingfolder,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:accesscapabilities,
+                --div--;core.form.tabs:accesscapabilities,
                         --palette--;Capabilities;capabilities,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+                --div--;core.form.tabs:access,
                         is_online,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+                --div--;core.form.tabs:notes,
                     description,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+                --div--;core.form.tabs:extended,
             ',
             'creationOptions' => [
                 'enableDirectRecordTypeCreation' => false,

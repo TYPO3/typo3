@@ -136,16 +136,16 @@
 			</trans-unit>
 
 			<!-- sys_file_metadata tabs -->
-			<trans-unit id="tabs.metadata">
+			<trans-unit id="tabs.metadata" x-unused-since="14.0">
 				<source>Metadata</source>
 			</trans-unit>
-			<trans-unit id="tabs.camera">
+			<trans-unit id="tabs.camera" x-unused-since="14.0">
 				<source>Camera Data</source>
 			</trans-unit>
-			<trans-unit id="tabs.audio">
+			<trans-unit id="tabs.audio" x-unused-since="14.0">
 				<source>Audio</source>
 			</trans-unit>
-			<trans-unit id="tabs.video">
+			<trans-unit id="tabs.video" x-unused-since="14.0">
 				<source>Video</source>
 			</trans-unit>
 
