@@ -1885,7 +1885,7 @@ class DatabaseRecordList
                     'aria-haspopup' => 'dialog',
                     'data-button-ok-text' => $linkTitle,
                     'data-button-close-text' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel'),
-                    'data-bs-content' => $warningText,
+                    'data-content' => $warningText,
                     'data-uri' => (string)$this->uriBuilder->buildUriFromRoute('tce_db', [
                         'cmd' => [
                             $table => [
@@ -2079,7 +2079,7 @@ class DatabaseRecordList
             $pasteAfterTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_pasteAfter');
             $pasteAfterContent = $this->clipObj->confirmMsgText($table, $record->getRawRecord()?->toArray(), 'after');
             $clipboardCells['pasteAfter'] = '
-                <button type="button" class="btn btn-default t3js-modal-trigger" data-severity="warning" aria-haspopup="dialog" title="' . htmlspecialchars($pasteAfterTitle) . '" aria-label="' . htmlspecialchars($pasteAfterTitle) . '" data-uri="' . htmlspecialchars($pasteAfterUrl) . '" data-bs-content="' . htmlspecialchars($pasteAfterContent) . '">
+                <button type="button" class="btn btn-default t3js-modal-trigger" data-severity="warning" aria-haspopup="dialog" title="' . htmlspecialchars($pasteAfterTitle) . '" aria-label="' . htmlspecialchars($pasteAfterTitle) . '" data-uri="' . htmlspecialchars($pasteAfterUrl) . '" data-content="' . htmlspecialchars($pasteAfterContent) . '">
                     ' . $this->iconFactory->getIcon('actions-document-paste-after', IconSize::SMALL)->render() . '
                 </button>';
         }
@@ -2093,7 +2093,7 @@ class DatabaseRecordList
             $pasteIntoTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_pasteInto');
             $pasteIntoContent = $this->clipObj->confirmMsgText($table, $record->getRawRecord()?->toArray(), 'into');
             $clipboardCells['pasteInto'] = '
-                <button type="button" class="btn btn-default t3js-modal-trigger" aria-haspopup="dialog" data-severity="warning" title="' . htmlspecialchars($pasteIntoTitle) . '" aria-label="' . htmlspecialchars($pasteIntoTitle) . '" data-uri="' . htmlspecialchars($pasteIntoUrl) . '" data-bs-content="' . htmlspecialchars($pasteIntoContent) . '">
+                <button type="button" class="btn btn-default t3js-modal-trigger" aria-haspopup="dialog" data-severity="warning" title="' . htmlspecialchars($pasteIntoTitle) . '" aria-label="' . htmlspecialchars($pasteIntoTitle) . '" data-uri="' . htmlspecialchars($pasteIntoUrl) . '" data-content="' . htmlspecialchars($pasteIntoContent) . '">
                     ' . $this->iconFactory->getIcon('actions-document-paste-into', IconSize::SMALL)->render() . '
                 </button>';
         }

@@ -79,19 +79,12 @@ function newFormSetup(formManagerApp: FormManager): void {
 
       const folders = formManagerApp.getAccessibleFormStorageFolders();
       if (folders.length === 0) {
-        html = '<div class="new-form-modal">'
-          + '<div class="row">'
-          + '<label class="col col-form-label">' + TYPO3.lang['formManager.newFormWizard.step1.noStorages'] + '</label>'
-          + '</div>'
-          + '</div>';
-
+        html = '<h5 class="form-section-headline">' + TYPO3.lang['formManager.newFormWizard.step1.noStorages'] + '</h5>';
         slide.html(html);
         formManagerApp.assert(false, 'No accessible form storage folders', 1477506500);
       }
 
-      html = '<div class="new-form-modal">';
-
-      html += '<div class="card-container">'
+      html = '<div class="card-container">'
         + '<div class="card card-size-medium">'
         + '<div class="card-header">'
         + '<div class="card-icon">' + blankIconMarkup + '</div>'
@@ -121,9 +114,8 @@ function newFormSetup(formManagerApp: FormManager): void {
         + '<div class="card-footer">'
         + '<button type="button" class="btn btn-default" data-inline="1" value="predefined" data-identifier="newFormModeButton">' + addIconMarkup + ' ' + TYPO3.lang['formManager.predefinedForm.label'] + '</button>'
         + '</div>'
+        + '</div>'
         + '</div>';
-
-      html += '</div>';
 
       slide.html(html);
 
@@ -194,7 +186,7 @@ function newFormSetup(formManagerApp: FormManager): void {
         $(templateSelect).append(option);
       }
 
-      html = '<div class="new-form-modal">';
+      html = '';
 
       if (settings.newFormMode === 'blank') {
         html += '<h5 class="form-section-headline">' + TYPO3.lang['formManager.blankForm.label'] + '</h5>';
@@ -203,30 +195,24 @@ function newFormSetup(formManagerApp: FormManager): void {
       } else {
         html += '<h5 class="form-section-headline">' + TYPO3.lang['formManager.predefinedForm.label'] + '</h5>';
         if (prototypes.length > 1) {
-          html += '<div class="mb-3">'
-            + '<label for="new-form-prototype-name">' + '<strong>' + TYPO3.lang['formManager.form_prototype'] + '</strong>' + '</label>'
-            + '<div class="formengine-field-item t3js-formengine-field-item">'
-            + '<div class="form-control-wrap">' + $(prototypeNameSelect)[0].outerHTML + '</div>'
-            + '</div>'
+          html += '<div class="form-group">'
+            + '<label class="form-label" for="new-form-prototype-name">' + TYPO3.lang['formManager.form_prototype'] + '</label>'
+            + $(prototypeNameSelect)[0].outerHTML
             + '</div>';
         }
 
         if (templates.length > 1) {
-          html += '<div class="mb-3">'
-            + '<label for="new-form-template">' + '<strong>' + TYPO3.lang['formManager.form_template'] + '</strong>' + '</label>'
-            + '<div class="formengine-field-item t3js-formengine-field-item">'
+          html += '<div class="form-group">'
+            + '<label class="form-label" for="new-form-template">' + TYPO3.lang['formManager.form_template'] + '</label>'
             + '<div class="form-description">' + TYPO3.lang['formManager.form_template_description'] + '</div>'
-            + '<div class="form-control-wrap">' + $(templateSelect)[0].outerHTML + '</div>'
-            + '</div>'
+            + $(templateSelect)[0].outerHTML
             + '</div>';
         }
       }
 
-      html += '<div class="mb-3">'
-        + '<label for="new-form-name">' + '<strong>' + TYPO3.lang['formManager.form_name'] + '</strong>' + '</label>'
-        + '<div class="formengine-field-item t3js-formengine-field-item">'
-        + '<div class="form-description">' + TYPO3.lang['formManager.form_name_description'] + '</div>'
-        + '<div class="form-control-wrap">';
+      html += '<div class="form-group">'
+        + '<label class="form-label" for="new-form-name">' + TYPO3.lang['formManager.form_name'] + '</label>'
+        + '<div class="form-description">' + TYPO3.lang['formManager.form_name_description'] + '</div>';
 
       if (settings.formName) {
         html += '<input class="form-control" id="new-form-name" data-identifier="newFormName" value="' + securityUtility.encodeHtml(settings.formName) + '" />';
@@ -239,21 +225,15 @@ function newFormSetup(formManagerApp: FormManager): void {
         html += '<input class="form-control has-error" id="new-form-name" data-identifier="newFormName" />';
       }
 
-      html += '</div>'
-        + '</div>'
-        + '</div>';
+      html += '</div>';
 
       if (savePathSelect) {
-        html += '<div class="mb-3">'
-          + '<label for="new-form-save-path">' + '<strong>' + TYPO3.lang['formManager.form_save_path'] + '</strong>' + '</label>'
-          + '<div class="formengine-field-item t3js-formengine-field-item">'
+        html += '<div class="form-group">'
+          + '<label class="form-label" for="new-form-save-path">' + TYPO3.lang['formManager.form_save_path'] + '</label>'
           + '<div class="form-description">' + TYPO3.lang['formManager.form_save_path_description'] + '</div>'
-          + '<div class="form-control-wrap">' + $(savePathSelect)[0].outerHTML + '</div>'
-          + '</div>'
+          + $(savePathSelect)[0].outerHTML
           + '</div>';
       }
-
-      html += '</div>';
 
       slide.html(html);
 
@@ -350,12 +330,8 @@ function newFormSetup(formManagerApp: FormManager): void {
       const modal = MultiStepWizard.setup.$carousel.closest('.modal');
       const nextButton = modal.find('.modal-footer').find('button[name="next"]');
 
-      let html = '<div class="new-form-modal">';
-
-      html += '<div class="mb-3">'
-        + '<h5 class="form-section-headline">' + TYPO3.lang['formManager.newFormWizard.step3.check'] + '</h5>'
+      let html = '<h5 class="form-section-headline">' + TYPO3.lang['formManager.newFormWizard.step3.check'] + '</h5>'
         + '<p>' + TYPO3.lang['formManager.newFormWizard.step3.message'] + '</p>'
-        + '</div>'
         + '<div class="alert alert-notice">';
 
       if (settings.prototypeNameName) {
@@ -399,9 +375,7 @@ function newFormSetup(formManagerApp: FormManager): void {
         + '<div class="col">'
         + securityUtility.encodeHtml(settings.savePathName)
         + '</div>'
-        + '</div>';
-
-      html += '</div>'
+        + '</div>'
         + '</div>';
 
       slide.html(html);
@@ -530,22 +504,20 @@ function duplicateFormSetup(formManagerApp: FormManager): void {
 
       html = '<div class="duplicate-form-modal">'
         + '<h2 class="h3 form-section-headline">' + TYPO3.lang['formManager.new_form_name'] + '</h2>'
-        + '<div class="mb-3">'
-        + '<label for="duplicate-form-name">' + '<strong>' + TYPO3.lang['formManager.form_name'] + '</strong>' + '</label>'
-        + '<div class="formengine-field-item t3js-formengine-field-item">'
+        + '<div class="form-group">'
+        + '<label class="form-label for="duplicate-form-name">' + TYPO3.lang['formManager.form_name'] + '</label>'
         + '<div class="form-description">' + TYPO3.lang['formManager.form_name_description'] + '</div>'
-        + '<div class="form-control-wrap">'
+        + '<div class="formengine-field-item t3js-formengine-field-item">'
         + '<input id="duplicate-form-name" class="form-control has-error" data-identifier="duplicateFormName" />'
-        + '</div>'
         + '</div>'
         + '</div>';
 
       if (savePathSelect) {
-        html += '<div class="mb-3">'
-          + '<label for="duplicate-form-save-path">' + '<strong>' + TYPO3.lang['formManager.form_save_path'] + '</strong>' + '</label>'
-          + '<div class="formengine-field-item t3js-formengine-field-item">'
+        html += '<div class="form-group">'
+          + '<label class="form-label" for="duplicate-form-save-path">' + TYPO3.lang['formManager.form_save_path'] + '</label>'
           + '<div class="form-description">' + TYPO3.lang['formManager.form_save_path_description'] + '</div>'
-          + '<div class="form-control-wrap">' + $(savePathSelect)[0].outerHTML + '</div>'
+          + '<div class="formengine-field-item t3js-formengine-field-item">'
+          + $(savePathSelect)[0].outerHTML
           + '</div>'
           + '</div>';
       }
@@ -602,14 +574,8 @@ function duplicateFormSetup(formManagerApp: FormManager): void {
       const modal = MultiStepWizard.setup.$carousel.closest('.modal');
       const nextButton = modal.find('.modal-footer').find('button[name="next"]');
 
-      let html = '<div class="new-form-modal">'
-        + '<div class="row">'
-        + '<div class="col">';
-
-      html += '<div class="mb-3">'
-        + '<h5 class="form-section-headline">' + TYPO3.lang['formManager.duplicateFormWizard.step2.check'] + '</h5>'
+      const html = '<h5 class="form-section-headline">' + TYPO3.lang['formManager.duplicateFormWizard.step2.check'] + '</h5>'
         + '<p>' + TYPO3.lang['formManager.newFormWizard.step3.message'] + '</p>'
-        + '</div>'
         + '<div class="alert alert-notice">'
         + '<div class="dropdown-table-row">'
         + '<div class="dropdown-table-column dropdown-table-icon">'
@@ -644,9 +610,6 @@ function duplicateFormSetup(formManagerApp: FormManager): void {
         + securityUtility.encodeHtml(settings.confirmationDuplicateFormSavePath)
         + '</div>'
         + '</div>'
-        + '</div>';
-
-      html += '</div>'
         + '</div>'
         + '</div>';
 
@@ -719,9 +682,7 @@ function showReferencesSetup(formManagerApp: FormManager): void {
       const editIconMarkup = await Icons.getIcon('actions-open', Icons.sizes.small);
 
       if (referencesLength > 0) {
-        html = '<div>'
-          + '<h2 class="h3">' + TYPO3.lang['formManager.references.headline'].replace('{0}', securityUtility.encodeHtml($that.data('formName'))) + '</h2>'
-          + '</div>'
+        html = '<h2 class="h3">' + TYPO3.lang['formManager.references.headline'].replace('{0}', securityUtility.encodeHtml($that.data('formName'))) + '</h2>'
           + '<div class="table-fit">'
           + '<table id="forms" class="table table-striped table-hover">'
           + '<thead>'

@@ -42,7 +42,7 @@ final class SchedulerTaskWizardCest
         // Click the "New task" button which should open the wizard
         $I->click('//typo3-scheduler-new-task-wizard-button', '.module-docheader');
         $modalDialog->canSeeDialog();
-        $I->see('New task', '.modal-title');
+        $I->see('New task', '.t3js-modal-title');
 
         // Should contain the wizard web component
         $I->seeElement('typo3-backend-new-record-wizard');

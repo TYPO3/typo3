@@ -14,7 +14,6 @@
 import { html, css, type TemplateResult, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
-import Severity from '@typo3/backend/severity';
 import Modal from '@typo3/backend/modal';
 import { lll } from '@typo3/core/lit-helper';
 
@@ -88,7 +87,7 @@ export class RecordDownloadButton extends LitElement {
         },
         {
           text: this.ok || lll('button.ok') || 'Download',
-          btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.info),
+          btnClass: 'btn-primary',
           name: 'download',
           trigger: (): void => {
             const form: HTMLFormElement = modal.querySelector('form');

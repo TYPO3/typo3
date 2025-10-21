@@ -67,7 +67,7 @@ final class FileOperationsCest
         $I->switchToIFrame('modal_frame');
         $modalDialog->canSeeDialog();
         $I->click('.t3js-modal-close');
-        $I->waitForElementNotVisible('.modal-dialog');
+        $I->waitForElementNotVisible('.t3js-modal');
         $I->switchToContentFrame();
         $I->see($fileName, '[data-multi-record-selection-element="true"]');
 

@@ -50,7 +50,7 @@ final class FalMetadataCest
         $I->click('typo3-backend-new-content-element-wizard-button');
         $I->wait(1);
         $I->switchToMainFrame();
-        $I->waitForElement('.t3js-modal.show');
+        $I->waitForElement('.t3js-modal[open]');
         $I->wait(3);
         $I->waitForElementNotVisible('div#nprogess');
         $I->executeJS("document.querySelector('typo3-backend-new-record-wizard').shadowRoot.querySelector('button[data-identifier=\"default\"]').click()");
@@ -145,7 +145,7 @@ final class FalMetadataCest
         $I->wait(1);
         $I->click('typo3-backend-new-content-element-wizard-button');
         $I->switchToMainFrame();
-        $I->waitForElement('.t3js-modal.show');
+        $I->waitForElement('.t3js-modal[open]');
         $I->wait(3);
         $I->waitForElementNotVisible('div#nprogess');
         $I->executeJS("document.querySelector('typo3-backend-new-record-wizard').shadowRoot.querySelector('button[data-identifier=\"default\"]').click()");

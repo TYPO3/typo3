@@ -37,7 +37,7 @@ final class InlineContentElementLocalizeSynchronizeCest
         // Add a content element type images and localize it
         $I->click('.module-body td[data-language-uid="0"] span[data-identifier="actions-plus"]');
         $I->switchToMainFrame();
-        $I->waitForElement('.t3js-modal.show');
+        $I->waitForElement('.t3js-modal[open]');
         $I->wait(3);
         $I->waitForElementNotVisible('div#nprogess');
         $I->executeJS("document.querySelector('typo3-backend-new-record-wizard').shadowRoot.querySelector('button[data-identifier=\"default\"]').click()");
@@ -101,7 +101,7 @@ final class InlineContentElementLocalizeSynchronizeCest
         $I->waitForText('Save and close');
         $I->click('Save and close');
         $I->wait(1);
-        $I->waitForElementNotVisible('.t3js-modal.show');
+        $I->waitForElementNotVisible('.t3js-modal');
         // Open the localized element and see that the second image can be synchronized
         $I->switchToContentFrame();
         $I->waitForText('(copy 1)');

@@ -28,7 +28,7 @@ final class ModalDialog extends AbstractModalDialog
      *
      * @var string
      */
-    public static $openedModalSelector = '.modal.show';
+    public static $openedModalSelector = '.t3js-modal[open]';
 
     /**
      * Selector for the container in the modal where the buttons are located
@@ -36,7 +36,7 @@ final class ModalDialog extends AbstractModalDialog
      *
      * @var string
      */
-    public static $openedModalButtonContainerSelector = '.modal.show .modal-footer';
+    public static $openedModalButtonContainerSelector = '.t3js-modal[open] .modal-footer';
 
     /**
      * @var ApplicationTester

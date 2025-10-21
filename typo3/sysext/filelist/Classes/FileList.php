@@ -1185,7 +1185,7 @@ class FileList
         $button->setAttributes([
             'type' => 'button',
             'data-title' => $title,
-            'data-bs-content' => sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.delete'), trim($recordInfo)) . $referenceCountText,
+            'data-content' => sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.delete'), trim($recordInfo)) . $referenceCountText,
             'data-filelist-action' => 'delete',
             'data-filelist-delete' => 'true',
             'data-filelist-delete-identifier' => $resourceView->getIdentifier(),

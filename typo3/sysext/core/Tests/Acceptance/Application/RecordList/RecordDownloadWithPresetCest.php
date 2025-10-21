@@ -47,7 +47,7 @@ final class RecordDownloadWithPresetCest
         $I->canSee('Download');
         $I->click('typo3-recordlist-record-download-button');
         $modalDialog->canSeeDialog();
-        $I->canSee('Download Page:', ModalDialog::$openedModalSelector . ' .modal-title');
+        $I->canSee('Download Page:', ModalDialog::$openedModalSelector . ' .t3js-modal-title');
         $I->canSee('Preset', ModalDialog::$openedModalSelector . ' .modal-body label');
         $I->fillField(ModalDialog::$openedModalSelector . ' input[name="filename"]', 'test-download');
         $I->selectOption(ModalDialog::$openedModalSelector . ' select[name="preset"]', 'Test-Preset');
@@ -72,7 +72,7 @@ final class RecordDownloadWithPresetCest
         $I->canSee('Download');
         $I->click('typo3-recordlist-record-download-button');
         $modalDialog->canSeeDialog();
-        $I->canSee('Download Page:', ModalDialog::$openedModalSelector . ' .modal-title');
+        $I->canSee('Download Page:', ModalDialog::$openedModalSelector . ' .t3js-modal-title');
         $I->dontSee('Preset', ModalDialog::$openedModalSelector . ' .modal-body label');
         $I->fillField(ModalDialog::$openedModalSelector . ' input[name="filename"]', 'test-download');
         $I->click('button[name="download"]', ModalDialog::$openedModalButtonContainerSelector);

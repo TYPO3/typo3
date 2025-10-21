@@ -14,7 +14,7 @@
 import { SeverityEnum } from './enum/severity';
 import $ from 'jquery';
 import { Carousel } from 'bootstrap';
-import Modal, { type ModalElement } from './modal';
+import Modal, { type ModalElement, Identifiers } from './modal';
 import Severity from './severity';
 import Icons from './icons';
 import { topLevelModuleImport } from './utility/top-level-module-import';
@@ -146,7 +146,7 @@ class MultiStepWizard {
       buttons: [{
         text: top.TYPO3.lang['wizard.button.cancel'],
         active: true,
-        btnClass: 'btn-default float-start',
+        btnClass: 'btn-default',
         name: 'cancel',
         trigger: (): void => {
           this.getComponent().trigger('wizard-dismiss');
@@ -164,22 +164,25 @@ class MultiStepWizard {
       callback: (modal: ModalElement): void => {
         topLevelModuleImport('@typo3/backend/element/progress-tracker-element.js').then((): void => {
           this.setup.carousel = new Carousel(modal.querySelector('.carousel'));
-          this.addButtonContainer();
           this.addProgressBar();
           this.initializeEvents();
+
+          if (this.setup.forceSelection) {
+            // @todo: This is a hack as modal buttons cannot be initially disabled.
+            this.lockPrevStep();
+            this.lockNextStep();
+          }
+
+          // Manually trigger the first slide callback since typo3-modal-shown already fired
+          const $firstSlide = this.setup.$carousel.find('.carousel-item').first();
+          if ($firstSlide.length > 0 && firstSlide.callback) {
+            this.runSlideCallback(firstSlide, $firstSlide);
+          }
         });
       }
     });
 
-    this.getComponent().on('wizard-visible', (): void => {
-      if (this.setup.forceSelection) {
-        // @todo: This is a hack as modal buttons cannot be initially disabled.
-        this.lockPrevStep();
-        this.lockNextStep();
-      }
-
-      this.runSlideCallback(firstSlide, this.setup.$carousel.find('.carousel-item').first());
-    }).on('wizard-dismissed', (): void => {
+    this.getComponent().on('wizard-dismissed', (): void => {
       this.setup = $.extend(true, {}, this.originalSetup);
     });
   }
@@ -306,7 +309,8 @@ class MultiStepWizard {
         this.lockNextStep();
       }
 
-      this.runSlideCallback(slide, $(evt.relatedTarget));
+      const $slide = $(evt.relatedTarget);
+      this.runSlideCallback(slide, $slide);
     });
 
     // Custom event, closes the wizard
@@ -315,9 +319,6 @@ class MultiStepWizard {
 
     Modal.currentModal.addEventListener('typo3-modal-hidden', (): void => {
       cmp.trigger('wizard-dismissed');
-    });
-    Modal.currentModal.addEventListener('typo3-modal-shown', (): void => {
-      cmp.trigger('wizard-visible');
     });
   }
 
@@ -346,15 +347,12 @@ class MultiStepWizard {
   private nextSlideChanges($modal: JQuery): void {
     this.initializeSlideNextEvent($modal);
 
-    const $modalTitle = $modal.find('.modal-title');
     const nextSlideNumber = this.setup.$carousel.data('currentSlide') + 1;
     const currentIndex = this.setup.$carousel.data('currentIndex');
     const nextIndex = currentIndex + 1;
-    const $slideContent = $modal.find('.carousel-item:eq(' + nextIndex + ')');
+    const nextSlide = this.setup.slides[nextIndex];
 
-    // Flush content when sliding
-    $slideContent.empty().append(this.setup.slides[nextIndex].content);
-    $modalTitle.text(this.setup.slides[nextIndex].title);
+    Modal.currentModal.modalTitle = nextSlide.title;
 
     // Always unlock previous step
     this.unlockPrevStep();
@@ -377,17 +375,14 @@ class MultiStepWizard {
   private prevSlideChanges($modal: JQuery): void {
     this.initializeSlidePrevEvent($modal);
 
-    const $modalTitle = $modal.find('.modal-title');
     const $modalFooter = $modal.find('.modal-footer');
     const $nextButton = $modalFooter.find('button[name="next"]');
     const nextSlideNumber = this.setup.$carousel.data('currentSlide') - 1;
     const currentIndex = this.setup.$carousel.data('currentIndex');
     const nextIndex = currentIndex - 1;
-    const $slideContent = $modal.find('.carousel-item:eq(' + nextIndex + ')');
+    const nextSlide = this.setup.slides[nextIndex];
 
-    // Flush content when sliding
-    $slideContent.empty().append(this.setup.slides[nextIndex].content);
-    $modalTitle.text(this.setup.slides[nextIndex].title);
+    Modal.currentModal.modalTitle = nextSlide.title;
 
     // Always unlock previous step if there is any
     if (nextIndex > 0) {
@@ -464,26 +459,19 @@ class MultiStepWizard {
           return slide.progressBarTitle;
         });
 
-      const modalContent = this.setup.$carousel.get(0).closest('.modal-content');
-      const modalBody = modalContent.querySelector('.modal-body');
+      const modal = this.setup.$carousel.get(0).closest(Identifiers.modal);
+      const modalHeader = modal.querySelector(Identifiers.header);
       const modalProgress = document.createElement('div');
       modalProgress.classList.add('modal-progress');
       modalProgress.appendChild(progressTracker);
 
-      modalContent.insertBefore(modalProgress, modalBody);
+      // Insert progress bar after the header
+      if (modalHeader.nextSibling) {
+        modal.insertBefore(modalProgress, modalHeader.nextSibling);
+      } else {
+        modal.appendChild(modalProgress);
+      }
     }
-  }
-
-  /**
-   * Wrap all the buttons of modal footer
-   *
-   * @private
-   */
-  private addButtonContainer(): void {
-    const $modal = this.setup.$carousel.closest('.modal');
-    const $modalFooterButtons = $modal.find('.modal-footer .btn');
-
-    $modalFooterButtons.wrapAll('<div class="modal-btn-group" />');
   }
 
   /**
@@ -508,21 +496,33 @@ class MultiStepWizard {
 
     for (let i = 0; i < this.setup.slides.length; ++i) {
       const currentSlide: Slide = this.setup.slides[i];
-      const slideInner = document.createElement('div');
-      if (typeof currentSlide.content === 'string') {
-        slideInner.textContent = currentSlide.content;
-      } else {
-        if (currentSlide.content instanceof $) {
-          slideInner.replaceChildren((currentSlide.content as JQuery).get(0));
-        } else {
-          slideInner.replaceChildren(currentSlide.content as Element | DocumentFragment);
-        }
-      }
       const slide = document.createElement('div');
       slide.classList.add('carousel-item');
       slide.dataset.bsSlide = currentSlide.identifier;
       slide.dataset.step = i.toString(10);
-      slide.append(slideInner);
+
+      // Populate slides with their initial content
+      // For slides with callbacks, content may be empty and will be populated by the callback
+      if (typeof currentSlide.content === 'string') {
+        if (currentSlide.content !== '') {
+          slide.textContent = currentSlide.content;
+        }
+      } else {
+        if (currentSlide.content instanceof $) {
+          const elem = (currentSlide.content as JQuery).get(0);
+          if (elem) {
+            // Move the element (don't clone) since each slide uses its content only once
+            slide.append(elem);
+          }
+        } else if (currentSlide.content instanceof DocumentFragment) {
+          // Move the fragment (don't clone) since DocumentFragments can only be used once anyway
+          slide.append(currentSlide.content);
+        } else {
+          const elem = currentSlide.content as Element;
+          // Move the element (don't clone) since each slide uses its content only once
+          slide.append(elem);
+        }
+      }
       carouselInner.append(slide);
     }
 

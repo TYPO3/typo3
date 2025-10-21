@@ -42,7 +42,7 @@ final class RecordDownloadCest
         $I->canSee('Download');
         $I->click('typo3-recordlist-record-download-button');
         $modalDialog->canSeeDialog();
-        $I->canSee('Download Page:', ModalDialog::$openedModalSelector . ' .modal-title');
+        $I->canSee('Download Page:', ModalDialog::$openedModalSelector . ' .t3js-modal-title');
         $I->fillField(ModalDialog::$openedModalSelector . ' input[name="filename"]', 'test-download');
         $I->canSee('CSV options', ModalDialog::$openedModalSelector . ' .modal-body h2');
         $I->selectOption(ModalDialog::$openedModalSelector . ' select[name="format"]', 'json');

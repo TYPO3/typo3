@@ -35,9 +35,9 @@ class AbstractCest
     public function _after(ApplicationTester $I): void
     {
         // Make sure any open modal gets closed
-        if ($I->tryToSeeElement('.modal-dialog')) {
+        if ($I->tryToSeeElement('.t3js-modal')) {
             $I->click('.t3js-modal-close');
-            $I->waitForElementNotVisible('.modal-dialog');
+            $I->waitForElementNotVisible('.t3js-modal');
         }
 
         $I->click('Logout');

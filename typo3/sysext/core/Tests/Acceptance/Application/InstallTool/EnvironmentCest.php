@@ -58,7 +58,7 @@ final class EnvironmentCest extends AbstractCest
     public function imageProcessingWorks(ApplicationTester $I): void
     {
         $I->click('Test Images');
-        $I->waitForElementVisible('.modal-dialog');
+        $I->waitForElementVisible('.t3js-modal');
         // This is odd: The 'close' X upper right does not immediately work, even though waitForElementVisible below
         // reports 'is ok' quickly. Worth a look of some JS jockey? We give the system some time to accumulate.
         $I->wait(1);

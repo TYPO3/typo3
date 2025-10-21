@@ -40,8 +40,8 @@ final class MaintenanceCest extends AbstractCest
     public function analyzeDatabaseStructureWorks(ApplicationTester $I): void
     {
         $I->click('Analyze database…');
-        $I->waitForElementVisible('.modal-dialog');
-        $I->see('Analyze Database Structure', '.modal-dialog h1');
+        $I->waitForElementVisible('.t3js-modal');
+        $I->see('Analyze Database Structure', '.t3js-modal .modal-header-title');
         $I->waitForElementVisible('.callout-success');
         $I->see('Database schema is up to date. Good job!', '.callout-success .callout-title');
     }
@@ -49,8 +49,8 @@ final class MaintenanceCest extends AbstractCest
     public function removeTemporaryAssetsWorks(ApplicationTester $I): void
     {
         $I->click('Scan temporary files…');
-        $I->waitForElementVisible('.modal-dialog');
-        $I->see('Remove Temporary Assets', '.modal-dialog h1');
+        $I->waitForElementVisible('.t3js-modal');
+        $I->see('Remove Temporary Assets', '.t3js-modal .modal-header-title');
     }
 
     #[Env('classic')]
@@ -64,15 +64,15 @@ final class MaintenanceCest extends AbstractCest
     public function clearPersistentTablesWorks(ApplicationTester $I): void
     {
         $I->click('Scan tables…');
-        $I->waitForElementVisible('.modal-dialog');
-        $I->see('Clear Persistent Database Tables', '.modal-dialog h1');
+        $I->waitForElementVisible('.t3js-modal');
+        $I->see('Clear Persistent Database Tables', '.t3js-modal .modal-header-title');
     }
 
     public function createAdminUserWorks(ApplicationTester $I): void
     {
         $I->click('Create Administrator…');
-        $I->waitForElementVisible('.modal-dialog');
-        $I->see('Create Administrative User', '.modal-dialog h1');
+        $I->waitForElementVisible('.t3js-modal');
+        $I->see('Create Administrative User', '.t3js-modal .modal-header-title');
     }
 
     public function resetBackendUserPreferencesWorks(ApplicationTester $I): void
@@ -86,8 +86,8 @@ final class MaintenanceCest extends AbstractCest
     public function manageLanguagePacksWorks(ApplicationTester $I): void
     {
         $I->click('Manage languages…');
-        $I->waitForElementVisible('.modal-dialog');
-        $I->see('Manage Language Packs', '.modal-dialog h1');
-        $I->waitForText('Active languages', 30, '.modal-dialog h2');
+        $I->waitForElementVisible('.t3js-modal');
+        $I->see('Manage Language Packs', '.t3js-modal .modal-header-title');
+        $I->waitForText('Active languages', 30, '.t3js-modal h2');
     }
 }

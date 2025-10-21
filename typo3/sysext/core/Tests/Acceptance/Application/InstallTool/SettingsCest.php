@@ -211,14 +211,13 @@ final class SettingsCest extends AbstractCest
 
     private function closeModalAndHideFlashMessage(ApplicationTester $I): void
     {
-        // We need to close the flash message here to be able to close the modal
+        if ($I->tryToSeeElement('.t3js-modal')) {
+            $I->click('.t3js-modal-close');
+            $I->waitForElementNotVisible('.t3js-modal');
+        }
         if ($I->tryToSeeElement(self::$alertContainerSelector)) {
             $I->click('.close', self::$alertContainerSelector);
             $I->waitForElementNotVisible(self::$alertContainerSelector);
-        }
-        if ($I->tryToSeeElement('.modal-dialog')) {
-            $I->click('.t3js-modal-close');
-            $I->waitForElementNotVisible('.modal-dialog');
         }
     }
 }
