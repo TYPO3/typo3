@@ -17,11 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\View;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceException;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
+use TYPO3\CMS\Core\SystemResource\Type\PublicResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Provide styling for backend authentication forms, customized via extension configuration.
@@ -34,23 +38,27 @@ readonly class AuthenticationStyleInformation
     public function __construct(
         private ExtensionConfiguration $extensionConfiguration,
         private LoggerInterface $logger,
+        private SystemResourceFactory $resourceFactory,
+        private SystemResourcePublisherInterface $resourcePublisher,
     ) {}
 
-    public function getBackgroundImageStyles(): string
+    public function getBackgroundImageStyles(ServerRequestInterface $request): string
     {
-        $backgroundImage = (string)($this->getBackendExtensionConfiguration()['loginBackgroundImage'] ?? '');
-        if ($backgroundImage === '') {
+        $backgroundImageResource = (string)($this->getBackendExtensionConfiguration()['loginBackgroundImage'] ?? '');
+        if ($backgroundImageResource === '') {
             return '';
         }
-
-        $backgroundImageUri = $this->getUriForFileName($backgroundImage);
-        if ($backgroundImageUri === '') {
-            $this->logger->warning('The configured TYPO3 backend login background image "{image_url}" can\'t be resolved. Please check if the file exists and the extension is activated.', [
-                'image_url' => $backgroundImage,
+        try {
+            $backgroundImageUri = (string)$this->resourcePublisher->generateUri(
+                $this->resourceFactory->createPublicResource($backgroundImageResource),
+                $request,
+            );
+        } catch (SystemResourceException) {
+            $this->logger->warning('The configured TYPO3 backend login background image "{image_resource}" can\'t be resolved. Please check if the file exists and the extension is activated.', [
+                'image_resource' => $backgroundImageResource,
             ]);
             return '';
         }
-
         return '
             .typo3-login-carousel-control.right,
             .typo3-login-carousel-control.left,
@@ -99,9 +107,17 @@ readonly class AuthenticationStyleInformation
         return strip_tags(trim($footerNote));
     }
 
-    public function getLogo(): string
+    public function getLogo(): ?PublicResourceInterface
     {
-        return $this->getBackendExtensionConfiguration()['loginLogo'] ?? '';
+        $logoIdentifier = $this->getBackendExtensionConfiguration()['loginLogo'] ?? '';
+        if ($logoIdentifier === '') {
+            return null;
+        }
+        try {
+            return $this->resourceFactory->createPublicResource($logoIdentifier);
+        } catch (SystemResourceException) {
+            return null;
+        }
     }
 
     public function getLogoAlt(): string
@@ -109,32 +125,9 @@ readonly class AuthenticationStyleInformation
         return trim((string)($this->getBackendExtensionConfiguration()['loginLogoAlt'] ?? ''));
     }
 
-    public function getDefaultLogo(): string
+    public function getDefaultLogo(): PublicResourceInterface
     {
-        return 'EXT:core/Resources/Public/Images/typo3_variable.svg';
-    }
-
-    /**
-     * Returns the uri of a relative reference, resolves the "EXT:" prefix
-     * (way of referring to files inside extensions) and checks that the file is inside
-     * the project root of the TYPO3 installation
-     *
-     * @param string $filename The input filename/filepath to evaluate
-     * @return string Returns the filename of $filename if valid, otherwise blank string.
-     * @internal
-     */
-    public function getUriForFileName(string $filename): string
-    {
-        // Check if it's already a URL
-        if (preg_match('/^(https?:)?\/\//', $filename)) {
-            return $filename;
-        }
-        $absoluteFilename = GeneralUtility::getFileAbsFileName(ltrim($filename, '/'));
-        $filename = '';
-        if ($absoluteFilename !== '' && @is_file($absoluteFilename)) {
-            $filename = PathUtility::getAbsoluteWebPath($absoluteFilename);
-        }
-        return $filename;
+        return $this->resourceFactory->createPublicResource('PKG:typo3/cms-core:Resources/Public/Images/typo3_variable.svg');
     }
 
     protected function getBackendExtensionConfiguration(): array

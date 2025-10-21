@@ -108,7 +108,7 @@ class MfaController extends AbstractMfaController
             'redirectParams' => $request->getQueryParams()['redirectParams'] ?? '',
             'hasAuthError' => (bool)($request->getQueryParams()['failure'] ?? false),
         ]);
-        $this->addCustomAuthenticationFormStyles();
+        $this->addCustomAuthenticationFormStyles($request);
         $this->pageRenderer->setBodyContent('<body>' . $view->render('Mfa/Auth'));
         return $this->pageRenderer->renderResponse();
     }
@@ -230,9 +230,9 @@ class MfaController extends AbstractMfaController
         return null;
     }
 
-    protected function addCustomAuthenticationFormStyles(): void
+    protected function addCustomAuthenticationFormStyles(ServerRequestInterface $request): void
     {
-        if (($backgroundImageStyles = $this->authenticationStyleInformation->getBackgroundImageStyles()) !== '') {
+        if (($backgroundImageStyles = $this->authenticationStyleInformation->getBackgroundImageStyles($request)) !== '') {
             $this->pageRenderer->addCssInlineBlock('loginBackgroundImage', $backgroundImageStyles, useNonce: true);
         }
         if (($highlightColorStyles = $this->authenticationStyleInformation->getHighlightColorStyles()) !== '') {

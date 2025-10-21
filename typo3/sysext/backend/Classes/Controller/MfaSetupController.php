@@ -214,13 +214,13 @@ class MfaSetupController extends AbstractMfaController
             'siteName' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
             'footerNote' => $this->authenticationStyleInformation->getFooterNote(),
         ]);
-        $this->addCustomAuthenticationFormStyles();
+        $this->addCustomAuthenticationFormStyles($request);
         return $view;
     }
 
-    protected function addCustomAuthenticationFormStyles(): void
+    protected function addCustomAuthenticationFormStyles(ServerRequestInterface $request): void
     {
-        if (($backgroundImageStyles = $this->authenticationStyleInformation->getBackgroundImageStyles()) !== '') {
+        if (($backgroundImageStyles = $this->authenticationStyleInformation->getBackgroundImageStyles($request)) !== '') {
             $this->pageRenderer->addCssInlineBlock('loginBackgroundImage', $backgroundImageStyles, useNonce: true);
         }
         if (($highlightColorStyles = $this->authenticationStyleInformation->getHighlightColorStyles()) !== '') {

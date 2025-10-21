@@ -17,12 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\ViewHelpers;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\View\AuthenticationStyleInformation;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Resource\Security\SvgSanitizer;
+use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceDoesNotExistException;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -49,24 +53,29 @@ final class LoginLogoViewHelper extends AbstractViewHelper
         private readonly PackageDependentCacheIdentifier $packageDependentCacheIdentifier,
         #[Autowire(service: 'cache.assets')]
         private readonly FrontendInterface $cache,
+        private readonly SystemResourcePublisherInterface $resourcePublisher,
     ) {}
 
     public function render(): string
     {
         $languageService = $this->getLanguageService();
-
-        if (($filepath = $this->authenticationStyleInformation->getLogo()) !== '') {
-            $alternativeText = $this->authenticationStyleInformation->getLogoAlt() ?: $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:typo3.altText');
+        $logo = $this->authenticationStyleInformation->getLogo();
+        $alternativeText = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:typo3.altText');
+        if ($logo !== null) {
+            $alternativeText = $this->authenticationStyleInformation->getLogoAlt() ?: $alternativeText;
         } else {
-            $filepath = $this->authenticationStyleInformation->getDefaultLogo();
-            $alternativeText = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:typo3.altText');
+            $logo = $this->authenticationStyleInformation->getDefaultLogo();
         }
 
-        if (($renderedSvg = $this->getInlineSvg($filepath)) !== null) {
+        if ($logo instanceof SystemResourceInterface && ($renderedSvg = $this->getInlineSvg($logo)) !== null) {
             return $renderedSvg;
         }
 
-        $uri = $this->authenticationStyleInformation->getUriForFileName($filepath);
+        $request = null;
+        if ($this->renderingContext->hasAttribute(ServerRequestInterface::class)) {
+            $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
+        }
+        $uri = (string)$this->resourcePublisher->generateUri($logo, $request);
         return $this->renderImage($uri, $alternativeText);
     }
 
@@ -78,39 +87,29 @@ final class LoginLogoViewHelper extends AbstractViewHelper
         ], true));
     }
 
-    private function getInlineSvg(string $filepath): ?string
+    private function getInlineSvg(SystemResourceInterface $svg): ?string
     {
         $cacheIdentifier = $this->packageDependentCacheIdentifier
             ->withPrefix('LoginLogo')
-            ->withAdditionalHashedIdentifier($filepath)
+            ->withAdditionalHashedIdentifier((string)$svg)
             ->toString();
         if ($this->cache->has($cacheIdentifier)) {
             return $this->cache->get($cacheIdentifier);
         }
 
-        $svgContent = $this->parseSvg($filepath);
+        $svgContent = $this->parseSvg($svg);
         $this->cache->set($cacheIdentifier, $svgContent);
         return $svgContent;
     }
 
-    private function parseSvg(string $filepath): ?string
+    private function parseSvg(SystemResourceInterface $svg): ?string
     {
-        if (!str_ends_with($filepath, '.svg')) {
+        if (!str_ends_with($svg->getName(), '.svg')) {
             return null;
         }
-
-        // Check if it's a URL
-        if (preg_match('/^(https?:)?\/\//', $filepath)) {
-            return null;
-        }
-
-        $absoluteFilePath = GeneralUtility::getFileAbsFileName(ltrim($filepath, '/'));
-        if (!file_exists($absoluteFilePath)) {
-            return null;
-        }
-
-        $svgContent = file_get_contents($absoluteFilePath);
-        if ($svgContent === false) {
+        try {
+            $svgContent = $svg->getContents();
+        } catch (SystemResourceDoesNotExistException) {
             return null;
         }
 

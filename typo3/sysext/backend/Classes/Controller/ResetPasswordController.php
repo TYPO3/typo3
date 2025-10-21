@@ -216,12 +216,12 @@ class ResetPasswordController
             'loginUrl' => (string)$request->getUri(),
         ]);
 
-        $this->provideCustomLoginStyling();
+        $this->provideCustomLoginStyling($request);
     }
 
-    protected function provideCustomLoginStyling(): void
+    protected function provideCustomLoginStyling(ServerRequestInterface $request): void
     {
-        if (($backgroundImageStyles = $this->authenticationStyleInformation->getBackgroundImageStyles()) !== '') {
+        if (($backgroundImageStyles = $this->authenticationStyleInformation->getBackgroundImageStyles($request)) !== '') {
             $this->pageRenderer->addCssInlineBlock('loginBackgroundImage', $backgroundImageStyles, useNonce: true);
         }
         if (($footerNote = $this->authenticationStyleInformation->getFooterNote()) !== '') {
