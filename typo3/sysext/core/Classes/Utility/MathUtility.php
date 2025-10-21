@@ -65,6 +65,8 @@ class MathUtility
     /**
      * Tests if the input can be interpreted as integer.
      *
+     * Note: "0" will return true while any other number with a leading 0 (including multiple zeroes) will be false.
+     *
      * Note: Integer casting from objects or arrays is considered undefined and thus will return false.
      *
      * @see https://php.net/manual/en/language.types.integer.php#language.types.integer.casting.from-other
@@ -73,10 +75,13 @@ class MathUtility
      */
     public static function canBeInterpretedAsInteger(mixed $var): bool
     {
+        if (is_int($var)) {
+            return true;
+        }
         if ($var === '' || is_object($var) || is_array($var)) {
             return false;
         }
-        return (string)(int)$var === (string)$var;
+        return \preg_match('/^(?:-?[1-9][0-9]*|0)$/', (string)$var) === 1;
     }
 
     /**
