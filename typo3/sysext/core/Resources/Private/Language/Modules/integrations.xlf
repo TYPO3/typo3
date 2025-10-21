@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Modules/integrations.xlf" date="2025-10-20T12:00:00Z" product-name="core">
+		<header/>
+		<body>
+			<trans-unit id="title">
+				<source>Integrations</source>
+			</trans-unit>
+			<trans-unit id="shortDescription">
+				<source>External system integrations</source>
+			</trans-unit>
+			<trans-unit id="description">
+				<source>This is the central hub for connecting TYPO3 with the world. External systems, third-party services, webhooks, translation providers, AI platforms, and countless other tools can be seamlessly integrated to supercharge TYPO3 installations and unlock endless possibilities.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

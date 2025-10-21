@@ -11,12 +11,12 @@
     <f:if condition="{currentModule}">
         <f:then>
             <h1>{f:translate(key: currentModule.title, default: currentModule.title)}</h1>
-            <f:if condition="{currentModule.shortDescription}">
+            <f:if condition="{currentModule.description}">
                 <f:then>
-                    <p>{f:translate(key: currentModule.shortDescription, default: currentModule.shortDescription)}</p>
-                </f:then>
-                <f:else if="{currentModule.description}">
                     <p>{f:translate(key: currentModule.description, default: currentModule.description)}</p>
+                </f:then>
+                <f:else if="{currentModule.shortDescription}">
+                    <p>{f:translate(key: currentModule.shortDescription, default: currentModule.shortDescription)}</p>
                 </f:else>
             </f:if>
             <f:if condition="{submodules}">
@@ -25,23 +25,19 @@
                         <f:for each="{submodules}" as="subModule">
                             <div class="card card-size-small">
                                 <div class="card-header">
-                                    <div class="card-header-content">
-                                        <div class="card-icon">
-                                            <core:icon identifier="{subModule.iconIdentifier}" size="small"/>
-                                        </div>
-                                        <div class="card-header-text">
-                                            <h2 class="card-title">{f:translate(key: subModule.title, default: subModule.title)}</h2>
-                                        </div>
+                                    <div class="card-icon">
+                                        <core:icon identifier="{subModule.iconIdentifier}" size="medium"/>
+                                    </div>
+                                    <div class="card-header-body">
+                                        <h2 class="card-title">{f:translate(key: subModule.title, default: subModule.title)}</h2>
+                                        <f:if condition="{subModule.shortDescription}">
+                                            <span class="card-subtitle">{f:translate(key: subModule.shortDescription, default: subModule.shortDescription)}</span>
+                                        </f:if>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <f:if condition="{subModule.shortDescription}">
-                                        <f:then>
-                                            <p class="card-text">{f:translate(key: subModule.shortDescription, default: subModule.shortDescription)}</p>
-                                        </f:then>
-                                        <f:else if="{subModule.description}">
-                                            <p class="card-text">{f:translate(key: subModule.description, default: subModule.description)}</p>
-                                        </f:else>
+                                    <f:if condition="{subModule.description}">
+                                        <p class="card-text">{f:translate(key: subModule.description, default: subModule.description)}</p>
                                     </f:if>
                                 </div>
                                 <div class="card-footer">

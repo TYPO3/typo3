@@ -58,6 +58,7 @@ class ManagementController
         $languageService = $this->getLanguageService();
 
         $this->registerDocHeaderButtons($view, $requestUri, $demand);
+        $view->makeDocHeaderModuleMenu();
 
         $webhookRecords = $this->webhookRepository->getWebhookRecords($demand);
         $paginator = new DemandedArrayPaginator($webhookRecords, $demand->getPage(), $demand->getLimit(), $this->webhookRepository->countAll($demand));
@@ -84,8 +85,8 @@ class ManagementController
                     [
                         'idField' => 'uid',
                         'tableName' => 'sys_webhook',
-                        'title' => $languageService->sL('LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:labels.delete.title'),
-                        'content' => $languageService->sL('LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:labels.delete.message'),
+                        'title' => $languageService->sL('LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:labels.delete.title'),
+                        'content' => $languageService->sL('LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:labels.delete.message'),
                         'ok' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
                         'cancel' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'),
                         'returnUrl' => $requestUri,
@@ -102,18 +103,27 @@ class ManagementController
         $languageService = $this->getLanguageService();
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
 
+        // Go back
+        $goBack = $buttonBar
+            ->makeLinkButton()
+            ->setHref((string)$this->uriBuilder->buildUriFromRoute('integrations'))
+            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL))
+            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+            ->setShowLabelText(true);
+        $buttonBar->addButton($goBack);
+
         // Create new
         $newRecordButton = $buttonBar->makeLinkButton()
             ->setHref((string)$this->uriBuilder->buildUriFromRoute(
                 'record_edit',
                 [
                     'edit' => ['sys_webhook' => ['new']],
-                    'module' => 'webhooks_management',
-                    'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('webhooks_management'),
+                    'module' => 'integrations_webhooks',
+                    'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('integrations_webhooks'),
                 ]
             ))
             ->setShowLabelText(true)
-            ->setTitle($languageService->sL('LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:webhook_create'))
+            ->setTitle($languageService->sL('LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:webhook_create'))
             ->setIcon($this->iconFactory->getIcon('actions-add', IconSize::SMALL));
         $buttonBar->addButton($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
 
@@ -126,8 +136,8 @@ class ManagementController
 
         // Shortcut
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier('webhooks_management')
-            ->setDisplayName($languageService->sL('LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:mlang_labels_tablabel'))
+            ->setRouteIdentifier('integrations_webhooks')
+            ->setDisplayName($languageService->sL('LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:title'))
             ->setArguments(array_filter([
                 'demand' => $demand->getParameters(),
                 'orderField' => $demand->getOrderField(),

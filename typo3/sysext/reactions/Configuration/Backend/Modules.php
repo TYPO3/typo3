@@ -6,14 +6,18 @@ use TYPO3\CMS\Reactions\Controller\ManagementController;
  * Definitions for modules provided by EXT:reactions
  */
 return [
-    'system_reactions' => [
-        'parent' => 'system',
-        'position' => ['after' => 'backend_user_management'],
+    'integrations_reactions' => [
+        'parent' => 'integrations',
         'access' => 'admin',
         'workspaces' => 'live',
-        'path' => '/module/system/reactions',
+        'path' => '/module/integrations/reactions',
         'iconIdentifier' => 'module-reactions',
-        'labels' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf',
+        'labels' => [
+            'title' => 'LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:title',
+            'description' => 'LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:description',
+            'shortDescription' => 'LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:shortDescription',
+        ],
+        'aliases' => ['system_reactions'],
         'routes' => [
             '_default' => [
                 'target' => ManagementController::class . '::handleRequest',

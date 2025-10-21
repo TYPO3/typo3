@@ -37,6 +37,23 @@ return [
         'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_system.xlf',
         'iconIdentifier' => 'modulegroup-system',
     ],
+    'integrations' => [
+        'parent' => 'system',
+        'position' => ['after' => 'backend_user_management'],
+        'access' => 'admin',
+        'workspaces' => 'live',
+        'path' => '/module/integrations',
+        'iconIdentifier' => 'module-webhooks',
+        'labels' => [
+            'title' => 'LLL:EXT:core/Resources/Private/Language/Modules/integrations.xlf:title',
+            'description' => 'LLL:EXT:core/Resources/Private/Language/Modules/integrations.xlf:description',
+            'shortDescription' => 'LLL:EXT:core/Resources/Private/Language/Modules/integrations.xlf:shortDescription',
+        ],
+        'appearance' => [
+            'dependsOnSubmodules' => true,
+        ],
+        'showSubmoduleOverview' => true,
+    ],
     'help' => [
         'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_help.xlf',
         'iconIdentifier' => 'modulegroup-help',

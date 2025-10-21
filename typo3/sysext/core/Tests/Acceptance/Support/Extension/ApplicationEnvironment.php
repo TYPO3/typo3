@@ -72,6 +72,8 @@ final class ApplicationEnvironment extends BackendEnvironment
             'recycler',
             'viewpage',
             'styleguide',
+            'webhooks',
+            'reactions',
         ],
         'csvDatabaseFixtures' => [
             __DIR__ . '/../../Fixtures/BackendEnvironment.csv',

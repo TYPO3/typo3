@@ -38,6 +38,7 @@
 					"typo3/cms-linkvalidator": "14.0.0-dev",
 					"typo3/cms-lowlevel": "14.0.0-dev",
 					"typo3/cms-opendocs": "14.0.0-dev",
+					"typo3/cms-reactions": "14.0.0-dev",
 					"typo3/cms-recycler": "14.0.0-dev",
 					"typo3/cms-redirects": "14.0.0-dev",
 					"typo3/cms-reports": "14.0.0-dev",
@@ -50,6 +51,7 @@
 					"typo3/cms-t3editor": "14.0.0-dev",
 					"typo3/cms-tstemplate": "14.0.0-dev",
 					"typo3/cms-viewpage": "14.0.0-dev",
+					"typo3/cms-webhooks": "14.0.0-dev",
 					"typo3/cms-workspaces": "14.0.0-dev"
 				}
 			}
@@ -82,6 +84,7 @@
 		"typo3/cms-linkvalidator": "@dev",
 		"typo3/cms-lowlevel": "@dev",
 		"typo3/cms-opendocs": "@dev",
+		"typo3/cms-reactions": "@dev",
 		"typo3/cms-recycler": "@dev",
 		"typo3/cms-redirects": "@dev",
 		"typo3/cms-reports": "@dev",
@@ -94,6 +97,7 @@
 		"typo3/cms-t3editor": "@dev",
 		"typo3/cms-tstemplate": "@dev",
 		"typo3/cms-viewpage": "@dev",
+		"typo3/cms-webhooks": "@dev",
 		"typo3/cms-workspaces": "@dev"
 	}
 }

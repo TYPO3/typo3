@@ -6,14 +6,18 @@ use TYPO3\CMS\Webhooks\Controller\ManagementController;
  * Definitions for modules provided by EXT:webhooks
  */
 return [
-    'webhooks_management' => [
-        'parent' => 'system',
-        'position' => ['after' => 'system_BeuserTxBeuser'],
+    'integrations_webhooks' => [
+        'parent' => 'integrations',
         'access' => 'admin',
         'workspaces' => 'live',
-        'path' => '/module/system/webhooks',
+        'path' => '/module/integrations/webhooks',
         'iconIdentifier' => 'module-webhooks',
-        'labels' => 'LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf',
+        'labels' => [
+            'title' => 'LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:title',
+            'description' => 'LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:description',
+            'shortDescription' => 'LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:shortDescription',
+        ],
+        'aliases' => ['webhooks_management'],
         'routes' => [
             '_default' => [
                 'target' => ManagementController::class . '::overviewAction',

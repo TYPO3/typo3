@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Info;
+namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Integrations;
 
 use Codeception\Attribute\DataProvider;
 use Codeception\Example;
@@ -23,35 +23,34 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
 /**
- * Tests concerning Info Module
+ * Tests concerning Integrations Module
  */
-final class InfoModuleCest
+final class IntegrationsModuleCest
 {
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
-        $I->click('[data-modulemenu-identifier="web_info"]');
-        $pageTree->openPath(['styleguide TCA demo']);
+        $I->click('[data-modulemenu-identifier="integrations"]');
         $I->switchToContentFrame();
-        $I->see('Info', 'h1');
-        $I->see('The Web>Info module is focused on statistic information about pages.');
+        $I->see('Integrations', 'h1');
+        $I->see('This is the central hub for connecting TYPO3 with the world.');
     }
 
-    private function infoMenuDataProvider(): array
+    private function integrationsMenuDataProvider(): array
     {
         return [
-            ['title' => 'Pagetree Overview', 'description' => 'View page records and settings in a tree structure with detailed metadata.'],
-            ['title' => 'Localization Overview', 'description' => 'Check translation status and manage localized content for pages.'],
+            ['title' => 'Reactions', 'shortDescription' => 'Manage incoming HTTP webhooks to external system'],
+            ['title' => 'Webhooks', 'shortDescription' => 'Manage outgoing HTTP webhooks to external system'],
         ];
     }
 
-    #[DataProvider('infoMenuDataProvider')]
-    public function seeInfoSubModules(ApplicationTester $I, Example $exampleData): void
+    #[DataProvider('integrationsMenuDataProvider')]
+    public function seeIntegrationSubModules(ApplicationTester $I, Example $exampleData): void
     {
         $I->amGoingTo('see card for ' . $exampleData['title']);
         $I->waitForElementVisible('.card-container');
         $I->see($exampleData['title'], '.card-title');
-        $I->see($exampleData['description'], '.card-text');
+        $I->see($exampleData['shortDescription'], '.card-subtitle');
         $I->see('Open module', '.card-footer');
 
         $I->amGoingTo('open ' . $exampleData['title'] . ' module via card button');

@@ -12,10 +12,10 @@
     <f:asset.module identifier="@typo3/backend/multi-record-selection-edit-action.js"/>
     <f:asset.module identifier="@typo3/backend/multi-record-selection-delete-action.js"/>
 
-    <h1><f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:heading_text"/></h1>
+    <h1><f:translate key="LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:heading_text"/></h1>
     <f:variable
         name="returnUrl"
-        value="{f:be.uri(route:'webhooks_management')}"
+        value="{f:be.uri(route:'integrations_webhooks')}"
     />
     <f:if condition="{paginator.paginatedItems -> f:count()}">
         <f:then>
@@ -26,26 +26,26 @@
             <f:if condition="{demand.constraints}">
                 <f:then>
                     <f:render section="filter" arguments="{_all}" />
-                    <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::NOTICE')}" title="{f:translate(key: 'LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:webhook_not_found_with_filter.title')}">
-                        <p><f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:webhook_not_found_with_filter.message"/></p>
-                        <a class="btn btn-default" href="{f:be.uri(route:'webhooks_management')}">
-                            <f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:webhook_no_filter"/>
+                    <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::NOTICE')}" title="{f:translate(key: 'LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:webhook_not_found_with_filter.title')}">
+                        <p><f:translate key="LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:webhook_not_found_with_filter.message"/></p>
+                        <a class="btn btn-default" href="{f:be.uri(route:'integrations_webhooks')}">
+                            <f:translate key="LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:webhook_no_filter"/>
                         </a>
                         <be:link.newRecord returnUrl="{returnUrl}" class="btn btn-primary" table="sys_webhook">
-                            <f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:webhook_create"/>
+                            <f:translate key="LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:webhook_create"/>
                         </be:link.newRecord>
                     </f:be.infobox>
 
-                    <f:variable name="gotToPageUrl"><f:be.uri route="webhooks_management" parameters="{demand: demand.parameters, page: 987654322}" /></f:variable>
+                    <f:variable name="gotToPageUrl"><f:be.uri route="integrations_webhooks" parameters="{demand: demand.parameters, page: 987654322}" /></f:variable>
                     <form data-on-submit="processNavigate">
                         <input type="hidden" value="1" name="paginator-target-page" data-number-of-pages="1" data-url="{gotToPageUrl}"/>
                     </form>
                 </f:then>
                 <f:else>
-                    <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}" title="{f:translate(key: 'LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:webhook_not_found.title')}">
-                        <p><f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:webhook_not_found.message"/></p>
+                    <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}" title="{f:translate(key: 'LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:webhook_not_found.title')}">
+                        <p><f:translate key="LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:webhook_not_found.message"/></p>
                         <be:link.newRecord returnUrl="{returnUrl}" class="btn btn-primary" table="sys_webhook">
-                            <f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:webhook_create"/>
+                            <f:translate key="LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:webhook_create"/>
                         </be:link.newRecord>
                     </f:be.infobox>
                 </f:else>
@@ -120,7 +120,7 @@
                             </td>
                             <td colspan="2">
                                 <span class="badge badge-danger">
-                                    <f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:webhook_no_implementation_class" arguments="{0: webhook.webhookType.identifier}" />
+                                    <f:translate key="LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:webhook_no_implementation_class" arguments="{0: webhook.webhookType.identifier}" />
                                 </span>
                             </td>
                             <td class="col-control">
@@ -165,7 +165,7 @@
             <li>
                 <a
                     class="dropdown-item"
-                    href="{f:be.uri(route:'webhooks_management', parameters: '{demand: demand.parameters, orderField: field, orderDirection: demand.defaultOrderDirection}')}"
+                    href="{f:be.uri(route:'integrations_webhooks', parameters: '{demand: demand.parameters, orderField: field, orderDirection: demand.defaultOrderDirection}')}"
                     title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.asc')}"
                     aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.asc')}"
                 >
@@ -186,7 +186,7 @@
             <li>
                 <a
                     class="dropdown-item"
-                    href="{f:be.uri(route:'webhooks_management', parameters: '{demand: demand.parameters, orderField: field, orderDirection: demand.reverseOrderDirection}')}"
+                    href="{f:be.uri(route:'integrations_webhooks', parameters: '{demand: demand.parameters, orderField: field, orderDirection: demand.reverseOrderDirection}')}"
                     title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.desc')}"
                     aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.desc')}"
                 >
@@ -209,18 +209,18 @@
 </f:section>
 
 <f:section name="filter">
-    <form action="{f:be.uri(route:'webhooks_management')}" method="post" enctype="multipart/form-data" name="demand">
+    <form action="{f:be.uri(route:'integrations_webhooks')}" method="post" enctype="multipart/form-data" name="demand">
         <input type="hidden" name="orderField" value="{demand.orderField}">
         <input type="hidden" name="orderDirection" value="{demand.orderDirection}">
         <div class="form-row">
             <div class="form-group">
-                <label for="demand-name" class="form-label"><f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:filter.name"/></label>
+                <label for="demand-name" class="form-label"><f:translate key="LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:filter.name"/></label>
                 <input type="text" id="demand-name" class="form-control" name="demand[name]" value="{demand.name}"/>
             </div>
             <div class="form-group">
-                <label for="demand-webhook-type" class="form-label"><f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:filter.webhook_type"/></label>
+                <label for="demand-webhook-type" class="form-label"><f:translate key="LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:filter.webhook_type"/></label>
                 <select id="demand-webhook-type" class="form-select" name="demand[webhook_type]" data-on-change="submit">
-                    <option value=""><f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:filter.webhook_type.showAll"/></option>
+                    <option value=""><f:translate key="LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:filter.webhook_type.showAll"/></option>
                     <f:for each="{webhookTypes}" key="identifier" as="webhookType">
                         <option value="{identifier}" {f:if(condition: '{identifier} == {demand.webhookType}', then: 'selected')}>
                             <f:translate key="{webhookType.description}" default="{webhookType.description}"/>
@@ -229,8 +229,8 @@
                 </select>
             </div>
             <div class="form-group align-self-end">
-                <input type="submit" value="{f:translate(key: 'LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:filter.sendButton')}" class="btn btn-default" />
-                <a href="{f:be.uri(route:'webhooks_management')}" class="btn btn-link"><f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:filter.resetButton"/></a>
+                <input type="submit" value="{f:translate(key: 'LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:filter.sendButton')}" class="btn btn-default" />
+                <a href="{f:be.uri(route:'integrations_webhooks')}" class="btn btn-link"><f:translate key="LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:filter.resetButton"/></a>
             </div>
         </div>
     </form>

@@ -8,12 +8,12 @@
             <f:if condition="{pagination.previousPageNumber} && {pagination.previousPageNumber} >= {pagination.firstPageNumber}">
                 <f:then>
                     <li class="page-item">
-                        <a href="{f:be.uri(route:'webhooks_management', parameters: '{demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection, page: 1}')}" title="{f:translate(key:'LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:pagination.first')}" class="page-link">
+                        <a href="{f:be.uri(route:'integrations_webhooks', parameters: '{demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection, page: 1}')}" title="{f:translate(key:'LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:pagination.first')}" class="page-link">
                             <core:icon identifier="actions-view-paging-first" />
                         </a>
                     </li>
                     <li class="page-item">
-                        <a href="{f:be.uri(route:'webhooks_management', parameters: '{demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection, page: pagination.previousPageNumber}')}" title="{f:translate(key:'LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:pagination.previous')}" class="page-link">
+                        <a href="{f:be.uri(route:'integrations_webhooks', parameters: '{demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection, page: pagination.previousPageNumber}')}" title="{f:translate(key:'LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:pagination.previous')}" class="page-link">
                             <core:icon identifier="actions-view-paging-previous" />
                         </a>
                     </li>
@@ -33,17 +33,17 @@
             </f:if>
             <li class="page-item">
                 <span class="page-link">
-                    <f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:pagination.records" /> {pagination.startRecordNumber} - {pagination.endRecordNumber}
+                    <f:translate key="LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:pagination.records" /> {pagination.startRecordNumber} - {pagination.endRecordNumber}
                 </span>
             </li>
             <li class="page-item">
                 <span class="page-link">
-                    <f:translate key="LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:pagination.page" />
+                    <f:translate key="LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:pagination.page" />
                     <form
                         class="form-inline"
                         data-global-event="submit"
                         data-action-navigate="$form=~s/$value/"
-                        data-navigate-value="{f:be.uri(route:'webhooks_management', parameters: '{demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection, page: \'$[value]\'}')}"
+                        data-navigate-value="{f:be.uri(route:'integrations_webhooks', parameters: '{demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection, page: \'$[value]\'}')}"
                         data-value-selector="input[name='paginator-target-page']">
                         <input
                             min="{pagination.firstPageNumber}"
@@ -63,12 +63,12 @@
             <f:if condition="{pagination.nextPageNumber} && {pagination.nextPageNumber} <= {pagination.lastPageNumber}">
                 <f:then>
                     <li class="page-item">
-                        <a href="{f:be.uri(route:'webhooks_management', parameters: '{demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection, page: pagination.nextPageNumber}')}" title="{f:translate(key:'LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:pagination.next')}" class="page-link">
+                        <a href="{f:be.uri(route:'integrations_webhooks', parameters: '{demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection, page: pagination.nextPageNumber}')}" title="{f:translate(key:'LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:pagination.next')}" class="page-link">
                             <core:icon identifier="actions-view-paging-next" />
                         </a>
                     </li>
                     <li class="page-item">
-                        <a href="{f:be.uri(route:'webhooks_management', parameters: '{demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection, page: pagination.lastPageNumber}')}" title="{f:translate(key:'LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:pagination.next')}" class="page-link">
+                        <a href="{f:be.uri(route:'integrations_webhooks', parameters: '{demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection, page: pagination.lastPageNumber}')}" title="{f:translate(key:'LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:pagination.next')}" class="page-link">
                             <core:icon identifier="actions-view-paging-last" />
                         </a>
                     </li>
@@ -87,7 +87,7 @@
                 </f:else>
             </f:if>
             <li class="page-item">
-                <a href="{f:be.uri(route:'webhooks_management', parameters: '{demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection, page: paginator.currentPageNumber}')}" title="{f:translate(key:'LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:pagination.refresh')}" class="page-link">
+                <a href="{f:be.uri(route:'integrations_webhooks', parameters: '{demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection, page: paginator.currentPageNumber}')}" title="{f:translate(key:'LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:pagination.refresh')}" class="page-link">
                     <core:icon identifier="actions-refresh" />
                 </a>
             </li>

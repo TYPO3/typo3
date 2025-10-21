@@ -56,6 +56,7 @@ class ManagementController
         $demand = ReactionDemand::fromRequest($request);
 
         $this->registerDocHeaderButtons($view, $request->getAttribute('normalizedParams')->getRequestUri(), $demand);
+        $view->makeDocHeaderModuleMenu();
 
         $reactionRecords = $this->reactionRepository->getReactionRecords($demand);
         $paginator = new DemandedArrayPaginator($reactionRecords, $demand->getPage(), $demand->getLimit(), $this->reactionRepository->countAll($demand));
@@ -85,8 +86,8 @@ class ManagementController
                     [
                         'idField' => 'uid',
                         'tableName' => 'sys_reaction',
-                        'title' => $languageService->sL('LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:labels.delete.title'),
-                        'content' => $languageService->sL('LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:labels.delete.message'),
+                        'title' => $languageService->sL('LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:labels.delete.title'),
+                        'content' => $languageService->sL('LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:labels.delete.message'),
                         'ok' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
                         'cancel' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'),
                         'returnUrl' => $requestUri,
@@ -103,18 +104,27 @@ class ManagementController
         $languageService = $this->getLanguageService();
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
 
+        // Go back
+        $goBack = $buttonBar
+            ->makeLinkButton()
+            ->setHref((string)$this->uriBuilder->buildUriFromRoute('integrations'))
+            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL))
+            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+            ->setShowLabelText(true);
+        $buttonBar->addButton($goBack);
+
         // Create new
         $newRecordButton = $buttonBar->makeLinkButton()
             ->setHref((string)$this->uriBuilder->buildUriFromRoute(
                 'record_edit',
                 [
                     'edit' => ['sys_reaction' => ['new']],
-                    'module' => 'system_reactions',
-                    'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('system_reactions'),
+                    'module' => 'integrations_reactions',
+                    'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('integrations_reactions'),
                 ]
             ))
             ->setShowLabelText(true)
-            ->setTitle($languageService->sL('LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:reaction_create'))
+            ->setTitle($languageService->sL('LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:reaction_create'))
             ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
         $buttonBar->addButton($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
 
@@ -127,8 +137,8 @@ class ManagementController
 
         // Shortcut
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier('system_reactions')
-            ->setDisplayName($languageService->sL('LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:mlang_labels_tablabel'))
+            ->setRouteIdentifier('integrations_reactions')
+            ->setDisplayName($languageService->sL('LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:title'))
             ->setArguments(array_filter([
                 'demand' => $demand->getParameters(),
                 'orderField' => $demand->getOrderField(),
