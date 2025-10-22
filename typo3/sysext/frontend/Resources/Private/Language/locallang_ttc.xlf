@@ -408,37 +408,37 @@
 			<trans-unit id="field.table.bodytext">
 				<source>Table content</source>
 			</trans-unit>
-			<trans-unit id="palette.general">
+			<trans-unit id="palette.general" x-unused-since="14.0">
 				<source>Content Element</source>
 			</trans-unit>
-			<trans-unit id="palette.headers">
+			<trans-unit id="palette.headers" x-unused-since="14.0">
 				<source>Headlines</source>
 			</trans-unit>
-			<trans-unit id="palette.header">
+			<trans-unit id="palette.header" x-unused-since="14.0">
 				<source>Header</source>
 			</trans-unit>
-			<trans-unit id="palette.visibility">
+			<trans-unit id="palette.visibility" x-unused-since="14.0">
 				<source>Visibility</source>
 			</trans-unit>
-			<trans-unit id="palette.access">
+			<trans-unit id="palette.access" x-unused-since="14.0">
 				<source>Publish Dates and Access Rights</source>
 			</trans-unit>
-			<trans-unit id="palette.frames">
+			<trans-unit id="palette.frames" x-unused-since="14.0">
 				<source>Content Element Layout</source>
 			</trans-unit>
-			<trans-unit id="palette.imagelinks">
+			<trans-unit id="palette.imagelinks" x-unused-since="14.0">
 				<source>Behavior</source>
 			</trans-unit>
-			<trans-unit id="palette.image_accessibility">
+			<trans-unit id="palette.image_accessibility" x-unused-since="14.0">
 				<source>Accessibility</source>
 			</trans-unit>
-			<trans-unit id="palette.uploads_layout">
+			<trans-unit id="palette.uploads_layout" x-unused-since="14.0">
 				<source>Filelinks Layout</source>
 			</trans-unit>
-			<trans-unit id="palette.table_layout">
+			<trans-unit id="palette.table_layout" x-unused-since="14.0">
 				<source>Table Layout</source>
 			</trans-unit>
-			<trans-unit id="palette.appearanceLinks">
+			<trans-unit id="palette.appearanceLinks" x-unused-since="14.0">
 				<source>Links</source>
 			</trans-unit>
 			<trans-unit id="tabs.access">
@@ -622,10 +622,10 @@
 			<trans-unit id="asset_references.addFileReference">
 				<source>Add media file</source>
 			</trans-unit>
-			<trans-unit id="palette.gallerySettings">
+			<trans-unit id="palette.gallerySettings" x-unused-since="14.0">
 				<source>Gallery Settings</source>
 			</trans-unit>
-			<trans-unit id="palette.mediaAdjustments">
+			<trans-unit id="palette.mediaAdjustments" x-unused-since="14.0">
 				<source>Media Adjustments</source>
 			</trans-unit>
 			<trans-unit id="palette.mediaAdjustments.imagewidth">

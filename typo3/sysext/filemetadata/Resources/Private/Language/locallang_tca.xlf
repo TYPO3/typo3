@@ -155,22 +155,22 @@
 			</trans-unit>
 
 			<!-- sys_file_metadata palette -->
-			<trans-unit id="palette.metrics">
+			<trans-unit id="palette.metrics" x-unused-since="14.0">
 				<source>Metrics</source>
 			</trans-unit>
-			<trans-unit id="palette.geo_location">
+			<trans-unit id="palette.geo_location" x-unused-since="14.0">
 				<source>Geo Location</source>
 			</trans-unit>
-			<trans-unit id="palette.visibility">
+			<trans-unit id="palette.visibility" x-unused-since="14.0">
 				<source>Visibility</source>
 			</trans-unit>
-			<trans-unit id="palette.content_date">
+			<trans-unit id="palette.content_date" x-unused-since="14.0">
 				<source>Content Date</source>
 			</trans-unit>
-			<trans-unit id="palette.accessibility">
+			<trans-unit id="palette.accessibility" x-unused-since="14.0">
 				<source>Accessibility</source>
 			</trans-unit>
-			<trans-unit id="palette.gps">
+			<trans-unit id="palette.gps" x-unused-since="14.0">
 				<source>GPS</source>
 			</trans-unit>
 

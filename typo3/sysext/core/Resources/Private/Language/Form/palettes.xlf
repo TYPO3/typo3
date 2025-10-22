@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Form/palettes.xlf" date="2025-01-22T20:22:33Z" product-name="palettes">
+		<header/>
+		<body>
+			<trans-unit id="general">
+				<source>General</source>
+			</trans-unit>
+			<trans-unit id="account">
+				<source>Account</source>
+			</trans-unit>
+			<trans-unit id="authentication">
+				<source>Authentication</source>
+			</trans-unit>
+			<trans-unit id="permission_languages">
+				<source>Language Permissions</source>
+			</trans-unit>
+			<trans-unit id="permission_general">
+				<source>General Permissions</source>
+			</trans-unit>
+			<trans-unit id="permission_specific">
+				<source>Specific Permissions</source>
+			</trans-unit>
+			<trans-unit id="standard">
+				<source>Page</source>
+			</trans-unit>
+			<trans-unit id="title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="visibility">
+				<source>Visibility</source>
+			</trans-unit>
+			<trans-unit id="access">
+				<source>Publish Dates and Access Rights</source>
+			</trans-unit>
+			<trans-unit id="abstract">
+				<source>Abstract</source>
+			</trans-unit>
+			<trans-unit id="metatags">
+				<source>Meta Tags</source>
+			</trans-unit>
+			<trans-unit id="editorial">
+				<source>Editorial</source>
+			</trans-unit>
+			<trans-unit id="layout">
+				<source>Layout</source>
+			</trans-unit>
+			<trans-unit id="page_layout">
+				<source>Page Layout</source>
+			</trans-unit>
+			<trans-unit id="use_as_container">
+				<source>Use as Container</source>
+			</trans-unit>
+			<trans-unit id="replace">
+				<source>Replace Content</source>
+			</trans-unit>
+			<trans-unit id="links">
+				<source>Links to this Page</source>
+			</trans-unit>
+			<trans-unit id="caching">
+				<source>Caching</source>
+			</trans-unit>
+			<trans-unit id="language">
+				<source>Language</source>
+			</trans-unit>
+			<trans-unit id="miscellaneous">
+				<source>Miscellaneous</source>
+			</trans-unit>
+			<trans-unit id="media">
+				<source>Files</source>
+			</trans-unit>
+			<trans-unit id="storage">
+				<source>Storage Page</source>
+			</trans-unit>
+			<trans-unit id="config">
+				<source>Configuration</source>
+			</trans-unit>
+			<trans-unit id="headers">
+				<source>Headlines</source>
+			</trans-unit>
+			<trans-unit id="header">
+				<source>Header</source>
+			</trans-unit>
+			<trans-unit id="content_layout">
+				<source>Content Element Layout</source>
+			</trans-unit>
+			<trans-unit id="media_behaviour">
+				<source>Media Behavior</source>
+			</trans-unit>
+			<trans-unit id="accessibility">
+				<source>Accessibility</source>
+			</trans-unit>
+			<trans-unit id="downloads_layout">
+				<source>Downloads Layout</source>
+			</trans-unit>
+			<trans-unit id="table_layout">
+				<source>Table Layout</source>
+			</trans-unit>
+			<trans-unit id="links_appearance">
+				<source>Links</source>
+			</trans-unit>
+			<trans-unit id="settings_gallery">
+				<source>Gallery Settings</source>
+			</trans-unit>
+			<trans-unit id="media_adjustments">
+				<source>Media Adjustments</source>
+			</trans-unit>
+			<trans-unit id="metrics">
+				<source>Metrics</source>
+			</trans-unit>
+			<trans-unit id="geolocation">
+				<source>Geo Location</source>
+			</trans-unit>
+			<trans-unit id="contentdate">
+				<source>Content Date</source>
+			</trans-unit>
+			<trans-unit id="gps">
+				<source>GPS</source>
+			</trans-unit>
+			<trans-unit id="seo">
+				<source>General SEO Settings</source>
+			</trans-unit>
+			<trans-unit id="robots">
+				<source>Robot instructions</source>
+			</trans-unit>
+			<trans-unit id="opengraph">
+				<source>Open Graph (Facebook)</source>
+			</trans-unit>
+			<trans-unit id="twittercards">
+				<source>X / Twitter Cards</source>
+			</trans-unit>
+			<trans-unit id="canonical">
+				<source>Canonical</source>
+			</trans-unit>
+			<trans-unit id="sitemap">
+				<source>Sitemap</source>
+			</trans-unit>
+			<trans-unit id="additional">
+				<source>Additional Configuration</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

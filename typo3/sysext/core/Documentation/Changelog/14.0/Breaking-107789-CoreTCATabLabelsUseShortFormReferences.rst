@@ -53,12 +53,29 @@ This particularly affects code that:
 
 Currently, the following label categories have been migrated to short form:
 
--   :php:`LLL:EXT:core/Resources/Private/Language/Form/locallang_tca.xlf:*`
+**Tab labels (--div--):**
+
+-   :php:`LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:*`
     → :php:`core.form.tabs:*`
 -   :php:`LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.*`
     → :php:`core.form.tabs:*`
 -   :php:`LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.tabs.*`
     → :php:`core.form.tabs:*`
+
+**Palette labels (palette definitions):**
+
+-   :php:`LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.palettes.*`
+    → :php:`core.form.palettes:*`
+-   :php:`LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.palettes.*`
+    → :php:`core.form.palettes:*`
+-   :php:`LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.*`
+    → :php:`core.form.palettes:*`
+-   :php:`LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.*`
+    → :php:`core.form.palettes:*`
+-   :php:`LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.*`
+    → :php:`core.form.palettes:*`
+-   :php:`LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.palettes.*`
+    → :php:`core.form.palettes:*`
 
 Affected installations
 ======================

@@ -384,18 +384,18 @@ return [
     ],
     'palettes' => [
         'account' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.palettes.account',
+            'label' => 'core.form.palettes:account',
             'showitem' => '
                 admin,
                 --linebreak--, username, password
             ',
         ],
         'authentication' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.palettes.authentication',
+            'label' => 'core.form.palettes:authentication',
             'showitem' => 'mfa',
         ],
         'permissionLanguages' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.palettes.permissionLanguages',
+            'label' => 'core.form.palettes:permission_languages',
             'showitem' => 'allowed_languages',
         ],
         'status' => [

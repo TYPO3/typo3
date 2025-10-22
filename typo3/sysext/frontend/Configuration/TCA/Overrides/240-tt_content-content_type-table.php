@@ -107,7 +107,7 @@ $GLOBALS['TCA']['tt_content']['palettes']['tableconfiguration'] = [
     'showitem' => 'table_delimiter,table_enclosure',
 ];
 $GLOBALS['TCA']['tt_content']['palettes']['tablelayout'] = [
-    'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.table_layout',
+    'label' => 'core.form.palettes:table_layout',
     'showitem' => 'cols, table_class, table_header_position, table_tfoot',
 ];
 

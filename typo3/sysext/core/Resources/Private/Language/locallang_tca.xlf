@@ -174,13 +174,13 @@
 			<trans-unit id="be_users.tabs.permissionRecords" x-unused-since="14.0">
 				<source>Record Permissions</source>
 			</trans-unit>
-			<trans-unit id="be_users.palettes.account">
+			<trans-unit id="be_users.palettes.account" x-unused-since="14.0">
 				<source>Account</source>
 			</trans-unit>
-			<trans-unit id="be_users.palettes.authentication">
+			<trans-unit id="be_users.palettes.authentication" x-unused-since="14.0">
 				<source>Authentication</source>
 			</trans-unit>
-			<trans-unit id="be_users.palettes.permissionLanguages">
+			<trans-unit id="be_users.palettes.permissionLanguages" x-unused-since="14.0">
 				<source>Language permissions</source>
 			</trans-unit>
 			<trans-unit id="be_groups.title">
@@ -231,16 +231,16 @@
 			<trans-unit id="be_groups.tabs.mounts_and_workspaces" x-unused-since="14.0">
 				<source>Mounts</source>
 			</trans-unit>
-			<trans-unit id="be_groups.palettes.authentication">
+			<trans-unit id="be_groups.palettes.authentication" x-unused-since="14.0">
 				<source>Authentication</source>
 			</trans-unit>
-			<trans-unit id="be_groups.palettes.permissionGeneral">
+			<trans-unit id="be_groups.palettes.permissionGeneral" x-unused-since="14.0">
 				<source>General permissions</source>
 			</trans-unit>
-			<trans-unit id="be_groups.palettes.permissionLanguages">
+			<trans-unit id="be_groups.palettes.permissionLanguages" x-unused-since="14.0">
 				<source>Language permissions</source>
 			</trans-unit>
-			<trans-unit id="be_groups.palettes.permissionSpecific">
+			<trans-unit id="be_groups.palettes.permissionSpecific" x-unused-since="14.0">
 				<source>Specific permissions</source>
 			</trans-unit>
 			<trans-unit id="be_groups.fileoper_perms">

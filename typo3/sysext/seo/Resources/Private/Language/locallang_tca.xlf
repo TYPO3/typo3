@@ -7,13 +7,13 @@
 			<trans-unit id="pages.tabs.seo" x-unused-since="14.0">
 				<source>SEO</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.seo">
+			<trans-unit id="pages.palettes.seo" x-unused-since="14.0">
 				<source>General SEO settings</source>
 			</trans-unit>
 			<trans-unit id="pages.seo_title">
 				<source>Title for search engines</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.robots">
+			<trans-unit id="pages.palettes.robots" x-unused-since="14.0">
 				<source>Robot instructions</source>
 			</trans-unit>
 			<trans-unit id="pages.no_index">
@@ -28,7 +28,7 @@
 			<trans-unit id="pages.no_follow_formlabel">
 				<source>Follow this page</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.opengraph">
+			<trans-unit id="pages.palettes.opengraph" x-unused-since="14.0">
 				<source>Open Graph (Facebook)</source>
 			</trans-unit>
 			<trans-unit id="pages.og_title">
@@ -40,7 +40,7 @@
 			<trans-unit id="pages.og_image">
 				<source>Open Graph Image</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.twittercards">
+			<trans-unit id="pages.palettes.twittercards" x-unused-since="14.0">
 				<source>X / Twitter Cards</source>
 			</trans-unit>
 			<trans-unit id="pages.twitter_title">
@@ -61,7 +61,7 @@
 			<trans-unit id="pages.twitter_card.summary_large_image">
 				<source>Summary Card with a large image</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.canonical">
+			<trans-unit id="pages.palettes.canonical" x-unused-since="14.0">
 				<source>Canonical</source>
 			</trans-unit>
 			<trans-unit id="pages.canonical_link">
@@ -73,7 +73,7 @@
 			<trans-unit id="pages.tabs.socialmedia" x-unused-since="14.0">
 				<source>Social media</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.sitemap">
+			<trans-unit id="pages.palettes.sitemap" x-unused-since="14.0">
 				<source>Sitemap</source>
 			</trans-unit>
 			<trans-unit id="pages.sitemap_changefreq">

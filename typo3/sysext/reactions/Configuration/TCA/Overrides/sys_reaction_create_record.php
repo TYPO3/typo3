@@ -67,7 +67,7 @@
 $GLOBALS['TCA']['sys_reaction']['ctrl']['typeicon_classes'][\TYPO3\CMS\Reactions\Reaction\CreateRecordReaction::getType()] = \TYPO3\CMS\Reactions\Reaction\CreateRecordReaction::getIconIdentifier();
 
 $GLOBALS['TCA']['sys_reaction']['palettes']['createRecord'] = [
-    'label' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:palette.additional',
+    'label' => 'reactions.db:palette.additional',
     'showitem' => 'table_name, --linebreak--, storage_pid, impersonate_user, --linebreak--, fields',
 ];
 

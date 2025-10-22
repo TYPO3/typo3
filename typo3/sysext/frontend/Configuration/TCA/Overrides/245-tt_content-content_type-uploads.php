@@ -120,7 +120,7 @@ $GLOBALS['TCA']['tt_content']['palettes']['uploads'] = [
     ',
 ];
 $GLOBALS['TCA']['tt_content']['palettes']['uploadslayout'] = [
-    'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.uploads_layout',
+    'label' => 'core.form.palettes:downloads_layout',
     'showitem' => '
         filelink_size;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:filelink_size_formlabel,
         uploads_description,

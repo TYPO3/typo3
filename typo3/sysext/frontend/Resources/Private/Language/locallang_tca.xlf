@@ -15,55 +15,55 @@
 			<trans-unit id="mod_tx_cms_webinfo_lang.description">
 				<source>Check translation status and manage localized content for pages.</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.standard">
+			<trans-unit id="pages.palettes.standard" x-unused-since="14.0">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.title">
+			<trans-unit id="pages.palettes.title" x-unused-since="14.0">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.visibility">
+			<trans-unit id="pages.palettes.visibility" x-unused-since="14.0">
 				<source>Visibility</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.access">
+			<trans-unit id="pages.palettes.access" x-unused-since="14.0">
 				<source>Publish Dates and Access Rights</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.abstract">
+			<trans-unit id="pages.palettes.abstract" x-unused-since="14.0">
 				<source>Abstract</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.metatags">
+			<trans-unit id="pages.palettes.metatags" x-unused-since="14.0">
 				<source>Meta Tags</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.editorial">
+			<trans-unit id="pages.palettes.editorial" x-unused-since="14.0">
 				<source>Editorial</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.layout">
+			<trans-unit id="pages.palettes.layout" x-unused-since="14.0">
 				<source>Page Layout</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.module">
+			<trans-unit id="pages.palettes.module" x-unused-since="14.0">
 				<source>Use as Container</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.replace">
+			<trans-unit id="pages.palettes.replace" x-unused-since="14.0">
 				<source>Replace Content</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.links">
+			<trans-unit id="pages.palettes.links" x-unused-since="14.0">
 				<source>Links to this Page</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.caching">
+			<trans-unit id="pages.palettes.caching" x-unused-since="14.0">
 				<source>Caching</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.language">
+			<trans-unit id="pages.palettes.language" x-unused-since="14.0">
 				<source>Language</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.miscellaneous">
+			<trans-unit id="pages.palettes.miscellaneous" x-unused-since="14.0">
 				<source>Miscellaneous</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.media">
+			<trans-unit id="pages.palettes.media" x-unused-since="14.0">
 				<source>Files</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.storage">
+			<trans-unit id="pages.palettes.storage" x-unused-since="14.0">
 				<source>General Record Storage Page</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.config">
+			<trans-unit id="pages.palettes.config" x-unused-since="14.0">
 				<source>Page TSconfig</source>
 			</trans-unit>
 			<trans-unit id="pages.doktype_formlabel">

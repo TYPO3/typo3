@@ -142,4 +142,81 @@ Example migration for extensions using old labels:
         ],
     ],
 
+New labels available in :file:`palettes.xlf`
+------------------------------------------------------
+
+In addition to tab labels, commonly used palette labels have also been consolidated
+into the central :file:`EXT:core/Resources/Private/Language/Form/palettes.xlf` file.
+
+The following palette labels are now available via the :php:`core.form.palettes:` prefix:
+
+-   :php:`core.form.palettes:general` - "General"
+-   :php:`core.form.palettes:account` - "Account"
+-   :php:`core.form.palettes:authentication` - "Authentication"
+-   :php:`core.form.palettes:permission_languages` - "Language permissions"
+-   :php:`core.form.palettes:permission_general` - "General permissions"
+-   :php:`core.form.palettes:permission_specific` - "Specific permissions"
+-   :php:`core.form.palettes:standard` - "Page"
+-   :php:`core.form.palettes:title` - "Title"
+-   :php:`core.form.palettes:visibility` - "Visibility"
+-   :php:`core.form.palettes:access` - "Publish Dates and Access Rights"
+-   :php:`core.form.palettes:abstract` - "Abstract"
+-   :php:`core.form.palettes:metatags` - "Meta Tags"
+-   :php:`core.form.palettes:editorial` - "Editorial"
+-   :php:`core.form.palettes:page_layout` - "Page Layout"
+-   :php:`core.form.palettes:use_as_container` - "Use as Container"
+-   :php:`core.form.palettes:replace` - "Replace Content"
+-   :php:`core.form.palettes:links_page` - "Links to this Page"
+-   :php:`core.form.palettes:caching` - "Caching"
+-   :php:`core.form.palettes:language` - "Language"
+-   :php:`core.form.palettes:miscellaneous` - "Miscellaneous"
+-   :php:`core.form.palettes:media` - "Files"
+-   :php:`core.form.palettes:storage` - "Storage Page"
+-   :php:`core.form.palettes:config` - "Configuration"
+-   :php:`core.form.palettes:headers` - "Headlines"
+-   :php:`core.form.palettes:header` - "Header"
+-   :php:`core.form.palettes:content_layout` - "Content Element Layout"
+-   :php:`core.form.palettes:media_behaviour` - "Media Behaviour"
+-   :php:`core.form.palettes:accessibility` - "Accessibility"
+-   :php:`core.form.palettes:downloads_layout` - "Downloads Layout"
+-   :php:`core.form.palettes:table_layout` - "Table Layout"
+-   :php:`core.form.palettes:links_appearance` - "Links"
+-   :php:`core.form.palettes:settings_gallery` - "Gallery Settings"
+-   :php:`core.form.palettes:media_adjustments` - "Media Adjustments"
+-   :php:`core.form.palettes:metrics` - "Metrics"
+-   :php:`core.form.palettes:geolocation` - "Geo Location"
+-   :php:`core.form.palettes:contentdate` - "Content Date"
+-   :php:`core.form.palettes:gps` - "GPS"
+-   :php:`core.form.palettes:seo` - "General SEO settings"
+-   :php:`core.form.palettes:robots` - "Robot instructions"
+-   :php:`core.form.palettes:opengraph` - "Open Graph (Facebook)"
+-   :php:`core.form.palettes:twittercards` - "X / Twitter Cards"
+-   :php:`core.form.palettes:canonical` - "Canonical"
+-   :php:`core.form.palettes:sitemap` - "Sitemap"
+-   :php:`core.form.palettes:additional` - "Additional configuration"
+
+Migrated palette labels
+-----------------------
+
+The following palette labels have been migrated to use :php:`core.form.palettes:*`
+and are marked as unused since TYPO3 v14.0 (attribute :php:`x-unused-since="14.0"` in XLF files):
+
+**EXT:core - Backend Users & Groups:**
+
+-   be_users.palettes.account, be_users.palettes.authentication, be_users.palettes.permissionLanguages
+-   be_groups.palettes.authentication, be_groups.palettes.permissionGeneral, be_groups.palettes.permissionLanguages, be_groups.palettes.permissionSpecific
+
+**EXT:frontend - Pages & Content Elements:**
+
+-   pages.palettes.* (17 labels: standard, title, visibility, access, abstract, metatags, editorial, layout, module, replace, links, caching, language, miscellaneous, media, storage, config)
+-   palette.* in tt_content (13 labels: general, headers, header, visibility, access, frames, imagelinks, image_accessibility, uploads_layout, table_layout, appearanceLinks, gallerySettings, mediaAdjustments)
+
+**EXT:filemetadata:**
+
+-   palette.* (6 labels: metrics, geo_location, visibility, content_date, accessibility, gps)
+
+**EXT:seo:**
+
+-   pages.palettes.* (6 labels: seo, robots, opengraph, twittercards, canonical, sitemap)
+
 ..  index:: TCA, NotScanned, ext:core
