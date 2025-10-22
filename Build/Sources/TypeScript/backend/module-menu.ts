@@ -112,6 +112,9 @@ class ModuleMenu {
     if (!moduleData.navigationComponentId) {
       return params;
     }
+    if (params.includes('id')) {
+      return params;
+    }
     // get id
     let section = '';
     if (moduleData.navigationComponentId === '@typo3/backend/tree/page-tree-element') {

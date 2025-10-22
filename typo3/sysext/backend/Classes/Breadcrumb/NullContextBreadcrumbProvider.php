@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Backend\Breadcrumb;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
+use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNodeRoute;
+use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleResolver;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\StorageRepository;
@@ -46,7 +48,13 @@ final class NullContextBreadcrumbProvider implements BreadcrumbProviderInterface
 
     public function generate(?BreadcrumbContext $context, ?ServerRequestInterface $request): array
     {
+        $breadcrumb = [];
+
         $currentModule = $this->moduleResolver->resolveModule($request);
+        if ($currentModule !== null) {
+            // Add parent modules first (for third-level modules)
+            $breadcrumb = $this->buildModuleHierarchy($currentModule);
+        }
 
         // Handle file storage tree
         if ($currentModule?->getNavigationComponent() === '@typo3/backend/tree/file-storage-tree-container') {
@@ -61,33 +69,75 @@ final class NullContextBreadcrumbProvider implements BreadcrumbProviderInterface
                 }
             }
 
-            return [
-                new BreadcrumbNode(
-                    identifier: (string)$id,
-                    label: $label,
-                    icon: $icon,
-                ),
-            ];
+            $breadcrumb[] = new BreadcrumbNode(
+                identifier: (string)$id,
+                label: $label,
+                icon: $icon,
+            );
         }
 
         // Handle page tree (default for null context or no module)
         if ($currentModule === null || $currentModule->getNavigationComponent() === '@typo3/backend/tree/page-tree-element') {
-            return [
-                new BreadcrumbNode(
-                    identifier: '0',
-                    label: (string)$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
-                    icon: 'apps-pagetree-root',
-                ),
-            ];
+            $breadcrumb[] = new BreadcrumbNode(
+                identifier: '0',
+                label: (string)$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
+                icon: 'apps-pagetree-root',
+            );
         }
 
-        return [];
+        return $breadcrumb;
     }
 
     public function getPriority(): int
     {
         // Low priority - only handles null contexts as fallback
         return 0;
+    }
+
+    /**
+     * Builds the module hierarchy including parent modules.
+     *
+     * For third-level modules, this returns [parent, current].
+     * For second-level modules, this returns [current].
+     * For standalone modules, this returns [current].
+     *
+     * @return BreadcrumbNode[]
+     */
+    private function buildModuleHierarchy(ModuleInterface $currentModule): array
+    {
+        $modules = [];
+        $moduleChain = [];
+
+        // Build chain from current to root
+        $module = $currentModule;
+        while ($module !== null) {
+            $moduleChain[] = $module;
+            $module = $module->getParentModule();
+        }
+
+        // Reverse to get root-to-current order and skip the top-level parent (main menu item)
+        $moduleChain = array_reverse($moduleChain);
+
+        // Skip the first item if we have more than one (first is the main menu container like "web")
+        if (count($moduleChain) > 1) {
+            array_shift($moduleChain);
+        }
+
+        // Build breadcrumb nodes for each module in the chain
+        foreach ($moduleChain as $module) {
+            $modules[] = new BreadcrumbNode(
+                identifier: $module->getIdentifier(),
+                label: $this->getLanguageService()->sL($module->getTitle()),
+                icon: $module->getIconIdentifier(),
+                route: new BreadcrumbNodeRoute(
+                    module: $module->getIdentifier(),
+                    params: $module->getNavigationComponent() === '@typo3/backend/tree/page-tree-element' ? ['id' => '0'] : [],
+                ),
+                forceShowIcon: true,
+            );
+        }
+
+        return $modules;
     }
 
     private function getLanguageService(): LanguageService

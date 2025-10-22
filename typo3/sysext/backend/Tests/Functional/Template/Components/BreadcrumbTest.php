@@ -358,6 +358,81 @@ final class BreadcrumbTest extends FunctionalTestCase
         self::assertSame('web_layout', $nodes[0]->route->module);
     }
 
+    #[Test]
+    public function breadcrumbIncludesModuleHierarchyForThirdLevelModule(): void
+    {
+        $recordFactory = $this->get(RecordFactory::class);
+        $pageRecord = $recordFactory->createResolvedRecordFromDatabaseRow('pages', BackendUtility::getRecord('pages', 1));
+
+        $context = new BreadcrumbContext($pageRecord);
+
+        // web_info_overview is a third-level module (parent: web_info, grandparent: content)
+        $request = $this->createMockRequest('web_info_overview');
+
+        $breadcrumb = $this->get(Breadcrumb::class);
+        $nodes = $breadcrumb->getBreadcrumb($request, $context);
+
+        // Should have: web_info (parent) + web_info_overview (current) + page
+        self::assertGreaterThanOrEqual(3, count($nodes), 'Should have parent module, current module, and page');
+
+        // First node should be the parent module (web_info)
+        self::assertSame('web_info', $nodes[0]->identifier, 'First node should be parent module');
+
+        // Second node should be the current third-level module
+        self::assertSame('web_info_overview', $nodes[1]->identifier, 'Second node should be current third-level module');
+
+        // All module nodes should be clickable with routes
+        self::assertNotNull($nodes[0]->route, 'Parent module should have route');
+        self::assertNotNull($nodes[1]->route, 'Current module should have route');
+
+        // Last node should be the current page
+        $lastNode = $nodes[count($nodes) - 1];
+        self::assertSame('1', $lastNode->identifier, 'Last node should be the current page');
+    }
+
+    #[Test]
+    public function breadcrumbIncludesModuleHierarchyForThirdLevelModuleWithNullContext(): void
+    {
+        // Test with null context (uses NullContextBreadcrumbProvider)
+        $request = $this->createMockRequest('web_info_translations');
+
+        $breadcrumb = $this->get(Breadcrumb::class);
+        $nodes = $breadcrumb->getBreadcrumb($request, null);
+
+        // Should have: web_info (parent) + web_info_translations (current) + virtual root
+        self::assertGreaterThanOrEqual(3, count($nodes), 'Should have parent module, current module, and virtual root');
+
+        // First node should be the parent module (web_info)
+        self::assertSame('web_info', $nodes[0]->identifier, 'First node should be parent module');
+
+        // Second node should be the current third-level module
+        self::assertSame('web_info_translations', $nodes[1]->identifier, 'Second node should be current third-level module');
+
+        // Both module nodes should have forceShowIcon enabled
+        self::assertTrue($nodes[0]->forceShowIcon, 'Parent module should force show icon');
+        self::assertTrue($nodes[1]->forceShowIcon, 'Current module should force show icon');
+    }
+
+    #[Test]
+    public function breadcrumbOnlyShowsSecondLevelModuleForNonThirdLevelModule(): void
+    {
+        $recordFactory = $this->get(RecordFactory::class);
+        $pageRecord = $recordFactory->createResolvedRecordFromDatabaseRow('pages', BackendUtility::getRecord('pages', 1));
+
+        $context = new BreadcrumbContext($pageRecord);
+
+        // web_info is a second-level module (parent: content, which should be skipped)
+        $request = $this->createMockRequest('web_info');
+
+        $breadcrumb = $this->get(Breadcrumb::class);
+        $nodes = $breadcrumb->getBreadcrumb($request, $context);
+
+        // Should have: web_info (current module) + page
+        // Should NOT have: content (top-level parent is skipped)
+        self::assertSame('web_info', $nodes[0]->identifier, 'First node should be the second-level module');
+        self::assertNotSame('content', $nodes[0]->identifier, 'Should not show top-level parent module');
+    }
+
     private function createMockRequest(string $moduleIdentifier): ServerRequestInterface
     {
         $moduleProvider = $this->get(ModuleProvider::class);

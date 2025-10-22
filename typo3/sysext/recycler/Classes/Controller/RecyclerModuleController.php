@@ -69,9 +69,7 @@ readonly class RecyclerModuleController
         $this->pageRenderer->loadJavaScriptModule('@typo3/recycler/recycler.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/multi-record-selection.js');
 
-        if ($backendUser->workspace !== 0
-            && (($id && $pageRecord !== []) || (!$id && $backendUser->isAdmin()))
-        ) {
+        if (($id && $pageRecord !== []) || (!$id && $backendUser->isAdmin())) {
             $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
         }
 

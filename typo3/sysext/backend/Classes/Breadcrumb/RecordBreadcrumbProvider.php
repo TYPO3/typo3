@@ -63,18 +63,9 @@ final class RecordBreadcrumbProvider implements BreadcrumbProviderInterface, Log
         $showRootline = $this->shouldShowRootline($currentModule);
         $targetModule = $currentModule?->getIdentifier() ?? $this->getTargetModule();
 
-        // Add module/root node
+        // Add module hierarchy (for third-level modules, this includes parent modules)
         if ($currentModule !== null) {
-            $breadcrumb[] = new BreadcrumbNode(
-                identifier: $currentModule->getIdentifier(),
-                label: $this->getLanguageService()->sL($currentModule->getTitle()),
-                icon: $currentModule->getIconIdentifier(),
-                route: new BreadcrumbNodeRoute(
-                    module: $currentModule->getIdentifier(),
-                    params: $showRootline ? ['id' => '0'] : [],
-                ),
-                forceShowIcon: true,
-            );
+            $breadcrumb = array_merge($breadcrumb, $this->buildModuleHierarchy($currentModule, $showRootline));
         } else {
             $breadcrumb[] = new BreadcrumbNode(
                 identifier: '0',
@@ -203,6 +194,52 @@ final class RecordBreadcrumbProvider implements BreadcrumbProviderInterface, Log
                 label: $record->getMainType() . ' [' . $record->getUid() . ']',
             );
         }
+    }
+
+    /**
+     * Builds the module hierarchy including parent modules.
+     *
+     * For third-level modules, this returns [parent, current].
+     * For second-level modules, this returns [current].
+     * For standalone modules, this returns [current].
+     *
+     * @return BreadcrumbNode[]
+     */
+    private function buildModuleHierarchy(ModuleInterface $currentModule, bool $showRootline): array
+    {
+        $modules = [];
+        $moduleChain = [];
+
+        // Build chain from current to root
+        $module = $currentModule;
+        while ($module !== null) {
+            $moduleChain[] = $module;
+            $module = $module->getParentModule();
+        }
+
+        // Reverse to get root-to-current order and skip the top-level parent (main menu item)
+        $moduleChain = array_reverse($moduleChain);
+
+        // Skip the first item if we have more than one (first is the main menu container like "web")
+        if (count($moduleChain) > 1) {
+            array_shift($moduleChain);
+        }
+
+        // Build breadcrumb nodes for each module in the chain
+        foreach ($moduleChain as $module) {
+            $modules[] = new BreadcrumbNode(
+                identifier: $module->getIdentifier(),
+                label: $this->getLanguageService()->sL($module->getTitle()),
+                icon: $module->getIconIdentifier(),
+                route: new BreadcrumbNodeRoute(
+                    module: $module->getIdentifier(),
+                    params: $showRootline ? ['id' => '0'] : [],
+                ),
+                forceShowIcon: true,
+            );
+        }
+
+        return $modules;
     }
 
     /**
