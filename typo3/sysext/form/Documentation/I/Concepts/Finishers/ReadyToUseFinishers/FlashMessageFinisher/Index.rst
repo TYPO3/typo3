@@ -19,7 +19,7 @@ FlashMessageContainer.
 
 ..  _apireference-finisheroptions-flashmessagefinisher-options:
 
-Options of the confirmation finisher
+Options of the FlashMessage finisher
 ====================================
 
 The following options can be set directly in the form definition YAML or

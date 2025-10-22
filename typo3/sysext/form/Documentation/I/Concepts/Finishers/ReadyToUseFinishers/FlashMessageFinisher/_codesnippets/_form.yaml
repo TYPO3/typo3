@@ -4,25 +4,11 @@ type: Form
 
 finishers:
   -
-    identifier: SaveToDatabase
+    identifier: FlashMessage
     options:
-      table: 'fe_users'
-      mode: update
-      whereClause:
-        uid: 1
-      databaseColumnMappings:
-        tstamp:
-          value: '{__currentTimestamp}'
-        pid:
-          value: 1
-      elements:
-        textfield-identifier-1:
-          mapOnDatabaseColumn: 'first_name'
-        textfield-identifier-2:
-          mapOnDatabaseColumn: 'last_name'
-        textfield-identifier-3:
-          mapOnDatabaseColumn: 'username'
-        advancedpassword-1:
-          mapOnDatabaseColumn: 'password'
-          skipIfValueIsEmpty: true
-          hashed: true
+      messageTitle: 'Merci'
+      messageCode: 201905041245
+      messageBody: 'Thx for using %s'
+      messageArguments:
+        - 'TYPO3'
+      severity: 0
