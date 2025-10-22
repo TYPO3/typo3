@@ -190,7 +190,7 @@ class LatestChangedPagesWidget implements WidgetInterface, RequestAwareWidgetInt
                 )
                 ->setMaxResults(1)
                 ->executeQuery()
-                ->fetchAssociative()['uid'];
+                ->fetchAssociative()['uid'] ?? null;
         }
 
         return $queryBuilder
@@ -201,7 +201,7 @@ class LatestChangedPagesWidget implements WidgetInterface, RequestAwareWidgetInt
             )
             ->setMaxResults(1)
             ->executeQuery()
-            ->fetchAssociative()['uid'];
+            ->fetchAssociative()['uid'] ?? null;
     }
 
     private function getRootLine(int $pageId): string
