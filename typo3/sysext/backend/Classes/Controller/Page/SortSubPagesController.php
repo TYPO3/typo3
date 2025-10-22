@@ -63,7 +63,7 @@ class SortSubPagesController
         }
 
         // Doc header handling
-        $view->getDocHeaderComponent()->setMetaInformation($pageInformation);
+        $view->getDocHeaderComponent()->setPageBreadcrumb($pageInformation);
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $previewDataAttributes = PreviewUriBuilder::create($pageInformation)
             ->withRootLine(BackendUtility::BEgetRootLine($parentPageUid))

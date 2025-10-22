@@ -74,7 +74,7 @@ class NewMultiplePagesController
         }
 
         // Doc header handling
-        $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
+        $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $previewDataAttributes = PreviewUriBuilder::create($pageRecord)
             ->withRootLine(BackendUtility::BEgetRootLine($pageUid))

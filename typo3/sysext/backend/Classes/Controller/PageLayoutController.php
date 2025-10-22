@@ -145,7 +145,7 @@ class PageLayoutController
         $pageLocalizationRecord = $this->getLocalizedPageRecord($this->currentSelectedLanguage);
 
         $view->setTitle($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'), $this->pageinfo['title']);
-        $view->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
+        $view->getDocHeaderComponent()->setPageBreadcrumb($this->pageinfo);
         $view->assignMultiple([
             'pageId' => $this->id,
             'localizedPageId' => $pageLocalizationRecord['uid'] ?? 0,

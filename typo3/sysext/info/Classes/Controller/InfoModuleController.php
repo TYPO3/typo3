@@ -81,7 +81,7 @@ class InfoModuleController
         // The page will show only if there is a valid page and if this page
         // may be viewed by the user
         if ($this->pageinfo !== []) {
-            $this->view->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
+            $this->view->getDocHeaderComponent()->setPageBreadcrumb($this->pageinfo);
         }
         $accessContent = false;
         $backendUser = $this->getBackendUser();

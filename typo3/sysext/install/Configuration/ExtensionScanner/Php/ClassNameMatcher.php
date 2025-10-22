@@ -2664,5 +2664,10 @@ return [
             'Deprecation-98453-SchedulerTaskRegistrationViaSCOPTIONS.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Template\Components\MetaInformation' => [
+        'restFiles' => [
+            'Deprecation-107813-DeprecateMetaInformationAPI.rst',
+        ],
+    ],
 
 ];

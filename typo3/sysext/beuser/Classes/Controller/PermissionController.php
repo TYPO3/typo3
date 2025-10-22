@@ -119,7 +119,7 @@ class PermissionController
             $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:mlang_tabs_tab'),
             $this->id !== 0 && !empty($this->pageInfo['title']) ? $this->pageInfo['title'] : ''
         );
-        $view->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
+        $view->getDocHeaderComponent()->setPageBreadcrumb($this->pageInfo);
 
         if ($action === 'edit') {
             return $this->editAction($view, $request);

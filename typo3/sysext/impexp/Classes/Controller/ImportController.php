@@ -123,7 +123,7 @@ class ImportController
             'uploadStatus' => $uploadStatus,
         ]);
         $view->setModuleName('');
-        $view->getDocHeaderComponent()->setMetaInformation($pageInfo);
+        $view->getDocHeaderComponent()->setPageBreadcrumb($pageInfo);
         if ((int)($pageInfo['uid'] ?? 0) > 0) {
             $this->addDocHeaderPreviewButton($view, $pageInfo);
         }

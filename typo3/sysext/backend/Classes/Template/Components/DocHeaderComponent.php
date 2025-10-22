@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Template\Components;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Breadcrumb\BreadcrumbContext;
+use TYPO3\CMS\Backend\Breadcrumb\BreadcrumbFactory;
 use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
@@ -50,6 +51,8 @@ class DocHeaderComponent
 
     protected Breadcrumb $breadcrumb;
 
+    protected BreadcrumbFactory $breadcrumbFactory;
+
     /**
      * The breadcrumb context for the current request.
      */
@@ -69,16 +72,22 @@ class DocHeaderComponent
         $this->menuRegistry = GeneralUtility::makeInstance(MenuRegistry::class);
         $this->metaInformation = GeneralUtility::makeInstance(MetaInformation::class);
         $this->breadcrumb = GeneralUtility::makeInstance(Breadcrumb::class);
+        $this->breadcrumbFactory = GeneralUtility::makeInstance(BreadcrumbFactory::class);
     }
 
     /**
      * Set page information
      *
      * @param array $metaInformation Record array
-     * @todo Deprecated. Use setBreadcrumbContext() with BreadcrumbFactory instead. Will be migrated in a follow-up patch.
+     * @deprecated since v14, will be removed in v15. Use setPageBreadcrumb() instead.
      */
     public function setMetaInformation(array $metaInformation)
     {
+        trigger_error(
+            'DocHeaderComponent::setMetaInformation() is deprecated and will be removed in TYPO3 v15. Use setPageBreadcrumb() instead.',
+            E_USER_DEPRECATED
+        );
+
         $this->metaInformation->setRecordArray($metaInformation);
 
         // Migrate meta information for breadcrumbs
@@ -92,10 +101,15 @@ class DocHeaderComponent
     /**
      * Set meta information for a file/folder resource.
      *
-     * @todo Deprecated. Use setBreadcrumbContext() with BreadcrumbFactory instead. Will be migrated in a follow-up patch.
+     * @deprecated since v14, will be removed in v15. Use setResourceBreadcrumb() instead.
      */
     public function setMetaInformationForResource(ResourceInterface $resource): void
     {
+        trigger_error(
+            'DocHeaderComponent::setMetaInformationForResource() is deprecated and will be removed in TYPO3 v15. Use setResourceBreadcrumb() instead.',
+            E_USER_DEPRECATED
+        );
+
         $this->metaInformation->setResource($resource);
 
         // Migrate meta information for breadcrumbs
@@ -105,24 +119,61 @@ class DocHeaderComponent
     /**
      * Sets the breadcrumb context for rendering.
      *
-     * This is the main API for providing breadcrumb information. Use BreadcrumbFactory
-     * to create contexts from controller actions.
+     * This is the main API for providing breadcrumb information.
      *
-     * Example:
-     *
-     *     // For editing a record
-     *     $context = $this->breadcrumbFactory->forEditAction('pages', 123);
-     *     $docHeaderComponent->setBreadcrumbContext($context);
-     *
-     *     // For creating a new record
-     *     $context = $this->breadcrumbFactory->forNewAction('tt_content', 42);
-     *     $docHeaderComponent->setBreadcrumbContext($context);
+     * For common scenarios, use the convenience methods instead:
+     * - setPageBreadcrumb() for page records
+     * - setRecordBreadcrumb() for any record
+     * - setResourceBreadcrumb() for files or folders
      *
      * @param BreadcrumbContext|null $breadcrumbContext The breadcrumb context
      */
     public function setBreadcrumbContext(?BreadcrumbContext $breadcrumbContext): void
     {
         $this->breadcrumbContext = $breadcrumbContext;
+    }
+
+    /**
+     * Sets breadcrumb from a page record array.
+     *
+     * This is the direct replacement for setMetaInformation().
+     *
+     * Example:
+     *     $view->getDocHeaderComponent()->setPageBreadcrumb($pageInfo);
+     *
+     * @param array $pageRecord The page record array (must contain 'uid')
+     */
+    public function setPageBreadcrumb(array $pageRecord): void
+    {
+        $this->breadcrumbContext = $this->breadcrumbFactory->forPageArray($pageRecord);
+    }
+
+    /**
+     * Sets breadcrumb for editing a record.
+     *
+     * Example:
+     *     $view->getDocHeaderComponent()->setRecordBreadcrumb('tt_content', 123);
+     *
+     * @param string $table The table name
+     * @param int $uid The record UID
+     */
+    public function setRecordBreadcrumb(string $table, int $uid): void
+    {
+        $this->breadcrumbContext = $this->breadcrumbFactory->forEditAction($table, $uid);
+    }
+
+    /**
+     * Sets breadcrumb for any resource (file or folder).
+     *
+     * Example:
+     *     $view->getDocHeaderComponent()->setResourceBreadcrumb($file);
+     *     $view->getDocHeaderComponent()->setResourceBreadcrumb($folder);
+     *
+     * @param ResourceInterface $resource The resource (file or folder)
+     */
+    public function setResourceBreadcrumb(ResourceInterface $resource): void
+    {
+        $this->breadcrumbContext = $this->breadcrumbFactory->forResource($resource);
     }
 
     /**
@@ -210,7 +261,6 @@ class DocHeaderComponent
             'enabled' => $this->isEnabled(),
             'buttons' => $this->buttonBar->getButtons(),
             'menus' => $this->menuRegistry->getMenus(),
-            'metaInformation' => $this->metaInformation,
             'breadcrumb' => $this->breadcrumb->getBreadcrumb($request, $this->breadcrumbContext),
         ];
     }

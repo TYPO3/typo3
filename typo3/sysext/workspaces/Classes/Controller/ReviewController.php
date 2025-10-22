@@ -121,7 +121,7 @@ final readonly class ReviewController
             $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab') . ' [' . $activeWorkspaceTitle . ']',
             $pageTitle
         );
-        $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
+        $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);
         $this->addPreviewLink($view, $pageUid, $activeWorkspace);
         $this->addEditWorkspaceRecordButton($view, $pageUid, $activeWorkspace);
         $this->addShortcutButton($view, $activeWorkspaceTitle, $pageTitle, $pageUid);

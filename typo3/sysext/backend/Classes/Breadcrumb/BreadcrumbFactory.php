@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
@@ -162,20 +161,40 @@ final class BreadcrumbFactory implements LoggerAwareInterface
     }
 
     /**
-     * Creates breadcrumb context for a file resource.
+     * Creates breadcrumb context from a page record array.
      *
-     * @param FileInterface $file The file resource
-     * @return BreadcrumbContext Context with the file resource
+     * This is the most common migration path from DocHeaderComponent::setMetaInformation().
+     *
+     * Example migration:
+     * Before: `$view->getDocHeaderComponent()->setMetaInformation($pageInfo);`
+     * After:  `$view->getDocHeaderComponent()->setBreadcrumbContext($this->breadcrumbFactory->forPageArray($pageInfo));`
+     *
+     * @param array $pageRecord The page record array (must contain 'uid')
+     * @return BreadcrumbContext Context with the page record or null on failure
      */
-    public function forFileResource(FileInterface $file): BreadcrumbContext
+    public function forPageArray(array $pageRecord): BreadcrumbContext
     {
-        return new BreadcrumbContext($file, []);
+        if (!isset($pageRecord['uid'])) {
+            $this->logger?->warning('Page record array must contain uid for breadcrumb');
+            return new BreadcrumbContext(null, []);
+        }
+
+        try {
+            $record = $this->recordFactory->createResolvedRecordFromDatabaseRow('pages', $pageRecord);
+            return new BreadcrumbContext($record, []);
+        } catch (\Exception $e) {
+            $this->logger?->error(
+                'Failed to create page record instance for breadcrumb',
+                ['uid' => $pageRecord['uid'], 'exception' => $e->getMessage()]
+            );
+            return new BreadcrumbContext(null, []);
+        }
     }
 
     /**
-     * Creates breadcrumb context for any resource.
+     * Creates breadcrumb context for any resource (file or folder).
      *
-     * @param ResourceInterface $resource The resource
+     * @param ResourceInterface $resource The resource (file or folder)
      * @return BreadcrumbContext Context with the resource
      */
     public function forResource(ResourceInterface $resource): BreadcrumbContext

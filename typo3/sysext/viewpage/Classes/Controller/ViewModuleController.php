@@ -163,7 +163,7 @@ class ViewModuleController
             $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($languageMenu);
         }
         if ($pageId && is_array(($pageRecord = BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW))))) {
-            $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
+            $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);
         }
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $showButton = $buttonBar->makeLinkButton()

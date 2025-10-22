@@ -108,7 +108,7 @@ class LinkValidatorController
 
         $view = $this->moduleTemplateFactory->create($request);
         if ($this->pageRecord !== []) {
-            $view->getDocHeaderComponent()->setMetaInformation($this->pageRecord);
+            $view->getDocHeaderComponent()->setPageBreadcrumb($this->pageRecord);
         }
 
         $this->validateSettings($request);

@@ -79,7 +79,7 @@ class ElementHistoryController
     {
         $this->view = $this->moduleTemplateFactory->create($request);
         $backendUser = $this->getBackendUser();
-        $this->view->getDocHeaderComponent()->setMetaInformation([]);
+        $this->view->getDocHeaderComponent()->setPageBreadcrumb([]);
         $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
 
         $parsedBody = $request->getParsedBody();
@@ -173,7 +173,7 @@ class ElementHistoryController
 
         $pageAccess = BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
         if (is_array($pageAccess)) {
-            $this->view->getDocHeaderComponent()->setMetaInformation($pageAccess);
+            $this->view->getDocHeaderComponent()->setPageBreadcrumb($pageAccess);
         }
 
         $schema = $this->tcaSchemaFactory->get($table);

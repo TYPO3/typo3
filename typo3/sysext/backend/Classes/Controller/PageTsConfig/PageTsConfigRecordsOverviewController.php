@@ -74,7 +74,7 @@ final class PageTsConfigRecordsOverviewController
 
         // The page will show only if there is a valid page and if this page may be viewed by the user.
         if ($pageRecord !== []) {
-            $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
+            $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);
         }
 
         $accessContent = false;

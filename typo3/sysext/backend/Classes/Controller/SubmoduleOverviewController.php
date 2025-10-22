@@ -66,7 +66,7 @@ final readonly class SubmoduleOverviewController
             $id !== 0 && isset($pageinfo['title']) ? $pageinfo['title'] : ''
         );
         if ($pageinfo !== []) {
-            $view->getDocHeaderComponent()->setMetaInformation($pageinfo);
+            $view->getDocHeaderComponent()->setPageBreadcrumb($pageinfo);
         }
         $view->makeDocHeaderModuleMenu(['id' => $id]);
 

@@ -108,7 +108,7 @@ class TemplateRecordsOverviewController extends AbstractTemplateModuleController
 
         $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle($this->getLanguageService()->sL($currentModule->getTitle()), '');
-        $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
+        $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);
         $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageUid);
         if ($pageUid !== 0) {
             $view->makeDocHeaderModuleMenu(['id' => $pageUid]);

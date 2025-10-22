@@ -211,7 +211,7 @@ class RecordListController
             $this->addNoRecordsFlashMessage($view, $this->table);
         }
         if ($pageinfo) {
-            $view->getDocHeaderComponent()->setMetaInformation($pageinfo);
+            $view->getDocHeaderComponent()->setPageBreadcrumb($pageinfo);
         }
         $this->getDocHeaderButtons($view, $clipboard, $request, $this->table, $dbList->listURL(), []);
         $view->assignMultiple([

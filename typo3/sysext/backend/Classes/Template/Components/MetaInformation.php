@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Shows the path to the current record or file / folder.
  *
- * @todo: this class should be deprecated and removed in future TYPO3 versions, as the Breadcrumb component now handles this
+ * @deprecated since v14, will be removed in v15. The Breadcrumb component now handles navigation display.
  */
 class MetaInformation
 {

@@ -70,7 +70,7 @@ readonly class RecyclerModuleController
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/multi-record-selection.js');
 
         if (($id && $pageRecord !== []) || (!$id && $backendUser->isAdmin())) {
-            $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
+            $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);
         }
 
         $view->setTitle(

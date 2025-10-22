@@ -947,7 +947,7 @@ class EditDocumentController
         $this->pageinfo = BackendUtility::readPageAccess($this->viewId, $this->perms_clause) ?: [];
         $this->setIsSavedRecord();
         // Setting up the buttons, markers for doc header and navigation component state
-        $this->resolveMetaInformation($view, $request);
+        $this->createBreadcrumb($view);
         $this->getButtons($view, $request);
 
         // Create language switch options if the record is already persisted, and it is a single record to edit
@@ -963,7 +963,7 @@ class EditDocumentController
         return $body;
     }
 
-    protected function resolveMetaInformation(ModuleTemplate $view, ServerRequestInterface $request): void
+    protected function createBreadcrumb(ModuleTemplate $view): void
     {
         // Handle file metadata records
         $file = null;
@@ -978,8 +978,7 @@ class EditDocumentController
 
         if ($file instanceof FileInterface) {
             $view->assign('moduleContextId', $file->getParentFolder()->getCombinedIdentifier());
-            $breadcrumbContext = $this->breadcrumbFactory->forFileResource($file);
-            $view->getDocHeaderComponent()->setBreadcrumbContext($breadcrumbContext);
+            $view->getDocHeaderComponent()->setResourceBreadcrumb($file);
         } elseif ($this->pageinfo !== []) {
             $l10nParent = (int)($this->pageinfo['l10n_parent'] ?? 0);
             $pageUid =  $this->pageinfo['uid'] ?? '';

@@ -120,7 +120,7 @@ class AdministrationController extends ActionController
         $permissionClause = $this->getBackendUserAuthentication()->getPagePermsClause(Permission::PAGE_SHOW);
         $pageRecord = BackendUtility::readPageAccess($this->pageUid, $permissionClause);
         if ($pageRecord) {
-            $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
+            $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);
         }
         $view->setFlashMessageQueue($this->getFlashMessageQueue());
 

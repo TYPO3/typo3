@@ -280,7 +280,7 @@ readonly class SiteSettingsController
     protected function addDocHeaderBreadcrumb(ModuleTemplate $moduleTemplate, Site $site): void
     {
         $record = BackendUtility::getRecord('pages', $site->getRootPageId());
-        $moduleTemplate->getDocHeaderComponent()->setMetaInformation($record ?? []);
+        $moduleTemplate->getDocHeaderComponent()->setPageBreadcrumb($record ?? []);
     }
 
     protected function addDocHeaderCloseAndSaveButtons(ModuleTemplate $moduleTemplate, Site $site, string $closeUrl, bool $saveEnabled): void

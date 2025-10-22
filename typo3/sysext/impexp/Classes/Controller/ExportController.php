@@ -151,7 +151,7 @@ class ExportController
             'inData' => $inputData,
         ]);
         $view->setModuleName('');
-        $view->getDocHeaderComponent()->setMetaInformation($pageInfo);
+        $view->getDocHeaderComponent()->setPageBreadcrumb($pageInfo);
         return $view->renderResponse('Export');
     }
 

@@ -6558,6 +6558,20 @@ return [
             'Breaking-107578-EventAfterCacheableContentIsGeneratedEventChanged.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Template\Components\DocHeaderComponent->setMetaInformation' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-107813-DeprecateMetaInformationAPI.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\Components\DocHeaderComponent->setMetaInformationForResource' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-107813-DeprecateMetaInformationAPI.rst',
+        ],
+    ],
     /** Note (leave this at the bottom):
      *  The FQCN object definitions here are not actually checked, only
      *  the method name itself. That means, never list generic method names

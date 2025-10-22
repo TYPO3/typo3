@@ -73,4 +73,33 @@ File management
   When browsing "fileadmin/images/products/" the breadcrumb shows:
   **fileadmin** → **images** → **products**
 
-..  index:: Backend, UX
+For Extension Developers
+=========================
+
+Custom backend modules can easily integrate breadcrumb navigation using new
+convenience methods on :php:`DocHeaderComponent`:
+
+..  code-block:: php
+
+    // For page-based modules
+    $view->getDocHeaderComponent()->setPageBreadcrumb($pageInfo);
+
+    // For record editing
+    $view->getDocHeaderComponent()->setRecordBreadcrumb('tt_content', 123);
+
+    // For file/folder browsing
+    $view->getDocHeaderComponent()->setResourceBreadcrumb($file);
+
+These methods automatically generate appropriate breadcrumb trails including:
+
+* Page tree hierarchy for page-based modules
+* Parent pages for content records
+* Folder structure for file resources
+* Module hierarchy for third-level modules
+
+..  note::
+    The previous :php:`setMetaInformation()` method has been deprecated in favor
+    of the new breadcrumb API. See :ref:`deprecation-107813-1730000000` for
+    migration instructions.
+
+..  index:: Backend, UX, ext:backend
