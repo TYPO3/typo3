@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 #[Autoconfigure(public: true, shared: false)]
 class VariableProcessor
 {
-    protected const LEVEL_DELIMITER = '__';
+    protected const LEVEL_DELIMITER = '___';
     protected const ARGUMENT_SEPARATOR = '/';
     protected const VARIABLE_PATTERN = '#\{(?P<modifier>!)?(?P<name>[^}]+)\}#';
     protected array $hashes = [];

@@ -65,61 +65,61 @@ final class VariableProcessorTest extends UnitTestCase
                 null,
                 ['aa' => '@any/nested'],
                 $plainInflatedRoutePath,
-                '/static/{qbeced67e6b340abc67a397f6e90bb0}/{bb}/{some_cc}/tail',
+                '/static/{ubc733a58af093f3974bbd80b5ce231}/{bb}/{some_cc}/tail',
             ],
             'aa -> @any/nested, no namespace (enforced)' => [
                 null,
                 ['aa' => '@any/nested'],
                 $enforcedInflatedRoutePath,
-                '/static/{!qbeced67e6b340abc67a397f6e90bb0}/{bb}/{some_cc}/tail',
+                '/static/{!ubc733a58af093f3974bbd80b5ce231}/{bb}/{some_cc}/tail',
             ],
             'no arguments, first (plain)' => [
                 'first',
                 [],
                 $plainInflatedRoutePath,
-                '/static/{first__aa}/{first__bb}/{first__some_cc}/tail',
+                '/static/{first___aa}/{first___bb}/{first___some_cc}/tail',
             ],
             'no arguments, first (enforced)' => [
                 'first',
                 [],
                 $enforcedInflatedRoutePath,
-                '/static/{!first__aa}/{first__bb}/{first__some_cc}/tail',
+                '/static/{!first___aa}/{first___bb}/{first___some_cc}/tail',
             ],
             'aa -> zz, first (plain)' => [
                 'first',
                 ['aa' => 'zz'],
                 $plainInflatedRoutePath,
-                '/static/{first__zz}/{first__bb}/{first__some_cc}/tail',
+                '/static/{first___zz}/{first___bb}/{first___some_cc}/tail',
             ],
             'aa -> zz, first (enforced)' => [
                 'first',
                 ['aa' => 'zz'],
                 $enforcedInflatedRoutePath,
-                '/static/{!first__zz}/{first__bb}/{first__some_cc}/tail',
+                '/static/{!first___zz}/{first___bb}/{first___some_cc}/tail',
             ],
             'aa -> any/nested, first (plain)' => [
                 'first',
                 ['aa' => 'any/nested'],
                 $plainInflatedRoutePath,
-                '/static/{first__any__nested}/{first__bb}/{first__some_cc}/tail',
+                '/static/{first___any___nested}/{first___bb}/{first___some_cc}/tail',
             ],
             'aa -> any/nested, first (enforced)' => [
                 'first',
                 ['aa' => 'any/nested'],
                 $enforcedInflatedRoutePath,
-                '/static/{!first__any__nested}/{first__bb}/{first__some_cc}/tail',
+                '/static/{!first___any___nested}/{first___bb}/{first___some_cc}/tail',
             ],
             'aa -> @any/nested, first (plain)' => [
                 'first',
                 ['aa' => '@any/nested'],
                 $plainInflatedRoutePath,
-                '/static/{ab0ce8f9f822228b4f324ec38b9c038}/{first__bb}/{first__some_cc}/tail',
+                '/static/{we2d75015c9dc39b96e079f4b84db6c}/{first___bb}/{first___some_cc}/tail',
             ],
             'aa -> @any/nested, first (enforced)' => [
                 'first',
                 ['aa' => '@any/nested'],
                 $enforcedInflatedRoutePath,
-                '/static/{!ab0ce8f9f822228b4f324ec38b9c038}/{first__bb}/{first__some_cc}/tail',
+                '/static/{!we2d75015c9dc39b96e079f4b84db6c}/{first___bb}/{first___some_cc}/tail',
             ],
         ];
     }
@@ -144,19 +144,19 @@ final class VariableProcessorTest extends UnitTestCase
         return [
             'no namespace, no arguments' => [
                 [],
-                ['a' => 'a', 'first__aa' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9' => '@any'],
+                ['a' => 'a', 'first___aa' => 'aa', 'first___second___aaa' => 'aaa', 'ea4ea1392ce210cd4fe39c586aa694d' => '@any'],
             ],
             'no namespace, a -> newA' => [
                 ['a' => 'newA'],
-                ['newA' => 'a', 'first__aa' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9' => '@any'],
+                ['newA' => 'a', 'first___aa' => 'aa', 'first___second___aaa' => 'aaa', 'ea4ea1392ce210cd4fe39c586aa694d' => '@any'],
             ],
             'no namespace, a -> 1' => [
                 ['a' => 1],
-                [1 => 'a', 'first__aa' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9' => '@any'],
+                [1 => 'a', 'first___aa' => 'aa', 'first___second___aaa' => 'aaa', 'ea4ea1392ce210cd4fe39c586aa694d' => '@any'],
             ],
             'no namespace, a -> @any/nested' => [
                 ['a' => '@any/nested'],
-                ['qbeced67e6b340abc67a397f6e90bb0' => 'a', 'first__aa' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9' => '@any'],
+                ['ubc733a58af093f3974bbd80b5ce231' => 'a', 'first___aa' => 'aa', 'first___second___aaa' => 'aaa', 'ea4ea1392ce210cd4fe39c586aa694d' => '@any'],
             ],
         ];
     }
@@ -205,32 +205,32 @@ final class VariableProcessorTest extends UnitTestCase
             'first, no arguments' => [
                 'first',
                 [],
-                ['a' => 'a', 'first__aa' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9' => '@any'],
+                ['a' => 'a', 'first___aa' => 'aa', 'first___second___aaa' => 'aaa', 'ea4ea1392ce210cd4fe39c586aa694d' => '@any'],
             ],
             'first, aa -> newAA' => [
                 'first',
                 ['aa' => 'newAA'],
-                ['a' => 'a', 'first__newAA' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9' => '@any'],
+                ['a' => 'a', 'first___newAA' => 'aa', 'first___second___aaa' => 'aaa', 'ea4ea1392ce210cd4fe39c586aa694d' => '@any'],
             ],
             'first, second -> newSecond' => [
                 'first',
                 ['second' => 'newSecond'],
-                ['a' => 'a', 'first__aa' => 'aa', 'first__newSecond__aaa' => 'aaa', 'q7aded81f5d1607191c695720db7ab2' => '@any'],
+                ['a' => 'a', 'first___aa' => 'aa', 'first___newSecond___aaa' => 'aaa', 'r134981ee0bc7b325daaca43a5405a4' => '@any'],
             ],
             'first, aa -> any/nested' => [
                 'first',
                 ['aa' => 'any/nested'],
-                ['a' => 'a', 'first__any__nested' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9' => '@any'],
+                ['a' => 'a', 'first___any___nested' => 'aa', 'first___second___aaa' => 'aaa', 'ea4ea1392ce210cd4fe39c586aa694d' => '@any'],
             ],
             'first, aa -> @any/nested' => [
                 'first',
                 ['aa' => '@any/nested'],
-                ['a' => 'a', 'ab0ce8f9f822228b4f324ec38b9c038' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9' => '@any'],
+                ['a' => 'a', 'we2d75015c9dc39b96e079f4b84db6c' => 'aa', 'first___second___aaa' => 'aaa', 'ea4ea1392ce210cd4fe39c586aa694d' => '@any'],
             ],
             'first, aa -> newAA, second => newSecond' => [
                 'first',
                 ['aa' => 'newAA', 'second' => 'newSecond'],
-                ['a' => 'a', 'first__newAA' => 'aa', 'first__newSecond__aaa' => 'aaa', 'q7aded81f5d1607191c695720db7ab2' => '@any'],
+                ['a' => 'a', 'first___newAA' => 'aa', 'first___newSecond___aaa' => 'aaa', 'r134981ee0bc7b325daaca43a5405a4' => '@any'],
             ],
         ];
     }
@@ -280,22 +280,22 @@ final class VariableProcessorTest extends UnitTestCase
             'no arguments, first' => [
                 'first',
                 [],
-                ['first__a' => 'a', 'first__b' => 'b', 'first__c' => ['d' => 'd', 'e' => 'e']],
+                ['first___a' => 'a', 'first___b' => 'b', 'first___c' => ['d' => 'd', 'e' => 'e']],
             ],
             'a -> newA, first' => [
                 'first',
                 ['a' => 'newA'],
-                ['first__newA' => 'a', 'first__b' => 'b', 'first__c' => ['d' => 'd', 'e' => 'e']],
+                ['first___newA' => 'a', 'first___b' => 'b', 'first___c' => ['d' => 'd', 'e' => 'e']],
             ],
             'a -> any/nested, first' => [
                 'first',
                 ['a' => 'any/nested'],
-                ['first__any__nested' => 'a', 'first__b' => 'b', 'first__c' => ['d' => 'd', 'e' => 'e']],
+                ['first___any___nested' => 'a', 'first___b' => 'b', 'first___c' => ['d' => 'd', 'e' => 'e']],
             ],
             'd -> newD, first' => [
                 'first',
                 ['d' => 'newD'], // not substituted, which is expected
-                ['first__a' => 'a', 'first__b' => 'b', 'first__c' => ['d' => 'd', 'e' => 'e']],
+                ['first___a' => 'a', 'first___b' => 'b', 'first___c' => ['d' => 'd', 'e' => 'e']],
             ],
         ];
     }
@@ -306,17 +306,17 @@ final class VariableProcessorTest extends UnitTestCase
             'a -> @any/nested, no namespace' => [
                 null,
                 ['a' => '@any/nested'],
-                ['qbeced67e6b340abc67a397f6e90bb0' => 'a', 'b' => 'b', 'c' => ['d' => 'd', 'e' => 'e']],
+                ['ubc733a58af093f3974bbd80b5ce231' => 'a', 'b' => 'b', 'c' => ['d' => 'd', 'e' => 'e']],
             ],
             'a -> newA, namespace_being_longer_than_32_characters' => [
                 'namespace_being_longer_than_32_characters',
                 ['a' => 'newA'],
-                ['qaea1f31c57b9c3e78c8205838d4563' => 'a', 'ub5e2989b61a4964ba4e06fc6de8527' => 'b', 'oabf16f448f7b02c6ecb13d155e5a4b' => ['d' => 'd', 'e' => 'e']],
+                ['pd0006115ed1b6710eabfcb97277207' => 'a', 'vb63bf3d2f0b2a06c1cc734de3a6887' => 'b', 'q961ab6f3ab344047baf38233e7c2e9' => ['d' => 'd', 'e' => 'e']],
             ],
             'a -> @any/nested, first' => [
                 'first',
                 ['a' => '@any/nested'],
-                ['ab0ce8f9f822228b4f324ec38b9c038' => 'a', 'first__b' => 'b', 'first__c' => ['d' => 'd', 'e' => 'e']],
+                ['we2d75015c9dc39b96e079f4b84db6c' => 'a', 'first___b' => 'b', 'first___c' => ['d' => 'd', 'e' => 'e']],
             ],
         ];
     }
