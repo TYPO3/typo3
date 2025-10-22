@@ -82,7 +82,12 @@ class Lexer
         $words = [];
         $this->debugString = '';
         while (1) {
-            [$start, $len] = $this->get_word($wordString, $pos);
+            $getWordResult = $this->get_word($wordString, $pos);
+            if (!is_array($getWordResult) || count($getWordResult) !== 2) {
+                break;
+            }
+            $start = $getWordResult[0];
+            $len = $getWordResult[1];
             if ($len) {
                 $this->addWords($words, $wordString, $start, $len);
                 if ($this->debug) {
