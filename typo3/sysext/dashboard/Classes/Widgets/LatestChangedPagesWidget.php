@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Widgets;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
@@ -28,6 +27,8 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Settings\SettingDefinition;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -49,13 +50,12 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
  *                          to find limit number of pages. Increase this value
  *                          if number of pages in list is not achieved.
  */
-class LatestChangedPagesWidget implements WidgetInterface, RequestAwareWidgetInterface
+class LatestChangedPagesWidget implements WidgetRendererInterface
 {
     /**
      * @var array{limit: int, historyLimit: int}
      */
     private readonly array $options;
-    private ServerRequestInterface $request;
 
     public function __construct(
         private readonly BackendViewFactory $backendViewFactory,
@@ -70,27 +70,44 @@ class LatestChangedPagesWidget implements WidgetInterface, RequestAwareWidgetInt
         ], $options);
     }
 
-    public function renderWidgetContent(): string
+    public function getSettingsDefinitions(): array
     {
-        $sysHistoryEntries = $this->getSysHistoryEntries($this->options['historyLimit']);
+        return [
+            new SettingDefinition(
+                key: 'restrictToCurrentUser',
+                type: 'bool',
+                default: false,
+                label: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.settings.restrictToCurrentUser',
+            ),
+        ];
+    }
+
+    public function renderWidget(WidgetContext $context): WidgetResult
+    {
+        $restrictToCurrentUser = (bool)$context->settings->get('restrictToCurrentUser');
+        $sysHistoryEntries = $this->getSysHistoryEntries($this->options['historyLimit'], $restrictToCurrentUser);
         $latestPages = $this->getLatestPagesFromSysHistory($sysHistoryEntries, $this->options['limit']);
         $latestPages = $this->enrichPageInformation($latestPages);
 
-        $view = $this->backendViewFactory->create($this->request);
+        $view = $this->backendViewFactory->create($context->request);
         $view->assignMultiple([
             'latestPages' => $latestPages,
             'configuration' => $this->configuration,
             'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
         ]);
 
-        return $view->render('Widget/LatestChangedPagesWidget');
+        return new WidgetResult(
+            content: $view->render('Widget/LatestChangedPagesWidget'),
+            refreshable: true,
+            label: $restrictToCurrentUser ? $this->getLanguageService()->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.title.restrictToCurrentUser') : null,
+        );
     }
 
-    private function getSysHistoryEntries(int $limit): array
+    private function getSysHistoryEntries(int $limit, bool $restrictToCurrentUser): array
     {
         $queryBuilder = $this->getQueryBuilderSysHistory();
         $workspaceId = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id');
-        return $queryBuilder
+        $queryBuilder
             ->select('tablename', 'recuid', 'tstamp', 'userid')
             ->from('sys_history')
             ->where(
@@ -104,7 +121,18 @@ class LatestChangedPagesWidget implements WidgetInterface, RequestAwareWidgetInt
                 $queryBuilder->expr()->eq('workspace', $workspaceId),
             )
             ->addOrderBy('tstamp', 'desc')
-            ->setMaxResults($limit)
+            ->setMaxResults($limit);
+
+        if ($restrictToCurrentUser) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq(
+                    'userid',
+                    $queryBuilder->createNamedParameter($this->getBackendUser()->user['uid'])
+                ),
+            );
+        }
+
+        return $queryBuilder
             ->executeQuery()
             ->fetchAllAssociative();
     }
@@ -244,13 +272,13 @@ class LatestChangedPagesWidget implements WidgetInterface, RequestAwareWidgetInt
         return $this->options;
     }
 
-    public function setRequest(ServerRequestInterface $request): void
-    {
-        $this->request = $request;
-    }
-
     private function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

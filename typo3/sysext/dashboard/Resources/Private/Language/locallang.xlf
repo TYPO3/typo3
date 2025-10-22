@@ -223,11 +223,17 @@
 			<trans-unit id="widgets.latestChangedPages.title" xml:space="preserve">
 				<source>Latest changed pages</source>
 			</trans-unit>
+			<trans-unit id="widgets.latestChangedPages.title.restrictToCurrentUser" xml:space="preserve">
+				<source>My latest changed pages</source>
+			</trans-unit>
 			<trans-unit id="widgets.latestChangedPages.description" xml:space="preserve">
 				<source>Show a list of pages where the latest changes were made</source>
 			</trans-unit>
 			<trans-unit id="widgets.latestChangedPages.empty" xml:space="preserve">
 				<source>No history found</source>
+			</trans-unit>
+			<trans-unit id="widgets.latestChangedPages.settings.restrictToCurrentUser" xml:space="preserve">
+				<source>Only show my changes</source>
 			</trans-unit>
 			<trans-unit id="widgets.latestChangedPages.column.change" xml:space="preserve">
 				<source>Change</source>
