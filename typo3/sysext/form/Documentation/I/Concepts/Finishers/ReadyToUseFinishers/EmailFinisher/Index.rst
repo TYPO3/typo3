@@ -235,8 +235,8 @@ programmatically in the options array but **not** from the backend editor:
 
 ..  _concepts-finishers-emailfinisher-yaml:
 
-Redirect finisher in the YAML form definition
-=============================================
+Email finisher in the YAML form definition
+==========================================
 
 This finisher sends an email to one recipient.
 EXT:form uses 2 EmailFinisher declarations with the identifiers
