@@ -78,17 +78,7 @@ class FalStatus implements StatusProviderInterface
         $message = '';
         $severity = ContextualFeedbackSeverity::OK;
 
-        $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-        $storageObjects = $storageRepository->findAll();
-        $storages = [];
-
-        foreach ($storageObjects as $storageObject) {
-            // We only check missing files for storages that are online
-            if ($storageObject->isOnline()) {
-                $storages[$storageObject->getUid()] = $storageObject;
-            }
-        }
-
+        $storages = $this->getBrowsableStorages();
         if (!empty($storages)) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file');
             $count = $queryBuilder
@@ -147,10 +137,7 @@ class FalStatus implements StatusProviderInterface
     {
         // @todo for performance reasons, consider using this only in CLI context as `ExtendedStatusProviderInterface`
 
-        $storages = array_filter(
-            GeneralUtility::makeInstance(StorageRepository::class)->findAll(),
-            static fn(ResourceStorage $storage): bool => $storage->isOnline()
-        );
+        $storages = $this->getBrowsableStorages();
         $inconsistenciesMessage = '';
         foreach ($storages as $storage) {
             $inconsistencies = $this->checkFolderConsistency($storage->getRootLevelFolder());
@@ -171,14 +158,15 @@ class FalStatus implements StatusProviderInterface
                 ReportStatus::class,
                 'Consistency check',
                 'No inconsistencies found in these storages',
-                $this->wrapInHtmlUnorderedList(array_map(
+                // make sure we have a list of strings (0… index) with `array_values` to ensure correct rendering
+                $this->wrapInHtmlUnorderedList(array_values(array_map(
                     static fn(ResourceStorage $storage): string => sprintf(
                         '%s (id: %d)',
                         $storage->getName(),
                         $storage->getUid()
                     ),
                     $storages,
-                )),
+                ))),
                 ContextualFeedbackSeverity::OK,
             );
         }
@@ -207,7 +195,7 @@ class FalStatus implements StatusProviderInterface
                 );
             }
         }
-        foreach ($folder->getSubFolders() as $subFolder) {
+        foreach ($folder->getSubfolders() as $subFolder) {
             $inconsistencies = [...$inconsistencies, ...$this->checkFolderConsistency($subFolder)];
         }
         return $inconsistencies;
@@ -239,6 +227,23 @@ class FalStatus implements StatusProviderInterface
                 array_values($items)
             ))
         );
+    }
+
+    /**
+     * Filter available storages that are actually browsable
+     *
+     * @return array<int,ResourceStorage>
+     */
+    protected function getBrowsableStorages(): array
+    {
+        $storages = [];
+        foreach (GeneralUtility::makeInstance(StorageRepository::class)->findAll() as $storageObject) {
+            if ($storageObject->isBrowsable()) {
+                $storages[$storageObject->getUid()] = $storageObject;
+            }
+        }
+
+        return $storages;
     }
 
     protected function getLanguageService(): LanguageService
