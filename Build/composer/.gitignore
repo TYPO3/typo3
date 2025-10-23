@@ -1,12 +1,9 @@
-/.env
-/composer.json
-/composer.lock
+/*
+!/config
 /config/*
 !/config/system
 /config/system/*
 !/config/system/additional.php.dist
+!/packages
 /packages/*
 !/packages/.gitkeep
-/public
-/var
-/vendor
