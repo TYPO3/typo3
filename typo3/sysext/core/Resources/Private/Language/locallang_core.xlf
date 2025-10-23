@@ -292,6 +292,12 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.show">
 				<source>Show</source>
 			</trans-unit>
+			<trans-unit id="labels.openTreeOptionsMenu">
+				<source>Open tree options menu</source>
+			</trans-unit>
+			<trans-unit id="labels.openPageTreeOptionsMenu">
+				<source>Open page tree options menu</source>
+			</trans-unit>
 			<trans-unit id="labels.refresh">
 				<source>Reload the tree from server</source>
 			</trans-unit>

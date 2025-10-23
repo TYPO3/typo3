@@ -59,6 +59,7 @@ export class TreeToolbar extends LitElement {
             class="tree-toolbar__menuitem dropdown-toggle dropdown-toggle-no-chevron float-end"
             data-bs-toggle="dropdown"
             aria-expanded="false"
+            aria-label="${lll('labels.openTreeOptionsMenu')}"
           >
             <typo3-backend-icon identifier="actions-menu-alternative" size="small"></typo3-backend-icon>
           </button>
