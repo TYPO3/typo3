@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,21 +18,57 @@
 namespace TYPO3\CMS\Backend\Template\Components\Buttons;
 
 /**
- * Interface for buttons
+ * Interface for buttons that define their own fixed position and group.
+ *
+ * Buttons implementing this interface will automatically override the position
+ * and group parameters passed to ButtonBar::addButton(), ensuring they always
+ * appear in their designated location regardless of what the developer specifies.
+ *
+ * This is useful for buttons that should always appear in a consistent location
+ * across the backend, such as the ShortcutButton which always appears in the
+ * top right corner.
+ *
+ * Example implementation:
+ *
+ * ```
+ * class MyButton implements ButtonInterface, PositionInterface
+ * {
+ *     public function getPosition(): string
+ *     {
+ *         return ButtonBar::BUTTON_POSITION_RIGHT;
+ *     }
+ *
+ *     public function getGroup(): int
+ *     {
+ *         return 90;
+ *     }
+ * }
+ * ```
+ *
+ * Usage:
+ *
+ * ```
+ * $button = $buttonBar->makeMyButton();
+ * // Position and group are ignored - button defines its own
+ * $buttonBar->addButton($button);
+ * ```
  */
 interface PositionInterface
 {
     /**
-     * Gets the button position.
+     * Returns the position where this button should be rendered.
      *
-     * @return string
+     * @return string Either ButtonBar::BUTTON_POSITION_LEFT or ButtonBar::BUTTON_POSITION_RIGHT
      */
-    public function getPosition();
+    public function getPosition(): string;
 
     /**
-     * Gets the button group.
+     * Returns the group number for this button.
      *
-     * @return int
+     * Groups determine the visual grouping and order of buttons within a position.
+     * Lower numbers appear first.
+     *
+     * @return int The group number (e.g., 1, 10, 90, 91)
      */
-    public function getGroup();
+    public function getGroup(): int;
 }

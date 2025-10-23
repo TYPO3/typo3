@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,96 +18,77 @@
 namespace TYPO3\CMS\Backend\Template\Components;
 
 /**
- * Control used by various components
+ * Base class providing common properties for UI controls in the backend.
+ * Provides standard HTML attributes like title, CSS classes, and data attributes
+ * that are shared across various component types (buttons, menu items, etc.).
+ *
+ * This class is extended by components like:
+ * - AbstractButton
+ * - MenuItem
+ *
+ * Example (inherited in MenuItem):
+ *
+ * ```
+ * public function __construct(
+ *     protected readonly ComponentFactory $componentFactory,
+ * ) {}
+ *
+ * $menuItem = $this->componentFactory->createMenuItem()
+ *     ->setTitle('My Item')              // From AbstractControl
+ *     ->setClasses('custom-class')       // From AbstractControl
+ *     ->setDataAttributes([              // From AbstractControl
+ *         'action' => 'do-something'
+ *     ])
+ *     ->setHref('/target');              // MenuItem-specific
+ * ```
  */
 class AbstractControl
 {
     /**
-     * HTML tag attribute for class
-     *
-     * @var string
+     * CSS classes to apply to the rendered element
      */
-    protected $classes = '';
+    protected string $classes = '';
 
     /**
-     * HTML tag attribute for title
-     *
-     * @var string
+     * Title/label text for the control
      */
-    protected $title = '';
+    protected string $title = '';
 
     /**
-     * HTML tag attributes for data-*
-     * Use key => value pairs
+     * HTML data-* attributes for the control
      *
-     * @var array
+     * @var array<string, string> Key-value pairs (e.g., ['action' => 'save'])
      */
-    protected $dataAttributes = [];
+    protected array $dataAttributes = [];
 
-    /**
-     * Get classes
-     *
-     * @return string
-     */
-    public function getClasses()
+    public function getClasses(): string
     {
         return $this->classes;
     }
 
-    /**
-     * Get Title
-     *
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * Get Data attributes
-     *
-     * @return array
-     */
-    public function getDataAttributes()
+    public function getDataAttributes(): array
     {
         return $this->dataAttributes;
     }
 
-    /**
-     * Set classes
-     *
-     * @param string $classes HTML class attribute to set
-     *
-     * @return $this
-     */
-    public function setClasses($classes)
+    public function setClasses(string $classes): static
     {
         $this->classes = $classes;
         return $this;
     }
 
-    /**
-     * Set title attribute
-     *
-     * @param string $title HTML title attribute to set
-     *
-     * @return $this
-     */
-    public function setTitle($title)
+    public function setTitle(string $title): static
     {
         $this->title = $title;
         return $this;
     }
 
-    /**
-     * Set Data attributes
-     *
-     * @param array $dataAttributes HTML data attributes to set
-     *
-     * @return $this
-     */
-    public function setDataAttributes(array $dataAttributes)
+    public function setDataAttributes(array $dataAttributes): static
     {
         $this->dataAttributes = $dataAttributes;
         return $this;

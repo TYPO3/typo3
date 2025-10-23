@@ -30,7 +30,7 @@ final class MenuItemTest extends UnitTestCase
     public function isMenuItemValidBlankCallExpectFalse(): void
     {
         $menuItem = new MenuItem();
-        $isValid = $menuItem->isValid($menuItem);
+        $isValid = $menuItem->isValid();
         self::assertFalse($isValid);
     }
 
@@ -42,7 +42,7 @@ final class MenuItemTest extends UnitTestCase
     {
         $menuItem = new MenuItem();
         $menuItem->setTitle('huhu');
-        $isValid = $menuItem->isValid($menuItem);
+        $isValid = $menuItem->isValid();
         self::assertFalse($isValid);
     }
 
@@ -54,7 +54,7 @@ final class MenuItemTest extends UnitTestCase
     {
         $menuItem = new MenuItem();
         $menuItem->setHref('husel');
-        $isValid = $menuItem->isValid($menuItem);
+        $isValid = $menuItem->isValid();
         self::assertFalse($isValid);
     }
 
@@ -66,7 +66,7 @@ final class MenuItemTest extends UnitTestCase
     {
         $menuItem = new MenuItem();
         $menuItem->setTitle('husel')->setHref('husel');
-        $isValid = $menuItem->isValid($menuItem);
+        $isValid = $menuItem->isValid();
         self::assertTrue($isValid);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,29 +17,15 @@
 
 namespace TYPO3\CMS\Backend\Template\Components\Buttons;
 
+use TYPO3\CMS\Backend\Template\Components\ComponentInterface;
+
 /**
- * Interface for buttons
+ * Interface for buttons in the document header.
+ *
+ * All button types (LinkButton, InputButton, DropDownButton, etc.) must implement
+ * this interface to be added to the ButtonBar.
+ *
+ * This interface extends ComponentInterface, which provides the common contract
+ * for all renderable backend components.
  */
-interface ButtonInterface extends \Stringable
-{
-    /**
-     * Validates all set parameters of a button.
-     *
-     * @return bool
-     */
-    public function isValid();
-
-    /**
-     * Returns the fully qualified class name of the button as a string
-     *
-     * @return string
-     */
-    public function getType();
-
-    /**
-     * Renders the markup for the button
-     *
-     * @return string
-     */
-    public function render();
-}
+interface ButtonInterface extends ComponentInterface {}

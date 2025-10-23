@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,8 +22,6 @@ use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * DropDownRadio
- *
  * This dropdown item type renders an element with an active state.
  * Use this element to display a radio-like selection of a state.
  * When set to active, it will show a dot in front of the icon and
@@ -54,33 +54,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class DropDownRadio extends AbstractDropDownItem implements DropDownItemInterface
 {
-    protected bool $active = false;
-
-    public function isActive(): bool
-    {
-        return $this->active;
-    }
-
-    public function setActive(bool $active): self
-    {
-        $this->active = $active;
-        return $this;
-    }
-
     public function render(): string
     {
-        // Status Icon
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        if ($this->isActive()) {
-            $statusIcon = '<span class="text-primary">' . $iconFactory->getIcon('actions-dot', IconSize::SMALL)->render() . '</span>';
-        } else {
-            $statusIcon = $iconFactory->getIcon('empty-empty', IconSize::SMALL)->render();
-        }
+        $statusIcon = $this->isActive()
+            ? '<span class="text-primary">' . $iconFactory->getIcon('actions-dot', IconSize::SMALL)->render() . '</span>'
+            : $iconFactory->getIcon('empty-empty', IconSize::SMALL)->render();
 
-        return '<' . $this->getTag() . ' ' . $this->getAttributesString() . '>'
-            . $statusIcon
-            . $this->getRenderedIcon()
-            . htmlspecialchars($this->getLabel())
-            . '</' . $this->getTag() . '>';
+        return sprintf(
+            '<%1$s %2$s>%3$s%4$s%5$s</%1$s>',
+            $this->getTag(),
+            $this->getAttributesString(),
+            $statusIcon,
+            $this->getRenderedIcon(),
+            htmlspecialchars($this->getLabel())
+        );
     }
 }

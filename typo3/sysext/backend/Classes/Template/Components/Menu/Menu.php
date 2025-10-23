@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,64 +20,86 @@ namespace TYPO3\CMS\Backend\Template\Components\Menu;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Menu
+ * Represents a navigation menu in the backend module document header, typically rendered
+ * as a dropdown selector that allows users to switch between different views or modes
+ * within a module.
+ *
+ * Menus consist of multiple MenuItems and are registered with the MenuRegistry in the
+ * DocHeaderComponent. The menu is automatically rendered in the module's document header.
+ *
+ * Example:
+ *
+ * ```
+ * public function __construct(
+ *     protected readonly ComponentFactory $componentFactory,
+ * ) {}
+ *
+ * public function myAction(): ResponseInterface
+ * {
+ *     $menuRegistry = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry();
+ *     $menu = $this->componentFactory->createMenu();
+ *     $menu->setIdentifier('myModuleMenu')
+ *         ->setLabel('Select View');
+ *
+ *     $menuItem1 = $this->componentFactory->createMenuItem()
+ *         ->setTitle('List View')
+ *         ->setHref($listViewUrl)
+ *         ->setActive(true);
+ *     $menu->addMenuItem($menuItem1);
+ *
+ *     $menuItem2 = $this->componentFactory->createMenuItem()
+ *         ->setTitle('Grid View')
+ *         ->setHref($gridViewUrl);
+ *     $menu->addMenuItem($menuItem2);
+ *
+ *     $menuRegistry->addMenu($menu);
+ * }
+ * ```
  */
 class Menu
 {
-    /**
-     * Menu Identifier
-     *
-     * @var string
-     */
-    protected $identifier = '';
+    protected string $identifier = '';
 
     /**
-     * Label of the Menu (useful for Selectbox menus)
-     *
-     * @var string
+     * Label of the Menu (displayed as the dropdown label)
      */
-    protected $label = '';
+    protected string $label = '';
 
-    /**
-     * Container for menuitems
-     *
-     * @var array
-     */
-    protected $menuItems = [];
+    protected array $menuItems = [];
 
-    /**
-     * Get the label
-     *
-     * @return string
-     */
-    public function getLabel()
+    public function getIdentifier(): string
+    {
+        return $this->identifier;
+    }
+
+    public function getDataIdentifier(): string
+    {
+        $dataMenuIdentifier = GeneralUtility::camelCaseToLowerCaseUnderscored($this->identifier);
+        return str_replace('_', '-', $dataMenuIdentifier);
+    }
+
+    public function getLabel(): string
     {
         return $this->label;
     }
 
-    /**
-     * Set label
-     *
-     * @param string $label LabelText for the menu (accepts LLL syntax)
-     *
-     * @return Menu
-     */
-    public function setLabel($label)
+    public function getMenuItems(): array
     {
-        $this->label = $label;
+        return $this->menuItems;
+    }
+
+    public function setIdentifier(string $identifier): static
+    {
+        $this->identifier = $identifier;
         return $this;
     }
 
     /**
-     * Set identifier
-     *
-     * @param string $identifier Menu Identifier
-     *
-     * @return Menu
+     * @param string $label LabelText for the menu (accepts LLL syntax)
      */
-    public function setIdentifier($identifier)
+    public function setLabel(string $label): static
     {
-        $this->identifier = $identifier;
+        $this->label = $label;
         return $this;
     }
 
@@ -86,66 +110,29 @@ class Menu
      *
      * @throws \InvalidArgumentException In case a menuItem is not valid
      */
-    public function addMenuItem(MenuItem $menuItem)
+    public function addMenuItem(MenuItem $menuItem): static
     {
-        if (!$menuItem->isValid($menuItem)) {
+        if (!$menuItem->isValid()) {
             throw new \InvalidArgumentException('MenuItem "' . $menuItem->getTitle() . '" is not valid', 1442236317);
         }
         // @todo implement sorting of menu items
         // @todo maybe even things like spacers/sections?
         $this->menuItems[] = clone $menuItem;
+        return $this;
     }
 
     /**
-     * Get menu items
-     *
-     * @return array
+     * @deprecated since v14, will be removed in v15. Use GeneralUtility::makeInstance(MenuItem::class) directly or inject ComponentFactory and use createMenuItem().
      */
-    public function getMenuItems()
+    public function makeMenuItem(): MenuItem
     {
-        return $this->menuItems;
+        // @todo Activate once core is migrated
+        // trigger_error('Menu::makeMenuItem() is deprecated and will be removed in TYPO3 v15. Use GeneralUtility::makeInstance(MenuItem::class) directly or inject ComponentFactory and use createMenuItem().', E_USER_DEPRECATED);
+        return GeneralUtility::makeInstance(MenuItem::class);
     }
 
-    /**
-     * Get identifier
-     *
-     * @return string
-     */
-    public function getIdentifier()
+    public function isValid(): bool
     {
-        return $this->identifier;
-    }
-
-    /**
-     * Get identifier for data attribute
-     */
-    public function getDataIdentifier(): string
-    {
-        $dataMenuIdentifier = GeneralUtility::camelCaseToLowerCaseUnderscored($this->identifier);
-        $dataMenuIdentifier = str_replace('_', '-', $dataMenuIdentifier);
-        return $dataMenuIdentifier;
-    }
-
-    /**
-     * MenuItem Factory Method
-     *
-     * @return MenuItem
-     */
-    public function makeMenuItem()
-    {
-        $menuItem = GeneralUtility::makeInstance(MenuItem::class);
-        return $menuItem;
-    }
-
-    /**
-     * Validation function
-     *
-     * @param Menu $menu The menu to validate
-     *
-     * @return bool
-     */
-    public function isValid(Menu $menu)
-    {
-        return trim($menu->getIdentifier()) !== '';
+        return trim($this->getIdentifier()) !== '';
     }
 }

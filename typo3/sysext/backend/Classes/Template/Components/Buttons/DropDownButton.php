@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -22,8 +24,6 @@ use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * DropDownButton
- *
  * This button type is a container for dropdown items.
  * It will render a dropdown containing all items attached
  * to it. There are different kinds available, each item
@@ -34,18 +34,25 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Example:
  *
  * ```
- * $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
- * $dropDownButton = $buttonBar->makeDropDownButton()
- *      ->setLabel('Dropdown')
- *      ->setTitle('Save')
- *      ->setIcon($this->iconFactory->getIcon('actions-heart'))
- *      ->getShowLabelText(true)
- *      ->addItem(
- *          GeneralUtility::makeInstance(DropDownItem::class)
- *              ->setLabel('Item')
- *              ->setHref('#')
- *      );
- * $buttonBar->addButton($dropDownButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+ * public function __construct(
+ *     protected readonly ComponentFactory $componentFactory,
+ * ) {}
+ *
+ * public function myAction(): ResponseInterface
+ * {
+ *     $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+ *     $dropDownButton = $this->componentFactory->createDropDownButton()
+ *          ->setLabel('Dropdown')
+ *          ->setTitle('Save')
+ *          ->setIcon($this->iconFactory->getIcon('actions-heart'))
+ *          ->getShowLabelText(true)
+ *          ->addItem(
+ *              GeneralUtility::makeInstance(DropDownItem::class)
+ *                  ->setLabel('Item')
+ *                  ->setHref('#')
+ *          );
+ *     $buttonBar->addButton($dropDownButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+ * }
  * ```
  */
 class DropDownButton implements ButtonInterface
@@ -62,7 +69,7 @@ class DropDownButton implements ButtonInterface
         return $this->icon;
     }
 
-    public function setIcon(?Icon $icon): self
+    public function setIcon(?Icon $icon): static
     {
         $icon?->setSize(IconSize::SMALL);
         $this->icon = $icon;
@@ -74,7 +81,7 @@ class DropDownButton implements ButtonInterface
         return $this->label;
     }
 
-    public function setLabel(string $label): self
+    public function setLabel(string $label): static
     {
         $this->label = $label;
         return $this;
@@ -85,7 +92,7 @@ class DropDownButton implements ButtonInterface
         return $this->title ?? $this->label;
     }
 
-    public function setTitle(?string $title): self
+    public function setTitle(?string $title): static
     {
         $this->title = $title;
         return $this;
@@ -96,7 +103,7 @@ class DropDownButton implements ButtonInterface
         return $this->showLabelText;
     }
 
-    public function setShowLabelText(bool $showLabelText): self
+    public function setShowLabelText(bool $showLabelText): static
     {
         $this->showLabelText = $showLabelText;
         return $this;
@@ -107,13 +114,13 @@ class DropDownButton implements ButtonInterface
         return $this->disabled;
     }
 
-    public function setDisabled(bool $disabled): self
+    public function setDisabled(bool $disabled): static
     {
         $this->disabled = $disabled;
         return $this;
     }
 
-    public function addItem(DropDownItemInterface $item): self
+    public function addItem(DropDownItemInterface $item): static
     {
         if (!$item->isValid()) {
             throw new \InvalidArgumentException(
@@ -137,35 +144,26 @@ class DropDownButton implements ButtonInterface
         return $this->items;
     }
 
-    /**
-     * @return bool
-     */
-    public function isValid()
+    public function isValid(): bool
     {
         return !empty($this->getLabel())
             && ($this->getShowLabelText() || $this->getIcon())
             && !empty($this->getItems());
     }
 
-    /**
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
         return static::class;
     }
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $items = $this->getItems();
 
         /**
          * @var DropDownRadio[] $activeItems
          */
-        $activeItems = array_filter($items, function (DropDownItemInterface $item): bool {
+        $activeItems = array_filter($items, static function (DropDownItemInterface $item): bool {
             return $item instanceof DropDownRadio && $item->isActive();
         });
         if (!empty($activeItems)) {
@@ -193,21 +191,13 @@ class DropDownButton implements ButtonInterface
             $labelText = ' ' . $this->getLabel();
         }
 
-        $content = '<div class="btn-group">'
-            . '<button ' . GeneralUtility::implodeAttributes($attributes, true) . '>'
-            . ($this->getIcon() !== null ? $this->getIcon()->render() : '')
-            . htmlspecialchars($labelText)
-            . '</button>'
-            . '<ul class="dropdown-menu">';
-
-        /** @var DropDownItemInterface $item */
-        foreach ($items as $item) {
-            $content .= '<li>' . $item->render() . '</li>';
-        }
-        $content .= '
-            </ul>
-        </div>';
-        return $content;
+        return sprintf(
+            '<div class="btn-group"><button %s>%s%s</button><ul class="dropdown-menu">%s</ul></div>',
+            GeneralUtility::implodeAttributes($attributes, true),
+            $this->getIcon()?->render() ?? '',
+            htmlspecialchars($labelText),
+            implode('', array_map(static fn(DropDownItemInterface $item) => '<li>' . $item->render() . '</li>', $items))
+        );
     }
 
     public function __toString(): string

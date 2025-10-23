@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,8 +20,6 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * InputButton
- *
  * This button type renders a HTML tag <button> and takes the HTML attributes
  * name and value as additional attributes to those defined in AbstractButton.
  *
@@ -29,128 +29,71 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Example:
  *
  * ```
- * $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
- * $saveButton = $buttonBar->makeInputButton()
- *      ->setName('save')
- *      ->setValue('1')
- *      ->setIcon($this->iconFactory->getIcon('actions-document-save', IconSize::SMALL))
- *      ->setTitle('Save');
- * $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
+ * public function __construct(
+ *     protected readonly ComponentFactory $componentFactory,
+ * ) {}
+ *
+ * public function myAction(): ResponseInterface
+ * {
+ *     $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+ *     $saveButton = $this->componentFactory->createInputButton()
+ *          ->setName('save')
+ *          ->setValue('1')
+ *          ->setIcon($this->iconFactory->getIcon('actions-document-save', IconSize::SMALL))
+ *          ->setTitle('Save');
+ *     $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
+ * }
  * ```
  */
 class InputButton extends AbstractButton
 {
-    /**
-     * Name Attribute of the button
-     *
-     * @var string
-     */
-    protected $name = '';
+    protected string $name = '';
+    protected string $value = '';
+    protected string $form = '';
 
-    /**
-     * Value attribute of the button
-     *
-     * @var string
-     */
-    protected $value = '';
-
-    /**
-     * ID of the referenced <form> tag
-     *
-     * @var string
-     */
-    protected $form = '';
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * Set name
-     *
-     * @param string $name Name attribute
-     *
-     * @return InputButton
-     */
-    public function setName($name)
+    public function setName(string $name): static
     {
         $this->name = $name;
         return $this;
     }
 
-    /**
-     * Get value
-     *
-     * @return string
-     */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
 
-    /**
-     * Set value
-     *
-     * @param string $value Value attribute
-     *
-     * @return InputButton
-     */
-    public function setValue($value)
+    public function setValue(string $value): static
     {
         $this->value = $value;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getForm()
+    public function getForm(): string
     {
         return $this->form;
     }
 
-    /**
-     * @param string $form
-     *
-     * @return InputButton
-     */
-    public function setForm($form)
+    public function setForm(string $form): static
     {
         $this->form = $form;
         return $this;
     }
 
-    /**
-     * Validates the current button
-     *
-     * @return bool
-     */
-    public function isValid()
+    public function isValid(): bool
     {
-        if (
-            trim($this->getName()) !== ''
+        return trim($this->getName()) !== ''
             && trim($this->getValue()) !== ''
             && trim($this->getTitle()) !== ''
-            && $this->getType() === self::class
-            && $this->getIcon() !== null
-        ) {
-            return true;
-        }
-        return false;
+            && $this->getType() === static::class
+            && $this->getIcon() !== null;
     }
 
-    /**
-     * Renders the markup of the button
-     *
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $attributes = [
             'name' => $this->getName(),
@@ -169,16 +112,15 @@ class InputButton extends AbstractButton
         foreach ($this->dataAttributes as $attributeName => $attributeValue) {
             $attributes['data-' . $attributeName] = $attributeValue;
         }
-        $attributesString = GeneralUtility::implodeAttributes($attributes, true);
 
-        return '<button ' . $attributesString . '>'
-            . $this->getIcon()->render() . htmlspecialchars($labelText)
-            . '</button>';
+        return sprintf(
+            '<button %s>%s%s</button>',
+            GeneralUtility::implodeAttributes($attributes, true),
+            $this->getIcon()?->render() ?? '',
+            htmlspecialchars($labelText)
+        );
     }
 
-    /**
-     * Magic method so Fluid can access a button via {button}
-     */
     public function __toString(): string
     {
         return $this->render();

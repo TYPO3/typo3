@@ -325,18 +325,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Security/SudoMode/PasswordVerification.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between TYPO3\\CMS\\Core\\Imaging\\Icon and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Template/Components/Buttons/InputButton.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between TYPO3\\CMS\\Core\\Imaging\\Icon and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Template/Components/Buttons/LinkButton.php
-
-		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 2

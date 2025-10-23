@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,8 +18,6 @@
 namespace TYPO3\CMS\Backend\Template\Components\Buttons\DropDown;
 
 /**
- * DropDownItem
- *
  * This dropdown item type renders a simple element.
  * Use this element if you need a link, button.
  *
@@ -36,24 +36,14 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons\DropDown;
  */
 class DropDownItem extends AbstractDropDownItem implements DropDownItemInterface
 {
-    protected string $tag = 'a';
-
-    public function setTag(string $tag): self
-    {
-        $this->tag = htmlspecialchars(trim($tag));
-        return $this;
-    }
-
-    public function getTag(): string
-    {
-        return $this->tag;
-    }
-
     public function render(): string
     {
-        return '<' . $this->getTag() . ' ' . $this->getAttributesString() . '>'
-            . ($this->getIcon() ? $this->getIcon()->render() : '')
-            . htmlspecialchars($this->getLabel())
-            . '</' . $this->getTag() . '>';
+        return sprintf(
+            '<%1$s %2$s>%3$s%4$s</%1$s>',
+            $this->getTag(),
+            $this->getAttributesString(),
+            $this->getIcon()?->render() ?? '',
+            htmlspecialchars($this->getLabel())
+        );
     }
 }

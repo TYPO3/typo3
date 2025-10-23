@@ -31,7 +31,7 @@ final class MenuTest extends UnitTestCase
     public function isMenuValidBlankCallExpectFalse(): void
     {
         $menu = new Menu();
-        $isValid = $menu->isValid($menu);
+        $isValid = $menu->isValid();
         self::assertFalse($isValid);
     }
 
@@ -43,7 +43,7 @@ final class MenuTest extends UnitTestCase
     {
         $menu = new Menu();
         $menu->setIdentifier('husel');
-        $isValid = $menu->isValid($menu);
+        $isValid = $menu->isValid();
         self::assertTrue($isValid);
     }
 

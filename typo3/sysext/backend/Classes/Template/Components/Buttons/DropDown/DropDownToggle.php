@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,12 +17,7 @@
 
 namespace TYPO3\CMS\Backend\Template\Components\Buttons\DropDown;
 
-use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
- * DropDownToggle
- *
  * This dropdown item type renders an element with an active state.
  * When set to active, it will show a checkmark in front of the icon
  * and text to indicate the current state.
@@ -40,27 +37,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class DropDownToggle extends AbstractDropDownItem implements DropDownItemInterface
 {
-    protected bool $active = false;
-
-    public function isActive(): bool
-    {
-        return $this->active;
-    }
-
-    public function setActive(bool $active): self
-    {
-        $this->active = $active;
-        return $this;
-    }
-
     public function render(): string
     {
         // Status Icon
         $this->setAttribute('data-dropdowntoggle-status', $this->isActive() ? 'active' : 'inactive');
-        return '<' . $this->getTag() . ' ' . $this->getAttributesString() . '>'
-            . '<span class="dropdown-item-status"></span>'
-            . $this->getRenderedIcon()
-            . htmlspecialchars($this->getLabel())
-            . '</' . $this->getTag() . '>';
+        return sprintf(
+            '<%1$s %2$s><span class="dropdown-item-status"></span>%3$s%4$s</%1$s>',
+            $this->getTag(),
+            $this->getAttributesString(),
+            $this->getRenderedIcon(),
+            htmlspecialchars($this->getLabel())
+        );
     }
 }

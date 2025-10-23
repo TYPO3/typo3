@@ -18,7 +18,47 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Template\Components;
 
 /**
- * Listeners can modify the buttons of the button bar in the backend module docheader
+ * PSR-14 event that allows listeners to modify the buttons in the backend module
+ * document header button bar. This event is dispatched after all buttons have been
+ * added to the button bar, but before they are rendered.
+ *
+ * Use cases:
+ * - Add custom buttons to existing modules
+ * - Remove or hide buttons based on conditions
+ * - Modify button properties (labels, icons, etc.)
+ * - Reorder buttons
+ *
+ * Example event listener:
+ *
+ * ```
+ * use TYPO3\CMS\Backend\Template\Components\ModifyButtonBarEvent;
+ * use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+ * use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
+ * use TYPO3\CMS\Core\Attribute\AsEventListener;
+ *
+ * final class MyButtonBarListener
+ * {
+ *     public function __construct(
+ *         protected readonly ComponentFactory $componentFactory,
+ *     ) {}
+ *
+ *     #[AsEventListener]
+ *     public function __invoke(ModifyButtonBarEvent $event): void
+ *     {
+ *         $buttons = $event->getButtons();
+ *         $buttonBar = $event->getButtonBar();
+ *
+ *         $myButton = $this->componentFactory->createLinkButton()
+ *             ->setHref('/my-action')
+ *             ->setTitle('My Action')
+ *             ->setIcon($iconFactory->getIcon('actions-heart'));
+ *
+ *         $buttons[ButtonBar::BUTTON_POSITION_RIGHT][1][] = clone $myButton;
+ *
+ *         $event->setButtons($buttons);
+ *     }
+ * }
+ * ```
  *
  * @phpstan-import-type Buttons from ButtonBar
  */

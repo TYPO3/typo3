@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,9 +17,15 @@
 
 namespace TYPO3\CMS\Backend\Template\Components\Buttons\DropDown;
 
-interface DropDownItemInterface
-{
-    public function getType(): string;
-    public function isValid(): bool;
-    public function render(): string;
-}
+use TYPO3\CMS\Backend\Template\Components\ComponentInterface;
+
+/**
+ * Interface for dropdown items that can be added to a DropDownButton.
+ *
+ * Dropdown items include interactive elements (DropDownItem, DropDownRadio, DropDownToggle)
+ * and structural elements (DropDownHeader, DropDownDivider).
+ *
+ * This interface extends ComponentInterface, which provides the common contract
+ * for all renderable backend components.
+ */
+interface DropDownItemInterface extends ComponentInterface {}

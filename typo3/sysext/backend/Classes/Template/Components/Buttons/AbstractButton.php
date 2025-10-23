@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -19,99 +21,67 @@ use TYPO3\CMS\Backend\Template\Components\AbstractControl;
 use TYPO3\CMS\Core\Imaging\Icon;
 
 /**
- * AbstractButton
+ * Base class for all button types in the backend document header.
+ * Provides common functionality for buttons including icon handling, label text display,
+ * and disabled state management.
+ *
+ * This class extends AbstractControl (providing title, classes, data attributes) and
+ * implements ButtonInterface (providing validation, type identification, and rendering).
+ *
+ * @see ButtonInterface
+ * @see AbstractControl
  */
 class AbstractButton extends AbstractControl implements ButtonInterface
 {
     /**
-     * Icon object
-     *
-     * @var Icon
+     * Optional icon to display on the button
      */
-    protected $icon;
+    protected ?Icon $icon = null;
 
     /**
-     * Defines whether to show the title as a label within the button
-     *
-     * @var bool
+     * Whether to show the button's label text (from title property).
+     * If false, only the icon is shown (label is used for title attribute).
      */
-    protected $showLabelText = false;
+    protected bool $showLabelText = false;
 
     /**
-     * Disabled state of the button
-     *
-     * @var bool
+     * Whether the button is in disabled state
      */
-    protected $disabled = false;
+    protected bool $disabled = false;
 
-    /**
-     * Show Label text
-     *
-     * @return bool
-     */
-    public function getShowLabelText()
+    public function getShowLabelText(): bool
     {
         return $this->showLabelText;
     }
 
-    /**
-     * Show Label text
-     *
-     * @param bool $showLabelText
-     *
-     * @return $this
-     */
-    public function setShowLabelText($showLabelText)
+    public function setShowLabelText(bool $showLabelText): static
     {
         $this->showLabelText = $showLabelText;
         return $this;
     }
 
-    /**
-     * Get icon
-     *
-     * @return Icon
-     */
-    public function getIcon()
+    public function getIcon(): ?Icon
     {
         return $this->icon;
     }
 
-    /**
-     * Get type
-     *
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
         return static::class;
     }
 
-    /**
-     * Set icon
-     *
-     * @param Icon $icon Icon object for the button
-     *
-     * @return $this
-     */
-    public function setIcon(Icon $icon)
+    public function setIcon(?Icon $icon): static
     {
         $this->icon = $icon;
         return $this;
     }
 
-    /**
-     * Check if button is disabled
-     */
     public function isDisabled(): bool
     {
         return $this->disabled;
     }
 
-    /**
-     * Set if button needs to be disabled
-     */
-    public function setDisabled(bool $disabled): AbstractButton
+    public function setDisabled(bool $disabled): static
     {
         $this->disabled = $disabled;
         return $this;
@@ -120,10 +90,8 @@ class AbstractButton extends AbstractControl implements ButtonInterface
     /**
      * Implementation from ButtonInterface
      * This object is an abstract, so no implementation is necessary
-     *
-     * @return bool
      */
-    public function isValid()
+    public function isValid(): bool
     {
         return false;
     }
@@ -143,7 +111,7 @@ class AbstractButton extends AbstractControl implements ButtonInterface
      *
      * @return string
      */
-    public function render()
+    public function render(): string
     {
         return '';
     }

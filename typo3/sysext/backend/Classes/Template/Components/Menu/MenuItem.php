@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,85 +20,63 @@ namespace TYPO3\CMS\Backend\Template\Components\Menu;
 use TYPO3\CMS\Backend\Template\Components\AbstractControl;
 
 /**
- * MenuItem
+ * Represents a single item within a Menu in the backend module document header.
+ * Each MenuItem has a title, URL (href), and can be marked as active to indicate
+ * the current selection.
+ *
+ * MenuItems inherit from AbstractControl, providing access to common properties like
+ * title, CSS classes, and data attributes.
+ *
+ * Example:
+ *
+ * ```
+ * public function __construct(
+ *     protected readonly ComponentFactory $componentFactory,
+ * ) {}
+ *
+ * public function myAction(): ResponseInterface
+ * {
+ *     $menu = $this->componentFactory->createMenu();
+ *     $menuItem = $this->componentFactory->createMenuItem()
+ *         ->setTitle('List View')
+ *         ->setHref('/my-module?view=list')
+ *         ->setActive(true)  // Marks this item as currently selected
+ *         ->setClasses('my-custom-class')
+ *         ->setDataAttributes(['action' => 'switch-view']);
+ *     $menu->addMenuItem($menuItem);
+ * }
+ * ```
  */
 class MenuItem extends AbstractControl
 {
-    /**
-     * Sets the href of the menuItem
-     *
-     * @var string
-     */
-    protected $href = '';
+    protected string $href = '';
 
-    /**
-     * Sets the active state of the menuItem
-     *
-     * @var bool
-     */
-    protected $active = false;
+    protected bool $active = false;
 
-    /**
-     * Set href
-     *
-     * @param string $href Href of the MenuItem
-     *
-     * @return MenuItem
-     */
-    public function setHref($href)
+    public function setHref(string $href): static
     {
         $this->href = $href;
         return $this;
     }
 
-    /**
-     * Set active
-     *
-     * @param bool $active Defines whether a menuItem is active
-     *
-     * @return MenuItem
-     */
-    public function setActive($active)
+    public function getHref(): string
+    {
+        return $this->href;
+    }
+
+    public function setActive(bool $active): static
     {
         $this->active = $active;
         return $this;
     }
 
-    /**
-     * Get href
-     *
-     * @return string
-     */
-    public function getHref()
-    {
-        return $this->href;
-    }
-
-    /**
-     * Check if is active
-     *
-     * @return bool
-     */
-    public function isActive()
+    public function isActive(): bool
     {
         return $this->active;
     }
 
-    /**
-     * Validation
-     *
-     * @param MenuItem $menuItem The menuItem to validate
-     *
-     * @return bool
-     */
-    public function isValid(MenuItem $menuItem)
+    public function isValid(): bool
     {
-        if (
-            $menuItem->getHref() !== ''
-            && $menuItem->getTitle() !== ''
-        ) {
-            return true;
-        }
-        return false;
+        return $this->getHref() !== '' && $this->getTitle() !== '';
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,8 +18,6 @@
 namespace TYPO3\CMS\Backend\Template\Components\Buttons\DropDown;
 
 /**
- * DropDownDivider
- *
  * This dropdown item type renders the divider element.
  *
  * Example:
@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons\DropDown;
  * $dropDownButton->addItem($item);
  * ```
  */
-class DropDownDivider implements DropDownItemInterface, \Stringable
+class DropDownDivider implements DropDownItemInterface
 {
     public function getType(): string
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,21 +18,17 @@
 namespace TYPO3\CMS\Backend\Template\Components\Buttons\DropDown;
 
 /**
- * DropDownHeader
- *
- * This dropdown item type renders a noninteractive text
- * element to group items and gives more meaning to a set
- * of options.
+ * This dropdown item type renders a noninteractive text element
+ * to group items and gives more meaning to a set of options.
  *
  * Example:
  *
  * ```
- * $item = GeneralUtility::makeInstance(DropDownHeader::class)
- *     ->setLabel('Label');
+ * $item = GeneralUtility::makeInstance(DropDownHeader::class)->setLabel('Label');
  * $dropDownButton->addItem($item);
  * ```
  */
-class DropDownHeader implements DropDownItemInterface, \Stringable
+class DropDownHeader implements DropDownItemInterface
 {
     protected ?string $label = null;
 
@@ -39,7 +37,7 @@ class DropDownHeader implements DropDownItemInterface, \Stringable
         return $this->label;
     }
 
-    public function setLabel(?string $label): self
+    public function setLabel(?string $label): static
     {
         $this->label = $label;
         return $this;

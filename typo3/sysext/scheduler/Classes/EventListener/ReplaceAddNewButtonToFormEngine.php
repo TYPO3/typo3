@@ -62,11 +62,15 @@ final readonly class ReplaceAddNewButtonToFormEngine
         ]);
 
         $languageService = $this->getLanguageService();
-        $newButton = $event->getButtonBar()->makeFullyRenderedButton()->setHtmlSource(
-            '<typo3-scheduler-new-task-wizard-button url="' . $addTaskUrl . '" subject="' . htmlspecialchars($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add')) . '">'
-            . $this->iconFactory->getIcon('actions-plus', IconSize::SMALL) . htmlspecialchars($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add')) .
-            '</typo3-scheduler-new-task-wizard-button>'
-        );
+        $newButton = $event->getButtonBar()->makeGenericButton()
+            ->setTag('typo3-scheduler-new-task-wizard-button')
+            ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL))
+            ->setLabel($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add'))
+            ->setShowLabelText(true)
+            ->setAttributes([
+                'url' => $addTaskUrl,
+                'subject' => $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add'),
+            ]);
 
         // Find and replace t3js-editform-new button
         // By replacing the existing button we ensure to respect TSconfig and that user has necessary permissions

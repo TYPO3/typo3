@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -32,89 +34,72 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * ShortcutButton
+ * Renders a shortcut button in the DocHeader which automatically positions itself
+ * in the top right corner (BUTTON_POSITION_RIGHT, group 91).
  *
- * Renders a shortcut button in the DocHeader which will be rendered
- * to the right position using button group "91".
+ * This button implements PositionInterface, which means the position and group
+ * parameters passed to addButton() are ignored - the button always uses its own
+ * predefined position.
  *
  * Example:
  *
  * ```
- * $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
- * $pageId = (int)($request->getQueryParams()['id'] ?? 0);
- * $myButton = $buttonBar->makeShortcutButton()
- *       ->setRouteIdentifier('page_preview')
- *       ->setDisplayName('View page ' . $pageId)
- *       ->setArguments([
- *          'id' => $pageId
- *       ]);
- * $buttonBar->addButton($myButton);
+ * public function __construct(
+ *     protected readonly ComponentFactory $componentFactory,
+ * ) {}
+ *
+ * public function myAction(): ResponseInterface
+ * {
+ *     $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+ *     $pageId = (int)($request->getQueryParams()['id'] ?? 0);
+ *     $myButton = $this->componentFactory->createShortcutButton()
+ *           ->setRouteIdentifier('page_preview')
+ *           ->setDisplayName('View page ' . $pageId)
+ *           ->setArguments([
+ *              'id' => $pageId
+ *           ]);
+ *     $buttonBar->addButton($myButton);
+ * }
  * ```
  */
 class ShortcutButton implements ButtonInterface, PositionInterface
 {
-    /**
-     * @var string The route identifier of the shortcut
-     */
     protected string $routeIdentifier = '';
 
-    /**
-     * @var string
-     */
-    protected $displayName = '';
+    protected string $displayName = '';
 
     /**
      * @var array List of parameter/value pairs relevant for this shortcut
      */
-    protected $arguments = [];
+    protected array $arguments = [];
 
     protected bool $copyUrlToClipboard = true;
 
     protected bool $disabled = false;
 
-    /**
-     * Gets the route identifier for the shortcut.
-     */
     public function getRouteIdentifier(): string
     {
         return $this->routeIdentifier;
     }
 
-    /**
-     * Sets the route identifier for the shortcut.
-     */
-    public function setRouteIdentifier(string $routeIdentifier): self
+    public function setRouteIdentifier(string $routeIdentifier): static
     {
         $this->routeIdentifier = $routeIdentifier;
         return $this;
     }
 
-    /**
-     * Gets the display name of the module.
-     *
-     * @return string
-     */
-    public function getDisplayName()
+    public function getDisplayName(): string
     {
         return $this->displayName;
     }
 
-    /**
-     * Sets the display name of the module.
-     *
-     * @param string $displayName
-     * @return ShortcutButton
-     */
-    public function setDisplayName($displayName)
+    public function setDisplayName(string $displayName): static
     {
         $this->displayName = $displayName;
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function setArguments(array $arguments): self
+    public function setArguments(array $arguments): static
     {
         $this->arguments = $arguments;
         return $this;
@@ -123,86 +108,50 @@ class ShortcutButton implements ButtonInterface, PositionInterface
     /**
      * Defines whether the shortcut button should be extended to also
      * allow copying the current URL to the operating systems' clipboard.
-     *
-     * @return $this
      */
-    public function setCopyUrlToClipboard(bool $copyUrlToClipboard): self
+    public function setCopyUrlToClipboard(bool $copyUrlToClipboard): static
     {
         $this->copyUrlToClipboard = $copyUrlToClipboard;
         return $this;
     }
 
-    /**
-     * Check if button is disabled
-     */
     public function isDisabled(): bool
     {
         return $this->disabled;
     }
 
-    /**
-     * Set if button needs to be disabled
-     */
-    public function setDisabled(bool $disabled): ShortcutButton
+    public function setDisabled(bool $disabled): static
     {
         $this->disabled = $disabled;
         return $this;
     }
 
-    /**
-     * Gets the button position.
-     *
-     * @return string
-     */
-    public function getPosition()
+    public function getPosition(): string
     {
         return ButtonBar::BUTTON_POSITION_RIGHT;
     }
 
-    /**
-     * Gets the button group.
-     *
-     * @return int
-     */
-    public function getGroup()
+    public function getGroup(): int
     {
         return 91;
     }
 
-    /**
-     * Gets the type of the button
-     *
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
         return static::class;
     }
 
-    /**
-     * Determines whether the button shall be rendered.
-     *
-     * @return bool
-     */
-    public function isValid()
+    public function isValid(): bool
     {
         return $this->displayName !== '' && $this->routeExists($this->routeIdentifier);
     }
 
-    /**
-     * Renders the button
-     */
     public function __toString(): string
     {
         return $this->render();
     }
 
-    /**
-     * Renders the button
-     *
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $createShortcut = $this->getBackendUser()->mayMakeShortcut();
         // Early return in case the current user is not allowed to create shortcuts.
@@ -274,7 +223,7 @@ class ShortcutButton implements ButtonInterface, PositionInterface
             $clipboardItem->setTag('typo3-copy-to-clipboard');
             $clipboardItem->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.copyCurrentUrl'));
             $clipboardItem->setAttributes([
-                'text' => GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute(
+                'text' => (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute(
                     $routeIdentifier,
                     $arguments,
                     UriBuilder::SHAREABLE_URL

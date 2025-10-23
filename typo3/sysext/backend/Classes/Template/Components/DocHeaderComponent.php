@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,6 +18,7 @@
 namespace TYPO3\CMS\Backend\Template\Components;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Breadcrumb\BreadcrumbContext;
 use TYPO3\CMS\Backend\Breadcrumb\BreadcrumbFactory;
 use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
@@ -24,55 +27,80 @@ use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * DocHeader component class
+ * Document header component for backend modules.
+ *
+ * This component manages the header area of backend module views, providing:
+ * - Breadcrumb navigation (via BreadcrumbContext)
+ * - Button bar for action buttons (save, close, delete, etc.)
+ * - Drop-down menus for module-specific actions
+ *
+ * The component can be enabled or disabled to control visibility of the entire
+ * document header. It integrates with the ModuleTemplate to provide a consistent
+ * header across all backend modules.
+ *
+ * Usage in a controller:
+ *
+ * ```
+ * public function __construct(
+ *     protected readonly ComponentFactory $componentFactory,
+ * ) {}
+ *
+ * public function myAction(): ResponseInterface
+ * {
+ *     $view = $this->moduleTemplateFactory->create($request);
+ *     $docHeader = $view->getDocHeaderComponent();
+ *
+ *     // Set breadcrumb for a page
+ *     $docHeader->setPageBreadcrumb($pageInfo);
+ *
+ *     // Add action buttons using ComponentFactory
+ *     $buttonBar = $docHeader->getButtonBar();
+ *     $saveButton = $this->componentFactory->createSaveButton('editform');
+ *     $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
+ * }
+ * ```
  */
+#[Autoconfigure(public: true)]
 class DocHeaderComponent
 {
     /**
-     * MenuRegistry Object
+     * Legacy meta information component (deprecated).
      *
-     * @var MenuRegistry
+     * @deprecated Will be removed in TYPO3 v15. Use breadcrumbContext instead.
      */
-    protected $menuRegistry;
+    protected MetaInformation $metaInformation;
 
     /**
-     * Meta information
-     *
-     * @var MetaInformation
+     * Button bar component for managing action buttons.
      */
-    protected $metaInformation;
+    protected ButtonBar $buttonBar;
 
     /**
-     * Registry Container for Buttons
-     *
-     * @var ButtonBar
+     * Breadcrumb component for rendering navigation trails.
      */
-    protected $buttonBar;
-
     protected Breadcrumb $breadcrumb;
 
-    protected BreadcrumbFactory $breadcrumbFactory;
-
     /**
-     * The breadcrumb context for the current request.
+     * Context information for breadcrumb rendering.
+     *
+     * Contains the main context (page, record, or resource) and optional suffix nodes
+     * for additional navigation elements.
      */
     protected ?BreadcrumbContext $breadcrumbContext = null;
 
     /**
-     * @var bool
+     * Whether the document header is enabled and should be rendered.
      */
-    protected $enabled = true;
+    protected bool $enabled = true;
 
-    /**
-     * Sets up buttonBar and MenuRegistry
-     */
-    public function __construct()
-    {
+    public function __construct(
+        protected readonly MenuRegistry $menuRegistry,
+        protected readonly RecordFactory $recordFactory,
+        protected readonly BreadcrumbFactory $breadcrumbFactory,
+    ) {
         $this->buttonBar = GeneralUtility::makeInstance(ButtonBar::class);
-        $this->menuRegistry = GeneralUtility::makeInstance(MenuRegistry::class);
         $this->metaInformation = GeneralUtility::makeInstance(MetaInformation::class);
         $this->breadcrumb = GeneralUtility::makeInstance(Breadcrumb::class);
-        $this->breadcrumbFactory = GeneralUtility::makeInstance(BreadcrumbFactory::class);
     }
 
     /**
@@ -81,7 +109,7 @@ class DocHeaderComponent
      * @param array $metaInformation Record array
      * @deprecated since v14, will be removed in v15. Use setPageBreadcrumb() instead.
      */
-    public function setMetaInformation(array $metaInformation)
+    public function setMetaInformation(array $metaInformation): void
     {
         trigger_error(
             'DocHeaderComponent::setMetaInformation() is deprecated and will be removed in TYPO3 v15. Use setPageBreadcrumb() instead.',
@@ -92,8 +120,7 @@ class DocHeaderComponent
 
         // Migrate meta information for breadcrumbs
         if (isset($metaInformation['uid'])) {
-            $recordFactory = GeneralUtility::makeInstance(RecordFactory::class);
-            $record = $recordFactory->createResolvedRecordFromDatabaseRow('pages', $metaInformation);
+            $record = $this->recordFactory->createResolvedRecordFromDatabaseRow('pages', $metaInformation);
             $this->breadcrumbContext = new BreadcrumbContext($record, []);
         }
     }
@@ -184,6 +211,17 @@ class DocHeaderComponent
      * - Showing "Edit Multiple" states
      * - Adding custom contextual information
      *
+     * Example:
+     *
+     *     $docHeader->setPageBreadcrumb($pageInfo);
+     *     $docHeader->addBreadcrumbSuffixNode(
+     *         new BreadcrumbNode(
+     *             identifier: 'new',
+     *             label: 'Create New Content Element',
+     *             icon: 'actions-add'
+     *         )
+     *     );
+     *
      * Note: This creates or modifies the breadcrumb context. If you need to build
      * a complete context, use BreadcrumbFactory instead.
      *
@@ -205,57 +243,65 @@ class DocHeaderComponent
     }
 
     /**
-     * Get moduleMenuRegistry
-     *
-     * @return MenuRegistry
+     * Returns the menu registry for adding drop-down menus to the document header.
      */
-    public function getMenuRegistry()
+    public function getMenuRegistry(): MenuRegistry
     {
         return $this->menuRegistry;
     }
 
     /**
-     * Get ButtonBar
+     * Returns the button bar for adding action buttons to the document header.
      *
-     * @return ButtonBar
+     * The button bar supports multiple button positions (left, right) and groups
+     * to organize buttons logically.
      */
-    public function getButtonBar()
+    public function getButtonBar(): ButtonBar
     {
         return $this->buttonBar;
     }
 
     /**
-     * Determines whether this components is enabled.
+     * Determines whether this component is enabled and should be rendered.
      *
-     * @return bool
+     * When disabled, the entire document header (including breadcrumbs, buttons,
+     * and menus) will not be displayed in the backend module.
      */
-    public function isEnabled()
+    public function isEnabled(): bool
     {
         return $this->enabled;
     }
 
     /**
-     * Sets the enabled property to TRUE.
+     * Enables this component for rendering.
      */
-    public function enable()
+    public function enable(): void
     {
         $this->enabled = true;
     }
 
     /**
-     * Sets the enabled property to FALSE (disabled).
+     * Disables this component to prevent rendering.
      */
-    public function disable()
+    public function disable(): void
     {
         $this->enabled = false;
     }
 
     /**
-     * Returns the abstract content of the docHeader as an array
+     * Returns the complete document header content as an array for rendering.
      *
-     * @return array
+     * This method aggregates all components (buttons, menus, breadcrumbs) into
+     * a structured array that can be consumed by the Fluid template rendering
+     * the backend module layout.
+     *
+     * The returned array structure:
+     * - 'enabled': Whether the document header should be rendered
+     * - 'buttons': Array of button configurations from the button bar
+     * - 'menus': Array of menu configurations from the menu registry
+     * - 'breadcrumb': Breadcrumb trail data from the breadcrumb context
      */
-    public function docHeaderContent(?ServerRequestInterface $request)
+    public function docHeaderContent(?ServerRequestInterface $request): array
     {
         return [
             'enabled' => $this->isEnabled(),

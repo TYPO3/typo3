@@ -76,6 +76,9 @@ File management
 For Extension Developers
 =========================
 
+Setting basic breadcrumb context
+---------------------------------
+
 Custom backend modules can easily integrate breadcrumb navigation using new
 convenience methods on :php:`DocHeaderComponent`:
 
@@ -97,9 +100,90 @@ These methods automatically generate appropriate breadcrumb trails including:
 * Folder structure for file resources
 * Module hierarchy for third-level modules
 
-..  note::
-    The previous :php:`setMetaInformation()` method has been deprecated in favor
-    of the new breadcrumb API. See :ref:`deprecation-107813-1730000000` for
-    migration instructions.
+Adding suffix nodes for special states
+---------------------------------------
+
+The :php:`addBreadcrumbSuffixNode()` method allows appending custom breadcrumb
+nodes after the main breadcrumb trail. This is useful for indicating special
+states or actions such as:
+
+* "Create New" actions when creating records
+* "Edit Multiple" states when editing multiple records
+* Custom contextual information specific to the current view
+
+**Example: Adding a "Create New" suffix node**
+
+..  code-block:: php
+
+    use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
+
+    $view = $this->moduleTemplateFactory->create($request);
+    $docHeader = $view->getDocHeaderComponent();
+
+    // Set main breadcrumb context (e.g., current page)
+    $docHeader->setPageBreadcrumb($pageInfo);
+
+    // Add suffix node for "Create New" action
+    $docHeader->addBreadcrumbSuffixNode(
+        new BreadcrumbNode(
+            identifier: 'new',
+            label: 'Create New Content Element',
+            icon: 'actions-add'
+        )
+    );
+
+**Example: Multiple suffix nodes**
+
+..  code-block:: php
+
+    use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
+
+    $docHeader = $view->getDocHeaderComponent();
+    $docHeader->setRecordBreadcrumb('pages', $pageUid);
+
+    // First suffix: editing mode
+    $docHeader->addBreadcrumbSuffixNode(
+        new BreadcrumbNode(
+            identifier: 'edit',
+            label: 'Edit',
+            icon: 'actions-document-open'
+        )
+    );
+
+    // Second suffix: specific field
+    $docHeader->addBreadcrumbSuffixNode(
+        new BreadcrumbNode(
+            identifier: 'field',
+            label: 'Page Properties'
+        )
+    );
+
+**Example: Clickable suffix nodes**
+
+Suffix nodes can also be clickable by providing a route:
+
+..  code-block:: php
+
+    use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
+    use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNodeRoute;
+
+    $docHeader->addBreadcrumbSuffixNode(
+        new BreadcrumbNode(
+            identifier: 'preview',
+            label: 'Preview Mode',
+            icon: 'actions-view',
+            route: new BreadcrumbNodeRoute(
+                'web_layout',
+                ['id' => $pageUid, 'mode' => 'preview']
+            )
+        )
+    );
+
+Deprecation notice
+------------------
+
+The previous :php:`setMetaInformation()` method has been deprecated in favor
+of the new breadcrumb API. See :ref:`deprecation-107813-1730000000` for
+migration instructions.
 
 ..  index:: Backend, UX, ext:backend

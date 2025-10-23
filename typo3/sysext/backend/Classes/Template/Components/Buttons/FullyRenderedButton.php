@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,8 +18,6 @@
 namespace TYPO3\CMS\Backend\Template\Components\Buttons;
 
 /**
- * FullyRenderedButton
- *
  * This button type is an intermediate solution for buttons that are rendered
  * by methods from TYPO3 itself, like the CSH buttons or Bookmark buttons.
  *
@@ -26,86 +26,56 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons;
  * Example:
  *
  * ```
- * $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
- * $myButton = $buttonBar->makeFullyRenderedButton()
- *      ->setHtmlSource('<span class="i-should-not-be-using-this>Foo</span>');
- * $buttonBar->addButton($myButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
+ * public function __construct(
+ *     protected readonly ComponentFactory $componentFactory,
+ * ) {}
+ *
+ * public function myAction(): ResponseInterface
+ * {
+ *     $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+ *     $myButton = $this->componentFactory->createFullyRenderedButton()
+ *          ->setHtmlSource('<span class="i-should-not-be-using-this>Foo</span>');
+ *     $buttonBar->addButton($myButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
+ * }
  * ```
  */
 class FullyRenderedButton implements ButtonInterface
 {
     /**
      * The full HTML source of the rendered button.
-     * This source will be passed through to the frontend as is,
-     * so keep htmlspecialchars() in mind
+     * This source will be passed through to the frontend as is, so keep htmlspecialchars() in mind.
      *
      * @var string
      */
-    protected $htmlSource = '';
+    protected string $htmlSource = '';
 
-    /**
-     * Gets the HTML Source of the button
-     *
-     * @return string
-     */
-    public function getHtmlSource()
+    public function getHtmlSource(): string
     {
         return $this->htmlSource;
     }
 
-    /**
-     * Sets the HTML Source of the button and returns itself
-     *
-     * @param string $htmlSource HTML sourcecode of the button
-     *
-     * @return FullyRenderedButton
-     */
-    public function setHtmlSource($htmlSource)
+    public function setHtmlSource(string $htmlSource): static
     {
         $this->htmlSource = $htmlSource;
         return $this;
     }
 
-    /**
-     * Gets the type of the button
-     *
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
         return static::class;
     }
 
-    /**
-     * Validator for a FullyRenderedButton
-     *
-     * @return bool
-     */
-    public function isValid()
+    public function isValid(): bool
     {
-        if (
-            trim($this->getHtmlSource()) !== ''
-            && $this->getType() === self::class
-        ) {
-            return true;
-        }
-        return false;
+        return trim($this->getHtmlSource()) !== '' && $this->getType() === static::class;
     }
 
-    /**
-     * Renders the button
-     */
     public function __toString(): string
     {
         return $this->render();
     }
 
-    /**
-     * Renders the button
-     *
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         return '<span class="btn btn-sm btn-default">' . $this->getHtmlSource() . '</span>';
     }

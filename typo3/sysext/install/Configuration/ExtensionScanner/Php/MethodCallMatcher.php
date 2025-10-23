@@ -6586,6 +6586,76 @@ return [
             'Deprecation-107813-DeprecateMetaInformationAPI.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeGenericButton' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-107824-ButtonBarMakeMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeInputButton' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-107824-ButtonBarMakeMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeSplitButton' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-107824-ButtonBarMakeMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeDropDownButton' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-107824-ButtonBarMakeMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeLinkButton' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-107824-ButtonBarMakeMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeFullyRenderedButton' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-107824-ButtonBarMakeMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeShortcutButton' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-107824-ButtonBarMakeMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeButton' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-107824-ButtonBarMakeMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\Components\Menu\Menu->makeMenuItem' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-107824-ButtonBarMakeMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\Components\MenuRegistry->makeMenu' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-107824-ButtonBarMakeMethods.rst',
+        ],
+    ],
     /** Note (leave this at the bottom):
      *  The FQCN object definitions here are not actually checked, only
      *  the method name itself. That means, never list generic method names
