@@ -3789,6 +3789,7 @@ body[data-typo3-login-ready]{overflow-y:auto}
 .typo3-login-copyright-link:hover{text-decoration:underline}
 .typo3-login-copyright-link>img{float:var(--typo3-position-end);margin-top:-4px}
 .typo3-login-copyright-text{color:var(--typo3-login-copyright-color);font-size:.95em;padding-top:1em}
+.typo3-login-copyright-text .list-unstyled{line-height:2.25}
 .typo3-login-copyright-text>:first-child{margin-top:0}
 .typo3-login-copyright-text>:last-child{margin-bottom:0}
 video{background-color:#000}
