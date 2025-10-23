@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, css, type TemplateResult, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators';
+import { PseudoButtonLitElement } from '@typo3/backend/element/pseudo-button';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import Severity from '@typo3/backend/severity';
 import Modal from '@typo3/backend/modal';
@@ -32,38 +32,14 @@ enum Selectors {
  * </typo3-recordlist-record-download-button>
  */
 @customElement('typo3-recordlist-record-download-button')
-export class RecordDownloadButton extends LitElement {
-  static override styles = [css`:host { cursor: pointer; appearance: button; }`];
+export class RecordDownloadButton extends PseudoButtonLitElement {
   @property({ type: String }) url: string;
   @property({ type: String }) subject: string;
   @property({ type: String }) ok: string;
   @property({ type: String }) close: string;
 
-  public constructor() {
-    super();
-    this.addEventListener('click', (e: Event): void => {
-      e.preventDefault();
-      this.showDownloadConfigurationModal();
-    });
-    this.addEventListener('keydown', (e: KeyboardEvent): void => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        this.showDownloadConfigurationModal();
-      }
-    });
-  }
-
-  public override connectedCallback(): void {
-    if (!this.hasAttribute('role')) {
-      this.setAttribute('role', 'button');
-    }
-    if (!this.hasAttribute('tabindex')) {
-      this.setAttribute('tabindex', '0');
-    }
-  }
-
-  protected override render(): TemplateResult {
-    return html`<slot></slot>`;
+  protected override buttonActivated(): void {
+    this.showDownloadConfigurationModal();
   }
 
   private showDownloadConfigurationModal(): void {

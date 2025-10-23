@@ -110,6 +110,7 @@ export class ActionList extends LitElement {
   }
 
   private handleKeyUp(e: KeyboardEvent): void {
+    // @todo Enter should (probably) be handled in keydown, like buttons do
     if (!['Enter', ' '].includes(e.key)) {
       return;
     }
