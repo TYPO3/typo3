@@ -11,44 +11,20 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, css, type TemplateResult, LitElement } from 'lit';
+import { html } from 'lit';
 import { customElement, property } from 'lit/decorators';
+import { PseudoButtonLitElement } from '@typo3/backend/element/pseudo-button';
 import Modal from '@typo3/backend/modal';
 
 @customElement('typo3-mfa-totp-url-info-button')
-export class MfaTotpUrlButton extends LitElement {
-  static override styles = [css`:host { cursor: pointer; appearance: button; }`];
-
+export class MfaTotpUrlButton extends PseudoButtonLitElement {
   @property({ type: String, attribute: 'data-url' }) modalUrl: string;
   @property({ type: String, attribute: 'data-title' }) modalTitle: string;
   @property({ type: String, attribute: 'data-description' }) modalDescription: string;
   @property({ type: String, attribute: 'data-button-ok' }) buttonOk: string;
 
-  public constructor() {
-    super();
-    this.addEventListener('click', (e: Event): void => {
-      e.preventDefault();
-      this.showTotpAuthUrlModal();
-    });
-    this.addEventListener('keydown', (e: KeyboardEvent): void => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        this.showTotpAuthUrlModal();
-      }
-    });
-  }
-
-  public override connectedCallback(): void {
-    if (!this.hasAttribute('role')) {
-      this.setAttribute('role', 'button');
-    }
-    if (!this.hasAttribute('tabindex')) {
-      this.setAttribute('tabindex', '0');
-    }
-  }
-
-  protected override render(): TemplateResult {
-    return html`<slot></slot>`;
+  protected override buttonActivated(): void {
+    this.showTotpAuthUrlModal();
   }
 
   private showTotpAuthUrlModal(): void {

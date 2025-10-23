@@ -12,7 +12,7 @@
  */
 
 import { customElement, property } from 'lit/decorators';
-import { html, css, LitElement, type TemplateResult } from 'lit';
+import { PseudoButtonLitElement } from '@typo3/backend/element/pseudo-button';
 import Modal from '@typo3/backend/modal';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import '@typo3/backend/new-record-wizard';
@@ -24,39 +24,11 @@ import '@typo3/backend/new-record-wizard';
  * <typo3-backend-new-content-element-wizard-button class="btn btn-default" url="link/to/endpoint" subject="Wizard title" ></typo3-backend-new-content-element-wizard-button>
  */
 @customElement('typo3-backend-new-content-element-wizard-button')
-export class NewContentElementWizardButton extends LitElement {
-  static override styles = [css`:host { cursor: pointer; appearance: button; }`];
+export class NewContentElementWizardButton extends PseudoButtonLitElement {
   @property({ type: String }) url: string;
   @property({ type: String }) subject: string;
 
-  public constructor() {
-    super();
-    this.addEventListener('click', (e: Event): void => {
-      e.preventDefault();
-      this.renderWizard();
-    });
-    this.addEventListener('keydown', (e: KeyboardEvent): void => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        this.renderWizard();
-      }
-    });
-  }
-
-  public override connectedCallback(): void {
-    if (!this.hasAttribute('role')) {
-      this.setAttribute('role', 'button');
-    }
-    if (!this.hasAttribute('tabindex')) {
-      this.setAttribute('tabindex', '0');
-    }
-  }
-
-  protected override render(): TemplateResult {
-    return html`<slot></slot>`;
-  }
-
-  private renderWizard(): void {
+  protected override buttonActivated(): void {
     if (!this.url) {
       // Return in case no url is defined
       return;

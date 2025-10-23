@@ -12,7 +12,7 @@
  */
 
 import { customElement, property } from 'lit/decorators';
-import { css, html, LitElement, type TemplateResult } from 'lit';
+import { PseudoButtonLitElement } from '@typo3/backend/element/pseudo-button';
 import Modal from '@typo3/backend/modal';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import DeferredAction from '@typo3/backend/action-button/deferred-action';
@@ -29,8 +29,7 @@ import type ResponseInterface from '@typo3/backend/ajax-data-handler/response-in
  * </typo3-sysnote-delete-button>
  */
 @customElement('typo3-sysnote-delete-button')
-export class DeleteButton extends LitElement {
-  static override styles = [css`:host { cursor: pointer; appearance: button; }`];
+export class DeleteButton extends PseudoButtonLitElement {
   @property({ type: Number }) uid: number;
   @property({ type: String, attribute: 'return-url' }) returnUrl: string;
   @property({ type: String, attribute: 'modal-title' }) modalTitle: string;
@@ -38,30 +37,7 @@ export class DeleteButton extends LitElement {
   @property({ type: String, attribute: 'modal-button-ok' }) okButtonLabel: string;
   @property({ type: String, attribute: 'modal-button-cancel' }) cancelButtonLabel: string;
 
-  public override connectedCallback(): void {
-    super.connectedCallback();
-
-    if (!this.hasAttribute('role')) {
-      this.setAttribute('role', 'button');
-    }
-    if (!this.hasAttribute('tabindex')) {
-      this.setAttribute('tabindex', '0');
-    }
-
-    this.addEventListener('click', this.showConfirmationModal);
-  }
-
-  public override disconnectedCallback(): void {
-    super.disconnectedCallback();
-
-    this.removeEventListener('click', this.showConfirmationModal);
-  }
-
-  protected override render(): TemplateResult {
-    return html`<slot></slot>`;
-  }
-
-  private showConfirmationModal(): void {
+  protected override buttonActivated(): void {
     Modal.advanced({
       content: this.modalContent,
       title: this.modalTitle,

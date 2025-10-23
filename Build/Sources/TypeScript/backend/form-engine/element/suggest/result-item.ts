@@ -11,8 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import { html, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators';
-import { html, LitElement, type TemplateResult } from 'lit';
+import { PseudoButtonLitElement } from '@typo3/backend/element/pseudo-button';
 import '@typo3/backend/element/icon-element';
 
 export interface ResultItemInterface {
@@ -24,27 +25,21 @@ export interface ResultItemInterface {
 }
 
 @customElement('typo3-backend-formengine-suggest-result-item')
-export class ResultItem extends LitElement {
+export class ResultItem extends PseudoButtonLitElement {
   @property({ type: Object }) icon: Record<string, string>;
   @property({ type: Number }) uid: number;
   @property({ type: String }) table: string;
   @property({ type: String }) label: string;
   @property({ type: String }) path: string;
 
-  public override connectedCallback(): void {
-    super.connectedCallback();
+  constructor() {
+    super();
 
     this.addEventListener('blur', this.onBlur);
-    this.addEventListener('click', this.onClick);
-    this.addEventListener('keyup', this.onKeyUp);
   }
 
-  public override disconnectedCallback(): void {
-    this.removeEventListener('blur', this.onBlur);
-    this.removeEventListener('click', this.onClick);
-    this.removeEventListener('keyup', this.onKeyUp);
-
-    super.disconnectedCallback();
+  protected override buttonActivated(e: Event): void {
+    this.dispatchItemChosenEvent(e.currentTarget as Element);
   }
 
   protected override createRenderRoot(): HTMLElement | ShadowRoot {
@@ -77,20 +72,6 @@ export class ResultItem extends LitElement {
     }
 
     resultContainer.hidden = closeResultContainer;
-  }
-
-  private onClick(e: PointerEvent): void {
-    e.preventDefault();
-    this.dispatchItemChosenEvent(e.currentTarget as Element);
-  }
-
-  private onKeyUp(e: KeyboardEvent): void {
-    e.preventDefault();
-
-    // Trigger item selection when pressing ENTER or SPACE
-    if (['Enter', ' '].includes(e.key)) {
-      this.dispatchItemChosenEvent(document.activeElement);
-    }
   }
 
   private dispatchItemChosenEvent(selectedItem: Element): void {

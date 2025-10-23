@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, css, type TemplateResult, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators';
+import { PseudoButtonLitElement } from '@typo3/backend/element/pseudo-button';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import { default as Modal, type ModalElement } from '@typo3/backend/modal';
 import { lll } from '@typo3/core/lit-helper';
@@ -50,29 +50,13 @@ enum SelectorActions {
  * </typo3-backend-column-selector-button>
  */
 @customElement('typo3-backend-column-selector-button')
-export class ColumnSelectorButton extends LitElement {
-  static override styles = [css`:host { cursor: pointer; appearance: button; }`];
-
+export class ColumnSelectorButton extends PseudoButtonLitElement {
   @property({ type: String, attribute: 'data-url' }) modalUrl: string;
   @property({ type: String, attribute: 'data-target' }) modalTarget: string;
   @property({ type: String, attribute: 'data-title' }) modalTitle: string = 'Show columns';
   @property({ type: String, attribute: 'data-button-ok' }) buttonOk: string = lll('button.ok') || 'Update';
   @property({ type: String, attribute: 'data-button-close' }) buttonClose: string = lll('button.close') || 'Close';
   @property({ type: String, attribute: 'data-error-message' }) errorMessage: string = 'Could not update columns';
-
-  public constructor() {
-    super();
-    this.addEventListener('click', (e: Event): void => {
-      e.preventDefault();
-      this.showColumnSelectorModal();
-    });
-    this.addEventListener('keydown', (e: KeyboardEvent): void => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        this.showColumnSelectorModal();
-      }
-    });
-  }
 
   /**
    * Toggle selector actions state (enabled or disabled) depending
@@ -148,17 +132,8 @@ export class ColumnSelectorButton extends LitElement {
     });
   }
 
-  public override connectedCallback(): void {
-    if (!this.hasAttribute('role')) {
-      this.setAttribute('role', 'button');
-    }
-    if (!this.hasAttribute('tabindex')) {
-      this.setAttribute('tabindex', '0');
-    }
-  }
-
-  protected override render(): TemplateResult {
-    return html`<slot></slot>`;
+  protected override buttonActivated(): void {
+    this.showColumnSelectorModal();
   }
 
   private showColumnSelectorModal(): void {

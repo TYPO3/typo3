@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, css, type TemplateResult, LitElement } from 'lit';
+import { PseudoButtonLitElement } from '@typo3/backend/element/pseudo-button';
 import { customElement, property } from 'lit/decorators';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
@@ -26,50 +26,22 @@ enum Modes {
  * Module: @typo3/backend/switch-user
  *
  * @example
- * <typo3-switch-user class="some" targetUser="123" mode="switch">
+ * <typo3-backend-switch-user class="some" targetuser="123" mode="switch">
  *   Switch user
- * </typo3-switch-user>
+ * </typo3-backend-switch-user>
  */
 @customElement('typo3-backend-switch-user')
-export class SwitchUser extends LitElement {
-  static override styles = [css`:host { cursor: pointer; appearance: button; }`];
+export class SwitchUser extends PseudoButtonLitElement {
 
   @property({ type: String }) targetUser: string;
   @property({ type: Modes }) mode: Modes = Modes.switch;
 
-  public constructor() {
-    super();
-    this.addEventListener('click', (event: Event): void => {
-      event.preventDefault();
-      if (this.mode === Modes.switch) {
-        this.handleSwitchUser();
-      } else if (this.mode === Modes.exit) {
-        this.handleExitSwitchUser();
-      }
-    });
-    this.addEventListener('keydown', (event: KeyboardEvent): void => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        if (this.mode === Modes.switch) {
-          this.handleSwitchUser();
-        } else if (this.mode === Modes.exit) {
-          this.handleExitSwitchUser();
-        }
-      }
-    });
-  }
-
-  public override connectedCallback(): void {
-    if (!this.hasAttribute('role')) {
-      this.setAttribute('role', 'button');
+  protected override buttonActivated(): void {
+    if (this.mode === Modes.switch) {
+      this.handleSwitchUser();
+    } else if (this.mode === Modes.exit) {
+      this.handleExitSwitchUser();
     }
-    if (!this.hasAttribute('tabindex')) {
-      this.setAttribute('tabindex', '0');
-    }
-  }
-
-  protected override render(): TemplateResult {
-    return html`<slot></slot>`;
   }
 
   private handleSwitchUser(): void {
