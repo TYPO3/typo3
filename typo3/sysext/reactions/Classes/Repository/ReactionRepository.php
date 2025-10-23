@@ -43,7 +43,7 @@ class ReactionRepository
 
     public function countAll(?ReactionDemand $demand = null): int
     {
-        $qb = $demand ? $this->getQueryBuilderForDemand($demand) : $this->getQueryBuilder();
+        $qb = $demand ? $this->getQueryBuilderForDemand($demand, false) : $this->getQueryBuilder(false);
         return (int)$qb
             ->count('*')
             ->executeQuery()
@@ -87,16 +87,18 @@ class ReactionRepository
             ->fetchAllAssociative());
     }
 
-    protected function getQueryBuilderForDemand(ReactionDemand $demand): QueryBuilder
+    protected function getQueryBuilderForDemand(ReactionDemand $demand, bool $addOrderBy = true): QueryBuilder
     {
         $queryBuilder = $this->getQueryBuilder(false);
-        $queryBuilder->orderBy(
-            $demand->getOrderField(),
-            $demand->getOrderDirection()
-        );
-        // Ensure deterministic ordering.
-        if ($demand->getOrderField() !== 'uid') {
-            $queryBuilder->addOrderBy('uid', 'asc');
+        if ($addOrderBy) {
+            $queryBuilder->orderBy(
+                $demand->getOrderField(),
+                $demand->getOrderDirection()
+            );
+            // Ensure deterministic ordering.
+            if ($demand->getOrderField() !== 'uid') {
+                $queryBuilder->addOrderBy('uid', 'asc');
+            }
         }
 
         $constraints = [];
