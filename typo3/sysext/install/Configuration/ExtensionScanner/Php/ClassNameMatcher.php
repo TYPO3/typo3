@@ -2669,5 +2669,15 @@ return [
             'Deprecation-107813-DeprecateMetaInformationAPI.rst',
         ],
     ],
+    'TYPO3\CMS\Reports\ReportInterface' => [
+        'restFiles' => [
+            'Breaking-107791-ReportInterfacesRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Reports\RequestAwareReportInterface' => [
+        'restFiles' => [
+            'Breaking-107791-ReportInterfacesRemoved.rst',
+        ],
+    ],
 
 ];

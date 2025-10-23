@@ -15,27 +15,22 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Reports\Tests\Unit\Report\Status;
+namespace TYPO3\CMS\Reports\Tests\Unit\Service;
 
 use PHPUnit\Framework\Attributes\Test;
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\View\BackendViewFactory;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
-use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolverFactoryInterface;
+use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Reports\ExtendedStatusProviderInterface;
 use TYPO3\CMS\Reports\Registry\StatusRegistry;
-use TYPO3\CMS\Reports\Report\Status\Status;
 use TYPO3\CMS\Reports\RequestAwareStatusProviderInterface;
+use TYPO3\CMS\Reports\Service\StatusService;
 use TYPO3\CMS\Reports\Status as StatusValue;
 use TYPO3\CMS\Reports\StatusProviderInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-final class StatusTest extends UnitTestCase
+final class StatusServiceTest extends UnitTestCase
 {
     protected function setUp(): void
     {
@@ -123,17 +118,12 @@ final class StatusTest extends UnitTestCase
     /**
      * @param array<array{0: StatusValue[], 1: string, 2?: bool, 3?: bool}> $statusProviderArguments
      */
-    private function createSubject(array $statusProviderArguments): Status
+    private function createSubject(array $statusProviderArguments): StatusService
     {
-        $container = $this->getMockBuilder(ContainerInterface::class)->getMock();
-        $cacheManager = new CacheManager();
-        $viewHelperResolverFactory = $this->getMockBuilder(ViewHelperResolverFactoryInterface::class)->getMock();
-        $renderingContextFactory = new RenderingContextFactory($container, $cacheManager, $viewHelperResolverFactory);
-        $packageManager = $this->getMockBuilder(PackageManager::class)->disableOriginalConstructor()->getMock();
-        $backendViewFactory = new BackendViewFactory($renderingContextFactory, $packageManager);
+        $registry = $this->getMockBuilder(Registry::class)->disableOriginalConstructor()->getMock();
         $statusRegistry = new StatusRegistry($this->generateStatusProviders($statusProviderArguments));
 
-        return new Status($backendViewFactory, $statusRegistry);
+        return new StatusService($statusRegistry, $registry);
     }
 
     /**

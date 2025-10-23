@@ -85,6 +85,31 @@ final class ReportModuleCest
         $I->assertGreaterThanOrEqual($testData['count'], $count);
     }
 
+    private function reportsMenuDataProvider(): array
+    {
+        return [
+            ['title' => 'Status Report', 'shortDescription' => 'Get a status report about your site\'s operation and any detected problems.'],
+            ['title' => 'Record Statistics', 'shortDescription' => 'Shows database record statistics'],
+        ];
+    }
+
+    #[DataProvider('reportsMenuDataProvider')]
+    public function seeReportSubModules(ApplicationTester $I, Example $exampleData): void
+    {
+        $I->amGoingTo('see card for ' . $exampleData['title']);
+        $I->waitForElementVisible('.card-container');
+        $I->see($exampleData['title'], '.card-title');
+        $I->see($exampleData['shortDescription'], '.card-subtitle');
+        $I->see('Open module', '.card-footer');
+
+        $I->amGoingTo('open ' . $exampleData['title'] . ' module via card button');
+        // Find the card containing the specific title and click its "Open module" button
+        $cardSelector = '//div[@class="card card-size-small" and .//h2[contains(text(), "' . $exampleData['title'] . '")]]';
+        $I->click('.btn', $cardSelector);
+        $I->waitForText($exampleData['title']);
+        $I->see($exampleData['title'], 'h1');
+    }
+
     /**
      * Find count of table row by name
      */
@@ -104,7 +129,7 @@ final class ReportModuleCest
 
     private function goToPageAndSeeHeadline(ApplicationTester $I, string $select, string $headline): void
     {
-        $I->selectOption('select[name=WebFuncJumpMenu]', $select);
+        $I->selectOption('select[name=moduleMenu]', $select);
         $I->see($headline, 'h1');
     }
 }

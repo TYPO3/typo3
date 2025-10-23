@@ -6,20 +6,8 @@
 return [
     [
         'action' => 'createPhpClassDocs',
-        'class' => \TYPO3\CMS\Reports\ReportInterface::class,
-        'targetFileName' => 'Generated/ReportInterface.rst.txt',
-        'withCode' => false,
-    ],
-    [
-        'action' => 'createPhpClassDocs',
         'class' => \TYPO3\CMS\Reports\StatusProviderInterface::class,
         'targetFileName' => 'Generated/StatusProviderInterface.rst.txt',
-        'withCode' => false,
-    ],
-    [
-        'action' => 'createPhpClassDocs',
-        'class' => \TYPO3\CMS\Reports\RequestAwareReportInterface::class,
-        'targetFileName' => 'Generated/RequestAwareReportInterface.rst.txt',
         'withCode' => false,
     ],
     [

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,74 +15,36 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Reports\Report\Status;
+namespace TYPO3\CMS\Reports\Service;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Reports\ExtendedStatusProviderInterface;
 use TYPO3\CMS\Reports\Registry\StatusRegistry;
-use TYPO3\CMS\Reports\RequestAwareReportInterface;
 use TYPO3\CMS\Reports\RequestAwareStatusProviderInterface;
-use TYPO3\CMS\Reports\Status as ReportStatus;
+use TYPO3\CMS\Reports\Status;
 
 /**
- * The status report
+ * Service for collecting and processing system status information
+ *
+ * @internal This is not part of the public API and may change at any time
  */
 #[Autoconfigure(public: true)]
-class Status implements RequestAwareReportInterface
+final readonly class StatusService
 {
-    /**
-     * Constructor for class tx_reports_report_Status
-     */
     public function __construct(
-        protected readonly BackendViewFactory $backendViewFactory,
-        protected readonly StatusRegistry $statusRegistry
+        protected StatusRegistry $statusRegistry,
+        protected Registry $registry,
     ) {}
-
-    /**
-     * Takes care of creating / rendering the status report
-     *
-     * @param ServerRequestInterface|null $request the currently handled request
-     * @return string The status report as HTML
-     */
-    public function getReport(?ServerRequestInterface $request = null): string
-    {
-        $status = $this->getSystemStatus($request);
-        $registry = GeneralUtility::makeInstance(Registry::class);
-        $registry->set('tx_reports', 'status.highestSeverity', $this->getHighestSeverity($status));
-        return $this->renderStatus($request, $status);
-    }
-
-    public function getIdentifier(): string
-    {
-        return 'status';
-    }
-
-    public function getTitle(): string
-    {
-        return 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_report_title';
-    }
-
-    public function getDescription(): string
-    {
-        return 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_report_description';
-    }
-
-    public function getIconIdentifier(): string
-    {
-        return 'module-reports';
-    }
 
     /**
      * Runs through all status providers and returns all statuses collected.
      *
      * @param ServerRequestInterface|null $request
-     * @return ReportStatus[][]
+     * @return Status[][]
      */
     public function getSystemStatus(?ServerRequestInterface $request = null): array
     {
@@ -101,7 +65,7 @@ class Status implements RequestAwareReportInterface
     /**
      * Runs through all status providers and returns all statuses collected, which are detailed.
      *
-     * @return ReportStatus[][]
+     * @return Status[][]
      */
     public function getDetailedSystemStatus(): array
     {
@@ -119,14 +83,13 @@ class Status implements RequestAwareReportInterface
     /**
      * Determines the highest severity from the given statuses.
      *
-     * @param array $statusCollection An array of \TYPO3\CMS\Reports\Status objects.
+     * @param array<string, array<string, Status>> $statusCollection An array of Status objects.
      * @return int The highest severity found from the statuses.
      */
     public function getHighestSeverity(array $statusCollection): int
     {
         $highestSeverity = ContextualFeedbackSeverity::NOTICE;
         foreach ($statusCollection as $providerStatuses) {
-            /** @var ReportStatus $status */
             foreach ($providerStatuses as $status) {
                 if ($status->getSeverity()->value > $highestSeverity->value) {
                     $highestSeverity = $status->getSeverity();
@@ -141,64 +104,49 @@ class Status implements RequestAwareReportInterface
     }
 
     /**
-     * Renders the system's status
+     * Collects system status and stores the highest severity in the registry.
+     * This is useful for displaying warnings at login or in the backend.
      *
-     * @param ServerRequestInterface $request Incoming request
-     * @param array $statusCollection An array of statuses as returned by the available status providers
-     * @return string The system status as an HTML table
+     * @param ServerRequestInterface|null $request
      */
-    protected function renderStatus(ServerRequestInterface $request, array $statusCollection): string
+    public function collectAndStoreSystemStatus(?ServerRequestInterface $request = null): void
     {
-        // Apply sorting to collection and the providers
-        $statusCollection = $this->sortStatusProviders($statusCollection);
-
-        foreach ($statusCollection as &$statuses) {
-            $statuses = $this->sortStatuses($statuses);
-        }
-        unset($statuses);
-
-        $view = $this->backendViewFactory->create($request);
-        return $view->assignMultiple([
-            'statusCollection' => $statusCollection,
-            'severityIconMapping' => [
-                ContextualFeedbackSeverity::NOTICE->value => 'actions-info',
-                ContextualFeedbackSeverity::INFO->value => 'actions-info',
-                ContextualFeedbackSeverity::OK->value => 'actions-check',
-                ContextualFeedbackSeverity::WARNING->value => 'actions-exclamation',
-                ContextualFeedbackSeverity::ERROR->value => 'actions-exclamation',
-            ],
-        ])->render('StatusReport');
+        $status = $this->getSystemStatus($request);
+        $this->registry->set('tx_reports', 'status.highestSeverity', $this->getHighestSeverity($status));
     }
 
     /**
      * Sorts the status providers (alphabetically and puts primary status providers at the beginning)
      *
-     * @param array $statusCollection A collection of statuses (with providers)
-     * @return array The collection of statuses sorted by provider (beginning with provider "_install")
+     * @param array<string, array<string, Status>> $statusCollection A collection of statuses (with providers)
+     * @return array<string, array<string, Status>> The collection of statuses sorted by provider
      */
-    protected function sortStatusProviders(array $statusCollection): array
+    public function sortStatusProviders(array $statusCollection): array
     {
+        $languageService = $this->getLanguageService();
+
         // Extract the primary status collections, i.e. the status groups
         // that must appear on top of the status report
         // Change their keys to localized collection titles
         $primaryStatuses = [
-            $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_typo3') => $statusCollection['typo3'],
-            $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_system') => $statusCollection['system'],
-            $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_security') => $statusCollection['security'],
-            $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_configuration') => $statusCollection['configuration'],
+            $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_typo3') => $statusCollection['typo3'] ?? [],
+            $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_system') => $statusCollection['system'] ?? [],
+            $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_security') => $statusCollection['security'] ?? [],
+            $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_configuration') => $statusCollection['configuration'] ?? [],
         ];
         unset($statusCollection['typo3'], $statusCollection['system'], $statusCollection['security'], $statusCollection['configuration']);
+
         // Assemble list of secondary status collections with left-over collections
         // Change their keys using localized labels if available
         $secondaryStatuses = [];
         foreach ($statusCollection as $statusProviderId => $collection) {
             if (str_starts_with($statusProviderId, 'LLL:')) {
                 // Label provided by extension
-                $label = $this->getLanguageService()->sL($statusProviderId);
+                $label = $languageService->sL($statusProviderId);
             } else {
                 // Generic label
                 // @todo phase this out
-                $label = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_' . $statusProviderId);
+                $label = $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_' . $statusProviderId);
             }
             $providerLabel = empty($label) ? $statusProviderId : $label;
             $secondaryStatuses[$providerLabel] = $collection;
@@ -211,15 +159,14 @@ class Status implements RequestAwareReportInterface
     /**
      * Sorts the statuses by severity
      *
-     * @param array $statusCollection A collection of statuses per provider
-     * @return array The collection of statuses sorted by severity
+     * @param array<string, Status> $statusCollection A collection of statuses per provider
+     * @return list<Status> The collection of statuses sorted by severity
      */
-    protected function sortStatuses(array $statusCollection): array
+    public function sortStatuses(array $statusCollection): array
     {
         $statuses = [];
         $sortTitle = [];
         $header = null;
-        /** @var ReportStatus $status */
         foreach ($statusCollection as $status) {
             if ($status->getTitle() === 'TYPO3') {
                 $header = $status;

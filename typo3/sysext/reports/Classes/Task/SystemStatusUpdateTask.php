@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
+use TYPO3\CMS\Reports\Service\StatusService;
 use TYPO3\CMS\Reports\Status;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
@@ -60,10 +61,10 @@ class SystemStatusUpdateTask extends AbstractTask
      */
     public function execute()
     {
+        $statusService = GeneralUtility::makeInstance(StatusService::class);
+        $systemStatus = $statusService->getDetailedSystemStatus();
+        $highestSeverity = $statusService->getHighestSeverity($systemStatus);
         $registry = GeneralUtility::makeInstance(Registry::class);
-        $statusReport = GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Report\Status\Status::class);
-        $systemStatus = $statusReport->getDetailedSystemStatus();
-        $highestSeverity = $statusReport->getHighestSeverity($systemStatus);
         $registry->set('tx_reports', 'status.highestSeverity', $highestSeverity);
         if (($highestSeverity > ContextualFeedbackSeverity::OK->value) || $this->notificationAll) {
             $this->sendNotificationEmail($systemStatus);

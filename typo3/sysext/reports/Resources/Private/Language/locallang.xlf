@@ -7,10 +7,10 @@
 				<source>Reports</source>
 			</trans-unit>
 			<trans-unit id="mlang_labels_tabdescr">
-				<source>A collection of several system reports.</source>
+				<source>Access various system reports for monitoring and analyzing your TYPO3 installation including system status checks, database statistics, and custom reports provided by extensions.</source>
 			</trans-unit>
 			<trans-unit id="mlang_labels_tablabel">
-				<source>System Reports</source>
+				<source>System monitoring and analysis reports</source>
 			</trans-unit>
 			<trans-unit id="reports_overview">
 				<source>Reports overview</source>
@@ -33,8 +33,11 @@
 			<trans-unit id="recordStatistics.title">
 				<source>Record Statistics</source>
 			</trans-unit>
+			<trans-unit id="recordStatistics.shortDescription">
+				<source>Shows database record statistics</source>
+			</trans-unit>
 			<trans-unit id="recordStatistics.description">
-				<source>This shows some statistics for the records in the database. This runs through the entire page-tree and therefore it will also load the server heavily!</source>
+				<source>Displays comprehensive statistics for records in the database including total pages, translated pages, hidden and deleted pages, page type distributions, and detailed table records with lost record detection. This report runs through the entire page tree.</source>
 			</trans-unit>
 		</body>
 	</file>

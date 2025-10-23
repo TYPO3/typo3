@@ -12,6 +12,5 @@ API
     :titlesonly:
     :glob:
 
-    ReportInterface
     StatusProviderInterface
     *

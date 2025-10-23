@@ -15,11 +15,9 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Reports\Report;
+namespace TYPO3\CMS\Reports\Service;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -29,33 +27,32 @@ use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck;
-use TYPO3\CMS\Reports\RequestAwareReportInterface;
 
+/**
+ * Service for collecting database record statistics
+ *
+ * @internal This is not part of the public API and may change at any time
+ */
 #[Autoconfigure(public: true)]
-final readonly class RecordStatistics implements RequestAwareReportInterface
+final readonly class RecordStatisticsService
 {
     public function __construct(
-        protected BackendViewFactory $backendViewFactory,
         protected IconFactory $iconFactory,
         protected TcaSchemaFactory $tcaSchemaFactory,
         protected PageDoktypeRegistry $pageDoktypeRegistry,
     ) {}
 
     /**
-     * Takes care of creating / rendering the status report
+     * Collects page statistics including total, translated, hidden, and deleted pages
      *
-     * @param ServerRequestInterface|null $request the currently handled request
-     * @return string The status report as HTML
+     * @return array<string, array{icon: string, count: int}>
      */
-    public function getReport(?ServerRequestInterface $request = null): string
+    public function collectPageStatistics(): array
     {
-        $view = $this->backendViewFactory->create($request);
-        $languageService = $this->getLanguageService();
         $databaseIntegrityCheck = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
         $databaseIntegrityCheck->genTree(0);
 
-        // Page stats
-        $pageStatistic = [
+        return [
             'total_pages' => [
                 'icon' => $this->iconFactory->getIconForRecord('pages', [], IconSize::SMALL)->render(),
                 'count' => count($databaseIntegrityCheck->getPageIdArray()),
@@ -73,8 +70,19 @@ final readonly class RecordStatistics implements RequestAwareReportInterface
                 'count' => isset($databaseIntegrityCheck->getRecStats()['deleted']['pages']) ? count($databaseIntegrityCheck->getRecStats()['deleted']['pages']) : 0,
             ],
         ];
+    }
 
-        // doktypes stats
+    /**
+     * Collects statistics for different page doktypes
+     *
+     * @return array<int, array{icon: string, title: string, count: int}>
+     */
+    public function collectDoktypeStatistics(): array
+    {
+        $languageService = $this->getLanguageService();
+        $databaseIntegrityCheck = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
+        $databaseIntegrityCheck->genTree(0);
+
         $doktypes = [];
         foreach ($this->pageDoktypeRegistry->getAllDoktypes() as $doktype) {
             if ($doktype->isDivider()) {
@@ -87,12 +95,27 @@ final readonly class RecordStatistics implements RequestAwareReportInterface
             ];
         }
 
+        return $doktypes;
+    }
+
+    /**
+     * Collects statistics for all TCA tables including lost records
+     *
+     * @return array<string, array{icon: string, title: string, count: int|string, lostRecords: string}>
+     */
+    public function collectTableStatistics(): array
+    {
+        $languageService = $this->getLanguageService();
+        $databaseIntegrityCheck = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
+        $databaseIntegrityCheck->genTree(0);
+
         // Tables and lost records
         $id_list = implode(',', array_merge([0], array_keys($databaseIntegrityCheck->getPageIdArray())));
         $databaseIntegrityCheck->lostRecords($id_list);
 
         $tableStatistic = [];
         $countArr = $databaseIntegrityCheck->countRecords($id_list);
+
         /** @var TcaSchema $schema */
         foreach ($this->tcaSchemaFactory->all() as $table => $schema) {
             if ($schema->hasCapability(TcaSchemaCapability::HideInUi)) {
@@ -130,37 +153,11 @@ final readonly class RecordStatistics implements RequestAwareReportInterface
             ];
         }
 
-        $view->assignMultiple([
-            'pages' => $pageStatistic,
-            'doktypes' => $doktypes,
-            'tables' => $tableStatistic,
-        ]);
-        return $view->render('RecordStatistics');
-    }
-
-    public function getIdentifier(): string
-    {
-        return 'recordStatistics';
-    }
-
-    public function getTitle(): string
-    {
-        return 'LLL:EXT:reports/Resources/Private/Language/locallang.xlf:recordStatistics.title';
-    }
-
-    public function getDescription(): string
-    {
-        return 'LLL:EXT:reports/Resources/Private/Language/locallang.xlf:recordStatistics.description';
-    }
-
-    public function getIconIdentifier(): string
-    {
-        return 'module-reports';
+        return $tableStatistic;
     }
 
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
-
 }
