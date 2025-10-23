@@ -75,13 +75,27 @@ class MathUtility
      */
     public static function canBeInterpretedAsInteger(mixed $var): bool
     {
-        if (is_int($var)) {
-            return true;
-        }
-        if ($var === '' || is_object($var) || is_array($var)) {
-            return false;
-        }
-        return \preg_match('/^(?:-?[1-9][0-9]*|0)$/', (string)$var) === 1;
+        return match (gettype($var)) {
+            'integer' => true,
+            // Due to historical reasons `TRUE` is correctly interpreted as integer
+            // but `FALSE` not even if a (int) cast would return `0` and keeping it
+            // we can simply return the boolean value to have the same behaviour and
+            // still avoiding type casting chain.
+            'boolean' => $var,
+            // We use a type casting chain here to ensure that value is the same after
+            // casting and eliminated invalid stuff from it. The `@` silence operator
+            // can look weird here but is required to avoid enforced casting issues
+            // with PHP 8.5.0 and newer.
+            'string' => (string)@(int)$var === $var,
+            // We use a type casting chain here to ensure that value is the same after
+            // casting and eliminated invalid stuff from it. The `@` silence operator
+            // can look weird here but is required to avoid enforced casting issues
+            // with PHP 8.5.0 and newer.
+            // gettype() returns `double` for `float values`
+            'double' => !is_nan($var) && (string)@(int)$var === (string)$var,
+            // non-scalar like array, object, resource, NULL or unknown_type
+            default => false,
+        };
     }
 
     /**
