@@ -62,7 +62,7 @@ class WebhookRepository
 
     public function countAll(?WebhookDemand $demand = null): int
     {
-        $qb = $demand !== null ? $this->getQueryBuilderForDemand($demand) : $this->getQueryBuilder();
+        $qb = $demand !== null ? $this->getQueryBuilderForDemand($demand, false) : $this->getQueryBuilder(false);
         return (int)$qb
             ->count('*')
             ->executeQuery()
@@ -113,16 +113,18 @@ class WebhookRepository
         return array_filter($webhooks, static fn($webhook) => $webhook->getWebhookType()?->getServiceName() === $type);
     }
 
-    protected function getQueryBuilderForDemand(WebhookDemand $demand): QueryBuilder
+    protected function getQueryBuilderForDemand(WebhookDemand $demand, bool $addOrderBy = true): QueryBuilder
     {
         $queryBuilder = $this->getQueryBuilder(false);
-        $queryBuilder->orderBy(
-            $demand->getOrderField(),
-            $demand->getOrderDirection()
-        );
-        // Ensure deterministic ordering.
-        if ($demand->getOrderField() !== 'uid') {
-            $queryBuilder->addOrderBy('uid', 'asc');
+        if ($addOrderBy) {
+            $queryBuilder->orderBy(
+                $demand->getOrderField(),
+                $demand->getOrderDirection()
+            );
+            // Ensure deterministic ordering.
+            if ($demand->getOrderField() !== 'uid') {
+                $queryBuilder->addOrderBy('uid', 'asc');
+            }
         }
 
         $constraints = [];
