@@ -59,6 +59,7 @@ use TYPO3\CMS\Form\Mvc\Configuration\Exception\CycleInheritancesException;
  * ---------------------
  * Scope: frontend / backend
  * @internal
+ * @deprecated will be removed in TYPO3 v15.0
  */
 class InheritancesResolverService
 {
@@ -183,6 +184,10 @@ class InheritancesResolverService
 
                     //and replace the __inheritance operator by the respective partial
                     if (is_array($inheritances)) {
+                        trigger_error(
+                            'Using the "__inheritances" operator is deprecated since version 14.0, will be removed in version 15.0',
+                            E_USER_DEPRECATED
+                        );
                         $inheritedConfigurations = $this->resolveInheritancesRecursive($inheritances);
                         $configuration[$key] = array_replace_recursive($inheritedConfigurations, $configuration[$key]);
                     }

@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Configuration;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\CycleInheritancesException;
 use TYPO3\CMS\Form\Mvc\Configuration\InheritancesResolverService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[IgnoreDeprecations]
 final class InheritancesResolverServiceTest extends UnitTestCase
 {
     /**

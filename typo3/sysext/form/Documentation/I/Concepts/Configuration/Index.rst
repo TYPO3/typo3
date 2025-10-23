@@ -301,11 +301,45 @@ register an additional configuration file via
 The values of your own configuration file will overrule the corresponding
 values of the basic configuration file (:file:`EXT:form/Configuration/Yaml/FormSetup.yaml`).
 
+.. _concepts-configuration-prevent-duplication:
+
+Prevent duplication
+^^^^^^^^^^^^^^^^^^^
+
+You can avoid duplication in your YAML files by using anchors (&), aliases (*) and overrides (<<:).
+
+..  code-block:: yaml
+
+    customEditor: &customEditor
+      1761226183:
+        identifier: custom
+        templateName: Inspector-TextEditor
+        label: Custom editor
+        propertyPath: custom
+
+    otherCustomEditor: &otherCustomEditor
+      identifier: otherCustom
+      templateName: Inspector-TextEditor
+      label: Other custom editor
+      propertyPath: otherCustom
+
+    prototypes:
+      standard:
+        formElementsDefinition:
+          Text:
+            formEditor:
+              editors:
+                <<: *customEditor
+                1761226184: *otherCustomEditor
 
 .. _concepts-configuration-inheritances-operator:
 
 __inheritances operator
 ^^^^^^^^^^^^^^^^^^^^^^^
+
+..  deprecated:: 14.0
+    The ``__inheritances`` operator has been marked as deprecated.
+    Support will be removed with TYPO3 v15. Use native YAML syntax to :ref:`prevent duplication <concepts-configuration-prevent-duplication>`
 
 The ``__inheritances`` operator is an extremely useful instrument. Using it
 helps to significantly reduce the configuration effort. It behaves similar
