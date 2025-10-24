@@ -66,6 +66,10 @@ abstract class BaseModule
 
     public function getIconIdentifier(): string
     {
+        if ($this->iconIdentifier === '' && $this->hasParentModule()) {
+            return $this->getParentModule()->getIconIdentifier();
+        }
+
         return $this->iconIdentifier;
     }
 

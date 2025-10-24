@@ -16,12 +16,11 @@ return [
             'shortDescription' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.shortDescription',
             'description' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.description',
         ],
-        'routes' => [
-            '_default' => [
-                'target' => StylesController::class . '::handleRequest',
-            ],
-        ],
         'aliases' => ['help_styleguide'],
+        'appearance' => [
+            'dependsOnSubmodules' => true,
+        ],
+        'showSubmoduleOverview' => true,
     ],
     'styleguide_components' => [
         'parent' => 'styleguide',
@@ -30,6 +29,8 @@ return [
         'path' => '/module/system/styleguide/components',
         'labels' => [
             'title' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.components.title',
+            'shortDescription' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.components.shortDescription',
+            'description' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.components.description',
         ],
         'routes' => [
             '_default' => [
@@ -44,6 +45,8 @@ return [
         'path' => '/module/system/styleguide/styles',
         'labels' => [
             'title' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.styles.title',
+            'shortDescription' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.styles.shortDescription',
+            'description' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.styles.description',
         ],
         'routes' => [
             '_default' => [
@@ -58,6 +61,8 @@ return [
         'path' => '/module/system/styleguide/manage-page-trees',
         'labels' => [
             'title' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.pageTrees.title',
+            'shortDescription' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.pageTrees.shortDescription',
+            'description' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.pageTrees.description',
         ],
         'routes' => [
             '_default' => [

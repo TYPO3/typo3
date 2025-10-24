@@ -13,7 +13,7 @@
             <h1>{f:translate(key: currentModule.title, default: currentModule.title)}</h1>
             <f:if condition="{currentModule.description}">
                 <f:then>
-                    <p>{f:translate(key: currentModule.description, default: currentModule.description)}</p>
+                    <p>{f:translate(key: currentModule.description, default: currentModule.description) -> f:transform.html()}</p>
                 </f:then>
                 <f:else if="{currentModule.shortDescription}">
                     <p>{f:translate(key: currentModule.shortDescription, default: currentModule.shortDescription)}</p>

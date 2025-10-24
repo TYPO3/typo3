@@ -16,11 +16,29 @@
 			<trans-unit id="module.configuration.components.title">
 				<source>Component Library: Components</source>
 			</trans-unit>
+			<trans-unit id="module.configuration.components.shortDescription">
+				<source>Backend UI Components</source>
+			</trans-unit>
+			<trans-unit id="module.configuration.components.description">
+				<source>Browse and explore the TYPO3 backend component library including buttons, forms, cards, tables, and other UI elements.</source>
+			</trans-unit>
 			<trans-unit id="module.configuration.pageTrees.title">
 				<source>Manage example page trees</source>
 			</trans-unit>
+			<trans-unit id="module.configuration.pageTrees.shortDescription">
+				<source>Demo Page Trees</source>
+			</trans-unit>
+			<trans-unit id="module.configuration.pageTrees.description">
+				<source>Create and manage example page trees with TCA demo records or content elements for testing and demonstration purposes.</source>
+			</trans-unit>
 			<trans-unit id="module.configuration.styles.title">
 				<source>Component Library: Styles</source>
+			</trans-unit>
+			<trans-unit id="module.configuration.styles.shortDescription">
+				<source>Design Tokens and Styles</source>
+			</trans-unit>
+			<trans-unit id="module.configuration.styles.description">
+				<source>Explore design tokens, color schemes, typography, shadows, and other styling elements used in the TYPO3 backend.</source>
 			</trans-unit>
 
 			<trans-unit id="componentsOverview.headline">
