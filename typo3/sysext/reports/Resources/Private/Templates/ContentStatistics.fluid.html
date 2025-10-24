@@ -1,0 +1,115 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+<f:layout name="Module" />
+
+<f:section name="Content">
+    <div class="container">
+        <h1>{f:translate(key:'reports.messages:contentStatistics.title')}</h1>
+        <p class="lead">{f:translate(key:'reports.messages:contentStatistics.description')}</p>
+
+        <f:if condition="{data.error}">
+            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR')}">{f:translate(key:'reports.messages:contentStatistics.existingElements.error')}</f:be.infobox>
+        </f:if>
+
+        <f:if condition="{data.exists}">
+            <h2>{f:translate(key:'reports.messages:contentStatistics.existingElements.header')}</h2>
+            <p>{f:translate(key:'reports.messages:contentStatistics.existingElements.description')}</p>
+            <f:be.infobox  state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}">{f:translate(key:'reports.messages:contentStatistics.existingElements.explanation')}</f:be.infobox>
+            <f:for each="{data.exists}" as="groupItem" key="group">
+                <f:if condition="{groupItem.elements}">
+                    <f:if condition="{groupItem.header}">
+                        <h3>{f:translate(key:groupItem.header, default:groupItem.header)} ({groupItem.elements -> f:count()})</h3>
+                    </f:if>
+                    <f:for each="{groupItem.elements}" as="type" key="ctype" iteration="i">
+                        <f:render section="panel" arguments="{type:type, ctype:ctype, mode:'exists'}" />
+                    </f:for>
+                </f:if>
+            </f:for>
+        </f:if>
+
+        <f:if condition="{data.unused}">
+            <h2>{f:translate(key:'reports.messages:contentStatistics.unusedElements.header')}</h2>
+            <p>{f:translate(key:'reports.messages:contentStatistics.unusedElements.description')}</p>
+            <f:for each="{data.unused}" as="groupItem" key="group">
+                <f:if condition="{groupItem.elements}">
+                    <f:if condition="{groupItem.header}">
+                        <h3>{f:translate(key:groupItem.header, default:groupItem.header)} ({groupItem.elements -> f:count()})</h3>
+                    </f:if>
+                    <div class="panel-group">
+                        <f:for each="{groupItem.elements}" as="type" key="ctype" iteration="i">
+                            <f:render section="panel" arguments="{type:type, ctype:ctype, mode:'unused'}" />
+                        </f:for>
+                    </div>
+                </f:if>
+            </f:for>
+        </f:if>
+    </div>
+</f:section>
+
+<f:section name="panel">
+    <div class="panel panel-default">
+        <h4 class="panel-heading">
+            <div class="panel-heading-row">
+                <button class="panel-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsible-panel-{ctype}" aria-expanded="false">
+                    <span class="caret"></span>
+                    <div class="panel-title">
+                        <f:if condition="{type.iconIdentifier}">
+                            <core:icon identifier="{type.iconIdentifier}" overlay="{type.iconOverlay}" />
+                        </f:if>
+                        {f:translate(key:type.title, default:type.title)}
+                        <code>[{ctype}]</code>
+                    </div>
+                </button>
+                <div>
+                    <f:if condition="{mode} == exists">
+                        <f:then>
+                            <f:translate key="reports.messages:contentStatistics.statistic.active_text" arguments="{0:type.count.visible, 1:type.count.hidden}" />
+                        </f:then>
+                        <f:else if="{type.count.deleted}">
+                            <f:translate key="reports.messages:contentStatistics.statistic.deleted_text" arguments="{0:type.count.deleted}" />
+                        </f:else>
+                    </f:if>
+                </div>
+                <f:if condition="{type.count}">
+                    <div class="panel-actions">
+                        <a class="btn btn-default btn-sm" href="{be:moduleLink(route: 'system_reports_contentstatistics', arguments:{ctype:ctype})}">
+                            <core:icon identifier="actions-document-view" />
+                            {f:translate(key:'core.common:details')}
+                        </a>
+                    </div>
+                </f:if>
+            </div>
+        </h4>
+        <div class="panel-collapse collapse" id="collapsible-panel-{ctype}" aria-expanded="false">
+            <div class="panel-body">
+                <h4><f:translate key="reports.messages:contentStatistics.fields" arguments="{0:'{type.fields -> f:count()}'}" /></h4>
+                <table class="table table-sm table-hover table-condensed table-striped">
+                    <thead>
+                    <tr>
+                        <th>{f:translate(key:'core.core:labels.th.name')}</th>
+                        <th>{f:translate(key:'reports.messages:contentStatistics.field.type')}</th>
+                        <th>{f:translate(key:'reports.messages:contentStatistics.field.excluded')}</th>
+                        <th>{f:translate(key:'reports.messages:contentStatistics.field.required')}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <f:for each="{type.fields}" as="field">
+                        <tr>
+                            <td>{f:translate(key:field.label, default:field.label)} <code>[{field.name}]</code></td>
+                            <td>{field.type}</td>
+                            <td>{f:if(condition:field.configuration.exclude, then:'{core:icon(identifier:\'actions-check-circle\')}')}</td>
+                            <td>{f:if(condition:field.configuration.required, then:'{core:icon(identifier:\'actions-check-circle\')}')}</td>
+                        </tr>
+                    </f:for>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</f:section>
+
+</html>

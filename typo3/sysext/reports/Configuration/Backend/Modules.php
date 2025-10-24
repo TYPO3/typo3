@@ -1,5 +1,6 @@
 <?php
 
+use TYPO3\CMS\Reports\Controller\ContentStatisticsController;
 use TYPO3\CMS\Reports\Controller\RecordStatisticsController;
 use TYPO3\CMS\Reports\Controller\StatusReportController;
 
@@ -37,6 +38,22 @@ return [
         'routes' => [
             '_default' => [
                 'target' => RecordStatisticsController::class . '::handleRequest',
+            ],
+        ],
+    ],
+    'system_reports_contentstatistics' => [
+        'parent' => 'system_reports',
+        'access' => 'admin',
+        'path' => '/module/system/reports/content-statistics',
+        'iconIdentifier' => 'module-reports',
+        'labels' => [
+            'title' => 'reports.messages:contentStatistics.title',
+            'shortDescription' => 'reports.messages:contentStatistics.shortDescription',
+            'description' => 'reports.messages:contentStatistics.description',
+        ],
+        'routes' => [
+            '_default' => [
+                'target' => ContentStatisticsController::class . '::handleRequest',
             ],
         ],
     ],

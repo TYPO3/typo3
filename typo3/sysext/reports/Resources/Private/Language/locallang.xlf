@@ -39,6 +39,63 @@
       <trans-unit id="recordStatistics.description" x-unused-since="14.0">
         <source>Displays comprehensive statistics for records in the database including total pages, translated pages, hidden and deleted pages, page type distributions, and detailed table records with lost record detection. This report runs through the entire page tree.</source>
       </trans-unit>
+      <trans-unit id="contentStatistics.title">
+        <source>Content Statistics</source>
+      </trans-unit>
+      <trans-unit id="contentStatistics.shortDescription">
+        <source>Shows statistics about used content elements</source>
+      </trans-unit>
+      <trans-unit id="contentStatistics.description">
+        <source>Provides an overview of all content element types, showing how often each appears across the site. Includes summaries per type.</source>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic">
+        <source>Statistics</source>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.header">
+        <source>Existing Content Element Types</source>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.description">
+        <source>The listed content elements include both visible and hidden records.</source>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.explanation">
+        <source>Keep in mind that some elements may not appear on any page, and others might be rendered by alternative methods (TypoScript, ViewHelpers, etc.). As a result, it is not technically possible to determine actual usage.</source>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.error">
+        <source>The content element database table's schema ("tt_content") could not be analyzed due to a missing or disabled schema type.</source>
+      </trans-unit>
+      <trans-unit id="contentStatistics.unusedElements.header">
+        <source>Unused content elements</source>
+      </trans-unit>
+      <trans-unit id="contentStatistics.unusedElements.description">
+        <source>This list includes content element types that are not used anywhere, or whose existing instances are all flagged as deleted.</source>
+      </trans-unit>
+      <trans-unit id="contentStatistics.fields">
+        <source>%d fields</source>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.type">
+        <source>Type</source>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.excluded">
+        <source>Excluded</source>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.required">
+        <source>Required</source>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic.active_text">
+        <source>%d active / %d hidden</source>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic.deleted_text">
+        <source>%d deleted</source>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic.deleted">
+        <source>Deleted</source>
+      </trans-unit>
+      <trans-unit id="contentStatistics.records">
+        <source>Records</source>
+      </trans-unit>
+      <trans-unit id="contentStatistics.noRecords">
+        <source>No records found</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

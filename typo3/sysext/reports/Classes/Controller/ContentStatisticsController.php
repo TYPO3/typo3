@@ -1,0 +1,88 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+namespace TYPO3\CMS\Reports\Controller;
+
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Reports\Service\ContentStatisticsService;
+
+/**
+ * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
+ */
+#[AsController]
+final readonly class ContentStatisticsController
+{
+    public function __construct(
+        private ModuleTemplateFactory $moduleTemplateFactory,
+        private ContentStatisticsService $contentStatisticsService,
+        private UriBuilder $uriBuilder,
+        private ComponentFactory $componentFactory,
+    ) {}
+
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
+    {
+        $languageService = $this->getLanguageService();
+        $view = $this->moduleTemplateFactory->create($request);
+        $view->setTitle(
+            $languageService->sL('reports.messages:mlang_tabs_tab'),
+            $languageService->sL('reports.messages:contentStatistics.title')
+        );
+        $view->makeDocHeaderModuleMenu();
+
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
+
+        $cType = $request->getQueryParams()['ctype'] ?? '';
+        if ($this->contentStatisticsService->isValidCtype($cType)) {
+            $backButton = $this->componentFactory->createBackButton((string)$this->uriBuilder->buildUriFromRoute('system_reports_contentstatistics'));
+            $buttonBar->addButton($backButton);
+
+            $shortcutButton = $this->componentFactory->createShortcutButton()
+                ->setRouteIdentifier('system_reports_contentstatistics')
+                ->setArguments(['ctype' => $cType])
+                ->setDisplayName($languageService->sL('reports.messages:contentStatistics.title'));
+            $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+
+            return $view->assignMultiple(
+                $this->contentStatisticsService->collectStatisticForCtype($cType, (int)($request->getQueryParams()['page'] ?? 1)),
+            )->renderResponse('ContentStatisticsDetail');
+        }
+
+        $backButton = $this->componentFactory->createBackButton((string)$this->uriBuilder->buildUriFromRoute('system_reports'));
+        $buttonBar->addButton($backButton);
+
+        $shortcutButton = $this->componentFactory->createShortcutButton()
+            ->setRouteIdentifier('system_reports_contentstatistics')
+            ->setDisplayName($languageService->sL('reports.messages:contentStatistics.title'));
+        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+
+        return $view->assignMultiple([
+            'data' => $this->contentStatisticsService->collectStatistic(),
+        ])->renderResponse('ContentStatistics');
+    }
+
+    private function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
+    }
+}

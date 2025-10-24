@@ -1,0 +1,176 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+<f:layout name="Module" />
+
+<f:section name="Content">
+    <div class="container">
+        <h1>{f:translate(key:label, default:label)} <code>[{ctype}]</code></h1>
+        <h2>{f:translate(key:'reports.messages:contentStatistics.statistic')}</h2>
+        <div class="table-fit">
+            <table class="table table-striped table-hover">
+                <tr>
+                    <th>{f:translate(key:'core.general:LGL.enabled')}</th>
+                    <td>{count.visible}</td>
+                </tr>
+                <tr>
+                    <th>{f:translate(key:'core.general:LGL.disabled')}</th>
+                    <td>{count.hidden}</td>
+                </tr>
+                <tr>
+                    <th>{f:translate(key:'reports.messages:contentStatistics.statistic.deleted')}</th>
+                    <td>{count.deleted}</td>
+                </tr>
+            </table>
+        </div>
+
+        <h2 id="recordlist">{f:translate(key:'reports.messages:contentStatistics.records')}</h2>
+        <f:if condition="{rows}">
+            <f:then>
+                <div class="table-fit">
+                    <table class="table table-striped table-hover table-border">
+                        <thead>
+                        <tr>
+                            <th>UID</th>
+                            <th>{f:translate(key:'frontend.db.tt_content:header')}</th>
+                            <th>{f:translate(key:'core.core:labels.pid')}</th>
+                            <th>{f:translate(key:'core.core:labels.tstamp')}</th>
+                            <th>{f:translate(key:'core.core:labels.path')}</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <f:for each="{rows}" as="row">
+                            <tr>
+                                <td class="nowrap">{row.uid}</td>
+                                <td class="col-title col-responsive nowrap">
+                                    <be:link.editRecord
+                                        returnUrl="{returnUrl}"
+                                        table="tt_content"
+                                        uid="{row.uid}"
+                                        title="{f:translate(key:'core.mod_web_list:edit')}"
+                                    >
+                                        <span><core:iconForRecord table="tt_content" row="{row}" /></span>
+                                        {row.header}
+                                    </be:link.editRecord>
+                                </td>
+                                <td class="nowrap">{row.pid}</td>
+                                <td class="nowrap">{row.tstamp_formatted}</td>
+                                <td class="col-path nowrap">{row.path}</td>
+                                <td class="col-control nowrap">
+                                    <div class="btn-group" role="group">
+                                        <be:link.editRecord
+                                            uid="{row.uid}"
+                                            table="tt_content"
+                                            class="btn btn-default"
+                                            returnUrl="{returnUrl}"
+                                            title="{f:translate(key:'core.mod_web_list:edit')}"
+                                        >
+                                            <core:icon identifier="actions-open" />
+                                        </be:link.editRecord>
+                                    </div>
+                                </td>
+                            </tr>
+                        </f:for>
+                        </tbody>
+                    </table>
+                </div>
+
+                <f:if condition="{paginator.numberOfPages} > 1">
+                    <nav class="pagination-wrap">
+                        <ul class="pagination">
+                            <f:if condition="{pagination.previousPageNumber}">
+                                <f:then>
+                                    <li class="page-item">
+                                        <a href="{f:be.uri(route:'system_reports_contentstatistics', parameters:'{ctype: ctype, page:1}')}#recordlist" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.first')}" class="page-link">
+                                            <core:icon identifier="actions-view-paging-first" />
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a href="{f:be.uri(route:'system_reports_contentstatistics', parameters:'{ctype: ctype, page:pagination.previousPageNumber}')}#recordlist" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.previous')}" class="page-link">
+                                            <core:icon identifier="actions-view-paging-previous" />
+                                        </a>
+                                    </li>
+                                </f:then>
+                                <f:else>
+                                    <li class="page-item disabled">
+                                        <span class="page-link">
+                                            <core:icon identifier="empty-empty"/>
+                                        </span>
+                                    </li>
+                                    <li class="page-item disabled">
+                                        <span class="page-link">
+                                            <core:icon identifier="empty-empty"/>
+                                        </span>
+                                    </li>
+                                </f:else>
+                            </f:if>
+                            <li class="page-item">
+                                <span class="page-link">
+                                    {pagination.startRecordNumber} - {pagination.endRecordNumber}
+                                </span>
+                            </li>
+                            <li class="page-item">
+                                <span class="page-link">
+                                    <f:translate extensionName="fluid" key="widget.pagination.page" />
+                                        <f:variable name="goToPageUrl">
+                                            <f:be.uri route="system_reports_contentstatistics" parameters="{action:'overview', page:987654322}" />
+                                        </f:variable>
+                                        <form data-on-submit="processNavigate" class="form-inline">
+                                            <input type="number"
+                                                value="{paginator.currentPageNumber}"
+                                                name="paginator-target-page"
+                                                class="form-control form-control-sm paginator-input"
+                                                min="1"
+                                                max="{paginator.numberOfPages}"
+                                                data-number-of-pages="{paginator.numberOfPages}"
+                                                data-url="{goToPageUrl}" />
+                                        </form>
+                                    / {paginator.numberOfPages}
+                                </span>
+                            </li>
+                            <f:if condition="{pagination.nextPageNumber}">
+                                <f:then>
+                                    <li class="page-item">
+                                        <a href="{f:be.uri(route:'system_reports_contentstatistics', parameters:'{ctype: ctype, page: pagination.nextPageNumber}')}#recordlist" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.next')}" class="page-link">
+                                            <core:icon identifier="actions-view-paging-next" />
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a href="{f:be.uri(route:'system_reports_contentstatistics', parameters:'{ctype: ctype, page: paginator.numberOfPages}')}#recordlist" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.last')}" class="page-link">
+                                            <core:icon identifier="actions-view-paging-last" />
+                                        </a>
+                                    </li>
+                                </f:then>
+                                <f:else>
+                                    <li class="page-item disabled">
+                                        <span class="page-link">
+                                            <core:icon identifier="empty-empty"/>
+                                        </span>
+                                    </li>
+                                    <li class="page-item disabled">
+                                        <span class="page-link">
+                                            <core:icon identifier="empty-empty"/>
+                                        </span>
+                                    </li>
+                                </f:else>
+                            </f:if>
+                            <li class="page-item">
+                                <a href="{f:be.uri(route:'system_reports_contentstatistics', parameters:'{ctype: ctype, page: paginator.currentPageNumber}')}#recordlist" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.refresh')}" class="page-link">
+                                    <core:icon identifier="actions-refresh" />
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </f:if>
+            </f:then>
+            <f:else>
+                <f:be.infobox>{f:translate(key:'reports.messages:contentStatistics.noRecords')}</f:be.infobox>
+            </f:else>
+        </f:if>
+    </div>
+</f:section>
+</html>
