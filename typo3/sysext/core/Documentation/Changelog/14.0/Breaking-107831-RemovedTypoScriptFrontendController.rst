@@ -21,9 +21,9 @@ The following instance access patterns have been removed:
 
     $GLOBALS['TSFE']
     $request->getAttribute('frontend.controller')
-    AbstractContentObject->:getTypoScriptFrontendController()
+    AbstractContentObject->getTypoScriptFrontendController()
 
-All API method that returned an instance of :php:`TypoScriptFrontendController`,
+All API methods that returned an instance of :php:`TypoScriptFrontendController`,
 usually called :php:`getTypoScriptFrontendController` or similar.
 
 Impact

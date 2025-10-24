@@ -33,7 +33,7 @@ Migration
 =========
 
 In most cases, the data that was previously provided by :php:`TypoScriptFrontendController`
-can now be found in the :php:`Request` whith is available using :php:`$event->getRequest()`.
+can now be found in the :php:`Request` which is available using :php:`$event->getRequest()`.
 
 See :ref:`breaking-102621-1701937690` for more information.
 

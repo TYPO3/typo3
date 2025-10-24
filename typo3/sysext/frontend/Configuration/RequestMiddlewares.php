@@ -64,7 +64,7 @@ return [
                 'typo3/cms-frontend/authentication',
             ],
             'before' => [
-                'typo3/cms-frontend/tsfe',
+                'typo3/cms-frontend/prepare-tsfe-rendering',
             ],
         ],
         'typo3/cms-frontend/site' => [
@@ -126,7 +126,7 @@ return [
         'typo3/cms-frontend/authentication' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\FrontendUserAuthenticator::class,
             'before' => [
-                'typo3/cms-frontend/tsfe',
+                'typo3/cms-frontend/prepare-tsfe-rendering',
             ],
             'after' => [
                 'typo3/cms-frontend/maintenance-mode',
@@ -141,7 +141,7 @@ return [
                 'typo3/cms-frontend/backend-user-authentication',
             ],
             'before' => [
-                'typo3/cms-frontend/tsfe',
+                'typo3/cms-frontend/prepare-tsfe-rendering',
             ],
         ],
         'typo3/cms-frontend/page-argument-validator' => [
@@ -150,7 +150,7 @@ return [
                 'typo3/cms-frontend/page-resolver',
             ],
             'before' => [
-                'typo3/cms-frontend/tsfe',
+                'typo3/cms-frontend/prepare-tsfe-rendering',
             ],
         ],
         /** internal: do not use or reference this middleware in your own code */
@@ -158,12 +158,12 @@ return [
             'target' => \TYPO3\CMS\Frontend\Middleware\CacheTimeout::class,
             'after' => [
                 'typo3/cms-core/cache-tags-attribute',
-                'typo3/cms-frontend/tsfe',
+                'typo3/cms-frontend/prepare-tsfe-rendering',
             ],
         ],
         /** internal: do not use or reference this middleware in your own code, as this will be possibly be removed */
-        'typo3/cms-frontend/tsfe' => [
-            'target' => \TYPO3\CMS\Frontend\Middleware\TypoScriptFrontendInitialization::class,
+        'typo3/cms-frontend/prepare-tsfe-rendering' => [
+            'target' => \TYPO3\CMS\Frontend\Middleware\PrepareTypoScriptFrontendRendering::class,
             'after' => [
                 'typo3/cms-frontend/eid',
                 'typo3/cms-frontend/page-argument-validator',
@@ -174,14 +174,7 @@ return [
         'typo3/cms-frontend/output-compression' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\OutputCompression::class,
             'after' => [
-                'typo3/cms-frontend/tsfe',
-            ],
-        ],
-        /** internal: do not use or reference this middleware in your own code, as this will be possibly be removed */
-        'typo3/cms-frontend/prepare-tsfe-rendering' => [
-            'target' => \TYPO3\CMS\Frontend\Middleware\PrepareTypoScriptFrontendRendering::class,
-            'after' => [
-                'typo3/cms-frontend/tsfe',
+                'typo3/cms-frontend/prepare-tsfe-rendering',
             ],
         ],
         /** internal: do not use or reference this middleware in your own code, as this will be possibly be removed */

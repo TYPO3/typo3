@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class TypoScriptFrontendInitializationTest extends FunctionalTestCase
+final class PrepareTypoScriptFrontendRenderingTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 

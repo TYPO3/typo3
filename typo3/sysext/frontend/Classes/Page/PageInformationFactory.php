@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Page\PageLayoutResolver;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -123,7 +124,11 @@ final readonly class PageInformationFactory
         $pageInformation = $event->getPageInformation();
 
         $pageInformation = $this->setSysTemplateRows($request, $pageInformation);
-        return $this->setLocalRootLine($request, $pageInformation);
+        $pageInformation = $this->setLocalRootLine($request, $pageInformation);
+
+        $this->verifySiteOrSysTemplateRowExists($request, $pageInformation);
+
+        return $pageInformation;
     }
 
     /**
@@ -639,6 +644,35 @@ final readonly class PageInformationFactory
         } catch (StatusException $up) {
             $this->logger->error($message, ['exception' => $up]);
             throw $up;
+        }
+    }
+
+    /**
+     * @throws PageInformationCreationFailedException
+     * @throws StatusException
+     */
+    protected function verifySiteOrSysTemplateRowExists(ServerRequestInterface $request, PageInformation $pageInformation): void
+    {
+        $site = $request->getAttribute('site');
+        if ((!$site instanceof NullSite && !$site->isTypoScriptRoot()) && $pageInformation->getSysTemplateRows() === []) {
+            // @todo: The above check for NullSite is done for ext:redirects to not explode on "not existing" sites here.
+            //        This is of course a hack that should vanish when the early url creation of ext:redirects and its fragile
+            //        bootstrap strategy is resolved.
+            //        This check should be: "if (!$site->isTypoScriptRoot() && $pageInformation->getSysTemplateRows() === []) {"
+            // Early exception if there is no typoscript definition in current site and no sys_template at all.
+            $message = 'No site configuration or TypoScript template record found!';
+            $this->logger->error($message);
+            try {
+                $response = $this->errorController->internalErrorAction(
+                    $request,
+                    $message,
+                    ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_FOUND]
+                );
+                throw new PageInformationCreationFailedException($response, 1705656657);
+            } catch (StatusException $up) {
+                $this->logger->error($message, ['exception' => $up]);
+                throw $up;
+            }
         }
     }
 

@@ -43,10 +43,9 @@ final class PageParts
      * Response HTTP body.
      *
      * @todo: This exists here since we need some place to park the initial content retrieved from cache.
-     *        This property could (should?) vanish at some point when the middleware related classes
-     *        TypoScriptFrontendInitialization, PrepareTypoScriptFrontendRendering and RequestHandler
-     *        see further refactoring loops. Note there are events like AfterCacheableContentIsGeneratedEvent
-     *        that already allow custom manipulation of events.
+     *        This property could (should?) vanish at some point when the middleware PrepareTypoScriptFrontendRendering
+     *        and the RequestHandler see further refactoring loops. Note there are events like AfterCacheableContentIsGeneratedEvent
+     *        that already allow custom manipulation of content.
      */
     private string $content = '';
 
