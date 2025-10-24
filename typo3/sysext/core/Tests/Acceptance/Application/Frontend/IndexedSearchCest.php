@@ -70,7 +70,7 @@ final class IndexedSearchCest
 
     public function seeSearchResults(ApplicationTester $I): void
     {
-        $I->fillField($this->searchSelector, 'search word');
+        $I->fillField($this->searchSelector, 'bumblebee phrase');
         $I->click($this->submitSelector);
         $I->see('No results found.', $this->noResultsSelector);
     }
