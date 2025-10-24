@@ -39,6 +39,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Form\Enum\SortDirection;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\FileWriteException;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
 use TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService;
@@ -193,7 +194,7 @@ readonly class FormPersistenceManager implements FormPersistenceManagerInterface
      *
      * @return array in the format [['name' => 'Form 01', 'persistenceIdentifier' => 'path1'], [ .... ]]
      */
-    public function listForms(array $formSettings): array
+    public function listForms(array $formSettings, string $orderField = '', ?SortDirection $orderDirection = null): array
     {
         $identifiers = [];
         $forms = [];
@@ -252,7 +253,7 @@ readonly class FormPersistenceManager implements FormPersistenceManagerInterface
                 }
             }
         }
-        return $this->sortForms($forms, $formSettings);
+        return $this->sortForms($forms, $formSettings, $orderField, $orderDirection);
     }
 
     /**
@@ -776,11 +777,15 @@ readonly class FormPersistenceManager implements FormPersistenceManagerInterface
         return !empty($data['identifier']) && trim($data['type'] ?? '') === 'Form';
     }
 
-    protected function sortForms(array $forms, array $formSettings): array
+    protected function sortForms(array $forms, array $formSettings, string $orderField = '', ?SortDirection $orderDirection = null): array
     {
-        $ascending = $formSettings['persistenceManager']['sortAscending'] ?? true;
+        if ($orderDirection) {
+            $ascending = $orderDirection === SortDirection::ASCENDING;
+        } else {
+            $ascending = $formSettings['persistenceManager']['sortAscending'] ?? true;
+        }
         $sortMultiplier = $ascending ? 1 : -1;
-        $keys = $formSettings['persistenceManager']['sortByKeys'] ?? ['name', 'fileUid'];
+        $keys = $orderField ? [$orderField] : $formSettings['persistenceManager']['sortByKeys'] ?? ['name', 'fileUid'];
         usort($forms, static function (array $a, array $b) use ($keys, $sortMultiplier) {
             foreach ($keys as $key) {
                 if (isset($a[$key], $b[$key])) {

@@ -39,6 +39,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
+use TYPO3\CMS\Form\Enum\SortDirection;
 use TYPO3\CMS\Form\Exception as FormException;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
@@ -74,11 +75,11 @@ class FormManagerController extends ActionController
     /**
      * Display the Form Manager. The main showing available forms.
      */
-    protected function indexAction(int $page = 1, string $searchTerm = ''): ResponseInterface
+    protected function indexAction(int $page = 1, string $searchTerm = '', string $orderField = '', ?SortDirection $orderDirection = null): ResponseInterface
     {
         $formSettings = $this->getFormSettings();
         $hasForms = $this->formPersistenceManager->hasForms($formSettings);
-        $forms = $hasForms ? $this->getAvailableFormDefinitions($formSettings, trim($searchTerm)) : [];
+        $forms = $hasForms ? $this->getAvailableFormDefinitions($formSettings, trim($searchTerm), $orderField, $orderDirection) : [];
         $arrayPaginator = new ArrayPaginator($forms, $page, self::PAGINATION_MAX);
         $pagination = new SimplePagination($arrayPaginator);
         $moduleTemplate = $this->initializeModuleTemplate($this->request, $page, $searchTerm);
@@ -86,6 +87,8 @@ class FormManagerController extends ActionController
             'paginator' => $arrayPaginator,
             'pagination' => $pagination,
             'searchTerm' => $searchTerm,
+            'orderField' => $orderField,
+            'orderDirection' => $orderDirection,
             'hasForms' => $hasForms,
             'stylesheets' => $formSettings['formManager']['stylesheets'],
             'formManagerAppInitialData' => json_encode($this->getFormManagerAppInitialData($formSettings)),
@@ -403,12 +406,12 @@ class FormManagerController extends ActionController
      * List all formDefinitions which can be loaded through t form persistence
      * manager. Enrich this data by a reference counter.
      */
-    protected function getAvailableFormDefinitions(array $formSettings, string $searchTerm = ''): array
+    protected function getAvailableFormDefinitions(array $formSettings, string $searchTerm = '', string $orderField = '', ?SortDirection $orderDirection = null): array
     {
         $allReferencesForFileUid = $this->databaseService->getAllReferencesForFileUid();
         $allReferencesForPersistenceIdentifier = $this->databaseService->getAllReferencesForPersistenceIdentifier();
         $availableFormDefinitions = [];
-        foreach ($this->formPersistenceManager->listForms($formSettings) as $formDefinition) {
+        foreach ($this->formPersistenceManager->listForms($formSettings, $orderField, $orderDirection) as $formDefinition) {
             $referenceCount  = 0;
             if (isset($formDefinition['fileUid'])
                 && array_key_exists($formDefinition['fileUid'], $allReferencesForFileUid)

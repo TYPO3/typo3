@@ -23,7 +23,6 @@ import Notification from '@typo3/backend/notification';
 import SecurityUtility from '@typo3/core/security-utility';
 import { selector } from '@typo3/core/literals';
 import type { FormManager } from '@typo3/form/backend/form-manager';
-import SortableTable from '@typo3/backend/sortable-table';
 
 const securityUtility = new SecurityUtility();
 
@@ -782,17 +781,9 @@ function showReferencesSetup(formManagerApp: FormManager): void {
   });
 }
 
-function initializeSortable(): void {
-  const formsList: HTMLTableElement = document.querySelector(Identifiers.formsTable) as HTMLTableElement;
-  if (formsList !== null) {
-    new SortableTable(formsList);
-  }
-}
-
 export function bootstrap(formManagerApp: FormManager): void {
   removeFormSetup(formManagerApp);
   newFormSetup(formManagerApp);
   duplicateFormSetup(formManagerApp);
   showReferencesSetup(formManagerApp);
-  initializeSortable();
 }
