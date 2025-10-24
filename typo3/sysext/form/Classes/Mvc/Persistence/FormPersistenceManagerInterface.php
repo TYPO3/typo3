@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Mvc\Persistence;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Form\Enum\SortDirection;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
 
 /**
@@ -68,7 +69,7 @@ interface FormPersistenceManagerInterface
      *
      * @return array in the format [['name' => 'Form 01', 'persistenceIdentifier' => 'path1'], [ .... ]]
      */
-    public function listForms(array $formSettings): array;
+    public function listForms(array $formSettings, string $orderField = '', ?SortDirection $orderDirection = null): array;
 
     /**
      * Check if any form definition is available

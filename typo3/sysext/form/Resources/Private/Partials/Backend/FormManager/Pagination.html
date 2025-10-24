@@ -4,12 +4,12 @@
             <f:if condition="{pagination.previousPageNumber} && {pagination.previousPageNumber} >= {pagination.firstPageNumber}">
                 <f:then>
                     <li class="page-item">
-                        <f:link.action action="index" arguments="{page: 1, searchTerm: searchTerm}" title="{f:translate(key:'pagination.first')}" class="page-link">
+                        <f:link.action action="index" arguments="{page: 1, searchTerm: searchTerm, orderField: orderField, orderDirection: orderDirection}" title="{f:translate(key:'pagination.first')}" class="page-link">
                             <core:icon identifier="actions-view-paging-first" />
                         </f:link.action>
                     </li>
                     <li class="page-item">
-                        <f:link.action action="index" arguments="{page: pagination.previousPageNumber, searchTerm: searchTerm}" title="{f:translate(key:'pagination.previous')}" class="page-link">
+                        <f:link.action action="index" arguments="{page: pagination.previousPageNumber, searchTerm: searchTerm, orderField: orderField, orderDirection: orderDirection}" title="{f:translate(key:'pagination.previous')}" class="page-link">
                             <core:icon identifier="actions-view-paging-previous" />
                         </f:link.action>
                     </li>
@@ -39,7 +39,7 @@
                         class="form-inline"
                         data-global-event="submit"
                         data-action-navigate="$form=~s/$value/"
-                        data-navigate-value="{f:uri.action(action:'index', arguments:'{page: \'$[value]\', searchTerm: searchTerm}')}"
+                        data-navigate-value="{f:uri.action(action:'index', arguments:'{page: \'$[value]\', searchTerm: searchTerm, orderField: orderField, orderDirection: orderDirection}')}"
                         data-value-selector="input[name='paginator-target-page']">
                         <input
                             min="{pagination.firstPageNumber}"
@@ -57,12 +57,12 @@
             <f:if condition="{pagination.nextPageNumber} && {pagination.nextPageNumber} <= {pagination.lastPageNumber}">
                 <f:then>
                     <li class="page-item">
-                        <f:link.action action="index" arguments="{page: pagination.nextPageNumber, searchTerm: searchTerm}" title="{f:translate(key:'pagination.next')}" class="page-link">
+                        <f:link.action action="index" arguments="{page: pagination.nextPageNumber, searchTerm: searchTerm, orderField: orderField, orderDirection: orderDirection}" title="{f:translate(key:'pagination.next')}" class="page-link">
                             <core:icon identifier="actions-view-paging-next" />
                         </f:link.action>
                     </li>
                     <li class="page-item">
-                        <f:link.action action="index" arguments="{page: pagination.lastPageNumber, searchTerm: searchTerm}" title="{f:translate(key:'pagination.last')}" class="page-link">
+                        <f:link.action action="index" arguments="{page: pagination.lastPageNumber, searchTerm: searchTerm, orderField: orderField, orderDirection: orderDirection}" title="{f:translate(key:'pagination.last')}" class="page-link">
                             <core:icon identifier="actions-view-paging-last" />
                         </f:link.action>
                     </li>
@@ -81,7 +81,7 @@
                 </f:else>
             </f:if>
             <li class="page-item">
-                <f:link.action action="index" arguments="{page: paginator.currentPageNumber, searchTerm: searchTerm}" title="{f:translate(key:'pagination.refresh')}" class="page-link">
+                <f:link.action action="index" arguments="{page: paginator.currentPageNumber, searchTerm: searchTerm, orderField: orderField, orderDirection: orderDirection}" title="{f:translate(key:'pagination.refresh')}" class="page-link">
                     <core:icon identifier="actions-refresh" />
                 </f:link.action>
             </li>
