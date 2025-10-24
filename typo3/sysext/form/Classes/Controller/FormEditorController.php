@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -81,6 +82,7 @@ class FormEditorController extends ActionController
         protected readonly ViewFactoryInterface $viewFactory,
         protected readonly DatabaseService $databaseService,
         protected readonly CacheManager $cacheManager,
+        protected readonly ComponentFactory $componentFactory,
     ) {}
 
     /**
@@ -367,18 +369,13 @@ class FormEditorController extends ActionController
     protected function initializeModuleTemplate(RequestInterface $request): ModuleTemplate
     {
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $getVars = $request->getArguments();
         if (isset($getVars['action']) && $getVars['action'] === 'index') {
-            $closeButton = $buttonBar->makeLinkButton()
+            $closeButton = $this->componentFactory->createCloseButton((string)$this->coreUriBuilder->buildUriFromRoute('web_FormFormbuilder'))
                 ->setDataAttributes(['identifier' => 'closeButton'])
-                ->setHref((string)$this->coreUriBuilder->buildUriFromRoute('web_FormFormbuilder'))
-                ->setClasses('formeditor-element-close-form-button hidden')
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
-                ->setShowLabelText(true)
-                ->setIcon($this->iconFactory->getIcon('actions-close', IconSize::SMALL));
-            $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
-            $saveButton = $buttonBar->makeInputButton()
+                ->setClasses('formeditor-element-close-form-button hidden');
+            $moduleTemplate->addButtonToButtonBar($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+            $saveButton = $this->componentFactory->createInputButton()
                 ->setDataAttributes(['identifier' => 'saveButton'])
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.save_button'))
                 ->setName('formeditor-save-form')
@@ -386,23 +383,23 @@ class FormEditorController extends ActionController
                 ->setClasses('formeditor-element-save-form-button hidden')
                 ->setIcon($this->iconFactory->getIcon('actions-document-save', IconSize::SMALL))
                 ->setShowLabelText(true);
-            $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
-            $undoButton = $buttonBar->makeInputButton()
+            $moduleTemplate->addButtonToButtonBar($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
+            $undoButton = $this->componentFactory->createInputButton()
                 ->setDataAttributes(['identifier' => 'undoButton'])
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.undo_button'))
                 ->setName('formeditor-undo-form')
                 ->setValue('undo')
                 ->setClasses('formeditor-element-undo-form-button hidden disabled')
                 ->setIcon($this->iconFactory->getIcon('actions-edit-undo', IconSize::SMALL));
-            $buttonBar->addButton($undoButton, ButtonBar::BUTTON_POSITION_LEFT, 5);
-            $redoButton = $buttonBar->makeInputButton()
+            $moduleTemplate->addButtonToButtonBar($undoButton, ButtonBar::BUTTON_POSITION_LEFT, 5);
+            $redoButton = $this->componentFactory->createInputButton()
                 ->setDataAttributes(['identifier' => 'redoButton'])
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.redo_button'))
                 ->setName('formeditor-redo-form')
                 ->setValue('redo')
                 ->setClasses('formeditor-element-redo-form-button hidden disabled')
                 ->setIcon($this->iconFactory->getIcon('actions-edit-redo', IconSize::SMALL));
-            $buttonBar->addButton($redoButton, ButtonBar::BUTTON_POSITION_LEFT, 5);
+            $moduleTemplate->addButtonToButtonBar($redoButton, ButtonBar::BUTTON_POSITION_LEFT, 5);
         }
         return $moduleTemplate;
     }

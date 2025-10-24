@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -95,6 +96,7 @@ class LinkValidatorController
         protected readonly LinktypeRegistry $linktypeRegistry,
         protected readonly TranslationConfigurationProvider $translationConfigurationProvider,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly ComponentFactory $componentFactory,
     ) {}
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
@@ -467,12 +469,11 @@ class LinkValidatorController
 
     protected function addDocHeaderShortCutButton(ModuleTemplate $view, string $action): void
     {
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        $shortcutButton = $buttonBar->makeShortcutButton()
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('web_linkvalidator')
             ->setDisplayName($this->getModuleTitle())
             ->setArguments(['id' => $this->id, 'action' => $action]);
-        $buttonBar->addButton($shortcutButton);
+        $view->addButtonToButtonBar($shortcutButton);
     }
 
     protected function getModuleUri(?string $action = null, array $additionalPramaters = []): string

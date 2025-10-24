@@ -19,6 +19,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -28,7 +29,6 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\AllowedMethodsTrait;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -57,6 +57,7 @@ class AdministrationController extends ActionController
         protected readonly IconFactory $iconFactory,
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly ConnectionPool $connectionPool,
+        protected readonly ComponentFactory $componentFactory,
     ) {}
 
     /**
@@ -90,7 +91,7 @@ class AdministrationController extends ActionController
 
         $view = $this->moduleTemplateFactory->create($request);
 
-        $menu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu = $this->componentFactory->createMenu();
         $menu->setIdentifier('IndexedSearchModuleMenu');
         $menu->setLabel(
             $languageService->sL(
@@ -101,7 +102,7 @@ class AdministrationController extends ActionController
         $context = '';
         foreach ($menuItems as $menuItemConfig) {
             $isActive = $this->request->getControllerActionName() === $menuItemConfig['action'];
-            $menuItem = $menu->makeMenuItem()
+            $menuItem = $this->componentFactory->createMenuItem()
                 ->setTitle($menuItemConfig['label'])
                 ->setHref($this->uriBuilder->reset()->uriFor($menuItemConfig['action'], [], $menuItemConfig['controller']))
                 ->setActive($isActive);
@@ -227,16 +228,7 @@ class AdministrationController extends ActionController
     protected function statisticDetailsAction(string $pageHash): ResponseInterface
     {
         $view = $this->initializeModuleTemplate($this->request);
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-
-        // Set back button
-        $backButton = $buttonBar
-            ->makeLinkButton()
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.back'))
-            ->setShowLabelText(true)
-            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL))
-            ->setHref($this->uriBuilder->reset()->uriFor('statistic', [], 'Administration'));
-        $buttonBar->addButton($backButton);
+        $view->addButtonToButtonBar($this->componentFactory->createBackButton($this->uriBuilder->reset()->uriFor('statistic', [], 'Administration')));
 
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_phash');
         $pageHashRow = $queryBuilder
@@ -351,16 +343,12 @@ class AdministrationController extends ActionController
             ->fetchAllAssociative();
 
         $view = $this->initializeModuleTemplate($this->request);
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
 
         // Set back button
-        $backButton = $buttonBar
-            ->makeLinkButton()
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.back'))
-            ->setShowLabelText(true)
-            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL))
-            ->setHref($this->uriBuilder->reset()->uriFor('statisticDetails', ['pageHash' => $pageHash], 'Administration'));
-        $buttonBar->addButton($backButton);
+        $backButton = $this->componentFactory
+            ->createBackButton($this->uriBuilder->reset()->uriFor('statisticDetails', ['pageHash' => $pageHash], 'Administration'))
+            ->setShowLabelText(true);
+        $view->addButtonToButtonBar($backButton);
 
         $view->assignMultiple([
             'extensionConfiguration' => $this->indexerConfig,

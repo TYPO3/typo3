@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -38,7 +39,8 @@ final class ConfigurationController
     public function __construct(
         private readonly ProviderRegistry $configurationProviderRegistry,
         private readonly UriBuilder $uriBuilder,
-        private readonly ModuleTemplateFactory $moduleTemplateFactory
+        private readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private readonly ComponentFactory $componentFactory,
     ) {}
 
     public function indexAction(ServerRequestInterface $request): ResponseInterface
@@ -145,7 +147,7 @@ final class ConfigurationController
      */
     private function addProviderDropDownToDocHeader(ModuleTemplate $view, array $providers, ProviderInterface $selectedProvider): void
     {
-        $menu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu = $this->componentFactory->createMenu();
         $menu->setIdentifier('tree');
         $menu->setLabel(
             $this->getLanguageService()->sL(
@@ -153,7 +155,7 @@ final class ConfigurationController
             )
         );
         foreach ($providers as $provider) {
-            $menuItem = $menu->makeMenuItem()
+            $menuItem = $this->componentFactory->createMenuItem()
                 ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_config', ['tree' => $provider->getIdentifier()]))
                 ->setTitle($provider->getLabel());
             if ($provider === $selectedProvider) {
@@ -166,12 +168,11 @@ final class ConfigurationController
 
     private function addShortcutButtonToDocHeader(ModuleTemplate $view, ProviderInterface $provider, string $providerIdentifier): void
     {
-        $shortcutButton = $view->getDocHeaderComponent()->getButtonBar()->makeShortcutButton();
-        $shortcutButton
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('system_config')
             ->setDisplayName($provider->getLabel())
             ->setArguments(['tree' => $providerIdentifier]);
-        $view->getDocHeaderComponent()->getButtonBar()->addButton($shortcutButton);
+        $view->addButtonToButtonBar($shortcutButton);
     }
 
     private function getLanguageService(): LanguageService

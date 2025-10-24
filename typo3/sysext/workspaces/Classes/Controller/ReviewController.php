@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -56,6 +57,7 @@ final readonly class ReviewController
         private TranslationConfigurationProvider $translationConfigurationProvider,
         private WorkspaceRepository $workspaceRepository,
         private WorkspaceStageRepository $workspaceStageRepository,
+        private ComponentFactory $componentFactory,
     ) {}
 
     /**
@@ -130,12 +132,11 @@ final readonly class ReviewController
 
     private function addShortcutButton(ModuleTemplate $view, string $activeWorkspaceTitle, string $pageTitle, int $pageId): void
     {
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        $shortcutButton = $buttonBar->makeShortcutButton()
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('workspaces_admin')
             ->setDisplayName(sprintf('%s: %s [%d]', $activeWorkspaceTitle, $pageTitle, $pageId))
             ->setArguments(['id' => (int)$pageId]);
-        $buttonBar->addButton($shortcutButton);
+        $view->addButtonToButtonBar($shortcutButton);
     }
 
     private function addPreviewLink(ModuleTemplate $view, int $pageUid, int $activeWorkspace): void
@@ -149,14 +150,13 @@ final readonly class ReviewController
             }
         }
         if ($canCreatePreviewLink) {
-            $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-            $showButton = $buttonBar->makeLinkButton()
+            $showButton = $this->componentFactory->createLinkButton()
                 ->setHref('#')
                 ->setClasses('t3js-preview-link')
                 ->setShowLabelText(true)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:tooltip.generatePagePreview'))
                 ->setIcon($this->iconFactory->getIcon('actions-version-workspaces-preview-link', IconSize::SMALL));
-            $buttonBar->addButton($showButton);
+            $view->addButtonToButtonBar($showButton);
         }
     }
 
@@ -164,7 +164,6 @@ final readonly class ReviewController
     {
         $backendUser = $this->getBackendUser();
         if ($backendUser->isAdmin() && $activeWorkspace > 0) {
-            $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
             $editWorkspaceRecordUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
                     'sys_workspace' => [
@@ -174,16 +173,12 @@ final readonly class ReviewController
                 'module' => 'workspaces_admin',
                 'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('workspaces_admin', ['id' => $pageUid]),
             ]);
-            $editSettingsButton = $buttonBar->makeLinkButton()
+            $editSettingsButton = $this->componentFactory->createLinkButton()
                 ->setHref($editWorkspaceRecordUrl)
                 ->setShowLabelText(true)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:button.editWorkspaceSettings'))
                 ->setIcon($this->iconFactory->getIcon('actions-cog-alt', IconSize::SMALL));
-            $buttonBar->addButton(
-                $editSettingsButton,
-                ButtonBar::BUTTON_POSITION_LEFT,
-                90
-            );
+            $view->addButtonToButtonBar($editSettingsButton, ButtonBar::BUTTON_POSITION_LEFT, 90);
         }
     }
 

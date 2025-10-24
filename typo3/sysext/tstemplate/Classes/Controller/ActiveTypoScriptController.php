@@ -27,7 +27,6 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -299,7 +298,7 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
         $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title']);
         $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);
-        $this->addBackButtonToDocHeader($view, $pageUid);
+        $view->addButtonToButtonBar($this->componentFactory->createBackButton($this->uriBuilder->buildUriFromRoute('typoscript_active', ['id' => $pageUid])));
         $view->makeDocHeaderModuleMenu(['id' => $pageUid]);
         $view->assignMultiple([
             'pageUid' => $pageUid,
@@ -501,29 +500,16 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
     private function addShortcutButtonToDocHeader(ModuleTemplate $view, string $moduleIdentifier, array $pageInfo, int $pageUid): void
     {
         $languageService = $this->getLanguageService();
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $shortcutTitle = sprintf(
             '%s: %s [%d]',
             $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:submodule.title'),
             BackendUtility::getRecordTitle('pages', $pageInfo),
             $pageUid
         );
-        $shortcutButton = $buttonBar->makeShortcutButton()
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier($moduleIdentifier)
             ->setDisplayName($shortcutTitle)
             ->setArguments(['id' => $pageUid]);
-        $buttonBar->addButton($shortcutButton);
-    }
-
-    private function addBackButtonToDocHeader(ModuleTemplate $view, int $pageUid): void
-    {
-        $languageService = $this->getLanguageService();
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        $backButton = $buttonBar->makeLinkButton()
-            ->setHref((string)$this->uriBuilder->buildUriFromRoute('typoscript_active', ['id' => $pageUid]))
-            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-            ->setShowLabelText(true)
-            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL));
-        $buttonBar->addButton($backButton);
+        $view->addButtonToButtonBar($shortcutButton);
     }
 }

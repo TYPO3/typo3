@@ -24,11 +24,11 @@ use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 
@@ -42,6 +42,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 final readonly class SubmoduleOverviewController
 {
     public function __construct(
+        protected ComponentFactory $componentFactory,
         protected ModuleTemplateFactory $moduleTemplateFactory,
         protected ModuleProvider $moduleProvider,
         protected IconFactory $iconFactory,
@@ -69,17 +70,11 @@ final readonly class SubmoduleOverviewController
             $view->getDocHeaderComponent()->setPageBreadcrumb($pageinfo);
         }
         $view->makeDocHeaderModuleMenu(['id' => $id]);
-
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        $reloadButton = $buttonBar->makeLinkButton()
-            ->setHref($request->getAttribute('normalizedParams')->getRequestUri())
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
-            ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
-        $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
-        $shortcutButton = $buttonBar->makeShortcutButton()
+        $view->addButtonToButtonBar($this->componentFactory->createReloadButton($request->getAttribute('normalizedParams')->getRequestUri()), ButtonBar::BUTTON_POSITION_RIGHT);
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier($currentModule->getIdentifier())
             ->setDisplayName($this->getLanguageService()->sL($currentModule->getTitle()));
-        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         $view->setTitle($this->getLanguageService()->sL($currentModule->getTitle()));
         $view->assign('currentModule', $currentModule);

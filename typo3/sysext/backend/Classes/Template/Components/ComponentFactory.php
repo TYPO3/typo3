@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Template\Components;
 
+use Psr\Http\Message\UriInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton;
@@ -70,14 +71,11 @@ readonly class ComponentFactory
 
     /**
      * Creates a standardized "back" navigation button.
-     *
-     * @param string $returnUrl The URL to navigate back to
-     * @return LinkButton Fully configured back button
      */
-    public function createBackButton(string $returnUrl): LinkButton
+    public function createBackButton(string|UriInterface $returnUrl): LinkButton
     {
         return $this->createLinkButton()
-            ->setHref($returnUrl)
+            ->setHref((string)$returnUrl)
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
             ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL))
             ->setShowLabelText(true);
@@ -88,30 +86,25 @@ readonly class ComponentFactory
      *
      * Similar to back button but uses "actions-close" icon and "Close" label.
      * Typically used for closing detail views or modal-like overlays.
-     *
-     * @param string $closeUrl The URL to navigate to when closing
-     * @return LinkButton Fully configured close button
      */
-    public function createCloseButton(string $closeUrl): LinkButton
+    public function createCloseButton(string|UriInterface $closeUrl): LinkButton
     {
         return $this->createLinkButton()
-            ->setHref($closeUrl)
+            ->setHref((string)$closeUrl)
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.close'))
             ->setIcon($this->iconFactory->getIcon('actions-close', IconSize::SMALL))
             ->setShowLabelText(true);
     }
 
     /**
-     * Creates a standardized "refresh" button for reloading the current view.
+     * Creates a standardized "reload" button for reloading the current view.
      *
-     *  Similar to back button but uses "actions-refresh" icon and without a displayed label.
-     *
-     * @return LinkButton Fully configured refresh button with current URL
+     * Similar to back button but uses "actions-refresh" icon and without a displayed label.
      */
-    public function createRefreshButton(string $requestUri): LinkButton
+    public function createReloadButton(string|UriInterface $requestUri): LinkButton
     {
         return $this->createLinkButton()
-            ->setHref($requestUri)
+            ->setHref((string)$requestUri)
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
             ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
     }
@@ -142,6 +135,17 @@ readonly class ComponentFactory
         }
 
         return $button;
+    }
+
+    public function createViewButton(array $previewDataAttributes = []): LinkButton
+    {
+        return $this->createLinkButton()
+            ->setHref('#')
+            ->setDataAttributes($previewDataAttributes)
+            ->setDisabled(!$previewDataAttributes)
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+            ->setIcon($this->iconFactory->getIcon('actions-view-page', IconSize::SMALL))
+            ->setShowLabelText(true);
     }
 
     public function createGenericButton(): GenericButton

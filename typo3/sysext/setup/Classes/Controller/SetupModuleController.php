@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Backend\Avatar\DefaultAvatarProvider;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -95,6 +96,7 @@ class SetupModuleController
         protected readonly UriBuilder $uriBuilder,
         protected readonly FormProtectionFactory $formProtectionFactory,
         protected readonly Locales $locales,
+        protected readonly ComponentFactory $componentFactory,
     ) {
         $passwordPolicy = $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy'] ?? 'default';
 
@@ -147,7 +149,11 @@ class SetupModuleController
         }
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $this->addFlashMessages($view);
-        $this->getButtons($view);
+        $view->addButtonToButtonBar($this->componentFactory->createSaveButton()->setName('data[save]'));
+        $shortcutButton = $this->componentFactory->createShortcutButton()
+            ->setRouteIdentifier('user_setup')
+            ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang_mod.xlf:mlang_labels_tablabel'));
+        $view->addButtonToButtonBar($shortcutButton);
         $view->assignMultiple([
             'isLanguageUpdate' => $this->languageUpdate,
             'menuItems' => $this->renderUserSetup(),
@@ -361,28 +367,6 @@ class SetupModuleController
                 BackendUtility::setUpdateSignal('updateTopbar');
             }
         }
-    }
-
-    /**
-     * Create the panel of buttons for submitting the form or otherwise perform operations.
-     */
-    protected function getButtons(ModuleTemplate $view): void
-    {
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-
-        $saveButton = $buttonBar->makeInputButton()
-            ->setName('data[save]')
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
-            ->setValue('1')
-            ->setForm('SetupModuleController')
-            ->setShowLabelText(true)
-            ->setIcon($this->iconFactory->getIcon('actions-document-save', IconSize::SMALL));
-
-        $buttonBar->addButton($saveButton);
-        $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier('user_setup')
-            ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang_mod.xlf:mlang_labels_tablabel'));
-        $buttonBar->addButton($shortcutButton);
     }
 
     /**

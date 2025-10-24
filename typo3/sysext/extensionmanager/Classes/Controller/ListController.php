@@ -218,7 +218,6 @@ class ListController extends AbstractController
         if (Environment::isComposerMode()) {
             return $view;
         }
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         if ($this->actionMethodName === 'showAllVersionsAction') {
             $action = $this->request->hasArgument('returnTo') ? $this->request->getArgument('returnTo') : 'ter';
             $uri = $this->uriBuilder->reset()->uriFor(in_array($action, ['index', 'ter'], true) ? $action : 'ter', [], 'List');
@@ -231,13 +230,13 @@ class ListController extends AbstractController
             $icon = $this->iconFactory->getIcon('actions-edit-upload', IconSize::SMALL);
             $classes = 't3js-upload';
         }
-        $button = $buttonBar->makeLinkButton()
+        $button = $this->componentFactory->createLinkButton()
             ->setHref($uri)
             ->setTitle($title)
             ->setShowLabelText(true)
             ->setClasses($classes)
             ->setIcon($icon);
-        $buttonBar->addButton($button);
+        $view->addButtonToButtonBar($button);
         return $view;
     }
 

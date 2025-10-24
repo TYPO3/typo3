@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -63,6 +64,7 @@ class InfoModuleController
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly ComponentFactory $componentFactory,
     ) {}
 
     /**
@@ -120,15 +122,7 @@ class InfoModuleController
      */
     protected function getButtons(): void
     {
-        $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
-
-        $goBack = $buttonBar
-            ->makeLinkButton()
-            ->setHref((string)$this->uriBuilder->buildUriFromRoute('web_info', ['id' => $this->id]))
-            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL))
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-            ->setShowLabelText(true);
-        $buttonBar->addButton($goBack);
+        $this->view->addButtonToButtonBar($this->componentFactory->createBackButton($this->uriBuilder->buildUriFromRoute('web_info', ['id' => $this->id])));
 
         if ($this->id) {
             // View
@@ -138,19 +132,19 @@ class InfoModuleController
                 $previewDataAttributes = $previewUriBuilder
                     ->withRootLine(BackendUtility::BEgetRootLine($this->pageinfo['uid']))
                     ->buildDispatcherDataAttributes();
-                $viewButton = $buttonBar->makeLinkButton()
+                $viewButton = $this->componentFactory->createLinkButton()
                     ->setHref('#')
                     ->setDataAttributes($previewDataAttributes ?? [])
                     ->setDisabled(!$previewDataAttributes)
                     ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
                     ->setIcon($this->iconFactory->getIcon('actions-view-page', IconSize::SMALL))
                     ->setShowLabelText(true);
-                $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+                $this->view->addButtonToButtonBar($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
             }
         }
 
         // Shortcut
-        $shortcutButton = $buttonBar->makeShortcutButton()
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier($this->currentModule->getIdentifier())
             ->setDisplayName(sprintf(
                 '%s [%d]',
@@ -158,7 +152,7 @@ class InfoModuleController
                 $this->id
             ))
             ->setArguments(['id' => $this->id]);
-        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $this->view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
     protected function getLanguageService(): LanguageService

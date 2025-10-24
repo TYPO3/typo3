@@ -126,8 +126,7 @@ class Menu
      */
     public function makeMenuItem(): MenuItem
     {
-        // @todo Activate once core is migrated
-        // trigger_error('Menu::makeMenuItem() is deprecated and will be removed in TYPO3 v15. Use GeneralUtility::makeInstance(MenuItem::class) directly or inject ComponentFactory and use createMenuItem().', E_USER_DEPRECATED);
+        trigger_error('Menu::makeMenuItem() is deprecated and will be removed in TYPO3 v15. Use GeneralUtility::makeInstance(MenuItem::class) directly or inject ComponentFactory and use createMenuItem().', E_USER_DEPRECATED);
         return GeneralUtility::makeInstance(MenuItem::class);
     }
 

@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\MfaConfigurationController;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Authentication\Mfa\Provider\Totp;
@@ -58,6 +59,7 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
         $this->subject = new MfaConfigurationController(
+            $this->get(ComponentFactory::class),
             $this->get(IconFactory::class),
             $this->get(UriBuilder::class),
             $this->get(ModuleTemplateFactory::class),

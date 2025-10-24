@@ -32,6 +32,7 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItemInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownRadio;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownToggle;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -88,6 +89,7 @@ class PageLayoutController
     protected ?ModuleData $moduleData = null;
 
     public function __construct(
+        protected readonly ComponentFactory $componentFactory,
         protected readonly IconFactory $iconFactory,
         protected readonly PageRenderer $pageRenderer,
         protected readonly UriBuilder $uriBuilder,
@@ -301,7 +303,7 @@ class PageLayoutController
             }
         }
 
-        $actionMenu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $actionMenu = $this->componentFactory->createMenu();
         $actionMenu->setIdentifier('actionMenu');
         $actionMenu->setLabel(
             $languageService->sL(
@@ -311,8 +313,7 @@ class PageLayoutController
         $defaultKey = null;
         $foundDefaultKey = false;
         foreach ($actions as $key => $action) {
-            $menuItem = $actionMenu
-                ->makeMenuItem()
+            $menuItem = $this->componentFactory->createMenuItem()
                 ->setTitle($action)
                 ->setHref((string)$this->uriBuilder->buildUriFromRoute('web_layout', ['id' => $this->id, 'function' => $key]));
             if (!$foundDefaultKey) {
@@ -502,32 +503,31 @@ class PageLayoutController
     protected function makeButtons(ModuleTemplate $view, ServerRequestInterface $request, array $tsConfig): void
     {
         $languageService = $this->getLanguageService();
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
 
         // Close button (show only if returnUrl is set)
         $returnUrl = $request->getQueryParams()['returnUrl'] ?? '';
-        if ($returnUrl && ($closeButton = $this->makeCloseButton($buttonBar, $returnUrl))) {
+        if ($returnUrl) {
             // use button group -1 so that close button is to the left of other buttons
-            $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, -1);
+            $view->addButtonToButtonBar($this->componentFactory->createCloseButton($returnUrl), ButtonBar::BUTTON_POSITION_LEFT, -1);
         }
 
         // Language
-        if ($languageButton = $this->makeLanguageSwitchButton($buttonBar)) {
-            $buttonBar->addButton($languageButton, ButtonBar::BUTTON_POSITION_LEFT, 0);
+        if ($languageButton = $this->makeLanguageSwitchButton()) {
+            $view->addButtonToButtonBar($languageButton, ButtonBar::BUTTON_POSITION_LEFT, 0);
         }
 
         // View
-        if ($viewButton = $this->makeViewButton($buttonBar, $tsConfig)) {
-            $buttonBar->addButton($viewButton);
+        if ($viewButton = $this->makeViewButton()) {
+            $view->addButtonToButtonBar($viewButton);
         }
 
         // Edit
-        if ($editButton = $this->makeEditButton($buttonBar, $request)) {
-            $buttonBar->addButton($editButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+        if ($editButton = $this->makeEditButton($request)) {
+            $view->addButtonToButtonBar($editButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         }
 
         // Shortcut
-        $shortcutButton = $buttonBar->makeShortcutButton()
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('web_layout')
             ->setDisplayName($this->getShortcutTitle())
             ->setArguments([
@@ -536,16 +536,16 @@ class PageLayoutController
                 'function' => (int)$this->moduleData->get('function'),
                 'language' => $this->currentSelectedLanguage,
             ]);
-        $buttonBar->addButton($shortcutButton);
+        $view->addButtonToButtonBar($shortcutButton);
 
         // Cache
-        $clearCacheButton = $buttonBar->makeLinkButton()
+        $clearCacheButton = $this->componentFactory->createLinkButton()
             ->setHref('#')
             ->setDataAttributes(['id' => $this->pageinfo['uid']])
             ->setClasses('t3js-clear-page-cache')
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'))
             ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', IconSize::SMALL));
-        $buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
+        $view->addButtonToButtonBar($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
 
         // ViewMode
         $viewModeItems = [];
@@ -564,28 +564,24 @@ class PageLayoutController
                 ]);
         }
         if (!empty($viewModeItems)) {
-            $viewModeButton = $buttonBar->makeDropDownButton()
+            $viewModeButton = $this->componentFactory->createDropDownButton()
                 ->setLabel($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view'))
                 ->setShowLabelText(true);
             foreach ($viewModeItems as $viewModeItem) {
                 /** @var DropDownItemInterface $viewModeItem */
                 $viewModeButton->addItem($viewModeItem);
             }
-            $buttonBar->addButton($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 3);
+            $view->addButtonToButtonBar($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 3);
         }
 
         // Reload
-        $reloadButton = $buttonBar->makeLinkButton()
-            ->setHref($request->getAttribute('normalizedParams')->getRequestUri())
-            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
-            ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
-        $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->addButtonToButtonBar($this->componentFactory->createReloadButton($request->getAttribute('normalizedParams')->getRequestUri()), ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
     /**
      * View Button
      */
-    protected function makeViewButton(ButtonBar $buttonBar, array $tsConfig): ?ButtonInterface
+    protected function makeViewButton(): ?ButtonInterface
     {
         // Do not create a "View webpage" button if
         // * "All languages" is selected
@@ -604,24 +600,16 @@ class PageLayoutController
             return null;
         }
 
-        $previewDataAttributes = $previewUriBuilder
+        return $this->componentFactory->createViewButton($previewUriBuilder
             ->withRootLine(BackendUtility::BEgetRootLine($this->pageinfo['uid']))
             ->withLanguage($this->currentSelectedLanguage)
-            ->buildDispatcherDataAttributes();
-
-        return $buttonBar->makeLinkButton()
-            ->setHref('#')
-            ->setDataAttributes($previewDataAttributes ?? [])
-            ->setDisabled(!$previewDataAttributes)
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-            ->setIcon($this->iconFactory->getIcon('actions-view-page', IconSize::SMALL))
-            ->setShowLabelText(true);
+            ->buildDispatcherDataAttributes() ?? []);
     }
 
     /**
      * Edit Button
      */
-    protected function makeEditButton(ButtonBar $buttonBar, ServerRequestInterface $request): ?ButtonInterface
+    protected function makeEditButton(ServerRequestInterface $request): ?ButtonInterface
     {
         if ((int)$this->moduleData->get('function') !== 1
             || !$this->isPageEditable($this->currentSelectedLanguage)
@@ -644,26 +632,17 @@ class PageLayoutController
             ],
         ];
 
-        return $buttonBar->makeLinkButton()
+        return $this->componentFactory->createLinkButton()
             ->setHref((string)$this->uriBuilder->buildUriFromRoute('record_edit', $params))
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageProperties'))
             ->setShowLabelText(true)
             ->setIcon($this->iconFactory->getIcon('actions-page-open', IconSize::SMALL));
     }
 
-    protected function makeCloseButton(ButtonBar $buttonBar, string $returnUrl): ?ButtonInterface
-    {
-        return $buttonBar->makeLinkButton()
-            ->setHref($returnUrl)
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.close') ?: 'Close')
-            ->setIcon($this->iconFactory->getIcon('actions-close', IconSize::SMALL))
-            ->setShowLabelText(true);
-    }
-
     /**
      * Language Switch
      */
-    protected function makeLanguageSwitchButton(ButtonBar $buttonbar): ?ButtonInterface
+    protected function makeLanguageSwitchButton(): ?ButtonInterface
     {
         // Early return if no translation exist
         if (array_filter($this->MOD_MENU['language'], static fn($language): bool => $language > 0, ARRAY_FILTER_USE_KEY) === []) {
@@ -672,7 +651,7 @@ class PageLayoutController
 
         $languageService = $this->getLanguageService();
 
-        $languageDropDownButton = $buttonbar->makeDropDownButton()
+        $languageDropDownButton = $this->componentFactory->createDropDownButton()
             ->setLabel($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.language'))
             ->setShowLabelText(true);
 

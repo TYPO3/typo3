@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Attribute\AsController as BackendController;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Context\Context;
@@ -61,6 +62,7 @@ final class SchedulerModuleController
         protected readonly IconFactory $iconFactory,
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly ComponentFactory $componentFactory,
         protected readonly Context $context,
         protected readonly TaskService $taskService,
         protected readonly PageRenderer $pageRenderer,
@@ -360,61 +362,61 @@ final class SchedulerModuleController
 
     protected function addDocHeaderReloadButton(ModuleTemplate $moduleTemplate): void
     {
-        $languageService = $this->getLanguageService();
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $reloadButton = $buttonBar->makeLinkButton()
-            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
-            ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL))
-            ->setHref((string)$this->uriBuilder->buildUriFromRoute('scheduler'));
-        $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
+        $moduleTemplate->addButtonToButtonBar(
+            $this->componentFactory->createReloadButton($this->uriBuilder->buildUriFromRoute('scheduler')),
+            ButtonBar::BUTTON_POSITION_RIGHT
+        );
     }
 
     protected function addDocHeaderAddTaskButton(ModuleTemplate $moduleTemplate, string $url): void
     {
         $languageService = $this->getLanguageService();
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $addButton = $buttonBar->makeFullyRenderedButton()->setHtmlSource(
-            '<typo3-scheduler-new-task-wizard-button url="' . $url . '" subject="' . htmlspecialchars($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add')) . '">'
-            . $this->iconFactory->getIcon('actions-plus', IconSize::SMALL) . htmlspecialchars($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add')) .
-            '</typo3-scheduler-new-task-wizard-button>'
-        );
-        $buttonBar->addButton($addButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+        $addButton = $this->componentFactory->createGenericButton()
+            ->setTag('typo3-scheduler-new-task-wizard-button')
+            ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL))
+            ->setLabel($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add'))
+            ->setShowLabelText(true)
+            ->setAttributes([
+                'url' => $url,
+                'subject' => $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add'),
+            ]);
+        $moduleTemplate->addButtonToButtonBar($addButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
     }
 
     private function addDocHeaderAddTaskGroupButton(ModuleTemplate $moduleTemplate): void
     {
         $languageService = $this->getLanguageService();
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $addButton = $buttonBar->makeInputButton()
+        $addButton = $this->componentFactory->createInputButton()
             ->setTitle($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.group.add'))
             ->setShowLabelText(true)
             ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL))
             ->setName('createSchedulerGroup')
             ->setValue('1')
             ->setClasses('t3js-create-group');
-        $buttonBar->addButton($addButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
+        $moduleTemplate->addButtonToButtonBar($addButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
     }
 
     private function addDocHeaderSetupCheckButton(ModuleTemplate $moduleTemplate): void
     {
         $languageService = $this->getLanguageService();
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $setupCheckUrl = (string)$this->uriBuilder->buildUriFromRoute('ajax_scheduler_setup_check');
-        $setupCheckButton = $buttonBar->makeFullyRenderedButton()->setHtmlSource(
-            '<typo3-scheduler-setup-check-button url="' . $setupCheckUrl . '" subject="' . htmlspecialchars($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.check')) . '">'
-            . $this->iconFactory->getIcon('actions-window-cog', IconSize::SMALL) . ' ' . htmlspecialchars($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.check')) .
-            '</typo3-scheduler-setup-check-button>'
-        );
-        $buttonBar->addButton($setupCheckButton, ButtonBar::BUTTON_POSITION_RIGHT, 0);
+        $setupCheckButton = $this->componentFactory->createGenericButton()
+            ->setTag('typo3-scheduler-setup-check-button')
+            ->setIcon($this->iconFactory->getIcon('actions-window-cog', IconSize::SMALL))
+            ->setLabel($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.check'))
+            ->setShowLabelText(true)
+            ->setAttributes([
+                'url' => (string)$this->uriBuilder->buildUriFromRoute('ajax_scheduler_setup_check'),
+                'subject' => $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.check'),
+            ]);
+        $moduleTemplate->addButtonToButtonBar($setupCheckButton, ButtonBar::BUTTON_POSITION_RIGHT, 0);
     }
 
     protected function addDocHeaderShortcutButton(ModuleTemplate $moduleTemplate, string $name): void
     {
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $shortcutButton = $buttonBar->makeShortcutButton()
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('scheduler')
             ->setDisplayName($name);
-        $buttonBar->addButton($shortcutButton);
+        $moduleTemplate->addButtonToButtonBar($shortcutButton);
     }
 
     /**

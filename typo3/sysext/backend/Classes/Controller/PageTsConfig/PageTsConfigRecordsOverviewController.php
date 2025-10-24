@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -47,6 +48,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 final class PageTsConfigRecordsOverviewController
 {
     public function __construct(
+        private readonly ComponentFactory $componentFactory,
         private readonly IconFactory $iconFactory,
         private readonly UriBuilder $uriBuilder,
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
@@ -200,12 +202,11 @@ final class PageTsConfigRecordsOverviewController
 
     private function addShortcutButtonToDocHeader(ModuleTemplate $view, ModuleInterface $currentModule, ?int $pageId): void
     {
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        $shortcutButton = $buttonBar->makeShortcutButton()
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier($currentModule->getIdentifier())
             ->setDisplayName($this->getLanguageService()->sL($currentModule->getTitle()))
             ->setArguments(['id' => $pageId]);
-        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
     private function getLanguageService(): LanguageService

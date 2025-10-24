@@ -25,7 +25,6 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilderInterface;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
@@ -194,7 +193,7 @@ class ConstantEditorController extends AbstractTemplateModuleController
         $this->addPreviewButtonToDocHeader($view, $pageRecord);
         $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageUid);
         if (!empty($relevantCategories)) {
-            $this->addSaveButtonToDocHeader($view);
+            $view->addButtonToButtonBar($this->componentFactory->createSaveButton('TypoScriptConstantEditorController'));
         }
         $view->makeDocHeaderModuleMenu(['id' => $pageUid]);
         $view->assignMultiple([
@@ -458,34 +457,19 @@ class ConstantEditorController extends AbstractTemplateModuleController
         return $templateConstantsArray;
     }
 
-    private function addSaveButtonToDocHeader(ModuleTemplate $view): void
-    {
-        $languageService = $this->getLanguageService();
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        $saveButton = $buttonBar->makeInputButton()
-            ->setName('_savedok')
-            ->setValue('1')
-            ->setForm('TypoScriptConstantEditorController')
-            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
-            ->setIcon($this->iconFactory->getIcon('actions-document-save', IconSize::SMALL))
-            ->setShowLabelText(true);
-        $buttonBar->addButton($saveButton);
-    }
-
     private function addShortcutButtonToDocHeader(ModuleTemplate $view, string $moduleIdentifier, array $pageInfo, int $pageUid): void
     {
         $languageService = $this->getLanguageService();
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $shortcutTitle = sprintf(
             '%s: %s [%d]',
             $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:submodule.title'),
             BackendUtility::getRecordTitle('pages', $pageInfo),
             $pageUid
         );
-        $shortcutButton = $buttonBar->makeShortcutButton()
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier($moduleIdentifier)
             ->setDisplayName($shortcutTitle)
             ->setArguments(['id' => $pageUid]);
-        $buttonBar->addButton($shortcutButton);
+        $view->addButtonToButtonBar($shortcutButton);
     }
 }

@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -33,7 +34,6 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -53,6 +53,7 @@ abstract class AbstractTemplateModuleController
     protected UriBuilder $uriBuilder;
     protected ConnectionPool $connectionPool;
     protected SiteFinder $siteFinder;
+    protected ComponentFactory $componentFactory;
     private DataHandler $dataHandler;
     private TcaSchemaFactory $tcaSchemaFactory;
 
@@ -84,6 +85,11 @@ abstract class AbstractTemplateModuleController
     public function injectTcaSchemaFactory(TcaSchemaFactory $tcaSchemaFactory)
     {
         $this->tcaSchemaFactory = $tcaSchemaFactory;
+    }
+
+    public function injectComponentFactory(ComponentFactory $componentFactory): void
+    {
+        $this->componentFactory = $componentFactory;
     }
 
     /**
@@ -133,21 +139,13 @@ abstract class AbstractTemplateModuleController
 
     protected function addPreviewButtonToDocHeader(ModuleTemplate $view, array $pageRecord): void
     {
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-
         $previewUriBuilder = PreviewUriBuilder::create($pageRecord);
         if ($previewUriBuilder->isPreviewable()) {
-            $previewDataAttributes = $previewUriBuilder
-                ->withRootLine(BackendUtility::BEgetRootLine($pageRecord['uid']))
-                ->buildDispatcherDataAttributes();
-            $viewButton = $buttonBar->makeLinkButton()
-                ->setHref('#')
-                ->setDataAttributes($previewDataAttributes ?? [])
-                ->setDisabled(!$previewDataAttributes)
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-                ->setIcon($this->iconFactory->getIcon('actions-view-page', IconSize::SMALL))
-                ->setShowLabelText(true);
-            $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 99);
+            $view->addButtonToButtonBar($this->componentFactory->createViewButton(
+                $previewUriBuilder
+                    ->withRootLine(BackendUtility::BEgetRootLine($pageRecord['uid']))
+                    ->buildDispatcherDataAttributes()
+            ), ButtonBar::BUTTON_POSITION_LEFT, 99);
         }
     }
 

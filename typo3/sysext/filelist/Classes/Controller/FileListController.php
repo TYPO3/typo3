@@ -32,6 +32,7 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownDivider;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItem;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownRadio;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownToggle;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -98,6 +99,7 @@ class FileListController implements LoggerAwareInterface
         protected readonly BackendViewFactory $viewFactory,
         protected readonly ResponseFactoryInterface $responseFactory,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly ComponentFactory $componentFactory,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -501,14 +503,9 @@ class FileListController implements LoggerAwareInterface
     protected function registerAdditionalDocHeaderButtons(ServerRequestInterface $request): void
     {
         $lang = $this->getLanguageService();
-        $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
 
         // Refresh
-        $refreshButton = $buttonBar->makeLinkButton()
-            ->setHref($request->getAttribute('normalizedParams')->getRequestUri())
-            ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
-            ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
-        $buttonBar->addButton($refreshButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $this->view->addButtonToButtonBar($this->componentFactory->createReloadButton($request->getAttribute('normalizedParams')->getRequestUri()), ButtonBar::BUTTON_POSITION_RIGHT);
 
         // ViewMode
         $viewModeItems = [];
@@ -560,7 +557,7 @@ class FileListController implements LoggerAwareInterface
                 ->setIcon($this->iconFactory->getIcon('actions-options'));
         }
 
-        $sortingButton = $buttonBar->makeDropDownButton()
+        $sortingButton = $this->componentFactory->createDropDownButton()
             ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting'))
             ->setIcon($this->iconFactory->getIcon($this->filelist->sortDirection->getIconIdentifier()))
             ->setShowLabelText(true);
@@ -597,15 +594,15 @@ class FileListController implements LoggerAwareInterface
             $sortingButton->addItem($sortingModeButton);
         }
 
-        $buttonBar->addButton($sortingButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+        $this->view->addButtonToButtonBar($sortingButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
 
-        $viewModeButton = $buttonBar->makeDropDownButton()
+        $viewModeButton = $this->componentFactory->createDropDownButton()
             ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view'))
             ->setShowLabelText(true);
         foreach ($viewModeItems as $viewModeItem) {
             $viewModeButton->addItem($viewModeItem);
         }
-        $buttonBar->addButton($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 3);
+        $this->view->addButtonToButtonBar($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 3);
 
         // Level up
         try {
@@ -614,7 +611,7 @@ class FileListController implements LoggerAwareInterface
             if ($currentStorage->isWithinFileMountBoundaries($parentFolder)
                 && $parentFolder->getIdentifier() !== $this->folderObject->getIdentifier()
             ) {
-                $levelUpButton = $buttonBar->makeLinkButton()
+                $levelUpButton = $this->componentFactory->createLinkButton()
                     ->setDataAttributes([
                         'tree-update-request' => htmlspecialchars('folder' . GeneralUtility::md5int($parentFolder->getCombinedIdentifier())),
                     ])
@@ -627,13 +624,13 @@ class FileListController implements LoggerAwareInterface
                     ->setShowLabelText(true)
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.upOneLevel'))
                     ->setIcon($this->iconFactory->getIcon('actions-view-go-up', IconSize::SMALL));
-                $buttonBar->addButton($levelUpButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
+                $this->view->addButtonToButtonBar($levelUpButton);
             }
         } catch (\Exception $e) {
         }
 
         // Shortcut
-        $shortCutButton = $buttonBar->makeShortcutButton()
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('media_management')
             ->setDisplayName(sprintf(
                 '%s: %s',
@@ -644,13 +641,13 @@ class FileListController implements LoggerAwareInterface
                 'id' => $this->id,
                 'searchTerm' => $this->searchTerm,
             ]));
-        $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $this->view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         // New file button
         if ($this->folderObject && $this->folderObject->checkActionPermission('write')
             && $this->folderObject->getStorage()->checkUserActionPermission('add', 'File')
         ) {
-            $newButton = $buttonBar->makeLinkButton()
+            $newButton = $this->componentFactory->createLinkButton()
                 ->setClasses('t3js-element-browser')
                 ->setHref((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser'))
                 ->setDataAttributes([
@@ -660,12 +657,12 @@ class FileListController implements LoggerAwareInterface
                 ->setShowLabelText(true)
                 ->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.new_file'))
                 ->setIcon($this->iconFactory->getIcon('actions-file-add', IconSize::SMALL));
-            $buttonBar->addButton($newButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+            $this->view->addButtonToButtonBar($newButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         }
 
         // New folder button
         if ($this->folderObject && $this->folderObject->checkActionPermission('write') && $this->folderObject->checkActionPermission('add')) {
-            $newButton = $buttonBar->makeLinkButton()
+            $newButton = $this->componentFactory->createLinkButton()
                 ->setClasses('t3js-element-browser')
                 ->setHref((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser'))
                 ->setDataAttributes([
@@ -675,7 +672,7 @@ class FileListController implements LoggerAwareInterface
                 ->setShowLabelText(true)
                 ->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.new_folder'))
                 ->setIcon($this->iconFactory->getIcon('actions-folder-add', IconSize::SMALL));
-            $buttonBar->addButton($newButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
+            $this->view->addButtonToButtonBar($newButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
         }
 
         // Add paste button if clipboard is initialized
@@ -697,7 +694,7 @@ class FileListController implements LoggerAwareInterface
                     $confirmText = $this->filelist->clipObj
                         ->confirmMsgText('_FILE', $this->folderObject->getReadablePath(), 'into');
                     $pastButtonTitle = $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_paste');
-                    $pasteButton = $buttonBar->makeLinkButton()
+                    $pasteButton = $this->componentFactory->createLinkButton()
                         ->setHref($this->filelist->clipObj
                             ->pasteUrl('_FILE', $this->folderObject->getCombinedIdentifier()))
                         ->setClasses('t3js-modal-trigger')
@@ -709,7 +706,7 @@ class FileListController implements LoggerAwareInterface
                         ->setShowLabelText(true)
                         ->setTitle($pastButtonTitle)
                         ->setIcon($this->iconFactory->getIcon('actions-document-paste-into', IconSize::SMALL));
-                    $buttonBar->addButton($pasteButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
+                    $this->view->addButtonToButtonBar($pasteButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
                 }
             }
         }

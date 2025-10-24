@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\Components\ModifyButtonBarEvent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
@@ -49,6 +50,13 @@ final class ButtonBarProvider
         'web_info_pagets',
     ];
 
+    public function __construct(
+        protected readonly IconFactory $iconFactory,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly ComponentFactory $componentFactory,
+    ) {}
+
     /**
      * Add a sys_note creation button to the button bar of defined modules
      *
@@ -76,7 +84,7 @@ final class ButtonBarProvider
             return;
         }
 
-        $uri = (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute(
+        $uri = (string)$this->uriBuilder->buildUriFromRoute(
             'record_edit',
             [
                 'edit' => [
@@ -89,10 +97,9 @@ final class ButtonBarProvider
             ]
         );
 
-        $buttons[ButtonBar::BUTTON_POSITION_RIGHT][2][] = $event->getButtonBar()
-            ->makeLinkButton()
+        $buttons[ButtonBar::BUTTON_POSITION_RIGHT][2][] = $this->componentFactory->createLinkButton()
             ->setTitle(htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:sys_note/Resources/Private/Language/locallang.xlf:new_internal_note')))
-            ->setIcon(GeneralUtility::makeInstance(IconFactory::class)->getIcon('sysnote-type-0', IconSize::SMALL))
+            ->setIcon($this->iconFactory->getIcon('sysnote-type-0', IconSize::SMALL))
             ->setHref($uri);
 
         ksort($buttons[ButtonBar::BUTTON_POSITION_RIGHT]);
@@ -105,7 +112,7 @@ final class ButtonBarProvider
      */
     protected function canCreateNewRecord(int $id): bool
     {
-        $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get(self::TABLE_NAME);
+        $schema = $this->tcaSchemaFactory->get(self::TABLE_NAME);
         $pageRow = BackendUtility::getRecord('pages', $id);
         $backendUser = $this->getBackendUserAuthentication();
 

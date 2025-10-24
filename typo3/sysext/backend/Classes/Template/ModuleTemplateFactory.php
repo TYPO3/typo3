@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -41,6 +42,7 @@ final readonly class ModuleTemplateFactory
         private FlashMessageService $flashMessageService,
         private ExtensionConfiguration $extensionConfiguration,
         private BackendViewFactory $viewFactory,
+        private ComponentFactory $componentFactory,
     ) {}
 
     public function create(ServerRequestInterface $request): ModuleTemplate
@@ -53,7 +55,8 @@ final readonly class ModuleTemplateFactory
             $this->flashMessageService,
             $this->extensionConfiguration,
             $this->viewFactory->create($request),
-            $request
+            $this->componentFactory,
+            $request,
         );
     }
 }

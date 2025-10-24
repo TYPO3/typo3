@@ -22,9 +22,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Reports\Service\RecordStatisticsService;
 
@@ -39,6 +39,7 @@ final readonly class RecordStatisticsController
         protected RecordStatisticsService $recordStatisticsService,
         protected UriBuilder $uriBuilder,
         protected IconFactory $iconFactory,
+        protected ComponentFactory $componentFactory,
     ) {}
 
     /**
@@ -53,23 +54,11 @@ final readonly class RecordStatisticsController
             $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:recordStatistics.title')
         );
         $view->makeDocHeaderModuleMenu();
-
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        // Back button to parent module
-        $backButton = $buttonBar
-            ->makeLinkButton()
-            ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_reports'))
-            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL))
-            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-            ->setShowLabelText(true);
-        $buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
-
-        // Shortcut button
-        $shortcutButton = $buttonBar
-            ->makeShortcutButton()
+        $view->addButtonToButtonBar($this->componentFactory->createBackButton($this->uriBuilder->buildUriFromRoute('system_reports')));
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('system_reports_statistics')
             ->setDisplayName($languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:recordStatistics.title'));
-        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         return $view->assignMultiple([
             'pages' => $this->recordStatisticsService->collectPageStatistics(),

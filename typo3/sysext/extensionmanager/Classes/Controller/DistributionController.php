@@ -18,9 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Controller;
 
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
@@ -47,28 +45,10 @@ class DistributionController extends AbstractController
         // Check if extension/package is installed
         $active = $this->packageManager->isPackageActive($extensionKey);
         $view = $this->initializeModuleTemplate($this->request);
-        $view = $this->registerDocHeaderButtons($view);
+        $view->addButtonToButtonBar($this->componentFactory->createBackButton($this->uriBuilder->reset()->uriFor('distributions', [], 'List')));
         $view->assign('distributionActive', $active);
         $view->assign('extension', $extension);
         $this->pageRenderer->loadJavaScriptModule('@typo3/extensionmanager/distribution-image.js');
         return $view->renderResponse('Distribution/Show');
-    }
-
-    /**
-     * Add 'back to list' icon to doc-header.
-     */
-    protected function registerDocHeaderButtons(ModuleTemplate $view): ModuleTemplate
-    {
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        $uri = $this->uriBuilder->reset()->uriFor('distributions', [], 'List');
-        $title = $this->translate('extConfTemplate.backToList');
-        $icon = $this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL);
-        $button = $buttonBar->makeLinkButton()
-            ->setHref($uri)
-            ->setTitle($title)
-            ->setShowLabelText(true)
-            ->setIcon($icon);
-        $buttonBar->addButton($button);
-        return $view;
     }
 }

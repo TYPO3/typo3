@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\CMS\Backend\History\RecordHistoryRollback;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -69,6 +70,7 @@ class ElementHistoryController
         private readonly DiffUtility $diffUtility,
         private readonly FlexFormValueFormatter $flexFormValueFormatter,
         private readonly TcaSchemaFactory $tcaSchemaFactory,
+        private readonly ComponentFactory $componentFactory,
     ) {}
 
     /**
@@ -80,7 +82,6 @@ class ElementHistoryController
         $this->view = $this->moduleTemplateFactory->create($request);
         $backendUser = $this->getBackendUser();
         $this->view->getDocHeaderComponent()->setPageBreadcrumb([]);
-        $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
 
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
@@ -113,12 +114,12 @@ class ElementHistoryController
             } elseif ($lastHistoryEntry) {
                 $completeDiff = $this->historyObject->getDiff($changeLog);
                 $this->displayMultipleDiff($completeDiff);
-                $button = $buttonBar->makeLinkButton()
+                $button = $this->componentFactory->createLinkButton()
                     ->setHref($this->buildUrl(['historyEntry' => '']))
                     ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL))
                     ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:fullView'))
                     ->setShowLabelText(true);
-                $buttonBar->addButton($button);
+                $this->view->addButtonToButtonBar($button);
             }
             if ($this->historyObject->getElementString() !== '') {
                 $this->displayHistory($changeLog);
@@ -136,7 +137,7 @@ class ElementHistoryController
             if ($elementTable !== 'pages') {
                 $parentPage = BackendUtility::getRecord($elementTable, $elementUid, '*', '', false);
                 if ($parentPage['pid'] > 0 && BackendUtility::readPageAccess($parentPage['pid'], $backendUser->getPagePermsClause(Permission::PAGE_SHOW))) {
-                    $button = $buttonBar->makeLinkButton()
+                    $button = $this->componentFactory->createLinkButton()
                         ->setHref($this->buildUrl([
                             'element' => 'pages:' . $parentPage['pid'],
                             'historyEntry' => '',
@@ -144,7 +145,7 @@ class ElementHistoryController
                         ->setIcon($this->iconFactory->getIcon('apps-pagetree-page-default', IconSize::SMALL))
                         ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:elementHistory_link'))
                         ->setShowLabelText(true);
-                    $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 2);
+                    $this->view->addButtonToButtonBar($button, ButtonBar::BUTTON_POSITION_LEFT, 2);
                 }
             }
         }
@@ -187,15 +188,13 @@ class ElementHistoryController
 
     protected function getButtons(): void
     {
-        $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
-
         if ($this->returnUrl) {
-            $backButton = $buttonBar->makeLinkButton()
+            $backButton = $this->componentFactory->createLinkButton()
                 ->setHref($this->returnUrl)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
                 ->setShowLabelText(true)
                 ->setIcon($this->iconFactory->getIcon('actions-close', IconSize::SMALL));
-            $buttonBar->addButton($backButton);
+            $this->view->addButtonToButtonBar($backButton);
         }
     }
 

@@ -21,12 +21,12 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
@@ -56,7 +56,8 @@ class ImportController
         protected readonly IconFactory $iconFactory,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly ExtendedFileUtility $fileProcessor,
-        protected readonly ResourceFactory $resourceFactory
+        protected readonly ResourceFactory $resourceFactory,
+        protected readonly ComponentFactory $componentFactory,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -125,25 +126,11 @@ class ImportController
         $view->setModuleName('');
         $view->getDocHeaderComponent()->setPageBreadcrumb($pageInfo);
         if ((int)($pageInfo['uid'] ?? 0) > 0) {
-            $this->addDocHeaderPreviewButton($view, $pageInfo);
+            $view->addButtonToButtonBar($this->componentFactory->createViewButton(PreviewUriBuilder::create($pageInfo)
+                ->withRootLine(BackendUtility::BEgetRootLine($pageInfo['uid']))
+                ->buildDispatcherDataAttributes() ?? []));
         }
         return $view->renderResponse('Import');
-    }
-
-    protected function addDocHeaderPreviewButton(ModuleTemplate $view, array $pageInfo): void
-    {
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        $previewDataAttributes = PreviewUriBuilder::create($pageInfo)
-            ->withRootLine(BackendUtility::BEgetRootLine($pageInfo['uid']))
-            ->buildDispatcherDataAttributes();
-        $viewButton = $buttonBar->makeLinkButton()
-            ->setHref('#')
-            ->setDataAttributes($previewDataAttributes ?? [])
-            ->setDisabled(!$previewDataAttributes)
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-            ->setIcon($this->iconFactory->getIcon('actions-view-page', IconSize::SMALL))
-            ->setShowLabelText(true);
-        $buttonBar->addButton($viewButton);
     }
 
     protected function handleFileUpload(ServerRequestInterface $request): ?File

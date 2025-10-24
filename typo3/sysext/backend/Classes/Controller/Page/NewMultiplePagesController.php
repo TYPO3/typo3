@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Form\Processor\SelectItemProcessor;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -32,7 +33,6 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Struct\SelectItem;
@@ -55,6 +55,7 @@ class NewMultiplePagesController
         protected readonly SelectItemProcessor $selectItemProcessor,
         protected readonly PageDoktypeRegistry $pageDoktypeRegistry,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly ComponentFactory $componentFactory,
     ) {}
 
     /**
@@ -75,18 +76,13 @@ class NewMultiplePagesController
 
         // Doc header handling
         $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        $previewDataAttributes = PreviewUriBuilder::create($pageRecord)
-            ->withRootLine(BackendUtility::BEgetRootLine($pageUid))
-            ->buildDispatcherDataAttributes();
-        $viewButton = $buttonBar->makeLinkButton()
-            ->setHref('#')
-            ->setDataAttributes($previewDataAttributes ?? [])
-            ->setDisabled(!$previewDataAttributes)
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-            ->setIcon($this->iconFactory->getIcon('actions-view-page', IconSize::SMALL))
-            ->setShowLabelText(true);
-        $buttonBar->addButton($viewButton);
+        $view->addButtonToButtonBar(
+            $this->componentFactory->createViewButton(
+                PreviewUriBuilder::create($pageRecord)
+                    ->withRootLine(BackendUtility::BEgetRootLine($pageUid))
+                    ->buildDispatcherDataAttributes() ?? []
+            )
+        );
 
         $calculatedPermissions = new Permission($backendUser->calcPerms($pageRecord));
         $canCreateNew = $backendUser->isAdmin() || $calculatedPermissions->createPagePermissionIsGranted();

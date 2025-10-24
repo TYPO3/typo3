@@ -19,7 +19,7 @@ pre-configured buttons for common patterns and basic component creation methods.
 The :php:`ComponentFactory` serves multiple purposes:
 
 1. **Pre-configured common buttons** - Ready-to-use buttons like back, close, save,
-   and refresh with standardized icons, labels, and behavior
+   reload, and view with standardized icons, labels, and behavior
 2. **Basic button creation** - Factory methods for creating button instances
    (previously available only on :php:`ButtonBar`)
 3. **Menu component creation** - Factory methods for creating Menu and MenuItem instances
@@ -40,10 +40,17 @@ The :php:`ComponentFactory` provides two categories of methods:
 
 **Pre-configured Common Buttons:**
 
-* :php:`createBackButton(string $returnUrl)` - Standard back navigation with "Go back" label
-* :php:`createCloseButton(string $closeUrl)` - Close button for modal-like views
+These methods provide ready-to-use buttons with sensible defaults. The returned instances
+are fully mutable and can be further customized using fluent interface methods
+(e.g., :php:`setDataAttributes()`, :php:`setClasses()`, :php:`setIcon()`).
+
+URL parameters accept both :php:`string` and :php:`UriInterface` for convenience.
+
+* :php:`createBackButton(string|UriInterface $returnUrl)` - Standard back navigation with "Go back" label
+* :php:`createCloseButton(string|UriInterface $closeUrl)` - Close button for modal-like views
 * :php:`createSaveButton(string $formName = '')` - Standard save button for forms
-* :php:`createRefreshButton()` - Reload current view
+* :php:`createReloadButton(string|UriInterface $requestUri)` - Reload current view
+* :php:`createViewButton(array $previewDataAttributes = [])` - View/preview page button with data attributes
 
 **Basic Button Creation:**
 
@@ -72,7 +79,7 @@ Impact
 Backend module developers should now inject :php:`ComponentFactory` in their controllers
 to create buttons. The factory provides:
 
-1. **Pre-configured buttons** for common patterns (back, close, save, refresh)
+1. **Pre-configured buttons** for common patterns (back, close, save, reload, view)
 2. **Basic button creation** methods (formerly only on ButtonBar)
 
 The :php:`ButtonBar::make*()` methods continue to work but are deprecated and will
@@ -119,6 +126,64 @@ Example - Creating basic buttons via ComponentFactory:
         ->setHref($url)
         ->setTitle('Custom')
         ->setIcon($icon);
+
+Example - Using the ModuleTemplate convenience method:
+
+..  code-block:: php
+
+    public function __construct(
+        protected readonly ComponentFactory $componentFactory,
+    ) {}
+
+    public function myAction(): ResponseInterface
+    {
+        // Shorthand: use ModuleTemplate::addButtonToButtonBar()
+        $this->moduleTemplate->addButtonToButtonBar(
+            $this->componentFactory->createReloadButton($this->request->getUri()->getPath()),
+            ButtonBar::BUTTON_POSITION_RIGHT
+        );
+
+        $this->moduleTemplate->addButtonToButtonBar(
+            $this->componentFactory->createBackButton($returnUrl),
+            ButtonBar::BUTTON_POSITION_LEFT,
+            1
+        );
+
+        // ...
+    }
+
+Example - Customizing pre-configured buttons:
+
+..  code-block:: php
+
+    public function __construct(
+        protected readonly ComponentFactory $componentFactory,
+    ) {}
+
+    public function myAction(): ResponseInterface
+    {
+        // Pre-configured buttons return mutable instances that can be further customized
+        $reloadButton = $this->componentFactory
+            ->createReloadButton((string)$this->uriBuilder->buildUriFromRoute($currentModule->getIdentifier()))
+            ->setDataAttributes(['csp-reports-handler' => 'refresh']);
+
+        $this->moduleTemplate->addButtonToButtonBar($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
+
+        // Add custom styling or behavior to a save button
+        $saveButton = $this->componentFactory
+            ->createSaveButton('myform')
+            ->setClasses('btn-primary custom-save')
+            ->setDataAttributes(['validate' => 'true']);
+
+        $this->moduleTemplate->addButtonToButtonBar($saveButton, ButtonBar::BUTTON_POSITION_LEFT);
+
+        // URL parameters accept both string and UriInterface
+        $backButton = $this->componentFactory->createBackButton($this->request->getUri()); // UriInterface
+        // or
+        $backButton = $this->componentFactory->createBackButton('/return/url'); // string
+
+        // ...
+    }
 
 Fluent Interface Improvements
 ==============================
@@ -177,8 +242,8 @@ several important reasons:
 
 **Pre-configured buttons solve common cases**
    The factory already provides pre-configured methods like :php:`createSaveButton()`,
-   :php:`createBackButton()`, :php:`createCloseButton()`, and :php:`createRefreshButton()`
-   that handle the most common use cases with minimal code.
+   :php:`createBackButton()`, :php:`createCloseButton()`, :php:`createReloadButton()`,
+   and :php:`createViewButton()` that handle the most common use cases with minimal code.
 
 **Avoids duplication and maintenance burden**
    A parameter-based approach would require duplicating all button-specific configuration

@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -73,6 +74,7 @@ class FormManagerController extends ActionController
         protected readonly CharsetConverter $charsetConverter,
         protected readonly UriBuilder $coreUriBuilder,
         protected readonly YamlSource $yamlSource,
+        protected readonly ComponentFactory $componentFactory,
     ) {}
 
     /**
@@ -507,21 +509,16 @@ class FormManagerController extends ActionController
     protected function initializeModuleTemplate(ServerRequestInterface $request, int $page, string $searchTerm): ModuleTemplate
     {
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         // Create new
-        $addFormButton = $buttonBar->makeLinkButton()
+        $addFormButton = $this->componentFactory->createLinkButton()
             ->setDataAttributes(['identifier' => 'newForm'])
             ->setHref('#')
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.create_new_form'))
             ->setShowLabelText(true)
             ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
-        $buttonBar->addButton($addFormButton);
+        $moduleTemplate->addButtonToButtonBar($addFormButton);
         // Reload
-        $reloadButton = $buttonBar->makeLinkButton()
-            ->setHref($this->request->getAttribute('normalizedParams')->getRequestUri())
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
-            ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
-        $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $moduleTemplate->addButtonToButtonBar($this->componentFactory->createReloadButton($this->request->getAttribute('normalizedParams')->getRequestUri()), ButtonBar::BUTTON_POSITION_RIGHT);
         // Shortcut
         $arguments = [];
         if ($searchTerm) {
@@ -532,11 +529,11 @@ class FormManagerController extends ActionController
             $arguments['tx_form_web_formformbuilder']['page'] = $page;
             $arguments['tx_form_web_formformbuilder']['controller'] = 'FormManager';
         }
-        $shortcutButton = $buttonBar->makeShortcutButton()
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('web_FormFormbuilder')
             ->setArguments($arguments)
             ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:module.shortcut_name'));
-        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $moduleTemplate->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
         return $moduleTemplate;
     }
 

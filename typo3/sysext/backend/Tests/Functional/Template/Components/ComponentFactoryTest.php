@@ -113,9 +113,9 @@ final class ComponentFactoryTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function createRefreshButtonReturnsValidLinkButton(): void
+    public function createReloadButtonReturnsValidLinkButton(): void
     {
-        $button = $this->subject->createRefreshButton('/current/uri');
+        $button = $this->subject->createReloadButton('/current/uri');
 
         self::assertTrue($button->isValid());
         self::assertSame('/current/uri', $button->getHref());
@@ -123,9 +123,9 @@ final class ComponentFactoryTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function createRefreshButtonRendersCorrectMarkup(): void
+    public function createReloadButtonRendersCorrectMarkup(): void
     {
-        $button = $this->subject->createRefreshButton('/current/uri');
+        $button = $this->subject->createReloadButton('/current/uri');
         $html = $button->render();
 
         self::assertStringContainsString('href="/current/uri"', $html);

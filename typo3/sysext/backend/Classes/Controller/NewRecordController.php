@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Controller\Event\ModifyNewRecordCreationLinksEvent;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Tree\View\PagePositionMap;
@@ -89,6 +90,7 @@ class NewRecordController
     protected ServerRequestInterface $request;
 
     public function __construct(
+        private readonly ComponentFactory $componentFactory,
         protected readonly IconFactory $iconFactory,
         protected readonly PageRenderer $pageRenderer,
         protected readonly UriBuilder $uriBuilder,
@@ -269,44 +271,34 @@ class NewRecordController
     protected function getButtons(bool $createPage = false): void
     {
         $lang = $this->getLanguageService();
-        $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
         // Regular new element:
         if (!$createPage) {
             // New page
             if ($this->isRecordCreationAllowedForTable('pages')) {
-                $newPageButton = $buttonBar->makeLinkButton()
+                $newPageButton = $this->componentFactory->createLinkButton()
                     ->setHref((string)$this->uriBuilder->buildUriFromRoute('db_new_pages', ['id' => $this->id, 'returnUrl' => $this->returnUrl]))
                     ->setTitle($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage'))
                     ->setShowLabelText(true)
                     ->setIcon($this->iconFactory->getIcon('actions-page-new', IconSize::SMALL));
-                $buttonBar->addButton($newPageButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
+                $this->view->addButtonToButtonBar($newPageButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
             }
         }
         // Back
         if ($this->returnUrl) {
-            $returnButton = $buttonBar->makeLinkButton()
-                ->setHref($this->returnUrl)
-                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-                ->setShowLabelText(true)
-                ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL));
-            $buttonBar->addButton($returnButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
+            $this->view->addButtonToButtonBar($this->componentFactory->createBackButton($this->returnUrl), ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
 
         if ($this->pageinfo['uid'] ?? false) {
             // View
             $previewUriBuilder = PreviewUriBuilder::create($this->pageinfo);
             if ($previewUriBuilder->isPreviewable()) {
-                $previewDataAttributes = $previewUriBuilder
-                    ->withRootLine(BackendUtility::BEgetRootLine($this->pageinfo['uid']))
-                    ->buildDispatcherDataAttributes();
-                $viewButton = $buttonBar->makeLinkButton()
-                    ->setHref('#')
-                    ->setDataAttributes($previewDataAttributes ?? [])
-                    ->setDisabled(!$previewDataAttributes)
-                    ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-                    ->setIcon($this->iconFactory->getIcon('actions-view-page', IconSize::SMALL))
-                    ->setShowLabelText(true);
-                $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 30);
+                $this->view->addButtonToButtonBar(
+                    $this->componentFactory->createViewButton($previewUriBuilder
+                        ->withRootLine(BackendUtility::BEgetRootLine($this->pageinfo['uid']))
+                        ->buildDispatcherDataAttributes() ?? []),
+                    ButtonBar::BUTTON_POSITION_LEFT,
+                    30
+                );
             }
         }
     }

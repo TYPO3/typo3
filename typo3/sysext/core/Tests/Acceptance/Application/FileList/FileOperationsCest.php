@@ -55,7 +55,7 @@ final class FileOperationsCest
 
         // Save file
         $I->amGoingTo('save the file');
-        $I->click('.module-docheader button[name="_save"]');
+        $I->click('.module-docheader button[name="_savedok"]');
         $I->waitForElementVisible($codeMirrorSelector);
         $I->executeJS("console.assert(document.querySelector('" . $codeMirrorSelector . "').getContent() === 'Some Text')");
         $I->see('File saved to', $flashMessageSelector);

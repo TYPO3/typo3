@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownHeader;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownRadio;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
@@ -61,6 +62,7 @@ class PermissionController
     protected array $pageInfo = [];
 
     public function __construct(
+        protected readonly ComponentFactory $componentFactory,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly PageRenderer $pageRenderer,
         protected readonly IconFactory $iconFactory,
@@ -389,29 +391,20 @@ class PermissionController
 
     protected function registerDocHeaderButtons(ModuleTemplate $view, string $action): void
     {
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $lang = $this->getLanguageService();
 
         if ($action === 'edit') {
             // CLOSE button:
             if ($this->returnUrl !== '') {
-                $closeButton = $buttonBar->makeLinkButton()
-                    ->setHref($this->returnUrl)
-                    ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
-                    ->setShowLabelText(true)
-                    ->setIcon($this->iconFactory->getIcon('actions-close', IconSize::SMALL));
-                $buttonBar->addButton($closeButton);
+                $view->addButtonToButtonBar($this->componentFactory->createCloseButton($this->returnUrl));
             }
 
             // SAVE button:
-            $saveButton = $buttonBar->makeInputButton()
+            $saveButton = $this->componentFactory
+                ->createSaveButton('PermissionControllerEdit')
                 ->setName('_save')
-                ->setValue('1')
-                ->setForm('PermissionControllerEdit')
-                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveCloseDoc'))
-                ->setShowLabelText(true)
-                ->setIcon($this->iconFactory->getIcon('actions-document-save', IconSize::SMALL));
-            $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveCloseDoc'));
+            $view->addButtonToButtonBar($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         }
 
         if ($action === 'index' && count($this->getDepthOptions()) > 0) {
@@ -427,20 +420,20 @@ class PermissionController
                         'depth' => $value,
                     ]));
             }
-            $viewModeButton = $buttonBar->makeDropDownButton()
+            $viewModeButton = $this->componentFactory->createDropDownButton()
                 ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view'))
                 ->setShowLabelText(true);
             foreach ($viewModeItems as $viewModeItem) {
                 $viewModeButton->addItem($viewModeItem);
             }
-            $buttonBar->addButton($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+            $view->addButtonToButtonBar($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
         }
 
-        $shortcutButton = $buttonBar->makeShortcutButton()
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('permissions_pages')
             ->setDisplayName($this->getShortcutTitle())
             ->setArguments(['id' => $this->id, 'action' => $action]);
-        $buttonBar->addButton($shortcutButton);
+        $view->addButtonToButtonBar($shortcutButton);
     }
 
     protected function getTree(): array

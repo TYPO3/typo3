@@ -91,7 +91,7 @@ After:
 
 Additionally, consider using the pre-configured button creation methods like
 :php:`createBackButton()`, :php:`createCloseButton()`, :php:`createSaveButton()`,
-and :php:`createRefreshButton()` for common button patterns.
+:php:`createReloadButton()`, and :php:`createViewButton()` for common button patterns.
 
 For the low-level :php:`makeButton(string $className)` method, use
 :php:`GeneralUtility::makeInstance()` directly or the appropriate

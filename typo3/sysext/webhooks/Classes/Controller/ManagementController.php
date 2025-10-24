@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\Components\MultiRecordSelection\Action;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -47,7 +48,8 @@ class ManagementController
         private readonly IconFactory $iconFactory,
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly WebhookTypesRegistry $webhookTypesRegistry,
-        private readonly WebhookRepository $webhookRepository
+        private readonly WebhookRepository $webhookRepository,
+        private readonly ComponentFactory $componentFactory,
     ) {}
 
     public function overviewAction(ServerRequestInterface $request): ResponseInterface
@@ -101,19 +103,12 @@ class ManagementController
     protected function registerDocHeaderButtons(ModuleTemplate $view, string $requestUri, WebhookDemand $demand): void
     {
         $languageService = $this->getLanguageService();
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
 
         // Go back
-        $goBack = $buttonBar
-            ->makeLinkButton()
-            ->setHref((string)$this->uriBuilder->buildUriFromRoute('integrations'))
-            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL))
-            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-            ->setShowLabelText(true);
-        $buttonBar->addButton($goBack);
+        $view->addButtonToButtonBar($this->componentFactory->createBackButton((string)$this->uriBuilder->buildUriFromRoute('integrations')));
 
         // Create new
-        $newRecordButton = $buttonBar->makeLinkButton()
+        $newRecordButton = $this->componentFactory->createLinkButton()
             ->setHref((string)$this->uriBuilder->buildUriFromRoute(
                 'record_edit',
                 [
@@ -125,17 +120,13 @@ class ManagementController
             ->setShowLabelText(true)
             ->setTitle($languageService->sL('LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:webhook_create'))
             ->setIcon($this->iconFactory->getIcon('actions-add', IconSize::SMALL));
-        $buttonBar->addButton($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
+        $view->addButtonToButtonBar($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
 
         // Reload
-        $reloadButton = $buttonBar->makeLinkButton()
-            ->setHref($requestUri)
-            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
-            ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
-        $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->addButtonToButtonBar($this->componentFactory->createReloadButton($requestUri), ButtonBar::BUTTON_POSITION_RIGHT);
 
         // Shortcut
-        $shortcutButton = $buttonBar->makeShortcutButton()
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('integrations_webhooks')
             ->setDisplayName($languageService->sL('LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:title'))
             ->setArguments(array_filter([
@@ -143,7 +134,7 @@ class ManagementController
                 'orderField' => $demand->getOrderField(),
                 'orderDirection' => $demand->getOrderDirection(),
             ]));
-        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
     protected function getLanguageService(): LanguageService

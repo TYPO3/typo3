@@ -21,11 +21,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
@@ -63,8 +61,8 @@ final class PageTreesController
         private readonly Generator $generator,
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly RecordFinder $recordFinder,
-        private readonly IconFactory $iconFactory,
         private readonly UriBuilder $uriBuilder,
+        private readonly ComponentFactory $componentFactory,
     ) {}
 
     /**
@@ -108,10 +106,16 @@ final class PageTreesController
             $languageService->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.managePageTrees'),
         );
         $view->makeDocHeaderModuleMenu();
-        // Add back button to return to main module
-        $this->addDocHeaderBackButton($view);
-        $this->addDocHeaderShortcutButton($view);
-
+        $view->addButtonToButtonBar($this->componentFactory->createBackButton((string)$this->uriBuilder->buildUriFromRoute('styleguide')));
+        $shortcutButton = $this->componentFactory->createShortcutButton()
+            ->setDisplayName(sprintf(
+                '%s - %s',
+                $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styleguide'),
+                $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.managePageTrees')
+            ))
+            ->setRouteIdentifier('styleguide_pagetrees')
+            ->setArguments(['action' => 'managePageTrees']);
+        $view->addButtonToButtonBar($shortcutButton);
         return $view->renderResponse('Backend/ManagePageTrees');
     }
 
@@ -195,31 +199,6 @@ final class PageTreesController
             'status' => ContextualFeedbackSeverity::OK,
         ];
         return new JsonResponse($json);
-    }
-
-    private function addDocHeaderBackButton(ModuleTemplate $moduleTemplate): void
-    {
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $backButton = $buttonBar->makeLinkButton()
-            ->setHref((string)$this->uriBuilder->buildUriFromRoute('styleguide'))
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-            ->setShowLabelText(true)
-            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL));
-        $buttonBar->addButton($backButton);
-    }
-
-    private function addDocHeaderShortcutButton(ModuleTemplate $moduleTemplate): void
-    {
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setDisplayName(sprintf(
-                '%s - %s',
-                $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styleguide'),
-                $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.managePageTrees')
-            ))
-            ->setRouteIdentifier('styleguide_pagetrees')
-            ->setArguments(['action' => 'managePageTrees']);
-        $buttonBar->addButton($shortcutButton);
     }
 
     private function getLanguageService(): LanguageService

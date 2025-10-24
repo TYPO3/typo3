@@ -40,6 +40,7 @@ use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\GenericButton;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -342,6 +343,7 @@ class EditDocumentController
     protected ?ModuleInterface $module = null;
 
     public function __construct(
+        private readonly ComponentFactory $componentFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly IconFactory $iconFactory,
         protected readonly RecordFactory $recordFactory,
@@ -1197,7 +1199,6 @@ class EditDocumentController
      */
     protected function getButtons(ModuleTemplate $view, ServerRequestInterface $request): void
     {
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         if (!empty($this->firstEl)) {
             $record = BackendUtility::getRecord($this->firstEl['table'], $this->firstEl['uid']);
             $schema = $this->tcaSchemaFactory->get($this->firstEl['table']);
@@ -1219,40 +1220,40 @@ class EditDocumentController
 
             $this->setIsPageInFreeTranslationMode($record, $sysLanguageUid);
 
-            $this->registerCloseButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 1);
+            $this->registerCloseButtonToButtonBar($view, ButtonBar::BUTTON_POSITION_LEFT, 1);
 
             // Show buttons when table is not read-only
             if (
                 !$this->errorC
                 && !$schema->hasCapability(TcaSchemaCapability::AccessReadOnly)
             ) {
-                $this->registerSaveButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 2);
-                $this->registerViewButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 3);
+                $view->addButtonToButtonBar($this->componentFactory->createSaveButton('EditDocumentController')->setDisabled(true), ButtonBar::BUTTON_POSITION_LEFT, 2);
+                $this->registerViewButtonToButtonBar($view, ButtonBar::BUTTON_POSITION_LEFT, 3);
                 if ($this->firstEl['cmd'] !== 'new') {
                     $this->registerNewButtonToButtonBar(
-                        $buttonBar,
+                        $view,
                         ButtonBar::BUTTON_POSITION_LEFT,
                         4,
                         $sysLanguageUid,
                         $l18nParent
                     );
                     $this->registerDuplicationButtonToButtonBar(
-                        $buttonBar,
+                        $view,
                         ButtonBar::BUTTON_POSITION_LEFT,
                         5,
                         $sysLanguageUid,
                         $l18nParent
                     );
                 }
-                $this->registerDeleteButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 6, $request);
-                $this->registerColumnsOnlyButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 7);
-                $this->registerHistoryButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 1);
+                $this->registerDeleteButtonToButtonBar($view, ButtonBar::BUTTON_POSITION_LEFT, 6, $request);
+                $this->registerColumnsOnlyButtonToButtonBar($view, ButtonBar::BUTTON_POSITION_LEFT, 7);
+                $this->registerHistoryButtonToButtonBar($view, ButtonBar::BUTTON_POSITION_RIGHT, 1);
             }
         }
 
-        $this->registerInfoButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 2);
-        $this->registerOpenInNewWindowButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 3, $request);
-        $this->registerShortcutButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 4, $request);
+        $this->registerInfoButtonToButtonBar($view, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+        $this->registerOpenInNewWindowButtonToButtonBar($view, ButtonBar::BUTTON_POSITION_RIGHT, 3, $request);
+        $this->registerShortcutButtonToButtonBar($view, ButtonBar::BUTTON_POSITION_RIGHT, 4, $request);
     }
 
     /**
@@ -1317,38 +1318,22 @@ class EditDocumentController
     /**
      * Register the close button to the button bar
      */
-    protected function registerCloseButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group): void
+    protected function registerCloseButtonToButtonBar(ModuleTemplate $view, string $position, int $group): void
     {
-        $closeButton = $buttonBar->makeLinkButton()
+        $closeButton = $this->componentFactory->createLinkButton()
             ->setHref('#')
             ->setClasses('t3js-editform-close')
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
             ->setShowLabelText(true)
             ->setIcon($this->iconFactory->getIcon('actions-close', IconSize::SMALL))
             ->setDisabled(true);
-        $buttonBar->addButton($closeButton, $position, $group);
-    }
-
-    /**
-     * Register the save button to the button bar
-     */
-    protected function registerSaveButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group): void
-    {
-        $saveButton = $buttonBar->makeInputButton()
-            ->setForm('EditDocumentController')
-            ->setIcon($this->iconFactory->getIcon('actions-document-save', IconSize::SMALL))
-            ->setName('_savedok')
-            ->setShowLabelText(true)
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
-            ->setValue('1')
-            ->setDisabled(true);
-        $buttonBar->addButton($saveButton, $position, $group);
+        $view->addButtonToButtonBar($closeButton, $position, $group);
     }
 
     /**
      * Register the view button to the button bar
      */
-    protected function registerViewButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group): void
+    protected function registerViewButtonToButtonBar(ModuleTemplate $view, string $position, int $group): void
     {
         if ($this->viewId // Pid to show the record
             && !$this->noView // Passed parameter
@@ -1361,7 +1346,7 @@ class EditDocumentController
             if ($previewUriBuilderForCurrentPage || $previewUriBuilder->isPreviewable()) {
                 $previewUrl = $previewUriBuilder->buildUri();
                 if ($previewUrl) {
-                    $viewButton = $buttonBar->makeLinkButton()
+                    $viewButton = $this->componentFactory->createLinkButton()
                         ->setHref((string)$previewUrl)
                         ->setIcon($this->iconFactory->getIcon('actions-view', IconSize::SMALL))
                         ->setShowLabelText(true)
@@ -1371,7 +1356,7 @@ class EditDocumentController
                     if (!$this->isSavedRecord && $this->firstEl['table'] === 'pages') {
                         $viewButton->setDataAttributes(['is-new' => '']);
                     }
-                    $buttonBar->addButton($viewButton, $position, $group);
+                    $view->addButtonToButtonBar($viewButton, $position, $group);
                 }
             }
         }
@@ -1380,7 +1365,7 @@ class EditDocumentController
     /**
      * Register the new button to the button bar
      */
-    protected function registerNewButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group, int $sysLanguageUid, int $l18nParent): void
+    protected function registerNewButtonToButtonBar(ModuleTemplate $view, string $position, int $group, int $sysLanguageUid, int $l18nParent): void
     {
         if ($this->firstEl['table'] !== 'sys_file_metadata'
             && !empty($this->firstEl['table'])
@@ -1402,7 +1387,7 @@ class EditDocumentController
             )
             && $this->getTsConfigOption($this->firstEl['table'], 'saveDocNew')
         ) {
-            $newButton = $buttonBar->makeLinkButton()
+            $newButton = $this->componentFactory->createLinkButton()
                 ->setHref('#')
                 ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL))
                 ->setShowLabelText(true)
@@ -1412,14 +1397,14 @@ class EditDocumentController
             if (!$this->isSavedRecord) {
                 $newButton->setDataAttributes(['is-new' => '']);
             }
-            $buttonBar->addButton($newButton, $position, $group);
+            $view->addButtonToButtonBar($newButton, $position, $group);
         }
     }
 
     /**
      * Register the duplication button to the button bar
      */
-    protected function registerDuplicationButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group, int $sysLanguageUid, int $l18nParent): void
+    protected function registerDuplicationButtonToButtonBar(ModuleTemplate $view, string $position, int $group, int $sysLanguageUid, int $l18nParent): void
     {
         if ($this->firstEl['table'] !== 'sys_file_metadata'
             && !empty($this->firstEl['table'])
@@ -1442,7 +1427,7 @@ class EditDocumentController
             && $this->getTsConfigOption($this->firstEl['table'], 'showDuplicate')
             && $this->isSingleRecordView()
         ) {
-            $duplicateButton = $buttonBar->makeLinkButton()
+            $duplicateButton = $this->componentFactory->createLinkButton()
                 ->setHref('#')
                 ->setShowLabelText(true)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.duplicateDoc'))
@@ -1452,14 +1437,14 @@ class EditDocumentController
             if (!$this->isSavedRecord) {
                 $duplicateButton->setDataAttributes(['is-new' => '']);
             }
-            $buttonBar->addButton($duplicateButton, $position, $group);
+            $view->addButtonToButtonBar($duplicateButton, $position, $group);
         }
     }
 
     /**
      * Register the delete button to the button bar
      */
-    protected function registerDeleteButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group, ServerRequestInterface $request): void
+    protected function registerDeleteButtonToButtonBar(ModuleTemplate $view, string $position, int $group, ServerRequestInterface $request): void
     {
         if ($this->firstEl['deleteAccess']
             && $this->isSavedRecord
@@ -1526,7 +1511,7 @@ class EditDocumentController
                 $recordInfo .= ' [' . $this->firstEl['table'] . ':' . $this->firstEl['uid'] . ']';
             }
 
-            $deleteButton = $buttonBar->makeLinkButton()
+            $deleteButton = $this->componentFactory->createLinkButton()
                 ->setClasses('t3js-editform-delete-record')
                 ->setDataAttributes([
                     'uid' => $this->firstEl['uid'],
@@ -1540,14 +1525,14 @@ class EditDocumentController
                 ->setShowLabelText(true)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteItem'))
                 ->setDisabled(true);
-            $buttonBar->addButton($deleteButton, $position, $group);
+            $view->addButtonToButtonBar($deleteButton, $position, $group);
         }
     }
 
     /**
      * Register the info button to the button bar
      */
-    protected function registerInfoButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group): void
+    protected function registerInfoButtonToButtonBar(ModuleTemplate $view, string $position, int $group): void
     {
         if ($this->isSingleRecordView()
             && !empty($this->firstEl['table'])
@@ -1562,14 +1547,14 @@ class EditDocumentController
                 'disabled' => 'disabled',
             ]);
             $button->setIcon($this->iconFactory->getIcon('actions-document-info', IconSize::SMALL));
-            $buttonBar->addButton($button, $position, $group);
+            $view->addButtonToButtonBar($button, $position, $group);
         }
     }
 
     /**
      * Register the history button to the button bar
      */
-    protected function registerHistoryButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group): void
+    protected function registerHistoryButtonToButtonBar(ModuleTemplate $view, string $position, int $group): void
     {
         $userTsConfig = $this->getBackendUser()->getTSConfig();
         if ($this->isSingleRecordView()
@@ -1580,38 +1565,38 @@ class EditDocumentController
                 'element' => $this->firstEl['table'] . ':' . $this->firstEl['uid'],
                 'returnUrl' => $this->R_URI,
             ]);
-            $historyButton = $buttonBar->makeLinkButton()
+            $historyButton = $this->componentFactory->createLinkButton()
                 ->setHref($historyUrl)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:recordHistory'))
                 ->setIcon($this->iconFactory->getIcon('actions-document-history-open', IconSize::SMALL))
                 ->setDisabled(true);
-            $buttonBar->addButton($historyButton, $position, $group);
+            $view->addButtonToButtonBar($historyButton, $position, $group);
         }
     }
 
     /**
      * Register the columns only button to the button bar
      */
-    protected function registerColumnsOnlyButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group): void
+    protected function registerColumnsOnlyButtonToButtonBar(ModuleTemplate $view, string $position, int $group): void
     {
         if ($this->columnsOnly
             && $this->isSingleRecordView()
         ) {
-            $columnsOnlyButton = $buttonBar->makeLinkButton()
+            $columnsOnlyButton = $this->componentFactory->createLinkButton()
                 ->setHref($this->R_URI . '&columnsOnly=')
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:editWholeRecord'))
                 ->setShowLabelText(true)
                 ->setIcon($this->iconFactory->getIcon('actions-open', IconSize::SMALL))
                 ->setDisabled(true);
 
-            $buttonBar->addButton($columnsOnlyButton, $position, $group);
+            $view->addButtonToButtonBar($columnsOnlyButton, $position, $group);
         }
     }
 
     /**
      * Register the open in new window button to the button bar
      */
-    protected function registerOpenInNewWindowButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group, ServerRequestInterface $request): void
+    protected function registerOpenInNewWindowButtonToButtonBar(ModuleTemplate $view, string $position, int $group, ServerRequestInterface $request): void
     {
         $closeUrl = $this->getCloseUrl($request);
         if ($this->returnUrl !== $closeUrl) {
@@ -1619,8 +1604,8 @@ class EditDocumentController
             $arguments = $this->getUrlQueryParamsForCurrentRequest($request);
             $arguments['returnUrl'] = $closeUrl;
             $requestUri = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $arguments);
-            $openInNewWindowButton = $buttonBar
-                ->makeLinkButton()
+            $openInNewWindowButton = $this->componentFactory
+                ->createLinkButton()
                 ->setHref('#')
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.openInNewWindow'))
                 ->setIcon($this->iconFactory->getIcon('actions-window-open', IconSize::SMALL))
@@ -1634,23 +1619,23 @@ class EditDocumentController
                     ]),
                 ])
                 ->setDisabled(true);
-            $buttonBar->addButton($openInNewWindowButton, $position, $group);
+            $view->addButtonToButtonBar($openInNewWindowButton, $position, $group);
         }
     }
 
     /**
      * Register the shortcut button to the button bar
      */
-    protected function registerShortcutButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group, ServerRequestInterface $request): void
+    protected function registerShortcutButtonToButtonBar(ModuleTemplate $view, string $position, int $group, ServerRequestInterface $request): void
     {
         if ($this->returnUrl !== $this->getCloseUrl($request)) {
             $arguments = $this->getUrlQueryParamsForCurrentRequest($request);
-            $shortCutButton = $buttonBar->makeShortcutButton()
+            $shortCutButton = $this->componentFactory->createShortcutButton()
                 ->setRouteIdentifier('record_edit')
                 ->setDisplayName($this->getShortcutTitle($request))
                 ->setArguments($arguments)
                 ->setDisabled(true);
-            $buttonBar->addButton($shortCutButton, $position, $group);
+            $view->addButtonToButtonBar($shortCutButton, $position, $group);
         }
     }
 
@@ -1964,7 +1949,7 @@ class EditDocumentController
                         $rowsByLang[$row[$languageField]] = $row;
                     }
                 }
-                $languageMenu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+                $languageMenu = $this->componentFactory->createMenu();
                 $languageMenu->setIdentifier('_langSelector');
                 $languageMenu->setLabel(
                     $this->getLanguageService()->sL(
@@ -2031,7 +2016,7 @@ class EditDocumentController
                         $href = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
                     }
                     if ($addOption && !in_array($languageId, $noAddOption, true)) {
-                        $menuItem = $languageMenu->makeMenuItem()
+                        $menuItem = $this->componentFactory->createMenuItem()
                             ->setTitle($selectorOptionLabel)
                             ->setHref($href);
                         if ($languageId === $currentLanguage) {

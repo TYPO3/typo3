@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Scheduler\EventListener;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\Components\ModifyButtonBarEvent;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -36,6 +37,7 @@ final readonly class ReplaceAddNewButtonToFormEngine
         private IconFactory $iconFactory,
         private PageRenderer $pageRenderer,
         private UriBuilder $uriBuilder,
+        private ComponentFactory $componentFactory,
     ) {}
 
     #[AsEventListener]
@@ -62,7 +64,7 @@ final readonly class ReplaceAddNewButtonToFormEngine
         ]);
 
         $languageService = $this->getLanguageService();
-        $newButton = $event->getButtonBar()->makeGenericButton()
+        $newButton = $this->componentFactory->createGenericButton()
             ->setTag('typo3-scheduler-new-task-wizard-button')
             ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL))
             ->setLabel($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add'))

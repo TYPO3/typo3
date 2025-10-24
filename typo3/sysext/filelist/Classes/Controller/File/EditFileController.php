@@ -26,12 +26,12 @@ use TYPO3\CMS\Backend\Form\FormResultCompiler;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileException;
@@ -105,6 +105,7 @@ class EditFileController
         protected readonly StreamFactoryInterface $streamFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly NodeFactory $nodeFactory,
+        protected readonly ComponentFactory $componentFactory,
     ) {}
 
     /**
@@ -179,25 +180,13 @@ class EditFileController
     protected function addDocHeaderButtons(ModuleTemplate $view, string $returnUrl): void
     {
         $languageService = $this->getLanguageService();
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-
-        // Save button
-        $saveButton = $buttonBar->makeInputButton()
-            ->setName('_save')
-            ->setValue('1')
-            ->setForm('EditFileController')
-            ->setShowLabelText(true)
-            ->setTitle($languageService->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_edit.php.submit'))
-            ->setIcon($this->iconFactory->getIcon('actions-document-save', IconSize::SMALL));
-        $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
-
-        // Close button
-        $closeButton = $buttonBar->makeLinkButton()
-            ->setShowLabelText(true)
-            ->setHref($returnUrl)
-            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.close'))
-            ->setIcon($this->iconFactory->getIcon('actions-close', IconSize::SMALL));
-        $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
+        $view->addButtonToButtonBar(
+            $this->componentFactory->createSaveButton('EditFileController')
+                ->setTitle($languageService->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_edit.php.submit')),
+            ButtonBar::BUTTON_POSITION_LEFT,
+            20
+        );
+        $view->addButtonToButtonBar($this->componentFactory->createCloseButton($returnUrl), ButtonBar::BUTTON_POSITION_LEFT, 10);
     }
 
     protected function getLanguageService(): LanguageService

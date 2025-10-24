@@ -34,6 +34,7 @@ use TYPO3\CMS\Backend\Security\SudoMode\Exception\VerificationRequiredException;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItemInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownToggle;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -83,6 +84,7 @@ class RecordListController
     protected bool $allowSearch = true;
 
     public function __construct(
+        private readonly ComponentFactory $componentFactory,
         protected readonly IconFactory $iconFactory,
         protected readonly PageRenderer $pageRenderer,
         protected readonly EventDispatcherInterface $eventDispatcher,
@@ -406,33 +408,28 @@ class RecordListController
     protected function getDocHeaderButtons(ModuleTemplate $view, Clipboard $clipboard, ServerRequestInterface $request, string $table, UriInterface $listUrl, array $moduleSettings): void
     {
         $queryParams = $request->getQueryParams();
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $lang = $this->getLanguageService();
         if ($table !== 'tt_content' && !($this->modTSconfig['noCreateRecordsLink'] ?? false) && $this->editLockPermissions()) {
             // New record button if: table is not tt_content - tt_content should be managed in page module, link is
             // not disabled via TSconfig, page is not 'edit locked'
-            $newRecordButton = $buttonBar->makeLinkButton()
+            $newRecordButton = $this->componentFactory->createLinkButton()
                 ->setHref((string)$this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id, 'returnUrl' => $listUrl]))
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:newRecordGeneral'))
                 ->setShowLabelText(true)
                 ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
-            $buttonBar->addButton($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
+            $view->addButtonToButtonBar($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
 
         if ($this->id !== 0) {
             $uriBuilder = PreviewUriBuilder::create($this->pageInfo);
             if ($uriBuilder->isPreviewable()) {
-                $previewDataAttributes = PreviewUriBuilder::create($this->pageInfo)
-                    ->withRootLine(BackendUtility::BEgetRootLine($this->id))
-                    ->buildDispatcherDataAttributes();
-                $viewButton = $buttonBar->makeLinkButton()
-                    ->setHref('#')
-                    ->setDataAttributes($previewDataAttributes ?? [])
-                    ->setDisabled(!$previewDataAttributes)
-                    ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-                    ->setIcon($this->iconFactory->getIcon('actions-view-page', IconSize::SMALL))
-                    ->setShowLabelText(true);
-                $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 15);
+                $view->addButtonToButtonBar(
+                    $this->componentFactory->createViewButton(PreviewUriBuilder::create($this->pageInfo)
+                        ->withRootLine(BackendUtility::BEgetRootLine($this->id))
+                        ->buildDispatcherDataAttributes() ?? []),
+                    ButtonBar::BUTTON_POSITION_LEFT,
+                    15
+                );
             }
             // If edit permissions are set, see BackendUserAuthentication
             if ($this->isPageEditable()) {
@@ -446,12 +443,12 @@ class RecordListController
                     'module' => 'web_list',
                     'returnUrl' => $listUrl,
                 ]);
-                $editButton = $buttonBar->makeLinkButton()
+                $editButton = $this->componentFactory->createLinkButton()
                     ->setHref((string)$editLink)
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:editPage'))
                     ->setShowLabelText(true)
                     ->setIcon($this->iconFactory->getIcon('actions-page-open', IconSize::SMALL));
-                $buttonBar->addButton($editButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
+                $view->addButtonToButtonBar($editButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
             }
         }
 
@@ -460,7 +457,7 @@ class RecordListController
             $elFromTable = $clipboard->elFromTable();
             if (!empty($elFromTable)) {
                 $confirmMessage = $clipboard->confirmMsgText('pages', $this->pageInfo, 'into', CountMode::ALL);
-                $pasteButton = $buttonBar->makeLinkButton()
+                $pasteButton = $this->componentFactory->createLinkButton()
                     ->setHref($clipboard->pasteUrl('', $this->id))
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_paste'))
                     ->setClasses('t3js-modal-trigger')
@@ -471,18 +468,18 @@ class RecordListController
                     ])
                     ->setIcon($this->iconFactory->getIcon('actions-document-paste-into', IconSize::SMALL))
                     ->setShowLabelText(true);
-                $buttonBar->addButton($pasteButton, ButtonBar::BUTTON_POSITION_LEFT, 40);
+                $view->addButtonToButtonBar($pasteButton, ButtonBar::BUTTON_POSITION_LEFT, 40);
             }
         }
         // Cache
         if ($this->id !== 0) {
-            $clearCacheButton = $buttonBar->makeLinkButton()
+            $clearCacheButton = $this->componentFactory->createLinkButton()
                 ->setHref('#')
                 ->setDataAttributes(['id' => $this->id])
                 ->setClasses('t3js-clear-page-cache')
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'))
                 ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', IconSize::SMALL));
-            $buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT);
+            $view->addButtonToButtonBar($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT);
         }
         if ($table
             && !($this->modTSconfig['noExportRecordsLinks'] ?? false)
@@ -491,20 +488,16 @@ class RecordListController
             // Export
             if (ExtensionManagementUtility::isLoaded('impexp')) {
                 $url = (string)$this->uriBuilder->buildUriFromRoute('tx_impexp_export', ['tx_impexp' => ['list' => [$table . ':' . $this->id]]]);
-                $exportButton = $buttonBar->makeLinkButton()
+                $exportButton = $this->componentFactory->createLinkButton()
                     ->setHref($url)
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.export'))
                     ->setIcon($this->iconFactory->getIcon('actions-document-export-t3d', IconSize::SMALL))
                     ->setShowLabelText(true);
-                $buttonBar->addButton($exportButton, ButtonBar::BUTTON_POSITION_LEFT, 50);
+                $view->addButtonToButtonBar($exportButton, ButtonBar::BUTTON_POSITION_LEFT, 50);
             }
         }
         // Reload
-        $reloadButton = $buttonBar->makeLinkButton()
-            ->setHref((string)$listUrl)
-            ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
-            ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
-        $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->addButtonToButtonBar($this->componentFactory->createReloadButton($listUrl), ButtonBar::BUTTON_POSITION_RIGHT);
 
         // ViewMode
         $viewModeItems = [];
@@ -523,18 +516,18 @@ class RecordListController
                 ->setIcon($this->iconFactory->getIcon('actions-clipboard'));
         }
         if (!empty($viewModeItems)) {
-            $viewModeButton = $buttonBar->makeDropDownButton()
+            $viewModeButton = $this->componentFactory->createDropDownButton()
                 ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view'))
                 ->setShowLabelText(true);
             foreach ($viewModeItems as $viewModeItem) {
                 /** @var DropDownItemInterface $viewModeItem */
                 $viewModeButton->addItem($viewModeItem);
             }
-            $buttonBar->addButton($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 3);
+            $view->addButtonToButtonBar($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 3);
         }
 
         // Shortcut
-        $shortCutButton = $buttonBar->makeShortcutButton()->setRouteIdentifier('web_list');
+        $shortCutButton = $this->componentFactory->createShortcutButton()->setRouteIdentifier('web_list');
         $arguments = [
             'id' => $this->id,
         ];
@@ -556,16 +549,11 @@ class RecordListController
         }
         $shortCutButton->setArguments($arguments);
         $shortCutButton->setDisplayName($this->getShortcutTitle($arguments));
-        $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->addButtonToButtonBar($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         // Back
         if ($this->returnUrl) {
-            $backButton = $buttonBar->makeLinkButton()
-                ->setHref($this->returnUrl)
-                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-                ->setShowLabelText(true)
-                ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL));
-            $buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT);
+            $view->addButtonToButtonBar($this->componentFactory->createBackButton($this->returnUrl));
         }
     }
 

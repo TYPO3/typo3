@@ -151,17 +151,16 @@ class InfoModifyController extends AbstractTemplateModuleController
     private function addShortcutButtonToDocHeader(ModuleTemplate $view, string $moduleIdentifier, array $pageInfo, int $pageUid): void
     {
         $languageService = $this->getLanguageService();
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $shortcutTitle = sprintf(
             '%s: %s [%d]',
             $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:submodule.title'),
             BackendUtility::getRecordTitle('pages', $pageInfo),
             $pageUid
         );
-        $shortcutButton = $buttonBar->makeShortcutButton()
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier($moduleIdentifier)
             ->setDisplayName($shortcutTitle)
             ->setArguments(['id' => $pageUid]);
-        $buttonBar->addButton($shortcutButton);
+        $view->addButtonToButtonBar($shortcutButton);
     }
 }

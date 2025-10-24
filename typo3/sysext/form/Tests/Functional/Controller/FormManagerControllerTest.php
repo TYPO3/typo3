@@ -23,6 +23,7 @@ use Symfony\Component\Routing\Route as SymfonyRoute;
 use TYPO3\CMS\Backend\Routing\Route as BackendRoute;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder as CoreUriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -81,6 +82,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->createMock(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
                 $this->createMock(YamlSource::class),
+                $this->createMock(ComponentFactory::class),
             ],
         );
 
@@ -147,6 +149,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->createMock(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
                 $this->createMock(YamlSource::class),
+                $this->createMock(ComponentFactory::class),
             ],
         );
 
@@ -206,6 +209,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->createMock(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
                 $this->createMock(YamlSource::class),
+                $this->createMock(ComponentFactory::class),
             ],
         );
         $formPersistenceManagerMock->method('listForms')->willReturn([
@@ -266,6 +270,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->createMock(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
                 $this->createMock(YamlSource::class),
+                $this->createMock(ComponentFactory::class),
             ],
         );
         self::assertTrue($subjectMock->_call(
@@ -312,6 +317,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->createMock(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
                 $this->createMock(YamlSource::class),
+                $this->createMock(ComponentFactory::class),
             ],
         );
         self::assertFalse(
@@ -360,6 +366,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->createMock(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
                 $this->createMock(YamlSource::class),
+                $this->createMock(ComponentFactory::class),
             ],
         );
         self::assertFalse(
@@ -418,6 +425,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->get(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
                 $this->createMock(YamlSource::class),
+                $this->createMock(ComponentFactory::class),
             ],
         );
         $input = 'test form';
@@ -442,6 +450,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->get(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
                 $this->createMock(YamlSource::class),
+                $this->createMock(ComponentFactory::class),
             ],
         );
         $input = 'téstform';
@@ -466,6 +475,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->get(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
                 $this->createMock(YamlSource::class),
+                $this->createMock(ComponentFactory::class),
             ],
         );
         $input = 'test form ' . hex2bin('667275cc88686e65757a6569746c696368656e');
@@ -490,6 +500,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->get(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
                 $this->createMock(YamlSource::class),
+                $this->createMock(ComponentFactory::class),
             ],
         );
         $input = 'test form ä#!_-01';

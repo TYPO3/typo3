@@ -211,8 +211,7 @@ class ButtonBar
      */
     public function makeGenericButton(): GenericButton
     {
-        // @todo Activate once core is migrated
-        // trigger_error('ButtonBar::makeGenericButton() is deprecated, inject ComponentFactory and use ComponentFactory::createGenericButton() instead.', E_USER_DEPRECATED);
+        trigger_error('ButtonBar::makeGenericButton() is deprecated, inject ComponentFactory and use ComponentFactory::createGenericButton() instead.', E_USER_DEPRECATED);
         return $this->componentFactory->createGenericButton();
     }
 
@@ -221,8 +220,7 @@ class ButtonBar
      */
     public function makeInputButton(): InputButton
     {
-        // @todo Activate once core is migrated
-        // trigger_error('ButtonBar::makeInputButton() is deprecated, inject ComponentFactory and use ComponentFactory::createInputButton() instead.', E_USER_DEPRECATED);
+        trigger_error('ButtonBar::makeInputButton() is deprecated, inject ComponentFactory and use ComponentFactory::createInputButton() instead.', E_USER_DEPRECATED);
         return $this->componentFactory->createInputButton();
     }
 
@@ -231,8 +229,7 @@ class ButtonBar
      */
     public function makeSplitButton(): SplitButton
     {
-        // @todo Activate once core is migrated
-        // trigger_error('ButtonBar::makeSplitButton() is deprecated, inject ComponentFactory and use ComponentFactory::createSplitButton() instead.', E_USER_DEPRECATED);
+        trigger_error('ButtonBar::makeSplitButton() is deprecated, inject ComponentFactory and use ComponentFactory::createSplitButton() instead.', E_USER_DEPRECATED);
         return $this->componentFactory->createSplitButton();
     }
 
@@ -241,8 +238,7 @@ class ButtonBar
      */
     public function makeDropDownButton(): DropDownButton
     {
-        // @todo Activate once core is migrated
-        // trigger_error('ButtonBar::makeDropDownButton() is deprecated, inject ComponentFactory and use ComponentFactory::createDropDownButton() instead.', E_USER_DEPRECATED);
+        trigger_error('ButtonBar::makeDropDownButton() is deprecated, inject ComponentFactory and use ComponentFactory::createDropDownButton() instead.', E_USER_DEPRECATED);
         return $this->componentFactory->createDropDownButton();
     }
 
@@ -251,8 +247,7 @@ class ButtonBar
      */
     public function makeLinkButton(): LinkButton
     {
-        // @todo Activate once core is migrated
-        // trigger_error('ButtonBar::makeLinkButton() is deprecated, inject ComponentFactory and use ComponentFactory::createLinkButton() instead.', E_USER_DEPRECATED);
+        trigger_error('ButtonBar::makeLinkButton() is deprecated, inject ComponentFactory and use ComponentFactory::createLinkButton() instead.', E_USER_DEPRECATED);
         return $this->componentFactory->createLinkButton();
     }
 
@@ -261,8 +256,7 @@ class ButtonBar
      */
     public function makeFullyRenderedButton(): FullyRenderedButton
     {
-        // @todo Activate once core is migrated
-        // trigger_error('ButtonBar::makeFullyRenderedButton() is deprecated, inject ComponentFactory and use ComponentFactory::createFullyRenderedButton() instead.', E_USER_DEPRECATED);
+        trigger_error('ButtonBar::makeFullyRenderedButton() is deprecated, inject ComponentFactory and use ComponentFactory::createFullyRenderedButton() instead.', E_USER_DEPRECATED);
         return $this->componentFactory->createFullyRenderedButton();
     }
 
@@ -271,8 +265,7 @@ class ButtonBar
      */
     public function makeShortcutButton(): ShortcutButton
     {
-        // @todo Activate once core is migrated
-        // trigger_error('ButtonBar::makeShortcutButton() is deprecated, inject ComponentFactory and use ComponentFactory::createShortcutButton() instead.', E_USER_DEPRECATED);
+        trigger_error('ButtonBar::makeShortcutButton() is deprecated, inject ComponentFactory and use ComponentFactory::createShortcutButton() instead.', E_USER_DEPRECATED);
         return $this->componentFactory->createShortcutButton();
     }
 }

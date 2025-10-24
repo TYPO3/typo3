@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -60,6 +61,7 @@ class ViewModuleController
         protected readonly PageRepository $pageRepository,
         protected readonly SiteFinder $siteFinder,
         protected readonly PolicyRegistry $policyRegistry,
+        protected readonly ComponentFactory $componentFactory,
     ) {}
 
     /**
@@ -137,7 +139,7 @@ class ViewModuleController
         $languageService = $this->getLanguageService();
         $languages = $this->getPreviewLanguages($pageId);
         if (count($languages) > 1) {
-            $languageMenu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+            $languageMenu = $this->componentFactory->createMenu();
             $languageMenu->setIdentifier('_langSelector');
             $languageMenu->setLabel(
                 $languageService->sL(
@@ -152,7 +154,7 @@ class ViewModuleController
                         'language' => (int)$value,
                     ]
                 );
-                $menuItem = $languageMenu->makeMenuItem()
+                $menuItem = $this->componentFactory->createMenuItem()
                     ->setTitle($label)
                     ->setHref($href);
                 if ($languageId === (int)$value) {
@@ -165,8 +167,7 @@ class ViewModuleController
         if ($pageId && is_array(($pageRecord = BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW))))) {
             $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);
         }
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        $showButton = $buttonBar->makeLinkButton()
+        $showButton = $this->componentFactory->createLinkButton()
             ->setHref($targetUrl)
             ->setDataAttributes([
                 'dispatch-action' => 'TYPO3.WindowManager.localOpen',
@@ -179,21 +180,21 @@ class ViewModuleController
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
             ->setShowLabelText(true)
             ->setIcon($this->iconFactory->getIcon('actions-view-page', IconSize::SMALL));
-        $buttonBar->addButton($showButton);
+        $view->addButtonToButtonBar($showButton);
 
-        $refreshButton = $buttonBar->makeLinkButton()
+        $refreshButton = $this->componentFactory->createLinkButton()
             ->setHref('#')
             ->setClasses('t3js-viewpage-refresh')
             ->setTitle($languageService->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:refreshPage'))
             ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
-        $buttonBar->addButton($refreshButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->addButtonToButtonBar($refreshButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         // Shortcut
-        $shortcutButton = $buttonBar->makeShortcutButton()
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('page_preview')
             ->setDisplayName($this->getShortcutTitle($pageId))
             ->setArguments(['id' => $pageId]);
-        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
     /**

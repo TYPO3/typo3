@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Form\Tests\Functional\Controller;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -71,6 +72,7 @@ final class FormEditorControllerTest extends FunctionalTestCase
                 $this->createMock(ViewFactoryInterface::class),
                 $this->createMock(DatabaseService::class),
                 $this->createMock(CacheManager::class),
+                $this->createMock(ComponentFactory::class),
             ],
         );
         $prototypeConfiguration = [
@@ -175,6 +177,7 @@ final class FormEditorControllerTest extends FunctionalTestCase
                 $this->createMock(ViewFactoryInterface::class),
                 $this->createMock(DatabaseService::class),
                 $this->createMock(CacheManager::class),
+                $this->createMock(ComponentFactory::class),
             ],
         );
         $prototypeConfiguration = [

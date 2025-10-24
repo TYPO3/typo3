@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -292,6 +293,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
             $tcaSchemaFactory,
             $this->get(FlashMessageRendererResolver::class),
             $this->get(PageDoktypeRegistry::class),
+            $this->get(ComponentFactory::class),
         ]);
         $subject->_set('table', 'aTable');
         $subject->_call('init', 'queryConfig', 'aTable');
@@ -371,6 +373,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
             $this->get(TcaSchemaFactory::class),
             $this->get(FlashMessageRendererResolver::class),
             $this->get(PageDoktypeRegistry::class),
+            $this->get(ComponentFactory::class),
         ]);
         $subject->_call('init', 'queryConfig', $settings['queryTable']);
         $subject->_call('makeSelectorTable', $settings, $request);

@@ -23,6 +23,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -49,6 +50,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 final readonly class PageTsConfigIncludesController
 {
     public function __construct(
+        private ComponentFactory $componentFactory,
         private UriBuilder $uriBuilder,
         private ModuleTemplateFactory $moduleTemplateFactory,
         private TsConfigTreeBuilder $tsConfigTreeBuilder,
@@ -282,18 +284,17 @@ final readonly class PageTsConfigIncludesController
     private function addShortcutButtonToDocHeader(ModuleTemplate $view, string $moduleIdentifier, array $pageInfo, int $pageUid): void
     {
         $languageService = $this->getLanguageService();
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $shortcutTitle = sprintf(
             '%s: %s [%d]',
             $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes'),
             BackendUtility::getRecordTitle('pages', $pageInfo),
             $pageUid
         );
-        $shortcutButton = $buttonBar->makeShortcutButton()
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier($moduleIdentifier)
             ->setDisplayName($shortcutTitle)
             ->setArguments(['id' => $pageUid]);
-        $buttonBar->addButton($shortcutButton);
+        $view->addButtonToButtonBar($shortcutButton);
     }
 
     private function getLanguageService(): LanguageService

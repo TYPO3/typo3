@@ -21,12 +21,12 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -43,7 +43,8 @@ readonly class RecyclerModuleController
     public function __construct(
         protected IconFactory $iconFactory,
         protected PageRenderer $pageRenderer,
-        protected ModuleTemplateFactory $moduleTemplateFactory
+        protected ModuleTemplateFactory $moduleTemplateFactory,
+        protected ComponentFactory $componentFactory,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -91,26 +92,18 @@ readonly class RecyclerModuleController
     protected function registerDocHeaderButtons(ModuleTemplate $view, int $id, array $pageRecord): void
     {
         $languageService = $this->getLanguageService();
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-
         $shortcutTitle = sprintf(
             '%s: %s [%d]',
             $languageService->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
             BackendUtility::getRecordTitle('pages', $pageRecord),
             $id
         );
-        $shortcutButton = $buttonBar->makeShortcutButton()
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('recycler')
             ->setDisplayName($shortcutTitle)
             ->setArguments(['id' => $id]);
-        $buttonBar->addButton($shortcutButton);
-
-        $reloadButton = $buttonBar->makeLinkButton()
-            ->setHref('#')
-            ->setDataAttributes(['action' => 'reload'])
-            ->setTitle($languageService->sL('LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.reload'))
-            ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
-        $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->addButtonToButtonBar($shortcutButton);
+        $view->addButtonToButtonBar($this->componentFactory->createReloadButton('#')->setDataAttributes(['action' => 'reload']), ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
     protected function getBackendUser(): BackendUserAuthentication

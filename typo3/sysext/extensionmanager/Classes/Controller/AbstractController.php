@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Controller;
 
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Core\Environment;
@@ -34,6 +35,7 @@ class AbstractController extends ActionController
     public const TRIGGER_RefreshTopbar = 'refreshTopbar';
 
     protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected ComponentFactory $componentFactory;
 
     protected array $triggerArguments = [
         self::TRIGGER_RefreshModuleMenu,
@@ -43,6 +45,11 @@ class AbstractController extends ActionController
     public function injectModuleTemplateFactory(ModuleTemplateFactory $moduleTemplateFactory)
     {
         $this->moduleTemplateFactory = $moduleTemplateFactory;
+    }
+
+    public function injectComponentFactory(ComponentFactory $componentFactory)
+    {
+        $this->componentFactory = $componentFactory;
     }
 
     /**
@@ -116,7 +123,7 @@ class AbstractController extends ActionController
             'controllerName' => $request->getControllerName(),
             'actionName' => $request->getControllerActionName(),
         ]);
-        $menu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu = $this->componentFactory->createMenu();
         $menu->setIdentifier('ExtensionManagerModuleMenu');
         $menu->setLabel(
             $this->translate(
@@ -130,7 +137,7 @@ class AbstractController extends ActionController
             } else {
                 $isActive = false;
             }
-            $menuItem = $menu->makeMenuItem()
+            $menuItem = $this->componentFactory->createMenuItem()
                 ->setTitle($menuItemConfig['label'])
                 ->setHref($this->uriBuilder->reset()->uriFor($menuItemConfig['action'], [], $menuItemConfig['controller']))
                 ->setActive($isActive);

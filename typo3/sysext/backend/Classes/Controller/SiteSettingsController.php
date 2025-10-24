@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItemInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownToggle;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -63,6 +64,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 readonly class SiteSettingsController
 {
     public function __construct(
+        protected ComponentFactory $componentFactory,
         protected ModuleTemplateFactory $moduleTemplateFactory,
         protected SiteFinder $siteFinder,
         protected SiteSettingsService $siteSettingsService,
@@ -285,29 +287,17 @@ readonly class SiteSettingsController
 
     protected function addDocHeaderCloseAndSaveButtons(ModuleTemplate $moduleTemplate, Site $site, string $closeUrl, bool $saveEnabled): void
     {
-        $languageService = $this->getLanguageService();
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $closeButton = $buttonBar->makeLinkButton()
-            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:close'))
-            ->setIcon($this->iconFactory->getIcon('actions-close', IconSize::SMALL))
-            ->setShowLabelText(true)
-            ->setHref($closeUrl);
-        $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
-        $saveButton = $buttonBar->makeInputButton()
+        $moduleTemplate->addButtonToButtonBar($this->componentFactory->createCloseButton($closeUrl), ButtonBar::BUTTON_POSITION_LEFT, 2);
+        $saveButton = $this->componentFactory->createSaveButton('sitesettings_form')
             ->setName('CMD')
             ->setValue('save')
-            ->setForm('sitesettings_form')
-            ->setIcon($this->iconFactory->getIcon('actions-document-save', IconSize::SMALL))
-            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:save'))
-            ->setShowLabelText(true)
             ->setDisabled(!$saveEnabled);
-        $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
+        $moduleTemplate->addButtonToButtonBar($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
     }
 
     protected function addDocHeaderViewModeButton(ModuleTemplate $moduleTemplate, Site $site, SettingsMode $mode): void
     {
         $languageService = $this->getLanguageService();
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
         $viewModeItems[] = GeneralUtility::makeInstance(DropDownToggle::class)
             ->setActive(($mode === SettingsMode::BASIC))
@@ -337,7 +327,7 @@ readonly class SiteSettingsController
             ->setLabel($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_settingseditor.xlf:settingseditor.mode.advanced'))
             ->setIcon($this->iconFactory->getIcon('actions-window-cog', IconSize::SMALL));
 
-        $viewModeButton = $buttonBar->makeDropDownButton()
+        $viewModeButton = $this->componentFactory->createDropDownButton()
             ->setLabel($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view'))
             ->setShowLabelText(true);
         foreach ($viewModeItems as $viewModeItem) {
@@ -345,30 +335,28 @@ readonly class SiteSettingsController
             $viewModeButton->addItem($viewModeItem);
         }
 
-        $buttonBar->addButton($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+        $moduleTemplate->addButtonToButtonBar($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
     }
 
     protected function addDocHeaderExportButton(ModuleTemplate $moduleTemplate, Site $site, SettingsMode $mode): void
     {
         if ($mode === SettingsMode::ADVANCED) {
             $languageService = $this->getLanguageService();
-            $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-            $exportButton = $buttonBar->makeInputButton()
+            $exportButton = $this->componentFactory->createInputButton()
                 ->setTitle($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:edit.yamlExport'))
                 ->setIcon($this->iconFactory->getIcon('actions-database-export', IconSize::SMALL))
                 ->setShowLabelText(true)
                 ->setName('CMD')
                 ->setValue('export')
                 ->setForm('sitesettings_form');
-            $buttonBar->addButton($exportButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
+            $moduleTemplate->addButtonToButtonBar($exportButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
         }
     }
 
     protected function addDocHeaderSiteConfigurationButton(ModuleTemplate $moduleTemplate, Site $site): void
     {
         $languageService = $this->getLanguageService();
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $exportButton = $buttonBar->makeLinkButton()
+        $exportButton = $this->componentFactory->createLinkButton()
             ->setTitle($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:edit.editSiteConfiguration'))
             ->setIcon($this->iconFactory->getIcon('actions-open', IconSize::SMALL))
             ->setShowLabelText(true)
@@ -378,7 +366,7 @@ readonly class SiteSettingsController
                     'site' => $site->getIdentifier(),
                 ]),
             ]));
-        $buttonBar->addButton($exportButton, ButtonBar::BUTTON_POSITION_RIGHT, 3);
+        $moduleTemplate->addButtonToButtonBar($exportButton, ButtonBar::BUTTON_POSITION_RIGHT, 3);
     }
 
     protected function getSiteTitle(Site $site): string

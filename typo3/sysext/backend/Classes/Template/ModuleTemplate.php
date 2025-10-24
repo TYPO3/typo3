@@ -22,6 +22,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\Components\DocHeaderComponent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -70,6 +73,7 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
         protected readonly FlashMessageService $flashMessageService,
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly ViewInterface $view,
+        protected readonly ComponentFactory $componentFactory,
         protected readonly ServerRequestInterface $request,
     ) {
         $module = $request->getAttribute('module');
@@ -296,7 +300,7 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
             return $this;
         }
 
-        $menu = $this->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu = $this->componentFactory->createMenu();
         $menu->setIdentifier('moduleMenu');
         $menu->setLabel(
             $this->getLanguageService()->sL(
@@ -306,8 +310,7 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
 
         // Add "Overview" link to the module menu in case a submodule overview exists
         if ($menuModule->hasSubmoduleOverview()) {
-            $item = $menu
-                ->makeMenuItem()
+            $item = $this->componentFactory->createMenuItem()
                 ->setHref(
                     (string)$this->uriBuilder->buildUriFromRoute(
                         $menuModule->getIdentifier(),
@@ -322,8 +325,7 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
         }
 
         foreach ($menuModule->getSubModules() as $module) {
-            $item = $menu
-                ->makeMenuItem()
+            $item = $this->componentFactory->createMenuItem()
                 ->setHref(
                     (string)$this->uriBuilder->buildUriFromRoute(
                         $module->getIdentifier(),
@@ -337,6 +339,18 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
             $menu->addMenuItem($item);
         }
         $this->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+        return $this;
+    }
+
+    /**
+     * Shorthand method to add a new button to the button bar
+     */
+    public function addButtonToButtonBar(
+        ButtonInterface $button,
+        string $buttonPosition = ButtonBar::BUTTON_POSITION_LEFT,
+        int $buttonGroup = 1
+    ): self {
+        $this->getDocHeaderComponent()->getButtonBar()->addButton($button, $buttonPosition, $buttonGroup);
         return $this;
     }
 

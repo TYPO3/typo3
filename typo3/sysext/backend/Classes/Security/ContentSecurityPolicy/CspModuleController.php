@@ -23,12 +23,12 @@ use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ScopeRepository;
@@ -48,6 +48,7 @@ class CspModuleController
         protected readonly ScopeRepository $scopeRepository,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly IconFactory $iconFactory,
+        protected readonly ComponentFactory $componentFactory,
     ) {}
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
@@ -70,18 +71,15 @@ class CspModuleController
 
     protected function registerDocHeaderButtons(ModuleTemplate $view, ModuleInterface $currentModule): void
     {
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        $shortcutButton = $buttonBar->makeShortcutButton()
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier($currentModule->getIdentifier())
             ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf:mlang_tabs_tab'));
-        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
-        $reloadButton = $buttonBar->makeLinkButton()
-            ->setDataAttributes(['csp-reports-handler' => 'refresh'])
-            ->setHref((string)$this->uriBuilder->buildUriFromRoute($currentModule->getIdentifier()))
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
-            ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
-        $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $reloadButton = $this->componentFactory
+            ->createReloadButton((string)$this->uriBuilder->buildUriFromRoute($currentModule->getIdentifier()))
+            ->setDataAttributes(['csp-reports-handler' => 'refresh']);
+        $view->addButtonToButtonBar($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
     protected function getConfigurationStatus(): array

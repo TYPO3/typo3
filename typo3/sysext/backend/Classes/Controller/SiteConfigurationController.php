@@ -28,6 +28,7 @@ use TYPO3\CMS\Backend\Form\FormResultCompiler;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -66,6 +67,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 class SiteConfigurationController
 {
     public function __construct(
+        protected readonly ComponentFactory $componentFactory,
         protected readonly SiteFinder $siteFinder,
         protected readonly IconFactory $iconFactory,
         protected readonly UriBuilder $uriBuilder,
@@ -687,25 +689,17 @@ class SiteConfigurationController
      */
     protected function configureEditViewDocHeader(ModuleTemplate $view, ?string $siteIdentifier): void
     {
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $lang = $this->getLanguageService();
-        $closeButton = $buttonBar->makeLinkButton()
-            ->setHref('#')
-            ->setClasses('t3js-editform-close')
-            ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
-            ->setShowLabelText(true)
-            ->setIcon($this->iconFactory->getIcon('actions-close', IconSize::SMALL));
-        $saveButton = $buttonBar->makeInputButton()
-            ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
+        $closeButton = $this->componentFactory->createCloseButton('#')
+            ->setClasses('t3js-editform-close');
+        $saveButton = $this->componentFactory->createSaveButton()
             ->setName('_savedok')
             ->setValue('1')
-            ->setShowLabelText(true)
-            ->setForm('siteConfigurationController')
-            ->setIcon($this->iconFactory->getIcon('actions-document-save', IconSize::SMALL));
-        $buttonBar->addButton($closeButton);
-        $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+            ->setForm('siteConfigurationController');
+        $view->addButtonToButtonBar($closeButton);
+        $view->addButtonToButtonBar($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         if ($siteIdentifier) {
-            $exportButton = $buttonBar->makeLinkButton()
+            $exportButton = $this->componentFactory->createLinkButton()
                 ->setTitle($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:edit.editSiteSettings'))
                 ->setIcon($this->iconFactory->getIcon('actions-cog', IconSize::SMALL))
                 ->setShowLabelText(true)
@@ -715,7 +709,7 @@ class SiteConfigurationController
                         'site' => $siteIdentifier,
                     ]),
                 ]));
-            $buttonBar->addButton($exportButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+            $view->addButtonToButtonBar($exportButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
         }
     }
 
@@ -724,16 +718,11 @@ class SiteConfigurationController
      */
     protected function configureOverViewDocHeader(ModuleTemplate $view, string $requestUri): void
     {
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        $reloadButton = $buttonBar->makeLinkButton()
-            ->setHref($requestUri)
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
-            ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
-        $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
-        $shortcutButton = $buttonBar->makeShortcutButton()
+        $view->addButtonToButtonBar($this->componentFactory->createReloadButton($requestUri), ButtonBar::BUTTON_POSITION_RIGHT);
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('site_configuration')
             ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf:mlang_labels_tablabel'));
-        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
     /**

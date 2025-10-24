@@ -27,6 +27,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -228,6 +229,7 @@ class DatabaseIntegrityController
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
         protected readonly FlashMessageRendererResolver $flashMessageRendererResolver,
         protected readonly PageDoktypeRegistry $pageDoktypeRegistry,
+        protected readonly ComponentFactory $componentFactory,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -340,8 +342,7 @@ class DatabaseIntegrityController
      */
     protected function setUpDocHeader(ModuleTemplate $moduleTemplate): void
     {
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $shortCutButton = $buttonBar->makeShortcutButton()
+        $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier($this->moduleName)
             ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch'))
             ->setArguments([
@@ -350,7 +351,7 @@ class DatabaseIntegrityController
                     'search_query_makeQuery' => $this->MOD_SETTINGS['search_query_makeQuery'] ?? '',
                 ],
             ]);
-        $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+        $moduleTemplate->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
     }
 
     /**
