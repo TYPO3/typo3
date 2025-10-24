@@ -71,74 +71,119 @@ readonly class GreedyDatabaseBackend
 
     public function getRows(string $tableName, array $uids, Context $context): array
     {
-        // Check runtime cache first
-        // @todo: the runtime cache needs to be much more sophisticated
-        //        as it needs to understand that a DB query for ID 4,5 has been made, because
-        //        they have been fetched with IDs 2,3 in the call before.
         $cacheIdentifier = $this->createRuntimeCacheIdentifier($tableName, $uids, $context);
-        if ($this->runtimeCache->has($cacheIdentifier)) {
-            $allRows = $this->runtimeCache->get($cacheIdentifier);
-        } else {
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
-            $queryBuilder
-                ->select('*')
-                ->from($tableName);
-            // @todo: consider a context-based query restriction container here!
-            // @todo: we should not remove the restrictions but rather add them based on the given Context
-            /** @var DefaultRestrictionContainer $restrictions */
-            $restrictions = $queryBuilder->getRestrictions();
-            $visibilityAspect = $context->getAspect('visibility');
-            if ($visibilityAspect->includeHidden()) {
-                $restrictions->removeByType(HiddenRestriction::class);
-            }
-            if ($visibilityAspect->includeDeletedRecords()) {
-                $restrictions->removeByType(DeletedRestriction::class);
-            }
-            if ($visibilityAspect->includeScheduledRecords()) {
-                $restrictions->removeByType(StartTimeRestriction::class);
-                $restrictions->removeByType(EndTimeRestriction::class);
-            }
-            if ($context->hasAspect('frontend.user')) {
-                $groupIds = $context->getAspect('frontend.user')->getGroupIds();
-                $restrictions->add(GeneralUtility::makeInstance(FrontendGroupRestriction::class, $groupIds));
-            }
-            // Workspace Restriction is never added
-            $restrictions->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $context->getAspect('workspace')->getId()));
-
-            // Subselect is doing: give me the PID of the given UIDs
-            // So we can get a greedy query for all records of these PIDs
-            $queryBuilderForSubselect = $queryBuilder->getConnection()->createQueryBuilder();
-            // Subselect must use same restrictions as main query
-            $queryBuilderForSubselect->setRestrictions($restrictions);
-            $queryBuilderForSubselect
-                ->select('pid')
-                ->from($tableName)
-                ->where(
-                    $queryBuilderForSubselect->expr()->in(
-                        'uid',
-                        $queryBuilder->createNamedParameter($uids, Connection::PARAM_INT_ARRAY)
-                    )
-                );
-
-            // Inject the subselect in the WHERE part of the main query
-            $queryBuilder->where(
-                $queryBuilder->expr()->comparison(
-                    $queryBuilder->quoteIdentifier('pid'),
-                    'IN',
-                    '(' . $queryBuilderForSubselect->getSQL() . ')'
-                )
-            );
-
-            $allRows = $queryBuilder->executeQuery()->fetchAllAssociative();
-            $this->runtimeCache->set($cacheIdentifier, $allRows);
+        $allRows = $this->getRowsFromCache($cacheIdentifier, $tableName, $uids, $context);
+        if ($allRows === null) {
+            $allRows = $this->getRowsFromDatabase($tableName, $uids, $context);
+            $this->setCache($cacheIdentifier, $tableName, $context, $allRows);
         }
-
         return $this->handleOverlays(
             // Only use the records from the given UIDs
             array_filter($allRows, static fn(array $row) => in_array((int)$row['uid'], $uids, true)),
             $tableName,
             $context
         );
+    }
+
+    protected function setCache(string $cacheIdentifier, string $tableName, Context $context, array $allRows): void
+    {
+        $resultUids = array_map(fn(array $row): int => (int)$row['uid'], $allRows);
+        foreach ($resultUids as $resultUid) {
+            $resultUidCacheIdentifier = $this->createRuntimeCacheIdentifier($tableName, [$resultUid], $context, 'pointer');
+            // Set pointer to actual rows cache entry.
+            $this->runtimeCache->set($resultUidCacheIdentifier, $cacheIdentifier);
+        }
+        $this->runtimeCache->set($cacheIdentifier, $allRows);
+    }
+
+    /**
+     * This method creates cache identifier pointers for each provided uid.
+     * These uids come from the same pid, so they will have the same result set.
+     * If at a later point in time one of these uids is requested again,
+     * the pointer will be used to retrieve the actual cache entry of the db row.
+     * Without this mechanism, the runtime cache would be filled quickly with the
+     * same database rows over and over again.
+     *
+     * Example: Having 1000 records on the same pid with each having a relation to
+     * a file reference. When RecordFactory is used to resolve all of these 1000 records
+     * at a time, each of these 1000 relations would produce a cache entry with 1000
+     * file reference database rows (1000*1000 = 1.000.000 database rows).
+     *
+     * Instead, only 1 cache entry is created with 1000 database rows and in addition
+     * 1000 lightweight cache identifier pointers, pointing to the actual value of the
+     * cache identifier.
+     */
+    protected function getRowsFromCache(string $cacheIdentifier, string $tableName, array $uids, Context $context): ?array
+    {
+        if ($this->runtimeCache->has($cacheIdentifier)) {
+            return $this->runtimeCache->get($cacheIdentifier);
+        }
+        foreach ($uids as $uid) {
+            $cacheIdentifierPointer = $this->createRuntimeCacheIdentifier($tableName, [$uid], $context, 'pointer');
+            if ($this->runtimeCache->has($cacheIdentifierPointer)) {
+                $cacheIdentifier = $this->runtimeCache->get($cacheIdentifierPointer);
+                if ($this->runtimeCache->has($cacheIdentifier)) {
+                    return $this->runtimeCache->get($cacheIdentifier);
+                }
+            }
+        }
+        return null;
+    }
+
+    protected function getRowsFromDatabase(string $tableName, array $uids, Context $context): array
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+        $queryBuilder
+            ->select('*')
+            ->from($tableName);
+        // @todo: consider a context-based query restriction container here!
+        // @todo: we should not remove the restrictions but rather add them based on the given Context
+        /** @var DefaultRestrictionContainer $restrictions */
+        $restrictions = $queryBuilder->getRestrictions();
+        $visibilityAspect = $context->getAspect('visibility');
+        if ($visibilityAspect->includeHidden()) {
+            $restrictions->removeByType(HiddenRestriction::class);
+        }
+        if ($visibilityAspect->includeDeletedRecords()) {
+            $restrictions->removeByType(DeletedRestriction::class);
+        }
+        if ($visibilityAspect->includeScheduledRecords()) {
+            $restrictions->removeByType(StartTimeRestriction::class);
+            $restrictions->removeByType(EndTimeRestriction::class);
+        }
+        if ($context->hasAspect('frontend.user')) {
+            $groupIds = $context->getAspect('frontend.user')->getGroupIds();
+            $restrictions->add(GeneralUtility::makeInstance(FrontendGroupRestriction::class, $groupIds));
+        }
+        // Workspace Restriction is never added
+        $restrictions->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $context->getAspect('workspace')->getId()));
+
+        // Subselect is doing: give me the PID of the given UIDs
+        // So we can get a greedy query for all records of these PIDs
+        $queryBuilderForSubselect = $queryBuilder->getConnection()->createQueryBuilder();
+        // Subselect must use same restrictions as main query
+        $queryBuilderForSubselect->setRestrictions($restrictions);
+        $queryBuilderForSubselect
+            ->select('pid')
+            ->from($tableName)
+            ->where(
+                $queryBuilderForSubselect->expr()->in(
+                    'uid',
+                    $queryBuilder->createNamedParameter($uids, Connection::PARAM_INT_ARRAY)
+                )
+            );
+
+        // Inject the subselect in the WHERE part of the main query
+        $queryBuilder->where(
+            $queryBuilder->expr()->comparison(
+                $queryBuilder->quoteIdentifier('pid'),
+                'IN',
+                '(' . $queryBuilderForSubselect->getSQL() . ')'
+            )
+        );
+
+        $allRows = $queryBuilder->executeQuery()->fetchAllAssociative();
+        return $allRows;
     }
 
     protected function handleOverlays(array $rows, string $dbTable, Context $context): array
@@ -163,7 +208,7 @@ readonly class GreedyDatabaseBackend
         return $finalRows;
     }
 
-    protected function createRuntimeCacheIdentifier(string $tableName, array $uids, Context $context): string
+    protected function createRuntimeCacheIdentifier(string $tableName, array $uids, Context $context, string $suffix = ''): string
     {
         sort($uids);
         $cacheIdentifier = $tableName . '-' . md5(implode('_', $uids)) . '-';
@@ -186,6 +231,7 @@ readonly class GreedyDatabaseBackend
         $userAspect = $context->getAspect('frontend.user');
         $groupIds = $userAspect->getGroupIds();
         $cacheIdentifier .= '-' . implode('_', $groupIds);
+        $cacheIdentifier .= '-' . $suffix;
 
         return 'greedy_database_backend_' . hash('xxh3', $cacheIdentifier);
     }
