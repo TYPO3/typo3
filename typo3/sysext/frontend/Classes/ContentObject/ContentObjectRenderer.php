@@ -127,17 +127,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public const OBJECTTYPE_USER = 2;
 
     /**
-     * @var ContainerInterface|null
+     * List of stdWrap functions in their correct order
      */
-    protected $container;
-
-    /**
-     * stdWrap functions in their correct order
-     *
-     * @see stdWrap()
-     * @var string[]
-     */
-    public array $stdWrapOrder = [
+    protected const STD_WRAP_ORDER = [
         BeforeStdWrapFunctionsInitializedEvent::class => 'event',
         'cacheRead' => 'hook', // this is a placeholder for checking if the content is available in cache
         'setContentToCurrent' => 'boolean',
@@ -285,6 +277,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
         'debugData' => 'boolean',
         'debugData.' => 'array',
     ];
+
+    /**
+     * @var ContainerInterface|null
+     */
+    protected $container;
 
     /**
      * Loaded with the current data-record.
@@ -1106,7 +1103,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         // Activate the stdWrap PSR-14 Events - They will be executed
-        // as stdWrap functions, based on the defined "stdWrapOrder".
+        // as stdWrap functions, based on the STD_WRAP_ORDER constant.
         $conf[BeforeStdWrapFunctionsInitializedEvent::class] = 1;
         $conf[AfterStdWrapFunctionsInitializedEvent::class] = 1;
         $conf[BeforeStdWrapFunctionsExecutedEvent::class] = 1;
@@ -1121,8 +1118,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $conf['cacheRead'] = 1;
             $conf['cacheStore'] = 1;
         }
-        // The configuration is sorted and filtered by intersection with the defined stdWrapOrder.
-        $sortedConf = array_keys(array_intersect_key($this->stdWrapOrder, $conf));
+        // The configuration is sorted and filtered by intersection with the defined STD_WRAP_ORDER.
+        $sortedConf = array_keys(array_intersect_key(self::STD_WRAP_ORDER, $conf));
         // Functions types that should not make use of nested stdWrap function calls to avoid conflicts with internal TypoScript used by these functions
         $stdWrapDisabledFunctionTypes = 'cObject,functionName,stdWrap';
         // Additional Array to check whether a function has already been executed
@@ -1137,12 +1134,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if ((!isset($isExecuted[$stdWrapName]) || !$isExecuted[$stdWrapName]) && !$this->stopRendering[$this->stdWrapRecursionLevel]) {
                 $functionName = rtrim($stdWrapName, '.');
                 $functionProperties = $functionName . '.';
-                $functionType = $this->stdWrapOrder[$functionName] ?? '';
+                $functionType = self::STD_WRAP_ORDER[$functionName] ?? '';
                 // If there is any code on the next level, check if it contains "official" stdWrap functions
                 // if yes, execute them first - will make each function stdWrap aware
                 // so additional stdWrap calls within the functions can be removed, since the result will be the same
                 if (!empty($conf[$functionProperties]) && !GeneralUtility::inList($stdWrapDisabledFunctionTypes, $functionType)) {
-                    if (array_intersect_key($this->stdWrapOrder, $conf[$functionProperties])) {
+                    if (array_intersect_key(self::STD_WRAP_ORDER, $conf[$functionProperties])) {
                         // Check if there's already content available before processing
                         // any ifEmpty or ifBlank stdWrap properties
                         if (($functionName === 'ifBlank' && $content !== '') ||
@@ -1170,9 +1167,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $isExecuted[$functionName] = true;
                     $isExecuted[$functionProperties] = true;
                     if ($functionType === 'event') {
-                        $content = $eventDispatcher->dispatch(
-                            new $functionName($content, $conf, $this)
-                        )->getContent();
+                        // @phpstan-ignore-next-line phpstan does not understand $functionName is only called on 'event' types
+                        $content = $eventDispatcher->dispatch(new $functionName($content, $conf, $this))->getContent();
                     } else {
                         // Call the function with the prefix stdWrap_ to make sure nobody can execute functions just by adding their name to the TS Array
                         $functionName = 'stdWrap_' . $functionName;
