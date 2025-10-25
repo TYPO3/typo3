@@ -10,7 +10,7 @@ This system extension adds the possibility to receive webhooks in TYPO3.
 
 A webhook is defined as an authorized POST request to the TYPO3 backend.
 
-It offers a backend module, :guilabel:`System > Reactions`, that can be used
+It offers a backend module, :guilabel:`System > Integrations > Reactions`, that can be used
 to configure reactions triggered by a webhook.
 
 The extensions provides a basic default reaction that can be used to

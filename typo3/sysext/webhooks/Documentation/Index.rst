@@ -33,7 +33,7 @@ TYPO3 Webhooks
 
 This extension handles outgoing webhooks to TYPO3. It also provides
 a corresponding backend module to manage reaction records in the TYPO3
-backend :guilabel:`System > Webhooks`.
+backend :guilabel:`System > Integrations > Webhooks`.
 
 ----
 

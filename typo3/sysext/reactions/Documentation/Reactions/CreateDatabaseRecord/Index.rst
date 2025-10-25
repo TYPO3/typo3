@@ -14,7 +14,7 @@ triggered and enriched by data from the caller.
 Navigate to the backend module
 ==============================
 
-To create a new reaction navigate to the :guilabel:`System > Reactions` backend
+To create a new reaction navigate to the :guilabel:`System > Integrations > Reactions` backend
 module. If you call it the first time you will see the invitation to create a
 new reaction:
 

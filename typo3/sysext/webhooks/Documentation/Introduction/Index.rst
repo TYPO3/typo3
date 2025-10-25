@@ -10,7 +10,7 @@ A webhook is an automated message sent from one application to another via HTTP.
 
 This extension adds the possibility to configure webhooks in TYPO3.
 
-The backend module :guilabel:`System > Webhooks` provides the possibility to
+The backend module :guilabel:`System > Integrations > Webhooks` provides the possibility to
 configure webhooks. The module is available in the TYPO3 backend for users with
 administrative rights.
 

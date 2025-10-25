@@ -4,7 +4,7 @@ TYPO3 extension `webhooks`
 
 This extension handles outgoing webhooks to TYPO3. It also provides
 a corresponding backend module to manage webhook records in the TYPO3
-backend (`System > Webhooks`).
+backend (`System > Integrations > Webhooks`).
 
 :Repository:  https://github.com/typo3/typo3
 :Issues:      https://forge.typo3.org/
