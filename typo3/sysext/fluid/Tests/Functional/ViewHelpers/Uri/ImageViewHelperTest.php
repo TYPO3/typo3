@@ -52,32 +52,32 @@ final class ImageViewHelperTest extends FunctionalTestCase
             [
                 '<f:uri.image />',
                 1460976233,
-                'Unable to render image uri: You must either specify a string src or a File object.',
+                'Unable to render image URI: You must either specify a string src or a File object.',
             ],
             [
                 '<f:uri.image src="" />',
                 1460976233,
-                'Unable to render image uri: You must either specify a string src or a File object.',
+                'Unable to render image URI: You must either specify a string src or a File object.',
             ],
             [
                 '<f:uri.image src="something" />',
                 1509741908,
-                'Unable to render image uri: Supplied something could not be resolved to a File or FileReference.',
+                'Unable to render image URI: Supplied something could not be resolved to a File or FileReference.',
             ],
             [
                 '<f:uri.image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" />',
                 1509741907,
-                'Unable to render image uri: Tried to access a private resource file "EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" from fallback compatibility storage. This storage only handles public files.',
+                'Unable to render image URI: Tried to access a private resource file "EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" from fallback compatibility storage. This storage only handles public files.',
             ],
             [
                 '<f:uri.image src="fileadmin/image.jpg" />',
                 1509741908,
-                'Unable to render image uri: Supplied fileadmin/image.jpg could not be resolved to a File or FileReference.',
+                'Unable to render image URI: Supplied fileadmin/image.jpg could not be resolved to a File or FileReference.',
             ],
             [
                 '<f:uri.image src="something" fileExtension="dummy" />',
                 1618992262,
-                'Unable to render image uri: The extension dummy is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\'] as a valid image file extension and can not be processed.',
+                'Unable to render image URI: The extension dummy is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\'] as a valid image file extension and can not be processed.',
             ],
         ];
     }
@@ -101,32 +101,32 @@ final class ImageViewHelperTest extends FunctionalTestCase
             [
                 '<f:uri.image />',
                 1460976233,
-                'Unable to render image uri in "tt_content:123": You must either specify a string src or a File object.',
+                'Unable to render image URI in "tt_content:123": You must either specify a string src or a File object.',
             ],
             [
                 '<f:uri.image src="" />',
                 1460976233,
-                'Unable to render image uri in "tt_content:123": You must either specify a string src or a File object.',
+                'Unable to render image URI in "tt_content:123": You must either specify a string src or a File object.',
             ],
             [
                 '<f:uri.image src="something" />',
                 1509741908,
-                'Unable to render image uri in "tt_content:123": Supplied something could not be resolved to a File or FileReference.',
+                'Unable to render image URI in "tt_content:123": Supplied something could not be resolved to a File or FileReference.',
             ],
             [
                 '<f:uri.image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" />',
                 1509741907,
-                'Unable to render image uri in "tt_content:123": Tried to access a private resource file "EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" from fallback compatibility storage. This storage only handles public files.',
+                'Unable to render image URI in "tt_content:123": Tried to access a private resource file "EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" from fallback compatibility storage. This storage only handles public files.',
             ],
             [
                 '<f:uri.image src="fileadmin/image.jpg" />',
                 1509741908,
-                'Unable to render image uri in "tt_content:123": Supplied fileadmin/image.jpg could not be resolved to a File or FileReference.',
+                'Unable to render image URI in "tt_content:123": Supplied fileadmin/image.jpg could not be resolved to a File or FileReference.',
             ],
             [
                 '<f:uri.image src="something" fileExtension="dummy" />',
                 1618992262,
-                'Unable to render image uri in "tt_content:123": The extension dummy is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\'] as a valid image file extension and can not be processed.',
+                'Unable to render image URI in "tt_content:123": The extension dummy is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\'] as a valid image file extension and can not be processed.',
             ],
         ];
     }

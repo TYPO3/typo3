@@ -157,7 +157,7 @@ class Uri implements UriInterface
             $port = (int)$uriParts['port'];
             if (!$this->validatePort($port)) {
                 throw new \InvalidArgumentException(
-                    'The uri "' . $uri . '" appears to be malformed, invalid port "' . $port . '" specified, must be a valid TCP/UDP port',
+                    'The URI "' . $uri . '" appears to be malformed, invalid port "' . $port . '" specified, must be a valid TCP/UDP port',
                     1728057215
                 );
             }
@@ -174,7 +174,7 @@ class Uri implements UriInterface
         }
 
         if (!$this->validate()) {
-            throw new \InvalidArgumentException('The uri "' . $uri . '" appears to be malformed', 1728057216);
+            throw new \InvalidArgumentException('The URI "' . $uri . '" appears to be malformed', 1728057216);
         }
     }
 

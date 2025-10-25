@@ -66,7 +66,7 @@ If the TypoScript configuration
 :typoscript:`config.typolinkLinkAccessRestrictedPages` is set, the GET/POST
 parameter :code:`redirect_url` is used.
 
-Example url:
+Example URL:
 
 .. code-block:: text
 

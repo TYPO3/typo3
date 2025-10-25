@@ -20,7 +20,7 @@
 					3. Enter the generated six-digit code in the corresponding field
 					4. Submit the form to activate the provider
 
-					Note: In case your application supports otpauth:// urls, you can retrieve the url by clicking on the info button next to the shared secret.</source>
+					Note: In case your application supports otpauth:// URLs, you can retrieve the URL by clicking on the info button next to the shared secret.</source>
 			</trans-unit>
 			<trans-unit id="recoveryCodes.title">
 				<source>Recovery codes</source>

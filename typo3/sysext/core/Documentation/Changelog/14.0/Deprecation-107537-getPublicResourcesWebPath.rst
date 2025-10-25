@@ -2,9 +2,9 @@
 
 .. _deprecation-107537-1761162068:
 
-===================================================================================
-Deprecation: #107537 - TYPO3\CMS\Core\Utility\PathUtility::getPublicResourceWebPath
-===================================================================================
+=====================================================================================
+Deprecation: #107537 - `TYPO3\CMS\Core\Utility\PathUtility::getPublicResourceWebPath`
+=====================================================================================
 
 See :issue:`107537`
 
@@ -56,9 +56,19 @@ After:
         );
     }
 
-If the code can not be easily refactored to receive a request (which is recommended),
-it is fine to pass `null` as request, which instructs the API to check for
-a global request and use it if it exists. If no request can be obtained, no absolute URLs
-can be created with the new API.
+..  note::
+
+    The code should always be refactored to receive a request, which must then be passed to the API.
+    If that is not possible due to restrictions in TYPO3 legacy API (e.g. Events or Hooks not passing the
+    request, but an URL must be generated in the listener), null can be passed.
+    Passing null instructs the API to check for :php:`$GLOBALS['TYPO3_REQUEST']` and use it (if it exists).
+    Be aware, though, that this global variable will deprecated and removed eventually.
+
+    On CLI, :php:`$GLOBALS['TYPO3_REQUEST']` is never available, neither is there a request.
+    In that case, passing `null` to the API has the consequence that no absolute URLs (containing host
+    and scheme) can be created. If you need absolute URLs based on a certain site on CLI,
+    a request must be constructed accordingly and passed to the API.
+    For more information about this and how to get/construct/mock the request object,
+    see `TYPO3 request object <https://docs.typo3.org/permalink/t3coreapi:typo3-request>`_.
 
 ..  index:: PHP-API, FullyScanned, ext:core

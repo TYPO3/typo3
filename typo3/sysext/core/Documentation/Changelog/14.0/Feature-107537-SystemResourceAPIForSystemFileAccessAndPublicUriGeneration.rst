@@ -58,9 +58,10 @@ A package resource can now be specified with a new syntax like the so:
 `PKG:my-vendor/package-name:Resources/Public/Icons/Extension.svg`
 It consists of three parts, separated by a colon (`:`):
 
-#. `PKG` prefix
-#. composer name of the package
-#. relative path to the file within the package
+#.  `PKG` prefix
+#.  composer name of the package (*also possible for "classic mode"
+    when using extensions that contain a* :file:`composer.json`)
+#.  relative path to the file within the package
 
 For the time being also the well known `EXT` syntax can be used:
 `EXT:ext_name/Resources/Public/Icons/Extension.svg`
@@ -71,7 +72,7 @@ to the new syntax for new projects.
 App resource
 ^^^^^^^^^^^^
 
-An app resource a file or folder within your TYPO3 installation.
+An app resource is a file or folder within your TYPO3 installation.
 Such files can now also be specified using the `PKG` syntax, but
 using the virtual name `typo3/app` as package name:
 `PKG:typo3/app:public/typo3temp/assets/style.css`
@@ -82,17 +83,22 @@ Additional allowed folders can be configured via:
 `$GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths']`
 
 ..  note::
-    Be aware, that while `public` is the default public directory in Composer based installations,
-    it can be configured to be a different directory (e.g. `web`). In that case, the correct public
-    directory must be specified for the resource (e.g. `PKG:typo3/app:web/typo3temp/assets/style.css`)
+    Be aware, that while `public` is the default public directory in
+    Composer-based installations, it can be configured to be a different
+    directory (e.g. `web`, `htdocs`, `html`, `www`). In that case, the correct
+    public directory must be specified for the resource (e.g.
+    `PKG:typo3/app:web/typo3temp/assets/style.css`).
 
 FAL resource
 ^^^^^^^^^^^^
 
-While users are encouraged to only use package and app resources instead,
+While users are encouraged to use package and app resources,
 it is additionally possible to specify files from FAL storages
 using the following syntax:
-`FAL:1:/identifier/of/file.svg`
+
+..  code-block:: text
+    FAL:1:/identifier/of/file.svg
+
 It consists of three parts, separated by a colon (`:`):
 
 #. `FAL` prefix
@@ -118,7 +124,7 @@ but are deprecated and will not work any more in the future TYPO3 versions:
 
 *   App resource (relative path to project's public dir): `_assets/vite/foo.css`
 
-It is highly recommended to switch the the FAL resource and App resource syntax
+It is highly recommended to switch to the FAL resource and App resource syntax
 in new projects or during upgrade.
 
 All representations for resources mentioned here are **resource identifiers**.
@@ -157,15 +163,16 @@ Example PHP usage
         );
     }
 
-The `TYPO3\CMS\Core\SystemResource\SystemResourceFactory` and an implementation of a system resource publisher is injected via
-dependency injection (DI) for use in your code. The resource publisher is referenced using
-the interface `TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface`.
+The :php:`TYPO3\CMS\Core\SystemResource\SystemResourceFactory` and an implementation of a system
+resource publisher is injected via dependency injection (DI) for use in your code. The resource
+publisher is referenced using the interface
+:php:`TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface`.
 
 ..  note::
-    In the future different publishing strategies might be implemented, e.g. directly
-    publishing resources to a CDN and the generating CDN URIs directly. In one TYPO3 installation
+    In the future, different publishing strategies might be implemented, e.g. directly
+    publishing resources to a CDN and then generating CDN URIs directly. In one TYPO3 installation
     there can however only be one default implementation, which can be configured to be used
-    when the interface is referenced
+    when the interface is referenced.
 
 Then in the `renderUrl` method, the `resourceFactory` is used to obtain a resource object
 from a given resource identifier (see above for different possibilities) using `createPublicResource`.
@@ -182,7 +189,7 @@ Example Fluid usage
 
 There is a new `<f:resource>` ViewHelper, that has the only purpose to convert
 a resource identifier into an object, that can be passed to other ViewHelpers.
-Currently only the `<f:uri.resource>` accepts such resource objects, but more
+Currently only the `<f:uri.resource>` Viewhelper accepts such resource objects, but more
 will support those in the future such as `<f:image>`.
 
 ..  code-block:: html
@@ -242,11 +249,11 @@ This change is a big first step, but it is not the last. In future efforts the f
 
 * Implement flexible resource publishing in Composer and classic mode,
   allowing different publishing strategies, as well as configuring different and more
-  public resource folders or files
+  public resource folders or files.
 
-* Using this API in all areas, that consume private resources, most notably Fluid template files
+* Using this API in all areas, that consume private resources, most notably Fluid template files.
 
 * Replace FAL storage for system assets completely, by leveraging the "app" to contain resources
-  like Fluid templates, CSS files, logos, images, or even complete themes
+  like Fluid templates, CSS files, logos, images, or even complete themes.
 
 ..  index:: ext:core

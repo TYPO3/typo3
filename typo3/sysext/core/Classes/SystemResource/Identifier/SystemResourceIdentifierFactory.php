@@ -49,7 +49,7 @@ final readonly class SystemResourceIdentifierFactory
         if (str_starts_with($resourceIdentifier, FalResourceIdentifier::TYPE)) {
             return $this->createFalResourceIdentifier($resourceIdentifier);
         }
-        throw new InvalidSystemResourceIdentifierException(sprintf('Can not resolve uri %s', $resourceIdentifier), 1758700314);
+        throw new InvalidSystemResourceIdentifierException(sprintf('Can not resolve URI %s', $resourceIdentifier), 1758700314);
     }
 
     /**
@@ -103,7 +103,7 @@ final readonly class SystemResourceIdentifierFactory
         try {
             $packageKey = $this->packageManager->extractPackageKeyFromPackagePath($extensionPath);
         } catch (UnknownPackageException | UnknownPackagePathException $e) {
-            throw new InvalidSystemResourceIdentifierException(sprintf('Can not a create system uri from "%s"', $extensionPath), 1758884297, $e);
+            throw new InvalidSystemResourceIdentifierException(sprintf('Can not create system URI from "%s"', $extensionPath), 1758884297, $e);
         }
         return sprintf(
             '%s:%s:%s',
@@ -124,7 +124,7 @@ final readonly class SystemResourceIdentifierFactory
         try {
             return $this->packageManager->getPackage($packageKey)->getValueFromComposerManifest('name') ?? $packageKey;
         } catch (UnknownPackageException $e) {
-            throw new InvalidSystemResourceIdentifierException(sprintf('Can not a create system uri. Unknown package "%s"', $packageKey), 1760989723, $e);
+            throw new InvalidSystemResourceIdentifierException(sprintf('Can not create system URI. Unknown package "%s"', $packageKey), 1760989723, $e);
         }
     }
 }

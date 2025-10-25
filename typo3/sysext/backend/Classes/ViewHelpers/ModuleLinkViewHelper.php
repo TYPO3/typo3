@@ -45,7 +45,7 @@ final class ModuleLinkViewHelper extends AbstractViewHelper
         $this->registerArgument('route', 'string', 'The route to link to', true);
         $this->registerArgument('arguments', 'array', 'Additional link arguments (e.g. id or returnUrl)', false, []);
         $this->registerArgument('query', 'string', 'Additional link arguments as string  (e.g. id or returnUrl)');
-        $this->registerArgument('currentUrlParameterName', 'string', 'Add current url as given parameter');
+        $this->registerArgument('currentUrlParameterName', 'string', 'Add current URL as given parameter');
     }
 
     /**

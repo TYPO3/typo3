@@ -159,10 +159,10 @@ final class ImageViewHelper extends AbstractViewHelper
         if ($request instanceof RequestInterface) {
             $currentContentObject = $request->getAttribute('currentContentObject');
             if ($currentContentObject instanceof ContentObjectRenderer) {
-                return sprintf('Unable to render image uri in "%s": %s', $currentContentObject->currentRecord, $detailedMessage);
+                return sprintf('Unable to render image URI in "%s": %s', $currentContentObject->currentRecord, $detailedMessage);
             }
         }
-        return sprintf('Unable to render image uri: %s', $detailedMessage);
+        return sprintf('Unable to render image URI: %s', $detailedMessage);
     }
 
     private static function getImageService(): ImageService

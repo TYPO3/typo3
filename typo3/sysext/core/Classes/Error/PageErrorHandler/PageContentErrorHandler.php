@@ -183,7 +183,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
     protected function resolveUrl(ServerRequestInterface $request, array $urlParams): string
     {
         if (!in_array($urlParams['type'], ['page', 'url'])) {
-            throw new \InvalidArgumentException('PageContentErrorHandler can only handle TYPO3 urls of types "page" or "url"', 1522826609);
+            throw new \InvalidArgumentException('PageContentErrorHandler can only handle TYPO3 URLs of types "page" or "url"', 1522826609);
         }
         if ($urlParams['type'] === 'url') {
             return $urlParams['url'];

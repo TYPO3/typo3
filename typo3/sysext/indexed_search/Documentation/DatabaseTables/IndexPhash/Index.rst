@@ -124,7 +124,7 @@ static_page_arguments
    Description
          The Static Page Arguments - URL parameter that are used for caching.
 
-         For TYPO3 pages: These are used to re-generate the actual url of the
+         For TYPO3 pages: These are used to re-generate the actual URL of the
          TYPO3 page in question
 
          For files this is an empty array. Not used.
