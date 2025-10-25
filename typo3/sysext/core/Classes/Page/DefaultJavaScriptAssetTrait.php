@@ -28,14 +28,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 trait DefaultJavaScriptAssetTrait
 {
-    protected string $defaultFrontendJavaScriptFile = 'EXT:frontend/Resources/Public/JavaScript/default_frontend.js';
     protected function addDefaultFrontendJavaScript(ServerRequestInterface $request): void
     {
         // `config.removeDefaultJS = 1` - remove default JavaScript, no action required
         if ($this->shallRemoveDefaultFrontendJavaScript($request)) {
             return;
         }
-        $filePath = $this->defaultFrontendJavaScriptFile;
+        $filePath = 'EXT:frontend/Resources/Public/JavaScript/default_frontend.js';
         $collector = GeneralUtility::makeInstance(AssetCollector::class);
         // `config.removeDefaultJS = external` - persist JavaScript to `typo3temp/assets/`
         if ($this->shallExportDefaultFrontendJavaScript($request)) {
