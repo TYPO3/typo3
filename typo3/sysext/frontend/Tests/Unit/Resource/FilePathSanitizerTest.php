@@ -65,7 +65,7 @@ final class FilePathSanitizerTest extends UnitTestCase
         $this->simulateWebRequestInComposerMode();
         $this->expectException(InvalidFileException::class);
         $subject = new FilePathSanitizer();
-        $subject->sanitize('EXT:frontend/Resources/Private/Templates/MainPage.html');
+        $subject->sanitize('EXT:core/Resources/Private/Templates/PageRenderer.html');
     }
 
     #[Test]
@@ -106,8 +106,8 @@ final class FilePathSanitizerTest extends UnitTestCase
                 'index.php',
             ],
             'extension paths are resolved as is, when second argument is true' => [
-                'EXT:frontend/Resources/Private/Templates/MainPage.html',
-                'EXT:frontend/Resources/Private/Templates/MainPage.html',
+                'EXT:core/Resources/Private/Templates/PageRenderer.html',
+                'EXT:core/Resources/Private/Templates/PageRenderer.html',
                 true,
             ],
             'public extension assets resolved to published assets path' => [
@@ -156,13 +156,13 @@ final class FilePathSanitizerTest extends UnitTestCase
                 'typo3/sysext/core/Resources/Private/Php/index.php',
             ],
             'extension paths are resolved as is, when second argument is true' => [
-                'EXT:frontend/Resources/Private/Templates/MainPage.html',
-                'EXT:frontend/Resources/Private/Templates/MainPage.html',
+                'EXT:core/Resources/Private/Templates/PageRenderer.html',
+                'EXT:core/Resources/Private/Templates/PageRenderer.html',
                 true,
             ],
             'absolute paths are made relative, even when second argument is true' => [
-                Environment::getFrameworkBasePath() . '/frontend/Resources/Private/Templates/MainPage.html',
-                'typo3/sysext/frontend/Resources/Private/Templates/MainPage.html',
+                Environment::getFrameworkBasePath() . '/core/Resources/Private/Templates/PageRenderer.html',
+                'typo3/sysext/core/Resources/Private/Templates/PageRenderer.html',
                 true,
             ],
         ];
@@ -203,6 +203,6 @@ final class FilePathSanitizerTest extends UnitTestCase
     public function sanitizeCorrectlyResolvesPathsForLegacySystemsEvenForPrivateResources(): void
     {
         $subject = new FilePathSanitizer();
-        self::assertSame('typo3/sysext/frontend/Resources/Private/Templates/MainPage.html', $subject->sanitize('EXT:frontend/Resources/Private/Templates/MainPage.html'));
+        self::assertSame('typo3/sysext/core/Resources/Private/Templates/PageRenderer.html', $subject->sanitize('EXT:core/Resources/Private/Templates/PageRenderer.html'));
     }
 }

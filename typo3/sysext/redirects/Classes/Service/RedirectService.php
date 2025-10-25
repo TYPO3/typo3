@@ -429,7 +429,6 @@ readonly class RedirectService
         $pageInformation = $this->pageInformationFactory->create($originalRequest);
         $originalRequest = $originalRequest->withAttribute('frontend.page.information', $pageInformation);
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->setTemplateFile('EXT:frontend/Resources/Private/Templates/MainPage.html');
         $language = $originalRequest->getAttribute('language') ?? $originalRequest->getAttribute('site')->getDefaultLanguage();
         if ($language->hasCustomTypo3Language()) {
             $locale = GeneralUtility::makeInstance(Locales::class)->createLocale($language->getTypo3Language());

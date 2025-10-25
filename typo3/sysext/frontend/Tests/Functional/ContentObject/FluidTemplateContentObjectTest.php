@@ -408,7 +408,7 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         );
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID));
         $responseBody = (string)$response->getBody();
-        self::assertStringContainsString('Foo Header' . "\n" . '</head>', $responseBody);
+        self::assertStringContainsString('Foo Header' . "\n\n" . '</head>', $responseBody);
         self::assertStringContainsString('Foo Footer' . "\n" . '</body>', $responseBody);
     }
 }

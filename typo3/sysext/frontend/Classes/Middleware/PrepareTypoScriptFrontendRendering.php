@@ -162,7 +162,6 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
         } else {
             // Init FE PageRenderer defaults when this page needs to be generated
             $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-            $pageRenderer->setTemplateFile('EXT:frontend/Resources/Private/Templates/MainPage.html');
             $language = $request->getAttribute('language') ?? $request->getAttribute('site')->getDefaultLanguage();
             if ($language->hasCustomTypo3Language()) {
                 $locale = GeneralUtility::makeInstance(Locales::class)->createLocale($language->getTypo3Language());
