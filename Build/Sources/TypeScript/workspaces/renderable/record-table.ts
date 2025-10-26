@@ -18,6 +18,7 @@ import { classMap } from 'lit/directives/class-map';
 import { ifDefined } from 'lit/directives/if-defined';
 import { repeat } from 'lit/directives/repeat';
 import '@typo3/backend/element/icon-element';
+import 'bootstrap'; // for data-bs-toggle="dropdown"
 
 export type RecordData = {
   table: string,

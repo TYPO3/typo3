@@ -17,6 +17,7 @@ import { classMap } from 'lit/directives/class-map';
 import ModuleMenu from '../module-menu';
 import { InputTransformer } from '@typo3/core/ajax/input-transformer';
 import '@typo3/backend/element/icon-element';
+import 'bootstrap'; // for data-bs-toggle="dropdown"
 
 interface BreadcrumbNodeInterface {
   identifier: string;

@@ -18,6 +18,7 @@ import DebounceEvent from '@typo3/core/event/debounce-event';
 import '@typo3/backend/element/icon-element';
 import { Tree } from './tree';
 import type { TreeNodeInterface } from './tree-node';
+import 'bootstrap'; // for data-bs-toggle="dropdown"
 
 @customElement('typo3-backend-tree-toolbar')
 export class TreeToolbar extends LitElement {

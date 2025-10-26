@@ -30,6 +30,7 @@ import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import type { DragTooltipMetadata } from '@typo3/backend/drag-tooltip';
 import type { DataTransferStringItem } from '@typo3/backend/tree/tree';
+import 'bootstrap'; // for data-bs-toggle="dropdown"
 
 /**
  * This module defines the Custom Element for rendering the navigation component for an editable page tree

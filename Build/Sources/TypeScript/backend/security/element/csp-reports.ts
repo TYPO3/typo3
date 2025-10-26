@@ -18,6 +18,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { lll } from '@typo3/core/lit-helper';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import 'bootstrap'; // for data-bs-toggle="dropdown"
 
 enum CspReportAttribute {
   fixable= 'fixable',
