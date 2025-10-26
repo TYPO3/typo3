@@ -26,8 +26,18 @@ page {
   20 {
     file = {$localImage}
   }
+  30 = TEXT
+  30.value = Link to img_resource
+  30.typolink {
+    parameter.cObject = IMG_RESOURCE
+    parameter.cObject.file = {$falImage}
+  }
 }
 
 [traverse(request.getQueryParams(), 'useAbsoluteUrls') == '1']
   config.forceAbsoluteUrls = 1
+[GLOBAL]
+
+[traverse(request.getQueryParams(), 'useAbsoluteUrls') == '2']
+  page.30.typolink.forceAbsoluteUrl = 1
 [GLOBAL]

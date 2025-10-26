@@ -49,6 +49,7 @@ final class AbsoluteUriPrefixRenderingTest extends FunctionalTestCase
         'extensionJS' => 'EXT:core/Resources/Public/JavaScript/Contrib/luxon.js',
         'externalJS' => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js',
         'localImage' => 'EXT:frontend/Resources/Public/Icons/Extension.svg',
+        'falImage' => 'EXT:frontend/Resources/Public/Icons/FileIcons/ico.gif',
     ];
 
     /**
@@ -59,6 +60,7 @@ final class AbsoluteUriPrefixRenderingTest extends FunctionalTestCase
         'extensionJS' => 'typo3/sysext/core/Resources/Public/JavaScript/Contrib/luxon.js',
         'externalJS' => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js',
         'localImage' => 'typo3/sysext/frontend/Resources/Public/Icons/Extension.svg',
+        'falImage' => 'typo3/sysext/frontend/Resources/Public/Icons/FileIcons/ico.gif',
         'link' => '/en/dummy-1-4-10',
     ];
 
@@ -104,6 +106,12 @@ final class AbsoluteUriPrefixRenderingTest extends FunctionalTestCase
                 'extension' => ['url' => '"http://localhost/{{CANDIDATE}}\?\d+"', 'count' => 3],
                 'external' => ['url' => '"{{CANDIDATE}}"', 'count' => 1],
                 'link' => ['url' => 'href="http://localhost{{CANDIDATE}}"', 'count' => 1],
+            ],
+        ];
+        yield 'without-global-config' => [
+            '2',
+            [
+                'fal' => ['url' => 'href="http://localhost/{{CANDIDATE}}"', 'count' => 1],
             ],
         ];
     }

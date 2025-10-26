@@ -43,6 +43,9 @@ abstract class AbstractTypolinkBuilder
         } else {
             $forceAbsoluteUrl = !empty($configuration['forceAbsoluteUrl']);
         }
+        // This part typically touches ONLY files/folders and external URLs, and ONLY the ones that do not have
+        // "config.forceAbsoluteUrls" but only "typolink.forceAbsoluteUrl" set. Ideally, we could evaluate this
+        // in the FAL ResourceUriGenerator and then remove this logic. Also see the comment below with the @todo
         if (!empty($url) && $forceAbsoluteUrl && preg_match('#^(?:([a-z]+)(://)([^/]*)/?)?(.*)$#', $url, $matches)) {
             $urlParts = [
                 'scheme' => $matches[1],
@@ -56,16 +59,21 @@ abstract class AbstractTypolinkBuilder
                 // absRefPrefix has been prepended to $url beforehand
                 // so we only modify the path if no absRefPrefix has been set
                 // otherwise we would destroy the path
+                $normalizedParams = $request->getAttribute('normalizedParams');
+                // @todo: This fallback should vanish mid-term: typolink has a dependency to ServerRequest
+                //        and should expect the normalizedParams argument is properly set as well. When for
+                //        instance CLI triggers this code, it should have set up a proper request.
+                $normalizedParams ??= NormalizedParams::createFromRequest($request);
+                $urlParts['scheme'] = $normalizedParams->isHttps() ? 'https' : 'http';
+                $urlParts['host'] = $normalizedParams->getHttpHost();
                 if (GeneralUtility::makeInstance(FrontendUrlPrefix::class)->getUrlPrefix($request) === '') {
-                    $normalizedParams = $request->getAttribute('normalizedParams');
-                    // @todo: This fallback should vanish mid-term: typolink has a dependency to ServerRequest
-                    //        and should expect the normalizedParams argument is properly set as well. When for
-                    //        instance CLI triggers this code, it should have set up a proper request.
-                    $normalizedParams ??= NormalizedParams::createFromRequest($request);
-                    $urlParts['scheme'] = $normalizedParams->isHttps() ? 'https' : 'http';
-                    $urlParts['host'] = $normalizedParams->getHttpHost();
-                    $urlParts['path'] = '/' . ltrim($urlParts['path'], '/');
-                    $urlParts['path'] = $normalizedParams->getSitePath() . ltrim($urlParts['path'], '/');
+                    // Remove any possible leading slashes
+                    $urlParts['path'] = ltrim($urlParts['path'], '/');
+                    // Ensure that sitePath will have a "/" between path and sitePath
+                    if (str_starts_with($normalizedParams->getSitePath(), '/')) {
+                        $urlParts['path'] = '/' . $urlParts['path'];
+                    }
+                    $urlParts['path'] = rtrim($normalizedParams->getSitePath(), '/') . $urlParts['path'];
                 }
                 $isUrlModified = true;
             }
