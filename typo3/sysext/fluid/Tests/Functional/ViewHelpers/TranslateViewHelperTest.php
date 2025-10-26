@@ -140,8 +140,16 @@ final class TranslateViewHelperTest extends FunctionalTestCase
                 '<f:translate key="LLL:test_translate.messages:form.legend" />',
                 'Search form',
             ],
+            'translation domain syntax for existing label with combined syntax and LLL prefix and default label' => [
+                '<f:translate key="LLL:test_translate.messages:form.legend" default="My Default Label" />',
+                'Search form',
+            ],
             'translation domain syntax for existing label with combined syntax' => [
                 '<f:translate key="test_translate.messages:form.legend" />',
+                'Search form',
+            ],
+            'translation domain syntax for existing label with combined syntax and default label' => [
+                '<f:translate key="test_translate.messages:form.legend" default="My Default Label" />',
                 'Search form',
             ],
             'translation domain attribute with extension name for existing label' => [
@@ -314,6 +322,14 @@ final class TranslateViewHelperTest extends FunctionalTestCase
             ],
             'key given with existing label' => [
                 '<f:translate key="login.header" />',
+                'Login',
+            ],
+            'translation domain syntax with existing label' => [
+                '<f:translate key="test_translate.messages:login.header" />',
+                'Login',
+            ],
+            'translation domain with LLL: syntax with existing label' => [
+                '<f:translate key="LLL:test_translate.messages:login.header" />',
                 'Login',
             ],
             'key given with existing label and arguments without given arguments' => [

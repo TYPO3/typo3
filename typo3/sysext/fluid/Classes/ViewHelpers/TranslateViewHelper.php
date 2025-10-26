@@ -91,25 +91,28 @@ final class TranslateViewHelper extends AbstractViewHelper
         if (!empty($domain)) {
             $extensionName = $domain;
         } elseif (empty($extensionName)) {
-            if ($request instanceof ExtbaseRequestInterface) {
-                $extensionName = $request->getControllerExtensionName();
-            } elseif (str_starts_with($id, 'LLL:EXT:')) {
+            if (str_starts_with($id, 'LLL:EXT:')) {
                 $extensionName = substr($id, 8, strpos($id, '/', 8) - 8);
             } elseif (str_starts_with($id, 'LLL:')) {
                 // Implicit domain usage, let's keep it as is
                 [$prefix, $domain, $id] = explode(':', $id, 3);
                 $extensionName = $domain;
-            } elseif ($default) {
-                return self::handleDefaultValue($default, $translateArguments);
-            } else {
+            } elseif (str_contains($id, ':')) {
                 // Check if the domain name is actually valid.
-                if (str_contains($id, ':')) {
-                    [$possibleDomain, $possibleId] = explode(':', $id, 2);
-                    $domainMapper = GeneralUtility::makeInstance(TranslationDomainMapper::class);
-                    if ($domainMapper->isValidDomainName($possibleDomain) && $domainMapper->mapDomainToFileName($possibleDomain) !== $possibleDomain) {
-                        $extensionName = $possibleDomain;
-                        $id = $possibleId;
-                    }
+                [
+                    $possibleDomain,
+                    $possibleId
+                ] = explode(':', $id, 2);
+                $domainMapper = GeneralUtility::makeInstance(TranslationDomainMapper::class);
+                if ($domainMapper->isValidDomainName($possibleDomain) && $domainMapper->mapDomainToFileName($possibleDomain) !== $possibleDomain) {
+                    $extensionName = $possibleDomain;
+                    $id = $possibleId;
+                }
+            } elseif ($request instanceof ExtbaseRequestInterface) {
+                $extensionName = $request->getControllerExtensionName();
+            } else {
+                if ($default) {
+                    return self::handleDefaultValue($default, $translateArguments);
                 }
             }
         }
