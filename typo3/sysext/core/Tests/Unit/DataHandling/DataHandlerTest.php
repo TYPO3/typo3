@@ -59,7 +59,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class DataHandlerTest extends UnitTestCase
 {
     protected DataHandler&MockObject&AccessibleObjectInterface $subject;
-    protected BackendUserAuthentication&MockObject $backendUserMock;
+    protected BackendUserAuthentication $backendUser;
     protected TcaSchemaFactory $tcaSchemaFactory;
 
     protected function setUp(): void
@@ -90,43 +90,43 @@ final class DataHandlerTest extends UnitTestCase
             $this->createMock(FlashMessageService::class),
         ];
         $this->subject = $this->getAccessibleMock(DataHandler::class, null, $constructorArguments);
-        $this->backendUserMock = $this->createMock(BackendUserAuthentication::class);
-        $this->subject->start([], [], $this->backendUserMock, $this->createMock(ReferenceIndexUpdater::class));
+        $this->backendUser = new BackendUserAuthentication();
+        $this->subject->start([], [], $this->backendUser, $this->createMock(ReferenceIndexUpdater::class));
     }
 
     #[Test]
     public function adminIsAllowedToModifyNonAdminTable(): void
     {
-        $this->subject->admin = true;
+        $this->subject->BE_USER->user['admin'] = 1;
         self::assertTrue($this->subject->_call('checkModifyAccessList', 'tt_content'));
     }
 
     #[Test]
     public function nonAdminIsNorAllowedToModifyNonAdminTable(): void
     {
-        $this->subject->admin = false;
+        $this->subject->BE_USER->user['admin'] = 0;
         self::assertFalse($this->subject->_call('checkModifyAccessList', 'tt_content'));
     }
 
     #[Test]
     public function nonAdminWithTableModifyAccessIsAllowedToModifyNonAdminTable(): void
     {
-        $this->subject->admin = false;
-        $this->backendUserMock->groupData['tables_modify'] = 'tt_content';
+        $this->subject->BE_USER->user['admin'] = 0;
+        $this->subject->BE_USER->groupData['tables_modify'] = 'tt_content';
         self::assertTrue($this->subject->_call('checkModifyAccessList', 'tt_content'));
     }
 
     #[Test]
     public function adminIsAllowedToModifyAdminTable(): void
     {
-        $this->subject->admin = true;
+        $this->subject->BE_USER->user['admin'] = 1;
         self::assertTrue($this->subject->_call('checkModifyAccessList', 'be_users'));
     }
 
     #[Test]
     public function nonAdminIsNotAllowedToModifyAdminTable(): void
     {
-        $this->subject->admin = false;
+        $this->subject->BE_USER->user['admin'] = 0;
         self::assertFalse($this->subject->_call('checkModifyAccessList', 'be_users'));
     }
 
@@ -141,8 +141,8 @@ final class DataHandlerTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->subject->admin = false;
-        $this->backendUserMock->groupData['tables_modify'] = $tableName;
+        $this->subject->BE_USER->user['admin'] = 0;
+        $this->subject->BE_USER->groupData['tables_modify'] = $tableName;
         $this->tcaSchemaFactory->load($GLOBALS['TCA'], true);
         self::assertFalse($this->subject->_call('checkModifyAccessList', $tableName));
     }

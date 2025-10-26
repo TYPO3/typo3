@@ -30,7 +30,7 @@ class PagesTsConfigGuard
         string $id,
         DataHandler $dataHandler
     ): void {
-        if ($table === 'pages' && !$dataHandler->admin) {
+        if ($table === 'pages' && !$dataHandler->BE_USER->isAdmin()) {
             unset($incomingFieldArray['TSconfig']);
             unset($incomingFieldArray['tsconfig_includes']);
         }

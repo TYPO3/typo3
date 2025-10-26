@@ -278,20 +278,6 @@ class DataHandler
     public BackendUserAuthentication $BE_USER;
 
     /**
-     * Will be set to uid of be_user executing this script
-     *
-     * @internal should only be used from within TYPO3 Core
-     */
-    public int $userid;
-
-    /**
-     * Will be set if user is admin
-     *
-     * @internal should only be used from within TYPO3 Core
-     */
-    public bool $admin;
-
-    /**
      * The list of <table>-<fields> that cannot be edited by user. This is compiled from TCA/exclude-flag combined with non_exclude_fields for the user.
      */
     protected array $excludedTablesAndFields = [];
@@ -474,8 +460,6 @@ class DataHandler
     ): void {
         // Initializing BE_USER
         $this->BE_USER = $backendUser ?: $GLOBALS['BE_USER'];
-        $this->userid = (int)($this->BE_USER->user['uid'] ?? 0);
-        $this->admin = $this->BE_USER->user['admin'] ?? false;
         // Sub instances should receive ReferenceIndexUpdater via start() and not from __construct() DI since
         // it is a stateful object for *this* DH chain run. If this is the outermost instance, a new one is created.
         $this->referenceIndexUpdater = $referenceIndexUpdater ?? GeneralUtility::makeInstance(ReferenceIndexUpdater::class);
@@ -492,7 +476,7 @@ class DataHandler
         }
 
         // generates the excludelist, based on TCA/exclude-flag and non_exclude_fields for the user:
-        if (!$this->admin) {
+        if (!$this->BE_USER->isAdmin()) {
             $this->excludedTablesAndFields = array_flip($this->getExcludeListArray());
         }
 
@@ -827,7 +811,7 @@ class DataHandler
                         $fieldArray = $this->pagePermissionAssembler->applyDefaults(
                             $fieldArray,
                             (int)$tscPID,
-                            $this->userid,
+                            (int)$this->BE_USER->getUserId(),
                             (int)$this->BE_USER->firstMainGroup
                         );
                     }
@@ -906,7 +890,7 @@ class DataHandler
                             $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to modify record {table}:{uid} denied by checkRecordUpdateAccess hook', null, ['table' => $table, 'uid' => $id], (int)$currentRecord['pid']);
                             continue;
                         }
-                    } elseif ($pageRecord === [] && $currentRecord['pid'] === 0 && !($this->admin || $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction())
+                    } elseif ($pageRecord === [] && $currentRecord['pid'] === 0 && !($this->BE_USER->isAdmin() || $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction())
                         || (($pageRecord !== [] || $currentRecord['pid'] !== 0) && !$this->hasPermissionToUpdate($table, $pageRecord))
                     ) {
                         $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to modify record {table}:{uid} without permission or non-existing page', null, ['table' => $table, 'uid' => $id], (int)$currentRecord['pid']);
@@ -1147,7 +1131,7 @@ class DataHandler
                 case 'perms_group':
                 case 'perms_everybody':
                     // Permissions can be edited by the owner or the administrator
-                    if ($table === 'pages' && ($this->admin || $status === 'new' || (int)$currentRecord['perms_userid'] === $this->userid)) {
+                    if ($table === 'pages' && ($this->BE_USER->isAdmin() || $status === 'new' || (int)$currentRecord['perms_userid'] === (int)$this->BE_USER->getUserId())) {
                         $value = (int)$fieldValue;
                         switch ($field) {
                             case 'perms_userid':
@@ -1257,7 +1241,7 @@ class DataHandler
 
         if ($table === 'pages' && $field === 'doktype') {
             // Processing special case of field pages.doktype
-            if (!($this->admin || GeneralUtility::inList($this->BE_USER->groupData['pagetypes_select'], $value))) {
+            if (!($this->BE_USER->isAdmin() || GeneralUtility::inList($this->BE_USER->groupData['pagetypes_select'], $value))) {
                 // User is not allowed to use this specific doktype
                 $this->log($table, (int)$id, SystemLogDatabaseAction::CHECK, null, SystemLogErrorClassification::USER_ERROR, 'User lacks permissions to set pages:{uid} doktype to "{value}"', null, ['uid' => $id, 'value' => $value], $currentRecord['pid'] ?? 0);
                 return [];
@@ -3448,7 +3432,7 @@ class DataHandler
                 return null;
             }
         }
-        if (($pageRecord === [] && $row['pid'] === 0 && !($this->admin || $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction()))
+        if (($pageRecord === [] && $row['pid'] === 0 && !($this->BE_USER->isAdmin() || $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction()))
             || (($pageRecord !== [] || $row['pid'] !== 0) && !$this->hasPagePermission(Permission::PAGE_SHOW, $pageRecord))
         ) {
             $this->log($table, $uid, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to copy record "{table}:{uid}" without read permissions', null, ['table' => $table, 'uid' => (int)$uid]);
@@ -3587,7 +3571,7 @@ class DataHandler
 
         $copyTablesAlongWithPage = $this->getAllowedTablesToCopyWhenCopyingAPage();
         // Begin to copy pages if we're allowed to:
-        if ($this->admin || in_array('pages', $copyTablesAlongWithPage, true)) {
+        if ($this->BE_USER->isAdmin() || in_array('pages', $copyTablesAlongWithPage, true)) {
             // Copy this page we're on. And set first-flag (this will trigger that the record is hidden if that is configured)
             // This method also copies the localizations of a page
             $theNewRootID = $this->copySpecificPage($uid, $destPid, $copyTablesAlongWithPage, true);
@@ -3622,7 +3606,7 @@ class DataHandler
     {
         // Finding list of tables to copy.
         // These are the tables, the user may modify
-        $copyTablesArray = $this->admin ? $this->tcaSchemaFactory->all()->getNames() : explode(',', $this->BE_USER->groupData['tables_modify']);
+        $copyTablesArray = $this->BE_USER->isAdmin() ? $this->tcaSchemaFactory->all()->getNames() : explode(',', $this->BE_USER->groupData['tables_modify']);
         // If not all tables are allowed then make a list of allowed tables.
         // That is the tables that figure in both allowed tables AND the copyTable-list
         if (!str_contains($this->copyWhichTables, '*')) {
@@ -4790,7 +4774,7 @@ class DataHandler
                 return false;
             }
         }
-        if (($pageRecord === [] && $row['pid'] === 0 && !($this->admin || $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction()))
+        if (($pageRecord === [] && $row['pid'] === 0 && !($this->BE_USER->isAdmin() || $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction()))
             || (($pageRecord !== [] || $row['pid'] !== 0) && !$this->hasPagePermission(Permission::PAGE_SHOW, $pageRecord))
         ) {
             $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to localize record {table}:{uid} without permission', null, ['table' => $table, 'uid' => (int)$uid]);
@@ -5649,14 +5633,14 @@ class DataHandler
             return 'Attempt to delete page which has prohibited localizations';
         }
         foreach ($subPages as $subPage) {
-            if (!$this->admin && !$this->BE_USER->doesUserHaveAccess($subPage, Permission::PAGE_DELETE)) {
+            if (!$this->BE_USER->isAdmin() && !$this->BE_USER->doesUserHaveAccess($subPage, Permission::PAGE_DELETE)) {
                 return 'Attempt to delete pages in branch without permissions';
             }
             if (!$this->BE_USER->recordEditAccessInternals('pages', $subPage, false, null, true)) {
                 return 'Attempt to delete page which has prohibited localizations';
             }
         }
-        if (!$this->admin) {
+        if (!$this->BE_USER->isAdmin()) {
             // Check if there are records from tables on the pages to be deleted which the current user is not allowed to touch.
             foreach ($this->tcaSchemaFactory->all() as $schema) {
                 // @todo: Shouldn't we skip 'pages' here?
@@ -7269,7 +7253,7 @@ class DataHandler
     protected function checkModifyAccessList(string $table): bool
     {
         $isTableAdminOnly = $this->tcaSchemaFactory->has($table) && $this->tcaSchemaFactory->get($table)->hasCapability(TcaSchemaCapability::AccessAdminOnly);
-        $isAccessAllowed = $this->admin || (!$isTableAdminOnly && isset($this->BE_USER->groupData['tables_modify']) && GeneralUtility::inList($this->BE_USER->groupData['tables_modify'], $table));
+        $isAccessAllowed = $this->BE_USER->isAdmin() || (!$isTableAdminOnly && isset($this->BE_USER->groupData['tables_modify']) && GeneralUtility::inList($this->BE_USER->groupData['tables_modify'], $table));
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'] ?? [] as $className) {
             $hookObject = GeneralUtility::makeInstance($className);
             if (!$hookObject instanceof DataHandlerCheckModifyAccessListHookInterface) {
@@ -7328,7 +7312,7 @@ class DataHandler
             (
                 $pid !== 0
                 || (
-                    !$this->admin
+                    !$this->BE_USER->isAdmin()
                     && !$schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction()
                 )
             )
@@ -7367,7 +7351,7 @@ class DataHandler
         $allowed = false;
         // Check root-level
         if (!$pageUid) {
-            if ($this->admin || $rootLevelCapability->shallIgnoreRootLevelRestriction()) {
+            if ($this->BE_USER->isAdmin() || $rootLevelCapability->shallIgnoreRootLevelRestriction()) {
                 $allowed = true;
             }
             return $allowed;
@@ -7543,7 +7527,7 @@ class DataHandler
         if (!$perms) {
             throw new \RuntimeException('Invalid $perms bitset: "' . $perms . '"', 1270853920);
         }
-        if ($this->bypassAccessCheckForRecords || $this->admin) {
+        if ($this->bypassAccessCheckForRecords || $this->BE_USER->isAdmin()) {
             return true;
         }
 
@@ -8380,7 +8364,7 @@ class DataHandler
                     $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
                 )
                 ->orderBy('sorting', 'DESC');
-            if (!$this->admin) {
+            if (!$this->BE_USER->isAdmin()) {
                 $queryBuilder->andWhere($this->BE_USER->getPagePermsClause(Permission::PAGE_SHOW));
             }
             if ($this->BE_USER->workspace === 0) {
@@ -8983,7 +8967,7 @@ class DataHandler
         $userTsConfig = $this->BE_USER->getTSConfig();
         switch (strtolower($cacheCmd)) {
             case 'pages':
-                if ($this->admin || ($userTsConfig['options.']['clearCache.']['pages'] ?? false)) {
+                if ($this->BE_USER->isAdmin() || ($userTsConfig['options.']['clearCache.']['pages'] ?? false)) {
                     $this->cacheManager->flushCachesInGroup('pages');
                 }
                 break;
@@ -8992,7 +8976,7 @@ class DataHandler
                 // disabled for admins (which could clear all caches by default). The latter option is useful
                 // for big production sites where it should be possible to restrict the cache clearing for some admins.
                 if (($userTsConfig['options.']['clearCache.']['all'] ?? false)
-                    || ($this->admin && (bool)($userTsConfig['options.']['clearCache.']['all'] ?? true))
+                    || ($this->BE_USER->isAdmin() && (bool)($userTsConfig['options.']['clearCache.']['all'] ?? true))
                 ) {
                     $this->cacheManager->flushCaches();
 
