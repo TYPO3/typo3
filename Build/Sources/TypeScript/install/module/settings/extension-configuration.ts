@@ -24,7 +24,6 @@ import type MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { Collapse } from 'bootstrap';
 import DebounceEvent from '@typo3/core/event/debounce-event';
-import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import type { ModalElement } from '@typo3/backend/modal';
 
@@ -53,13 +52,6 @@ class ExtensionConfiguration extends AbstractInteractableModule {
         // Focus search field on ctrl-f
         if (event.key === 'f' || event.key === 'F') {
           event.preventDefault();
-          searchInput.focus();
-        }
-      } else if (event.key === KeyTypesEnum.ESCAPE) {
-        if (searchInput.value.trim() !== '') {
-          // Clear search on ESC key otherwise close the modal
-          event.preventDefault();
-          searchInput.value = '';
           searchInput.focus();
         }
       }

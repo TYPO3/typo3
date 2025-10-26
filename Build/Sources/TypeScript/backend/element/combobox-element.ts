@@ -587,11 +587,11 @@ export class ComboboxElement extends LitElement {
         }
         break;
       case 'Escape':
-        event.preventDefault();
         this.lastAction = Action.NAVIGATION;
         if (this.isOpen) {
           // First ESC closes the dropdown
           this.isOpen = false;
+          event.preventDefault();
           event.stopPropagation();
         } else {
           // Second ESC (or ESC when dropdown is closed) clears the value
@@ -600,6 +600,7 @@ export class ComboboxElement extends LitElement {
             this.clearInput();
             // Prevent dropdown from opening after clearing
             this.isOpen = false;
+            event.preventDefault();
             event.stopPropagation();
           }
         }

@@ -199,6 +199,7 @@ export class ModalElement extends LitElement {
           class=${classMap(classes)}
           aria-labelledby=${ifDefined(this.hideHeader ? undefined : `t3-modal-header-${this.uniqueId}`)}
           aria-label=${ifDefined(this.hideHeader ? this.modalTitle : undefined)}
+          closedby=${this.hideCloseButton ? 'none' : 'closerequest'}
           @close=${this.handleDialogClose}
           @cancel=${this.handleDialogCancel}
           @click=${this.handleDialogClick}
@@ -228,19 +229,30 @@ export class ModalElement extends LitElement {
     this.trigger('typo3-modal-hidden');
   }
 
+  /**
+   * Handle Escape key (implicit cancel) or explicit cancel events via `dialog.requestClose()`
+   */
   private handleDialogCancel(e: Event): void {
-    // Intercept the cancel event (Escape key) to show animation
-    e.preventDefault();
-    this.hideModal();
+    if (this.hideCloseButton) {
+      e.preventDefault();
+    }
+    if (e.defaultPrevented) {
+      // Show shake animation if we (or another event listener component)
+      // prevented the default behavior (=close) of the cancel event
+      this.shake();
+    } else {
+      // Intercept the cancel event to show animation
+      e.preventDefault();
+      this.hideModal();
+    }
   }
 
   private handleDialogClick(e: Event): void {
     if (e.target === this.dialog) {
       if (this.staticBackdrop) {
-        e.preventDefault();
         this.shake();
       } else {
-        this.hideModal();
+        this.requestClose();
       }
     }
   }
@@ -290,6 +302,7 @@ export class ModalElement extends LitElement {
         if (iframe.contentDocument.title) {
           this.modalTitle = iframe.contentDocument.title;
         }
+        iframe.contentDocument.addEventListener('keydown', this.handleIframeKeydown);
       };
       return html`
         <iframe src="${this.content}" name="modal_frame" class="modal-iframe t3js-modal-iframe" @load=${loadCallback}></iframe>
@@ -329,6 +342,43 @@ export class ModalElement extends LitElement {
   private trigger(event: string): void {
     this.dispatchEvent(new CustomEvent(event, { bubbles: true, composed: true }));
   }
+
+  /**
+   * Compatibility wrapper for dialog.requestClose which is (by the time of writing)
+   * baseline "newly available" [1] and not available in our CI chrome version.
+   * @todo remove this wrapper once `dialog.requestClose()` becomes widely available,
+   *       all logic is already implemented in the `cancel` event handler and duplicated
+   *       here for the sake of browser compatibility
+   * [1] https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/requestClose
+   */
+  private requestClose(): void {
+    if ('requestClose' in this.dialog) {
+      this.dialog.requestClose();
+    } else if (this.hideCloseButton) {
+      this.hideModal();
+    } else {
+      this.shake();
+    }
+  }
+
+  private readonly handleIframeKeydown = (e: KeyboardEvent): void => {
+    if (e.key === 'Escape') {
+      if (e.target instanceof e.view.window.HTMLInputElement && e.target.type === 'search') {
+        if (e.target.value === '') {
+          this.requestClose();
+        }
+        return;
+      }
+
+      // Don't close modal if default behavior (default behavior = close)
+      // was prevented by another component
+      if (e.defaultPrevented) {
+        return;
+      }
+
+      this.requestClose();
+    }
+  };
 
   private shake(): void {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
