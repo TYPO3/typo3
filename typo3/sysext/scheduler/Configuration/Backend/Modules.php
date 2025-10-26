@@ -10,6 +10,7 @@ return [
         'parent' => 'system',
         'access' => 'admin',
         'path' => '/module/system/scheduler',
+        'workspaces' => 'live',
         'iconIdentifier' => 'module-scheduler',
         'labels' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf',
         'routes' => [
