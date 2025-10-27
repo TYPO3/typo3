@@ -100,11 +100,15 @@ final class ReportModuleCest
         $I->waitForElementVisible('.card-container');
         $I->see($exampleData['title'], '.card-title');
         $I->see($exampleData['shortDescription'], '.card-subtitle');
-        $I->see('Open ' . $exampleData['title'] . ' module', '.card-footer');
+        $I->see('Open module', '.card-footer');
+
+        $I->amGoingTo('check aria-label contains module name for accessibility');
+        // Find the card containing the specific title and verify its button has proper aria-label
+        $cardSelector = '//div[@class="card card-size-small" and .//h2[contains(text(), "' . $exampleData['title'] . '")]]';
+        $buttonSelector = $cardSelector . '//a[@aria-label="Open ' . $exampleData['title'] . ' module"]';
+        $I->seeElement($buttonSelector);
 
         $I->amGoingTo('open ' . $exampleData['title'] . ' module via card button');
-        // Find the card containing the specific title and click its "Open module" button
-        $cardSelector = '//div[@class="card card-size-small" and .//h2[contains(text(), "' . $exampleData['title'] . '")]]';
         $I->click('.btn', $cardSelector);
         $I->waitForText($exampleData['title']);
         $I->see($exampleData['title'], 'h1');

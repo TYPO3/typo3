@@ -56,21 +56,15 @@
                                 </p>
                             </f:then>
                             <f:else>
+                                <f:variable name="submoduleTitle"><f:translate key="{subModule.title}">{subModule.title}</f:translate></f:variable>
                                 <a
                                     href="#"
                                     data-dispatch-action="TYPO3.ModuleMenu.showModule"
                                     data-dispatch-args-list="{subModule.identifier}"
                                     class="btn btn-default"
+                                    aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:submoduleOverview.openModuleWithTitle', arguments: {0: submoduleTitle})}"
                                 >
-                                    <f:if condition="{subModule.title}">
-                                        <f:then>
-                                            <f:variable name="submoduleTitle"><f:translate key="{subModule.title}">{subModule.title}</f:translate></f:variable>
-                                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:link.openModuleWithTitle" arguments="{0: submoduleTitle}" />
-                                        </f:then>
-                                        <f:else>
-                                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:link.openModule" />
-                                        </f:else>
-                                    </f:if>
+                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:link.openModule" />
                                 </a>
                             </f:else>
                         </f:if>
