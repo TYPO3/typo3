@@ -99,10 +99,12 @@ readonly class LabelFileResolver
     /**
      * If a file is called "de_AT.locallang.xlf", this method returns "de_AT".
      * If there is no suffix, NULL is returned.
+     *
+     * However, for files like "db.xlf", "db" should not be detected as locale
      */
     public function getLocaleFromLanguageFile(string $fileName): ?string
     {
-        if (preg_match('/^[a-z]{2}([_-][A-z]{2})?\./', $fileName)) {
+        if (substr_count($fileName, '.') > 1 && preg_match('/^[a-z]{2}([_-][A-z]{2,3})?\./', $fileName)) {
             return substr($fileName, 0, strpos($fileName, '.'));
         }
         return null;

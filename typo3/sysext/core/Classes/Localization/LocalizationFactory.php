@@ -44,6 +44,11 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  */
 readonly class LocalizationFactory
 {
+    protected const MOVED_FILES = [
+        // @todo: remove the following files in TYPO3 v15.0, they serve as a fallback for old syntax and files that have been moved
+        'EXT:seo/Resources/Private/Language/locallang_tca.xlf' => 'EXT:seo/Resources/Private/Language/db.xlf',
+    ];
+
     public function __construct(
         protected Translator $translator,
         #[Autowire(service: 'cache.l10n')]
@@ -72,6 +77,12 @@ readonly class LocalizationFactory
     public function getParsedData(string $fileReference, string $languageKey): array
     {
         $languageKey = $languageKey === 'default' ? 'en' : $languageKey;
+
+        if (isset(self::MOVED_FILES[$fileReference])) {
+            trigger_error('The file ' . $fileReference . ' has been moved to ' . self::MOVED_FILES[$fileReference] . '. Please update your code accordingly.', E_USER_DEPRECATED);
+            $fileReference = self::MOVED_FILES[$fileReference];
+        }
+
         $fileReference = $this->translationDomainMapper->mapDomainToFileName($fileReference);
         $systemCacheIdentifier = md5($fileReference . $languageKey);
 

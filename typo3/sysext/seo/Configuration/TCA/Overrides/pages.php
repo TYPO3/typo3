@@ -9,7 +9,7 @@ $openGraphCropConfiguration = [
                 'disabled' => true,
             ],
             'social' => [
-                'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop_variant.social',
+                'title' => 'core.wizards:imwizard.crop_variant.social',
                 'coverAreas' => [],
                 'cropArea' => [
                     'x' => '0.0',
@@ -19,11 +19,11 @@ $openGraphCropConfiguration = [
                 ],
                 'allowedAspectRatios' => [
                     '1.91:1' => [
-                        'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.191_1',
+                        'title' => 'core.wizards:imwizard.ratio.191_1',
                         'value' => 1200 / 630,
                     ],
                     'NaN' => [
-                        'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.free',
+                        'title' => 'core.wizards:imwizard.ratio.free',
                         'value' => 0.0,
                     ],
                 ],
@@ -37,11 +37,11 @@ $tca = [
     'palettes' => [
         'seo' => [
             'label' => 'core.form.palettes:seo',
-            'showitem' => 'seo_title;LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.seo_title',
+            'showitem' => 'seo_title',
         ],
         'robots' => [
             'label' => 'core.form.palettes:robots',
-            'showitem' => 'no_index;LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.no_index_formlabel, no_follow;LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.no_follow_formlabel',
+            'showitem' => 'no_index, no_follow',
         ],
         'canonical' => [
             'label' => 'core.form.palettes:canonical',
@@ -64,7 +64,7 @@ $tca = [
         'seo_title' => [
             'exclude' => true,
             'l10n_mode' => 'prefixLangTitle',
-            'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.seo_title',
+            'label' => 'seo.db:pages.seo_title',
             'config' => [
                 'type' => 'input',
                 'size' => 40,
@@ -76,7 +76,7 @@ $tca = [
             'exclude' => true,
             'l10n_mode' => 'exclude',
             'onChange' => 'reload',
-            'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.no_index_formlabel',
+            'label' => 'seo.db:pages.no_index_formlabel',
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
@@ -91,7 +91,7 @@ $tca = [
         'no_follow' => [
             'exclude' => true,
             'l10n_mode' => 'exclude',
-            'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.no_follow_formlabel',
+            'label' => 'seo.db:pages.no_follow_formlabel',
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
@@ -105,26 +105,26 @@ $tca = [
         ],
         'sitemap_changefreq' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq',
+            'label' => 'seo.db:pages.sitemap_changefreq',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq.none', 'value' => ''],
-                    ['label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq.always', 'value' => 'always'],
-                    ['label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq.hourly', 'value' => 'hourly'],
-                    ['label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq.daily', 'value' => 'daily'],
-                    ['label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq.weekly', 'value' => 'weekly'],
-                    ['label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq.monthly', 'value' => 'monthly'],
-                    ['label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq.yearly', 'value' => 'yearly'],
-                    ['label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq.never', 'value' => 'never'],
+                    ['label' => 'seo.db:pages.sitemap_changefreq.none', 'value' => ''],
+                    ['label' => 'seo.db:pages.sitemap_changefreq.always', 'value' => 'always'],
+                    ['label' => 'seo.db:pages.sitemap_changefreq.hourly', 'value' => 'hourly'],
+                    ['label' => 'seo.db:pages.sitemap_changefreq.daily', 'value' => 'daily'],
+                    ['label' => 'seo.db:pages.sitemap_changefreq.weekly', 'value' => 'weekly'],
+                    ['label' => 'seo.db:pages.sitemap_changefreq.monthly', 'value' => 'monthly'],
+                    ['label' => 'seo.db:pages.sitemap_changefreq.yearly', 'value' => 'yearly'],
+                    ['label' => 'seo.db:pages.sitemap_changefreq.never', 'value' => 'never'],
                 ],
                 'dbFieldLength' => 10,
             ],
         ],
         'sitemap_priority' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_priority',
+            'label' => 'seo.db:pages.sitemap_priority',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -146,15 +146,15 @@ $tca = [
         ],
         'canonical_link' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.canonical_link',
-            'description' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.canonical_link.description',
+            'label' => 'seo.db:pages.canonical_link',
+            'description' => 'seo.db:pages.canonical_link.description',
             'displayCond' => 'FIELD:no_index:=:0',
             'config' => [
                 'type' => 'link',
                 'allowedTypes' => ['page', 'url', 'record'],
                 'size' => 50,
                 'appearance' => [
-                    'browserTitle' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.canonical_link',
+                    'browserTitle' => 'seo.db:pages.canonical_link',
                     'allowedOptions' => ['params', 'rel'],
                 ],
             ],
@@ -162,7 +162,7 @@ $tca = [
         'og_title' => [
             'exclude' => true,
             'l10n_mode' => 'prefixLangTitle',
-            'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.og_title',
+            'label' => 'seo.db:pages.og_title',
             'config' => [
                 'type' => 'input',
                 'size' => 40,
@@ -173,7 +173,7 @@ $tca = [
         'og_description' => [
             'exclude' => true,
             'l10n_mode' => 'prefixLangTitle',
-            'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.og_description',
+            'label' => 'seo.db:pages.og_description',
             'config' => [
                 'type' => 'text',
                 'cols' => 40,
@@ -182,7 +182,7 @@ $tca = [
         ],
         'og_image' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.og_image',
+            'label' => 'seo.db:pages.og_image',
             'config' => [
                 'type' => 'file',
                 'allowed' => 'common-image-types',
@@ -199,7 +199,7 @@ $tca = [
         'twitter_title' => [
             'exclude' => true,
             'l10n_mode' => 'prefixLangTitle',
-            'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.twitter_title',
+            'label' => 'seo.db:pages.twitter_title',
             'config' => [
                 'type' => 'input',
                 'size' => 40,
@@ -210,7 +210,7 @@ $tca = [
         'twitter_description' => [
             'exclude' => true,
             'l10n_mode' => 'prefixLangTitle',
-            'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.twitter_description',
+            'label' => 'seo.db:pages.twitter_description',
             'config' => [
                 'type' => 'text',
                 'cols' => 40,
@@ -219,7 +219,7 @@ $tca = [
         ],
         'twitter_image' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.twitter_image',
+            'label' => 'seo.db:pages.twitter_image',
             'config' => [
                 'type' => 'file',
                 'allowed' => 'common-image-types',
@@ -235,15 +235,15 @@ $tca = [
         ],
         'twitter_card' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.twitter_card',
+            'label' => 'seo.db:pages.twitter_card',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'default' => '',
                 'items' => [
                     ['label' => '', 'value' => ''],
-                    ['label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.twitter_card.summary', 'value' => 'summary'],
-                    ['label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.twitter_card.summary_large_image', 'value' => 'summary_large_image'],
+                    ['label' => 'seo.db:pages.twitter_card.summary', 'value' => 'summary'],
+                    ['label' => 'seo.db:pages.twitter_card.summary_large_image', 'value' => 'summary_large_image'],
                 ],
                 'dbFieldLength' => 255,
             ],
