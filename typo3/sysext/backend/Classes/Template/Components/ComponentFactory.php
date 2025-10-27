@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Backend\Template\Components;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownDivider;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItem;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\FullyRenderedButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\GenericButton;
@@ -166,6 +168,16 @@ readonly class ComponentFactory
     public function createDropDownButton(): DropDownButton
     {
         return GeneralUtility::makeInstance(DropDownButton::class);
+    }
+
+    public function createDropDownDivider(): DropDownDivider
+    {
+        return GeneralUtility::makeInstance(DropDownDivider::class);
+    }
+
+    public function createDropDownItem(): DropDownItem
+    {
+        return GeneralUtility::makeInstance(DropDownItem::class);
     }
 
     public function createLinkButton(): LinkButton

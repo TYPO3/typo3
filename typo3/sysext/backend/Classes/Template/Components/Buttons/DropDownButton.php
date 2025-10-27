@@ -63,6 +63,7 @@ class DropDownButton implements ButtonInterface
     protected array $items = [];
     protected bool $showLabelText = false;
     protected bool $disabled = false;
+    protected ButtonSize $size = ButtonSize::SMALL;
 
     public function getIcon(): ?Icon
     {
@@ -136,6 +137,17 @@ class DropDownButton implements ButtonInterface
         return $this;
     }
 
+    public function getSize(): ButtonSize
+    {
+        return $this->size;
+    }
+
+    public function setSize(ButtonSize $size): DropDownButton
+    {
+        $this->size = $size;
+        return $this;
+    }
+
     /**
      * @return DropDownItemInterface[]
      */
@@ -175,7 +187,7 @@ class DropDownButton implements ButtonInterface
 
         $attributes = [
             'type' => 'button',
-            'class' => 'btn btn-sm btn-default dropdown-toggle',
+            'class' => 'btn ' . $this->getSize()->value . ' btn-default dropdown-toggle',
             'data-bs-toggle' => 'dropdown',
             'aria-expanded' => 'false',
         ];

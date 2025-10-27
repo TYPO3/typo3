@@ -40,12 +40,8 @@ class ProcessFileListActionsEventListener
             return;
         }
 
-        $actionItems = $event->getActionItems();
         foreach (self::DISABLED_ACTIONS as $disableIconName) {
-            if (!empty($actionItems[$disableIconName])) {
-                unset($actionItems[$disableIconName]);
-            }
+            $event->removeAction($disableIconName);
         }
-        $event->setActionItems($actionItems);
     }
 }

@@ -33,8 +33,37 @@ and :php:`ComponentFactory` handles component creation.
 Additionally, several "add" methods now support fluent interface patterns, to
 enable method chaining for improved code readability.
 
+.. _feature-107824-recordlists:
+
+Database record list and file list
+----------------------------------
+
+The :php`TYPO3\CMS\Backend\RecordList\DatabaseRecordList` and
+:php:`TYPO3\CMS\Filelist\FileList` classes, which are responsible in the backend
+to show all lists of records and files, now make use of the ComponentFactory.
+The list of "action buttons" is no longer represented with plain HTML and allows
+a clear distinction of primary and secondary actions.
+
+For this, the new
+enum :php:`TYPO3\CMS\Backend\Template\Components\ActionGroup` and
+:php:`TYPO3\CMS\Backend\Template\Components\ComponentGroup` are also added
+to the Button API to allow this grouping.
+
+The existing PSR-14 events (
+:php:`\TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListRecordActionsEvent`,
+:php:`\TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent`) which are used within
+these classes have been streamlined to deal with these API changes. Details can
+be found see in the related :ref:`breaking changes document <breaking-107884-1730135000>`
+of :issue:`107884`.
+
+The Button API has also been enhanced to allow passing a new
+:php:`TYPO3\CMS\Backend\Template\Components\Buttons\ButtonSize` enum
+to differentiate the buttons for certain icon sizes.
+
+.. _feature-107824-factorymethods:
+
 Available Factory Methods
---------------------------
+-------------------------
 
 The :php:`ComponentFactory` provides two categories of methods:
 
@@ -61,6 +90,8 @@ URL parameters accept both :php:`string` and :php:`UriInterface` for convenience
 * :php:`createDropDownButton()` - Creates a new DropDownButton instance
 * :php:`createFullyRenderedButton()` - Creates a new FullyRenderedButton instance
 * :php:`createShortcutButton()` - Creates a new ShortcutButton instance
+* :php:`createDropDownDivider()` - Creates a new DropDownDivider instance
+* :php:`createDropDownItem()` - Creates a new DropDownItem instance
 
 **Menu Component Creation:**
 
@@ -72,6 +103,26 @@ URL parameters accept both :php:`string` and :php:`UriInterface` for convenience
    The corresponding :php:`ButtonBar::make*()`, :php:`Menu::makeMenuItem()`, and
    :php:`MenuRegistry::makeMenu()` methods are now deprecated.
    See :ref:`deprecation-107824-1761297638`
+
+The Button API has also been enhanced to allow passing a new
+ enum
+to differentiate the buttons for certain icon sizes.
+
+.. _feature-107824-buttonapi:
+
+Improvements to Button API types
+--------------------------------
+
+The following button types can use :php:`getSize()` and :php:`setSize()`
+methods in their instance to set the icon size with the
+:php:`TYPO3\CMS\Backend\Template\Components\Buttons\ButtonSize` enum,
+choosing between a small, medium and large variant (utilizing CSS classes
+internally):
+
+* :php:`TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton`
+* :php:`TYPO3\CMS\Backend\Template\Components\Buttons\GenericButton`
+* :php:`TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton`
+
 
 Impact
 ======
@@ -185,8 +236,10 @@ Example - Customizing pre-configured buttons:
         // ...
     }
 
+.. _feature-107824-fluent:
+
 Fluent Interface Improvements
-==============================
+=============================
 
 Several "add" methods now support fluent interface pattern, enabling method
 chaining:
@@ -218,6 +271,8 @@ chaining:
 
 These changes provide a more fluent API while maintaining backward compatibility, as the
 return values were previously ignored (:php:`void`).
+
+.. _feature-107824-rationale:
 
 Design Rationale
 ================

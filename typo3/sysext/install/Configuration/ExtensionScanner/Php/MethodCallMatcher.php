@@ -6670,6 +6670,34 @@ return [
             'Deprecation-93981-GraphicalFunctionsGifOrJpg.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListRecordActionsEvent->getActions' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-107884-ReworkActionsToUseButtonsAPI.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListRecordActionsEvent->setActions' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-107884-ReworkActionsToUseButtonsAPI.rst',
+        ],
+    ],
+    'TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent->getActionItems' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-107884-ReworkActionsToUseButtonsAPI.rst',
+        ],
+    ],
+    'TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent->setActionItems' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-107884-ReworkActionsToUseButtonsAPI.rst',
+        ],
+    ],
     /** Note (leave this at the bottom):
      *  The FQCN object definitions here are not actually checked, only
      *  the method name itself. That means, never list generic method names

@@ -94,6 +94,7 @@ class GenericButton implements ButtonInterface
     protected ?string $title = null;
     protected ?string $href = null;
     protected string $classes = '';
+    protected ButtonSize $size = ButtonSize::SMALL;
     protected array $attributes = [];
     protected bool $showLabelText = false;
 
@@ -164,6 +165,17 @@ class GenericButton implements ButtonInterface
         return $this;
     }
 
+    public function getSize(): ButtonSize
+    {
+        return $this->size;
+    }
+
+    public function setSize(ButtonSize $size): static
+    {
+        $this->size = $size;
+        return $this;
+    }
+
     /**
      * @param array<string, string> $attributes
      */
@@ -207,7 +219,7 @@ class GenericButton implements ButtonInterface
     protected function getAttributesString(): string
     {
         $attributes = $this->getAttributes();
-        $attributes['class'] = rtrim('btn btn-sm btn-default ' . $this->getClasses());
+        $attributes['class'] = rtrim('btn ' . $this->getSize()->value . ' btn-default ' . $this->getClasses());
         if ($this->getHref()) {
             $attributes['href'] = $this->getHref();
         }

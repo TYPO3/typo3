@@ -50,6 +50,8 @@ class LinkButton extends AbstractButton
 
     protected string $role = 'button';
 
+    protected ButtonSize $size = ButtonSize::SMALL;
+
     public function getHref(): string
     {
         return $this->href;
@@ -72,6 +74,17 @@ class LinkButton extends AbstractButton
         return $this;
     }
 
+    public function getSize(): ButtonSize
+    {
+        return $this->size;
+    }
+
+    public function setSize(ButtonSize $size): static
+    {
+        $this->size = $size;
+        return $this;
+    }
+
     public function isValid(): bool
     {
         return trim($this->getHref()) !== ''
@@ -86,7 +99,7 @@ class LinkButton extends AbstractButton
             'role' => $this->getRole(),
             'href' => $this->getHref(),
             // @see SplitButton - hard-coded replacement for this hard-coded class-list
-            'class' => 'btn btn-sm btn-default ' . $this->getClasses(),
+            'class' => 'btn ' . $this->getSize()->value . ' btn-default ' . $this->getClasses(),
             'title' => $this->getTitle(),
         ];
         $labelText = '';
@@ -104,7 +117,7 @@ class LinkButton extends AbstractButton
             '<a %s>%s%s</a>',
             GeneralUtility::implodeAttributes($attributes, true),
             $this->getIcon()?->render() ?? '',
-            htmlspecialchars($labelText)
+            htmlspecialchars($labelText),
         );
     }
 

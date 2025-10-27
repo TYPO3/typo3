@@ -17,19 +17,25 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\RecordList\Event;
 
+use Psr\Http\Message\RequestInterface;
 use TYPO3\CMS\Backend\RecordList\DatabaseRecordList;
+use TYPO3\CMS\Backend\Template\Components\ActionGroup;
+use TYPO3\CMS\Backend\Template\Components\ComponentGroup;
+use TYPO3\CMS\Backend\Template\Components\ComponentInterface;
+use TYPO3\CMS\Core\Domain\RecordInterface;
 
 /**
  * An event to modify the displayed record actions (e.g.
  * "edit", "copy", "delete") for a table in the RecordList.
  */
-final class ModifyRecordListRecordActionsEvent
+final readonly class ModifyRecordListRecordActionsEvent
 {
     public function __construct(
-        private array $actions,
-        private readonly string $table,
-        private readonly array $record,
-        private readonly DatabaseRecordList $recordList
+        private ComponentGroup $primary,
+        private ComponentGroup $secondary,
+        private RecordInterface $record,
+        private DatabaseRecordList $recordList,
+        private RequestInterface $request,
     ) {}
 
     /**
@@ -42,48 +48,41 @@ final class ModifyRecordListRecordActionsEvent
      * Note: In case non or an invalid $group is provided, the new action will
      * be added to the secondary group.
      *
-     * @param string $action
+     * @param ?ComponentInterface $action
      * @param string $actionName
-     * @param string $group
+     * @param ActionGroup $group
      * @param string $before
      * @param string $after
      */
     public function setAction(
-        string $action,
-        string $actionName = '',
-        string $group = '',
+        ?ComponentInterface $action,
+        string $actionName,
+        ActionGroup $group = ActionGroup::secondary,
         string $before = '',
-        string $after = ''
+        string $after = '',
     ): void {
-        // Only "primary" and "secondary" are valid, default to "secondary" otherwise
-        $group = in_array($group, ['primary', 'secondary'], true) ? $group : 'secondary';
-
-        if ($actionName !== '') {
-            if ($before !== '' && $this->hasAction($before, $group)) {
-                $end = array_splice($this->actions[$group], (int)(array_search($before, array_keys($this->actions[$group]), true)));
-                $this->actions[$group] = array_merge($this->actions[$group], [$actionName => $action], $end);
-            } elseif ($after !== '' && $this->hasAction($after, $group)) {
-                $end = array_splice($this->actions[$group], (int)(array_search($after, array_keys($this->actions[$group]), true)) + 1);
-                $this->actions[$group] = array_merge($this->actions[$group], [$actionName => $action], $end);
-            } else {
-                $this->actions[$group][$actionName] = $action;
-            }
-        } else {
-            $this->actions[$group][] = $action;
+        if ($actionName === '') {
+            throw new \Exception('You must provide a valid action name when adding a new action.', 1761584690);
         }
+
+        $componentGroup = match ($group) {
+            ActionGroup::primary => $this->primary,
+            ActionGroup::secondary => $this->secondary,
+        };
+        $componentGroup->add($actionName, $action, $before, $after);
     }
 
     /**
      * Whether the action exists in the given group. In case non or
      * an invalid $group is provided, both groups will be checked.
      */
-    public function hasAction(string $actionName, string $group = ''): bool
+    public function hasAction(string $actionName, ?ActionGroup $group = null): bool
     {
-        if (in_array($group, ['primary', 'secondary'], true)) {
-            return (bool)($this->actions[$group][$actionName] ?? false);
-        }
-
-        return (bool)($this->actions['primary'][$actionName] ?? $this->actions['secondary'][$actionName] ?? false);
+        return match ($group) {
+            ActionGroup::primary => $this->primary->has($actionName),
+            ActionGroup::secondary => $this->secondary->has($actionName),
+            null => $this->primary->has($actionName) || $this->secondary->has($actionName),
+        };
     }
 
     /**
@@ -91,69 +90,59 @@ final class ModifyRecordListRecordActionsEvent
      * and non or an invalid $group is provided, the action from the
      * "primary" group will be returned.
      */
-    public function getAction(string $actionName, string $group = ''): ?string
+    public function getAction(string $actionName, ?ActionGroup $group = null): ?ComponentInterface
     {
-        if (in_array($group, ['primary', 'secondary'], true)) {
-            return $this->actions[$group][$actionName] ?? null;
-        }
-
-        return $this->actions['primary'][$actionName] ?? $this->actions['secondary'][$actionName] ?? null;
+        return match ($group) {
+            ActionGroup::primary => $this->primary->get($actionName),
+            ActionGroup::secondary => $this->secondary->get($actionName),
+            null => $this->primary->get($actionName) ?? $this->secondary->get($actionName),
+        };
     }
 
     /**
      * Remove action by its name. In case the action exists in both groups
      * and non or an invalid $group is provided, the action will be removed
      * from both groups.
-     *
-     * @return bool Whether the action could be removed - Will therefore
-     *              return FALSE if the action to remove does not exist.
      */
-    public function removeAction(string $actionName, string $group = ''): bool
+    public function removeAction(string $actionName, ?ActionGroup $group = null): void
     {
-        if (($this->actions[$group][$actionName] ?? false) && in_array($group, ['primary', 'secondary'], true)) {
-            unset($this->actions[$group][$actionName]);
-            return true;
+        if ($group === null) {
+            $this->primary->remove($actionName);
+            $this->secondary->remove($actionName);
+            return;
         }
+        match ($group) {
+            ActionGroup::primary => $this->primary->remove($actionName),
+            ActionGroup::secondary => $this->secondary->remove($actionName),
+        };
+    }
 
-        $actionRemoved = false;
-
-        if ($this->actions['primary'][$actionName] ?? false) {
-            unset($this->actions['primary'][$actionName]);
-            $actionRemoved = true;
+    public function moveActionTo(
+        string $actionName,
+        ActionGroup $group,
+        string $before = '',
+        string $after = '',
+    ): void {
+        if (!$this->hasAction($actionName)) {
+            throw new \RuntimeException('The action "' . $actionName . '" does not exist and therefore cannot be moved.', 1761646464);
         }
-
-        if ($this->actions['secondary'][$actionName] ?? false) {
-            unset($this->actions['secondary'][$actionName]);
-            $actionRemoved = true;
-        }
-
-        return $actionRemoved;
+        $action = $this->getAction($actionName);
+        $this->removeAction($actionName);
+        $this->setAction($action, $actionName, $group, $before, $after);
     }
 
     /**
      * Get the actions of a specific group
      */
-    public function getActionGroup(string $group): ?array
+    public function getActionGroup(ActionGroup $group): ComponentGroup
     {
-        return in_array($group, ['primary', 'secondary'], true) ? $this->actions[$group] : null;
+        return match ($group) {
+            ActionGroup::primary => $this->primary,
+            ActionGroup::secondary => $this->secondary,
+        };
     }
 
-    public function setActions(array $actions): void
-    {
-        $this->actions = $actions;
-    }
-
-    public function getActions(): array
-    {
-        return $this->actions;
-    }
-
-    public function getTable(): string
-    {
-        return $this->table;
-    }
-
-    public function getRecord(): array
+    public function getRecord(): RecordInterface
     {
         return $this->record;
     }
@@ -166,5 +155,10 @@ final class ModifyRecordListRecordActionsEvent
     public function getRecordList(): DatabaseRecordList
     {
         return $this->recordList;
+    }
+
+    public function getRequest(): RequestInterface
+    {
+        return $this->request;
     }
 }

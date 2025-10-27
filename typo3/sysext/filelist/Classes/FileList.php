@@ -21,11 +21,13 @@ use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ActionGroup;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItem;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton;
+use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonSize;
 use TYPO3\CMS\Backend\Template\Components\Buttons\GenericButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
+use TYPO3\CMS\Backend\Template\Components\ComponentGroup;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\JsConfirmation;
@@ -160,6 +162,7 @@ class FileList
     protected TranslationConfigurationProvider $translateTools;
     protected OnlineMediaHelperRegistry $onlineMediaHelperRegistry;
     protected TcaSchemaFactory $tcaSchemaFactory;
+    protected ComponentFactory $componentFactory;
 
     public function __construct(ServerRequestInterface $request)
     {
@@ -199,6 +202,7 @@ class FileList
             $fileExtensionMatcher->addExtension('*');
         }
         $this->resourceDownloadMatcher->addMatcher($fileExtensionMatcher);
+        $this->componentFactory = GeneralUtility::makeInstance(ComponentFactory::class);
     }
 
     public function setResourceDownloadMatcher(?Matcher $matcher): self
@@ -917,15 +921,11 @@ class FileList
         }
 
         // primary actions
-        $primaryActions =  ['view', 'metadata', 'translations', 'delete'];
         $userTsConfig = $this->getBackendUser()->getTSConfig();
-        if ($userTsConfig['options.']['file_list.']['primaryActions'] ?? false) {
-            $primaryActions = GeneralUtility::trimExplode(',', $userTsConfig['options.']['file_list.']['primaryActions']);
-            // Always add "translations" as this action has an own dropdown container and therefore cannot be a secondary action
-            if (!in_array('translations', $primaryActions, true)) {
-                $primaryActions[] = 'translations';
-            }
-        }
+        $primaryActions = GeneralUtility::trimExplode(',', $userTsConfig['options.']['file_list.']['primaryActions'] ?? 'view,metadata,translations,delete');
+
+        $primary = new ComponentGroup('primary');
+        $secondary = new ComponentGroup('secondary');
 
         $actions = [
             'edit' => $this->createControlEditContent($resourceView),
@@ -943,53 +943,70 @@ class FileList
             'updateOnlineMedia' => $this->createControlUpdateOnlineMedia($resourceView),
         ];
 
-        $event = new ProcessFileListActionsEvent($resourceView->resource, $actions);
+        foreach ($actions as $actionName => $action) {
+            if (in_array($actionName, $primaryActions, true)) {
+                $primary->add($actionName, $action);
+            } else {
+                $secondary->add($actionName, $action);
+            }
+        }
+
+        $event = new ProcessFileListActionsEvent($primary, $secondary, $resourceView->resource, $this->request);
         $event = $this->eventDispatcher->dispatch($event);
-        $actions = $event->getActionItems();
 
-        // Remove empty actions
-        $actions = array_filter($actions, static fn($action) => $action !== null && trim($action) !== '');
+        if ($event->hasAction('translation')) {
+            // Always move "translations" to primary as this action has an own dropdown container and therefore cannot be a secondary action
+            $event->moveActionTo('translation', ActionGroup::primary);
+        }
 
-        // Compile items into a dropdown
         $cellOutput = '';
         $output = '';
-        foreach ($actions as $key => $action) {
-            if (in_array($key, $primaryActions, true)) {
-                $output .= $action;
+        foreach ($event->getActionGroup(ActionGroup::primary)->getItems() as $action) {
+            if (method_exists($action, 'setSize')) {
+                $action->setSize(ButtonSize::MEDIUM);
+            }
+            $output .= $action;
+        }
+        foreach ($event->getActionGroup(ActionGroup::secondary)->getItems() as $action) {
+            if ($action instanceof GenericButton) {
+                $action = $this->componentFactory
+                    ->createDropDownItem()
+                    ->setTag($action->getTag())
+                    ->setLabel($action->getLabel() ?: $action->getTitle())
+                    ->setIcon($action->getIcon())
+                    ->setHref($action->getHref())
+                    ->setAttributes([
+                        ...$action->getAttributes(),
+                        'class' => $action->getClasses(),
+                    ]);
+                $cellOutput .= '<li>' . $action->render() . '</li>';
                 continue;
             }
-            // This is a backwards-compat layer for the existing hook items, which will be removed in TYPO3 v12.
-            $action = str_replace('btn btn-sm btn-default', 'dropdown-item dropdown-item-spaced', $action);
-            $title = [];
-            preg_match('/title="([^"]*)"/', $action, $title);
-            if (empty($title)) {
-                preg_match('/aria-label="([^"]*)"/', $action, $title);
-            }
-            if (!empty($title[1])) {
-                $action = str_replace(
-                    [
-                        '</a>',
-                        '</button>',
-                    ],
-                    [
-                        ' ' . $title[1] . '</a>',
-                        ' ' . $title[1] . '</button>',
-                    ],
-                    $action
-                );
-                // In case we added the title as tag content, we can remove the attribute,
-                // since this is duplicated and would trigger a tooltip with the same content.
-                if (!empty($title[0])) {
-                    $action = str_replace($title[0], '', $action);
+            if ($action instanceof LinkButton) {
+                $attributes = [];
+                foreach ($action->getDataAttributes() as $key => $value) {
+                    $attributes['data-' . $key] = $value;
                 }
-                $cellOutput .= '<li>' . $action . '</li>';
+                $action = $this->componentFactory
+                    ->createDropDownItem()
+                    ->setLabel($action->getTitle())
+                    ->setIcon($action->getIcon())
+                    ->setHref($action->getHref())
+                    ->setAttributes([
+                        ...$attributes,
+                        'class' => $action->getClasses(),
+                        'role' => $action->getRole(),
+                    ]);
+                $cellOutput .= '<li>' . $action->render() . '</li>';
+                continue;
             }
+            $cellOutput .= '<li>' . $action->render() . '</li>';
         }
 
         if ($cellOutput !== '') {
             $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.more');
             $output .= '<div class="btn-group dropdown">'
-                . '<a title="' . htmlspecialchars($title) . '" href="#actions_' . $resourceView->resource->getHashedIdentifier() . '" class="btn btn-sm btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">'
+                . '<a title="' . htmlspecialchars($title) . '" href="#actions_' . $resourceView->resource->getHashedIdentifier() . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">'
                 . $this->iconFactory->getIcon('actions-menu-alternative', IconSize::SMALL)->render()
                 . '</a>'
                 . '<ul id="actions_' . $resourceView->resource->getHashedIdentifier() . '" class="dropdown-menu">' . $cellOutput . '</ul>'
@@ -1019,7 +1036,11 @@ class FileList
         if (empty($actions)) {
             return '';
         }
-
+        foreach ($actions as $action) {
+            if (method_exists($action, 'setSize')) {
+                $action->setSize(ButtonSize::MEDIUM);
+            }
+        }
         return '<div class="btn-group">' . implode(' ', $actions) . '</div>';
     }
 
@@ -1033,7 +1054,7 @@ class FileList
             $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.selectFile'),
             $resourceView->getName(),
         );
-        $button = GeneralUtility::makeInstance(GenericButton::class);
+        $button = $this->componentFactory->createGenericButton();
         $button->setTitle($title);
         $button->setAttributes([
             'type' => 'button',
@@ -1052,7 +1073,7 @@ class FileList
             return null;
         }
 
-        $button = GeneralUtility::makeInstance(LinkButton::class);
+        $button = $this->componentFactory->createLinkButton();
         $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editcontent'));
         $button->setHref($resourceView->editContentUri);
         $button->setIcon($this->iconFactory->getIcon('actions-page-open', IconSize::SMALL));
@@ -1066,7 +1087,8 @@ class FileList
             return null;
         }
 
-        $button = GeneralUtility::makeInstance(LinkButton::class);
+        $button = $this->componentFactory->createLinkButton();
+        $button->setSize(ButtonSize::MEDIUM);
         $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata'));
         $button->setHref($resourceView->editDataUri);
         $button->setIcon($this->iconFactory->getIcon('actions-open', IconSize::SMALL));
@@ -1080,11 +1102,12 @@ class FileList
             return null;
         }
 
-        $button = GeneralUtility::makeInstance(GenericButton::class);
+        $button = $this->componentFactory->createGenericButton();
         $button->setTag('a');
         $button->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.view'));
         $button->setHref($resourceView->getPublicUrl());
         $button->setAttributes(['target' => '_blank']);
+        $button->setSize(ButtonSize::MEDIUM);
         $button->setIcon($this->iconFactory->getIcon('actions-document-view', IconSize::SMALL));
 
         return $button;
@@ -1096,7 +1119,7 @@ class FileList
             return null;
         }
 
-        $button = GeneralUtility::makeInstance(GenericButton::class);
+        $button = $this->componentFactory->createGenericButton();
         $button->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.replace'));
         $button->setAttributes(['type' => 'button', 'data-filelist-action' => 'replace']);
         $button->setIcon($this->iconFactory->getIcon('actions-edit-replace', IconSize::SMALL));
@@ -1110,7 +1133,7 @@ class FileList
             return null;
         }
 
-        $button = GeneralUtility::makeInstance(GenericButton::class);
+        $button = $this->componentFactory->createGenericButton();
         $button->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.rename'));
         $button->setAttributes(['type' => 'button', 'data-filelist-action' => 'rename']);
         $button->setIcon($this->iconFactory->getIcon('actions-edit-rename', IconSize::SMALL));
@@ -1128,7 +1151,7 @@ class FileList
             return null;
         }
 
-        $button = GeneralUtility::makeInstance(GenericButton::class);
+        $button = $this->componentFactory->createGenericButton();
         $button->setLabel($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download'));
         $button->setAttributes([
             'type' => 'button',
@@ -1146,7 +1169,7 @@ class FileList
             return null;
         }
 
-        $button = GeneralUtility::makeInstance(GenericButton::class);
+        $button = $this->componentFactory->createGenericButton();
         $button->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info'));
         $button->setAttributes([
             'type' => 'button',
@@ -1179,7 +1202,7 @@ class FileList
         }
 
         $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete');
-        $button = GeneralUtility::makeInstance(GenericButton::class);
+        $button = $this->componentFactory->createGenericButton();
         $button->setLabel($title);
         $button->setIcon($this->iconFactory->getIcon('actions-edit-delete', IconSize::SMALL));
         $button->setAttributes([
@@ -1194,6 +1217,7 @@ class FileList
             'data-filelist-delete-check' => $this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE) ? '1' : '0',
             'data-redirect-url' => $this->createModuleUri(),
         ]);
+        $button->setSize(ButtonSize::MEDIUM);
 
         return $button;
     }
@@ -1282,7 +1306,7 @@ class FileList
                 );
             }
 
-            $dropdownItem = GeneralUtility::makeInstance(DropDownItem::class);
+            $dropdownItem = $this->componentFactory->createDropDownItem();
             $dropdownItem->setLabel($title);
             $dropdownItem->setHref($url);
             $dropdownItem->setIcon($this->iconFactory->getIcon($language['flagIcon'], IconSize::SMALL, 'overlay-' . $actionType));
@@ -1293,9 +1317,10 @@ class FileList
             return null;
         }
 
-        $dropdownButton = GeneralUtility::makeInstance(DropDownButton::class);
+        $dropdownButton = $this->componentFactory->createDropDownButton();
         $dropdownButton->setLabel($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:translations'));
         $dropdownButton->setIcon($this->iconFactory->getIcon('actions-translate', IconSize::SMALL));
+        $dropdownButton->setSize(ButtonSize::MEDIUM);
         foreach ($dropdownItems as $dropdownItem) {
             $dropdownButton->addItem($dropdownItem);
         }
@@ -1311,7 +1336,7 @@ class FileList
 
         if ($this->clipObj->current === 'normal') {
             $isSelected = $this->clipObj->isSelected('_FILE', md5($resourceView->getIdentifier()));
-            $button = GeneralUtility::makeInstance(LinkButton::class);
+            $button = $this->componentFactory->createLinkButton();
             $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($isSelected === 'copy' ? 'copyrelease' : 'copy')));
             $button->setHref($this->clipObj->selUrlFile($resourceView->getIdentifier(), true, $isSelected === 'copy'));
             $button->setIcon($this->iconFactory->getIcon($isSelected === 'copy' ? 'actions-edit-copy-release' : 'actions-edit-copy', IconSize::SMALL));
@@ -1329,7 +1354,7 @@ class FileList
 
         if ($this->clipObj->current === 'normal') {
             $isSelected = $this->clipObj->isSelected('_FILE', md5($resourceView->getIdentifier()));
-            $button = GeneralUtility::makeInstance(LinkButton::class);
+            $button = $this->componentFactory->createLinkButton();
             $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($isSelected === 'cut' ? 'cutrelease' : 'cut')));
             $button->setHref($this->clipObj->selUrlFile($resourceView->getIdentifier(), false, $isSelected === 'cut'));
             $button->setIcon($this->iconFactory->getIcon($isSelected === 'cut' ? 'actions-edit-cut-release' : 'actions-edit-cut', IconSize::SMALL));
@@ -1364,7 +1389,7 @@ class FileList
         }
 
         $pasteTitle = $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_pasteInto');
-        $button = GeneralUtility::makeInstance(LinkButton::class);
+        $button = $this->componentFactory->createLinkButton();
         $button->setTitle($pasteTitle);
         $button->setHref($this->clipObj->pasteUrl('_FILE', $resourceView->getIdentifier()));
         $button->setDataAttributes([
@@ -1387,7 +1412,7 @@ class FileList
         }
 
         $title = $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:reloadMetadata');
-        $button = GeneralUtility::makeInstance(GenericButton::class);
+        $button = $this->componentFactory->createGenericButton();
         $button->setLabel($title);
         $button->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
         $button->setAttributes([
