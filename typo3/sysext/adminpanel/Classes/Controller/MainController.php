@@ -19,13 +19,11 @@ namespace TYPO3\CMS\Adminpanel\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Adminpanel\ModuleApi\ConfigurableInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleDataStorageCollection;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\PageSettingsProviderInterface;
-use TYPO3\CMS\Adminpanel\ModuleApi\RequestEnricherInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ShortInfoProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\SubmoduleProviderInterface;
 use TYPO3\CMS\Adminpanel\Service\ModuleLoader;
@@ -34,7 +32,6 @@ use TYPO3\CMS\Adminpanel\Utility\StateUtility;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\RequestId;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 
@@ -47,31 +44,15 @@ use TYPO3\CMS\Core\View\ViewFactoryInterface;
  *
  * @internal
  */
-#[Autoconfigure(public: true)]
-class MainController
+readonly class MainController
 {
-    /** @var array<string, ModuleInterface> */
-    protected array $modules = [];
-
     public function __construct(
-        private readonly ModuleLoader $moduleLoader,
-        private readonly UriBuilder $uriBuilder,
-        private readonly RequestId $requestId,
-        private readonly ViewFactoryInterface $viewFactory,
+        private ModuleLoader $moduleLoader,
+        private UriBuilder $uriBuilder,
+        private RequestId $requestId,
+        private ViewFactoryInterface $viewFactory,
+        private ResourceUtility $resourceUtility,
     ) {}
-
-    /**
-     * Initializes settings for the admin panel.
-     */
-    public function initialize(ServerRequestInterface $request): ServerRequestInterface
-    {
-        $adminPanelModuleConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
-        $this->modules = $this->moduleLoader->validateSortAndInitializeModules($adminPanelModuleConfiguration);
-        if (StateUtility::isActivatedForUser()) {
-            $request = $this->initializeModules($request, $this->modules);
-        }
-        return $request;
-    }
 
     /**
      * Renders the admin panel - Called in PSR-15 Middleware
@@ -80,7 +61,10 @@ class MainController
      */
     public function render(ServerRequestInterface $request, ResponseInterface $response): string
     {
-        $resources = ResourceUtility::getResources(['nonce' => $this->requestId->nonce], $request);
+        $adminPanelModuleConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
+        $modules = $this->moduleLoader->validateSortAndInitializeModules($adminPanelModuleConfiguration);
+
+        $resources = $this->resourceUtility->getResources(['nonce' => $this->requestId->nonce], $request);
 
         $backupRequest = null;
         $frontendTypoScript = $request->getAttribute('frontend.typoscript');
@@ -121,15 +105,15 @@ class MainController
             $data = $this->storeDataPerModule(
                 $request,
                 $response,
-                $this->modules,
-                GeneralUtility::makeInstance(ModuleDataStorageCollection::class)
+                $modules,
+                new ModuleDataStorageCollection()
             );
-            $moduleResources = ResourceUtility::getAdditionalResourcesForModules($this->modules, ['nonce' => $this->requestId->nonce], $request);
-            $settingsModules = array_filter($this->modules, static function (ModuleInterface $module): bool {
+            $moduleResources = $this->resourceUtility->getAdditionalResourcesForModules($modules, ['nonce' => $this->requestId->nonce], $request);
+            $settingsModules = array_filter($modules, static function (ModuleInterface $module): bool {
                 return $module instanceof PageSettingsProviderInterface;
             });
             $parentModules = array_filter(
-                $this->modules,
+                $modules,
                 static function (ModuleInterface $module): bool {
                     return $module instanceof SubmoduleProviderInterface && $module instanceof ShortInfoProviderInterface;
                 }
@@ -149,7 +133,7 @@ class MainController
             );
 
             $view->assignMultiple([
-                'modules' => $this->modules,
+                'modules' => $modules,
                 'settingsModules' => $settingsModules,
                 'parentModules' => $parentModules,
                 'saveUrl' => $this->generateBackendUrl('ajax_adminPanel_saveForm'),
@@ -172,28 +156,6 @@ class MainController
     protected function generateBackendUrl(string $route): string
     {
         return (string)$this->uriBuilder->buildUriFromRoute($route);
-    }
-
-    /**
-     * @param array<string, ModuleInterface> $modules
-     */
-    protected function initializeModules(ServerRequestInterface $request, array $modules): ServerRequestInterface
-    {
-        foreach ($modules as $module) {
-            if (
-                ($module instanceof RequestEnricherInterface)
-                && (
-                    (($module instanceof ConfigurableInterface) && $module->isEnabled())
-                    || (!($module instanceof ConfigurableInterface))
-                )
-            ) {
-                $request = $module->enrich($request);
-            }
-            if ($module instanceof SubmoduleProviderInterface) {
-                $request = $this->initializeModules($request, $module->getSubModules());
-            }
-        }
-        return $request;
     }
 
     /**

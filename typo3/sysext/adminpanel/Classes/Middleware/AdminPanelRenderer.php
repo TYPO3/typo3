@@ -24,7 +24,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Adminpanel\Controller\MainController;
 use TYPO3\CMS\Adminpanel\Utility\StateUtility;
 use TYPO3\CMS\Core\Http\Stream;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Render the admin panel via PSR-15 middleware
@@ -33,6 +32,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 readonly class AdminPanelRenderer implements MiddlewareInterface
 {
+    public function __construct(
+        private MainController $mainController,
+    ) {}
+
     /**
      * Render the admin panel if activated
      */
@@ -44,13 +47,12 @@ readonly class AdminPanelRenderer implements MiddlewareInterface
             && ($typoScriptConfig['admPanel'] ?? false)
             && !StateUtility::isHiddenForUser()
         ) {
-            $mainController = GeneralUtility::makeInstance(MainController::class);
             $body = $response->getBody();
             $body->rewind();
             $contents = $response->getBody()->getContents();
             $content = str_ireplace(
                 '</body>',
-                $mainController->render($request, $response) . '</body>',
+                $this->mainController->render($request, $response) . '</body>',
                 $contents
             );
             $body = new Stream('php://temp', 'rw');

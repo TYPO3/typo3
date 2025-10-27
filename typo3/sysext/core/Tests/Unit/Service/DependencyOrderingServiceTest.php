@@ -24,14 +24,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DependencyOrderingServiceTest extends UnitTestCase
 {
-    #[DataProvider('orderByDependenciesBuildsCorrectOrderDataProvider')]
-    #[Test]
-    public function orderByDependenciesBuildsCorrectOrder(array $items, string $beforeKey, string $afterKey, array $expectedOrderedItems): void
-    {
-        $orderedItems = (new DependencyOrderingService())->orderByDependencies($items, $beforeKey, $afterKey);
-        self::assertSame($expectedOrderedItems, $orderedItems);
-    }
-
     public static function orderByDependenciesBuildsCorrectOrderDataProvider(): array
     {
         return [
@@ -148,6 +140,14 @@ final class DependencyOrderingServiceTest extends UnitTestCase
                 ],
             ],
         ];
+    }
+
+    #[DataProvider('orderByDependenciesBuildsCorrectOrderDataProvider')]
+    #[Test]
+    public function orderByDependenciesBuildsCorrectOrder(array $items, string $beforeKey, string $afterKey, array $expectedOrderedItems): void
+    {
+        $orderedItems = (new DependencyOrderingService())->orderByDependencies($items, $beforeKey, $afterKey);
+        self::assertSame($expectedOrderedItems, $orderedItems);
     }
 
     /**

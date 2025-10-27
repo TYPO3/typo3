@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -42,13 +44,10 @@ readonly class DependencyOrderingService
      * If your items use different keys for specifying the relations, you can define the appropriate keys
      * by setting the $beforeKey and $afterKey parameters accordingly.
      *
-     * @param array $items
      * @param string $beforeKey The key to use in a dependency which specifies the "before"-relation. eg. 'sortBefore', 'loadBefore'
      * @param string $afterKey The key to use in a dependency which specifies the "after"-relation. eg. 'sortAfter', 'loadAfter'
-     * @return array
-     * @throws \UnexpectedValueException
      */
-    public function orderByDependencies(array $items, $beforeKey = 'before', $afterKey = 'after')
+    public function orderByDependencies(array $items, string $beforeKey = 'before', string $afterKey = 'after'): array
     {
         $graph = $this->buildDependencyGraph($items, $beforeKey, $afterKey);
         $sortedItems = [];
@@ -93,7 +92,7 @@ readonly class DependencyOrderingService
      * @param string $afterKey The key to use in a dependency which specifies the "after"-relation. eg. 'sortAfter', 'loadAfter'
      * @return array<array-key, array<array-key, bool>> The dependency graph
      */
-    public function buildDependencyGraph(array $dependencies, $beforeKey = 'before', $afterKey = 'after')
+    public function buildDependencyGraph(array $dependencies, string $beforeKey = 'before', string $afterKey = 'after'): array
     {
         $dependencies = $this->prepareDependencies($dependencies, $beforeKey, $afterKey);
 
@@ -135,9 +134,8 @@ readonly class DependencyOrderingService
      *
      * @param bool[][] $dependencyGraph
      * @return mixed[] Sorted array of keys of $dependencies
-     * @throws \UnexpectedValueException
      */
-    public function calculateOrder(array $dependencyGraph)
+    public function calculateOrder(array $dependencyGraph): array
     {
         $rootIds = array_flip($this->findRootIds($dependencyGraph));
 
@@ -171,7 +169,7 @@ readonly class DependencyOrderingService
             foreach (array_filter($dependencyGraph[$currentId]) as $dependingId => $_) {
                 // Remove the edge to this dependency
                 $dependencyGraph[$currentId][$dependingId] = false;
-                if (!$this->getIncomingEdgeCount($dependencyGraph, $dependingId)) {
+                if (!$this->getIncomingEdgeCount($dependencyGraph, (string)$dependingId)) {
                     // We found a new root, lets add it to the list
                     $rootIds[$dependingId] = count(array_filter($dependencyGraph[$dependingId]));
                 }
@@ -198,11 +196,8 @@ readonly class DependencyOrderingService
 
     /**
      * Get the number of incoming edges in the dependency graph for given identifier
-     *
-     * @param string $identifier
-     * @return int
      */
-    protected function getIncomingEdgeCount(array $dependencyGraph, $identifier)
+    protected function getIncomingEdgeCount(array $dependencyGraph, string $identifier): int
     {
         $incomingEdgeCount = 0;
         foreach ($dependencyGraph as $dependencies) {
@@ -222,12 +217,12 @@ readonly class DependencyOrderingService
      * @param bool[][] $dependencyGraph
      * @return array List of identifiers which are root nodes
      */
-    public function findRootIds(array $dependencyGraph)
+    public function findRootIds(array $dependencyGraph): array
     {
         // Filter nodes with no incoming edge (aka root nodes)
         $rootIds = [];
         foreach ($dependencyGraph as $id => $_) {
-            if (!$this->getIncomingEdgeCount($dependencyGraph, $id)) {
+            if (!$this->getIncomingEdgeCount($dependencyGraph, (string)$id)) {
                 $rootIds[] = $id;
             }
         }
@@ -242,7 +237,7 @@ readonly class DependencyOrderingService
      * @param string $to Destination node
      * @return array Nodes of the found path; empty if no path is found
      */
-    protected function findPathInGraph(array $graph, $from, $to)
+    protected function findPathInGraph(array $graph, string $from, string $to): array
     {
         foreach (array_filter($graph[$from]) as $node => $_) {
             if ($node === $to) {
@@ -262,14 +257,14 @@ readonly class DependencyOrderingService
      *
      * Ensure that all discovered identifiers are added to the dependency list
      * so we can reliably use the identifiers to build the matrix.
-     * Additionally fix all invalid or missing before/after arrays
+     * Additionally, fix all invalid or missing before/after arrays
      *
      * @param array $dependencies
      * @param string $beforeKey The key to use in a dependency which specifies the "before"-relation. eg. 'sortBefore', 'loadBefore'
      * @param string $afterKey The key to use in a dependency which specifies the "after"-relation. eg. 'sortAfter', 'loadAfter'
      * @return array Prepared dependencies
      */
-    protected function prepareDependencies(array $dependencies, $beforeKey = 'before', $afterKey = 'after')
+    protected function prepareDependencies(array $dependencies, string $beforeKey = 'before', string $afterKey = 'after'): array
     {
         $preparedDependencies = [];
         foreach ($dependencies as $id => $dependency) {

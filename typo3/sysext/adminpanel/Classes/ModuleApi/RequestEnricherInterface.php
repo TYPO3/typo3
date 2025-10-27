@@ -31,7 +31,6 @@ use Psr\Http\Message\ServerRequestInterface;
  * Initialize is called in the PSR-15 middleware stack through admin panel initialisation via the AdminPanel MainController.
  *
  * @see \TYPO3\CMS\Adminpanel\Middleware\AdminPanelInitiator::process()
- * @see \TYPO3\CMS\Adminpanel\Controller\MainController::initialize()
  */
 interface RequestEnricherInterface
 {

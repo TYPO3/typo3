@@ -21,9 +21,12 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use TYPO3\CMS\Adminpanel\Controller\MainController;
+use TYPO3\CMS\Adminpanel\ModuleApi\ConfigurableInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\RequestEnricherInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\SubmoduleProviderInterface;
+use TYPO3\CMS\Adminpanel\Service\ModuleLoader;
 use TYPO3\CMS\Adminpanel\Utility\StateUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -31,8 +34,12 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  *
  * @internal
  */
-class AdminPanelInitiator implements MiddlewareInterface
+readonly class AdminPanelInitiator implements MiddlewareInterface
 {
+    public function __construct(
+        private ModuleLoader $moduleLoader,
+    ) {}
+
     /**
      * Initialize the adminPanel if
      * - backend user is logged in
@@ -43,11 +50,32 @@ class AdminPanelInitiator implements MiddlewareInterface
     {
         if (StateUtility::isActivatedForUser() && StateUtility::isOpen()) {
             $request = $request->withAttribute('adminPanelRequestId', substr(md5(StringUtility::getUniqueId()), 0, 13));
-            $adminPanelController = GeneralUtility::makeInstance(
-                MainController::class
-            );
-            $request = $adminPanelController->initialize($request);
+            $adminPanelModuleConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
+            $modules = $this->moduleLoader->validateSortAndInitializeModules($adminPanelModuleConfiguration);
+            $request = $this->initializeModules($request, $modules);
         }
         return $handler->handle($request);
+    }
+
+    /**
+     * @param array<string, ModuleInterface> $modules
+     */
+    private function initializeModules(ServerRequestInterface $request, array $modules): ServerRequestInterface
+    {
+        foreach ($modules as $module) {
+            if (
+                ($module instanceof RequestEnricherInterface)
+                && (
+                    (($module instanceof ConfigurableInterface) && $module->isEnabled())
+                    || (!($module instanceof ConfigurableInterface))
+                )
+            ) {
+                $request = $module->enrich($request);
+            }
+            if ($module instanceof SubmoduleProviderInterface) {
+                $request = $this->initializeModules($request, $module->getSubModules());
+            }
+        }
+        return $request;
     }
 }

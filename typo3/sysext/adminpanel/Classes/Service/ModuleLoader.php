@@ -28,14 +28,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal
  */
-class ModuleLoader
+readonly class ModuleLoader
 {
+    public function __construct(
+        private DependencyOrderingService $dependencyOrderingService,
+    ) {}
+
     /**
      * Validates, sorts and initiates the registered modules
      *
      * @param array<string, mixed> $modules
      * @return array<string, ModuleInterface>
-     * @throws \RuntimeException
      */
     public function validateSortAndInitializeModules(array $modules): array
     {
@@ -52,11 +55,7 @@ class ModuleLoader
             if (empty($configuration['module']) ||
                 !is_string($configuration['module']) ||
                 !class_exists($configuration['module']) ||
-                !is_subclass_of(
-                    $configuration['module'],
-                    ModuleInterface::class,
-                    true
-                )
+                !is_subclass_of($configuration['module'], ModuleInterface::class)
             ) {
                 throw new \RuntimeException(
                     'The module "' .
@@ -68,11 +67,7 @@ class ModuleLoader
                 );
             }
         }
-
-        $orderedModules = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies(
-            $modules
-        );
-
+        $orderedModules = $this->dependencyOrderingService->orderByDependencies($modules);
         $moduleInstances = [];
         foreach ($orderedModules as $moduleConfiguration) {
             $module = GeneralUtility::makeInstance($moduleConfiguration['module']);

@@ -23,7 +23,6 @@ use TYPO3\CMS\Adminpanel\Service\ModuleLoader;
 use TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures\DisabledMainModuleFixture;
 use TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures\MainModuleFixture;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ModuleLoaderTest extends UnitTestCase
@@ -31,9 +30,8 @@ final class ModuleLoaderTest extends UnitTestCase
     #[Test]
     public function validateSortAndInitializeModulesReturnsEmptyArrayIfNoModulesAreConfigured(): void
     {
-        $moduleLoader = new ModuleLoader();
+        $moduleLoader = new ModuleLoader(new DependencyOrderingService());
         $result = $moduleLoader->validateSortAndInitializeModules([]);
-
         self::assertSame([], $result);
     }
 
@@ -52,7 +50,7 @@ final class ModuleLoaderTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1519490105);
 
-        $moduleLoader = new ModuleLoader();
+        $moduleLoader = new ModuleLoader(new DependencyOrderingService());
         $moduleLoader->validateSortAndInitializeModules($configuration);
     }
 
@@ -89,26 +87,8 @@ final class ModuleLoaderTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1519490112);
 
-        $moduleLoader = new ModuleLoader();
+        $moduleLoader = new ModuleLoader(new DependencyOrderingService());
         $moduleLoader->validateSortAndInitializeModules($configuration);
-    }
-
-    #[Test]
-    public function validateSortAndInitializeModulesOrdersModulesWithDependencyOrderingService(): void
-    {
-        $config = [
-            'module1' => [
-                'module' => MainModuleFixture::class,
-            ],
-        ];
-
-        $dependencyOrderingServiceMock = $this->getMockBuilder(DependencyOrderingService::class)->getMock();
-        GeneralUtility::addInstance(DependencyOrderingService::class, $dependencyOrderingServiceMock);
-        $dependencyOrderingServiceMock->expects($this->atLeastOnce())->method('orderByDependencies')
-            ->with($config)->willReturn($config);
-
-        $moduleLoader = new ModuleLoader();
-        $moduleLoader->validateSortAndInitializeModules($config);
     }
 
     #[Test]
@@ -122,15 +102,8 @@ final class ModuleLoaderTest extends UnitTestCase
                 'module' => DisabledMainModuleFixture::class,
             ],
         ];
-
-        $dependencyOrderingServiceMock = $this->getMockBuilder(DependencyOrderingService::class)->getMock();
-        GeneralUtility::addInstance(DependencyOrderingService::class, $dependencyOrderingServiceMock);
-        $dependencyOrderingServiceMock->expects($this->atLeastOnce())->method('orderByDependencies')
-            ->with($config)->willReturn($config);
-
-        $moduleLoader = new ModuleLoader();
+        $moduleLoader = new ModuleLoader(new DependencyOrderingService());
         $result = $moduleLoader->validateSortAndInitializeModules($config);
-
         self::assertCount(1, $result);
         self::assertInstanceOf(MainModuleFixture::class, $result['example']);
         self::assertArrayNotHasKey('example-disabled', $result);
