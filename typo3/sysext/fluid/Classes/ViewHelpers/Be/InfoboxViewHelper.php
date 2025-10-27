@@ -102,7 +102,7 @@ final class InfoboxViewHelper extends AbstractViewHelper
                 '</div>';
         }
         $titleTemplate = '';
-        if ($title !== null) {
+        if ($title !== '') {
             $titleTemplate = '<div class="callout-title">' . htmlspecialchars($title) . '</div>';
         }
         return '<div class="callout callout-' . htmlspecialchars($severity->getCssClass()) . '">' .
