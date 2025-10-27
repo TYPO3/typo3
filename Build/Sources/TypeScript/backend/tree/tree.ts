@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, LitElement, type TemplateResult, nothing } from 'lit';
+import { html, LitElement, type TemplateResult, type PropertyValues, nothing } from 'lit';
 import { property, state, query } from 'lit/decorators';
 import { repeat } from 'lit/directives/repeat';
 import { styleMap } from 'lit/directives/style-map';
@@ -45,6 +45,38 @@ export interface TreeWrapper extends HTMLElement {
   tree?: Tree
 }
 
+export class TreeNodeMap<T extends TreeNodeInterface = TreeNodeInterface> {
+  private readonly treeNodes: T[];
+  private treeIdentifierIndex: Record<string, number>;
+
+  constructor(nodes: T[]) {
+    this.treeNodes = nodes;
+    this.updateIndexes();
+  }
+
+  public get length(): number {
+    return this.treeNodes.length;
+  }
+
+  public toArray(): ReadonlyArray<T> {
+    return this.treeNodes;
+  }
+
+  public splice(start: number, deleteCount?: number, ...items: T[]) {
+    this.treeNodes.splice(start, deleteCount, ...items);
+    this.updateIndexes();
+  }
+
+  public getNodeByTreeIdentifier(treeIdentifier: string): T|null {
+    const index = this.treeIdentifierIndex[treeIdentifier] ?? null;
+    return this.treeNodes[index] ?? null;
+  }
+
+  private updateIndexes(): void {
+    this.treeIdentifierIndex = Object.fromEntries(this.treeNodes.map((node, index) => ([node.__treeIdentifier, index])));
+  }
+}
+
 export class Tree extends LitElement {
   @property({ type: Object }) setup?: {[keys: string]: any} = null;
   @state() settings: TreeSettings = {
@@ -58,7 +90,7 @@ export class Tree extends LitElement {
   };
 
   @query('.nodes-root') root: HTMLElement;
-  @state() nodes: TreeNodeInterface[] = [];
+  @state() nodeMap: TreeNodeMap = new TreeNodeMap([]);
   @state() currentScrollPosition: number = 0;
   @state() currentVisibleHeight: number = 0;
   @state() searchTerm: string|null = null;
@@ -96,9 +128,18 @@ export class Tree extends LitElement {
 
   private __loadFinished: () => void;
   private __loadPromise: Promise<void> = new Promise(res => this.__loadFinished = res);
+  private lastRenderScrollPosition: number = null;
 
   public get loadComplete(): Promise<void> {
     return this.__loadPromise;
+  }
+
+  public get nodes(): ReadonlyArray<TreeNodeInterface> {
+    return this.nodeMap.toArray();
+  }
+
+  public set nodes(nodes: TreeNodeInterface[]) {
+    this.nodeMap = new TreeNodeMap(nodes);
   }
 
   public getNodeFromElement(element: HTMLElement): TreeNodeInterface|null
@@ -141,7 +182,7 @@ export class Tree extends LitElement {
 
   public async loadData(): Promise<void> {
     this.loading = true;
-    this.nodes = this.prepareNodes(await this.fetchData());
+    this.nodeMap = new TreeNodeMap(this.prepareNodes(await this.fetchData()));
     this.__loadFinished();
     this.__loadPromise = new Promise(res => this.__loadFinished = res);
     this.loading = false;
@@ -216,7 +257,7 @@ export class Tree extends LitElement {
         }
         deleteCount++;
       }
-      this.nodes.splice(positionAfterParentNode, deleteCount, ...nodes);
+      this.nodeMap.splice(positionAfterParentNode, deleteCount, ...nodes);
       // @todo: do we need to "prepare" all nodes again?
 
       parentNode.__loading = false;
@@ -349,7 +390,7 @@ export class Tree extends LitElement {
       index++;
     }
 
-    this.nodes.splice(index, 0, newNode);
+    this.nodeMap.splice(index, 0, newNode);
     this.handleNodeAdd(newNode, target, position);
   }
 
@@ -357,7 +398,7 @@ export class Tree extends LitElement {
     const index = this.nodes.indexOf(node);
     const parentNode = this.getParentNode(node);
     if (index > -1) {
-      this.nodes.splice(index, 1);
+      this.nodeMap.splice(index, 1);
     }
     this.requestUpdate();
     this.updateComplete.then(() => {
@@ -385,7 +426,7 @@ export class Tree extends LitElement {
             if (this.unfilteredNodes === '') {
               this.unfilteredNodes = JSON.stringify(this.nodes);
             }
-            this.nodes = this.enhanceNodes(nodes);
+            this.nodeMap = new TreeNodeMap(this.enhanceNodes(nodes));
           }
         })
         .catch((error: any) => {
@@ -416,7 +457,7 @@ export class Tree extends LitElement {
         this.loadData();
         return;
       }
-      this.nodes = this.enhanceNodes(JSON.parse(this.unfilteredNodes));
+      this.nodeMap = new TreeNodeMap(this.enhanceNodes(JSON.parse(this.unfilteredNodes)));
       this.unfilteredNodes = '';
       // re-select the node from the identifier because the nodes have been updated
       const currentlySelectedNode = this.getNodeByTreeIdentifier(currentlySelected.__treeIdentifier);
@@ -456,9 +497,7 @@ export class Tree extends LitElement {
   }
 
   public getNodeByTreeIdentifier(treeIdentifier: string): TreeNodeInterface|null {
-    return this.nodes.find((node: TreeNodeInterface) => {
-      return node.__treeIdentifier === treeIdentifier;
-    });
+    return this.nodeMap.getNodeByTreeIdentifier(treeIdentifier);
   }
 
   public getNodeDragStatusIcon(): string
@@ -576,6 +615,17 @@ export class Tree extends LitElement {
     return this;
   }
 
+  protected override shouldUpdate(changedProperties: PropertyValues<this>): boolean {
+    if (changedProperties.size === 1 &&
+        changedProperties.has('currentScrollPosition') &&
+        this.lastRenderScrollPosition !== null &&
+        Math.abs(this.currentScrollPosition - this.lastRenderScrollPosition) / this.nodeHeight < 20
+    ) {
+      return false;
+    }
+    return true;
+  }
+
   protected override render(): TemplateResult {
     const loader = this.loading
       ? html`
@@ -607,21 +657,16 @@ export class Tree extends LitElement {
    * viewport (adding, modifying and removing nodes)
    */
   protected renderVisibleNodes(): TemplateResult {
-    const blacklist: string[] = [];
-    this.nodes.forEach((node: TreeNodeInterface): void => {
-      if (node.__expanded === false) {
-        blacklist.push(this.getNodeTreeIdentifier(node));
-      }
-    });
-
-    this.displayNodes = this.nodes.filter((node: TreeNodeInterface): boolean => {
-      return node.__hidden !== true && !node.__treeParents.some((parentTreeIdentifier: string) => Boolean(blacklist.indexOf(parentTreeIdentifier) !== -1));
-    });
+    this.displayNodes = this.nodes.filter(node => (
+      node.__hidden !== true &&
+      !node.__treeParents.some(parentTreeIdentifier => this.getNodeByTreeIdentifier(parentTreeIdentifier).__expanded === false)
+    ));
     this.displayNodes.forEach((node: TreeNodeInterface, i: number) => {
       node.__x = node.depth * this.indentWidth;
       node.__y = i * this.nodeHeight;
     });
 
+    this.lastRenderScrollPosition = this.currentScrollPosition;
     const visibleRows = Math.ceil(this.currentVisibleHeight / this.nodeHeight);
     const position = Math.floor(this.currentScrollPosition / this.nodeHeight);
     const visibleNodes = this.displayNodes.filter((node: TreeNodeInterface, index: number) => {
@@ -637,7 +682,7 @@ export class Tree extends LitElement {
       if (this.lastFocusedNode === node) {
         return true;
       }
-      return index + 2 >= position && index - 2 < position + visibleRows;
+      return index + 40 >= position && index - 40 < position + visibleRows;
     });
 
     return html`
