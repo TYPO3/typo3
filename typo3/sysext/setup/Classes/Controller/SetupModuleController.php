@@ -149,7 +149,7 @@ class SetupModuleController
         }
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $this->addFlashMessages($view);
-        $view->addButtonToButtonBar($this->componentFactory->createSaveButton()->setName('data[save]'));
+        $view->addButtonToButtonBar($this->componentFactory->createSaveButton('SetupModuleController')->setName('data[save]'));
         $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('user_setup')
             ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang_mod.xlf:mlang_labels_tablabel'));

@@ -692,10 +692,7 @@ class SiteConfigurationController
         $lang = $this->getLanguageService();
         $closeButton = $this->componentFactory->createCloseButton('#')
             ->setClasses('t3js-editform-close');
-        $saveButton = $this->componentFactory->createSaveButton()
-            ->setName('_savedok')
-            ->setValue('1')
-            ->setForm('siteConfigurationController');
+        $saveButton = $this->componentFactory->createSaveButton('siteConfigurationController');
         $view->addButtonToButtonBar($closeButton);
         $view->addButtonToButtonBar($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         if ($siteIdentifier) {
