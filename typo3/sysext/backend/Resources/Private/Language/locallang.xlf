@@ -201,6 +201,9 @@
 			<trans-unit id="submoduleOverview.openModule">
 				<source>Open module</source>
 			</trans-unit>
+			<trans-unit id="submoduleOverview.openModuleWithTitle">
+				<source>Open %1s module</source>
+			</trans-unit>
 			<trans-unit id="submoduleOverview.noAccess.title">
 				<source>No modules available</source>
 			</trans-unit>

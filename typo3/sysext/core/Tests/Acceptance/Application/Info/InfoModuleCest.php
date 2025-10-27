@@ -52,7 +52,7 @@ final class InfoModuleCest
         $I->waitForElementVisible('.card-container');
         $I->see($exampleData['title'], '.card-title');
         $I->see($exampleData['description'], '.card-text');
-        $I->see('Open module', '.card-footer');
+        $I->see('Open ' . $exampleData['title'] . ' module', '.card-footer');
 
         $I->amGoingTo('open ' . $exampleData['title'] . ' module via card button');
         // Find the card containing the specific title and click its "Open module" button

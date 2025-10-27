@@ -72,7 +72,8 @@ final class SubmoduleOverviewControllerTest extends FunctionalTestCase
         self::assertStringContainsString('Check translation status and manage localized content for pages', $content);
 
         // Verify action buttons are present
-        self::assertStringContainsString('Open module', $content);
+        self::assertStringContainsString('Open Pagetree Overview module', $content);
+        self::assertStringContainsString('Open Localization Overview module', $content);
     }
 
     #[Test]
