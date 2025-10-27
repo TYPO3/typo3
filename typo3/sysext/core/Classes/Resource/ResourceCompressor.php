@@ -293,10 +293,18 @@ class ResourceCompressor
             foreach ($filesToInclude as $fileToMerge) {
                 if ($fileToMerge instanceof SystemResourceInterface && $fileToMerge instanceof PublicResourceInterface) {
                     $contents = $fileToMerge->getContents();
-                    $fileUrl = ltrim((string)$this->resourcePublisher->generateUri($fileToMerge, null, new UriGenerationOptions(uriPrefix: '')), '/');
+                    // @todo: We make an "URL" relative to public dir here for CSS processing.
+                    //        check whether this can be done differently
+                    //        This should be done asap, because other implementations of SystemResourcePublisherInterface
+                    //        might not evaluate the uriPrefix options
+                    $fileUrl = ltrim((string)$this->resourcePublisher->generateUri($fileToMerge, null, new UriGenerationOptions(uriPrefix: '', cacheBusting: false)), '/');
                 } else {
                     $filename = $fileToMerge;
                     $filenameAbsolute = Environment::getPublicPath() . '/' . $filename;
+                    // @todo: We make an "URL" relative to public dir here for CSS processing.
+                    //        check whether this can be done differently
+                    //        This should be done asap, because other implementations of SystemResourcePublisherInterface
+                    //        might not evaluate the uriPrefix options
                     $fileUrl = PathUtility::getAbsoluteWebPath($filenameAbsolute, false);
                     $contents = (string)file_get_contents($filenameAbsolute);
                     // remove any UTF-8 byte order mark (BOM) from files
@@ -364,7 +372,9 @@ class ResourceCompressor
             $filename = $resource->getNameWithoutExtension();
             $contents = $resource->getContents();
             $hash = $resource->getHash();
-            $cssUrl = ltrim((string)$this->resourcePublisher->generateUri($resource, null, new UriGenerationOptions(uriPrefix: '')), '/');
+            // @todo: We make an "URL" relative to public dir here for CSS processing.
+            //        check whether this can be done differently
+            $cssUrl = ltrim((string)$this->resourcePublisher->generateUri($resource, null, new UriGenerationOptions(uriPrefix: '', cacheBusting: false)), '/');
         } else {
             $filename = PathUtility::pathinfo($cssFile)['filename'];
             $filenameAbsolute = Environment::getPublicPath() . '/' . $this->getFilenameFromMainDir($cssFile);
@@ -491,8 +501,9 @@ class ResourceCompressor
         }
         // build the file path relative to the public web path
         if (PathUtility::isExtensionPath($filename)) {
-            return ltrim((string)PathUtility::getSystemResourceUri($filename, null, new UriGenerationOptions(uriPrefix: ''))
-                ->withQuery(''), '/');
+            // @todo: Until a full refactor of this class, we return an URL relative to document root
+            //        to adhere the internal API
+            return ltrim((string)PathUtility::getSystemResourceUri($filename, null, new UriGenerationOptions(uriPrefix: '', cacheBusting: false)), '/');
         }
         return $filename;
     }

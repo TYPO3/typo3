@@ -265,8 +265,11 @@ class ImportMap
                     continue 2;
                 }
             }
-
-            $url = ltrim((string)PathUtility::getSystemResourceUri($resourceIdentifier, null, new UriGenerationOptions(uriPrefix: ''))
+            // @todo: Until the request is passed in render method, we rely on generating relative URLs
+            //        here and adding the site prefix, which is passed during rendering later on
+            //        This should be done asap, because other implementations of SystemResourcePublisherInterface
+            //        might not evaluate the uriPrefix options
+            $url = ltrim((string)PathUtility::getSystemResourceUri($resourceIdentifier, null, new UriGenerationOptions(uriPrefix: '', cacheBusting: false))
                 ->withQuery('bust=' . $bust), '/');
             $map[$specifier] = $url;
         }
@@ -283,8 +286,11 @@ class ImportMap
             if (str_ends_with($specifier, '/')) {
                 $path = is_array($address) ? ($address['path'] ?? '') : $address;
                 $exclude = is_array($address) ? ($address['exclude'] ?? []) : [];
-                $uri = PathUtility::getSystemResourceUri($path, null, new UriGenerationOptions(uriPrefix: ''))
-                    ->withQuery('');
+                // @todo: Until the request is passed in render method, we rely on generating relative URLs
+                //        here and adding the site prefix, which is passed during rendering later on
+                //        This should be done asap, because other implementations of SystemResourcePublisherInterface
+                //        might not evaluate the uriPrefix options
+                $uri = PathUtility::getSystemResourceUri($path, null, new UriGenerationOptions(uriPrefix: '', cacheBusting: false));
                 $cacheBusted = preg_match('#[^/]@#', $path) === 1;
                 if ($bust !== null && !$cacheBusted) {
                     // Resolve recursive importmap in order to add a bust suffix
@@ -292,13 +298,20 @@ class ImportMap
                     $cacheBustingSpecifiers[] = $this->resolveRecursiveImportMap($specifier, $path, $exclude, $bust);
                 }
             } else {
-                $uri = PathUtility::getSystemResourceUri($address, null, new UriGenerationOptions(uriPrefix: ''))
-                    ->withQuery('');
+                // @todo: Until the request is passed in render method, we rely on generating relative URLs
+                //        here and adding the site prefix, which is passed during rendering later on
+                //        This should be done asap, because other implementations of SystemResourcePublisherInterface
+                //        might not evaluate the uriPrefix options
+                $uri = PathUtility::getSystemResourceUri($address, null, new UriGenerationOptions(uriPrefix: '', cacheBusting: false));
                 $cacheBusted = preg_match('#[^/]@#', $address) === 1;
                 if ($bust !== null && !$cacheBusted) {
                     $uri = $uri->withQuery('bust=' . $bust);
                 }
             }
+            // @todo: Until the request is passed in render method, we rely on generating relative URLs
+            //        here and adding the site prefix, which is passed during rendering later on
+            //        This should be done asap, because other implementations of SystemResourcePublisherInterface
+            //        might not evaluate the uriPrefix options
             $imports[$specifier] = ltrim((string)$uri, '/');
         }
 

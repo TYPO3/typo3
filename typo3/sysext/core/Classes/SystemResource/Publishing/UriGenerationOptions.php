@@ -29,9 +29,16 @@ final readonly class UriGenerationOptions
     /**
      * Variable names are explicitly public API
      * for named variable access
+     *
+     * Some or all of these options might to be applicable
+     * to specific implementations SystemResourcePublisherInterface,
+     * which means, that if other resource publishing strategies
+     * are configured, that changing these options might not
+     * influence the resulting URI
      */
     public function __construct(
         public ?string $uriPrefix = null,
         public bool $absoluteUri = false,
+        public bool $cacheBusting = true,
     ) {}
 }

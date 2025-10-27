@@ -14,16 +14,13 @@ Description
 The following changes are considered breaking, although their impact is likely
 very low.
 
-* TypoScript getData :typoscript:`path` returned a relative URL without cache busting
-  and is now returning an absolute URI including cache busting information.
-
-* Setting the `<f:uri.resource>` argument `useCacheBusting` to false has no effect any more,
-  as it is now always enforced.
+* TypoScript getData :typoscript:`path` returned a relative URL
+  and is now returning an absolute URL (prepended with `absRefPrefix`).
 
 * Access to FAL storages other than the default storage using `$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']`
   via relative paths for resources (e.g. CSS) is not possible any more.
 
-* All generated URLs now contain a cache busting.
+* All generated system resource URLs now contain cache busting.
 
 * Additional query strings applied to the resource identifier will **not** disable cache busting.
 
@@ -40,35 +37,16 @@ getText "path" in TypoScript
     }
 
 ..  code-block:: text
-    :caption: Result
+    :caption: Result TYPO3 classic mode (note the leading "/")
 
     "path" result before: typo3/sysext/core/Resources/Public/Icons/Extension.svg
-    "path" result now: /typo3/sysext/core/Resources/Public/Icons/Extension.svg?1709051481
-
-..  note::
-
-    If further arguments were previously passed to the result of this resolving
-    (like `?something=x`), these may now need to be appended with a `&` argument
-    separator, depending on whether cache busting URIs use request parameters or
-    filename patterns.
-
-f:uri.resource view helper in Fluid
------------------------------------
-
-..  code-block:: html
-    :caption: EXT:my_extension/Resources/Private/Template/MyTemplate.html
-    :emphasize-lines: 3
-
-    <f:uri.resource
-        path="EXT:core/Resources/Public/Icons/Extension.svg"
-        useCacheBusting="false"
-    />
+    "path" result now: /typo3/sysext/core/Resources/Public/Icons/Extension.svg
 
 ..  code-block:: text
-    :caption: Comparison
+    :caption: Result TYPO3 composer mode (note the leading "/")
 
-    Before: /typo3/sysext/core/Resources/Public/Icons/Extension.svg
-    Now: /typo3/sysext/core/Resources/Public/Icons/Extension.svg?1709051481
+    "path" result before: _assets/5f237792cbcdc97cfceade1e16ea33d7/Icons/Extension.svg
+    "path" result now: /_assets/5f237792cbcdc97cfceade1e16ea33d7/Icons/Extension.svg
 
 All generated URLs now contain cache busting
 --------------------------------------------
@@ -105,18 +83,8 @@ Impact
 getText "path" in TypoScript
 ----------------------------
 
-All installations using a resolved `path` of TypoScript `data`
-will trigger a deprecation notice.
-
-This will continue to work until removed in TYPO3 v15.0
-(see details in :ref:`deprecation-107537-1760338410`), but produces
-absolute cache busting URIs.
-
-f:uri.resource view helper in Fluid
------------------------------------
-
-Cache busting can not be disabled any more when using this view helper.
-Using the argument is deprecated and will be removed in TYPO3 v15.
+All installations using :typoscript:`path` of TypoScript :typoscript:`data`,
+will now have these usages resolved to absolute URLs, instead of relative.
 
 All generated URLs now contain cache busting
 --------------------------------------------
@@ -136,13 +104,7 @@ Affected installations
 getText "path" in TypoScript
 ----------------------------
 
-All installations using `path` in TypoScript `data`.
-
-f:uri.resource view helper in Fluid
------------------------------------
-
-All installations, that use `<f:uri.resource>` view helper with
-`useCacheBusting="false"`
+All installations using :typoscript:`path` in TypoScript :typoscript:`data`.
 
 Additional query strings applied to the resource identifier
 -----------------------------------------------------------

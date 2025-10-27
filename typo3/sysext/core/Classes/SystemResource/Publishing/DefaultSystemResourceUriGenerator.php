@@ -41,7 +41,7 @@ readonly class DefaultSystemResourceUriGenerator implements SystemResourceUriGen
         private string $publishingDirectory,
         private string $prefix,
         private ?ServerRequestInterface $request,
-        private ?UriGenerationOptions $options = null,
+        private UriGenerationOptions $options,
     ) {}
 
     public function generateForPublicResourceBasedOnAbsolutePath(
@@ -49,6 +49,9 @@ readonly class DefaultSystemResourceUriGenerator implements SystemResourceUriGen
         string $absoluteResourcePath,
     ): UriInterface {
         $uri = $this->makeAbsolute(new Uri($this->calculateUriPath($absoluteResourcePath)));
+        if (!$this->options->cacheBusting) {
+            return $uri;
+        }
         return CacheBustingUri::fromFileSystemPath(
             $absoluteResourcePath,
             $uri,
@@ -62,19 +65,29 @@ readonly class DefaultSystemResourceUriGenerator implements SystemResourceUriGen
         if ($publicUrl === null) {
             throw new CanNotGenerateUriException(sprintf('Can not create a public Uri for a file %s', $file), 1758619473);
         }
+        $uri = $this->makeAbsolute(new Uri($publicUrl));
+        if (!$this->options->cacheBusting) {
+            return $uri;
+        }
         return CacheBustingUri::fromFile(
             $file,
-            $this->makeAbsolute(new Uri($publicUrl)),
+            $uri,
         );
     }
 
     private function makeAbsolute(UriInterface $uri): UriInterface
     {
-        if ($this->request === null || !$this->options?->absoluteUri) {
+        if ($this->request === null || !$this->options->absoluteUri) {
             return $uri;
         }
-        return $uri->withHost($uri->getHost() ?: $this->request->getUri()->getHost())
-                   ->withScheme($uri->getScheme() ?: $this->request->getUri()->getScheme());
+        if ($uri->getHost() !== '') {
+            return $uri;
+        }
+        $siteUri = new Uri($this->request->getAttribute('normalizedParams')->getSiteUrl());
+        return $uri->withScheme($siteUri->getScheme())
+            ->withUserInfo($siteUri->getUserInfo())
+            ->withHost($siteUri->getHost())
+            ->withPort($siteUri->getPort());
     }
 
     private function calculateUriPath(string $absoluteResourcePath): string

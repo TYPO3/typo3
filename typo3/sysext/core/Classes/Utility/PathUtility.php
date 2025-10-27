@@ -114,9 +114,11 @@ class PathUtility
             throw new InvalidFileException(sprintf('Given resource path "%s" must start with "EXT:", but does not.', $resourcePath), 1630089406);
         }
         if ($prefixWithSitePath) {
-            return (string)self::getSystemResourceUri($resourcePath);
+            return (string)self::getSystemResourceUri($resourcePath, null, new UriGenerationOptions(cacheBusting: false));
         }
-        return ltrim((string)self::getSystemResourceUri($resourcePath, null, new UriGenerationOptions(uriPrefix: ''))->withQuery(''), '/');
+        // Other implementations of SystemResourcePublisherInterface
+        // might not evaluate the uriPrefix options, so good this method is deprecated and will be removed
+        return ltrim((string)self::getSystemResourceUri($resourcePath, null, new UriGenerationOptions(uriPrefix: '', cacheBusting: false)), '/');
     }
 
     /**

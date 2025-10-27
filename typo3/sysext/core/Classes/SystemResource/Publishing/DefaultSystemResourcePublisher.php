@@ -55,10 +55,11 @@ final readonly class DefaultSystemResourcePublisher implements SystemResourcePub
             throw new CanNotGenerateUriException(sprintf('Can not generate Uri for an unpublished resource %s', $publicResource), 1761211273);
         }
         $request ??= $GLOBALS['TYPO3_REQUEST'] ?? null;
+        $options ??= new UriGenerationOptions();
         return $publicResource->getPublicUri(
             new DefaultSystemResourceUriGenerator(
                 self::PUBLISHING_DIRECTORY,
-                $this->extractPublicPrefixFromRequest($request, $options?->uriPrefix),
+                $this->extractPublicPrefixFromRequest($request, $options->uriPrefix),
                 $request,
                 $options,
             )

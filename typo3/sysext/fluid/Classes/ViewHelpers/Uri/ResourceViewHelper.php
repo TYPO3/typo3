@@ -58,7 +58,7 @@ final class ResourceViewHelper extends AbstractViewHelper
         $this->registerArgument('path', 'string', 'The path and filename of the resource (relative to Public resource directory of the extension).');
         $this->registerArgument('extensionName', 'string', 'Target extension name. If not set, the current extension name will be used');
         $this->registerArgument('absolute', 'bool', 'If set, an absolute URI is rendered', false, false);
-        $this->registerArgument('useCacheBusting', 'bool', 'Setting this to false has no effect any more', false, true);
+        $this->registerArgument('useCacheBusting', 'bool', 'If set, the URI is rendered with a cache buster', false, true);
     }
 
     /**
@@ -84,7 +84,10 @@ final class ResourceViewHelper extends AbstractViewHelper
         return (string)$this->resourcePublisher->generateUri(
             $resource,
             $request,
-            new UriGenerationOptions(absoluteUri: $this->arguments['absolute']),
+            new UriGenerationOptions(
+                absoluteUri: $this->arguments['absolute'],
+                cacheBusting: $this->arguments['useCacheBusting'],
+            ),
         );
     }
 

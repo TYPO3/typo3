@@ -19,11 +19,15 @@ namespace TYPO3\CMS\Core\Tests\Functional\SystemResource\Publishing;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\SystemResource\Exception\CanNotGenerateUriException;
 use TYPO3\CMS\Core\SystemResource\Publishing\DefaultSystemResourcePublisher;
+use TYPO3\CMS\Core\SystemResource\Publishing\UriGenerationOptions;
 use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\SystemResource\Type\PackageResource;
 use TYPO3\CMS\Core\SystemResource\Type\PublicPackageFile;
@@ -154,6 +158,40 @@ final class DefaultResourcePublisherTest extends FunctionalTestCase
         if ($endsWith !== null) {
             self::assertStringEndsWith($endsWith, (string)$resourcePublisher->generateUri($resource, null));
         }
+    }
+
+    #[Test]
+    public function generatesUriWithoutCacheBusting(): void
+    {
+        $resourceString = 'PKG:typo3tests/test-system-resources:Resources/Public/Icons/Extension.svg';
+        $url = '/typo3conf/ext/test_system_resources/Resources/Public/Icons/Extension.svg';
+        $resourceFactory = $this->get(SystemResourceFactory::class);
+        $resourcePublisher = $this->get(DefaultSystemResourcePublisher::class);
+        $resource = $resourceFactory->createPublicResource($resourceString);
+        self::assertSame($url, (string)$resourcePublisher->generateUri($resource, null, new UriGenerationOptions(cacheBusting: false)));
+    }
+
+    #[Test]
+    public function generatesUriWithCacheBustingInFileName(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['versionNumberInFilename'] = true;
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'] = true;
+        $iconMtime = filemtime(__DIR__ . '/../../Fixtures/Extensions/test_system_resources/Resources/Private/Icons/Extension.svg');
+        $resourceString = 'PKG:typo3tests/test-system-resources:Resources/Public/Icons/Extension.svg';
+        $url = '/typo3conf/ext/test_system_resources/Resources/Public/Icons/Extension.' . $iconMtime . '.svg';
+        $resourceFactory = $this->get(SystemResourceFactory::class);
+        $resourcePublisher = $this->get(DefaultSystemResourcePublisher::class);
+        $resource = $resourceFactory->createPublicResource($resourceString);
+
+        self::assertSame($url, (string)$resourcePublisher->generateUri($resource, null));
+
+        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams->method('getSitePath')->willReturn('/');
+        $request = (new ServerRequest('https://www.example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('normalizedParams', $normalizedParams);
+
+        self::assertSame($url, (string)$resourcePublisher->generateUri($resource, $request));
     }
 
     #[Test]

@@ -68,6 +68,7 @@ use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\Publishing\UriGenerationOptions;
 use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\Text\TextCropper;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -3908,12 +3909,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         break;
                     case 'asset':
                     case 'path':
+                        $options = null;
                         if ($type === 'path') {
-                            trigger_error('Using "path" is deprecated and will be removed with TYPO3 v15, please use "asset" instead', E_USER_DEPRECATED);
+                            $options = new UriGenerationOptions(cacheBusting: false);
                         }
                         try {
                             $resource = GeneralUtility::makeInstance(SystemResourceFactory::class)->createPublicResource($key);
-                            $retVal = (string)GeneralUtility::makeInstance(SystemResourcePublisherInterface::class)->generateUri($resource, $this->getRequest());
+                            $retVal = (string)GeneralUtility::makeInstance(SystemResourcePublisherInterface::class)->generateUri($resource, $this->getRequest(), $options);
                         } catch (Exception) {
                             $retVal = null;
                         }

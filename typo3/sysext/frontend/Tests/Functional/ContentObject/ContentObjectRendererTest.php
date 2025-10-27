@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -1407,7 +1406,6 @@ And another one';
      * Checks if getData() works with type "path"
      */
     #[Test]
-    #[IgnoreDeprecations]
     public function getDataWithTypePath(): void
     {
         $subject = new ContentObjectRenderer();
@@ -1424,7 +1422,7 @@ And another one';
                     ->withAttribute('frontend.typoscript', $frontendTypoScript)
         );
         $filenameIn = 'EXT:frontend/Resources/Public/Icons/Extension.svg';
-        $expectedUrl = '/typo3/sysext/frontend/Resources/Public/Icons/Extension.svg?' . filemtime(GeneralUtility::getFileAbsFileName($filenameIn));
+        $expectedUrl = '/typo3/sysext/frontend/Resources/Public/Icons/Extension.svg';
         self::assertEquals($expectedUrl, $subject->getData('path:' . $filenameIn, []));
     }
 }

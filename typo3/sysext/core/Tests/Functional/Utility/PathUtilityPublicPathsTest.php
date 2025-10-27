@@ -117,22 +117,22 @@ final class PathUtilityPublicPathsTest extends FunctionalTestCase
         return [
             'public assets are resolved to absolute url' => [
                 'EXT:core/Resources/Public/Icons/Extension.svg',
-                '/typo3/sysext/core/Resources/Public/Icons/Extension.svg?' . $iconMtime,
+                '/typo3/sysext/core/Resources/Public/Icons/Extension.svg',
                 fn() => self::simulateTraditionalWebRequest(),
             ],
             'public assets are resolved to absolute url with sub directory prefixed' => [
                 'EXT:core/Resources/Public/Icons/Extension.svg',
-                '/cms/typo3/sysext/core/Resources/Public/Icons/Extension.svg?' . $iconMtime,
+                '/cms/typo3/sysext/core/Resources/Public/Icons/Extension.svg',
                 fn() => self::simulateTraditionalWebRequestInSubDirectory('/cms/'),
             ],
             'public assets are resolved to absolute url of published assets in Composer mode' => [
                 'EXT:core/Resources/Public/Icons/Extension.svg',
-                '/_assets/d25de869aebcd01495d2fe67ad5b0e25/Icons/Extension.svg?' . $iconMtime,
+                '/_assets/d25de869aebcd01495d2fe67ad5b0e25/Icons/Extension.svg',
                 fn() => self::simulateWebRequestInComposerMode(),
             ],
             'public assets are resolved to absolute url of published assets in Composer mode with sub directory prefixed' => [
                 'EXT:core/Resources/Public/Icons/Extension.svg',
-                '/cms/_assets/d25de869aebcd01495d2fe67ad5b0e25/Icons/Extension.svg?' . $iconMtime,
+                '/cms/_assets/d25de869aebcd01495d2fe67ad5b0e25/Icons/Extension.svg',
                 fn() => self::simulateWebRequestInComposerModeInSubDirectory('/cms/'),
             ],
         ];

@@ -192,8 +192,12 @@ readonly class ResourceFactory implements SingletonInterface
             }
             if ($prefix === 'EXT') {
                 try {
-                    $potentialPathRelativeToPublicDir = (string)PathUtility::getSystemResourceUri($input, null, new UriGenerationOptions(uriPrefix: ''))
-                        ->withQuery('');
+                    // @todo: We make an "URL" relative to public dir because the fallback storage root
+                    //        is the public dir and in this case file identifier === url
+                    //        this will be resolved once fallback storage is deprecated
+                    //        This should be done asap, because other implementations of SystemResourcePublisherInterface
+                    //        might not evaluate the uriPrefix options
+                    $potentialPathRelativeToPublicDir = (string)PathUtility::getSystemResourceUri($input, null, new UriGenerationOptions(uriPrefix: '', cacheBusting: false));
                     if (!file_exists(Environment::getPublicPath() . $potentialPathRelativeToPublicDir)) {
                         throw new ResourceDoesNotExistException(sprintf('File "%s" does not exist in fallback compatibility storage.', $input), 1760532790);
                     }
