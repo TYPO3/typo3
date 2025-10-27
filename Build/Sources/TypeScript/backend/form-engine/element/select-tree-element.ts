@@ -135,7 +135,7 @@ export class SelectTreeElement {
    * Sets __indeterminate state for a subtree.
    * It relays on the tree to have __indeterminate state reset beforehand.
    */
-  private calculateIndeterminate(nodes: TreeNodeInterface[]): void {
+  private calculateIndeterminate(nodes: ReadonlyArray<TreeNodeInterface>): void {
     nodes.forEach((node: TreeNodeInterface) => {
       if ((node.checked || node.__indeterminate) && node.__treeParents && node.__treeParents.length > 0) {
         node.__treeParents.forEach((treeParentIdentifier: string) => {
