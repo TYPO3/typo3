@@ -303,6 +303,37 @@
 			<trans-unit id="dashboard.empty.content.button" xml:space="preserve">
 				<source>Add a widget</source>
  			</trans-unit>
+
+			<trans-unit id="widgets.bookmarks.title" xml:space="preserve">
+				<source>Bookmarks</source>
+			</trans-unit>
+			<trans-unit id="widgets.bookmarks.description" xml:space="preserve">
+				<source>Display current bookmarks as a dashboard widget</source>
+			</trans-unit>
+			<trans-unit id="widgets.bookmarks.noBookmarks" xml:space="preserve">
+				<source>You haven't added any bookmarks yet. To add one, click the share icon %s, available on all pages throughout the backend.</source>
+			</trans-unit>
+			<trans-unit id="widget.bookmarks.setting.label.label" xml:space="preserve">
+				<source>Widget Label</source>
+			</trans-unit>
+			<trans-unit id="widget.bookmarks.setting.label.description" xml:space="preserve">
+				<source>Leave empty to use the selected group title automatically.</source>
+			</trans-unit>
+			<trans-unit id="widget.bookmarks.setting.groups.label" xml:space="preserve">
+				<source>Bookmark groups</source>
+			</trans-unit>
+			<trans-unit id="widget.bookmarks.setting.groups.description" xml:space="preserve">
+				<source>Bookmark groups to be displayed.</source>
+			</trans-unit>
+			<trans-unit id="widget.bookmarks.setting.limit.label" xml:space="preserve">
+				<source>Limit</source>
+			</trans-unit>
+			<trans-unit id="widget.bookmarks.setting.limit.description" xml:space="preserve">
+				<source>Defines how many Bookmark items should be shown.</source>
+			</trans-unit>
+			<trans-unit id="widget.bookmarks.setting.label.showAll" xml:space="preserve">
+				<source>Show all Bookmarks</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -202,6 +202,18 @@ services:
         description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.description'
         iconIdentifier: 'content-widget-number'
 
+  dashboard.widget.bookmarks:
+    class: 'TYPO3\CMS\Dashboard\Widgets\BookmarksWidget'
+    tags:
+      - name: dashboard.widget
+        identifier: 'bookmarks'
+        groupNames: 'content'
+        title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.bookmarks.title'
+        description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.bookmarks.description'
+        iconIdentifier: 'actions-star'
+        height: 'medium'
+        width: 'medium'
+
   dashboard.widget.latestChangedPages:
     class: 'TYPO3\CMS\Dashboard\Widgets\LatestChangedPagesWidget'
     arguments:
