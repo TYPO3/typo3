@@ -145,14 +145,6 @@ class DataHandler
     protected bool $useTransOrigPointerField = true;
 
     /**
-     * If TRUE, workspace restrictions are bypassed on edit and create actions (process_datamap()).
-     * YOU MUST KNOW what you do if you use this feature!
-     *
-     * @internal should only be used from within TYPO3 Core
-     */
-    public bool $bypassWorkspaceRestrictions = false;
-
-    /**
      * If TRUE, access check, check for deleted etc. for records is bypassed.
      * YOU MUST KNOW what you are doing if you use this feature!
      */
@@ -792,7 +784,7 @@ class DataHandler
                         $this->log($table, 0, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::USER_ERROR, 'recordEditAccessInternals() check failed [{reason}]', null, ['reason' => $this->BE_USER->errorMsg]);
                         continue;
                     }
-                    if (!$this->bypassWorkspaceRestrictions && !$this->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
+                    if (!$this->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
                         // If LIVE records cannot be created due to workspace restrictions, prepare creation of placeholder-record
                         // So, if no live records were allowed in the current workspace, we have to create a new version of this record
                         if ($schema->isWorkspaceAware()) {
@@ -908,7 +900,7 @@ class DataHandler
                         $this->getVersionizedIncomingFieldArray($table, $id, $incomingFieldArray, $registerDBList);
                         // Use the new id of the copied/versioned record:
                         $id = $this->autoVersionIdMap[$table][$id];
-                    } elseif (!$this->bypassWorkspaceRestrictions && ($errorCode = $this->workspaceCannotEditRecord($table, $currentRecord))) {
+                    } elseif (($errorCode = $this->workspaceCannotEditRecord($table, $currentRecord))) {
                         // Versioning is required and it must be offline version!
                         // Check if there already is a workspace version
                         $workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid,t3ver_oid');
@@ -6673,7 +6665,6 @@ class DataHandler
         // the current process is an import process
         $copyTCE->isImporting = $this->isImporting;
         $copyTCE->bypassAccessCheckForRecords = $this->bypassAccessCheckForRecords;
-        $copyTCE->bypassWorkspaceRestrictions = $this->bypassWorkspaceRestrictions;
         return $copyTCE;
     }
 

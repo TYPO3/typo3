@@ -355,8 +355,6 @@ class SetupModuleController
                 // Make dedicated instance of TCE for storing the changes.
                 $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
                 $dataHandler->start($storeRec, [], $backendUser);
-                // This is to make sure that the users record can be updated even if in another workspace. This is tolerated.
-                $dataHandler->bypassWorkspaceRestrictions = true;
                 $dataHandler->process_datamap();
                 $dataHandler->printLogErrorMessages();
                 // reset the user record admin flag to previous value, just in case it gets used any further.
