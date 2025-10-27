@@ -191,7 +191,8 @@
 }
 
 a.dropdown-item,
-button.dropdown-item {
+button.dropdown-item,
+.dropdown-item[role="button"] {
     &:hover {
         color: var(--typo3-dropdown-item-hover-color);
         background-color: var(--typo3-dropdown-item-hover-bg);
