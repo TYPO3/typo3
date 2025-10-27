@@ -861,6 +861,10 @@ class Indexer
         $maxL = MathUtility::forceIntegerInRange($this->conf['index_descrLgd'], 0, 255, 200);
         if ($maxL) {
             $bodyDescription = preg_replace('/\s+/u', ' ', $indexingDataDto->body);
+            // Handle preg_replace failures (returns null on PCRE errors like PREG_BAD_UTF8_ERROR)
+            if ($bodyDescription === null) {
+                $bodyDescription = $indexingDataDto->body;
+            }
             // Shorten the string. If the database has the wrong character set,
             // the string is probably truncated again.
             $bodyDescription = \mb_strcut($bodyDescription, 0, $maxL, 'utf-8');
