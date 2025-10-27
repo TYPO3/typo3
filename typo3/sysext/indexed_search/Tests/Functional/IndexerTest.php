@@ -19,6 +19,7 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Functional;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\IndexedSearch\Dto\IndexingDataAsString;
 use TYPO3\CMS\IndexedSearch\Indexer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -141,5 +142,27 @@ final class IndexerTest extends FunctionalTestCase
         $indexer->forceIndexing = true;
         $indexer->indexTypo3PageContent();
         self::assertCSVDataSet(__DIR__ . '/Fixtures/Indexer/indexing_words_twice_second.csv');
+    }
+
+    #[Test]
+    public function bodyDescriptionSubstitutesMultipleSpaceCharactersWithSingleSpace(): void
+    {
+        $indexingDataDto = new IndexingDataAsString(body: "This is a test body with multiple   spaces and\n\nnewlines that should be normalized.");
+        $expected = 'This is a test body with multiple spaces and newlines that should be normalized.';
+        $subject = $this->get(Indexer::class);
+        $subject->conf = ['index_descrLgd' => 200];
+        self::assertSame($expected, $subject->bodyDescription($indexingDataDto));
+    }
+
+    #[Test]
+    public function bodyDescriptionHandlesPregReplaceFailureGracefully(): void
+    {
+        // Have a string with invalid UTF-8 that will trigger PREG_BAD_UTF8_ERROR
+        // using a byte sequences that cause PCRE to fail with /u modifier.
+        $invalidUtf8 = "Valid start \x80\x81\x82 invalid UTF-8 sequence";
+        $indexingDataDto = new IndexingDataAsString(body: $invalidUtf8);
+        $subject = $this->get(Indexer::class);
+        $subject->conf = ['index_descrLgd' => 200];
+        self::assertSame($invalidUtf8, $subject->bodyDescription($indexingDataDto));
     }
 }
