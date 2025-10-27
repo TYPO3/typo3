@@ -1348,4 +1348,10 @@ return [
             'Breaking-108055-RemovedPageRendererRelatedHooksAndMethods.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'backend\'][\'avatarProviders\']' => [
+        'restFiles' => [
+            'Breaking-107871-RemoveBackendAvatarProviderRegistrationViaGLOBALS.rst',
+            'Feature-107871-AutoconfigureBackendAvatarProviders.rst',
+        ],
+    ],
 ];

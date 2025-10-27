@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use TYPO3\CMS\Backend\Backend\Avatar\DefaultAvatarProvider;
 use TYPO3\CMS\Backend\Hooks\DataHandlerAuthenticationContext;
 use TYPO3\CMS\Backend\LoginProvider\UsernamePasswordLoginProvider;
 
@@ -13,10 +12,6 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'][1433416747] 
     'sorting' => 50,
     'iconIdentifier' => 'actions-key',
     'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.link',
-];
-
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['avatarProviders']['defaultAvatarProvider'] = [
-    'provider' => DefaultAvatarProvider::class,
 ];
 
 // Register search key shortcuts

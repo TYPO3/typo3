@@ -7,8 +7,10 @@ namespace TYPO3\CMS\Backend;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use TYPO3\CMS\Backend\Attribute\AsAvatarProvider;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\ProviderInterface;
+use TYPO3\CMS\Backend\DependencyInjection\AvatarProviderPass;
 use TYPO3\CMS\Backend\ElementBrowser\ElementBrowserInterface;
 use TYPO3\CMS\Backend\Form\NodeInterface;
 use TYPO3\CMS\Backend\Localization\LocalizationHandlerInterface;
@@ -35,11 +37,25 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
 
     $containerBuilder->addCompilerPass(new PublicServicePass('backend.form.dataprovider'));
 
+    $containerBuilder->addCompilerPass(new AvatarProviderPass('backend.avatar_provider'));
+
     // adds tag backend.controller to services
     $containerBuilder->registerAttributeForAutoconfiguration(
         AsController::class,
         static function (ChildDefinition $definition, AsController $attribute): void {
             $definition->addTag(AsController::TAG_NAME);
         }
+    );
+
+    // Autoconfigure backend avatar providers
+    $containerBuilder->registerAttributeForAutoconfiguration(
+        AsAvatarProvider::class,
+        static function (ChildDefinition $definition, AsAvatarProvider $attribute): void {
+            $definition->addTag(AsAvatarProvider::TAG_NAME, [
+                'identifier' => $attribute->identifier,
+                'before' => \implode(',', $attribute->before),
+                'after' => \implode(',', $attribute->after),
+            ]);
+        },
     );
 };

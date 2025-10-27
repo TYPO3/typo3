@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Backend\Avatar;
 
+use TYPO3\CMS\Backend\Attribute\AsAvatarProvider;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Avatar Provider used for rendering avatars based on local files (based on FAL), stored in the be_users.avatar
  * relation field with sys_file_reference.
  */
+#[AsAvatarProvider('defaultAvatarProvider')]
 class DefaultAvatarProvider implements AvatarProviderInterface
 {
     /**

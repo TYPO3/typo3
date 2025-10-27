@@ -37,19 +37,16 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class Avatar
 {
     /**
-     * Sorted and initialized avatar providers
-     *
-     * @var AvatarProviderInterface[]
+     * @param list<AvatarProviderInterface> $avatarProviders
      */
-    protected array $avatarProviders = [];
-
     public function __construct(
         #[Autowire(service: 'cache.runtime')]
         protected readonly FrontendInterface $cache,
         protected readonly DependencyOrderingService $dependencyOrderingService,
-        protected readonly IconFactory $iconFactory
+        protected readonly IconFactory $iconFactory,
+        protected readonly array $avatarProviders = [],
     ) {
-        $this->validateSortAndInitiateAvatarProviders();
+        $this->validateAvatarProviders();
     }
 
     /**
@@ -115,35 +112,20 @@ class Avatar
      *
      * @throws \RuntimeException
      */
-    protected function validateSortAndInitiateAvatarProviders(): void
+    protected function validateAvatarProviders(): void
     {
-        /** @var array<string,array> $providers */
-        $providers = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['avatarProviders'] ?? [];
-        if (empty($providers)) {
-            return;
-        }
-        foreach ($providers as $identifier => $configuration) {
-            if (empty($configuration) || !is_array($configuration)) {
+        foreach ($this->avatarProviders as $provider) {
+            /* @phpstan-ignore instanceof.alwaysTrue */
+            if (!($provider instanceof AvatarProviderInterface)) {
                 throw new \RuntimeException(
-                    'Missing configuration for avatar provider "' . $identifier . '".',
-                    1439317801
+                    sprintf(
+                        'Avatar provider must implement interface "%s", "%s" given.',
+                        AvatarProviderInterface::class,
+                        \get_debug_type($provider),
+                    ),
+                    1439317802,
                 );
             }
-            if (!is_string($configuration['provider']) || empty($configuration['provider']) || !class_exists($configuration['provider']) || !is_subclass_of(
-                $configuration['provider'],
-                AvatarProviderInterface::class
-            )) {
-                throw new \RuntimeException(
-                    'The avatar provider "' . $identifier . '" defines an invalid provider. Ensure the class exists and implements the "' . AvatarProviderInterface::class . '".',
-                    1439317802
-                );
-            }
-        }
-        $orderedProviders = $this->dependencyOrderingService->orderByDependencies($providers);
-        foreach ($orderedProviders as $configuration) {
-            /** @var AvatarProviderInterface $avatarProvider */
-            $avatarProvider = GeneralUtility::makeInstance($configuration['provider']);
-            $this->avatarProviders[] = $avatarProvider;
         }
     }
 
