@@ -61,10 +61,13 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
             $fieldConfig['config']['items'] = $this->addItemsFromForeignTable($result, $fieldName, $fieldConfig['config']['items']);
 
             // Resolve "itemsProcFunc"
-            if (!empty($fieldConfig['config']['itemsProcFunc'])) {
-                $fieldConfig['config']['items'] = $this->resolveItemProcessorFunction($result, $fieldName, $fieldConfig['config']['items']);
+            if (!empty($fieldConfig['config']['itemsProcFunc']) || !empty($fieldConfig['config']['itemsProcessors'])) {
+                $fieldConfig['config']['items'] = $this->resolveItemsProcessorFunction($result, $fieldName, $fieldConfig['config']['items']);
                 // itemsProcFunc must not be used anymore
-                unset($fieldConfig['config']['itemsProcFunc']);
+                unset(
+                    $fieldConfig['config']['itemsProcFunc'],
+                    $fieldConfig['config']['itemsProcessors']
+                );
             }
 
             // removing items before $dynamicItems and $removedItems have been built results in having them

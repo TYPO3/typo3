@@ -2563,7 +2563,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
     }
 
     #[Test]
-    public function enrichAddsSelectTextWithItemProcFunc(): void
+    public function enrichAddsSelectTextWithItemsProcFunc(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
         $tca['aTable']['columns']['select'] = [

@@ -113,7 +113,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                 // with two key, "title" and "description"
                 // For the sake of backwards compatibility, we test if the help text
                 // is a string and use it as a description (this could happen if items
-                // are modified with an itemProcFunc)
+                // are modified with an itemsProcFunc)
                 $help = '';
                 if (!empty($item['description'])) {
                     if (is_array($item['description'])) {

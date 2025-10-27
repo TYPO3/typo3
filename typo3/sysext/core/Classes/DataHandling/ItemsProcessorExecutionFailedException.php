@@ -15,23 +15,12 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
+namespace TYPO3\CMS\Core\DataHandling;
 
-/**
- * A user function used in radio_5
- *
- * @internal
- */
-final class TypeRadio5ItemsProcFunc
+class ItemsProcessorExecutionFailedException extends \RuntimeException
 {
-    /**
-     * Add two items to existing ones
-     *
-     * @param array $params
-     */
-    public function itemsProcFunc(&$params): void
+    public function __construct(public readonly array $items, string $message, int $code, ?\Throwable $previous = null)
     {
-        $params['items'][] = ['item 1 from itemsProcFunc()', 3, null];
-        $params['items'][] = ['item 2 from itemsProcFunc()', 4, null];
+        parent::__construct($message, $code, $previous);
     }
 }

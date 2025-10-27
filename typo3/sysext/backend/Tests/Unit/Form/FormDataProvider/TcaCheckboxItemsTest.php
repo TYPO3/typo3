@@ -20,11 +20,17 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems;
+use TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider\Fixtures\ItemsProcessor1;
+use TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider\Fixtures\ItemsProcessor2;
+use TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider\Fixtures\ItemsProcessorForTestingExceptionsForCheckboxItems;
+use TYPO3\CMS\Core\DataHandling\ItemProcessingService;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -496,6 +502,19 @@ final class TcaCheckboxItemsTest extends UnitTestCase
             'databaseRow' => [],
             'effectivePid' => 42,
             'site' => new Site('aSite', 456, []),
+            // Set some dummy TSconfig to avoid \TYPO3\CMS\Core\DataHandling\ItemProcessingService::processItems()
+            // trying to retrieve some, which will fail in a unit test context
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'itemsProcFunc.' => [
+                                'foo',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
             'processedTca' => [
                 'columns' => [
                     'aField' => [
@@ -516,15 +535,89 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
         $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $flashMessageService = $this->createMock(FlashMessageService::class);
+        GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService);
 
-        $items = (new TcaCheckboxItems())->addData($input)['processedTca']['columns']['aField']['config']['items'];
+        $subject = new TcaCheckboxItems();
+        $subject->injectItemProcessingService(
+            $this->getItemProcessingServiceInstance($flashMessageService)
+        );
+        $items = $subject->addData($input)['processedTca']['columns']['aField']['config']['items'];
 
         self::assertCount(1, $items);
         self::assertSame('foo', $items[0]['label']);
     }
 
     #[Test]
-    public function addDataItemsProcFuncReceivesParameters(): void
+    public function addDataCallsItemsProcessors(): void
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'inlineParentUid' => 1,
+            'inlineParentTableName' => 'aTable',
+            'inlineParentFieldName' => 'aField',
+            'inlineParentConfig' => [],
+            'inlineTopMostParentUid' => 1,
+            'inlineTopMostParentTableName' => 'topMostTable',
+            'inlineTopMostParentFieldName' => 'topMostField',
+            'databaseRow' => [],
+            'effectivePid' => 42,
+            'site' => new Site('aSite', 456, []),
+            // Set some dummy TSconfig to avoid \TYPO3\CMS\Core\DataHandling\ItemProcessingService::processItems()
+            // trying to retrieve some, which will fail in a unit test context
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'itemsProcFunc.' => [
+                                'foo',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'check',
+                            'items' => [],
+                            'itemsProcessors' => [
+                                100 => [
+                                    'class' => ItemsProcessor2::class,
+                                ],
+                                50 => [
+                                    'class' => ItemsProcessor1::class,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $languageService = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $flashMessageService = $this->createMock(FlashMessageService::class);
+        GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService);
+
+        $subject = new TcaCheckboxItems();
+        $subject->injectItemProcessingService(
+            $this->getItemProcessingServiceInstance($flashMessageService)
+        );
+        $items = $subject->addData($input)['processedTca']['columns']['aField']['config']['items'];
+
+        // Check that 2 items have been added, with the expected properties and in the expected order
+        self::assertCount(2, $items);
+        self::assertSame('label1', $items[0]->getLabel());
+        self::assertSame('value1', $items[0]->getValue());
+        self::assertSame('label2', $items[1]->getLabel());
+        self::assertSame('value2', $items[1]->getValue());
+    }
+
+    #[Test]
+    public function addDataItemsProcFuncOrItemsProcessorsReceiveParameters(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -546,6 +639,11 @@ final class TcaCheckboxItemsTest extends UnitTestCase
                         'aField.' => [
                             'itemsProcFunc.' => [
                                 'itemParamKey' => 'itemParamValue',
+                            ],
+                            'itemsProcessors.' => [
+                                '100.' => [
+                                    'itemParamKey' => 'itemParamValue',
+                                ],
                             ],
                         ],
                     ],
@@ -587,6 +685,14 @@ final class TcaCheckboxItemsTest extends UnitTestCase
                                     throw new \UnexpectedValueException('broken', 1476109402);
                                 }
                             },
+                            'itemsProcessors' => [
+                                100 => [
+                                    'class' => ItemsProcessorForTestingExceptionsForCheckboxItems::class,
+                                    'parameters' => [
+                                        'hello' => 'world',
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],
@@ -606,7 +712,11 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         // itemsProcFunc must NOT have raised an exception
         $flashMessageQueue->expects($this->never())->method('enqueue');
 
-        (new TcaCheckboxItems())->addData($input);
+        $subject = new TcaCheckboxItems();
+        $subject->injectItemProcessingService(
+            $this->getItemProcessingServiceInstance($flashMessageService)
+        );
+        $subject->addData($input);
     }
 
     #[Test]
@@ -671,6 +781,85 @@ final class TcaCheckboxItemsTest extends UnitTestCase
 
         $subject = new TcaCheckboxItems();
         $subject->injectFlashMessageService($flashMessageService);
+        $subject->injectItemProcessingService(
+            $this->getItemProcessingServiceInstance($flashMessageService)
+        );
+
+        $subject->addData($input);
+    }
+
+    #[Test]
+    public function addDataItemsProcessorsEnqueuesFlashMessageOnException(): void
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'inlineParentUid' => 1,
+            'inlineParentTableName' => 'aTable',
+            'inlineParentFieldName' => 'aField',
+            'inlineParentConfig' => [],
+            'inlineTopMostParentUid' => 1,
+            'inlineTopMostParentTableName' => 'topMostTable',
+            'inlineTopMostParentFieldName' => 'topMostField',
+            'databaseRow' => [
+                'aField' => 'aValue',
+            ],
+            'effectivePid' => 42,
+            'site' => new Site('aSite', 456, []),
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'itemsProcessors.' => [
+                                '100.' => [
+                                    'unexpectedKey' => 'unexpectedValue',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'check',
+                            'aKey' => 'aValue',
+                            'items' => [
+                                0 => [
+                                    'label' => 'foo',
+                                    'value' => 'bar',
+                                ],
+                            ],
+                            'itemsProcessors' => [
+                                100 => [
+                                    'class' => ItemsProcessorForTestingExceptionsForCheckboxItems::class,
+                                    'parameters' => [
+                                        'hello' => 'world',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $languageService = $this->createMock(LanguageService::class);
+        $languageService->method('sL')->with(self::anything())->willReturn('');
+        $GLOBALS['LANG'] = $languageService;
+        $flashMessage = $this->createMock(FlashMessage::class);
+        GeneralUtility::addInstance(FlashMessage::class, $flashMessage);
+        $flashMessageService = $this->createMock(FlashMessageService::class);
+        $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
+        $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
+
+        $flashMessageQueue->expects($this->atLeastOnce())->method('enqueue');
+
+        $subject = new TcaCheckboxItems();
+        $subject->injectFlashMessageService($flashMessageService);
+        $subject->injectItemProcessingService(
+            $this->getItemProcessingServiceInstance($flashMessageService)
+        );
 
         $subject->addData($input);
     }
@@ -723,5 +912,14 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config']['items'][0]['invertStateDisplay'] = false;
 
         self::assertSame($expected, (new TcaCheckboxItems())->addData($input));
+    }
+
+    protected function getItemProcessingServiceInstance(FlashMessageService $flashMessageService): ItemProcessingService
+    {
+        return new ItemProcessingService(
+            $this->createMock(SiteFinder::class),
+            $this->createMock(TcaSchemaFactory::class),
+            $flashMessageService,
+        );
     }
 }

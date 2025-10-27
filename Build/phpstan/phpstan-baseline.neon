@@ -1195,6 +1195,12 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Schema/Field/NumberFieldType.php
 
 		-
+			message: '#^Instanceof between TYPO3\\CMS\\Core\\Schema\\Struct\\SelectItem and TYPO3\\CMS\\Core\\Schema\\Struct\\SelectItem will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 3
+			path: ../../typo3/sysext/core/Classes/Schema/Struct/SelectItemCollection.php
+
+		-
 			message: '#^Method TYPO3\\CMS\\Core\\Security\\ContentSecurityPolicy\\HashValue\:\:compile\(\) never returns null so it can be removed from the return type\.$#'
 			identifier: return.unusedType
 			count: 1

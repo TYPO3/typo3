@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -21,7 +23,7 @@ use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Schema\Struct\SelectItem;
+use TYPO3\CMS\Core\Schema\Struct\SelectItemCollection;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
@@ -33,16 +35,98 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Provides services around item processing
  */
 #[Autoconfigure(public: true)]
-class ItemProcessingService
+readonly class ItemProcessingService
 {
     public function __construct(
-        protected readonly SiteFinder $siteFinder,
-        protected readonly TcaSchemaFactory $tcaSchemaFactory,
-        protected readonly FlashMessageService $flashMessageService,
+        protected SiteFinder $siteFinder,
+        protected TcaSchemaFactory $tcaSchemaFactory,
+        protected FlashMessageService $flashMessageService,
     ) {}
 
+    public function processItems(SelectItemCollection $items, ItemsProcessorContext $context): SelectItemCollection
+    {
+        $pageId = (int)($context->table === 'pages' ? ($context->row['uid'] ?? $context->realPid) : ($context->row['pid'] ?? $context->realPid));
+        $fieldTSconfig = $context->fieldTSconfig;
+        if ($fieldTSconfig === []) {
+            $TSconfig = BackendUtility::getPagesTSconfig($pageId);
+            $fieldTSconfig = $TSconfig['TCEFORM.'][$context->table . '.'][$context->field . '.'] ?? [];
+        }
+
+        $site = $context->site;
+        // Legacy itemsProcFunc support - convert to array for backwards compatibility
+        $itemsArray = $items->toArray();
+        $processorParameters = [
+            // Function manipulates $items directly and return nothing
+            'items' => &$itemsArray,
+            'config' => $context->fieldConfiguration,
+            'table' => $context->table,
+            'row' => $context->row,
+            'field' => $context->field,
+            'effectivePid' => $context->realPid,
+            'site' => $site,
+        ];
+        $processorParameters = array_merge($processorParameters, $context->additionalParameters);
+        try {
+            // @todo: deprecate when the time is right
+            if (!empty($context->fieldConfiguration['itemsProcFunc'])) {
+                $processorParameters['TSconfig'] = $fieldTSconfig['itemsProcFunc.'] ?? null;
+                GeneralUtility::callUserFunction($context->fieldConfiguration['itemsProcFunc'], $processorParameters, $this);
+                // Recreate collection from potentially modified array
+                $items = SelectItemCollection::createFromArray($itemsArray, $context->fieldConfiguration['type']);
+            }
+
+            // "itemsProcessors" is the more modern version of "itemsProcFunc", which will eventually be deprecated
+            $itemsProcessors = $context->fieldConfiguration['itemsProcessors'] ?? [];
+            ksort($itemsProcessors);
+            foreach ($itemsProcessors as $key => $itemsProcessorConfiguration) {
+                $tsConfig = $fieldTSconfig['itemsProcessors.'][$key . '.'] ?? [];
+                if (empty($itemsProcessorConfiguration['class'])) {
+                    throw new ItemsProcessorExecutionFailedException(
+                        $itemsArray,
+                        sprintf(
+                            'Missing class for itemsProcessors %d, field %s, table %s',
+                            $key,
+                            $context->field,
+                            $context->table
+                        ),
+                        1761814167
+                    );
+                }
+                $itemsProcessorObject = GeneralUtility::makeInstance($itemsProcessorConfiguration['class']);
+                if (!$itemsProcessorObject instanceof ItemsProcessorInterface) {
+                    throw new ItemsProcessorExecutionFailedException(
+                        $itemsArray,
+                        sprintf(
+                            'Class %s must implement %s',
+                            $itemsProcessorConfiguration['class'],
+                            ItemsProcessorInterface::class
+                        ),
+                        1761753898
+                    );
+                }
+                $processorContext = new ItemsProcessorContext(
+                    table: $context->table,
+                    field: $context->field,
+                    row: $context->row,
+                    fieldConfiguration: $context->fieldConfiguration,
+                    processorParameters: $itemsProcessorConfiguration['parameters'] ?? [],
+                    realPid: $context->realPid,
+                    site: $site,
+                    fieldTSconfig: $tsConfig,
+                    additionalParameters: $context->additionalParameters
+                );
+                $items = $itemsProcessorObject->processItems($items, $processorContext);
+            }
+        } catch (\Exception $exception) {
+            // Catch anything here!
+            throw new ItemsProcessorExecutionFailedException($itemsArray, $exception->getMessage(), 1761588907, $exception);
+        }
+        return $items;
+    }
+
     /**
-     * Executes an itemsProcFunc if defined in TCA and returns the combined result (predefined + processed items)
+     * Executes an itemsProcFunc or itemsProcessors if defined in TCA and returns the combined result
+     * (predefined + processed items)
      *
      * @param string $table
      * @param int $realPid Record pid. This is the pid of the record.
@@ -51,36 +135,25 @@ class ItemProcessingService
      * @param array $tcaConfig The TCA configuration of $field
      * @param array $selectedItems The items already defined in the TCA configuration
      * @return array The processed items (including the predefined items)
+     * @throws \TYPO3\CMS\Core\Exception
+     * @throws \TYPO3\CMS\Core\Schema\Exception\UndefinedFieldException
+     * @throws \TYPO3\CMS\Core\Schema\Exception\UndefinedSchemaException
      */
     public function getProcessingItems($table, $realPid, $field, $row, $tcaConfig, $selectedItems)
     {
-        $pageId = (int)($table === 'pages' ? ($row['uid'] ?? $realPid) : ($row['pid'] ?? $realPid));
-        $TSconfig = BackendUtility::getPagesTSconfig($pageId);
-        $fieldTSconfig = $TSconfig['TCEFORM.'][$table . '.'][$field . '.'] ?? [];
-
-        $params = [];
-        $params['items'] = &$selectedItems;
-        $params['config'] = $tcaConfig;
-        $params['TSconfig'] = $fieldTSconfig['itemsProcFunc.'] ?? null;
-        $params['table'] = $table;
-        $params['row'] = $row;
-        $params['field'] = $field;
-        $params['effectivePid'] = $realPid;
-        $params['site'] = $this->resolveSite($realPid);
-
-        // The itemsProcFunc method may throw an exception.
-        // If it does, display an error message and return items unchanged.
         try {
-            $params['items'] = array_map(
-                static fn(array $item): SelectItem => SelectItem::fromTcaItemArray($item, $params['config']['type']),
-                $params['items']
+            $itemsCollection = SelectItemCollection::createFromArray($selectedItems, $tcaConfig['type']);
+            $context = new ItemsProcessorContext(
+                table: $table,
+                field: $field,
+                row: $row,
+                fieldConfiguration: $tcaConfig,
+                processorParameters: [],
+                realPid: $realPid,
+                site: $this->resolveSite((int)($table === 'pages' ? ($row['uid'] ?? $realPid) : ($row['pid'] ?? $realPid)))
             );
-            GeneralUtility::callUserFunction($tcaConfig['itemsProcFunc'], $params, $this);
-            $params['items'] = array_map(
-                static fn($item): SelectItem => $item instanceof SelectItem ? $item : SelectItem::fromTcaItemArray($item, $params['config']['type']),
-                $params['items']
-            );
-        } catch (\Exception $exception) {
+            $selectedItems = $this->processItems($itemsCollection, $context)->toArray();
+        } catch (ItemsProcessorExecutionFailedException $exception) {
             $fieldLabel = '';
             if ($this->tcaSchemaFactory->has($table)) {
                 $schema = $this->tcaSchemaFactory->get($table);
@@ -110,7 +183,7 @@ class ItemProcessingService
         return $selectedItems;
     }
 
-    protected function resolveSite(int $pageId): SiteInterface
+    public function resolveSite(int $pageId): SiteInterface
     {
         try {
             return $this->siteFinder->getSiteByPageId($pageId);

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Provides ItemProcFunc fields for special population of available TYPO3 system languages
+ * Provides ItemsProcFunc fields for special population of available TYPO3 system languages
  * @internal
  */
 #[Autoconfigure(public: true)]

@@ -25,6 +25,8 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\DataHandling\ItemProcessingService;
+use TYPO3\CMS\Core\DataHandling\ItemsProcessorContext;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -33,7 +35,7 @@ use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Schema\Capability\RootLevelCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
-use TYPO3\CMS\Core\Schema\Struct\SelectItem;
+use TYPO3\CMS\Core\Schema\Struct\SelectItemCollection;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -57,6 +59,7 @@ abstract class AbstractItemProvider
     private FlashMessageService $flashMessageService;
     private ConnectionPool $connectionPool;
     private TcaSchemaFactory $tcaSchemaFactory;
+    private ItemProcessingService $itemProcessingService;
 
     public function injectIconFactory(IconFactory $iconFactory): void
     {
@@ -83,33 +86,34 @@ abstract class AbstractItemProvider
         $this->connectionPool = $connectionPool;
     }
 
+    public function injectItemProcessingService(ItemProcessingService $itemProcessingService): void
+    {
+        $this->itemProcessingService = $itemProcessingService;
+    }
+
     /**
-     * Resolve "itemProcFunc" of elements.
+     * Resolve "itemsProcFunc" of elements.
      *
      * @param array $result Main result array
      * @param string $fieldName Field name to handle item list for
      * @param array $items Existing items array
      * @return array New list of item elements
      */
-    protected function resolveItemProcessorFunction(array $result, $fieldName, array $items)
+    protected function resolveItemsProcessorFunction(array $result, $fieldName, array $items)
     {
         $table = $result['tableName'];
         $config = $result['processedTca']['columns'][$fieldName]['config'];
 
-        $pageTsProcessorParameters = null;
+        // Pass along only itemsProcFunc or itemsProcessors TSconfig
+        $pageTsProcessorParameters = [];
         if (!empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['itemsProcFunc.'])) {
-            $pageTsProcessorParameters = $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['itemsProcFunc.'];
+            $pageTsProcessorParameters['itemsProcFunc.'] = $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['itemsProcFunc.'];
         }
-        $processorParameters = [
-            // Function manipulates $items directly and return nothing
-            'items' => &$items,
-            'config' => $config,
-            'TSconfig' => $pageTsProcessorParameters,
-            'table' => $table,
-            'row' => $result['databaseRow'],
-            'field' => $fieldName,
-            'effectivePid' => $result['effectivePid'],
-            'site' => $result['site'],
+        if (!empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['itemsProcessors.'])) {
+            $pageTsProcessorParameters['itemsProcessors.'] = $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['itemsProcessors.'];
+        }
+
+        $additionalParameters = [
             // IMPORTANT: Below fields are only available in FormEngine context.
             // They are not used by the DataHandler when processing itemsProcFunc
             // for checking if a submitted value is valid. This means, in case
@@ -126,19 +130,24 @@ abstract class AbstractItemProvider
             'inlineTopMostParentTableName' => $result['inlineTopMostParentTableName'],
             'inlineTopMostParentFieldName' => $result['inlineTopMostParentFieldName'],
         ];
+
         if (!empty($result['flexParentDatabaseRow'])) {
-            $processorParameters['flexParentDatabaseRow'] = $result['flexParentDatabaseRow'];
+            $additionalParameters['flexParentDatabaseRow'] = $result['flexParentDatabaseRow'];
         }
         try {
-            $items = array_map(
-                fn(array $item): SelectItem => SelectItem::fromTcaItemArray($item, $config['type']),
-                $items
+            $itemsCollection = SelectItemCollection::createFromArray($items, $config['type']);
+            $context = new ItemsProcessorContext(
+                table: $result['tableName'],
+                field: $fieldName,
+                row: $result['databaseRow'],
+                fieldConfiguration: $config,
+                processorParameters: [],
+                realPid: $result['effectivePid'],
+                site: $result['site'] ?? $this->itemProcessingService->resolveSite($result['effectivePid']),
+                fieldTSconfig: $pageTsProcessorParameters,
+                additionalParameters: $additionalParameters
             );
-            GeneralUtility::callUserFunction($config['itemsProcFunc'], $processorParameters, $this);
-            $items = array_map(
-                fn(SelectItem|array $item): SelectItem => $item instanceof SelectItem ? $item : SelectItem::fromTcaItemArray($item, $config['type']),
-                $processorParameters['items']
-            );
+            $items = $this->itemProcessingService->processItems($itemsCollection, $context)->toArray();
         } catch (\Exception $exception) {
             // The itemsProcFunc method may throw an exception, create a flash message if so
             $languageService = $this->getLanguageService();
@@ -1035,7 +1044,7 @@ abstract class AbstractItemProvider
         $newDatabaseValueArray = [];
 
         // Add all values that were defined by static methods and do not come from the relation
-        // e.g. TCA, TSconfig, itemProcFunc etc.
+        // e.g. TCA, TSconfig, itemsProcFunc etc.
         foreach ($currentDatabaseValueArray as $value) {
             if (isset($staticValues[$value])) {
                 $newDatabaseValueArray[] = $value;

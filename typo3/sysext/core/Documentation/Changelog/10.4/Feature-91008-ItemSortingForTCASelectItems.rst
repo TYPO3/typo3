@@ -15,7 +15,7 @@ A new option :php:`sortOrders` for TCA-based select fields has been added to all
 sorting of static TCA select items by their values or labels.
 
 This is now used in TYPO3 Core's :php:`tt_content.list_type` whereas
-a previous :php:`itemProcFunc` was used to sort all plugins by label
+a previous :php:`itemsProcFunc` was used to sort all plugins by label
 in the FormEngine dropdown.
 
 Built-in orderings are to sort items by their labels or values. It is also possible

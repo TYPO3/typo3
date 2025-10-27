@@ -46,10 +46,13 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
             $items = $this->sanitizeConfiguration($config, $fieldName, $table);
 
             // Resolve "itemsProcFunc"
-            if (!empty($config['itemsProcFunc'])) {
-                $items = $this->resolveItemProcessorFunction($result, $fieldName, $items);
+            if (!empty($config['itemsProcFunc']) || !empty($config['itemsProcessors'])) {
+                $items = $this->resolveItemsProcessorFunction($result, $fieldName, $items);
                 // itemsProcFunc must not be used anymore
-                unset($result['processedTca']['columns'][$fieldName]['config']['itemsProcFunc']);
+                unset(
+                    $result['processedTca']['columns'][$fieldName]['config']['itemsProcFunc'],
+                    $result['processedTca']['columns'][$fieldName]['config']['itemsProcessors']
+                );
             }
 
             // Set label overrides from pageTsConfig if given

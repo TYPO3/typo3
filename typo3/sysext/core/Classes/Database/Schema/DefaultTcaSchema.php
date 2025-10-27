@@ -707,7 +707,8 @@ class DefaultTcaSchema
                         break;
 
                     case $fieldType instanceof RadioFieldType:
-                        $hasItemsProcFunc = ($fieldTypeConfiguration['itemsProcFunc'] ?? '') !== '';
+                        $hasItemsProcFunc = ($fieldTypeConfiguration['itemsProcFunc'] ?? '') !== '' ||
+                            ($fieldTypeConfiguration['itemsProcessors'] ?? []) !== [];
                         $items = $fieldTypeConfiguration['items'] ?? [];
                         // With itemsProcFunc we can't be sure, which values are persisted. Use type string.
                         if ($hasItemsProcFunc) {
@@ -943,7 +944,10 @@ class DefaultTcaSchema
                         }
                         $dbFieldLength = (int)($fieldTypeConfiguration['dbFieldLength'] ?? 0);
                         // If itemsProcFunc is not set, check the item values
-                        if (($fieldTypeConfiguration['itemsProcFunc'] ?? '') === '') {
+                        if (
+                            ($fieldTypeConfiguration['itemsProcFunc'] ?? '') === '' ||
+                            ($fieldTypeConfiguration['itemsProcessors'] ?? []) !== []
+                        ) {
                             $items = $fieldTypeConfiguration['items'] ?? [];
                             $itemsContainsOnlyIntegers = true;
                             foreach ($items as $item) {

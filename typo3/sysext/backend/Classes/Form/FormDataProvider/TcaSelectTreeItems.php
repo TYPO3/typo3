@@ -125,10 +125,13 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
                     $staticItems = $this->removeItemsByUserAuthMode($result, $fieldName, $staticItems);
                     $staticItems = $this->removeItemsByDoktypeUserRestriction($result, $fieldName, $staticItems);
                     // Call itemsProcFunc if given. Note this function does *not* see the "dynamic" list of items
-                    if (!empty($fieldConfig['config']['itemsProcFunc'])) {
-                        $staticItems = $this->resolveItemProcessorFunction($result, $fieldName, $staticItems);
+                    if (!empty($fieldConfig['config']['itemsProcFunc']) || !empty($fieldConfig['config']['itemsProcessors'])) {
+                        $staticItems = $this->resolveItemsProcessorFunction($result, $fieldName, $staticItems);
                         // itemsProcFunc must not be used anymore
-                        unset($fieldConfig['config']['itemsProcFunc']);
+                        unset(
+                            $fieldConfig['config']['itemsProcFunc'],
+                            $fieldConfig['config']['itemsProcessors']
+                        );
                     }
                     // translate any labels
                     $staticItems = $this->translateLabels($result, $staticItems, $table, $fieldName);

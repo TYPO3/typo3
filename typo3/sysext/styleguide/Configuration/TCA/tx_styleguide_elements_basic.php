@@ -1152,7 +1152,7 @@ backend_layout {
             // @todo: Checking a checkbox that is added by itemsProcFunc is not persisted correctly.
             // @todo: HTML looks good, so this is probably an issue in DataHandler?
             'label' => 'checkbox_6',
-            'description' => 'itemsProcFunc',
+            'description' => 'itemsProcFunc and itemsProcessors',
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -1160,6 +1160,14 @@ backend_layout {
                     ['label' => 'bar'],
                 ],
                 'itemsProcFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\TypeCheckbox8ItemsProcFunc->itemsProcFunc',
+                'itemsProcessors' => [
+                    100 => [
+                        'class' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\TypeCheckbox8ItemsProcessor',
+                        'parameters' => [
+                            'extra' => 'extraValue',
+                        ],
+                    ],
+                ],
             ],
         ],
         'checkbox_7' => [

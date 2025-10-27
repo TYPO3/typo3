@@ -69,6 +69,7 @@ use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\FieldTranslationBehaviour;
 use TYPO3\CMS\Core\Schema\Field\FileFieldType;
 use TYPO3\CMS\Core\Schema\Field\InlineFieldType;
+use TYPO3\CMS\Core\Schema\Struct\SelectItemCollection;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
@@ -2026,16 +2027,22 @@ class DataHandler
     protected function checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field)
     {
         $items = $tcaFieldConf['items'] ?? null;
-        if (!empty($tcaFieldConf['itemsProcFunc'])) {
+        if (
+            ($tcaFieldConf['itemsProcFunc'] ?? '') !== '' ||
+            ($tcaFieldConf['itemsProcessors'] ?? []) !== []
+        ) {
             $processingService = GeneralUtility::makeInstance(ItemProcessingService::class);
-            $items = $processingService->getProcessingItems(
-                $table,
-                $realPid,
-                $field,
-                $this->checkValue_currentRecord,
-                $tcaFieldConf,
-                $tcaFieldConf['items']
+            $itemsCollection = SelectItemCollection::createFromArray($tcaFieldConf['items'], $tcaFieldConf['type']);
+            $context = new ItemsProcessorContext(
+                table: $table,
+                field: $field,
+                row: $this->checkValue_currentRecord,
+                fieldConfiguration: $tcaFieldConf,
+                processorParameters: [],
+                realPid: $realPid,
+                site: $processingService->resolveSite($realPid)
             );
+            $items = $processingService->processItems($itemsCollection, $context)->toArray();
         }
 
         $itemC = 0;
@@ -2055,7 +2062,7 @@ class DataHandler
             //        changing list of items, then it may happen that a value is transformed and vanished checkboxes
             //        are permanently removed from the value.
             //        Suggestion: Throw an exception instead? Maybe a specific, catchable exception that generates a
-            //        error message to the user - dynamic item sets via itemProcFunc on check would be a bad idea anyway.
+            //        error message to the user - dynamic item sets via itemsProcFunc on check would be a bad idea anyway.
             $value = (int)$value & $maxV;
         }
         if ($field && $value > 0 && !empty($tcaFieldConf['eval'])) {
@@ -2117,18 +2124,23 @@ class DataHandler
         }
 
         // if no value was found and an itemsProcFunc is defined, check that for the value
-        if (!empty($tcaFieldConf['itemsProcFunc']) && empty($res['value'])) {
+        if (
+            empty($res['value']) &&
+            (($tcaFieldConf['itemsProcFunc'] ?? '') !== '' ||
+            ($tcaFieldConf['itemsProcessors'] ?? []) !== [])
+        ) {
             $processingService = GeneralUtility::makeInstance(ItemProcessingService::class);
-            $processedItems = $processingService->getProcessingItems(
-                $table,
-                $pid,
-                $field,
-                $this->checkValue_currentRecord,
-                $tcaFieldConf,
-                $tcaFieldConf['items']
+            $itemsCollection = SelectItemCollection::createFromArray($tcaFieldConf['items'], $tcaFieldConf['type']);
+            $context = new ItemsProcessorContext(
+                table: $table,
+                field: $field,
+                row: $this->checkValue_currentRecord,
+                fieldConfiguration: $tcaFieldConf,
+                processorParameters: [],
+                realPid: $pid,
+                site: $processingService->resolveSite($pid)
             );
-
-            foreach ($processedItems as $set) {
+            foreach ($processingService->processItems($itemsCollection, $context) as $set) {
                 if ((string)$set['value'] === (string)$value) {
                     $res['value'] = $value;
                     break;

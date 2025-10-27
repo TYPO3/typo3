@@ -21,10 +21,16 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Backend\Form\Processor\SelectItemProcessor;
+use TYPO3\CMS\Backend\Tests\Functional\Form\Fixtures\TcaSelectItems\ItemsProcessor1;
+use TYPO3\CMS\Backend\Tests\Functional\Form\Fixtures\TcaSelectItems\ItemsProcessor2;
+use TYPO3\CMS\Backend\Tests\Functional\Form\Fixtures\TcaSelectItems\ItemsProcessorForTestingExceptionsForSelectItems;
+use TYPO3\CMS\Backend\Tests\Functional\Form\Fixtures\TcaSelectItems\ItemsProcessorKeepingFirstItemsFromForeignTable;
+use TYPO3\CMS\Backend\Tests\Functional\Form\Fixtures\TcaSelectItems\ItemsProcessorKeepingSingleItemFromForeignTable;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\DataHandling\ItemProcessingService;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -2111,8 +2117,81 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             ],
             'maxitems' => 99999,
         ];
+        $selectItems = new TcaSelectItems($this->get(SelectItemProcessor::class));
+        $selectItems->injectItemProcessingService($this->get(ItemProcessingService::class));
 
-        self::assertSame($expected, (new TcaSelectItems($this->get(SelectItemProcessor::class)))->addData($input));
+        self::assertSame($expected, $selectItems->addData($input));
+    }
+
+    #[Test]
+    public function addDataCallsItemsProcessors(): void
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'inlineParentUid' => 1,
+            'inlineParentTableName' => 'aTable',
+            'inlineParentFieldName' => 'aField',
+            'inlineParentConfig' => [],
+            'inlineTopMostParentUid' => 1,
+            'inlineTopMostParentTableName' => 'topMostTable',
+            'inlineTopMostParentFieldName' => 'topMostField',
+            'databaseRow' => [
+                'aField' => 'aValue',
+            ],
+            'effectivePid' => 42,
+            'site' => new Site('aSite', 456, []),
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [],
+                            'itemsProcessors' => [
+                                100 => [
+                                    'class' => ItemsProcessor2::class,
+                                ],
+                                50 => [
+                                    'class' => ItemsProcessor1::class,
+                                ],
+                            ],
+                            'disableNoMatchingValueElement' => true,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = $input;
+        $expected['databaseRow'] = ['aField' => []];
+        $expected['processedTca']['columns']['aField']['config'] = [
+            'type' => 'select',
+            'renderType' => 'selectSingle',
+            'items' => [
+                0 => [
+                    'label' => 'label1',
+                    'value' => 'value1',
+                    'icon' => null,
+                    'iconOverlay' => null,
+                    'group' => null,
+                    'description' => null,
+                ],
+                1 => [
+                    'label' => 'label2',
+                    'value' => 'value2',
+                    'icon' => null,
+                    'iconOverlay' => null,
+                    'group' => null,
+                    'description' => null,
+                ],
+            ],
+            'disableNoMatchingValueElement' => true,
+            'maxitems' => 99999,
+        ];
+        $selectItems = new TcaSelectItems($this->get(SelectItemProcessor::class));
+        $selectItems->injectItemProcessingService($this->get(ItemProcessingService::class));
+
+        self::assertSame($expected, $selectItems->addData($input));
     }
 
     /**
@@ -2195,6 +2274,80 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $selectItems->injectFlashMessageService($this->get(FlashMessageService::class));
         $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
         $selectItems->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
+        $selectItems->injectItemProcessingService($this->get(ItemProcessingService::class));
+        self::assertEquals($expected, $selectItems->addData($input));
+    }
+
+    /**
+     * This test case combines the use of itemsProcessors and foreign_table
+     *
+     * In the itemsProcessors we iterate over the items given from foreign_table and filter out every item that
+     * does not have an uid of 2
+     */
+    #[Test]
+    public function addDataItemsProcessorsWillUseItemsFromForeignTable(): void
+    {
+        $input = [
+            'databaseRow' => [
+                'uid' => 5,
+                'aField' => '',
+            ],
+            'tableName' => 'aTable',
+            'inlineParentUid' => 1,
+            'inlineParentTableName' => 'aTable',
+            'inlineParentFieldName' => 'aField',
+            'inlineParentConfig' => [],
+            'inlineTopMostParentUid' => 1,
+            'inlineTopMostParentTableName' => 'topMostTable',
+            'inlineTopMostParentFieldName' => 'topMostField',
+            'effectivePid' => 1,
+            'site' => new Site('aSite', 456, []),
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'foreign_table' => 'foreign_table',
+                            'itemsProcessors' => [
+                                100 => [
+                                    'class' => ItemsProcessorKeepingSingleItemFromForeignTable::class,
+                                ],
+                            ],
+                            'maxitems' => 99999,
+                        ],
+                    ],
+                ],
+            ],
+            'rootline' => [],
+        ];
+
+        $expected = $input;
+        $expected['processedTca']['columns']['aField']['config'] = [
+            'type' => 'select',
+            'renderType' => 'selectSingle',
+            'foreign_table' => 'foreign_table',
+            'items' => [
+                0 => [
+                    'label' => 'Item 2',
+                    'value' => 2,
+                    'icon' => 'default-not-found',
+                    'iconOverlay' => null,
+                    'group' => null,
+                    'description' => null,
+                ],
+            ],
+            'maxitems' => 99999,
+        ];
+
+        $expected['databaseRow']['aField'] = [];
+
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectFlashMessageService($this->get(FlashMessageService::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
+        $selectItems->injectItemProcessingService($this->get(ItemProcessingService::class));
         self::assertEquals($expected, $selectItems->addData($input));
     }
 
@@ -2288,6 +2441,90 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $selectItems->injectFlashMessageService($this->get(FlashMessageService::class));
         $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
         $selectItems->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
+        $selectItems->injectItemProcessingService($this->get(ItemProcessingService::class));
+        self::assertEquals($expected, $selectItems->addData($input));
+    }
+
+    /**
+     * This test case combines the use of itemsProcessors, foreign_table and pageTsConfig
+     *
+     * In the itemsProcessors we iterate over the items given from foreign_table and filter out every item that
+     * does not have an uid lower than 3.
+     * The pageTsConfig will remove the item with the uid=2 from the list so only one item with uid=1 will remain
+     */
+    #[Test]
+    public function addDataItemsProcessorsWillUseItemsFromForeignTableAndRemoveItemsByPageTsConfig(): void
+    {
+        $input = [
+            'databaseRow' => [
+                'uid' => 5,
+                'aField' => '',
+            ],
+            'tableName' => 'aTable',
+            'inlineParentUid' => 1,
+            'inlineParentTableName' => 'aTable',
+            'inlineParentFieldName' => 'aField',
+            'inlineParentConfig' => [],
+            'inlineTopMostParentUid' => 1,
+            'inlineTopMostParentTableName' => 'topMostTable',
+            'inlineTopMostParentFieldName' => 'topMostField',
+            'effectivePid' => 1,
+            'site' => new Site('aSite', 456, []),
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'foreign_table' => 'foreign_table',
+                            'itemsProcessors' => [
+                                100 => [
+                                    'class' => ItemsProcessorKeepingFirstItemsFromForeignTable::class,
+                                ],
+                            ],
+                            'maxitems' => 99999,
+                        ],
+                    ],
+                ],
+            ],
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'removeItems' => '2',
+                        ],
+                    ],
+                ],
+            ],
+            'rootline' => [],
+        ];
+
+        $expected = $input;
+        $expected['processedTca']['columns']['aField']['config'] = [
+            'type' => 'select',
+            'renderType' => 'selectSingle',
+            'foreign_table' => 'foreign_table',
+            'items' => [
+                0 => [
+                    'label' => 'Item 1',
+                    'value' => 1,
+                    'icon' => 'default-not-found',
+                    'iconOverlay' => null,
+                    'group' => null,
+                    'description' => null,
+                ],
+            ],
+            'maxitems' => 99999,
+        ];
+
+        $expected['databaseRow']['aField'] = [];
+
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectFlashMessageService($this->get(FlashMessageService::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
+        $selectItems->injectItemProcessingService($this->get(ItemProcessingService::class));
         self::assertEquals($expected, $selectItems->addData($input));
     }
 
@@ -2391,6 +2628,100 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $selectItems->injectFlashMessageService($this->get(FlashMessageService::class));
         $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
         $selectItems->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
+        $selectItems->injectItemProcessingService($this->get(ItemProcessingService::class));
+        self::assertEquals($expected, $selectItems->addData($input));
+    }
+
+    /**
+     * This test case combines the use of itemsProcessors, foreign_table and pageTsConfig
+     *
+     * In the itemsProcessors we iterate over the items given from foreign_table and filter out every item that
+     * does not have the uid of 2.
+     * The pageTsConfig then adds an item with the uid=12.
+     */
+    #[Test]
+    public function addDataItemsProcessorsWillUseItemsFromForeignTableAndAddItemsByPageTsConfig(): void
+    {
+        $input = [
+            'databaseRow' => [
+                'uid' => 5,
+                'aField' => '',
+            ],
+            'tableName' => 'aTable',
+            'inlineParentUid' => 1,
+            'inlineParentTableName' => 'aTable',
+            'inlineParentFieldName' => 'aField',
+            'inlineParentConfig' => [],
+            'inlineTopMostParentUid' => 1,
+            'inlineTopMostParentTableName' => 'topMostTable',
+            'inlineTopMostParentFieldName' => 'topMostField',
+            'effectivePid' => 1,
+            'site' => new Site('aSite', 456, []),
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'foreign_table' => 'foreign_table',
+                            'itemsProcessors' => [
+                                100 => [
+                                    'class' => ItemsProcessorKeepingSingleItemFromForeignTable::class,
+                                ],
+                            ],
+                            'maxitems' => 99999,
+                        ],
+                    ],
+                ],
+            ],
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'addItems.' => [
+                                '12' => 'Label of the added item',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'rootline' => [],
+        ];
+
+        $expected = $input;
+        $expected['processedTca']['columns']['aField']['config'] = [
+            'type' => 'select',
+            'renderType' => 'selectSingle',
+            'foreign_table' => 'foreign_table',
+            'items' => [
+                0 => [
+                    'label' => 'Item 2',
+                    'value' => 2,
+                    'icon' => 'default-not-found',
+                    'iconOverlay' => null,
+                    'group' => null,
+                    'description' => null,
+                ],
+                1 => [
+                    'label' => 'Label of the added item',
+                    'value' => 12,
+                    'icon' => null,
+                    'iconOverlay' => null,
+                    'group' => null,
+                    'description' => null,
+                ],
+            ],
+            'maxitems' => 99999,
+        ];
+
+        $expected['databaseRow']['aField'] = [];
+
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectFlashMessageService($this->get(FlashMessageService::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
+        $selectItems->injectItemProcessingService($this->get(ItemProcessingService::class));
         self::assertEquals($expected, $selectItems->addData($input));
     }
 
@@ -2464,6 +2795,75 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
         $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
         $selectItems->injectFlashMessageService($flashMessageService);
+        $selectItems->injectItemProcessingService($this->get(ItemProcessingService::class));
+        $selectItems->addData($input);
+
+        $flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+        self::assertCount(0, $flashMessageQueue->getAllMessages());
+    }
+
+    #[Test]
+    public function addDataItemsProcessorsReceivesParameters(): void
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'inlineParentUid' => 1,
+            'inlineParentTableName' => 'aTable',
+            'inlineParentFieldName' => 'aField',
+            'inlineParentConfig' => ['config' => 'someValue'],
+            'inlineTopMostParentUid' => 1,
+            'inlineTopMostParentTableName' => 'topMostTable',
+            'inlineTopMostParentFieldName' => 'topMostField',
+            'databaseRow' => [
+                'aField' => 'aValue',
+            ],
+            'effectivePid' => 42,
+            'site' => new Site('aSite', 456, []),
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'itemsProcessors.' => [
+                                '100.' => [
+                                    'itemParamKey' => 'itemParamValue',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'aKey' => 'aValue',
+                            'items' => [
+                                0 => [
+                                    'label' => 'aLabel',
+                                    'value' => 'aValue',
+                                ],
+                            ],
+                            'itemsProcessors' => [
+                                100 => [
+                                    'class' => ItemsProcessorForTestingExceptionsForSelectItems::class,
+                                    'parameters' => [
+                                        'hello' => 'world',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $flashMessageService = $this->get(FlashMessageService::class);
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->injectFlashMessageService($flashMessageService);
+        $selectItems->injectItemProcessingService($this->get(ItemProcessingService::class));
         $selectItems->addData($input);
 
         $flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
@@ -2523,6 +2923,75 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
         $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
         $selectItems->injectFlashMessageService($this->get(FlashMessageService::class));
+        $selectItems->injectItemProcessingService($this->get(ItemProcessingService::class));
+        $selectItems->addData($input);
+
+        $flashMessageService = $this->get(FlashMessageService::class);
+        $flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+        self::assertCount(1, $flashMessageQueue->getAllMessages());
+    }
+
+    #[Test]
+    public function addDataItemsProcessorsEnqueuesFlashMessageOnException(): void
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'inlineParentUid' => 1,
+            'inlineParentTableName' => 'aTable',
+            'inlineParentFieldName' => 'aField',
+            'inlineParentConfig' => [],
+            'inlineTopMostParentUid' => 1,
+            'inlineTopMostParentTableName' => 'topMostTable',
+            'inlineTopMostParentFieldName' => 'topMostField',
+            'databaseRow' => [
+                'aField' => 'aValue',
+            ],
+            'effectivePid' => 42,
+            'site' => new Site('aSite', 456, []),
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'itemsProcessors.' => [
+                                '100.' => [
+                                    'unexpectedParamKey' => 'unexpectedParamValue',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'aKey' => 'aValue',
+                            'items' => [
+                                0 => [
+                                    0 => 'aLabel',
+                                    1 => 'aValue',
+                                ],
+                            ],
+                            'itemsProcessors' => [
+                                100 => [
+                                    'class' => ItemsProcessorForTestingExceptionsForSelectItems::class,
+                                    'parameters' => [
+                                        'hello' => 'world',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->injectFlashMessageService($this->get(FlashMessageService::class));
+        $selectItems->injectItemProcessingService($this->get(ItemProcessingService::class));
         $selectItems->addData($input);
 
         $flashMessageService = $this->get(FlashMessageService::class);

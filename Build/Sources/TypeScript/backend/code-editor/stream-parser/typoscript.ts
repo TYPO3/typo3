@@ -522,6 +522,7 @@ export class TypoScriptStreamParserFactory {
         'itemH': kw('itemH'),
         'items': kw('items'),
         'itemsProcFunc': kw('itemsProcFunc'),
+        'itemsProcessors': kw('itemsProcessors'),
         'iterations': kw('iterations'),
         'join': kw('join'),
         'JSwindow': A,

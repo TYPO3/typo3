@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\ItemProcessingService;
+use TYPO3\CMS\Core\DataHandling\ItemsProcessorContext;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -49,6 +50,7 @@ use TYPO3\CMS\Core\Schema\Field\FileFieldType;
 use TYPO3\CMS\Core\Schema\Field\JsonFieldType;
 use TYPO3\CMS\Core\Schema\Field\NoneFieldType;
 use TYPO3\CMS\Core\Schema\Field\PassthroughFieldType;
+use TYPO3\CMS\Core\Schema\Struct\SelectItemCollection;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
@@ -1223,16 +1225,22 @@ class BackendUtility
 
         $items = $columnConfig['items'] ?? [];
 
-        if ($columnConfig['itemsProcFunc'] ?? false) {
+        if (
+            ($columnConfig['itemsProcFunc'] ?? '') !== '' ||
+            ($columnConfig['itemsProcessors'] ?? []) !== []
+        ) {
             $processingService = GeneralUtility::makeInstance(ItemProcessingService::class);
-            $items = $processingService->getProcessingItems(
-                $table,
-                $row['pid'] ?? 0,
-                $col,
-                $row,
-                $columnConfig,
-                $items
+            $itemsCollection = SelectItemCollection::createFromArray($items, $columnConfig['type']);
+            $context = new ItemsProcessorContext(
+                table: $table,
+                field: $col,
+                row: $row,
+                fieldConfiguration: $columnConfig,
+                processorParameters: [],
+                realPid: $row['pid'] ?? 0,
+                site: $processingService->resolveSite($row['pid'] ?? 0)
             );
+            $items = $processingService->processItems($itemsCollection, $context)->toArray();
         }
 
         foreach ($items as $itemConfiguration) {
@@ -1307,16 +1315,22 @@ class BackendUtility
 
         $items = $columnConfig['items'] ?? [];
 
-        if ($columnConfig['itemsProcFunc'] ?? false) {
+        if (
+            ($columnConfig['itemsProcFunc'] ?? '') !== '' ||
+            ($columnConfig['itemsProcessors'] ?? []) !== []
+        ) {
             $processingService = GeneralUtility::makeInstance(ItemProcessingService::class);
-            $items = $processingService->getProcessingItems(
-                $table,
-                $row['pid'] ?? 0,
-                $column,
-                $row,
-                $columnConfig,
-                $items
+            $itemsCollection = SelectItemCollection::createFromArray($items, $columnConfig['type']);
+            $context = new ItemsProcessorContext(
+                table: $table,
+                field: $column,
+                row: $row,
+                fieldConfiguration: $columnConfig,
+                processorParameters: [],
+                realPid: $row['pid'] ?? 0,
+                site: $processingService->resolveSite($row['pid'] ?? 0)
             );
+            $items = $processingService->processItems($itemsCollection, $context)->toArray();
         }
 
         $keys = GeneralUtility::trimExplode(',', $keyList, true);
