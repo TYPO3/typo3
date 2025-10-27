@@ -92,7 +92,7 @@ return [
                         'group' => 'link',
                     ],
                     [
-                        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.I.8',
+                        'label' => 'core.db.pages.doktype:link',
                         'value' => (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_LINK,
                         'icon' => 'apps-pagetree-page-shortcut-external',
                         'group' => 'link',
@@ -263,18 +263,20 @@ return [
                 'eval' => 'trim',
             ],
         ],
-        'url' => [
-            'label' => 'core.db.pages:url',
+        'link' => [
+            'label' => 'core.db.pages:link',
+            'description' => 'core.db.pages:link.description',
             'config' => [
-                'type' => 'input',
+                'type' => 'link',
                 'size' => 50,
-                'max' => 255,
-                'required' => true,
-                'eval' => 'trim',
-                'softref' => 'url',
+                'appearance' => [
+                    'allowedOptions' => ['params', 'target'],
+                ],
+                'default' => '',
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,
                 ],
+                'required' => true,
             ],
         ],
         'lastUpdated' => [
@@ -707,13 +709,12 @@ return [
                 --div--;core.form.tabs:extended,
             ',
         ],
-        // external URL
         (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_LINK => [
             'showitem' => '
                 --div--;core.form.tabs:general,
                     doktype,
                     --palette--;;title,
-                    --palette--;;external,
+                    --palette--;;link,
                 --div--;core.form.tabs:metadata,
                     --palette--;;abstract,
                     --palette--;;editorial,
@@ -859,8 +860,8 @@ return [
         'mountpage' => [
             'showitem' => 'mount_pid',
         ],
-        'external' => [
-            'showitem' => 'url, target',
+        'link' => [
+            'showitem' => 'link',
         ],
         'title' => [
             'label' => 'core.form.palettes:title',

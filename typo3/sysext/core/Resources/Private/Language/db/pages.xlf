@@ -71,6 +71,16 @@
                 <source>Keywords</source>
             </segment>
         </unit>
+		<unit id="link">
+			<segment>
+				<source>Link destination</source>
+			</segment>
+		</unit>
+		<unit id="link.description">
+			<segment>
+				<source>Defines the destination this page links to — for example a page, file, or external URL. </source>
+			</segment>
+		</unit>
         <unit id="l18n_cfg">
             <segment>
                 <source>Localization</source>

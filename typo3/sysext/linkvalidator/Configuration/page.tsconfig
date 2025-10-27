@@ -3,7 +3,7 @@ mod.linkvalidator {
   # specify fields to be crawled
   searchFields {
     # pages.media: forward compatibility, not yet supported (type=file not as softref), but may be in the future
-    pages = url, media, canonical_link
+    pages = link, media, canonical_link
     # tt_content.records: forward compatibility, not yet supported (type=group not as softref), but may be in the future
     tt_content = bodytext, header_link, records
     sys_file_reference = link

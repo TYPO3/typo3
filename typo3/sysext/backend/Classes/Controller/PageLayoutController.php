@@ -28,6 +28,7 @@ use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Service\PageLinkMessageProvider;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\LanguageSelectorBuilder;
@@ -86,6 +87,7 @@ class PageLayoutController
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
         protected readonly ConnectionPool $connectionPool,
         protected readonly LanguageSelectorBuilder $languageSelectorBuilder,
+        protected readonly PageLinkMessageProvider $pageLinkMessageProvider,
     ) {}
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
@@ -352,27 +354,11 @@ class PageLayoutController
             ];
         }
         if ($currentDocumentType === PageRepository::DOKTYPE_LINK) {
-            if (empty($this->pageContext->pageRecord['url'])) {
-                $infoBoxes[] = [
-                    'message' => $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsMisconfiguredExternalLinkMessage'),
-                    'state' => ContextualFeedbackSeverity::ERROR,
-                ];
-            } else {
-                $primaryLanguageId = $this->pageContext->getPrimaryLanguageId();
-                if ($primaryLanguageId > 0 && ($overlayRecord = $this->pageContext->languageInformation->existingTranslations[$primaryLanguageId] ?? []) !== []) {
-                    $externalUrl = $this->resolveExternalUrl($overlayRecord, $request);
-                } else {
-                    $externalUrl = $this->resolveExternalUrl($this->pageContext->pageRecord, $request);
-                }
-                if ($externalUrl !== '') {
-                    $externalUrl = htmlspecialchars($externalUrl);
-                    $externalUrlHtml = '<a href="' . $externalUrl . '" target="_blank" rel="noreferrer">' . $externalUrl . '</a>';
-                    $infoBoxes[] = [
-                        'message' => sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsExternalLinkMessage'), $externalUrlHtml),
-                        'state' => ContextualFeedbackSeverity::INFO,
-                    ];
-                }
-            }
+            $primaryLanguageId = $this->pageContext->getPrimaryLanguageId();
+            $pageRecord = ($primaryLanguageId > 0 && ($overlayRecord = $this->pageContext->languageInformation->existingTranslations[$primaryLanguageId] ?? []) !== [])
+                ? $overlayRecord
+                : $this->pageContext->pageRecord;
+            $infoBoxes[] = $this->pageLinkMessageProvider->generateMessagesForPageTypeLink($pageRecord, $request);
         }
         if ($this->pageContext->pageRecord['content_from_pid'] ?? false) {
             // If content from different pid is displayed
@@ -752,28 +738,6 @@ class PageLayoutController
     {
         $fieldName = $this->schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName();
         return !($targetPage[$fieldName] ?? false) ? $targetPage : [];
-    }
-
-    /**
-     * Returns the redirect URL for the input page row IF the doktype is set to 3.
-     */
-    protected function resolveExternalUrl(array $pagerow, ServerRequestInterface $request): string
-    {
-        $redirectTo = (string)($pagerow['url'] ?? '');
-        if ($redirectTo === '') {
-            return '';
-        }
-        $urlInformation = parse_url($redirectTo);
-        // If relative path, prefix Site URL
-        // If it's a valid email without protocol, add "mailto:"
-        if (!($urlInformation['scheme'] ?? false)) {
-            if (GeneralUtility::validEmail($redirectTo)) {
-                $redirectTo = 'mailto:' . $redirectTo;
-            } elseif ($redirectTo[0] !== '/') {
-                $redirectTo = $request->getAttribute('normalizedParams')->getSiteUrl() . $redirectTo;
-            }
-        }
-        return $redirectTo;
     }
 
     protected function getLanguageService(): LanguageService

@@ -107,7 +107,7 @@ class PageTreeRepository
             'shortcut',
             'shortcut_mode',
             'mount_pid_ol',
-            'url',
+            'link',
             'sys_language_uid',
             'l10n_parent',
         ], $additionalFieldsToQuery);

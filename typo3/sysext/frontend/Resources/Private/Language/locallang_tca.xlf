@@ -88,7 +88,10 @@
 			<trans-unit id="pages.doktype.I.7">
 				<source>Menu Separator</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.8">
+			<trans-unit id="pages.doktype.link">
+				<source>Link</source>
+			</trans-unit>
+			<trans-unit id="pages.doktype.I.8" x-unused-since="14.0">
 				<source>Link to External URL</source>
 			</trans-unit>
 			<trans-unit id="pages.doktype.div.page">
@@ -166,7 +169,7 @@
 			<trans-unit id="pages.url">
 				<source>URL</source>
 			</trans-unit>
-			<trans-unit id="pages.url_formlabel">
+			<trans-unit id="pages.url_formlabel" x-unused-since="14.0">
 				<source>URL</source>
 			</trans-unit>
 			<trans-unit id="pages.lastUpdated">

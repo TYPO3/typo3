@@ -285,7 +285,7 @@
 			<trans-unit id="content_on_pid_title">
 				<source>This content is also shown on: %s</source>
 			</trans-unit>
-			<trans-unit id="pageIsExternalLinkMessage">
+			<trans-unit id="pageIsExternalLinkMessage" x-unused-since="14.0">
 				<source>Page is a link to the following external URL: %s</source>
 			</trans-unit>
 			<trans-unit id="pageIsInternalLinkMessage">
@@ -303,7 +303,7 @@
 			<trans-unit id="pageIsMisconfiguredParentPageMessage">
 				<source>Page is configured to be a link to the parent page but there is actually no such page accessible in the frontend.</source>
 			</trans-unit>
-			<trans-unit id="pageIsMisconfiguredExternalLinkMessage">
+			<trans-unit id="pageIsMisconfiguredExternalLinkMessage" x-unused-since="14.0">
 				<source>Page is configured to be an external link but there is actually no URL defined.</source>
 			</trans-unit>
 			<trans-unit id="goToListModule">

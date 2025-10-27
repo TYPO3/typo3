@@ -15,9 +15,13 @@ Fields checked by the Linkvalidator
     *   :typoscript:`sys_redirect = target`
     *   :typoscript:`sys_file_reference = link`
 
+..  versionchanged:: 14.0
+    Field `pages.url` has been removed in favour of the new `pages.link` field
+    as replacement and is used as default now.
+
 The following tables and fields are supported by default:
 
-*   :typoscript:`pages = url, canonical_link`
+*   :typoscript:`pages = link, canonical_link`
 *   :typoscript:`sys_redirect = target`
 *   :typoscript:`sys_file_reference = link`
 *   :typoscript:`tt_content = bodytext, header_link`
@@ -59,7 +63,7 @@ For this reason, it is currently not possible to check for
 Examples for working fields:
 
 *   `pages.canonical_link` (:php:`'type' => 'link'`)
-*   `pages.url` (:php:`'softref' => 'url'`)
+*   `pages.link` (:php:`'type' => 'link'`)
 *   `sys_file_reference.link` (:php:`'type' => 'link'`)
 
 Example for not working fields:

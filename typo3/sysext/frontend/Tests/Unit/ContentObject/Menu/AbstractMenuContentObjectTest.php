@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\LinkHandling\PageTypeLinkResolver;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -109,7 +110,8 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_MIXED));
         GeneralUtility::setSingletonInstance(Context::class, $context);
         $tcaFactoryMocked = $this->createMock(TcaSchemaFactory::class);
-        $pageRepository = $this->getMockBuilder(PageRepository::class)->setConstructorArgs([$context, $tcaFactoryMocked])->onlyMethods(['init', 'getPage', 'getLanguageOverlay'])->getMock();
+        $pageTypeLinkResolverMocked = $this->createMock(PageTypeLinkResolver::class);
+        $pageRepository = $this->getMockBuilder(PageRepository::class)->setConstructorArgs([$context, $tcaFactoryMocked, $pageTypeLinkResolverMocked])->onlyMethods(['init', 'getPage', 'getLanguageOverlay'])->getMock();
         $pageRepository->expects($this->once())->method('getPage')->willReturn(['sys_language_uid' => 1]);
         $pageRepository->expects($this->once())->method('getLanguageOverlay')->willReturn(['uid' => 0, 'header' => 'OVERLAID']);
         $subject->sys_page = $pageRepository;

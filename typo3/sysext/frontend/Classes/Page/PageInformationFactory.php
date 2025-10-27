@@ -25,9 +25,13 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Error\Http\LinkedPageNotResolvableException;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\StatusException;
+use TYPO3\CMS\Core\Exception\Page\CircularPageReferenceChainException;
+use TYPO3\CMS\Core\Exception\Page\PageReferenceResolvingReachedIterationLimitException;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
+use TYPO3\CMS\Core\LinkHandling\PageTypeLinkResolver;
 use TYPO3\CMS\Core\Page\PageLayoutResolver;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -74,6 +78,7 @@ final readonly class PageInformationFactory
         private SysTemplateRepository $sysTemplateRepository,
         private PageLayoutResolver $pageLayoutResolver,
         private TcaSchemaFactory $tcaSchemaFactory,
+        private PageTypeLinkResolver $pageTypeLinkResolver,
     ) {}
 
     /**
@@ -215,7 +220,7 @@ final readonly class PageInformationFactory
             throw new PageInformationCreationFailedException($response, 1533931343);
         }
 
-        if ($pageDoktype === PageRepository::DOKTYPE_SHORTCUT) {
+        if ($pageDoktype === PageRepository::DOKTYPE_LINK || $pageDoktype === PageRepository::DOKTYPE_SHORTCUT) {
             // Resolve shortcut page target.
             // Clear mount point if page is a shortcut: If the shortcut goes to
             // another page, we leave the rootline which the MP expects.
@@ -225,23 +230,47 @@ final readonly class PageInformationFactory
             // or if a translation of the page overwrites the shortcut target, and we need to follow the new target.
             $pageInformation = $this->settingLanguage($request, $pageInformation);
             // Reset vars to new state that may have been created by settingLanguage()
+            /** @var PageRepository $pageRepository */
             $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
             $pageRecord = $pageInformation->getPageRecord();
-            $pageInformation->setOriginalShortcutPageRecord($pageRecord);
-            try {
-                $pageRecord = $pageRepository->resolveShortcutPage($pageRecord);
-            } catch (ShortcutTargetPageNotFoundException) {
-                $response = $this->errorController->pageNotFoundAction(
-                    $request,
-                    'ID was not an accessible page',
-                    ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
-                );
-                throw new PageInformationCreationFailedException($response, 1705335065);
+            if ($pageDoktype === PageRepository::DOKTYPE_LINK) {
+                $pageInformation->setOriginalShortcutPageRecord($pageRecord);
+                $typolinkInformation = $this->pageTypeLinkResolver->resolveTypolinkParts($pageRecord);
+                // The link destination was a page, we have to prevent infinitive loops
+                if ($typolinkInformation['type'] === 'page') {
+                    try {
+                        $pageRecord = $pageRepository->resolveLinkPage($pageRecord);
+                    } catch (ShortcutTargetPageNotFoundException|LinkedPageNotResolvableException|CircularPageReferenceChainException|PageReferenceResolvingReachedIterationLimitException) {
+                        $response = $this->errorController->pageNotFoundAction(
+                            $request,
+                            'ID was not an accessible page',
+                            ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
+                        );
+                        throw new PageInformationCreationFailedException($response, 1705335066);
+                    }
+                    $pageInformation->setPageRecord($pageRecord);
+                    $id = (int)$pageRecord['uid'];
+                    $pageInformation->setId($id);
+                    $pageDoktype = (int)($pageRecord['doktype'] ?? 0);
+                }
             }
-            $pageInformation->setPageRecord($pageRecord);
-            $id = (int)$pageRecord['uid'];
-            $pageInformation->setId($id);
-            $pageDoktype = (int)($pageRecord['doktype'] ?? 0);
+            if ($pageDoktype === PageRepository::DOKTYPE_SHORTCUT) {
+                $pageInformation->setOriginalShortcutPageRecord($pageRecord);
+                try {
+                    $pageRecord = $pageRepository->resolveShortcutPage($pageRecord);
+                } catch (ShortcutTargetPageNotFoundException|LinkedPageNotResolvableException|CircularPageReferenceChainException|PageReferenceResolvingReachedIterationLimitException) {
+                    $response = $this->errorController->pageNotFoundAction(
+                        $request,
+                        'ID was not an accessible page',
+                        ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
+                    );
+                    throw new PageInformationCreationFailedException($response, 1705335065);
+                }
+                $pageInformation->setPageRecord($pageRecord);
+                $id = (int)$pageRecord['uid'];
+                $pageInformation->setId($id);
+                $pageDoktype = (int)($pageRecord['doktype'] ?? 0);
+            }
         }
 
         if ($pageDoktype === PageRepository::DOKTYPE_MOUNTPOINT && $pageRecord['mount_pid_ol']) {

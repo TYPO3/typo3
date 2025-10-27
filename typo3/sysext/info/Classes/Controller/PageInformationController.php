@@ -274,9 +274,17 @@ class PageInformationController extends InfoModuleController
                                     '</span>';
                             }
                         } else {
-                            $headerCells[$field] = $editButton . '&nbsp;<strong>'
-                                . htmlspecialchars($lang->sL($pagesSchema->getField($field)->getLabel()))
-                                . '</strong>';
+                            if ($pagesSchema->hasField($field)) {
+                                $headerCells[$field] = $editButton . '&nbsp;<strong>'
+                                    . htmlspecialchars($lang->sL($pagesSchema->getField($field)->getLabel()))
+                                    . '</strong>';
+                            } else {
+                                // Invalid field configured in `mod.web_info.fieldDefinitions.*`,
+                                // using field name as header label.
+                                $headerCells[$field] = $editButton . '&nbsp;<strong>'
+                                    . htmlspecialchars($field)
+                                    . '</strong>';
+                            }
                         }
                 }
             }

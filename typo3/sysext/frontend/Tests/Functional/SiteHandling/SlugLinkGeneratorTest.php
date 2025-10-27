@@ -542,14 +542,18 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
                 'https://acme.us/',
                 1100,
                 [
-                    ['title' => 'EN: Welcome', 'link' => '/welcome', 'target' => ''],
-                    [
+                    0 => [
+                        'title' => 'EN: Welcome',
+                        'link' => '/welcome',
+                        'target' => '',
+                    ],
+                    1 => [
                         'title' => 'ZH-CN: Welcome Default',
                         // Symfony UrlGenerator, which is used for uri generation, rawurlencodes the url internally.
                         'link' => '/%E7%AE%80-bienvenue',
                         'target' => '',
                     ],
-                    [
+                    2 => [
                         'title' => 'EN: Features',
                         'link' => '/features',
                         'target' => '',
@@ -561,7 +565,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
                             ],
                         ],
                     ],
-                    [
+                    3 => [
                         'title' => 'EN: Products',
                         'link' => 'https://products.acme.com/products',
                         'target' => '',
@@ -583,8 +587,12 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
                             ],
                         ],
                     ],
-                    ['title' => 'EN: ACME in your Region', 'link' => '/acme-in-your-region', 'target' => ''],
-                    [
+                    4 => [
+                        'title' => 'EN: ACME in your Region',
+                        'link' => '/acme-in-your-region',
+                        'target' => '',
+                    ],
+                    5 => [
                         'title' => 'Divider',
                         // Dividers are not linkable so the link is empty
                         'link' => '',
@@ -597,9 +605,17 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
                             ],
                         ],
                     ],
-                    ['title' => 'Internal', 'link' => '/my-acme', 'target' => ''],
-                    ['title' => 'About us', 'link' => '/about', 'target' => ''],
-                    [
+                    6 => [
+                        'title' => 'Internal',
+                        'link' => '/my-acme',
+                        'target' => '',
+                    ],
+                    7 => [
+                        'title' => 'About us',
+                        'link' => '/about',
+                        'target' => '',
+                    ],
+                    8 => [
                         'title' => 'Announcements & News',
                         'link' => '/news',
                         'target' => '',
@@ -621,17 +637,33 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
                             ],
                         ],
                     ],
-                    ['title' => 'That page is forbidden to you', 'link' => '/403', 'target' => ''],
-                    ['title' => 'That page was not found', 'link' => '/404', 'target' => ''],
-                    ['title' => 'Our Blog', 'link' => 'https://blog.acme.com/authors', 'target' => ''],
-                    ['title' => 'Cross Site Shortcut', 'link' => 'https://blog.acme.com/authors', 'target' => ''],
+                    9 => [
+                        'title' => 'That page is forbidden to you',
+                        'link' => '/403',
+                        'target' => '',
+                    ],
+                    10 => [
+                        'title' => 'That page was not found',
+                        'link' => '/404',
+                        'target' => '',
+                    ],
+                    11 => [
+                        'title' => 'Our Blog',
+                        'link' => 'https://blog.acme.com/authors',
+                        'target' => '',
+                    ],
+                    12 => [
+                        'title' => 'Cross Site Shortcut',
+                        'link' => 'https://blog.acme.com/authors',
+                        'target' => '',
+                    ],
                 ],
             ],
             'ACME Blog' => [
                 'https://blog.acme.com/',
                 2100,
                 [
-                    [
+                    0 => [
                         'title' => 'Authors',
                         'link' => '/authors',
                         'target' => '',
@@ -653,34 +685,65 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
                             ],
                         ],
                     ],
-                    1 =>
-                        [
-                            'title' => 'Announcements & News',
-                            'link' => '/news',
-                            'target' => '',
-                            'children' => [
-                                [
-                                    'title' => 'Markets',
-                                    'link' => '/news/common/markets',
-                                    'target' => '',
-                                ],
-                                [
-                                    'title' => 'Products',
-                                    'link' => '/news/common/products',
-                                    'target' => '',
-                                ],
-                                [
-                                    'title' => 'Partners',
-                                    'link' => '/news/common/partners',
-                                    'target' => '_blank',
-                                ],
+                    1 => [
+                        'title' => 'Announcements & News',
+                        'link' => '/news',
+                        'target' => '',
+                        'children' => [
+                            [
+                                'title' => 'Markets',
+                                'link' => '/news/common/markets',
+                                'target' => '',
+                            ],
+                            [
+                                'title' => 'Products',
+                                'link' => '/news/common/products',
+                                'target' => '',
+                            ],
+                            [
+                                'title' => 'Partners',
+                                'link' => '/news/common/partners',
+                                'target' => '_blank',
                             ],
                         ],
-                    ['title' => 'What is a blog on Wikipedia', 'link' => 'https://en.wikipedia.org/wiki/Blog', 'target' => 'a_new_tab'],
-                    ['title' => 'Link to a query parameter', 'link' => '/authors?showOption=1&cHash=98e2ce943b4e491e9b4b8a8fdf77cf226e57e433eaf19303db124fd4cfedd36b', 'target' => ''],
+                    ],
+                    2 => [
+                        'title' => 'Read about Jane',
+                        'link' => 'https://blog.acme.com/jane/jane',
+                        'target' => '',
+                    ],
+                    3 => [
+                        'title' => 'More about Jane',
+                        'link' => 'https://blog.acme.com/jane/jane?my-parameter=123&cHash=bffc3d9f2604437744c0da1411665776f1d8e78599c6d795d0fb4532516c8287#c33',
+                        'target' => '_blank',
+                    ],
+                    4 => [
+                        'title' => 'Email to Jane',
+                        'link' => 'mailto:jane@example.org',
+                        'target' => '',
+                    ],
+                    5 => [
+                        'title' => 'What is a blog on Wikipedia',
+                        'link' => 'https://en.wikipedia.org/wiki/Blog',
+                        'target' => 'a_new_tab',
+                    ],
+                    6 => [
+                        'title' => 'Link to a query parameter',
+                        'link' =>
+                        '/authors?showOption=1&cHash=98e2ce943b4e491e9b4b8a8fdf77cf226e57e433eaf19303db124fd4cfedd36b',
+                        'target' => '',
+                    ],
                     // target is empty because no fluid_styled_content typoscript with config.extTarget is active
-                    ['title' => 'What is Wikipedia in a separate window', 'link' => 'https://en.wikipedia.org/', 'target' => ''],
-                    ['title' => 'ACME Inc', 'link' => 'https://acme.us/welcome', 'target' => ''],
+                    7 => [
+                        'title' => 'What is Wikipedia in a separate window',
+                        'link' => 'https://en.wikipedia.org/',
+                        'target' => '',
+                    ],
+                    8 => [
+                        'title' => 'ACME Inc',
+                        'link' => 'https://acme.us/welcome',
+                        'target' => '',
+                    ],
                 ],
             ],
         ];

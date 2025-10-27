@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\LinkHandling\PageTypeLinkResolver;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -95,6 +96,7 @@ final class RedirectServiceTest extends UnitTestCase
                 new SysTemplateRepository(new NoopEventDispatcher(), $this->createMock(ConnectionPool::class), new Context()),
                 $this->createMock(PageLayoutResolver::class),
                 $this->createMock(TcaSchemaFactory::class),
+                $this->createMock(PageTypeLinkResolver::class),
             ),
             new FrontendTypoScriptFactory(
                 $this->createMock(ContainerInterface::class),
@@ -659,6 +661,7 @@ final class RedirectServiceTest extends UnitTestCase
                     new SysTemplateRepository(new NoopEventDispatcher(), $this->createMock(ConnectionPool::class), new Context()),
                     $this->createMock(PageLayoutResolver::class),
                     $this->createMock(TcaSchemaFactory::class),
+                    $this->createMock(PageTypeLinkResolver::class),
                 ),
                 new FrontendTypoScriptFactory(
                     $this->createMock(ContainerInterface::class),

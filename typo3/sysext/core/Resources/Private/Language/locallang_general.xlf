@@ -162,7 +162,7 @@
 			<trans-unit id="LGL.disableRTE">
 				<source>Disable Rich Text Editor</source>
 			</trans-unit>
-			<trans-unit id="LGL.external">
+			<trans-unit id="LGL.external" x-unused-since="14.0">
 				<source>External URL</source>
 			</trans-unit>
 			<trans-unit id="LGL.recursive">

@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\LinkHandling\PageTypeLinkResolver;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,14 +36,17 @@ use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 
 /**
- * Checks mount points, shortcuts and redirects to the target.
- * Alternatively, checks if the current page is a redirect to an external page
+ * Redirects pages of type mount points, shortcuts and link to their destination.
  *
- * @internal this middleware might get removed in TYPO3 v10.x.
+ * @internal
  */
 class ShortcutAndMountPointRedirect implements MiddlewareInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
+
+    public function __construct(
+        protected readonly PageTypeLinkResolver $pageTypeLinkResolver,
+    ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -54,9 +58,9 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface, LoggerAwareI
         } catch (ImmediateResponseException $e) {
             return $e->getResponse();
         }
+        /** @var PageArguments $pageArguments */
+        $pageArguments = $request->getAttribute('routing', null);
         if ($redirectToUri !== null && $redirectToUri !== (string)$request->getUri()) {
-            /** @var PageArguments $pageArguments */
-            $pageArguments = $request->getAttribute('routing', null);
             $message = 'TYPO3 Shortcut/Mountpoint' . ($exposeInformation ? ' at page with ID ' . $pageArguments->getPageId() : '');
             return new RedirectResponse(
                 $redirectToUri,
@@ -65,29 +69,32 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface, LoggerAwareI
             );
         }
 
-        // See if the current page is of doktype "External URL", if so, do a redirect as well.
+        // See if the current page is of doktype "Link", if so, do a redirect as well.
         $pageInformation = $request->getAttribute('frontend.page.information');
         $pageRecord = $pageInformation->getPageRecord();
         if ((int)$pageRecord['doktype'] === PageRepository::DOKTYPE_LINK) {
-            $externalUrl = $this->prefixExternalPageUrl($pageRecord['url'], $request->getAttribute('normalizedParams')->getSiteUrl());
-            $message = 'TYPO3 External URL' . ($exposeInformation ? ' at page with ID ' . $pageRecord['uid'] : '');
-            if (!empty($externalUrl)) {
+            $url = $this->pageTypeLinkResolver->resolvePageLinkUrl($pageRecord, $request);
+            $message =  'TYPO3 Link' . ($exposeInformation ? ' at page with ID ' . $pageArguments->getPageId() : '');
+            $status =  $this->pageTypeLinkResolver->getRedirectStatus($pageRecord);
+
+            if ($status !== null) {
                 return new RedirectResponse(
-                    $externalUrl,
-                    303,
+                    $url,
+                    $status,
                     ['X-Redirect-By' => $message]
                 );
             }
+
             $this->logger->error(
-                'Page of type "External URL" could not be resolved properly',
+                'Page of type "Link" could not be resolved properly',
                 [
                     'page' => $pageRecord,
                 ]
             );
             return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                 $request,
-                'Page of type "External URL" could not be resolved properly',
-                ['code' => PageAccessFailureReasons::INVALID_EXTERNAL_URL]
+                'Page of type "Link" could not be resolved properly',
+                ['code' => PageAccessFailureReasons::INVALID_LINK_PAGE]
             );
         }
 
@@ -156,28 +163,6 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface, LoggerAwareI
             return $this->getUriToCurrentPageForRedirect($request);
         }
         return null;
-    }
-
-    /**
-     * Returns the redirect URL for the input page row IF the doktype is set to 3.
-     *
-     * @param string $redirectTo The page row to return URL type for
-     * @param string $sitePrefix if no protocol or relative path given, the site prefix is added
-     * @return string The URL from based on the external page URL given with a prefix.
-     */
-    protected function prefixExternalPageUrl(string $redirectTo, string $sitePrefix): string
-    {
-        $uI = parse_url($redirectTo);
-        // If relative path, prefix Site URL
-        // If it's a valid email without protocol, add "mailto:"
-        if (!($uI['scheme'] ?? false)) {
-            if (GeneralUtility::validEmail($redirectTo)) {
-                $redirectTo = 'mailto:' . $redirectTo;
-            } elseif (!str_starts_with($redirectTo, '/')) {
-                $redirectTo = $sitePrefix . $redirectTo;
-            }
-        }
-        return $redirectTo;
     }
 
     protected function getUriToCurrentPageForRedirect(ServerRequestInterface $request): string

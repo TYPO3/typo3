@@ -47,7 +47,11 @@ use TYPO3\CMS\Core\Domain\Event\BeforePageLanguageOverlayEvent;
 use TYPO3\CMS\Core\Domain\Event\BeforeRecordLanguageOverlayEvent;
 use TYPO3\CMS\Core\Domain\Event\ModifyDefaultConstraintsForDatabaseQueryEvent;
 use TYPO3\CMS\Core\Domain\Page;
+use TYPO3\CMS\Core\Error\Http\LinkedPageNotResolvableException;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
+use TYPO3\CMS\Core\Exception\Page\CircularPageReferenceChainException;
+use TYPO3\CMS\Core\Exception\Page\PageReferenceResolvingReachedIterationLimitException;
+use TYPO3\CMS\Core\LinkHandling\PageTypeLinkResolver;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
@@ -114,15 +118,17 @@ class PageRepository implements LoggerAwareInterface
 
     protected Context $context;
     protected TcaSchemaFactory $tcaSchemaFactory;
+    protected PageTypeLinkResolver $pageTypeLinkResolver;
 
     /**
      * PageRepository constructor to set the base context, this will effectively remove the necessity for
      * setting properties from the outside.
      */
-    public function __construct(?Context $context = null, ?TcaSchemaFactory $tcaSchemaFactory = null)
+    public function __construct(?Context $context = null, ?TcaSchemaFactory $tcaSchemaFactory = null, ?PageTypeLinkResolver $pageTypeLinkResolver = null)
     {
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->tcaSchemaFactory = $tcaSchemaFactory ?? GeneralUtility::makeInstance(TcaSchemaFactory::class);
+        $this->pageTypeLinkResolver = $pageTypeLinkResolver ?? GeneralUtility::makeInstance(PageTypeLinkResolver::class);
         $this->init();
     }
 
@@ -958,7 +964,8 @@ class PageRepository implements LoggerAwareInterface
 
             // If shortcut, look up if the target exists and is currently visible
             if ($checkShortcuts) {
-                $page = $this->checkValidShortcutOfPage((array)$page, $additionalWhereClause);
+                $page = $this->checkValidShortcutOfPage($page, $additionalWhereClause);
+                $page = $this->checkValidLinkOfPage($page, $disableGroupAccessCheck);
             }
 
             // If the page still is there, we add it to the output
@@ -1076,6 +1083,35 @@ class PageRepository implements LoggerAwareInterface
     }
 
     /**
+     * If shortcut, look up if the target exists and is currently visible
+     *
+     * @param array $page The page to check
+     */
+    protected function checkValidLinkOfPage(array $page, bool $disableGroupAccessCheck): array
+    {
+        if (empty($page)) {
+            return [];
+        }
+        $dokType = (int)($page['doktype'] ?? 0);
+        if ($dokType !== self::DOKTYPE_LINK) {
+            return $page;
+        }
+        $link = (string)($page['link'] ?? '');
+        if ($link === '') {
+            // No link set, remove from menu.
+            return [];
+        }
+        $chain = [];
+        try {
+            $resolvedPage = $this->resolveReferencedPageRecord($page, $chain, 20, $disableGroupAccessCheck);
+        } catch (ShortcutTargetPageNotFoundException|LinkedPageNotResolvableException|PageReferenceResolvingReachedIterationLimitException|CircularPageReferenceChainException $exception) {
+            // Linked page is not linkable, remove it from the menu.
+            return [];
+        }
+        return $page;
+    }
+
+    /**
      * Get page shortcut; Finds the records pointed to by $shortcutFieldValue
      *
      * @param string $shortcutFieldValue The value of the "shortcut" field from the pages record
@@ -1097,14 +1133,14 @@ class PageRepository implements LoggerAwareInterface
         // Find $page record depending on shortcut mode:
         if ($shortcutMode === self::SHORTCUT_MODE_PARENT_PAGE) {
             $parent = $this->getPage(($shortcutId ?: (int)$thisUid), $disableGroupCheck);
-            $page = $this->getPage((int)$parent['pid'], $disableGroupCheck);
-            if (empty($page)) {
+            $referencedPageRecord = $this->getPage((int)$parent['pid'], $disableGroupCheck);
+            if (empty($referencedPageRecord)) {
                 $message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to its parent page. However, the parent page is not accessible.';
                 throw new ShortcutTargetPageNotFoundException($message, 1301648358);
             }
         } elseif ($shortcutMode === self::DOKTYPE_SHORTCUT || ($shortcutMode !== self::SHORTCUT_MODE_FIRST_SUBPAGE && $shortcutId)) {
-            $page = $this->getPage($shortcutId, $disableGroupCheck);
-            if (empty($page)) {
+            $referencedPageRecord = $this->getPage($shortcutId, $disableGroupCheck);
+            if (empty($referencedPageRecord)) {
                 $message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a page, which is not accessible (ID ' . $shortcutId . ').';
                 throw new ShortcutTargetPageNotFoundException($message, 1301648404);
             }
@@ -1115,26 +1151,14 @@ class PageRepository implements LoggerAwareInterface
                 self::DOKTYPE_BE_USER_SECTION,
             ];
             $pageArray = $this->getMenu($shortcutId ?: (int)$thisUid, '*', 'sorting', 'AND pages.doktype NOT IN (' . implode(', ', $excludedDoktypes) . ')', true, $disableGroupCheck);
-            $page = reset($pageArray);
-            if (empty($page)) {
+            $referencedPageRecord = reset($pageArray);
+            if (empty($referencedPageRecord)) {
                 $message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a subpage. However, this page has no accessible subpages.';
                 throw new ShortcutTargetPageNotFoundException($message, 1301648328);
             }
         }
         // Check if shortcut page was a shortcut itself, if so look up recursively
-        if ((int)$page['doktype'] === self::DOKTYPE_SHORTCUT) {
-            if (!in_array($page['uid'], $pageLog) && $iteration > 0) {
-                $pageLog[] = $page['uid'];
-                $page = $this->getPageShortcut((string)$page['shortcut'], $page['shortcut_mode'], $page['uid'], $iteration - 1, $pageLog, $disableGroupCheck);
-            } else {
-                $pageLog[] = $page['uid'];
-                $this->logger->error('Page shortcuts were looping in uids {uids}', ['uids' => implode(', ', array_values($pageLog))]);
-                // @todo: This shouldn't be a \RuntimeException since editors can construct loops. It should trigger 500 handling or something.
-                throw new \RuntimeException('Page shortcuts were looping in uids: ' . implode(', ', array_values($pageLog)), 1294587212);
-            }
-        }
-        // Return resulting page:
-        return $page;
+        return $this->resolveReferencedPageRecord($referencedPageRecord, $pageLog, $iteration, $disableGroupCheck);
     }
 
     /**
@@ -1145,7 +1169,10 @@ class PageRepository implements LoggerAwareInterface
      * This method also provides a runtime cache around resolving the shortcut resolving, in order to speed up link generation
      * to the same shortcut page.
      *
+     * @throws CircularPageReferenceChainException
      * @throws ShortcutTargetPageNotFoundException
+     * @throws PageReferenceResolvingReachedIterationLimitException
+     * @throws LinkedPageNotResolvableException
      */
     public function resolveShortcutPage(array $page, bool $disableGroupAccessCheck = false): array
     {
@@ -1178,6 +1205,79 @@ class PageRepository implements LoggerAwareInterface
         $this->getRuntimeCache()->set($cacheIdentifier, $page);
 
         return $page;
+    }
+
+    /**
+     * If a page is a link whose destination is another page, the other pages
+     * record is returned. The result is cached. Circles of pages linking to
+     * each other are stopped after 20 iterations and an exception is thrown
+     * in that case.
+     *
+     * If the link destination is of any other type, the original page record
+     * is returned.
+     *
+     * @throws CircularPageReferenceChainException
+     * @throws ShortcutTargetPageNotFoundException
+     * @throws PageReferenceResolvingReachedIterationLimitException
+     * @throws LinkedPageNotResolvableException
+     */
+    public function resolveLinkPage(array $pageRecord, bool $disableGroupAccessCheck = false): array
+    {
+        if ((int)($pageRecord['doktype'] ?? 0) !== self::DOKTYPE_LINK) {
+            return $pageRecord;
+        }
+        $linkParts = $this->pageTypeLinkResolver->resolveTypolinkParts($pageRecord);
+        if ($linkParts['type'] !== 'page') {
+            return $pageRecord;
+        }
+
+        $cacheIdentifier = 'links_resolved_' . ($disableGroupAccessCheck ? '1' : '0') . '_' . $pageRecord['uid'] . '_' . $this->context->getPropertyFromAspect('language', 'id', 0) . '_' . $pageRecord['sys_language_uid'];
+        // Only use the runtime cache if we do not support the random subpages functionality
+        $cachedResult = $this->getRuntimeCache()->get($cacheIdentifier);
+        if (is_array($cachedResult)) {
+            return $cachedResult;
+        }
+        $resolvedPageRecord = $this->getPageLink(
+            $linkParts,
+            $pageRecord,
+            20,
+            [],
+            $disableGroupAccessCheck
+        );
+
+        if (!empty($resolvedPageRecord)) {
+            $shortcutOriginalPageUid = (int)$pageRecord['uid'];
+            $pageRecord = $resolvedPageRecord;
+            $pageRecord['_SHORTCUT_ORIGINAL_PAGE_UID'] = $shortcutOriginalPageUid;
+        }
+
+        $this->getRuntimeCache()->set($cacheIdentifier, $pageRecord);
+
+        return $resolvedPageRecord;
+    }
+
+    /**
+     * @internal to be used only within {@see self::resolveLinkPage()} and {@see self::resolveReferencedPageRecord()}.
+     *
+     * @throws CircularPageReferenceChainException
+     * @throws ShortcutTargetPageNotFoundException
+     * @throws PageReferenceResolvingReachedIterationLimitException
+     * @throws LinkedPageNotResolvableException
+     */
+    protected function getPageLink(array $linkParts, array $pageRecord, int $iteration = 20, array $pageLog = [], bool $disableGroupCheck = false): array
+    {
+        if (($linkParts['pageuid'] ?? '') === 'current') {
+            // TypoLink field allows to omit a page uid to create links to current page and only adding
+            // query parameters and is respected here by returning the record for the current record.
+            return $pageRecord;
+        }
+        $referencedPageId = (int)($linkParts['pageuid'] ?? 0);
+        $referencedPageRecord = $this->getPage($referencedPageId, $disableGroupCheck);
+        if (empty($referencedPageRecord)) {
+            $message = sprintf('This page (ID %d) is of type "Link" and configured to redirect to a page, which is not accessible (ID %d).', $pageRecord['uid'], $referencedPageId);
+            throw new LinkedPageNotResolvableException($message, 1761831322);
+        }
+        return $this->resolveReferencedPageRecord($referencedPageRecord, $pageLog, $iteration, $disableGroupCheck);
     }
 
     /**
@@ -2089,6 +2189,65 @@ class PageRepository implements LoggerAwareInterface
             $isHidden = !$accessVoter->accessGranted('pages', $page, $alternativeContext);
         }
         return $isHidden;
+    }
+
+    /**
+     * This resolves and returns the referenced pageRecord for {@see self::DOKTYPE_SHORTCUT} and
+     * {@see self::DOKTYPE_LINK},
+     *
+     * For any other `$pageRecord['doktype']` the passed `$pageRecord` is returned unchanged.
+     *
+     * @throws CircularPageReferenceChainException
+     * @throws PageReferenceResolvingReachedIterationLimitException
+     * @throws ShortcutTargetPageNotFoundException
+     * @throws LinkedPageNotResolvableException
+     */
+    public function resolveReferencedPageRecord(array $pageRecord, array $pageLog, int $iteration, bool $disableGroupCheck): mixed
+    {
+        $doktype = (int)($pageRecord['doktype'] ?? 0);
+        if (!in_array($doktype, [self::DOKTYPE_LINK, self::DOKTYPE_SHORTCUT], true)) {
+            return $pageRecord;
+        }
+        if (in_array($pageRecord['uid'], $pageLog, true)) {
+            $pageLog[] = $pageRecord['uid'];
+            $chain = implode(' → ', $pageLog);
+            $this->logger->error(
+                'Circular page reference detected. Chain: {chain}',
+                ['chain' => $chain, 'uids' => $pageLog]
+            );
+            throw new CircularPageReferenceChainException(
+                sprintf(
+                    'A circular reference occurred while resolving page references (shortcut/link). Chain: %s',
+                    $chain,
+                ),
+                1294587212,
+            );
+        }
+        $pageLog[] = $pageRecord['uid'];
+        if ($iteration <= 0) {
+            $chain = implode(' → ', $pageLog);
+            $this->logger->error(
+                'Page reference resolving depth reached before resolving final page. Chain: {chain}',
+                ['chain' => $chain, 'uids' => $pageLog]
+            );
+            throw new PageReferenceResolvingReachedIterationLimitException(
+                sprintf(
+                    'Resolving page references reached max depth before resolving final page record for shortcut/link. Chain: %s',
+                    $chain,
+                ),
+                1763640566,
+            );
+        }
+        if ($doktype === self::DOKTYPE_LINK) {
+            $subLinkParts = $this->pageTypeLinkResolver->resolveTypolinkParts($pageRecord);
+            return match ($subLinkParts['type'] ?? '') {
+                'page' => $this->getPageLink($subLinkParts, $pageRecord, $iteration - 1, $pageLog, $disableGroupCheck),
+                // @todo Consider to add a PSR-14 event here to allow handling for custom link types if they are linkable/redirectable,
+                //       for now return $pageRecord to allow them, like `email` or `telephone` which are at least linkable in menues.
+                default => $pageRecord,
+            };
+        }
+        return $this->getPageShortcut((string)$pageRecord['shortcut'], $pageRecord['shortcut_mode'], $pageRecord['uid'], $iteration - 1, $pageLog, $disableGroupCheck);
     }
 
     /**

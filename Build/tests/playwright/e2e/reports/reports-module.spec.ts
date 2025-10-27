@@ -31,7 +31,7 @@ test.describe('Record statistics', () => {
       { name: 'Marked-deleted pages', count: 0 },
       { name: 'Standard', count: 1 },
       { name: 'Backend User Section', count: 0 },
-      { name: 'Link to External URL', count: 0 }
+      { name: 'Link', count: 0 },
     ];
     for (const entry of entries) {
       await checkCountOfRecordStatisticEntry(backend.contentFrame, entry.name, entry.count);

@@ -26,7 +26,7 @@ final class PageAccessFailureReasons
     public const NO_PAGES_FOUND = 'page.database.empty';
     public const PAGE_NOT_FOUND = 'page';
     public const ROOTLINE_BROKEN = 'page.rootline';
-    public const INVALID_EXTERNAL_URL = 'page.invalid_external_url';
+    public const INVALID_LINK_PAGE = 'page.invalid_external_url';
 
     // Site configuration issues
     public const INVALID_SITE_SETS = 'site.sets.invalid';
@@ -64,7 +64,7 @@ final class PageAccessFailureReasons
     protected array $messages = [
         self::NO_PAGES_FOUND => 'No page on rootlevel found',
         self::PAGE_NOT_FOUND => 'The requested page does not exist',
-        self::INVALID_EXTERNAL_URL => 'Page of type "External URL" could not be resolved properly',
+        self::INVALID_LINK_PAGE => 'Page of type "Link" could not be resolved properly',
 
         self::RENDERING_INSTRUCTIONS_NOT_FOUND => 'No TypoScript record found',
         self::RENDERING_INSTRUCTIONS_NOT_CONFIGURED => 'The page is not configured',
