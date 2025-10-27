@@ -90,6 +90,9 @@ class VimeoRenderer implements FileRendererInterface
     {
         $options = $this->collectOptions($options, $file);
         $src = $this->createVimeoUrl($options, $file);
+        if ($src === '') {
+            return '';
+        }
         $attributes = $this->collectIframeAttributes($width, $height, $options);
 
         return sprintf(
@@ -122,15 +125,15 @@ class VimeoRenderer implements FileRendererInterface
         return $options;
     }
 
-    /**
-     * @return string
-     */
-    protected function createVimeoUrl(array $options, FileInterface $file)
+    protected function createVimeoUrl(array $options, FileInterface $file): string
     {
         $videoIdRaw = $this->getVideoIdFromFile($file);
         $videoIdRaw = GeneralUtility::trimExplode('/', $videoIdRaw, true);
 
-        $videoId = $videoIdRaw[0];
+        $videoId = $videoIdRaw[0] ?? '';
+        if (empty($videoId)) {
+            return '';
+        }
         $hash = $videoIdRaw[1] ?? null;
 
         $urlParams = [];
