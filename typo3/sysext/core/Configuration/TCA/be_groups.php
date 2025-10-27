@@ -242,6 +242,8 @@ return [
             'config' => [
                 'type' => 'text',
                 'cols' => 40,
+                'renderType' => 'codeEditor',
+                'format' => 'typoscript',
                 'rows' => 5,
                 'enableTabulator' => true,
                 'fixedFont' => true,

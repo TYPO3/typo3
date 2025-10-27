@@ -61,6 +61,8 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.constants',
             'config' => [
                 'type' => 'text',
+                'renderType' => 'codeEditor',
+                'format' => 'typoscript',
                 'cols' => 48,
                 'rows' => 15,
                 'wrap' => 'off',
@@ -121,6 +123,8 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.config',
             'config' => [
                 'type' => 'text',
+                'renderType' => 'codeEditor',
+                'format' => 'typoscript',
                 'rows' => 15,
                 'cols' => 48,
                 'wrap' => 'off',

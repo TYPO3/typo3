@@ -150,6 +150,8 @@ return [
             'displayCond' => 'HIDE_FOR_NON_ADMINS',
             'config' => [
                 'type' => 'text',
+                'renderType' => 'codeEditor',
+                'format' => 'typoscript',
                 'cols' => 40,
                 'rows' => 15,
                 'enableTabulator' => true,

@@ -299,6 +299,8 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:TSconfig',
             'config' => [
                 'type' => 'text',
+                'renderType' => 'codeEditor',
+                'format' => 'typoscript',
                 'cols' => 40,
                 'rows' => 5,
                 'enableTabulator' => true,
