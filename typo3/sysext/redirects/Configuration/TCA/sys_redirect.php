@@ -33,7 +33,7 @@ return [
         '1' => [
             'showitem' => '
                 --div--;core.form.tabs:general, --palette--;;source, --palette--;;targetdetails, protected, --palette--;;internals,
-                --div--;redirects.tabs:redirectCount, disable_hitcount, hitcount, lasthiton, createdon,
+                --div--;redirects.db:tabs.redirectCount, disable_hitcount, hitcount, lasthiton, createdon,
                 --div--;core.form.tabs:access, --palette--;;visibility,
                 --div--;core.form.tabs:notes, description',
         ],
