@@ -39,6 +39,12 @@
 			<trans-unit id="cleanupRedirectsCommand.label.integrityStatus">
 				<source>Cleanup redirects matching provided integrity status</source>
 			</trans-unit>
+			<trans-unit id="created_on">
+				<source>on</source>
+			</trans-unit>
+			<trans-unit id="not_tracked">
+				<source>[Not Tracked]</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

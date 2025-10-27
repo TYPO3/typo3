@@ -45,12 +45,17 @@ class DataHandlerSlugUpdateHook
     ) {}
 
     /**
+     * Sets the current user id for new records in the "createdby" field.
      * Collects slugs of persisted records before having been updated.
      *
      * @param string|int $id (id could be string, for this reason no type hint)
      */
-    public function processDatamap_preProcessFieldArray(array $incomingFieldArray, string $table, $id, DataHandler $dataHandler): void
+    public function processDatamap_preProcessFieldArray(array &$incomingFieldArray, string $table, $id, DataHandler $dataHandler): void
     {
+        if ($table === 'sys_redirect' && !MathUtility::canBeInterpretedAsInteger($id)) {
+            $incomingFieldArray['createdby'] = $dataHandler->BE_USER->user['uid'];
+            return;
+        }
         if ($table !== 'pages'
             || empty($incomingFieldArray['slug'])
             || $this->isNestedHookInvocation($dataHandler)

@@ -123,6 +123,9 @@
 			<trans-unit id="sys_redirect.uid">
 				<source>UID</source>
 			</trans-unit>
+			<trans-unit id="sys_redirect.createdby">
+				<source>Created by</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

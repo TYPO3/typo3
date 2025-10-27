@@ -43,13 +43,13 @@ return [
             'showitem' => 'disabled, --linebreak--, starttime, endtime',
         ],
         'source' => [
-            'showitem' => 'source_host, --linebreak--, source_path, respect_query_parameters, is_regexp',
+            'showitem' => 'source_host, source_path, --linebreak--, respect_query_parameters, is_regexp',
         ],
         'targetdetails' => [
             'showitem' => 'target, target_statuscode, --linebreak--, force_https, keep_query_parameters',
         ],
         'internals' => [
-            'showitem' => 'creation_type, integrity_status',
+            'showitem' => 'creation_type, integrity_status, --linebreak--, createdby',
         ],
     ],
     'columns' => [
@@ -240,6 +240,15 @@ return [
                 ],
                 'default' => 1,
                 'readOnly' => true,
+            ],
+        ],
+        'createdby' => [
+            'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.createdby',
+            'description' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.createdby.description',
+            'config' => [
+                'type' => 'passthrough',
+                'renderType' => 'creationInformation',
+                'default' => 0,
             ],
         ],
         'integrity_status' => [

@@ -23,6 +23,13 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRe
     ],
 ];
 
+// Renders Redirect creation information. i.e. backend username and creation date.
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1761573166] = [
+    'nodeName' => 'creationInformation',
+    'priority' => 40,
+    'class' => TYPO3\CMS\Redirects\Form\Element\RenderCreationInformation::class,
+];
+
 // Add validation call for form field source_host and source_path
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][SourceHost::class] = '';
 
