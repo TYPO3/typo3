@@ -10,9 +10,16 @@ services:
   TYPO3\CMS\Dashboard\Widgets\WidgetConfiguration:
     autowire: false
 
-  TYPO3\CMS\Dashboard\Widgets\Provider\SysLogButtonProvider:
+  dashboard.buttons.syslogErrors:
+    class: 'TYPO3\CMS\Dashboard\Widgets\Provider\SysLogButtonProvider'
     arguments:
       $title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.buttonText'
+
+  dashboard.buttons.syslogUsers:
+    class: 'TYPO3\CMS\Dashboard\Widgets\Provider\SysLogButtonProvider'
+    arguments:
+      $title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogUsers.buttonText'
+      $channel: 'user'
 
   cache.dashboard.rss:
     class: 'TYPO3\CMS\Core\Cache\Frontend\FrontendInterface'
@@ -87,7 +94,7 @@ services:
     class: 'TYPO3\CMS\Dashboard\Widgets\BarChartWidget'
     arguments:
       $dataProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\SysLogErrorsDataProvider'
-      $buttonProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\SysLogButtonProvider'
+      $buttonProvider: '@dashboard.buttons.syslogErrors'
       $options:
         refreshAvailable: true
     tags:
@@ -254,3 +261,18 @@ services:
       $iconIdentifier: 'content-dashboard'
       $height: 'medium'
       $width: 'medium'
+
+  dashboard.widget.latestBeLogins:
+    class: 'TYPO3\CMS\Dashboard\Widgets\LatestBeLoginsWidget'
+    arguments:
+      $dataProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\LatestBeLoginsDataProvider'
+      $buttonProvider: '@dashboard.buttons.syslogUsers'
+    tags:
+      - name: dashboard.widget
+        identifier: 'latestBeLogins'
+        groupNames: 'systemInfo'
+        title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestBeLogins.title'
+        description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestBeLogins.description'
+        iconIdentifier: 'content-widget-list'
+        height: 'medium'
+        width: 'small'

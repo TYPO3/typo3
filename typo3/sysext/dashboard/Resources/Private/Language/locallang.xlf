@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard">
     <header/>
@@ -180,6 +180,9 @@
       <trans-unit id="widgets.sysLogErrors.buttonText">
         <source>Show all errors in log</source>
       </trans-unit>
+      <trans-unit id="widgets.sysLogUsers.buttonText">
+        <source>Show all user logins</source>
+      </trans-unit>
       <trans-unit id="widgets.sysLogErrors.chart.dataSet.0">
         <source>Number of errors</source>
       </trans-unit>
@@ -266,6 +269,33 @@
       </trans-unit>
       <trans-unit id="widgets.latestChangedPages.table.pages">
         <source>Page</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.title">
+        <source>Latest backend logins</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.description">
+        <source>Shows the latest backend user logins.</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.empty">
+        <source>No backend login history found</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.time">
+        <source>Time</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.user">
+        <source>User</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.user.notFound">
+        <source>Not found</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.user.edit">
+        <source>Edit user</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.settings.limit">
+        <source>Number of logins to display</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.settings.limit.description">
+        <source>Maximum number of backend user logins to show in the widget</source>
       </trans-unit>
       <trans-unit id="widget_group.general">
         <source>General</source>

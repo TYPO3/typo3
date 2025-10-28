@@ -28,7 +28,11 @@ use TYPO3\CMS\Dashboard\Widgets\ElementAttributesInterface;
  */
 class SysLogButtonProvider implements ButtonProviderInterface, ElementAttributesInterface
 {
-    public function __construct(private readonly string $title, private readonly string $target = '') {}
+    public function __construct(
+        private readonly string $title,
+        private readonly string $target = '',
+        private readonly string $channel = '',
+    ) {}
 
     public function getTitle(): string
     {
@@ -53,7 +57,7 @@ class SysLogButtonProvider implements ButtonProviderInterface, ElementAttributes
         return [
             'data-dispatch-action' => 'TYPO3.ModuleMenu.showModule',
             'data-dispatch-args-list' => 'system_log,&'
-                . http_build_query(['constraint' => ['channel' => 'php']]),
+                . http_build_query(['constraint' => ['channel' => $this->channel ?: 'php']]),
         ];
     }
 }

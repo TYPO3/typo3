@@ -1,0 +1,66 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+<f:layout name="Widget/Widget"/>
+<f:section name="main">
+
+    <f:if condition="{items}">
+        <f:then>
+            <div class="widget-table-wrapper">
+                <table class="widget-table table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th colspan="2">{f:translate(key: 'widgets.latestBeLogins.column.user', domain: 'dashboard.messages')}</th>
+                            <th class="col-time">{f:translate(key: 'widgets.latestBeLogins.column.time', domain: 'dashboard.messages')}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <f:for each="{items}" as="item">
+                            <tr>
+                                <td class="col-avatar">
+                                    <be:avatar backendUser="{item.userId}" size="32" showIcon="true" />
+                                </td>
+                                <td class="col-username">
+                                    <f:if condition="{item.realName}">
+                                        <f:then>
+                                            <be:link.editRecord table="be_users" uid="{item.userId}" title="{f:translate(key: 'widgets.latestBeLogins.column.user.edit', domain: 'dashboard.messages')}" returnUrl="{f:be.uri(route: 'dashboard')}">{item.realName}</be:link.editRecord>
+                                            <f:if condition="{item.username}">
+                                                <div class="text-muted">({item.username})</div>
+                                            </f:if>
+                                        </f:then>
+                                        <f:else>
+                                            <be:link.editRecord table="be_users" uid="{item.userId}" title="{f:translate(key: 'widgets.latestBeLogins.column.user.edit', domain: 'dashboard.messages')}" returnUrl="{f:be.uri(route: 'dashboard')}">{f:if(condition: item.username, then: item.username, else: '{f:translate(key: \'widgets.latestBeLogins.column.user.notFound\', domain: \'dashboard.messages\')}')}</be:link.editRecord>
+                                        </f:else>
+                                    </f:if>
+                                </td>
+                                <td class="col-datetime">
+                                    {item.timestamp -> f:format.date(format: dateFormat)}
+                                </td>
+                            </tr>
+                        </f:for>
+                    </tbody>
+                </table>
+            </div>
+        </f:then>
+        <f:else>
+            <div class="callout callout-info">
+                <div class="callout-icon">
+                    <span class="icon-emphasized">
+                        <core:icon identifier="content-widget-list" />
+                    </span>
+                </div>
+                <div class="callout-content">
+                    <div class="callout-title">
+                        {f:translate(key: 'widgets.latestBeLogins.empty', domain: 'dashboard.messages')}
+                    </div>
+                </div>
+            </div>
+        </f:else>
+    </f:if>
+
+</f:section>
+<f:section name="footer">
+    <f:render partial="Widget/Button" arguments="{button: button}"/>
+</f:section>
+</html>
