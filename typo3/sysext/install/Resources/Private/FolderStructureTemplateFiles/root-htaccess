@@ -173,6 +173,10 @@
 
 	ExpiresByType text/x-cross-domain-policy            "access plus 1 week"
 
+	<FilesMatch "^index\.php$">
+		ExpiresActive Off
+	</FilesMatch>
+
 </IfModule>
 
 ### End: Browser caching of resource files ###
