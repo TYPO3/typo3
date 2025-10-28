@@ -77,15 +77,14 @@ class EnableFileService
         return $result;
     }
 
-    /**
-     * Removes the FIRST_INSTALL file
-     */
     public static function removeFirstInstallFile(): bool
     {
         $result = true;
         $files = self::getFirstInstallFilePaths();
         foreach ($files as $file) {
-            $result = unlink(Environment::getPublicPath() . '/' . $file) && $result;
+            // `getFirstInstallFilePaths()` returns list of existing files only and
+            // allows us to simply unlink them without superfluous additional checks.
+            $result = @unlink($file) && $result;
         }
         return $result;
     }
@@ -206,15 +205,30 @@ class EnableFileService
     }
 
     /**
-     * Returns the paths to the FIRST_INSTALL files
+     * List of found `FIRST_INSTALL` files with different casings in public and project folder.
+     *
+     * @returns non-empty-string[]
      */
     protected static function getFirstInstallFilePaths(): array
     {
+        // Check in public path
         $files = scandir(Environment::getPublicPath() . '/');
         $files = is_array($files) ? $files : [];
         $files = array_filter($files, static function ($file) {
             return @is_file(Environment::getPublicPath() . '/' . $file) && preg_match('~^' . self::FIRST_INSTALL_FILE_PATH . '.*~i', $file);
         });
+        $files = array_map(fn(string $file): string => Environment::getPublicPath() . '/' . $file, $files);
+
+        // Check in project path (only if different from public path)
+        if (Environment::getPublicPath() !== Environment::getProjectPath()) {
+            $projectFiles = scandir(Environment::getProjectPath() . '/');
+            $projectFiles = is_array($projectFiles) ? $projectFiles : [];
+            $projectFiles = array_filter($projectFiles, static function ($file) {
+                return @is_file(Environment::getProjectPath() . '/' . $file) && preg_match('~^' . self::FIRST_INSTALL_FILE_PATH . '.*~i', $file);
+            });
+            $projectFiles = array_map(fn(string $file): string => Environment::getProjectPath() . '/' . $file, $projectFiles);
+            $files = array_unique(array_merge($files, $projectFiles));
+        }
         return $files;
     }
 }
