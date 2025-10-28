@@ -95,7 +95,7 @@ class SystemInformationMenu {
     element.classList.toggle('hidden', !(data.count > 0));
   }
 
-  private readonly updateMenu = (): void => {
+  private readonly updateMenu = async (): Promise<void> => {
     const toolbarItemIcon = document.querySelector(SystemInformationSelector.icon);
     const currentIcon = toolbarItemIcon.cloneNode(true);
 
@@ -108,14 +108,24 @@ class SystemInformationMenu {
       toolbarItemIcon.replaceWith(document.createRange().createContextualFragment(spinner));
     });
 
-    (new AjaxRequest(TYPO3.settings.ajaxUrls.systeminformation_render)).get().then(async (response: AjaxResponse): Promise<void> => {
-      document.querySelector(SystemInformationSelector.menu).innerHTML = await response.resolve();
+    try {
+      const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.systeminformation_render).get({ redirect: 'manual' });
+      const htmlResult = await response.resolve();
+      document.querySelector(SystemInformationSelector.menu).innerHTML = htmlResult;
       SystemInformationMenu.updateBadge();
-    }).finally((): void => {
+    } catch (e: unknown) {
+      const errorToBeSurpressed = (
+        // Backend is not available and returned a redirect to the login page, ignore
+        e instanceof AjaxResponse && e.response.type === 'opaqueredirect'
+      );
+      if (!errorToBeSurpressed) {
+        throw e;
+      }
+    } finally {
       document.querySelector(SystemInformationSelector.icon).replaceWith(currentIcon);
       // reload error data every five minutes
       this.timer = setTimeout(this.updateMenu, 1000 * 300);
-    });
+    }
   };
 
   /**
