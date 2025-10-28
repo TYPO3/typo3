@@ -213,9 +213,9 @@ checkForCommitType() {
 # Check for existence of a "Resolves: " line.
 #
 checkForResolves() {
-	if ! grep -q -E '^(Resolves|Fixes): #[0-9]+$' "$MSG"; then
+	if ! grep -q -E '^Resolves: #[0-9]+$' "$MSG"; then
 		COMMIT_MSG_ERROR_FOUND=1
-		ERROR_TEXT="${ERROR_TEXT} - You need at least one 'Resolves|Fixes: #<issue number>' line.\n"
+		ERROR_TEXT="${ERROR_TEXT} - You need at least one 'Resolves: #<issue number>' line.\n"
 	fi
 }
 
