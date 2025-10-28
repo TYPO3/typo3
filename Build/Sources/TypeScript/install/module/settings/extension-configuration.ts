@@ -57,10 +57,12 @@ class ExtensionConfiguration extends AbstractInteractableModule {
           searchInput.focus();
         }
       } else if (event.key === KeyTypesEnum.ESCAPE) {
-        // Clear search on ESC key
-        event.preventDefault();
-        searchInput.value = '';
-        searchInput.focus();
+        if (searchInput.value.trim() !== '') {
+          // Clear search on ESC key otherwise close the modal
+          event.preventDefault();
+          searchInput.value = '';
+          searchInput.focus();
+        }
       }
     }).bindTo(currentModal);
 
