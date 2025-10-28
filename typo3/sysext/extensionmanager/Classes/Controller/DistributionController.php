@@ -21,7 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
+use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 
 /**
  * Controller for distribution related actions.
@@ -33,16 +33,18 @@ class DistributionController extends AbstractController
     public function __construct(
         protected readonly PackageManager $packageManager,
         protected readonly PageRenderer $pageRenderer,
-        protected readonly IconFactory $iconFactory
+        protected readonly IconFactory $iconFactory,
+        protected readonly ExtensionRepository $extensionRepository
     ) {}
 
     /**
      * Shows information about a single distribution. Reachable from 'Get preconfigured distribution'.
      */
-    public function showAction(Extension $extension): ResponseInterface
+    public function showAction(int $extension): ResponseInterface
     {
-        $extensionKey = $extension->getExtensionKey();
         // Check if extension/package is installed
+        $extension = $this->extensionRepository->findByUid($extension);
+        $extensionKey = $extension->extensionKey;
         $active = $this->packageManager->isPackageActive($extensionKey);
         $view = $this->initializeModuleTemplate($this->request);
         $view->addButtonToButtonBar($this->componentFactory->createBackButton($this->uriBuilder->reset()->uriFor('distributions', [], 'List')));

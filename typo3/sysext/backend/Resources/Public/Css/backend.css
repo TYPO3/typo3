@@ -3857,6 +3857,10 @@ td.permission-column-group{-webkit-padding-start:0;padding-inline-start:0;white-
 .extension-list th:nth-child(3),.extension-list th:nth-child(4){width:30%}
 .extension-list th:nth-child(5),.extension-list th:nth-child(6),.extension-list th:nth-child(7){width:7%}
 .extension-list th:nth-child(8){width:11%}
+.extension-list-terTable th:first-child,.extension-list-terTable th:nth-child(2){width:4%}
+.extension-list-terTable th:nth-child(3),.extension-list-terTable th:nth-child(6){width:30%}
+.extension-list-terTable th:nth-child(4),.extension-list-terTable th:nth-child(5),.extension-list-terTable th:nth-child(7){width:7%}
+.extension-list-terTable th:nth-child(8){width:11%}
 .extension-list-search{-webkit-padding-end:2.3em;padding-inline-end:2.3em}
 .extension-icon{height:32px;width:32px;-webkit-margin-end:1em;border-radius:4px;margin-inline-end:1em}
 #terTableWrapper{margin-top:1em;position:relative}

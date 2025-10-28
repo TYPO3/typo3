@@ -19,146 +19,149 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
-use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
-use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
-use TYPO3\CMS\Extbase\Persistence\QueryInterface;
-use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
-use TYPO3\CMS\Extbase\Persistence\Repository;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Enum\ExtensionCategory;
 
 /**
- * A repository for extensions
+ * A repository for extensions.
+ *
+ * The implementation does not filter extension marked as insecure, this has
+ * to happen on a different level when needed.
+ *
  * @internal This class is a specific domain repository implementation and is not part of the Public TYPO3 API.
- * @extends Repository<Extension>
  */
-class ExtensionRepository extends Repository
+readonly class ExtensionRepository
 {
-    /**
-     * @var string
-     */
-    public const TABLE_NAME = 'tx_extensionmanager_domain_model_extension';
+    private const TABLE_NAME = 'tx_extensionmanager_domain_model_extension';
 
-    protected ?QuerySettingsInterface $querySettings = null;
+    public function __construct(
+        private ConnectionPool $connectionPool,
+    ) {}
 
-    public function injectQuerySettings(QuerySettingsInterface $querySettings)
+    public function countAll(): int
     {
-        $this->querySettings = $querySettings;
-    }
-
-    /**
-     * Do not include pid in queries
-     */
-    public function initializeObject()
-    {
-        $this->setDefaultQuerySettings($this->querySettings->setRespectStoragePage(false));
-    }
-
-    /**
-     * Count all extensions
-     *
-     * @return int
-     */
-    public function countAll()
-    {
-        $query = $this->createQuery();
-        $query = $this->addDefaultConstraints($query);
-        return $query->execute()->count();
-    }
-
-    /**
-     * Finds all extensions
-     *
-     * @return array|QueryResultInterface
-     */
-    public function findAll()
-    {
-        $query = $this->createQuery();
-        $query = $this->addDefaultConstraints($query);
-        $query->setOrderings(
-            [
-                'lastUpdated' => QueryInterface::ORDER_DESCENDING,
-            ]
-        );
-        return $query->execute();
-    }
-
-    /**
-     * Find an extension by extension key ordered by version
-     *
-     * @param string $extensionKey
-     * @return QueryResultInterface
-     */
-    public function findByExtensionKeyOrderedByVersion($extensionKey)
-    {
-        $query = $this->createQuery();
-        $query->matching(
-            $query->logicalAnd(
-                $query->equals('extensionKey', $extensionKey),
-                $query->greaterThanOrEqual('reviewState', 0)
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
+        return $queryBuilder
+            ->count('*')
+            ->from(self::TABLE_NAME)
+            ->where(
+                $queryBuilder->expr()->eq('current_version', true),
+                $queryBuilder->expr()->gte('review_state', 0),
             )
-        );
-        $query->setOrderings(['integerVersion' => QueryInterface::ORDER_DESCENDING]);
-        return $query->execute();
+            ->fetchOne();
     }
 
     /**
-     * Find the current version by extension key
-     *
-     * @param string $extensionKey
-     * @return object|null
+     * @return Extension[]
      */
-    public function findOneByCurrentVersionByExtensionKey($extensionKey)
+    public function findAll(): array
     {
-        $query = $this->createQuery();
-        $query->matching(
-            $query->logicalAnd(
-                $query->equals('extensionKey', $extensionKey),
-                $query->greaterThanOrEqual('reviewState', 0),
-                $query->equals('currentVersion', 1)
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
+        $result = $queryBuilder->select('*')
+            ->from(self::TABLE_NAME)
+            ->where(
+                $queryBuilder->expr()->eq('current_version', true),
+                $queryBuilder->expr()->gte('review_state', 0),
             )
-        );
-        $query->setLimit(1);
-        return $query->execute()->getFirst();
+            ->orderBy('last_updated', 'DESC')
+            ->executeQuery()
+            ->fetchAllAssociative();
+        $extensions = [];
+        foreach ($result as $row) {
+            $extensions[] = Extension::createObjectFromRow($row);
+        }
+        return $extensions;
     }
 
     /**
-     * Find one extension by extension key and version
-     *
-     * @param string $extensionKey
+     * @return Extension[]
+     */
+    public function findByExtensionKeyOrderedByVersion(string $extensionKey): array
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
+        $result = $queryBuilder->select('*')
+            ->from(self::TABLE_NAME)
+            ->where(
+                $queryBuilder->expr()->eq('extension_key', $queryBuilder->createNamedParameter($extensionKey, Connection::PARAM_STR)),
+                $queryBuilder->expr()->gte('review_state', 0),
+            )
+            ->orderBy('integer_version', 'DESC')
+            ->executeQuery()
+            ->fetchAllAssociative();
+        $extensions = [];
+        foreach ($result as $row) {
+            $extensions[] = Extension::createObjectFromRow($row);
+        }
+        return $extensions;
+    }
+
+    public function findByUid(int $uid): ?Extension
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
+        $row = $queryBuilder
+            ->select('*')
+            ->from(self::TABLE_NAME)
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
+            )
+            ->executeQuery()
+            ->fetchAssociative();
+        if (!$row) {
+            return null;
+        }
+        return Extension::createObjectFromRow($row);
+    }
+
+    public function findOneByCurrentVersionByExtensionKey(string $extensionKey): ?Extension
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
+        $row = $queryBuilder->select('*')
+            ->from(self::TABLE_NAME)
+            ->where(
+                $queryBuilder->expr()->eq('extension_key', $queryBuilder->createNamedParameter($extensionKey, Connection::PARAM_STR)),
+                $queryBuilder->expr()->gte('review_state', 0),
+                $queryBuilder->expr()->eq('current_version', 1),
+            )
+            ->executeQuery()
+            ->fetchAssociative();
+        if (is_array($row)) {
+            return Extension::createObjectFromRow($row);
+        }
+        return null;
+    }
+
+    /**
      * @param string $version (example: 4.3.10)
-     * @return object|null
      */
-    public function findOneByExtensionKeyAndVersion($extensionKey, $version)
+    public function findOneByExtensionKeyAndVersion(string $extensionKey, string $version): ?Extension
     {
-        $query = $this->createQuery();
-        // Hint: This method must not filter out insecure extensions, if needed,
-        // it should be done on a different level, or with a helper method.
-        $query->matching($query->logicalAnd(
-            $query->equals('extensionKey', $extensionKey),
-            $query->equals('version', $version)
-        ));
-        return $query->setLimit(1)->execute()->getFirst();
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
+        $row = $queryBuilder->select('*')
+            ->from(self::TABLE_NAME)
+            ->where(
+                $queryBuilder->expr()->eq('extension_key', $queryBuilder->createNamedParameter($extensionKey, Connection::PARAM_STR)),
+                $queryBuilder->expr()->eq('version', $queryBuilder->createNamedParameter($version, Connection::PARAM_STR)),
+            )
+            ->executeQuery()
+            ->fetchAssociative();
+        if (is_array($row)) {
+            return Extension::createObjectFromRow($row);
+        }
+        return null;
     }
 
     /**
-     * Find an extension by title, author name or extension key
-     * This is the function used by the TER search. It is using a
-     * scoring for the matches to sort the extension with an
-     * exact key match on top
+     * Find extensions by title, author name or extension key.
+     * Uses a simple scoring to sort matches.
      *
      * @param string $searchString The string to search for extensions
-     * @return mixed
+     * @return Extension[]
      */
-    public function findByTitleOrAuthorNameOrExtensionKey($searchString)
+    public function findByTitleOrAuthorNameOrExtensionKey(string $searchString): array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable(self::TABLE_NAME);
-
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
         $searchPlaceholderForLike = '%' . $queryBuilder->escapeLikeWildcards($searchString) . '%';
-
         $searchConstraints = [
             'extension_key' => $queryBuilder->expr()->eq(
                 'extension_key',
@@ -181,7 +184,6 @@ class ExtensionRepository extends Repository
                 $queryBuilder->createNamedParameter($searchPlaceholderForLike)
             ),
         ];
-
         $caseStatement = 'CASE ' .
             'WHEN ' . $searchConstraints['extension_key'] . ' THEN 16 ' .
             'WHEN ' . $searchConstraints['extension_key_like'] . ' THEN 8 ' .
@@ -189,7 +191,6 @@ class ExtensionRepository extends Repository
             'WHEN ' . $searchConstraints['description'] . ' THEN 2 ' .
             'WHEN ' . $searchConstraints['author_name'] . ' THEN 1 ' .
             'END AS ' . $queryBuilder->quoteIdentifier('position');
-
         $result = $queryBuilder
             ->select('*')
             ->addSelectLiteral($caseStatement)
@@ -202,148 +203,125 @@ class ExtensionRepository extends Repository
             ->orderBy('position', 'DESC')
             ->executeQuery()
             ->fetchAllAssociative();
-
-        $dataMapper = GeneralUtility::makeInstance(DataMapper::class);
-        return $dataMapper->map(Extension::class, $result);
+        $extensions = [];
+        foreach ($result as $row) {
+            $extensions[] = Extension::createObjectFromRow($row);
+        }
+        return $extensions;
     }
 
     /**
-     * Find an extension between a certain version range ordered by version number
+     * Find an extension between a certain version range ordered by version number.
      *
-     * @param string $extensionKey
-     * @param int $lowestVersion
-     * @param int $highestVersion
-     * @param bool $includeCurrentVersion
-     * @return QueryResultInterface
+     * @return Extension[]
      */
-    public function findByVersionRangeAndExtensionKeyOrderedByVersion($extensionKey, $lowestVersion = 0, $highestVersion = 0, $includeCurrentVersion = true)
+    public function findByVersionRangeAndExtensionKeyOrderedByVersion(string $extensionKey, int $lowestVersion = 0, int $highestVersion = 0, bool $includeCurrentVersion = true): array
     {
-        $query = $this->createQuery();
-        $constraint = null;
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
+        $queryBuilder->select('*')->from(self::TABLE_NAME);
+        $constraints = [
+            $queryBuilder->expr()->eq('extension_key', $queryBuilder->createNamedParameter($extensionKey, Connection::PARAM_STR)),
+        ];
         if ($lowestVersion !== 0 && $highestVersion !== 0) {
+            $constraints[] = $queryBuilder->expr()->lte('integer_version', $queryBuilder->createNamedParameter($highestVersion, Connection::PARAM_INT));
             if ($includeCurrentVersion) {
-                $constraint = $query->logicalAnd($query->lessThanOrEqual('integerVersion', $highestVersion), $query->greaterThanOrEqual('integerVersion', $lowestVersion), $query->equals('extensionKey', $extensionKey));
+                $constraints[] = $queryBuilder->expr()->gte('integer_version', $queryBuilder->createNamedParameter($lowestVersion, Connection::PARAM_INT));
             } else {
-                $constraint = $query->logicalAnd($query->lessThanOrEqual('integerVersion', $highestVersion), $query->greaterThan('integerVersion', $lowestVersion), $query->equals('extensionKey', $extensionKey));
+                $constraints[] = $queryBuilder->expr()->gt('integer_version', $queryBuilder->createNamedParameter($lowestVersion, Connection::PARAM_INT));
             }
         } elseif ($lowestVersion === 0 && $highestVersion !== 0) {
             if ($includeCurrentVersion) {
-                $constraint = $query->logicalAnd($query->lessThanOrEqual('integerVersion', $highestVersion), $query->equals('extensionKey', $extensionKey));
+                $constraints[] = $queryBuilder->expr()->lte('integer_version', $queryBuilder->createNamedParameter($highestVersion, Connection::PARAM_INT));
             } else {
-                $constraint = $query->logicalAnd($query->lessThan('integerVersion', $highestVersion), $query->equals('extensionKey', $extensionKey));
+                $constraints[] = $queryBuilder->expr()->lt('integer_version', $queryBuilder->createNamedParameter($highestVersion, Connection::PARAM_INT));
             }
         } elseif ($lowestVersion !== 0 && $highestVersion === 0) {
             if ($includeCurrentVersion) {
-                $constraint = $query->logicalAnd($query->greaterThanOrEqual('integerVersion', $lowestVersion), $query->equals('extensionKey', $extensionKey));
+                $constraints[] = $queryBuilder->expr()->gte('integer_version', $queryBuilder->createNamedParameter($lowestVersion, Connection::PARAM_INT));
             } else {
-                $constraint = $query->logicalAnd($query->greaterThan('integerVersion', $lowestVersion), $query->equals('extensionKey', $extensionKey));
+                $constraints[] = $queryBuilder->expr()->gt('integer_version', $queryBuilder->createNamedParameter($lowestVersion, Connection::PARAM_INT));
             }
-        } elseif ($lowestVersion === 0 && $highestVersion === 0) {
-            $constraint = $query->equals('extensionKey', $extensionKey);
         }
-        if ($constraint) {
-            $query->matching($query->logicalAnd($constraint, $query->greaterThanOrEqual('reviewState', 0)));
+        $constraints[] = $queryBuilder->expr()->gte('review_state', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT));
+        $queryBuilder->where(...$constraints);
+        $queryBuilder->orderBy('integer_version', 'DESC');
+        $result = $queryBuilder->executeQuery()->fetchAllAssociative();
+        $extensions = [];
+        foreach ($result as $row) {
+            $extensions[] = Extension::createObjectFromRow($row);
         }
-        $query->setOrderings([
-            'integerVersion' => QueryInterface::ORDER_DESCENDING,
-        ]);
-        return $query->execute();
+        return $extensions;
     }
 
     /**
-     * Finds all extensions with category "distribution" not published by the TYPO3 CMS Team
+     * Find all extensions with category "distribution" not published by the TYPO3 CMS Team.
      *
      * @return Extension[]
      */
     public function findAllCommunityDistributions(bool $showUnsuitableDistributions = false): array
     {
-        $query = $this->createQuery();
-        $query->matching(
-            $query->logicalAnd(
-                $query->equals('category', ExtensionCategory::Distribution->value),
-                $query->logicalNot($query->equals('ownerusername', 'typo3v4'))
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
+        $result = $queryBuilder->select('*')
+            ->from(self::TABLE_NAME)
+            ->where(
+                $queryBuilder->expr()->and(
+                    $queryBuilder->expr()->eq('category', $queryBuilder->createNamedParameter(ExtensionCategory::Distribution->value)),
+                    $queryBuilder->expr()->neq('ownerusername', $queryBuilder->createNamedParameter('typo3v4'))
+                )
             )
-        );
-
-        $query->setOrderings([
-            'alldownloadcounter' => QueryInterface::ORDER_DESCENDING,
-        ]);
-
-        return $this->filterYoungestVersionOfExtensionList($query->execute()->toArray(), $showUnsuitableDistributions);
+            ->orderBy('alldownloadcounter', 'DESC')
+            ->executeQuery()
+            ->fetchAllAssociative();
+        $extensions = [];
+        foreach ($result as $row) {
+            $extensions[] = Extension::createObjectFromRow($row);
+        }
+        return $this->filterYoungestVersionOfExtensionList($extensions, $showUnsuitableDistributions);
     }
 
     /**
-     * Finds all extensions with category "distribution" that are published by the TYPO3 CMS Team
+     * Find all extensions with category "distribution" that have been published by the TYPO3 CMS Team.
      *
      * @return Extension[]
      */
     public function findAllOfficialDistributions(bool $showUnsuitableDistributions = false): array
     {
-        $query = $this->createQuery();
-        $query->matching(
-            $query->logicalAnd(
-                $query->equals('category', ExtensionCategory::Distribution->value),
-                $query->equals('ownerusername', 'typo3v4')
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
+        $result = $queryBuilder->select('*')
+            ->from(self::TABLE_NAME)
+            ->where(
+                $queryBuilder->expr()->eq('category', ExtensionCategory::Distribution->value),
+                $queryBuilder->expr()->eq('ownerusername', $queryBuilder->createNamedParameter('typo3v4', Connection::PARAM_STR)),
             )
-        );
-
-        $query->setOrderings([
-            'alldownloadcounter' => QueryInterface::ORDER_DESCENDING,
-        ]);
-
-        return $this->filterYoungestVersionOfExtensionList($query->execute()->toArray(), $showUnsuitableDistributions);
-    }
-
-    /**
-     * Count extensions with a certain key between a given version range
-     *
-     * @param string $extensionKey
-     * @param int $lowestVersion
-     * @param int $highestVersion
-     * @return int
-     */
-    public function countByVersionRangeAndExtensionKey($extensionKey, $lowestVersion = 0, $highestVersion = 0)
-    {
-        return $this->findByVersionRangeAndExtensionKeyOrderedByVersion($extensionKey, $lowestVersion, $highestVersion)->count();
-    }
-
-    /**
-     * Find highest version available of an extension
-     *
-     * @param string $extensionKey
-     * @return object|null
-     */
-    public function findHighestAvailableVersion($extensionKey)
-    {
-        $query = $this->createQuery();
-        $query->matching($query->logicalAnd($query->equals('extensionKey', $extensionKey), $query->greaterThanOrEqual('reviewState', 0)));
-        $query->setOrderings([
-            'integerVersion' => QueryInterface::ORDER_DESCENDING,
-        ]);
-        return $query->setLimit(1)->execute()->getFirst();
-    }
-
-    /**
-     * Adds default constraints to the query - in this case it
-     * enables us to always just search for the latest version of an extension
-     *
-     * @param QueryInterface $query the query to adjust
-     */
-    protected function addDefaultConstraints(QueryInterface $query): QueryInterface
-    {
-        if ($query->getConstraint()) {
-            $query->matching($query->logicalAnd(
-                $query->getConstraint(),
-                $query->equals('current_version', true),
-                $query->greaterThanOrEqual('reviewState', 0)
-            ));
-        } else {
-            $query->matching($query->logicalAnd(
-                $query->equals('current_version', true),
-                $query->greaterThanOrEqual('reviewState', 0)
-            ));
+            ->orderBy('alldownloadcounter', 'DESC')
+            ->executeQuery()
+            ->fetchAllAssociative();
+        $extensions = [];
+        foreach ($result as $row) {
+            $extensions[] = Extension::createObjectFromRow($row);
         }
-        return $query;
+        return $this->filterYoungestVersionOfExtensionList($extensions, $showUnsuitableDistributions);
+    }
+
+    /**
+     * Find the highest version available of an extension.
+     */
+    public function findHighestAvailableVersion(string $extensionKey): ?Extension
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
+        $result = $queryBuilder->select('*')
+            ->from(self::TABLE_NAME)
+            ->where(
+                $queryBuilder->expr()->eq('extension_key', $queryBuilder->createNamedParameter($extensionKey, Connection::PARAM_STR)),
+                $queryBuilder->expr()->gte('review_state', 0),
+            )
+            ->orderBy('integer_version', 'DESC')
+            ->executeQuery()
+            ->fetchAssociative();
+        if (is_array($result)) {
+            return Extension::createObjectFromRow($result);
+        }
+        return null;
     }
 
     /**
@@ -365,8 +343,8 @@ class ExtensionRepository extends Repository
     }
 
     /**
-     * Get a list of various extensions in various versions and returns
-     * a filtered list containing the extension-version combination with
+     * Filter a list of various extensions in various versions to return
+     * a list containing the extension-version combination with
      * the highest version number.
      *
      * @param Extension[] $extensions
@@ -379,13 +357,13 @@ class ExtensionRepository extends Repository
         }
         $filteredExtensions = [];
         foreach ($extensions as $extension) {
-            $extensionKey = $extension->getExtensionKey();
+            $extensionKey = $extension->extensionKey;
             if (!array_key_exists($extensionKey, $filteredExtensions)) {
                 $filteredExtensions[$extensionKey] = $extension;
                 continue;
             }
-            $currentVersion = $filteredExtensions[$extensionKey]->getVersion();
-            $newVersion = $extension->getVersion();
+            $currentVersion = $filteredExtensions[$extensionKey]->version;
+            $newVersion = $extension->version;
             if (version_compare($newVersion, $currentVersion, '>')) {
                 $filteredExtensions[$extensionKey] = $extension;
             }

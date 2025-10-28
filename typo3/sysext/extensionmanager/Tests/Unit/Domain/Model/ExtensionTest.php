@@ -137,11 +137,11 @@ final class ExtensionTest extends UnitTestCase
         $imageUrl = 'https://example.org/path/to/image.png';
 
         $extension = new Extension();
-        $extension->setDistributionImage($imageUrl);
+        $extension->distributionImage = $imageUrl;
 
         self::assertEquals(
             $imageUrl,
-            $extension->getDistributionImage()
+            $extension->distributionImage
         );
     }
 
@@ -151,11 +151,11 @@ final class ExtensionTest extends UnitTestCase
         $imageUrl = 'https://example.org/path/to/image.png';
 
         $extension = new Extension();
-        $extension->setDistributionWelcomeImage($imageUrl);
+        $extension->distributionWelcomeImage = $imageUrl;
 
         self::assertEquals(
             $imageUrl,
-            $extension->getDistributionWelcomeImage()
+            $extension->distributionWelcomeImage
         );
     }
 }

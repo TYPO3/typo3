@@ -124,7 +124,7 @@ class ExtensionStatus implements StatusProviderInterface
                 && $information['terObject'] instanceof Extension
             ) {
                 $terObject = $information['terObject'];
-                $insecureStatus = $terObject->getReviewState();
+                $insecureStatus = $terObject->reviewState;
                 if ($insecureStatus === -1) {
                     if (
                         array_key_exists('installed', $information)
@@ -132,12 +132,12 @@ class ExtensionStatus implements StatusProviderInterface
                     ) {
                         $loadedInsecure[] = [
                             'extensionKey' => $extensionKey,
-                            'version' => $terObject->getVersion(),
+                            'version' => $terObject->version,
                         ];
                     } else {
                         $existingInsecure[] = [
                             'extensionKey' => $extensionKey,
-                            'version' => $terObject->getVersion(),
+                            'version' => $terObject->version,
                         ];
                     }
                 } elseif ($insecureStatus === -2) {
@@ -147,12 +147,12 @@ class ExtensionStatus implements StatusProviderInterface
                     ) {
                         $loadedOutdated[] = [
                             'extensionKey' => $extensionKey,
-                            'version' => $terObject->getVersion(),
+                            'version' => $terObject->version,
                         ];
                     } else {
                         $existingOutdated[] = [
                             'extensionKey' => $extensionKey,
-                            'version' => $terObject->getVersion(),
+                            'version' => $terObject->version,
                         ];
                     }
                 }

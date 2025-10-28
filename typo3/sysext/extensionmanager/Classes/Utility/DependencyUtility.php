@@ -133,7 +133,7 @@ class DependencyUtility implements SingletonInterface
                 }
             } catch (UnresolvedDependencyException $e) {
                 if (in_array($identifier, Dependency::$specialDependencies)) {
-                    $extensionKey = $extension->getExtensionKey();
+                    $extensionKey = $extension->extensionKey;
                 } else {
                     $extensionKey = $identifier;
                 }
@@ -402,7 +402,7 @@ class DependencyUtility implements SingletonInterface
      */
     protected function isExtensionDownloadableFromRemote(string $extensionKey): bool
     {
-        return $this->extensionRepository->count(['extensionKey' => $extensionKey]) > 0;
+        return count($this->extensionRepository->findByExtensionKeyOrderedByVersion($extensionKey)) > 0;
     }
 
     /**
@@ -410,11 +410,11 @@ class DependencyUtility implements SingletonInterface
      */
     protected function isDownloadableVersionCompatible(Dependency $dependency): bool
     {
-        $count = $this->extensionRepository->countByVersionRangeAndExtensionKey(
+        $count = count($this->extensionRepository->findByVersionRangeAndExtensionKeyOrderedByVersion(
             $dependency->getIdentifier(),
             $dependency->getLowestVersionAsInteger(),
             $dependency->getHighestVersionAsInteger()
-        );
+        ));
         return !empty($count);
     }
 
@@ -427,7 +427,7 @@ class DependencyUtility implements SingletonInterface
         foreach ($extensions as $extension) {
             /** @var Extension $extension */
             $this->checkDependencies($extension);
-            $extensionKey = $extension->getExtensionKey();
+            $extensionKey = $extension->extensionKey;
 
             if (isset($this->dependencyErrors[$extensionKey])) {
                 // reset dependencyErrors and continue with next version

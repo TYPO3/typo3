@@ -270,8 +270,8 @@ final class ExtensionStatusTest extends UnitTestCase
         bool $installed = true
     ): ListUtility&MockObject {
         $mockTerObject = new Extension();
-        $mockTerObject->setVersion('1.0.6');
-        $mockTerObject->setReviewState($reviewState);
+        $mockTerObject->version = '1.0.6';
+        $mockTerObject->reviewState = $reviewState;
 
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $mockListUtility = $this->getMockBuilder(ListUtility::class)->getMock();

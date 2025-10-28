@@ -65,7 +65,7 @@ final class DownloadExtensionViewHelper extends AbstractFormViewHelper
         $this->uriBuilder->reset();
         $this->uriBuilder->setFormat('json');
         $uri = $this->uriBuilder->uriFor($action, [
-            'extension' => (int)$extension->getUid(),
+            'extension' => (int)$extension->uid,
         ], 'Download');
         $this->tag->addAttribute('data-href', $uri);
 
@@ -86,7 +86,7 @@ final class DownloadExtensionViewHelper extends AbstractFormViewHelper
             </div>';
 
         $this->tag->setContent($label);
-        return '<div id="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadFromTer" class="downloadFromTer">' . $this->tag->render() . '</div>';
+        return '<div id="' . htmlspecialchars($extension->extensionKey) . '-downloadFromTer" class="downloadFromTer">' . $this->tag->render() . '</div>';
     }
 
     private function getLanguageService(): LanguageService

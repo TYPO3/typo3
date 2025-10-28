@@ -1,5 +1,7 @@
-# Keeping most fields here since that table *should not* have TCA at all
+# Manually creating the table, as this table does not have a TCA definition on purpose
 CREATE TABLE tx_extensionmanager_domain_model_extension (
+  uid int(11) unsigned NOT NULL auto_increment,
+  pid int(10) unsigned NOT NULL default '0',
   extension_key varchar(60) NOT NULL default '',
   remote varchar(100) NOT NULL default 'ter',
   version varchar(15) NOT NULL default '',
@@ -17,7 +19,15 @@ CREATE TABLE tx_extensionmanager_domain_model_extension (
   documentation_link varchar(2048),
   distribution_image varchar(255),
   distribution_welcome_image varchar(255),
+  description longtext,
+  state int(10) unsigned NOT NULL default '0',
+  category int(10) unsigned NOT NULL default '0',
+  last_updated bigint(20) DEFAULT '0' NOT NULL,
+  update_comment longtext,
+  current_version smallint unsigned DEFAULT 0 NOT NULL,
+  review_state int(11) NOT NULL default '0',
 
+	PRIMARY KEY (uid),
   KEY index_extrepo (extension_key,remote),
   KEY index_versionrepo (integer_version,remote,extension_key),
   KEY index_currentversions (current_version,review_state),

@@ -30,22 +30,22 @@ final class ExtensionRepositoryTest extends UnitTestCase
     {
         // foo2 should be kept
         $foo1 = new Extension();
-        $foo1->setExtensionKey('foo');
-        $foo1->setVersion('1.0.0');
+        $foo1->extensionKey = 'foo';
+        $foo1->version = '1.0.0';
         $foo2 = new Extension();
-        $foo2->setExtensionKey('foo');
-        $foo2->setVersion('1.0.1');
+        $foo2->extensionKey = 'foo';
+        $foo2->version = '1.0.1';
 
         // bar1 should be kept
         $bar1 = new Extension();
-        $bar1->setExtensionKey('bar');
-        $bar1->setVersion('1.1.2');
+        $bar1->extensionKey = 'bar';
+        $bar1->version = '1.1.2';
         $bar2 = new Extension();
-        $bar2->setExtensionKey('bar');
-        $bar2->setVersion('1.1.1');
+        $bar2->extensionKey = 'bar';
+        $bar2->version = '1.1.1';
         $bar3 = new Extension();
-        $bar3->setExtensionKey('bar');
-        $bar3->setVersion('1.0.3');
+        $bar3->extensionKey = 'bar';
+        $bar3->version = '1.0.3';
 
         $input = [$foo1, $foo2, $bar1, $bar2, $bar3];
         $subject = $this->getAccessibleMock(ExtensionRepository::class, null, [], '', false);
@@ -66,24 +66,24 @@ final class ExtensionRepositoryTest extends UnitTestCase
 
         // foo1 should be kept
         $foo1 = new Extension();
-        $foo1->setExtensionKey('foo');
-        $foo1->setVersion('1.0.0');
+        $foo1->extensionKey = 'foo';
+        $foo1->version = '1.0.0';
         $foo1->setDependencies($suitableDependencies);
 
         $foo2 = new Extension();
-        $foo2->setExtensionKey('foo');
-        $foo2->setVersion('1.0.1');
+        $foo2->extensionKey = 'foo';
+        $foo2->version = '1.0.1';
         $foo2->setDependencies($unsuitableDependencies);
 
         // bar2 should be kept
         $bar1 = new Extension();
-        $bar1->setExtensionKey('bar');
-        $bar1->setVersion('1.1.2');
+        $bar1->extensionKey = 'bar';
+        $bar1->version = '1.1.2';
         $bar1->setDependencies($unsuitableDependencies);
 
         $bar2 = new Extension();
-        $bar2->setExtensionKey('bar');
-        $bar2->setVersion('1.1.1');
+        $bar2->extensionKey = 'bar';
+        $bar2->version = '1.1.1';
         $bar2->setDependencies($suitableDependencies);
 
         $input = [$foo1, $foo2, $bar1, $bar2];
@@ -98,16 +98,16 @@ final class ExtensionRepositoryTest extends UnitTestCase
         $suitableDependencies = new \SplObjectStorage();
         $suitableDependencies->offsetSet($suitableDependency);
         $suitableExtension = new Extension();
-        $suitableExtension->setExtensionKey('suitable');
-        $suitableExtension->setVersion('1.0.0');
+        $suitableExtension->extensionKey = 'suitable';
+        $suitableExtension->version = '1.0.0';
         $suitableExtension->setDependencies($suitableDependencies);
 
         $unsuitableDependency = Dependency::createFromEmConf('typo3', '9.5.0-10.4.99');
         $unsuitableDependencies = new \SplObjectStorage();
         $unsuitableDependencies->offsetSet($unsuitableDependency);
         $unsuitableExtension = new Extension();
-        $unsuitableExtension->setExtensionKey('unsuitable');
-        $unsuitableExtension->setVersion('1.0.0');
+        $unsuitableExtension->extensionKey = 'unsuitable';
+        $unsuitableExtension->version = '1.0.0';
         $unsuitableExtension->setDependencies($unsuitableDependencies);
 
         $input = [$suitableExtension, $unsuitableExtension];

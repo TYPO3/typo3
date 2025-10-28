@@ -55,8 +55,9 @@ class DownloadController extends AbstractController
     /**
      * Check extension dependencies
      */
-    public function checkDependenciesAction(Extension $extension): ResponseInterface
+    public function checkDependenciesAction(int $extension): ResponseInterface
     {
+        $extension = $this->extensionRepository->findByUid($extension);
         $message = '';
         $title = '';
         $hasDependencies = false;
@@ -115,7 +116,7 @@ class DownloadController extends AbstractController
 
         $url = $this->uriBuilder->uriFor(
             $action,
-            ['extension' => $extension->getUid(), 'format' => 'json'],
+            ['extension' => $extension->uid, 'format' => 'json'],
             'Download'
         );
         $this->view->setConfiguration($configuration);
@@ -143,8 +144,9 @@ class DownloadController extends AbstractController
     /**
      * Install an extension from TER action
      */
-    public function installFromTerAction(Extension $extension): ResponseInterface
+    public function installFromTerAction(int $extension): ResponseInterface
     {
+        $extension = $this->extensionRepository->findByUid($extension);
         $this->assertAllowedHttpMethod($this->request, 'POST');
 
         [$result, $errorMessages] = $this->installFromTer($extension);
@@ -162,7 +164,7 @@ class DownloadController extends AbstractController
     /**
      * Check extension dependencies with special dependencies
      */
-    public function installExtensionWithoutSystemDependencyCheckAction(Extension $extension): ResponseInterface
+    public function installExtensionWithoutSystemDependencyCheckAction(int $extension): ResponseInterface
     {
         $this->assertAllowedHttpMethod($this->request, 'POST');
 
@@ -174,8 +176,9 @@ class DownloadController extends AbstractController
      * Action for installing a distribution -
      * redirects directly to configuration after installing
      */
-    public function installDistributionAction(Extension $extension): ResponseInterface
+    public function installDistributionAction(int $extension): ResponseInterface
     {
+        $extension = $this->extensionRepository->findByUid($extension);
         $this->assertAllowedHttpMethod($this->request, 'POST');
 
         if (!ExtensionManagementUtility::isLoaded('impexp')) {
@@ -188,7 +191,7 @@ class DownloadController extends AbstractController
                 'List',
                 null,
                 [
-                    'extensionKey' => $extension->getExtensionKey(),
+                    'extensionKey' => $extension->extensionKey,
                     'returnAction' => ['controller' => 'List', 'action' => 'distributions'],
                 ]
             );
@@ -198,7 +201,7 @@ class DownloadController extends AbstractController
             LocalizationUtility::translate(
                 'distribution.welcome.message',
                 'extensionmanager',
-                [$extension->getExtensionKey()]
+                [$extension->extensionKey]
             ) ?? '',
             LocalizationUtility::translate('distribution.welcome.headline', 'extensionmanager') ?? ''
         );
@@ -225,7 +228,7 @@ class DownloadController extends AbstractController
         $extensionKey = $this->request->getArgument('extension');
         $version = $this->request->getArgument('version');
         $extension = $this->extensionRepository->findOneByExtensionKeyAndVersion($extensionKey, $version);
-        if (!$extension instanceof Extension) {
+        if ($extension === null) {
             $extension = $this->extensionRepository->findHighestAvailableVersion($extensionKey);
         }
         $installedExtensions = ExtensionManagementUtility::getLoadedExtensionListArray();
@@ -258,7 +261,6 @@ class DownloadController extends AbstractController
         $versionStart = $this->request->getArgument('integerVersionStart');
         $versionStop = $this->request->getArgument('integerVersionStop');
         $updateComments = [];
-        /** @var Extension[] $updatableVersions */
         $updatableVersions = $this->extensionRepository->findByVersionRangeAndExtensionKeyOrderedByVersion(
             $extensionKey,
             $versionStart,
@@ -269,9 +271,9 @@ class DownloadController extends AbstractController
 
         foreach ($updatableVersions as $updatableVersion) {
             if ($highestPossibleVersion === false) {
-                $highestPossibleVersion = $updatableVersion->getVersion();
+                $highestPossibleVersion = $updatableVersion->version;
             }
-            $updateComments[$updatableVersion->getVersion()] = $updatableVersion->getUpdateComment();
+            $updateComments[$updatableVersion->version] = $updatableVersion->updateComment;
         }
 
         $this->view->assign('value', [
@@ -310,7 +312,7 @@ class DownloadController extends AbstractController
             }
         } catch (ExtensionManagerException $e) {
             $errorMessages = [
-                $extension->getExtensionKey() => [
+                $extension->extensionKey => [
                     [
                         'code' => $e->getCode(),
                         'message' => $e->getMessage(),

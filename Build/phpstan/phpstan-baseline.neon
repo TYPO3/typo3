@@ -2113,8 +2113,8 @@ parameters:
 			path: ../../typo3/sysext/extensionmanager/Classes/Controller/ListController.php
 
 		-
-			message: '#^Cannot call method getVersion\(\) on string\.$#'
-			identifier: method.nonObject
+			message: '#^Cannot access property \$version on string\.$#'
+			identifier: property.nonObject
 			count: 1
 			path: ../../typo3/sysext/extensionmanager/Classes/Domain/Model/DownloadQueue.php
 

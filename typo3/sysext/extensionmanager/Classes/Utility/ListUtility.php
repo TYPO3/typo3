@@ -212,7 +212,7 @@ class ListUtility implements SingletonInterface
                 continue;
             }
             $extensions[$extensionKey]['terObject'] = $terObject;
-            $extensions[$extensionKey]['remote'] = $terObject->getRemoteIdentifier();
+            $extensions[$extensionKey]['remote'] = $terObject->remote;
             $extensions[$extensionKey]['updateAvailable'] = false;
             $extensions[$extensionKey]['updateToVersion'] = null;
 
@@ -245,10 +245,8 @@ class ListUtility implements SingletonInterface
                 // Found in TER now, set version information to the known ones, so we can look if there is a newer one
                 // Use a cloned object, otherwise wrong information is stored in persistenceManager
                 $terObject = clone $terObject;
-                $terObject->setVersion($version);
-                $terObject->setIntegerVersion(
-                    VersionNumberUtility::convertVersionNumberToInteger($terObject->getVersion())
-                );
+                $terObject->version = $version;
+                $terObject->integerVersion = VersionNumberUtility::convertVersionNumberToInteger($terObject->version);
             } else {
                 $terObject = null;
             }
@@ -276,14 +274,14 @@ class ListUtility implements SingletonInterface
     protected function getUpdateableVersion(Extension $extensionData): ?Extension
     {
         // Only check for update for TER extensions
-        $version = $extensionData->getIntegerVersion();
+        $version = $extensionData->integerVersion;
         $extensionUpdates = $this->extensionRepository->findByVersionRangeAndExtensionKeyOrderedByVersion(
-            $extensionData->getExtensionKey(),
+            $extensionData->extensionKey,
             $version,
             0,
             false
         );
-        if ($extensionUpdates->count() > 0) {
+        if (count($extensionUpdates) > 0) {
             foreach ($extensionUpdates as $extensionUpdate) {
                 /** @var Extension $extensionUpdate */
                 $this->dependencyUtility->checkDependencies($extensionUpdate);

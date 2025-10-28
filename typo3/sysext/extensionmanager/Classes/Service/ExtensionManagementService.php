@@ -214,8 +214,8 @@ class ExtensionManagementService implements SingletonInterface
     {
         $resolvedDependencies = [];
         foreach ($updateQueue as $extensionToUpdate) {
-            $this->installUtility->uninstall($extensionToUpdate->getExtensionKey());
-            $resolvedDependencies['updated'][$extensionToUpdate->getExtensionKey()] = $extensionToUpdate;
+            $this->installUtility->uninstall($extensionToUpdate->extensionKey);
+            $resolvedDependencies['updated'][$extensionToUpdate->extensionKey] = $extensionToUpdate;
         }
         return $resolvedDependencies;
     }
@@ -256,8 +256,8 @@ class ExtensionManagementService implements SingletonInterface
         foreach ($downloadQueue as $extensionToDownload) {
             $this->rawDownload($extensionToDownload);
             $this->downloadQueue->removeExtensionFromQueue($extensionToDownload);
-            $resolvedDependencies['downloaded'][$extensionToDownload->getExtensionKey()] = $extensionToDownload;
-            $this->markExtensionForInstallation($extensionToDownload->getExtensionKey());
+            $resolvedDependencies['downloaded'][$extensionToDownload->extensionKey] = $extensionToDownload;
+            $this->markExtensionForInstallation($extensionToDownload->extensionKey);
         }
         return $resolvedDependencies;
     }
@@ -285,7 +285,7 @@ class ExtensionManagementService implements SingletonInterface
     {
         // The extension object has a uid if the extension is not present in the system
         // or an update of a present extension is triggered.
-        if ($extension->getUid()) {
+        if ($extension->uid) {
             $this->rawDownload($extension);
         }
     }
@@ -299,16 +299,16 @@ class ExtensionManagementService implements SingletonInterface
             throw new ExtensionManagerException('Extension Manager is in offline mode. No TER connection available.', 1437078620);
         }
 
-        $remoteIdentifier = $extension->getRemoteIdentifier();
+        $remoteIdentifier = $extension->remote;
 
         if ($this->remoteRegistry->hasRemote($remoteIdentifier)) {
             $this->remoteRegistry
                 ->getRemote($remoteIdentifier)
                 ->downloadExtension(
-                    $extension->getExtensionKey(),
-                    $extension->getVersion(),
+                    $extension->extensionKey,
+                    $extension->version,
                     $this->fileHandlingUtility,
-                    $extension->getMd5hash()
+                    $extension->md5hash
                 );
         }
     }

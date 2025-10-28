@@ -51,16 +51,16 @@ class DownloadQueue implements SingletonInterface
         if (!isset($this->extensionStorage[$stack])) {
             $this->extensionStorage[$stack] = [];
         }
-        if (array_key_exists($extension->getExtensionKey(), $this->extensionStorage[$stack])) {
-            if ($this->extensionStorage[$stack][$extension->getExtensionKey()] !== $extension) {
+        if (array_key_exists($extension->extensionKey, $this->extensionStorage[$stack])) {
+            if ($this->extensionStorage[$stack][$extension->extensionKey] !== $extension) {
                 throw new ExtensionManagerException(
-                    $extension->getExtensionKey() . ' was requested to be downloaded in different versions (' . $extension->getVersion()
-                        . ' and ' . $this->extensionStorage[$stack][$extension->getExtensionKey()]->getVersion() . ').',
+                    $extension->extensionKey . ' was requested to be downloaded in different versions (' . $extension->version
+                        . ' and ' . $this->extensionStorage[$stack][$extension->extensionKey]->version . ').',
                     1342432101
                 );
             }
         }
-        $this->extensionStorage[$stack][$extension->getExtensionKey()] = $extension;
+        $this->extensionStorage[$stack][$extension->extensionKey] = $extension;
     }
 
     public function getExtensionQueue(): array
@@ -79,8 +79,8 @@ class DownloadQueue implements SingletonInterface
             throw new ExtensionManagerException('Stack has to be either "download" or "update"', 1342432104);
         }
         if (array_key_exists($stack, $this->extensionStorage) && is_array($this->extensionStorage[$stack])) {
-            if (array_key_exists($extension->getExtensionKey(), $this->extensionStorage[$stack])) {
-                unset($this->extensionStorage[$stack][$extension->getExtensionKey()]);
+            if (array_key_exists($extension->extensionKey, $this->extensionStorage[$stack])) {
+                unset($this->extensionStorage[$stack][$extension->extensionKey]);
             }
         }
     }
@@ -90,7 +90,7 @@ class DownloadQueue implements SingletonInterface
      */
     public function addExtensionToInstallQueue(Extension $extension): void
     {
-        $this->extensionInstallStorage[$extension->getExtensionKey()] = $extension;
+        $this->extensionInstallStorage[$extension->extensionKey] = $extension;
     }
 
     /**
