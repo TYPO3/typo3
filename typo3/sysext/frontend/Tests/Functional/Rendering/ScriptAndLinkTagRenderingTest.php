@@ -51,11 +51,13 @@ final class ScriptAndLinkTagRenderingTest extends FunctionalTestCase
         'alternateJSLib'        => 'EXT:test_resource_rendering/Resources/Public/alternateLib.js',
         'alternateJSLibFooter'  => 'EXT:test_resource_rendering/Resources/Public/alternateLibFooter.js',
 
-        'dataCSS'               => 'EXT:test_resource_rendering/Resources/Public/data.css',
-        'dataJS'                => 'EXT:test_resource_rendering/Resources/Public/data.js',
-        'dataCSSLib'            => 'EXT:test_resource_rendering/Resources/Public/dataLib.css',
-        'dataJSLib'             => 'EXT:test_resource_rendering/Resources/Public/dataLib.js',
-        'dataJSLibFooter'       => 'EXT:test_resource_rendering/Resources/Public/dataLibFooter.js',
+        'dataCSS'                 => 'EXT:test_resource_rendering/Resources/Public/data.css',
+        'absoluteUrlCSS'          => 'https://www.example.com/styles/absoluteUrlCSS.css',
+        'relativeUriCSS'          => 'URI:/styles/relativeUriCSS.css',
+        'dataJS'                  => 'EXT:test_resource_rendering/Resources/Public/data.js',
+        'dataCSSLib'              => 'EXT:test_resource_rendering/Resources/Public/dataLib.css',
+        'dataJSLib'               => 'EXT:test_resource_rendering/Resources/Public/dataLib.js',
+        'dataJSLibFooter'         => 'EXT:test_resource_rendering/Resources/Public/dataLibFooter.js',
     ];
 
     protected function setUp(): void
@@ -107,11 +109,13 @@ final class ScriptAndLinkTagRenderingTest extends FunctionalTestCase
             'alternateJSLib'        => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/alternateLib.js" type="text/plain" defer="defer" nomodule="nomodule" integrity="4711" crossorigin="example.com"></script>',
             'alternateJSLibFooter'  => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/alternateLibFooter.js" type="text/plain" defer="defer" nomodule="nomodule" integrity="4711" crossorigin="example.com"></script>',
 
-            'dataCSS'               => '<link rel="stylesheet" href="/typo3conf/ext/test_resource_rendering/Resources/Public/data.css" media="all" somethingcustom="someValue" data-attribute="value">',
-            'dataCSSLib'            => '<link rel="stylesheet" href="/typo3conf/ext/test_resource_rendering/Resources/Public/dataLib.css" media="all" somethingcustom="someValue" data-attribute="value">',
-            'dataJS'                => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/data.js" data-attribute="value"></script>',
-            'dataJSLib'             => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/dataLib.js" somethingcustom="someValue" data-attribute="value"></script>',
-            'dataJSLibFooter'       => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/dataLibFooter.js" somethingcustom="someValue" data-attribute="value"></script>',
+            'dataCSS'                 => '<link rel="stylesheet" href="/typo3conf/ext/test_resource_rendering/Resources/Public/data.css" media="all" somethingcustom="someValue" data-attribute="value">',
+            'absoluteUrlCSS'          => '<link rel="stylesheet" href="https://www.example.com/styles/absoluteUrlCSS.css" media="all">',
+            'relativeUriCSS'          => '<link rel="stylesheet" href="/styles/relativeUriCSS.css" media="all">',
+            'dataCSSLib'              => '<link rel="stylesheet" href="/typo3conf/ext/test_resource_rendering/Resources/Public/dataLib.css" media="all" somethingcustom="someValue" data-attribute="value">',
+            'dataJS'                  => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/data.js" data-attribute="value"></script>',
+            'dataJSLib'               => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/dataLib.js" somethingcustom="someValue" data-attribute="value"></script>',
+            'dataJSLibFooter'         => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/dataLibFooter.js" somethingcustom="someValue" data-attribute="value"></script>',
         ];
 
         foreach ($expectations as $expectationHtml) {

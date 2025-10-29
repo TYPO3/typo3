@@ -108,9 +108,12 @@ It consists of three parts, separated by a colon (`:`):
 URI resource
 ^^^^^^^^^^^^
 
-A fully qualified URL (including http(s) scheme), can be specified as well:
+A fully qualified URL (including http(s) scheme), can be specified:
 `https://www.example.com/my/image.svg`
 
+URIs relative to the current host,
+can be specified with prefixing them with `URI:` like so:
+`URI:/path/to/my/image.svg`
 
 Legacy resource annotations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^

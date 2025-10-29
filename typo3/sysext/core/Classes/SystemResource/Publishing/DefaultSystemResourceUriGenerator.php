@@ -65,6 +65,12 @@ readonly class DefaultSystemResourceUriGenerator implements SystemResourceUriGen
         if ($publicUrl === null) {
             throw new CanNotGenerateUriException(sprintf('Can not create a public Uri for a file %s', $file), 1758619473);
         }
+        if (Environment::isCli()) {
+            // On CLI FAL public URLs are always relative to public directory,
+            // so we apply the prefix here, which is likely a "/" only,
+            // unless calling code properly faked a request.
+            $publicUrl = $this->prefix . $publicUrl;
+        }
         $uri = $this->makeAbsolute(new Uri($publicUrl));
         if (!$this->options->cacheBusting) {
             return $uri;

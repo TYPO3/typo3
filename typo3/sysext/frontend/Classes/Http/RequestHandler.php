@@ -441,12 +441,10 @@ readonly class RequestHandler implements RequestHandlerInterface
                 if (isset($cssResourceConfig['if.']) && !$contentObjectRenderer->checkIf($cssResourceConfig['if.'])) {
                     continue;
                 }
-                if (!($cssResourceConfig['external'] ?? false)) {
-                    try {
-                        $cssResource = (string)$this->systemResourceFactory->createResource($cssResource);
-                    } catch (SystemResourceException) {
-                        continue;
-                    }
+                try {
+                    $cssResource = $this->systemResourceFactory->createResource($cssResource);
+                } catch (SystemResourceException) {
+                    continue;
                 }
                 $additionalAttributes = $this->cleanupAdditionalAttributeKeys($additionalAttributes, 'css');
                 $this->pageRenderer->addCssFile(
@@ -473,12 +471,10 @@ readonly class RequestHandler implements RequestHandlerInterface
                 if (isset($cssResourceConfig['if.']) && !$contentObjectRenderer->checkIf($cssResourceConfig['if.'])) {
                     continue;
                 }
-                if (!($cssResourceConfig['external'] ?? false)) {
-                    try {
-                        $cssResource = (string)$this->systemResourceFactory->createResource($cssResource);
-                    } catch (SystemResourceException) {
-                        continue;
-                    }
+                try {
+                    $cssResource = $this->systemResourceFactory->createResource($cssResource);
+                } catch (SystemResourceException) {
+                    continue;
                 }
                 $additionalAttributes = $this->cleanupAdditionalAttributeKeys($additionalAttributes, 'css');
                 $this->pageRenderer->addCssLibrary(
@@ -511,17 +507,12 @@ readonly class RequestHandler implements RequestHandlerInterface
                 if (isset($jsResourceConfig['if.']) && !$contentObjectRenderer->checkIf($jsResourceConfig['if.'])) {
                     continue;
                 }
-                if (!($jsResourceConfig['external'] ?? false)) {
-                    try {
-                        $jsResource = (string)$this->systemResourceFactory->createResource($jsResource);
-                    } catch (SystemResourceException) {
-                        continue;
-                    }
+                try {
+                    $jsResource = $this->systemResourceFactory->createResource($jsResource);
+                } catch (SystemResourceException) {
+                    continue;
                 }
                 $crossOrigin = (string)($jsResourceConfig['crossorigin'] ?? '');
-                if ($crossOrigin === '' && ($jsResourceConfig['integrity'] ?? false) && ($jsResourceConfig['external'] ?? false)) {
-                    $crossOrigin = 'anonymous';
-                }
                 $additionalAttributes = $this->cleanupAdditionalAttributeKeys($additionalAttributes, 'js');
                 $this->pageRenderer->addJsLibrary(
                     $key,
@@ -550,17 +541,12 @@ readonly class RequestHandler implements RequestHandlerInterface
                 if (isset($jsResourceConfig['if.']) && !$contentObjectRenderer->checkIf($jsResourceConfig['if.'])) {
                     continue;
                 }
-                if (!($jsResourceConfig['external'] ?? false)) {
-                    try {
-                        $jsResource = (string)$this->systemResourceFactory->createResource($jsResource);
-                    } catch (SystemResourceException) {
-                        continue;
-                    }
+                try {
+                    $jsResource = $this->systemResourceFactory->createResource($jsResource);
+                } catch (SystemResourceException) {
+                    continue;
                 }
                 $crossOrigin = (string)($jsResourceConfig['crossorigin'] ?? '');
-                if ($crossOrigin === '' && ($jsResourceConfig['integrity'] ?? false) && ($jsResourceConfig['external'] ?? false)) {
-                    $crossOrigin = 'anonymous';
-                }
                 $additionalAttributes = $this->cleanupAdditionalAttributeKeys($additionalAttributes, 'js');
                 $this->pageRenderer->addJsFooterLibrary(
                     $key,
@@ -589,17 +575,12 @@ readonly class RequestHandler implements RequestHandlerInterface
                 if (isset($jsResourceConfig['if.']) && !$contentObjectRenderer->checkIf($jsResourceConfig['if.'])) {
                     continue;
                 }
-                if (!($jsResourceConfig['external'] ?? false)) {
-                    try {
-                        $jsResource = (string)$this->systemResourceFactory->createResource($jsResource);
-                    } catch (SystemResourceException) {
-                        continue;
-                    }
+                try {
+                    $jsResource = $this->systemResourceFactory->createResource($jsResource);
+                } catch (SystemResourceException) {
+                    continue;
                 }
                 $crossOrigin = (string)($jsResourceConfig['crossorigin'] ?? '');
-                if ($crossOrigin === '' && ($jsResourceConfig['integrity'] ?? false) && ($jsResourceConfig['external'] ?? false)) {
-                    $crossOrigin = 'anonymous';
-                }
                 $this->pageRenderer->addJsFile(
                     $jsResource,
                     $jsResourceConfig['type'] ?? null,
@@ -627,17 +608,12 @@ readonly class RequestHandler implements RequestHandlerInterface
                 if (isset($jsResourceConfig['if.']) && !$contentObjectRenderer->checkIf($jsResourceConfig['if.'])) {
                     continue;
                 }
-                if (!($jsResourceConfig['external'] ?? false)) {
-                    try {
-                        $jsResource = (string)$this->systemResourceFactory->createResource($jsResource);
-                    } catch (SystemResourceException) {
-                        continue;
-                    }
+                try {
+                    $jsResource = $this->systemResourceFactory->createResource($jsResource);
+                } catch (SystemResourceException) {
+                    continue;
                 }
                 $crossOrigin = (string)($jsResourceConfig['crossorigin'] ?? '');
-                if ($crossOrigin === '' && ($jsResourceConfig['integrity'] ?? false) && ($jsResourceConfig['external'] ?? false)) {
-                    $crossOrigin = 'anonymous';
-                }
                 $this->pageRenderer->addJsFooterFile(
                     $jsResource,
                     $jsResourceConfig['type'] ?? null,

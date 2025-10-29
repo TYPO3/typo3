@@ -60,9 +60,7 @@ readonly class AssetRenderer
         $template = '<script%attributes%></script>';
         $assets = $this->assetCollector->getJavaScripts($priority);
         foreach ($assets as &$assetData) {
-            if (!($assetData['options']['external'] ?? false)) {
-                $assetData['source'] = $this->getAbsoluteWebPath($assetData['source']);
-            }
+            $assetData['source'] = $this->getAbsoluteWebPath($assetData['source']);
             $assetData['attributes']['src'] = $assetData['source'];
         }
         return $this->render($assets, $template, false, Directive::ScriptSrcElem, $nonce);
@@ -88,9 +86,7 @@ readonly class AssetRenderer
         $template = '<link%attributes% ' . $endingSlash . '>';
         $assets = $this->assetCollector->getStyleSheets($priority);
         foreach ($assets as &$assetData) {
-            if (!($assetData['options']['external'] ?? false)) {
-                $assetData['source'] = $this->getAbsoluteWebPath($assetData['source']);
-            }
+            $assetData['source'] = $this->getAbsoluteWebPath($assetData['source']);
             $assetData['attributes']['href'] = $assetData['source'];
             $assetData['attributes']['rel'] = $assetData['attributes']['rel'] ?? 'stylesheet';
         }

@@ -18,10 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\SystemResource\Identifier;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\Exception\UnknownPackagePathException;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolveSystemResourceIdentifierException;
 use TYPO3\CMS\Core\SystemResource\Exception\InvalidSystemResourceIdentifierException;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -37,6 +37,7 @@ final readonly class SystemResourceIdentifierFactory
 
     /**
      * @throws InvalidSystemResourceIdentifierException
+     * @throws CanNotResolveSystemResourceIdentifierException
      */
     public function create(string $resourceIdentifier): SystemResourceIdentifier
     {
@@ -49,7 +50,16 @@ final readonly class SystemResourceIdentifierFactory
         if (str_starts_with($resourceIdentifier, FalResourceIdentifier::TYPE)) {
             return $this->createFalResourceIdentifier($resourceIdentifier);
         }
-        throw new InvalidSystemResourceIdentifierException(sprintf('Can not resolve URI %s', $resourceIdentifier), 1758700314);
+        if (str_starts_with($resourceIdentifier, UriResourceIdentifier::TYPE)
+            || PathUtility::hasProtocolAndScheme($resourceIdentifier)
+        ) {
+            try {
+                return new UriResourceIdentifier($resourceIdentifier);
+            } catch (\Throwable $e) {
+                throw new InvalidSystemResourceIdentifierException(sprintf('Can not resolve system resource identifier "%s". Invalid URI.', $resourceIdentifier), 1761732010, $e);
+            }
+        }
+        throw new CanNotResolveSystemResourceIdentifierException(sprintf('Can not resolve system resource identifier "%s".', $resourceIdentifier), 1758700314);
     }
 
     /**
@@ -90,7 +100,7 @@ final readonly class SystemResourceIdentifierFactory
     {
         $identifierParts = explode(':', $resourceIdentifier);
         if (count($identifierParts) !== 3) {
-            throw new InvalidSystemResourceIdentifierException(sprintf('Given identifier "%s" is invalid. An identifier consists of three parts, separated by a colon (":")', $resourceIdentifier), 1760386146);
+            throw new InvalidSystemResourceIdentifierException(sprintf('Given system resource identifier "%s" is invalid. An identifier consists of three parts, separated by a colon (":").', $resourceIdentifier), 1760386146);
         }
         return $identifierParts;
     }
@@ -103,7 +113,7 @@ final readonly class SystemResourceIdentifierFactory
         try {
             $packageKey = $this->packageManager->extractPackageKeyFromPackagePath($extensionPath);
         } catch (UnknownPackageException | UnknownPackagePathException $e) {
-            throw new InvalidSystemResourceIdentifierException(sprintf('Can not create system URI from "%s"', $extensionPath), 1758884297, $e);
+            throw new InvalidSystemResourceIdentifierException(sprintf('Can not create system resource identifier from "%s".', $extensionPath), 1758884297, $e);
         }
         return sprintf(
             '%s:%s:%s',
@@ -124,7 +134,7 @@ final readonly class SystemResourceIdentifierFactory
         try {
             return $this->packageManager->getPackage($packageKey)->getValueFromComposerManifest('name') ?? $packageKey;
         } catch (UnknownPackageException $e) {
-            throw new InvalidSystemResourceIdentifierException(sprintf('Can not create system URI. Unknown package "%s"', $packageKey), 1760989723, $e);
+            throw new InvalidSystemResourceIdentifierException(sprintf('Can not create system resource identifier. Unknown package "%s"', $packageKey), 1760989723, $e);
         }
     }
 }

@@ -18,17 +18,19 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\SystemResource\Type;
 
 use Psr\Http\Message\UriInterface;
-use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\SystemResource\Identifier\UriResourceIdentifier;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourceUriGeneratorInterface;
 
 /**
  * @internal Only to be used in TYPO3\CMS\Core\SystemResource namespace
  */
-final class UriResource extends Uri implements StaticResourceInterface, PublicResourceInterface
+final class UriResource implements StaticResourceInterface, PublicResourceInterface
 {
+    public function __construct(private readonly UriResourceIdentifier $identifier) {}
+
     public function getPublicUri(SystemResourceUriGeneratorInterface $uriGenerator): UriInterface
     {
-        return $this;
+        return $this->identifier->getUri();
     }
 
     public function isPublished(): bool
@@ -36,8 +38,13 @@ final class UriResource extends Uri implements StaticResourceInterface, PublicRe
         return true;
     }
 
+    public function __toString(): string
+    {
+        return $this->getResourceIdentifier();
+    }
+
     public function getResourceIdentifier(): string
     {
-        return (string)$this;
+        return (string)$this->identifier;
     }
 }

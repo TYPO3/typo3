@@ -31,10 +31,12 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolvePublicResourceException;
 use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolveSystemResourceException;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolveSystemResourceIdentifierException;
 use TYPO3\CMS\Core\SystemResource\Exception\InvalidSystemResourceIdentifierException;
 use TYPO3\CMS\Core\SystemResource\Identifier\FalResourceIdentifier;
 use TYPO3\CMS\Core\SystemResource\Identifier\PackageResourceIdentifier;
 use TYPO3\CMS\Core\SystemResource\Identifier\SystemResourceIdentifierFactory;
+use TYPO3\CMS\Core\SystemResource\Identifier\UriResourceIdentifier;
 use TYPO3\CMS\Core\SystemResource\Package\VirtualAppPackage;
 use TYPO3\CMS\Core\SystemResource\Type\PackageResource;
 use TYPO3\CMS\Core\SystemResource\Type\PublicPackageFile;
@@ -85,12 +87,13 @@ readonly class SystemResourceFactory
      * is required.
      *
      * @throws CanNotResolveSystemResourceException
+     * @throws InvalidSystemResourceIdentifierException
      */
     public function createResource(string $resourceString): StaticResourceInterface
     {
         try {
             return $this->createFromIdentifier($resourceString);
-        } catch (InvalidSystemResourceIdentifierException $e) {
+        } catch (CanNotResolveSystemResourceIdentifierException $e) {
             if (str_starts_with($resourceString, Environment::getProjectPath())
                 || (PathUtility::isAbsolutePath($resourceString) && file_exists($resourceString))
             ) {
@@ -104,6 +107,7 @@ readonly class SystemResourceFactory
 
     /**
      * @throws CanNotResolveSystemResourceException
+     * @throws InvalidSystemResourceIdentifierException
      */
     private function createResourceFromRelativePublicPath(string $relativePublicPath): SystemResourceInterface
     {
@@ -129,15 +133,15 @@ readonly class SystemResourceFactory
     }
 
     /**
+     * @throws CanNotResolveSystemResourceException
      * @throws InvalidSystemResourceIdentifierException
+     * @throws CanNotResolveSystemResourceIdentifierException
      */
     private function createFromIdentifier(string $potentialIdentifier): StaticResourceInterface
     {
-        if (str_starts_with($potentialIdentifier, 'http') && PathUtility::hasProtocolAndScheme($potentialIdentifier)) {
-            return new UriResource($potentialIdentifier);
-        }
         $identifier = $this->identifierFactory->create($potentialIdentifier);
         return match (get_class($identifier)) {
+            UriResourceIdentifier::class => new UriResource($identifier),
             PackageResourceIdentifier::class => $this->createFromPackageIdentifier($identifier),
             FalResourceIdentifier::class => $this->createFromFalIdentifier($identifier),
             default => throw new InvalidSystemResourceIdentifierException(sprintf('Can not resolve "%s" to a system resource. Unknown SystemResourceIdentifier', $potentialIdentifier), 1759393674),
@@ -176,6 +180,9 @@ readonly class SystemResourceFactory
         return $file;
     }
 
+    /**
+     * @throws CanNotResolveSystemResourceException
+     */
     private function createFromFalIdentifier(FalResourceIdentifier $resourceUri): PublicResourceInterface
     {
         try {

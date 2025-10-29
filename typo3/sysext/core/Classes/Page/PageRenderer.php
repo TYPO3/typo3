@@ -37,7 +37,9 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceDoesNotExistException;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
+use TYPO3\CMS\Core\SystemResource\Type\StaticResourceInterface;
 use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
+use TYPO3\CMS\Core\SystemResource\Type\UriResource;
 use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -606,7 +608,7 @@ class PageRenderer implements SingletonInterface
      * Adds JS Library. JS Library block is rendered on top of the JS files.
      *
      * @param string $name Arbitrary identifier
-     * @param string $file File name
+     * @param string|StaticResourceInterface $file File name
      * @param string|null $type Content Type
      * @param bool $forceOnTop Flag if added library should be inserted at begin of this block
      * @param string $allWrap
@@ -620,12 +622,17 @@ class PageRenderer implements SingletonInterface
      */
     public function addJsLibrary($name, $file, $type = '', mixed $_ = null, $forceOnTop = false, $allWrap = '', mixed $__ = null, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false, array $tagAttributes = [])
     {
+        $resource = $this->handleAddedResource($file);
+        $isUriResource = $resource instanceof UriResource;
         if ($type === null) {
             $type = $this->docType === DocType::html5 ? '' : 'text/javascript';
         }
+        if ($crossorigin === '' && $integrity !== '' && $isUriResource) {
+            $crossorigin = 'anonymous';
+        }
         if (!isset($this->jsLibs[strtolower($name)])) {
             $this->jsLibs[strtolower($name)] = [
-                'file' => $file,
+                'file' => (string)$resource,
                 'type' => $type,
                 'section' => self::PART_HEADER,
                 'forceOnTop' => $forceOnTop,
@@ -645,7 +652,7 @@ class PageRenderer implements SingletonInterface
      * Adds JS Library to Footer. JS Library block is rendered on top of the Footer JS files.
      *
      * @param string $name Arbitrary identifier
-     * @param string $file File name
+     * @param string|StaticResourceInterface $file File name
      * @param string|null $type Content Type
      * @param bool $forceOnTop Flag if added library should be inserted at begin of this block
      * @param string $allWrap
@@ -659,13 +666,18 @@ class PageRenderer implements SingletonInterface
      */
     public function addJsFooterLibrary($name, $file, $type = '', mixed $_ = null, $forceOnTop = false, $allWrap = '', mixed $__ = null, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false, array $tagAttributes = [])
     {
+        $resource = $this->handleAddedResource($file);
+        $isUriResource = $resource instanceof UriResource;
         if ($type === null) {
             $type = $this->docType === DocType::html5 ? '' : 'text/javascript';
+        }
+        if ($crossorigin === '' && $integrity !== '' && $isUriResource) {
+            $crossorigin = 'anonymous';
         }
         $name .= '_jsFooterLibrary';
         if (!isset($this->jsLibs[strtolower($name)])) {
             $this->jsLibs[strtolower($name)] = [
-                'file' => $file,
+                'file' => (string)$resource,
                 'type' => $type,
                 'section' => self::PART_FOOTER,
                 'forceOnTop' => $forceOnTop,
@@ -684,7 +696,7 @@ class PageRenderer implements SingletonInterface
     /**
      * Adds JS file
      *
-     * @param string $file File name
+     * @param string|StaticResourceInterface $file File name
      * @param string|null $type Content Type
      * @param bool $forceOnTop
      * @param string $allWrap
@@ -698,12 +710,18 @@ class PageRenderer implements SingletonInterface
      */
     public function addJsFile($file, $type = '', mixed $_ = null, $forceOnTop = false, $allWrap = '', mixed $__ = null, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false, array $tagAttributes = [])
     {
+        $resource = $this->handleAddedResource($file);
+        $resourceIdentifier = (string)$resource;
+        $isUriResource = $resource instanceof UriResource;
         if ($type === null) {
             $type = $this->docType === DocType::html5 ? '' : 'text/javascript';
         }
-        if (!isset($this->jsFiles[$file])) {
-            $this->jsFiles[$file] = [
-                'file' => $file,
+        if ($crossorigin === '' && $integrity !== '' && $isUriResource) {
+            $crossorigin = 'anonymous';
+        }
+        if (!isset($this->jsFiles[$resourceIdentifier])) {
+            $this->jsFiles[$resourceIdentifier] = [
+                'file' => $resourceIdentifier,
                 'type' => $type,
                 'section' => self::PART_HEADER,
                 'forceOnTop' => $forceOnTop,
@@ -722,7 +740,7 @@ class PageRenderer implements SingletonInterface
     /**
      * Adds JS file to footer
      *
-     * @param string $file File name
+     * @param string|StaticResourceInterface $file File name
      * @param string|null $type Content Type
      * @param bool $forceOnTop
      * @param string $allWrap
@@ -736,12 +754,18 @@ class PageRenderer implements SingletonInterface
      */
     public function addJsFooterFile($file, $type = '', mixed $_ = null, $forceOnTop = false, $allWrap = '', mixed $__ = null, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '', $nomodule = false, array $tagAttributes = [])
     {
+        $resource = $this->handleAddedResource($file);
+        $resourceIdentifier = (string)$resource;
+        $isUriResource = $resource instanceof UriResource;
         if ($type === null) {
             $type = $this->docType === DocType::html5 ? '' : 'text/javascript';
         }
-        if (!isset($this->jsFiles[$file])) {
-            $this->jsFiles[$file] = [
-                'file' => $file,
+        if ($crossorigin === '' && $integrity !== '' && $isUriResource) {
+            $crossorigin = 'anonymous';
+        }
+        if (!isset($this->jsFiles[$resourceIdentifier])) {
+            $this->jsFiles[$resourceIdentifier] = [
+                'file' => $resourceIdentifier,
                 'type' => $type,
                 'section' => self::PART_FOOTER,
                 'forceOnTop' => $forceOnTop,
@@ -798,7 +822,7 @@ class PageRenderer implements SingletonInterface
     /**
      * Adds CSS file
      *
-     * @param string $file
+     * @param string|StaticResourceInterface $file
      * @param string $rel
      * @param string $media
      * @param string $title
@@ -810,9 +834,11 @@ class PageRenderer implements SingletonInterface
      */
     public function addCssFile($file, $rel = 'stylesheet', $media = 'all', $title = '', mixed $_ = null, $forceOnTop = false, $allWrap = '', mixed $__ = null, $splitChar = '|', $inline = false, array $tagAttributes = [])
     {
-        if (!isset($this->cssFiles[$file])) {
-            $this->cssFiles[$file] = [
-                'file' => $file,
+        $resource = $this->handleAddedResource($file);
+        $resourceIdentifier = (string)$resource;
+        if (!isset($this->cssFiles[$resourceIdentifier])) {
+            $this->cssFiles[$resourceIdentifier] = [
+                'file' => $resourceIdentifier,
                 'rel' => $rel,
                 'media' => $media,
                 'title' => $title,
@@ -828,7 +854,7 @@ class PageRenderer implements SingletonInterface
     /**
      * Adds CSS file
      *
-     * @param string $file
+     * @param string|StaticResourceInterface $file
      * @param string $rel
      * @param string $media
      * @param string $title
@@ -840,9 +866,11 @@ class PageRenderer implements SingletonInterface
      */
     public function addCssLibrary($file, $rel = 'stylesheet', $media = 'all', $title = '', mixed $_ = null, $forceOnTop = false, $allWrap = '', mixed $__ = null, $splitChar = '|', $inline = false, array $tagAttributes = [])
     {
-        if (!isset($this->cssLibs[$file])) {
-            $this->cssLibs[$file] = [
-                'file' => $file,
+        $resource = $this->handleAddedResource($file);
+        $resourceIdentifier = (string)$resource;
+        if (!isset($this->cssLibs[$resourceIdentifier])) {
+            $this->cssLibs[$resourceIdentifier] = [
+                'file' => $resourceIdentifier,
                 'rel' => $rel,
                 'media' => $media,
                 'title' => $title,
@@ -1371,8 +1399,8 @@ class PageRenderer implements SingletonInterface
     {
         $cssFiles = '';
         if (!empty($this->cssLibs)) {
-            foreach ($this->cssLibs as $file => $properties) {
-                $tag = $this->createCssTag($properties, $file);
+            foreach ($this->cssLibs as $properties) {
+                $tag = $this->createCssTag($properties, $properties['file']);
                 if ($properties['forceOnTop'] ?? false) {
                     $cssFiles = $tag . $cssFiles;
                 } else {
@@ -1392,8 +1420,8 @@ class PageRenderer implements SingletonInterface
     {
         $cssFiles = '';
         if (!empty($this->cssFiles)) {
-            foreach ($this->cssFiles as $file => $properties) {
-                $tag = $this->createCssTag($properties, $file);
+            foreach ($this->cssFiles as $properties) {
+                $tag = $this->createCssTag($properties, $properties['file']);
                 if ($properties['forceOnTop'] ?? false) {
                     $cssFiles = $tag . $cssFiles;
                 } else {
@@ -1481,7 +1509,7 @@ class PageRenderer implements SingletonInterface
         if (!empty($this->jsLibs)) {
             foreach ($this->jsLibs as $properties) {
                 $tagAttributes = [];
-                $tagAttributes['src'] = $this->getPublicUrlForFile($properties['file'] ?? '');
+                $tagAttributes['src'] = $this->getPublicUrlForFile($properties['file']);
                 if ($properties['type'] ?? false) {
                     $tagAttributes['type'] = $properties['type'];
                 }
@@ -1541,9 +1569,9 @@ class PageRenderer implements SingletonInterface
         $jsFiles = '';
         $jsFooterFiles = '';
         if (!empty($this->jsFiles)) {
-            foreach ($this->jsFiles as $file => $properties) {
+            foreach ($this->jsFiles as $properties) {
                 $tagAttributes = [];
-                $tagAttributes['src'] = $this->getPublicUrlForFile($file);
+                $tagAttributes['src'] = $this->getPublicUrlForFile($properties['file']);
                 if ($properties['type'] ?? false) {
                     $tagAttributes['type'] = $properties['type'];
                 }
@@ -1673,6 +1701,14 @@ class PageRenderer implements SingletonInterface
     {
         $languageService = $this->languageServiceFactory->create($this->locale);
         return $languageService->getLabelsFromResource($fileRef);
+    }
+
+    private function handleAddedResource(string|StaticResourceInterface $potentialResource): StaticResourceInterface
+    {
+        if ($potentialResource instanceof StaticResourceInterface) {
+            return $potentialResource;
+        }
+        return $this->systemResourceFactory->createResource($potentialResource);
     }
 
     /**

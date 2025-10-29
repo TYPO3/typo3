@@ -165,5 +165,20 @@ Additional query strings applied to the resource identifier
 All installations, that use resource identifiers with a custom query string,
 like `EXT:foo/Resources/Public/rte.css?v=123`
 
+Migration
+=========
+
+Relative path to FAL Storage
+----------------------------
+
+Either convert the relative path to a FAL resource like so:
+
+`FAL:1:/path/to/file.css`
+
+Alternatively it is possible to convert it to a resource URI:
+
+`URI:/my-other-fileadmin/path/to/file.css`
+
+The first will add cache busting, the latter will use the URI as is.
 
 .. index:: Frontend, NotScanned, ext:frontend

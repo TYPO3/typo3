@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolvePublicResourceException;
 use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolveSystemResourceException;
+use TYPO3\CMS\Core\SystemResource\Exception\InvalidSystemResourceIdentifierException;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourceUriGeneratorInterface;
 use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\SystemResource\Type\PublicResourceInterface;
 use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
@@ -80,12 +82,27 @@ final class SystemResourceFactoryTest extends FunctionalTestCase
             'notExpectedClass' => PublicResourceInterface::class,
         ];
         yield 'absolute http url' => [
-            'resourceString' => 'http://host.tld/Resources/Private/Icons/Extension.svg',
+            'resourceString' => 'http://example.com/Resources/Private/Icons/Extension.svg',
+            'expectedClass' => UriResource::class,
+            'notExpectedClass' => SystemResourceInterface::class,
+        ];
+        yield 'relative uri with prefix' => [
+            'resourceString' => 'URI:/Resources/Private/Icons/Extension.svg',
             'expectedClass' => UriResource::class,
             'notExpectedClass' => SystemResourceInterface::class,
         ];
         yield 'absolute https url' => [
-            'resourceString' => 'https://host.tld/Resources/Private/Icons/Extension.svg',
+            'resourceString' => 'https://example.com/Resources/Private/Icons/Extension.svg',
+            'expectedClass' => UriResource::class,
+            'notExpectedClass' => SystemResourceInterface::class,
+        ];
+        yield 'absolute url with no scheme' => [
+            'resourceString' => '//example.com/Resources/Private/Icons/Extension.svg',
+            'expectedClass' => UriResource::class,
+            'notExpectedClass' => SystemResourceInterface::class,
+        ];
+        yield 'absolute https url with prefix' => [
+            'resourceString' => 'URI:https://example.com/Resources/Private/Icons/Extension.svg',
             'expectedClass' => UriResource::class,
             'notExpectedClass' => SystemResourceInterface::class,
         ];
@@ -153,51 +170,75 @@ final class SystemResourceFactoryTest extends FunctionalTestCase
 
     public static function createResourceThrowsForInvalidResourceStringsDataProvider(): \Generator
     {
+        yield 'PKG: back path' => [
+            'PKG:typo3/sysext-core:Resources/../../../../../../etc/passwd',
+            InvalidSystemResourceIdentifierException::class,
+        ];
+        yield 'EXT: back path' => [
+            'EXT:core/Resources/../../../../../../etc/passwd',
+            InvalidSystemResourceIdentifierException::class,
+        ];
         yield 'not in asset, _assets nor uploads folder' => [
             'PKG:typo3/app:typo3temp/foo/Extension.svg',
+            CanNotResolveSystemResourceException::class,
         ];
         yield 'legacy resolving not in asset, _assets nor uploads folder, but file exists' => [
             'typo3temp/foo/Extension.svg',
+            CanNotResolveSystemResourceException::class,
         ];
         yield 'not existing combined identifier' => [
             'FAL:1:/foo/bar/Extension.svg',
+            CanNotResolveSystemResourceException::class,
         ];
-        yield 'not existing uid' => [
+        yield 'invalid FAL identifier' => [
             'FAL:2343',
+            InvalidSystemResourceIdentifierException::class,
         ];
         yield 'folder' => [
             'FAL:1:/',
+            CanNotResolveSystemResourceException::class,
         ];
         yield 'malformed resource string (leading slash)' => [
             'PKG:typo3tests/test-system-resources:/Resources/Private/Icons/Extension.svg',
+            InvalidSystemResourceIdentifierException::class,
         ];
         yield 'malformed resource string (too many colons)' => [
             'PKG:typo3tests/test-system-resources::Resources/Private/Icons/Extension.svg',
+            InvalidSystemResourceIdentifierException::class,
         ];
         yield 'not existing extension in ext path' => [
             'EXT:not_here/Resources/Private/Icons/Extension.svg',
+            InvalidSystemResourceIdentifierException::class,
         ];
-        yield 'not existing extension in resource uri' => [
+        yield 'not existing extension in package identifier' => [
             'PKG:not_here:Resources/Private/Icons/Extension.svg',
+            InvalidSystemResourceIdentifierException::class,
+        ];
+        yield 'valid package identifier is not a valid URI' => [
+            'URI:PKG:typo3/app:uploads/assets/Extension.svg',
+            InvalidSystemResourceIdentifierException::class,
         ];
         // For legacy relative path resolving to work, the files must exist
         yield 'legacy resolving: public asset path' => [
             '_assets/vite/asset.svg',
+            CanNotResolveSystemResourceException::class,
         ];
         yield 'legacy resolving: public temporary asset path' => [
             'typo3temp/assets/Extension.svg',
+            CanNotResolveSystemResourceException::class,
         ];
         yield 'legacy resolving: public uploads path' => [
             'uploads/assets/Extension.svg',
+            CanNotResolveSystemResourceException::class,
         ];
     }
 
     #[Test]
     #[DataProvider('createResourceThrowsForInvalidResourceStringsDataProvider')]
-    public function createResourceThrowsForInvalidResourceStrings(string $resourceString): void
+    public function createResourceThrowsForInvalidResourceStrings(string $resourceString, string $expectedException): void
     {
         $this->file->ensureFilesExistInPublicFolder('/typo3temp/foo/Extension.svg');
-        $this->expectException(CanNotResolveSystemResourceException::class);
+        $this->expectException($expectedException);
         $resourceFactory = $this->get(SystemResourceFactory::class);
         $resourceFactory->createResource($resourceString);
     }
@@ -266,5 +307,40 @@ final class SystemResourceFactoryTest extends FunctionalTestCase
         self::assertInstanceOf(PublicResourceInterface::class, $resource);
         self::assertInstanceOf(SystemResourceInterface::class, $resource);
         self::assertInstanceOf(File::class, $resource);
+    }
+
+    public static function createResourceCreatesUriResourceDataProvider(): \Generator
+    {
+        yield 'absolute http url' => [
+            'resourceString' => 'http://example.com/Resources/Private/Icons/Extension.svg',
+        ];
+        yield 'absolute https url' => [
+            'resourceString' => 'https://example.com/Resources/Private/Icons/Extension.svg',
+        ];
+        yield 'absolute url with no scheme' => [
+            'resourceString' => '//example.com/Resources/Private/Icons/Extension.svg',
+        ];
+        yield 'relative uri with prefix' => [
+            'resourceString' => 'URI:/Resources/Private/Icons/Extension.svg',
+            'expectedUri' => '/Resources/Private/Icons/Extension.svg',
+            'expectedIdentifier' => 'URI:/Resources/Private/Icons/Extension.svg',
+        ];
+        yield 'absolute https url with prefix' => [
+            'resourceString' => 'URI:https://example.com/Resources/Private/Icons/Extension.svg',
+            'expectedUri' => 'https://example.com/Resources/Private/Icons/Extension.svg',
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('createResourceCreatesUriResourceDataProvider')]
+    public function createResourceCreatesUriResource(string $resourceString, ?string $expectedUri = null, ?string $expectedIdentifier = null): void
+    {
+        $resourceFactory = $this->get(SystemResourceFactory::class);
+        $resource = $resourceFactory->createResource($resourceString);
+        $expectedIdentifier ??= $expectedUri ?? $resourceString;
+        self::assertInstanceOf(UriResource::class, $resource);
+        self::assertSame($expectedUri ?? $resourceString, (string)$resource->getPublicUri($this->createMock(SystemResourceUriGeneratorInterface::class)));
+        self::assertSame($expectedIdentifier, (string)$resource);
+        self::assertSame($expectedIdentifier, $resource->getResourceIdentifier());
     }
 }

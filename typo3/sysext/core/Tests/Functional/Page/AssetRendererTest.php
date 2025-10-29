@@ -72,7 +72,7 @@ final class AssetRendererTest extends FunctionalTestCase
                     'js_prio' => '',
                 ],
             ],
-            '1 file from external source' => [
+            '1 URI resource' => [
                 'files' => [
                     ['file1', 'https://typo3.org/foo.ext', [], []],
                 ],
@@ -83,7 +83,7 @@ final class AssetRendererTest extends FunctionalTestCase
                     'js_prio' => '',
                 ],
             ],
-            '1 file from external source with one parameter' => [
+            '1 URI resource with one parameter' => [
                 'files' => [
                     ['file1', 'https://typo3.org/foo.ext?foo=bar', [], []],
                 ],
@@ -94,7 +94,7 @@ final class AssetRendererTest extends FunctionalTestCase
                     'js_prio' => '',
                 ],
             ],
-            '1 file from external source with two parameters' => [
+            '1 URI resource with two parameters' => [
                 'files' => [
                     ['file1', 'https://typo3.org/foo.ext?foo=bar&bar=baz', [], []],
                 ],
@@ -187,20 +187,9 @@ final class AssetRendererTest extends FunctionalTestCase
                     'js_prio' => '',
                 ],
             ],
-            '1 file with external option' => [
-                'files' => [
-                    ['file1', 'EXT:core/Resources/Public/foo.ext', [], ['external' => true]],
-                ],
-                'expectedMarkup' => [
-                    'css_no_prio' => '<link href="EXT:core/Resources/Public/foo.ext" rel="stylesheet" >',
-                    'css_prio' => '',
-                    'js_no_prio' => '<script src="EXT:core/Resources/Public/foo.ext"></script>',
-                    'js_prio' => '',
-                ],
-            ],
             '1 temp file with external option' => [
                 'files' => [
-                    ['file1', '/typo3temp/bla/foo.ext', [], ['external' => true]],
+                    ['file1', 'URI:/typo3temp/bla/foo.ext', [], []],
                 ],
                 'expectedMarkup' => [
                     'css_no_prio' => '<link href="/typo3temp/bla/foo.ext" rel="stylesheet" >',

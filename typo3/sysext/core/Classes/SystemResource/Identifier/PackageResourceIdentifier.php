@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\SystemResource\Identifier;
 
 use TYPO3\CMS\Core\SystemResource\Exception\InvalidSystemResourceIdentifierException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This is subject to change during v14 development. Do not use.
@@ -29,8 +30,10 @@ final class PackageResourceIdentifier extends SystemResourceIdentifier
     public function __construct(private readonly string $packageKey, private readonly string $relativePath, string $givenIdentifier)
     {
         parent::__construct($givenIdentifier);
-        if (str_starts_with($relativePath, '/')) {
-            throw new InvalidSystemResourceIdentifierException(sprintf('Relative package path "%s" must not start with a slash ("/"). (Given identifier "%s")', $relativePath, $givenIdentifier), 1760422369);
+        if (str_starts_with($relativePath, '/')
+            || !GeneralUtility::validPathStr($relativePath)
+        ) {
+            throw new InvalidSystemResourceIdentifierException(sprintf('Relative package path "%s" must not start with a slash ("/") and must not contain invalid characters (e.g. ../ back path). (Given identifier "%s")', $relativePath, $givenIdentifier), 1760422369);
         }
     }
 

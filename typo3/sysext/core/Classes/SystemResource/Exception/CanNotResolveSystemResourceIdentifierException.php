@@ -18,6 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\SystemResource\Exception;
 
 /**
- * Thrown when an identifier type is detected, but the identifier contains errors
+ * Thrown when no specific identifier type can be detected
  */
-final class InvalidSystemResourceIdentifierException extends SystemResourceException {}
+final class CanNotResolveSystemResourceIdentifierException extends SystemResourceException {}

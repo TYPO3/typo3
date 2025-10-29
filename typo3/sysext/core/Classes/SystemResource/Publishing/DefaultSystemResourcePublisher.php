@@ -48,9 +48,6 @@ final readonly class DefaultSystemResourcePublisher implements SystemResourcePub
      */
     public function generateUri(PublicResourceInterface $publicResource, ?ServerRequestInterface $request, ?UriGenerationOptions $options = null): UriInterface
     {
-        if ($publicResource instanceof UriInterface) {
-            return $publicResource;
-        }
         if (!$publicResource->isPublished()) {
             throw new CanNotGenerateUriException(sprintf('Can not generate Uri for an unpublished resource %s', $publicResource), 1761211273);
         }

@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\SystemResource\Exception\InvalidSystemResourceIdentifierException;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolveSystemResourceIdentifierException;
 use TYPO3\CMS\Core\SystemResource\Identifier\SystemResourceIdentifierFactory;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\SystemResource\Publishing\UriGenerationOptions;
@@ -110,7 +110,7 @@ final class ResourceViewHelper extends AbstractViewHelper
         $path = $this->arguments['path'];
         try {
             return (string)$this->resourceIdentifierFactory->create($path);
-        } catch (InvalidSystemResourceIdentifierException) {
+        } catch (CanNotResolveSystemResourceIdentifierException) {
             $packageKey = $this->resolveExtensionKey();
             $relativePath = 'Resources/Public/' . ltrim($path, '/');
             return (string)$this->resourceIdentifierFactory->createFromPackagePath(

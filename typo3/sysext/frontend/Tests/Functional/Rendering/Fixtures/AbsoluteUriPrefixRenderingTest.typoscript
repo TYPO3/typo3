@@ -3,13 +3,11 @@ page {
   includeCSS {
     extensionCSS = {$extensionCSS}
     externalCSS = {$externalCSS}
-    externalCSS.external = 1
   }
 
   includeJS {
     extensionJS = {$extensionJS}
     externalJS = {$externalJS}
-    externalJS.external = 1
   }
   # added so we can also test the inclusion of these types in FE
   includeCSSLibs {

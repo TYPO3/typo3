@@ -21,10 +21,12 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolveSystemResourceIdentifierException;
 use TYPO3\CMS\Core\SystemResource\Exception\InvalidSystemResourceIdentifierException;
 use TYPO3\CMS\Core\SystemResource\Identifier\FalResourceIdentifier;
 use TYPO3\CMS\Core\SystemResource\Identifier\PackageResourceIdentifier;
 use TYPO3\CMS\Core\SystemResource\Identifier\SystemResourceIdentifierFactory;
+use TYPO3\CMS\Core\SystemResource\Identifier\UriResourceIdentifier;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SystemResourceIdentifierFactoryTest extends UnitTestCase
@@ -50,6 +52,19 @@ final class SystemResourceIdentifierFactoryTest extends UnitTestCase
         yield 'FAL: syntax' => [
             'FAL:1:/identifier/of/file.ext',
             FalResourceIdentifier::class,
+        ];
+        yield 'Absolute URL' => [
+            'https://example.com/foo/bar/',
+            UriResourceIdentifier::class,
+        ];
+        yield 'Absolute URL with prefix' => [
+            'URI:https://example.com/foo/bar/',
+            UriResourceIdentifier::class,
+            'https://example.com/foo/bar/',
+        ];
+        yield 'Relative URI' => [
+            'URI:/foo/bar/',
+            UriResourceIdentifier::class,
         ];
     }
 
@@ -83,25 +98,42 @@ final class SystemResourceIdentifierFactoryTest extends UnitTestCase
         yield 'PKG: syntax, leading slash' => [
             'PKG:typo3/cms-core:/Resources/Public/Icons/Extension.svg',
         ];
+        yield 'PKG: back path' => [
+            'PKG:typo3/cms-core:Resources/../../../../../../etc/passwd',
+        ];
         yield 'FAL: syntax, storage not int' => [
             'FAL:fileadmin:/identifier/of/file.ext',
-            FalResourceIdentifier::class,
         ];
         yield 'FAL: syntax, too few colons' => [
             'FAL:1/identifier/of/file.ext',
-            FalResourceIdentifier::class,
         ];
         yield 'FAL: syntax, too many colons' => [
             'FAL:1:/identifier/of/file:ext',
-            FalResourceIdentifier::class,
+        ];
+        yield 'URI: with following invalid URI' => [
+            'URI:1:/identifier/of/file:ext',
+        ];
+        yield 'URI: with following valid package identifier' => [
+            'URI:PKG:typo3/cms-core:Resources/Public/Icons/Extension.svg',
+        ];
+        yield 'URI: with following valid EXT identifier' => [
+            'URI:EXT:core/Resources/Public/Icons/Extension.svg#fragment',
+        ];
+        yield 'relative path' => [
+            'fileadmin/templates/main.css',
+            CanNotResolveSystemResourceIdentifierException::class,
+        ];
+        yield 'pseudo random string' => [
+            'asdnnasdnoweoncsaasdncsasd',
+            CanNotResolveSystemResourceIdentifierException::class,
         ];
     }
 
     #[DataProvider('invalidIdentifierThrowsExceptionDataProvider')]
     #[Test]
-    public function invalidIdentifierThrowsException(string $potentialIdentifier): void
+    public function invalidIdentifierThrowsException(string $potentialIdentifier, string $expectedException = InvalidSystemResourceIdentifierException::class): void
     {
-        $this->expectException(InvalidSystemResourceIdentifierException::class);
+        $this->expectException($expectedException);
         $packageManager = $this->createMock(PackageManager::class);
         $subject = new SystemResourceIdentifierFactory($packageManager);
         $subject->create($potentialIdentifier);
