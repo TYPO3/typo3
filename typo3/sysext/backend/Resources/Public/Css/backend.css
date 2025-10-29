@@ -2686,7 +2686,7 @@ body>.module{height:100dvh}
 .module-docheader .module-docheader-bar .form-group{margin:0}
 .module-docheader .module-docheader-bar-container{display:flex;flex-wrap:wrap;gap:var(--module-docheader-spacing)}
 .module-docheader .module-docheader-bar .dropdown-menu{max-height:calc(100dvh - var(--module-docheader-height));overflow-y:auto}
-.module-body{grid-area:moduleBody;overflow:auto;padding:var(--module-body-padding);position:relative}
+.module-body{background-color:var(--module-bg);grid-area:moduleBody;overflow:auto;padding:var(--module-body-padding);position:relative}
 .module-body>.container{padding-left:0;padding-right:0}
 .module-body .container-small{margin:0 auto;max-width:768px}
 .module-body>:last-child{margin-bottom:0}

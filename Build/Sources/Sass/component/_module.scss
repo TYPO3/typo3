@@ -123,6 +123,7 @@
     position: relative;
     padding: var(--module-body-padding);
     overflow: auto;
+    background-color: var(--module-bg);
 
     > .container {
         padding-left: 0;
