@@ -2,7 +2,7 @@
 
 return [
     'ctrl' => [
-        'title' => 'dashboard.tca:be_dashboard',
+        'title' => 'dashboard.db:be_dashboard',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -27,7 +27,7 @@ return [
             ],
         ],
         'identifier' => [
-            'label' => 'dashboard.tca:identifier',
+            'label' => 'dashboard.db:identifier',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -36,7 +36,7 @@ return [
             ],
         ],
         'title' => [
-            'label' => 'dashboard.tca:title',
+            'label' => 'dashboard.db:title',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
