@@ -117,7 +117,7 @@ final class TranslateViewHelper extends AbstractViewHelper
             }
         }
 
-        if (empty($extensionName)) {
+        if (empty($extensionName) && empty($default)) {
             // Throw exception in case neither an extension key nor a extbase request
             // are given, since the "short key" shouldn't be considered as a label.
             throw new \RuntimeException(

@@ -192,6 +192,14 @@ final class TranslateViewHelperTest extends FunctionalTestCase
                 '<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:iDoNotExist">{k}</f:translate></f:for>',
                 '4711',
             ],
+            'fallback to default due to invalid domain name, id contains colon' => [
+                '<f:translate key="apple:tree" default="plum:tree"/>',
+                'plum:tree',
+            ],
+            'fallback to default to invalid domain name, id contains colon, key and default the same' => [
+                '<f:translate key="apple:tree" default="apple:tree"/>',
+                'apple:tree',
+            ],
         ];
     }
 
