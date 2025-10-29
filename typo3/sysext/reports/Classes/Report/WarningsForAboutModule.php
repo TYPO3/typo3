@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
  */
 final class WarningsForAboutModule
 {
-    private string $reportsModuleName = 'system_reports';
+    private string $reportsModuleName = 'system_reports_status';
 
     public function __construct(
         private readonly Registry $registry,
