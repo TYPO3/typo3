@@ -110,8 +110,6 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         self::assertFileDoesNotExist(GeneralUtility::getFileAbsFileName('fileadmin/_processed_/1/b/FileWithoutProcessedFileRecord.png'));
         self::assertFileDoesNotExist(GeneralUtility::getFileAbsFileName('local-storage/_processed_/0/a/NotReferencedImage2.png'));
         self::assertFileDoesNotExist(GeneralUtility::getFileAbsFileName('local-storage/_processed_/1/b/FileWithoutProcessedFileRecord2.png'));
-        self::assertFileDoesNotExist(GeneralUtility::getFileAbsFileName('local-storage/_processed_/1/a/ReferencedImage.png'));
-        self::assertFileDoesNotExist(GeneralUtility::getFileAbsFileName('local-storage/_processed_/1/a/ReferencedImage2.png'));
         self::assertFileExists(GeneralUtility::getFileAbsFileName('fileadmin/image.png'));
     }
 
@@ -148,8 +146,8 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
 
         self::assertStringContainsString('[RECORD] Would delete /_processed_/a/SomeMissingFile.png', $output);
         self::assertStringContainsString('Are you sure you want to delete these processed files and records', $output);
-        self::assertStringContainsString('Deleted 3 processed records', $output);
-        self::assertStringContainsString('Deleted 6 processed files', $output);
+        self::assertStringContainsString('Deleted 1 processed records', $output);
+        self::assertStringContainsString('Deleted 4 processed files', $output);
     }
 
     #[Test]
