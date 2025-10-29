@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang_tca.xlf" date="2020-09-19T08:53:36Z" product-name="impexp">
+	<file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/db.xlf" date="2020-09-19T08:53:36Z" product-name="impexp">
 		<header/>
 		<body>
 			<trans-unit id="tx_impexp_presets" xml:space="preserve">

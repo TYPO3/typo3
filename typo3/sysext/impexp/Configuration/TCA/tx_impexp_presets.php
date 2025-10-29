@@ -2,7 +2,7 @@
 
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:impexp/Resources/Private/Language/locallang_tca.xlf:tx_impexp_presets',
+        'title' => 'impexp.db:tx_impexp_presets',
         'label' => 'title',
         'default_sortby' => 'title',
         'tstamp' => 'tstamp',
@@ -15,31 +15,31 @@ return [
     ],
     'columns' => [
         'title' => [
-            'label' => 'LLL:EXT:impexp/Resources/Private/Language/locallang_tca.xlf:title',
+            'label' => 'impexp.db:title',
             'config' => [
                 'type' => 'passthrough',
             ],
         ],
         'public' => [
-            'label' => 'LLL:EXT:impexp/Resources/Private/Language/locallang_tca.xlf:public',
+            'label' => 'impexp.db:public',
             'config' => [
                 'type' => 'passthrough',
             ],
         ],
         'user_uid' => [
-            'label' => 'LLL:EXT:impexp/Resources/Private/Language/locallang_tca.xlf:user_uid',
+            'label' => 'impexp.db:user_uid',
             'config' => [
                 'type' => 'passthrough',
             ],
         ],
         'item_uid' => [
-            'label' => 'LLL:EXT:impexp/Resources/Private/Language/locallang_tca.xlf:item_uid',
+            'label' => 'impexp.db:item_uid',
             'config' => [
                 'type' => 'passthrough',
             ],
         ],
         'preset_data' => [
-            'label' => 'LLL:EXT:impexp/Resources/Private/Language/locallang_tca.xlf:preset_data',
+            'label' => 'impexp.db:preset_data',
             'config' => [
                 'type' => 'passthrough',
             ],
