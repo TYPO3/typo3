@@ -69,10 +69,6 @@ class CleanUpLocalProcessedFilesService
             $storageBasePath = PathUtility::stripPathSitePrefix($this->getAbsoluteBasePath($storage->getConfiguration()));
             foreach ($storage->getProcessingFolders() as $folder) {
                 foreach ($this->getFilesOfFolderRecursive($folder) as $splFileInfo) {
-                    if (!$splFileInfo->isFile()) {
-                        continue;
-                    }
-
                     // prepare identifier for proper lookup
                     $filePath = '/' . mb_substr(
                         PathUtility::stripPathSitePrefix($splFileInfo->getPathname()),
@@ -178,7 +174,7 @@ class CleanUpLocalProcessedFilesService
 
         $iterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator(
-                $basePath . $folder->getIdentifier(),
+                $basePath . ltrim($folder->getIdentifier(), '/'),
                 \FilesystemIterator::UNIX_PATHS | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS | \FilesystemIterator::CURRENT_AS_FILEINFO
             ),
             \RecursiveIteratorIterator::SELF_FIRST,

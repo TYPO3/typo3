@@ -1,7 +1,8 @@
 "sys_file_processedfile",,,,,,,,,,,,,,
 ,"uid","tstamp","crdate","storage","original","identifier","name","configuration","configurationsha1","originalfilesha1","task_type","checksum","width","height"
 ,1,1540470345,1540470345,1,83,"/image.png","image.png",,"013cecd923f59a410611402187055a763c68a59b","806835cf309d0d57d148dc5cd70ca166d04524ae","Image.CropScaleMask","678b062853",1100,479
+# "/a/SomeMissingFile" intentionally has a wrong _processed_ directory name, unlike the others.
 ,2,1540470345,1540470345,1,83,"/_processed_/a/SomeMissingFile.png","SomeMissingFile.png",,"d6c532fac79f74ae7340dca7311482304d1103a0","806835cf309d0d57d148dc5cd70ca166d04524ae","Image.CropScaleMask","98dd664bab",920,401
-,3,1540470345,1540470345,1,83,"/_processed_/a/ReferencedImage.png","ReferencedImage.png",,"123452fac79f74ae7340dca7311482304d1103a1","123456cf309d0d57d148dc5cd70ca166d04524af","Image.CropScaleMask","98dd664bab",920,401
-,4,1540470345,1540470345,1,83,"/_processed_/a/ReferencedImage2.png","ReferencedImage2.png",,"223452fac79f74ae7340dca7311482304d1103a2","223456cf309d0d57d148dc5cd70ca166d04524a0","Image.CropScaleMask","98dd664bab",920,401
+,3,1540470345,1540470345,2,83,"/_processed_/1/a/ReferencedImage.png","ReferencedImage.png",,"123452fac79f74ae7340dca7311482304d1103a1","123456cf309d0d57d148dc5cd70ca166d04524af","Image.CropScaleMask","98dd664bab",920,401
+,4,1540470345,1540470345,2,83,"/_processed_/1/a/ReferencedImage2.png","ReferencedImage2.png",,"223452fac79f74ae7340dca7311482304d1103a2","223456cf309d0d57d148dc5cd70ca166d04524a0","Image.CropScaleMask","98dd664bab",920,401
 ,5,1540470345,1540470345,0,83,"","AnInvalidEntry",,"323452fac79f74ae7340dca7311482304d1103a2","323456cf309d0d57d148dc5cd70ca166d04524a0","Image.CropScaleMask","98dd664bab",920,401
