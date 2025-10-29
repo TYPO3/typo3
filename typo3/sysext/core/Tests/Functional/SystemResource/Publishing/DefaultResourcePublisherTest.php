@@ -57,6 +57,11 @@ final class DefaultResourcePublisherTest extends FunctionalTestCase
             'resourceString' => 'PKG:typo3tests/test-system-resources:Resources/Public/Icons/Extension.svg',
             'url' => '/typo3conf/ext/test_system_resources/Resources/Public/Icons/Extension.svg?' . $iconMtime,
         ];
+        yield 'public resource string to folder' => [
+            'resourceString' => 'PKG:typo3tests/test-system-resources:Resources/Public/Icons/',
+            'url' => '/typo3conf/ext/test_system_resources/Resources/Public/Icons/',
+            'endsWith' => '/typo3conf/ext/test_system_resources/Resources/Public/Icons/',
+        ];
         yield 'public resource string with query' => [
             'resourceString' => 'PKG:typo3tests/test-system-resources:Resources/Public/Icons/Extension.svg?v=42',
             'url' => '/typo3conf/ext/test_system_resources/Resources/Public/Icons/Extension.svg?v=42&' . $iconMtime,

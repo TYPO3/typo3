@@ -3740,6 +3740,9 @@ final class GeneralUtilityTest extends UnitTestCase
         self::assertStringContainsString('.css?', $versionedFilename);
         self::assertStringStartsWith('static/main_', $versionedFilename);
 
+        $versionedFilename = GeneralUtility::createVersionNumberedFilename($testFileDirectory);
+        self::assertSame($testFileDirectory, $versionedFilename);
+
         GeneralUtility::rmdir($testFileDirectory, true);
     }
 

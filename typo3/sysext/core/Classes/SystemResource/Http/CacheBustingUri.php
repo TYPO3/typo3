@@ -34,7 +34,7 @@ class CacheBustingUri extends Uri
             // The absolute path might be appended with a query string and/ or fragment
             // therefore we remove it here before we check for file existence
             $absolutePath = (new Uri($absolutePathToPotentialFile))->getPath();
-            if (!file_exists($absolutePath)) {
+            if (!is_file($absolutePath)) {
                 return $baseUri;
             }
         } catch (\Throwable) {
