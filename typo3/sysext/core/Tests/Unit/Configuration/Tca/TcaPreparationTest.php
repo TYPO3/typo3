@@ -935,8 +935,8 @@ final class TcaPreparationTest extends UnitTestCase
                 ],
             ],
             '
-                    CType;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType_formlabel,
-                    colPos;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos_formlabel,
+                    CType,
+                    colPos,
                     --palette--;;headers,
                 --div--;core.form.tabs:appearance,
                     --palette--;;frames,
@@ -958,15 +958,15 @@ final class TcaPreparationTest extends UnitTestCase
                 'palettes' => [
                     'general' => [
                         'showitem' => '
-                            CType123;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType_formlabel,
-                            foocolPos;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos_formlabel,
+                            CType123;frontend.db.tt_content:type,
+                            foocolPos;frontend.db.tt_content:colpos,
                         ',
                     ],
                 ],
             ],
             '
-                    CType;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType_formlabel,
-                    colPos;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos_formlabel,
+                    CType,
+                    colPos,
                     --palette--;;headers,
                 --div--;core.form.tabs:appearance,
                     --palette--;;frames,
@@ -1383,7 +1383,7 @@ final class TcaPreparationTest extends UnitTestCase
             '
                 --div--;core.form.tabs:custom-label,
                     recordType,
-                   colPos;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos_formlabel,
+                   colPos,
                     --palette--;;headers,
                     bodytext,
                     --palette--;;custom-palette,
@@ -1505,13 +1505,13 @@ final class TcaPreparationTest extends UnitTestCase
             'palettes' => [
                 'general' => [
                     'showitem' => '
-                        CType;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType_formlabel,
-                        colPos;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos_formlabel,
+                        CType,
+                        colPos,
                     ',
                 ],
                 'hidden' => [
                     'showitem' => '
-                        hidden;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:field.default.hidden
+                        hidden;frontend.db.tt_content:hidden
                     ',
                 ],
                 'language' => [

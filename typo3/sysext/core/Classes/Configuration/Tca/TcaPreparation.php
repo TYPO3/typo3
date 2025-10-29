@@ -465,8 +465,8 @@ readonly class TcaPreparation
                 $showItemParts = ['--palette--;;general'];
             } else {
                 $showItemParts = [
-                    $typeField === 'CType' ? 'CType;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType_formlabel' : $typeField,
-                    'colPos;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos_formlabel',
+                    $typeField,
+                    'colPos',
                 ];
             }
 

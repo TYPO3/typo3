@@ -3,7 +3,7 @@
 	<file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_ttc.xlf" date="2011-10-17T20:22:32Z" product-name="cms">
 		<header/>
 		<body>
-			<trans-unit id="CType_formlabel">
+			<trans-unit id="CType_formlabel" x-unused-since="14.0">
 				<source>Type</source>
 			</trans-unit>
 			<trans-unit id="layout.I.1">
@@ -15,10 +15,10 @@
 			<trans-unit id="layout.I.3">
 				<source>Layout 3</source>
 			</trans-unit>
-			<trans-unit id="colPos">
+			<trans-unit id="colPos" x-unused-since="14.0">
 				<source>Columns</source>
 			</trans-unit>
-			<trans-unit id="colPos_formlabel">
+			<trans-unit id="colPos_formlabel" x-unused-since="14.0">
 				<source>Column</source>
 			</trans-unit>
 			<trans-unit id="colPos.I.0">
@@ -36,22 +36,22 @@
 			<trans-unit id="colPos.I.unused">
 				<source>Unused</source>
 			</trans-unit>
-			<trans-unit id="date">
+			<trans-unit id="date" x-unused-since="14.0">
 				<source>Date</source>
 			</trans-unit>
-			<trans-unit id="date_formlabel">
+			<trans-unit id="date_formlabel" x-unused-since="14.0">
 				<source>Date</source>
 			</trans-unit>
-			<trans-unit id="header">
+			<trans-unit id="header" x-unused-since="14.0">
 				<source>Header</source>
 			</trans-unit>
-			<trans-unit id="header_formlabel">
+			<trans-unit id="header_formlabel" x-unused-since="14.0">
 				<source>Header</source>
 			</trans-unit>
 			<trans-unit id="header.ALT.shortcut_formlabel">
 				<source>Name (not visible in frontend)</source>
 			</trans-unit>
-			<trans-unit id="header.ALT.script_formlabel">
+			<trans-unit id="header.ALT.script_formlabel" x-unused-since="14.0">
 				<source>Name (not visible in frontend)</source>
 			</trans-unit>
 			<trans-unit id="header.ALT.div_formlabel">
@@ -63,10 +63,10 @@
 			<trans-unit id="header.description.ALT">
 				<source>The name won't be displayed as header above the element, but will be used as reference in menus.</source>
 			</trans-unit>
-			<trans-unit id="header_position">
+			<trans-unit id="header_position" x-unused-since="14.0">
 				<source>Align</source>
 			</trans-unit>
-			<trans-unit id="header_position_formlabel">
+			<trans-unit id="header_position_formlabel" x-unused-since="14.0">
 				<source>Alignment</source>
 			</trans-unit>
 			<trans-unit id="header_position.I.1">
@@ -78,13 +78,13 @@
 			<trans-unit id="header_position.I.3">
 				<source>Left</source>
 			</trans-unit>
-			<trans-unit id="header_link">
+			<trans-unit id="header_link" x-unused-since="14.0">
 				<source>Link</source>
 			</trans-unit>
-			<trans-unit id="header_link_formlabel">
+			<trans-unit id="header_link_formlabel" x-unused-since="14.0">
 				<source>Link</source>
 			</trans-unit>
-			<trans-unit id="header_layout_formlabel">
+			<trans-unit id="header_layout_formlabel" x-unused-since="14.0">
 				<source>Type</source>
 			</trans-unit>
 			<trans-unit id="header_layout.I.1">
@@ -117,22 +117,22 @@
 			<trans-unit id="bullets_type.2">
 				<source>Definition list</source>
 			</trans-unit>
-			<trans-unit id="imagewidth">
+			<trans-unit id="imagewidth" x-unused-since="14.0">
 				<source>Width (pixels)</source>
 			</trans-unit>
-			<trans-unit id="imagewidth_formlabel">
+			<trans-unit id="imagewidth_formlabel" x-unused-since="14.0">
 				<source>Width (px)</source>
 			</trans-unit>
-			<trans-unit id="imageheight">
+			<trans-unit id="imageheight" x-unused-since="14.0">
 				<source>Height (pixels)</source>
 			</trans-unit>
-			<trans-unit id="imageheight_formlabel">
+			<trans-unit id="imageheight_formlabel" x-unused-since="14.0">
 				<source>Height (px)</source>
 			</trans-unit>
-			<trans-unit id="imageorient">
+			<trans-unit id="imageorient" x-unused-since="14.0">
 				<source>Position</source>
 			</trans-unit>
-			<trans-unit id="imageorient_formlabel">
+			<trans-unit id="imageorient_formlabel" x-unused-since="14.0">
 				<source>Position and Alignment</source>
 			</trans-unit>
 			<trans-unit id="imageorient.I.0">
@@ -165,22 +165,22 @@
 			<trans-unit id="imageorient.I.10">
 				<source>Beside Text, Left</source>
 			</trans-unit>
-			<trans-unit id="imageborder">
+			<trans-unit id="imageborder" x-unused-since="14.0">
 				<source>Border</source>
 			</trans-unit>
-			<trans-unit id="imageborder_formlabel">
+			<trans-unit id="imageborder_formlabel" x-unused-since="14.0">
 				<source>Border</source>
 			</trans-unit>
-			<trans-unit id="image_zoom">
+			<trans-unit id="image_zoom" x-unused-since="14.0">
 				<source>Click-enlarge</source>
 			</trans-unit>
-			<trans-unit id="image_zoom_formlabel">
+			<trans-unit id="image_zoom_formlabel" x-unused-since="14.0">
 				<source>Enlarge on Click</source>
-			</trans-unit>0
-			<trans-unit id="imagecols">
+			</trans-unit>
+			<trans-unit id="imagecols" x-unused-since="14.0">
 				<source>Columns</source>
 			</trans-unit>
-			<trans-unit id="imagecols_formlabel">
+			<trans-unit id="imagecols_formlabel" x-unused-since="14.0">
 				<source>Number of Columns</source>
 			</trans-unit>
 			<trans-unit id="images.addFileReference">
@@ -285,16 +285,16 @@
 			<trans-unit id="records_formlabel">
 				<source>Records</source>
 			</trans-unit>
-			<trans-unit id="space_before_class">
+			<trans-unit id="space_before_class" x-unused-since="14.0">
 				<source>Space Before</source>
 			</trans-unit>
-			<trans-unit id="space_before_class_formlabel">
+			<trans-unit id="space_before_class_formlabel" x-unused-since="14.0">
 				<source>Space Before</source>
 			</trans-unit>
-			<trans-unit id="space_after_class">
+			<trans-unit id="space_after_class" x-unused-since="14.0">
 				<source>Space After</source>
 			</trans-unit>
-			<trans-unit id="space_after_class_formlabel">
+			<trans-unit id="space_after_class_formlabel" x-unused-since="14.0">
 				<source>Space After</source>
 			</trans-unit>
 			<trans-unit id="space_class_none">
@@ -315,10 +315,10 @@
 			<trans-unit id="space_class_extra_large">
 				<source>Extra Large</source>
 			</trans-unit>
-			<trans-unit id="frame_class">
+			<trans-unit id="frame_class" x-unused-since="14.0">
 				<source>Frame</source>
 			</trans-unit>
-			<trans-unit id="frame_class_formlabel">
+			<trans-unit id="frame_class_formlabel" x-unused-since="14.0">
 				<source>Frame</source>
 			</trans-unit>
 			<trans-unit id="frame_class.default">
@@ -342,16 +342,16 @@
 			<trans-unit id="frame_class.none">
 				<source>No Frame</source>
 			</trans-unit>
-			<trans-unit id="sectionIndex">
+			<trans-unit id="sectionIndex" x-unused-since="14.0">
 				<source>Index</source>
 			</trans-unit>
-			<trans-unit id="sectionIndex_formlabel">
+			<trans-unit id="sectionIndex_formlabel" x-unused-since="14.0">
 				<source>Show in Section Menus</source>
 			</trans-unit>
-			<trans-unit id="linkToTop">
+			<trans-unit id="linkToTop" x-unused-since="14.0">
 				<source>To top</source>
 			</trans-unit>
-			<trans-unit id="linkToTop_formlabel">
+			<trans-unit id="linkToTop_formlabel" x-unused-since="14.0">
 				<source>Append with Link to Top of Page</source>
 			</trans-unit>
 			<trans-unit id="pi_flexform">
@@ -378,7 +378,7 @@
 			<trans-unit id="tabs.plugin">
 				<source>Plugin</source>
 			</trans-unit>
-			<trans-unit id="subheader_formlabel">
+			<trans-unit id="subheader_formlabel" x-unused-since="14.0">
 				<source>Subheader</source>
 			</trans-unit>
 			<trans-unit id="starttime_formlabel">
@@ -390,10 +390,10 @@
 			<trans-unit id="fe_group_formlabel">
 				<source>Usergroup Access Rights</source>
 			</trans-unit>
-			<trans-unit id="layout_formlabel">
+			<trans-unit id="layout_formlabel" x-unused-since="14.0">
 				<source>Layout</source>
 			</trans-unit>
-			<trans-unit id="bodytext_formlabel">
+			<trans-unit id="bodytext_formlabel" x-unused-since="14.0">
 				<source>Text</source>
 			</trans-unit>
 			<trans-unit id="bodytext.ALT.bulletlist_formlabel">
@@ -402,7 +402,7 @@
 			<trans-unit id="bodytext.ALT.html_formlabel">
 				<source>HTML Code</source>
 			</trans-unit>
-			<trans-unit id="field.default.hidden">
+			<trans-unit id="field.default.hidden" x-unused-since="14.0">
 				<source>Visibility of content element</source>
 			</trans-unit>
 			<trans-unit id="field.table.bodytext">
@@ -628,13 +628,13 @@
 			<trans-unit id="palette.mediaAdjustments" x-unused-since="14.0">
 				<source>Media Adjustments</source>
 			</trans-unit>
-			<trans-unit id="palette.mediaAdjustments.imagewidth">
+			<trans-unit id="palette.mediaAdjustments.imagewidth" x-unused-since="14.0">
 				<source>Width of each element (px)</source>
 			</trans-unit>
-			<trans-unit id="palette.mediaAdjustments.imageheight">
+			<trans-unit id="palette.mediaAdjustments.imageheight" x-unused-since="14.0">
 				<source>Height of each element (px)</source>
 			</trans-unit>
-			<trans-unit id="palette.mediaAdjustments.imageborder">
+			<trans-unit id="palette.mediaAdjustments.imageborder" x-unused-since="14.0">
 				<source>Border around each element</source>
 			</trans-unit>
 			<trans-unit id="uploads_description">

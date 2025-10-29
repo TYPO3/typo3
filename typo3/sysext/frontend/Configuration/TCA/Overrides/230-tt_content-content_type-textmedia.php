@@ -11,7 +11,7 @@ defined('TYPO3') or die();
     ],
     '
         --palette--;;headers,
-        bodytext;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext_formlabel,
+        bodytext,
     --div--;core.form.tabs:media,
         assets,
         --palette--;;mediaAdjustments,

@@ -49,7 +49,7 @@ return [
         'title' => [
             'exclude' => false,
             'l10n_mode' => 'prefixLangTitle',
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_formlabel',
+            'label' => 'core.form.palettes:header',
             'config' => [
                 'type' => 'input',
                 'size' => 60,

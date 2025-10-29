@@ -41,7 +41,7 @@ return [
     ],
     'columns' => [
         'CType' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.type',
+            'label' => 'frontend.db.tt_content:type',
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'config' => [
@@ -83,7 +83,7 @@ return [
         ],
         'layout' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.layout',
+            'label' => 'frontend.db.tt_content:layout',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -110,7 +110,7 @@ return [
         ],
         'frame_class' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:frame_class',
+            'label' => 'frontend.db.tt_content:frame_class',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -128,7 +128,7 @@ return [
         ],
         'space_before_class' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:space_before_class',
+            'label' => 'frontend.db.tt_content:space_before_class',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -146,7 +146,7 @@ return [
         ],
         'space_after_class' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:space_after_class',
+            'label' => 'frontend.db.tt_content:space_after_class',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -163,7 +163,7 @@ return [
             ],
         ],
         'colPos' => [
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos',
+            'label' => 'frontend.db.tt_content:column',
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'config' => [
@@ -193,7 +193,7 @@ return [
         ],
         'date' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:date',
+            'label' => 'frontend.db.tt_content:date',
             'config' => [
                 'type' => 'datetime',
                 'format' => 'date',
@@ -202,7 +202,7 @@ return [
         ],
         'header' => [
             'l10n_mode' => 'prefixLangTitle',
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header',
+            'label' => 'frontend.db.tt_content:header',
             'config' => [
                 'type' => 'input',
                 'size' => 50,
@@ -211,7 +211,7 @@ return [
         ],
         'header_layout' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.type',
+            'label' => 'frontend.db.tt_content:header_type',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -249,7 +249,7 @@ return [
             ],
         ],
         'header_position' => [
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_position',
+            'label' => 'frontend.db.tt_content:header_position',
             'exclude' => true,
             'config' => [
                 'type' => 'select',
@@ -278,18 +278,18 @@ return [
         ],
         'header_link' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_link',
+            'label' => 'frontend.db.tt_content:header_link',
             'config' => [
                 'type' => 'link',
                 'size' => 50,
                 'appearance' => [
-                    'browserTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_link_formlabel',
+                    'browserTitle' => 'frontend.db.tt_content:header_link',
                 ],
             ],
         ],
         'subheader' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.subheader',
+            'label' => 'frontend.db.tt_content:subheader',
             'config' => [
                 'type' => 'input',
                 'size' => 50,
@@ -299,7 +299,7 @@ return [
         ],
         'bodytext' => [
             'l10n_mode' => 'prefixLangTitle',
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.text',
+            'label' => 'frontend.db.tt_content:bodytext',
             'config' => [
                 'type' => 'text',
                 'cols' => 50,
@@ -332,7 +332,7 @@ return [
         ],
         'imagewidth' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imagewidth',
+            'label' => 'frontend.db.tt_content:imagewidth',
             'config' => [
                 'type' => 'number',
                 'size' => 4,
@@ -345,7 +345,7 @@ return [
         ],
         'imageheight' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageheight',
+            'label' => 'frontend.db.tt_content:imageheight',
             'config' => [
                 'type' => 'number',
                 'size' => 4,
@@ -358,7 +358,7 @@ return [
         ],
         'imageorient' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageorient',
+            'label' => 'frontend.db.tt_content:imageorientation',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -424,7 +424,7 @@ return [
         ],
         'imageborder' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageborder',
+            'label' => 'frontend.db.tt_content:imageborder',
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
@@ -432,7 +432,7 @@ return [
         ],
         'image_zoom' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_zoom',
+            'label' => 'frontend.db.tt_content:image_zoom',
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
@@ -440,7 +440,7 @@ return [
         ],
         'imagecols' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imagecols',
+            'label' => 'frontend.db.tt_content:imagecols',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -524,7 +524,7 @@ return [
         ],
         'sectionIndex' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:sectionIndex',
+            'label' => 'frontend.db.tt_content:section_index',
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
@@ -533,7 +533,7 @@ return [
         ],
         'linkToTop' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:linkToTop',
+            'label' => 'frontend.db.tt_content:link_to_top',
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
@@ -604,7 +604,7 @@ return [
         'text' => [
             'showitem' => '
                     --palette--;;headers,
-                    bodytext;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext_formlabel,
+                    bodytext,
                 --div--;core.form.tabs:appearance,
                     --palette--;;frames,
                     --palette--;;appearanceLinks,
@@ -624,93 +624,57 @@ return [
     'palettes' => [
         'general' => [
             'label' => 'core.form.palettes:general',
-            'showitem' => '
-                CType;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType_formlabel,
-                colPos;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos_formlabel,
-            ',
+            'showitem' => 'CType,colPos',
         ],
         'header' => [
             'label' => 'core.form.palettes:header',
             'showitem' => '
-                header;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_formlabel,
-                --linebreak--,
-                header_layout;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_layout_formlabel,
-                header_position;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_position_formlabel,
-                date;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:date_formlabel,
-                --linebreak--,
-                header_link;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_link_formlabel
+                header,
+                --linebreak--,header_layout,header_position,date,
+                --linebreak--,header_link
             ',
         ],
         'headers' => [
             'label' => 'core.form.palettes:headers',
             'showitem' => '
-                header;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_formlabel,
-                --linebreak--,
-                header_layout;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_layout_formlabel,
-                header_position;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_position_formlabel,
-                date;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:date_formlabel,
-                --linebreak--,
-                header_link;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_link_formlabel,
-                --linebreak--,
-                subheader;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:subheader_formlabel
+                header,
+                --linebreak--,header_layout,header_position,date,
+                --linebreak--,header_link,
+                --linebreak--,subheader
             ',
         ],
         'gallerySettings' => [
             'label' => 'core.form.palettes:settings_gallery',
-            'showitem' => '
-                imageorient;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageorient_formlabel,
-                imagecols;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imagecols_formlabel
-            ',
+            'showitem' => 'imageorient,imagecols',
         ],
         'mediaAdjustments' => [
             'label' => 'core.form.palettes:media_adjustments',
-            'showitem' => '
-                imagewidth;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.mediaAdjustments.imagewidth,
-                imageheight;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.mediaAdjustments.imageheight,
-                imageborder;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.mediaAdjustments.imageborder
-            ',
+            'showitem' => 'imagewidth,imageheight,imageborder',
         ],
         'imagelinks' => [
             'label' => 'core.form.palettes:media_behaviour',
-            'showitem' => '
-                image_zoom;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_zoom_formlabel
-            ',
+            'showitem' => 'image_zoom',
         ],
         'hidden' => [
-            'showitem' => '
-                hidden;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:field.default.hidden
-            ',
+            'showitem' => 'hidden;frontend.db.tt_content:hidden',
         ],
         'language' => [
-            'showitem' => '
-                sys_language_uid,l18n_parent
-            ',
+            'showitem' => 'sys_language_uid,l18n_parent',
         ],
         'access' => [
             'label' => 'core.form.palettes:access',
             'showitem' => '
-                starttime;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:starttime_formlabel,
-                endtime;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:endtime_formlabel,
-                --linebreak--,
-                fe_group;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:fe_group_formlabel,
-                --linebreak--,editlock
-            ',
+                starttime;core.db.general:starttime, endtime;core.db.general:endtime,
+                --linebreak--, fe_group;core.db.general:fe_group,
+                --linebreak--, editlock',
         ],
         'appearanceLinks' => [
             'label' => 'core.form.palettes:links_appearance',
-            'showitem' => '
-                sectionIndex;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:sectionIndex_formlabel,
-                linkToTop;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:linkToTop_formlabel
-            ',
+            'showitem' => 'sectionIndex,linkToTop',
         ],
         'frames' => [
             'label' => 'core.form.palettes:content_layout',
-            'showitem' => '
-                layout;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:layout_formlabel,
-                frame_class;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:frame_class_formlabel,
-                space_before_class;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:space_before_class_formlabel,
-                space_after_class;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:space_after_class_formlabel,
-            ',
+            'showitem' => 'layout,frame_class,space_before_class,space_after_class',
         ],
     ],
 ];

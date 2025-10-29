@@ -77,6 +77,81 @@ Currently, the following label categories have been migrated to short form:
 -   :php:`LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.palettes.*`
     → :php:`core.form.palettes:*`
 
+**Field label overrides removed in showitem definitions:**
+
+Field labels can be overriden in showitem definitions for types or palettes, but
+should rather be kept in the field definition itself. The following field label
+overrides have been removed from showitem strings in favor of using the field's
+own label definition:
+
+-   :php:`bodytext;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext_formlabel`
+    → :php:`frontend.db.tt_content:bodytext`
+-   :php:`CType;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType_formlabel`
+    → :php:`frontend.db.tt_content:type`
+-   :php:`colPos;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos_formlabel`
+    → :php:`frontend.db.tt_content:column`
+-   :php:`header*;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header`
+    → :php:`frontend.db.tt_content:header`
+-   :php:`header*;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_formlabel`
+    → :php:`frontend.db.tt_content:header`
+-   :php:`header*;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_layout_formlabel`
+    → :php:`frontend.db.tt_content:header_type`
+-   :php:`header*;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_link`
+    → :php:`frontend.db.tt_content:header_link`
+-   :php:`header*;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_link_formlabel`
+    → :php:`frontend.db.tt_content:header_link`
+-   :php:`header*;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_position`
+    → :php:`frontend.db.tt_content:header_position`
+-   :php:`subheader;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:subheader_formlabel`
+    → :php:`frontend.db.tt_content:subheader`
+-   :php:`date;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:date_formlabel`
+    → :php:`frontend.db.tt_content:date`
+-   :php:`image*;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_zoom`
+    → :php:`frontend.db.tt_content:image_zoom`
+-   :php:`image*;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_zoom_formlabel`
+    → :php:`frontend.db.tt_content:image_zoom`
+-   :php:`image*;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageborder`
+    → :php:`frontend.db.tt_content:imageborder`
+-   :php:`image*;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageborder_formlabel`
+    → :php:`frontend.db.tt_content:imageborder`
+-   :php:`image*;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imagecols`
+    → :php:`frontend.db.tt_content:imagecols`
+-   :php:`image*;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imagecols_formlabel`
+    → :php:`frontend.db.tt_content:imagecols`
+-   :php:`image*;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageorient`
+    → :php:`frontend.db.tt_content:imageorientation`
+-   :php:`image*;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageorient_formlabel`
+    → :php:`frontend.db.tt_content:imageorientation`
+-   :php:`image*;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageheight`
+    → :php:`frontend.db.tt_content:imageheight`
+-   :php:`image*;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageheight_formlabel`
+    → :php:`frontend.db.tt_content:imageheight`
+-   :php:`image*;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imagewidth`
+    → :php:`frontend.db.tt_content:imagewidth`
+-   :php:`image*;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imagewidth_formlabel`
+    → :php:`frontend.db.tt_content:imagewidth`
+-   :php:`sectionIndex;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:sectionIndex_formlabel`
+    → :php:`sectionIndex`
+-   :php:`linkToTop;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:linkToTop_formlabel`
+    → :php:`linkToTop`
+-   :php:`layout;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:layout_formlabel`
+    → :php:`layout`
+-   :php:`space_before_class;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:space_before_class_formlabel`
+    → :php:`space_before_class`
+-   :php:`space_after_class;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:space_after_class_formlabel`
+    → :php:`space_after_class`
+
+**Field label overrides changed in palette definitions:**
+
+-   :php:`hidden;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:field.default.hidden`
+    → :php:`hidden;frontend.db.tt_content:hidden`
+-   :php:`starttime;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:starttime_formlabel`
+    → :php:`starttime;frontend.db.tt_content:starttime`
+-   :php:`endtime;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:endtime_formlabel`
+    → :php:`endtime;frontend.db.tt_content:endtime`
+-   :php:`fe_group;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:fe_group_formlabel`
+    → :php:`fe_group;frontend.db.tt_content:fe_group`
+
 Affected installations
 ======================
 

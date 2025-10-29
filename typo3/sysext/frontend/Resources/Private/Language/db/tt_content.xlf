@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
+	<file id="f1">
+		<unit id="hidden">
+			<segment>
+				<source>Visibility of content element</source>
+			</segment>
+		</unit>
+		<unit id="type">
+			<segment>
+				<source>Type</source>
+			</segment>
+		</unit>
+		<unit id="column">
+			<segment>
+				<source>Column</source>
+			</segment>
+		</unit>
+		<unit id="header">
+			<segment>
+				<source>Header</source>
+			</segment>
+		</unit>
+		<unit id="header_type">
+			<segment>
+				<source>Type</source>
+			</segment>
+		</unit>
+		<unit id="header_layout">
+			<segment>
+				<source>Layout</source>
+			</segment>
+		</unit>
+		<unit id="header_position">
+			<segment>
+				<source>Alignment</source>
+			</segment>
+		</unit>
+		<unit id="header_link">
+			<segment>
+				<source>Link</source>
+			</segment>
+		</unit>
+		<unit id="subheader">
+			<segment>
+				<source>Subheader</source>
+			</segment>
+		</unit>
+		<unit id="date">
+			<segment>
+				<source>Date</source>
+			</segment>
+		</unit>
+		<unit id="bodytext">
+			<segment>
+				<source>Text</source>
+			</segment>
+		</unit>
+		<unit id="imageorientation">
+			<segment>
+				<source>Position and Alignment</source>
+			</segment>
+		</unit>
+		<unit id="imagecols">
+			<segment>
+				<source>Number of Columns</source>
+			</segment>
+		</unit>
+		<unit id="imagewidth">
+			<segment>
+				<source>Width of each element (px)</source>
+			</segment>
+		</unit>
+		<unit id="imageheight">
+			<segment>
+				<source>Height of each element (px)</source>
+			</segment>
+		</unit>
+		<unit id="imageborder">
+			<segment>
+				<source>Border around each element</source>
+			</segment>
+		</unit>
+		<unit id="image_zoom">
+			<segment>
+				<source>Enlarge on Click</source>
+			</segment>
+		</unit>
+		<unit id="section_index">
+			<segment>
+				<source>Show in Section Menus</source>
+			</segment>
+		</unit>
+		<unit id="link_to_top">
+			<segment>
+				<source>Append with Link to Top of Page</source>
+			</segment>
+		</unit>
+		<unit id="layout">
+			<segment>
+				<source>Layout</source>
+			</segment>
+		</unit>
+		<unit id="frame_class">
+			<segment>
+				<source>Frame</source>
+			</segment>
+		</unit>
+		<unit id="space_before_class">
+			<segment>
+				<source>Space Before</source>
+			</segment>
+		</unit>
+		<unit id="space_after_class">
+			<segment>
+				<source>Space After</source>
+			</segment>
+		</unit>
+	</file>
+</xliff>

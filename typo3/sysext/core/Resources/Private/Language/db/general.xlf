@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
+	<file id="f1">
+		<unit id="starttime">
+			<segment>
+				<source>Publish Date</source>
+			</segment>
+		</unit>
+		<unit id="endtime">
+			<segment>
+				<source>Expiration Date</source>
+			</segment>
+		</unit>
+		<unit id="fe_group">
+			<segment>
+				<source>Frontend User Group Access Rights</source>
+			</segment>
+		</unit>
+	</file>
+</xliff>
