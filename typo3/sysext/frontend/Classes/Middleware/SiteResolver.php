@@ -37,12 +37,12 @@ use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
  * If a site is found, the request is populated with the found language+site objects. If none is found, the main magic
  * is handled by the PageResolver middleware.
  */
-class SiteResolver implements MiddlewareInterface
+readonly class SiteResolver implements MiddlewareInterface
 {
     public function __construct(
-        protected readonly SiteMatcher $matcher,
-        protected readonly LoggerInterface $logger,
-        protected readonly ErrorController $errorController,
+        protected SiteMatcher $matcher,
+        protected LoggerInterface $logger,
+        protected ErrorController $errorController,
     ) {}
 
     /**

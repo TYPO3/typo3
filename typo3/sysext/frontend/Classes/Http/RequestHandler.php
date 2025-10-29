@@ -21,14 +21,22 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LogLevel;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use TYPO3\CMS\Core\Cache\CacheEntry;
+use TYPO3\CMS\Core\Cache\CacheTag;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Middleware\PolicyBag;
@@ -42,9 +50,12 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
+use TYPO3\CMS\Frontend\Cache\MetaDataState;
 use TYPO3\CMS\Frontend\Cache\NonceValueSubstitution;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
+use TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent;
 use TYPO3\CMS\Frontend\Event\ModifyHrefLangTagsEvent;
 use TYPO3\CMS\Frontend\Page\PageParts;
 use TYPO3\CMS\Frontend\Resource\PublicUrlPrefixer;
@@ -52,41 +63,33 @@ use TYPO3\CMS\Frontend\Resource\PublicUrlPrefixer;
 /**
  * This is the main entry point of the TypoScript driven standard front-end.
  *
- * "handle()" is called when all PSR-15 middlewares have been set up the PSR-7 ServerRequest object and the following
- * things have been evaluated
- * - correct page ID, page type (typeNum), rootline, MP etc.
- * - info if is cached content already available
- * - proper language
- * - proper TypoScript which should be processed.
+ * "handle()" is called when all PSR-15 middlewares have set up the PSR-7 ServerRequest.
  *
- * Then, this class is able to render the actual HTTP body part built via TypoScript. Here this is split into two parts:
- * - Everything included in <body>, done via page.10, page.20 etc.
- * - Everything around.
- *
- * If the content has been built together within the cache (cache_pages), it is fetched directly, and
- * any so-called "uncached" content is generated again.
- *
- * Some further events allow to post-process the content.
- *
- * Then the right HTTP response headers are compiled together and sent as well.
+ * Then, this class creates the Response with main body content using the ContentObjectRenderer
+ * based on TypoScript configuration and to add main HTTP headers.
  */
-class RequestHandler implements RequestHandlerInterface
+readonly class RequestHandler implements RequestHandlerInterface
 {
     public function __construct(
-        private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly ListenerProvider $listenerProvider,
-        private readonly TimeTracker $timeTracker,
-        private readonly SystemResourceFactory $systemResourceFactory,
-        private readonly SystemResourcePublisherInterface $resourcePublisher,
-        private readonly TypoScriptService $typoScriptService,
-        private readonly Context $context,
-        private readonly TypoScriptFrontendController $typoScriptFrontendController,
-        private readonly ResponseService $responseService,
-        private readonly PolicyProvider $policyProvider,
+        private EventDispatcherInterface $eventDispatcher,
+        private ListenerProvider $listenerProvider,
+        private TimeTracker $timeTracker,
+        private SystemResourceFactory $systemResourceFactory,
+        private SystemResourcePublisherInterface $resourcePublisher,
+        private TypoScriptService $typoScriptService,
+        private Context $context,
+        private ResponseService $responseService,
+        private PolicyProvider $policyProvider,
+        // injecting this central stateful singleton. this is usually a smell, but ok in this case as exception.
+        private PageRenderer $pageRenderer,
+        #[Autowire(service: 'cache.pages')]
+        private FrontendInterface $pageCache,
+        private ConnectionPool $connectionPool,
+        private CacheLifetimeCalculator $cacheLifetimeCalculator,
     ) {}
 
     /**
-     * Handles a frontend request, after finishing running middlewares
+     * Handle frontend request after middlewares finished to create a response.
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -96,7 +99,7 @@ class RequestHandler implements RequestHandlerInterface
         // Forward `ConsumableNonce` containing a nonce to `PageRenderer`
         $nonce = $request->getAttribute('nonce');
         $nonce = $nonce instanceof ConsumableNonce ? $nonce : null;
-        $this->getPageRenderer()->setNonce($nonce);
+        $this->pageRenderer->setNonce($nonce);
         $policyBag = $request->getAttribute('csp.policyBag');
         $policyBag = $policyBag instanceof PolicyBag ? $policyBag : null;
 
@@ -114,18 +117,15 @@ class RequestHandler implements RequestHandlerInterface
 
         $content = $pageParts->getContent();
         if (!$pageParts->hasPageContentBeenLoadedFromCache()) {
+            $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
+            $cacheInstruction = $request->getAttribute('frontend.cache.instruction');
+            $cacheDataCollector = $request->getAttribute('frontend.cache.collector');
+            $pageInformation = $request->getAttribute('frontend.page.information');
+
             $this->timeTracker->push('Page generation');
 
-            // Make sure all FAL resources are prefixed with absPrefPrefix
-            $this->listenerProvider->addListener(
-                GeneratePublicUrlForResourceEvent::class,
-                PublicUrlPrefixer::class,
-                'prefixWithAbsRefPrefix'
-            );
-
-            $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
             $docType = DocType::createFromConfigurationKey($typoScriptConfigArray['doctype'] ?? '');
-            $this->getPageRenderer()->setDocType($docType);
+            $this->pageRenderer->setDocType($docType);
 
             // Content generation
             $this->timeTracker->incStackPointer();
@@ -165,14 +165,74 @@ class RequestHandler implements RequestHandlerInterface
                 }
             }
 
-            $content = $this->typoScriptFrontendController->generatePage_postProcessing($request, $content);
+            $event = new AfterCacheableContentIsGeneratedEvent($request, $content, $cacheDataCollector->getPageCacheIdentifier(), $cacheInstruction->isCachingAllowed());
+            $event = $this->eventDispatcher->dispatch($event);
+            $content = $event->getContent();
+
+            // Write page cache if allowed
+            if ($event->isCachingEnabled()) {
+                $pageId = $pageInformation->getId();
+                $pageRecord = $pageInformation->getPageRecord();
+
+                $lifetime = $this->cacheLifetimeCalculator->calculateLifetimeForPage($pageInformation->getId(), $pageInformation->getPageRecord(), $typoScriptConfigArray, $this->context);
+                $cacheDataCollector->addCacheTags(new CacheTag('pageId_' . $pageId, $lifetime));
+                if ($pageId !== $pageInformation->getContentFromPid()) {
+                    // Respect the page cache when content from different pid is shown
+                    $cacheDataCollector->addCacheTags(new CacheTag('pageId_' . $pageInformation->getContentFromPid(), $lifetime));
+                }
+                if ((int)($pageRecord['_LOCALIZED_UID'] ?? 0) > 0) {
+                    // Respect the translation page id on translated pages
+                    $cacheDataCollector->addCacheTags(new CacheTag('pageId_' . $pageRecord['_LOCALIZED_UID'], $lifetime));
+                }
+                if (!empty($pageRecord['cache_tags'])) {
+                    $tags = GeneralUtility::trimExplode(',', $pageRecord['cache_tags'], true);
+                    array_walk($tags, fn(string $tag) => $cacheDataCollector->addCacheTags(new CacheTag($tag, $lifetime)));
+                }
+
+                $cacheData = [
+                    'page_id' => $pageId,
+                    'content' => $content,
+                    'contentType' => $pageParts->getHttpContentType(),
+                    'INTincScript' => $pageParts->getNotCachedContentElementRegistry(),
+                    'pageRendererSubstitutionHash' => $pageParts->getPageRendererSubstitutionHash(),
+                    'pageRendererState' => serialize($this->pageRenderer->getState()),
+                    'assetCollectorState' => serialize(GeneralUtility::makeInstance(AssetCollector::class)->getState()),
+                    'pageTitleCache' => $pageParts->getPageTitle(),
+                    'pageCacheGeneratedTimestamp' => $GLOBALS['EXEC_TIME'],
+                    'metaDataState' => GeneralUtility::makeInstance(MetaDataState::class)->getState(),
+                ];
+
+                $cacheDataCollector->enqueueCacheEntry(
+                    new CacheEntry(
+                        identifier: 'tsfe-page-cache',
+                        content: $cacheData,
+                        persist: function (ServerRequestInterface $request, string $identifier, mixed $content) {
+                            $cacheDataCollector = $request->getAttribute('frontend.cache.collector');
+                            $cacheTimeout = $cacheDataCollector->resolveLifetime();
+                            $pageCacheTags = array_map(fn(CacheTag $cacheTag) => $cacheTag->name, $cacheDataCollector->getCacheTags());
+
+                            $content['cacheTags'] = $pageCacheTags;
+                            $content['pageCacheExpireTimestamp'] = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
+                            $this->pageCache->set($cacheDataCollector->getPageCacheIdentifier(), $content, $pageCacheTags, $cacheTimeout);
+
+                            // Event for cache post processing (eg. writing static files)
+                            $this->eventDispatcher->dispatch(
+                                new AfterCachedPageIsPersistedEvent($request, $cacheDataCollector->getPageCacheIdentifier(), $content, $cacheTimeout)
+                            );
+                        }
+                    )
+                );
+            }
+
+            $this->updateSysLastChangedInPageRecord($request);
+
             $this->timeTracker->pull();
         }
 
         // Render non-cached page parts by replacing placeholders which are taken from cache or added during page generation
         if ($pageParts->hasNotCachedContentElements()) {
             $this->timeTracker->push('Non-cached objects');
-            $content = $this->typoScriptFrontendController->INTincScript($request, $content);
+            $content = $this->calculateNonCachedElements($request, $content);
             $this->timeTracker->pull();
         }
 
@@ -180,7 +240,7 @@ class RequestHandler implements RequestHandlerInterface
 
         // Create a default Response object and add headers and body to it
         $response = new Response();
-        $response = $this->typoScriptFrontendController->applyHttpHeadersToResponse($request, $response, $content);
+        $response = $this->addHttpHeadersToResponse($request, $response, $content);
         $response->getBody()->write($content);
         return $response;
     }
@@ -201,16 +261,15 @@ class RequestHandler implements RequestHandlerInterface
         }
         // Now, populate pageRenderer with all additional data
         $this->processHtmlBasedRenderingSettings($request);
-        $pageRenderer = $this->getPageRenderer();
         // Add previously generated page content within the <body> tag afterwards
-        $pageRenderer->addBodyContent(LF . $pageContent);
+        $this->pageRenderer->addBodyContent(LF . $pageContent);
         $pageParts = $request->getAttribute('frontend.page.parts');
         if ($pageParts->hasNotCachedContentElements()) {
             // Render complete page, keep placeholders for JavaScript and CSS
-            return $pageRenderer->renderPageWithUncachedObjects($pageParts->getPageRendererSubstitutionHash());
+            return $this->pageRenderer->renderPageWithUncachedObjects($pageParts->getPageRendererSubstitutionHash());
         }
         // Render complete page
-        return $pageRenderer->render();
+        return $this->pageRenderer->render();
     }
 
     /**
@@ -235,6 +294,23 @@ class RequestHandler implements RequestHandlerInterface
     }
 
     /**
+     * Calculate non cached elements and inline to given cacheable content.
+     */
+    protected function calculateNonCachedElements(ServerRequestInterface $request, string $content): string
+    {
+        $content = $this->recursivelyReplaceIntPlaceholdersInContent($request, $content);
+        $this->timeTracker->push('Substitute header section');
+        $titleTagContent = $this->generatePageTitle($request);
+        $this->pageRenderer->setTitle($titleTagContent);
+        $pageParts = $request->getAttribute('frontend.page.parts');
+        $content = $this->pageRenderer->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($content, $pageParts->getPageRendererSubstitutionHash());
+        // Replace again, because header and footer data and page renderer replacements may introduce additional placeholders (see #44825)
+        $content = $this->recursivelyReplaceIntPlaceholdersInContent($request, $content);
+        $this->timeTracker->pull();
+        return $content;
+    }
+
+    /**
      * At this point, the cacheable content has just been generated: Content is available but hasn't been added
      * to PageRenderer yet. The method is called after the "main" page content, since some JS may be inserted at that point
      * that has been registered by cacheable plugins.
@@ -243,26 +319,25 @@ class RequestHandler implements RequestHandlerInterface
      */
     protected function processHtmlBasedRenderingSettings(ServerRequestInterface $request): void
     {
-        $pageRenderer = $this->getPageRenderer();
         $typoScript = $request->getAttribute('frontend.typoscript');
         $typoScriptSetupArray = $typoScript->getSetupArray();
         $typoScriptConfigArray = $typoScript->getConfigArray();
         $typoScriptPageArray = $typoScript->getPageArray();
 
         if ($typoScriptConfigArray['moveJsFromHeaderToFooter'] ?? false) {
-            $pageRenderer->enableMoveJsFromHeaderToFooter();
+            $this->pageRenderer->enableMoveJsFromHeaderToFooter();
         }
         if ($typoScriptConfigArray['pageRendererTemplateFile'] ?? false) {
             try {
                 $resource = $this->systemResourceFactory->createResource($typoScriptConfigArray['pageRendererTemplateFile']);
-                $pageRenderer->setTemplateFile((string)$resource);
+                $this->pageRenderer->setTemplateFile((string)$resource);
             } catch (SystemResourceException) {
                 // Custom template is not set if createResource() throws
             }
         }
         $headerComment = trim($typoScriptConfigArray['headerComment'] ?? '');
         if ($headerComment) {
-            $pageRenderer->addInlineComment("\t" . str_replace(LF, LF . "\t", $headerComment) . LF);
+            $this->pageRenderer->addInlineComment("\t" . str_replace(LF, LF . "\t", $headerComment) . LF);
         }
         $htmlTagAttributes = [];
 
@@ -271,7 +346,7 @@ class RequestHandler implements RequestHandlerInterface
         if ($siteLanguage->getLocale()->isRightToLeftLanguageDirection()) {
             $htmlTagAttributes['dir'] = 'rtl';
         }
-        $docType = $pageRenderer->getDocType();
+        $docType = $this->pageRenderer->getDocType();
         // Set document type
         $docTypeParts = [];
         $xmlDocument = true;
@@ -298,7 +373,7 @@ class RequestHandler implements RequestHandlerInterface
             $docTypeParts[] = $docType->getDoctypeDeclaration();
         }
         if (!empty($docTypeParts)) {
-            $pageRenderer->setXmlPrologAndDocType(implode(LF, $docTypeParts));
+            $this->pageRenderer->setXmlPrologAndDocType(implode(LF, $docTypeParts));
         }
 
         // See https://www.w3.org/International/questions/qa-html-language-declarations.en.html#attributes
@@ -320,23 +395,23 @@ class RequestHandler implements RequestHandlerInterface
         $contentObjectRenderer->setRequest($request);
         $contentObjectRenderer->start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages');
 
-        $pageRenderer->setHtmlTag($this->generateHtmlTag($htmlTagAttributes, $typoScriptConfigArray, $contentObjectRenderer));
+        $this->pageRenderer->setHtmlTag($this->generateHtmlTag($htmlTagAttributes, $typoScriptConfigArray, $contentObjectRenderer));
 
         $headTag = $typoScriptPageArray['headTag'] ?? '<head>';
         if (isset($typoScriptPageArray['headTag.'])) {
             $headTag = $contentObjectRenderer->stdWrap($headTag, $typoScriptPageArray['headTag.']);
         }
-        $pageRenderer->setHeadTag($headTag);
+        $this->pageRenderer->setHeadTag($headTag);
 
-        $pageRenderer->addInlineComment(GeneralUtility::makeInstance(Typo3Information::class)->getInlineHeaderComment());
+        $this->pageRenderer->addInlineComment(GeneralUtility::makeInstance(Typo3Information::class)->getInlineHeaderComment());
 
         if ($typoScriptPageArray['shortcutIcon'] ?? false) {
             try {
                 $favIconResource = $this->systemResourceFactory->createPublicResource($typoScriptPageArray['shortcutIcon']);
                 if ($favIconResource instanceof SystemResourceInterface) {
-                    $pageRenderer->setIconMimeType(' type="' . $favIconResource->getMimeType() . '"');
+                    $this->pageRenderer->setIconMimeType(' type="' . $favIconResource->getMimeType() . '"');
                 }
-                $pageRenderer->setFavIcon((string)$this->resourcePublisher->generateUri($favIconResource, $request));
+                $this->pageRenderer->setFavIcon((string)$this->resourcePublisher->generateUri($favIconResource, $request));
             } catch (SystemResourceException) {
                 // FavIcon is not set if sanitize() throws
             }
@@ -374,7 +449,7 @@ class RequestHandler implements RequestHandlerInterface
                     }
                 }
                 $additionalAttributes = $this->cleanupAdditionalAttributeKeys($additionalAttributes, 'css');
-                $pageRenderer->addCssFile(
+                $this->pageRenderer->addCssFile(
                     $cssResource,
                     ($cssResourceConfig['alternate'] ?? false) ? 'alternate stylesheet' : 'stylesheet',
                     ($cssResourceConfig['media'] ?? false) ?: 'all',
@@ -406,7 +481,7 @@ class RequestHandler implements RequestHandlerInterface
                     }
                 }
                 $additionalAttributes = $this->cleanupAdditionalAttributeKeys($additionalAttributes, 'css');
-                $pageRenderer->addCssLibrary(
+                $this->pageRenderer->addCssLibrary(
                     $cssResource,
                     ($cssResourceConfig['alternate'] ?? false) ? 'alternate stylesheet' : 'stylesheet',
                     ($cssResourceConfig['media'] ?? false) ?: 'all',
@@ -448,7 +523,7 @@ class RequestHandler implements RequestHandlerInterface
                     $crossOrigin = 'anonymous';
                 }
                 $additionalAttributes = $this->cleanupAdditionalAttributeKeys($additionalAttributes, 'js');
-                $pageRenderer->addJsLibrary(
+                $this->pageRenderer->addJsLibrary(
                     $key,
                     $jsResource,
                     $jsResourceConfig['type'] ?? null,
@@ -487,7 +562,7 @@ class RequestHandler implements RequestHandlerInterface
                     $crossOrigin = 'anonymous';
                 }
                 $additionalAttributes = $this->cleanupAdditionalAttributeKeys($additionalAttributes, 'js');
-                $pageRenderer->addJsFooterLibrary(
+                $this->pageRenderer->addJsFooterLibrary(
                     $key,
                     $jsResource,
                     $jsResourceConfig['type'] ?? null,
@@ -525,7 +600,7 @@ class RequestHandler implements RequestHandlerInterface
                 if ($crossOrigin === '' && ($jsResourceConfig['integrity'] ?? false) && ($jsResourceConfig['external'] ?? false)) {
                     $crossOrigin = 'anonymous';
                 }
-                $pageRenderer->addJsFile(
+                $this->pageRenderer->addJsFile(
                     $jsResource,
                     $jsResourceConfig['type'] ?? null,
                     null,
@@ -563,7 +638,7 @@ class RequestHandler implements RequestHandlerInterface
                 if ($crossOrigin === '' && ($jsResourceConfig['integrity'] ?? false) && ($jsResourceConfig['external'] ?? false)) {
                     $crossOrigin = 'anonymous';
                 }
-                $pageRenderer->addJsFooterFile(
+                $this->pageRenderer->addJsFooterFile(
                     $jsResource,
                     $jsResourceConfig['type'] ?? null,
                     null,
@@ -584,13 +659,14 @@ class RequestHandler implements RequestHandlerInterface
 
         // Header and footer data
         if (is_array($typoScriptPageArray['headerData.'] ?? false)) {
-            $pageRenderer->addHeaderData($contentObjectRenderer->cObjGet($typoScriptPageArray['headerData.'], 'headerData.'));
+            $this->pageRenderer->addHeaderData($contentObjectRenderer->cObjGet($typoScriptPageArray['headerData.'], 'headerData.'));
         }
         if (is_array($typoScriptPageArray['footerData.'] ?? false)) {
-            $pageRenderer->addFooterData($contentObjectRenderer->cObjGet($typoScriptPageArray['footerData.'], 'footerData.'));
+            $this->pageRenderer->addFooterData($contentObjectRenderer->cObjGet($typoScriptPageArray['footerData.'], 'footerData.'));
         }
 
-        $this->typoScriptFrontendController->generatePageTitle($request);
+        $titleTagContent = $this->generatePageTitle($request);
+        $this->pageRenderer->setTitle($titleTagContent);
 
         // @internal hook for EXT:seo, will be gone soon, do not use it in your own extensions
         $_params = ['request' => $request];
@@ -599,7 +675,7 @@ class RequestHandler implements RequestHandlerInterface
             GeneralUtility::callUserFunction($_funcRef, $_params, $_ref);
         }
 
-        $this->generateHrefLangTags($request, $pageRenderer);
+        $this->generateHrefLangTags($request);
         $this->generateMetaTagHtml($typoScriptPageArray['meta.'] ?? [], $contentObjectRenderer);
 
         // Javascript inline and inline footer code
@@ -616,26 +692,26 @@ class RequestHandler implements RequestHandlerInterface
             $inlineJSint = '';
             $this->stripIntObjectPlaceholder($inlineJS, $inlineJSint);
             if ($inlineJSint) {
-                $pageRenderer->addJsInlineCode('TS_inlineJSint', $inlineJSint);
+                $this->pageRenderer->addJsInlineCode('TS_inlineJSint', $inlineJSint);
             }
             if (trim($inlineJS)) {
-                $pageRenderer->addJsFile(GeneralUtility::writeJavaScriptContentToTemporaryFile($inlineJS), null);
+                $this->pageRenderer->addJsFile(GeneralUtility::writeJavaScriptContentToTemporaryFile($inlineJS), null);
             }
             if ($inlineFooterJs) {
                 $inlineFooterJSint = '';
                 $this->stripIntObjectPlaceholder($inlineFooterJs, $inlineFooterJSint);
                 if ($inlineFooterJSint) {
-                    $pageRenderer->addJsFooterInlineCode('TS_inlineFooterJSint', $inlineFooterJSint);
+                    $this->pageRenderer->addJsFooterInlineCode('TS_inlineFooterJSint', $inlineFooterJSint);
                 }
-                $pageRenderer->addJsFooterFile(GeneralUtility::writeJavaScriptContentToTemporaryFile($inlineFooterJs), null);
+                $this->pageRenderer->addJsFooterFile(GeneralUtility::writeJavaScriptContentToTemporaryFile($inlineFooterJs), null);
             }
         } else {
             // Include only inlineJS
             if ($inlineJS) {
-                $pageRenderer->addJsInlineCode('TS_inlineJS', $inlineJS);
+                $this->pageRenderer->addJsInlineCode('TS_inlineJS', $inlineJS);
             }
             if ($inlineFooterJs) {
-                $pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs);
+                $this->pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs);
             }
         }
         if (is_array($typoScriptPageArray['inlineLanguageLabelFiles.'] ?? false)) {
@@ -647,7 +723,7 @@ class RequestHandler implements RequestHandlerInterface
                 if (isset($languageFileConfig['if.']) && !$contentObjectRenderer->checkIf($languageFileConfig['if.'])) {
                     continue;
                 }
-                $pageRenderer->addInlineLanguageLabelFile(
+                $this->pageRenderer->addInlineLanguageLabelFile(
                     $languageFile,
                     ($languageFileConfig['selectionPrefix'] ?? false) ? $languageFileConfig['selectionPrefix'] : '',
                     ($languageFileConfig['stripFromSelectionName'] ?? false) ? $languageFileConfig['stripFromSelectionName'] : ''
@@ -655,11 +731,11 @@ class RequestHandler implements RequestHandlerInterface
             }
         }
         if (is_array($typoScriptPageArray['inlineSettings.'] ?? false)) {
-            $pageRenderer->addInlineSettingArray('TS', $typoScriptPageArray['inlineSettings.']);
+            $this->pageRenderer->addInlineSettingArray('TS', $typoScriptPageArray['inlineSettings.']);
         }
         // Header complete, now the body tag is added so the regular content can be applied later-on
         if ($typoScriptConfigArray['disableBodyTag'] ?? false) {
-            $pageRenderer->addBodyContent(LF);
+            $this->pageRenderer->addBodyContent(LF);
         } else {
             $bodyTag = '<body>';
             if ($typoScriptPageArray['bodyTag'] ?? false) {
@@ -670,7 +746,7 @@ class RequestHandler implements RequestHandlerInterface
             if (trim($typoScriptPageArray['bodyTagAdd'] ?? '')) {
                 $bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim($typoScriptPageArray['bodyTagAdd']) . '>';
             }
-            $pageRenderer->addBodyContent(LF . $bodyTag);
+            $this->pageRenderer->addBodyContent(LF . $bodyTag);
         }
     }
 
@@ -696,7 +772,6 @@ class RequestHandler implements RequestHandlerInterface
      */
     protected function generateMetaTagHtml(array $metaTagTypoScript, ContentObjectRenderer $cObj)
     {
-        $pageRenderer = $this->getPageRenderer();
         $conf = $this->typoScriptService->convertTypoScriptArrayToPlainArray($metaTagTypoScript);
         foreach ($conf as $key => $properties) {
             $replace = false;
@@ -727,15 +802,10 @@ class RequestHandler implements RequestHandlerInterface
             }
             foreach ($value as $subValue) {
                 if (trim($subValue ?? '') !== '') {
-                    $pageRenderer->setMetaTag($attribute, $key, $subValue, [], $replace);
+                    $this->pageRenderer->setMetaTag($attribute, $key, $subValue, [], $replace);
                 }
             }
         }
-    }
-
-    protected function getPageRenderer(): PageRenderer
-    {
-        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 
     /**
@@ -747,12 +817,11 @@ class RequestHandler implements RequestHandlerInterface
     protected function addCssToPageRenderer(ServerRequestInterface $request, string $cssStyles, string $inlineBlockName): void
     {
         $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
-        $pageRenderer = $this->getPageRenderer();
         // This option is enabled by default on purpose
         if (empty($typoScriptConfigArray['inlineStyle2TempFile'] ?? true)) {
-            $pageRenderer->addCssInlineBlock($inlineBlockName, $cssStyles);
+            $this->pageRenderer->addCssInlineBlock($inlineBlockName, $cssStyles);
         } else {
-            $pageRenderer->addCssFile('PKG:typo3/app:' . Environment::getRelativePublicPath() . GeneralUtility::writeStyleSheetContentToTemporaryFile($cssStyles));
+            $this->pageRenderer->addCssFile('PKG:typo3/app:' . Environment::getRelativePublicPath() . GeneralUtility::writeStyleSheetContentToTemporaryFile($cssStyles));
         }
     }
 
@@ -813,13 +882,13 @@ class RequestHandler implements RequestHandlerInterface
         return $htmlTag;
     }
 
-    protected function generateHrefLangTags(ServerRequestInterface $request, PageRenderer $pageRenderer): void
+    protected function generateHrefLangTags(ServerRequestInterface $request): void
     {
         $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
         if ($typoScriptConfigArray['disableHrefLang'] ?? false) {
             return;
         }
-        $endingSlash = $pageRenderer->getDocType()->isXmlCompliant() ? '/' : '';
+        $endingSlash = $this->pageRenderer->getDocType()->isXmlCompliant() ? '/' : '';
         $hrefLangs = $this->eventDispatcher->dispatch(new ModifyHrefLangTagsEvent($request))->getHrefLangs();
         if (count($hrefLangs) > 1) {
             $data = [];
@@ -830,14 +899,12 @@ class RequestHandler implements RequestHandlerInterface
                     'href' => $href,
                 ], true), $endingSlash);
             }
-            $pageRenderer->addHeaderData(implode(LF, $data));
+            $this->pageRenderer->addHeaderData(implode(LF, $data));
         }
     }
 
     /**
      * Include the preview block in case we're looking at a hidden page in the LIVE workspace
-     *
-     * @internal this method might get moved to a PSR-15 middleware at some point
      */
     protected function displayPreviewInfoMessage(ServerRequestInterface $request, string $content): string
     {
@@ -875,11 +942,6 @@ class RequestHandler implements RequestHandlerInterface
         return $content;
     }
 
-    protected function getLanguageService(): LanguageService
-    {
-        return GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
-    }
-
     /**
      * Filter out known TypoScript attributes so that they are NOT passed along
      * to a <link rel...> or <script...> tag as additional attributes.
@@ -888,7 +950,6 @@ class RequestHandler implements RequestHandlerInterface
      * evaluated, in the addCssFile/addCssLibrary/addJsFile/addJsFooterLibrary methods.
      *
      * @param string $cleanupType: Indicate if "css" <link> or "js" <script> is cleaned up.
-     * @internal
      */
     private function cleanupAdditionalAttributeKeys(array $additionalAttributes, string $cleanupType): array
     {
@@ -900,7 +961,6 @@ class RequestHandler implements RequestHandlerInterface
             $additionalAttributes['allWrap.'],
             $additionalAttributes['forceOnTop']
         );
-
         if ($cleanupType === 'css') {
             unset(
                 $additionalAttributes['alternate'],
@@ -910,7 +970,6 @@ class RequestHandler implements RequestHandlerInterface
                 $additionalAttributes['internal']
             );
         }
-
         if ($cleanupType === 'js') {
             unset(
                 $additionalAttributes['type'],
@@ -920,7 +979,347 @@ class RequestHandler implements RequestHandlerInterface
                 $additionalAttributes['nomodule']
             );
         }
-
         return $additionalAttributes;
+    }
+
+    /**
+     * Setting the SYS_LASTCHANGED value in the page record: This value is set to the highest timestamp
+     * of records rendered on the page. This includes all records with no regard to hidden records, user
+     * protection and so on. This updates a translated "pages" record (_LOCALIZED_UID) if the Frontend
+     * is called with a translation.
+     *
+     * @see ContentObjectRenderer::lastChanged()
+     */
+    protected function updateSysLastChangedInPageRecord(ServerRequestInterface $request): void
+    {
+        // Only update if browsing the live workspace
+        $isInWorkspace = $this->context->getPropertyFromAspect('workspace', 'isOffline', false);
+        if ($isInWorkspace) {
+            return;
+        }
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        $pageParts = $request->getAttribute('frontend.page.parts');
+        $pageRecord = $pageInformation->getPageRecord();
+        if ($pageRecord['SYS_LASTCHANGED'] < $pageParts->getLastChanged()) {
+            $connection = $this->connectionPool->getConnectionForTable('pages');
+            $pageId = $pageRecord['_LOCALIZED_UID'] ?? $pageInformation->getId();
+            $connection->update('pages', ['SYS_LASTCHANGED' => $pageParts->getLastChanged()], ['uid' => (int)$pageId]);
+        }
+    }
+
+    /**
+     * Create and return page title. This ends up as HTML <head> <title> tag.
+     *
+     * @todo: This is currently called twice: Once after calculation of cached elements,
+     *        and (if exists) a second time after calculating non-cached elements. This
+     *        is due to PageRenderer rendering logic being triggered at unfortunate places.
+     *        The entire logic is odd and should be modeled and routed in a better way
+     *        when PageRenderer is disentangled.
+     */
+    protected function generatePageTitle(ServerRequestInterface $request): string
+    {
+        $site = $request->getAttribute('site');
+        $language = $request->getAttribute('language') ?? $site->getDefaultLanguage();
+        $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
+        $pageParts = $request->getAttribute('frontend.page.parts');
+        $pageInformation = $request->getAttribute('frontend.page.information');
+
+        // config.noPageTitle = 2 - means do not render the page title
+        if ((int)($typoScriptConfigArray['noPageTitle'] ?? 0) === 2) {
+            return '';
+        }
+
+        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $contentObjectRenderer->setRequest($request);
+        $contentObjectRenderer->start($pageInformation->getPageRecord(), 'pages');
+
+        // Check for a custom pageTitleSeparator, and perform stdWrap on it
+        $pageTitleSeparator = (string)$contentObjectRenderer->stdWrapValue('pageTitleSeparator', $typoScriptConfigArray);
+        if ($pageTitleSeparator !== '' && $pageTitleSeparator === ($typoScriptConfigArray['pageTitleSeparator'] ?? '')) {
+            $pageTitleSeparator .= ' ';
+        }
+
+        $titleProvider = GeneralUtility::makeInstance(PageTitleProviderManager::class);
+        $titleProvider->setPageTitleCache($pageParts->getPageTitle());
+        $pageTitle = $titleProvider->getTitle($request);
+        $pageParts->setPageTitle($titleProvider->getPageTitleCache());
+
+        $noPageTitle = (bool)($typoScriptConfigArray['noPageTitle'] ?? false);
+        $showPageTitleFirst = (bool)($typoScriptConfigArray['pageTitleFirst'] ?? false);
+        $showWebsiteTitle = (bool)($typoScriptConfigArray['showWebsiteTitle'] ?? true);
+
+        $websiteTitle = '';
+        if ($showWebsiteTitle) {
+            if (trim($language->getWebsiteTitle()) !== '') {
+                $websiteTitle = trim($language->getWebsiteTitle());
+            } else {
+                $siteConfiguration = $site->getConfiguration();
+                if (trim($siteConfiguration['websiteTitle'] ?? '') !== '') {
+                    $websiteTitle = trim($siteConfiguration['websiteTitle']);
+                }
+            }
+        }
+        $pageTitle = $noPageTitle ? '' : $pageTitle;
+        if ($pageTitle === '' || $websiteTitle === '') {
+            // only show a separator if there are both site title and page title
+            $pageTitleSeparator = '';
+        } elseif (empty($pageTitleSeparator)) {
+            // use the default separator if none given
+            $pageTitleSeparator = ': ';
+        }
+        if ($showPageTitleFirst) {
+            $titleTagContent = $pageTitle . $pageTitleSeparator . $websiteTitle;
+        } else {
+            $titleTagContent = $websiteTitle . $pageTitleSeparator . $pageTitle;
+        }
+
+        if (isset($typoScriptConfigArray['pageTitle.']) && is_array($typoScriptConfigArray['pageTitle.'])) {
+            // stdWrap for pageTitle if set in config.pageTitle.
+            $pageTitleStdWrapArray = [
+                'pageTitle' => $titleTagContent,
+                'pageTitle.' => $typoScriptConfigArray['pageTitle.'],
+            ];
+            $titleTagContent = (string)$contentObjectRenderer->stdWrapValue('pageTitle', $pageTitleStdWrapArray);
+        }
+
+        return $titleTagContent;
+    }
+
+    /**
+     * Replace non-cached element placeholders ("INT" placeholders) in content. In case the replacement
+     * adds additional placeholders, it loops until no new placeholders are found.
+     */
+    protected function recursivelyReplaceIntPlaceholdersInContent(ServerRequestInterface $request, string $content): string
+    {
+        $pageParts = $request->getAttribute('frontend.page.parts');
+        do {
+            $nonCacheableData = $pageParts->getNotCachedContentElementRegistry();
+            $content = $this->processNonCacheableContentPartsAndSubstituteContentMarkers($nonCacheableData, $request, $content);
+            // Check if there were new items added to INTincScript during the previous execution:
+            // array_diff_assoc throws notices if values are arrays but not strings. We suppress this here.
+            $nonCacheableData = @array_diff_assoc($pageParts->getNotCachedContentElementRegistry(), $nonCacheableData);
+            $reprocess = count($nonCacheableData) > 0;
+        } while ($reprocess);
+        return $content;
+    }
+
+    /**
+     * Splits content by <!--INT_SCRIPT.12345 --> and puts the content back
+     * together with content from processed content elements.
+     */
+    protected function processNonCacheableContentPartsAndSubstituteContentMarkers(array $nonCacheableData, ServerRequestInterface $request, string $incomingContent): string
+    {
+        $this->timeTracker->push('Split content');
+        // Splits content with the key.
+        $contentSplitByUncacheableMarkers = explode('<!--INT_SCRIPT.', $incomingContent);
+        $this->timeTracker->setTSlogMessage('Parts: ' . count($contentSplitByUncacheableMarkers), LogLevel::INFO);
+        $this->timeTracker->pull();
+        $content = '';
+        foreach ($contentSplitByUncacheableMarkers as $counter => $contentPart) {
+            // If the split had a comment-end after 32 characters it's probably a split-string
+            if (substr($contentPart, 32, 3) === '-->') {
+                $nonCacheableKey = 'INT_SCRIPT.' . substr($contentPart, 0, 32);
+                $nonCacheableConfig = [];
+                foreach ($nonCacheableData as $nonCacheableDataValues) {
+                    if ($nonCacheableDataValues['substKey'] === $nonCacheableKey) {
+                        $nonCacheableConfig = $nonCacheableDataValues;
+                        break;
+                    }
+                }
+                if (!empty($nonCacheableConfig)) {
+                    $label = 'Include ' . $nonCacheableConfig['type'];
+                    $this->timeTracker->push($label);
+                    $nonCacheableContent = '';
+                    $contentObjectRendererForNonCacheable = unserialize($nonCacheableConfig['cObj']);
+                    if ($contentObjectRendererForNonCacheable instanceof ContentObjectRenderer) {
+                        $contentObjectRendererForNonCacheable->setRequest($request);
+                        $nonCacheableContent = match ($nonCacheableConfig['type']) {
+                            'COA' => $contentObjectRendererForNonCacheable->cObjGetSingle('COA', $nonCacheableConfig['conf']),
+                            'FUNC' => $contentObjectRendererForNonCacheable->cObjGetSingle('USER', $nonCacheableConfig['conf']),
+                            'POSTUSERFUNC' => $contentObjectRendererForNonCacheable->callUserFunction($nonCacheableConfig['postUserFunc'], $nonCacheableConfig['conf'], $nonCacheableConfig['content']),
+                            default => '',
+                        };
+                    }
+                    $content .= $nonCacheableContent;
+                    $content .= substr($contentPart, 35);
+                    $this->timeTracker->pull($nonCacheableContent);
+                } else {
+                    $content .= substr($contentPart, 35);
+                }
+            } elseif ($counter) {
+                // If it's not the first entry (which would be "0" of the array keys), then re-add the INT_SCRIPT part
+                $content .= '<!--INT_SCRIPT.' . $contentPart;
+            } else {
+                $content .= $contentPart;
+            }
+        }
+        // Invoke permanent, general handlers. This has been implemented for nonce handling.
+        foreach ($nonCacheableData as $item) {
+            // @todo: Separate nonce handling from INT handling.
+            if (empty($item['permanent']) || empty($item['target'])) {
+                continue;
+            }
+            $parameters = array_merge($item['parameters'] ?? [], ['content' => $content]);
+            $content = GeneralUtility::callUserFunction($item['target'], $parameters) ?? $content;
+        }
+        return $content;
+    }
+
+    protected function addHttpHeadersToResponse(ServerRequestInterface $request, ResponseInterface $response, string $content): ResponseInterface
+    {
+        $pageParts = $request->getAttribute('frontend.page.parts');
+        $typoScriptConfigTree = $request->getAttribute('frontend.typoscript')->getConfigTree();
+        // @todo: Check when/if there are scenarios where attribute 'language' is not yet set in $request.
+        $language = $request->getAttribute('language') ?? $request->getAttribute('site')->getDefaultLanguage();
+
+        $response = $response->withHeader('Content-Type', $pageParts->getHttpContentType());
+
+        // Set header for content language unless disabled
+        if (empty($typoScriptConfigTree->getChildByName('disableLanguageHeader')?->getValue())) {
+            $response = $response->withHeader('Content-Language', (string)$language->getLocale());
+        }
+
+        // Add a Response header to show debug information if a page was fetched from cache
+        if ($pageParts->hasPageContentBeenLoadedFromCache()
+            && ($typoScriptConfigTree->getChildByName('debug')?->getValue() || !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']))
+        ) {
+            $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
+            $timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
+            $response = $response->withHeader(
+                'X-TYPO3-Debug-Cache',
+                'Cached page generated ' . date($dateFormat . ' ' . $timeFormat, $pageParts->getPageCacheGeneratedTimestamp()) . '.'
+                    . ' Expires ' . date($dateFormat . ' ' . $timeFormat, $pageParts->getPageCacheExpireTimestamp())
+            );
+        }
+
+        // Add cache related headers for proxy / client caching
+        $headers = $this->getClientCacheHeaders($request, $content);
+        foreach ($headers as $header => $value) {
+            $response = $response->withHeader($header, $value);
+        }
+
+        // Add additional headers if configured via TypoScript
+        $additionalHeaders = $this->getAdditionalHeadersFromTypoScript($request);
+        foreach ($additionalHeaders as $headerConfig) {
+            if ($headerConfig['statusCode']) {
+                $response = $response->withStatus((int)$headerConfig['statusCode']);
+            }
+            if ($headerConfig['replace']) {
+                $response = $response->withHeader($headerConfig['header'], $headerConfig['value']);
+            } else {
+                $response = $response->withAddedHeader($headerConfig['header'], $headerConfig['value']);
+            }
+        }
+
+        return $response;
+    }
+
+    protected function getClientCacheHeaders(ServerRequestInterface $request, string $content): array
+    {
+        $normalizedParams = $request->getAttribute('normalizedParams');
+        $pageParts = $request->getAttribute('frontend.page.parts');
+        $cacheInstruction = $request->getAttribute('frontend.cache.instruction');
+        $lifetime = $request->getAttribute('frontend.cache.collector')->resolveLifetime();
+        $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
+
+        $clientCachingPossible = $cacheInstruction->isCachingAllowed() // server side caching denied for some reason, client follows
+            && !$pageParts->hasNotCachedContentElements() // having not cached elements must disable client caching
+            && !$this->context->getAspect('frontend.user')->isUserOrGroupSet() // no client caching with logged in FE user
+            && $this->context->getPropertyFromAspect('workspace', 'isLive', true); // live workspace
+
+        if ($clientCachingPossible
+            && !$this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)
+            && (($typoScriptConfigArray['sendCacheHeadersForSharedCaches'] ?? '') === 'force'
+                || (($typoScriptConfigArray['sendCacheHeadersForSharedCaches'] ?? '') === 'auto' && $normalizedParams->isBehindReverseProxy()))
+        ) {
+            // Client side caching possible, user not logged in to BE,
+            // TypoScript "config.sendCacheHeadersForSharedCaches" takes precedence over "config.sendCacheHeaders" below.
+            return [
+                'Expires' => gmdate('D, d M Y H:i:s T', (min($GLOBALS['EXEC_TIME'] + $lifetime, PHP_INT_MAX))),
+                'ETag' => '"' . md5($content) . '"',
+                // Do not cache for private caches, but store in shared caches
+                // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#:~:text=Age%3A%20100-,s%2Dmaxage,-The%20s%2Dmaxage
+                'Cache-Control' => 'max-age=0, s-maxage=' . $lifetime,
+                'Pragma' => 'public',
+            ];
+        }
+
+        if ($clientCachingPossible
+            && !$this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)
+            && !empty($typoScriptConfigArray['sendCacheHeaders'])
+        ) {
+            // Client side caching possible, user not logged in to BE, TypoScript "config.sendCacheHeaders" configured.
+            return [
+                'Expires' => gmdate('D, d M Y H:i:s T', (min($GLOBALS['EXEC_TIME'] + $lifetime, PHP_INT_MAX))),
+                'ETag' => '"' . md5($content) . '"',
+                'Cache-Control' => 'max-age=' . $lifetime,
+                'Pragma' => 'public',
+            ];
+        }
+
+        if ($this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)) {
+            // User is logged in to BE. Add client cache information details for admin panel.
+            if ($clientCachingPossible) {
+                $this->timeTracker->setTSlogMessage('Cache-headers with max-age "' . $lifetime . '" would have been sent');
+            } else {
+                $noClientCacheReasons = [];
+                if (!$cacheInstruction->isCachingAllowed()) {
+                    $noClientCacheReasons[] = 'Caching disabled.';
+                }
+                if ($pageParts->hasNotCachedContentElements()) {
+                    $noClientCacheReasons[] = 'Not cache elements on page.';
+                }
+                if ($this->context->getPropertyFromAspect('frontend.user', 'isLoggedIn', false)) {
+                    $noClientCacheReasons[] = 'Frontend user logged in.';
+                }
+                if ($this->context->getPropertyFromAspect('workspace', 'isOffline', false)) {
+                    $noClientCacheReasons[] = 'Draft workspace selected.';
+                }
+                $this->timeTracker->setTSlogMessage('Request would not allow client side caching: "' . implode(' ', $noClientCacheReasons) . '"', LogLevel::NOTICE);
+            }
+        }
+
+        // Fallback: No client cache headers by default. Explicitly set 'private, no-store'
+        // so a .htaccess does not accidentally add unwanted default headers.
+        return [
+            'Cache-Control' => 'private, no-store',
+        ];
+    }
+
+    /**
+     * Determine additional headers from TypoScript config.additionalHeaders
+     */
+    protected function getAdditionalHeadersFromTypoScript(ServerRequestInterface $request): array
+    {
+        $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
+        if (!isset($typoScriptConfigArray['additionalHeaders.'])) {
+            return [];
+        }
+        $additionalHeaders = [];
+        $additionalHeadersConfig = $typoScriptConfigArray['additionalHeaders.'];
+        ksort($additionalHeadersConfig);
+        foreach ($additionalHeadersConfig as $options) {
+            if (!is_array($options)) {
+                continue;
+            }
+            $header = trim($options['header'] ?? '');
+            if ($header === '') {
+                continue;
+            }
+            $headerKeyValue = GeneralUtility::trimExplode(':', $header, false, 2);
+            $additionalHeaders[] = [
+                'header' => $headerKeyValue[0],
+                'value' => $headerKeyValue[1],
+                // "replace existing headers" is turned on by default, unless turned off
+                'replace' => ($options['replace'] ?? '') !== '0',
+                'statusCode' => (int)($options['httpResponseCode'] ?? 0) ?: null,
+            ];
+        }
+        return $additionalHeaders;
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
     }
 }

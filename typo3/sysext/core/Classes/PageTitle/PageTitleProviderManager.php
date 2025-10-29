@@ -19,8 +19,7 @@ namespace TYPO3\CMS\Core\PageTitle;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -29,16 +28,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * This class will take care of the different providers and returns the title with the highest priority
  */
-class PageTitleProviderManager implements SingletonInterface, LoggerAwareInterface
+class PageTitleProviderManager implements SingletonInterface
 {
-    use LoggerAwareTrait;
-
     private array $pageTitleCache = [];
 
     public function __construct(
         private readonly ContainerInterface $container,
         private readonly DependencyOrderingService $dependencyOrderingService,
         private readonly TypoScriptService $typoScriptService,
+        private readonly LoggerInterface $logger,
     ) {}
 
     public function getTitle(ServerRequestInterface $request): string

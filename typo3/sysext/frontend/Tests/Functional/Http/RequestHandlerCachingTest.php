@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Frontend\Tests\Functional\Controller;
+namespace TYPO3\CMS\Frontend\Tests\Functional\Http;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScrip
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class TypoScriptFrontendControllerTest extends FunctionalTestCase
+final class RequestHandlerCachingTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
@@ -55,7 +55,7 @@ final class TypoScriptFrontendControllerTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->setUpFrontendRootPage(
             2,
-            ['EXT:frontend/Tests/Functional/Controller/Fixtures/PageWithUserInt.typoscript']
+            ['EXT:frontend/Tests/Functional/Http/Fixtures/PageWithUserInt.typoscript']
         );
         $this->writeSiteConfiguration(
             'test',
@@ -122,7 +122,7 @@ alert(yes);', $body);
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->setUpFrontendRootPage(
             2,
-            ['EXT:frontend/Tests/Functional/Controller/Fixtures/PageWithUserObjectUsingSlWithoutLLL.typoscript']
+            ['EXT:frontend/Tests/Functional/Http/Fixtures/PageWithUserObjectUsingSlWithoutLLL.typoscript']
         );
         $this->writeSiteConfiguration(
             'test',
@@ -141,7 +141,7 @@ alert(yes);', $body);
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->setUpFrontendRootPage(
             2,
-            ['EXT:frontend/Tests/Functional/Controller/Fixtures/PageWithUserObjectUsingSlWithLLL.typoscript']
+            ['EXT:frontend/Tests/Functional/Http/Fixtures/PageWithUserObjectUsingSlWithLLL.typoscript']
         );
         $this->writeSiteConfiguration(
             'test',
@@ -160,7 +160,7 @@ alert(yes);', $body);
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->setUpFrontendRootPage(
             2,
-            ['EXT:frontend/Tests/Functional/Controller/Fixtures/PageHttpsConditionHelloWorld.typoscript']
+            ['EXT:frontend/Tests/Functional/Http/Fixtures/PageHttpsConditionHelloWorld.typoscript']
         );
         $this->writeSiteConfiguration(
             'test',
@@ -178,7 +178,7 @@ alert(yes);', $body);
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->setUpFrontendRootPage(
             2,
-            ['EXT:frontend/Tests/Functional/Controller/Fixtures/PageHttpsConditionHelloWorld.typoscript']
+            ['EXT:frontend/Tests/Functional/Http/Fixtures/PageHttpsConditionHelloWorld.typoscript']
         );
         $this->writeSiteConfiguration(
             'test',
@@ -196,7 +196,7 @@ alert(yes);', $body);
         $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
         $this->setUpFrontendRootPage(
             2,
-            ['EXT:frontend/Tests/Functional/Controller/Fixtures/PageHttpsConditionHelloWorld.typoscript'],
+            ['EXT:frontend/Tests/Functional/Http/Fixtures/PageHttpsConditionHelloWorld.typoscript'],
         );
         $this->writeSiteConfiguration(
             'test',

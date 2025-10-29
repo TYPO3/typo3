@@ -35,10 +35,7 @@ final class RequestHandlerTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
-        $this->writeSiteConfiguration(
-            'RequestHandlerTest',
-            $this->buildSiteConfiguration(1, '/'),
-        );
+        $this->writeSiteConfiguration('RequestHandlerTest', $this->buildSiteConfiguration(1, '/'));
     }
 
     public static function generateHtmlTagUsingTypoScriptDataProvider(): array
@@ -47,7 +44,7 @@ final class RequestHandlerTest extends FunctionalTestCase
             'empty TypoScript config.' => [
                 [
                     'page = PAGE',
-                ], // 'config {}' section of TypoScript, one row per line
+                ],
                 '<html lang="en-US">',
             ],
             'disable all attributes' => [
@@ -95,9 +92,9 @@ final class RequestHandlerTest extends FunctionalTestCase
 
     #[DataProvider('generateHtmlTagUsingTypoScriptDataProvider')]
     #[Test]
-    public function generateHtmlTagUsingTypoScript(array $typoScriptSetupConfig, string $expectedResult): void
+    public function generateHtmlTagUsingTypoScript(array $typoScriptSetup, string $expectedResult): void
     {
-        $this->setUpFrontendRootPage(1, [], ['config' => implode("\n", $typoScriptSetupConfig)]);
+        $this->setUpFrontendRootPage(1, [], ['config' => implode("\n", $typoScriptSetup)]);
         $response = $this->executeFrontendSubRequest((new InternalRequest('https://website.local/'))->withPageId(1));
         self::assertStringContainsString($expectedResult, (string)$response->getBody());
     }

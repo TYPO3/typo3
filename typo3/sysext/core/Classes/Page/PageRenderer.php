@@ -77,9 +77,6 @@ class PageRenderer implements SingletonInterface
      */
     protected array $cssLibs = [];
 
-    /**
-     * The title of the page
-     */
     protected string $title = '';
     protected string $favIcon = '';
 
@@ -237,18 +234,10 @@ class PageRenderer implements SingletonInterface
         $this->javaScriptRenderer = JavaScriptRenderer::create();
     }
 
-    /*****************************************************/
-    /*                                                   */
-    /*  Public Setters                                   */
-    /*                                                   */
-    /*                                                   */
-    /*****************************************************/
     /**
-     * Sets the title
-     *
-     * @param string $title	title of webpage
+     * Content of <title> tag in <html><head>
      */
-    public function setTitle($title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
@@ -397,12 +386,7 @@ class PageRenderer implements SingletonInterface
         $this->moveJsFromHeaderToFooter = false;
     }
 
-    /**
-     * Gets the title
-     *
-     * @return string $title Title of webpage
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }

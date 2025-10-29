@@ -39,12 +39,12 @@ class ExtbasePluginContentObject extends AbstractContentObject
         $extbaseBootstrap = GeneralUtility::makeInstance(Bootstrap::class);
         $extbaseBootstrap->setContentObjectRenderer($this->getContentObjectRenderer());
         if ($this->cObj->getUserObjectType() === false) {
-            // Come here only if we are not called from $TSFE->processNonCacheableContentPartsAndSubstituteContentMarkers()!
+            // Come here only if we are not called as non-cached element
             $this->cObj->setUserObjectType(ContentObjectRenderer::OBJECTTYPE_USER);
         }
         $request = $extbaseBootstrap->initialize($conf, $this->request);
         $content = $extbaseBootstrap->handleFrontendRequest($request);
-        // Rendering is deferred, as the action should not be cached, we pump this now to TSFE to be executed later-on
+        // Rendering is deferred, as the action should not be cached. Register as non cached element.
         if ($this->cObj->doConvertToUserIntObject) {
             $this->cObj->doConvertToUserIntObject = false;
             // @todo: this should be removed in the future when FE chains allows more "uncacheables" than USER_INTs

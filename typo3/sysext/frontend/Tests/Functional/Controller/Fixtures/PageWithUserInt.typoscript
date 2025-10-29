@@ -1,3 +1,0 @@
-page = PAGE
-page.10 = USER_INT
-page.10.userFunc = TYPO3\CMS\Frontend\Tests\Functional\Controller\Fixtures\TypoScriptFrontendControllerTestUserFuncs->userIntCallback

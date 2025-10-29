@@ -80,6 +80,8 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
         private ErrorController $errorController,
         private TimeTracker $timeTracker,
         private PageInformationFactory $pageInformationFactory,
+        // injecting this central stateful singleton. this is usually a smell, but ok in this case as exception.
+        private PageRenderer $pageRenderer,
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -183,7 +185,6 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
             }
         }
 
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         if (is_array($pageCacheRow)) {
             // Got page from cache. Set up system state with it.
             $pageParts->setPageContentWasLoadedFromCache();
@@ -198,7 +199,7 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
             $pageParts->setPageRendererSubstitutionHash($pageCacheRow['pageRendererSubstitutionHash']);
             if ($pageCacheRow['pageRendererState'] ?? false) {
                 $pageRendererState = unserialize($pageCacheRow['pageRendererState'], ['allowed_classes' => [Locale::class]]);
-                $pageRenderer->updateState($pageRendererState);
+                $this->pageRenderer->updateState($pageRendererState);
             }
             if ($pageCacheRow['assetCollectorState'] ?? false) {
                 $assetCollectorState = unserialize($pageCacheRow['assetCollectorState'], ['allowed_classes' => false]);
@@ -215,14 +216,12 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
             }
         } else {
             // Init FE PageRenderer defaults when this page needs to be generated
-            $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-            $language = $request->getAttribute('language') ?? $request->getAttribute('site')->getDefaultLanguage();
             if ($language->hasCustomTypo3Language()) {
                 $locale = GeneralUtility::makeInstance(Locales::class)->createLocale($language->getTypo3Language());
             } else {
                 $locale = $language->getLocale();
             }
-            $pageRenderer->setLanguage($locale);
+            $this->pageRenderer->setLanguage($locale);
             $pageParts->setPageRendererSubstitutionHash(md5(StringUtility::getUniqueId()));
             $pageParts->setPageCacheGeneratedTimestamp($GLOBALS['EXEC_TIME']);
         }

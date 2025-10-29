@@ -15,14 +15,14 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Frontend\Tests\Functional\Controller\Fixtures;
+namespace TYPO3\CMS\Frontend\Tests\Functional\Http\Fixtures;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-final readonly class TypoScriptFrontendControllerTestUserFuncs
+final readonly class RequestHandlerTestUserFuncs
 {
     /**
      * A USER_INT method referenced in PageWithUserInt.typoscript
