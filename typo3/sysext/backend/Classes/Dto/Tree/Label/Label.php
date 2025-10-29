@@ -23,6 +23,8 @@ final readonly class Label implements \JsonSerializable
         public string $label,
         public string $color = '#ff8700',
         public int $priority = 0,
+        /** @internal Only to be used by TYPO3 core */
+        public bool $inheritByChildren = true,
     ) {}
 
     public function jsonSerialize(): array

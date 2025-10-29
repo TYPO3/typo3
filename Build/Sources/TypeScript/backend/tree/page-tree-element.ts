@@ -477,6 +477,18 @@ class PageTreeToolbar extends TreeToolbar {
   @property({ type: EditablePageTree })
   override tree: EditablePageTree = null;
 
+  @property({ type: Boolean })
+  searchInTranslatedPages: boolean = false;
+
+  protected override updated(changedProperties: Map<PropertyKey, unknown>): void {
+    super.updated(changedProperties);
+
+    // Update searchInTranslatedPages when tree property changes (initial load or tree replacement)
+    if (changedProperties.has('tree') && this.tree?.settings?.searchInTranslatedPagesEnabled !== undefined) {
+      this.searchInTranslatedPages = this.tree.settings.searchInTranslatedPagesEnabled;
+    }
+  }
+
   protected override render(): TemplateResult {
     /* eslint-disable @stylistic/indent */
     return html`
@@ -542,10 +554,49 @@ class PageTreeToolbar extends TreeToolbar {
                 </span>
               </button>
             </li>
+            ${this.tree?.settings?.searchInTranslatedPagesAvailable ? html`
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li>
+                <button class="dropdown-item" @click="${() => this.toggleTranslationSearch()}">
+                  <span class="dropdown-item-columns">
+                    <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                      <typo3-backend-icon identifier="${this.searchInTranslatedPages ? 'actions-check-square' : 'actions-selection'}" size="small"></typo3-backend-icon>
+                    </span>
+                    <span class="dropdown-item-column dropdown-item-column-title">
+                      ${lll('tree.search_in_translated_pages')}
+                    </span>
+                  </span>
+                </button>
+              </li>
+            ` : nothing}
           </ul>
         </div>
       </div>
     `;
+  }
+
+  protected async toggleTranslationSearch(): Promise<void> {
+    const newValue = !this.searchInTranslatedPages;
+
+    try {
+      await Persistent.set('pageTree_searchInTranslatedPages', newValue ? '1' : '0');
+
+      // Update both local state and tree settings
+      this.searchInTranslatedPages = newValue;
+      if (this.tree?.settings) {
+        this.tree.settings.searchInTranslatedPagesEnabled = newValue;
+      }
+
+      // Refresh the tree if there's an active search
+      const searchInput = this.querySelector('.search-input') as HTMLInputElement;
+      if (searchInput && searchInput.value.trim() !== '') {
+        this.refreshTree();
+      }
+    } catch (error) {
+      console.error('Failed to toggle translation search:', error);
+    }
   }
 
   protected handleDragStart(event: DragEvent, item: any): void {

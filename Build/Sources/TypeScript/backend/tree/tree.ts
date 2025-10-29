@@ -94,6 +94,7 @@ export class Tree extends LitElement {
   @state() currentScrollPosition: number = 0;
   @state() currentVisibleHeight: number = 0;
   @state() searchTerm: string|null = null;
+  @state() searchResults: number = 0;
   @state() loading: boolean = false;
 
   @state() hoveredNode: TreeNodeInterface|null = null;
@@ -422,11 +423,13 @@ export class Tree extends LitElement {
         .then((response: AjaxResponse) => response.resolve())
         .then((json) => {
           const nodes = Array.isArray(json) ? json : [];
+          this.searchResults = nodes.length;
           if (nodes.length > 0) {
             if (this.unfilteredNodes === '') {
               this.unfilteredNodes = JSON.stringify(this.nodes);
             }
             this.nodeMap = new TreeNodeMap(this.enhanceNodes(nodes));
+            this.searchResults = nodes.length;
           }
         })
         .catch((error: any) => {
@@ -451,6 +454,7 @@ export class Tree extends LitElement {
   public resetFilter(): void
   {
     this.searchTerm = '';
+    this.searchResults = 0;
     if (this.unfilteredNodes.length > 0) {
       const currentlySelected = this.getSelectedNodes()[0];
       if (typeof currentlySelected === 'undefined') {
@@ -1118,9 +1122,11 @@ export class Tree extends LitElement {
   protected createNodeContentLabel(node: TreeNodeInterface): TemplateResult
   {
     const label = (node.prefix || '') + node.name + (node.suffix || '');
-
     let nodeContent: Array<TemplateResult|string> | string = label;
-    if (this.searchTerm) {
+    // In case active search is happening, there are max 100 results, and the search term is at least 2 characters long
+    // or contains a number (which might indicate search for ids) > highlight the search term in the label.
+    // Note: This only works for default pages.
+    if (this.searchTerm && this.searchResults <= 100 && (this.searchTerm.length > 1 || /\d/.test(this.searchTerm))) {
       // Escape all meta characters of regular expressions: ( ) [ ] $ * + ? . { } / | ^ -
       // Also wrap the search term in a capture group so the regex split retains the separator
       const regexp = new RegExp(`(${this.searchTerm.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
@@ -1310,7 +1316,8 @@ export class Tree extends LitElement {
       return [];
     }
 
-    return this.getNodeLabels(parentNode);
+    // Inherit labels from parent, but only those that allow inheritance
+    return this.getNodeLabels(parentNode).filter(label => label.inheritByChildren);
   }
 
   protected getNodeStatusInformation(node: TreeNodeInterface): TreeNodeStatusInformation[] {

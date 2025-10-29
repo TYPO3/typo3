@@ -2,6 +2,7 @@ options.enableBookmarks = 1
 
 options.pageTree {
   doktypesToShowInNewPageDragArea := addToList(1,6,4,7,3,254,199)
+  searchInTranslatedPages = 1
 }
 
 options.contextMenu {

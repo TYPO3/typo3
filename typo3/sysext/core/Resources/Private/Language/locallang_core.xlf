@@ -1335,6 +1335,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="sortable.dragmove">
 				<source>Drag to move</source>
 			</trans-unit>
+			<trans-unit id="tree.search_in_translated_pages">
+				<source>Search in translated pages</source>
+			</trans-unit>
 			<trans-unit id="tree.searchTermInfo">
 				<source>Enter search term</source>
 			</trans-unit>

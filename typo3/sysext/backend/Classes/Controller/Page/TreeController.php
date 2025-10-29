@@ -141,16 +141,31 @@ class TreeController
      */
     public function fetchConfigurationAction(): ResponseInterface
     {
+        $backendUser = $this->getBackendUser();
+        $userTsConfig = $backendUser->getTSConfig();
+
+        // Check if translation search feature is generally available (TSconfig setting)
+        $translationSearchAvailable = (bool)($userTsConfig['options.']['pageTree.']['searchInTranslatedPages'] ?? true);
+
+        // Determine if translation search is enabled by the user preference - otherwise TSconfig setting applies
+        $translationSearchEnabled = $translationSearchAvailable
+            && (
+                !isset($backendUser->uc['pageTree_searchInTranslatedPages'])
+                || $backendUser->uc['pageTree_searchInTranslatedPages']
+            );
+
         $configuration = [
             'allowDragMove' => $this->isDragMoveAllowed(),
             'doktypes' => $this->getDokTypes(),
-            'displayDeleteConfirmation' => $this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE),
-            'temporaryMountPoint' => $this->getMountPointPath((int)($this->getBackendUser()->uc['pageTree_temporaryMountPoint'] ?? 0)),
+            'displayDeleteConfirmation' => $backendUser->jsConfirmation(JsConfirmation::DELETE),
+            'temporaryMountPoint' => $this->getMountPointPath((int)($backendUser->uc['pageTree_temporaryMountPoint'] ?? 0)),
             'showIcons' => true,
             'dataUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_data'),
             'rootlineUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_rootline'),
             'filterUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_filter'),
             'setTemporaryMountPointUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_set_temporary_mount_point'),
+            'searchInTranslatedPagesEnabled' => $translationSearchEnabled,
+            'searchInTranslatedPagesAvailable' => $translationSearchAvailable,
         ];
 
         return new JsonResponse($configuration);
@@ -402,6 +417,8 @@ class TreeController
             // _page is only for use in events so they do not need to fetch those
             // records again. The property will be removed from the final payload.
             '_page' => $page,
+            // _translationLanguageUids contains the language UIDs for translations that matched (only populated during search)
+            '_translationLanguageUids' => $this->pageTreeRepository->getTranslationMatches($pageId),
             'doktype' => (int)($page['doktype'] ?? 0),
             'nameSourceField' => $nameSourceField,
             'mountPoint' => $entryPoint,

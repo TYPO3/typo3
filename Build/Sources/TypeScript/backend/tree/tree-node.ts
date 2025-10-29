@@ -38,6 +38,7 @@ export interface TreeNodeLabel {
   label: string,
   color: string,
   priority: number,
+  inheritByChildren: boolean,
 }
 
 /**

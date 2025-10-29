@@ -240,6 +240,18 @@
 			<trans-unit id="colorScheme.dark">
 				<source>Dark mode</source>
 			</trans-unit>
+			<trans-unit id="pageTree.found_translation">
+				<source>Found translation</source>
+			</trans-unit>
+			<trans-unit id="pageTree.found_in_translation">
+				<source>Found in translation: %s</source>
+			</trans-unit>
+			<trans-unit id="pageTree.found_in_multiple_translations">
+				<source>Found in multiple translations</source>
+			</trans-unit>
+			<trans-unit id="pageTree.searchResult">
+				<source>Search result</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

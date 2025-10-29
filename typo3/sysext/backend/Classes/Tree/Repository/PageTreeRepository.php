@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Backend\Tree\Repository;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -27,6 +29,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\PlainDataResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -68,6 +71,8 @@ class PageTreeRepository
     protected ?string $additionalWhereClause = null;
 
     protected EventDispatcherInterface $eventDispatcher;
+
+    protected readonly FrontendInterface $runtimeCache;
 
     /**
      * @param int $workspaceId the workspace ID to be checked for.
@@ -115,6 +120,7 @@ class PageTreeRepository
 
         // @todo: use DI in the future
         $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
+        $this->runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
         $this->quotedFields = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages')
             ->quoteIdentifiersForSelect($this->fields);
@@ -123,6 +129,17 @@ class PageTreeRepository
     public function setAdditionalWhereClause(string $additionalWhereClause): void
     {
         $this->additionalWhereClause = $additionalWhereClause;
+    }
+
+    /**
+     * Get translation language UIDs that matched for a specific page UID
+     *
+     * @return int[]
+     */
+    public function getTranslationMatches(int $pageUid): array
+    {
+        $translationMatches = $this->runtimeCache->get('pageTree_translationMatches') ?: [];
+        return $translationMatches[$pageUid] ?? [];
     }
 
     /**
@@ -247,7 +264,7 @@ class PageTreeRepository
         $queryBuilder
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
+                $queryBuilder->expr()->eq('sys_language_uid', 0)
             )
             // ensure deterministic sorting
             ->orderBy('sorting', 'ASC')
@@ -374,7 +391,7 @@ class PageTreeRepository
             ->from('pages')
             ->where(
                 // Only show records in default language
-                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
+                $queryBuilder->expr()->eq('sys_language_uid', 0)
             );
 
         if (!empty($this->additionalWhereClause)) {
@@ -536,7 +553,7 @@ class PageTreeRepository
             // Include live records PLUS records from the given workspace
             $workspaceIdExpression = $expressionBuilder->in(
                 't3ver_wsid',
-                [0, $this->currentWorkspace]
+                $queryBuilder->createNamedParameter([0, $this->currentWorkspace], Connection::PARAM_INT_ARRAY)
             );
         }
 
@@ -545,10 +562,13 @@ class PageTreeRepository
             ->from('pages')
             ->where(
                 // Only show records in default language
-                $expressionBuilder->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                $expressionBuilder->eq('sys_language_uid', 0),
                 $workspaceIdExpression,
                 QueryHelper::stripLogicalOperatorPrefix($additionalWhereClause)
             );
+
+        // Clear translation matches cache for new search
+        $this->runtimeCache->remove('pageTree_translationMatches');
 
         // Allow to extend search parts and search uids
         $event = $this->eventDispatcher->dispatch(
@@ -560,24 +580,27 @@ class PageTreeRepository
         if (!empty($searchUids)) {
             // Ensure that the LIVE id is also found
             if ($this->currentWorkspace > 0) {
-                $uidFilter = $expressionBuilder->or(
+                $uidConditions = [
                     // Check for UID of live record
                     $expressionBuilder->and(
                         $expressionBuilder->in('uid', $queryBuilder->createNamedParameter($searchUids, Connection::PARAM_INT_ARRAY)),
-                        $expressionBuilder->eq('t3ver_wsid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                        $expressionBuilder->eq('t3ver_wsid', 0),
                     ),
                     // Check for UID of live record in versioned record
                     $expressionBuilder->and(
                         $expressionBuilder->in('t3ver_oid', $queryBuilder->createNamedParameter($searchUids, Connection::PARAM_INT_ARRAY)),
                         $expressionBuilder->eq('t3ver_wsid', $queryBuilder->createNamedParameter($this->currentWorkspace, Connection::PARAM_INT)),
                     ),
-                    // Check for UID for new or moved versioned record
-                    $expressionBuilder->and(
-                        $expressionBuilder->eq('uid', $queryBuilder->createNamedParameter($searchFilter, Connection::PARAM_INT)),
-                        $expressionBuilder->eq('t3ver_oid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                ];
+                // Check for UID for new or moved versioned record (only if searchFilter is numeric)
+                if (MathUtility::canBeInterpretedAsInteger($searchFilter)) {
+                    $uidConditions[] = $expressionBuilder->and(
+                        $expressionBuilder->eq('uid', $queryBuilder->createNamedParameter((int)$searchFilter, Connection::PARAM_INT)),
+                        $expressionBuilder->eq('t3ver_oid', 0),
                         $expressionBuilder->eq('t3ver_wsid', $queryBuilder->createNamedParameter($this->currentWorkspace, Connection::PARAM_INT)),
-                    )
-                );
+                    );
+                }
+                $uidFilter = $expressionBuilder->or(...$uidConditions);
             } else {
                 $uidFilter = $expressionBuilder->in('uid', $queryBuilder->createNamedParameter($searchUids, Connection::PARAM_INT_ARRAY));
             }

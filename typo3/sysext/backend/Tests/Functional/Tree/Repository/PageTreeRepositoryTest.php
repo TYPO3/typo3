@@ -631,4 +631,120 @@ final class PageTreeRepositoryTest extends FunctionalTestCase
         self::assertStringContainsString('pid = 31', preg_replace('/["\'`]/', '', (string)$beforePageTreeIsFilteredEvent->searchParts));
         self::assertEquals([31, 432], $beforePageTreeIsFilteredEvent->searchUids);
     }
+
+    #[Test]
+    public function fetchFilteredTreeFindsDefaultLanguagePageWhenSearchingForTranslatedPageTitle(): void
+    {
+        // Create a German translation of "Main Area Sub 1" (uid 20)
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/TranslatedPages.csv');
+
+        $pageTreeRepository = new PageTreeRepository(0);
+        $pageTreeRepository->fetchFilteredTree('Hauptbereich Unterseite 1', [1], '');
+        $actual = $pageTreeRepository->getTree(1, null, [1]);
+        $actual = $this->sortTreeArray([$actual]);
+        $keepProperties = array_flip(['uid', 'title', '_children']);
+        $actual = $this->normalizeTreeArray($actual, $keepProperties);
+
+        $expectedResult = [
+            'uid' => 1,
+            'title' => 'Home',
+            '_children' => [
+                [
+                    'uid' => 2,
+                    'title' => 'Main Area',
+                    '_children' => [
+                        [
+                            'uid' => 20,
+                            'title' => 'Main Area Sub 1',
+                            '_children' => [],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        self::assertEquals($expectedResult, $actual[0]);
+    }
+
+    #[Test]
+    public function fetchFilteredTreeDoesNotFindTranslatedPageWhenDisabledViaTSConfig(): void
+    {
+        // Create a German translation of "Main Area Sub 1" (uid 20)
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/TranslatedPages.csv');
+
+        // Create a backend user with TSconfig that disables searching in translated pages
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users_no_translated_search.csv');
+        $this->setUpBackendUser(2);
+
+        $pageTreeRepository = new PageTreeRepository(0);
+        $pageTreeRepository->fetchFilteredTree('Hauptbereich Unterseite 1', [0], '');
+        $actual = $pageTreeRepository->getTree(0, null, [0]);
+        $actual = $this->sortTreeArray([$actual]);
+
+        $expectedResult = [
+            'uid' => 0,
+            'title' => 'New TYPO3 site',
+            '_children' => [],
+        ];
+
+        $keepProperties = array_flip(['uid', 'title', '_children']);
+        $actual = $this->normalizeTreeArray($actual, $keepProperties);
+        self::assertEquals($expectedResult, $actual[0]);
+    }
+
+    #[Test]
+    public function fetchFilteredTreeRespectsUserAllowedLanguages(): void
+    {
+        // Create translations in language 1 (German) and language 2 (French)
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/TranslatedPagesMultipleLanguages.csv');
+        // Create a backend user with a group that only allows language 1
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users_language_restricted.csv');
+        $this->setUpBackendUser(3);
+
+        // Search for a term that exists in language 2 (French) only
+        // This should NOT find the page because language 2 is not allowed
+        $pageTreeRepository = new PageTreeRepository(0);
+        $pageTreeRepository->fetchFilteredTree('Sous-page principale', [0], '');
+        $actual = $pageTreeRepository->getTree(0, null, [0]);
+        $actual = $this->sortTreeArray([$actual]);
+
+        $expectedResult = [
+            'uid' => 0,
+            'title' => 'New TYPO3 site',
+            '_children' => [],
+        ];
+
+        $keepProperties = array_flip(['uid', 'title', '_children']);
+        $actual = $this->normalizeTreeArray($actual, $keepProperties);
+        self::assertEquals($expectedResult, $actual[0]);
+
+        // Search for a term that exists in language 1 (German) only
+        // This SHOULD find the page because language 1 is allowed
+        $pageTreeRepository = new PageTreeRepository(0);
+        $pageTreeRepository->fetchFilteredTree('Hauptbereich', [1], '');
+        $actual = $pageTreeRepository->getTree(1, null, [1]);
+        $actual = $this->sortTreeArray([$actual]);
+        $keepProperties = array_flip(['uid', 'title', '_children']);
+        $actual = $this->normalizeTreeArray($actual, $keepProperties);
+
+        $expectedResult = [
+            'uid' => 1,
+            'title' => 'Home',
+            '_children' => [
+                [
+                    'uid' => 2,
+                    'title' => 'Main Area',
+                    '_children' => [
+                        [
+                            'uid' => 20,
+                            'title' => 'Main Area Sub 1',
+                            '_children' => [],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        self::assertEquals($expectedResult, $actual[0]);
+    }
 }

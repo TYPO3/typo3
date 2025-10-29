@@ -590,8 +590,8 @@ final class TreeControllerTest extends FunctionalTestCase
                 sha1(random_bytes(10)),
                 [],
             ],
-            'search for "groups" (live value, but changed in workspace)' => [
-                'Groups',
+            'search for "EN: Groups" (live value, but changed in workspace)' => [
+                'EN: Groups', // Specific search for EN title to prevent translated pages with same title to be found
                 [],
             ],
             'search for "teams" (workspace value)' => [
