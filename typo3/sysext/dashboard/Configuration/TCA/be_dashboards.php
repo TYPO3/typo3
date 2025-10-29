@@ -2,7 +2,7 @@
 
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_tca.xlf:be_dashboard',
+        'title' => 'dashboard.tca:be_dashboard',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -27,7 +27,7 @@ return [
             ],
         ],
         'identifier' => [
-            'label' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_tca.xlf:identifier',
+            'label' => 'dashboard.tca:identifier',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -36,7 +36,7 @@ return [
             ],
         ],
         'title' => [
-            'label' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_tca.xlf:title',
+            'label' => 'dashboard.tca:title',
             'config' => [
                 'type' => 'input',
                 'size' => 30,

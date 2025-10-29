@@ -5,7 +5,7 @@ defined('TYPO3') or die();
 call_user_func(static function () {
     $additionalColumns = [
         'availableWidgets' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:availableWidgets',
+            'label' => 'core.tca:availableWidgets',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
