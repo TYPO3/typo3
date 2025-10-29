@@ -66,14 +66,12 @@ readonly class ExtractorRegistry
     }
 
     /**
-     * @deprecated no-op. Will be removed with TYPO3 v15, classes implementing ExtractorInterface are registered automatically.
+     * @deprecated remove in v15
      */
     public function registerExtractionService(): void
     {
-        trigger_error(
-            'ExtractorRegistry::registerExtractionService has been deprecated in TYPO3 v14 and will be removed in TYPO3 v15. Implementing the ExtractorInterface automatically registers the class.',
-            E_USER_DEPRECATED
-        );
+        // Method kept for backwards compatibility, but does nothing.
+        // Registration happens automatically via ExtractorInterface.
     }
 
     /**

@@ -6660,7 +6660,7 @@ return [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-107783-RegistrationOfMetadataExtractorsViaRegisterExtractionService.rst',
+            'Breaking-107783-RemovedRegisterExtractionService.rst',
         ],
     ],
     'TYPO3\CMS\Core\Imaging\GraphicalFunctions->gif_or_jpg' => [
