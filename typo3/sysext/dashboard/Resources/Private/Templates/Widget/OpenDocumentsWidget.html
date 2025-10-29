@@ -1,0 +1,60 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+<f:layout name="Widget/Widget"/>
+<f:section name="main">
+    <f:if condition="{items}">
+        <f:then>
+            <div class="widget-table-wrapper">
+                <table class="widget-table table table-striped table-hover">
+                    <tbody>
+                    <f:for each="{items}" as="item">
+                        <tr>
+                            <td class="col-document">
+                                <nav class="breadcrumb breadcrumb-collapsible" aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:breadcrumb')}">
+                                    <f:if condition="{item.type}">
+                                        <div role="presentation" class="breadcrumb-item breadcrumb-item-first">
+                                            <span class="breadcrumb-element" title="{item.type}">
+                                                <core:icon identifier="{item.typeIcon}" size="small" />
+                                                <span class="breadcrumb-element-label">{item.type}</span>
+                                            </span>
+                                        </div>
+                                    </f:if>
+                                    <f:if condition="{item.breadcrumb}">
+                                        <div role="presentation" class="breadcrumb-item">
+                                            <span class="breadcrumb-element" title="{item.breadcrumb}">
+                                                <span class="breadcrumb-element-label">{item.breadcrumb}</span>
+                                            </span>
+                                        </div>
+                                    </f:if>
+                                    <div role="presentation" class="breadcrumb-item breadcrumb-item-last">
+                                        <a href="{item.uri}" class="breadcrumb-element" title="{item.title}" aria-current="page">
+                                            <core:iconForRecord table="{item.table}" row="{item.record}" size="small" />
+                                            <span class="breadcrumb-element-label">{item.title}</span>
+                                        </a>
+                                    </div>
+                                </nav>
+                            </td>
+                        </tr>
+                    </f:for>
+                    </tbody>
+                </table>
+            </div>
+        </f:then>
+        <f:else>
+            <div class="callout callout-info">
+                <div class="callout-icon">
+                <span class="icon-emphasized">
+                    <core:icon identifier="content-widget-list" />
+                </span>
+                </div>
+                <div class="callout-content">
+                    <div class="callout-title">
+                        {f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:open_documents.empty')}
+                    </div>
+                </div>
+            </div>
+        </f:else>
+    </f:if>
+</f:section>
+</html>

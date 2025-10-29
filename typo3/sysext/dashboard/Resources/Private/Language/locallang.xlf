@@ -294,6 +294,27 @@
       <trans-unit id="dashboard.empty.content.button">
         <source>Add a widget</source>
       </trans-unit>
+      <trans-unit id="open_documents.title">
+        <source>Recently opened documents</source>
+      </trans-unit>
+      <trans-unit id="open_documents.description">
+        <source>Displays recently accessed documents in the system.</source>
+      </trans-unit>
+      <trans-unit id="open_documents.empty">
+        <source>No recently opened document found</source>
+      </trans-unit>
+      <trans-unit id="open_documents.column.time">
+        <source>Time</source>
+      </trans-unit>
+      <trans-unit id="open_documents.column.document">
+        <source>Documents</source>
+      </trans-unit>
+      <trans-unit id="open_documents.settings.limit">
+        <source>Number of documents to display</source>
+      </trans-unit>
+      <trans-unit id="open_documents.settings.limit.description">
+        <source>Maximum number of documents entries to show in the widget</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

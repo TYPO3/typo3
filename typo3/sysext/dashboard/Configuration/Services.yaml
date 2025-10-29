@@ -228,3 +228,29 @@ services:
         iconIdentifier: 'content-widget-list'
         height: 'medium'
         width: 'medium'
+
+  TYPO3\CMS\Dashboard\Widgets\OpenDocumentsWidget:
+    arguments:
+      $configuration: '@dashboard.widget.openDocs'
+      $dataProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\RecentlyOpenedDocuments'
+      $backendViewFactory: '@TYPO3\CMS\Backend\View\BackendViewFactory'
+    tags:
+      - name: dashboard.widget
+        identifier: 'openDocs'
+        groupNames: 'content'
+        title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:open_documents.title'
+        description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:open_documents.description'
+        iconIdentifier: 'content-widget-list'
+        height: 'medium'
+        width: 'medium'
+
+  dashboard.widget.openDocs:
+    class: 'TYPO3\CMS\Dashboard\Widgets\WidgetConfiguration'
+    arguments:
+      $identifier: 'openDocs'
+      $groupNames: [ 'general' ]
+      $title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:open_documents.title'
+      $description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:open_documents.description'
+      $iconIdentifier: 'content-dashboard'
+      $height: 'medium'
+      $width: 'medium'
