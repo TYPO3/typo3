@@ -264,6 +264,7 @@ class NewContentElementController
             $groupItems = [];
             $wizardElements = $wizardGroup['elements.'] ?? [];
             if (is_array($wizardElements)) {
+                $wizardElements = $this->orderElements($wizardElements);
                 foreach ($wizardElements as $itemKey => $itemConf) {
                     $itemKey = rtrim($itemKey, '.');
                     if ($itemConf !== []) {
@@ -352,6 +353,63 @@ class NewContentElementController
         }
         $mergedWizards = array_replace_recursive($contentElementWizards, $pageTsConfigWizards);
         return $mergedWizards;
+    }
+
+    /**
+     * Orders elements within a wizard group using before/after configuration.
+     * Similar to orderWizards() but for individual content elements.
+     */
+    protected function orderElements(array $elements): array
+    {
+        // Check if any element has before/after configuration
+        // and return early if no reordering is required.
+        if (!$this->hasPositionalArguments($elements)) {
+            return $elements;
+        }
+
+        // Prepare elements for dependency ordering.
+        // Create implicit chain based on initial order for consecutive elements
+        // without explicit dependencies, preserving relative order while allowing
+        // explicit positioning.
+        $preparedElements = [];
+
+        // First pass: prepare all elements with their explicit dependencies
+        foreach ($elements as $elementKey => $element) {
+            $preparedElement = $element;
+            // Prepare before/after values (they might be comma-separated strings)
+            $preparedElement = $this->prepareDependencyOrdering($preparedElement, 'before');
+            $preparedElement = $this->prepareDependencyOrdering($preparedElement, 'after');
+            $preparedElements[$elementKey] = $preparedElement;
+        }
+
+        // Second pass: add implicit chain for consecutive elements without explicit dependencies
+        // This preserves relative order within blocks, while explicit dependencies can reorder them
+        $previousIndependentElementKey = null;
+        foreach ($elements as $elementKey => $element) {
+            $isIndependent = empty($element['before']) && empty($element['after']);
+            if ($isIndependent) {
+                // Element without explicit dependency: chain with previous independent element
+                if ($previousIndependentElementKey !== null) {
+                    $existingAfter = $preparedElements[$elementKey]['after'] ?? [];
+                    if (!in_array($previousIndependentElementKey, $existingAfter, true)) {
+                        $preparedElements[$elementKey]['after'] = array_merge($existingAfter, [$previousIndependentElementKey]);
+                    }
+                }
+                $previousIndependentElementKey = $elementKey;
+            }
+        }
+        // Use dependency ordering service to order elements
+        return $this->dependencyOrderingService->orderByDependencies($preparedElements);
+    }
+
+    protected function hasPositionalArguments(array $elements): bool
+    {
+        foreach ($elements as $element) {
+            if (!empty($element['before']) || !empty($element['after'])) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -579,6 +637,12 @@ class NewContentElementController
             if (!is_array($cfg['defaultValues'] ?? false)) {
                 continue;
             }
+
+            // This is not a group; this is likely broken configuration
+            if ($cfg['defaultValues'] === []) {
+                unset($wizardItems[$key]);
+            }
+
             // If defaultValues are defined, check access by traversing all fields with default values:
             foreach ($cfg['defaultValues'] as $fieldName => $value) {
                 if (!$schema->hasField($fieldName)) {
@@ -622,9 +686,14 @@ class NewContentElementController
      */
     protected function prepareDependencyOrdering(array $wizardGroup, string $key): array
     {
-        if (isset($wizardGroup[$key])) {
-            $wizardGroup[$key] = GeneralUtility::trimExplode(',', $wizardGroup[$key]);
-            $wizardGroup[$key] = array_map(static fn(string|int $s): string => $s . '.', $wizardGroup[$key]);
+        if (is_string($wizardGroup[$key] ?? null)) {
+            $wizardGroup[$key] = GeneralUtility::trimExplode(',', $wizardGroup[$key], true);
+        }
+        if (is_array($wizardGroup[$key] ?? null)) {
+            $wizardGroup[$key] = array_map(
+                static fn(string $s): string => rtrim($s, '.') . '.',
+                $wizardGroup[$key]
+            );
         }
         return $wizardGroup;
     }
