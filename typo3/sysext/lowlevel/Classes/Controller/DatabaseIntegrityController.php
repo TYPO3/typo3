@@ -239,8 +239,8 @@ class DatabaseIntegrityController
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->setUpDocHeader($moduleTemplate, $request);
 
-        $title = $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.dbint.title');
-        $moduleTemplate->setTitle($title, $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch'));
+        $title = $languageService->translate('title', 'lowlevel.modules.database_integrity');
+        $moduleTemplate->setTitle($title, $languageService->translate('fullSearch', 'lowlevel.messages'));
         return $this->searchAction($moduleTemplate, $request);
     }
 
@@ -259,8 +259,8 @@ class DatabaseIntegrityController
         // Values NOT in this array will not be saved in the settings-array for the module.
         $this->MOD_MENU = [
             'search' => [
-                'raw' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:rawSearch'),
-                'query' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:advancedQuery'),
+                'raw' => $lang->translate('rawSearch', 'lowlevel.messages'),
+                'query' => $lang->translate('advancedQuery', 'lowlevel.messages'),
             ],
             'search_query_smallparts' => '',
             'search_result_labels' => '',
@@ -290,10 +290,10 @@ class DatabaseIntegrityController
             'storeQueryConfigs' => '',
             // Used to store the available Query configs in memory
             'search_query_makeQuery' => [
-                'all' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:selectRecords'),
-                'count' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:countResults'),
-                'explain' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:explainQuery'),
-                'csv' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:csvExport'),
+                'all' => $lang->translate('selectRecords', 'lowlevel.messages'),
+                'count' => $lang->translate('countResults', 'lowlevel.messages'),
+                'explain' => $lang->translate('explainQuery', 'lowlevel.messages'),
+                'csv' => $lang->translate('csvExport', 'lowlevel.messages'),
             ],
             'sword' => '',
         ];
@@ -343,7 +343,7 @@ class DatabaseIntegrityController
     {
         $moduleTemplate->getDocHeaderComponent()->setShortcutContext(
             routeIdentifier: $this->moduleName,
-            displayName: $this->getLanguageService()->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch'),
+            displayName: $this->getLanguageService()->translate('fullSearch', 'lowlevel.messages'),
             arguments: [
                 'SET' => [
                     'search' => $this->MOD_SETTINGS['search'] ?? 'raw',
@@ -364,7 +364,7 @@ class DatabaseIntegrityController
 
         $searchTypeSelect = '';
         $searchTypeSelect .= '<div class="form-group">';
-        $searchTypeSelect .=   '<label for="search" class="form-label">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.searchType.label') . '</label>';
+        $searchTypeSelect .=   '<label for="search" class="form-label">' . $lang->translate('fullSearch.form.field.searchType.label', 'lowlevel.messages') . '</label>';
         $searchTypeSelect .=   '<div class="input-group">' . $this->getDropdownMenu('SET[search]', $searchMode, $this->MOD_MENU['search'], $request) . '</div>';
         $searchTypeSelect .= '</div>';
 
@@ -372,24 +372,24 @@ class DatabaseIntegrityController
         $queryOptions = '';
         if ($searchMode === 'query') {
             $queryTypeSelect .= '<div class="form-group">';
-            $queryTypeSelect .=   '<label for="search-search-query-make-query" class="form-label">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.makeQuery.label') . '</label>';
+            $queryTypeSelect .=   '<label for="search-search-query-make-query" class="form-label">' . $lang->translate('fullSearch.form.field.makeQuery.label', 'lowlevel.messages') . '</label>';
             $queryTypeSelect .=   '<div class="input-group">' . $this->getDropdownMenu('SET[search_query_makeQuery]', $this->MOD_SETTINGS['search_query_makeQuery'], $this->MOD_MENU['search_query_makeQuery'], $request) . '</div>';
             $queryTypeSelect .= '</div>';
 
             $queryOptions .= '<div class="form-row">';
             $queryOptions .=   '<div class="form-group">';
             $queryOptions .=     '<fieldset>';
-            $queryOptions .=       '<legend class="form-label">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.section.queryOptions') . '</legend>';
+            $queryOptions .=       '<legend class="form-label">' . $lang->translate('fullSearch.section.queryOptions', 'lowlevel.messages') . '</legend>';
             $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'] ?? '', $request, 'id="checkSearch_query_smallparts"')
-                . '<label class="form-check-label" for="checkSearch_query_smallparts">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:showSQL') . '</label></div>';
+                . '<label class="form-check-label" for="checkSearch_query_smallparts">' . $lang->translate('showSQL', 'lowlevel.messages') . '</label></div>';
             $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'] ?? '', $request, 'id="checkSearch_result_labels"')
-                . '<label class="form-check-label" for="checkSearch_result_labels">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:useFormattedStrings') . '</label></div>';
+                . '<label class="form-check-label" for="checkSearch_result_labels">' . $lang->translate('useFormattedStrings', 'lowlevel.messages') . '</label></div>';
             $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix'] ?? '', $request, 'id="checkLabels_noprefix"')
-                . '<label class="form-check-label" for="checkLabels_noprefix">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:dontUseOrigValues') . '</label></div>';
+                . '<label class="form-check-label" for="checkLabels_noprefix">' . $lang->translate('dontUseOrigValues', 'lowlevel.messages') . '</label></div>';
             $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel'] ?? '', $request, 'id="checkOptions_sortlabel"')
-                . '<label class="form-check-label" for="checkOptions_sortlabel">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:sortOptions') . '</label></div>';
+                . '<label class="form-check-label" for="checkOptions_sortlabel">' . $lang->translate('sortOptions', 'lowlevel.messages') . '</label></div>';
             $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'] ?? 0, $request, 'id="checkShow_deleted"')
-                . '<label class="form-check-label" for="checkShow_deleted">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:showDeleted') . '</label></div>';
+                . '<label class="form-check-label" for="checkShow_deleted">' . $lang->translate('showDeleted', 'lowlevel.messages') . '</label></div>';
             $queryOptions .=     '</fieldset>';
             $queryOptions .=   '</div>';
             $queryOptions .= '</div>';
@@ -425,7 +425,7 @@ class DatabaseIntegrityController
         if (!($userTsConfig['mod.']['dbint.']['disableStoreControl'] ?? false)) {
             $output .= '<div class="card">';
             $output .=   '<div class="card-body">';
-            $output .=     '<h2 class="card-title">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.section.queryStorage') . '</h2>';
+            $output .=     '<h2 class="card-title">' . $lang->translate('fullSearch.section.queryStorage', 'lowlevel.messages') . '</h2>';
             $output .=       $this->makeStoreControl();
             $output .=     '<div class="card-text">' . $msg . '</div>';
             $output .=   '</div>';
@@ -435,7 +435,7 @@ class DatabaseIntegrityController
         // Query Maker:
         $this->init('queryConfig', $this->MOD_SETTINGS['queryTable'] ?? '', '', $this->MOD_SETTINGS);
 
-        $output .=  '<h2>' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.section.querySettings') . '</h2>';
+        $output .=  '<h2>' . $lang->translate('fullSearch.section.querySettings', 'lowlevel.messages') . '</h2>';
         $output .=   '<fieldset class="form-section">';
         $output .=     $this->makeSelectorTable($this->MOD_SETTINGS, $request);
         $output .=   '</fieldset>';
@@ -475,7 +475,7 @@ class DatabaseIntegrityController
                         $dataRows = $connection->executeQuery($selectQueryString)->fetchAllAssociative();
                     }
                     if (!($userTsConfig['mod.']['dbint.']['disableShowSQLQuery'] ?? false)) {
-                        $output .= '<h2>' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.section.querySQL') . '</h2>';
+                        $output .= '<h2>' . $lang->translate('fullSearch.section.querySQL', 'lowlevel.messages') . '</h2>';
                         $output .= '<pre class="language-sql">';
                         $output .=   '<code class="language-sql">';
                         $output .=     htmlspecialchars($fullQueryString);
@@ -491,14 +491,14 @@ class DatabaseIntegrityController
                     }
                 } catch (DBALException $e) {
                     if (!($userTsConfig['mod.']['dbint.']['disableShowSQLQuery'] ?? false)) {
-                        $output .= '<h2>' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.section.querySQL') . '</h2>';
+                        $output .= '<h2>' . $lang->translate('fullSearch.section.querySQL', 'lowlevel.messages') . '</h2>';
                         $output .= '<pre class="language-sql">';
                         $output .=   '<code class="language-sql">';
                         $output .=     htmlspecialchars($fullQueryString);
                         $output .=   '</code>';
                         $output .= '</pre>';
                     }
-                    $output .= '<h2>' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.section.querySQL.error') . '</h2>';
+                    $output .= '<h2>' . $lang->translate('fullSearch.section.querySQL.error', 'lowlevel.messages') . '</h2>';
                     $output .= '<div class="alert alert-danger">';
                     $output .=   '<p class="alert-message"><strong>Error:</strong> ' . htmlspecialchars($e->getMessage()) . '</p>';
                     $output .= '</div>';
@@ -649,10 +649,10 @@ class DatabaseIntegrityController
         $languageService = $this->getLanguageService();
         $out = '';
         $cPR = [];
-        $cPR['header'] = $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.section.result');
+        $cPR['header'] = $languageService->translate('fullSearch.section.result', 'lowlevel.messages');
         switch ($type) {
             case 'count':
-                $cPR['content'] = '<p><strong>' . (int)$dataRows[0] . '</strong> ' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.type.count.resultsFound') . '</p>';
+                $cPR['content'] = '<p><strong>' . (int)$dataRows[0] . '</strong> ' . $languageService->translate('fullSearch.type.count.resultsFound', 'lowlevel.messages') . '</p>';
                 break;
             case 'all':
                 $rowArr = [];
@@ -667,7 +667,7 @@ class DatabaseIntegrityController
                     $out .= '</table>';
                     $out .= '</div>';
                 } else {
-                    $out .= '<p>' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.type.all.noResultsFound') . '</p>';
+                    $out .= '<p>' . $languageService->translate('fullSearch.type.all.noResultsFound', 'lowlevel.messages') . '</p>';
                     $this->renderNoResultsFoundMessage();
                 }
 
@@ -706,7 +706,7 @@ class DatabaseIntegrityController
                         die;
                     }
                 } else {
-                    $out .= '<p>' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.type.all.noResultsFound') . '</p>';
+                    $out .= '<p>' . $languageService->translate('fullSearch.type.all.noResultsFound', 'lowlevel.messages') . '</p>';
                     $this->renderNoResultsFoundMessage();
                 }
                 $cPR['content'] = $out;
@@ -1180,7 +1180,7 @@ class DatabaseIntegrityController
     private function renderNoResultsFoundMessage(): void
     {
         $languageService = $this->getLanguageService();
-        $flashMessageText = $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.flashMessage.noResultsFoundMessage');
+        $flashMessageText = $languageService->translate('fullSearch.flashMessage.noResultsFoundMessage', 'lowlevel.messages');
         $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $flashMessageText, '', ContextualFeedbackSeverity::INFO);
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
@@ -1331,7 +1331,7 @@ class DatabaseIntegrityController
         $out[] = '<div class="row">';
         if (in_array('table', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableSelectATable'] ?? false)) {
             $out[] = '<div class="form-group">';
-            $out[] =   '<label class="form-label" for="select-table">' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.queryTable.label') . '</label>';
+            $out[] =   '<label class="form-label" for="select-table">' . $languageService->translate('fullSearch.form.field.queryTable.label', 'lowlevel.messages') . '</label>';
             $out[] =   $this->mkTableSelect('SET[queryTable]', $this->table);
             $out[] = '</div>';
         }
@@ -1373,13 +1373,13 @@ class DatabaseIntegrityController
 
             if (in_array('fields', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableSelectFields'] ?? false)) {
                 $out[] = '<div class="form-group">';
-                $out[] =   '<label class="form-label" for="select-queryFields">' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.queryFields.label') . '</label>';
+                $out[] =   '<label class="form-label" for="select-queryFields">' . $languageService->translate('fullSearch.form.field.queryFields.label', 'lowlevel.messages') . '</label>';
                 $out[] =    $this->mkFieldToInputSelect('SET[queryFields]', $this->extFieldLists['queryFields']);
                 $out[] = '</div>';
             }
             if (in_array('query', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableMakeQuery'] ?? false)) {
                 $out[] = '<div class="form-group">';
-                $out[] =   '<label class="form-label">' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.query.label') . '</label>';
+                $out[] =   '<label class="form-label">' . $languageService->translate('fullSearch.form.field.query.label', 'lowlevel.messages') . '</label>';
                 $out[] =    $queryCode;
                 $out[] = '</div>';
             }
@@ -1387,7 +1387,7 @@ class DatabaseIntegrityController
             // 'Group by'
             if (in_array('group', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableGroupBy'] ?? false)) {
                 $out[] = '<div class="form-group col-sm-6">';
-                $out[] =   '<label class="form-label" for="SET[queryGroup]">' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.groupBy.label') . '</label>';
+                $out[] =   '<label class="form-label" for="SET[queryGroup]">' . $languageService->translate('fullSearch.form.field.groupBy.label', 'lowlevel.messages') . '</label>';
                 $out[] =   $this->mkTypeSelect('SET[queryGroup]', $this->extFieldLists['queryGroup'], '');
                 $out[] = '</div>';
             }
@@ -1402,7 +1402,7 @@ class DatabaseIntegrityController
                 $orderBy[] =     '<div class="input-group-text">';
                 $orderBy[] =       '<div class="form-check form-check-type-toggle">';
                 $orderBy[] =         $this->getFuncCheck('SET[queryOrderDesc]', $modSettings['queryOrderDesc'] ?? '', $request, 'id="checkQueryOrderDesc"');
-                $orderBy[] =         '<label class="form-check-label" for="checkQueryOrderDesc">' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.orderBy.descending') . '</label>';
+                $orderBy[] =         '<label class="form-check-label" for="checkQueryOrderDesc">' . $languageService->translate('fullSearch.form.field.orderBy.descending', 'lowlevel.messages') . '</label>';
                 $orderBy[] =       '</div>';
                 $orderBy[] =     '</div>';
                 $orderBy[] =   '</div>';
@@ -1415,7 +1415,7 @@ class DatabaseIntegrityController
                     $orderBy[] =     '<div class="input-group-text">';
                     $orderBy[] =       '<div class="form-check form-check-type-toggle">';
                     $orderBy[] =         $this->getFuncCheck('SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'] ?? false, $request, 'id="checkQueryOrder2Desc"');
-                    $orderBy[] =         '<label class="form-check-label" for="checkQueryOrder2Desc">' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.orderBy.descending') . '</label>';
+                    $orderBy[] =         '<label class="form-check-label" for="checkQueryOrder2Desc">' . $languageService->translate('fullSearch.form.field.orderBy.descending', 'lowlevel.messages') . '</label>';
                     $orderBy[] =       '</div>';
                     $orderBy[] =     '</div>';
                     $orderBy[] =   '</div>';
@@ -1423,7 +1423,7 @@ class DatabaseIntegrityController
                 }
 
                 $out[] = '<div class="form-group col-sm-6">';
-                $out[] =   '<label class="form-label">' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.orderBy.label') . '</label>';
+                $out[] =   '<label class="form-label">' . $languageService->translate('fullSearch.form.field.orderBy.label', 'lowlevel.messages') . '</label>';
                 $out[] =   implode(LF, $orderBy);
                 $out[] = '</div>';
             }
@@ -1456,7 +1456,7 @@ class DatabaseIntegrityController
                 }
 
                 $out[] = '  <div class="form-group">';
-                $out[] = '    <label for="queryLimit" class="form-label">' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.limit.label') . '</label>';
+                $out[] = '    <label for="queryLimit" class="form-label">' . $languageService->translate('fullSearch.form.field.limit.label', 'lowlevel.messages') . '</label>';
                 $out[] = '    <div class="form-row">';
                 $out[] = '      <div class="form-group">';
                 $out[] =          implode(LF, $limit);
@@ -2035,7 +2035,7 @@ class DatabaseIntegrityController
         $lineHTML[] = '    <span class="input-group-text">';
         $lineHTML[] = '      <div class="form-check form-check-type-toggle">';
         $lineHTML[] = '        <input type="checkbox" id="negateComparison" class="form-check-input t3js-submit-click"' . (($conf['negate'] ?? null) ? ' checked' : '') . ' name="' . htmlspecialchars($fieldPrefix) . '[negate]">';
-        $lineHTML[] = '        <label class="form-check-label" for="negateComparison">' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.queryConfig.comparison.negate') . '</label>';
+        $lineHTML[] = '        <label class="form-check-label" for="negateComparison">' . $languageService->translate('fullSearch.form.field.queryConfig.comparison.negate', 'lowlevel.messages') . '</label>';
         $lineHTML[] = '      </div>';
         $lineHTML[] = '    </span>';
         $lineHTML[] = '  </div>';
@@ -2477,27 +2477,27 @@ class DatabaseIntegrityController
         $markup = [];
         $markup[] = '<div class="form-row">';
         $markup[] = '  <div class="form-group">';
-        $markup[] = '    <label for="query-store" class="form-label">' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.queryStore.storage.label') . '</label>';
+        $markup[] = '    <label for="query-store" class="form-label">' . $languageService->translate('fullSearch.form.field.queryStore.storage.label', 'lowlevel.messages') . '</label>';
         $markup[] = '    <div class="input-group">';
         $markup[] = '      <select class="form-select" name="storeControl[STORE]" id="query-store" data-assign-store-control-title>' . implode(LF, $opt) . '</select>';
         $markup[] = '    </div>';
         $markup[] = '  </div>';
         $markup[] = '  <div class="form-group">';
-        $markup[] = '    <label for="query-title" class="form-label">' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.queryStore.title.label') . '</label>';
+        $markup[] = '    <label for="query-title" class="form-label">' . $languageService->translate('fullSearch.form.field.queryStore.title.label', 'lowlevel.messages') . '</label>';
         $markup[] = '    <input class="form-control" name="storeControl[title]" id="query-title" value="" type="text" max="80">';
         $markup[] = '  </div>';
         $markup[] = '  <div class="form-group">';
-        $markup[] = '    <button class="btn btn-default" type="submit" name="storeControl[LOAD]" value="' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.btn.load.label') . '">';
+        $markup[] = '    <button class="btn btn-default" type="submit" name="storeControl[LOAD]" value="' . $languageService->translate('fullSearch.form.btn.load.label', 'lowlevel.messages') . '">';
         $markup[] =        $this->iconFactory->getIcon('actions-upload', IconSize::SMALL)->render();
-        $markup[] =        $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.btn.load.label');
+        $markup[] =        $languageService->translate('fullSearch.form.btn.load.label', 'lowlevel.messages');
         $markup[] = '    </button>';
-        $markup[] = '    <button class="btn btn-default" type="submit" name="storeControl[SAVE]" value="' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.btn.save.label') . '">';
+        $markup[] = '    <button class="btn btn-default" type="submit" name="storeControl[SAVE]" value="' . $languageService->translate('fullSearch.form.btn.save.label', 'lowlevel.messages') . '">';
         $markup[] =        $this->iconFactory->getIcon('actions-save', IconSize::SMALL)->render();
-        $markup[] =        $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.btn.save.label');
+        $markup[] =        $languageService->translate('fullSearch.form.btn.save.label', 'lowlevel.messages');
         $markup[] = '    </button>';
-        $markup[] = '    <button class="btn btn-default" type="submit" name="storeControl[REMOVE]" value="' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.btn.delete.label') . '">';
+        $markup[] = '    <button class="btn btn-default" type="submit" name="storeControl[REMOVE]" value="' . $languageService->translate('fullSearch.form.btn.delete.label', 'lowlevel.messages') . '">';
         $markup[] =        $this->iconFactory->getIcon('actions-delete', IconSize::SMALL)->render();
-        $markup[] =        $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.btn.delete.label');
+        $markup[] =        $languageService->translate('fullSearch.form.btn.delete.label', 'lowlevel.messages');
         $markup[] = '    </button>';
         $markup[] = '  </div>';
         $markup[] = '</div>';
@@ -2613,7 +2613,7 @@ class DatabaseIntegrityController
     {
         $languageService = $this->getLanguageService();
         $storeArray = [
-            '0' => $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.queryStore.storage.0'),
+            '0' => $languageService->translate('fullSearch.form.field.queryStore.storage.0', 'lowlevel.messages'),
         ];
         $savedStoreArray = unserialize($this->MOD_SETTINGS['storeArray'] ?? '', ['allowed_classes' => false]);
         if (is_array($savedStoreArray)) {
@@ -2715,6 +2715,7 @@ class DatabaseIntegrityController
                 $markup = [];
                 $markup[] = '<div class="panel panel-default">';
                 $markup[] = '  <div class="panel-heading">';
+                // TODO: why 3 dots in the sL function here?
                 $markup[] = htmlspecialchars($schema->getTitle($this->getLanguageService()->sL(...))) . ' (' . $count . ')';
                 $markup[] = '  </div>';
                 $markup[] = '  <div class="table-fit">';

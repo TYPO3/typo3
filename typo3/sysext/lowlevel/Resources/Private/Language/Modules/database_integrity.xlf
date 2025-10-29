@@ -3,14 +3,14 @@
 	<file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/Modules/database_integrity.xlf" date="2026-11-10T13:37:37Z" product-name="database_integrity">
 		<header/>
 		<body>
+			<trans-unit id="title">
+				<source>Database</source>
+			</trans-unit>
 			<trans-unit id="short_description">
 				<source>Database integrity check</source>
 			</trans-unit>
 			<trans-unit id="description">
 				<source>Here you can check the integrity of the database tables configured by the $TCA. For instance all records must belong to a page record. You can also get a view of the total pagetree including deleted pages. Finally you've got access to a global database search facility.</source>
-			</trans-unit>
-			<trans-unit id="title">
-				<source>Database</source>
 			</trans-unit>
 			<trans-unit id="query_loaded">
 				<source>Query "%s" loaded</source>

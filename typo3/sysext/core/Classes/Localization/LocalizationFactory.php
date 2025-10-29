@@ -46,14 +46,15 @@ readonly class LocalizationFactory
 {
     protected const MOVED_FILES = [
         // @todo: remove the following files in TYPO3 v15.0, they serve as a fallback for old syntax and files that have been moved
+        'EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf' => 'EXT:lowlevel/Resources/Private/Language/fullsearch.xlf',
         'EXT:dashboard/Resources/Private/Language/locallang_tca.xlf' => 'EXT:dashboard/Resources/Private/Language/db.xlf',
         'EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf' => 'EXT:filemetadata/Resources/Private/Language/db.xlf',
+        'EXT:lowlevel/Resources/Private/Language/locallang.xlf' => 'EXT:lowlevel/Resources/Private/Language/messages.xlf',
         'EXT:impexp/Resources/Private/Language/locallang_tca.xlf' => 'EXT:impexp/Resources/Private/Language/db.xlf',
         'EXT:linkvalidator/Resources/Private/Language/locallang.xlf' => 'EXT:linkvalidator/Resources/Private/Language/db.xlf',
         'EXT:seo/Resources/Private/Language/locallang_tca.xlf' => 'EXT:seo/Resources/Private/Language/db.xlf',
         'EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf' => 'EXT:webhooks/Resources/Private/Language/module.xlf',
         'EXT:reactions/Resources/Private/Language/Modules/webhooks.xlf' => 'EXT:reactions/Resources/Private/Language/module.xlf',
-        'EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf' => 'EXT:lowlevel/Resources/Private/Language/Modules/database_integrity.xlf',
     ];
 
     protected const DEPRECATED_FILES = [

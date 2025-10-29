@@ -13,12 +13,12 @@
 
     <f:be.pageRenderer
         addJsInlineLabels="{
-            'collapse-state-search.numberOfSearchMatches': 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.configuration.numberOfSearchMatches'
+            'collapse-state-search.numberOfSearchMatches': 'lowlevel.messages:module.configuration.numberOfSearchMatches'
         }"
     />
 
     <form action="" id="ConfigurationView" method="post">
-        <h1><f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:configuration.headline" arguments="{0: treeName}" /></h1>
+        <h1><f:translate domain="lowlevel.messages" key="configuration.headline" arguments="{0: treeName}" /></h1>
 
         <div id="lowlevel-config" class="form-row-md">
             <div class="form-group">

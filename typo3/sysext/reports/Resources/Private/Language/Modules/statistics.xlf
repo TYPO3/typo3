@@ -12,6 +12,42 @@
 			<trans-unit id="title">
 				<source>Record Statistics</source>
 			</trans-unit>
+			<trans-unit id="doktype">
+				<source>Document types</source>
+			</trans-unit>
+			<trans-unit id="doktype_value">
+				<source>Document types (value)</source>
+			</trans-unit>
+			<trans-unit id="count">
+				<source>Count</source>
+			</trans-unit>
+			<trans-unit id="pages">
+				<source>Pages</source>
+			</trans-unit>
+			<trans-unit id="total_pages">
+				<source>Total number of default language pages</source>
+			</trans-unit>
+			<trans-unit id="translated_pages">
+				<source>Total number of translated pages</source>
+			</trans-unit>
+			<trans-unit id="deleted_pages">
+				<source>Marked-deleted pages</source>
+			</trans-unit>
+			<trans-unit id="hidden_pages">
+				<source>Hidden pages</source>
+			</trans-unit>
+			<trans-unit id="tables">
+				<source>Tables</source>
+			</trans-unit>
+			<trans-unit id="label">
+				<source>Label</source>
+			</trans-unit>
+			<trans-unit id="tablename">
+				<source>Table name</source>
+			</trans-unit>
+			<trans-unit id="total_lost">
+				<source>Records total / lost</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

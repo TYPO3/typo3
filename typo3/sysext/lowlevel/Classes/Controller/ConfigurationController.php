@@ -58,7 +58,7 @@ final class ConfigurationController
         $configurationArray = $selectedProvider->getConfiguration();
 
         $view = $this->moduleTemplateFactory->create($request);
-        $view->setTitle($languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang:module.configuration.title'), $selectedProviderLabel);
+        $view->setTitle($languageService->translate('title', 'lowlevel.modules.config'), $selectedProviderLabel);
         $this->addProviderDropDownToDocHeader($view, $providers, $selectedProvider);
         $view->getDocHeaderComponent()->setShortcutContext(
             routeIdentifier: 'system_config',
@@ -154,9 +154,7 @@ final class ConfigurationController
         $menu = $this->componentFactory->createMenu();
         $menu->setIdentifier('tree');
         $menu->setLabel(
-            $this->getLanguageService()->sL(
-                'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:moduleMenu.dropdown.label'
-            )
+            $this->getLanguageService()->translate('moduleMenu.dropdown.label', 'lowlevel.messages')
         );
         foreach ($providers as $provider) {
             $menuItem = $this->componentFactory->createMenuItem()

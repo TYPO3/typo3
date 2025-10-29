@@ -11,7 +11,7 @@
 
 <f:section name="Content">
 
-    <h1>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:search_whole_database')}</h1>
+    <h1>{f:translate(domain:'lowlevel.messages', key:'search_whole_database')}</h1>
 
     <f:if condition="{searchMode} == 'raw'">
         <f:then>
@@ -25,7 +25,7 @@
                         </label>
                         <div class="input-group">
                             <input type="search" id="searchField" name="SET[sword]" class="form-control" value="{sword}" />
-                            <button class="btn btn-default" disabled type="submit" name="submitSearch" id="submitSearch" title="{f:translate(key: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:search.submit')}">
+                            <button class="btn btn-default" disabled type="submit" name="submitSearch" id="submitSearch" title="{f:translate(domain:'lowlevel.messages', key:'search.submit')}">
                                 <core:icon identifier="actions-search" size="small" />
                             </button>
                         </div>
@@ -35,16 +35,16 @@
 
             <f:if condition="{results}">
                 <f:then>
-                    <h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.section.result')}</h2>
+                    <h2>{f:translate(domain:'lowlevel.messages', key:'fullSearch.section.result')}</h2>
                     <f:format.raw>{results}</f:format.raw>
                 </f:then>
                 <f:else if="{sword} != ''">
-                    <h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.section.result')}</h2>
-                    <f:be.infobox message="{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:no_results', arguments: {0: sword})}" state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}" />
+                    <h2>{f:translate(domain:'lowlevel.messages', key:'fullSearch.section.result')}</h2>
+                    <f:be.infobox message="{f:translate(domain:'lowlevel.messages', key:'no_results', arguments: {0: sword})}" state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}" />
                 </f:else>
                 <f:else if="{isSearching}">
-                    <h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.section.result')}</h2>
-                    <f:be.infobox message="{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:no_sword')}" state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}" />
+                    <h2>{f:translate(domain:'lowlevel.messages', key:'fullSearch.section.result')}</h2>
+                    <f:be.infobox message="{f:translate(domain:'lowlevel.messages', key:'no_sword')}" state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}" />
                 </f:else>
             </f:if>
         </f:then>

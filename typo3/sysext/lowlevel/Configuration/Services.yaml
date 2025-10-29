@@ -33,7 +33,7 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'confVars'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:typo3ConfVars'
+        label: 'lowlevel.messages:typo3ConfVars'
         globalVariableKey: 'TYPO3_CONF_VARS'
         before: 'tca'
 
@@ -42,7 +42,7 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'tca'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:tca'
+        label: 'lowlevel.messages:tca'
         globalVariableKey: 'TCA'
         before: 'services'
         after: 'confVars'
@@ -52,7 +52,7 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'services'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:t3services'
+        label: 'lowlevel.messages:t3services'
         globalVariableKey: 'T3_SERVICES'
         before: 'userSettings'
         after: 'tca'
@@ -62,7 +62,7 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'userSettings'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:usersettings'
+        label: 'lowlevel.messages:usersettings'
         globalVariableKey: 'TYPO3_USER_SETTINGS'
         before: 'pagesTypes'
         after: 'services'
@@ -72,7 +72,7 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'pagesTypes'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:pagesTypes'
+        label: 'lowlevel.messages:pagesTypes'
         before: 'beUserUc'
         after: 'userSettings'
 
@@ -81,7 +81,7 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'beUserUc'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:beUser'
+        label: 'lowlevel.messages:beUser'
         before: 'beUserTsConfig'
         after: 'pagesTypes'
 
@@ -90,7 +90,7 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'beUserTsConfig'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:beUserTsConfig'
+        label: 'lowlevel.messages:beUserTsConfig'
         before: 'beRoutes'
         after: 'beUserUc'
 
@@ -99,7 +99,7 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'beRoutes'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:routes'
+        label: 'lowlevel.messages:routes'
         before: 'backendModules'
         after: 'beUserTsConfig'
 
@@ -108,7 +108,7 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'backendModules'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:backendModules'
+        label: 'lowlevel.messages:backendModules'
         before: 'httpMiddlewareStacks'
         after: 'beRoutes'
 
@@ -117,7 +117,7 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'httpMiddlewareStacks'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:httpMiddlewareStacks'
+        label: 'lowlevel.messages:httpMiddlewareStacks'
         before: 'sitesTcaConfiguration'
         after: 'backendModules'
 
@@ -126,7 +126,7 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'contentSecurityPolicyMutations'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:contentSecurityPolicyMutations'
+        label: 'lowlevel.messages:contentSecurityPolicyMutations'
         before: 'softReferenceParsers'
         after: 'httpMiddlewareStacks'
 
@@ -135,7 +135,7 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'sitesTcaConfiguration'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:sitesTcaConfiguration'
+        label: 'lowlevel.messages:sitesTcaConfiguration'
         before: 'sitesYamlConfiguration'
         after: 'contentSecurityPolicyMutations'
 
@@ -144,7 +144,7 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'sitesYamlConfiguration'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:sitesYamlConfiguration'
+        label: 'lowlevel.messages:sitesYamlConfiguration'
         before: 'eventListeners'
         after: 'sitesTcaConfiguration'
 
@@ -153,7 +153,7 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'eventListeners'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:eventListeners'
+        label: 'lowlevel.messages:eventListeners'
         before: 'mfaProviders'
         after: 'sitesYamlConfiguration'
 
@@ -162,7 +162,7 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'mfaProviders'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:mfaProviders'
+        label: 'lowlevel.messages:mfaProviders'
         before: 'softReferenceParsers'
         after: 'eventListeners'
 
@@ -171,7 +171,7 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'softReferenceParsers'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:softReferenceParsers'
+        label: 'lowlevel.messages:softReferenceParsers'
         before: 'toolbaritems'
         after: 'mfaproviders'
 
@@ -180,7 +180,7 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'toolbaritems'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:toolbarItems'
+        label: 'lowlevel.messages:toolbarItems'
         after: 'softReferenceParsers'
 
   lowlevel.configuration.module.provider.expressionlanguage:
@@ -188,7 +188,7 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'symfonyExpressionLanguage'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:symfonyExpressionLanguage'
+        label: 'lowlevel.messages:symfonyExpressionLanguage'
         after: 'toolbaritems'
 
   lowlevel.configuration.module.provider.doctrine-driver-middlewares:
@@ -196,7 +196,7 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'doctrineDbalDriverMiddlewares'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:doctrineDbalDriverMiddlewares'
+        label: 'lowlevel.messages:doctrineDbalDriverMiddlewares'
         after: 'expressionlanguage'
 
   lowlevel.configuration.module.provider.translation-domain-list:
@@ -204,5 +204,5 @@ services:
     tags:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'translationDomainList'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:translationDomainList'
+        label: 'lowlevel.messages:translationDomainList'
         after: 'expressionlanguage'
