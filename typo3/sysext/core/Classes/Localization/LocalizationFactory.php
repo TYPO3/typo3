@@ -47,6 +47,7 @@ readonly class LocalizationFactory
     protected const MOVED_FILES = [
         // @todo: remove the following files in TYPO3 v15.0, they serve as a fallback for old syntax and files that have been moved
         'EXT:dashboard/Resources/Private/Language/locallang_tca.xlf' => 'EXT:dashboard/Resources/Private/Language/db.xlf',
+        'EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf' => 'EXT:filemetadata/Resources/Private/Language/db.xlf',
         'EXT:seo/Resources/Private/Language/locallang_tca.xlf' => 'EXT:seo/Resources/Private/Language/db.xlf',
     ];
 
