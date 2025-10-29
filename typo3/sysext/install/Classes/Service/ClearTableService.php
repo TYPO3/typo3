@@ -86,10 +86,6 @@ final readonly class ClearTableService
                 'description' => 'Frontend user sessions',
             ],
             [
-                'name' => 'sys_history',
-                'description' => 'Tracking of database record changes through TYPO3 backend forms',
-            ],
-            [
                 'name' => 'sys_lockedrecords',
                 'description' => 'Record locking of backend user editing',
             ],
@@ -97,11 +93,13 @@ final readonly class ClearTableService
                 'name' => 'sys_log',
                 'description' => 'General log table',
             ],
-            [
+        ];
+        if ($this->packageManager->isPackageActive('workspaces')) {
+            $tableList[] = [
                 'name' => 'sys_preview',
                 'description' => 'Workspace preview links',
-            ],
-        ];
+            ];
+        }
         if ($this->packageManager->isPackageActive('extensionmanager')) {
             $tableList[] = [
                 'name' => 'tx_extensionmanager_domain_model_extension',
