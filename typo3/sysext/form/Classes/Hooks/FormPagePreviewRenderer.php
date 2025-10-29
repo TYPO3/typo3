@@ -57,20 +57,25 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer
     {
         $record = $item->getRecord();
         $itemContent = $this->linkEditContent('<strong>' . htmlspecialchars($item->getContext()->getContentTypeLabels()['form_formframework']) . '</strong>', $record) . '<br />';
-        $flexFormData = null;
-        if ($record->has('pi_flexform')
-            && (
-                ($flexFormData = $record->get('pi_flexform')) instanceof FlexFormFieldValues === false
-                || !$flexFormData->has('sDEF/settings.persistenceIdentifier')
-            )
-        ) {
-            $this->logger?->warning(
-                'Type "{type}" of field "pi_flexform" for record-uid "{uid}" is not valid.',
-                ['type' => get_debug_type($flexFormData), 'uid' => $record->getUid()]
-            );
-            $flexFormData = null;
+        $persistenceIdentifier = null;
+        if ($record->has('pi_flexform')) {
+            $flexFormData = $record->get('pi_flexform');
+            if ($flexFormData instanceof FlexFormFieldValues) {
+                if ($flexFormData->has('sDEF/settings.persistenceIdentifier')) {
+                    $persistenceIdentifier = $flexFormData->get('sDEF/settings.persistenceIdentifier');
+                } else {
+                    $this->logger?->warning(
+                        'Field "pi_flexform" for record-uid "{uid}" does not contain a persistence identifier.',
+                        ['uid' => $record->getUid()]
+                    );
+                }
+            } else {
+                $this->logger?->warning(
+                    'Type "{type}" of field "pi_flexform" for record-uid "{uid}" is not valid.',
+                    ['type' => get_debug_type($flexFormData), 'uid' => $record->getUid()]
+                );
+            }
         }
-        $persistenceIdentifier = $flexFormData->get('sDEF/settings.persistenceIdentifier');
         $languageService = $this->getLanguageService();
         if (!empty($persistenceIdentifier)) {
             try {
