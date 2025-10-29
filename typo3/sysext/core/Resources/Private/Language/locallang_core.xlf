@@ -12,7 +12,7 @@
 			<trans-unit id="labels.goBack">
 				<source>Go back</source>
 			</trans-unit>
-			<trans-unit id="labels.makeShortcut" x-unused-since="14.0">
+			<trans-unit id="labels.makeShortcut">
 				<source>Create a shortcut to this page?</source>
 			</trans-unit>
 			<trans-unit id="labels.makeBookmark">
@@ -24,10 +24,10 @@
 			<trans-unit id="labels.copyCurrentUrl">
 				<source>Copy URL of this record</source>
 			</trans-unit>
-			<trans-unit id="labels.lockedRecord" x-unused-since="14.0">
+			<trans-unit id="labels.lockedRecord">
 				<source>The user '%s' began to edit this record %s ago.</source>
 			</trans-unit>
-			<trans-unit id="labels.lockedRecord_content" x-unused-since="14.0">
+			<trans-unit id="labels.lockedRecord_content">
 				<source>The user '%s' began to edit content on this page %s ago.</source>
 			</trans-unit>
 			<trans-unit id="labels.lockedRecordUser">
@@ -36,10 +36,10 @@
 			<trans-unit id="labels.lockedRecordUser_content">
 				<source>The %s '%s' began to edit content on this page %s ago.</source>
 			</trans-unit>
-			<trans-unit id="labels.color" x-unused-since="14.0">
+			<trans-unit id="labels.color">
 				<source>Color</source>
 			</trans-unit>
-			<trans-unit id="labels.user" x-unused-since="14.0">
+			<trans-unit id="labels.user">
 				<source>User</source>
 			</trans-unit>
 			<trans-unit id="labels.beUser">
@@ -51,16 +51,16 @@
 			<trans-unit id="labels.unknownUser">
 				<source>-Unknown-</source>
 			</trans-unit>
-			<trans-unit id="labels.showRecords" x-unused-since="14.0">
+			<trans-unit id="labels.showRecords">
 				<source>Show records</source>
 			</trans-unit>
 			<trans-unit id="labels.path">
 				<source>Path</source>
 			</trans-unit>
-			<trans-unit id="labels.resetFilter" x-unused-since="14.0">
+			<trans-unit id="labels.resetFilter">
 				<source>Reset Filter</source>
 			</trans-unit>
-			<trans-unit id="labels.table" x-unused-since="14.0">
+			<trans-unit id="labels.table">
 				<source>Table</source>
 			</trans-unit>
 			<trans-unit id="labels.upOneLevel">
@@ -69,7 +69,7 @@
 			<trans-unit id="labels.expandTable">
 				<source>Expand table</source>
 			</trans-unit>
-			<trans-unit id="labels.collapseTable" x-unused-since="14.0">
+			<trans-unit id="labels.collapseTable">
 				<source>Collapse table</source>
 			</trans-unit>
 			<trans-unit id="labels.enterSearchString">
@@ -102,7 +102,7 @@
 			<trans-unit id="labels.fieldsMissing">
 				<source>The fields marked with an exclamation mark are not yet correctly filled in. Please complete them properly.</source>
 			</trans-unit>
-			<trans-unit id="labels.fieldsChanged">
+			<trans-unit id="labels.fieldsChanged" xml:space="preserve">
 				<source>There are unsaved changes in the form!
 Do you want to continue WITHOUT saving?</source>
 			</trans-unit>
@@ -115,40 +115,40 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.maxItemsAllowed">
 				<source>A maximum of {0} child records are allowed.</source>
 			</trans-unit>
-			<trans-unit id="labels.noRTEfound" x-unused-since="14.0">
+			<trans-unit id="labels.noRTEfound">
 				<source>Notice: This field can only be edited with a Rich Text Editor. No editor is currently available or enabled.</source>
 			</trans-unit>
 			<trans-unit id="labels.recordInformation">
 				<source>Record information</source>
 			</trans-unit>
-			<trans-unit id="labels.disableRTE" x-unused-since="14.0">
+			<trans-unit id="labels.disableRTE">
 				<source>Disable Rich Text Editor (RTE)</source>
 			</trans-unit>
 			<trans-unit id="labels._CONTROL_">
 				<source>Control</source>
 			</trans-unit>
-			<trans-unit id="labels._PATH_" x-unused-since="14.0">
+			<trans-unit id="labels._PATH_">
 				<source>Path</source>
 			</trans-unit>
 			<trans-unit id="labels._LOCALIZATION_">
 				<source>Localization</source>
 			</trans-unit>
-			<trans-unit id="labels._REF_" x-unused-since="14.0">
+			<trans-unit id="labels._REF_">
 				<source>References</source>
 			</trans-unit>
-			<trans-unit id="labels.uid" x-unused-since="14.0">
+			<trans-unit id="labels.uid">
 				<source>Unique ID</source>
 			</trans-unit>
-			<trans-unit id="labels.pid" x-unused-since="14.0">
+			<trans-unit id="labels.pid">
 				<source>Parent page ID</source>
 			</trans-unit>
-			<trans-unit id="labels.tstamp" x-unused-since="14.0">
+			<trans-unit id="labels.tstamp">
 				<source>Last modified</source>
 			</trans-unit>
 			<trans-unit id="labels.crdate">
 				<source>Creation date</source>
 			</trans-unit>
-			<trans-unit id="labels.cruser_id" x-unused-since="14.0">
+			<trans-unit id="labels.cruser_id">
 				<source>Created by</source>
 			</trans-unit>
 			<trans-unit id="labels.sorting">
@@ -160,28 +160,28 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.sorting.desc">
 				<source>Sort descending</source>
 			</trans-unit>
-			<trans-unit id="labels.t3ver_state" x-unused-since="14.0">
+			<trans-unit id="labels.t3ver_state">
 				<source>Workspace status</source>
 			</trans-unit>
-			<trans-unit id="labels.t3ver_wsid" x-unused-since="14.0">
+			<trans-unit id="labels.t3ver_wsid">
 				<source>Workspace ID</source>
 			</trans-unit>
-			<trans-unit id="labels.t3ver_oid" x-unused-since="14.0">
+			<trans-unit id="labels.t3ver_oid">
 				<source>Live record ID</source>
 			</trans-unit>
-			<trans-unit id="labels.setFields" x-unused-since="14.0">
+			<trans-unit id="labels.setFields">
 				<source>Set fields</source>
 			</trans-unit>
 			<trans-unit id="labels.search">
 				<source>Search</source>
 			</trans-unit>
-			<trans-unit id="labels.author" x-unused-since="14.0">
+			<trans-unit id="labels.author">
 				<source>Author</source>
 			</trans-unit>
-			<trans-unit id="labels.note" x-unused-since="14.0">
+			<trans-unit id="labels.note">
 				<source>Note</source>
 			</trans-unit>
-			<trans-unit id="labels.category" x-unused-since="14.0">
+			<trans-unit id="labels.category">
 				<source>Category</source>
 			</trans-unit>
 			<trans-unit id="labels.reload">
@@ -247,7 +247,7 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.minutesHoursDaysYears">
 				<source>min|hrs|days|yrs|min|hour|day|year</source>
 			</trans-unit>
-			<trans-unit id="labels.menu" x-unused-since="14.0">
+			<trans-unit id="labels.menu">
 				<source>Menu</source>
 			</trans-unit>
 			<trans-unit id="labels.showPage">
@@ -286,13 +286,13 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.depth_infi">
 				<source>Infinite</source>
 			</trans-unit>
-			<trans-unit id="labels.allow" x-unused-since="14.0">
+			<trans-unit id="labels.allow">
 				<source>Allow</source>
 			</trans-unit>
-			<trans-unit id="labels.deny" x-unused-since="14.0">
+			<trans-unit id="labels.deny">
 				<source>Deny</source>
 			</trans-unit>
-			<trans-unit id="labels.automatic" x-unused-since="14.0">
+			<trans-unit id="labels.automatic">
 				<source>Auto</source>
 			</trans-unit>
 			<trans-unit id="labels.enabled">
@@ -316,13 +316,13 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.temporaryPageTreeEntryPoints">
 				<source>Cancel temporary Page Tree Entry Points</source>
 			</trans-unit>
-			<trans-unit id="labels.refreshList" x-unused-since="14.0">
+			<trans-unit id="labels.refreshList">
 				<source>Reload list from server</source>
 			</trans-unit>
 			<trans-unit id="labels.close">
 				<source>Close</source>
 			</trans-unit>
-			<trans-unit id="labels.tableWizard" x-unused-since="14.0">
+			<trans-unit id="labels.tableWizard">
 				<source>Table Wizard</source>
 			</trans-unit>
 			<trans-unit id="labels.new">
@@ -373,10 +373,10 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.editMultipleRecordsRootLevel">
 				<source>Edit multiple "%s" records on root level</source>
 			</trans-unit>
-			<trans-unit id="labels.rootLevel" x-unused-since="14.0">
+			<trans-unit id="labels.rootLevel">
 				<source>root level</source>
 			</trans-unit>
-			<trans-unit id="labels.addnew" x-unused-since="14.0">
+			<trans-unit id="labels.addnew">
 				<source>Add new</source>
 			</trans-unit>
 			<trans-unit id="labels.toggleall">
@@ -418,16 +418,16 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.browse_db">
 				<source>Browse for records</source>
 			</trans-unit>
-			<trans-unit id="labels.clipInsert_file" x-unused-since="14.0">
+			<trans-unit id="labels.clipInsert_file">
 				<source>Insert %s file(s) from the clipboard</source>
 			</trans-unit>
 			<trans-unit id="labels.clipInsert_db">
 				<source>Insert %s record(s) from the clipboard</source>
 			</trans-unit>
-			<trans-unit id="labels.generalOptions" x-unused-since="14.0">
+			<trans-unit id="labels.generalOptions">
 				<source>General options</source>
 			</trans-unit>
-			<trans-unit id="labels.generalOptions_more" x-unused-since="14.0">
+			<trans-unit id="labels.generalOptions_more">
 				<source>General options (continued)</source>
 			</trans-unit>
 			<trans-unit id="labels.allTables">
@@ -439,11 +439,10 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.noMatchingLabel">
 				<source>MISSING LABEL ("%s")</source>
 			</trans-unit>
-			<!-- TODO: move clipboard related labels into dedicated file start -->
-			<trans-unit id="labels.thumbmode_clip" x-unused-since="14.0">
+			<trans-unit id="labels.thumbmode_clip">
 				<source>Show Thumbnails on ClipBoard</source>
 			</trans-unit>
-			<trans-unit id="labels.copymode" x-unused-since="14.0">
+			<trans-unit id="labels.copymode">
 				<source>Copy items instead of moving them</source>
 			</trans-unit>
 			<trans-unit id="labels.normal">
@@ -461,23 +460,22 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.cliptabs-description">
 				<source>This clipboard allows to select and edit/copy/move multiple records at once. Choose it to show a checkbox by each record.</source>
 			</trans-unit>
-			<trans-unit id="labels.clipboard.delete_elements" x-unused-since="14.0">
+			<trans-unit id="labels.clipboard.delete_elements">
 				<source>Delete elements</source>
 			</trans-unit>
-			<trans-unit id="labels.clipboard.clear_clipboard" x-unused-since="14.0">
+			<trans-unit id="labels.clipboard.clear_clipboard">
 				<source>Clear clipboard</source>
 			</trans-unit>
 			<trans-unit id="labels.removeItem">
 				<source>Remove element</source>
 			</trans-unit>
-			<!-- Clipboard section end -->
 			<trans-unit id="labels.holdDownCTRL">
 				<source>Important: Hold down the CTRL key while toggling elements in this list!</source>
 			</trans-unit>
 			<trans-unit id="labels.revertSelection">
 				<source>Revert selection</source>
 			</trans-unit>
-			<trans-unit id="labels.setAllCheckboxes" x-unused-since="14.0">
+			<trans-unit id="labels.setAllCheckboxes">
 				<source>Select All Checkboxes</source>
 			</trans-unit>
 			<trans-unit id="labels.openSelectionOptions">
@@ -513,20 +511,19 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.generatePassword">
 				<source>Generate password</source>
 			</trans-unit>
-			<trans-unit id="labels.new_section" x-unused-since="14.0">
+			<trans-unit id="labels.new_section">
 				<source>Create new</source>
 			</trans-unit>
 			<trans-unit id="labels.count">
 				<source>Quantity</source>
 			</trans-unit>
-			<!-- TODO: Move search related icons start -->
-			<trans-unit id="labels.title.searchIcon" x-unused-since="14.0">
+			<trans-unit id="labels.title.searchIcon">
 				<source>Toggle search toolbar</source>
 			</trans-unit>
 			<trans-unit id="labels.title.searchString">
 				<source>Search term</source>
 			</trans-unit>
-			<trans-unit id="labels.title.limit" x-unused-since="14.0">
+			<trans-unit id="labels.title.limit">
 				<source>Limit</source>
 			</trans-unit>
 			<trans-unit id="labels.title.search">
@@ -538,29 +535,24 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.label.searchString">
 				<source>Search term</source>
 			</trans-unit>
-			<trans-unit id="labels.label.limit" x-unused-since="14.0">
+			<trans-unit id="labels.label.limit">
 				<source>Limit</source>
 			</trans-unit>
 			<trans-unit id="labels.label.search_levels">
 				<source>Search levels</source>
 			</trans-unit>
-			<!-- Search related labels end -->
 			<trans-unit id="labels.active">
 				<source>Active</source>
 			</trans-unit>
 			<trans-unit id="labels.locked">
 				<source>Locked</source>
 			</trans-unit>
-			<!-- TODO: Move MFA related strings -->
 			<trans-unit id="labels.mfa.enabled">
 				<source>MFA enabled</source>
 			</trans-unit>
 			<trans-unit id="labels.mfa.disabled">
 				<source>MFA disabled</source>
 			</trans-unit>
-
-			<!-- MFA related strings end -->
-			<!-- TODO: Move error messages -->
 			<trans-unit id="labels.recordReadonly">
 				<source>The table is defined as readonly and can't be edited.</source>
 			</trans-unit>
@@ -573,32 +565,30 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.editingLiveRecordsWarning">
 				<source>Caution! These records are not versioned, you will edit the live records.</source>
 			</trans-unit>
-			<!-- error messages end -->
 			<trans-unit id="labels.th.name">
 				<source>Name</source>
 			</trans-unit>
-			<trans-unit id="alttext.suggestSearching" x-unused-since="14.0">
+			<trans-unit id="alttext.suggestSearching">
 				<source>Searching...</source>
 			</trans-unit>
-			<trans-unit id="ver.online"  x-unused-since="14.0">
+			<trans-unit id="ver.online">
 				<source>ONLINE</source>
 			</trans-unit>
-			<trans-unit id="ver.mgm" x-unused-since="14.0">
+			<trans-unit id="ver.mgm">
 				<source>Version Management</source>
 			</trans-unit>
-			<trans-unit id="ver.selVer" x-unused-since="14.0">
+			<trans-unit id="ver.selVer">
 				<source>Select version</source>
 			</trans-unit>
-			<trans-unit id="ver.swap" x-unused-since="14.0">
+			<trans-unit id="ver.swap">
 				<source>Swap/Publish</source>
 			</trans-unit>
-			<trans-unit id="ver.swapPage" x-unused-since="14.0">
+			<trans-unit id="ver.swapPage">
 				<source>Publish this version of the page including content</source>
 			</trans-unit>
-			<trans-unit id="TYPO3_Element_Browser" x-unused-since="14.0">
+			<trans-unit id="TYPO3_Element_Browser">
 				<source>TYPO3 Element Browser</source>
 			</trans-unit>
-			<!-- TODO: Move file reference related labels -->
 			<trans-unit id="labels.referencesToRecord">
 				<source>There are %s reference(s) to this record!</source>
 			</trans-unit>
@@ -608,11 +598,9 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.translationsOfRecord">
 				<source>This record has %s translation(s) which will be deleted, too!</source>
 			</trans-unit>
-			<!-- file reference related labels end -->
-			<trans-unit id="show_item.php.viewItem" x-unused-since="14.0">
+			<trans-unit id="show_item.php.viewItem">
 				<source>View Item</source>
 			</trans-unit>
-			<!-- TODO: Move content element information related labels -->
 			<trans-unit id="show_item.php.fieldValues">
 				<source>Field values</source>
 			</trans-unit>
@@ -628,22 +616,22 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="show_item.php.referencesFromThisItem">
 				<source>References from this item</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.file" x-unused-since="14.0">
+			<trans-unit id="show_item.php.file">
 				<source>File</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.dimensions" x-unused-since="14.0">
+			<trans-unit id="show_item.php.dimensions">
 				<source>Dimensions</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.filesize" x-unused-since="14.0">
+			<trans-unit id="show_item.php.filesize">
 				<source>Size</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.pixels" x-unused-since="14.0">
+			<trans-unit id="show_item.php.pixels">
 				<source>Pixels</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.files" x-unused-since="14.0">
+			<trans-unit id="show_item.php.files">
 				<source>files</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.cannotDisplayArchive" x-unused-since="14.0">
+			<trans-unit id="show_item.php.cannotDisplayArchive">
 				<source>Sorry, TYPO3_CONF_VARS[BE][disable_exec_function] was set, so cannot display content of archive file.</source>
 			</trans-unit>
 			<trans-unit id="show_item.php.table">
@@ -667,24 +655,21 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="show_item.php.sorting">
 				<source>Sorting</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.refTable" x-unused-since="14.0">
+			<trans-unit id="show_item.php.refTable">
 				<source>Ref Table</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.refUid" x-unused-since="14.0">
+			<trans-unit id="show_item.php.refUid">
 				<source>Ref Uid</source>
 			</trans-unit>
 			<trans-unit id="show_item.php.refString">
 				<source>Ref String</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.ftp_area" x-unused-since="14.0">
+			<trans-unit id="show_item.php.ftp_area">
 				<source>FTP AREA</source>
 			</trans-unit>
 			<trans-unit id="show_item.php.missing_record">
 				<source>Record is missing!</source>
 			</trans-unit>
-			<!-- content element information related labels end -->
-
-			<!-- TODO: Move new page related labels -->
 			<trans-unit id="db_new.php.pagetitle">
 				<source>New record</source>
 			</trans-unit>
@@ -697,8 +682,6 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="file_upload.php.pagetitle">
 				<source>Upload files</source>
 			</trans-unit>
-			<!-- new page related labels end -->
-			<!-- TODO: Move file upload related labels -->
 			<trans-unit id="file_upload.php.submit">
 				<source>Upload files</source>
 			</trans-unit>
@@ -735,13 +718,13 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="file_upload.upload-in-progress">
 				<source>File upload in progress...</source>
 			</trans-unit>
-			<trans-unit id="file_upload.upload-progress-info" x-unused-since="14.0">
+			<trans-unit id="file_upload.upload-progress-info">
 				<source>Uploading file {0} out of {1} files.</source>
 			</trans-unit>
-			<trans-unit id="file_upload.upload-finished" x-unused-since="14.0">
+			<trans-unit id="file_upload.upload-finished">
 				<source>Upload complete! Filelist reloading...</source>
 			</trans-unit>
-			<trans-unit id="file_upload.overwriteExistingFiles" x-unused-since="14.0">
+			<trans-unit id="file_upload.overwriteExistingFiles">
 				<source>Shall existing files be overwritten?</source>
 			</trans-unit>
 			<trans-unit id="file_upload.header.originalFile">
@@ -807,8 +790,6 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="file_upload.reload.filelist.actions.reload">
 				<source>Reload</source>
 			</trans-unit>
-			<!-- file upload related labels end -->
-			<!-- TODO: Move file download related labels -->
 			<trans-unit id="file_download.prepare">
 				<source>File download is being prepared</source>
 			</trans-unit>
@@ -824,11 +805,9 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="file_download.noFiles">
 				<source>Could not find any allowed file</source>
 			</trans-unit>
-			<trans-unit id="file_download.noFiles.message" x-unused-since="14.0">
+			<trans-unit id="file_download.noFiles.message">
 				<source>Please check your selection, since there might be file extension limitations, defined by your administrator.</source>
 			</trans-unit>
-			<!-- file download related labels end -->
-			<!-- TODO: Move file renaming related labels -->
 			<trans-unit id="file_rename.title">
 				<source>Rename</source>
 			</trans-unit>
@@ -844,8 +823,6 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="folder_rename.label">
 				<source>New folder name</source>
 			</trans-unit>
-			<!-- file renaming related labels end -->
-			<!-- TODO: Move online media related labels -->
 			<trans-unit id="online_media.new_media">
 				<source>Add new media asset</source>
 			</trans-unit>
@@ -882,28 +859,24 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="online_media.update.error">
 				<source>Error on updating online media</source>
 			</trans-unit>
-			<!-- online media related labels end -->
-			<trans-unit id="file_clipupload.php.warning_head" x-unused-since="14.0">
+			<trans-unit id="file_clipupload.php.warning_head">
 				<source>Upload path error</source>
 			</trans-unit>
-			<trans-unit id="file_clipupload.php.warning" x-unused-since="14.0">
+			<trans-unit id="file_clipupload.php.warning">
 				<source>No upload-folder is found. You should create a TEMP-folder ("_temp_") in the root of one of your mounts first!</source>
 			</trans-unit>
-			<trans-unit id="mess.redraw" x-unused-since="14.0">
+			<trans-unit id="mess.redraw">
 				<source>Redrawing the page will discard the current data. Do you want to continue?</source>
 			</trans-unit>
-			<!-- TODO: Move message related labels -->
 			<trans-unit id="mess.delete">
 				<source>Are you sure you want to delete '%s'?</source>
 			</trans-unit>
 			<trans-unit id="mess.delete.title">
 				<source>Delete this record?</source>
 			</trans-unit>
-			<trans-unit id="mess.deleteClip" x-unused-since="14.0">
+			<trans-unit id="mess.deleteClip">
 				<source>Are you sure you want to delete ALL referenced elements (%s) on the clipboard?</source>
 			</trans-unit>
-
-			<!-- TODO: Move refresh login message related labels -->
 			<trans-unit id="mess.refresh_login" xml:space="preserve">
 				<source>Your login has probably expired.
 Do you want to refresh it now?</source>
@@ -941,14 +914,12 @@ Do you want to refresh it now?</source>
 			<trans-unit id="mess.refresh_login_emptyPassword">
 				<source>Empty password is not allowed!</source>
 			</trans-unit>
-			<!--refresh login message related labels end -->
 			<trans-unit id="mess.please_wait">
 				<source>Please wait ...</source>
 			</trans-unit>
 			<trans-unit id="mess.be_locked">
 				<source>The TYPO3 backend is currently locked for maintenance. Leave this browser window open and the backend will automatically become available again once maintenance is complete.</source>
 			</trans-unit>
-			<!-- TODO: Move login expire message related labels -->
 			<trans-unit id="mess.login_about_to_expire">
 				<source>Your TYPO3 login is about to expire. Please confirm that you want to stay logged in.</source>
 			</trans-unit>
@@ -964,11 +935,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="mess.login_expired">
 				<source>Your TYPO3 login has expired. You need to login again if you want to continue. Otherwise you can close the current browser window.</source>
 			</trans-unit>
-			<!-- login expire message related labels end -->
-			<trans-unit id="mess.noSelItemForEdit" x-unused-since="14.0">
+			<trans-unit id="mess.noSelItemForEdit">
 				<source>Please select one or more items in the list before you can edit.</source>
 			</trans-unit>
-			<!-- TODO: Move refresh message related labels -->
 			<trans-unit id="mess.refreshRequired.title">
 				<source>Refresh required</source>
 			</trans-unit>
@@ -981,8 +950,6 @@ Do you want to refresh it now?</source>
 			<trans-unit id="mess.refreshRequired.confirm">
 				<source>Save and refresh</source>
 			</trans-unit>
-			<!-- refresh message related labels end -->
-			<!-- TODO: Move element moving / copying message related labels -->
 			<trans-unit id="mess.move_into">
 				<source>Move "%s" into "%s"?</source>
 			</trans-unit>
@@ -998,39 +965,37 @@ Do you want to refresh it now?</source>
 			<trans-unit id="mess.copy_after">
 				<source>Copy "%s" to after "%s"?</source>
 			</trans-unit>
-			<!-- element moving / copying message related labels end -->
-			<trans-unit id="mess.copycb_into" x-unused-since="14.0">
+			<trans-unit id="mess.copycb_into">
 				<source>Copy all elements (%s) from the clipboard into "%s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.copycb_after" x-unused-since="14.0">
+			<trans-unit id="mess.copycb_after">
 				<source>Copy all elements (%s) from the clipboard to the position after "%s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.movecb_into" x-unused-since="14.0">
+			<trans-unit id="mess.movecb_into">
 				<source>Move all elements (%s) from the clipboard into "%s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.movecb_after" x-unused-since="14.0">
+			<trans-unit id="mess.movecb_after">
 				<source>Move all elements (%s) from the clipboard to the position after "%s"?</source>
 			</trans-unit>
-			<trans-unit id="rm.menu" x-unused-since="14.0">
+			<trans-unit id="rm.menu">
 				<source>[menu]</source>
 			</trans-unit>
-			<trans-unit id="rm.saveDoc" x-unused-since="14.0">
+			<trans-unit id="rm.saveDoc">
 				<source>Save</source>
 			</trans-unit>
-			<!-- TODO: Move record editing button related labels -->
 			<trans-unit id="rm.viewDoc">
 				<source>View</source>
 			</trans-unit>
-			<trans-unit id="rm.saveDocShow" x-unused-since="14.0">
+			<trans-unit id="rm.saveDocShow">
 				<source>Save and view page</source>
 			</trans-unit>
 			<trans-unit id="rm.saveCloseDoc">
 				<source>Save and close</source>
 			</trans-unit>
-			<trans-unit id="rm.saveCloseAllDocs" x-unused-since="14.0">
+			<trans-unit id="rm.saveCloseAllDocs">
 				<source>Save and close all</source>
 			</trans-unit>
-			<trans-unit id="rm.saveNewDoc" x-unused-since="14.0">
+			<trans-unit id="rm.saveNewDoc">
 				<source>Save and create a new one</source>
 			</trans-unit>
 			<trans-unit id="rm.newDoc">
@@ -1039,40 +1004,36 @@ Do you want to refresh it now?</source>
 			<trans-unit id="rm.duplicateDoc">
 				<source>Duplicate</source>
 			</trans-unit>
-			<trans-unit id="rm.closeDoc">
-				<source>Close</source>
-			</trans-unit>
-			<!-- record editing button related labels end -->
-			<!-- TODO: Move record editing messages related labels -->
 			<trans-unit id="labels.recordDuplicated">
 				<source>The record has been duplicated.</source>
 			</trans-unit>
 			<trans-unit id="labels.recordDuplicationFailed">
 				<source>The record could not be duplicated.</source>
 			</trans-unit>
-			<!-- record editing messages related labels end -->
-			<trans-unit id="rm.clearCache_thisPage" x-unused-since="14.0">
+			<trans-unit id="rm.closeDoc">
+				<source>Close</source>
+			</trans-unit>
+			<trans-unit id="rm.clearCache_thisPage">
 				<source>This page</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCache_all" x-unused-since="14.0">
+			<trans-unit id="rm.clearCache_all">
 				<source>Clear FE cache</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCache_pages" x-unused-since="14.0">
+			<trans-unit id="rm.clearCache_pages">
 				<source>Clear Page Cache</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCache_allTypo3Conf" x-unused-since="14.0">
+			<trans-unit id="rm.clearCache_allTypo3Conf">
 				<source>Clear cache in typo3conf/</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCacheMenu_all" x-unused-since="14.0">
+			<trans-unit id="rm.clearCacheMenu_all">
 				<source>Clear all caches</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCacheMenu_pages" x-unused-since="14.0">
+			<trans-unit id="rm.clearCacheMenu_pages">
 				<source>Clear page content cache</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCacheMenu_allTypo3Conf" x-unused-since="14.0">
+			<trans-unit id="rm.clearCacheMenu_allTypo3Conf">
 				<source>Clear configuration cache</source>
 			</trans-unit>
-			<!-- TODO: Move cache flushing related labels -->
 			<trans-unit id="flushPageCachesTitle">
 				<source>Flush frontend caches</source>
 			</trans-unit>
@@ -1091,23 +1052,21 @@ Do you want to refresh it now?</source>
 			<trans-unit id="flushCaches.error.description">
 				<source>An error occurred while clearing the cache. It is likely not all caches were cleared as expected.</source>
 			</trans-unit>
-			<!-- cache flushing button related labels -->
-			<trans-unit id="rm.adminFunctions" x-unused-since="14.0">
+			<trans-unit id="rm.adminFunctions">
 				<source>Admin functions</source>
 			</trans-unit>
-			<trans-unit id="rm.edit" x-unused-since="14.0">
+			<trans-unit id="rm.edit">
 				<source>Edit</source>
 			</trans-unit>
 			<trans-unit id="rm.export">
 				<source>Export</source>
 			</trans-unit>
-			<trans-unit id="rm.delete" x-unused-since="14.0">
+			<trans-unit id="rm.delete">
 				<source>Delete</source>
 			</trans-unit>
 			<trans-unit id="message.header.fileNotDeletedHasReferences">
 				<source>File not deleted</source>
 			</trans-unit>
-			<!-- TODO: Move message/error related labels -->
 			<trans-unit id="message.description.fileNotDeletedHasReferences">
 				<source>The file "%s" cannot be deleted since it is still used at the following places</source>
 			</trans-unit>
@@ -1141,26 +1100,22 @@ Do you want to refresh it now?</source>
 			<trans-unit id="message.description.folderDeleted">
 				<source>The folder "%s" was successfully deleted.</source>
 			</trans-unit>
-			<!-- message/error related labels end -->
 
-			<trans-unit id="buttons.exit" x-unused-since="14.0">
+			<trans-unit id="buttons.exit">
 				<source>Exit</source>
 			</trans-unit>
-			<trans-unit id="buttons.selMenu_modules" x-unused-since="14.0">
+			<trans-unit id="buttons.selMenu_modules">
 				<source>MODULES</source>
 			</trans-unit>
-			<trans-unit id="buttons.clear" x-unused-since="14.0">
+			<trans-unit id="buttons.clear">
 				<source>Clear</source>
 			</trans-unit>
-
-			<!-- TODO: Move Clipboard related labels -->
 			<trans-unit id="buttons.clipboard">
 				<source>Clipboard</source>
 			</trans-unit>
 			<trans-unit id="buttons.removeAll">
 				<source>Remove all</source>
 			</trans-unit>
-			<!-- Clipboard related labels end -->
 			<trans-unit id="buttons.toggleLinkExplanation">
 				<source>Toggle link explanation</source>
 			</trans-unit>
@@ -1173,9 +1128,6 @@ Do you want to refresh it now?</source>
 			<trans-unit id="buttons.deactivateMfa">
 				<source>Deactivate multi-factor authentication</source>
 			</trans-unit>
-
-			<!-- TODO: Move MFA related labels -->
-
 			<trans-unit id="buttons.deactivateMfaProvider">
 				<source>Deactivate %s</source>
 			</trans-unit>
@@ -1185,10 +1137,6 @@ Do you want to refresh it now?</source>
 			<trans-unit id="buttons.deactivateMfaProvider.confirmation.text">
 				<source>Are you sure you want to deactivate %s? This action can not be undone and will be applied immediately!</source>
 			</trans-unit>
-
-			<!-- MFA related labels end -->
-
-			<!-- TODO: Move slug related labels -->
 			<trans-unit id="slugCreation.success.page">
 				<source>This page will be reachable via %s</source>
 			</trans-unit>
@@ -1198,12 +1146,10 @@ Do you want to refresh it now?</source>
 			<trans-unit id="slugCreation.error">
 				<source>The requested URL is already in use, but %s will be used instead</source>
 			</trans-unit>
-			<!-- slug related labels end-->
-			<!-- TODO: Move copy/paste action related labels -->
 			<trans-unit id="cm.copy">
 				<source>Copy</source>
 			</trans-unit>
-			<trans-unit id="cm.copyrelease"  x-unused-since="14.0">
+			<trans-unit id="cm.copyrelease">
 				<source>Copy release</source>
 			</trans-unit>
 			<trans-unit id="cm.cut">
@@ -1320,27 +1266,24 @@ Do you want to refresh it now?</source>
 			<trans-unit id="cm.moveFolder_into">
 				<source>Move folder into</source>
 			</trans-unit>
-			<!-- copy/paste action related labels -->
 			<trans-unit id="cm.createNewRelation">
 				<source>Create new relation</source>
 			</trans-unit>
-			<trans-unit id="cm.branchActions" x-unused-since="14.0">
+			<trans-unit id="cm.branchActions">
 				<source>Branch Actions</source>
 			</trans-unit>
-			<trans-unit id="cm.copyPasteActions" x-unused-since="14.0">
+			<trans-unit id="cm.copyPasteActions">
 				<source>Page Actions</source>
 			</trans-unit>
-			<trans-unit id="cm.collapseBranch" x-unused-since="14.0">
+			<trans-unit id="cm.collapseBranch">
 				<source>Collapse Branch</source>
 			</trans-unit>
-			<trans-unit id="cm.expandBranch" x-unused-since="14.0">
+			<trans-unit id="cm.expandBranch">
 				<source>Expand Branch</source>
 			</trans-unit>
 			<trans-unit id="cm.more">
 				<source>More options...</source>
 			</trans-unit>
-
-			<!-- TODO: Move allowed files related labels -->
 			<trans-unit id="cm.allowedFileExtensions">
 				<source>Allowed file extensions</source>
 			</trans-unit>
@@ -1356,25 +1299,21 @@ Do you want to refresh it now?</source>
 			<trans-unit id="cm.allowedRelations">
 				<source>Allowed relations</source>
 			</trans-unit>
-			<!-- Allowed files related labels -->
 			<trans-unit id="cm.history">
 				<source>History/Undo</source>
 			</trans-unit>
-			<!-- TODO: Move clipboard related labels -->
 			<trans-unit id="cm.transferToClipboard">
 				<source>Transfer to clipboard</source>
 			</trans-unit>
 			<trans-unit id="cm.removeFromClipboard">
 				<source>Remove from clipboard</source>
 			</trans-unit>
-			<!-- clipboard related labels end -->
 			<trans-unit id="sortable.dragmove">
 				<source>Drag to move</source>
 			</trans-unit>
 			<trans-unit id="tree.searchTermInfo">
 				<source>Enter search term</source>
 			</trans-unit>
-			<!-- TODO: Move warning / error messages labels -->
 			<trans-unit id="warning.file_deny_pattern">
 				<source>The value of fileDenyPattern is not set to its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
 			</trans-unit>
@@ -1480,49 +1419,39 @@ Do you want to refresh it now?</source>
 			<trans-unit id="error.misconfiguredPasswordRules">
 				<source>No password could be generated due to misconfigured password rules.</source>
 			</trans-unit>
-			<!-- warning / error messages labels end-->
-			<!-- TODO: Move constant editor labels -->
 			<trans-unit id="labels.deleteTitle">
 				<source>Revert to default Constant</source>
 			</trans-unit>
 			<trans-unit id="labels.editTitle">
 				<source>Edit this Constant</source>
 			</trans-unit>
-			<!-- constant editor labels end -->
 			<trans-unit id="pageTranslation">
 				<source>Page Translation</source>
 			</trans-unit>
-			<!-- TODO: Filestorage related errors -->
 			<trans-unit id="filestorage.invalidpathexception.title">
 				<source>Error in Path</source>
 			</trans-unit>
 			<trans-unit id="filestorage.invalidpathexception.message">
 				<source>You entered an invalid path for this File Storage. Note that "../" and "//" are not allowed when using an absolute path.</source>
 			</trans-unit>
-			<!-- Filestorage related errors -->
 			<trans-unit id="iframe.listFrame">
 				<source>List frame (content area) to create and modify pages, content and records</source>
 			</trans-unit>
 			<trans-unit id="message.confirmation">
 				<source>Are you sure?</source>
 			</trans-unit>
-			<!-- TODO: Move Form labels -->
 			<trans-unit id="labels.datepicker.today">
 				<source>Today</source>
 			</trans-unit>
 			<trans-unit id="labels.inputfield.clearButton.title">
 				<source>Clear input</source>
 			</trans-unit>
-			<!-- Form labels end-->
-			<!-- TODO: Move context menu labels -->
 			<trans-unit id="labels.contextMenu.open">
 				<source>Open context menu</source>
 			</trans-unit>
 			<trans-unit id="labels.contextMenu.open.recordLabel">
 				<source>Open context menu for record: %s</source>
 			</trans-unit>
-			<!-- context menu labels end-->
-			<!-- TODO: Move site related error labels -->
 			<trans-unit id="error.site.invalidSetDependencies">
 				<source>This site depends on invalid site sets</source>
 			</trans-unit>
@@ -1544,7 +1473,6 @@ Do you want to refresh it now?</source>
 			<trans-unit id="error.siteSet.invalidSet">
 				<source>Invalid site set '%1$s': %2$s</source>
 			</trans-unit>
-			<!--site related error labels end-->
 			<trans-unit id="countries.default">
 				<source>Default countries</source>
 			</trans-unit>
