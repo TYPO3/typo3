@@ -16,6 +16,7 @@ import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import IconHelper from '@typo3/workspaces/utility/icon-helper';
 import { classMap } from 'lit/directives/class-map';
 import { ifDefined } from 'lit/directives/if-defined';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { repeat } from 'lit/directives/repeat';
 import '@typo3/backend/element/icon-element';
 import 'bootstrap'; // for data-bs-toggle="dropdown"
@@ -35,6 +36,10 @@ export type RecordData = {
   value_prevStage: number,
   path_Workspace: string,
   lastChangedFormatted: string,
+  lastEditorId: number,
+  lastEditorName: string,
+  lastEditorRealName: string,
+  lastEditorAvatar: string,
   t3ver_wsid: number,
   t3ver_oid: number,
   livepid: number,
@@ -126,7 +131,7 @@ export class RecordTableElement extends LitElement {
             </th>
             <th class="col-min">${TYPO3.lang['column.wsTitle']}</th>
             <th class="col-language">${TYPO3.lang['labels._LOCALIZATION_']}</th>
-            <th class="col-datetime">${TYPO3.lang['column.lastChangeOn']}</th>
+            <th class="col-datetime">${TYPO3.lang['column.last_change']}</th>
             <th class="col-state">${TYPO3.lang['column.wsStateAction']}</th>
             <th class="col-state">${TYPO3.lang['column.integrity']}</th>
             <th>${TYPO3.lang['column.stage']}</th>
@@ -230,7 +235,21 @@ export class RecordTableElement extends LitElement {
           </span>
           ${data.language.title_crop}
         </td>
-        <td class="col-datetime">${data.lastChangedFormatted}</td>
+        <td class="col-datetime col-nowrap">
+          <div class="d-flex flex-column flex-nowrap row-gap-1">
+            ${data.lastEditorName ? html`
+            <span class="d-inline-flex align-items-center gap-1">
+              <span class="d-inline-flex align-items-center" aria-hidden="true">
+                ${unsafeHTML((data.lastEditorAvatar || '').replace(/--avatar-size:\s*\d+px/g, '--avatar-size: 16px'))}
+              </span>
+              <span>${data.lastEditorRealName || data.lastEditorName}</span>
+            </span>
+          ` : html`
+            <span class="text-muted">${TYPO3.lang['column.editor.unknown']}</span>
+          `}
+            ${data.lastChangedFormatted}
+          </div>
+        </td>
         <td class="col-state">
           <span class="badge badge-${wsStateActionClass}">${wsStateActionLabel}</span>
         </td>

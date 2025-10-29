@@ -44,10 +44,6 @@ readonly class HistoryService implements SingletonInterface
 
     /**
      * Gets the editing history of a record.
-     *
-     * @param string $table Name of the table
-     * @param int $id Uid of the record
-     * @return array Record history entries
      */
     public function getHistory(string $table, int $id): array
     {
@@ -98,6 +94,8 @@ readonly class HistoryService implements SingletonInterface
         return [
             'datetime' => htmlspecialchars(BackendUtility::datetime($entry['tstamp'])),
             'user' => htmlspecialchars($beUserRecord['username'] ?? 'unknown'),
+            'user_realName' => htmlspecialchars($beUserRecord['realName'] ?? ''),
+            'user_uid' => (int)($beUserRecord['uid'] ?? 0),
             'user_avatar' => $this->avatar->render($beUserRecord),
             'differences' => $differences,
         ];
@@ -149,9 +147,6 @@ readonly class HistoryService implements SingletonInterface
 
     /**
      * Gets an instance of the record history of a record.
-     *
-     * @param string $table Name of the table
-     * @param int $id Uid of the record
      */
     protected function getHistoryEntries(string $table, int $id): array
     {

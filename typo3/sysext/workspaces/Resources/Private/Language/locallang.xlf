@@ -127,8 +127,11 @@
 			<trans-unit id="column.stage">
 				<source>Current Stage</source>
 			</trans-unit>
-			<trans-unit id="column.lastChangeOn">
-				<source>Last changed on</source>
+			<trans-unit id="column.last_change">
+				<source>Last changed</source>
+			</trans-unit>
+			<trans-unit id="column.editor.unknown">
+				<source>Unknown</source>
 			</trans-unit>
 			<trans-unit id="column.actions">
 				<source>Actions</source>

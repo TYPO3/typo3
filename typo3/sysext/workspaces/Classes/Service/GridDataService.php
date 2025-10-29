@@ -394,6 +394,11 @@ readonly class GridDataService
                     // @todo: Avoid hard coded access to 'tstamp' and use table TCA 'ctrl' 'tstamp' value instead, if set.
                     $versionArray['lastChangedFormatted'] = BackendUtility::datetime((int)$versionRecord['tstamp']);
                 }
+                $history = $this->historyService->getHistory($table, (int)$record['uid']);
+                $versionArray['lastEditorId'] = isset($history[0]['user_uid']) ? (int)$history[0]['user_uid'] : 0;
+                $versionArray['lastEditorName'] = htmlspecialchars((string)($history[0]['user'] ?? ''));
+                $versionArray['lastEditorRealName'] = htmlspecialchars((string)($history[0]['user_realName'] ?? ''));
+                $versionArray['lastEditorAvatar'] = (string)($history[0]['user_avatar'] ?? '');
                 $versionArray['t3ver_wsid'] = $versionRecord['t3ver_wsid'];
                 $versionArray['t3ver_oid'] = $calculatedT3verOid;
                 $versionArray['livepid'] = $record['livepid'];
