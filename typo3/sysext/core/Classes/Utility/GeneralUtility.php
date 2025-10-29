@@ -2083,7 +2083,7 @@ class GeneralUtility
             $configValue = (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['versionNumberInFilename'] ?? false);
         }
         try {
-            $fileExists = file_exists($path);
+            $fileExists = is_file($path);
         } catch (\Throwable $e) {
             $fileExists = false;
         }
