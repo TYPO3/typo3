@@ -829,7 +829,13 @@ class DatabaseRecordList
                         }
                     }
 
-                    $rowOutput .= $this->renderListRow($table, $record, 0, $translations, $translationEnabled, $filterLanguage !== -1 ? [$filterLanguage] : []);
+                    // Only offer localization to filtered language if the page has a translation in that language
+                    $possibleTranslationsForRow = [];
+                    if ($filterLanguage > 0 && in_array($filterLanguage, $this->possibleTranslations, true)) {
+                        $possibleTranslationsForRow = [$filterLanguage];
+                    }
+
+                    $rowOutput .= $this->renderListRow($table, $record, 0, $translations, $translationEnabled, $possibleTranslationsForRow);
 
                     if ($listTranslatedRecords) {
                         foreach ($translations ?? [] as $lRow) {

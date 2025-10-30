@@ -190,4 +190,26 @@ final class DatabaseRecordListTest extends FunctionalTestCase
         // French-CA content should NOT be shown when French is selected
         self::assertStringNotContainsString('FR-CA: Content Element #1', $listHtml);
     }
+
+    #[Test]
+    public function localizationPanelDoesNotOfferLanguageWithoutPageTranslation(): void
+    {
+        $request = (new ServerRequest())->withAttribute('route', (new Route('/typo3/module/web/list', ['_identifier' => 'web_list'])));
+        $recordList = $this->get(DatabaseRecordList::class);
+        $recordList->setRequest($request);
+
+        // Page 1200 has NO translations
+        $recordList->start(1200, 'tt_content', 0);
+
+        // Set language filter to "all languages" (-1) to see localization panel
+        $moduleData = new ModuleData('web_list', ['language' => -1], ['language' => -1]);
+        $recordList->setModuleData($moduleData);
+
+        $listHtml = $recordList->generateList();
+
+        // The localization panel should NOT be present at all
+        // because the page has no translations, so there's nothing to localize to
+        self::assertStringNotContainsString('t3js-action-localize', $listHtml);
+    }
+
 }

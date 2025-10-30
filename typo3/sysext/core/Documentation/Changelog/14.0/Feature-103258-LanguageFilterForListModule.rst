@@ -57,6 +57,17 @@ When a specific language is selected:
 Example: If French is selected, one will see French translations, default
 language content, and content marked for "all languages".
 
+Localization Restrictions
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The localization panel respects page translation availability. When a language
+is selected or when viewing in "all languages" mode, the list module only
+offers localization options for languages where the page has an existing
+translation.
+
+This ensures data integrity by preventing the creation of records in
+languages where the parent page does not exist.
+
 Impact
 ======
 
