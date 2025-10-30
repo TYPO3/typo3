@@ -2002,7 +2002,7 @@ class DatabaseRecordList
         foreach ($secondary->getItems() as $action) {
             if ($action instanceof GenericButton) {
                 $action = $this->componentFactory->createDropDownItem()
-                    ->setTag($action->getTag())
+                    ->setTag($action->getHref() === null ? $action->getTag() : 'a')
                     ->setLabel($action->getLabel() ?: $action->getTitle())
                     ->setIcon($action->getIcon())
                     ->setHref($action->getHref())
@@ -2069,7 +2069,7 @@ class DatabaseRecordList
             $isSel = $this->clipObj->isSelected($table, $record->getUid());
 
             $copyTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($isSel === 'copy' ? 'copyrelease' : 'copy'));
-            $copyUrl = $this->clipObj->selUrlDB($table, (int)$record->getUid(), true, $isSel === 'copy');
+            $copyUrl = $this->clipObj->selUrlDB($table, $record->getUid(), true, $isSel === 'copy');
             $clipboardButtons['copy'] = $this->componentFactory->createGenericButton()
                 ->setIcon($this->iconFactory->getIcon($isSel === 'copy' ? 'actions-edit-copy-release' : 'actions-edit-copy', IconSize::SMALL))
                 ->setTitle($copyTitle)
@@ -2085,7 +2085,7 @@ class DatabaseRecordList
                 $clipboardButtons['cut'] = null;
             } else {
                 $cutTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($isSel === 'cut' ? 'cutrelease' : 'cut'));
-                $cutUrl = $this->clipObj->selUrlDB($table, (int)$record->getUid(), false, $isSel === 'cut');
+                $cutUrl = $this->clipObj->selUrlDB($table, $record->getUid(), false, $isSel === 'cut');
                 $clipboardButtons['cut'] = $this->componentFactory->createGenericButton()
                     ->setIcon($this->iconFactory->getIcon($isSel === 'cut' ? 'actions-edit-cut-release' : 'actions-edit-cut', IconSize::SMALL))
                     ->setTitle($cutTitle)
