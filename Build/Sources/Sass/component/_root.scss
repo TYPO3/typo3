@@ -25,10 +25,15 @@
 :root {
     color-scheme: light dark;
     scroll-behavior: smooth;
+    // Respect user agent font size setting, but require at
+    // least a minimum font-size of 14px, as we're scaling
+    // <body> by 75% and any base font size below 14px would
+    // become less than 10px for default text.
+    font-size: max(1em, 14px);
 
     // General
-    --typo3-font-size: 12px;
-    --typo3-font-size-small: 11px;
+    --typo3-font-size: .75rem;
+    --typo3-font-size-small: .6875rem;
     --typo3-font-family-sans-serif: #{$font-family-sans-serif};
     --typo3-font-family-monospace: #{$font-family-monospace};
     --typo3-font-family: var(--typo3-font-family-sans-serif);

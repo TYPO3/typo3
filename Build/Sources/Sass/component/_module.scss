@@ -19,7 +19,7 @@
     --module-docheader-bg: var(--typo3-surface-container-high);
     --module-docheader-border-color: color-mix(in srgb, var(--module-docheader-bg), var(--module-color) 10%);
     --module-docheader-border-width: 1px;
-    --module-docheader-bar-height: 28.5px;
+    --module-docheader-bar-height: calc((28.5px - 16px) + 1em);
     --module-docheader-scroll-offset: calc(-1 * (var(--module-docheader-bar-height) + var(--module-docheader-padding-y)));
     --module-docheader-height: calc(var(--module-docheader-bar-height) * 2 + var(--module-docheader-padding-y) * 2 + var(--module-docheader-spacing-y) + var(--module-docheader-border-width));
     --module-body-padding-y: 1.5rem;
