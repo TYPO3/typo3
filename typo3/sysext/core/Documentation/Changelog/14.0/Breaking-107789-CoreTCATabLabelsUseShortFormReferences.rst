@@ -140,6 +140,66 @@ own label definition:
     → :php:`space_before_class`
 -   :php:`space_after_class;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:space_after_class_formlabel`
     → :php:`space_after_class`
+-   :php:`doktype:LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype_formlabel`
+    → :php:`doktype`
+-   :php:`shortcut_mode;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.shortcut_mode_formlabel`
+    → :php:`shortcut_mode`
+-   :php:`shortcut;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.shortcut_formlabel`
+    → :php:`shortcut`
+-   :php:`mount_pid_ol;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.mount_pid_ol_formlabel`
+    → :php:`mount_pid_ol`
+-   :php:`mount_pid;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.mount_pid_formlabel`
+    → :php:`mount_pid`
+-   :php:`url;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.url_formlabel`
+    → :php:`url`
+-   :php:`title;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.title_formlabel`
+    → :php:`title`
+-   :php:`nav_title;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.nav_title_formlabel`
+    → :php:`nav_title`
+-   :php:`subtitle;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.subtitle_formlabel`
+    → :php:`subtitle`
+-   :php:`nav_hide;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:pages.nav_hide_toggle_formlabel`
+    → :php:`nav_hide`
+-   :php:`extendToSubpages;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.extendToSubpages_formlabel`
+    → :php:`extendToSubpages`
+-   :php:`abstract;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.abstract_formlabel`
+    → :php:`abstract`
+-   :php:`keywords;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.keywords_formlabel`
+    → :php:`keywords`
+-   :php:`author;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.author_formlabel`
+    → :php:`author`
+-   :php:`author_email;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.author_email_formlabel`
+    → :php:`author_email`
+-   :php:`lastUpdated;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.lastUpdated_formlabel`
+    → :php:`lastUpdated`
+-   :php:`newUntil;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.newUntil_formlabel`
+    → :php:`newUntil`
+-   :php:`backend_layout;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.backend_layout_formlabel`
+    → :php:`backend_layout`
+-   :php:`backend_layout_next_level;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.backend_layout_next_level_formlabel`
+    → :php:`backend_layout_next_level`
+-   :php:`module;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.module_formlabel`
+    → :php:`module`
+-   :php:`content_from_pid;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.content_from_pid_formlabel`
+    → :php:`content_from_pid`
+-   :php:`cache_timeout;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.cache_timeout_formlabel`
+    → :php:`cache_timeout`
+-   :php:`l18n_cfg;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg_formlabel`
+    → :php:`l18n_cfg`
+-   :php:`is_siteroot;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.is_siteroot_formlabel`
+    → :php:`is_siteroot`
+-   :php:`no_search;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.no_search_formlabel`
+    → :php:`no_search`
+-   :php:`php_tree_stop;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.php_tree_stop_formlabel`
+    → :php:`php_tree_stop`
+-   :php:`editlock;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.editlock_formlabel`
+    → :php:`editlock`
+-   :php:`media;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.media_formlabel`
+    → :php:`media`
+-   :php:`tsconfig_includes;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tsconfig_includes`
+    → :php:`tsconfig_includes`
+-   :php:`TSconfig;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.TSconfig_formlabel`
+    → :php:`TSconfig`
 
 **Field label overrides changed in palette definitions:**
 
@@ -151,6 +211,16 @@ own label definition:
     → :php:`endtime;frontend.db.tt_content:endtime`
 -   :php:`fe_group;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:fe_group_formlabel`
     → :php:`fe_group;frontend.db.tt_content:fe_group`
+-   :php:`hidden;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:pages.hidden_toggle_formlabel`
+    → :php:`hidden;core.db.pages:hidden`
+-   :php:`starttime;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.starttime_formlabel`
+    → :php:`starttime;core.db.pages:starttime`
+-   :php:`endtime;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.endtime_formlabel`
+    → :php:`starttime;core.db.pages:endtime`
+-   :php:`fe_group;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.fe_group_formlabel`
+    → :php:`fe_group;core.db.pages:fe_group`
+-   :php:`target;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.target_formlabel`
+    → :php:`target;core.db.pages:link.target`
 
 Affected installations
 ======================

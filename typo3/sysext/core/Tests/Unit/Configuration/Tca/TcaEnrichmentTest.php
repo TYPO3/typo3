@@ -244,7 +244,7 @@ final class TcaEnrichmentTest extends UnitTestCase
         $expected = $tca;
         $expected['aTable']['columns']['myEditLockField'] = [
             'displayCond' => 'HIDE_FOR_NON_ADMINS',
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:editlock',
+            'label' => 'core.db.general:editlock',
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',

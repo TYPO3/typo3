@@ -33,7 +33,7 @@
 			<trans-unit id="LGL.usergroups">
 				<source>__Usergroups:__</source>
 			</trans-unit>
-			<trans-unit id="LGL.type">
+			<trans-unit id="LGL.type" x-unused-since="14.0">
 				<source>Type</source>
 			</trans-unit>
 			<trans-unit id="LGL.description">

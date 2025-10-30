@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
+    <file id="f1">
+        <unit id="abstract">
+            <segment>
+                <source>Abstract</source>
+            </segment>
+        </unit>
+        <unit id="author">
+            <segment>
+                <source>Author Name</source>
+            </segment>
+        </unit>
+        <unit id="author_email">
+            <segment>
+                <source>Author Email</source>
+            </segment>
+        </unit>
+        <unit id="backend_layout">
+            <segment>
+                <source>Backend Layout (this page only)</source>
+            </segment>
+        </unit>
+        <unit id="backend_layout_next_level">
+            <segment>
+                <source>Backend Layout (subpages of this page)</source>
+            </segment>
+        </unit>
+        <unit id="cache_tags">
+            <segment>
+                <source>Cache Tags</source>
+            </segment>
+        </unit>
+        <unit id="cache_timeout">
+            <segment>
+                <source>Cache Lifetime</source>
+            </segment>
+        </unit>
+        <unit id="content_from_pid">
+            <segment>
+                <source>Show Content from this page</source>
+            </segment>
+        </unit>
+        <unit id="description">
+            <segment>
+                <source>Description for search engines</source>
+            </segment>
+        </unit>
+        <unit id="doktype">
+            <segment>
+                <source>Type</source>
+            </segment>
+        </unit>
+        <unit id="extend_to_subpages">
+            <segment>
+                <source>Extend to Subpages</source>
+            </segment>
+        </unit>
+        <unit id="hidden">
+            <segment>
+                <source>Page visible</source>
+            </segment>
+        </unit>
+       <unit id="is_siteroot">
+            <segment>
+                <source>Use as Root Page</source>
+            </segment>
+        </unit>
+        <unit id="keywords">
+            <segment>
+                <source>Keywords</source>
+            </segment>
+        </unit>
+        <unit id="l18n_cfg">
+            <segment>
+                <source>Localization</source>
+            </segment>
+        </unit>
+        <unit id="last_updated">
+            <segment>
+                <source>Last Update</source>
+            </segment>
+        </unit>
+        <unit id="layout">
+            <segment>
+                <source>Frontend Layout</source>
+            </segment>
+        </unit>
+        <unit id="link.target">
+            <segment>
+                <source>Link target</source>
+            </segment>
+        </unit>
+        <unit id="media">
+            <segment>
+                <source>Media</source>
+            </segment>
+        </unit>
+        <unit id="module">
+            <segment>
+                <source>Contains Plugin</source>
+            </segment>
+        </unit>
+        <unit id="mount_pid">
+            <segment>
+                <source>Mounted page</source>
+            </segment>
+        </unit>
+        <unit id="mount_pid_ol">
+            <segment>
+                <source>Mount Point Display Option</source>
+            </segment>
+        </unit>
+        <unit id="nav_hide">
+            <segment>
+                <source>Page enabled in menus</source>
+            </segment>
+        </unit>
+        <unit id="nav_title">
+            <segment>
+                <source>Alternative Navigation Title</source>
+            </segment>
+        </unit>
+        <unit id="new_until">
+            <segment>
+                <source>Mark as 'New' Until</source>
+            </segment>
+        </unit>
+        <unit id="no_search">
+            <segment>
+                <source>Include in Search</source>
+            </segment>
+        </unit>
+        <unit id="php_tree_stop">
+            <segment>
+                <source>Hide child pages in page tree</source>
+            </segment>
+        </unit>
+        <unit id="shortcut">
+            <segment>
+                <source>Shortcut to page</source>
+            </segment>
+        </unit>
+        <unit id="shortcut_mode">
+            <segment>
+                <source>Shortcut Mode</source>
+            </segment>
+        </unit>
+        <unit id="slug">
+            <segment>
+                <source>URL Segment</source>
+            </segment>
+        </unit>
+        <unit id="subtitle">
+            <segment>
+                <source>Subtitle</source>
+            </segment>
+        </unit>
+        <unit id="target">
+            <segment>
+                <source>Target</source>
+            </segment>
+        </unit>
+        <unit id="title">
+            <segment>
+                <source>Page title</source>
+            </segment>
+        </unit>
+        <unit id="tsconfig">
+            <segment>
+                <source>Page TSconfig</source>
+            </segment>
+        </unit>
+        <unit id="tsconfig_includes">
+            <segment>
+                <source>Include static Page TSconfig (from extensions)</source>
+            </segment>
+        </unit>
+        <unit id="url">
+            <segment>
+                <source>URL</source>
+            </segment>
+        </unit>
+    </file>
+</xliff>

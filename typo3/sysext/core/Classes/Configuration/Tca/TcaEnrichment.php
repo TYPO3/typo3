@@ -152,7 +152,7 @@ final readonly class TcaEnrichment
             if ($editLockFieldName && !is_array($tableDefinition['columns'][$editLockFieldName] ?? null)) {
                 $tca[$table]['columns'][$editLockFieldName] = [
                     'displayCond' => 'HIDE_FOR_NON_ADMINS',
-                    'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:editlock',
+                    'label' => 'core.db.general:editlock',
                     'config' => [
                         'type' => 'check',
                         'renderType' => 'checkboxToggle',
