@@ -42,7 +42,7 @@ This class has to implement the :php:`WidgetInterface` and could look like this:
             private readonly WidgetConfigurationInterface $configuration,
             private readonly Cache $cache,
             private readonly BackendViewFactory $backendViewFactory,
-            private readonly ButtonProviderInterface $buttonProvider = null,
+            private readonly ?ButtonProviderInterface $buttonProvider = null,
             private readonly array $options = []
         ) {
         }
