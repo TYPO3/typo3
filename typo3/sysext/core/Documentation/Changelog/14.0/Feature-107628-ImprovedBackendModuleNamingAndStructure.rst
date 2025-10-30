@@ -259,6 +259,20 @@ this section defines behavior (languages, domains, routes), not content.
 **Migration:** Since the module identifier `site_configuration` is kept, no
 changes in referencing modules are required.
 
+Settings => Setup
+-----------------
+
+The second level :guilabel:`Settings` module has been integrated into :guilabel:`Setup`.
+
+**Rationale:** Combining the "Setup" and "Settings" gives a more concise view,
+since managing sites and site settings are often done as one task.
+
+**Migration:** The module identifier `site_settings` has been removed, the existing
+actions :php:`edit`, :php:`save` and :php:`dump` have been renamed to
+:php:`editSettings`, :php:`saveSettings` and :php:`dumpSettings` as part of the
+`site_configuration` module identifier.
+
+
 System > Backend Users => Administration > Users
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -76,7 +76,7 @@
                 />
             </p>
             <f:variable name="returnUrl">{f:be.uri(route: 'web_typoscript_constanteditor', parameters: {id: pageUid})}</f:variable>
-            <f:be.link route="site_settings.edit" parameters="{site: templateRecord.site.identifier, returnUrl: returnUrl}" class="btn btn-default">
+            <f:be.link route="site_configuration.editSettings" parameters="{site: templateRecord.site.identifier, returnUrl: returnUrl}" class="btn btn-default">
                 <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:btn.editSiteSettings"/>
             </f:be.link>
         </f:be.infobox>

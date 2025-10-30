@@ -10,6 +10,8 @@ use TYPO3\CMS\Backend\Controller\SiteConfigurationController;
 use TYPO3\CMS\Backend\Controller\SiteSettingsController;
 use TYPO3\CMS\Backend\Security\ContentSecurityPolicy\CspModuleController;
 use TYPO3\CMS\Backend\View\PageViewMode;
+use TYPO3\CMS\Backend\View\SetupModuleViewMode;
+use TYPO3\CMS\Backend\View\SetupSettingsViewMode;
 
 /**
  * Definitions for modules provided by EXT:backend
@@ -75,6 +77,9 @@ return [
             '_default' => [
                 'target' => SiteConfigurationController::class . '::overviewAction',
             ],
+            'detail' => [
+                'target' => SiteConfigurationController::class . '::detailAction',
+            ],
             'edit' => [
                 'target' => SiteConfigurationController::class . '::editAction',
             ],
@@ -86,31 +91,21 @@ return [
                 'target' => SiteConfigurationController::class . '::deleteAction',
                 'methods' => ['POST'],
             ],
-        ],
-    ],
-    'site_settings' => [
-        'parent' => 'site',
-        'position' => ['after' => 'site_configuration'],
-        // @todo implement access=user
-        'access' => 'admin',
-        'path' => '/module/site/settings',
-        'iconIdentifier' => 'module-site-settings',
-        'labels' => 'backend.modules.site_settings',
-        'routes' => [
-            '_default' => [
-                'target' => SiteSettingsController::class . '::overviewAction',
-            ],
-            'edit' => [
+            'editSettings' => [
                 'target' => SiteSettingsController::class . '::editAction',
             ],
-            'save' => [
+            'saveSettings' => [
                 'target' => SiteSettingsController::class . '::saveAction',
                 'methods' => ['POST'],
             ],
-            'dump' => [
+            'dumpSettings' => [
                 'target' => SiteSettingsController::class . '::dumpAction',
                 'methods' => ['POST'],
             ],
+        ],
+        'moduleData' => [
+            'viewMode' => SetupModuleViewMode::TILES->value,
+            'settingsMode' => SetupSettingsViewMode::BASIC->value,
         ],
     ],
     'about' => [

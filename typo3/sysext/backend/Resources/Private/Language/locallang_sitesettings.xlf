@@ -3,28 +3,28 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf" date="2024-09-10T12:13:00Z" product-name="backend">
 		<header/>
 		<body>
-			<trans-unit id="overview.title">
+			<trans-unit id="overview.title" x-unused-since="14.0">
 				<source>Site Settings Overview</source>
 			</trans-unit>
-			<trans-unit id="overview.setSummary">
+			<trans-unit id="overview.setSummary" x-unused-since="14.0">
 				<source>Sets (%d)</source>
 			</trans-unit>
-			<trans-unit id="overview.customSettingsSummary">
+			<trans-unit id="overview.customSettingsSummary" x-unused-since="14.0">
 				<source>Custom Settings (%d)</source>
 			</trans-unit>
-			<trans-unit id="overview.editSettings">
+			<trans-unit id="overview.editSettings" x-unused-since="14.0">
 				<source>Edit Settings</source>
 			</trans-unit>
-			<trans-unit id="overview.message.notEditable">
+			<trans-unit id="overview.message.notEditable" x-unused-since="14.0">
 				<source>The sets of this site do not provide any configurable settings.</source>
 			</trans-unit>
-			<trans-unit id="overview.noSiteSettingsExists.title">
+			<trans-unit id="overview.noSiteSettingsExists.title" x-unused-since="14.0">
 				<source>No configurable Site Settings found</source>
 			</trans-unit>
-			<trans-unit id="overview.noSiteSettingsExists.message">
+			<trans-unit id="overview.noSiteSettingsExists.message" x-unused-since="14.0">
 				<source>See the documentation for instructions on defining settings via site sets.</source>
 			</trans-unit>
-			<trans-unit id="overview.noSiteSettingsExists.button-documentation-label">
+			<trans-unit id="overview.noSiteSettingsExists.button-documentation-label" x-unused-since="14.0">
 				<source>Open the documentation</source>
 			</trans-unit>
 			<trans-unit id="edit.headline">

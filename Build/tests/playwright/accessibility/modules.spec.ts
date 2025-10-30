@@ -15,9 +15,9 @@ test.describe('modules', () => {
       'label': 'the status module',
       'route': 'module/content/status',
     },
-    'mod_site_settings': {
-      'label': 'the site settings module',
-      'route': 'module/site/settings',
+    'mod_site_configuration': {
+      'label': 'the sites module',
+      'route': 'module/site/configuration',
     },
     'mod_reports': {
       'label': 'the reports module',

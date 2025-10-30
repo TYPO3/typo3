@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="overview.title">
-				<source>Site Configuration</source>
+				<source>Setup</source>
 			</trans-unit>
 			<trans-unit id="overview.site">
 				<source>Site</source>
@@ -13,12 +13,15 @@
 				<source>Site identifier</source>
 			</trans-unit>
 			<trans-unit id="overview.noPages.title">
-				<source>No Root Pages Available</source>
+				<source>No root pages available</source>
 			</trans-unit>
 			<trans-unit id="overview.noPages.message">
-				<source>Please create at least one root page in the Page module. A root page must be a content page at the top level (not a folder or separator) or have the "Root Page" flag enabled (Page Properties → Behavior tab).</source>
+				<source>Please create at least one root page in the Layout module. A root page must be a content page at the top level (not a folder or separator) or have the "Root Page" flag enabled (Page Properties → Behavior tab).</source>
 			</trans-unit>
-			<trans-unit id="overview.noSiteConfiguration">
+			<trans-unit id="overview.noPages.link.label">
+				<source>Open the documentation</source>
+			</trans-unit>
+			<trans-unit id="overview.noSiteConfiguration" x-unused-since="14.0">
 				<source>This site does not have a configuration, yet.</source>
 			</trans-unit>
 			<trans-unit id="overview.addSiteConfiguration">
@@ -39,11 +42,17 @@
 			<trans-unit id="overview.baseUrl">
 				<source>Base URL</source>
 			</trans-unit>
+			<trans-unit id="overview.rootPagesWithoutSiteConfiguration.title">
+				<source>Pages without a site configuration</source>
+			</trans-unit>
+			<trans-unit id="overview.rootPagesWithoutSiteConfiguration.description">
+				<source>The following root pages have no site configuration:</source>
+			</trans-unit>
 			<trans-unit id="overview.unassignedSites.title">
 				<source>Unassigned site configurations</source>
 			</trans-unit>
 			<trans-unit id="overview.unassignedSites.description">
-				<source>The following sites don't belong to any page anymore and can be removed.</source>
+				<source>The following site configurations don't belong to any page anymore and can be removed.</source>
 			</trans-unit>
 			<trans-unit id="overview.invalidSets.title">
 				<source>Invalid site set configurations</source>
@@ -69,9 +78,120 @@
 			<trans-unit id="overview.duplicatedRootPage.message">
 				<source>The page with ID "%1s" is used in the following site configurations:</source>
 			</trans-unit>
+			<trans-unit id="overview.btn.details">
+				<source>View details</source>
+			</trans-unit>
+			<trans-unit id="overview.entry_point">
+				<source>Entry Point</source>
+			</trans-unit>
+			<trans-unit id="overview.error_handling">
+				<source>Error handling</source>
+			</trans-unit>
+			<trans-unit id="overview.info.title">
+				<source>Information</source>
+			</trans-unit>
+			<trans-unit id="overview.info.all_sites.multiple">
+				<source><![CDATA[The installation includes <strong>%s configured sites</strong>.]]></source>
+			</trans-unit>
+			<trans-unit id="overview.info.all_sites.single">
+				<source><![CDATA[The installation includes <strong>%s configured site</strong>.]]></source>
+			</trans-unit>
+			<trans-unit id="overview.info.root_pages_without_site_sonfiguration.multiple">
+				<source><![CDATA[<strong>%s root pages</strong> are lacking a site configuration.]]></source>
+			</trans-unit>
+			<trans-unit id="overview.info.root_pages_without_site_sonfiguration.single">
+				<source><![CDATA[<strong>%s page</strong> is lacking a site configuration.]]></source>
+			</trans-unit>
+			<trans-unit id="overview.info.unassigned_sites.multiple">
+				<source><![CDATA[There are currently <strong>%s site configurations</strong> that are not assigned to any page.]]></source>
+			</trans-unit>
+			<trans-unit id="overview.info.unassigned_sites.single">
+				<source><![CDATA[There is currently <strong>%s site configuration</strong> that is not assigned to any page.]]></source>
+			</trans-unit>
+			<trans-unit id="overview.languages">
+				<source>Languages</source>
+			</trans-unit>
+			<trans-unit id="overview.languages.amount">
+				<source>and %s more</source>
+			</trans-unit>
+			<trans-unit id="overview.root_pages_without_site_configuration.title">
+				<source>Sites</source>
+			</trans-unit>
+			<trans-unit id="overview.site_sets">
+				<source>Dependencies to site sets</source>
+			</trans-unit>
+			<trans-unit id="overview.site_sets.yes">
+				<source>Yes</source>
+			</trans-unit>
+			<trans-unit id="overview.static_routes">
+				<source>Static routes</source>
+			</trans-unit>
+			<trans-unit id="overview.no_sites_with_site_configuration.title">
+				<source>No configured sites available</source>
+			</trans-unit>
+			<trans-unit id="overview.no_sites_with_site_configuration.message">
+				<source>At least one root page must have a site configuration.</source>
+			</trans-unit>
+			<trans-unit id="overview.none">
+				<source>None</source>
+			</trans-unit>
+
+			<trans-unit id="detail.headline_with_site_identifier">
+				<source>Setup of "%s"</source>
+			</trans-unit>
+			<trans-unit id="detail.headline_with_page_title">
+				<source>Setup of site "%s"</source>
+			</trans-unit>
+			<trans-unit id="detail.not_configured">
+				<source>Not configured.</source>
+			</trans-unit>
+			<trans-unit id="detail.site_configuration.error_handling">
+				<source>Error handling</source>
+			</trans-unit>
+			<trans-unit id="detail.site_configuration.headline">
+				<source>Site configuration</source>
+			</trans-unit>
+			<trans-unit id="detail.site_configuration.languages">
+				<source>Languages</source>
+			</trans-unit>
+			<trans-unit id="detail.site_configuration.languages.language">
+				<source>Language</source>
+			</trans-unit>
+			<trans-unit id="detail.site_configuration.languages.language_url">
+				<source>Full URL prefix</source>
+			</trans-unit>
+			<trans-unit id="detail.site_configuration.static_routes">
+				<source>Static routes</source>
+			</trans-unit>
+			<trans-unit id="detail.site_settings.active_settings.headline">
+				<source>Active settings</source>
+			</trans-unit>
+			<trans-unit id="detail.site_settings.active_settings.custom_site_settings">
+				<source>Settings within site configuration (e.g. via 'settings.yaml')</source>
+			</trans-unit>
+			<trans-unit id="detail.site_settings.dependencies.headline">
+				<source>Dependencies</source>
+			</trans-unit>
+			<trans-unit id="detail.site_settings.dependencies.text">
+				<source><![CDATA[Settings can be stored directly via the site configuration, or indirectly by loading them as a dependency of another site set.<br>The following dependencies are stored in the site configuration:]]></source>
+			</trans-unit>
+			<trans-unit id="detail.site_settings.headline">
+				<source>Site settings</source>
+			</trans-unit>
+			<trans-unit id="detail.site_settings.no_settings_found.message">
+				<source><![CDATA[Settings are listed here as soon as they are either present in a <code>settings.yaml</code> file in the site folder or there is one or more dependencies on site sets in the site configuration.]]></source>
+			</trans-unit>
+			<trans-unit id="detail.site_settings.no_settings_found.title">
+				<source>No site settings were found for this site</source>
+			</trans-unit>
+
 			<trans-unit id="edit.editSiteSettings">
 				<source>Edit site settings</source>
 			</trans-unit>
+			<trans-unit id="edit.site_configuration">
+				<source>Edit site configuration</source>
+			</trans-unit>
+
 			<trans-unit id="validation.identifierRenamed.title">
 				<source>Renamed identifier</source>
 			</trans-unit>
@@ -101,6 +221,10 @@
 			</trans-unit>
 			<trans-unit id="validation.duplicateLanguageId.message">
 				<source>Two language configurations for language "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+			</trans-unit>
+
+			<trans-unit id="labels.detail">
+				<source>View Site Configuration "%s"</source>
 			</trans-unit>
 			<trans-unit id="labels.edit">
 				<source>Edit Site Configuration "%s"</source>

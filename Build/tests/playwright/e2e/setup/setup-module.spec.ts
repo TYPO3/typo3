@@ -7,7 +7,7 @@ test.beforeEach(async ({ page, backend }) => {
 });
 
 test('Shows site configuration module', async ({ backend }) => {
-  await expect(backend.contentFrame.locator('h1')).toContainText('Site Configuration');
+  await expect(backend.contentFrame.locator('h1')).toContainText('Setup');
   // we would not expect to have more than one missing site configuration (zero if other tests did not create one)
   expect(await backend.contentFrame.locator('//table//tr//a[contains(text(),"Add new site configuration for this site")]').count()).toBeLessThan(2);
 });
@@ -75,7 +75,7 @@ test('Edit existing site configuration', async ({ backend, page }) => {
 
   await test.step('Close site configuration', async () => {
     await backend.formEngine.close();
-    await expect(backend.contentFrame.locator('h1')).toContainText('Site Configuration');
+    await expect(backend.contentFrame.locator('h1')).toContainText('Setup');
   });
 });
 

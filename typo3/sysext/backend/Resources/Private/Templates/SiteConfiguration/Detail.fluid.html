@@ -1,0 +1,497 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Before">
+    <f:asset.module identifier="@typo3/backend/element/immediate-action-element.js"/>
+    <f:asset.module identifier="@typo3/backend/utility/collapse-state-persister.js"/>
+    <f:variable name="args" value="{0: 'site', 1: page.uid}" />
+    <typo3-immediate-action
+        action="TYPO3.Backend.Storage.ModuleStateStorage.update"
+        args="{args -> f:format.json() -> f:format.htmlspecialchars()}"
+    ></typo3-immediate-action>
+</f:section>
+
+<f:section name="Content">
+
+    <f:if condition="{site.identifier}">
+        <div class="row">
+            <div class="col-md-10 col-lg-8">
+                <h1>
+                    <f:if condition="{page}">
+                        <f:then>
+                            <f:translate
+                                key="detail.headline_with_page_title"
+                                domain="backend.siteconfiguration"
+                                arguments="{
+                                    0: '{page.title}'
+                                }"
+                            />
+                        </f:then>
+                        <f:else>
+                            <f:translate
+                                key="detail.headline_with_site_identifier"
+                                domain="backend.siteconfiguration"
+                                arguments="{
+                                    0: '{site.identifier}'
+                                }"
+                            />
+                        </f:else>
+                    </f:if>
+                </h1>
+
+                <f:if condition="{site.sets -> f:count()} && {site.invalidSets}">
+                    <f:render partial="SiteManagement/InvalidSets" arguments="{site: site, renderMode: 'infobox'}" />
+                </f:if>
+
+                <h2>
+                    <f:translate key="detail.site_configuration.headline" domain="backend.siteconfiguration" />
+                </h2>
+
+                <f:comment><!-- Languages --></f:comment>
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab">
+                        <div class="panel-heading-row">
+                            <button
+                                class="panel-button collapsed"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#languages-collapse"
+                                aria-controls="languages-collapse"
+                                aria-expanded="false"
+                            >
+                                <div class="panel-title">
+                                    <f:translate key="detail.site_configuration.languages" domain="backend.siteconfiguration"/>
+                                </div>
+                                <span class="caret"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="languages-collapse" class="panel-collapse collapse" data-persist-collapse-state="true" role="tabpanel">
+                        <div class="table-fit">
+                            <table class="table table-hover table-vertical-top">
+                                <thead>
+                                    <tr>
+                                        <th class="col-50" colspan="2">
+                                            <f:translate key="detail.site_configuration.languages.language" domain="backend.siteconfiguration" />
+                                        </th>
+                                        <th class="col-50 col-word-break">
+                                            <f:translate key="detail.site_configuration.languages.language_url" domain="backend.siteconfiguration" />
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <f:for each="{site.languages}" as="language">
+                                        <tr>
+                                            <td class="col-icon">
+                                                <f:if condition="{language.enabled}">
+                                                    <f:then>
+                                                        <core:icon identifier="{language.flagIdentifier}" />
+                                                    </f:then>
+                                                    <f:else>
+                                                        <core:icon identifier="{language.flagIdentifier}" overlay="overlay-hidden" />
+                                                    </f:else>
+                                                </f:if>
+                                            </td>
+                                            <td>
+                                                <f:if condition="{language.enabled}">
+                                                    <f:then>
+                                                        {language.title} <code>[{language.languageId}]</code>
+                                                    </f:then>
+                                                    <f:else>
+                                                        <span class="text-body-secondary">
+                                                            {language.title} (<f:translate key="disabled" domain="core.common">disabled</f:translate>)
+                                                            <code>[{language.languageId}]</code>
+                                                        </span>
+                                                    </f:else>
+                                                </f:if>
+                                            </td>
+                                            <td>
+                                                <a href="{language.base}" target="_blank">{language.base}</a>
+                                            </td>
+                                        </tr>
+                                    </f:for>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <f:comment><!-- Error handling --></f:comment>
+                <f:if condition="{site.configuration.errorHandling -> f:count()} > 0">
+                    <f:then>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab">
+                                <div class="panel-heading-row">
+                                    <button
+                                        class="panel-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#error-handling-collapse"
+                                        aria-controls="error-handling-collapse"
+                                        aria-expanded="false"
+                                    >
+                                        <div class="panel-title">
+                                            <f:translate key="detail.site_configuration.error_handling" domain="backend.siteconfiguration" />
+                                        </div>
+                                        <span class="caret"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="error-handling-collapse" class="panel-collapse collapse" data-persist-collapse-state="true" role="tabpanel">
+                                <div class="panel-body">
+                                    <ul class="treelist">
+                                        <f:for each="{site.configuration.errorHandling}" as="errorHandling">
+                                            <li>
+                                                <span class="treelist-group treelist-group-monospace">
+                                                    <span class="treelist-label">
+                                                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorCode.{errorHandling.errorCode}" />
+                                                    </span>
+                                                </span>
+                                                <ul class="treelist">
+                                                    <f:switch expression="{errorHandling.errorHandler}">
+                                                        <f:case value="Fluid">
+                                                            <f:variable name="label" value="{f:translate(key:'site_errorhandling.errorFluidTemplate', domain:'backend.siteconfiguration_tca')}"/>
+                                                            <f:render
+                                                                section="TreeItem"
+                                                                arguments="{
+                                                                    label: label,
+                                                                    value: '{errorHandling.errorFluidTemplate}'
+                                                                }"
+                                                            />
+                                                        </f:case>
+                                                        <f:case value="Page">
+                                                            <f:variable name="label" value="{f:translate(key:'site_errorhandling.errorContentSource', domain:'backend.siteconfiguration_tca')}" />
+                                                            <f:render
+                                                                section="TreeItem"
+                                                                arguments="{
+                                                                    label: label,
+                                                                    value: '{errorHandling.errorContentSource}'
+                                                                }"
+                                                            />
+                                                        </f:case>
+                                                        <f:case value="PHP">
+                                                            <f:variable name="label" value="{f:translate(key:'site_errorhandling.errorPhpClassFQCN', domain:'backend.siteconfiguration_tca')}" />
+                                                            <f:render
+                                                                section="TreeItem"
+                                                                arguments="{
+                                                                    label: label,
+                                                                    value: '{errorHandling.errorPhpClassFQCN}'
+                                                                }"
+                                                            />
+                                                        </f:case>
+                                                        <f:case value="LoginRedirect">
+                                                            <f:variable name="label" value="{f:translate(key:'site_errorhandling.loginRedirectTarget', domain:'backend.siteconfiguration_tca')}" />
+                                                            <f:render
+                                                                section="TreeItem"
+                                                                arguments="{
+                                                                    label: label,
+                                                                    value: '{errorHandling.loginRedirectTarget}'
+                                                                }"
+                                                            />
+                                                            <f:variable name="label" value="{f:translate(key:'site_errorhandling.loginRedirectParameter', domain:'backend.siteconfiguration_tca')}" />
+                                                            <f:variable name="value" value="{f:translate(key:'site_errorhandling.loginRedirectParameter.{errorHandling.loginRedirectParameter}', domain:'backend.siteconfiguration_tca')}" />
+                                                            <f:render
+                                                                section="TreeItem"
+                                                                arguments="{
+                                                                    label: label,
+                                                                    value: value
+                                                                }"
+                                                            />
+                                                        </f:case>
+                                                    </f:switch>
+                                                </ul>
+                                            </li>
+                                        </f:for>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </f:then>
+                    <f:else>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <f:translate key="detail.site_configuration.error_handling" domain="backend.siteconfiguration" />
+                            </div>
+                            <div class="panel-body">
+                                <f:translate key="detail.not_configured"  domain="backend.siteconfiguration"/>
+                            </div>
+                        </div>
+                    </f:else>
+                </f:if>
+
+                <f:comment><!-- Static routes --></f:comment>
+                <f:if condition="{site.configuration.routes -> f:count()} > 0">
+                    <f:then>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab">
+                                <div class="panel-heading-row">
+                                    <button
+                                        class="panel-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#routes-handling-collapse"
+                                        aria-controls="routes-handling-collapse"
+                                        aria-expanded="false"
+                                    >
+                                        <div class="panel-title">
+                                            <f:translate key="detail.site_configuration.static_routes" domain="backend.siteconfiguration" />
+                                        </div>
+                                        <span class="caret"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="routes-handling-collapse" class="panel-collapse collapse" data-persist-collapse-state="true" role="tabpanel">
+                                <div class="panel-body">
+                                    <ul class="treelist">
+                                        <f:for each="{site.configuration.routes}" as="route">
+                                            <li>
+                                                <span class="treelist-group treelist-group-monospace">
+                                                    <span class="treelist-label">
+                                                        {route.route}
+                                                    </span>
+                                                </span>
+                                                <ul class="treelist">
+                                                    <f:variable name="typeLabel" value="{f:translate(key:'site_route.type', domain:'backend.siteconfiguration_tca')}" />
+                                                    <f:if condition="{route.type} == 'uri'">
+                                                        <f:then>
+                                                            <f:variable name="typeValue" value="{f:translate(key:'site_route.source', domain:'backend.siteconfiguration_tca')}" />
+                                                        </f:then>
+                                                        <f:else>
+                                                            <f:variable name="typeValue" value="{f:translate(key:'site_route.{route.type}', domain:'backend.siteconfiguration_tca')}" />
+                                                        </f:else>
+                                                    </f:if>
+                                                    <f:render
+                                                        section="TreeItem"
+                                                        arguments="{
+                                                            label: typeLabel,
+                                                            value: typeValue
+                                                        }"
+                                                    />
+
+                                                    <f:switch expression="{route.type}">
+                                                        <f:case value="staticText">
+                                                            <f:variable name="label" value="{f:translate(key:'site_route.staticText, domain:'backend.siteconfiguration_tca'')}" />
+                                                            <f:render
+                                                                section="TreeItem"
+                                                                arguments="{
+                                                                    label: label,
+                                                                    value: '{route.content}'
+                                                                }"
+                                                            />
+                                                        </f:case>
+                                                        <f:case value="uri">
+                                                            <f:variable name="label" value="{f:translate(key:'site_route.source', domain:'backend.siteconfiguration_tca')}" />
+                                                            <f:render
+                                                                section="TreeItem"
+                                                                arguments="{
+                                                                    label: label,
+                                                                    value: '{route.source}'
+                                                                }"
+                                                            />
+                                                        </f:case>
+                                                        <f:case value="asset">
+                                                            <f:variable name="label" value="{f:translate(key:'site_route.asset', domain:'backend.siteconfiguration_tca')}" />
+                                                            <f:render
+                                                                section="TreeItem"
+                                                                arguments="{
+                                                                    label: label,
+                                                                    value: '{route.asset}'
+                                                                }"
+                                                            />
+                                                        </f:case>
+                                                    </f:switch>
+                                                </ul>
+                                            </li>
+                                        </f:for>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </f:then>
+                    <f:else>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <f:translate key="detail.site_configuration.static_routes" domain="backend.siteconfiguration" />
+                            </div>
+                            <div class="panel-body">
+                                <f:translate key="detail.not_configured" domain="backend.siteconfiguration" />
+                            </div>
+                        </div>
+                    </f:else>
+                </f:if>
+
+                <h2>
+                    <f:translate key="detail.site_settings.headline" domain="backend.siteconfiguration" />
+                </h2>
+
+                <f:if condition="({site.sets -> f:count()} > 0) || ({localSettings.map -> f:count()} > 0) || ({categories -> f:count()} > 0)">
+                    <f:then>
+                        <f:comment><!-- Show dependencies --></f:comment>
+                        <f:if condition="{site.sets -> f:count()} > 0">
+                            <h3>
+                                <f:translate key="detail.site_settings.dependencies.headline" domain="backend.siteconfiguration" />
+                            </h3>
+                            <p>
+                                <f:sanitize.html><f:translate key="detail.site_settings.dependencies.text" domain="backend.siteconfiguration" /></f:sanitize.html>
+                            </p>
+                            <ul>
+                                <f:for each="{site.sets}" as="set" iteration="setIterator">
+                                    <li><code>{set}</code></li>
+                                </f:for>
+                            </ul>
+                        </f:if>
+
+                        <h3>
+                            <f:translate key="detail.site_settings.active_settings.headline" domain="backend.siteconfiguration" />
+                        </h3>
+
+                        <f:comment><!-- Settings from site configuration --></f:comment>
+                        <f:if condition="{localSettings.map -> f:count()} > 0">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab">
+                                    <div class="panel-heading-row">
+                                        <button
+                                            class="panel-button collapsed"
+                                            type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#custom-settings-collapse"
+                                            aria-controls="custom-settings-collapse"
+                                            aria-expanded="false"
+                                        >
+                                            <div class="panel-title">
+                                                <f:translate key="detail.site_settings.active_settings.custom_site_settings" domain="backend.siteconfiguration" />
+                                            </div>
+                                            <span class="caret"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="custom-settings-collapse" class="panel-collapse collapse" data-persist-collapse-state="true" role="tabpanel">
+                                    <div class="panel-body">
+                                        <ul class="treelist">
+                                            <f:for each="{localSettings.map}" as="setting" key="key">
+                                                <li>
+                                                    <span class="treelist-group treelist-group-monospace">
+                                                        <span class="treelist-label">
+                                                            {key}
+                                                        </span>
+                                                        <span class="treelist-operator">=</span>
+                                                        <span class="treelist-value">
+                                                            {setting -> f:format.json()}
+                                                        </span>
+                                                    </span>
+                                                </li>
+                                            </f:for>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </f:if>
+
+                        <f:comment><!-- Settings from site sets --></f:comment>
+                        <f:if condition="{categories -> f:count()} > 0">
+                            <f:for each="{categories}" as="category">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab">
+                                        <div class="panel-heading-row">
+                                            <button
+                                                class="panel-button collapsed"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#siteset-{category.key}-collapse"
+                                                aria-controls="siteset-{category.key}-collapse"
+                                                aria-expanded="false"
+                                            >
+                                                <div class="panel-title">
+                                                    {category.label}
+                                                </div>
+                                                <span class="caret"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div id="siteset-{category.key}-collapse" class="panel-collapse collapse" data-persist-collapse-state="true" role="tabpanel">
+                                        <div class="panel-body">
+                                            <f:if condition="{category.categories -> f:count()} > 0">
+                                                <f:then>
+                                                    <f:comment><!-- Grouped settings --></f:comment>
+                                                    <ul class="treelist">
+                                                        <f:for each="{category.categories}" as="section">
+                                                            <li>
+                                                                <span class="treelist-group treelist-group-monospace">
+                                                                    <span class="treelist-label">{section.label}</span>
+                                                                </span>
+                                                                <f:render section="Tree" arguments="{settings: '{section.settings}'}" />
+                                                            </li>
+                                                        </f:for>
+                                                    </ul>
+                                                </f:then>
+                                                <f:else>
+                                                    <f:comment><!-- Default --></f:comment>
+                                                    <f:render section="Tree" arguments="{settings: '{category.settings}'}" />
+                                                </f:else>
+                                            </f:if>
+                                        </div>
+                                    </div>
+                                </div>
+                            </f:for>
+                        </f:if>
+                    </f:then>
+                    <f:else>
+                        <f:be.infobox
+                            title="{f:translate(key:'detail.site_settings.no_settings_found.title', domain:'backend.siteconfiguration')}"
+                            state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}"
+                        >
+                            <f:sanitize.html><f:translate key="detail.site_settings.no_settings_found.message" domain="backend.siteconfiguration" /></f:sanitize.html>
+                        </f:be.infobox>
+                    </f:else>
+                </f:if>
+            </div>
+        </div>
+    </f:if>
+</f:section>
+
+<f:section name="Tree">
+    <ul class="treelist">
+        <f:for each="{settings}" as="setting">
+            <f:if condition="{setting.definition.label}">
+                <li class="loose">
+                    <div class="treelist-comment">
+                        <div>
+                            # {setting.definition.label}
+                        </div>
+                    </div>
+                </li>
+            </f:if>
+            <li>
+                <span class="treelist-group treelist-group-monospace">
+                    <span class="treelist-label">
+                        {setting.definition.key}
+                    </span>
+                    <span class="treelist-operator">=</span>
+                    <span class="treelist-value">
+                        {setting.value}
+                    </span>
+                </span>
+            </li>
+        </f:for>
+    </ul>
+</f:section>
+
+<f:section name="TreeItem">
+    <li>
+        <span class="treelist-group treelist-group-monospace">
+            <span class="treelist-label">
+                {label}
+            </span>
+            <span class="treelist-operator">=</span>
+            <span class="treelist-value">
+                {value}
+            </span>
+        </span>
+    </li>
+</f:section>

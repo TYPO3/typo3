@@ -15,13 +15,15 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Settings;
+namespace TYPO3\CMS\Backend\View;
 
 /**
+ * List / Tile view decision used in Setup module.
+ *
  * @internal
  */
-enum SettingsMode: string
+enum SetupModuleViewMode: string
 {
-    case BASIC = 'basic';
-    case ADVANCED = 'advanced';
+    case LIST = 'list';
+    case TILES = 'tiles';
 }
