@@ -10,28 +10,28 @@ if (isset($GLOBALS['TCA']['tx_scheduler_task'])) {
         'tx_scheduler_task',
         [
             'tx_linkvalidator_configuration' => [
-                'label' => 'LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.conf',
+                'label' => 'linkvalidator.db:tasks.validate.conf',
                 'config' => [
                     'type' => 'text',
                 ],
             ],
             'tx_linkvalidator_depth' => [
-                'label' => 'LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.depth',
+                'label' => 'linkvalidator.db:tasks.validate.depth',
                 'config' => [
                     'type' => 'select',
                     'renderType' => 'selectSingle',
                     'items' => [
-                        ['value' => '0', 'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0'],
-                        ['value' => '1', 'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1'],
-                        ['value' => '2', 'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2'],
-                        ['value' => '3', 'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3'],
-                        ['value' => '4', 'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4'],
-                        ['value' => '999', 'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi'],
+                        ['value' => '0', 'label' => 'core.db.general:depth_0'],
+                        ['value' => '1', 'label' => 'core.db.general:depth_1'],
+                        ['value' => '2', 'label' => 'core.db.general:depth_2'],
+                        ['value' => '3', 'label' => 'core.db.general:depth_3'],
+                        ['value' => '4', 'label' => 'core.db.general:depth_4'],
+                        ['value' => '999', 'label' => 'core.db.general:depth_infi'],
                     ],
                 ],
             ],
             'tx_linkvalidator_page' => [
-                'label' => 'LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.page',
+                'label' => 'linkvalidator.db:tasks.validate.page',
                 'config' => [
                     'type' => 'group',
                     'allowed' => 'pages',
@@ -41,19 +41,19 @@ if (isset($GLOBALS['TCA']['tx_scheduler_task'])) {
                 ],
             ],
             'tx_linkvalidator_languages' => [
-                'label' => 'LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.languages',
+                'label' => 'linkvalidator.db:tasks.validate.languages',
                 'config' => [
                     'type' => 'input',
                 ],
             ],
             'tx_linkvalidator_email' => [
-                'label' => 'LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.email',
+                'label' => 'linkvalidator.db:tasks.validate.email',
                 'config' => [
                     'type' => 'text',
                 ],
             ],
             'tx_linkvalidator_email_on_broken_link_only' => [
-                'label' => 'LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.emailOnBrokenLinkOnly',
+                'label' => 'linkvalidator.db:tasks.validate.emailOnBrokenLinkOnly',
                 'config' => [
                     'type' => 'check',
                     'renderType' => 'checkboxToggle',
@@ -61,7 +61,7 @@ if (isset($GLOBALS['TCA']['tx_scheduler_task'])) {
                 ],
             ],
             'tx_linkvalidator_email_template_name' => [
-                'label' => 'LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.emailTemplateName',
+                'label' => 'linkvalidator.db:tasks.validate.emailTemplateName',
                 'config' => [
                     'type' => 'input',
                 ],
@@ -71,8 +71,8 @@ if (isset($GLOBALS['TCA']['tx_scheduler_task'])) {
 
     ExtensionManagementUtility::addRecordType(
         [
-            'label' => 'LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.name',
-            'description' => 'LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.description',
+            'label' => 'linkvalidator.db:tasks.validate.name',
+            'description' => 'linkvalidator.db:tasks.validate.description',
             'value' => ValidatorTask::class,
             'icon' => 'mimetypes-x-tx_scheduler_task_group',
             'group' => 'linkvalidator',
@@ -89,7 +89,7 @@ if (isset($GLOBALS['TCA']['tx_scheduler_task'])) {
             tx_linkvalidator_email,
             tx_linkvalidator_email_on_broken_link_only,
             tx_linkvalidator_email_template_name,
-        --div--;LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:scheduler.form.palettes.timing,
+        --div--;scheduler.messages:scheduler.form.palettes.timing,
             execution_details,
             nextexecution,
             --palette--;;lastexecution,

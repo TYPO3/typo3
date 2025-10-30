@@ -49,6 +49,7 @@ readonly class LocalizationFactory
         'EXT:dashboard/Resources/Private/Language/locallang_tca.xlf' => 'EXT:dashboard/Resources/Private/Language/db.xlf',
         'EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf' => 'EXT:filemetadata/Resources/Private/Language/db.xlf',
         'EXT:impexp/Resources/Private/Language/locallang_tca.xlf' => 'EXT:impexp/Resources/Private/Language/db.xlf',
+        'EXT:linkvalidator/Resources/Private/Language/locallang.xlf' => 'EXT:linkvalidator/Resources/Private/Language/db.xlf',
         'EXT:seo/Resources/Private/Language/locallang_tca.xlf' => 'EXT:seo/Resources/Private/Language/db.xlf',
     ];
 

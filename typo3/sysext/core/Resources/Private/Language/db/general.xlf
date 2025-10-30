@@ -21,5 +21,35 @@
                 <source>Publish Date</source>
             </segment>
         </unit>
+		<unit id="depth_0">
+			<segment>
+				<source>This page</source>
+			</segment>
+		</unit>
+		<unit id="depth_1">
+			<segment>
+				<source>1 level</source>
+			</segment>
+		</unit>
+		<unit id="depth_2">
+			<segment>
+				<source>2 levels</source>
+			</segment>
+		</unit>
+		<unit id="depth_3">
+			<segment>
+				<source>3 levels</source>
+			</segment>
+		</unit>
+		<unit id="depth_4">
+			<segment>
+				<source>4 levels</source>
+			</segment>
+		</unit>
+		<unit id="depth_infi">
+			<segment>
+				<source>Infinite</source>
+			</segment>
+		</unit>
     </file>
 </xliff>
