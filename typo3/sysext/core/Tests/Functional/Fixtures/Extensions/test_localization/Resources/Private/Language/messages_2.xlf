@@ -1,40 +1,40 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
-	<file id="f1">
-		<unit id="label1">
-			<segment>
-				<source>This is label #1</source>
-			</segment>
-		</unit>
-		<unit id="label2">
-			<segment>
-				<source>This is label #2</source>
-			</segment>
-		</unit>
-		<unit id="label3">
-			<segment>
-				<source>This is label #3</source>
-			</segment>
-		</unit>
-		<unit id="label4.x-unused">
-			<segment>
-				<source>This is label #4 is deprecated</source>
-			</segment>
-		</unit>
-		<unit id="label5">
-			<segment subState="deprecated">
-				<source>This is label #5 (deprecated in English)</source>
-			</segment>
-		</unit>
-		<unit id="label6">
-			<segment>
-				<source>This is label #6, it is deprecated only in french</source>
-			</segment>
-		</unit>
-		<unit id="expiration_date">
-			<segment subState="deprecated">
-				<source>Expiration Date</source>
-			</segment>
-		</unit>
-	</file>
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en">
+  <file id="f1">
+    <unit id="label1">
+      <segment>
+        <source>This is label #1</source>
+      </segment>
+    </unit>
+    <unit id="label2">
+      <segment>
+        <source>This is label #2</source>
+      </segment>
+    </unit>
+    <unit id="label3">
+      <segment>
+        <source>This is label #3</source>
+      </segment>
+    </unit>
+    <unit id="label4.x-unused">
+      <segment>
+        <source>This is label #4 is deprecated</source>
+      </segment>
+    </unit>
+    <unit id="label5">
+      <segment subState="deprecated">
+        <source>This is label #5 (deprecated in English)</source>
+      </segment>
+    </unit>
+    <unit id="label6">
+      <segment>
+        <source>This is label #6, it is deprecated only in french</source>
+      </segment>
+    </unit>
+    <unit id="expiration_date">
+      <segment subState="deprecated">
+        <source>Expiration Date</source>
+      </segment>
+    </unit>
+  </file>
 </xliff>

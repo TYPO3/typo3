@@ -1,228 +1,219 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/localization.xlf" date="2025-10-28T00:00:00Z" product-name="backend">
-		<header/>
-		<body>
-			<!-- Wizard -->
-			<trans-unit id="localization_wizard.modal.title">
-				<source>Localization</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.modal.title.record_prefix">
-				<source>Localize:</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.buttons.cancel">
-				<source>Cancel</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.buttons.next">
-				<source>Next</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.buttons.previous">
-				<source>Previous</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.buttons.finish">
-				<source>Finish</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.buttons.localize">
-				<source>Localize</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.error.message">
-				<source>Failed to load wizard configuration. Please try again.</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.error.title">
-				<source>Configuration error</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.loading">
-				<source>Loading...</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.loading_configuration">
-				<source>Loading wizard configuration...</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.loading_steps">
-				<source>Loading step modules...</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.loading_finisher">
-				<source>Loading finisher...</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.no_steps_available.message">
-				<source>No localization steps are available for this record type.</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.no_steps_available.title">
-				<source>Warning</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.status.error.message">
-				<source>Failed to complete localization:</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.status.error.title">
-				<source>Error</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.status.pending.message">
-				<source>Processing localization...</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.finisher.no_data.message">
-				<source>No finisher data available. Cannot complete the localization process.</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.finisher.load_error.message">
-				<source>Failed to load finisher module:</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.finisher.redirect.success.title">
-				<source>Localization completed</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.finisher.redirect.success.description">
-				<source>The content has been successfully localized. You will be redirected to the new language version.</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.finisher.reload.success.title">
-				<source>Localization completed</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.finisher.reload.success.description">
-				<source>The content has been successfully localized. The page will reload to show the updated content.</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.finisher.noop.success.title">
-				<source>No operation required</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.finisher.noop.success.description">
-				<source>No records were selected that need processing. The page will reload.</source>
-			</trans-unit>
-			<trans-unit id="localization_wizard.step.error.title">
-				<source>Error</source>
-			</trans-unit>
-
-			<!-- Step: Confirmation -->
-			<trans-unit id="step.confirmation.title">
-				<source>Confirmation</source>
-			</trans-unit>
-			<trans-unit id="step.confirmation.headline">
-				<source>Confirm localization</source>
-			</trans-unit>
-			<trans-unit id="step.confirmation.description">
-				<source>Please review the following localization settings before proceeding:</source>
-			</trans-unit>
-
-			<!-- Step: Content selection -->
-			<trans-unit id="step.content_selection.title">
-				<source>Content selection</source>
-			</trans-unit>
-			<trans-unit id="step.content_selection.headline">
-				<source>Select records to localize</source>
-			</trans-unit>
-			<trans-unit id="step.content_selection.description">
-				<source>Choose which content elements you would like to translate:</source>
-			</trans-unit>
-			<trans-unit id="step.content_selection.summary.title">
-				<source>Content Element(s)</source>
-			</trans-unit>
-			<trans-unit id="step.content_selection.summary.amount">
-				<source>%s Element(s)</source>
-			</trans-unit>
-			<trans-unit id="step.content_selection.error.message">
-				<source>Failed to load records for selection</source>
-			</trans-unit>
-			<trans-unit id="step.content_selection.button.select_all">
-				<source>Select all</source>
-			</trans-unit>
-			<trans-unit id="step.content_selection.button.deselect_all">
-				<source>Deselect all</source>
-			</trans-unit>
-			<trans-unit id="step.content_selection.no_content.message">
-				<source>This page does not contain any content elements.</source>
-			</trans-unit>
-
-			<!-- Step: Handler selection -->
-			<trans-unit id="step.handler_selection.title">
-				<source>Handler</source>
-			</trans-unit>
-			<trans-unit id="step.handler_selection.headline">
-				<source>Select localization handler</source>
-			</trans-unit>
-			<trans-unit id="step.handler_selection.description">
-				<source>Choose how you would like to localize this record:</source>
-			</trans-unit>
-			<trans-unit id="step.handler_selection.summary_label">
-				<source>Handler</source>
-			</trans-unit>
-			<trans-unit id="step.handler_selection.error">
-				<source>Failed to load localization handlers.</source>
-			</trans-unit>
-			<trans-unit id="step.handler_selection.no_handlers">
-				<source>No localization handlers available.</source>
-			</trans-unit>
-
-			<!-- Step: Mode -->
-			<trans-unit id="step.modes.title">
-				<source>Mode</source>
-			</trans-unit>
-			<trans-unit id="step.modes.headline">
-				<source>Select localization mode</source>
-			</trans-unit>
-			<trans-unit id="step.modes.description">
-				<source>Choose how content should be localized:</source>
-			</trans-unit>
-			<trans-unit id="step.modes.summary.title">
-				<source>Mode</source>
-			</trans-unit>
-			<trans-unit id="step.modes.error.message">
-				<source>Failed to load localization modes.</source>
-			</trans-unit>
-			<trans-unit id="step.modes.none_available">
-				<source>No localization modes available.</source>
-			</trans-unit>
-
-			<!-- Step: Source language -->
-			<trans-unit id="step.source_language.title">
-				<source>Source language</source>
-			</trans-unit>
-			<trans-unit id="step.source_language.headline">
-				<source>Select source language</source>
-			</trans-unit>
-			<trans-unit id="step.source_language.description">
-				<source>Choose the language from which you would like to translate content:</source>
-			</trans-unit>
-			<trans-unit id="step.source_language.summary.title">
-				<source>Source language</source>
-			</trans-unit>
-			<trans-unit id="step.source_language.error.message">
-				<source>Failed to load source languages.</source>
-			</trans-unit>
-			<trans-unit id="step.source_language.none_available">
-				<source>No source languages available.</source>
-			</trans-unit>
-
-			<!-- Step: Finisher -->
-			<trans-unit id="step.finisher.title">
-				<source>Finish</source>
-			</trans-unit>
-
-			<!-- Step: Target language -->
-			<trans-unit id="step.target_language.title">
-				<source>Target language</source>
-			</trans-unit>
-			<trans-unit id="step.target_language.headline">
-				<source>Select target language</source>
-			</trans-unit>
-			<trans-unit id="step.target_language.description">
-				<source>Select the language into which you would like to translate the content:</source>
-			</trans-unit>
-			<trans-unit id="step.target_language.summary.title">
-				<source>Target language</source>
-			</trans-unit>
-			<trans-unit id="step.target_language.error.message">
-				<source>Failed to load target languages.</source>
-			</trans-unit>
-			<trans-unit id="step.target_language.none_available">
-				<source>No target languages available.</source>
-			</trans-unit>
-
-			<!-- Handlers -->
-			<trans-unit id="handler.manual.label">
-				<source>Manual Translation</source>
-			</trans-unit>
-			<trans-unit id="handler.manual.description">
-				<source>Prepares the language version. Edit and translate the content yourself afterwards.</source>
-			</trans-unit>
-
-			<!-- Error Messages -->
-			<trans-unit id="error.recordNotFound">
-				<source>Record with uid "%s" of type "%s" does not exist or is not accessible.</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/localization.xlf" date="2025-10-28T00:00:00Z" product-name="backend">
+    <header/>
+    <body>
+      <!-- Wizard -->
+      <trans-unit id="localization_wizard.modal.title">
+        <source>Localization</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.modal.title.record_prefix">
+        <source>Localize:</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.buttons.cancel">
+        <source>Cancel</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.buttons.next">
+        <source>Next</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.buttons.previous">
+        <source>Previous</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.buttons.finish">
+        <source>Finish</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.buttons.localize">
+        <source>Localize</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.error.message">
+        <source>Failed to load wizard configuration. Please try again.</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.error.title">
+        <source>Configuration error</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.loading">
+        <source>Loading...</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.loading_configuration">
+        <source>Loading wizard configuration...</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.loading_steps">
+        <source>Loading step modules...</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.loading_finisher">
+        <source>Loading finisher...</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.no_steps_available.message">
+        <source>No localization steps are available for this record type.</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.no_steps_available.title">
+        <source>Warning</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.status.error.message">
+        <source>Failed to complete localization:</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.status.error.title">
+        <source>Error</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.status.pending.message">
+        <source>Processing localization...</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.no_data.message">
+        <source>No finisher data available. Cannot complete the localization process.</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.load_error.message">
+        <source>Failed to load finisher module:</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.redirect.success.title">
+        <source>Localization completed</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.redirect.success.description">
+        <source>The content has been successfully localized. You will be redirected to the new language version.</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.reload.success.title">
+        <source>Localization completed</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.reload.success.description">
+        <source>The content has been successfully localized. The page will reload to show the updated content.</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.noop.success.title">
+        <source>No operation required</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.noop.success.description">
+        <source>No records were selected that need processing. The page will reload.</source>
+      </trans-unit>
+      <trans-unit id="localization_wizard.step.error.title">
+        <source>Error</source>
+      </trans-unit>
+      <!-- Step: Confirmation -->
+      <trans-unit id="step.confirmation.title">
+        <source>Confirmation</source>
+      </trans-unit>
+      <trans-unit id="step.confirmation.headline">
+        <source>Confirm localization</source>
+      </trans-unit>
+      <trans-unit id="step.confirmation.description">
+        <source>Please review the following localization settings before proceeding:</source>
+      </trans-unit>
+      <!-- Step: Content selection -->
+      <trans-unit id="step.content_selection.title">
+        <source>Content selection</source>
+      </trans-unit>
+      <trans-unit id="step.content_selection.headline">
+        <source>Select records to localize</source>
+      </trans-unit>
+      <trans-unit id="step.content_selection.description">
+        <source>Choose which content elements you would like to translate:</source>
+      </trans-unit>
+      <trans-unit id="step.content_selection.summary.title">
+        <source>Content Element(s)</source>
+      </trans-unit>
+      <trans-unit id="step.content_selection.summary.amount">
+        <source>%s Element(s)</source>
+      </trans-unit>
+      <trans-unit id="step.content_selection.error.message">
+        <source>Failed to load records for selection</source>
+      </trans-unit>
+      <trans-unit id="step.content_selection.button.select_all">
+        <source>Select all</source>
+      </trans-unit>
+      <trans-unit id="step.content_selection.button.deselect_all">
+        <source>Deselect all</source>
+      </trans-unit>
+      <trans-unit id="step.content_selection.no_content.message">
+        <source>This page does not contain any content elements.</source>
+      </trans-unit>
+      <!-- Step: Handler selection -->
+      <trans-unit id="step.handler_selection.title">
+        <source>Handler</source>
+      </trans-unit>
+      <trans-unit id="step.handler_selection.headline">
+        <source>Select localization handler</source>
+      </trans-unit>
+      <trans-unit id="step.handler_selection.description">
+        <source>Choose how you would like to localize this record:</source>
+      </trans-unit>
+      <trans-unit id="step.handler_selection.summary_label">
+        <source>Handler</source>
+      </trans-unit>
+      <trans-unit id="step.handler_selection.error">
+        <source>Failed to load localization handlers.</source>
+      </trans-unit>
+      <trans-unit id="step.handler_selection.no_handlers">
+        <source>No localization handlers available.</source>
+      </trans-unit>
+      <!-- Step: Mode -->
+      <trans-unit id="step.modes.title">
+        <source>Mode</source>
+      </trans-unit>
+      <trans-unit id="step.modes.headline">
+        <source>Select localization mode</source>
+      </trans-unit>
+      <trans-unit id="step.modes.description">
+        <source>Choose how content should be localized:</source>
+      </trans-unit>
+      <trans-unit id="step.modes.summary.title">
+        <source>Mode</source>
+      </trans-unit>
+      <trans-unit id="step.modes.error.message">
+        <source>Failed to load localization modes.</source>
+      </trans-unit>
+      <trans-unit id="step.modes.none_available">
+        <source>No localization modes available.</source>
+      </trans-unit>
+      <!-- Step: Source language -->
+      <trans-unit id="step.source_language.title">
+        <source>Source language</source>
+      </trans-unit>
+      <trans-unit id="step.source_language.headline">
+        <source>Select source language</source>
+      </trans-unit>
+      <trans-unit id="step.source_language.description">
+        <source>Choose the language from which you would like to translate content:</source>
+      </trans-unit>
+      <trans-unit id="step.source_language.summary.title">
+        <source>Source language</source>
+      </trans-unit>
+      <trans-unit id="step.source_language.error.message">
+        <source>Failed to load source languages.</source>
+      </trans-unit>
+      <trans-unit id="step.source_language.none_available">
+        <source>No source languages available.</source>
+      </trans-unit>
+      <!-- Step: Finisher -->
+      <trans-unit id="step.finisher.title">
+        <source>Finish</source>
+      </trans-unit>
+      <!-- Step: Target language -->
+      <trans-unit id="step.target_language.title">
+        <source>Target language</source>
+      </trans-unit>
+      <trans-unit id="step.target_language.headline">
+        <source>Select target language</source>
+      </trans-unit>
+      <trans-unit id="step.target_language.description">
+        <source>Select the language into which you would like to translate the content:</source>
+      </trans-unit>
+      <trans-unit id="step.target_language.summary.title">
+        <source>Target language</source>
+      </trans-unit>
+      <trans-unit id="step.target_language.error.message">
+        <source>Failed to load target languages.</source>
+      </trans-unit>
+      <trans-unit id="step.target_language.none_available">
+        <source>No target languages available.</source>
+      </trans-unit>
+      <!-- Handlers -->
+      <trans-unit id="handler.manual.label">
+        <source>Manual Translation</source>
+      </trans-unit>
+      <trans-unit id="handler.manual.description">
+        <source>Prepares the language version. Edit and translate the content yourself afterwards.</source>
+      </trans-unit>
+      <!-- Error Messages -->
+      <trans-unit id="error.recordNotFound">
+        <source>Record with uid "%s" of type "%s" does not exist or is not accessible.</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

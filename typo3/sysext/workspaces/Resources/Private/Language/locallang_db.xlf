@@ -1,122 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces">
-		<header/>
-		<body>
-			<trans-unit id="sys_workspace">
-				<source>Workspace</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.custom_stages">
-				<source>Custom stages</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace_stage.responsible_persons">
-				<source>Responsible persons</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace_stage.default_mailcomment">
-				<source>Default mail comment</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace_stage.parentid">
-				<source>UID of parent record</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace_stage">
-				<source>Workspace Stage</source>
-			</trans-unit>
-			<trans-unit id="tabs.notification_settings">
-				<source>Notification settings</source>
-			</trans-unit>
-			<trans-unit id="tabs.general">
-				<source>General</source>
-			</trans-unit>
-			<trans-unit id="tabs.internal_stages">
-				<source>Internal Stages</source>
-			</trans-unit>
-			<trans-unit id="tabs.custom_stages">
-				<source>Custom Stages</source>
-			</trans-unit>
-			<trans-unit id="tabs.publish_access">
-				<source>Publishing / Access</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace_stage.notification_defaults">
-				<source>Default notification recipients</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace_stage.allow_notificaton_settings">
-				<source>Allow notification settings during stage change</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.palette.stage.edit">
-				<source>Stage "editing"</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.palette.stage.publish">
-				<source>Stage "ready to publish"</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.palette.stage.execute">
-				<source>Stage "publishing execute"</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.settingsDialog">
-				<source>Notification dialog settings</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.settingsDialog.showDialog">
-				<source>Show Dialog</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.settingsDialog.changeablePreselection">
-				<source>Allow to change pre-selection of recipients</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.preselection">
-				<source>Pre-select recipients</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.preselection.owners">
-				<source>Owners</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.preselection.members">
-				<source>Members</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.preselection.editors">
-				<source>Unused, no functionality attached</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.preselection.responsiblePersons">
-				<source>Responsible Persons</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.adminusers">
-				<source>Owners</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.members">
-				<source>Members</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.publish_time">
-				<source>Auto-publish changes on (requires scheduler task)</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.unpublish_time">
-				<source>Un-Publish changes on (requires scheduler task)</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.live_edit">
-				<source>Allow "live" editing of records from tables without versioning</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.publish_access">
-				<source>Publish access</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.publish_access.1">
-				<source>Publish only content in publish stage</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.publish_access.2">
-				<source>Restrict publishing to workspace owners</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.publish_access.3">
-				<source>Hide "Entire workspace" action drop down</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.stagechg_notification">
-				<source>Send notifications upon state changes</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.stagechg_notification.description">
-				<source>This workspace-level setting determines if notifications are triggered when records transition to other stages or are published. Individual stages can have their own notification preferences.</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.previewlink_lifetime">
-				<source>Lifetime in hours on how long a preview link will be valid</source>
-			</trans-unit>
-			<trans-unit id="tabs.users">
-				<source>Users</source>
-			</trans-unit>
-			<trans-unit id="tabs.mountpoints">
-				<source>Mountpoints</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces">
+    <header/>
+    <body>
+      <trans-unit id="sys_workspace">
+        <source>Workspace</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.custom_stages">
+        <source>Custom stages</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.responsible_persons">
+        <source>Responsible persons</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.default_mailcomment">
+        <source>Default mail comment</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.parentid">
+        <source>UID of parent record</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage">
+        <source>Workspace Stage</source>
+      </trans-unit>
+      <trans-unit id="tabs.notification_settings">
+        <source>Notification settings</source>
+      </trans-unit>
+      <trans-unit id="tabs.general">
+        <source>General</source>
+      </trans-unit>
+      <trans-unit id="tabs.internal_stages">
+        <source>Internal Stages</source>
+      </trans-unit>
+      <trans-unit id="tabs.custom_stages">
+        <source>Custom Stages</source>
+      </trans-unit>
+      <trans-unit id="tabs.publish_access">
+        <source>Publishing / Access</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.notification_defaults">
+        <source>Default notification recipients</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.allow_notificaton_settings">
+        <source>Allow notification settings during stage change</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.edit">
+        <source>Stage "editing"</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.publish">
+        <source>Stage "ready to publish"</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.execute">
+        <source>Stage "publishing execute"</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog">
+        <source>Notification dialog settings</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog.showDialog">
+        <source>Show Dialog</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog.changeablePreselection">
+        <source>Allow to change pre-selection of recipients</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection">
+        <source>Pre-select recipients</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.owners">
+        <source>Owners</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.members">
+        <source>Members</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.editors">
+        <source>Unused, no functionality attached</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.responsiblePersons">
+        <source>Responsible Persons</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.adminusers">
+        <source>Owners</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.members">
+        <source>Members</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_time">
+        <source>Auto-publish changes on (requires scheduler task)</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.unpublish_time">
+        <source>Un-Publish changes on (requires scheduler task)</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.live_edit">
+        <source>Allow "live" editing of records from tables without versioning</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access">
+        <source>Publish access</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.1">
+        <source>Publish only content in publish stage</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.2">
+        <source>Restrict publishing to workspace owners</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.3">
+        <source>Hide "Entire workspace" action drop down</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification">
+        <source>Send notifications upon state changes</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification.description">
+        <source>This workspace-level setting determines if notifications are triggered when records transition to other stages or are published. Individual stages can have their own notification preferences.</source>
+      </trans-unit>
+      <trans-unit id="sys_workspace.previewlink_lifetime">
+        <source>Lifetime in hours on how long a preview link will be valid</source>
+      </trans-unit>
+      <trans-unit id="tabs.users">
+        <source>Users</source>
+      </trans-unit>
+      <trans-unit id="tabs.mountpoints">
+        <source>Mountpoints</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

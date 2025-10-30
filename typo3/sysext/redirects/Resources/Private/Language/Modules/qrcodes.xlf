@@ -1,48 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/Modules/qrcodes.xlf" date="2025-11-13T18:00:15Z" product-name="redirects">
-		<header/>
-		<body>
-            <trans-unit id="title">
-                <source>QR Codes</source>
-            </trans-unit>
-            <trans-unit id="short_description">
-                <source>QR Codes Administration</source>
-            </trans-unit>
-            <trans-unit id="description">
-                <source>This is the administration area for QR Codes.</source>
-            </trans-unit>
-
-			<trans-unit id="heading_text">
-				<source>QR Code Management</source>
-			</trans-unit>
-			<trans-unit id="add_text">
-				<source>Add QR Code</source>
-			</trans-unit>
-			<trans-unit id="not_found_with_filter.message">
-				<source>With the current set of filters applied, no QR Code could be found.</source>
-			</trans-unit>
-			<trans-unit id="not_found.title">
-				<source>No QR Codes found!</source>
-			</trans-unit>
-			<trans-unit id="not_found.message">
-				<source>There are currently no QR Codes found in the database.</source>
-			</trans-unit>
-			<trans-unit id="create">
-				<source>Create new QR Code</source>
-			</trans-unit>
-			<trans-unit id="delete.title">
-				<source>Delete QR Codes</source>
-			</trans-unit>
-			<trans-unit id="delete.message">
-				<source>Are you sure you want to delete all marked QR Codes?</source>
-			</trans-unit>
-			<trans-unit id="download">
-				<source>Download</source>
-			</trans-unit>
-			<trans-unit id="show">
-				<source>Show QR Code</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/Modules/qrcodes.xlf" date="2025-11-13T18:00:15Z" product-name="redirects">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>QR Codes</source>
+      </trans-unit>
+      <trans-unit id="short_description">
+        <source>QR Codes Administration</source>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>This is the administration area for QR Codes.</source>
+      </trans-unit>
+      <trans-unit id="heading_text">
+        <source>QR Code Management</source>
+      </trans-unit>
+      <trans-unit id="add_text">
+        <source>Add QR Code</source>
+      </trans-unit>
+      <trans-unit id="not_found_with_filter.message">
+        <source>With the current set of filters applied, no QR Code could be found.</source>
+      </trans-unit>
+      <trans-unit id="not_found.title">
+        <source>No QR Codes found!</source>
+      </trans-unit>
+      <trans-unit id="not_found.message">
+        <source>There are currently no QR Codes found in the database.</source>
+      </trans-unit>
+      <trans-unit id="create">
+        <source>Create new QR Code</source>
+      </trans-unit>
+      <trans-unit id="delete.title">
+        <source>Delete QR Codes</source>
+      </trans-unit>
+      <trans-unit id="delete.message">
+        <source>Are you sure you want to delete all marked QR Codes?</source>
+      </trans-unit>
+      <trans-unit id="download">
+        <source>Download</source>
+      </trans-unit>
+      <trans-unit id="show">
+        <source>Show QR Code</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

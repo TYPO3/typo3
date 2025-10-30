@@ -1,89 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms">
-		<header/>
-		<body>
-			<trans-unit id="page_title">
-				<source>Pagetree overview</source>
-			</trans-unit>
-			<trans-unit id="pages_0">
-				<source>Basic settings</source>
-			</trans-unit>
-			<trans-unit id="pages_2">
-				<source>Cache and Age</source>
-			</trans-unit>
-			<trans-unit id="pages_1">
-				<source>Record overview</source>
-			</trans-unit>
-			<trans-unit id="pages_layouts">
-				<source>Layouts</source>
-			</trans-unit>
-			<trans-unit id="actual_backend_layout">
-				<source>Actual backend layout</source>
-			</trans-unit>
-			<trans-unit id="lang_title">
-				<source>Localization overview</source>
-			</trans-unit>
-			<trans-unit id="lang_renderl10n_editPage">
-				<source>Edit page content</source>
-			</trans-unit>
-			<trans-unit id="lang_renderl10n_editTranslatedPage">
-				<source>Edit translated page content</source>
-			</trans-unit>
-			<trans-unit id="lang_renderl10n_viewPage">
-				<source>View page</source>
-			</trans-unit>
-			<trans-unit id="lang_renderl10n_viewTranslatedPage">
-				<source>View translated page</source>
-			</trans-unit>
-			<trans-unit id="lang_renderl10n_editPageProperties">
-				<source>Edit page properties</source>
-			</trans-unit>
-			<trans-unit id="lang_renderl10n_editTranslatedPageProperties">
-				<source>Edit translated page properties</source>
-			</trans-unit>
-			<trans-unit id="lang_renderl10n_editAllPageProperties">
-				<source>Edit all page properties</source>
-			</trans-unit>
-			<trans-unit id="lang_renderl10n_editAllTranslationedPageProperties">
-				<source>Edit all translated page properties</source>
-			</trans-unit>
-			<trans-unit id="lang_renderl10n_badThingThereAre">
-				<source>Multiple translated page records exist for this language, but only one is allowed. Please remove the extra records.</source>
-			</trans-unit>
-			<trans-unit id="lang_renderl10n_page">
-				<source>Page</source>
-			</trans-unit>
-			<trans-unit id="lang_renderl10n_default">
-				<source>Default</source>
-			</trans-unit>
-			<trans-unit id="lang_getlangsta_createNewTranslationHeaders">
-				<source>Create new translation headers</source>
-			</trans-unit>
-			<trans-unit id="lang_renderl10n_CEcount">
-				<source>Content Element Count</source>
-			</trans-unit>
-			<trans-unit id="moduleFunctions.depth">
-				<source>Depth</source>
-			</trans-unit>
-			<trans-unit id="moduleFunctions.type">
-				<source>Type</source>
-			</trans-unit>
-			<trans-unit id="moduleFunctions.lang">
-				<source>Language</source>
-			</trans-unit>
-			<trans-unit id="error.noAccess.title">
-				<source>No access</source>
-			</trans-unit>
-			<trans-unit id="error.noAccess.message">
-				<source>You don't have access to this module.</source>
-			</trans-unit>
-			<trans-unit id="info.noContent.message">
-				<source>There are no page information available.</source>
-			</trans-unit>
-			<trans-unit id="info.noPageSelected.message">
-				<source>Please select a page in the page tree.</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms">
+    <header/>
+    <body>
+      <trans-unit id="page_title">
+        <source>Pagetree overview</source>
+      </trans-unit>
+      <trans-unit id="pages_0">
+        <source>Basic settings</source>
+      </trans-unit>
+      <trans-unit id="pages_2">
+        <source>Cache and Age</source>
+      </trans-unit>
+      <trans-unit id="pages_1">
+        <source>Record overview</source>
+      </trans-unit>
+      <trans-unit id="pages_layouts">
+        <source>Layouts</source>
+      </trans-unit>
+      <trans-unit id="actual_backend_layout">
+        <source>Actual backend layout</source>
+      </trans-unit>
+      <trans-unit id="lang_title">
+        <source>Localization overview</source>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editPage">
+        <source>Edit page content</source>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editTranslatedPage">
+        <source>Edit translated page content</source>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_viewPage">
+        <source>View page</source>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_viewTranslatedPage">
+        <source>View translated page</source>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editPageProperties">
+        <source>Edit page properties</source>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editTranslatedPageProperties">
+        <source>Edit translated page properties</source>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editAllPageProperties">
+        <source>Edit all page properties</source>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editAllTranslationedPageProperties">
+        <source>Edit all translated page properties</source>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_badThingThereAre">
+        <source>Multiple translated page records exist for this language, but only one is allowed. Please remove the extra records.</source>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_page">
+        <source>Page</source>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_default">
+        <source>Default</source>
+      </trans-unit>
+      <trans-unit id="lang_getlangsta_createNewTranslationHeaders">
+        <source>Create new translation headers</source>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_CEcount">
+        <source>Content Element Count</source>
+      </trans-unit>
+      <trans-unit id="moduleFunctions.depth">
+        <source>Depth</source>
+      </trans-unit>
+      <trans-unit id="moduleFunctions.type">
+        <source>Type</source>
+      </trans-unit>
+      <trans-unit id="moduleFunctions.lang">
+        <source>Language</source>
+      </trans-unit>
+      <trans-unit id="error.noAccess.title">
+        <source>No access</source>
+      </trans-unit>
+      <trans-unit id="error.noAccess.message">
+        <source>You don't have access to this module.</source>
+      </trans-unit>
+      <trans-unit id="info.noContent.message">
+        <source>There are no page information available.</source>
+      </trans-unit>
+      <trans-unit id="info.noPageSelected.message">
+        <source>Please select a page in the page tree.</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

@@ -1,176 +1,176 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
-		<header/>
-		<body>
-			<trans-unit id="shortcut_onlineWS">
-				<source>LIVE workspace</source>
-			</trans-unit>
-			<trans-unit id="bookmark_group">
-				<source>Group</source>
-			</trans-unit>
-			<trans-unit id="bookmark_group_1">
-				<source>Pages</source>
-			</trans-unit>
-			<trans-unit id="bookmark_group_2">
-				<source>Records</source>
-			</trans-unit>
-			<trans-unit id="bookmark_group_3">
-				<source>Files</source>
-			</trans-unit>
-			<trans-unit id="bookmark_group_4">
-				<source>Tools</source>
-			</trans-unit>
-			<trans-unit id="bookmark_group_5">
-				<source>Miscellaneous</source>
-			</trans-unit>
-			<trans-unit id="bookmark_global">
-				<source>Global</source>
-			</trans-unit>
-			<trans-unit id="bookmark_all">
-				<source>All</source>
-			</trans-unit>
-			<trans-unit id="overwriteExistingFiles">
-				<source>Overwrite existing files</source>
-			</trans-unit>
-			<trans-unit id="uploadMultipleFilesInfo">
-				<source>Upload multiple files by holding the Shift or CTRL-file pressed while selecting your files (works on modern browsers only).</source>
-			</trans-unit>
-			<trans-unit id="fileMetaDataLocation">
-				<source>Location</source>
-			</trans-unit>
-			<trans-unit id="fileMetaErrorInvalidRecord">
-				<source>File meta data not found</source>
-			</trans-unit>
-			<trans-unit id="selectPosition">
-				<source>Select a position for the new page</source>
-			</trans-unit>
-			<trans-unit id="pageSelectPosition">
-				<source>Page (select position)</source>
-			</trans-unit>
-			<trans-unit id="goBack">
-				<source>Go back</source>
-			</trans-unit>
-			<trans-unit id="createNewPage">
-				<source>Create a new page</source>
-			</trans-unit>
-			<trans-unit id="insertNewPageHere">
-				<source>Insert the new page here</source>
-			</trans-unit>
-			<trans-unit id="insertNewRecordHere">
-				<source>Insert new record here</source>
-			</trans-unit>
-			<trans-unit id="moveElementToHere">
-				<source>Move element to this position</source>
-			</trans-unit>
-			<trans-unit id="moveElements">
-				<source>Move elements</source>
-			</trans-unit>
-			<trans-unit id="copyElements">
-				<source>Copy elements</source>
-			</trans-unit>
-			<trans-unit id="copyElementToHere">
-				<source>Copy element to this position</source>
-			</trans-unit>
-			<trans-unit id="makeCopy">
-				<source>Make copy instead of moving element</source>
-			</trans-unit>
-			<trans-unit id="newRecordWizard.filter.placeholder">
-				<source>Search for any record type</source>
-			</trans-unit>
-			<trans-unit id="newRecordWizard.filter.noResults">
-				<source>Unfortunately no record type matches your query, please try a different one.</source>
-			</trans-unit>
-			<trans-unit id="newRecordWizard.recentlyUsed">
-				<source>Recently used</source>
-			</trans-unit>
-			<trans-unit id="newContentElement.filter.placeholder">
-				<source>Search for any content type</source>
-			</trans-unit>
-			<trans-unit id="newContentElement.filter.noResults">
-				<source>Unfortunately no content type matches your query, please try a different one.</source>
-			</trans-unit>
-			<trans-unit id="system_records">
-				<source>System Records</source>
-			</trans-unit>
-			<trans-unit id="recordgroup.content">
-				<source>Content</source>
-			</trans-unit>
-			<trans-unit id="recordgroup.backendaccess">
-				<source>Backend Access</source>
-			</trans-unit>
-			<trans-unit id="recordgroup.frontendaccess">
-				<source>Frontend Access</source>
-			</trans-unit>
-			<trans-unit id="1_selectType">
-				<source>First select the type of the new content element</source>
-			</trans-unit>
-			<trans-unit id="2_selectPosition">
-				<source>Now click on the position of the new content element</source>
-			</trans-unit>
-			<trans-unit id="CM_history">
-				<source>History/Undo</source>
-			</trans-unit>
-			<trans-unit id="CM_hideInMenus">
-				<source>Hide in menu</source>
-			</trans-unit>
-			<trans-unit id="CM_showInMenus">
-				<source>Show in menu</source>
-			</trans-unit>
-			<trans-unit id="CM_newWizard">
-				<source>'Create New' wizard</source>
-			</trans-unit>
-			<trans-unit id="localize">
-				<source>Localize</source>
-			</trans-unit>
-			<trans-unit id="localize.isLocalizable">
-				<source>Record can be localized</source>
-			</trans-unit>
-			<trans-unit id="localizeAllRecords">
-				<source>Localize all records</source>
-			</trans-unit>
-			<trans-unit id="synchronizeWithOriginalLanguage">
-				<source>Synchronize with original language</source>
-			</trans-unit>
-			<trans-unit id="tree_networkError">
-				<source>Navigation loading error</source>
-			</trans-unit>
-			<trans-unit id="tree_networkErrorDescription">
-				<source>Got unexpected response from the server. Please check logs for details.</source>
-			</trans-unit>
-			<trans-unit id="synchronizeFolderRelations.afterFolderRenamed">
-				<source>%d %s records referencing the renamed directory were updated.</source>
-			</trans-unit>
-			<trans-unit id="liveSearch_listEmptyText">
-				<source>No results found.</source>
-			</trans-unit>
-			<trans-unit id="liveSearch.versionizedRecord">
-				<source>Versionized record</source>
-			</trans-unit>
-			<trans-unit id="liveSearch_helpDescriptionPages">
-				<source>`#page:Home` will search for all pages with the title "Home"</source>
-			</trans-unit>
-			<trans-unit id="liveSearch_helpDescriptionContent">
-				<source>`#content:Professional` will search for all content elements containing the term "Professional"</source>
-			</trans-unit>
-			<trans-unit id="liveSearch_help.shortcutOpen">
-				<source><![CDATA[You can open the live search by pressing the <kbd><kbd>Ctrl</kbd> + <kbd>K</kbd></kbd> or <kbd><kbd>Cmd</kbd> + <kbd>K</kbd></kbd> keystroke]]></source>
-			</trans-unit>
-			<trans-unit id="liveSearch_search">
-				<source>Search</source>
-			</trans-unit>
-			<trans-unit id="liveSearch_searchIn">
-				<source>Search records in</source>
-			</trans-unit>
-			<trans-unit id="liveSearch_activeFilters">
-				<source>active filters</source>
-			</trans-unit>
-			<trans-unit id="viewport_navigation_show">
-				<source>Show Navigation</source>
-			</trans-unit>
-			<trans-unit id="viewport_navigation_hide">
-				<source>Hide Navigation</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
+    <header/>
+    <body>
+      <trans-unit id="shortcut_onlineWS">
+        <source>LIVE workspace</source>
+      </trans-unit>
+      <trans-unit id="bookmark_group">
+        <source>Group</source>
+      </trans-unit>
+      <trans-unit id="bookmark_group_1">
+        <source>Pages</source>
+      </trans-unit>
+      <trans-unit id="bookmark_group_2">
+        <source>Records</source>
+      </trans-unit>
+      <trans-unit id="bookmark_group_3">
+        <source>Files</source>
+      </trans-unit>
+      <trans-unit id="bookmark_group_4">
+        <source>Tools</source>
+      </trans-unit>
+      <trans-unit id="bookmark_group_5">
+        <source>Miscellaneous</source>
+      </trans-unit>
+      <trans-unit id="bookmark_global">
+        <source>Global</source>
+      </trans-unit>
+      <trans-unit id="bookmark_all">
+        <source>All</source>
+      </trans-unit>
+      <trans-unit id="overwriteExistingFiles">
+        <source>Overwrite existing files</source>
+      </trans-unit>
+      <trans-unit id="uploadMultipleFilesInfo">
+        <source>Upload multiple files by holding the Shift or CTRL-file pressed while selecting your files (works on modern browsers only).</source>
+      </trans-unit>
+      <trans-unit id="fileMetaDataLocation">
+        <source>Location</source>
+      </trans-unit>
+      <trans-unit id="fileMetaErrorInvalidRecord">
+        <source>File meta data not found</source>
+      </trans-unit>
+      <trans-unit id="selectPosition">
+        <source>Select a position for the new page</source>
+      </trans-unit>
+      <trans-unit id="pageSelectPosition">
+        <source>Page (select position)</source>
+      </trans-unit>
+      <trans-unit id="goBack">
+        <source>Go back</source>
+      </trans-unit>
+      <trans-unit id="createNewPage">
+        <source>Create a new page</source>
+      </trans-unit>
+      <trans-unit id="insertNewPageHere">
+        <source>Insert the new page here</source>
+      </trans-unit>
+      <trans-unit id="insertNewRecordHere">
+        <source>Insert new record here</source>
+      </trans-unit>
+      <trans-unit id="moveElementToHere">
+        <source>Move element to this position</source>
+      </trans-unit>
+      <trans-unit id="moveElements">
+        <source>Move elements</source>
+      </trans-unit>
+      <trans-unit id="copyElements">
+        <source>Copy elements</source>
+      </trans-unit>
+      <trans-unit id="copyElementToHere">
+        <source>Copy element to this position</source>
+      </trans-unit>
+      <trans-unit id="makeCopy">
+        <source>Make copy instead of moving element</source>
+      </trans-unit>
+      <trans-unit id="newRecordWizard.filter.placeholder">
+        <source>Search for any record type</source>
+      </trans-unit>
+      <trans-unit id="newRecordWizard.filter.noResults">
+        <source>Unfortunately no record type matches your query, please try a different one.</source>
+      </trans-unit>
+      <trans-unit id="newRecordWizard.recentlyUsed">
+        <source>Recently used</source>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.placeholder">
+        <source>Search for any content type</source>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.noResults">
+        <source>Unfortunately no content type matches your query, please try a different one.</source>
+      </trans-unit>
+      <trans-unit id="system_records">
+        <source>System Records</source>
+      </trans-unit>
+      <trans-unit id="recordgroup.content">
+        <source>Content</source>
+      </trans-unit>
+      <trans-unit id="recordgroup.backendaccess">
+        <source>Backend Access</source>
+      </trans-unit>
+      <trans-unit id="recordgroup.frontendaccess">
+        <source>Frontend Access</source>
+      </trans-unit>
+      <trans-unit id="1_selectType">
+        <source>First select the type of the new content element</source>
+      </trans-unit>
+      <trans-unit id="2_selectPosition">
+        <source>Now click on the position of the new content element</source>
+      </trans-unit>
+      <trans-unit id="CM_history">
+        <source>History/Undo</source>
+      </trans-unit>
+      <trans-unit id="CM_hideInMenus">
+        <source>Hide in menu</source>
+      </trans-unit>
+      <trans-unit id="CM_showInMenus">
+        <source>Show in menu</source>
+      </trans-unit>
+      <trans-unit id="CM_newWizard">
+        <source>'Create New' wizard</source>
+      </trans-unit>
+      <trans-unit id="localize">
+        <source>Localize</source>
+      </trans-unit>
+      <trans-unit id="localize.isLocalizable">
+        <source>Record can be localized</source>
+      </trans-unit>
+      <trans-unit id="localizeAllRecords">
+        <source>Localize all records</source>
+      </trans-unit>
+      <trans-unit id="synchronizeWithOriginalLanguage">
+        <source>Synchronize with original language</source>
+      </trans-unit>
+      <trans-unit id="tree_networkError">
+        <source>Navigation loading error</source>
+      </trans-unit>
+      <trans-unit id="tree_networkErrorDescription">
+        <source>Got unexpected response from the server. Please check logs for details.</source>
+      </trans-unit>
+      <trans-unit id="synchronizeFolderRelations.afterFolderRenamed">
+        <source>%d %s records referencing the renamed directory were updated.</source>
+      </trans-unit>
+      <trans-unit id="liveSearch_listEmptyText">
+        <source>No results found.</source>
+      </trans-unit>
+      <trans-unit id="liveSearch.versionizedRecord">
+        <source>Versionized record</source>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescriptionPages">
+        <source>`#page:Home` will search for all pages with the title "Home"</source>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescriptionContent">
+        <source>`#content:Professional` will search for all content elements containing the term "Professional"</source>
+      </trans-unit>
+      <trans-unit id="liveSearch_help.shortcutOpen">
+        <source><![CDATA[You can open the live search by pressing the <kbd><kbd>Ctrl</kbd> + <kbd>K</kbd></kbd> or <kbd><kbd>Cmd</kbd> + <kbd>K</kbd></kbd> keystroke]]></source>
+      </trans-unit>
+      <trans-unit id="liveSearch_search">
+        <source>Search</source>
+      </trans-unit>
+      <trans-unit id="liveSearch_searchIn">
+        <source>Search records in</source>
+      </trans-unit>
+      <trans-unit id="liveSearch_activeFilters">
+        <source>active filters</source>
+      </trans-unit>
+      <trans-unit id="viewport_navigation_show">
+        <source>Show Navigation</source>
+      </trans-unit>
+      <trans-unit id="viewport_navigation_hide">
+        <source>Hide Navigation</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

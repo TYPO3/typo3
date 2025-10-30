@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:dashboard/Resources/Private/Language/module.xlf" date="2026-11-10T13:37:37Z" product-name="dashboard">
-		<header/>
-		<body>
-			<trans-unit id="short_description">
-				<source>Dashboard</source>
-			</trans-unit>
-			<trans-unit id="description">
-				<source>A dashboard that can show widgets of all kind of extensions</source>
-			</trans-unit>
-			<trans-unit id="title">
-				<source>Dashboard</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:dashboard/Resources/Private/Language/module.xlf" date="2026-11-10T13:37:37Z" product-name="dashboard">
+    <header/>
+    <body>
+      <trans-unit id="short_description">
+        <source>Dashboard</source>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>A dashboard that can show widgets of all kind of extensions</source>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Dashboard</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

@@ -1,57 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" date="2020-06-03T15:50:00Z">
-		<header/>
-		<body>
-			<trans-unit id="tabs.general">
-				<source>General</source>
-			</trans-unit>
-			<trans-unit id="tabs.visibility">
-				<source>Visibility</source>
-			</trans-unit>
-
-			<trans-unit id="pages.doktype.div.irre">
-				<source>IRRE Tutorial</source>
-			</trans-unit>
-			<trans-unit id="pages.doktype.I.233">
-				<source>IRRE Tutorial Test Page</source>
-			</trans-unit>
-
-
-			<trans-unit id="tx_testirremm_hotel">
-				<source>Hotels</source>
-			</trans-unit>
-			<trans-unit id="tx_testirremm_hotel.title">
-				<source>Title:</source>
-			</trans-unit>
-			<trans-unit id="tx_testirremm_hotel.offers">
-				<source>Offers:</source>
-			</trans-unit>
-			<trans-unit id="tx_testirremm_offer">
-				<source>Offers</source>
-			</trans-unit>
-			<trans-unit id="tx_testirremm_offer.title">
-				<source>Title:</source>
-			</trans-unit>
-			<trans-unit id="tx_testirremm_offer.hotels">
-				<source>Hotels:</source>
-			</trans-unit>
-			<trans-unit id="tx_testirremm_offer.prices">
-				<source>Prices:</source>
-			</trans-unit>
-			<trans-unit id="tx_testirremm_price">
-				<source>Prices</source>
-			</trans-unit>
-			<trans-unit id="tx_testirremm_price.title">
-				<source>Title:</source>
-			</trans-unit>
-			<trans-unit id="tx_testirremm_price.offers">
-				<source>Offers:</source>
-			</trans-unit>
-			<trans-unit id="tx_testirremm_price.price">
-				<source>Price:</source>
-			</trans-unit>
-			
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" date="2020-06-03T15:50:00Z">
+    <header/>
+    <body>
+      <trans-unit id="tabs.general">
+        <source>General</source>
+      </trans-unit>
+      <trans-unit id="tabs.visibility">
+        <source>Visibility</source>
+      </trans-unit>
+      <trans-unit id="pages.doktype.div.irre">
+        <source>IRRE Tutorial</source>
+      </trans-unit>
+      <trans-unit id="pages.doktype.I.233">
+        <source>IRRE Tutorial Test Page</source>
+      </trans-unit>
+      <trans-unit id="tx_testirremm_hotel">
+        <source>Hotels</source>
+      </trans-unit>
+      <trans-unit id="tx_testirremm_hotel.title">
+        <source>Title:</source>
+      </trans-unit>
+      <trans-unit id="tx_testirremm_hotel.offers">
+        <source>Offers:</source>
+      </trans-unit>
+      <trans-unit id="tx_testirremm_offer">
+        <source>Offers</source>
+      </trans-unit>
+      <trans-unit id="tx_testirremm_offer.title">
+        <source>Title:</source>
+      </trans-unit>
+      <trans-unit id="tx_testirremm_offer.hotels">
+        <source>Hotels:</source>
+      </trans-unit>
+      <trans-unit id="tx_testirremm_offer.prices">
+        <source>Prices:</source>
+      </trans-unit>
+      <trans-unit id="tx_testirremm_price">
+        <source>Prices</source>
+      </trans-unit>
+      <trans-unit id="tx_testirremm_price.title">
+        <source>Title:</source>
+      </trans-unit>
+      <trans-unit id="tx_testirremm_price.offers">
+        <source>Offers:</source>
+      </trans-unit>
+      <trans-unit id="tx_testirremm_price.price">
+        <source>Price:</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

@@ -1,467 +1,449 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang.xlf" date="2011-12-18T10:19:20Z" product-name="indexed_search">
-		<header/>
-		<body>
-			<trans-unit id="localizedOperandAnd">
-				<source>AND</source>
-			</trans-unit>
-			<trans-unit id="localizedOperandOr">
-				<source>OR</source>
-			</trans-unit>
-			<trans-unit id="localizedOperandNot">
-				<source>NOT</source>
-			</trans-unit>
-
-			<trans-unit id="form.legend">
-				<source>Search form</source>
-			</trans-unit>
-			<trans-unit id="form.searchFor">
-				<source>Search for</source>
-			</trans-unit>
-			<trans-unit id="form.extResume">
-				<source>Extended resume</source>
-			</trans-unit>
-			<trans-unit id="form.atATime">
-				<source>at a time</source>
-			</trans-unit>
-			<trans-unit id="form.orderBy">
-				<source>Order by</source>
-			</trans-unit>
-			<trans-unit id="form.fromSection">
-				<source>From section</source>
-			</trans-unit>
-			<trans-unit id="form.freeIndexUid">
-				<source>Category</source>
-			</trans-unit>
-			<trans-unit id="form.searchIn">
-				<source>Search in</source>
-			</trans-unit>
-			<trans-unit id="form.match">
-				<source>Match</source>
-			</trans-unit>
-			<trans-unit id="form.style">
-				<source>Style</source>
-			</trans-unit>
-			<trans-unit id="form.submit">
-				<source>Search</source>
-			</trans-unit>
-			<trans-unit id="form.addToSearch">
-				<source>Add to current search words</source>
-			</trans-unit>
-
-			<trans-unit id="form.linkToRegularSearch">
-				<source>Regular search</source>
-			</trans-unit>
-			<trans-unit id="form.linkToAdvancedSearch">
-				<source>Advanced search</source>
-			</trans-unit>
-
-			<trans-unit id="searchTypes.0">
-				<source>Distinct word</source>
-			</trans-unit>
-			<trans-unit id="searchTypes.1">
-				<source>Part of word</source>
-			</trans-unit>
-			<trans-unit id="searchTypes.2">
-				<source>First part of word</source>
-			</trans-unit>
-			<trans-unit id="searchTypes.3">
-				<source>Last part of word</source>
-			</trans-unit>
-			<trans-unit id="searchTypes.20">
-				<source>Sentence</source>
-			</trans-unit>
-
-			<trans-unit id="defaultOperands.0">
-				<source>All words (AND)</source>
-			</trans-unit>
-			<trans-unit id="defaultOperands.1">
-				<source>Any words (OR)</source>
-			</trans-unit>
-			<trans-unit id="sections.0">
-				<source>Whole site</source>
-			</trans-unit>
-			<trans-unit id="sections.-1">
-				<source>Only this page</source>
-			</trans-unit>
-			<trans-unit id="sections.-2">
-				<source>Top + level 1</source>
-			</trans-unit>
-			<trans-unit id="sections.-3">
-				<source>Level 2 and out</source>
-			</trans-unit>
-			<trans-unit id="sections.rootLevel1">
-				<source>Level 1</source>
-			</trans-unit>
-			<trans-unit id="sections.rootLevel1All">
-				<source>All pages on level 1</source>
-			</trans-unit>
-			<trans-unit id="sections.rootLevel2">
-				<source>- Level 2</source>
-			</trans-unit>
-			<trans-unit id="sections.rootLevel2All">
-				<source>- All pages on level 2</source>
-			</trans-unit>
-
-			<trans-unit id="mediaTypes.0">
-				<source>Internal pages</source>
-			</trans-unit>
-			<trans-unit id="mediaTypes.-1">
-				<source>All media</source>
-			</trans-unit>
-			<trans-unit id="mediaTypes.-2">
-				<source>All External</source>
-			</trans-unit>
-
-			<trans-unit id="indexingConfigurations.-1">
-				<source>All, mixed</source>
-			</trans-unit>
-			<trans-unit id="indexingConfigurations.-2">
-				<source>All, categorized</source>
-			</trans-unit>
-			<trans-unit id="indexingConfigurations.0">
-				<source>Pages</source>
-			</trans-unit>
-
-			<trans-unit id="indexingConfigurationHeader.-1">
-				<source>Mixed categories</source>
-			</trans-unit>
-			<trans-unit id="indexingConfigurationHeader.0">
-				<source>Website Pages</source>
-			</trans-unit>
-
-			<trans-unit id="sortOrders.rank_flag">
-				<source>Weight/Frequency</source>
-			</trans-unit>
-			<trans-unit id="sortOrders.rank_freq">
-				<source>Frequency</source>
-			</trans-unit>
-			<trans-unit id="sortOrders.rank_first">
-				<source>Close to top</source>
-			</trans-unit>
-			<trans-unit id="sortOrders.rank_count">
-				<source>Number of words</source>
-			</trans-unit>
-			<trans-unit id="sortOrders.mtime">
-				<source>Date Modified</source>
-			</trans-unit>
-			<trans-unit id="sortOrders.title">
-				<source>Document title</source>
-			</trans-unit>
-			<trans-unit id="sortOrders.crdate">
-				<source>Creation date</source>
-			</trans-unit>
-
-			<trans-unit id="sortOrders.descending">
-				<source>Highest first</source>
-			</trans-unit>
-			<trans-unit id="sortOrders.ascending">
-				<source>Lowest first</source>
-			</trans-unit>
-
-			<trans-unit id="groupBy.sections">
-				<source>Section hierarchy</source>
-			</trans-unit>
-			<trans-unit id="groupBy.flat">
-				<source>Flat list</source>
-			</trans-unit>
-
-			<trans-unit id="result.page">
-				<source>page</source>
-			</trans-unit>
-			<trans-unit id="result.pages">
-				<source>pages</source>
-			</trans-unit>
-			<trans-unit id="result.unnamedSection">
-				<source>Other</source>
-			</trans-unit>
-			<trans-unit id="result.otherMatching">
-				<source>Other matching pages in the same document</source>
-			</trans-unit>
-			<trans-unit id="result.otherPageAsWell">
-				<source>INFO: There was another page indexed as well. Probably indexed with another or no usergroup.</source>
-			</trans-unit>
-			<trans-unit id="result.path">
-				<source>Path</source>
-			</trans-unit>
-			<trans-unit id="result.modified">
-				<source>Modified</source>
-			</trans-unit>
-			<trans-unit id="result.created">
-				<source>Created</source>
-			</trans-unit>
-			<trans-unit id="result.size">
-				<source>Size</source>
-			</trans-unit>
-			<trans-unit id="result.noResume">
-				<source>Note: This search hit may not accurately match the content on this page. The page resume cannot be shown.</source>
-			</trans-unit>
-			<trans-unit id="result.memberGroups">
-				<source>Require membership of group numbers %s</source>
-			</trans-unit>
-
-			<trans-unit id="result.ratingMatches">
-				<source>matches</source>
-			</trans-unit>
-			<trans-unit id="result.noResult">
-				<source>No results found.</source>
-			</trans-unit>
-			<trans-unit id="result.inSection">
-				<source>in the section</source>
-			</trans-unit>
-			<trans-unit id="result.inNsection">
-				<source>in %s section</source>
-			</trans-unit>
-			<trans-unit id="result.inNsections">
-				<source>in %s sections</source>
-			</trans-unit>
-
-			<trans-unit id="searchFor">
-				<source>Search for</source>
-			</trans-unit>
-			<trans-unit id="searchFor.or">
-				<source>or</source>
-			</trans-unit>
-			<trans-unit id="searchFor.and">
-				<source>and</source>
-			</trans-unit>
-			<trans-unit id="searchFor.andnot">
-				<source>but not</source>
-			</trans-unit>
-
-			<trans-unit id="displayResults.previous">
-				<source>Previous</source>
-			</trans-unit>
-			<trans-unit id="displayResults.page">
-				<source>Page</source>
-			</trans-unit>
-			<trans-unit id="displayResults.next">
-				<source>Next</source>
-			</trans-unit>
-			<trans-unit id="displayResults">
-				<source><![CDATA[Displaying results <strong>%1$s to %2$s</strong> out of <strong>%3$s</strong>]]></source>
-			</trans-unit>
-
-			<trans-unit id="administration.menu.general">
-				<source>General statistics</source>
-			</trans-unit>
-			<trans-unit id="administration.menu.pages">
-				<source>List of indexed pages</source>
-			</trans-unit>
-			<trans-unit id="administration.menu.externalDocuments">
-				<source>List of indexed external documents</source>
-			</trans-unit>
-			<trans-unit id="administration.menu.searchStatistic">
-				<source>Search statistics</source>
-			</trans-unit>
-			<trans-unit id="administration.menu.statistic">
-				<source>Detailed statistics</source>
-			</trans-unit>
-
-			<trans-unit id="administration.externalDocuments.headline">
-				<source>List of indexed external documents</source>
-			</trans-unit>
-			<trans-unit id="administration.index.headline">
-				<source>General statistics</source>
-			</trans-unit>
-			<trans-unit id="administration.pages.headline">
-				<source>List of indexed pages</source>
-			</trans-unit>
-			<trans-unit id="administration.statistic.headline">
-				<source>Detailed statistics</source>
-			</trans-unit>
-			<trans-unit id="administration.statisticDetails.headline">
-				<source>Details for a single result row</source>
-			</trans-unit>
-			<trans-unit id="administration.statisticDetails.headlineWithItemTitle">
-				<source>Details for single result row "%s"</source>
-			</trans-unit>
-			<trans-unit id="administration.wordDetail.headline">
-				<source>Detail view of a single word</source>
-			</trans-unit>
-			<trans-unit id="administration.wordDetail.headlineWithWordTitle">
-				<source>Detail view of single word "%s"</source>
-			</trans-unit>
-
-			<trans-unit id="administration.statistics.header">
-				<source>Row count by database table</source>
-			</trans-unit>
-			<trans-unit id="administration.statistics.name">
-				<source>Name</source>
-			</trans-unit>
-			<trans-unit id="administration.statistics.count">
-				<source>Count</source>
-			</trans-unit>
-			<trans-unit id="administration.statistics.headerTypes">
-				<source>Hash Header Types</source>
-			</trans-unit>
-			<trans-unit id="administration.statistics.headerTypes.count">
-				<source>Count / Unique count</source>
-			</trans-unit>
-			<trans-unit id="administration.statistics.word">
-				<source>Word</source>
-			</trans-unit>
-			<trans-unit id="administration.statistics.mostSearched.title">
-				<source>List of most searched words</source>
-			</trans-unit>
-			<trans-unit id="administration.statistics.mostSearched.description">
-				<source>Statistics for all pages. Select a page with indexed search form to see several statistics.</source>
-			</trans-unit>
-			<trans-unit id="administration.statistics.mostSearched.all">
-				<source>All</source>
-			</trans-unit>
-			<trans-unit id="administration.statistics.mostSearched.last30days">
-				<source>Last 30 days</source>
-			</trans-unit>
-			<trans-unit id="administration.statistics.mostSearched.last24hours">
-				<source>Last 24 hours</source>
-			</trans-unit>
-			<trans-unit id="field.pageTitle">
-				<source>Page title</source>
-			</trans-unit>
-			<trans-unit id="field.fileName">
-				<source>Filename</source>
-			</trans-unit>
-			<trans-unit id="field.fileSize">
-				<source>Filesize</source>
-			</trans-unit>
-			<trans-unit id="field.wordCount">
-				<source>Word count</source>
-			</trans-unit>
-			<trans-unit id="field.words">
-				<source>Words</source>
-			</trans-unit>
-			<trans-unit id="field.mtime">
-				<source>Modification time</source>
-			</trans-unit>
-			<trans-unit id="field.indexed">
-				<source>Indexed</source>
-			</trans-unit>
-			<trans-unit id="field.updated">
-				<source>Updated</source>
-			</trans-unit>
-			<trans-unit id="field.parseTime">
-				<source>Parsetime [ms]</source>
-			</trans-unit>
-			<trans-unit id="field.groups">
-				<source>#sec/gr/full</source>
-			</trans-unit>
-			<trans-unit id="field.sub">
-				<source>Sub</source>
-			</trans-unit>
-			<trans-unit id="field.staticPageArguments">
-				<source>Static Page Arguments</source>
-			</trans-unit>
-			<trans-unit id="field.count">
-				<source>Count</source>
-			</trans-unit>
-			<trans-unit id="field.first">
-				<source>First</source>
-			</trans-unit>
-			<trans-unit id="field.pHash">
-				<source>PageHash</source>
-			</trans-unit>
-			<trans-unit id="field.path">
-				<source>Path</source>
-			</trans-unit>
-			<trans-unit id="field.id">
-				<source>Page Id</source>
-			</trans-unit>
-			<trans-unit id="field.uniqueId">
-				<source>Uid</source>
-			</trans-unit>
-			<trans-unit id="field.type">
-				<source>Type</source>
-			</trans-unit>
-			<trans-unit id="field.title">
-				<source>Title</source>
-			</trans-unit>
-			<trans-unit id="field.language">
-				<source>Language</source>
-			</trans-unit>
-			<trans-unit id="field.frequency">
-				<source>Frequency</source>
-			</trans-unit>
-			<trans-unit id="field.flag">
-				<source>Flag</source>
-			</trans-unit>
-			<trans-unit id="field.content">
-				<source>Content</source>
-			</trans-unit>
-			<trans-unit id="administration.notIndexed">
-				<source>Not indexed</source>
-			</trans-unit>
-
-			<trans-unit id="administration.document.words">
-				<source>Words found on this page</source>
-			</trans-unit>
-			<trans-unit id="administration.stopWords">
-				<source>Stopwords</source>
-			</trans-unit>
-			<trans-unit id="administration.stopWords.save">
-				<source>Save stopwords</source>
-			</trans-unit>
-			<trans-unit id="administration.word">
-				<source>Word</source>
-			</trans-unit>
-			<trans-unit id="administration.words">
-				<source>Words</source>
-			</trans-unit>
-			<trans-unit id="administration.statistics.sectionRecords">
-				<source>Section records for this phash</source>
-			</trans-unit>
-			<trans-unit id="administration.statistics.view.overview">
-				<source>Overview</source>
-			</trans-unit>
-			<trans-unit id="administration.statistics.view.content">
-				<source>Words and content</source>
-			</trans-unit>
-			<trans-unit id="administration.phash.tableHeader">
-				<source>Phash row content</source>
-			</trans-unit>
-			<trans-unit id="administration.removeEntry">
-				<source>Remove entry</source>
-			</trans-unit>
-			<trans-unit id="administration.removeAllEntries">
-				<source>Remove all listed entries</source>
-			</trans-unit>
-			<trans-unit id="administration.back">
-				<source>Back</source>
-			</trans-unit>
-			<trans-unit id="administration.moduleFunctions.mode">
-				<source>Mode</source>
-			</trans-unit>
-			<trans-unit id="administration.moduleFunctions.depth">
-				<source>Depth</source>
-			</trans-unit>
-			<trans-unit id="administration.btn.details.title">
-				<source>Show details</source>
-			</trans-unit>
-			<trans-unit id="administration.noPageSelected">
-				<source>Please select a page in the page tree.</source>
-			</trans-unit>
-			<trans-unit id="administration.noRecords">
-				<source>No records found.</source>
-			</trans-unit>
-			<trans-unit id="administration.noResult">
-				<source>No result found.</source>
-			</trans-unit>
-			<trans-unit id="administration.noResultForPage">
-				<source>No result for the selected page found.</source>
-			</trans-unit>
-			<trans-unit id="error.noTypoScript">
-				<source>Error: Please check that TypoScript for the Indexed Search plugin is included.</source>
-			</trans-unit>
-			<trans-unit id="administration.flag.32">
-				<source>description</source>
-			</trans-unit>
-			<trans-unit id="administration.flag.64">
-				<source>keyword</source>
-			</trans-unit>
-			<trans-unit id="administration.flag.128">
-				<source>title</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang.xlf" date="2011-12-18T10:19:20Z" product-name="indexed_search">
+    <header/>
+    <body>
+      <trans-unit id="localizedOperandAnd">
+        <source>AND</source>
+      </trans-unit>
+      <trans-unit id="localizedOperandOr">
+        <source>OR</source>
+      </trans-unit>
+      <trans-unit id="localizedOperandNot">
+        <source>NOT</source>
+      </trans-unit>
+      <trans-unit id="form.legend">
+        <source>Search form</source>
+      </trans-unit>
+      <trans-unit id="form.searchFor">
+        <source>Search for</source>
+      </trans-unit>
+      <trans-unit id="form.extResume">
+        <source>Extended resume</source>
+      </trans-unit>
+      <trans-unit id="form.atATime">
+        <source>at a time</source>
+      </trans-unit>
+      <trans-unit id="form.orderBy">
+        <source>Order by</source>
+      </trans-unit>
+      <trans-unit id="form.fromSection">
+        <source>From section</source>
+      </trans-unit>
+      <trans-unit id="form.freeIndexUid">
+        <source>Category</source>
+      </trans-unit>
+      <trans-unit id="form.searchIn">
+        <source>Search in</source>
+      </trans-unit>
+      <trans-unit id="form.match">
+        <source>Match</source>
+      </trans-unit>
+      <trans-unit id="form.style">
+        <source>Style</source>
+      </trans-unit>
+      <trans-unit id="form.submit">
+        <source>Search</source>
+      </trans-unit>
+      <trans-unit id="form.addToSearch">
+        <source>Add to current search words</source>
+      </trans-unit>
+      <trans-unit id="form.linkToRegularSearch">
+        <source>Regular search</source>
+      </trans-unit>
+      <trans-unit id="form.linkToAdvancedSearch">
+        <source>Advanced search</source>
+      </trans-unit>
+      <trans-unit id="searchTypes.0">
+        <source>Distinct word</source>
+      </trans-unit>
+      <trans-unit id="searchTypes.1">
+        <source>Part of word</source>
+      </trans-unit>
+      <trans-unit id="searchTypes.2">
+        <source>First part of word</source>
+      </trans-unit>
+      <trans-unit id="searchTypes.3">
+        <source>Last part of word</source>
+      </trans-unit>
+      <trans-unit id="searchTypes.20">
+        <source>Sentence</source>
+      </trans-unit>
+      <trans-unit id="defaultOperands.0">
+        <source>All words (AND)</source>
+      </trans-unit>
+      <trans-unit id="defaultOperands.1">
+        <source>Any words (OR)</source>
+      </trans-unit>
+      <trans-unit id="sections.0">
+        <source>Whole site</source>
+      </trans-unit>
+      <trans-unit id="sections.-1">
+        <source>Only this page</source>
+      </trans-unit>
+      <trans-unit id="sections.-2">
+        <source>Top + level 1</source>
+      </trans-unit>
+      <trans-unit id="sections.-3">
+        <source>Level 2 and out</source>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel1">
+        <source>Level 1</source>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel1All">
+        <source>All pages on level 1</source>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel2">
+        <source>- Level 2</source>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel2All">
+        <source>- All pages on level 2</source>
+      </trans-unit>
+      <trans-unit id="mediaTypes.0">
+        <source>Internal pages</source>
+      </trans-unit>
+      <trans-unit id="mediaTypes.-1">
+        <source>All media</source>
+      </trans-unit>
+      <trans-unit id="mediaTypes.-2">
+        <source>All External</source>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.-1">
+        <source>All, mixed</source>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.-2">
+        <source>All, categorized</source>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.0">
+        <source>Pages</source>
+      </trans-unit>
+      <trans-unit id="indexingConfigurationHeader.-1">
+        <source>Mixed categories</source>
+      </trans-unit>
+      <trans-unit id="indexingConfigurationHeader.0">
+        <source>Website Pages</source>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_flag">
+        <source>Weight/Frequency</source>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_freq">
+        <source>Frequency</source>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_first">
+        <source>Close to top</source>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_count">
+        <source>Number of words</source>
+      </trans-unit>
+      <trans-unit id="sortOrders.mtime">
+        <source>Date Modified</source>
+      </trans-unit>
+      <trans-unit id="sortOrders.title">
+        <source>Document title</source>
+      </trans-unit>
+      <trans-unit id="sortOrders.crdate">
+        <source>Creation date</source>
+      </trans-unit>
+      <trans-unit id="sortOrders.descending">
+        <source>Highest first</source>
+      </trans-unit>
+      <trans-unit id="sortOrders.ascending">
+        <source>Lowest first</source>
+      </trans-unit>
+      <trans-unit id="groupBy.sections">
+        <source>Section hierarchy</source>
+      </trans-unit>
+      <trans-unit id="groupBy.flat">
+        <source>Flat list</source>
+      </trans-unit>
+      <trans-unit id="result.page">
+        <source>page</source>
+      </trans-unit>
+      <trans-unit id="result.pages">
+        <source>pages</source>
+      </trans-unit>
+      <trans-unit id="result.unnamedSection">
+        <source>Other</source>
+      </trans-unit>
+      <trans-unit id="result.otherMatching">
+        <source>Other matching pages in the same document</source>
+      </trans-unit>
+      <trans-unit id="result.otherPageAsWell">
+        <source>INFO: There was another page indexed as well. Probably indexed with another or no usergroup.</source>
+      </trans-unit>
+      <trans-unit id="result.path">
+        <source>Path</source>
+      </trans-unit>
+      <trans-unit id="result.modified">
+        <source>Modified</source>
+      </trans-unit>
+      <trans-unit id="result.created">
+        <source>Created</source>
+      </trans-unit>
+      <trans-unit id="result.size">
+        <source>Size</source>
+      </trans-unit>
+      <trans-unit id="result.noResume">
+        <source>Note: This search hit may not accurately match the content on this page. The page resume cannot be shown.</source>
+      </trans-unit>
+      <trans-unit id="result.memberGroups">
+        <source>Require membership of group numbers %s</source>
+      </trans-unit>
+      <trans-unit id="result.ratingMatches">
+        <source>matches</source>
+      </trans-unit>
+      <trans-unit id="result.noResult">
+        <source>No results found.</source>
+      </trans-unit>
+      <trans-unit id="result.inSection">
+        <source>in the section</source>
+      </trans-unit>
+      <trans-unit id="result.inNsection">
+        <source>in %s section</source>
+      </trans-unit>
+      <trans-unit id="result.inNsections">
+        <source>in %s sections</source>
+      </trans-unit>
+      <trans-unit id="searchFor">
+        <source>Search for</source>
+      </trans-unit>
+      <trans-unit id="searchFor.or">
+        <source>or</source>
+      </trans-unit>
+      <trans-unit id="searchFor.and">
+        <source>and</source>
+      </trans-unit>
+      <trans-unit id="searchFor.andnot">
+        <source>but not</source>
+      </trans-unit>
+      <trans-unit id="displayResults.previous">
+        <source>Previous</source>
+      </trans-unit>
+      <trans-unit id="displayResults.page">
+        <source>Page</source>
+      </trans-unit>
+      <trans-unit id="displayResults.next">
+        <source>Next</source>
+      </trans-unit>
+      <trans-unit id="displayResults">
+        <source><![CDATA[Displaying results <strong>%1$s to %2$s</strong> out of <strong>%3$s</strong>]]></source>
+      </trans-unit>
+      <trans-unit id="administration.menu.general">
+        <source>General statistics</source>
+      </trans-unit>
+      <trans-unit id="administration.menu.pages">
+        <source>List of indexed pages</source>
+      </trans-unit>
+      <trans-unit id="administration.menu.externalDocuments">
+        <source>List of indexed external documents</source>
+      </trans-unit>
+      <trans-unit id="administration.menu.searchStatistic">
+        <source>Search statistics</source>
+      </trans-unit>
+      <trans-unit id="administration.menu.statistic">
+        <source>Detailed statistics</source>
+      </trans-unit>
+      <trans-unit id="administration.externalDocuments.headline">
+        <source>List of indexed external documents</source>
+      </trans-unit>
+      <trans-unit id="administration.index.headline">
+        <source>General statistics</source>
+      </trans-unit>
+      <trans-unit id="administration.pages.headline">
+        <source>List of indexed pages</source>
+      </trans-unit>
+      <trans-unit id="administration.statistic.headline">
+        <source>Detailed statistics</source>
+      </trans-unit>
+      <trans-unit id="administration.statisticDetails.headline">
+        <source>Details for a single result row</source>
+      </trans-unit>
+      <trans-unit id="administration.statisticDetails.headlineWithItemTitle">
+        <source>Details for single result row "%s"</source>
+      </trans-unit>
+      <trans-unit id="administration.wordDetail.headline">
+        <source>Detail view of a single word</source>
+      </trans-unit>
+      <trans-unit id="administration.wordDetail.headlineWithWordTitle">
+        <source>Detail view of single word "%s"</source>
+      </trans-unit>
+      <trans-unit id="administration.statistics.header">
+        <source>Row count by database table</source>
+      </trans-unit>
+      <trans-unit id="administration.statistics.name">
+        <source>Name</source>
+      </trans-unit>
+      <trans-unit id="administration.statistics.count">
+        <source>Count</source>
+      </trans-unit>
+      <trans-unit id="administration.statistics.headerTypes">
+        <source>Hash Header Types</source>
+      </trans-unit>
+      <trans-unit id="administration.statistics.headerTypes.count">
+        <source>Count / Unique count</source>
+      </trans-unit>
+      <trans-unit id="administration.statistics.word">
+        <source>Word</source>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.title">
+        <source>List of most searched words</source>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.description">
+        <source>Statistics for all pages. Select a page with indexed search form to see several statistics.</source>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.all">
+        <source>All</source>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.last30days">
+        <source>Last 30 days</source>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.last24hours">
+        <source>Last 24 hours</source>
+      </trans-unit>
+      <trans-unit id="field.pageTitle">
+        <source>Page title</source>
+      </trans-unit>
+      <trans-unit id="field.fileName">
+        <source>Filename</source>
+      </trans-unit>
+      <trans-unit id="field.fileSize">
+        <source>Filesize</source>
+      </trans-unit>
+      <trans-unit id="field.wordCount">
+        <source>Word count</source>
+      </trans-unit>
+      <trans-unit id="field.words">
+        <source>Words</source>
+      </trans-unit>
+      <trans-unit id="field.mtime">
+        <source>Modification time</source>
+      </trans-unit>
+      <trans-unit id="field.indexed">
+        <source>Indexed</source>
+      </trans-unit>
+      <trans-unit id="field.updated">
+        <source>Updated</source>
+      </trans-unit>
+      <trans-unit id="field.parseTime">
+        <source>Parsetime [ms]</source>
+      </trans-unit>
+      <trans-unit id="field.groups">
+        <source>#sec/gr/full</source>
+      </trans-unit>
+      <trans-unit id="field.sub">
+        <source>Sub</source>
+      </trans-unit>
+      <trans-unit id="field.staticPageArguments">
+        <source>Static Page Arguments</source>
+      </trans-unit>
+      <trans-unit id="field.count">
+        <source>Count</source>
+      </trans-unit>
+      <trans-unit id="field.first">
+        <source>First</source>
+      </trans-unit>
+      <trans-unit id="field.pHash">
+        <source>PageHash</source>
+      </trans-unit>
+      <trans-unit id="field.path">
+        <source>Path</source>
+      </trans-unit>
+      <trans-unit id="field.id">
+        <source>Page Id</source>
+      </trans-unit>
+      <trans-unit id="field.uniqueId">
+        <source>Uid</source>
+      </trans-unit>
+      <trans-unit id="field.type">
+        <source>Type</source>
+      </trans-unit>
+      <trans-unit id="field.title">
+        <source>Title</source>
+      </trans-unit>
+      <trans-unit id="field.language">
+        <source>Language</source>
+      </trans-unit>
+      <trans-unit id="field.frequency">
+        <source>Frequency</source>
+      </trans-unit>
+      <trans-unit id="field.flag">
+        <source>Flag</source>
+      </trans-unit>
+      <trans-unit id="field.content">
+        <source>Content</source>
+      </trans-unit>
+      <trans-unit id="administration.notIndexed">
+        <source>Not indexed</source>
+      </trans-unit>
+      <trans-unit id="administration.document.words">
+        <source>Words found on this page</source>
+      </trans-unit>
+      <trans-unit id="administration.stopWords">
+        <source>Stopwords</source>
+      </trans-unit>
+      <trans-unit id="administration.stopWords.save">
+        <source>Save stopwords</source>
+      </trans-unit>
+      <trans-unit id="administration.word">
+        <source>Word</source>
+      </trans-unit>
+      <trans-unit id="administration.words">
+        <source>Words</source>
+      </trans-unit>
+      <trans-unit id="administration.statistics.sectionRecords">
+        <source>Section records for this phash</source>
+      </trans-unit>
+      <trans-unit id="administration.statistics.view.overview">
+        <source>Overview</source>
+      </trans-unit>
+      <trans-unit id="administration.statistics.view.content">
+        <source>Words and content</source>
+      </trans-unit>
+      <trans-unit id="administration.phash.tableHeader">
+        <source>Phash row content</source>
+      </trans-unit>
+      <trans-unit id="administration.removeEntry">
+        <source>Remove entry</source>
+      </trans-unit>
+      <trans-unit id="administration.removeAllEntries">
+        <source>Remove all listed entries</source>
+      </trans-unit>
+      <trans-unit id="administration.back">
+        <source>Back</source>
+      </trans-unit>
+      <trans-unit id="administration.moduleFunctions.mode">
+        <source>Mode</source>
+      </trans-unit>
+      <trans-unit id="administration.moduleFunctions.depth">
+        <source>Depth</source>
+      </trans-unit>
+      <trans-unit id="administration.btn.details.title">
+        <source>Show details</source>
+      </trans-unit>
+      <trans-unit id="administration.noPageSelected">
+        <source>Please select a page in the page tree.</source>
+      </trans-unit>
+      <trans-unit id="administration.noRecords">
+        <source>No records found.</source>
+      </trans-unit>
+      <trans-unit id="administration.noResult">
+        <source>No result found.</source>
+      </trans-unit>
+      <trans-unit id="administration.noResultForPage">
+        <source>No result for the selected page found.</source>
+      </trans-unit>
+      <trans-unit id="error.noTypoScript">
+        <source>Error: Please check that TypoScript for the Indexed Search plugin is included.</source>
+      </trans-unit>
+      <trans-unit id="administration.flag.32">
+        <source>description</source>
+      </trans-unit>
+      <trans-unit id="administration.flag.64">
+        <source>keyword</source>
+      </trans-unit>
+      <trans-unit id="administration.flag.128">
+        <source>title</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

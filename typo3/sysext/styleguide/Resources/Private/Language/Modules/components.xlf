@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:styleguide/Resources/Private/Language/Modules/components.xlf" date="2026-11-10T13:37:37Z" product-name="components">
-		<header/>
-		<body>
-			<trans-unit id="short_description">
-				<source>Backend UI Components</source>
-			</trans-unit>
-			<trans-unit id="description">
-				<source>Browse and explore the TYPO3 backend component library including buttons, forms, cards, tables, and other UI elements.</source>
-			</trans-unit>
-			<trans-unit id="title">
-				<source>Component Library: Components</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:styleguide/Resources/Private/Language/Modules/components.xlf" date="2026-11-10T13:37:37Z" product-name="components">
+    <header/>
+    <body>
+      <trans-unit id="short_description">
+        <source>Backend UI Components</source>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>Browse and explore the TYPO3 backend component library including buttons, forms, cards, tables, and other UI elements.</source>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Component Library: Components</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

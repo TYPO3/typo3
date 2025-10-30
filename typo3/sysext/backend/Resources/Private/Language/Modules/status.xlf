@@ -1,23 +1,23 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
-	<file id="f1">
-		<unit id="title">
-			<segment>
-				<source>Status</source>
-			</segment>
-		</unit>
-		<unit id="short_description">
-			<segment>
-				<source>Overview of site and page status information</source>
-			</segment>
-		</unit>
-		<unit id="description">
-			<segment>
-				<source>The Status module provides an overview of site- and page-level
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en">
+  <file id="f1">
+    <unit id="title">
+      <segment>
+        <source>Status</source>
+      </segment>
+    </unit>
+    <unit id="short_description">
+      <segment>
+        <source>Overview of site and page status information</source>
+      </segment>
+    </unit>
+    <unit id="description">
+      <segment>
+        <source>The Status module provides an overview of site- and page-level
 information. Depending on installed extensions and user permissions,
 it may include additional sections offering details that help assess
 the state and structure of individual sites or pages.</source>
-			</segment>
-		</unit>
-	</file>
+      </segment>
+    </unit>
+  </file>
 </xliff>

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/Modules/ts.xlf" date="2026-11-10T13:37:37Z" product-name="ts">
-		<header/>
-		<body>
-			<trans-unit id="short_description">
-				<source>TypoScript tools</source>
-			</trans-unit>
-			<trans-unit id="description">
-				<source>Here you manage the TypoScript records which are in charge of the look of your website on the frontend. The module provides specialized features like a TypoScript tree, a constant editor and raw editing facilities.</source>
-			</trans-unit>
-			<trans-unit id="title">
-				<source>TypoScript</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/Modules/ts.xlf" date="2026-11-10T13:37:37Z" product-name="ts">
+    <header/>
+    <body>
+      <trans-unit id="short_description">
+        <source>TypoScript tools</source>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>Here you manage the TypoScript records which are in charge of the look of your website on the frontend. The module provides specialized features like a TypoScript tree, a constant editor and raw editing facilities.</source>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>TypoScript</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

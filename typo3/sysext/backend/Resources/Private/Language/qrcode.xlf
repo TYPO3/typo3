@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/qrcode.xlf" date="2025-11-05T19:32:00Z" product-name="backend">
-		<header/>
-		<body>
-			<trans-unit id="qrcode.format.png">
-				<source>PNG</source>
-			</trans-unit>
-			<trans-unit id="qrcode.format.svg">
-				<source>SVG</source>
-			</trans-unit>
-			<trans-unit id="qrcode.format">
-				<source>Format</source>
-			</trans-unit>
-			<trans-unit id="qrcode.size">
-				<source>Size</source>
-			</trans-unit>
-			<trans-unit id="qrcode.size.small">
-				<source>small</source>
-			</trans-unit>
-			<trans-unit id="qrcode.size.medium">
-				<source>medium</source>
-			</trans-unit>
-			<trans-unit id="qrcode.size.large">
-				<source>large</source>
-			</trans-unit>
-			<trans-unit id="qrcode.download">
-				<source>Download</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/qrcode.xlf" date="2025-11-05T19:32:00Z" product-name="backend">
+    <header/>
+    <body>
+      <trans-unit id="qrcode.format.png">
+        <source>PNG</source>
+      </trans-unit>
+      <trans-unit id="qrcode.format.svg">
+        <source>SVG</source>
+      </trans-unit>
+      <trans-unit id="qrcode.format">
+        <source>Format</source>
+      </trans-unit>
+      <trans-unit id="qrcode.size">
+        <source>Size</source>
+      </trans-unit>
+      <trans-unit id="qrcode.size.small">
+        <source>small</source>
+      </trans-unit>
+      <trans-unit id="qrcode.size.medium">
+        <source>medium</source>
+      </trans-unit>
+      <trans-unit id="qrcode.size.large">
+        <source>large</source>
+      </trans-unit>
+      <trans-unit id="qrcode.download">
+        <source>Download</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

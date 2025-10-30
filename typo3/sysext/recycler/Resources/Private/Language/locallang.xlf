@@ -1,146 +1,146 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:35Z" product-name="recycler">
-		<header/>
-		<body>
-			<trans-unit id="title">
-				<source>Recycler</source>
-			</trans-unit>
-			<trans-unit id="description">
-				<source>The recycler allows you to select any deleted data and undelete it. You can undelete recursive if the parent of the element is deleted too.</source>
-			</trans-unit>
-			<trans-unit id="label_allrecordtypes">
-				<source>All Record Types</source>
-			</trans-unit>
-			<trans-unit id="filter.search">
-				<source>Search term</source>
-			</trans-unit>
-			<trans-unit id="filter.depth">
-				<source>Depth</source>
-			</trans-unit>
-			<trans-unit id="filter.type">
-				<source>Type</source>
-			</trans-unit>
-			<trans-unit id="button.cancel">
-				<source>Cancel</source>
-			</trans-unit>
-			<trans-unit id="button.delete">
-				<source>Delete</source>
-			</trans-unit>
-			<trans-unit id="button.deleteselected">
-				<source>Delete {0} records</source>
-			</trans-unit>
-			<trans-unit id="button.undo">
-				<source>Restore</source>
-			</trans-unit>
-			<trans-unit id="button.expand">
-				<source>Expand record</source>
-			</trans-unit>
-			<trans-unit id="button.dropdown.multiselect">
-				<source>Open context menu for multiselect options</source>
-			</trans-unit>
-			<trans-unit id="button.undoselected">
-				<source>Restore {0} records</source>
-			</trans-unit>
-			<trans-unit id="button.reload">
-				<source>Reload</source>
-			</trans-unit>
-			<trans-unit id="modal.delete.header">
-				<source>Confirm deletion</source>
-			</trans-unit>
-			<trans-unit id="modal.undo.header">
-				<source>Restore records</source>
-			</trans-unit>
-			<trans-unit id="modal.undo.recursive">
-				<source>Restore content and subpages recursively</source>
-			</trans-unit>
-			<trans-unit id="modal.deletecontent.text">
-				<source>Delete the record "{0}" {1} permanently? You cannot undo this action.</source>
-			</trans-unit>
-			<trans-unit id="modal.massdelete.text">
-				<source>Delete all selected records and potential subpages? You cannot undo this action.</source>
-			</trans-unit>
-			<trans-unit id="modal.deletepage.text">
-				<source>Delete the page "{0}" {1} and all of its contents (records and pages) permanently? You cannot undo this action.</source>
-			</trans-unit>
-			<trans-unit id="modal.undocontent.text">
-				<source>Restore the record "{0}" {1}?</source>
-			</trans-unit>
-			<trans-unit id="modal.undopage.text">
-				<source>Restore the page "{0}" {1}, its contents and optionally all of its subpages?</source>
-			</trans-unit>
-			<trans-unit id="modal.undo.parentpages">
-				<source>All parent pages have been restored to ensure a valid rootline.</source>
-			</trans-unit>
-			<trans-unit id="modal.massundo.text">
-				<source>Restore all selected records and optionally potential subpages?</source>
-			</trans-unit>
-			<trans-unit id="flashmessage.delete.norecordsselected">
-				<source>No records set to delete.</source>
-			</trans-unit>
-			<trans-unit id="flashmessage.delete.success.singular">
-				<source>One record was deleted.</source>
-			</trans-unit>
-			<trans-unit id="flashmessage.delete.success.plural">
-				<source>%d records were deleted.</source>
-			</trans-unit>
-			<trans-unit id="flashmessage.delete.failure.singular">
-				<source>Could not delete one record.</source>
-			</trans-unit>
-			<trans-unit id="flashmessage.delete.failure.plural">
-				<source>Could not delete %d records.</source>
-			</trans-unit>
-			<trans-unit id="flashmessage.undo.norecordsselected">
-				<source>No records set to restore.</source>
-			</trans-unit>
-			<trans-unit id="flashmessage.undo.success.singular">
-				<source>One record was restored.</source>
-			</trans-unit>
-			<trans-unit id="flashmessage.undo.success.plural">
-				<source>%d records were restored.</source>
-			</trans-unit>
-			<trans-unit id="flashmessage.undo.failure.singular">
-				<source>Could not restore one record.</source>
-			</trans-unit>
-			<trans-unit id="flashmessage.undo.failure.plural">
-				<source>Could not restore %d records.</source>
-			</trans-unit>
-			<trans-unit id="alert.noDeletedRecords">
-				<source>No deleted records have been found.</source>
-			</trans-unit>
-			<trans-unit id="table.caption.recently_deleted_records">
-				<source>Recently deleted records</source>
-			</trans-unit>
-			<trans-unit id="table.header.uid">
-				<source>UID</source>
-			</trans-unit>
-			<trans-unit id="table.header.pageTitle">
-				<source>Page title</source>
-			</trans-unit>
-			<trans-unit id="table.header.pid">
-				<source>Page ID</source>
-			</trans-unit>
-			<trans-unit id="table.header.record">
-				<source>Record</source>
-			</trans-unit>
-			<trans-unit id="table.header.tstamp">
-				<source>Last edit</source>
-			</trans-unit>
-			<trans-unit id="table.header.crdate">
-				<source>Created at</source>
-			</trans-unit>
-			<trans-unit id="table.header.createdBy">
-				<source>Created by</source>
-			</trans-unit>
-			<trans-unit id="table.header.deletedBy">
-				<source>Deleted by</source>
-			</trans-unit>
-			<trans-unit id="table.header.path">
-				<source>Path</source>
-			</trans-unit>
-			<trans-unit id="record.userDeleted">
-				<source>[Deleted user] (id=%s)</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:35Z" product-name="recycler">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>Recycler</source>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>The recycler allows you to select any deleted data and undelete it. You can undelete recursive if the parent of the element is deleted too.</source>
+      </trans-unit>
+      <trans-unit id="label_allrecordtypes">
+        <source>All Record Types</source>
+      </trans-unit>
+      <trans-unit id="filter.search">
+        <source>Search term</source>
+      </trans-unit>
+      <trans-unit id="filter.depth">
+        <source>Depth</source>
+      </trans-unit>
+      <trans-unit id="filter.type">
+        <source>Type</source>
+      </trans-unit>
+      <trans-unit id="button.cancel">
+        <source>Cancel</source>
+      </trans-unit>
+      <trans-unit id="button.delete">
+        <source>Delete</source>
+      </trans-unit>
+      <trans-unit id="button.deleteselected">
+        <source>Delete {0} records</source>
+      </trans-unit>
+      <trans-unit id="button.undo">
+        <source>Restore</source>
+      </trans-unit>
+      <trans-unit id="button.expand">
+        <source>Expand record</source>
+      </trans-unit>
+      <trans-unit id="button.dropdown.multiselect">
+        <source>Open context menu for multiselect options</source>
+      </trans-unit>
+      <trans-unit id="button.undoselected">
+        <source>Restore {0} records</source>
+      </trans-unit>
+      <trans-unit id="button.reload">
+        <source>Reload</source>
+      </trans-unit>
+      <trans-unit id="modal.delete.header">
+        <source>Confirm deletion</source>
+      </trans-unit>
+      <trans-unit id="modal.undo.header">
+        <source>Restore records</source>
+      </trans-unit>
+      <trans-unit id="modal.undo.recursive">
+        <source>Restore content and subpages recursively</source>
+      </trans-unit>
+      <trans-unit id="modal.deletecontent.text">
+        <source>Delete the record "{0}" {1} permanently? You cannot undo this action.</source>
+      </trans-unit>
+      <trans-unit id="modal.massdelete.text">
+        <source>Delete all selected records and potential subpages? You cannot undo this action.</source>
+      </trans-unit>
+      <trans-unit id="modal.deletepage.text">
+        <source>Delete the page "{0}" {1} and all of its contents (records and pages) permanently? You cannot undo this action.</source>
+      </trans-unit>
+      <trans-unit id="modal.undocontent.text">
+        <source>Restore the record "{0}" {1}?</source>
+      </trans-unit>
+      <trans-unit id="modal.undopage.text">
+        <source>Restore the page "{0}" {1}, its contents and optionally all of its subpages?</source>
+      </trans-unit>
+      <trans-unit id="modal.undo.parentpages">
+        <source>All parent pages have been restored to ensure a valid rootline.</source>
+      </trans-unit>
+      <trans-unit id="modal.massundo.text">
+        <source>Restore all selected records and optionally potential subpages?</source>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.norecordsselected">
+        <source>No records set to delete.</source>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.success.singular">
+        <source>One record was deleted.</source>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.success.plural">
+        <source>%d records were deleted.</source>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.failure.singular">
+        <source>Could not delete one record.</source>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.failure.plural">
+        <source>Could not delete %d records.</source>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.norecordsselected">
+        <source>No records set to restore.</source>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.success.singular">
+        <source>One record was restored.</source>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.success.plural">
+        <source>%d records were restored.</source>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.failure.singular">
+        <source>Could not restore one record.</source>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.failure.plural">
+        <source>Could not restore %d records.</source>
+      </trans-unit>
+      <trans-unit id="alert.noDeletedRecords">
+        <source>No deleted records have been found.</source>
+      </trans-unit>
+      <trans-unit id="table.caption.recently_deleted_records">
+        <source>Recently deleted records</source>
+      </trans-unit>
+      <trans-unit id="table.header.uid">
+        <source>UID</source>
+      </trans-unit>
+      <trans-unit id="table.header.pageTitle">
+        <source>Page title</source>
+      </trans-unit>
+      <trans-unit id="table.header.pid">
+        <source>Page ID</source>
+      </trans-unit>
+      <trans-unit id="table.header.record">
+        <source>Record</source>
+      </trans-unit>
+      <trans-unit id="table.header.tstamp">
+        <source>Last edit</source>
+      </trans-unit>
+      <trans-unit id="table.header.crdate">
+        <source>Created at</source>
+      </trans-unit>
+      <trans-unit id="table.header.createdBy">
+        <source>Created by</source>
+      </trans-unit>
+      <trans-unit id="table.header.deletedBy">
+        <source>Deleted by</source>
+      </trans-unit>
+      <trans-unit id="table.header.path">
+        <source>Path</source>
+      </trans-unit>
+      <trans-unit id="record.userDeleted">
+        <source>[Deleted user] (id=%s)</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

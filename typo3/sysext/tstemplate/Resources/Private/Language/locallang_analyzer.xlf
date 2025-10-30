@@ -1,119 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate">
-		<header/>
-		<body>
-			<trans-unit id="submodule.title">
-				<source>Included TypoScript</source>
-			</trans-unit>
-			<trans-unit id="submodule.titleWithRecord">
-				<source>Included TypoScript for record "%s"</source>
-			</trans-unit>
-			<trans-unit id="submodule.description">
-				<source>Overview of the included TypoScript and include order for the current page.</source>
-			</trans-unit>
-			<trans-unit id="infobox.message.noTypoScriptFound">
-				<source>No TypoScript found.</source>
-			</trans-unit>
-			<trans-unit id="options.selectedRecord">
-				<source>Selected record</source>
-			</trans-unit>
-			<trans-unit id="sectionHeadline.constants">
-				<source>Constants</source>
-			</trans-unit>
-			<trans-unit id="sectionHeadline.setup">
-				<source>Setup</source>
-			</trans-unit>
-			<trans-unit id="panel.header.syntaxErrors">
-				<source>Syntax scanner warnings</source>
-			</trans-unit>
-			<trans-unit id="panel.header.configuration">
-				<source>Configuration</source>
-			</trans-unit>
-			<trans-unit id="panel.info.syntaxErrorCount.single">
-				<source>%s syntax warning</source>
-			</trans-unit>
-			<trans-unit id="panel.info.syntaxErrorCount.multiple">
-				<source>%s syntax warnings</source>
-			</trans-unit>
-			<trans-unit id="syntaxError.sourceCode">
-				<source>Show affected code snippet</source>
-			</trans-unit>
-			<trans-unit id="syntaxError.type.line.invalid">
-				<source>Invalid line in "%1$s", line number "%2$s"</source>
-			</trans-unit>
-			<trans-unit id="syntaxError.type.brace.excess">
-				<source>Brace in excess in "%1$s", line number "%2$s"</source>
-			</trans-unit>
-			<trans-unit id="syntaxError.type.brace.missing">
-				<source>Brace missing in "%1$s", line number "%2$s"</source>
-			</trans-unit>
-			<trans-unit id="syntaxError.type.import.empty">
-				<source>Import does not find a file in "%1$s", line number "%2$s"</source>
-			</trans-unit>
-			<trans-unit id="tree.child.btn.sourceCode">
-				<source>Show code</source>
-			</trans-unit>
-			<trans-unit id="tree.child.btn.sourceCodeWithResolvedIncludes">
-				<source>Show code including possible includes/imports</source>
-			</trans-unit>
-			<trans-unit id="tree.child.setting.clear">
-				<source>Clear</source>
-			</trans-unit>
-			<trans-unit id="tree.child.setting.root">
-				<source>Root</source>
-			</trans-unit>
-			<trans-unit id="tree.child.sysTemplateRecord">
-				<source>TypoScript record (page UID %s)</source>
-			</trans-unit>
-			<trans-unit id="tree.child.type.AtImport">
-				<source>Included via "@import"</source>
-			</trans-unit>
-			<trans-unit id="tree.child.type.Condition">
-				<source>Condition (then)</source>
-			</trans-unit>
-			<trans-unit id="tree.child.type.ConditionElse">
-				<source>Condition (else)</source>
-			</trans-unit>
-			<trans-unit id="tree.child.type.ConditionStop">
-				<source>Condition (end)</source>
-			</trans-unit>
-			<trans-unit id="tree.child.type.DefaultTypoScript">
-				<source>Included via "$GLOBALS"</source>
-			</trans-unit>
-			<trans-unit id="tree.child.type.DefaultTypoScriptMagicKey">
-				<source>Included via "$GLOBALS"</source>
-			</trans-unit>
-			<trans-unit id="tree.child.type.DefaultTypoScriptMagicKey_formlabel">
-				<source>Default content rendering</source>
-			</trans-unit>
-			<trans-unit id="tree.child.type.ExtensionStatic">
-				<source>TypoScript set (loaded automatically)</source>
-			</trans-unit>
-			<trans-unit id="tree.child.type.File">
-				<source>Part of a TypoScript set</source>
-			</trans-unit>
-			<trans-unit id="tree.child.type.IncludeStaticFileDatabase">
-				<source>TypoScript set</source>
-			</trans-unit>
-			<trans-unit id="tree.child.type.IncludeStaticFileFile">
-				<source>TypoScript set (included via file)</source>
-			</trans-unit>
-			<trans-unit id="tree.child.type.Root">
-				<source>Root</source>
-			</trans-unit>
-			<trans-unit id="tree.child.type.Segment">
-				<source>Code segment</source>
-			</trans-unit>
-			<trans-unit id="tree.child.type.Site">
-				<source>Site</source>
-			</trans-unit>
-			<trans-unit id="tree.child.type.SiteTemplate">
-				<source>Site configuration</source>
-			</trans-unit>
-			<trans-unit id="tree.child.type.SysTemplate">
-				<source>TypoScript record</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate">
+    <header/>
+    <body>
+      <trans-unit id="submodule.title">
+        <source>Included TypoScript</source>
+      </trans-unit>
+      <trans-unit id="submodule.titleWithRecord">
+        <source>Included TypoScript for record "%s"</source>
+      </trans-unit>
+      <trans-unit id="submodule.description">
+        <source>Overview of the included TypoScript and include order for the current page.</source>
+      </trans-unit>
+      <trans-unit id="infobox.message.noTypoScriptFound">
+        <source>No TypoScript found.</source>
+      </trans-unit>
+      <trans-unit id="options.selectedRecord">
+        <source>Selected record</source>
+      </trans-unit>
+      <trans-unit id="sectionHeadline.constants">
+        <source>Constants</source>
+      </trans-unit>
+      <trans-unit id="sectionHeadline.setup">
+        <source>Setup</source>
+      </trans-unit>
+      <trans-unit id="panel.header.syntaxErrors">
+        <source>Syntax scanner warnings</source>
+      </trans-unit>
+      <trans-unit id="panel.header.configuration">
+        <source>Configuration</source>
+      </trans-unit>
+      <trans-unit id="panel.info.syntaxErrorCount.single">
+        <source>%s syntax warning</source>
+      </trans-unit>
+      <trans-unit id="panel.info.syntaxErrorCount.multiple">
+        <source>%s syntax warnings</source>
+      </trans-unit>
+      <trans-unit id="syntaxError.sourceCode">
+        <source>Show affected code snippet</source>
+      </trans-unit>
+      <trans-unit id="syntaxError.type.line.invalid">
+        <source>Invalid line in "%1$s", line number "%2$s"</source>
+      </trans-unit>
+      <trans-unit id="syntaxError.type.brace.excess">
+        <source>Brace in excess in "%1$s", line number "%2$s"</source>
+      </trans-unit>
+      <trans-unit id="syntaxError.type.brace.missing">
+        <source>Brace missing in "%1$s", line number "%2$s"</source>
+      </trans-unit>
+      <trans-unit id="syntaxError.type.import.empty">
+        <source>Import does not find a file in "%1$s", line number "%2$s"</source>
+      </trans-unit>
+      <trans-unit id="tree.child.btn.sourceCode">
+        <source>Show code</source>
+      </trans-unit>
+      <trans-unit id="tree.child.btn.sourceCodeWithResolvedIncludes">
+        <source>Show code including possible includes/imports</source>
+      </trans-unit>
+      <trans-unit id="tree.child.setting.clear">
+        <source>Clear</source>
+      </trans-unit>
+      <trans-unit id="tree.child.setting.root">
+        <source>Root</source>
+      </trans-unit>
+      <trans-unit id="tree.child.sysTemplateRecord">
+        <source>TypoScript record (page UID %s)</source>
+      </trans-unit>
+      <trans-unit id="tree.child.type.AtImport">
+        <source>Included via "@import"</source>
+      </trans-unit>
+      <trans-unit id="tree.child.type.Condition">
+        <source>Condition (then)</source>
+      </trans-unit>
+      <trans-unit id="tree.child.type.ConditionElse">
+        <source>Condition (else)</source>
+      </trans-unit>
+      <trans-unit id="tree.child.type.ConditionStop">
+        <source>Condition (end)</source>
+      </trans-unit>
+      <trans-unit id="tree.child.type.DefaultTypoScript">
+        <source>Included via "$GLOBALS"</source>
+      </trans-unit>
+      <trans-unit id="tree.child.type.DefaultTypoScriptMagicKey">
+        <source>Included via "$GLOBALS"</source>
+      </trans-unit>
+      <trans-unit id="tree.child.type.DefaultTypoScriptMagicKey_formlabel">
+        <source>Default content rendering</source>
+      </trans-unit>
+      <trans-unit id="tree.child.type.ExtensionStatic">
+        <source>TypoScript set (loaded automatically)</source>
+      </trans-unit>
+      <trans-unit id="tree.child.type.File">
+        <source>Part of a TypoScript set</source>
+      </trans-unit>
+      <trans-unit id="tree.child.type.IncludeStaticFileDatabase">
+        <source>TypoScript set</source>
+      </trans-unit>
+      <trans-unit id="tree.child.type.IncludeStaticFileFile">
+        <source>TypoScript set (included via file)</source>
+      </trans-unit>
+      <trans-unit id="tree.child.type.Root">
+        <source>Root</source>
+      </trans-unit>
+      <trans-unit id="tree.child.type.Segment">
+        <source>Code segment</source>
+      </trans-unit>
+      <trans-unit id="tree.child.type.Site">
+        <source>Site</source>
+      </trans-unit>
+      <trans-unit id="tree.child.type.SiteTemplate">
+        <source>Site configuration</source>
+      </trans-unit>
+      <trans-unit id="tree.child.type.SysTemplate">
+        <source>TypoScript record</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

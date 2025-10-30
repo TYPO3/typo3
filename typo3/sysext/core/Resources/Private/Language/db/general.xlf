@@ -1,90 +1,90 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
-	<file id="f1">
-		<unit id="description">
-			<segment>
-				<source>Description</source>
-			</segment>
-		</unit>
-        <unit id="editlock">
-            <segment>
-                <source>Editable for Admins Only</source>
-            </segment>
-        </unit>
-		<unit id="enabled">
-			<segment>
-				<source>Enabled</source>
-			</segment>
-		</unit>
-        <unit id="endtime">
-            <segment>
-                <source>Expiration Date</source>
-            </segment>
-        </unit>
-        <unit id="fe_group">
-            <segment>
-                <source>Frontend User Group Access Rights</source>
-            </segment>
-        </unit>
-		<unit id="fe_group.hide_at_login">
-			<segment>
-				<source>Hide at login</source>
-			</segment>
-		</unit>
-		<unit id="fe_group.any_login">
-			<segment>
-				<source>Show at any login</source>
-			</segment>
-		</unit>
-		<unit id="fe_group.usergroups">
-			<segment>
-				<source>__Usergroups:__</source>
-			</segment>
-		</unit>
-		<unit id="l18n_parent">
-			<segment>
-				<source>Transl.Orig</source>
-			</segment>
-		</unit>
-		<unit id="language">
-			<segment>
-				<source>Language</source>
-			</segment>
-		</unit>
-        <unit id="starttime">
-            <segment>
-                <source>Publish Date</source>
-            </segment>
-        </unit>
-		<unit id="depth_0">
-			<segment>
-				<source>This page</source>
-			</segment>
-		</unit>
-		<unit id="depth_1">
-			<segment>
-				<source>1 level</source>
-			</segment>
-		</unit>
-		<unit id="depth_2">
-			<segment>
-				<source>2 levels</source>
-			</segment>
-		</unit>
-		<unit id="depth_3">
-			<segment>
-				<source>3 levels</source>
-			</segment>
-		</unit>
-		<unit id="depth_4">
-			<segment>
-				<source>4 levels</source>
-			</segment>
-		</unit>
-		<unit id="depth_infi">
-			<segment>
-				<source>Infinite</source>
-			</segment>
-		</unit>
-    </file>
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en">
+  <file id="f1">
+    <unit id="description">
+      <segment>
+        <source>Description</source>
+      </segment>
+    </unit>
+    <unit id="editlock">
+      <segment>
+        <source>Editable for Admins Only</source>
+      </segment>
+    </unit>
+    <unit id="enabled">
+      <segment>
+        <source>Enabled</source>
+      </segment>
+    </unit>
+    <unit id="endtime">
+      <segment>
+        <source>Expiration Date</source>
+      </segment>
+    </unit>
+    <unit id="fe_group">
+      <segment>
+        <source>Frontend User Group Access Rights</source>
+      </segment>
+    </unit>
+    <unit id="fe_group.hide_at_login">
+      <segment>
+        <source>Hide at login</source>
+      </segment>
+    </unit>
+    <unit id="fe_group.any_login">
+      <segment>
+        <source>Show at any login</source>
+      </segment>
+    </unit>
+    <unit id="fe_group.usergroups">
+      <segment>
+        <source>__Usergroups:__</source>
+      </segment>
+    </unit>
+    <unit id="l18n_parent">
+      <segment>
+        <source>Transl.Orig</source>
+      </segment>
+    </unit>
+    <unit id="language">
+      <segment>
+        <source>Language</source>
+      </segment>
+    </unit>
+    <unit id="starttime">
+      <segment>
+        <source>Publish Date</source>
+      </segment>
+    </unit>
+    <unit id="depth_0">
+      <segment>
+        <source>This page</source>
+      </segment>
+    </unit>
+    <unit id="depth_1">
+      <segment>
+        <source>1 level</source>
+      </segment>
+    </unit>
+    <unit id="depth_2">
+      <segment>
+        <source>2 levels</source>
+      </segment>
+    </unit>
+    <unit id="depth_3">
+      <segment>
+        <source>3 levels</source>
+      </segment>
+    </unit>
+    <unit id="depth_4">
+      <segment>
+        <source>4 levels</source>
+      </segment>
+    </unit>
+    <unit id="depth_infi">
+      <segment>
+        <source>Infinite</source>
+      </segment>
+    </unit>
+  </file>
 </xliff>

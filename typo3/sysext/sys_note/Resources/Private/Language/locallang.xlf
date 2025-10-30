@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:sys_note/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="sys_note">
-		<header/>
-		<body>
-			<trans-unit id="internal_note">
-				<source>Internal notes</source>
-			</trans-unit>
-			<trans-unit id="new_internal_note">
-				<source>Create internal note for this page</source>
-			</trans-unit>
-			<trans-unit id="author">
-				<source>Author</source>
-			</trans-unit>
-			<trans-unit id="date">
-				<source>Date</source>
-			</trans-unit>
-			<trans-unit id="edit_note">
-				<source>Edit note record</source>
-			</trans-unit>
-			<trans-unit id="personal">
-				<source>Personal</source>
-			</trans-unit>
-			<trans-unit id="category.1">
-				<source>Instructions</source>
-			</trans-unit>
-			<trans-unit id="category.2">
-				<source>Template</source>
-			</trans-unit>
-			<trans-unit id="category.3">
-				<source>Notes</source>
-			</trans-unit>
-			<trans-unit id="category.4">
-				<source>To-do</source>
-			</trans-unit>
-			<trans-unit id="yes">
-				<source>Yes</source>
-			</trans-unit>
-			<trans-unit id="author_deleted">
-				<source>Unknown author</source>
-			</trans-unit>
-			<trans-unit id="widget_group.sys_note_widget.title">
-				<source>System Notes</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:sys_note/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="sys_note">
+    <header/>
+    <body>
+      <trans-unit id="internal_note">
+        <source>Internal notes</source>
+      </trans-unit>
+      <trans-unit id="new_internal_note">
+        <source>Create internal note for this page</source>
+      </trans-unit>
+      <trans-unit id="author">
+        <source>Author</source>
+      </trans-unit>
+      <trans-unit id="date">
+        <source>Date</source>
+      </trans-unit>
+      <trans-unit id="edit_note">
+        <source>Edit note record</source>
+      </trans-unit>
+      <trans-unit id="personal">
+        <source>Personal</source>
+      </trans-unit>
+      <trans-unit id="category.1">
+        <source>Instructions</source>
+      </trans-unit>
+      <trans-unit id="category.2">
+        <source>Template</source>
+      </trans-unit>
+      <trans-unit id="category.3">
+        <source>Notes</source>
+      </trans-unit>
+      <trans-unit id="category.4">
+        <source>To-do</source>
+      </trans-unit>
+      <trans-unit id="yes">
+        <source>Yes</source>
+      </trans-unit>
+      <trans-unit id="author_deleted">
+        <source>Unknown author</source>
+      </trans-unit>
+      <trans-unit id="widget_group.sys_note_widget.title">
+        <source>System Notes</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

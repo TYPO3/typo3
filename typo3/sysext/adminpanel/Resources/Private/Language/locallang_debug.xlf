@@ -1,102 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf" date="2018-03-21T11:47:00Z"
-		  product-name="adminpanel">
-		<header/>
-		<body>
-			<trans-unit id="module.label">
-				<source>Debug</source>
-			</trans-unit>
-			<trans-unit id="module.shortinfoErrorsAndSQL">
-				<source>(%1$u Errors/Warnings, SQL: %2$ux / %3$u ms)</source>
-			</trans-unit>
-			<trans-unit id="submodule.log.label">
-				<source>Log</source>
-			</trans-unit>
-			<trans-unit id="submodule.log.message">
-				<source>Log Message</source>
-			</trans-unit>
-			<trans-unit id="submodule.log.component">
-				<source>Component</source>
-			</trans-unit>
-			<trans-unit id="submodule.log.level">
-				<source>Level</source>
-			</trans-unit>
-			<trans-unit id="submodule.log.groupByComponent">
-				<source>Group by Component</source>
-			</trans-unit>
-			<trans-unit id="submodule.log.groupByLevel">
-				<source>Group by Level</source>
-			</trans-unit>
-			<trans-unit id="submodule.log.startLevel">
-				<source>Display only levels equal or higher to</source>
-			</trans-unit>
-			<trans-unit id="submodule.log.noEntries">
-				<source>No log entries.</source>
-			</trans-unit>
-			<trans-unit id="submodule.events.label">
-				<source>Events</source>
-			</trans-unit>
-			<trans-unit id="submodule.queryInformation.label">
-				<source>Query Information</source>
-			</trans-unit>
-			<trans-unit id="submodule.queryInformation.query">
-				<source>Query</source>
-			</trans-unit>
-			<trans-unit id="submodule.queryInformation.queries">
-				<source>Queries</source>
-			</trans-unit>
-			<trans-unit id="submodule.queryInformation.backtrace">
-				<source>Backtrace</source>
-			</trans-unit>
-			<trans-unit id="submodule.queryInformation.doctrineDebug">
-				<source>SQL Debug</source>
-			</trans-unit>
-			<trans-unit id="submodule.queryInformation.sqlQuery">
-				<source>SQL Query</source>
-			</trans-unit>
-			<trans-unit id="submodule.queryInformation.queryCount">
-				<source>Count</source>
-			</trans-unit>
-			<trans-unit id="submodule.queryInformation.queryTime">
-				<source>Total Time [ms]</source>
-			</trans-unit>
-			<trans-unit id="submodule.queryInformation.total">
-				<source>Total</source>
-			</trans-unit>
-			<trans-unit id="submodule.pageTitle.label">
-				<source>Page title</source>
-			</trans-unit>
-			<trans-unit id="submodule.pageTitle.usedProvider">
-				<source>Used provider</source>
-			</trans-unit>
-			<trans-unit id="submodule.pageTitle.title">
-				<source>Title</source>
-			</trans-unit>
-			<trans-unit id="submodule.pageTitle.provider">
-				<source>Provider</source>
-			</trans-unit>
-			<trans-unit id="submodule.pageTitle.skippedProviders">
-				<source>Skipped providers (provided no title)</source>
-			</trans-unit>
-			<trans-unit id="submodule.pageTitle.name">
-				<source>Name</source>
-			</trans-unit>
-			<trans-unit id="submodule.pageTitle.allProviders">
-				<source>All providers checked in order</source>
-			</trans-unit>
-			<trans-unit id="submodule.pageTitle.cacheEnabled">
-				<source>It's not possible to retrieve the page title (providers) information when the page is cached.</source>
-			</trans-unit>
-			<trans-unit id="submodule.pageTitle.cacheEnabled.extraInfo">
-				<source>Visit this page uncached, or disable the cache through this admin panel.</source>
-			</trans-unit>
-			<trans-unit id="submodule.events.eventClassName">
-				<source>Event class name</source>
-			</trans-unit>
-			<trans-unit id="submodule.events.count">
-				<source>Dispatch count (%1d)</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf" date="2018-03-21T11:47:00Z" product-name="adminpanel">
+    <header/>
+    <body>
+      <trans-unit id="module.label">
+        <source>Debug</source>
+      </trans-unit>
+      <trans-unit id="module.shortinfoErrorsAndSQL">
+        <source>(%1$u Errors/Warnings, SQL: %2$ux / %3$u ms)</source>
+      </trans-unit>
+      <trans-unit id="submodule.log.label">
+        <source>Log</source>
+      </trans-unit>
+      <trans-unit id="submodule.log.message">
+        <source>Log Message</source>
+      </trans-unit>
+      <trans-unit id="submodule.log.component">
+        <source>Component</source>
+      </trans-unit>
+      <trans-unit id="submodule.log.level">
+        <source>Level</source>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByComponent">
+        <source>Group by Component</source>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByLevel">
+        <source>Group by Level</source>
+      </trans-unit>
+      <trans-unit id="submodule.log.startLevel">
+        <source>Display only levels equal or higher to</source>
+      </trans-unit>
+      <trans-unit id="submodule.log.noEntries">
+        <source>No log entries.</source>
+      </trans-unit>
+      <trans-unit id="submodule.events.label">
+        <source>Events</source>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.label">
+        <source>Query Information</source>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.query">
+        <source>Query</source>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queries">
+        <source>Queries</source>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.backtrace">
+        <source>Backtrace</source>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.doctrineDebug">
+        <source>SQL Debug</source>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.sqlQuery">
+        <source>SQL Query</source>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryCount">
+        <source>Count</source>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryTime">
+        <source>Total Time [ms]</source>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.total">
+        <source>Total</source>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.label">
+        <source>Page title</source>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.usedProvider">
+        <source>Used provider</source>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.title">
+        <source>Title</source>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.provider">
+        <source>Provider</source>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.skippedProviders">
+        <source>Skipped providers (provided no title)</source>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.name">
+        <source>Name</source>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.allProviders">
+        <source>All providers checked in order</source>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.cacheEnabled">
+        <source>It's not possible to retrieve the page title (providers) information when the page is cached.</source>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.cacheEnabled.extraInfo">
+        <source>Visit this page uncached, or disable the cache through this admin panel.</source>
+      </trans-unit>
+      <trans-unit id="submodule.events.eventClassName">
+        <source>Event class name</source>
+      </trans-unit>
+      <trans-unit id="submodule.events.count">
+        <source>Dispatch count (%1d)</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

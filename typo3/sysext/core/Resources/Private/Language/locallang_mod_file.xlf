@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mod_file.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
-		<header/>
-		<body>
-			<!--
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mod_file.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
+    <header/>
+    <body>
+      <!--
 			@todo: The remaining labels in this file should be migrated to more appropriate locations in a future patch:
 			      - sys_file_storage.* labels could move to a dedicated file for file storage configuration
 			      - role_folder_* labels could move to a file for folder/file management
 			-->
-			<trans-unit id="sys_file_storage.isOffline">
-				<source>offline</source>
-			</trans-unit>
-			<trans-unit id="sys_file_storage.localDriverFlexform_basePath">
-				<source>Base path</source>
-			</trans-unit>
-			<trans-unit id="sys_file_storage.localDriverFlexform_basePath_placeholder">
-				<source>Add storage path here. For example: myPath/folder/</source>
-			</trans-unit>
-			<trans-unit id="sys_file_storage.localDriverFlexform_baseUri">
-				<source>Base URI</source>
-			</trans-unit>
-			<trans-unit id="sys_file_storage.localDriverFlexform_baseUri_placeholder">
-				<source>Use this URI to build the public URL of files, instead of deriving the URI from base path</source>
-			</trans-unit>
-			<trans-unit id="sys_file_storage.localDriverFlexform_pathType">
-				<source>Path type</source>
-			</trans-unit>
-			<trans-unit id="sys_file_storage.localDriverFlexform_pathType_relative">
-				<source>relative</source>
-			</trans-unit>
-			<trans-unit id="sys_file_storage.localDriverFlexform_pathType_absolute">
-				<source>absolute</source>
-			</trans-unit>
-			<trans-unit id="sys_file_storage.localDriverFlexform_caseSensitive">
-				<source>Uses case sensitive identifiers</source>
-			</trans-unit>
-			<trans-unit id="role_folder_temporary">
-				<source>Temporary files</source>
-			</trans-unit>
-			<trans-unit id="role_folder_recycler">
-				<source>Recycler</source>
-			</trans-unit>
-		</body>
-	</file>
+      <trans-unit id="sys_file_storage.isOffline">
+        <source>offline</source>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.localDriverFlexform_basePath">
+        <source>Base path</source>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.localDriverFlexform_basePath_placeholder">
+        <source>Add storage path here. For example: myPath/folder/</source>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.localDriverFlexform_baseUri">
+        <source>Base URI</source>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.localDriverFlexform_baseUri_placeholder">
+        <source>Use this URI to build the public URL of files, instead of deriving the URI from base path</source>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.localDriverFlexform_pathType">
+        <source>Path type</source>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.localDriverFlexform_pathType_relative">
+        <source>relative</source>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.localDriverFlexform_pathType_absolute">
+        <source>absolute</source>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.localDriverFlexform_caseSensitive">
+        <source>Uses case sensitive identifiers</source>
+      </trans-unit>
+      <trans-unit id="role_folder_temporary">
+        <source>Temporary files</source>
+      </trans-unit>
+      <trans-unit id="role_folder_recycler">
+        <source>Recycler</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

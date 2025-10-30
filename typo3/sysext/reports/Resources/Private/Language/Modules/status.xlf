@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/Modules/status.xlf" date="2026-11-10T13:37:37Z" product-name="status">
-		<header/>
-		<body>
-			<trans-unit id="short_description">
-				<source>Get a status report about your site's operation and any detected problems.</source>
-			</trans-unit>
-			<trans-unit id="description">
-				<source>Here you can find a short overview of your site's parameters as well as any problems detected with your installation. It may be useful to copy and paste this information into support requests filed on TYPO3's support mailing lists and project issue trackers.</source>
-			</trans-unit>
-			<trans-unit id="title">
-				<source>Status Report</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/Modules/status.xlf" date="2026-11-10T13:37:37Z" product-name="status">
+    <header/>
+    <body>
+      <trans-unit id="short_description">
+        <source>Get a status report about your site's operation and any detected problems.</source>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>Here you can find a short overview of your site's parameters as well as any problems detected with your installation. It may be useful to copy and paste this information into support requests filed on TYPO3's support mailing lists and project issue trackers.</source>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Status Report</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

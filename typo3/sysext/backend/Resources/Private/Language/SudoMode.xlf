@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/SudoMode.xlf" date="2023-04-08T00:00:00Z" product-name="backend">
-		<header/>
-		<body>
-			<trans-unit id="cancel">
-				<source>Cancel</source>
-			</trans-unit>
-			<trans-unit id="verify">
-				<source>Verify</source>
-			</trans-unit>
-			<trans-unit id="password">
-				<source>Password</source>
-			</trans-unit>
-			<trans-unit id="verifyWithUserPassword">
-				<source>Verify with user password</source>
-			</trans-unit>
-			<trans-unit id="verifyWithInstallToolPassword">
-				<source>Verify with Install Tool password</source>
-			</trans-unit>
-			<trans-unit id="accessGranted">
-				<source>Access granted</source>
-			</trans-unit>
-			<trans-unit id="invalidPassword">
-				<source>Invalid password</source>
-			</trans-unit>
-			<trans-unit id="userPasswordMode">
-				<source>Use user password instead</source>
-			</trans-unit>
-			<trans-unit id="installToolPasswordMode">
-				<source>Use Install Tool password instead</source>
-			</trans-unit>
-			<trans-unit id="sudoModeUserPasswordExplanation">
-				<source>To perform this action, please enter your user password to confirm you are authorized to proceed.</source>
-			</trans-unit>
-			<trans-unit id="sudoModeInstallToolPasswordExplanation">
-				<source>To perform this action, please enter the Install Tool password to confirm you are authorized to proceed.</source>
-			</trans-unit>
-			<trans-unit id="verificationFailed">
-				<source>Verification failed</source>
-			</trans-unit>
-			<trans-unit id="verificationExpired">
-				<source>Confirmation has expired. Please try again.</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/SudoMode.xlf" date="2023-04-08T00:00:00Z" product-name="backend">
+    <header/>
+    <body>
+      <trans-unit id="cancel">
+        <source>Cancel</source>
+      </trans-unit>
+      <trans-unit id="verify">
+        <source>Verify</source>
+      </trans-unit>
+      <trans-unit id="password">
+        <source>Password</source>
+      </trans-unit>
+      <trans-unit id="verifyWithUserPassword">
+        <source>Verify with user password</source>
+      </trans-unit>
+      <trans-unit id="verifyWithInstallToolPassword">
+        <source>Verify with Install Tool password</source>
+      </trans-unit>
+      <trans-unit id="accessGranted">
+        <source>Access granted</source>
+      </trans-unit>
+      <trans-unit id="invalidPassword">
+        <source>Invalid password</source>
+      </trans-unit>
+      <trans-unit id="userPasswordMode">
+        <source>Use user password instead</source>
+      </trans-unit>
+      <trans-unit id="installToolPasswordMode">
+        <source>Use Install Tool password instead</source>
+      </trans-unit>
+      <trans-unit id="sudoModeUserPasswordExplanation">
+        <source>To perform this action, please enter your user password to confirm you are authorized to proceed.</source>
+      </trans-unit>
+      <trans-unit id="sudoModeInstallToolPasswordExplanation">
+        <source>To perform this action, please enter the Install Tool password to confirm you are authorized to proceed.</source>
+      </trans-unit>
+      <trans-unit id="verificationFailed">
+        <source>Verification failed</source>
+      </trans-unit>
+      <trans-unit id="verificationExpired">
+        <source>Confirmation has expired. Please try again.</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

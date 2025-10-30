@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_tsdebug.xlf" date="2018-03-15T09:39:00Z" product-name="adminpanel">
-        <header/>
-        <body>
-            <trans-unit id="module.label">
-                <source>TypoScript</source>
-            </trans-unit>
-            <trans-unit id="module.shortinfo">
-                <source>(%s Messages)</source>
-            </trans-unit>
-            <trans-unit id="treeDisplay">
-                <source>Tree display</source>
-            </trans-unit>
-            <trans-unit id="displayTimes">
-                <source>Display all times</source>
-            </trans-unit>
-            <trans-unit id="displayMessages">
-                <source>Display messages</source>
-            </trans-unit>
-            <trans-unit id="displayContent">
-                <source>Display content</source>
-            </trans-unit>
-            <trans-unit id="trackContentRendering">
-                <source>Track content rendering</source>
-            </trans-unit>
-            <trans-unit id="forceTemplateParsing">
-                <source>Force TS Rendering</source>
-            </trans-unit>
-            <trans-unit id="sub.waterfall.label">
-                <source>TS Tree</source>
-            </trans-unit>
-        </body>
-    </file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_tsdebug.xlf" date="2018-03-15T09:39:00Z" product-name="adminpanel">
+    <header/>
+    <body>
+      <trans-unit id="module.label">
+        <source>TypoScript</source>
+      </trans-unit>
+      <trans-unit id="module.shortinfo">
+        <source>(%s Messages)</source>
+      </trans-unit>
+      <trans-unit id="treeDisplay">
+        <source>Tree display</source>
+      </trans-unit>
+      <trans-unit id="displayTimes">
+        <source>Display all times</source>
+      </trans-unit>
+      <trans-unit id="displayMessages">
+        <source>Display messages</source>
+      </trans-unit>
+      <trans-unit id="displayContent">
+        <source>Display content</source>
+      </trans-unit>
+      <trans-unit id="trackContentRendering">
+        <source>Track content rendering</source>
+      </trans-unit>
+      <trans-unit id="forceTemplateParsing">
+        <source>Force TS Rendering</source>
+      </trans-unit>
+      <trans-unit id="sub.waterfall.label">
+        <source>TS Tree</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

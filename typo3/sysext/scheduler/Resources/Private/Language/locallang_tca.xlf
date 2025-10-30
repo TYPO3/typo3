@@ -1,92 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler">
-		<header/>
-		<body>
-			<trans-unit id="tx_scheduler_task">
-				<source>Scheduler task</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task.tasktype">
-				<source>Task type</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task.task_group">
-				<source>Belongs to task group</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task.description">
-				<source>Description</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task.parameters">
-				<source>Settings</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task.execution_details">
-				<source>Schedule</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task.nextexecution">
-				<source>Next run planned at</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task.lastexecution_time">
-				<source>Last run started at</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task.lastexecution_failure">
-				<source>Error details from last run</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task.lastexecution_context">
-				<source>Last run via</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task.number_of_days">
-				<source>Handle entries older than given number of days</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task.selected_tables">
-				<source>Database tables</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task.file_storage">
-				<source>File storage</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task_group">
-				<source>Scheduler task group</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task_group.groupName">
-				<source>Group name</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task_group.color">
-				<source>Color</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task_group.color.typo3Orange">
-				<source>TYPO3 Orange</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task_group.color.white">
-				<source>White</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task_group.color.gray">
-				<source>Gray</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task_group.color.black">
-				<source>Black</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task_group.color.blue">
-				<source>Blue</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task_group.color.purple">
-				<source>Purple</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task_group.color.teal">
-				<source>Teal</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task_group.color.green">
-				<source>Green</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task_group.color.magenta">
-				<source>Magenta</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task_group.color.yellow">
-				<source>Yellow</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task_group.color.red">
-				<source>Red</source>
-			</trans-unit>
-			<trans-unit id="tx_scheduler_task_group.description">
-				<source>Description</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler">
+    <header/>
+    <body>
+      <trans-unit id="tx_scheduler_task">
+        <source>Scheduler task</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.tasktype">
+        <source>Task type</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.task_group">
+        <source>Belongs to task group</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.description">
+        <source>Description</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.parameters">
+        <source>Settings</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.execution_details">
+        <source>Schedule</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.nextexecution">
+        <source>Next run planned at</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.lastexecution_time">
+        <source>Last run started at</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.lastexecution_failure">
+        <source>Error details from last run</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.lastexecution_context">
+        <source>Last run via</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.number_of_days">
+        <source>Handle entries older than given number of days</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.selected_tables">
+        <source>Database tables</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.file_storage">
+        <source>File storage</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group">
+        <source>Scheduler task group</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.groupName">
+        <source>Group name</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color">
+        <source>Color</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.typo3Orange">
+        <source>TYPO3 Orange</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.white">
+        <source>White</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.gray">
+        <source>Gray</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.black">
+        <source>Black</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.blue">
+        <source>Blue</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.purple">
+        <source>Purple</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.teal">
+        <source>Teal</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.green">
+        <source>Green</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.magenta">
+        <source>Magenta</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.yellow">
+        <source>Yellow</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.red">
+        <source>Red</source>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.description">
+        <source>Description</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

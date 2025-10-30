@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:sys_note/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:37Z" product-name="sys_note">
-		<header/>
-		<body>
-			<trans-unit id="sys_note">
-				<source>Internal note</source>
-			</trans-unit>
-			<trans-unit id="sys_note.category.I.0">
-				<source>Default</source>
-			</trans-unit>
-			<trans-unit id="sys_note.category.I.1">
-				<source>Instructions</source>
-			</trans-unit>
-			<trans-unit id="sys_note.category.I.2">
-				<source>Template</source>
-			</trans-unit>
-			<trans-unit id="sys_note.category.I.3">
-				<source>Notes</source>
-			</trans-unit>
-			<trans-unit id="sys_note.category.I.4">
-				<source>To-do</source>
-			</trans-unit>
-			<trans-unit id="sys_note.subject">
-				<source>Subject</source>
-			</trans-unit>
-			<trans-unit id="sys_note.message">
-				<source>Message</source>
-			</trans-unit>
-			<trans-unit id="sys_note.personal">
-				<source>Personal</source>
-			</trans-unit>
-			<trans-unit id="sys_note.position">
-				<source>Position</source>
-			</trans-unit>
-			<trans-unit id="sys_note.position.top">
-				<source>Top</source>
-			</trans-unit>
-			<trans-unit id="sys_note.position.bottom">
-				<source>Bottom</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:sys_note/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:37Z" product-name="sys_note">
+    <header/>
+    <body>
+      <trans-unit id="sys_note">
+        <source>Internal note</source>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.0">
+        <source>Default</source>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.1">
+        <source>Instructions</source>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.2">
+        <source>Template</source>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.3">
+        <source>Notes</source>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.4">
+        <source>To-do</source>
+      </trans-unit>
+      <trans-unit id="sys_note.subject">
+        <source>Subject</source>
+      </trans-unit>
+      <trans-unit id="sys_note.message">
+        <source>Message</source>
+      </trans-unit>
+      <trans-unit id="sys_note.personal">
+        <source>Personal</source>
+      </trans-unit>
+      <trans-unit id="sys_note.position">
+        <source>Position</source>
+      </trans-unit>
+      <trans-unit id="sys_note.position.top">
+        <source>Top</source>
+      </trans-unit>
+      <trans-unit id="sys_note.position.bottom">
+        <source>Bottom</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/module.xlf" date="2025-11-10T13:37:37Z" product-name="indexed_search">
-		<header/>
-		<body>
-			<trans-unit id="title">
-				<source>Indexing</source>
-			</trans-unit>
-			<trans-unit id="short_description">
-				<source>Search indexing control panel</source>
-			</trans-unit>
-			<trans-unit id="description">
-				<source>This lets you manage settings for the search indexing engine which is provided by the frontend website. You can see statistics of indexed pages. Indexing must be enabled in the TypoScript.</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/module.xlf" date="2025-11-10T13:37:37Z" product-name="indexed_search">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>Indexing</source>
+      </trans-unit>
+      <trans-unit id="short_description">
+        <source>Search indexing control panel</source>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>This lets you manage settings for the search indexing engine which is provided by the frontend website. You can see statistics of indexed pages. Indexing must be enabled in the TypoScript.</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

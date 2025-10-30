@@ -1,257 +1,257 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend">
-		<header/>
-		<body>
-			<trans-unit id="onlineDocumentation">
-				<source>TYPO3 Online Documentation</source>
-			</trans-unit>
-			<trans-unit id="opensInANewWindow">
-				<source>opens in a new window</source>
-			</trans-unit>
-			<trans-unit id="no_modules_registered">
-				<source>No modules have been registered. Please contact your system administrator.</source>
-			</trans-unit>
-			<trans-unit id="show_references">
-				<source>Show references</source>
-			</trans-unit>
-			<trans-unit id="config.loginLogo">
-				<source>Logo: If set, this logo will be used instead of the TYPO3 logo above the login credential fields (e.g. fileadmin/images/login-logo.png or EXT:my_theme/Resources/Public/Images/login-logo.png or //domain.tld/login-logo.png).</source>
-			</trans-unit>
-			<trans-unit id="config.loginLogoAlt">
-				<source>Logo Alt-Text: If a custom logo is set, this text will be used as the alt attribute of the img tag.</source>
-			</trans-unit>
-			<trans-unit id="config.loginHighlightColor">
-				<source>Highlight Color: If set, this color will be used as highlight color in the login screen.</source>
-			</trans-unit>
-			<trans-unit id="config.loginBackgroundImage">
-				<source>Background Image: If set, this image will be used as background image for the login screen (e.g. fileadmin/images/my-background.jpg or EXT:my_theme/Resources/Public/Images/my-background.jpg or //domain.tld/my-background.png).</source>
-			</trans-unit>
-			<trans-unit id="config.loginFootnote">
-				<source>Footnote: If set, this text will be displayed on the login screen to provide copyright information for the background image (e.g. background image © 2017 by John Doe) or a descriptive text.</source>
-			</trans-unit>
-			<trans-unit id="config.backendLogo">
-				<source>Logo: If set, this logo will be used instead of the TYPO3 logo in the TYPO3 backend in the left top corner (e.g. fileadmin/images/backend-logo.png or EXT:my_theme/Resources/Public/Images/backend-logo.png).</source>
-			</trans-unit>
-			<trans-unit id="config.backendFavicon">
-				<source>Favicon: If set, this favicon will be used instead of the TYPO3 logo (e.g. EXT:my_theme/Resources/Public/Images/favicon.ico).</source>
-			</trans-unit>
-			<trans-unit id="foldertreeview.noFolders.title">
-				<source>No folders available</source>
-			</trans-unit>
-			<trans-unit id="foldertreeview.noFolders.message">
-				<source>You do not have access to any folder. Please ask your administrator to fix access permissions for your account.</source>
-			</trans-unit>
-			<trans-unit id="login.header">
-				<source>Login</source>
-			</trans-unit>
-			<trans-unit id="login.region.footnote">
-				<source>Footnote</source>
-			</trans-unit>
-			<trans-unit id="login.link">
-				<source>Login with username and password</source>
-			</trans-unit>
-			<trans-unit id="login.username">
-				<source>Username</source>
-			</trans-unit>
-			<trans-unit id="login.password">
-				<source>Password</source>
-			</trans-unit>
-			<trans-unit id="login.togglePassword">
-				<source>Toggle password visibility</source>
-			</trans-unit>
-			<trans-unit id="login.password_forget">
-				<source>Forgot your password?</source>
-			</trans-unit>
-			<trans-unit id="login.error.capslock">
-				<source>Attention: Caps lock enabled</source>
-			</trans-unit>
-			<trans-unit id="login.error.capslockStatus">
-				<source>Caps lock enabled</source>
-			</trans-unit>
-			<trans-unit id="login.warning.whitespace-around-password">
-				<source>The password you just pasted has leading and / or trailing whitespace.</source>
-			</trans-unit>
-			<trans-unit id="login.warning.whitespace-around-password.action-link">
-				<source>Remove whitespace</source>
-			</trans-unit>
-			<trans-unit id="login.news.header">
-				<source>System News</source>
-			</trans-unit>
-			<trans-unit id="login.news.date">
-				<source>Date</source>
-			</trans-unit>
-			<trans-unit id="login.news.previous">
-				<source>Previous</source>
-			</trans-unit>
-			<trans-unit id="login.news.next">
-				<source>Next</source>
-			</trans-unit>
-			<trans-unit id="login.navigation.loginProvider">
-				<source>Login Provider</source>
-			</trans-unit>
-			<trans-unit id="login.navigation.typo3">
-				<source>Further information about TYPO3</source>
-			</trans-unit>
-			<trans-unit id="login.error.message">
-				<source>Your login attempt did not succeed</source>
-			</trans-unit>
-			<trans-unit id="login.error.description">
-				<source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
-			</trans-unit>
-			<trans-unit id="login.error.javascript">
-				<source>Please activate JavaScript</source>
-			</trans-unit>
-			<trans-unit id="login.error.cookies">
-				<source>Please activate Cookies</source>
-			</trans-unit>
-			<trans-unit id="login.error.referrer">
-				<source>TYPO3 relies on HTTP referrers for security reasons in the backend. It looks like your browser was not able to send this information, which may be due to privacy or security settings.</source>
-			</trans-unit>
-			<trans-unit id="login.process">
-				<source>Verifying Login Data ...</source>
-			</trans-unit>
-			<trans-unit id="login.submit">
-				<source>Login</source>
-			</trans-unit>
-			<trans-unit id="login.copyrightLink">
-				<source>More about TYPO3</source>
-			</trans-unit>
-			<trans-unit id="login.typo3Logo">
-				<source>TYPO3 logo</source>
-			</trans-unit>
-			<trans-unit id="login.donate">
-				<source>Donate</source>
-			</trans-unit>
-			<trans-unit id="formEngine.databaseRecordErrorInlineChildChild">
-				<source>The record with uid %2$s from table %1$s could not be retrieved from the database. This data inconsistency can occur if
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend">
+    <header/>
+    <body>
+      <trans-unit id="onlineDocumentation">
+        <source>TYPO3 Online Documentation</source>
+      </trans-unit>
+      <trans-unit id="opensInANewWindow">
+        <source>opens in a new window</source>
+      </trans-unit>
+      <trans-unit id="no_modules_registered">
+        <source>No modules have been registered. Please contact your system administrator.</source>
+      </trans-unit>
+      <trans-unit id="show_references">
+        <source>Show references</source>
+      </trans-unit>
+      <trans-unit id="config.loginLogo">
+        <source>Logo: If set, this logo will be used instead of the TYPO3 logo above the login credential fields (e.g. fileadmin/images/login-logo.png or EXT:my_theme/Resources/Public/Images/login-logo.png or //domain.tld/login-logo.png).</source>
+      </trans-unit>
+      <trans-unit id="config.loginLogoAlt">
+        <source>Logo Alt-Text: If a custom logo is set, this text will be used as the alt attribute of the img tag.</source>
+      </trans-unit>
+      <trans-unit id="config.loginHighlightColor">
+        <source>Highlight Color: If set, this color will be used as highlight color in the login screen.</source>
+      </trans-unit>
+      <trans-unit id="config.loginBackgroundImage">
+        <source>Background Image: If set, this image will be used as background image for the login screen (e.g. fileadmin/images/my-background.jpg or EXT:my_theme/Resources/Public/Images/my-background.jpg or //domain.tld/my-background.png).</source>
+      </trans-unit>
+      <trans-unit id="config.loginFootnote">
+        <source>Footnote: If set, this text will be displayed on the login screen to provide copyright information for the background image (e.g. background image © 2017 by John Doe) or a descriptive text.</source>
+      </trans-unit>
+      <trans-unit id="config.backendLogo">
+        <source>Logo: If set, this logo will be used instead of the TYPO3 logo in the TYPO3 backend in the left top corner (e.g. fileadmin/images/backend-logo.png or EXT:my_theme/Resources/Public/Images/backend-logo.png).</source>
+      </trans-unit>
+      <trans-unit id="config.backendFavicon">
+        <source>Favicon: If set, this favicon will be used instead of the TYPO3 logo (e.g. EXT:my_theme/Resources/Public/Images/favicon.ico).</source>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.title">
+        <source>No folders available</source>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.message">
+        <source>You do not have access to any folder. Please ask your administrator to fix access permissions for your account.</source>
+      </trans-unit>
+      <trans-unit id="login.header">
+        <source>Login</source>
+      </trans-unit>
+      <trans-unit id="login.region.footnote">
+        <source>Footnote</source>
+      </trans-unit>
+      <trans-unit id="login.link">
+        <source>Login with username and password</source>
+      </trans-unit>
+      <trans-unit id="login.username">
+        <source>Username</source>
+      </trans-unit>
+      <trans-unit id="login.password">
+        <source>Password</source>
+      </trans-unit>
+      <trans-unit id="login.togglePassword">
+        <source>Toggle password visibility</source>
+      </trans-unit>
+      <trans-unit id="login.password_forget">
+        <source>Forgot your password?</source>
+      </trans-unit>
+      <trans-unit id="login.error.capslock">
+        <source>Attention: Caps lock enabled</source>
+      </trans-unit>
+      <trans-unit id="login.error.capslockStatus">
+        <source>Caps lock enabled</source>
+      </trans-unit>
+      <trans-unit id="login.warning.whitespace-around-password">
+        <source>The password you just pasted has leading and / or trailing whitespace.</source>
+      </trans-unit>
+      <trans-unit id="login.warning.whitespace-around-password.action-link">
+        <source>Remove whitespace</source>
+      </trans-unit>
+      <trans-unit id="login.news.header">
+        <source>System News</source>
+      </trans-unit>
+      <trans-unit id="login.news.date">
+        <source>Date</source>
+      </trans-unit>
+      <trans-unit id="login.news.previous">
+        <source>Previous</source>
+      </trans-unit>
+      <trans-unit id="login.news.next">
+        <source>Next</source>
+      </trans-unit>
+      <trans-unit id="login.navigation.loginProvider">
+        <source>Login Provider</source>
+      </trans-unit>
+      <trans-unit id="login.navigation.typo3">
+        <source>Further information about TYPO3</source>
+      </trans-unit>
+      <trans-unit id="login.error.message">
+        <source>Your login attempt did not succeed</source>
+      </trans-unit>
+      <trans-unit id="login.error.description">
+        <source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+      </trans-unit>
+      <trans-unit id="login.error.javascript">
+        <source>Please activate JavaScript</source>
+      </trans-unit>
+      <trans-unit id="login.error.cookies">
+        <source>Please activate Cookies</source>
+      </trans-unit>
+      <trans-unit id="login.error.referrer">
+        <source>TYPO3 relies on HTTP referrers for security reasons in the backend. It looks like your browser was not able to send this information, which may be due to privacy or security settings.</source>
+      </trans-unit>
+      <trans-unit id="login.process">
+        <source>Verifying Login Data ...</source>
+      </trans-unit>
+      <trans-unit id="login.submit">
+        <source>Login</source>
+      </trans-unit>
+      <trans-unit id="login.copyrightLink">
+        <source>More about TYPO3</source>
+      </trans-unit>
+      <trans-unit id="login.typo3Logo">
+        <source>TYPO3 logo</source>
+      </trans-unit>
+      <trans-unit id="login.donate">
+        <source>Donate</source>
+      </trans-unit>
+      <trans-unit id="formEngine.databaseRecordErrorInlineChildChild">
+        <source>The record with uid %2$s from table %1$s could not be retrieved from the database. This data inconsistency can occur if
 				a base record has been deleted but the intermediate record from table %3$s with uid %4$s still points to it. To fix
 				this situation, either delete the intermediate record, or recover the deleted record using the recycler module.
 				</source>
-			</trans-unit>
-			<trans-unit id="modulemenu.label">
-				<source>Module Menu</source>
-			</trans-unit>
-			<trans-unit id="module.noAccess.title">
-				<source>No module access</source>
-			</trans-unit>
-			<trans-unit id="module.noAccess.message">
-				<source>You've been redirected to the "%s" module, because you currently can't access the "%s" module. You either don't have the necessary permissions or access is temporarily not possible, e.g. due to workspace restrictions.</source>
-			</trans-unit>
-			<trans-unit id="clearcache.title">
-				<source>Page cache</source>
-			</trans-unit>
-			<trans-unit id="clearcache.message.success">
-				<source>Successfully cleared page cache</source>
-			</trans-unit>
-			<trans-unit id="clearcache.message.error">
-				<source>Page cache could not be cleared</source>
-			</trans-unit>
-			<trans-unit id="error.linkHandlerTitleMissing">
-				<source>[title missing]</source>
-			</trans-unit>
-			<trans-unit id="create_folder.title">
-				<source>Create new folder</source>
-			</trans-unit>
-			<trans-unit id="create_folder.placeholder">
-				<source>Your new folder name</source>
-			</trans-unit>
-			<trans-unit id="create_folder.submit">
-				<source>Create folder</source>
-			</trans-unit>
-			<trans-unit id="row.deletePlaceholder.title">
-				<source>The live pendant of this record will be deleted when this workspace record is published.</source>
-			</trans-unit>
-			<trans-unit id="shortcut.title">
-				<source>%s%s on page "%s" [%d]</source>
-			</trans-unit>
-			<trans-unit id="liveSearch.databaseRecordProvider.filterLabel">
-				<source>Database records</source>
-			</trans-unit>
-			<trans-unit id="liveSearch.databaseRecordProvider.typeLabel">
-				<source>Database record</source>
-			</trans-unit>
-			<trans-unit id="liveSearch.pageRecordProvider.filterLabel">
-				<source>Pages</source>
-			</trans-unit>
-			<trans-unit id="liveSearch.pageRecordProvider.typeLabel">
-				<source>Page</source>
-			</trans-unit>
-			<trans-unit id="liveSearch.backendModuleProvider.filterLabel">
-				<source>Backend modules</source>
-			</trans-unit>
-			<trans-unit id="liveSearch.backendModuleProvider.typeLabel">
-				<source>Backend module</source>
-			</trans-unit>
-			<trans-unit id="resultItem.backendModuleProvider.openModule">
-				<source>Open module</source>
-			</trans-unit>
-			<trans-unit id="moduleMenu.dropdown.label">
-				<source>Module action</source>
-			</trans-unit>
-			<trans-unit id="pagelayout.moduleMenu.dropdown.label">
-				<source>Display mode</source>
-			</trans-unit>
-			<trans-unit id="editdocument.moduleMenu.dropdown.label">
-				<source>Record language</source>
-			</trans-unit>
-			<trans-unit id="moduleMenu.dropdown.overview">
-				<source>Module overview</source>
-			</trans-unit>
-			<trans-unit id="submoduleOverview.openModule">
-				<source>Open module</source>
-			</trans-unit>
-			<trans-unit id="submoduleOverview.openModuleWithTitle">
-				<source>Open %1s module</source>
-			</trans-unit>
-			<trans-unit id="submoduleOverview.noAccess.title">
-				<source>No modules available</source>
-			</trans-unit>
-			<trans-unit id="submoduleOverview.noAccess.message">
-				<source>There are no submodules available or you do not have access to any of them. Please contact your administrator if you believe this is an error.</source>
-			</trans-unit>
-			<trans-unit id="theme">
-				<source>Theme</source>
-			</trans-unit>
-			<trans-unit id="theme.classic">
-				<source>Classic</source>
-			</trans-unit>
-			<trans-unit id="theme.modern">
-				<source>Modern</source>
-			</trans-unit>
-			<trans-unit id="theme.fresh">
-				<source>Fresh</source>
-			</trans-unit>
-			<trans-unit id="colorScheme">
-				<source>Color scheme</source>
-			</trans-unit>
-			<trans-unit id="toggleColorScheme">
-				<source>Toggle color scheme between light and dark mode</source>
-			</trans-unit>
-			<trans-unit id="colorSchemeToggleDisabled">
-				<source>Due to your current accessibility settings, the color scheme cannot be changed.</source>
-			</trans-unit>
-			<trans-unit id="colorScheme.auto">
-				<source>Auto detect</source>
-			</trans-unit>
-			<trans-unit id="colorScheme.light">
-				<source>Light mode</source>
-			</trans-unit>
-			<trans-unit id="colorScheme.dark">
-				<source>Dark mode</source>
-			</trans-unit>
-			<trans-unit id="pageTree.found_translation">
-				<source>Found translation</source>
-			</trans-unit>
-			<trans-unit id="pageTree.found_in_translation">
-				<source>Found in translation: %s</source>
-			</trans-unit>
-			<trans-unit id="pageTree.found_in_multiple_translations">
-				<source>Found in multiple translations</source>
-			</trans-unit>
-			<trans-unit id="pageTree.searchResult">
-				<source>Search result</source>
-			</trans-unit>
-		</body>
-	</file>
+      </trans-unit>
+      <trans-unit id="modulemenu.label">
+        <source>Module Menu</source>
+      </trans-unit>
+      <trans-unit id="module.noAccess.title">
+        <source>No module access</source>
+      </trans-unit>
+      <trans-unit id="module.noAccess.message">
+        <source>You've been redirected to the "%s" module, because you currently can't access the "%s" module. You either don't have the necessary permissions or access is temporarily not possible, e.g. due to workspace restrictions.</source>
+      </trans-unit>
+      <trans-unit id="clearcache.title">
+        <source>Page cache</source>
+      </trans-unit>
+      <trans-unit id="clearcache.message.success">
+        <source>Successfully cleared page cache</source>
+      </trans-unit>
+      <trans-unit id="clearcache.message.error">
+        <source>Page cache could not be cleared</source>
+      </trans-unit>
+      <trans-unit id="error.linkHandlerTitleMissing">
+        <source>[title missing]</source>
+      </trans-unit>
+      <trans-unit id="create_folder.title">
+        <source>Create new folder</source>
+      </trans-unit>
+      <trans-unit id="create_folder.placeholder">
+        <source>Your new folder name</source>
+      </trans-unit>
+      <trans-unit id="create_folder.submit">
+        <source>Create folder</source>
+      </trans-unit>
+      <trans-unit id="row.deletePlaceholder.title">
+        <source>The live pendant of this record will be deleted when this workspace record is published.</source>
+      </trans-unit>
+      <trans-unit id="shortcut.title">
+        <source>%s%s on page "%s" [%d]</source>
+      </trans-unit>
+      <trans-unit id="liveSearch.databaseRecordProvider.filterLabel">
+        <source>Database records</source>
+      </trans-unit>
+      <trans-unit id="liveSearch.databaseRecordProvider.typeLabel">
+        <source>Database record</source>
+      </trans-unit>
+      <trans-unit id="liveSearch.pageRecordProvider.filterLabel">
+        <source>Pages</source>
+      </trans-unit>
+      <trans-unit id="liveSearch.pageRecordProvider.typeLabel">
+        <source>Page</source>
+      </trans-unit>
+      <trans-unit id="liveSearch.backendModuleProvider.filterLabel">
+        <source>Backend modules</source>
+      </trans-unit>
+      <trans-unit id="liveSearch.backendModuleProvider.typeLabel">
+        <source>Backend module</source>
+      </trans-unit>
+      <trans-unit id="resultItem.backendModuleProvider.openModule">
+        <source>Open module</source>
+      </trans-unit>
+      <trans-unit id="moduleMenu.dropdown.label">
+        <source>Module action</source>
+      </trans-unit>
+      <trans-unit id="pagelayout.moduleMenu.dropdown.label">
+        <source>Display mode</source>
+      </trans-unit>
+      <trans-unit id="editdocument.moduleMenu.dropdown.label">
+        <source>Record language</source>
+      </trans-unit>
+      <trans-unit id="moduleMenu.dropdown.overview">
+        <source>Module overview</source>
+      </trans-unit>
+      <trans-unit id="submoduleOverview.openModule">
+        <source>Open module</source>
+      </trans-unit>
+      <trans-unit id="submoduleOverview.openModuleWithTitle">
+        <source>Open %1s module</source>
+      </trans-unit>
+      <trans-unit id="submoduleOverview.noAccess.title">
+        <source>No modules available</source>
+      </trans-unit>
+      <trans-unit id="submoduleOverview.noAccess.message">
+        <source>There are no submodules available or you do not have access to any of them. Please contact your administrator if you believe this is an error.</source>
+      </trans-unit>
+      <trans-unit id="theme">
+        <source>Theme</source>
+      </trans-unit>
+      <trans-unit id="theme.classic">
+        <source>Classic</source>
+      </trans-unit>
+      <trans-unit id="theme.modern">
+        <source>Modern</source>
+      </trans-unit>
+      <trans-unit id="theme.fresh">
+        <source>Fresh</source>
+      </trans-unit>
+      <trans-unit id="colorScheme">
+        <source>Color scheme</source>
+      </trans-unit>
+      <trans-unit id="toggleColorScheme">
+        <source>Toggle color scheme between light and dark mode</source>
+      </trans-unit>
+      <trans-unit id="colorSchemeToggleDisabled">
+        <source>Due to your current accessibility settings, the color scheme cannot be changed.</source>
+      </trans-unit>
+      <trans-unit id="colorScheme.auto">
+        <source>Auto detect</source>
+      </trans-unit>
+      <trans-unit id="colorScheme.light">
+        <source>Light mode</source>
+      </trans-unit>
+      <trans-unit id="colorScheme.dark">
+        <source>Dark mode</source>
+      </trans-unit>
+      <trans-unit id="pageTree.found_translation">
+        <source>Found translation</source>
+      </trans-unit>
+      <trans-unit id="pageTree.found_in_translation">
+        <source>Found in translation: %s</source>
+      </trans-unit>
+      <trans-unit id="pageTree.found_in_multiple_translations">
+        <source>Found in multiple translations</source>
+      </trans-unit>
+      <trans-unit id="pageTree.searchResult">
+        <source>Search result</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

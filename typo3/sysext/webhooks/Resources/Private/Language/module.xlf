@@ -1,92 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:webhooks/Resources/Private/Language/module.xlf" date="2025-10-20T12:00:00Z" product-name="webhooks">
-		<header/>
-		<body>
-			<trans-unit id="title">
-				<source>Webhooks</source>
-			</trans-unit>
-			<trans-unit id="short_description">
-				<source>Manage outgoing HTTP webhooks to external system</source>
-			</trans-unit>
-			<trans-unit id="shortDescription" x-unused-since="14.0">
-				<source>Manage outgoing HTTP webhooks to external system</source>
-			</trans-unit>
-			<trans-unit id="description">
-				<source>Enables TYPO3 to communicate with external systems. Automatically notifies third-party services when defined system events occur, supporting integrations with platforms such as Slack, Discord, payment providers, CRM systems, and more.</source>
-			</trans-unit>
-			<trans-unit id="heading_text">
-				<source>Webhooks — Manage Outgoing HTTP Webhooks</source>
-			</trans-unit>
-			<trans-unit id="webhook_not_found.title">
-				<source>No webhooks found</source>
-			</trans-unit>
-			<trans-unit id="webhook_not_found.message">
-				<source>There are currently no webhooks records found in the database.</source>
-			</trans-unit>
-			<trans-unit id="webhook_create">
-				<source>Create new webhook</source>
-			</trans-unit>
-			<trans-unit id="webhook_not_found_with_filter.title">
-				<source>No webhooks found</source>
-			</trans-unit>
-			<trans-unit id="webhook_not_found_with_filter.message">
-				<source>With the current set of filters applied, no webhooks could be found.</source>
-			</trans-unit>
-			<trans-unit id="webhook_no_filter">
-				<source>Remove all filter</source>
-			</trans-unit>
-			<trans-unit id="webhook_no_implementation_class">
-				<source>Implementation class for webhook type "%s" is missing.</source>
-			</trans-unit>
-			<trans-unit id="webhook_example">
-				<source>Example</source>
-			</trans-unit>
-
-			<trans-unit id="filter.sendButton">
-				<source>Filter</source>
-			</trans-unit>
-			<trans-unit id="filter.resetButton">
-				<source>Reset</source>
-			</trans-unit>
-			<trans-unit id="filter.name">
-				<source>Name</source>
-			</trans-unit>
-			<trans-unit id="filter.webhook_type">
-				<source>Webhook Trigger</source>
-			</trans-unit>
-			<trans-unit id="filter.webhook_type.showAll">
-				<source>Show all</source>
-			</trans-unit>
-
-			<trans-unit id="pagination.previous">
-				<source>previous</source>
-			</trans-unit>
-			<trans-unit id="pagination.next">
-				<source>next</source>
-			</trans-unit>
-			<trans-unit id="pagination.first">
-				<source>first</source>
-			</trans-unit>
-			<trans-unit id="pagination.last">
-				<source>last</source>
-			</trans-unit>
-			<trans-unit id="pagination.records">
-				<source>Records</source>
-			</trans-unit>
-			<trans-unit id="pagination.page">
-				<source>Page</source>
-			</trans-unit>
-			<trans-unit id="pagination.refresh">
-				<source>Refresh</source>
-			</trans-unit>
-
-			<trans-unit id="labels.delete.title">
-				<source>Delete webhooks</source>
-			</trans-unit>
-			<trans-unit id="labels.delete.message">
-				<source>Delete all marked webhooks? You can restore deleted webhooks from the TYPO3 recycler.</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:webhooks/Resources/Private/Language/module.xlf" date="2025-10-20T12:00:00Z" product-name="webhooks">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>Webhooks</source>
+      </trans-unit>
+      <trans-unit id="short_description">
+        <source>Manage outgoing HTTP webhooks to external system</source>
+      </trans-unit>
+      <trans-unit id="shortDescription" x-unused-since="14.0">
+        <source>Manage outgoing HTTP webhooks to external system</source>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>Enables TYPO3 to communicate with external systems. Automatically notifies third-party services when defined system events occur, supporting integrations with platforms such as Slack, Discord, payment providers, CRM systems, and more.</source>
+      </trans-unit>
+      <trans-unit id="heading_text">
+        <source>Webhooks — Manage Outgoing HTTP Webhooks</source>
+      </trans-unit>
+      <trans-unit id="webhook_not_found.title">
+        <source>No webhooks found</source>
+      </trans-unit>
+      <trans-unit id="webhook_not_found.message">
+        <source>There are currently no webhooks records found in the database.</source>
+      </trans-unit>
+      <trans-unit id="webhook_create">
+        <source>Create new webhook</source>
+      </trans-unit>
+      <trans-unit id="webhook_not_found_with_filter.title">
+        <source>No webhooks found</source>
+      </trans-unit>
+      <trans-unit id="webhook_not_found_with_filter.message">
+        <source>With the current set of filters applied, no webhooks could be found.</source>
+      </trans-unit>
+      <trans-unit id="webhook_no_filter">
+        <source>Remove all filter</source>
+      </trans-unit>
+      <trans-unit id="webhook_no_implementation_class">
+        <source>Implementation class for webhook type "%s" is missing.</source>
+      </trans-unit>
+      <trans-unit id="webhook_example">
+        <source>Example</source>
+      </trans-unit>
+      <trans-unit id="filter.sendButton">
+        <source>Filter</source>
+      </trans-unit>
+      <trans-unit id="filter.resetButton">
+        <source>Reset</source>
+      </trans-unit>
+      <trans-unit id="filter.name">
+        <source>Name</source>
+      </trans-unit>
+      <trans-unit id="filter.webhook_type">
+        <source>Webhook Trigger</source>
+      </trans-unit>
+      <trans-unit id="filter.webhook_type.showAll">
+        <source>Show all</source>
+      </trans-unit>
+      <trans-unit id="pagination.previous">
+        <source>previous</source>
+      </trans-unit>
+      <trans-unit id="pagination.next">
+        <source>next</source>
+      </trans-unit>
+      <trans-unit id="pagination.first">
+        <source>first</source>
+      </trans-unit>
+      <trans-unit id="pagination.last">
+        <source>last</source>
+      </trans-unit>
+      <trans-unit id="pagination.records">
+        <source>Records</source>
+      </trans-unit>
+      <trans-unit id="pagination.page">
+        <source>Page</source>
+      </trans-unit>
+      <trans-unit id="pagination.refresh">
+        <source>Refresh</source>
+      </trans-unit>
+      <trans-unit id="labels.delete.title">
+        <source>Delete webhooks</source>
+      </trans-unit>
+      <trans-unit id="labels.delete.message">
+        <source>Delete all marked webhooks? You can restore deleted webhooks from the TYPO3 recycler.</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

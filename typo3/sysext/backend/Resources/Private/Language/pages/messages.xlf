@@ -1,45 +1,45 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
-	<file id="f1">
-		<unit id="link_missing">
-			<segment>
-				<source>The "%1$s" field is required to resolve links for pages of type "%2$s". Please provide a value in the page properties.</source>
-			</segment>
-		</unit>
-		<unit id="link_invalid">
-			<segment>
-				<source>Invalid link in "%1$s": "%2$s" cannot be resolved. Select a valid destination in the page properties.</source>
-			</segment>
-		</unit>
-		<unit id="link_destination">
-			<segment>
-				<source>Page of type "%1$s" links to the following %2$s: %3$s.</source>
-			</segment>
-		</unit>
-		<unit id="link_current">
-			<segment>
-				<source>Page of type "%1$s" links to current request url, and dynamic value cannot be displayed here.</source>
-			</segment>
-		</unit>
-		<unit id="link_current_with_added_queryparameters">
-			<segment>
-				<source>Page of type "%1$s" appends %2$s to current request url, and dynamic value cannot be displayed here.</source>
-			</segment>
-		</unit>
-		<unit id="link_destination_record">
-			<segment>
-				<source>Page of type "%1$s" links to the following record of type "%2$s": %3$s.</source>
-			</segment>
-		</unit>
-		<unit id="link_destination_additional_parameters">
-			<segment>
-				<source>Additional parameters: "%s".</source>
-			</segment>
-		</unit>
-		<unit id="link_destination_content_element">
-			<segment>
-				<source>Page of type "%1$s" links to content element %2$s on page %3$s.</source>
-			</segment>
-		</unit>
-	</file>
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en">
+  <file id="f1">
+    <unit id="link_missing">
+      <segment>
+        <source>The "%1$s" field is required to resolve links for pages of type "%2$s". Please provide a value in the page properties.</source>
+      </segment>
+    </unit>
+    <unit id="link_invalid">
+      <segment>
+        <source>Invalid link in "%1$s": "%2$s" cannot be resolved. Select a valid destination in the page properties.</source>
+      </segment>
+    </unit>
+    <unit id="link_destination">
+      <segment>
+        <source>Page of type "%1$s" links to the following %2$s: %3$s.</source>
+      </segment>
+    </unit>
+    <unit id="link_current">
+      <segment>
+        <source>Page of type "%1$s" links to current request url, and dynamic value cannot be displayed here.</source>
+      </segment>
+    </unit>
+    <unit id="link_current_with_added_queryparameters">
+      <segment>
+        <source>Page of type "%1$s" appends %2$s to current request url, and dynamic value cannot be displayed here.</source>
+      </segment>
+    </unit>
+    <unit id="link_destination_record">
+      <segment>
+        <source>Page of type "%1$s" links to the following record of type "%2$s": %3$s.</source>
+      </segment>
+    </unit>
+    <unit id="link_destination_additional_parameters">
+      <segment>
+        <source>Additional parameters: "%s".</source>
+      </segment>
+    </unit>
+    <unit id="link_destination_content_element">
+      <segment>
+        <source>Page of type "%1$s" links to content element %2$s on page %3$s.</source>
+      </segment>
+    </unit>
+  </file>
 </xliff>

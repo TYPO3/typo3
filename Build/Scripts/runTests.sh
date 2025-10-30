@@ -528,6 +528,7 @@ Options:
             - lintServicesYaml: YAML Linting Services.yaml files with enabled tags parsing.
             - lintTypescript: TS linting
             - lintYaml: YAML Linting (excluding Services.yaml)
+            - normalizeXliff: normalize .xlf files
             - npm: "npm" command dispatcher, to execute various npm commands directly
             - accessibility: accessibility tests (use accessibility-prepare for manual execution)
             - e2e: end to end tests (use e2e-prepare for manual execution)
@@ -627,8 +628,8 @@ Options:
         is not listening on default port.
 
     -n
-        Only with -s cgl|cglGit|cglHeader|cglHeaderGit
-        Activate dry-run in CGL check that does not actively change files and only prints broken ones.
+        Only with -s cgl|cglGit|cglHeader|cglHeaderGit|normalizeXliff
+        Activate dry-run: do not modify files, only report issues.
 
     -u
         Update existing typo3/core-testing-* container images and remove obsolete dangling image versions.
@@ -1427,6 +1428,18 @@ case ${TEST_SUITE} in
         EXCLUDE_INVALID_FIXTURE_YAML_FILES="--exclude typo3/sysext/form/Tests/Unit/Mvc/Configuration/Fixtures/Invalid.yaml --exclude typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_sets/Configuration/Sets/InvalidSettings/settings.yaml --exclude typo3/sysext/core/Tests/Functional/Configuration/Loader/Fixtures/InvalidYamlFiles/LoadEmptyYaml.yaml --exclude typo3/sysext/core/Tests/Functional/Configuration/Loader/Fixtures/InvalidYamlFiles/LoadInvalidYaml.yaml"
         COMMAND="php -v | grep '^PHP'; find typo3/ \\( -name '*.yaml' -o -name '*.yml' \\) ! -name 'Services.yaml' | xargs -r php -dxdebug.mode=off bin/yaml-lint --no-parse-tags ${EXCLUDE_INVALID_FIXTURE_YAML_FILES}"
         ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name lint-php-${SUFFIX} ${IMAGE_PHP} /bin/sh -c "${COMMAND}"
+        SUITE_EXIT_CODE=$?
+        ;;
+    normalizeXliff)
+        NORMALIZE_ARGS=""
+        if [ -n "${CGLCHECK_DRY_RUN}" ]; then
+            NORMALIZE_ARGS="-n"
+        fi
+
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} \
+            --name normalize-xliff-${SUFFIX} \
+            ${IMAGE_PHP} php -dxdebug.mode=off Build/Scripts/xliffNormalizer.php \
+            --root typo3/sysext ${NORMALIZE_ARGS} "$@"
         SUITE_EXIT_CODE=$?
         ;;
     npm)

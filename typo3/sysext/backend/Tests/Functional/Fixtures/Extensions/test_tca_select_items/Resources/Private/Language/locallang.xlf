@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:test_tca_select/Resources/Private/Language/locallang.xlf" date="2022-12-21T19:27:00Z" product-name="test_tca_select">
-		<header/>
-		<body>
-			<trans-unit id="aLabel">
-				<source>translated</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:test_tca_select/Resources/Private/Language/locallang.xlf" date="2022-12-21T19:27:00Z" product-name="test_tca_select">
+    <header/>
+    <body>
+      <trans-unit id="aLabel">
+        <source>translated</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

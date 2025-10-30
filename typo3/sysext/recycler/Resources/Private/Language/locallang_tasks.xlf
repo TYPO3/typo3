@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/locallang_tasks.xlf" date="2011-10-17T20:22:35Z" product-name="recycler">
-		<header />
-		<body>
-			<trans-unit id="cleanerTaskTitle">
-				<source>Remove deleted records</source>
-			</trans-unit>
-			<trans-unit id="cleanerTaskDescription">
-				<source>Deletes rows from the database which are flagged "deleted"</source>
-			</trans-unit>
-			<trans-unit id="cleanerTaskPeriod">
-				<source>Delete entries older than (in days)</source>
-			</trans-unit>
-			<trans-unit id="cleanerTaskTCA">
-				<source>Tables</source>
-			</trans-unit>
-			<trans-unit id="cleanerTaskDescriptionTables">
-				<source>Tables: %s</source>
-			</trans-unit>
-			<trans-unit id="cleanerTaskDescriptionDays">
-				<source>Older than %d day(s)</source>
-			</trans-unit>
-			<trans-unit id="cleanerTaskErrorPeriod">
-				<source>The period has to be an integer and greater than zero.</source>
-			</trans-unit>
-			<trans-unit id="cleanerTaskErrorTCAempty">
-				<source>You have to select at least one table.</source>
-			</trans-unit>
-			<trans-unit id="cleanerTaskErrorTCANotSet">
-				<source>The table "%s" is not in the TCA.</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/locallang_tasks.xlf" date="2011-10-17T20:22:35Z" product-name="recycler">
+    <header/>
+    <body>
+      <trans-unit id="cleanerTaskTitle">
+        <source>Remove deleted records</source>
+      </trans-unit>
+      <trans-unit id="cleanerTaskDescription">
+        <source>Deletes rows from the database which are flagged "deleted"</source>
+      </trans-unit>
+      <trans-unit id="cleanerTaskPeriod">
+        <source>Delete entries older than (in days)</source>
+      </trans-unit>
+      <trans-unit id="cleanerTaskTCA">
+        <source>Tables</source>
+      </trans-unit>
+      <trans-unit id="cleanerTaskDescriptionTables">
+        <source>Tables: %s</source>
+      </trans-unit>
+      <trans-unit id="cleanerTaskDescriptionDays">
+        <source>Older than %d day(s)</source>
+      </trans-unit>
+      <trans-unit id="cleanerTaskErrorPeriod">
+        <source>The period has to be an integer and greater than zero.</source>
+      </trans-unit>
+      <trans-unit id="cleanerTaskErrorTCAempty">
+        <source>You have to select at least one table.</source>
+      </trans-unit>
+      <trans-unit id="cleanerTaskErrorTCANotSet">
+        <source>The table "%s" is not in the TCA.</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

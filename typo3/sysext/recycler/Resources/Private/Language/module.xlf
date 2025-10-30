@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/module.xlf" date="2026-11-10T13:37:37Z" product-name="recycler">
-		<header/>
-		<body>
-			<trans-unit id="title">
-				<source>Recycler</source>
-			</trans-unit>
-			<trans-unit id="short_description">
-				<source>Restore or permanently remove deleted records</source>
-			</trans-unit>
-			<trans-unit id="description">
-				<source>Allows you to restore deleted records or remove them permanently from the database. Supports single, multiple, and recursive actions, such as restoring a page with all its content elements. Filter by page or table to review deleted records before taking action.</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/module.xlf" date="2026-11-10T13:37:37Z" product-name="recycler">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>Recycler</source>
+      </trans-unit>
+      <trans-unit id="short_description">
+        <source>Restore or permanently remove deleted records</source>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>Allows you to restore deleted records or remove them permanently from the database. Supports single, multiple, and recursive actions, such as restoring a page with all its content elements. Filter by page or table to review deleted records before taking action.</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

@@ -1,337 +1,331 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel">
-		<header/>
-		<body>
-			<trans-unit id="module.configuration.title" x-unused-since="14.0">
-				<source>Configuration</source>
-			</trans-unit>
-			<trans-unit id="module.configuration.shortDescription" x-unused-since="14.0">
-				<source>View configuration from localconf.php and tables.php</source>
-			</trans-unit>
-			<trans-unit id="module.configuration.description" x-unused-since="14.0">
-				<source>Allows you to browse the values of the $TCA array (table configuration) and $TYPO3_CONF_VARS. You cannot set any values, only browse them.</source>
-			</trans-unit>
-
-			<trans-unit id="module.configuration.numberOfSearchMatches">
-				<source>%s search match(es)</source>
-			</trans-unit>
-
-			<trans-unit id="moduleMenu.dropdown.label">
-				<source>Configuration to show</source>
-			</trans-unit>
-			<trans-unit id="configuration.headline">
-				<source>Configuration of "%1s"</source>
-			</trans-unit>
-			<trans-unit id="typo3ConfVars">
-				<source>$GLOBALS['TYPO3_CONF_VARS'] (Global Configuration)</source>
-			</trans-unit>
-			<trans-unit id="tca">
-				<source>$GLOBALS['TCA'] (Table configuration array)</source>
-			</trans-unit>
-			<trans-unit id="beUserTsConfig">
-				<source>$GLOBALS['BE_USER']-&gt;getTSConfig() (User TSconfig)</source>
-			</trans-unit>
-			<trans-unit id="beUser">
-				<source>$GLOBALS['BE_USER']-&gt;uc (User Settings)</source>
-			</trans-unit>
-			<trans-unit id="usersettings">
-				<source>$GLOBALS['TYPO3_USER_SETTINGS'] (User Settings Configuration)</source>
-			</trans-unit>
-			<trans-unit id="routes">
-				<source>Backend Routes</source>
-			</trans-unit>
-			<trans-unit id="httpMiddlewareStacks">
-				<source>HTTP Middlewares (PSR-15)</source>
-			</trans-unit>
-			<trans-unit id="contentSecurityPolicyMutations">
-				<source>Content Security Policy Mutations</source>
-			</trans-unit>
-			<trans-unit id="sitesTcaConfiguration">
-				<source>Sites: TCA configuration</source>
-			</trans-unit>
-			<trans-unit id="sitesYamlConfiguration">
-				<source>Sites: YAML configuration</source>
-			</trans-unit>
-			<trans-unit id="eventListeners">
-				<source>Event Listeners (PSR-14)</source>
-			</trans-unit>
-			<trans-unit id="mfaProviders">
-				<source>MFA providers</source>
-			</trans-unit>
-			<trans-unit id="softReferenceParsers">
-				<source>Soft Reference Parsers</source>
-			</trans-unit>
-			<trans-unit id="toolbarItems">
-				<source>Backend Toolbar Items</source>
-			</trans-unit>
-			<trans-unit id="symfonyExpressionLanguage">
-				<source>Symfony Expression Language Providers</source>
-			</trans-unit>
-			<trans-unit id="translationDomainList">
-				<source>Translation Domain List</source>
-			</trans-unit>
-			<trans-unit id="doctrineDbalDriverMiddlewares">
-				<source>Doctrine DBAL Driver Middlewares</source>
-			</trans-unit>
-			<trans-unit id="formYamlConfiguration">
-				<source>Form: YAML Configuration</source>
-			</trans-unit>
-			<trans-unit id="t3services">
-				<source>$GLOBALS['T3_SERVICES'] (Registered Services)</source>
-			</trans-unit>
-			<trans-unit id="backendModules">
-				<source>Backend Modules</source>
-			</trans-unit>
-			<trans-unit id="pagesTypes">
-				<source>Table permissions per page type</source>
-			</trans-unit>
-
-			<trans-unit id="module.dbint.title" x-unused-since="14.0">
-				<source>DB Check</source>
-			</trans-unit>
-			<trans-unit id="module.dbint.shortDescription" x-unused-since="14.0">
-				<source>Database integrity check</source>
-			</trans-unit>
-			<trans-unit id="module.dbint.description" x-unused-since="14.0">
-				<source>Here you can check the integrity of the database tables configured by the $TCA. For instance all records must belong to a page record. You can also get a view of the total pagetree including deleted pages. Finally you've got access to a global database search facility.</source>
-			</trans-unit>
-
-			<trans-unit id="search.submit">
-				<source>Search All Records</source>
-				<note>Label of submit button to search within the database (raw search in all fields)</note>
-			</trans-unit>
-			<trans-unit id="search">
-				<source>Search</source>
-			</trans-unit>
-			<trans-unit id="totalPageTree" x-unused-since="14.0">
-				<source>Total Page Tree</source>
-			</trans-unit>
-			<trans-unit id="fullSearch">
-				<source>Full search</source>
-			</trans-unit>
-			<trans-unit id="findFilename" x-unused-since="14.0">
-				<source>Find filename</source>
-			</trans-unit>
-			<trans-unit id="rawSearch" x-unused-since="14.0">
-				<source>Raw search in all fields</source>
-			</trans-unit>
-			<trans-unit id="advancedQuery" x-unused-since="14.0">
-				<source>Advanced query</source>
-			</trans-unit>
-			<trans-unit id="selectRecords">
-				<source>Select records</source>
-			</trans-unit>
-			<trans-unit id="countResults">
-				<source>Count results</source>
-			</trans-unit>
-			<trans-unit id="explainQuery">
-				<source>Explain query</source>
-			</trans-unit>
-			<trans-unit id="csvExport">
-				<source>CSV Export</source>
-			</trans-unit>
-			<trans-unit id="xmlExport" x-unused-since="14.0">
-				<source>XML Export</source>
-			</trans-unit>
-
-			<trans-unit id="fullSearch.flashMessage.noResultsFoundMessage">
-				<source>The query returned no results.</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.section.queryOptions">
-				<source>Query options</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.section.querySQL">
-				<source>Full SQL query</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.section.querySQL.error">
-				<source>SQL error</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.section.querySettings">
-				<source>Query compilation</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.section.queryStorage">
-				<source>Load/save query</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.section.result">
-				<source>Result</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.type.count.resultsFound">
-				<source>records found.</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.type.all.noResultsFound">
-				<source>No records found.</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.form.btn.delete.label">
-				<source>Delete</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.form.btn.load.label">
-				<source>Load</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.form.btn.save.label">
-				<source>Save</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.form.field.groupBy.label">
-				<source>Group by</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.form.field.limit.label">
-				<source>Limit</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.form.field.makeQuery.label">
-				<source>Result type</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.form.field.orderBy.label">
-				<source>Order by</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.form.field.orderBy.descending">
-				<source>Descending</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.form.field.searchType.label">
-				<source>Search type</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.form.field.query.label">
-				<source>Query</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.form.field.queryFields.label">
-				<source>Fields</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.form.field.queryTable.label">
-				<source>Table</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.form.field.queryStore.storage.label">
-				<source>Saved queries</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.form.field.queryStore.storage.0">
-				<source>[New]</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.form.field.queryStore.title.label">
-				<source>Title</source>
-			</trans-unit>
-			<trans-unit id="fullSearch.form.field.queryConfig.comparison.negate">
-				<source>Negate</source>
-			</trans-unit>
-
-			<trans-unit id="showSQL">
-				<source>Show SQL parts</source>
-			</trans-unit>
-			<trans-unit id="useFormattedStrings">
-				<source>Use formatted strings, labels and dates instead of original values for results</source>
-			</trans-unit>
-			<trans-unit id="dontUseOrigValues">
-				<source>Don't use original values in brackets as prefix for labeled results</source>
-			</trans-unit>
-			<trans-unit id="sortOptions">
-				<source>Sort selectbox-options for relations by label and not by value</source>
-			</trans-unit>
-			<trans-unit id="showDeleted">
-				<source>Show even deleted entries (with undelete buttons)</source>
-			</trans-unit>
-			<trans-unit id="result" x-unused-since="14.0">
-				<source>Result</source>
-			</trans-unit>
-			<trans-unit id="no_results">
-				<source>No results found for "%s".</source>
-				<note>Info text in case no results are found for a given search term</note>
-			</trans-unit>
-			<trans-unit id="no_sword">
-				<source>Enter a search term to search for records</source>
-			</trans-unit>
-			<trans-unit id="tables" x-unused-since="14.0">
-				<source>Tables</source>
-			</trans-unit>
-			<trans-unit id="references" x-unused-since="14.0">
-				<source>references</source>
-			</trans-unit>
-			<trans-unit id="isMissing" x-unused-since="14.0">
-				<source>is missing!</source>
-			</trans-unit>
-			<trans-unit id="referencedFrom" x-unused-since="14.0">
-				<source>Referenced from</source>
-			</trans-unit>
-			<trans-unit id="enterRegexPattern" x-unused-since="14.0">
-				<source>Enter regex pattern</source>
-			</trans-unit>
-			<trans-unit id="searchButton" x-unused-since="14.0">
-				<source>Search</source>
-			</trans-unit>
-			<trans-unit id="pattern" x-unused-since="14.0">
-				<source>Pattern</source>
-			</trans-unit>
-			<trans-unit id="beingChecked" x-unused-since="14.0">
-				<source>being checked...</source>
-			</trans-unit>
-			<trans-unit id="directories" x-unused-since="14.0">
-				<source>Dirs</source>
-			</trans-unit>
-			<trans-unit id="directoriesTooDeep" x-unused-since="14.0">
-				<source>ERROR: Directories deeper than the following number of levels</source>
-			</trans-unit>
-			<trans-unit id="files" x-unused-since="14.0">
-				<source>Files</source>
-			</trans-unit>
-			<trans-unit id="matchingFiles" x-unused-since="14.0">
-				<source>Matching files</source>
-			</trans-unit>
-			<trans-unit id="notChecked" x-unused-since="14.0">
-				<source>not checked.</source>
-			</trans-unit>
-			<trans-unit id="searchingForFilenames" x-unused-since="14.0">
-				<source>Searching for filenames</source>
-			</trans-unit>
-			<trans-unit id="fixLostRecord" x-unused-since="14.0">
-				<source>Click to move this lost record to rootlevel (pid=0)</source>
-			</trans-unit>
-			<trans-unit id="doktype" x-unused-since="14.0">
-				<source>Document types</source>
-			</trans-unit>
-			<trans-unit id="doktype_value" x-unused-since="14.0">
-				<source>Document types (value)</source>
-			</trans-unit>
-			<trans-unit id="pages" x-unused-since="14.0">
-				<source>Pages</source>
-			</trans-unit>
-			<trans-unit id="total_pages" x-unused-since="14.0">
-				<source>Total number of default language pages</source>
-			</trans-unit>
-			<trans-unit id="translated_pages" x-unused-since="14.0">
-				<source>Total number of translated pages</source>
-			</trans-unit>
-			<trans-unit id="deleted_pages" x-unused-since="14.0">
-				<source>Marked-deleted pages</source>
-			</trans-unit>
-			<trans-unit id="hidden_pages" x-unused-since="14.0">
-				<source>Hidden pages</source>
-			</trans-unit>
-			<trans-unit id="count">
-				<source>Count</source>
-			</trans-unit>
-			<trans-unit id="label" x-unused-since="14.0">
-				<source>Label</source>
-			</trans-unit>
-			<trans-unit id="tablename" x-unused-since="14.0">
-				<source>Table name</source>
-			</trans-unit>
-			<trans-unit id="total_lost" x-unused-since="14.0">
-				<source>Records total / lost</source>
-			</trans-unit>
-			<trans-unit id="tree" x-unused-since="14.0">
-				<source>The Page Tree</source>
-			</trans-unit>
-			<trans-unit id="tree_description" x-unused-since="14.0">
-				<source>This shows all pages in the system in one large tree. Beware that this will probably result in a very long document which will also take some time for the server to compute!</source>
-			</trans-unit>
-			<trans-unit id="search_whole_database">
-				<source>Search whole Database</source>
-			</trans-unit>
-			<trans-unit id="search_description" x-unused-since="14.0">
-				<source>This searches through all database tables and records for a text string.</source>
-			</trans-unit>
-			<trans-unit id="refindex" x-unused-since="14.0">
-				<source>Check and update global reference index</source>
-			</trans-unit>
-			<trans-unit id="refindex_description" x-unused-since="14.0">
-				<source>Allows you to maintain the reference index kept by TYPO3.</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel">
+    <header/>
+    <body>
+      <trans-unit id="module.configuration.title" x-unused-since="14.0">
+        <source>Configuration</source>
+      </trans-unit>
+      <trans-unit id="module.configuration.shortDescription" x-unused-since="14.0">
+        <source>View configuration from localconf.php and tables.php</source>
+      </trans-unit>
+      <trans-unit id="module.configuration.description" x-unused-since="14.0">
+        <source>Allows you to browse the values of the $TCA array (table configuration) and $TYPO3_CONF_VARS. You cannot set any values, only browse them.</source>
+      </trans-unit>
+      <trans-unit id="module.configuration.numberOfSearchMatches">
+        <source>%s search match(es)</source>
+      </trans-unit>
+      <trans-unit id="moduleMenu.dropdown.label">
+        <source>Configuration to show</source>
+      </trans-unit>
+      <trans-unit id="configuration.headline">
+        <source>Configuration of "%1s"</source>
+      </trans-unit>
+      <trans-unit id="typo3ConfVars">
+        <source>$GLOBALS['TYPO3_CONF_VARS'] (Global Configuration)</source>
+      </trans-unit>
+      <trans-unit id="tca">
+        <source>$GLOBALS['TCA'] (Table configuration array)</source>
+      </trans-unit>
+      <trans-unit id="beUserTsConfig">
+        <source>$GLOBALS['BE_USER']-&gt;getTSConfig() (User TSconfig)</source>
+      </trans-unit>
+      <trans-unit id="beUser">
+        <source>$GLOBALS['BE_USER']-&gt;uc (User Settings)</source>
+      </trans-unit>
+      <trans-unit id="usersettings">
+        <source>$GLOBALS['TYPO3_USER_SETTINGS'] (User Settings Configuration)</source>
+      </trans-unit>
+      <trans-unit id="routes">
+        <source>Backend Routes</source>
+      </trans-unit>
+      <trans-unit id="httpMiddlewareStacks">
+        <source>HTTP Middlewares (PSR-15)</source>
+      </trans-unit>
+      <trans-unit id="contentSecurityPolicyMutations">
+        <source>Content Security Policy Mutations</source>
+      </trans-unit>
+      <trans-unit id="sitesTcaConfiguration">
+        <source>Sites: TCA configuration</source>
+      </trans-unit>
+      <trans-unit id="sitesYamlConfiguration">
+        <source>Sites: YAML configuration</source>
+      </trans-unit>
+      <trans-unit id="eventListeners">
+        <source>Event Listeners (PSR-14)</source>
+      </trans-unit>
+      <trans-unit id="mfaProviders">
+        <source>MFA providers</source>
+      </trans-unit>
+      <trans-unit id="softReferenceParsers">
+        <source>Soft Reference Parsers</source>
+      </trans-unit>
+      <trans-unit id="toolbarItems">
+        <source>Backend Toolbar Items</source>
+      </trans-unit>
+      <trans-unit id="symfonyExpressionLanguage">
+        <source>Symfony Expression Language Providers</source>
+      </trans-unit>
+      <trans-unit id="translationDomainList">
+        <source>Translation Domain List</source>
+      </trans-unit>
+      <trans-unit id="doctrineDbalDriverMiddlewares">
+        <source>Doctrine DBAL Driver Middlewares</source>
+      </trans-unit>
+      <trans-unit id="formYamlConfiguration">
+        <source>Form: YAML Configuration</source>
+      </trans-unit>
+      <trans-unit id="t3services">
+        <source>$GLOBALS['T3_SERVICES'] (Registered Services)</source>
+      </trans-unit>
+      <trans-unit id="backendModules">
+        <source>Backend Modules</source>
+      </trans-unit>
+      <trans-unit id="pagesTypes">
+        <source>Table permissions per page type</source>
+      </trans-unit>
+      <trans-unit id="module.dbint.title" x-unused-since="14.0">
+        <source>DB Check</source>
+      </trans-unit>
+      <trans-unit id="module.dbint.shortDescription" x-unused-since="14.0">
+        <source>Database integrity check</source>
+      </trans-unit>
+      <trans-unit id="module.dbint.description" x-unused-since="14.0">
+        <source>Here you can check the integrity of the database tables configured by the $TCA. For instance all records must belong to a page record. You can also get a view of the total pagetree including deleted pages. Finally you've got access to a global database search facility.</source>
+      </trans-unit>
+      <trans-unit id="search.submit">
+        <source>Search All Records</source>
+        <note>Label of submit button to search within the database (raw search in all fields)</note>
+      </trans-unit>
+      <trans-unit id="search">
+        <source>Search</source>
+      </trans-unit>
+      <trans-unit id="totalPageTree" x-unused-since="14.0">
+        <source>Total Page Tree</source>
+      </trans-unit>
+      <trans-unit id="fullSearch">
+        <source>Full search</source>
+      </trans-unit>
+      <trans-unit id="findFilename" x-unused-since="14.0">
+        <source>Find filename</source>
+      </trans-unit>
+      <trans-unit id="rawSearch" x-unused-since="14.0">
+        <source>Raw search in all fields</source>
+      </trans-unit>
+      <trans-unit id="advancedQuery" x-unused-since="14.0">
+        <source>Advanced query</source>
+      </trans-unit>
+      <trans-unit id="selectRecords">
+        <source>Select records</source>
+      </trans-unit>
+      <trans-unit id="countResults">
+        <source>Count results</source>
+      </trans-unit>
+      <trans-unit id="explainQuery">
+        <source>Explain query</source>
+      </trans-unit>
+      <trans-unit id="csvExport">
+        <source>CSV Export</source>
+      </trans-unit>
+      <trans-unit id="xmlExport" x-unused-since="14.0">
+        <source>XML Export</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.flashMessage.noResultsFoundMessage">
+        <source>The query returned no results.</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.queryOptions">
+        <source>Query options</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.querySQL">
+        <source>Full SQL query</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.querySQL.error">
+        <source>SQL error</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.querySettings">
+        <source>Query compilation</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.queryStorage">
+        <source>Load/save query</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.result">
+        <source>Result</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.type.count.resultsFound">
+        <source>records found.</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.type.all.noResultsFound">
+        <source>No records found.</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.btn.delete.label">
+        <source>Delete</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.btn.load.label">
+        <source>Load</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.btn.save.label">
+        <source>Save</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.groupBy.label">
+        <source>Group by</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.limit.label">
+        <source>Limit</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.makeQuery.label">
+        <source>Result type</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.orderBy.label">
+        <source>Order by</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.orderBy.descending">
+        <source>Descending</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.searchType.label">
+        <source>Search type</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.query.label">
+        <source>Query</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryFields.label">
+        <source>Fields</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryTable.label">
+        <source>Table</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryStore.storage.label">
+        <source>Saved queries</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryStore.storage.0">
+        <source>[New]</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryStore.title.label">
+        <source>Title</source>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryConfig.comparison.negate">
+        <source>Negate</source>
+      </trans-unit>
+      <trans-unit id="showSQL">
+        <source>Show SQL parts</source>
+      </trans-unit>
+      <trans-unit id="useFormattedStrings">
+        <source>Use formatted strings, labels and dates instead of original values for results</source>
+      </trans-unit>
+      <trans-unit id="dontUseOrigValues">
+        <source>Don't use original values in brackets as prefix for labeled results</source>
+      </trans-unit>
+      <trans-unit id="sortOptions">
+        <source>Sort selectbox-options for relations by label and not by value</source>
+      </trans-unit>
+      <trans-unit id="showDeleted">
+        <source>Show even deleted entries (with undelete buttons)</source>
+      </trans-unit>
+      <trans-unit id="result" x-unused-since="14.0">
+        <source>Result</source>
+      </trans-unit>
+      <trans-unit id="no_results">
+        <source>No results found for "%s".</source>
+        <note>Info text in case no results are found for a given search term</note>
+      </trans-unit>
+      <trans-unit id="no_sword">
+        <source>Enter a search term to search for records</source>
+      </trans-unit>
+      <trans-unit id="tables" x-unused-since="14.0">
+        <source>Tables</source>
+      </trans-unit>
+      <trans-unit id="references" x-unused-since="14.0">
+        <source>references</source>
+      </trans-unit>
+      <trans-unit id="isMissing" x-unused-since="14.0">
+        <source>is missing!</source>
+      </trans-unit>
+      <trans-unit id="referencedFrom" x-unused-since="14.0">
+        <source>Referenced from</source>
+      </trans-unit>
+      <trans-unit id="enterRegexPattern" x-unused-since="14.0">
+        <source>Enter regex pattern</source>
+      </trans-unit>
+      <trans-unit id="searchButton" x-unused-since="14.0">
+        <source>Search</source>
+      </trans-unit>
+      <trans-unit id="pattern" x-unused-since="14.0">
+        <source>Pattern</source>
+      </trans-unit>
+      <trans-unit id="beingChecked" x-unused-since="14.0">
+        <source>being checked...</source>
+      </trans-unit>
+      <trans-unit id="directories" x-unused-since="14.0">
+        <source>Dirs</source>
+      </trans-unit>
+      <trans-unit id="directoriesTooDeep" x-unused-since="14.0">
+        <source>ERROR: Directories deeper than the following number of levels</source>
+      </trans-unit>
+      <trans-unit id="files" x-unused-since="14.0">
+        <source>Files</source>
+      </trans-unit>
+      <trans-unit id="matchingFiles" x-unused-since="14.0">
+        <source>Matching files</source>
+      </trans-unit>
+      <trans-unit id="notChecked" x-unused-since="14.0">
+        <source>not checked.</source>
+      </trans-unit>
+      <trans-unit id="searchingForFilenames" x-unused-since="14.0">
+        <source>Searching for filenames</source>
+      </trans-unit>
+      <trans-unit id="fixLostRecord" x-unused-since="14.0">
+        <source>Click to move this lost record to rootlevel (pid=0)</source>
+      </trans-unit>
+      <trans-unit id="doktype" x-unused-since="14.0">
+        <source>Document types</source>
+      </trans-unit>
+      <trans-unit id="doktype_value" x-unused-since="14.0">
+        <source>Document types (value)</source>
+      </trans-unit>
+      <trans-unit id="pages" x-unused-since="14.0">
+        <source>Pages</source>
+      </trans-unit>
+      <trans-unit id="total_pages" x-unused-since="14.0">
+        <source>Total number of default language pages</source>
+      </trans-unit>
+      <trans-unit id="translated_pages" x-unused-since="14.0">
+        <source>Total number of translated pages</source>
+      </trans-unit>
+      <trans-unit id="deleted_pages" x-unused-since="14.0">
+        <source>Marked-deleted pages</source>
+      </trans-unit>
+      <trans-unit id="hidden_pages" x-unused-since="14.0">
+        <source>Hidden pages</source>
+      </trans-unit>
+      <trans-unit id="count">
+        <source>Count</source>
+      </trans-unit>
+      <trans-unit id="label" x-unused-since="14.0">
+        <source>Label</source>
+      </trans-unit>
+      <trans-unit id="tablename" x-unused-since="14.0">
+        <source>Table name</source>
+      </trans-unit>
+      <trans-unit id="total_lost" x-unused-since="14.0">
+        <source>Records total / lost</source>
+      </trans-unit>
+      <trans-unit id="tree" x-unused-since="14.0">
+        <source>The Page Tree</source>
+      </trans-unit>
+      <trans-unit id="tree_description" x-unused-since="14.0">
+        <source>This shows all pages in the system in one large tree. Beware that this will probably result in a very long document which will also take some time for the server to compute!</source>
+      </trans-unit>
+      <trans-unit id="search_whole_database">
+        <source>Search whole Database</source>
+      </trans-unit>
+      <trans-unit id="search_description" x-unused-since="14.0">
+        <source>This searches through all database tables and records for a text string.</source>
+      </trans-unit>
+      <trans-unit id="refindex" x-unused-since="14.0">
+        <source>Check and update global reference index</source>
+      </trans-unit>
+      <trans-unit id="refindex_description" x-unused-since="14.0">
+        <source>Allows you to maintain the reference index kept by TYPO3.</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

@@ -1,56 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang.xlf" date="2017-12-29T20:22:14Z" product-name="redirects">
-		<header/>
-		<body>
-			<trans-unit id="redirects">
-				<source>Redirect Settings</source>
-			</trans-unit>
-			<trans-unit id="redirects.autoUpdateSlugs">
-				<source>Update the slugs of all sub pages automatically</source>
-			</trans-unit>
-			<trans-unit id="redirects.autoCreateRedirects">
-				<source>Create redirects for pages with a new slug automatically</source>
-			</trans-unit>
-			<trans-unit id="redirects.redirectTTL">
-				<source>Time To Live of redirect records in days</source>
-			</trans-unit>
-			<trans-unit id="redirects.httpStatusCode">
-				<source>HTTP Status Code for the redirect, 301 is the default</source>
-			</trans-unit>
-			<trans-unit id="cleanupRedirectsCommand.label.days">
-				<source>Cleanup redirects older than provided number of days</source>
-			</trans-unit>
-			<trans-unit id="cleanupRedirectsCommand.label.domain">
-				<source>Cleanup redirects matching provided domain(s)</source>
-			</trans-unit>
-			<trans-unit id="cleanupRedirectsCommand.label.hitCount">
-				<source>Cleanup redirects matching hit counts lower than given number</source>
-			</trans-unit>
-			<trans-unit id="cleanupRedirectsCommand.label.path">
-				<source>Cleanup redirects matching given path (as database like expression)</source>
-			</trans-unit>
-			<trans-unit id="cleanupRedirectsCommand.label.creationType">
-				<source>Cleanup redirects matching provided creation type</source>
-			</trans-unit>
-			<trans-unit id="cleanupRedirectsCommand.label.statusCode">
-				<source>Cleanup redirects matching provided status code(s)</source>
-			</trans-unit>
-			<trans-unit id="cleanupRedirectsCommand.label.integrityStatus">
-				<source>Cleanup redirects matching provided integrity status</source>
-			</trans-unit>
-			<trans-unit id="cleanupRedirectsCommand.label.redirectType">
-				<source>Cleanup redirects matching provided redirect type</source>
-			</trans-unit>
-			<trans-unit id="created_on">
-				<source>on</source>
-			</trans-unit>
-			<trans-unit id="not_tracked">
-				<source>[Not Tracked]</source>
-			</trans-unit>
-			<trans-unit id="no_qrcode">
-				<source>Not enough information for generating a QR Code.</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang.xlf" date="2017-12-29T20:22:14Z" product-name="redirects">
+    <header/>
+    <body>
+      <trans-unit id="redirects">
+        <source>Redirect Settings</source>
+      </trans-unit>
+      <trans-unit id="redirects.autoUpdateSlugs">
+        <source>Update the slugs of all sub pages automatically</source>
+      </trans-unit>
+      <trans-unit id="redirects.autoCreateRedirects">
+        <source>Create redirects for pages with a new slug automatically</source>
+      </trans-unit>
+      <trans-unit id="redirects.redirectTTL">
+        <source>Time To Live of redirect records in days</source>
+      </trans-unit>
+      <trans-unit id="redirects.httpStatusCode">
+        <source>HTTP Status Code for the redirect, 301 is the default</source>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.days">
+        <source>Cleanup redirects older than provided number of days</source>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.domain">
+        <source>Cleanup redirects matching provided domain(s)</source>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.hitCount">
+        <source>Cleanup redirects matching hit counts lower than given number</source>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.path">
+        <source>Cleanup redirects matching given path (as database like expression)</source>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.creationType">
+        <source>Cleanup redirects matching provided creation type</source>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.statusCode">
+        <source>Cleanup redirects matching provided status code(s)</source>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.integrityStatus">
+        <source>Cleanup redirects matching provided integrity status</source>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.redirectType">
+        <source>Cleanup redirects matching provided redirect type</source>
+      </trans-unit>
+      <trans-unit id="created_on">
+        <source>on</source>
+      </trans-unit>
+      <trans-unit id="not_tracked">
+        <source>[Not Tracked]</source>
+      </trans-unit>
+      <trans-unit id="no_qrcode">
+        <source>Not enough information for generating a QR Code.</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

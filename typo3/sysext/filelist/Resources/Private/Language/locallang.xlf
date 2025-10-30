@@ -1,128 +1,128 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang.xlf" date="2015-08-21T11:45:35Z" product-name="filelist">
-		<header/>
-		<body>
-			<trans-unit id="search">
-				<source>Search "%s" in %s</source>
-			</trans-unit>
-			<trans-unit id="search.reset">
-				<source>Reset search</source>
-			</trans-unit>
-			<trans-unit id="flashmessage.no_results">
-				<source>No results found</source>
-			</trans-unit>
-			<trans-unit id="flashmessage.no_results.message">
-				<source>This folder does not contain any files for "%s"</source>
-			</trans-unit>
-			<trans-unit id="flashmessage.no_items">
-				<source>This folder is empty</source>
-			</trans-unit>
-			<trans-unit id="flashmessage.no_items.message">
-				<source>Drag files here to upload them</source>
-			</trans-unit>
-			<trans-unit id="file_upload.php.pagetitle">
-				<source>Upload files</source>
-			</trans-unit>
-			<trans-unit id="file_upload.php.submit">
-				<source>Upload files</source>
-			</trans-unit>
-			<trans-unit id="file_upload.php.files">
-				<source>files</source>
-			</trans-unit>
-			<trans-unit id="file_rename.exists.title">
-				<source>File exists already</source>
-			</trans-unit>
-			<trans-unit id="file_rename.exists.description">
-				<source>You want to rename the file "{0}" to "{1}", but the file "{1}" already exists. How do you want to proceed?</source>
-			</trans-unit>
-			<trans-unit id="file_rename.actions.cancel">
-				<source>Cancel</source>
-			</trans-unit>
-			<trans-unit id="file_rename.actions.rename">
-				<source>Rename with unique name</source>
-			</trans-unit>
-			<trans-unit id="file_rename.actions.override">
-				<source>Overwrite</source>
-			</trans-unit>
-			<trans-unit id="file_rename.php.pagetitle">
-				<source>Rename</source>
-			</trans-unit>
-			<trans-unit id="file_rename.php.submit">
-				<source>Rename</source>
-				<note from="developer">This label is not used since TYPO3 v9.</note>
-			</trans-unit>
-			<trans-unit id="file_rename.php.label.target.file">
-				<source>New file name</source>
-			</trans-unit>
-			<trans-unit id="file_rename.php.label.target.folder">
-				<source>New folder name</source>
-			</trans-unit>
-			<trans-unit id="file_replace.title">
-				<source>Replace file "%s"</source>
-			</trans-unit>
-			<trans-unit id="file_replace.intro">
-				<source>You're about to replace the file "%s".</source>
-			</trans-unit>
-			<trans-unit id="file_replace.new_file.label">
-				<source>Select new file</source>
-			</trans-unit>
-			<trans-unit id="file_replace.keepFilename.label">
-				<source>Keep current filename "%s"?</source>
-			</trans-unit>
-			<trans-unit id="file_replace.button.replace">
-				<source>Replace</source>
-			</trans-unit>
-			<trans-unit id="file_edit.php.pagetitle">
-				<source>Edit</source>
-			</trans-unit>
-			<trans-unit id="file_edit.php.submit">
-				<source>Save</source>
-			</trans-unit>
-			<trans-unit id="file_edit.php.saveAndClose">
-				<source>Save and Close</source>
-			</trans-unit>
-			<trans-unit id="file_edit.php.coundNot">
-				<source>This filetype cannot be edited.&lt;br /&gt;The file must have an extension like:&lt;br /&gt;&lt;br
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang.xlf" date="2015-08-21T11:45:35Z" product-name="filelist">
+    <header/>
+    <body>
+      <trans-unit id="search">
+        <source>Search "%s" in %s</source>
+      </trans-unit>
+      <trans-unit id="search.reset">
+        <source>Reset search</source>
+      </trans-unit>
+      <trans-unit id="flashmessage.no_results">
+        <source>No results found</source>
+      </trans-unit>
+      <trans-unit id="flashmessage.no_results.message">
+        <source>This folder does not contain any files for "%s"</source>
+      </trans-unit>
+      <trans-unit id="flashmessage.no_items">
+        <source>This folder is empty</source>
+      </trans-unit>
+      <trans-unit id="flashmessage.no_items.message">
+        <source>Drag files here to upload them</source>
+      </trans-unit>
+      <trans-unit id="file_upload.php.pagetitle">
+        <source>Upload files</source>
+      </trans-unit>
+      <trans-unit id="file_upload.php.submit">
+        <source>Upload files</source>
+      </trans-unit>
+      <trans-unit id="file_upload.php.files">
+        <source>files</source>
+      </trans-unit>
+      <trans-unit id="file_rename.exists.title">
+        <source>File exists already</source>
+      </trans-unit>
+      <trans-unit id="file_rename.exists.description">
+        <source>You want to rename the file "{0}" to "{1}", but the file "{1}" already exists. How do you want to proceed?</source>
+      </trans-unit>
+      <trans-unit id="file_rename.actions.cancel">
+        <source>Cancel</source>
+      </trans-unit>
+      <trans-unit id="file_rename.actions.rename">
+        <source>Rename with unique name</source>
+      </trans-unit>
+      <trans-unit id="file_rename.actions.override">
+        <source>Overwrite</source>
+      </trans-unit>
+      <trans-unit id="file_rename.php.pagetitle">
+        <source>Rename</source>
+      </trans-unit>
+      <trans-unit id="file_rename.php.submit">
+        <source>Rename</source>
+        <note from="developer">This label is not used since TYPO3 v9.</note>
+      </trans-unit>
+      <trans-unit id="file_rename.php.label.target.file">
+        <source>New file name</source>
+      </trans-unit>
+      <trans-unit id="file_rename.php.label.target.folder">
+        <source>New folder name</source>
+      </trans-unit>
+      <trans-unit id="file_replace.title">
+        <source>Replace file "%s"</source>
+      </trans-unit>
+      <trans-unit id="file_replace.intro">
+        <source>You're about to replace the file "%s".</source>
+      </trans-unit>
+      <trans-unit id="file_replace.new_file.label">
+        <source>Select new file</source>
+      </trans-unit>
+      <trans-unit id="file_replace.keepFilename.label">
+        <source>Keep current filename "%s"?</source>
+      </trans-unit>
+      <trans-unit id="file_replace.button.replace">
+        <source>Replace</source>
+      </trans-unit>
+      <trans-unit id="file_edit.php.pagetitle">
+        <source>Edit</source>
+      </trans-unit>
+      <trans-unit id="file_edit.php.submit">
+        <source>Save</source>
+      </trans-unit>
+      <trans-unit id="file_edit.php.saveAndClose">
+        <source>Save and Close</source>
+      </trans-unit>
+      <trans-unit id="file_edit.php.coundNot">
+        <source>This filetype cannot be edited.&lt;br /&gt;The file must have an extension like:&lt;br /&gt;&lt;br
 					/&gt; &lt;b&gt;%s&lt;/b&gt;
-				</source>
-			</trans-unit>
-			<trans-unit id="file_newfolder.php.pagetitle">
-				<source>New file or folder</source>
-			</trans-unit>
-			<trans-unit id="file_newfolder.php.label_newfolder">
-				<source>Folder</source>
-			</trans-unit>
-			<trans-unit id="file_newfolder.php.submit">
-				<source>Create folders</source>
-			</trans-unit>
-			<trans-unit id="file_newfolder.php.folders">
-				<source>folders</source>
-			</trans-unit>
-			<trans-unit id="file_newfolder.php.newfile_submit">
-				<source>Create file</source>
-			</trans-unit>
-			<trans-unit id="file_newfolder.php.newfile">
-				<source>Create new textfile</source>
-			</trans-unit>
-			<trans-unit id="file_newfolder.php.label_newfile">
-				<source>File name</source>
-			</trans-unit>
-			<trans-unit id="file_newfolder.php.number_of_folders">
-				<source>Number of folders</source>
-			</trans-unit>
-			<trans-unit id="download">
-				<source>Download</source>
-			</trans-unit>
-			<trans-unit id="actions.new_folder">
-				<source>New Folder</source>
-			</trans-unit>
-			<trans-unit id="actions.new_file">
-				<source>New File</source>
-			</trans-unit>
-			<trans-unit id="translations">
-				<source>Translations</source>
-			</trans-unit>
-		</body>
-	</file>
+                </source>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.pagetitle">
+        <source>New file or folder</source>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.label_newfolder">
+        <source>Folder</source>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.submit">
+        <source>Create folders</source>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.folders">
+        <source>folders</source>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.newfile_submit">
+        <source>Create file</source>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.newfile">
+        <source>Create new textfile</source>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.label_newfile">
+        <source>File name</source>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.number_of_folders">
+        <source>Number of folders</source>
+      </trans-unit>
+      <trans-unit id="download">
+        <source>Download</source>
+      </trans-unit>
+      <trans-unit id="actions.new_folder">
+        <source>New Folder</source>
+      </trans-unit>
+      <trans-unit id="actions.new_file">
+        <source>New File</source>
+      </trans-unit>
+      <trans-unit id="translations">
+        <source>Translations</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>
