@@ -29,12 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This class holds functions used by the TYPO3 backend to check the integrity
  * of the database (The DBint module, 'lowlevel' extension)
  *
- * Depends on \TYPO3\CMS\Core\Database\RelationHandler
- *
- * @TODO: Need to really extend this class when the DataHandler library has been
- * @TODO: updated and the whole API is better defined. There are some known bugs
- * @TODO: in this library. Further it would be nice with a facility to not only
- * @TODO: analyze but also clean up!
+ * @deprecated will be removed in TYPO3 v15.0
  */
 #[Autoconfigure(public: true)]
 class DatabaseIntegrityCheck
@@ -63,7 +58,9 @@ class DatabaseIntegrityCheck
 
     public function __construct(
         protected readonly TcaSchemaFactory $tcaSchemaFactory
-    ) {}
+    ) {
+        trigger_error(__CLASS__ . ' will be removed in TYPO3 v15.0.', E_USER_DEPRECATED);
+    }
 
     public function getPageTranslatedPageIDArray(): array
     {

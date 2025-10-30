@@ -2776,4 +2776,9 @@ return [
             'Deprecation-109230-FormResultCompiler.rst',
         ],
     ],
+    'TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck' => [
+        'restFiles' => [
+            'Deprecation-107931-LowlevelDatabaseIntegrityCheck.rst',
+        ],
+    ],
 ];

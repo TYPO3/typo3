@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck;
+use TYPO3\CMS\Reports\Integrity\DatabaseIntegrityCheck;
 
 /**
  * Service for collecting database record statistics
@@ -110,29 +110,26 @@ final readonly class RecordStatisticsService
         $databaseIntegrityCheck->genTree(0);
 
         // Tables and lost records
-        $id_list = implode(',', array_merge([0], array_keys($databaseIntegrityCheck->getPageIdArray())));
-        $databaseIntegrityCheck->lostRecords($id_list);
+        $pageIds = array_merge([0], array_keys($databaseIntegrityCheck->getPageIdArray()));
+        $lostRecords = $databaseIntegrityCheck->lostRecords($pageIds);
 
         $tableStatistic = [];
-        $countArr = $databaseIntegrityCheck->countRecords($id_list);
+        $countArr = $databaseIntegrityCheck->countRecords($pageIds);
+        $lostPageIds = isset($lostRecords['pages']) ? array_keys($lostRecords['pages']) : [];
 
         /** @var TcaSchema $schema */
         foreach ($this->tcaSchemaFactory->all() as $table => $schema) {
             if ($schema->hasCapability(TcaSchemaCapability::HideInUi)) {
                 continue;
             }
-            if ($table === 'pages' && $databaseIntegrityCheck->getLostPagesList() !== '') {
-                $lostRecordCount = count(explode(',', $databaseIntegrityCheck->getLostPagesList()));
-            } else {
-                $lostRecordCount = isset($databaseIntegrityCheck->getLRecords()[$table]) ? count($databaseIntegrityCheck->getLRecords()[$table]) : 0;
-            }
+            $lostRecordCount = isset($lostRecords[$table]) ? count($lostRecords[$table]) : 0;
             $recordCount = 0;
             if ($countArr['all'][$table] ?? false) {
                 $recordCount = (int)($countArr['non_deleted'][$table] ?? 0) . '/' . $lostRecordCount;
             }
             $lostRecordList = [];
-            foreach ($databaseIntegrityCheck->getLRecords()[$table] ?? [] as $data) {
-                if (!GeneralUtility::inList($databaseIntegrityCheck->getLostPagesList(), $data['pid'])) {
+            foreach ($lostRecords[$table] ?? [] as $data) {
+                if (!in_array((int)$data['pid'], $lostPageIds, true)) {
                     $lostRecordList[] =
                         '<div class="record">' .
                         $this->iconFactory->getIcon('status-dialog-error', IconSize::SMALL)->render() .
