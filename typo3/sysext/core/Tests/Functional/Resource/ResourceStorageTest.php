@@ -22,7 +22,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
@@ -93,6 +96,39 @@ final class ResourceStorageTest extends FunctionalTestCase
         );
         $subject->markAsPermanentlyOffline();
         self::assertNull($subject->getPublicUrl($file));
+    }
+
+    #[Test]
+    public function getPublicUrlReturnsNullForNonPublicStorageWithoutRequest(): void
+    {
+        unset($GLOBALS['TYPO3_REQUEST']);
+        $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
+        $subject = new ResourceStorage($localDriver, ['uid' => 1, 'name' => 'testing', 'is_online' => 1, 'is_public' => 0], new NoopEventDispatcher());
+        $file = new File(['uid' => 5, 'identifier' => '/private/foo.jpg', 'name' => 'foo.jpg'], $subject);
+
+        self::assertNull($subject->getPublicUrl($file));
+    }
+
+    #[Test]
+    public function getPublicUrlReturnsAbsoluteDumpFileUrlForNonPublicStorageWithRequest(): void
+    {
+        $request = new ServerRequest('https://example.com/', 'GET', null, [], ['HTTP_HOST' => 'example.com', 'HTTPS' => 'on']);
+        $GLOBALS['TYPO3_REQUEST'] = $request
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+        $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
+        $subject = new ResourceStorage($localDriver, ['uid' => 1, 'name' => 'testing', 'is_online' => 1, 'is_public' => 0], new NoopEventDispatcher());
+        $file = new File(['uid' => 5, 'identifier' => '/private/foo.jpg', 'name' => 'foo.jpg'], $subject);
+
+        $publicUrl = $subject->getPublicUrl($file);
+
+        self::assertNotNull($publicUrl);
+        self::assertStringStartsWith('https://example.com/', $publicUrl);
+        parse_str((string)parse_url($publicUrl, PHP_URL_QUERY), $query);
+        self::assertSame('dumpFile', $query['eID']);
+        self::assertSame('f', $query['t']);
+        self::assertSame('5', $query['f']);
+        self::assertNotEmpty($query['token']);
     }
 
     #[Test]
