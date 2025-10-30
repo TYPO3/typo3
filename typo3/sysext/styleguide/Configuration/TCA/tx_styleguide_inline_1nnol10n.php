@@ -32,7 +32,6 @@ return [
                 'foreign_field' => 'parentid',
                 'foreign_table_field' => 'parenttable',
             ],
-            'relationship' => 'manyToOne',
         ],
     ],
 

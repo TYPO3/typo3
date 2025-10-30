@@ -123,7 +123,6 @@ return [
                 ],
                 'foreign_field' => 'parentid',
             ],
-            'default' => 0,
         ],
         'edit_notification_defaults' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_defaults',
