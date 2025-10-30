@@ -3,6 +3,7 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_view_help.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
+			<!-- TODO: Delete with TYPO3 15.0 -->
 			<trans-unit id="details">
 				<source>Details</source>
 			</trans-unit>

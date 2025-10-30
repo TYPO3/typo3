@@ -56,6 +56,13 @@ class TranslationDomainListCommand extends Command
                 InputOption::VALUE_REQUIRED,
                 'Show translations domains only for the specified extension key.'
             );
+        $this
+            ->addOption(
+                'deprecated',
+                'd',
+                InputOption::VALUE_NONE,
+                'Include deprecated translation domains.'
+            );
     }
 
     /**
@@ -66,6 +73,7 @@ class TranslationDomainListCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $specificExtension = $input->getOption('extension');
+        $includeDeprecated = $input->getOption('deprecated');
 
         // Determine which packages to scan
         if ($specificExtension) {
@@ -91,12 +99,16 @@ class TranslationDomainListCommand extends Command
             $resources = $resourcesByLocale['en'] ?? [];
             foreach ($resources as $domain => $resource) {
                 $labelCount = $this->countLabelsInResource($resource);
+                $deprecated = $this->localizationFactory->isLanguageFileDeprecated($resource);
 
-                $labelData[] = [
-                    'domain' => $domain,
-                    'resource' => $resource,
-                    'labelCount' => $labelCount,
-                ];
+                if (!$deprecated || $includeDeprecated) {
+                    $labelData[] = [
+                        'domain' => $domain,
+                        'resource' => $resource,
+                        'labelCount' => $labelCount,
+                        'deprecated' => $deprecated,
+                    ];
+                }
             }
         }
 
@@ -114,6 +126,7 @@ class TranslationDomainListCommand extends Command
             'Translation Domain',
             'Label Resource',
             '# Labels',
+            'Status',
         ]);
 
         foreach ($labelData as $data) {
@@ -121,6 +134,7 @@ class TranslationDomainListCommand extends Command
                 $data['domain'],
                 $data['resource'],
                 (string)$data['labelCount'],
+                $data['deprecated'] ? 'deprecated' : '',
             ]);
         }
 

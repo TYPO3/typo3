@@ -53,6 +53,11 @@ readonly class LocalizationFactory
         'EXT:seo/Resources/Private/Language/locallang_tca.xlf' => 'EXT:seo/Resources/Private/Language/db.xlf',
     ];
 
+    protected const DEPRECATED_FILES = [
+        // @todo: remove the following files in TYPO3 v15.0
+        'EXT:backend/Resources/Private/Language/locallang_view_help.xlf',
+    ];
+
     public function __construct(
         protected Translator $translator,
         #[Autowire(service: 'cache.l10n')]
@@ -71,6 +76,15 @@ readonly class LocalizationFactory
     }
 
     /**
+     * @internal Not part of TYPO3 Core API. Do not use outside of TYPO3 Core as this method may vanish at any time.
+     */
+    public function isLanguageFileDeprecated(string $fileReference): bool
+    {
+        return in_array($fileReference, self::DEPRECATED_FILES) ||
+            isset(self::MOVED_FILES[$fileReference]);
+    }
+
+    /**
      * Returns parsed data from a given file and language key.
      *
      * @param string $fileReference Input is a file-reference (see \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName). That file is expected to be a supported locallang file format
@@ -82,6 +96,12 @@ readonly class LocalizationFactory
     {
         $languageKey = $languageKey === 'default' ? 'en' : $languageKey;
 
+        if (in_array($fileReference, self::DEPRECATED_FILES)) {
+            trigger_error(
+                sprintf('The file "%s" is deprecated. Please use a label from a different language file instead.', $fileReference),
+                E_USER_DEPRECATED
+            );
+        }
         if (isset(self::MOVED_FILES[$fileReference])) {
             trigger_error('The file ' . $fileReference . ' has been moved to ' . self::MOVED_FILES[$fileReference] . '. Please update your code accordingly.', E_USER_DEPRECATED);
             $fileReference = self::MOVED_FILES[$fileReference];
