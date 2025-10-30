@@ -209,6 +209,8 @@ class SilentConfigurationUpgradeService
         // #107436
         // symfony/translation loaders used now
         'SYS/lang/parser',
+        // #107943
+        'BE/compressionLevel',
     ];
 
     public function __construct(private readonly ConfigurationManager $configurationManager) {}

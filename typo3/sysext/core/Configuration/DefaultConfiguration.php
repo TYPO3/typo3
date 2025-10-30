@@ -1482,7 +1482,6 @@ return [
         'showRefreshLoginPopup' => false,
         'adminOnly' => 0,
         'disable_exec_function' => false,
-        'compressionLevel' => 0,
         'installToolPassword' => '',
         'installToolSessionHandler' => [
             'className' => \TYPO3\CMS\Install\Service\Session\FileSessionHandler::class,

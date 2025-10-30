@@ -81,17 +81,10 @@ return [
             ],
         ],
         /** internal: do not use or reference this middleware in your own code */
-        'typo3/cms-backend/output-compression' => [
-            'target' => \TYPO3\CMS\Backend\Middleware\OutputCompression::class,
-            'after' => [
-                'typo3/cms-backend/authentication',
-            ],
-        ],
-        /** internal: do not use or reference this middleware in your own code */
         'typo3/cms-backend/csp-headers' => [
             'target' => \TYPO3\CMS\Backend\Middleware\ContentSecurityPolicyHeaders::class,
             'after' => [
-                'typo3/cms-backend/output-compression',
+                'typo3/cms-backend/authentication',
             ],
         ],
         /** internal: do not use or reference this middleware in your own code */

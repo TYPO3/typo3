@@ -171,13 +171,6 @@ return [
             ],
         ],
         /** internal: do not use or reference this middleware in your own code, as this will be possibly be removed */
-        'typo3/cms-frontend/output-compression' => [
-            'target' => \TYPO3\CMS\Frontend\Middleware\OutputCompression::class,
-            'after' => [
-                'typo3/cms-frontend/prepare-tsfe-rendering',
-            ],
-        ],
-        /** internal: do not use or reference this middleware in your own code, as this will be possibly be removed */
         'typo3/cms-frontend/shortcut-and-mountpoint-redirect' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\ShortcutAndMountPointRedirect::class,
             'after' => [
@@ -198,7 +191,7 @@ return [
         'typo3/cms-core/response-propagation' => [
             'target' => \TYPO3\CMS\Core\Middleware\ResponsePropagation::class,
             'after' => [
-                'typo3/cms-frontend/output-compression',
+                'typo3/cms-frontend/prepare-tsfe-rendering',
                 'typo3/cms-frontend/csp-headers',
             ],
         ],

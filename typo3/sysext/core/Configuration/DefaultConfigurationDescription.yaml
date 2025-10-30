@@ -395,9 +395,6 @@ BE:
         disable_exec_function:
             type: bool
             description: 'Don''t use exec() function (except for ImageMagick which is disabled by <a href="#GFX-im">[GFX][im]</a>=0). If set, all file operations are done by the default PHP-functions. This is necessary under Windows! On Unix the system commands by exec() can be used, unless this is disabled.'
-        compressionLevel:
-            type: text
-            description: 'Determines output compression of BE output. Makes output smaller but slows down the page generation depending on the compression level. Requires a) zlib in your PHP installation and b) special rewrite rules for .css.gz and .js.gz (please see <code>_.htaccess</code> for an example). Range 1-9, where 1 is least compression and 9 is greatest compression. ''true'' as value will set the compression based on the PHP default settings (usually 5). Suggested and most optimal value is 5.'
         contentSecurityPolicyReportingUrl:
             type: text
             description: 'Content-Security-Policy reporting HTTP endpoint. If blank (""), the system default will be used. If set to zero ("0"), the reporting endpoint is disabled.'

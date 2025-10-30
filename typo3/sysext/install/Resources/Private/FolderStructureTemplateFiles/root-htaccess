@@ -29,7 +29,6 @@
 # Compressing resource files will save bandwidth and so improve loading speed especially for users
 # with slower internet connections. TYPO3 can compress the .js and .css files for you.
 # *) Uncomment the following lines and
-# *) Set $GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel'] = 9 for the Backend
 # *) Set $GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'] = 9 together with the TypoScript properties
 #    config.compressJs and config.compressCss for GZIP compression of Frontend JS and CSS files.
 

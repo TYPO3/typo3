@@ -85,7 +85,7 @@
 		"ext-mysqli": "",
 		"ext-openssl": "OpenSSL is required for sending SMTP mails over an encrypted channel endpoint",
 		"ext-zip": "",
-		"ext-zlib": "TYPO3 uses zlib for amongst others output compression and un/packing t3x extension files"
+		"ext-zlib": "TYPO3 uses zlib for resource compression and un/packing t3x extension files"
 	},
 	"conflict": {
 		"hoa/core": "*",
