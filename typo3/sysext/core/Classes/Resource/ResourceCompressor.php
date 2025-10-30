@@ -349,9 +349,6 @@ class ResourceCompressor
      * Options:
      * baseDirectories If set, only include files below one of the base directories
      *
-     * removes comments and whitespaces
-     * Adopted from https://github.com/drupal/drupal/blob/8.0.x/core/lib/Drupal/Core/Asset/CssOptimizer.php
-     *
      * @param string $cssFile Source filename, relative to requested page
      * @return string Compressed filename, relative to requested page
      */
@@ -365,28 +362,26 @@ class ResourceCompressor
         }
         if ($resource instanceof SystemResourceInterface) {
             $filename = $resource->getNameWithoutExtension();
-            $fileContents = $resource->getContents();
+            $contents = $resource->getContents();
             $hash = $resource->getHash();
             $cssUrl = ltrim((string)$this->resourcePublisher->generateUri($resource, null, new UriGenerationOptions(uriPrefix: '')), '/');
         } else {
             $filename = PathUtility::pathinfo($cssFile)['filename'];
             $filenameAbsolute = Environment::getPublicPath() . '/' . $this->getFilenameFromMainDir($cssFile);
             if (@file_exists($filenameAbsolute)) {
-                $fileContents = file_get_contents($filenameAbsolute);
+                $contents = file_get_contents($filenameAbsolute);
                 $fileStatus = stat($filenameAbsolute);
                 $hash = md5($filenameAbsolute . $fileStatus['mtime'] . $fileStatus['size']);
             } else {
                 $hash = md5($filenameAbsolute);
-                $fileContents = '';
+                $contents = '';
             }
             // make sure it is again the full filename
             $cssUrl = PathUtility::getAbsoluteWebPath($filenameAbsolute, false);
         }
 
         $targetFile = $this->targetDirectory . $filename . '-' . $hash . '.css';
-        if (!file_exists(Environment::getPublicPath() . '/' . $targetFile . ($this->createGzipped ? $this->gzipFileExtension : ''))
-        ) {
-            $contents = $this->compressCssString($fileContents);
+        if (!file_exists(Environment::getPublicPath() . '/' . $targetFile . ($this->createGzipped ? $this->gzipFileExtension : ''))) {
             if (!str_contains($cssUrl, $this->targetDirectory)) {
                 $contents = $this->cssFixRelativeUrlPaths($contents, $cssUrl);
             }
@@ -629,56 +624,6 @@ class ResourceCompressor
             }
         }
         return $javaScriptSourceCode;
-    }
-
-    /**
-     * Compress a CSS string by removing comments and whitespace characters
-     *
-     * @param string $contents
-     * @return string
-     */
-    protected function compressCssString($contents)
-    {
-        // Perform some safe CSS optimizations.
-        // Regexp to match comment blocks.
-        $comment = '/\*[^*]*\*+(?:[^/*][^*]*\*+)*/';
-        // Regexp to match double quoted strings.
-        $double_quot = '"[^"\\\\]*(?:\\\\.[^"\\\\]*)*"';
-        // Regexp to match single quoted strings.
-        $single_quot = "'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'";
-        // Strip all comment blocks, but keep double/single quoted strings.
-        $contents = (string)preg_replace(
-            "<($double_quot|$single_quot)|$comment>Ss",
-            '$1',
-            $contents
-        );
-        // Remove certain whitespace.
-        // There are different conditions for removing leading and trailing
-        // whitespace.
-        // @see https://php.net/manual/regexp.reference.subpatterns.php
-        $contents = (string)preg_replace(
-            '<
-				# Strip leading and trailing whitespace.
-				\s*([@{};,])\s*
-				# Strip only leading whitespace from:
-				# - Closing parenthesis: Retain "@media (bar) and foo".
-				| \s+([\)])
-				# Strip only trailing whitespace from:
-				# - Opening parenthesis: Retain "@media (bar) and foo".
-				# - Colon: Retain :pseudo-selectors.
-				| ([\(:])\s+
-				>xS',
-            // Only one of the three capturing groups will match, so its reference
-            // will contain the wanted value and the references for the
-            // two non-matching groups will be replaced with empty strings.
-            '$1$2$3',
-            $contents
-        );
-        // End the file with a new line.
-        $contents = trim($contents);
-        // Ensure file ends in newline.
-        $contents .= LF;
-        return $contents;
     }
 
     /**

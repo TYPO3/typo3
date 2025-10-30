@@ -471,45 +471,6 @@ final class ResourceCompressorTest extends UnitTestCase
         self::assertSame($expected, $result[$concatenatedFileName]['async']);
     }
 
-    public static function calcStatementsDataProvider(): array
-    {
-        return [
-            'simple calc' => [
-                'calc(100% - 3px)',
-                'calc(100% - 3px)',
-            ],
-            'complex calc with parentheses at the beginning' => [
-                'calc((100%/20) - 2*3px)',
-                'calc((100%/20) - 2*3px)',
-            ],
-            'complex calc with parentheses at the end' => [
-                'calc(100%/20 - 2*3px - (200px + 3%))',
-                'calc(100%/20 - 2*3px - (200px + 3%))',
-            ],
-            'complex calc with many parentheses' => [
-                'calc((100%/20) - (2 * (3px - (200px + 3%))))',
-                'calc((100%/20) - (2 * (3px - (200px + 3%))))',
-            ],
-        ];
-    }
-
-    #[DataProvider('calcStatementsDataProvider')]
-    #[Test]
-    public function calcFunctionMustRetainWhitespaces(string $input, string $expected): void
-    {
-        $subject = $this->getAccessibleMock(
-            ResourceCompressor::class,
-            ['compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir'],
-            [
-                $this->createMock(SystemResourceFactory::class),
-                $this->createMock(SystemResourcePublisherInterface::class),
-            ]
-        );
-        $subject->_call('initialize');
-        $result = $subject->_call('compressCssString', $input);
-        self::assertSame($expected, trim($result));
-    }
-
     #[Test]
     public function nomoduleJavascriptIsNotConcatenated(): void
     {
