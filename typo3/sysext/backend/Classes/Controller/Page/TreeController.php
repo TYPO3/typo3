@@ -631,11 +631,10 @@ class TreeController
         if ($uid <= 0) {
             return '';
         }
-        $rootline = array_reverse(BackendUtility::BEgetRootLine($uid));
+        $rootline = array_reverse(BackendUtility::BEgetRootLine($uid, '', true, ['nav_title']));
         array_shift($rootline);
         $path = [];
-        foreach ($rootline as $rootlineElement) {
-            $record = BackendUtility::getRecordWSOL('pages', $rootlineElement['uid'], 'title, nav_title', '', true, true);
+        foreach ($rootline as $record) {
             $text = $record['title'] ?? '';
             if ($this->useNavTitle && trim($record['nav_title'] ?? '') !== '') {
                 $text = $record['nav_title'];

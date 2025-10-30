@@ -855,6 +855,56 @@ final class TreeControllerTest extends FunctionalTestCase
         self::assertEquals($expected, $result);
     }
 
+    public static function getMountPointPathResolvesPagesMovedInWorkspaceDataProvider(): \Generator
+    {
+        yield 'page moved in workspace' => [
+            'uid' => 1511,
+            'expectation' => '/ACME Inc/Announcements & News/Products',
+        ];
+        yield 'sub-page of a page moved in workspace' => [
+            'uid' => 151110,
+            'expectation' => '/ACME Inc/Announcements & News/Products/Product 1',
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('getMountPointPathResolvesPagesMovedInWorkspaceDataProvider')]
+    public function getMountPointPathResolvesPagesMovedInWorkspace(int $uid, string $expectation): void
+    {
+        $this->backendUser = $this->setUpBackendUser(1);
+        $this->backendUser->workspace = 1;
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect(1));
+        $subject = $this->get(TreeController::class);
+        $method = new \ReflectionMethod($subject, 'getMountPointPath');
+        self::assertSame(htmlspecialchars($expectation), $method->invoke($subject, $uid));
+    }
+
+    #[Test]
+    public function fetchConfigurationActionAllowsPageMovedInWorkspaceAsTemporaryMountPoint(): void
+    {
+        $this->backendUser = $this->setUpBackendUser(1);
+        $this->backendUser->workspace = 1;
+        $this->backendUser->uc['pageTree_temporaryMountPoint'] = 1511;
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect(1));
+        $response = $this->get(TreeController::class)->fetchConfigurationAction(new ServerRequest(new Uri('https://example.com')));
+        $configuration = json_decode((string)$response->getBody(), true);
+        self::assertSame(htmlspecialchars('/ACME Inc/Announcements & News/Products'), $configuration['temporaryMountPoint']);
+    }
+
+    #[Test]
+    public function getAllEntryPointPageTreesWithPageMovedInWorkspaceAsTemporaryMountPoint(): void
+    {
+        $this->backendUser = $this->setUpBackendUser(1);
+        $this->backendUser->workspace = 1;
+        $this->backendUser->uc['pageTree_temporaryMountPoint'] = 1511;
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect(1));
+        $subject = $this->get(TreeController::class);
+        $method = new \ReflectionMethod($subject, 'getAllEntryPointPageTrees');
+        $result = $this->normalizeTreeArray($this->sortTreeArray($method->invoke($subject)), array_flip(['uid', 'title', '_children']));
+        self::assertSame(1511, $result[0]['uid'] ?? null);
+        self::assertSame('Products', $result[0]['title'] ?? null);
+    }
+
     #[Test]
     public function pageTreeItemsModificationEventIsTriggered(): void
     {
