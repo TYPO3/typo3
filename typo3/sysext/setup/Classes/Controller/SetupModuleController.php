@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
+use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -86,6 +87,7 @@ class SetupModuleController
     protected PasswordPolicyValidator $passwordPolicyValidator;
 
     public function __construct(
+        protected readonly Typo3Information $typo3Information,
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly MfaProviderRegistry $mfaProviderRegistry,
         protected readonly IconFactory $iconFactory,
@@ -155,6 +157,7 @@ class SetupModuleController
             ->setDisplayName($this->getLanguageService()->translate('short_description', 'setup.module'));
         $view->addButtonToButtonBar($shortcutButton);
         $view->assignMultiple([
+            'typo3Info' => $this->typo3Information,
             'isLanguageUpdate' => $this->languageUpdate,
             'menuItems' => $this->renderUserSetup(),
             'menuId' => 'DTM-375167ed176e8c9caf4809cee7df156c',

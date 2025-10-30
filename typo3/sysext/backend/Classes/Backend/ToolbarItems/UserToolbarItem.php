@@ -112,9 +112,14 @@ class UserToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemIn
         if ($userModule = $this->moduleProvider->getModuleForMenu('user', $backendUser)) {
             $modules = $userModule->getSubModules();
         }
+        $helpModules = null;
+        if ($helpModule = $this->moduleProvider->getModuleForMenu('help', $this->getBackendUser())) {
+            $helpModules = $helpModule->getSubModules();
+        }
         $view = $this->backendViewFactory->create($this->request);
         $view->assignMultiple([
             'modules' => $modules,
+            'helpModules' => $helpModules,
             'switchUserMode' => $this->getBackendUser()->getOriginalUserIdWhenInSwitchUserMode() !== null,
             'recentUsers' => $mostRecentUsers,
             'colorSchemeSwitchEnabled' => $this->getColorSchemeSwitchEnabled(),

@@ -28,7 +28,7 @@ final class HelpCest
     /**
      * Selector for the module container in the topbar
      */
-    private static string $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-helptoolbaritem';
+    private static string $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-usertoolbaritem';
 
     public function _before(ApplicationTester $I): void
     {

@@ -30,6 +30,48 @@
         </f:for>
     </ul>
 </f:if>
+<p class="dropdown-headline" id="help-dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.help" /></p>
+<f:if condition="{helpModules}">
+    <ul class="dropdown-list">
+        <f:for each="{helpModules}" as="module">
+            <li>
+                <a
+                    href="{f:if(condition: module.path, then: '{f:be.uri(route: module.identifier)}', else: '#')}"
+                    title="{f:translate(key: module.description, default: module.description)}"
+                    class="dropdown-item"
+                    role="menuitem"
+                    data-moduleroute-identifier="{module.identifier}"
+                >
+                    <span class="dropdown-item-columns">
+                        <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                            <core:icon identifier="{module.iconIdentifier}" size="small" alternativeMarkupIdentifier="inline"/>
+                        </span>
+                        <span class="dropdown-item-column dropdown-item-column-title">
+                            <f:translate key="{module.title}">{module.title}</f:translate>
+                        </span>
+                    </span>
+                </a>
+            </li>
+        </f:for>
+        <li>
+            <a
+                class="dropdown-item"
+                role="menuitem"
+                href="https://docs.typo3.org/" target="_blank" rel="noreferrer">
+                    <span class="dropdown-item-columns">
+                        <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                            <core:icon identifier="module-cshmanual" size="small" alternativeMarkupIdentifier="inline" />
+                        </span>
+                        <span class="dropdown-item-column dropdown-item-column-title">
+                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:onlineDocumentation">TYPO3 Online Documentation</f:translate>
+                            <span class="visually-hidden">(<f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:opensInANewWindow" />)</span>
+                        </span>
+                        <core:icon identifier="actions-window-open" />
+                    </span>
+            </a>
+        </li>
+    </ul>
+</f:if>
 <f:if condition="{f:count(subject: recentUsers)} > 0">
     <hr class="dropdown-divider" aria-hidden="true">
     <p class="dropdown-header"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.user.recentlySwitchedUsers" /></p>
