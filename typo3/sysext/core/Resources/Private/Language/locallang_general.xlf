@@ -3,7 +3,7 @@
 	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_general.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="LGL.endtime">
+			<trans-unit id="LGL.endtime" x-unused-since="14.0">
 				<source>Stop</source>
 			</trans-unit>
 			<trans-unit id="LGL.hidden">
@@ -18,19 +18,19 @@
 			<trans-unit id="LGL.creationUserId">
 				<source>Created By</source>
 			</trans-unit>
-			<trans-unit id="LGL.starttime">
+			<trans-unit id="LGL.starttime" x-unused-since="14.0">
 				<source>Start</source>
 			</trans-unit>
-			<trans-unit id="LGL.fe_group">
+			<trans-unit id="LGL.fe_group" x-unused-since="14.0">
 				<source>Access</source>
 			</trans-unit>
-			<trans-unit id="LGL.hide_at_login">
+			<trans-unit id="LGL.hide_at_login" x-unused-since="14.0">
 				<source>Hide at login</source>
 			</trans-unit>
-			<trans-unit id="LGL.any_login">
+			<trans-unit id="LGL.any_login" x-unused-since="14.0">
 				<source>Show at any login</source>
 			</trans-unit>
-			<trans-unit id="LGL.usergroups">
+			<trans-unit id="LGL.usergroups" x-unused-since="14.0">
 				<source>__Usergroups:__</source>
 			</trans-unit>
 			<trans-unit id="LGL.type" x-unused-since="14.0">
@@ -168,7 +168,7 @@
 			<trans-unit id="LGL.recursive">
 				<source>Recursive</source>
 			</trans-unit>
-			<trans-unit id="LGL.l18n_parent">
+			<trans-unit id="LGL.l18n_parent" x-unused-since="14.0">
 				<source>Transl.Orig</source>
 			</trans-unit>
 			<trans-unit id="LGL.siteLanguages">

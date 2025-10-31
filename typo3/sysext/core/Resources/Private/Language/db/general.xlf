@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
 	<file id="f1">
+		<unit id="description">
+			<segment>
+				<source>Description</source>
+			</segment>
+		</unit>
         <unit id="editlock">
             <segment>
                 <source>Editable for Admins Only</source>
             </segment>
         </unit>
+		<unit id="enabled">
+			<segment>
+				<source>Enabled</source>
+			</segment>
+		</unit>
         <unit id="endtime">
             <segment>
                 <source>Expiration Date</source>
@@ -16,6 +26,31 @@
                 <source>Frontend User Group Access Rights</source>
             </segment>
         </unit>
+		<unit id="fe_group.hide_at_login">
+			<segment>
+				<source>Hide at login</source>
+			</segment>
+		</unit>
+		<unit id="fe_group.any_login">
+			<segment>
+				<source>Show at any login</source>
+			</segment>
+		</unit>
+		<unit id="fe_group.usergroups">
+			<segment>
+				<source>__Usergroups:__</source>
+			</segment>
+		</unit>
+		<unit id="l18n_parent">
+			<segment>
+				<source>Transl.Orig</source>
+			</segment>
+		</unit>
+		<unit id="language">
+			<segment>
+				<source>Language</source>
+			</segment>
+		</unit>
         <unit id="starttime">
             <segment>
                 <source>Publish Date</source>

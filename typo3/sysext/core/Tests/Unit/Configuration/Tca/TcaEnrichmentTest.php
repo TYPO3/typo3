@@ -37,7 +37,7 @@ final class TcaEnrichmentTest extends UnitTestCase
         ];
         $expected = $tca;
         $expected['aTable']['columns']['myDisableField'] = [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
+            'label' => 'core.db.general:enabled',
             'exclude' => true,
             'config' => [
                 'type' => 'check',
@@ -90,7 +90,7 @@ final class TcaEnrichmentTest extends UnitTestCase
         $expected = $tca;
         $expected['aTable']['columns']['myStarttimeField'] = [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
+            'label' => 'core.db.general:starttime',
             'config' => [
                 'type' => 'datetime',
                 'default' => 0,
@@ -135,7 +135,7 @@ final class TcaEnrichmentTest extends UnitTestCase
         $expected = $tca;
         $expected['aTable']['columns']['myEndtimeField'] = [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
+            'label' => 'core.db.general:endtime',
             'config' => [
                 'type' => 'datetime',
                 'default' => 0,
@@ -183,7 +183,7 @@ final class TcaEnrichmentTest extends UnitTestCase
         $expected = $tca;
         $expected['aTable']['columns']['myFeGroupField'] = [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.fe_group',
+            'label' => 'core.db.general:fe_group',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -191,15 +191,15 @@ final class TcaEnrichmentTest extends UnitTestCase
                 'maxitems' => 20,
                 'items' => [
                     [
-                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
+                        'label' => 'core.db.general:fe_group.hide_at_login',
                         'value' => -1,
                     ],
                     [
-                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
+                        'label' => 'core.db.general:fe_group.any_login',
                         'value' => -2,
                     ],
                     [
-                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
+                        'label' => 'core.db.general:fe_group.usergroups',
                         'value' => '--div--',
                     ],
                 ],
@@ -285,7 +285,7 @@ final class TcaEnrichmentTest extends UnitTestCase
         $expected = $tca;
         $expected['aTable']['columns']['myDescriptionField'] = [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.description',
+            'label' => 'core.db.general:description',
             'config' => [
                 'type' => 'text',
                 'rows' => 5,
@@ -327,7 +327,7 @@ final class TcaEnrichmentTest extends UnitTestCase
         ];
         $expected = [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
+            'label' => 'core.db.general:language',
             'config' => [
                 'type' => 'language',
             ],
@@ -396,7 +396,7 @@ final class TcaEnrichmentTest extends UnitTestCase
         ];
         $expected = [
             'displayCond' => 'FIELD:myLanguageField:>:0',
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+            'label' => 'core.db.general:l18n_parent',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
