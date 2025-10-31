@@ -975,10 +975,7 @@ class FileList
                     ->setLabel($action->getLabel() ?: $action->getTitle())
                     ->setIcon($action->getIcon())
                     ->setHref($action->getHref())
-                    ->setAttributes([
-                        ...$action->getAttributes(),
-                        'class' => $action->getClasses(),
-                    ]);
+                    ->setAttributes($action->getAttributes());
                 $cellOutput .= '<li>' . $action->render() . '</li>';
                 continue;
             }
@@ -993,8 +990,8 @@ class FileList
                     ->setIcon($action->getIcon())
                     ->setHref($action->getHref())
                     ->setAttributes([
+                        ...$action->getAttributes(),
                         ...$attributes,
-                        'class' => $action->getClasses(),
                         'role' => $action->getRole(),
                     ]);
                 $cellOutput .= '<li>' . $action->render() . '</li>';
@@ -1102,9 +1099,8 @@ class FileList
             return null;
         }
 
-        $button = $this->componentFactory->createGenericButton();
-        $button->setTag('a');
-        $button->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.view'));
+        $button = $this->componentFactory->createLinkButton();
+        $button->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.view'));
         $button->setHref($resourceView->getPublicUrl());
         $button->setAttributes(['target' => '_blank']);
         $button->setSize(ButtonSize::MEDIUM);

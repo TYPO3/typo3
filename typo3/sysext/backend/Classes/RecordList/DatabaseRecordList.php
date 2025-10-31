@@ -980,27 +980,28 @@ class DatabaseRecordList
             return null;
         }
 
-        $schema = $this->tcaSchemaFactory->get($table);
-
-        $tag = 'a';
-        $iconIdentifier = 'actions-plus';
         $label = sprintf(
             $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:newRecordOfType'),
-            $schema->getTitle($this->getLanguageService()->sL(...)),
+            $this->tcaSchemaFactory->get($table)->getTitle($this->getLanguageService()->sL(...)),
         );
-        $attributes = [
-            'data-recordlist-action' => 'new',
+        $dataAttributes = [
+            'recordlist-action' => 'new',
         ];
 
+        $button = $this->componentFactory->createLinkButton()
+            ->setTitle($label)
+            ->setShowLabelText(true);
+
         if ($table === 'pages') {
-            $iconIdentifier = 'actions-page-new';
-            $attributes['data-new'] = 'page';
-            $attributes['href'] = (string)$this->uriBuilder->buildUriFromRoute(
+            $button->setIcon($this->iconFactory->getIcon('actions-page-new', IconSize::SMALL));
+            $button->setHref((string)$this->uriBuilder->buildUriFromRoute(
                 'db_new_pages',
                 ['id' => $this->id, 'returnUrl' => $this->listURL()]
-            );
+            ));
+            $dataAttributes['new'] = 'page';
         } else {
-            $attributes['href'] = $this->uriBuilder->buildUriFromRoute(
+            $button->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
+            $button->setHref((string)$this->uriBuilder->buildUriFromRoute(
                 'record_edit',
                 [
                     'edit' => [
@@ -1011,17 +1012,10 @@ class DatabaseRecordList
                     'module' => $this->request->getAttribute('module')?->getIdentifier() ?? '',
                     'returnUrl' => $this->listURL(),
                 ]
-            );
+            ));
         }
 
-        $button = $this->componentFactory->createGenericButton();
-        $button->setTag($tag);
-        $button->setLabel($label);
-        $button->setShowLabelText(true);
-        $button->setIcon($this->iconFactory->getIcon($iconIdentifier, IconSize::SMALL));
-        $button->setAttributes($attributes);
-
-        return $button;
+        return $button->setDataAttributes($dataAttributes);
     }
 
     protected function createActionButtonDownload(string $table, int $totalItems): ?ButtonInterface
@@ -1848,7 +1842,7 @@ class DatabaseRecordList
                     $moveUpButton = $this->componentFactory->createLinkButton()
                         ->setIcon($this->iconFactory->getIcon('actions-move-up', IconSize::SMALL))
                         ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:moveUp'))
-                        ->setHref((string)$url);
+                        ->setHref($url);
                 }
                 $primary->add('moveUp', $moveUpButton);
 
@@ -1933,7 +1927,7 @@ class DatabaseRecordList
                         $params['redirect'] = $this->listURL();
                         $params['cmd'][$table][$record->getUid()]['move'] = -$this->id;
                         $url = $this->uriBuilder->buildUriFromRoute('tce_db', $params);
-                        $moveLeftButton = $this->componentFactory->createGenericButton()
+                        $moveLeftButton = $this->componentFactory->createLinkButton()
                             ->setIcon($this->iconFactory->getIcon('actions-move-left', IconSize::SMALL))
                             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:prevLevel'))
                             ->setHref((string)$url);
@@ -1956,7 +1950,7 @@ class DatabaseRecordList
                         $params['redirect'] = $this->listURL();
                         $params['cmd'][$table][$record->getUid()]['move'] = $this->currentTable['prevUid'][$record->getUid()];
                         $url = $this->uriBuilder->buildUriFromRoute('tce_db', $params);
-                        $moveRightAction = $this->componentFactory->createGenericButton()
+                        $moveRightAction = $this->componentFactory->createLinkButton()
                             ->setIcon($this->iconFactory->getIcon('actions-move-right', IconSize::SMALL))
                             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:nextLevel'))
                             ->setHref((string)$url);
@@ -2002,7 +1996,7 @@ class DatabaseRecordList
         foreach ($secondary->getItems() as $action) {
             if ($action instanceof GenericButton) {
                 $action = $this->componentFactory->createDropDownItem()
-                    ->setTag($action->getHref() === null ? $action->getTag() : 'a')
+                    ->setTag($action->getTag())
                     ->setLabel($action->getLabel() ?: $action->getTitle())
                     ->setIcon($action->getIcon())
                     ->setHref($action->getHref())
@@ -2023,8 +2017,8 @@ class DatabaseRecordList
                     ->setIcon($action->getIcon())
                     ->setHref($action->getHref())
                     ->setAttributes([
+                        ...$action->getAttributes(),
                         ...$attributes,
-                        'class' => $action->getClasses(),
                         'role' => $action->getRole(),
                     ]);
                 $cellOutput .= '<li>' . $action->render() . '</li>';
@@ -2070,7 +2064,7 @@ class DatabaseRecordList
 
             $copyTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($isSel === 'copy' ? 'copyrelease' : 'copy'));
             $copyUrl = $this->clipObj->selUrlDB($table, $record->getUid(), true, $isSel === 'copy');
-            $clipboardButtons['copy'] = $this->componentFactory->createGenericButton()
+            $clipboardButtons['copy'] = $this->componentFactory->createLinkButton()
                 ->setIcon($this->iconFactory->getIcon($isSel === 'copy' ? 'actions-edit-copy-release' : 'actions-edit-copy', IconSize::SMALL))
                 ->setTitle($copyTitle)
                 ->setHref($copyUrl);
@@ -2086,7 +2080,7 @@ class DatabaseRecordList
             } else {
                 $cutTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($isSel === 'cut' ? 'cutrelease' : 'cut'));
                 $cutUrl = $this->clipObj->selUrlDB($table, $record->getUid(), false, $isSel === 'cut');
-                $clipboardButtons['cut'] = $this->componentFactory->createGenericButton()
+                $clipboardButtons['cut'] = $this->componentFactory->createLinkButton()
                     ->setIcon($this->iconFactory->getIcon($isSel === 'cut' ? 'actions-edit-cut-release' : 'actions-edit-cut', IconSize::SMALL))
                     ->setTitle($cutTitle)
                     ->setHref($cutUrl);
@@ -2104,7 +2098,6 @@ class DatabaseRecordList
             $pasteAfterTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_pasteAfter');
             $pasteAfterContent = $this->clipObj->confirmMsgText($table, $record->getRawRecord()?->toArray(), 'after');
             $clipboardButtons['pasteAfter'] = $this->componentFactory->createGenericButton()
-                ->setTag('button')
                 ->setIcon($this->iconFactory->getIcon('actions-document-paste-after', IconSize::SMALL))
                 ->setTitle($pasteAfterTitle)
                 ->setAttributes([
@@ -2112,8 +2105,8 @@ class DatabaseRecordList
                     'aria-haspopup' => 'dialog',
                     'data-uri' => $pasteAfterUrl,
                     'data-content' => $pasteAfterContent,
-                    'class' => 'btn btn-default t3js-modal-trigger',
-                ]);
+                ])
+                ->setClasses('t3js-modal-trigger');
         }
 
         // Now, looking for elements in general:
@@ -2129,8 +2122,8 @@ class DatabaseRecordList
                     'aria-haspopup' => 'dialog',
                     'data-uri' => $pasteIntoUrl,
                     'data-content' => $pasteIntoContent,
-                    'class' => 'btn btn-default t3js-modal-trigger',
-                ]);
+                ])
+                ->setClasses('t3js-modal-trigger');
         }
 
         return $clipboardButtons;
