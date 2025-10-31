@@ -117,4 +117,17 @@ final class FileSizeValidatorTest extends AbstractUploadedFileTestCase
         $validator = new FileSizeValidator();
         $validator->validate($objectStorage);
     }
+
+    #[Test]
+    public function validatorUsesCustomByteSizeUnitsString(): void
+    {
+        $options = ['minimum' => '10B', 'maximum' => '20B', 'byteSizeUnits' => ' b| kb| mb| gb'];
+        $validator = new FileSizeValidator();
+        $validator->setOptions($options);
+
+        $testFilename = $this->createTestFile('too_small_testfile.txt', 'TYPO3');
+        $uploadedFile = new UploadedFile($testFilename, 100, UPLOAD_ERR_OK, 'testfile.txt');
+        $validationError = $validator->validate($uploadedFile)->getFirstError()->getMessage();
+        self::assertEquals('The file must be larger than 10 b in size.', $validationError);
+    }
 }
