@@ -69,7 +69,7 @@ final class ActionViewHelperTest extends FunctionalTestCase
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = $request->withAttribute('routing', new PageArguments(1, '0', []));
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1639819692);
+        $this->expectExceptionCode(1690370264);
         $context = $this->get(RenderingContextFactory::class)->create([], $request);
         $context->getTemplatePaths()->setTemplateSource('<f:uri.action />');
         (new TemplateView($context))->render();
