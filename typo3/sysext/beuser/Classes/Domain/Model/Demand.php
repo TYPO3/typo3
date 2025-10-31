@@ -33,6 +33,7 @@ class Demand
 
     public const LOGIN_SOME = 1;
     public const LOGIN_NONE = 2;
+    public const LOGIN_CURRENT = 3;
 
     protected string $userName = '';
     protected int $userType = self::ALL;

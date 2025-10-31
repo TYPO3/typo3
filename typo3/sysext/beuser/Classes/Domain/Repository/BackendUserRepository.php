@@ -73,30 +73,45 @@ class BackendUserRepository extends Repository
                 $constraints[] = $query->logicalOr(...$searchConstraints);
             }
         }
-        // Only display admin users
-        if ($demand->getUserType() === Demand::USERTYPE_ADMINONLY) {
-            $constraints[] = $query->equals('admin', 1);
+
+        switch ($demand->getUserType()) {
+            case Demand::USERTYPE_ADMINONLY:
+                // Only display admin users
+                $constraints[] = $query->equals('admin', 1);
+                break;
+            case Demand::USERTYPE_USERONLY:
+                // Only display non-admin users
+                $constraints[] = $query->equals('admin', 0);
+                break;
         }
-        // Only display non-admin users
-        if ($demand->getUserType() === Demand::USERTYPE_USERONLY) {
-            $constraints[] = $query->equals('admin', 0);
+
+        switch ($demand->getStatus()) {
+            case Demand::STATUS_ACTIVE:
+                // Only display active users
+                $constraints[] = $query->equals('disable', 0);
+                break;
+            case Demand::STATUS_INACTIVE:
+                // Only display in-active users
+                $constraints[] = $query->equals('disable', 1);
+                break;
         }
-        // Only display active users
-        if ($demand->getStatus() === Demand::STATUS_ACTIVE) {
-            $constraints[] = $query->equals('disable', 0);
+
+        switch ($demand->getLogins()) {
+            case Demand::LOGIN_NONE:
+                // Not logged in before
+                $constraints[] = $query->equals('lastlogin', 0);
+                break;
+            case Demand::LOGIN_SOME:
+                // At least one login
+                $constraints[] = $query->logicalNot($query->equals('lastlogin', 0));
+                break;
+
+            case Demand::LOGIN_CURRENT:
+                // Currently logged-in users
+                $sessionTimeout = (int)($GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'] ?? 28800);
+                $constraints[] = $query->greaterThanOrEqual('lastlogin', time() - $sessionTimeout);
         }
-        // Only display in-active users
-        if ($demand->getStatus() === Demand::STATUS_INACTIVE) {
-            $constraints[] = $query->equals('disable', 1);
-        }
-        // Not logged in before
-        if ($demand->getLogins() === Demand::LOGIN_NONE) {
-            $constraints[] = $query->equals('lastlogin', 0);
-        }
-        // At least one login
-        if ($demand->getLogins() === Demand::LOGIN_SOME) {
-            $constraints[] = $query->logicalNot($query->equals('lastlogin', 0));
-        }
+
         // In backend user group
         if ($demand->getBackendUserGroup()) {
             $constraints[] = $query->logicalOr(

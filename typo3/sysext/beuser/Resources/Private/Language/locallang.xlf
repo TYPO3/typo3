@@ -264,6 +264,9 @@
 			<trans-unit id="backendUser.list.filter.loginState.never">
 				<source>Never logged in</source>
 			</trans-unit>
+			<trans-unit id="backendUser.list.filter.loginState.loggedIn">
+				<source>Currently logged in</source>
+			</trans-unit>
 			<trans-unit id="backendUser.list.filter.status">
 				<source>Status</source>
 			</trans-unit>

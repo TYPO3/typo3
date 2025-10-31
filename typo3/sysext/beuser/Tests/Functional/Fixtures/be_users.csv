@@ -1,4 +1,9 @@
 "be_users"
-,"uid","pid","tstamp","username","password","admin","disable","starttime","endtime","options","crdate","workspace_perms","deleted","TSconfig","lastlogin","workspace_id"
+,"uid","pid","tstamp","usergroup","username","password","admin","disable","starttime","endtime","options","crdate","workspace_perms","deleted","TSconfig","lastlogin","workspace_id"
 # The password is "password"
-,1,0,1366642540,"admin","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",1,0,0,0,0,1366642540,1,0,,1371033743,0
+,1,0,1366642540,0,"admin","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",1,0,0,0,0,1366642540,1,0,,1371033743,0
+,2,0,1366642540,3,"user-2","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",0,0,0,0,0,1366642540,1,0,,1371033743,0
+,3,0,1366642540,3,"hidden-user-3","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",0,0,0,0,0,1366642540,1,0,,1371033743,0
+,4,0,1366642540,3,"deleted-user-4","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",0,0,0,0,0,1366642540,1,1,,1371033743,0
+,5,0,1366642540,3,"never-logged-in-user-5","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",0,0,0,0,0,1366642540,1,0,,0,0
+,6,0,1366642540,3,"disabled-user-6","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",0,1,0,0,0,1366642540,1,0,,0,0

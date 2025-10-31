@@ -77,7 +77,7 @@ final class BackendUserControllerTest extends FunctionalTestCase
         self::assertCount(1, $dispatchedEvents);
         // NOTE: the backend groups list comes with an empty item at the start, to allow for not filtering the users list,
         // so it's one more item than in the database
-        self::assertCount(2, $dispatchedEvents[0]->backendGroups);
+        self::assertCount(3, $dispatchedEvents[0]->backendGroups);
     }
 
     #[Test]
