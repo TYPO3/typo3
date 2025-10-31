@@ -1,12 +1,12 @@
 ..  include:: /Includes.rst.txt
 
-..  _feature-107824-1761297638:
+..  _feature-107823-1761297638:
 
 ==========================================================
-Feature: #107824 - ComponentFactory for backend components
+Feature: #107823 - ComponentFactory for backend components
 ==========================================================
 
-See :issue:`107824`
+See :issue:`107823`
 
 Description
 ===========
@@ -33,7 +33,7 @@ and :php:`ComponentFactory` handles component creation.
 Additionally, several "add" methods now support fluent interface patterns, to
 enable method chaining for improved code readability.
 
-.. _feature-107824-recordlists:
+.. _feature-107823-recordlists:
 
 Database record list and file list
 ----------------------------------
@@ -60,7 +60,7 @@ The Button API has also been enhanced to allow passing a new
 :php:`TYPO3\CMS\Backend\Template\Components\Buttons\ButtonSize` enum
 to differentiate the buttons for certain icon sizes.
 
-.. _feature-107824-factorymethods:
+.. _feature-107823-factorymethods:
 
 Available Factory Methods
 -------------------------
@@ -102,13 +102,13 @@ URL parameters accept both :php:`string` and :php:`UriInterface` for convenience
 
    The corresponding :php:`ButtonBar::make*()`, :php:`Menu::makeMenuItem()`, and
    :php:`MenuRegistry::makeMenu()` methods are now deprecated.
-   See :ref:`deprecation-107824-1761297638`
+   See :ref:`deprecation-107823-1761297638`
 
 The Button API has also been enhanced to allow passing a new
  enum
 to differentiate the buttons for certain icon sizes.
 
-.. _feature-107824-buttonapi:
+.. _feature-107823-buttonapi:
 
 Improvements to Button API types
 --------------------------------
@@ -236,7 +236,7 @@ Example - Customizing pre-configured buttons:
         // ...
     }
 
-.. _feature-107824-fluent:
+.. _feature-107823-fluent:
 
 Fluent Interface Improvements
 =============================
@@ -272,7 +272,7 @@ chaining:
 These changes provide a more fluent API while maintaining backward compatibility, as the
 return values were previously ignored (:php:`void`).
 
-.. _feature-107824-rationale:
+.. _feature-107823-rationale:
 
 Design Rationale
 ================

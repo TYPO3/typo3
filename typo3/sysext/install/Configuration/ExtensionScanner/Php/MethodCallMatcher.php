@@ -6590,70 +6590,70 @@ return [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-107824-ButtonBarMakeMethods.rst',
+            'Deprecation-107823-ButtonBarMakeMethods.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeInputButton' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-107824-ButtonBarMakeMethods.rst',
+            'Deprecation-107823-ButtonBarMakeMethods.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeSplitButton' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-107824-ButtonBarMakeMethods.rst',
+            'Deprecation-107823-ButtonBarMakeMethods.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeDropDownButton' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-107824-ButtonBarMakeMethods.rst',
+            'Deprecation-107823-ButtonBarMakeMethods.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeLinkButton' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-107824-ButtonBarMakeMethods.rst',
+            'Deprecation-107823-ButtonBarMakeMethods.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeFullyRenderedButton' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-107824-ButtonBarMakeMethods.rst',
+            'Deprecation-107823-ButtonBarMakeMethods.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeShortcutButton' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-107824-ButtonBarMakeMethods.rst',
+            'Deprecation-107823-ButtonBarMakeMethods.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeButton' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-107824-ButtonBarMakeMethods.rst',
+            'Deprecation-107823-ButtonBarMakeMethods.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\Menu\Menu->makeMenuItem' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-107824-ButtonBarMakeMethods.rst',
+            'Deprecation-107823-ButtonBarMakeMethods.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\MenuRegistry->makeMenu' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-107824-ButtonBarMakeMethods.rst',
+            'Deprecation-107823-ButtonBarMakeMethods.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\Index\ExtractorRegistry->registerExtractionService' => [

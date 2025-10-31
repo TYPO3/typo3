@@ -1,12 +1,12 @@
 ..  include:: /Includes.rst.txt
 
-..  _deprecation-107824-1761297638:
+..  _deprecation-107823-1761297638:
 
 ====================================================================================
-Deprecation: #107824 - ButtonBar, Menu, and MenuRegistry make* methods deprecated
+Deprecation: #107823 - ButtonBar, Menu, and MenuRegistry make* methods deprecated
 ====================================================================================
 
-See :issue:`107824`
+See :issue:`107823`
 
 Description
 ===========

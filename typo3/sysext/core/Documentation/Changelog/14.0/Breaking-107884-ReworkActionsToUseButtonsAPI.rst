@@ -37,7 +37,7 @@ Impact
 Extensions that listen to the :php:`ModifyRecordListRecordActionsEvent` or
 :php:`ProcessFileListActionsEvent` to modify record or file actions need to be
 updated. The events no longer work with HTML strings but with
-:php:`ComponentInterface` objects (see :issue:`107824`).
+:php:`ComponentInterface` objects (see :issue:`107823`).
 
 Extensions that directly call :php:`DatabaseRecordList::makeControl()` need to
 update the method signature as the `$table` parameter has been removed.
@@ -147,7 +147,7 @@ Instead of retrieving all items and modifying them, distinct event methods
 identifying each action button with a string like the former array key index.
 
 Action buttons can now longer be submitted as raw HTML markup, but instead need to
-utilize either the Button API or the new ComponentFactory() (see :issue:`107824`) for a convenience
+utilize either the Button API or the new ComponentFactory() (see :issue:`107823`) for a convenience
 layer on top of the Button API.
 
 ..  code-block:: php
