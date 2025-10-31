@@ -40,6 +40,7 @@ final class FileSizeValidator extends AbstractValidator
         'maximum' => [PHP_INT_MAX . 'B', 'The maximum file size to accept', 'string'],
         'lessMessage' => [null, 'Translation key or message for value less than minimum', 'string'],
         'exceedMessage' => [null, 'Translation key or message for value exceeds maximum', 'string'],
+        'byteSizeUnits' => [' Bytes| Kilobyte| Megabyte| Gigabyte', 'Byte size units string for "formatSize" function', 'string'],
     ];
 
     public function isValid(mixed $value): void
@@ -69,7 +70,7 @@ final class FileSizeValidator extends AbstractValidator
             $maxFileSize = PHP_INT_MAX;
         }
 
-        $labels = ' Bytes| Kilobyte| Megabyte| Gigabyte';
+        $labels = htmlspecialchars($this->options['byteSizeUnits']);
         if ($fileSize < $minFileSize) {
             $message = $this->translateErrorMessage(
                 $this->lessMessage,
