@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Error\Exception;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -46,7 +45,6 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer
     private const L10N_PREFIX = 'LLL:EXT:form/Resources/Private/Language/Database.xlf:';
 
     public function __construct(
-        protected readonly FlexFormService $flexFormService,
         protected readonly FormPersistenceManagerInterface $formPersistenceManager,
         protected readonly FlashMessageService $flashMessageService,
         protected readonly ExtbaseConfigurationManagerInterface $extbaseConfigurationManager,

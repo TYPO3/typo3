@@ -35,7 +35,6 @@ use TYPO3\CMS\Core\Schema\Capability\RootLevelCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Serializer\Typo3XmlParser;
 use TYPO3\CMS\Core\Serializer\Typo3XmlSerializerOptions;
-use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -122,7 +121,6 @@ class Import extends ImportExport
     public function __construct(
         protected readonly FlexFormTools $flexFormTools,
         protected readonly StorageRepository $storageRepository,
-        protected readonly FlexFormService $flexFormService,
         protected readonly ConnectionPool $connectionPool,
     ) {
         $this->fetchStorages();
@@ -506,7 +504,7 @@ class Import extends ImportExport
             && $storageObject->isWritable() === (bool)$storageRecord['is_writable']
             && $storageObject->isOnline() === (bool)$storageRecord['is_online']
         ) {
-            $storageRecordConfiguration = $this->flexFormService->convertFlexFormContentToArray($storageRecord['configuration'] ?? '');
+            $storageRecordConfiguration = $this->flexFormTools->convertFlexFormContentToArray($storageRecord['configuration'] ?? '');
             $storageObjectConfiguration = $storageObject->getConfiguration();
             if ($storageRecordConfiguration['pathType'] === $storageObjectConfiguration['pathType']
                 && $storageRecordConfiguration['basePath'] === $storageObjectConfiguration['basePath']

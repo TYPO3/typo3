@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
 use TYPO3\CMS\Core\Resource\Event\AfterResourceStorageInitializationEvent;
 use TYPO3\CMS\Core\Resource\Event\BeforeResourceStorageInitializationEvent;
-use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -55,7 +54,6 @@ class StorageRepository
         protected readonly ConnectionPool $connectionPool,
         protected readonly DriverRegistry $driverRegistry,
         protected readonly FlexFormTools $flexFormTools,
-        protected readonly FlexFormService $flexFormService,
         protected readonly LoggerInterface $logger,
     ) {}
 
@@ -447,7 +445,7 @@ class StorageRepository
     protected function convertFlexFormDataToConfigurationArray(string $flexFormData): array
     {
         if ($flexFormData) {
-            return $this->flexFormService->convertFlexFormContentToArray($flexFormData);
+            return $this->flexFormTools->convertFlexFormContentToArray($flexFormData);
         }
         return [];
     }

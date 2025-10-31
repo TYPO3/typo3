@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Frontend\DataProcessing;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Core\Service\FlexFormService;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -64,7 +64,7 @@ use TYPO3\CMS\Frontend\Resource\FileCollector;
 readonly class FlexFormProcessor implements DataProcessorInterface
 {
     public function __construct(
-        private FlexFormService $flexFormService,
+        private FlexFormTools $flexFormTools,
     ) {}
 
     /**
@@ -92,7 +92,7 @@ readonly class FlexFormProcessor implements DataProcessorInterface
         if (!is_string($originalValue)) {
             return $processedData;
         }
-        $flexFormData = $this->flexFormService->convertFlexFormContentToArray($originalValue);
+        $flexFormData = $this->flexFormTools->convertFlexFormContentToArray($originalValue);
 
         // Process FAL references
         if (isset($processorConfiguration['references.']) && is_array($processorConfiguration['references.'])) {

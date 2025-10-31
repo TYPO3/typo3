@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\DataHandling;
 
 use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Core\Collection\LazyRecordCollection;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -45,7 +46,6 @@ use TYPO3\CMS\Core\Schema\Field\RelationalFieldTypeInterface;
 use TYPO3\CMS\Core\Schema\Field\StaticSelectFieldType;
 use TYPO3\CMS\Core\Schema\FlexFormSchemaFactory;
 use TYPO3\CMS\Core\Schema\RelationMap;
-use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -76,7 +76,7 @@ readonly class RecordFieldTransformer
     public function __construct(
         protected RelationResolver $relationResolver,
         protected ResourceFactory $resourceFactory,
-        protected FlexFormService $flexFormService,
+        protected FlexFormTools $flexFormTools,
         protected FlexFormSchemaFactory $flexFormSchemaFactory,
         protected LinkService $linkService,
         protected TypoLinkCodecService $typoLinkCodecService,
@@ -221,7 +221,7 @@ readonly class RecordFieldTransformer
         Context $context,
         RecordIdentityMap $recordIdentityMap,
     ): FlexFormFieldValues {
-        $plainValues = $this->flexFormService->convertFlexFormContentToSheetsArray((string)$fieldValue);
+        $plainValues = $this->flexFormTools->convertFlexFormContentToSheetsArray((string)$fieldValue);
         // @todo: RelationMap does not work in FlexForm currently, as we do not have this information persisted somewhere
         $usedSchema = $this->flexFormSchemaFactory->getSchemaForRecord($record, $fieldInformation, new RelationMap());
         if ($usedSchema === null) {

@@ -22,6 +22,7 @@ use Psr\Http\Message\UploadedFileInterface;
 use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Cache\Event\AddCacheTagEvent;
 use TYPO3\CMS\Core\Configuration\Features;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -91,7 +92,6 @@ use TYPO3\CMS\Core\Resource\Search\Result\FileSearchResultInterface;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Resource\Service\FileProcessingService;
 use TYPO3\CMS\Core\Resource\Service\ResourceConsistencyService;
-use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\Exception\NotImplementedMethodException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -213,7 +213,7 @@ class ResourceStorage implements ResourceStorageInterface
         if (is_array($this->storageRecord['configuration'] ?? null)) {
             $this->configuration = $this->storageRecord['configuration'];
         } elseif (!empty($this->storageRecord['configuration'] ?? '')) {
-            $this->configuration = GeneralUtility::makeInstance(FlexFormService::class)->convertFlexFormContentToArray($this->storageRecord['configuration']);
+            $this->configuration = GeneralUtility::makeInstance(FlexFormTools::class)->convertFlexFormContentToArray($this->storageRecord['configuration']);
         } else {
             $this->configuration = [];
         }

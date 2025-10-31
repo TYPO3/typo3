@@ -23,38 +23,13 @@ use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
-use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
 use TYPO3\CMS\Core\Resource\LocalPath;
 use TYPO3\CMS\Core\Resource\StorageRepository;
-use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class StorageRepositoryTest extends UnitTestCase
 {
-    #[Test]
-    public function getDriverObjectAcceptsDriverClassName(): void
-    {
-        $mockedDriver = $this->createMock(DriverInterface::class);
-        $driverFixtureClass = get_class($mockedDriver);
-        $registry = new DriverRegistry();
-        $registry->registerDriverClass($driverFixtureClass);
-        $subject = $this->getAccessibleMock(
-            StorageRepository::class,
-            null,
-            [
-                new NoopEventDispatcher(),
-                $this->createMock(ConnectionPool::class),
-                $registry,
-                $this->createMock(FlexFormTools::class),
-                new FlexFormService(),
-                $this->createMock(LoggerInterface::class),
-            ]
-        );
-        $obj = $subject->_call('getDriverObject', $driverFixtureClass, []);
-        self::assertInstanceOf(DriverInterface::class, $obj);
-    }
-
     public static function storageDetectionDataProvider(): array
     {
         $asRelativePathClosure = fn($value) => new LocalPath($value, LocalPath::TYPE_RELATIVE);
@@ -111,7 +86,6 @@ final class StorageRepositoryTest extends UnitTestCase
             $this->createMock(ConnectionPool::class),
             $this->createMock(DriverRegistry::class),
             $this->createMock(FlexFormTools::class),
-            new FlexFormService(),
             $this->createMock(LoggerInterface::class),
         );
         $mock = \Closure::bind(static function (StorageRepository $storageRepository) use (&$path, $storageConfiguration) {

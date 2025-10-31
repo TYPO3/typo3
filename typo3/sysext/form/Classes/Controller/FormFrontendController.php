@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Form\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
-use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
@@ -44,7 +43,6 @@ class FormFrontendController extends ActionController
     public function __construct(
         protected readonly ConfigurationService $configurationService,
         protected readonly FormPersistenceManagerInterface $formPersistenceManager,
-        protected readonly FlexFormService $flexFormService,
         protected readonly FlexFormTools $flexFormTools,
         protected readonly ExtFormConfigurationManagerInterface $extFormConfigurationManager,
     ) {}
@@ -156,6 +154,6 @@ class FormFrontendController extends ActionController
             return [];
         }
         $sheetDataXml = $this->flexFormTools->flexArray2Xml($sheetData);
-        return $this->flexFormService->convertFlexFormContentToArray($sheetDataXml)['settings'] ?? [];
+        return $this->flexFormTools->convertFlexFormContentToArray($sheetDataXml)['settings'] ?? [];
     }
 }

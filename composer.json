@@ -144,6 +144,7 @@
 	"extra": {
 		"typo3/class-alias-loader": {
 			"class-alias-maps": [
+				"typo3/sysext/core/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/extbase/Migrations/Code/ClassAliasMap.php"
 			],
 			"always-add-alias-loader": true

@@ -2684,5 +2684,9 @@ return [
             'Deprecation-107537-FilePathSanitizer.rst',
         ],
     ],
-
+    'TYPO3\CMS\Core\Service\FlexFormService' => [
+        'restFiles' => [
+            'Breaking-107945-ClassFlexFormServiceMergedIntoFlexFormTools.rst',
+        ],
+    ],
 ];

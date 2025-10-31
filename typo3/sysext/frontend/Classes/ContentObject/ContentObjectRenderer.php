@@ -26,6 +26,7 @@ use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Configuration\Features;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\Environment;
@@ -66,7 +67,6 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\Text\TextCropper;
@@ -4045,9 +4045,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         if (count($keyParts) === 2 && isset($this->data[$keyParts[0]])) {
                             $flexFormContent = $this->data[$keyParts[0]];
                             if (!empty($flexFormContent)) {
-                                $flexFormService = GeneralUtility::makeInstance(FlexFormService::class);
+                                $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
                                 $flexFormKey = str_replace('.', '|', $keyParts[1]);
-                                $settings = $flexFormService->convertFlexFormContentToArray($flexFormContent);
+                                $settings = $flexFormTools->convertFlexFormContentToArray($flexFormContent);
                                 $retVal = $this->getGlobal($flexFormKey, $settings);
                             }
                         }

@@ -19,8 +19,8 @@ namespace TYPO3\CMS\Extbase\Configuration;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -38,7 +38,7 @@ final readonly class FrontendConfigurationManager
 {
     public function __construct(
         private TypoScriptService $typoScriptService,
-        private FlexFormService $flexFormService,
+        private FlexFormTools $flexFormTools,
         private PageRepository $pageRepository,
         private EventDispatcherInterface $eventDispatcher
     ) {}
@@ -246,7 +246,7 @@ final readonly class FrontendConfigurationManager
         $flexFormConfiguration = $contentObject?->data['pi_flexform'] ?? [];
         if (is_string($flexFormConfiguration)) {
             if ($flexFormConfiguration !== '') {
-                $flexFormConfiguration = $this->flexFormService->convertFlexFormContentToArray($flexFormConfiguration);
+                $flexFormConfiguration = $this->flexFormTools->convertFlexFormContentToArray($flexFormConfiguration);
             } else {
                 $flexFormConfiguration = [];
             }

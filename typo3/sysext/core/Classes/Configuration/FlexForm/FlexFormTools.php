@@ -291,6 +291,91 @@ readonly class FlexFormTools
     }
 
     /**
+     * Parses the flexForm XML string and converts it to an array.
+     * The resulting array will be multidimensional, as a value "bla.blubb"
+     * results in two levels, and a value "bla.blubb.bla" results in three levels.
+     */
+    public function convertFlexFormContentToArray(string $flexFormContent): array
+    {
+        $settings = [];
+        $flexFormArray = GeneralUtility::xml2array($flexFormContent);
+        $flexFormArray = $flexFormArray['data'] ?? [];
+        foreach ($flexFormArray as $languages) {
+            if (!is_array($languages['lDEF'] ?? false)) {
+                continue;
+            }
+            foreach ($languages['lDEF'] as $valueKey => $valueDefinition) {
+                if (!str_contains($valueKey, '.')) {
+                    $settings[$valueKey] = $this->walkFlexFormNode($valueDefinition);
+                } else {
+                    $valueKeyParts = explode('.', $valueKey);
+                    $currentNode = &$settings;
+                    foreach ($valueKeyParts as $valueKeyPart) {
+                        $currentNode = &$currentNode[$valueKeyPart];
+                    }
+                    if (is_array($valueDefinition)) {
+                        if (array_key_exists('vDEF', $valueDefinition)) {
+                            $currentNode = $valueDefinition['vDEF'];
+                        } else {
+                            $currentNode = $this->walkFlexFormNode($valueDefinition);
+                        }
+                    } else {
+                        $currentNode = $valueDefinition;
+                    }
+                }
+            }
+        }
+        return $settings;
+    }
+
+    /**
+     * Parses the flexForm XML string and converts it to an array.
+     * The resulting array will be multidimensional. Sheets are
+     * respected to support property paths in multiple sheets.
+     *
+     * A value such as "settings.pageId" results in three levels:
+     * "'sDEF' => ['settings' => ['pageId' => 123]]" and a value such
+     * as "settings.storages.newsPid" results in four levels:
+     * "'sDEF' => ['settings' => ['storages' => ['newsPid' => 123]]]"
+     *
+     * @param string $flexFormContent flexForm xml string
+     */
+    public function convertFlexFormContentToSheetsArray(string $flexFormContent): array
+    {
+        $settings = [];
+        $flexFormArray = GeneralUtility::xml2array($flexFormContent);
+        $flexFormArray = $flexFormArray['data'] ?? [];
+        foreach ($flexFormArray as $sheetName => $sheet) {
+            foreach ($sheet as $language => $fields) {
+                if ($language !== 'lDEF') {
+                    continue;
+                }
+                foreach ($fields as $valueKey => $valueDefinition) {
+                    if (!str_contains($valueKey, '.')) {
+                        $settings[$sheetName][$valueKey] = $this->walkFlexFormNode($valueDefinition);
+                    } else {
+                        $valueKeyParts = explode('.', $valueKey);
+                        $currentNode = &$settings[$sheetName];
+                        foreach ($valueKeyParts as $valueKeyPart) {
+                            $currentNode = &$currentNode[$valueKeyPart];
+                        }
+                        if (is_array($valueDefinition)) {
+                            if (array_key_exists('vDEF', $valueDefinition)) {
+                                $currentNode = $valueDefinition['vDEF'];
+                            } else {
+                                $currentNode = $this->walkFlexFormNode($valueDefinition);
+                            }
+                        } else {
+                            $currentNode = $valueDefinition;
+                        }
+                    }
+                }
+            }
+        }
+        return $settings;
+    }
+
+    /**
      * Finds data structure in TCA, defined in column config 'ds'
      *
      * fieldTca = [
@@ -759,5 +844,48 @@ readonly class FlexFormTools
             }
         }
         return [];
+    }
+
+    /**
+     * Parses a flexForm node recursively and takes care of sections etc.
+     * Helper method of convertFlexFormContentToArray() and convertFlexFormContentToSheetsArray().
+     */
+    private function walkFlexFormNode(mixed $nodeArray): mixed
+    {
+        if (!is_array($nodeArray)) {
+            return $nodeArray;
+        }
+        $result = [];
+        foreach ($nodeArray as $nodeKey => $nodeValue) {
+            if ($nodeKey === 'vDEF') {
+                return $nodeValue;
+            }
+            if (in_array($nodeKey, ['el', '_arrayContainer'])) {
+                return $this->walkFlexFormNode($nodeValue);
+            }
+            if (($nodeKey[0] ?? '') === '_') {
+                continue;
+            }
+            if (strpos((string)$nodeKey, '.')) {
+                $nodeKeyParts = explode('.', $nodeKey);
+                $currentNode = &$result;
+                $nodeKeyPartsCount = count($nodeKeyParts);
+                for ($i = 0; $i < $nodeKeyPartsCount - 1; $i++) {
+                    $currentNode = &$currentNode[$nodeKeyParts[$i]];
+                }
+                $newNode = [next($nodeKeyParts) => $nodeValue];
+                $subVal = $this->walkFlexFormNode($newNode);
+                $currentNode[key($subVal)] = current($subVal);
+            } elseif (is_array($nodeValue)) {
+                if (array_key_exists('vDEF', $nodeValue)) {
+                    $result[$nodeKey] = $nodeValue['vDEF'];
+                } else {
+                    $result[$nodeKey] = $this->walkFlexFormNode($nodeValue);
+                }
+            } else {
+                $result[$nodeKey] = $nodeValue;
+            }
+        }
+        return $result;
     }
 }

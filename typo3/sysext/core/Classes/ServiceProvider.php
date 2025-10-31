@@ -29,6 +29,8 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
+use TYPO3\CMS\Core\Configuration\Tca\TcaMigration;
+use TYPO3\CMS\Core\Configuration\Tca\TcaPreparation;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\HashService;
@@ -38,7 +40,6 @@ use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
-use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Type\Map;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 
@@ -113,6 +114,8 @@ class ServiceProvider extends AbstractServiceProvider
             Resource\Security\FileNameValidator::class => self::getFileNameValidator(...),
             Resource\StorageRepository::class => self::getStorageRepository(...),
             Service\DependencyOrderingService::class => self::getDependencyOrderingService(...),
+            // @deprecated since TYPO3 v14, will be removed in TYPO3 v15
+            Service\FlexFormService::class => self::getFlexFormService(...),
             Service\OpcodeCacheService::class => self::getOpcodeCacheService(...),
             TypoScript\TypoScriptStringFactory::class => self::getTypoScriptStringFactory(...),
             TypoScript\TypoScriptService::class => self::getTypoScriptService(...),
@@ -556,8 +559,19 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Database\ConnectionPool::class),
             $container->get(Resource\Driver\DriverRegistry::class),
             $container->get(FlexFormTools::class),
-            new FlexFormService(),
             $container->get(Log\LogManager::class)->getLogger(Resource\StorageRepository::class),
+        ]);
+    }
+
+    /**
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+     */
+    public static function getFlexFormService(ContainerInterface $container): Service\FlexFormService
+    {
+        return self::new($container, Service\FlexFormService::class, [
+            $container->get(EventDispatcherInterface::class),
+            new TcaMigration(),
+            new TcaPreparation(),
         ]);
     }
 
