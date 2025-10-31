@@ -49,6 +49,11 @@ class AbstractButton extends AbstractControl implements ButtonInterface
      */
     protected bool $disabled = false;
 
+    /**
+     * Attributes for the button
+     */
+    protected array $attributes = [];
+
     public function getShowLabelText(): bool
     {
         return $this->showLabelText;
@@ -85,6 +90,23 @@ class AbstractButton extends AbstractControl implements ButtonInterface
     {
         $this->disabled = $disabled;
         return $this;
+    }
+
+    /**
+     * @param array<string, string> $attributes
+     */
+    public function setAttributes(array $attributes): static
+    {
+        $this->attributes = $attributes;
+        return $this;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function getAttributes(): array
+    {
+        return $this->attributes;
     }
 
     /**

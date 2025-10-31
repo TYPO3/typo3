@@ -203,7 +203,7 @@ final class SplitButtonTest extends UnitTestCase
         // - matching icon
         self::assertMatchesRegularExpression('@'
             . '<div class="btn-group t3js-splitbutton">'
-            . '\s+<a  class="btn btn-sm btn-default " data-customkey="customval" href="/some/link" role="button" title="linkbutton-title">'
+            . '\s+<a class="btn btn-sm btn-default " data-customkey="customval" href="/some/link" role="button" title="linkbutton-title">'
             . '\s+<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-document-save" data-identifier="actions-document-save" aria-hidden="true">'
             . '\s+<span class="icon-markup">\s+\[actions-document-save\]\s+</span>'
             . '\s+</span>'

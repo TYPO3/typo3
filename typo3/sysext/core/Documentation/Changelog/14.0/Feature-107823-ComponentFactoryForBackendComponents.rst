@@ -93,6 +93,11 @@ URL parameters accept both :php:`string` and :php:`UriInterface` for convenience
 * :php:`createDropDownDivider()` - Creates a new DropDownDivider instance
 * :php:`createDropDownItem()` - Creates a new DropDownItem instance
 
+.. note::
+
+   All button instances, extending the :php:`AbstractButton` class
+   do support any kind tag attributes via :php:`setAttributes()`.
+
 **Menu Component Creation:**
 
 * :php:`createMenu()` - Creates a new Menu instance
@@ -105,8 +110,7 @@ URL parameters accept both :php:`string` and :php:`UriInterface` for convenience
    See :ref:`deprecation-107823-1761297638`
 
 The Button API has also been enhanced to allow passing a new
- enum
-to differentiate the buttons for certain icon sizes.
+enum to differentiate the buttons for certain icon sizes.
 
 .. _feature-107823-buttonapi:
 

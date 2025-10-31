@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Template\Components\Buttons;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This button type renders a bootstrap split button.
  * It takes multiple button objects as parameters.
@@ -176,6 +178,11 @@ class SplitButton extends AbstractButton
         if (method_exists($primary, 'getForm') && !empty($primary->getForm())) {
             $attributes['form'] = $primary->getForm();
         }
+        if ($primary->getAttributes() !== []) {
+            foreach ($primary->getAttributes() as $attributeName => $attributeValue) {
+                $attributes[$attributeName] = $attributeValue;
+            }
+        }
         if ($primary->getDataAttributes() !== []) {
             foreach ($primary->getDataAttributes() as $attributeName => $attributeValue) {
                 $attributes['data-' . $attributeName] = $attributeValue;
@@ -190,10 +197,7 @@ class SplitButton extends AbstractButton
             $attributes['title'] = $primary->getTitle();
         }
 
-        $attributesString = '';
-        foreach ($attributes as $key => $value) {
-            $attributesString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
-        }
+        $attributesString = GeneralUtility::implodeAttributes($attributes, true);
 
         if ($primary instanceof LinkButton) {
             $primaryButtonHTML = '<a ' . $attributesString . '>
@@ -201,7 +205,7 @@ class SplitButton extends AbstractButton
                 ' . htmlspecialchars($primary->getTitle()) . '
             </a>';
         } else {
-            $primaryButtonHTML = '<button' . $attributesString . ' type="submit">
+            $primaryButtonHTML = '<button ' . $attributesString . ' type="submit">
             ' . ($primary->getIcon()?->render('inline') ?? '') . '
                 ' . htmlspecialchars($primary->getTitle()) . '
             </button>';

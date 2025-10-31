@@ -106,6 +106,9 @@ class LinkButton extends AbstractButton
         if ($this->showLabelText) {
             $labelText = ' ' . $this->title;
         }
+        foreach ($this->attributes as $attributeName => $attributeValue) {
+            $attributes[$attributeName] = $attributeValue;
+        }
         foreach ($this->dataAttributes as $attributeName => $attributeValue) {
             $attributes['data-' . $attributeName] = $attributeValue;
         }
