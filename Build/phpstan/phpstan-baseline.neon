@@ -1855,30 +1855,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Validation/Validator/CollectionValidator.php
 
 		-
-			message: '#^Property TYPO3Tests\\BlogExample\\Domain\\Model\\Administrator\:\:\$image on left side of \?\? is not nullable nor uninitialized\.$#'
-			identifier: nullCoalesce.initializedProperty
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Domain/Model/Administrator.php
-
-		-
-			message: '#^Property TYPO3Tests\\BlogExample\\Domain\\Model\\Administrator\:\:\$usergroup on left side of \?\? is not nullable nor uninitialized\.$#'
-			identifier: nullCoalesce.initializedProperty
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Domain/Model/Administrator.php
-
-		-
-			message: '#^Variable \$expectations on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.variable
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerArgumentTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Mapper\\\\DataMap'' and TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMap will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/Generic/Mapper/DataMapFactoryTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with TYPO3Tests\\TestDataMapper\\Domain\\Model\\Enum\\IntegerBackedEnum\:\:ONE and TYPO3Tests\\TestDataMapper\\Domain\\Model\\Enum\\IntegerBackedEnum will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
@@ -1891,58 +1867,10 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/Generic/Mapper/DataMapperTest.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with arguments ''TYPO3Tests\\\\BlogExample\\\\Domain\\\\Model\\\\Administrator'', TYPO3Tests\\BlogExample\\Domain\\Model\\Administrator and ''Assert that …'' will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/LazyLoadingProxyTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with arguments ''TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\LazyLoadingProxy'', TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyLoadingProxy and ''Assert that …'' will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/LazyLoadingProxyTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with arguments ''TYPO3Tests\\\\BlogExample\\\\Domain\\\\Model\\\\Post'', TYPO3Tests\\BlogExample\\Domain\\Model\\Post and ''Assert that \$posts…'' will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/LazyObjectStorageTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with arguments ''TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\LazyObjectStorage'', TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyObjectStorage and ''Assert that …'' will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/LazyObjectStorageTest.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface\<TYPO3Tests\\BlogExample\\Domain\\Model\\Post\>\:\:between\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/OperatorTest.php
-
-		-
-			message: '#^Parameter \#1 \$criteria of method TYPO3\\CMS\\Extbase\\Persistence\\Repository\<TYPO3Tests\\BlogExample\\Domain\\Model\\Post\>\:\:findBy\(\) expects array\<non\-empty\-string, mixed\>, array\{''author'', 1\} given\.$#'
+			message: '#^Parameter \#1 \$criteria of method TYPO3\\CMS\\Extbase\\Persistence\\Repository\<TYPO3Tests\\BlogExample\\Domain\\Model\\Post\>\:\:findBy\(\) expects array\<non\-empty\-string, mixed\>, array\{''author''\} given\.$#'
 			identifier: argument.type
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/RepositoryTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3Tests\\\\TypeConverterTest\\\\Domain\\\\Model\\\\Cat'' and TYPO3Tests\\TypeConverterTest\\Domain\\Model\\Cat will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 3
-			path: ../../typo3/sysext/extbase/Tests/Functional/Property/PropertyMapperTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SplObjectStorage'' and iterable\<TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface\>&SplObjectStorage will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 5
-			path: ../../typo3/sysext/extbase/Tests/Functional/Validation/ValidatorResolverTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\IconFactory'' and TYPO3\\CMS\\Core\\Imaging\\IconFactory will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Validation/ValidatorResolverTest.php
 
 		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Extbase\\\\Error\\\\Result'' and TYPO3\\CMS\\Extbase\\Error\\Result will always evaluate to true\.$#'

@@ -54,7 +54,9 @@ final class ValidatorResolverTest extends FunctionalTestCase
         $validator = $subject->createValidator(CustomValidator::class, $options);
         self::assertInstanceOf(CustomValidator::class, $validator);
         self::assertSame($options, $validator->getOptions());
-        self::assertInstanceOf(IconFactory::class, $validator->iconFactory);
+
+        // Test that iconFactory is injected (will throw exception if not injected)
+        self::assertNotEmpty($validator->iconFactory->getIcon('actions-brand-typo3'));
     }
 
     #[Test]
@@ -157,7 +159,6 @@ final class ValidatorResolverTest extends FunctionalTestCase
         self::assertArrayHasKey('qux', $propertyValidators);
 
         $fooPropertyValidators = $propertyValidators['foo'];
-        self::assertInstanceOf(\SplObjectStorage::class, $fooPropertyValidators);
         self::assertCount(3, $fooPropertyValidators);
 
         $fooPropertyValidators->rewind();
@@ -193,7 +194,6 @@ final class ValidatorResolverTest extends FunctionalTestCase
         self::assertInstanceOf(NotEmptyValidator::class, $propertyValidator);
 
         $barPropertyValidators = $propertyValidators['bar'];
-        self::assertInstanceOf(\SplObjectStorage::class, $barPropertyValidators);
         self::assertCount(1, $barPropertyValidators);
 
         $barPropertyValidators->rewind();
@@ -201,7 +201,6 @@ final class ValidatorResolverTest extends FunctionalTestCase
         self::assertInstanceOf(CustomValidator::class, $propertyValidator);
 
         $bazPropertyValidators = $propertyValidators['baz'];
-        self::assertInstanceOf(\SplObjectStorage::class, $bazPropertyValidators);
         self::assertCount(1, $bazPropertyValidators);
 
         $bazPropertyValidators->rewind();
@@ -209,7 +208,6 @@ final class ValidatorResolverTest extends FunctionalTestCase
         self::assertInstanceOf(CollectionValidator::class, $propertyValidator);
 
         $quxPropertyValidators = $propertyValidators['qux'];
-        self::assertInstanceOf(\SplObjectStorage::class, $quxPropertyValidators);
         self::assertCount(1, $quxPropertyValidators);
 
         $quxPropertyValidators->rewind();
@@ -251,7 +249,6 @@ final class ValidatorResolverTest extends FunctionalTestCase
         self::assertArrayHasKey('foo', $propertyValidators);
 
         $fooPropertyValidators = $propertyValidators['foo'];
-        self::assertInstanceOf(\SplObjectStorage::class, $fooPropertyValidators);
         self::assertCount(1, $fooPropertyValidators);
 
         $fooPropertyValidators->rewind();

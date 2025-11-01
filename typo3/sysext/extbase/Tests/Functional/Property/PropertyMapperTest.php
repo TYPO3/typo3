@@ -214,7 +214,6 @@ final class PropertyMapperTest extends FunctionalTestCase
         $propertyMappingConfiguration->allowAllProperties();
 
         $propertyMapper = $this->get(PropertyMapper::class);
-        /** @var Cat $result */
         $result = $propertyMapper->convert(
             $source,
             Cat::class,
@@ -236,7 +235,6 @@ final class PropertyMapperTest extends FunctionalTestCase
         $propertyMappingConfiguration->skipProperties('color');
 
         $propertyMapper = $this->get(PropertyMapper::class);
-        /** @var Cat $result */
         $result = $propertyMapper->convert(
             $source,
             Cat::class,
@@ -281,7 +279,6 @@ final class PropertyMapperTest extends FunctionalTestCase
         $propertyMappingConfiguration->skipUnknownProperties();
 
         $propertyMapper = $this->get(PropertyMapper::class);
-        /** @var Cat $result */
         $result = $propertyMapper->convert(
             $source,
             Cat::class,

@@ -53,16 +53,15 @@ final class LazyObjectStorageTest extends FunctionalTestCase
 
         self::assertFalse(str_contains($serialized, 'dataMapper'), 'Assert that serialized object string does not contain dataMapper');
 
-        /** @var LazyObjectStorage $postsProxy */
         $postsProxy = unserialize($serialized, ['allowed_classes' => true]);
         self::assertInstanceOf(LazyObjectStorage::class, $postsProxy, 'Assert that $postsProxy is an instance of LazyObjectStorage');
 
-        /** @var Post[] $posts */
         $posts = $postsProxy->toArray();
 
         self::assertInstanceOf(Post::class, $posts[0], 'Assert that $posts[0] is an instance of Post');
         self::assertInstanceOf(Post::class, $posts[1], 'Assert that $posts[1] is an instance of Post');
 
+        /** @var Post[] $posts */
         self::assertSame('Post1', $posts[0]->getTitle());
         self::assertSame('Post2', $posts[1]->getTitle());
     }

@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
-use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Administrator;
@@ -47,7 +46,6 @@ final class DataMapFactoryTest extends FunctionalTestCase
     {
         $subject = $this->get(DataMapFactory::class);
         $dataMap = $subject->buildDataMap(Administrator::class);
-        self::assertInstanceOf(DataMap::class, $dataMap);
         self::assertEquals('TYPO3Tests\BlogExample\Domain\Model\Administrator', $dataMap->recordType);
         self::assertEquals('fe_users', $dataMap->tableName);
     }
@@ -57,7 +55,6 @@ final class DataMapFactoryTest extends FunctionalTestCase
     {
         $subject = $this->get(DataMapFactory::class);
         $dataMap = $subject->buildDataMap(TtContent::class);
-        self::assertInstanceOf(DataMap::class, $dataMap);
         self::assertNull($dataMap->getColumnMap('thisPropertyDoesNotExist'));
         $headerColumnMap = $dataMap->getColumnMap('header');
         self::assertInstanceOf(ColumnMap::class, $headerColumnMap);

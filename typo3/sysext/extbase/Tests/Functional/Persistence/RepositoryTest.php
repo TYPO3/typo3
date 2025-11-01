@@ -269,7 +269,7 @@ final class RepositoryTest extends FunctionalTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1741806517);
         $this->get(PostRepository::class)->findBy(
-            ['author', 1],
+            [0 => 'author'],
         );
     }
 

@@ -50,11 +50,9 @@ final class LazyLoadingProxyTest extends FunctionalTestCase
 
         self::assertFalse(str_contains($serialized, 'dataMapper'), 'Assert that serialized object string does not contain dataMapper');
 
-        /** @var LazyLoadingProxy $administratorProxy */
         $administratorProxy = unserialize($serialized, ['allowed_classes' => true]);
         self::assertInstanceOf(LazyLoadingProxy::class, $administratorProxy, 'Assert that $administratorProxy is an instance of LazyLoadingProxy');
 
-        /** @var Administrator $administrator */
         $administrator = $administratorProxy->_loadRealInstance();
         self::assertInstanceOf(Administrator::class, $administrator, 'Assert that $administrator is an instance of Administrator');
 

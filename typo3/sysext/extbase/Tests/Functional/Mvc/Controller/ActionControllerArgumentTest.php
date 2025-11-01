@@ -111,7 +111,7 @@ final class ActionControllerArgumentTest extends FunctionalTestCase
         $body->rewind();
         $validateDocument = $this->createDocument($body->getContents());
         $parsedValidateData = $this->parseDataFromResponseDocument($validateDocument);
-        foreach ($expectations ?? [] as $bodyPath => $bodyValue) {
+        foreach ($expectations as $bodyPath => $bodyValue) {
             self::assertSame($bodyValue, ArrayUtility::getValueByPath($parsedValidateData, $bodyPath));
         }
     }

@@ -71,8 +71,7 @@ class Administrator extends AbstractEntity
     {
         $this->username = $username;
         $this->password = $password;
-        $this->usergroup = new ObjectStorage();
-        $this->image = new ObjectStorage();
+        $this->initializeObject();
     }
 
     /**
@@ -80,8 +79,8 @@ class Administrator extends AbstractEntity
      */
     public function initializeObject(): void
     {
-        $this->usergroup = $this->usergroup ?? new ObjectStorage();
-        $this->image = $this->image ?? new ObjectStorage();
+        $this->usergroup = new ObjectStorage();
+        $this->image = new ObjectStorage();
     }
 
     public function setUsername(string $username): void
