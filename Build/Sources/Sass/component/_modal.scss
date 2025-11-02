@@ -227,6 +227,12 @@
  */
 .modal-size-small {
     --typo3-modal-width: 440px;
+
+    &.modal-type-iframe {
+        // Define height since iframe is positioned absolute and can not
+        // provide an intrinstic height to the <dialog>
+        --typo3-modal-height: 440px;
+    }
 }
 
 .modal-size-medium {

@@ -2872,6 +2872,7 @@ td .table-fit{margin-bottom:0}
 .modal-severity-notice{--typo3-modal-header-color:var(--typo3-surface-container-notice-text);--typo3-modal-header-bg:var(--typo3-surface-container-notice)}
 .modal-severity-default{--typo3-modal-header-color:var(--typo3-surface-container-default-text);--typo3-modal-header-bg:var(--typo3-surface-container-default)}
 .modal-size-small{--typo3-modal-width:440px}
+.modal-size-small.modal-type-iframe{--typo3-modal-height:440px}
 .modal-size-medium{--typo3-modal-width:800px;--typo3-modal-height:520px}
 .modal-size-large{--typo3-modal-width:1000px;--typo3-modal-height:800px}
 .modal-size-full{--typo3-modal-width:100%;--typo3-modal-height:100%}
