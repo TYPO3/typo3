@@ -544,9 +544,15 @@ config.compressJs = 1
             <default><![CDATA[false]]></default>
         </property>
         <property name="compressCss" type="boolean">
-            <description><![CDATA[If set, CSS files will be minified and compressed.
+            <description><![CDATA[If set, CSS and JS files will be minified and compressed.
 
-Minification will remove all excess space. The more significant compression step (using Gzip compression) requires $TYPO3_CONF_VARS['FE']['compressionLevel'] to be enabled in the Install Tool together with the gzip-related compressionLevel options in .htaccess, as otherwise the files will not be readable by the user agent.
+If enabled, CSS and JS files will be pre-compressed to reduce file size. This
+setting has no effect on files included via page.headerData.
+
+Compression is applied if $TYPO3_CONF_VARS['FE']['compressionLevel'] is set to a
+non-zero value in the Install Tool. To serve compressed files correctly, make
+sure that gzip-related options are enabled in .htaccess; otherwise, browsers may
+not be able to read the compressed output.
 
 Example:
 

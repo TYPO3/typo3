@@ -437,8 +437,8 @@ FE:
             type: bool
             description: 'If enabled, the total parsetime of the page is added as HTTP response header "X-TYPO3-Parsetime". This can also be enabled/disabled via the TypoScript option <code>config.debug = 0</code>.'
         compressionLevel:
-            type: int
-            description: 'Determines output compression of FE output. Makes output smaller but slows down the page generation depending on the compression level. Requires zlib in your PHP installation. Range 1-9, where 1 is least compression and 9 is greatest compression. ''true'' as value will set the compression based on the PHP default settings (usually 5). Suggested and most optimal value is 5.'
+          type: int
+          description: 'Defines the compression level for pre-compressing generated CSS and JS files (used with config.compressCss / config.compressJs). Requires zlib. Range 0–9 (0=off, 9=max). "true" uses PHP default (usually 5).'
         pageNotFoundOnCHashError:
             type: bool
             description: 'If TRUE, a page not found call is made when cHash evaluation error occurs, otherwise caching is disabled and page output is displayed.'
