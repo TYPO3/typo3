@@ -18,5 +18,8 @@ return [
                 'target' => ManagementController::class . '::handleRequest',
             ],
         ],
+        'moduleData' => [
+            'redirectType' => 'default',
+        ],
     ],
 ];

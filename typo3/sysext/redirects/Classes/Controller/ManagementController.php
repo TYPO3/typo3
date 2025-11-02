@@ -166,6 +166,11 @@ class ManagementController
                 [
                     'edit' => ['sys_redirect' => ['new']],
                     'module' => 'site_redirects',
+                    'defVals' => [
+                        'sys_redirect' => [
+                            'redirect_type' => Demand::DEFAULT_REDIRECT_TYPE,
+                        ],
+                    ],
                     'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('site_redirects'),
                 ]
             ))

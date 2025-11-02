@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Redirects\Tests\Functional\Controller;
 
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
@@ -27,6 +28,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Redirects\Controller\ManagementController;
 use TYPO3\CMS\Redirects\Event\ModifyRedirectManagementControllerViewDataEvent;
+use TYPO3\CMS\Redirects\Repository\Demand;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ManagementControllerTest extends FunctionalTestCase
@@ -53,7 +55,8 @@ final class ManagementControllerTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request
             ->withAttribute('normalizedParams', $this->normalizedParams)
-            ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-redirects']));
+            ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-redirects']))
+            ->withAttribute('moduleData', new ModuleData('site_redirects', ['redirectType' => Demand::DEFAULT_REDIRECT_TYPE]));
         $GLOBALS['TYPO3_REQUEST'] = $request;
 
         $setHosts = ['*', 'example.com'];

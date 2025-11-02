@@ -104,6 +104,16 @@ class CleanupRedirectsCommand extends Command
                     return array_keys($this->redirectRepository->findIntegrityStatusCodes());
                 }
             )
+            ->addOption(
+                'redirectType',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.label.redirectType'),
+                Demand::DEFAULT_REDIRECT_TYPE,
+                function (): array {
+                    return array_keys($this->redirectRepository->findRedirectTypes());
+                }
+            )
         ;
     }
 

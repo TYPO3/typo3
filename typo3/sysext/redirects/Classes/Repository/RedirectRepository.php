@@ -37,6 +37,7 @@ class RedirectRepository
     {
         $this->schema = $schemaFactory->get('sys_redirect');
     }
+
     /**
      * Used within the backend module, which also includes the hidden records, but never deleted records.
      */
@@ -92,6 +93,13 @@ class RedirectRepository
         }
 
         $constraints = [];
+        if ($demand->hasRedirectType()) {
+            $constraints[] = $queryBuilder->expr()->eq(
+                'redirect_type',
+                $queryBuilder->createNamedParameter($demand->getRedirectType())
+            );
+        }
+
         if ($demand->hasSourceHosts()) {
             $constraints[] = $queryBuilder->expr()->in(
                 'source_host',
@@ -211,6 +219,20 @@ class RedirectRepository
         }
 
         return $statusCodes;
+    }
+
+    /**
+     * Get all available redirect_types
+     */
+    public function findRedirectTypes(): array
+    {
+        $result = $this->getQueryBuilder()
+            ->select('redirect_type')
+            ->from('sys_redirect')
+            ->groupBy('redirect_type')
+            ->executeQuery();
+
+        return array_column($result->fetchAllAssociative(), 'redirect_type');
     }
 
     protected function getGroupedRows(string $field, string $as): array

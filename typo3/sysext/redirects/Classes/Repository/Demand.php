@@ -26,6 +26,8 @@ use Symfony\Component\Console\Input\InputInterface;
  */
 class Demand
 {
+    public const DEFAULT_REDIRECT_TYPE = 'default';
+
     protected const ORDER_DESCENDING = 'desc';
     protected const ORDER_ASCENDING = 'asc';
     protected const DEFAULT_ORDER_FIELD = 'source_host';
@@ -34,6 +36,7 @@ class Demand
 
     protected string $orderField;
     protected string $orderDirection;
+    protected string $redirectType;
 
     /**
      * @var string[]
@@ -59,6 +62,7 @@ class Demand
         int $page = 1,
         string $orderField = self::DEFAULT_ORDER_FIELD,
         string $orderDirection = self::ORDER_ASCENDING,
+        string $redirectType = self::DEFAULT_REDIRECT_TYPE,
         array $sourceHosts = [],
         string $sourcePath = '',
         string $target = '',
@@ -78,6 +82,7 @@ class Demand
             $orderDirection = self::ORDER_ASCENDING;
         }
         $this->orderDirection = $orderDirection;
+        $this->redirectType = $redirectType;
         $this->sourceHosts = $sourceHosts;
         $this->sourcePath = $sourcePath;
         $this->target = $target;
@@ -95,9 +100,10 @@ class Demand
         $page = (int)($request->getQueryParams()['page'] ?? $request->getParsedBody()['page'] ?? 1);
         $orderField = $request->getQueryParams()['orderField'] ?? $request->getParsedBody()['orderField'] ?? self::DEFAULT_ORDER_FIELD;
         $orderDirection = $request->getQueryParams()['orderDirection'] ?? $request->getParsedBody()['orderDirection'] ?? self::ORDER_ASCENDING;
+        $redirectType = (string)($request->getAttribute('moduleData')->get('redirectType') ?? self::DEFAULT_REDIRECT_TYPE);
         $demand = $request->getQueryParams()['demand'] ?? $request->getParsedBody()['demand'] ?? [];
         if (empty($demand)) {
-            return new self($page, $orderField, $orderDirection);
+            return new self($page, $orderField, $orderDirection, $redirectType);
         }
         $sourceHost = $demand['source_host'] ?? '';
         $sourceHosts = $sourceHost ? [$sourceHost] : [];
@@ -109,7 +115,7 @@ class Demand
         $creationType = isset($demand['creation_type']) ? ((int)$demand['creation_type']) : -1;
         $protected = isset($demand['protected']) ? ((int)$demand['protected']) : -1;
         $integrityStatus = isset($demand['integrity_status']) ? ((string)$demand['integrity_status']) : null;
-        return new self($page, $orderField, $orderDirection, $sourceHosts, $sourcePath, $target, $statusCodes, $maxHits, null, $creationType, $protected, $integrityStatus);
+        return new self($page, $orderField, $orderDirection, $redirectType, $sourceHosts, $sourcePath, $target, $statusCodes, $maxHits, null, $creationType, $protected, $integrityStatus);
     }
 
     public static function fromCommandInput(InputInterface $input): self
@@ -118,6 +124,7 @@ class Demand
             1,
             self::DEFAULT_ORDER_FIELD,
             self::ORDER_ASCENDING,
+            (string)$input->getOption('redirectType'),
             (array)$input->getOption('domain'),
             (string)$input->getOption('path'),
             '',
@@ -160,6 +167,11 @@ class Demand
     public function getOrderDirection(): string
     {
         return $this->orderDirection;
+    }
+
+    public function getRedirectType(): string
+    {
+        return $this->redirectType;
     }
 
     public function getDefaultOrderDirection(): string
@@ -267,6 +279,15 @@ class Demand
         return $this->integrityStatus !== null && $this->integrityStatus !== '';
     }
 
+    public function hasRedirectType(): bool
+    {
+        return !empty($this->redirectType);
+    }
+
+    /**
+     * This is actually used for the backend filter and therefore only takes properties into account, which
+     * can be filtered for. For example "redirect_type" is not checked because it is not part of the filter.
+     */
     public function hasConstraints(): bool
     {
         return $this->hasSourcePath()
@@ -303,6 +324,9 @@ class Demand
         }
         if ($this->hasSourceHosts()) {
             $parameters['source_host'] = $this->getFirstSourceHost();
+        }
+        if ($this->hasRedirectType()) {
+            $parameters['redirect_type'] = $this->getRedirectType();
         }
         if ($this->hasTarget()) {
             $parameters['target'] = $this->getTarget();

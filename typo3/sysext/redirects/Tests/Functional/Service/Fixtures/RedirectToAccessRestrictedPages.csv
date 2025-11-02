@@ -2,6 +2,6 @@ pages,,,,,,,
 ,uid,pid,title,slug,hidden,deleted,fe_group
 ,1,0,Root,/,0,0,0
 ,2,1,"Access restricted page",/access-restricted,0,0,1
-sys_redirect,,,,,,,
-,uid,pid,disabled,deleted,source_host,source_path,target
-,1,0,0,0,acme.com,/redirect-to-access-restricted-site,t3://page?uid=2
+sys_redirect,,,,,,,,
+,uid,pid,disabled,deleted,source_host,source_path,target,redirect_type
+,1,0,0,0,acme.com,/redirect-to-access-restricted-site,t3://page?uid=2,default

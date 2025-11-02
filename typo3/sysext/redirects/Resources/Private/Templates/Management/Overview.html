@@ -401,6 +401,7 @@
     <form action="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\'}')}" method="post" enctype="multipart/form-data" name="demand">
         <input type="hidden" name="orderField" value="{demand.orderField}">
         <input type="hidden" name="orderDirection" value="{demand.orderDirection}">
+        <input type="hidden" name="redirectType" value="{f:constant(name: '\TYPO3\CMS\Redirects\Repository\Demand::DEFAULT_REDIRECT_TYPE')}">
         <div class="form-row">
             <div class="form-group">
                 <label for="demand-source-host" class="form-label"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.source_host"/></label>

@@ -3,7 +3,7 @@ pages,,,,,,,,,,,
 ,1,0,Root,/,0,0,0,,,,
 ,2,1,Page2,/page2,0,0,0,,,,
 ,3,1,Page3,/page3,0,0,0,,,,
-sys_redirect,,,,,,,,,,,
-,uid,pid,target_statuscode,disabled,deleted,source_host,source_path,target,is_regexp,respect_query_parameters,keep_query_parameters
-,1,0,301,0,0,acme.com,#^/foo/(.*)bar\.html$#,t3://page?uid=2,1,0,0
-,2,0,301,0,0,acme.com,#^/foo/(.*)bar\.html\?type=101$#,t3://page?uid=3,1,1,1
+sys_redirect,,,,,,,,,,,,
+,uid,pid,target_statuscode,disabled,deleted,source_host,source_path,target,is_regexp,respect_query_parameters,keep_query_parameters,redirect_type
+,1,0,301,0,0,acme.com,#^/foo/(.*)bar\.html$#,t3://page?uid=2,1,0,0,default
+,2,0,301,0,0,acme.com,#^/foo/(.*)bar\.html\?type=101$#,t3://page?uid=3,1,1,1,default

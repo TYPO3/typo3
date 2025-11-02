@@ -4321,4 +4321,40 @@ final class TcaMigrationTest extends UnitTestCase
         ];
         self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
     }
+
+    #[Test]
+    public function migrateSysRedirectDefaultTypeOverridesKeysFromType1(): void
+    {
+        $input = [
+            'sys_redirect' => [
+                'types' => [
+                    'default' => [
+                        'showitem' => 'source_host, source_path',
+                        'existingKey' => 'existingValue',
+                    ],
+                    '1' => [
+                        'showitem' => 'custom_field',
+                        'customKey' => 'customValue',
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'sys_redirect' => [
+                'types' => [
+                    'default' => [
+                        'showitem' => 'custom_field',
+                        'existingKey' => 'existingValue',
+                        'customKey' => 'customValue',
+                    ],
+                ],
+            ],
+        ];
+        $result = (new TcaMigration())->migrate($input);
+        self::assertSame($expected, $result->getTca());
+        self::assertCount(1, $result->getMessages());
+        self::assertStringContainsString('sys_redirect', $result->getMessages()[0]);
+        self::assertStringContainsString('\'1\'', $result->getMessages()[0]);
+        self::assertStringContainsString('\'default\'', $result->getMessages()[0]);
+    }
 }

@@ -193,6 +193,7 @@ final class RedirectRepositoryTest extends FunctionalTestCase
             1,
             '',
             '',
+            Demand::DEFAULT_REDIRECT_TYPE,
             $domains,
             $path,
             '',

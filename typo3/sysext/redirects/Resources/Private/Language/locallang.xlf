@@ -39,6 +39,9 @@
 			<trans-unit id="cleanupRedirectsCommand.label.integrityStatus">
 				<source>Cleanup redirects matching provided integrity status</source>
 			</trans-unit>
+			<trans-unit id="cleanupRedirectsCommand.label.redirectType">
+				<source>Cleanup redirects matching provided redirect type</source>
+			</trans-unit>
 			<trans-unit id="created_on">
 				<source>on</source>
 			</trans-unit>

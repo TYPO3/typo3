@@ -28,14 +28,15 @@ return [
         'typeicon_classes' => [
             'default' => 'mimetypes-x-sys_redirect',
         ],
+        'type' => 'redirect_type',
     ],
     'types' => [
-        '1' => [
+        'default' => [
             'showitem' => '
                 --div--;core.form.tabs:general, --palette--;;source, --palette--;;targetdetails, protected, --palette--;;internals,
                 --div--;redirects.db:tabs.redirectCount, disable_hitcount, hitcount, lasthiton, createdon,
                 --div--;core.form.tabs:access, --palette--;;visibility,
-                --div--;core.form.tabs:notes, description',
+                --div--;core.form.tabs:notes, description, redirect_type',
         ],
     ],
     'palettes' => [
@@ -53,6 +54,12 @@ return [
         ],
     ],
     'columns' => [
+        'redirect_type' => [
+            'config' => [
+                'type' => 'passthrough',
+                'default' => 'default',
+            ],
+        ],
         'source_host' => [
             'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.source_host',
             'config' => [

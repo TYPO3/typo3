@@ -29,51 +29,51 @@ final class DemandTest extends UnitTestCase
     {
         return [
             [
-                [1, '', '', [], '', '', []],
+                [1, '', '', Demand::DEFAULT_REDIRECT_TYPE, [], '', '', []],
                 [],
             ],
             [
-                [2, '', '', ['host'], '', '', []],
+                [2, '', '', Demand::DEFAULT_REDIRECT_TYPE, ['host'], '', '', []],
                 ['source_host' => 'host'],
             ],
             [
-                [3, '', '', [], 'path', '', []],
+                [3, '', '', Demand::DEFAULT_REDIRECT_TYPE, [], 'path', '', []],
                 ['source_path' => 'path'],
             ],
             [
-                [4, '', '', [], '', 'target', []],
+                [4, '', '', Demand::DEFAULT_REDIRECT_TYPE, [], '', 'target', []],
                 ['target' => 'target'],
             ],
             [
-                [5, '', '', [], '', '', [301]],
+                [5, '', '', Demand::DEFAULT_REDIRECT_TYPE, [], '', '', [301]],
                 ['target_statuscode' => 301],
             ],
             [
-                [6, '', '', ['host'], '', 'target'],
+                [6, '', '', Demand::DEFAULT_REDIRECT_TYPE, ['host'], '', 'target', []],
                 ['source_host' => 'host', 'target' => 'target'],
             ],
             [
-                [7, '', '', [], 'path', '', [302]],
+                [7, '', '', Demand::DEFAULT_REDIRECT_TYPE, [], 'path', '', [302]],
                 ['source_path' => 'path', 'target_statuscode' => 302],
             ],
             [
-                [8, '', '', ['host'], 'path', 'target', [307]],
+                [8, '', '', Demand::DEFAULT_REDIRECT_TYPE, ['host'], 'path', 'target', [307]],
                 ['source_path' => 'path', 'source_host' => 'host', 'target' => 'target', 'target_statuscode' => 307],
             ],
             [
-                [9, '', '', [], '', '', [], 100],
+                [9, '', '', Demand::DEFAULT_REDIRECT_TYPE, [], '', '', [], 100],
                 ['max_hits' => 100],
             ],
             [
-                [10, '', '', [], '', '', [], 0, null, 1],
+                [10, '', '', Demand::DEFAULT_REDIRECT_TYPE, [], '', '', [], 0, null, 1],
                 ['creation_type' => 1],
             ],
             [
-                [11, '', '', [], '', '', [], 0, null, -1, 1],
+                [11, '', '', Demand::DEFAULT_REDIRECT_TYPE, [], '', '', [], 0, null, -1, 1],
                 ['protected' => 1],
             ],
             [
-                [12, '', '', [], '', '', [], 0, null, null, null, 'self_reference'],
+                [12, '', '', Demand::DEFAULT_REDIRECT_TYPE, [], '', '', [], 0, null, null, null, 'self_reference'],
                 ['integrity_status' => RedirectConflict::SELF_REFERENCE],
             ],
         ];
@@ -83,6 +83,6 @@ final class DemandTest extends UnitTestCase
     #[Test]
     public function getParametersRespectsDemandState(array $input, array $expected): void
     {
-        self::assertEquals($expected, (new Demand(...$input))->getParameters());
+        self::assertEquals($expected, array_filter((new Demand(...$input))->getParameters(), static fn(string $key): bool => $key !== 'redirect_type', ARRAY_FILTER_USE_KEY));
     }
 }

@@ -97,6 +97,7 @@ class TcaMigration
         $tcaProcessingResult = $this->removeSearchFieldsControlOption($tcaProcessingResult);
         $tcaProcessingResult = $this->migrateSingleDataStructureConfiguration($tcaProcessingResult);
         $tcaProcessingResult = $this->removeValuePickerMode($tcaProcessingResult);
+        $tcaProcessingResult = $this->migrateSysRedirectDefaultType($tcaProcessingResult);
 
         return $tcaProcessingResult;
     }
@@ -1831,6 +1832,28 @@ class TcaMigration
                     . ' a "mode" in its "valuePicker" configuration. This is not evaluated anymore and is therefore removed.'
                     . ' Please adjust your TCA accordingly.');
             }
+        }
+
+        return $tcaProcessingResult->withTca($tca);
+    }
+
+    /**
+     * Migrates $TCA['sys_redirect']['types']['1'] to $TCA['sys_redirect']['types']['default']
+     */
+    protected function migrateSysRedirectDefaultType(TcaProcessingResult $tcaProcessingResult): TcaProcessingResult
+    {
+        $tca = $tcaProcessingResult->getTca();
+        if (isset($tca['sys_redirect']['types']['1'])) {
+            // Override each key from '1' into 'default'
+            foreach ($tca['sys_redirect']['types']['1'] as $key => $value) {
+                $tca['sys_redirect']['types']['default'][$key] = $value;
+            }
+            unset($tca['sys_redirect']['types']['1']);
+            $tcaProcessingResult = $tcaProcessingResult->withAdditionalMessages(
+                'The TCA table \'sys_redirect\' used to define the default type as \'1\', which has been migrated to \'default\'. '
+                . 'Please adjust your TCA accordingly by using $GLOBALS[\'TCA\'][\'sys_redirect\'][\'types\'][\'default\'] '
+                . 'instead of $GLOBALS[\'TCA\'][\'sys_redirect\'][\'types\'][\'1\'].'
+            );
         }
 
         return $tcaProcessingResult->withTca($tca);
