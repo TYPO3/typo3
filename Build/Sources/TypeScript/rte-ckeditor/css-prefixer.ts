@@ -30,7 +30,7 @@ export function cssRelocator(currentPath: string): NodeProcessor {
     }
 
     const absoluteUrl = new URL(currentPath.replace(/\?.+/, '') + '/../' + url.value, document.baseURI);
-    url.value = absoluteUrl.pathname + absoluteUrl.search;
+    url.value = absoluteUrl.pathname + absoluteUrl.search + absoluteUrl.hash;
   };
 }
 
