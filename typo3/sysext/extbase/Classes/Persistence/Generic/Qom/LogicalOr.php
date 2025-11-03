@@ -30,8 +30,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 final readonly class LogicalOr implements OrInterface
 {
     public function __construct(
-        protected ConstraintInterface $constraint1,
-        protected ConstraintInterface $constraint2
+        private ConstraintInterface $constraint1,
+        private ConstraintInterface $constraint2
     ) {}
 
     public function collectBoundVariableNames(array &$boundVariables): void

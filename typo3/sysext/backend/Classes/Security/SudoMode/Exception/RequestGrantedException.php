@@ -27,7 +27,7 @@ use TYPO3\CMS\Backend\Security\SudoMode\Access\ServerRequestInstruction;
  */
 final class RequestGrantedException extends \RuntimeException
 {
-    protected ServerRequestInstruction $instruction;
+    private ServerRequestInstruction $instruction;
 
     public function withInstruction(ServerRequestInstruction $instruction): self
     {

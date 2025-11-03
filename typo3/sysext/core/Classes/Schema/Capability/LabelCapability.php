@@ -23,11 +23,11 @@ namespace TYPO3\CMS\Core\Schema\Capability;
 final readonly class LabelCapability implements SchemaCapabilityInterface
 {
     public function __construct(
-        protected ?string $primaryFieldName,
+        private ?string $primaryFieldName,
         /** @var string[] */
-        protected array $additionalFieldNames,
-        protected bool $alwaysRenderAdditionalFields,
-        protected array $configuration,
+        private array $additionalFieldNames,
+        private bool $alwaysRenderAdditionalFields,
+        private array $configuration,
     ) {}
 
     public function getPrimaryFieldName(): ?string

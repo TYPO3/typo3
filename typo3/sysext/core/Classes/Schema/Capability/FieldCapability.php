@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 final readonly class FieldCapability implements SchemaCapabilityInterface
 {
     public function __construct(
-        protected FieldTypeInterface $field
+        private FieldTypeInterface $field
     ) {}
 
     public function getFieldName(): string

@@ -1039,6 +1039,48 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Schema/Field/NumberFieldType.php
 
 		-
+			message: '#^Property TYPO3\\CMS\\Core\\Schema\\PassiveRelation\:\:\$flexPointer is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Schema/PassiveRelation.php
+
+		-
+			message: '#^Property TYPO3\\CMS\\Core\\Schema\\Struct\\FlexSectionContainer\:\:\$description is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Schema/Struct/FlexSectionContainer.php
+
+		-
+			message: '#^Property TYPO3\\CMS\\Core\\Schema\\Struct\\FlexSectionContainer\:\:\$sheetIdentifier is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Schema/Struct/FlexSectionContainer.php
+
+		-
+			message: '#^Property TYPO3\\CMS\\Core\\Schema\\Struct\\FlexSectionContainer\:\:\$title is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Schema/Struct/FlexSectionContainer.php
+
+		-
+			message: '#^Property TYPO3\\CMS\\Core\\Schema\\Struct\\FlexSheet\:\:\$description is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Schema/Struct/FlexSheet.php
+
+		-
+			message: '#^Property TYPO3\\CMS\\Core\\Schema\\Struct\\FlexSheet\:\:\$sheetIdentifier is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Schema/Struct/FlexSheet.php
+
+		-
+			message: '#^Property TYPO3\\CMS\\Core\\Schema\\Struct\\FlexSheet\:\:\$title is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Schema/Struct/FlexSheet.php
+
+		-
 			message: '#^Instanceof between TYPO3\\CMS\\Core\\Schema\\Struct\\SelectItem and TYPO3\\CMS\\Core\\Schema\\Struct\\SelectItem will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 3

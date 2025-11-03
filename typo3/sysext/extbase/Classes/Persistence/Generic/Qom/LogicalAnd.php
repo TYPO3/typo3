@@ -27,7 +27,10 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  */
 final readonly class LogicalAnd implements AndInterface
 {
-    public function __construct(protected ConstraintInterface $constraint1, protected ConstraintInterface $constraint2) {}
+    public function __construct(
+        private ConstraintInterface $constraint1,
+        private ConstraintInterface $constraint2
+    ) {}
 
     public function collectBoundVariableNames(array &$boundVariables): void
     {

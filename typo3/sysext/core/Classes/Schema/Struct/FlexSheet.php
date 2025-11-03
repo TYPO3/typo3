@@ -29,11 +29,12 @@ use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 final readonly class FlexSheet
 {
     public function __construct(
-        protected string $sheetIdentifier,
-        protected string $title,
-        protected string $description,
-        protected FieldCollection $fields,
-        protected array $sections,
+        // @todo: incomplete or obsolete implementation, these properties are never read.
+        private string $sheetIdentifier,
+        private string $title,
+        private string $description,
+        private FieldCollection $fields,
+        private array $sections,
     ) {}
 
     public function getFields(): FieldCollection

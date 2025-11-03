@@ -29,7 +29,7 @@ final readonly class FileFieldType extends AbstractFieldType implements Relation
     public function __construct(
         protected string $name,
         protected array $configuration,
-        protected array $relations,
+        private array $relations,
     ) {}
 
     public function getType(): string

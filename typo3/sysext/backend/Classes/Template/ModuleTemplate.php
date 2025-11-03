@@ -50,17 +50,17 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
 {
     use PageRendererBackendSetupTrait;
 
-    protected bool $uiBlock = false;
+    private bool $uiBlock = false;
 
-    protected string $moduleId = '';
-    protected string $moduleName = '';
-    protected string $moduleClass = '';
-    protected string $title = '';
-    protected string $bodyTag = '<body>';
-    protected string $formTag = '';
+    private string $moduleId = '';
+    private string $moduleName = '';
+    private string $moduleClass = '';
+    private string $title = '';
+    private string $bodyTag = '<body>';
+    private string $formTag = '';
 
-    protected FlashMessageQueue $flashMessageQueue;
-    protected DocHeaderComponent $docHeaderComponent;
+    private FlashMessageQueue $flashMessageQueue;
+    private DocHeaderComponent $docHeaderComponent;
 
     /**
      * Init PageRenderer and properties.
@@ -130,7 +130,7 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
         return $this->pageRenderer->renderResponse();
     }
 
-    protected function prepareRender(string $templateFileName): void
+    private function prepareRender(string $templateFileName): void
     {
         if ($templateFileName === '') {
             $extbaseRequestMessage = '';
@@ -357,7 +357,7 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
     /**
      * Dispatches all messages in a special FlashMessageQueue to the PageRenderer to be rendered as inline notifications
      */
-    protected function dispatchNotificationMessages(): void
+    private function dispatchNotificationMessages(): void
     {
         $notificationQueue = $this->flashMessageService->getMessageQueueByIdentifier(FlashMessageQueue::NOTIFICATION_QUEUE);
         foreach ($notificationQueue->getAllMessagesAndFlush() as $message) {
@@ -367,12 +367,12 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
         }
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
 
-    protected function getBackendUser(): BackendUserAuthentication
+    private function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

@@ -27,7 +27,7 @@ final readonly class SelectRelationFieldType extends AbstractFieldType implement
     public function __construct(
         protected string $name,
         protected array $configuration,
-        protected array $relations,
+        private array $relations,
     ) {}
 
     public function getType(): string

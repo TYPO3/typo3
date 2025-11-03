@@ -19,10 +19,7 @@ namespace TYPO3\CMS\Core\Pagination;
 
 final class SimplePagination implements PaginationInterface
 {
-    /**
-     * @var PaginatorInterface
-     */
-    protected $paginator;
+    private PaginatorInterface $paginator;
 
     public function __construct(PaginatorInterface $paginator)
     {

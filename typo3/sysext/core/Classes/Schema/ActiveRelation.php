@@ -27,8 +27,8 @@ namespace TYPO3\CMS\Core\Schema;
 final readonly class ActiveRelation
 {
     public function __construct(
-        protected string $toTable,
-        protected ?string $toField
+        private string $toTable,
+        private ?string $toField
     ) {}
 
     public function toTable(): string

@@ -43,7 +43,6 @@ use TYPO3\CMS\Scheduler\Execution;
 use TYPO3\CMS\Scheduler\Scheduler;
 use TYPO3\CMS\Scheduler\SchedulerManagementAction;
 use TYPO3\CMS\Scheduler\Service\TaskService;
-use TYPO3\CMS\Scheduler\Task\TaskSerializer;
 
 /**
  * Scheduler backend module.
@@ -53,20 +52,19 @@ use TYPO3\CMS\Scheduler\Task\TaskSerializer;
 #[BackendController]
 final class SchedulerModuleController
 {
-    protected SchedulerManagementAction $currentAction;
+    private SchedulerManagementAction $currentAction;
 
     public function __construct(
-        protected readonly Scheduler $scheduler,
-        protected readonly TaskSerializer $taskSerializer,
-        protected readonly SchedulerTaskRepository $taskRepository,
-        protected readonly IconFactory $iconFactory,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-        protected readonly ComponentFactory $componentFactory,
-        protected readonly Context $context,
-        protected readonly TaskService $taskService,
-        protected readonly PageRenderer $pageRenderer,
-        protected readonly Registry $registry,
+        private readonly Scheduler $scheduler,
+        private readonly SchedulerTaskRepository $taskRepository,
+        private readonly IconFactory $iconFactory,
+        private readonly UriBuilder $uriBuilder,
+        private readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private readonly ComponentFactory $componentFactory,
+        private readonly Context $context,
+        private readonly TaskService $taskService,
+        private readonly PageRenderer $pageRenderer,
+        private readonly Registry $registry,
     ) {}
 
     /**
@@ -142,7 +140,7 @@ final class SchedulerModuleController
     /**
      * Mark a task as deleted.
      */
-    protected function deleteTask(ModuleTemplate $view, int $taskUid): void
+    private function deleteTask(ModuleTemplate $view, int $taskUid): void
     {
         $languageService = $this->getLanguageService();
         if ($taskUid <= 0) {
@@ -180,7 +178,7 @@ final class SchedulerModuleController
      * Note this doesn't actually stop the running script. It just unmarks execution.
      * @todo find a way to really kill the running task.
      */
-    protected function stopTask(ModuleTemplate $view, int $taskUid): void
+    private function stopTask(ModuleTemplate $view, int $taskUid): void
     {
         $languageService = $this->getLanguageService();
         if ($taskUid <= 0) {
@@ -211,7 +209,7 @@ final class SchedulerModuleController
     /**
      * Toggle the disabled state of a task and register for next execution if a task is of type "single execution".
      */
-    protected function toggleDisabledFlag(ModuleTemplate $view, int $taskUid): void
+    private function toggleDisabledFlag(ModuleTemplate $view, int $taskUid): void
     {
         $languageService = $this->getLanguageService();
         if ($taskUid <= 0) {
@@ -247,7 +245,7 @@ final class SchedulerModuleController
     /**
      * Execute a list of tasks.
      */
-    protected function executeTasks(ModuleTemplate $view, string $taskUids): void
+    private function executeTasks(ModuleTemplate $view, string $taskUids): void
     {
         $taskUids = GeneralUtility::intExplode(',', $taskUids, true);
         if (empty($taskUids)) {
@@ -278,7 +276,7 @@ final class SchedulerModuleController
     /**
      * Schedule selected tasks to be executed on next cron run
      */
-    protected function scheduleCrons(ModuleTemplate $view, string $taskUids): void
+    private function scheduleCrons(ModuleTemplate $view, string $taskUids): void
     {
         $taskUids = GeneralUtility::intExplode(',', $taskUids, true);
         if (empty($taskUids)) {
@@ -309,7 +307,7 @@ final class SchedulerModuleController
     /**
      * Assemble a listing of scheduled tasks
      */
-    protected function renderListTasksView(ModuleTemplate $view, ModuleData $moduleData, ServerRequestInterface $request): ResponseInterface
+    private function renderListTasksView(ModuleTemplate $view, ModuleData $moduleData, ServerRequestInterface $request): ResponseInterface
     {
         $languageService = $this->getLanguageService();
         $data = $this->taskRepository->getGroupedTasks();
@@ -359,7 +357,7 @@ final class SchedulerModuleController
         return $view->renderResponse('ListTasks');
     }
 
-    protected function addDocHeaderAddTaskButton(ModuleTemplate $moduleTemplate, string $url): void
+    private function addDocHeaderAddTaskButton(ModuleTemplate $moduleTemplate, string $url): void
     {
         $languageService = $this->getLanguageService();
         $addButton = $this->componentFactory->createGenericButton()
@@ -402,7 +400,7 @@ final class SchedulerModuleController
         $moduleTemplate->addButtonToButtonBar($setupCheckButton, ButtonBar::BUTTON_POSITION_RIGHT, 0);
     }
 
-    protected function addDocHeaderShortcutButton(ModuleTemplate $moduleTemplate, string $name): void
+    private function addDocHeaderShortcutButton(ModuleTemplate $moduleTemplate, string $name): void
     {
         $moduleTemplate->getDocHeaderComponent()->setShortcutContext(
             routeIdentifier: 'scheduler',
@@ -413,7 +411,7 @@ final class SchedulerModuleController
     /**
      * Add a flash message to the flash message queue of this module.
      */
-    protected function addMessage(ModuleTemplate $moduleTemplate, string $message, ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK): void
+    private function addMessage(ModuleTemplate $moduleTemplate, string $message, ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK): void
     {
         $moduleTemplate->addFlashMessage($message, '', $severity);
     }
@@ -524,7 +522,7 @@ final class SchedulerModuleController
         return sprintf('%s/%s/typo3', getenv('TYPO3_PATH_COMPOSER_ROOT'), $binDir);
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

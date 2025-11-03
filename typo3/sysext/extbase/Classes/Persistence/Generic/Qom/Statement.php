@@ -30,8 +30,8 @@ final readonly class Statement implements ConstraintInterface
      * @param array $boundVariables An array of variables to bind to the statement, only to be used with prepared statements
      */
     public function __construct(
-        protected string|\Doctrine\DBAL\Statement|QueryBuilder $statement,
-        protected array $boundVariables = []
+        private string|\Doctrine\DBAL\Statement|QueryBuilder $statement,
+        private array $boundVariables = []
     ) {}
 
     public function getStatement(): string|\Doctrine\DBAL\Statement|QueryBuilder

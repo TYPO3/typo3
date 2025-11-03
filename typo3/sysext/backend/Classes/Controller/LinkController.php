@@ -35,11 +35,11 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
  * @internal
  */
 #[AsController]
-final class LinkController
+final readonly class LinkController
 {
     public function __construct(
-        protected readonly LinkService $linkService,
-        protected readonly ResourceFactory $resourceFactory
+        private LinkService $linkService,
+        private ResourceFactory $resourceFactory
     ) {}
 
     public function resourceAction(ServerRequestInterface $request): ResponseInterface

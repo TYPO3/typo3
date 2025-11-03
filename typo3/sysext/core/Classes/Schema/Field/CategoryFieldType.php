@@ -24,7 +24,7 @@ final readonly class CategoryFieldType extends AbstractFieldType implements Rela
     public function __construct(
         protected string $name,
         protected array $configuration,
-        protected array $relations
+        private array $relations
     ) {}
 
     public function getType(): string

@@ -36,7 +36,7 @@ final class TypeInlineFalSelectSingle12Foreign extends AbstractFieldGenerator im
      * and a different one for the second image ... this static property tracks that
      * since there is no other indication if that is the first or second call.
      */
-    protected static bool $first = true;
+    private static bool $first = true;
 
     protected array $matchArray = [
         'fieldName' => 'fal_1',

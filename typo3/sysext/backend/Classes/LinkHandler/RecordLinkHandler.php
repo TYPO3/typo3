@@ -63,19 +63,19 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
     /**
      * Configuration key in TSconfig TCEMAIN.linkHandler.<identifier>
      */
-    protected string $identifier;
+    private string $identifier;
 
     /**
      * Specific TSconfig for the current instance (corresponds to TCEMAIN.linkHandler.record.<identifier>.configuration)
      */
-    protected array $configuration = [];
+    private array $configuration = [];
 
     /**
      * Parts of the current link
      */
-    protected array $linkParts = [];
+    private array $linkParts = [];
 
-    protected int $expandPage = 0;
+    private int $expandPage = 0;
 
     public function __construct(
         private readonly ElementBrowserRecordList $elementBrowserRecordList,

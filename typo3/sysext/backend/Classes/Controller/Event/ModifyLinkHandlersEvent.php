@@ -27,8 +27,8 @@ final class ModifyLinkHandlersEvent
      * @param array<string, mixed> $currentLinkParts
      */
     public function __construct(
-        protected array $linkHandlers,
-        protected array $currentLinkParts,
+        private array $linkHandlers,
+        private array $currentLinkParts,
     ) {}
 
     /**

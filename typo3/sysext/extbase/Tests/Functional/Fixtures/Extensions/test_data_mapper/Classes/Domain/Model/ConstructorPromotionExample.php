@@ -60,23 +60,23 @@ final class ConstructorPromotionExample extends AbstractEntity
     // property directly instead of using a getter, because it is defined but not initialized.
     public function __construct(
         // Required (no default values)
-        protected string $uninitializedStringProperty,
-        protected ?\DateTime $uninitializedDateTimeProperty,
-        protected \DateTime $uninitializedMandatoryDateTimeProperty,
+        private string $uninitializedStringProperty,
+        private ?\DateTime $uninitializedDateTimeProperty,
+        private \DateTime $uninitializedMandatoryDateTimeProperty,
         public $unknownType,
         public Enum\StringBackedEnum $stringBackedEnum,
         public Enum\IntegerBackedEnum $integerBackedEnum,
 
         // Optional (default values)
-        protected string $firstProperty = '',
-        protected int $secondProperty = 0,
-        protected float $thirdProperty = 0.0,
-        protected bool $fourthProperty = true,
+        private string $firstProperty = '',
+        private int $secondProperty = 0,
+        private float $thirdProperty = 0.0,
+        private bool $fourthProperty = true,
         protected ?\DateTime $initializedDateTimeProperty = null,
         protected ?\DateTime $initializedDateTimePropertyDate = null,
         protected ?\DateTime $initializedDateTimePropertyDatetime = null,
         protected ?\DateTime $initializedDateTimePropertyTime = null,
-        protected ?CustomDateTime $customDateTime = null,
+        private ?CustomDateTime $customDateTime = null,
         public ?Enum\StringBackedEnum $nullableStringBackedEnum = null,
         public ?Enum\IntegerBackedEnum $nullableIntegerBackedEnum = null
     ) {}

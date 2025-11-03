@@ -47,7 +47,7 @@ final class FailedLoginAttemptNotification
 {
     use LogDataTrait;
 
-    protected string $notificationRecipientEmailAddress;
+    private string $notificationRecipientEmailAddress;
 
     /**
      * @param string|null $notificationRecipientEmailAddress The receiver of the notification
@@ -56,8 +56,8 @@ final class FailedLoginAttemptNotification
      */
     public function __construct(
         ?string $notificationRecipientEmailAddress = null,
-        protected readonly int $warningPeriod = 3600,
-        protected readonly int $failedLoginAttemptsThreshold = 3
+        private readonly int $warningPeriod = 3600,
+        private readonly int $failedLoginAttemptsThreshold = 3
     ) {
         $this->notificationRecipientEmailAddress = $notificationRecipientEmailAddress ?? (string)$GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
     }

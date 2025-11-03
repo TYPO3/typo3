@@ -32,7 +32,10 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  */
 final readonly class PropertyValue implements PropertyValueInterface
 {
-    public function __construct(protected string $propertyName, protected string $selectorName = '') {}
+    public function __construct(
+        private string $propertyName,
+        private string $selectorName = '',
+    ) {}
 
     public function getSelectorName(): string
     {

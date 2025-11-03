@@ -25,7 +25,7 @@ final class TypeConverterException extends \TYPO3\CMS\Extbase\Property\Exception
     /**
      * @var Error
      */
-    protected $error;
+    private $error;
 
     public static function fromError(Error $error): TypeConverterException
     {

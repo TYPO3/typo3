@@ -25,7 +25,7 @@ use Psr\Http\Message\ServerRequestInterface;
 final readonly class LoginErrorOccurredEvent
 {
     public function __construct(
-        protected ServerRequestInterface $request
+        private ServerRequestInterface $request
     ) {}
 
     public function getRequest(): ServerRequestInterface

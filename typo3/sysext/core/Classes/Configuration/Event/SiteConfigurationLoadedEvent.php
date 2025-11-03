@@ -24,8 +24,8 @@ namespace TYPO3\CMS\Core\Configuration\Event;
 final class SiteConfigurationLoadedEvent
 {
     public function __construct(
-        protected string $siteIdentifier,
-        protected array $configuration
+        private readonly string $siteIdentifier,
+        private array $configuration
     ) {}
 
     public function getSiteIdentifier(): string

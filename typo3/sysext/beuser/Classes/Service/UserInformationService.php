@@ -37,10 +37,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 final readonly class UserInformationService
 {
     public function __construct(
-        protected IconFactory $iconFactory,
-        protected ModuleProvider $moduleProvider,
-        protected TcaSchemaFactory $tcaSchemaFactory,
-        protected PageDoktypeRegistry $pageDoktypeRegistry,
+        private IconFactory $iconFactory,
+        private ModuleProvider $moduleProvider,
+        private TcaSchemaFactory $tcaSchemaFactory,
+        private PageDoktypeRegistry $pageDoktypeRegistry,
     ) {}
 
     /**

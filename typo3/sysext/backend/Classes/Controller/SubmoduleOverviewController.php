@@ -22,12 +22,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 
@@ -41,11 +38,8 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 final readonly class SubmoduleOverviewController
 {
     public function __construct(
-        protected ComponentFactory $componentFactory,
-        protected ModuleTemplateFactory $moduleTemplateFactory,
-        protected ModuleProvider $moduleProvider,
-        protected IconFactory $iconFactory,
-        protected UriBuilder $uriBuilder,
+        private ModuleTemplateFactory $moduleTemplateFactory,
+        private ModuleProvider $moduleProvider,
     ) {}
 
     /**
@@ -89,7 +83,7 @@ final readonly class SubmoduleOverviewController
      *
      * @return ModuleInterface[]
      */
-    protected function getAccessibleSubmodules(ModuleInterface $module): array
+    private function getAccessibleSubmodules(ModuleInterface $module): array
     {
         $accessibleSubmodules = [];
         foreach ($module->getSubModules() as $submodule) {
@@ -101,12 +95,12 @@ final readonly class SubmoduleOverviewController
         return $accessibleSubmodules;
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
 
-    protected function getBackendUser(): BackendUserAuthentication
+    private function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

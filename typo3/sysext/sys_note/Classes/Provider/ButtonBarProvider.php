@@ -39,7 +39,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal This is a specific listener implementation and is not considered part of the Public TYPO3 API.
  */
-final class ButtonBarProvider
+final readonly class ButtonBarProvider
 {
     private const TABLE_NAME = 'sys_note';
     private const ALLOWED_MODULES = [
@@ -51,10 +51,10 @@ final class ButtonBarProvider
     ];
 
     public function __construct(
-        protected readonly IconFactory $iconFactory,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly TcaSchemaFactory $tcaSchemaFactory,
-        protected readonly ComponentFactory $componentFactory,
+        private IconFactory $iconFactory,
+        private UriBuilder $uriBuilder,
+        private TcaSchemaFactory $tcaSchemaFactory,
+        private ComponentFactory $componentFactory,
     ) {}
 
     /**
@@ -110,7 +110,7 @@ final class ButtonBarProvider
     /**
      * Check if the user is allowed to create a sys_note record
      */
-    protected function canCreateNewRecord(int $id): bool
+    private function canCreateNewRecord(int $id): bool
     {
         $schema = $this->tcaSchemaFactory->get(self::TABLE_NAME);
         $pageRow = BackendUtility::getRecord('pages', $id);
@@ -128,7 +128,7 @@ final class ButtonBarProvider
     /**
      * Check if creation is allowed / denied in web_list via mod TSconfig
      */
-    protected function isCreationAllowed(array $modTSconfig): bool
+    private function isCreationAllowed(array $modTSconfig): bool
     {
         $allowedNewTables = GeneralUtility::trimExplode(',', $modTSconfig['allowedNewTables'] ?? '', true);
         $deniedNewTables = GeneralUtility::trimExplode(',', $modTSconfig['deniedNewTables'] ?? '', true);
@@ -138,17 +138,17 @@ final class ButtonBarProvider
                 && ($allowedNewTables === [] || in_array(self::TABLE_NAME, $allowedNewTables)));
     }
 
-    protected function getRequest(): ServerRequestInterface
+    private function getRequest(): ServerRequestInterface
     {
         return $GLOBALS['TYPO3_REQUEST'];
     }
 
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
+    private function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

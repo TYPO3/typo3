@@ -25,11 +25,11 @@ namespace TYPO3\CMS\Extensionmanager\Updates;
 final readonly class ExtensionModel
 {
     public function __construct(
-        protected string $key,
-        protected string $title,
-        protected string $versionString,
-        protected string $composerName,
-        protected string $description
+        private string $key,
+        private string $title,
+        private string $versionString,
+        private string $composerName,
+        private string $description
     ) {}
 
     public function getDescription(): string

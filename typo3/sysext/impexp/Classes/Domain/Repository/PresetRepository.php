@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Impexp\Exception\InsufficientUserPermissionsException;
 use TYPO3\CMS\Impexp\Exception\MalformedPresetException;
 use TYPO3\CMS\Impexp\Exception\PresetNotFoundException;
@@ -31,26 +30,19 @@ use TYPO3\CMS\Impexp\Exception\PresetNotFoundException;
  *
  * @internal This class is not considered part of the public TYPO3 API.
  */
-final class PresetRepository
+final readonly class PresetRepository
 {
-    protected const PRESET_TABLE = 'tx_impexp_presets';
-    protected QueryBuilder $queryBuilder;
-    protected Connection $connection;
-    protected Context $context;
+    private const PRESET_TABLE = 'tx_impexp_presets';
 
     public function __construct(
-        ConnectionPool $connectionPool,
-        Context $context
-    ) {
-        $this->queryBuilder = $connectionPool->getQueryBuilderForTable(self::PRESET_TABLE);
-        $this->connection = $connectionPool->getConnectionForTable(self::PRESET_TABLE);
-        $this->context = $context;
-    }
+        private ConnectionPool $connectionPool,
+        private Context $context,
+    ) {}
 
     public function getPresets(int $pageId): array
     {
         $backendUser = $this->getBackendUser();
-        $queryBuilder = $this->queryBuilder;
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::PRESET_TABLE);
         $queryBuilder->select('*')
             ->from(self::PRESET_TABLE)
             ->where(
@@ -80,12 +72,11 @@ final class PresetRepository
 
     public function createPreset(array $data): void
     {
-        $backendUser = $this->getBackendUser();
         $timestamp = $this->context->getPropertyFromAspect('date', 'timestamp');
-        $this->connection->insert(
+        $this->connectionPool->getConnectionForTable(self::PRESET_TABLE)->insert(
             self::PRESET_TABLE,
             [
-                'user_uid' => $backendUser->user['uid'],
+                'user_uid' => $this->getBackendUser()->user['uid'],
                 'public' => $data['preset']['public'],
                 'title' => $data['preset']['title'],
                 'item_uid' => (int)$data['pagetree']['id'],
@@ -112,7 +103,7 @@ final class PresetRepository
             );
         }
         $timestamp = $this->context->getPropertyFromAspect('date', 'timestamp');
-        $this->connection->update(
+        $this->connectionPool->getConnectionForTable(self::PRESET_TABLE)->update(
             self::PRESET_TABLE,
             [
                 'public' => $data['preset']['public'],
@@ -157,7 +148,7 @@ final class PresetRepository
                 1604564346
             );
         }
-        $this->connection->delete(
+        $this->connectionPool->getConnectionForTable(self::PRESET_TABLE)->delete(
             self::PRESET_TABLE,
             ['uid' => $uid]
         );
@@ -168,9 +159,9 @@ final class PresetRepository
      *
      * @throws PresetNotFoundException
      */
-    protected function getPreset(int $uid): array
+    private function getPreset(int $uid): array
     {
-        $queryBuilder = $this->queryBuilder;
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::PRESET_TABLE);
         $preset = $queryBuilder->select('*')
             ->from(self::PRESET_TABLE)
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)))
@@ -185,7 +176,7 @@ final class PresetRepository
         return $preset;
     }
 
-    protected function getBackendUser(): BackendUserAuthentication
+    private function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

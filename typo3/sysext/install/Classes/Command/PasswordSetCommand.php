@@ -33,9 +33,9 @@ final class PasswordSetCommand extends Command
 {
     public function __construct(
         string $name,
-        protected readonly PasswordHashFactory $passwordHashFactory,
-        protected readonly ConfigurationManager $configurationManager,
-        protected readonly Random $random
+        private readonly PasswordHashFactory $passwordHashFactory,
+        private readonly ConfigurationManager $configurationManager,
+        private readonly Random $random
     ) {
         parent::__construct($name);
     }

@@ -29,9 +29,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal this class is not part of the TYPO3 Core API as this is a concrete event listener implementation
  */
-final class FailedMfaAttemptNotification
+final readonly class FailedMfaAttemptNotification
 {
-    public function __construct(protected readonly MailerInterface $mailer) {}
+    public function __construct(private MailerInterface $mailer) {}
 
     /**
      * Sends a notification email to the backend user on failed MFA verification.

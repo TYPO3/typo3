@@ -45,8 +45,8 @@ use TYPO3\CMS\Dashboard\Widgets\WidgetResult;
 final readonly class DashboardEntry
 {
     public function __construct(
-        protected WidgetContext $context,
-        protected WidgetRendererInterface|WidgetInterface $renderer,
+        private WidgetContext $context,
+        private WidgetRendererInterface|WidgetInterface $renderer,
     ) {}
 
     public function getIdentifier(): string

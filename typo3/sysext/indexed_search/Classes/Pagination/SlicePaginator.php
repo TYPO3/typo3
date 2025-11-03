@@ -26,8 +26,8 @@ use TYPO3\CMS\Core\Pagination\AbstractPaginator;
  */
 final class SlicePaginator extends AbstractPaginator
 {
-    protected array $items = [];
-    protected int $totalAmount = 0;
+    private array $items = [];
+    private int $totalAmount = 0;
 
     public function __construct(
         array $items,

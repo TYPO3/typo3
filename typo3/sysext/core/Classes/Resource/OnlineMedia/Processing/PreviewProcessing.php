@@ -31,8 +31,8 @@ use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
 final class PreviewProcessing extends LocalImageProcessor implements ProcessorInterface
 {
     public function __construct(
-        protected readonly OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
-        protected readonly EventDispatcherInterface $eventDispatcher,
+        private readonly OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {}
 
     public function canProcessTask(TaskInterface $task): bool

@@ -27,7 +27,7 @@ use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessClaim;
  */
 final class VerificationRequiredException extends \RuntimeException
 {
-    protected AccessClaim $claim;
+    private AccessClaim $claim;
 
     public function withClaim(AccessClaim $bundle): self
     {

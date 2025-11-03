@@ -31,8 +31,9 @@ namespace TYPO3\CMS\Core\Schema\Capability;
 final readonly class ScalarCapability implements SchemaCapabilityInterface
 {
     public function __construct(
-        protected bool|string|int|array|float|null $value = null
+        private bool|string|int|array|float|null $value = null
     ) {}
+
     public function getValue(): bool|string|int|array|float|null
     {
         return $this->value;

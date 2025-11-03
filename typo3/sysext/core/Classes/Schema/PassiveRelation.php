@@ -28,9 +28,9 @@ namespace TYPO3\CMS\Core\Schema;
 final readonly class PassiveRelation
 {
     public function __construct(
-        protected string $fromTable,
-        protected ?string $fromField,
-        protected ?string $flexPointer,
+        private string $fromTable,
+        private ?string $fromField,
+        private ?string $flexPointer,
     ) {}
 
     public function fromTable(): string

@@ -19,12 +19,12 @@ namespace TYPO3\CMS\Core\Pagination;
 
 final class SlidingWindowPagination implements PaginationInterface
 {
-    protected int $displayRangeStart = 0;
-    protected int $displayRangeEnd = 0;
-    protected bool $hasLessPages = false;
-    protected bool $hasMorePages = false;
-    protected int $maximumNumberOfLinks = 0;
-    protected PaginatorInterface $paginator;
+    private int $displayRangeStart = 0;
+    private int $displayRangeEnd = 0;
+    private bool $hasLessPages = false;
+    private bool $hasMorePages = false;
+    private int $maximumNumberOfLinks = 0;
+    private PaginatorInterface $paginator;
 
     public function __construct(PaginatorInterface $paginator, int $maximumNumberOfLinks = 0)
     {

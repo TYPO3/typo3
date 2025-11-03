@@ -29,10 +29,10 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 final readonly class EquiJoinCondition implements EquiJoinConditionInterface
 {
     public function __construct(
-        protected string $selector1Name,
-        protected string $property1Name,
-        protected string $selector2Name,
-        protected string $property2Name
+        private string $selector1Name,
+        private string $property1Name,
+        private string $selector2Name,
+        private string $property2Name
     ) {
         // @todo Test for selector1Name = selector2Name -> exception
     }

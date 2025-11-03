@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  */
 final readonly class LowerCase implements LowerCaseInterface
 {
-    public function __construct(protected PropertyValueInterface $operand) {}
+    public function __construct(private PropertyValueInterface $operand) {}
 
     public function getOperand(): PropertyValueInterface
     {

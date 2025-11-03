@@ -36,8 +36,8 @@ use TYPO3\CMS\Reports\Status;
 final readonly class StatusService
 {
     public function __construct(
-        protected StatusRegistry $statusRegistry,
-        protected Registry $registry,
+        private StatusRegistry $statusRegistry,
+        private Registry $registry,
     ) {}
 
     /**

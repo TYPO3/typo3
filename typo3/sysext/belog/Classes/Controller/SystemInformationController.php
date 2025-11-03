@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\InformationStatus;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -31,16 +32,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Count latest exceptions for the system information menu.
  *
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
+ * @todo: This is not a controller but an event listener. Rename!
  */
-final class SystemInformationController
+final readonly class SystemInformationController
 {
-    protected array $backendUserConfiguration;
-
-    public function __construct(?array $backendUserConfiguration = null)
-    {
-        $this->backendUserConfiguration = $backendUserConfiguration ?? $GLOBALS['BE_USER']->uc;
-    }
-
     /**
      * Modifies the SystemInformation toolbar to inject a new message
      * @throws RouteNotFoundException
@@ -90,15 +85,20 @@ final class SystemInformationController
 
     private function fetchLastAccessTimestamp(): int
     {
-        if (!isset($this->backendUserConfiguration['systeminformation'])) {
+        if (!isset($this->getBackendUser()->uc['systeminformation'])) {
             return 0;
         }
-        $systemInformationUc = json_decode($this->backendUserConfiguration['systeminformation'], true);
+        $systemInformationUc = json_decode($this->getBackendUser()->uc['systeminformation'], true, 512, JSON_THROW_ON_ERROR);
         return (int)($systemInformationUc['system_log']['lastAccess'] ?? 0);
     }
 
     private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
+    }
+
+    private function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

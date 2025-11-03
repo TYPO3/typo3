@@ -24,9 +24,9 @@ use TYPO3\CMS\Core\Schema\Struct\FlexSheet;
 final readonly class FlexFormSchema implements SchemaInterface
 {
     public function __construct(
-        protected string $structIdentifier,
+        private string $structIdentifier,
         /** @var FlexSheet[] */
-        protected array $sheets
+        private array $sheets
     ) {}
 
     public function getSheets(): array

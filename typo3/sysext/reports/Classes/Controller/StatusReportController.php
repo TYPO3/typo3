@@ -32,8 +32,8 @@ use TYPO3\CMS\Reports\Service\StatusService;
 final readonly class StatusReportController
 {
     public function __construct(
-        protected ModuleTemplateFactory $moduleTemplateFactory,
-        protected StatusService $statusService,
+        private ModuleTemplateFactory $moduleTemplateFactory,
+        private StatusService $statusService,
     ) {}
 
     /**

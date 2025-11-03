@@ -31,14 +31,14 @@ final class GenericMetaTagManager implements MetaTagManagerInterface
      *
      * @var string
      */
-    protected $subPropertySeparator = ':';
+    private $subPropertySeparator = ':';
 
     /**
      * Array of properties that are set by the manager
      *
      * @var array
      */
-    protected $properties = [];
+    private $properties = [];
 
     /**
      * Add a property (including subProperties)

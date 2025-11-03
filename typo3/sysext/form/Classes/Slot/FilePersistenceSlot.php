@@ -43,7 +43,7 @@ final class FilePersistenceSlot implements SingletonInterface
     public const COMMAND_FILE_REPLACE = 'fileReplace';
     public const COMMAND_FILE_SET_CONTENTS = 'fileSetContents';
 
-    protected array $allowedInvocations = [];
+    private array $allowedInvocations = [];
 
     public function __construct(private readonly HashService $hashService) {}
 

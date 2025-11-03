@@ -27,9 +27,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class IndexedSearchCTypeMigrationTest extends FunctionalTestCase
 {
-    protected const TABLE_CONTENT = 'tt_content';
-    protected const TABLE_BACKEND_USER_GROUPS = 'be_groups';
-
     protected array $coreExtensionsToLoad = [
         'indexed_search',
     ];

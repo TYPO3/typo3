@@ -27,14 +27,9 @@ use TYPO3\CMS\Redirects\Event\RedirectWasHitEvent;
 /**
  * Event listener to increment a matched redirect records' hit count
  */
-final class IncrementHitCount
+final readonly class IncrementHitCount
 {
-    protected Features $features;
-
-    public function __construct(Features $features)
-    {
-        $this->features = $features;
-    }
+    public function __construct(private Features $features) {}
 
     #[AsEventListener('redirects-increment-hit-count')]
     public function __invoke(RedirectWasHitEvent $event): void

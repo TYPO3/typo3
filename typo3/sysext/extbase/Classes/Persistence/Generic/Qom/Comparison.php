@@ -70,9 +70,9 @@ final readonly class Comparison implements ComparisonInterface
      * @param QueryInterface::OPERATOR_* $operator
      */
     public function __construct(
-        protected PropertyValueInterface $operand1,
-        protected int $operator,
-        protected mixed $operand2
+        private PropertyValueInterface $operand1,
+        private int $operator,
+        private mixed $operand2
     ) {}
 
     public function getOperand1(): PropertyValueInterface

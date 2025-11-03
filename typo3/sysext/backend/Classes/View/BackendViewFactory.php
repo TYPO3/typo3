@@ -34,8 +34,8 @@ use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
 final readonly class BackendViewFactory
 {
     public function __construct(
-        protected RenderingContextFactory $renderingContextFactory,
-        protected PackageManager $packageManager,
+        private RenderingContextFactory $renderingContextFactory,
+        private PackageManager $packageManager,
     ) {}
 
     /**

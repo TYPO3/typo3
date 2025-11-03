@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  */
 final readonly class BindVariableValue implements BindVariableValueInterface
 {
-    public function __construct(protected string $variableName) {}
+    public function __construct(private string $variableName) {}
 
     public function collectBoundVariableNames(array &$boundVariables): void
     {

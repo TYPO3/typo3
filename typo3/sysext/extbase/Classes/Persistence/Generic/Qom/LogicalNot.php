@@ -26,7 +26,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  */
 final readonly class LogicalNot implements NotInterface
 {
-    public function __construct(protected ConstraintInterface $constraint) {}
+    public function __construct(private ConstraintInterface $constraint) {}
 
     public function collectBoundVariableNames(array &$boundVariables): void
     {

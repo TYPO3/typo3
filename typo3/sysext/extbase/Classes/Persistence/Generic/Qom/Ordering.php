@@ -31,8 +31,8 @@ final readonly class Ordering implements OrderingInterface
      * @param string $order One of QueryInterface::ORDER_*
      */
     public function __construct(
-        protected DynamicOperandInterface $operand,
-        protected string $order = QueryInterface::ORDER_ASCENDING
+        private DynamicOperandInterface $operand,
+        private string $order = QueryInterface::ORDER_ASCENDING
     ) {}
 
     public function getOperand(): DynamicOperandInterface

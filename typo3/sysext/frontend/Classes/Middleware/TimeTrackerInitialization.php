@@ -34,7 +34,7 @@ final class TimeTrackerInitialization implements MiddlewareInterface
 {
     private bool $isDebugEnabledInTypoScriptConfig = false;
 
-    public function __construct(protected readonly TimeTracker $timeTracker) {}
+    public function __construct(private readonly TimeTracker $timeTracker) {}
 
     /**
      * Starting time tracking (by setting up a singleton object)

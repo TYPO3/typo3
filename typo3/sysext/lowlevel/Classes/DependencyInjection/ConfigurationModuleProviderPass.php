@@ -30,7 +30,7 @@ use TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ProviderRegistry;
  */
 final class ConfigurationModuleProviderPass implements CompilerPassInterface
 {
-    protected string $tagName;
+    private string $tagName;
 
     public function __construct(string $tagName)
     {

@@ -22,7 +22,8 @@ namespace TYPO3\CMS\Core\Core\Event;
  */
 final readonly class BootCompletedEvent
 {
-    public function __construct(protected bool $cachingEnabled) {}
+    public function __construct(private bool $cachingEnabled) {}
+
     public function isCachingEnabled(): bool
     {
         return $this->cachingEnabled;

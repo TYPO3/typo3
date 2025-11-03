@@ -31,8 +31,8 @@ use TYPO3\CMS\Reports\Service\RecordStatisticsService;
 final readonly class RecordStatisticsController
 {
     public function __construct(
-        protected ModuleTemplateFactory $moduleTemplateFactory,
-        protected RecordStatisticsService $recordStatisticsService,
+        private ModuleTemplateFactory $moduleTemplateFactory,
+        private RecordStatisticsService $recordStatisticsService,
     ) {}
 
     /**
@@ -59,7 +59,7 @@ final readonly class RecordStatisticsController
         ])->renderResponse('RecordStatistics');
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

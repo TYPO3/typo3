@@ -29,8 +29,8 @@ final class BeforeEmailFinisherInitializedEvent
      * @param array<string, mixed> $options
      */
     public function __construct(
-        protected readonly FinisherContext $finisherContext,
-        protected array $options
+        private readonly FinisherContext $finisherContext,
+        private array $options
     ) {}
 
     public function getFinisherContext(): FinisherContext

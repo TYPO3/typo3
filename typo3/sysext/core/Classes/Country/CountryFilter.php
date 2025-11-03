@@ -26,7 +26,7 @@ final class CountryFilter
      * @param string[] $excludeCountries
      * @param string[] $onlyCountries
      */
-    public function __construct(protected array $excludeCountries = [], protected array $onlyCountries = []) {}
+    public function __construct(private array $excludeCountries = [], private array $onlyCountries = []) {}
 
     /**
      * @return string[]

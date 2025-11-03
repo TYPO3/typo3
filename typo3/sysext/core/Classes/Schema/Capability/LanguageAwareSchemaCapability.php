@@ -28,10 +28,10 @@ use TYPO3\CMS\Core\Schema\Field\LanguageFieldType;
 final readonly class LanguageAwareSchemaCapability implements SchemaCapabilityInterface
 {
     public function __construct(
-        protected LanguageFieldType $languageField,
-        protected FieldTypeInterface $originPointerField,
-        protected ?FieldTypeInterface $translationSourceField,
-        protected ?FieldTypeInterface $diffSourceField
+        private LanguageFieldType $languageField,
+        private FieldTypeInterface $originPointerField,
+        private ?FieldTypeInterface $translationSourceField,
+        private ?FieldTypeInterface $diffSourceField
     ) {}
 
     /**

@@ -31,7 +31,7 @@ final class LineStream
      * @var LineInterface[]
      */
     private array $lines = [];
-    protected int $currentIndex = -1;
+    private int $currentIndex = -1;
 
     /**
      * Create a source string from given token lines. This is used in backend

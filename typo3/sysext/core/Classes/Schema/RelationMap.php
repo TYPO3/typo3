@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 final class RelationMap
 {
     public function __construct(
-        protected array $relations = []
+        private array $relations = []
     ) {}
 
     public function add(string $fromTable, string $fromFieldName, array $fieldConfig, ?string $flexPointer = null): void

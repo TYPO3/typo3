@@ -37,9 +37,9 @@ use TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck;
 final readonly class RecordStatisticsService
 {
     public function __construct(
-        protected IconFactory $iconFactory,
-        protected TcaSchemaFactory $tcaSchemaFactory,
-        protected PageDoktypeRegistry $pageDoktypeRegistry,
+        private IconFactory $iconFactory,
+        private TcaSchemaFactory $tcaSchemaFactory,
+        private PageDoktypeRegistry $pageDoktypeRegistry,
     ) {}
 
     /**

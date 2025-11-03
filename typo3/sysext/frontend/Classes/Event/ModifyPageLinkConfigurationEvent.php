@@ -25,7 +25,7 @@ namespace TYPO3\CMS\Frontend\Event;
  */
 final class ModifyPageLinkConfigurationEvent
 {
-    protected bool $pageWasModified = false;
+    private bool $pageWasModified = false;
 
     public function __construct(
         private array $configuration,

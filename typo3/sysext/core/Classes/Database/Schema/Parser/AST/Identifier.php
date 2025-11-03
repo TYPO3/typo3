@@ -25,7 +25,7 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST;
  */
 final class Identifier
 {
-    protected string $quoteChar = '`';
+    private string $quoteChar = '`';
 
     public function __construct(
         public readonly string $schemaObjectName

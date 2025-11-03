@@ -61,19 +61,19 @@ final class PageRecordProvider implements SearchProviderInterface
 {
     private const RECURSIVE_PAGE_LEVEL = 99;
 
-    protected LanguageService $languageService;
-    protected string $userPermissions;
-    protected array $pageIdList = [];
+    private LanguageService $languageService;
+    private string $userPermissions;
+    private array $pageIdList = [];
 
     public function __construct(
-        protected readonly EventDispatcherInterface $eventDispatcher,
-        protected readonly IconFactory $iconFactory,
-        protected readonly LanguageServiceFactory $languageServiceFactory,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly QueryParser $queryParser,
-        protected readonly SiteFinder $siteFinder,
-        protected readonly SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
-        protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly IconFactory $iconFactory,
+        private readonly LanguageServiceFactory $languageServiceFactory,
+        private readonly UriBuilder $uriBuilder,
+        private readonly QueryParser $queryParser,
+        private readonly SiteFinder $siteFinder,
+        private readonly SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {
         $this->languageService = $this->languageServiceFactory->createFromUserPreferences($this->getBackendUser());
         $this->userPermissions = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
