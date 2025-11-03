@@ -705,7 +705,6 @@ class ServiceProvider extends AbstractServiceProvider
         // Provide a simplified resource factory for the install tool when $resourceFactory is null (that means when we run without symfony DI)
         return $resourceFactory ?? new SystemResource\SystemResourceFactory(
             $container->get(SystemResource\Identifier\SystemResourceIdentifierFactory::class),
-            $container->get(PackageManager::class),
             null,
             null,
         );

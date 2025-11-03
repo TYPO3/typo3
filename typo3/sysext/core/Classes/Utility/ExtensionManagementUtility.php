@@ -21,6 +21,10 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Exception as PackageException;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Schema\Struct\SelectItem;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolveSystemResourceIdentifierException;
+use TYPO3\CMS\Core\SystemResource\Exception\InvalidSystemResourceIdentifierException;
+use TYPO3\CMS\Core\SystemResource\Identifier\PackageResourceIdentifier;
+use TYPO3\CMS\Core\SystemResource\Identifier\SystemResourceIdentifierFactory;
 
 /**
  * Extension Management functions
@@ -31,6 +35,7 @@ use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 class ExtensionManagementUtility
 {
     protected static PackageManager $packageManager;
+    private static SystemResourceIdentifierFactory $resourceIdentifierFactory;
 
     /**
      * Sets the package manager for all that backwards compatibility stuff,
@@ -41,6 +46,7 @@ class ExtensionManagementUtility
     public static function setPackageManager(PackageManager $packageManager): void
     {
         static::$packageManager = $packageManager;
+        self::$resourceIdentifierFactory = new SystemResourceIdentifierFactory($packageManager);
     }
 
     /**************************************
@@ -58,18 +64,32 @@ class ExtensionManagementUtility
     }
 
     /**
-     * Temporary helper method to resolve paths with the PackageManager.
+     * Temporary helper method to resolve system resource paths.
      *
      * The PackageManager is statically injected to this class already. This
-     * method will be removed without substitution in TYPO3 12 once a proper
-     * resource API is introduced.
+     * method will be removed without substitution in TYPO3 15 once
+     * GeneralUtility::getFileAbsFileName() is removed and usages of it replaced
+     * using the system resource API.
      *
-     * @throws PackageException
+     * @throws CanNotResolveSystemResourceIdentifierException
+     * @throws InvalidSystemResourceIdentifierException
      * @internal This method is only allowed to be called from GeneralUtility::getFileAbsFileName()! DONT'T introduce other usages!
      */
     public static function resolvePackagePath(string $path): string
     {
-        return static::$packageManager->resolvePackagePath($path);
+        if (!PathUtility::isExtensionPath($path, true)) {
+            throw new CanNotResolveSystemResourceIdentifierException(sprintf('"%s" is not a package resource identifier', $path), 1763402850);
+        }
+        $packageIdentifier = self::$resourceIdentifierFactory->create($path);
+        if (!$packageIdentifier instanceof PackageResourceIdentifier) {
+            // Identifier is of type URI or FAL, which is invalid for path resolving
+            throw new InvalidSystemResourceIdentifierException(sprintf('"%s" can not be resolved to a valid package resource', $path), 1763402808);
+        }
+        if (str_starts_with($packageIdentifier->givenIdentifier, 'PKG:')) {
+            trigger_error(sprintf('Resolving absolute file system path from a package resource is deprecated and will be removed in TYPO3 v14 LTS (identifier: "%s")', $packageIdentifier->givenIdentifier), E_USER_DEPRECATED);
+        }
+        // validity of path is evaluated on resource identifier creation already
+        return $packageIdentifier->getPackage()->getPackagePath() . $packageIdentifier->getRelativePath();
     }
 
     /**

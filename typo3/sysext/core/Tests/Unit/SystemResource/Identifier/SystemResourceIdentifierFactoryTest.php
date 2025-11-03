@@ -84,7 +84,6 @@ final class SystemResourceIdentifierFactoryTest extends UnitTestCase
             ->willReturn('typo3/cms-' . $packageKey);
         $packageManager
             ->method('getPackage')
-            ->with($packageKey)
             ->willReturn($package);
 
         $subject = new SystemResourceIdentifierFactory($packageManager);

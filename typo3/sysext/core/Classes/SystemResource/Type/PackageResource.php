@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\SystemResource\Type;
 
-use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceDoesNotExistException;
 use TYPO3\CMS\Core\SystemResource\Identifier\PackageResourceIdentifier;
 use TYPO3\CMS\Core\Type\File\FileInfo;
@@ -31,25 +30,21 @@ class PackageResource implements SystemResourceInterface
 {
     private ?FileInfo $fileInfo = null;
 
-    public function __construct(
-        protected readonly PackageInterface $package,
-        protected readonly string $relativePath,
-        protected readonly PackageResourceIdentifier $identifier,
-    ) {}
+    public function __construct(protected readonly PackageResourceIdentifier $identifier) {}
 
     public function getName(): string
     {
-        return PathUtility::pathinfo($this->relativePath)['basename'];
+        return PathUtility::pathinfo($this->identifier->getRelativePath())['basename'];
     }
 
     public function getNameWithoutExtension(): string
     {
-        return PathUtility::pathinfo($this->relativePath)['filename'];
+        return PathUtility::pathinfo($this->identifier->getRelativePath())['filename'];
     }
 
     public function getExtension(): string
     {
-        return PathUtility::pathinfo($this->relativePath)['extension'];
+        return PathUtility::pathinfo($this->identifier->getRelativePath())['extension'];
     }
 
     /**
@@ -95,7 +90,7 @@ class PackageResource implements SystemResourceInterface
         if ($this->fileInfo !== null) {
             return $this->fileInfo;
         }
-        $fileInfo = GeneralUtility::makeInstance(FileInfo::class, $this->package->getPackagePath() . $this->relativePath);
+        $fileInfo = GeneralUtility::makeInstance(FileInfo::class, $this->identifier->getPackage()->getPackagePath() . $this->identifier->getRelativePath());
         if (!$fileInfo->isFile()) {
             throw new SystemResourceDoesNotExistException(sprintf('Referenced system resource "%s" (resolved as "%s") does not exist, or is not a file', $this->identifier->givenIdentifier, $this), 1758785343);
         }

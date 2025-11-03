@@ -408,10 +408,8 @@ class PackageManager implements SingletonInterface
         $this->composerNameToPackageKeyMap[$package->getValueFromComposerManifest('name')] = $packageKey;
         $this->packages[$packageKey] = $package;
 
-        if ($package instanceof PackageInterface) {
-            foreach ($package->getPackageReplacementKeys() as $packageToReplace => $versionConstraint) {
-                $this->packageAliasMap[$packageToReplace] = $package->getPackageKey();
-            }
+        foreach ($package->getPackageReplacementKeys() as $packageToReplace => $versionConstraint) {
+            $this->packageAliasMap[$packageToReplace] = $package->getPackageKey();
         }
         return $package;
     }
@@ -425,10 +423,8 @@ class PackageManager implements SingletonInterface
     {
         try {
             $package = $this->getPackage($packageKey);
-            if ($package instanceof PackageInterface) {
-                foreach ($package->getPackageReplacementKeys() as $packageToReplace => $versionConstraint) {
-                    unset($this->packageAliasMap[$packageToReplace]);
-                }
+            foreach ($package->getPackageReplacementKeys() as $packageToReplace => $versionConstraint) {
+                unset($this->packageAliasMap[$packageToReplace]);
             }
         } catch (UnknownPackageException $e) {
         }

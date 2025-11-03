@@ -89,7 +89,7 @@ class FailsafePackageManager extends PackageManager
         if (!Environment::isComposerMode() && !file_exists($this->packageStatesPathAndFilename)) {
             $packages = $this->getAvailablePackages();
             foreach ($packages as $package) {
-                if ($package instanceof PackageInterface && ($useFactoryDefault ? $package->isPartOfFactoryDefault() : $package->isPartOfMinimalUsableSystem())) {
+                if ($useFactoryDefault ? $package->isPartOfFactoryDefault() : $package->isPartOfMinimalUsableSystem()) {
                     $this->activatePackage($package->getPackageKey());
                 }
             }

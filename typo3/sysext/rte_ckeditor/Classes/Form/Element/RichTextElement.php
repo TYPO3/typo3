@@ -385,10 +385,7 @@ class RichTextElement extends AbstractFormElement
             } elseif (is_string($value)
                 && $value !== ''
                 // @todo: this check should vanish, once not every config key is iterated over
-                && (
-                    PathUtility::isExtensionPath(strtoupper($value))
-                    || str_starts_with($value, 'PKG:')
-                )
+                && PathUtility::isExtensionPath(strtoupper($value), true)
             ) {
                 $configuration[$key] = $this->resolveUrlPath($value);
             }

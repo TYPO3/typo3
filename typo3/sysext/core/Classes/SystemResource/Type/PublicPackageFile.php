@@ -27,12 +27,15 @@ final class PublicPackageFile extends PackageResource implements PublicResourceI
 {
     public function getPublicUri(SystemResourceUriGeneratorInterface $uriGenerator): UriInterface
     {
-        return $uriGenerator->generateForPublicResourceBasedOnAbsolutePath($this, $this->package->getPackagePath() . $this->relativePath);
+        return $uriGenerator->generateForPublicResourceBasedOnAbsolutePath(
+            $this,
+            $this->identifier->getPackage()->getPackagePath() . $this->identifier->getRelativePath(),
+        );
     }
 
     public function isPublished(): bool
     {
-        return $this->package->getResources()->isPublicPath($this->relativePath);
+        return $this->identifier->getPackage()->getResources()->isPublicPath($this->identifier->getRelativePath());
     }
 
     /**
@@ -46,10 +49,6 @@ final class PublicPackageFile extends PackageResource implements PublicResourceI
         if ($packageResource instanceof PublicResourceInterface) {
             throw new \LogicException('It is pointless to create a public resource from an already public resource', 1761217630);
         }
-        return new self(
-            $packageResource->package,
-            $packageResource->relativePath,
-            $packageResource->identifier,
-        );
+        return new self($packageResource->identifier);
     }
 }

@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Core\SystemResource;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
-use TYPO3\CMS\Core\Package\PackageInterface;
-use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\Exception as FalException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -50,13 +47,15 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * This is the heart of system resource handling and
  * the most important API to be used in userland code
  * and throughout the core.
+ *
+ * This class should be final, but is not, because it
+ * needs to be mocked in tests.
  */
 #[Autoconfigure(public: true)]
 readonly class SystemResourceFactory
 {
     public function __construct(
         private SystemResourceIdentifierFactory $identifierFactory,
-        private PackageManager $packageManager,
         private ?StorageRepository $storageRepository,
         private ?ResourceFactory $resourceFactory,
     ) {}
@@ -204,37 +203,11 @@ readonly class SystemResourceFactory
         }
     }
 
-    /**
-     * @throws CanNotResolveSystemResourceException
-     */
     private function createFromPackageIdentifier(PackageResourceIdentifier $packageIdentifier): SystemResourceInterface
     {
-        $packageKey = $packageIdentifier->getPackageKey();
-        $relativePath = $packageIdentifier->getRelativePath();
-        try {
-            $package = $this->getPackageAndValidatePath($packageKey, $relativePath);
-            if ($package->getResources()->isPublicPath($relativePath)) {
-                return new PublicPackageFile($package, $relativePath, $packageIdentifier);
-            }
-            return new PackageResource($package, $relativePath, $packageIdentifier);
-        } catch (UnknownPackageException $e) {
-            throw new CanNotResolveSystemResourceException(sprintf('Can not resolve "%s" of extension "%s" to a system resource', $relativePath, $packageKey), 1759397437, $e);
+        if ($packageIdentifier->getPackage()->getResources()->isPublicPath($packageIdentifier->getRelativePath())) {
+            return new PublicPackageFile($packageIdentifier);
         }
-    }
-
-    /**
-     * @throws CanNotResolveSystemResourceException
-     * @throws UnknownPackageException
-     */
-    private function getPackageAndValidatePath(string $packageKey, string $relativePath): PackageInterface
-    {
-        if ($packageKey !== VirtualAppPackage::APP_PACKAGE_KEY) {
-            return $this->packageManager->getPackage($packageKey);
-        }
-        $package = new VirtualAppPackage();
-        if (!$package->getResources()->isValidPath($relativePath)) {
-            throw new CanNotResolveSystemResourceException(sprintf('Project path "%s" is not allowed', $relativePath), 1759742867);
-        }
-        return $package;
+        return new PackageResource($packageIdentifier);
     }
 }

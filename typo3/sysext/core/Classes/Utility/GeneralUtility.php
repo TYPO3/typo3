@@ -34,10 +34,11 @@ use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Package\Exception as PackageException;
 use TYPO3\CMS\Core\Security\AllowedCallableAssertion;
 use TYPO3\CMS\Core\Security\RawValue;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\SystemResource\Exception\InvalidSystemResourceIdentifierException;
+use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceException;
 use TYPO3\CMS\Core\SystemResource\Http\CacheBustingUri;
 
 /**
@@ -2437,18 +2438,14 @@ class GeneralUtility
         if ($fileName === '') {
             return '';
         }
-        $checkForBackPath = fn(string $fileName): string => $fileName !== '' && static::validPathStr($fileName) ? $fileName : '';
-
-        // Extension "EXT:" path resolving.
-        if (PathUtility::isExtensionPath($fileName)) {
-            try {
-                $fileName = ExtensionManagementUtility::resolvePackagePath($fileName);
-            } catch (PackageException) {
-                $fileName = '';
-            }
-            return $checkForBackPath($fileName);
+        try {
+            return ExtensionManagementUtility::resolvePackagePath($fileName);
+        } catch (InvalidSystemResourceIdentifierException) {
+            return '';
+        } catch (SystemResourceException) {
         }
 
+        $checkForBackPath = fn(string $fileName): string => $fileName !== '' && static::validPathStr($fileName) ? $fileName : '';
         // Absolute path, but set to blank if not inside allowed directories.
         if (PathUtility::isAbsolutePath($fileName)) {
             if (static::isAllowedAbsPath($fileName)) {

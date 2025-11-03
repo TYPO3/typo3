@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Backend\Module;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * @internal only to be used within TYPO3 Core
@@ -56,9 +54,6 @@ class ModuleFactory
 
         if ($configuration['icon'] ?? false) {
             $iconPath = $configuration['icon'];
-            if (!PathUtility::isExtensionPath($iconPath)) {
-                $iconPath = GeneralUtility::getFileAbsFileName($iconPath);
-            }
             if ($iconPath !== '') {
                 $iconIdentifier = 'module-' . $identifier;
                 $iconProvider = $this->iconRegistry->detectIconProvider($iconPath);

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Imaging\IconProvider;
 
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconProviderInterface;
+use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceDoesNotExistException;
 use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceException;
 use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
@@ -76,10 +77,11 @@ abstract class AbstractSvgIconProvider implements IconProviderInterface
             if ($resource instanceof SystemResourceInterface) {
                 return $resource->getContents();
             }
+        } catch (SystemResourceDoesNotExistException) {
             return null;
         } catch (SystemResourceException) {
         }
-        if (PathUtility::isExtensionPath($source) || !PathUtility::isAbsolutePath($source)) {
+        if (!PathUtility::isAbsolutePath($source)) {
             $source = GeneralUtility::getFileAbsFileName($source);
         }
         if (!file_exists($source)) {

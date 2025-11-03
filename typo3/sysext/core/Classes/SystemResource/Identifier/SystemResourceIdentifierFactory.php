@@ -17,20 +17,21 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\SystemResource\Identifier;
 
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\Exception\UnknownPackagePathException;
+use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolveSystemResourceIdentifierException;
 use TYPO3\CMS\Core\SystemResource\Exception\InvalidSystemResourceIdentifierException;
+use TYPO3\CMS\Core\SystemResource\Package\VirtualAppPackage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * This is subject to change during v14 development. Do not use.
- * @internal Only to be used in TYPO3\CMS\Core\SystemResource namespace (with two exceptions due to deprecated legacy code @see Uri\ResourceViewHelper and PageRendererBackendSetupTrait)
- * This only needs to be a public service due to a required usage in aforementioned Trait
+ * @internal Only to be used in TYPO3\CMS\Core\SystemResource namespace,
+ *           with three exceptions due to deprecated legacy code @see Uri\ResourceViewHelper, PageRendererBackendSetupTrait and ExtensionManagementUtility::resolvePackagePath())
  */
-#[Autoconfigure(public: true)]
 final readonly class SystemResourceIdentifierFactory
 {
     public function __construct(private PackageManager $packageManager) {}
@@ -67,7 +68,11 @@ final readonly class SystemResourceIdentifierFactory
      */
     public function createFromPackagePath(string $packageKey, string $relativePath, string $givenIdentifier): PackageResourceIdentifier
     {
-        return new PackageResourceIdentifier($this->getComposerName($packageKey), $relativePath, $givenIdentifier);
+        return new PackageResourceIdentifier(
+            $this->getPackageAndValidatePath($packageKey, $relativePath, $givenIdentifier),
+            $relativePath,
+            $givenIdentifier
+        );
     }
 
     /**
@@ -75,12 +80,8 @@ final readonly class SystemResourceIdentifierFactory
      */
     private function createPackageResourceIdentifier(string $resourceIdentifier, ?string $originalIdentifier = null): PackageResourceIdentifier
     {
-        [,$packageKey, $path] = $this->parseIdentifier($resourceIdentifier);
-        return new PackageResourceIdentifier(
-            $this->getComposerName($packageKey),
-            $path,
-            $originalIdentifier ?? $resourceIdentifier,
-        );
+        [,$packageKey, $relativePath] = $this->parseIdentifier($resourceIdentifier);
+        return $this->createFromPackagePath($packageKey, $relativePath, $originalIdentifier ?? $resourceIdentifier);
     }
 
     /**
@@ -118,7 +119,7 @@ final readonly class SystemResourceIdentifierFactory
         return sprintf(
             '%s:%s:%s',
             PackageResourceIdentifier::TYPE,
-            $this->getComposerName($packageKey),
+            $packageKey,
             substr($extensionPath, strlen($packageKey) + 5),
         );
     }
@@ -126,15 +127,25 @@ final readonly class SystemResourceIdentifierFactory
     /**
      * @throws InvalidSystemResourceIdentifierException
      */
-    private function getComposerName(string $packageKey): string
+    private function getPackageAndValidatePath(string $packageKey, string $relativePath, string $givenIdentifier): PackageInterface
     {
-        if (str_contains($packageKey, '/')) {
-            return $packageKey;
+        if ($relativePath === ''
+            || str_starts_with($relativePath, '/')
+            || !GeneralUtility::validPathStr($relativePath)
+        ) {
+            throw new InvalidSystemResourceIdentifierException(sprintf('Relative package path "%s" must not be empty, must not start with a slash ("/") and must not contain invalid characters (e.g. ../ back path). (Given identifier "%s")', $relativePath, $givenIdentifier), 1763381514);
         }
         try {
-            return $this->packageManager->getPackage($packageKey)->getValueFromComposerManifest('name') ?? $packageKey;
+            if ($packageKey !== VirtualAppPackage::APP_PACKAGE_KEY) {
+                return $this->packageManager->getPackage($packageKey);
+            }
         } catch (UnknownPackageException $e) {
-            throw new InvalidSystemResourceIdentifierException(sprintf('Can not create system resource identifier. Unknown package "%s"', $packageKey), 1760989723, $e);
+            throw new InvalidSystemResourceIdentifierException(sprintf('Package with key "%s" does not exist. (Given identifier "%s")', $relativePath, $givenIdentifier), 1763381504, $e);
         }
+        $package = new VirtualAppPackage();
+        if (!$package->getResources()->isValidPath($relativePath)) {
+            throw new InvalidSystemResourceIdentifierException(sprintf('Project path "%s" is not allowed', $relativePath), 1763381519);
+        }
+        return $package;
     }
 }

@@ -919,12 +919,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Package/Cache/PackageStatesPackageCache.php
 
 		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Package\\PackageInterface and TYPO3\\CMS\\Core\\Package\\PackageInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Package/FailsafePackageManager.php
-
-		-
 			message: '#^Parameter \#2 \$selectedStatements of method TYPO3\\CMS\\Core\\Database\\Schema\\SchemaMigrator\:\:migrate\(\) expects array\<string\>, array\<int\|string, true\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -934,12 +928,6 @@ parameters:
 			message: '#^Call to function is_object\(\) with object will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
-			path: ../../typo3/sysext/core/Classes/Package/PackageManager.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Package\\PackageInterface and TYPO3\\CMS\\Core\\Package\\PackageInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 2
 			path: ../../typo3/sysext/core/Classes/Package/PackageManager.php
 
 		-

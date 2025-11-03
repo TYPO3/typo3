@@ -180,11 +180,11 @@ final class SystemResourceFactoryTest extends FunctionalTestCase
         ];
         yield 'not in asset, _assets nor uploads folder' => [
             'PKG:typo3/app:typo3temp/foo/Extension.svg',
-            CanNotResolveSystemResourceException::class,
+            InvalidSystemResourceIdentifierException::class,
         ];
         yield 'legacy resolving not in asset, _assets nor uploads folder, but file exists' => [
             'typo3temp/foo/Extension.svg',
-            CanNotResolveSystemResourceException::class,
+            InvalidSystemResourceIdentifierException::class,
         ];
         yield 'not existing combined identifier' => [
             'FAL:1:/foo/bar/Extension.svg',

@@ -141,9 +141,11 @@ class PathUtility
     /**
      * Checks whether the given path is an extension resource
      */
-    public static function isExtensionPath(string $path): bool
+    public static function isExtensionPath(string $path, bool $includePackagePaths = false): bool
     {
-        return str_starts_with($path, 'EXT:');
+        return
+            str_starts_with($path, 'EXT:')
+            || ($includePackagePaths && str_starts_with($path, 'PKG:'));
     }
 
     /**

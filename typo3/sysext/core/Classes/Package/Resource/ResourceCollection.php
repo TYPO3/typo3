@@ -42,17 +42,15 @@ final class ResourceCollection implements ResourceCollectionInterface
             return null;
         }
         return new PublicPackageFile(
-            $this->package,
-            $this->iconPath,
             new PackageResourceIdentifier(
-                $this->package->getPackageKey(),
+                $this->package,
                 $this->iconPath,
                 sprintf(
                     'PKG:%s:%s',
                     $this->package->getValueFromComposerManifest('name') ?? $this->package->getPackageKey(),
                     $this->iconPath
                 )
-            )
+            ),
         );
     }
 }

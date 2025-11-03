@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\SystemResource\Identifier;
 
+use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\SystemResource\Exception\InvalidSystemResourceIdentifierException;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This is subject to change during v14 development. Do not use.
@@ -27,19 +27,18 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 final class PackageResourceIdentifier extends SystemResourceIdentifier
 {
     public const TYPE = 'PKG';
-    public function __construct(private readonly string $packageKey, private readonly string $relativePath, string $givenIdentifier)
-    {
+
+    public function __construct(
+        private readonly PackageInterface $package,
+        private readonly string $relativePath,
+        string $givenIdentifier,
+    ) {
         parent::__construct($givenIdentifier);
-        if (str_starts_with($relativePath, '/')
-            || !GeneralUtility::validPathStr($relativePath)
-        ) {
-            throw new InvalidSystemResourceIdentifierException(sprintf('Relative package path "%s" must not start with a slash ("/") and must not contain invalid characters (e.g. ../ back path). (Given identifier "%s")', $relativePath, $givenIdentifier), 1760422369);
-        }
     }
 
-    public function getPackageKey(): string
+    public function getPackage(): PackageInterface
     {
-        return $this->packageKey;
+        return $this->package;
     }
 
     public function getRelativePath(): string
@@ -53,7 +52,7 @@ final class PackageResourceIdentifier extends SystemResourceIdentifier
     public function withRelativePath(string $newPath): self
     {
         return new self(
-            $this->packageKey,
+            $this->package,
             $newPath,
             $this->givenIdentifier,
         );
@@ -64,7 +63,7 @@ final class PackageResourceIdentifier extends SystemResourceIdentifier
         return sprintf(
             '%s:%s:%s',
             self::TYPE,
-            $this->packageKey,
+            $this->package->getValueFromComposerManifest('name') ?? $this->package->getPackageKey(),
             $this->relativePath,
         );
     }

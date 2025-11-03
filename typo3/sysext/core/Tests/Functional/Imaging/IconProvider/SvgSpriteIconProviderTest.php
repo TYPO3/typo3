@@ -83,6 +83,7 @@ final class SvgSpriteIconProviderTest extends FunctionalTestCase
     public function prepareIconMarkupWithPkgSourceReturnsInstanceOfIconWithCorrectMarkup(): void
     {
         $testFile = $this->file->ensureFilesExistInPublicFolder('/typo3temp/assets/actions.svg', self::svgTestFileContent);
+        $this->file->ensureFilesExistInPublicFolder('/typo3temp/assets/actions-plus.svg', self::svgTestFileContent);
         $this->subject->prepareIconMarkup($this->icon, [
             'sprite' => 'PKG:typo3/app:typo3temp/assets/actions.svg#actions-plus',
             'source' => 'PKG:typo3/app:typo3temp/assets/actions-plus.svg',
@@ -117,8 +118,8 @@ final class SvgSpriteIconProviderTest extends FunctionalTestCase
         $this->file->ensureFilesExistInPublicFolder('/typo3temp/assets/foo.svg', $svgTestFileContent);
         $this->file->ensureFilesExistInPublicFolder('/typo3temp/assets/foo-bar.svg', $svgTestFileContent);
         $this->subject->prepareIconMarkup($this->icon, [
-            'sprite' => '/typo3temp/assets/foo.svg#bar',
-            'source' => '/typo3temp/assets/foo-bar.svg',
+            'sprite' => 'typo3temp/assets/foo.svg#bar',
+            'source' => 'typo3temp/assets/foo-bar.svg',
         ]);
         self::assertEquals('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="#CD201F" d="M11 12l3-2v6H2v-6l3 2 3-2 3 2z"/></svg>', $this->icon->getMarkup(SvgSpriteIconProvider::MARKUP_IDENTIFIER_INLINE));
     }

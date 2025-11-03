@@ -2974,6 +2974,10 @@ final class GeneralUtilityTest extends UnitTestCase
                 'fileadmin/foo.txt',
                 Environment::getPublicPath() . '/fileadmin/foo.txt',
             ],
+            'relative path (legacy app resource) is prefixed with public path' => [
+                'typo3temp/assets/foo.txt',
+                Environment::getPublicPath() . '/typo3temp/assets/foo.txt',
+            ],
             'relative path, referencing current directory is prefixed with public path' => [
                 './fileadmin/foo.txt',
                 Environment::getPublicPath() . '/./fileadmin/foo.txt',
@@ -2997,6 +3001,18 @@ final class GeneralUtilityTest extends UnitTestCase
             'EXT paths are resolved to absolute paths' => [
                 'EXT:foo/Resources/Private/Templates/Home.html',
                 '/path/to/foo/Resources/Private/Templates/Home.html',
+            ],
+            'EXT paths are resolved empty, when containing back path' => [
+                'EXT:foo/Resources/../../../Private/Templates/Home.html',
+                '',
+            ],
+            'EXT paths are resolved empty, when relative path is empty' => [
+                'EXT:foo/',
+                '',
+            ],
+            'EXT paths are resolved empty, with unknown ext' => [
+                'EXT:bla/Resources/Private/Templates/Home.html',
+                '',
             ],
         ];
     }

@@ -77,8 +77,8 @@ trait PageRendererBackendSetupTrait
         // @todo this needs to be replaced with usage of the yet to be created
         //       System Resource API that can handle folders
         //       This will then remove the need to use internal SystemResourceIdentifierFactory here
-        $identifierFactory = GeneralUtility::makeInstance(SystemResourceIdentifierFactory::class);
         $packageManager = GeneralUtility::makeInstance(PackageManager::class);
+        $identifierFactory = new SystemResourceIdentifierFactory($packageManager);
         foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['stylesheets'] ?? [] as $potentialResourceIdentifier) {
             try {
                 $resourceIdentifier = $identifierFactory->create($potentialResourceIdentifier);
@@ -88,7 +88,7 @@ trait PageRendererBackendSetupTrait
             if (!$resourceIdentifier instanceof PackageResourceIdentifier) {
                 continue;
             }
-            $package = $packageManager->getPackage($resourceIdentifier->getPackageKey());
+            $package = $resourceIdentifier->getPackage();
             $relativePath = $resourceIdentifier->getRelativePath();
             $absolutePath = $package->getPackagePath() . $relativePath;
             if (is_dir($absolutePath)) {

@@ -264,13 +264,7 @@ class Package implements PackageInterface
         if ($key === null) {
             return $this->composerManifest;
         }
-
-        if (isset($this->composerManifest->{$key})) {
-            $value = $this->composerManifest->{$key};
-        } else {
-            $value = null;
-        }
-        return $value;
+        return $this->composerManifest->{$key} ?? null;
     }
 
     /**
