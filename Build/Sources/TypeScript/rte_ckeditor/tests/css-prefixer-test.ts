@@ -17,6 +17,19 @@ describe('@typo3/rte-ckeditor/css-prefixer-test', () => {
 
       expect(result).to.equal('foo{background-image:url(/assets/foo.png?v=2)}');
     });
+    it('relocates URLs with fragment', () => {
+      const result = prefixAndRebaseCss(
+        `
+          foo {
+            background-image: url('../foo.png?v=2#bar')
+          }
+        `,
+        '/assets/css/style.css?v=3',
+        ''
+      );
+
+      expect(result).to.equal('foo{background-image:url(/assets/foo.png?v=2#bar)}');
+    });
   });
   describe('data URI in css is not relocated', () => {
     it('does not relocate data URIs', () => {
