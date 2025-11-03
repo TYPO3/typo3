@@ -32,7 +32,10 @@ final class ListGroupCest
         $I->click('Backend Users');
 
         $I->switchToContentFrame();
-        $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Backend user groups');
+        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('Backend user groups', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElementVisible('table.table-striped');
         $I->canSee('Backend user groups', 'h1');
     }

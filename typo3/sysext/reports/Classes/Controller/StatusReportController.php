@@ -20,11 +20,9 @@ namespace TYPO3\CMS\Reports\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Reports\Service\StatusService;
@@ -38,8 +36,6 @@ final readonly class StatusReportController
     public function __construct(
         protected ModuleTemplateFactory $moduleTemplateFactory,
         protected StatusService $statusService,
-        protected UriBuilder $uriBuilder,
-        protected IconFactory $iconFactory,
         protected ComponentFactory $componentFactory,
     ) {}
 
@@ -65,7 +61,6 @@ final readonly class StatusReportController
             $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_report_title')
         );
         $view->makeDocHeaderModuleMenu();
-        $view->addButtonToButtonBar($this->componentFactory->createBackButton($this->uriBuilder->buildUriFromRoute('system_reports')));
         $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('system_reports_status')
             ->setDisplayName($languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_report_title'));

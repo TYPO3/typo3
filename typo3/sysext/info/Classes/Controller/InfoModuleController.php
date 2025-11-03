@@ -122,8 +122,6 @@ class InfoModuleController
      */
     protected function getButtons(): void
     {
-        $this->view->addButtonToButtonBar($this->componentFactory->createBackButton($this->uriBuilder->buildUriFromRoute('web_info', ['id' => $this->id])));
-
         if ($this->id) {
             // View
             $previewUriBuilder = PreviewUriBuilder::create($this->pageinfo);

@@ -40,7 +40,9 @@ final class ConfigurationModuleProviderCest
         $I->see('Configuration of "$GLOBALS[\'TYPO3_CONF_VARS\'] (Global Configuration)"', 'h1');
 
         // Middlewares provider exists
-        $I->selectOption('select[name=tree]', 'HTTP Middlewares (PSR-15)');
+        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('HTTP Middlewares (PSR-15)', '.module-docheader-bar-buttons .dropdown-menu');
 
         // Middleware provider can be loaded
         $I->waitForElementVisible('#ConfigurationView');
@@ -71,7 +73,10 @@ final class ConfigurationModuleProviderCest
             'MFA providers',
         ];
         foreach ($itemList as $item) {
-            $I->selectOption('select[name=tree]', $item);
+            $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+            $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
+            $I->click($item, '.module-docheader-bar-buttons .dropdown-menu');
+            $I->waitForElementNotVisible('#t3js-ui-block');
             $I->see('Configuration of "' . $item . '"', 'h1');
         }
     }

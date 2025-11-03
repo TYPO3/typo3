@@ -71,7 +71,11 @@ final class CompareUserCest
 
         // Remove selected users for comparison
         $I->amGoingTo('Switch to user group listing');
-        $I->selectOption('.t3-js-jumpMenuBox', 'Backend users');
+        // Click the module actions dropdown button
+        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('Backend users', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->waitForElementNotVisible('#t3js-ui-block');
         $I->see('Backend users', 'h1');
         $I->click('Clear compare list');
     }
@@ -80,7 +84,11 @@ final class CompareUserCest
     {
         $I->amGoingTo('Switch to user group listing');
         $I->see('Backend users', 'h1');
-        $I->selectOption('.t3-js-jumpMenuBox', 'Backend user groups');
+        // Click the module actions dropdown button
+        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('Backend user groups', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->waitForElementNotVisible('#t3js-ui-block');
         $I->see('Backend user groups', 'h1');
 
         // put three into compare list
@@ -101,7 +109,11 @@ final class CompareUserCest
         $I->canSeeNumberOfElements('table.beuser-comparison-table > thead > tr > th', 3);
 
         // Remove selected user groups for comparison
-        $I->selectOption('.t3-js-jumpMenuBox', 'Backend user groups');
+        // Click the module actions dropdown button
+        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('Backend user groups', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->waitForElementNotVisible('#t3js-ui-block');
         $I->see('Backend user groups', 'h1');
         $I->click('Clear compare list');
     }

@@ -42,8 +42,10 @@ final class DatabaseRecordListCest
     public function allRecordsCanBeSeen(ApplicationTester $I): void
     {
         $I->wantToTest('whether all records can be seen by default in the record list');
-        $I->click('Language');
-        $I->click('All languages');
+        // Click the language selector dropdown button in the navigation bar
+        $I->click('.module-docheader-bar-navigation button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-navigation .dropdown-menu');
+        $I->click('All languages', '.module-docheader-bar-navigation .dropdown-menu');
         self::checkRowVisibility($I, ['1', '2', '3', '4', '5']);
     }
 
@@ -53,20 +55,23 @@ final class DatabaseRecordListCest
 
         // Default language
         $I->amGoingTo('select the default language');
-        $I->click('Language');
-        $I->click('English');
+        $I->click('.module-docheader-bar-navigation button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-navigation .dropdown-menu');
+        $I->click('English', '.module-docheader-bar-navigation .dropdown-menu');
         self::checkRowVisibility($I, ['1'], ['2', '3', '4', '5']);
 
         // Language with records having l10n_parent
         $I->amGoingTo('select a language with records having l10n_parent');
-        $I->click('Language');
-        $I->click('styleguide demo language german');
+        $I->click('.module-docheader-bar-navigation button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-navigation .dropdown-menu');
+        $I->click('styleguide demo language german', '.module-docheader-bar-navigation .dropdown-menu');
         self::checkRowVisibility($I, ['1', '3'], ['2', '4', '5']);
 
         // Language with records not having l10n_parent
         $I->amGoingTo('select a language with records not having l10n_parent');
-        $I->click('Language');
-        $I->click('styleguide demo language danish');
+        $I->click('.module-docheader-bar-navigation button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-navigation .dropdown-menu');
+        $I->click('styleguide demo language danish', '.module-docheader-bar-navigation .dropdown-menu');
         self::checkRowVisibility($I, ['1', '2'], ['3', '4', '5']);
     }
 
@@ -81,8 +86,9 @@ final class DatabaseRecordListCest
 
         // Filter language
         $I->amGoingTo('select the default language');
-        $I->click('Language');
-        $I->click('styleguide demo language danish');
+        $I->click('.module-docheader-bar-navigation button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-navigation .dropdown-menu');
+        $I->click('styleguide demo language danish', '.module-docheader-bar-navigation .dropdown-menu');
 
         // Enter a search term
         $I->amGoingTo('enter a search term');

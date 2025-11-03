@@ -66,11 +66,16 @@ final class InlineContentElementLocalizeSynchronizeCest
         $I->wait(1);
         // Switch to "All languages" view and localize content element
         $I->switchToContentFrame();
-        $I->waitForElementVisible('select[name=actionMenu]');
-        $I->selectOption('select[name=actionMenu]', 'Language Comparison');
-        $I->waitForElementVisible('button[title="Language"]');
-        $I->click('button[title="Language"]');
-        $I->click('a[title="All languages"]');
+        $I->waitForElementVisible('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('Language Comparison', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->waitForElementNotVisible('#t3js-ui-block');
+        // Switch to "All languages" in the language selector
+        $I->waitForElementVisible('.module-docheader-bar-navigation button.dropdown-toggle');
+        $I->click('.module-docheader-bar-navigation button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-navigation .dropdown-menu');
+        $I->click('All languages', '.module-docheader-bar-navigation .dropdown-menu');
         $I->waitForText('Translate');
         $I->click('Translate');
         $I->switchToWindow('typo3-backend');

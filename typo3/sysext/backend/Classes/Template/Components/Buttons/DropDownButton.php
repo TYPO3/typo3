@@ -45,7 +45,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *          ->setLabel('Dropdown')
  *          ->setTitle('Save')
  *          ->setIcon($this->iconFactory->getIcon('actions-heart'))
- *          ->getShowLabelText(true)
+ *          ->setShowLabelText(true)
  *          ->addItem(
  *              GeneralUtility::makeInstance(DropDownItem::class)
  *                  ->setLabel('Item')
@@ -62,6 +62,7 @@ class DropDownButton implements ButtonInterface
     protected ?string $title = null;
     protected array $items = [];
     protected bool $showLabelText = false;
+    protected bool $showActiveLabelText = false;
     protected bool $disabled = false;
     protected ButtonSize $size = ButtonSize::SMALL;
 
@@ -107,6 +108,17 @@ class DropDownButton implements ButtonInterface
     public function setShowLabelText(bool $showLabelText): static
     {
         $this->showLabelText = $showLabelText;
+        return $this;
+    }
+
+    public function getShowActiveLabelText(): bool
+    {
+        return $this->showActiveLabelText;
+    }
+
+    public function setShowActiveLabelText(bool $showActiveLabelText): static
+    {
+        $this->showActiveLabelText = $showActiveLabelText;
         return $this;
     }
 
@@ -173,6 +185,10 @@ class DropDownButton implements ButtonInterface
         $items = $this->getItems();
 
         /**
+         * @var DropDownRadio|null $activeItem
+         */
+        $activeItem = null;
+        /**
          * @var DropDownRadio[] $activeItems
          */
         $activeItems = array_filter($items, static function (DropDownItemInterface $item): bool {
@@ -180,9 +196,6 @@ class DropDownButton implements ButtonInterface
         });
         if (!empty($activeItems)) {
             $activeItem = array_shift($activeItems);
-            if ($activeItem->getIcon()) {
-                $this->setIcon($activeItem->getIcon());
-            }
         }
 
         $attributes = [
@@ -191,23 +204,38 @@ class DropDownButton implements ButtonInterface
             'data-bs-toggle' => 'dropdown',
             'aria-expanded' => 'false',
         ];
-        if ($this->getTitle()) {
-            $attributes['title'] = $this->getTitle();
-        }
         if ($this->isDisabled()) {
             $attributes['disabled'] = 'disabled';
         }
 
-        $labelText = '';
+        $buttonLabel = '';
         if ($this->getShowLabelText()) {
-            $labelText = ' ' . $this->getLabel();
+            if ($activeItem !== null && $this->getShowActiveLabelText()) {
+                // Render label with visually-hidden span for screen readers
+                $buttonLabel = '<span class="visually-hidden">' . htmlspecialchars($this->getLabel()) . ':</span> ' . htmlspecialchars($activeItem->getLabel());
+            } else {
+                // No active item or showActiveLabelText is false, just render the label
+                $buttonLabel = htmlspecialchars($this->getLabel());
+            }
+        } else {
+            // Add aria-label and title for accessibility when label text is not shown
+            // Both serve different purposes: aria-label for screen readers, title for visual tooltip
+            if ($activeItem !== null && $this->getShowActiveLabelText()) {
+                $attributes['aria-label'] = htmlspecialchars($this->getTitle() . ': ' . $activeItem->getLabel());
+                $attributes['title'] = htmlspecialchars($this->getTitle() . ': ' . $activeItem->getLabel());
+            } else {
+                $attributes['aria-label'] = $this->getTitle();
+                $attributes['title'] = $this->getTitle();
+            }
         }
 
+        $icon = $activeItem?->getIcon()?->render() ?? $this->getIcon()?->render() ?? '';
+        $buttonContent = $icon . ($icon !== '' && $buttonLabel !== '' ? ' ' : '') . $buttonLabel;
+
         return sprintf(
-            '<div class="btn-group"><button %s>%s%s</button><ul class="dropdown-menu">%s</ul></div>',
+            '<div class="btn-group"><button %s>%s</button><ul class="dropdown-menu">%s</ul></div>',
             GeneralUtility::implodeAttributes($attributes, true),
-            $this->getIcon()?->render() ?? '',
-            htmlspecialchars($labelText),
+            $buttonContent,
             implode('', array_map(static fn(DropDownItemInterface $item) => '<li>' . $item->render() . '</li>', $items))
         );
     }

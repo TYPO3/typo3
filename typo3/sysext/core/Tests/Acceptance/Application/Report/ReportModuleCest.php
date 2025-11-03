@@ -133,7 +133,10 @@ final class ReportModuleCest
 
     private function goToPageAndSeeHeadline(ApplicationTester $I, string $select, string $headline): void
     {
-        $I->selectOption('select[name=moduleMenu]', $select);
+        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
+        $I->click($select, '.module-docheader-bar-buttons .dropdown-menu');
+        $I->waitForElementNotVisible('#t3js-ui-block');
         $I->see($headline, 'h1');
     }
 }

@@ -33,7 +33,10 @@ final class ListUserCest
         $I->click('Backend Users');
 
         $I->switchToContentFrame();
-        $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Backend users');
+        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('Backend users', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElementVisible('table.table-striped');
         $I->canSee('Backend users', 'h1');
     }

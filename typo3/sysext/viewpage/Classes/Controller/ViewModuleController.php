@@ -139,14 +139,12 @@ class ViewModuleController
         $languageService = $this->getLanguageService();
         $languages = $this->getPreviewLanguages($pageId);
         if (count($languages) > 1) {
-            $languageMenu = $this->componentFactory->createMenu();
-            $languageMenu->setIdentifier('_langSelector');
-            $languageMenu->setLabel(
-                $languageService->sL(
-                    'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:moduleMenu.dropdown.label'
-                )
-            );
-            foreach ($languages as $value => $label) {
+            $languageDropDownButton = $this->componentFactory->createDropDownButton()
+                ->setLabel($languageService->sL('core.core:labels.language'))
+                ->setShowActiveLabelText(true)
+                ->setShowLabelText(true);
+
+            foreach ($languages as $value => $language) {
                 $href = (string)$this->uriBuilder->buildUriFromRoute(
                     'page_preview',
                     [
@@ -154,15 +152,18 @@ class ViewModuleController
                         'language' => (int)$value,
                     ]
                 );
-                $menuItem = $this->componentFactory->createMenuItem()
-                    ->setTitle($label)
-                    ->setHref($href);
-                if ($languageId === (int)$value) {
-                    $menuItem->setActive(true);
+                $languageItem = $this->componentFactory->createDropDownRadio()
+                    ->setLabel($language['title'])
+                    ->setHref($href)
+                    ->setActive($languageId === (int)$value);
+                if (!empty($language['flagIcon'])) {
+                    $languageItem->setIcon($this->iconFactory->getIcon($language['flagIcon']));
                 }
-                $languageMenu->addMenuItem($menuItem);
+                $languageDropDownButton->addItem($languageItem);
             }
-            $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($languageMenu);
+
+            // Set the language selector component
+            $view->getDocHeaderComponent()->setLanguageSelector($languageDropDownButton);
         }
         if ($pageId && is_array(($pageRecord = BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW))))) {
             $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);
@@ -271,7 +272,10 @@ class ViewModuleController
                 $page = $this->pageRepository->getPageOverlay($this->pageRepository->getPage($pageId), $siteLanguage->getLanguageId());
 
                 if ($this->pageRepository->isPageSuitableForLanguage($page, $languageAspectToTest)) {
-                    $languages[$siteLanguage->getLanguageId()] = $siteLanguage->getTitle();
+                    $languages[$siteLanguage->getLanguageId()] = [
+                        'title' => $siteLanguage->getTitle(),
+                        'flagIcon' => $siteLanguage->getFlagIdentifier(),
+                    ];
                 }
             }
         } catch (SiteNotFoundException $e) {

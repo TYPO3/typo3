@@ -6,24 +6,17 @@
 <div class="module-loading-indicator"></div>
 <div class="module-docheader t3js-module-docheader">
     <div class="module-docheader-bar module-docheader-bar-navigation t3js-module-docheader-bar t3js-module-docheader-bar-navigation">
-        <div class="module-docheader-bar-column-left">
-            <f:if condition="{docHeader.menus}">
-                <div class="module-docheader-bar-container">
-                    <f:for each="{docHeader.menus}" as="menu">
-                        <div class="form-group form-group-sm">
-                            <f:render partial="Menus/SelectBoxJumpMenu" arguments="{menu:menu}"/>
-                        </div>
-                    </f:for>
-                </div>
-            </f:if>
-        </div>
-        <div class="module-docheader-bar-column-right module-docheader-bar-column-grow">
+        <div class="module-docheader-bar-column-left module-docheader-bar-column-grow">
             <f:if condition="{docHeader.breadcrumb}">
                 <typo3-breadcrumb
                     label='{f:translate(key: "LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:breadcrumb")}'
                     nodes='{docHeader.breadcrumb -> f:format.json()}'
-                    alignRight='true'
                 ></typo3-breadcrumb>
+            </f:if>
+        </div>
+        <div class="module-docheader-bar-column-right">
+            <f:if condition="{docHeader.languageSelector}">
+                <f:format.raw>{docHeader.languageSelector}</f:format.raw>
             </f:if>
         </div>
     </div>

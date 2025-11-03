@@ -48,7 +48,10 @@ final class GetExtensionsCest
 
         $I->waitForElementVisible('#typo3-extension-list');
 
-        $I->selectOption('[name="ExtensionManagerModuleMenu"]', 'Get Extensions');
+        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('Get Extensions', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElementVisible('#terTable');
 
         // We expect exact two extensions created from the Fixtures

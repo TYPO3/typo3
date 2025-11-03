@@ -59,8 +59,8 @@ final class BookmarkCest
         $I->see('Scheduled tasks');
 
         $I->click(self::$docHeaderBookmarkButtonSelector);
-        $I->waitForElementVisible('.module-docheader .dropdown-menu');
-        $I->click('.module-docheader .dropdown-menu button:nth-of-type(1)');
+        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('Create a bookmark to this record', '.module-docheader-bar-buttons .dropdown-menu');
 
         $I->switchToMainFrame();
         $this->clickBookmarkDropdownToggleInTopbar($I);

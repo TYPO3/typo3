@@ -35,8 +35,11 @@ final class IndexedSearchModuleCest
         // click on PID=0
         $I->clickWithLeftButton('#typo3-pagetree-treeContainer [role="treeitem"][data-id="0"] .node-contentlabel');
         $I->switchToContentFrame();
-        $I->seeElement('.t3-js-jumpMenuBox');
-        $I->selectOption('.t3-js-jumpMenuBox', 'General statistics');
+        // Click the module actions dropdown button and select "General statistics"
+        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('General statistics', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->waitForElementNotVisible('#t3js-ui-block');
         $I->see('General statistics', '.t3js-module-body');
         $I->see('Row count by database table', '.t3js-module-body');
         // Select only "Row count by database table"
@@ -46,13 +49,25 @@ final class IndexedSearchModuleCest
             $I->assertIsNumeric($count);
         }
 
-        $I->selectOption('.t3-js-jumpMenuBox', 'List of indexed pages');
+        // Click the module actions dropdown button and select "List of indexed pages"
+        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('List of indexed pages', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->waitForElementNotVisible('#t3js-ui-block');
         $I->see('List of indexed pages', '.t3js-module-body');
 
-        $I->selectOption('.t3-js-jumpMenuBox', 'List of indexed external documents');
+        // Click the module actions dropdown button and select "List of indexed external documents"
+        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('List of indexed external documents', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->waitForElementNotVisible('#t3js-ui-block');
         $I->see('List of indexed external documents', '.t3js-module-body');
 
-        $I->selectOption('.t3-js-jumpMenuBox', 'Detailed statistics');
+        // Click the module actions dropdown button and select "Detailed statistics"
+        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('Detailed statistics', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->waitForElementNotVisible('#t3js-ui-block');
         $I->see('Detailed statistics', '.t3js-module-body');
         $I->see('Please select a page in the page tree.', '.t3js-module-body');
     }

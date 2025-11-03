@@ -18,16 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\View;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayout\ContentFetcher;
 use TYPO3\CMS\Backend\View\Drawing\DrawingConfiguration;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\Persistence\RecordIdentityMap;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
@@ -36,7 +31,6 @@ use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * @internal
@@ -263,78 +257,6 @@ class PageLayoutContext
         $contentRecords = empty($contentRecordsPerColumn) ? [] : array_merge(...$contentRecordsPerColumn);
         $translationData = $this->contentFetcher->getTranslationData($this, $contentRecords, $this->siteLanguage->getLanguageId());
         return $translationData['mode'] ?? '';
-    }
-
-    public function getNewLanguageOptions(): array
-    {
-        if (!$this->getBackendUser()->check('tables_modify', 'pages')) {
-            return [];
-        }
-
-        // First, select all languages that are available for the current user
-        $availableTranslations = [];
-        foreach ($this->getSiteLanguages() as $language) {
-            if ($language->getLanguageId() <= 0) {
-                continue;
-            }
-            $availableTranslations[$language->getLanguageId()] = $language->getTitle();
-        }
-
-        $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('pages');
-
-        // Then, subtract the languages which are already on the page:
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
-        $queryBuilder->select('*')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    $schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName(),
-                    $queryBuilder->createNamedParameter($this->pageId, Connection::PARAM_INT)
-                )
-            );
-        $statement = $queryBuilder->executeQuery();
-        while ($row = $statement->fetchAssociative()) {
-            BackendUtility::workspaceOL('pages', $row, $this->getBackendUser()->workspace);
-            if ($row && VersionState::tryFrom($row['t3ver_state']) !== VersionState::DELETE_PLACEHOLDER) {
-                unset($availableTranslations[(int)$row[$schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName()]]);
-            }
-        }
-        // If any languages are left, make selector:
-        $options = [];
-        if (!empty($availableTranslations)) {
-            $options[] = $this->getLanguageService()->sL('backend.layout:new_language');
-            foreach ($availableTranslations as $languageUid => $languageTitle) {
-                // Build localize command URL to DataHandler (tce_db)
-                // which redirects to FormEngine (record_edit)
-                // which, when finished editing should return back to the current page (returnUrl)
-                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                $targetUrl = (string)$uriBuilder->buildUriFromRoute(
-                    'tce_db',
-                    [
-                        'cmd' => [
-                            'pages' => [
-                                $this->pageId => [
-                                    'localize' => $languageUid,
-                                ],
-                            ],
-                        ],
-                        'redirect' => (string)$uriBuilder->buildUriFromRoute(
-                            'record_edit',
-                            [
-                                'justLocalized' => 'pages:' . $this->pageId . ':' . $languageUid,
-                                'module' => 'web_layout',
-                                'returnUrl' => $this->getReturnUrl(),
-                            ]
-                        ),
-                    ]
-                );
-                $options[$targetUrl] = $languageTitle;
-            }
-        }
-        return $options;
     }
 
     public function getCurrentRequest(): ServerRequestInterface

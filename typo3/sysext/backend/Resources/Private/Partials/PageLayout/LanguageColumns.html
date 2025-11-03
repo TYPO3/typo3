@@ -5,17 +5,6 @@
     data-namespace-typo3-fluid="true"
 >
 
-<f:if condition="{context.newLanguageOptions}">
-    <div class="form-row">
-        <div class="form-group">
-            <select class="form-select" name="createNewLanguage" data-global-event="change" data-action-navigate="$value">
-                <f:for each="{context.newLanguageOptions}" as="languageName" key="url">
-                    <option value="{url}">{languageName}</option>
-                </f:for>
-            </select>
-        </div>
-    </div>
-</f:if>
 <div class="t3-grid-container{f:if(condition: context.backendLayout.identifierCleaned, then: ' t3-grid-container-{context.backendLayout.identifierCleaned}')}" data-multi-languages="{f:if(condition: context.multiLanguages, then: '1', else: '0')}">
     <div class="t3-grid-container-inner">
         <table class="t3-page-columns t3-grid-table t3js-page-columns">

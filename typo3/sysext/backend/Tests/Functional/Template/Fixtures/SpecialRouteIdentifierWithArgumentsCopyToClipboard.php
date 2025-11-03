@@ -21,6 +21,7 @@ return <<<EOF
         class="btn btn-sm btn-default dropdown-toggle"
         data-bs-toggle="dropdown"
         aria-expanded="false"
+        aria-label="Share"
         title="Share">
         <span
             class="t3js-icon icon icon-size-small icon-state-default icon-actions-share-alt"

@@ -35,8 +35,11 @@ final class FrontendLoginCest
         $I->click('Page');
         $pageTree->openPath(['styleguide frontend demo']);
         $I->switchToContentFrame();
-        $I->waitForElementVisible('select[name=actionMenu]');
-        $I->selectOption('select[name=actionMenu]', 'Layout');
+        $I->waitForElementVisible('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('Layout', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElementVisible('.t3js-module-docheader-bar a[title="View webpage"]');
         $I->wait(1);
         $I->click('.t3js-module-docheader-bar a[title="View webpage"]');

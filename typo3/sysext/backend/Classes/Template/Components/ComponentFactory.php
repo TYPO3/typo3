@@ -21,7 +21,10 @@ use Psr\Http\Message\UriInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownDivider;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownHeader;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItem;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownRadio;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownToggle;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\FullyRenderedButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\GenericButton;
@@ -178,6 +181,21 @@ readonly class ComponentFactory
     public function createDropDownItem(): DropDownItem
     {
         return GeneralUtility::makeInstance(DropDownItem::class);
+    }
+
+    public function createDropDownRadio(): DropDownRadio
+    {
+        return GeneralUtility::makeInstance(DropDownRadio::class);
+    }
+
+    public function createDropDownToggle(): DropDownToggle
+    {
+        return GeneralUtility::makeInstance(DropDownToggle::class);
+    }
+
+    public function createDropDownHeader(): DropDownHeader
+    {
+        return GeneralUtility::makeInstance(DropDownHeader::class);
     }
 
     public function createLinkButton(): LinkButton

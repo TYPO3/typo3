@@ -22,6 +22,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Breadcrumb\BreadcrumbContext;
 use TYPO3\CMS\Backend\Breadcrumb\BreadcrumbFactory;
 use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
+use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -93,10 +94,16 @@ class DocHeaderComponent
      */
     protected bool $enabled = true;
 
+    /**
+     * Language selector component.
+     */
+    protected ?ComponentInterface $languageSelector = null;
+
     public function __construct(
         protected readonly MenuRegistry $menuRegistry,
         protected readonly RecordFactory $recordFactory,
         protected readonly BreadcrumbFactory $breadcrumbFactory,
+        protected readonly ComponentFactory $componentFactory,
     ) {
         $this->buttonBar = GeneralUtility::makeInstance(ButtonBar::class);
         $this->metaInformation = GeneralUtility::makeInstance(MetaInformation::class);
@@ -288,26 +295,83 @@ class DocHeaderComponent
         $this->enabled = false;
     }
 
+    public function setLanguageSelector(?ComponentInterface $component): void
+    {
+        $this->languageSelector = $component;
+    }
+
+    public function getLanguageSelector(): ?ComponentInterface
+    {
+        return $this->languageSelector;
+    }
+
     /**
      * Returns the complete document header content as an array for rendering.
      *
-     * This method aggregates all components (buttons, menus, breadcrumbs) into
+     * This method aggregates all components (buttons, breadcrumbs) into
      * a structured array that can be consumed by the Fluid template rendering
      * the backend module layout.
      *
      * The returned array structure:
      * - 'enabled': Whether the document header should be rendered
      * - 'buttons': Array of button configurations from the button bar
-     * - 'menus': Array of menu configurations from the menu registry
      * - 'breadcrumb': Breadcrumb trail data from the breadcrumb context
+     * - 'languageSelector': Language Selector
      */
     public function docHeaderContent(?ServerRequestInterface $request): array
     {
+        // Process MenuRegistry and add any menus as dropdown buttons to the button bar
+        $moduleMenuButton = $this->processMenuRegistry();
+        if ($moduleMenuButton !== null) {
+            $this->buttonBar->addButton($moduleMenuButton, ButtonBar::BUTTON_POSITION_LEFT, 0);
+        }
+
         return [
             'enabled' => $this->isEnabled(),
             'buttons' => $this->buttonBar->getButtons(),
-            'menus' => $this->menuRegistry->getMenus(),
             'breadcrumb' => $this->breadcrumb->getBreadcrumb($request, $this->breadcrumbContext),
+            'languageSelector' => $this->getLanguageSelector(),
         ];
+    }
+
+    /**
+     * Processes registered menus from the MenuRegistry into a dropdown button component.
+     *
+     * Takes the first registered menu from the MenuRegistry and creates a dropdown button
+     * component that can be added to the button bar.
+     *
+     * @return ButtonInterface|null The dropdown button, or null if no menus registered
+     */
+    private function processMenuRegistry(): ?ButtonInterface
+    {
+        $menus = $this->menuRegistry->getMenus();
+
+        if ($menus === []) {
+            return null;
+        }
+
+        // Use the first menu (most controllers only register one menu)
+        $menu = reset($menus);
+
+        // Hide menu if it's either empty or offers only one item
+        if (count($menu->getMenuItems()) < 2) {
+            return null;
+        }
+
+        $dropdownButton = $this->componentFactory->createDropDownButton()
+            ->setLabel($menu->getLabel())
+            ->setShowActiveLabelText(true)
+            ->setShowLabelText(true);
+
+        foreach ($menu->getMenuItems() as $menuItem) {
+            $dropdownItem = $this->componentFactory->createDropDownRadio()
+                ->setHref($menuItem->getHref())
+                ->setLabel($menuItem->getTitle())
+                ->setActive($menuItem->isActive());
+
+            $dropdownButton->addItem($dropdownItem);
+        }
+
+        return $dropdownButton;
     }
 }

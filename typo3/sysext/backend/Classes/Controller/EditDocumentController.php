@@ -1949,18 +1949,21 @@ class EditDocumentController
                         $rowsByLang[$row[$languageField]] = $row;
                     }
                 }
-                $languageMenu = $this->componentFactory->createMenu();
-                $languageMenu->setIdentifier('_langSelector');
-                $languageMenu->setLabel(
-                    $this->getLanguageService()->sL(
-                        'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:editdocument.moduleMenu.dropdown.label'
-                    )
-                );
+                $languageDropDownButton = $this->componentFactory->createDropDownButton()
+                    ->setLabel($this->getLanguageService()->sL('core.core:labels.language'))
+                    ->setShowActiveLabelText(true)
+                    ->setShowLabelText(true);
+
+                $existingLanguageItems = [];
+                $newLanguageItems = [];
+
                 foreach ($availableLanguages as $languageId => $language) {
                     $selectorOptionLabel = $language['title'];
                     // Create url for creating a localized record
                     $addOption = true;
                     $href = '';
+                    $isNewLanguage = false;
+
                     if (!isset($rowsByLang[$languageId])) {
                         // Translation in this language does not exist
                         if ($this->columnsOnly[$table] ?? false) {
@@ -1974,7 +1977,6 @@ class EditDocumentController
                             $addOption = false;
                         } else {
                             // Build the link to add the localization
-                            $selectorOptionLabel .= ' [' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.new')) . ']';
                             $href = (string)$this->uriBuilder->buildUriFromRoute(
                                 'tce_db',
                                 [
@@ -1995,6 +1997,7 @@ class EditDocumentController
                                     ),
                                 ]
                             );
+                            $isNewLanguage = true;
                         }
                     } else {
                         $params = [
@@ -2016,16 +2019,47 @@ class EditDocumentController
                         $href = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
                     }
                     if ($addOption && !in_array($languageId, $noAddOption, true)) {
-                        $menuItem = $this->componentFactory->createMenuItem()
-                            ->setTitle($selectorOptionLabel)
-                            ->setHref($href);
-                        if ($languageId === $currentLanguage) {
-                            $menuItem->setActive(true);
+                        if ($isNewLanguage) {
+                            $languageItem = $this->componentFactory->createDropDownItem()
+                                ->setLabel($selectorOptionLabel)
+                                ->setHref($href)
+                                ->setActive(false);
+                            if (!empty($language['flagIcon'])) {
+                                $languageItem->setIcon($this->iconFactory->getIcon($language['flagIcon']));
+                            }
+                            $newLanguageItems[] = $languageItem;
+                        } else {
+                            $isActive = $languageId === $currentLanguage;
+                            $languageItem = $this->componentFactory->createDropDownRadio()
+                                ->setLabel($selectorOptionLabel)
+                                ->setHref($href)
+                                ->setActive($isActive);
+                            if (!empty($language['flagIcon'])) {
+                                $languageItem->setIcon($this->iconFactory->getIcon($language['flagIcon']));
+                            }
+                            $existingLanguageItems[] = $languageItem;
                         }
-                        $languageMenu->addMenuItem($menuItem);
                     }
                 }
-                $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($languageMenu);
+
+                // Add existing languages first
+                foreach ($existingLanguageItems as $item) {
+                    $languageDropDownButton->addItem($item);
+                }
+
+                // Add separator and new languages if any
+                if (!empty($newLanguageItems)) {
+                    $languageDropDownButton->addItem($this->componentFactory->createDropDownDivider());
+                    $languageDropDownButton->addItem(
+                        $this->componentFactory->createDropDownHeader()
+                            ->setLabel($this->getLanguageService()->sL('core.core:labels.new_page_translation'))
+                    );
+                    foreach ($newLanguageItems as $item) {
+                        $languageDropDownButton->addItem($item);
+                    }
+                }
+
+                $view->getDocHeaderComponent()->setLanguageSelector($languageDropDownButton);
             }
         }
     }

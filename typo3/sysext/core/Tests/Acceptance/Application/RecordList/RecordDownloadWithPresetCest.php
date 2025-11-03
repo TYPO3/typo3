@@ -83,7 +83,7 @@ final class RecordDownloadWithPresetCest
     private function setUserTsConfig(ApplicationTester $I, int $userId, string $userTsConfig): void
     {
         try {
-            $I->seeElement($this->inModuleHeader . ' [name=BackendUserModuleMenu]');
+            $I->seeElement($this->inModuleHeader . ' .btn-group button.dropdown-toggle');
         } catch (\Exception $e) {
             $I->switchToMainFrame();
             $I->click('Backend Users');
@@ -92,8 +92,11 @@ final class RecordDownloadWithPresetCest
 
         $codeMirrorSelector = 'typo3-t3editor-codemirror[name="data[be_users][' . $userId . '][TSconfig]"]';
 
-        $I->waitForElementVisible($this->inModuleHeader . ' [name=BackendUserModuleMenu]');
-        $I->selectOption($this->inModuleHeader . ' [name=BackendUserModuleMenu]', ['text' => 'Backend users']);
+        $I->waitForElementVisible($this->inModuleHeader . ' .module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->click($this->inModuleHeader . ' .module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible($this->inModuleHeader . ' .module-docheader-bar-buttons .dropdown-menu');
+        $I->click('Backend users', $this->inModuleHeader . ' .module-docheader-bar-buttons .dropdown-menu');
+        $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElement('#typo3-backend-user-list');
         $I->click('//table[@id="typo3-backend-user-list"]/tbody/tr[descendant::button[@data-contextmenu-uid="' . $userId . '"]]//a[@title="Edit"]');
         $I->waitForElement('#EditDocumentController');

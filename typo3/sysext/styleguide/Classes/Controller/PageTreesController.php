@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Styleguide\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -61,7 +60,6 @@ final class PageTreesController
         private readonly Generator $generator,
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly RecordFinder $recordFinder,
-        private readonly UriBuilder $uriBuilder,
         private readonly ComponentFactory $componentFactory,
     ) {}
 
@@ -106,7 +104,6 @@ final class PageTreesController
             $languageService->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.managePageTrees'),
         );
         $view->makeDocHeaderModuleMenu();
-        $view->addButtonToButtonBar($this->componentFactory->createBackButton((string)$this->uriBuilder->buildUriFromRoute('styleguide')));
         $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setDisplayName(sprintf(
                 '%s - %s',

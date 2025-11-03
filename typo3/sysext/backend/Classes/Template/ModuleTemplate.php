@@ -278,7 +278,10 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
     }
 
     /**
-     * Generates a menu in the docheader to access third-level modules
+     * Generates a module actions dropdown in the docheader button bar.
+     *
+     * Creates a dropdown button on the LEFT side (group 0) containing navigation to
+     * submodules or module actions. The button label shows the currently active module/action.
      */
     public function makeDocHeaderModuleMenu(array $additionalQueryParams = []): self
     {
@@ -293,52 +296,49 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
             // This is a fallback in case a second level module is called here
             $menuModule = $this->moduleProvider->getModuleForMenu($currentModule->getIdentifier(), $this->getBackendUser());
         }
-        if ($menuModule === null) {
-            return $this;
-        }
-        if (!$menuModule->hasSubModules()) {
+
+        if ($menuModule === null || !$menuModule->hasSubModules()) {
             return $this;
         }
 
-        $menu = $this->componentFactory->createMenu();
-        $menu->setIdentifier('moduleMenu');
-        $menu->setLabel(
-            $this->getLanguageService()->sL(
-                'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:moduleMenu.dropdown.label'
-            )
-        );
+        $itemCount = 0;
+        $dropdownButton = $this->componentFactory->createDropDownButton()
+            ->setLabel($this->getLanguageService()->sL('backend.messages:moduleMenu.dropdown.label'))
+            ->setShowActiveLabelText(true)
+            ->setShowLabelText(true);
 
-        // Add "Overview" link to the module menu in case a submodule overview exists
+        // Add "Overview" link if exists
         if ($menuModule->hasSubmoduleOverview()) {
-            $item = $this->componentFactory->createMenuItem()
-                ->setHref(
-                    (string)$this->uriBuilder->buildUriFromRoute(
-                        $menuModule->getIdentifier(),
-                        $additionalQueryParams,
-                    )
-                )
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:moduleMenu.dropdown.overview'));
-            if ($menuModule->getIdentifier() === $currentModule->getIdentifier()) {
-                $item->setActive(true);
-            }
-            $menu->addMenuItem($item);
+            $isActive = $menuModule->getIdentifier() === $currentModule->getIdentifier();
+            $overviewLabel = $this->getLanguageService()->sL('backend.messages:moduleMenu.dropdown.overview');
+            $dropdownItem = $this->componentFactory->createDropDownRadio()
+                ->setHref((string)$this->uriBuilder->buildUriFromRoute($menuModule->getIdentifier(), $additionalQueryParams))
+                ->setLabel($overviewLabel)
+                ->setActive($isActive);
+
+            $dropdownButton->addItem($dropdownItem);
+            $itemCount++;
         }
 
+        // Add all submodules
         foreach ($menuModule->getSubModules() as $module) {
-            $item = $this->componentFactory->createMenuItem()
-                ->setHref(
-                    (string)$this->uriBuilder->buildUriFromRoute(
-                        $module->getIdentifier(),
-                        $additionalQueryParams,
-                    )
-                )
-                ->setTitle($this->getLanguageService()->sL($module->getTitle()));
-            if ($module->getIdentifier() === $currentModule->getIdentifier()) {
-                $item->setActive(true);
-            }
-            $menu->addMenuItem($item);
+            $isActive = $module->getIdentifier() === $currentModule->getIdentifier();
+            $moduleTitle = $this->getLanguageService()->sL($module->getTitle());
+            $dropdownItem = $this->componentFactory->createDropDownRadio()
+                ->setHref((string)$this->uriBuilder->buildUriFromRoute($module->getIdentifier(), $additionalQueryParams))
+                ->setLabel($moduleTitle)
+                ->setActive($isActive);
+
+            $dropdownButton->addItem($dropdownItem);
+            $itemCount++;
         }
-        $this->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+
+        // Only add dropdown if there's more than one item
+        if ($itemCount > 1) {
+            // Add to button bar at LEFT, group 0 (first position)
+            $this->getDocHeaderComponent()->getButtonBar()->addButton($dropdownButton, ButtonBar::BUTTON_POSITION_LEFT, 0);
+        }
+
         return $this;
     }
 

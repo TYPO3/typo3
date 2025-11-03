@@ -22,7 +22,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
 use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNodeRoute;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -80,7 +79,6 @@ final class ComponentsController
     public function __construct(
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly FlashMessageService $flashMessageService,
-        private readonly UriBuilder $uriBuilder,
         private readonly ComponentFactory $componentFactory,
     ) {}
 
@@ -556,7 +554,6 @@ final class ComponentsController
         );
         $view->setModuleClass('module-styleguide');
         $view->makeDocHeaderModuleMenu();
-        $view->addButtonToButtonBar($this->componentFactory->createBackButton((string)$this->uriBuilder->buildUriFromRoute('styleguide')));
         $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setDisplayName(sprintf(
                 '%s - %s',

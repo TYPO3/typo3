@@ -33,10 +33,10 @@ final class SitemapXmlCest
         $I->click('Page');
         $pageTree->openPath(['styleguide frontend demo']);
         $I->switchToContentFrame();
-        $I->waitForElementVisible('.module-docheader-bar-column-left a:first-child');
+        $I->waitForElementVisible('a[title="View webpage"]');
         $I->wait(1);
         $I->waitForElementNotVisible('#nprogress', 120);
-        $dataDispatchArgs = $I->grabAttributeFrom('.module-docheader-bar-column-left a:first-child', 'data-dispatch-args');
+        $dataDispatchArgs = $I->grabAttributeFrom('a[title="View webpage"]', 'data-dispatch-args');
         $url = json_decode($dataDispatchArgs, false, 512, JSON_THROW_ON_ERROR);
         // Add Sitemap parameter to URL
         $I->amOnPage(str_replace('/typo3temp/var/tests/acceptance', '', $url[0]) . '?type=1533906435');

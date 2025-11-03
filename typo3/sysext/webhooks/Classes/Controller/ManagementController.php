@@ -104,9 +104,6 @@ class ManagementController
     {
         $languageService = $this->getLanguageService();
 
-        // Go back
-        $view->addButtonToButtonBar($this->componentFactory->createBackButton((string)$this->uriBuilder->buildUriFromRoute('integrations')));
-
         // Create new
         $newRecordButton = $this->componentFactory->createLinkButton()
             ->setHref((string)$this->uriBuilder->buildUriFromRoute(

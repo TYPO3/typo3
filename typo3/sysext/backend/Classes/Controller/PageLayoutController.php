@@ -29,9 +29,6 @@ use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItemInterface;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownRadio;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownToggle;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -100,6 +97,7 @@ class PageLayoutController
         protected readonly BackendLayoutRenderer $backendLayoutRenderer,
         protected readonly BackendLayoutView $backendLayoutView,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly ConnectionPool $connectionPool,
     ) {}
 
     protected function initialize(ServerRequestInterface $request): void
@@ -251,7 +249,7 @@ class PageLayoutController
         if ($languageId === 0) {
             return null;
         }
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
@@ -452,7 +450,7 @@ class PageLayoutController
      */
     protected function getPageLinksWhereContentIsAlsoShownOn(int $pageId): string
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll();
         $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $queryBuilder->select('*')
@@ -511,10 +509,8 @@ class PageLayoutController
             $view->addButtonToButtonBar($this->componentFactory->createCloseButton($returnUrl), ButtonBar::BUTTON_POSITION_LEFT, -1);
         }
 
-        // Language
-        if ($languageButton = $this->makeLanguageSwitchButton()) {
-            $view->addButtonToButtonBar($languageButton, ButtonBar::BUTTON_POSITION_LEFT, 0);
-        }
+        // Language selector
+        $this->createLanguageSelector($view);
 
         // View
         if ($viewButton = $this->makeViewButton()) {
@@ -552,7 +548,7 @@ class PageLayoutController
         $pageLayoutContext = $this->createPageLayoutContext($request, $tsConfig);
         $hiddenElementsShowToggle = $this->getBackendUser()->check('tables_select', 'tt_content');
         if ($hiddenElementsShowToggle) {
-            $viewModeItems[] = GeneralUtility::makeInstance(DropDownToggle::class)
+            $viewModeItems[] = $this->componentFactory->createDropDownToggle()
                 ->setTag('button')
                 ->setActive((bool)$this->moduleData->get('showHidden'))
                 ->setLabel($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:hiddenCE') . ' (' . $this->getNumberOfHiddenElements($pageLayoutContext->getDrawingConfiguration()) . ')')
@@ -568,7 +564,6 @@ class PageLayoutController
                 ->setLabel($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view'))
                 ->setShowLabelText(true);
             foreach ($viewModeItems as $viewModeItem) {
-                /** @var DropDownItemInterface $viewModeItem */
                 $viewModeButton->addItem($viewModeItem);
             }
             $view->addButtonToButtonBar($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 3);
@@ -618,8 +613,7 @@ class PageLayoutController
         }
 
         $pageUid = $this->id;
-        if ($this->currentSelectedLanguage > 0) {
-            $overlayRecord = $this->getLocalizedPageRecord($this->currentSelectedLanguage);
+        if ($this->currentSelectedLanguage > 0 && ($overlayRecord = $this->getLocalizedPageRecord($this->currentSelectedLanguage)) !== null) {
             $pageUid = $overlayRecord['uid'];
         }
         $params = [
@@ -639,56 +633,165 @@ class PageLayoutController
             ->setIcon($this->iconFactory->getIcon('actions-page-open', IconSize::SMALL));
     }
 
-    /**
-     * Language Switch
-     */
-    protected function makeLanguageSwitchButton(): ?ButtonInterface
+    protected function createLanguageSelector(ModuleTemplate $view): void
     {
-        // Early return if no translation exist
-        if (array_filter($this->MOD_MENU['language'], static fn($language): bool => $language > 0, ARRAY_FILTER_USE_KEY) === []) {
-            return null;
+        // Early return if no languages are available (more than just default language)
+        if (count($this->availableLanguages) <= 1) {
+            return;
         }
 
         $languageService = $this->getLanguageService();
+        $backendUser = $this->getBackendUser();
+
+        // Check if user can create new page translations
+        $canCreateTranslations = $backendUser->check('tables_modify', 'pages');
+
+        // Get existing page translations with workspace handling
+        $existingTranslations = [];
+        if ($this->id) {
+            $languageField = $this->schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
+            $translationOriginField = $this->schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName();
+
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $backendUser->workspace));
+            $queryBuilder->select('*')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        $translationOriginField,
+                        $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
+                    )
+                );
+            $statement = $queryBuilder->executeQuery();
+            while ($row = $statement->fetchAssociative()) {
+                BackendUtility::workspaceOL('pages', $row, $backendUser->workspace);
+                if ($row && VersionState::tryFrom($row['t3ver_state']) !== VersionState::DELETE_PLACEHOLDER) {
+                    $existingTranslations[(int)$row[$languageField]] = $row;
+                }
+            }
+        }
+
+        // Check if current selected language exists, if not we fall back to default (0)
+        // Note: -1 (all languages) is only valid when there are actual translations
+        $currentLanguageExists = $this->currentSelectedLanguage === 0
+            || ($this->currentSelectedLanguage === -1 && !empty($existingTranslations))
+            || isset($existingTranslations[$this->currentSelectedLanguage]);
 
         $languageDropDownButton = $this->componentFactory->createDropDownButton()
             ->setLabel($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.language'))
+            ->setShowActiveLabelText(true)
             ->setShowLabelText(true);
 
-        foreach ($this->MOD_MENU['language'] as $key => $language) {
-            $siteLanguage = $this->availableLanguages[$key] ?? null;
-            if (!$siteLanguage instanceof SiteLanguage) {
-                // Skip invalid language keys, e.g. "-1" for "all languages"
+        $existingLanguageItems = [];
+        $newLanguageItems = [];
+
+        foreach ($this->availableLanguages as $siteLanguage) {
+
+            $languageId = $siteLanguage->getLanguageId();
+            $languageTitle = $siteLanguage->getTitle();
+
+            // Skip languages that don't exist and user can't create
+            if ($languageId > 0 && !isset($existingTranslations[$languageId]) && !$canCreateTranslations) {
                 continue;
             }
-            /** @var DropDownItemInterface $languageItem */
-            $languageItem = GeneralUtility::makeInstance(DropDownRadio::class)
-                ->setActive($this->currentSelectedLanguage === $siteLanguage->getLanguageId())
-                ->setIcon($this->iconFactory->getIcon($siteLanguage->getFlagIdentifier()))
-                ->setHref((string)$this->uriBuilder->buildUriFromRoute('web_layout', [
+
+            if ($languageId > 0 && !isset($existingTranslations[$languageId])) {
+                // Translation doesn't exist - build URL to create it via DataHandler
+                $returnUrl = (string)$this->uriBuilder->buildUriFromRoute(
+                    'web_layout',
+                    [
+                        'id' => $this->id,
+                        'function' => (int)$this->moduleData->get('function'),
+                        'language' => $languageId,
+                    ]
+                );
+                $href = (string)$this->uriBuilder->buildUriFromRoute(
+                    'tce_db',
+                    [
+                        'cmd' => [
+                            'pages' => [
+                                $this->id => [
+                                    'localize' => $languageId,
+                                ],
+                            ],
+                        ],
+                        'redirect' => (string)$this->uriBuilder->buildUriFromRoute(
+                            'record_edit',
+                            [
+                                'justLocalized' => 'pages:' . $this->id . ':' . $languageId,
+                                'module' => 'web_layout',
+                                'returnUrl' => $returnUrl,
+                            ]
+                        ),
+                    ]
+                );
+                $languageItem = $this->componentFactory->createDropDownItem()
+                    ->setActive(false)
+                    ->setIcon($this->iconFactory->getIcon($siteLanguage->getFlagIdentifier()))
+                    ->setHref($href)
+                    ->setLabel($languageTitle);
+                $newLanguageItems[] = $languageItem;
+            } else {
+                // Translation exists or is default language - just switch view
+                $href = (string)$this->uriBuilder->buildUriFromRoute('web_layout', [
                     'id' => $this->id,
                     'function' => (int)$this->moduleData->get('function'),
-                    'language' => $siteLanguage->getLanguageId(),
-                ]))
-                ->setLabel($siteLanguage->getTitle());
-            $languageDropDownButton->addItem($languageItem);
+                    'language' => $languageId,
+                ]);
+                // If selected language doesn't exist, fall back to marking default (0) as active
+                if ($currentLanguageExists) {
+                    $isActive = $this->currentSelectedLanguage === $languageId;
+                } else {
+                    $isActive = $languageId === 0;
+                }
+
+                $languageItem = $this->componentFactory->createDropDownRadio()
+                    ->setActive($isActive)
+                    ->setIcon($this->iconFactory->getIcon($siteLanguage->getFlagIdentifier()))
+                    ->setHref($href)
+                    ->setLabel($languageTitle);
+                $existingLanguageItems[] = $languageItem;
+            }
         }
 
-        if ((int)$this->moduleData->get('function') !== 1) {
-            /** @var DropDownItemInterface $allLanguagesItem */
-            $allLanguagesItem = GeneralUtility::makeInstance(DropDownRadio::class)
-                ->setActive($this->currentSelectedLanguage === -1)
+        // Add existing languages first
+        foreach ($existingLanguageItems as $item) {
+            $languageDropDownButton->addItem($item);
+        }
+
+        // Add "All languages" option after existing languages if translations exist
+        if ((int)$this->moduleData->get('function') !== 1 && !empty($existingTranslations)) {
+            $allLanguagesLabel = $languageService->sL('core.mod_web_list:multipleLanguages');
+            $isAllLanguagesActive = $this->currentSelectedLanguage === -1;
+            $allLanguagesItem = $this->componentFactory->createDropDownRadio()
+                ->setActive($isAllLanguagesActive)
                 ->setIcon($this->iconFactory->getIcon('flags-multiple'))
                 ->setHref((string)$this->uriBuilder->buildUriFromRoute('web_layout', [
                     'id' => $this->id,
                     'function' => (int)$this->moduleData->get('function'),
                     'language' => -1,
                 ]))
-                ->setLabel($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages'));
-            $languageDropDownButton->addItem($allLanguagesItem);
+                ->setLabel($allLanguagesLabel);
+            $languageDropDownButton
+                ->addItem($this->componentFactory->createDropDownDivider())
+                ->addItem($allLanguagesItem);
         }
 
-        return $languageDropDownButton;
+        // Add separator and new languages if any
+        if (!empty($newLanguageItems)) {
+            $languageDropDownButton->addItem($this->componentFactory->createDropDownDivider());
+            $languageDropDownButton->addItem(
+                $this->componentFactory->createDropDownHeader()
+                ->setLabel($languageService->sL('core.core:labels.new_page_translation'))
+            );
+            foreach ($newLanguageItems as $item) {
+                $languageDropDownButton->addItem($item);
+            }
+        }
+
+        $view->getDocHeaderComponent()->setLanguageSelector($languageDropDownButton);
     }
 
     /**
@@ -699,7 +802,7 @@ class PageLayoutController
     {
         $isLanguageComparisonModeActive = $drawingConfiguration->isLanguageComparisonMode();
         $andWhere = [];
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tt_content');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
