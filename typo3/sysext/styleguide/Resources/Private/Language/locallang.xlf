@@ -136,6 +136,9 @@
 			<trans-unit id="action.progressTrackers">
 				<source>Progress trackers</source>
 			</trans-unit>
+			<trans-unit id="action.radio">
+				<source>Radio</source>
+			</trans-unit>
 			<trans-unit id="action.select">
 				<source>Select</source>
 			</trans-unit>
@@ -374,6 +377,9 @@
 			<!-- Component: Checkbox -->
 			<trans-unit id="component.checkbox.headline">
 				<source>Checkboxes</source>
+			</trans-unit>
+			<trans-unit id="component.checkbox.section.card.headline">
+				<source>Card-Layout</source>
 			</trans-unit>
 			<trans-unit id="component.checkbox.section.checkBoxToggleButton.headline">
 				<source>Checkbox toggle button</source>
@@ -715,6 +721,17 @@
 			</trans-unit>
 			<trans-unit id="component.progressTrackers.section.demo.headline">
 				<source>Demo</source>
+			</trans-unit>
+
+			<!-- Component: Radio -->
+			<trans-unit id="component.radio.headline">
+				<source>Radio buttons</source>
+			</trans-unit>
+			<trans-unit id="component.radio.section.card.headline">
+				<source>Card-Layout</source>
+			</trans-unit>
+			<trans-unit id="component.radio.section.default.headline">
+				<source>Default</source>
 			</trans-unit>
 
 			<!-- Component: Select -->

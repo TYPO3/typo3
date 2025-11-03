@@ -69,6 +69,7 @@ final class ComponentsController
         'panels',
         'progressIndicators',
         'progressTrackers',
+        'radio',
         'select',
         'tab',
         'tables',
@@ -113,6 +114,7 @@ final class ComponentsController
             'panels' => $this->renderPanelsView($request),
             'progressIndicators' => $this->renderProgressIndicatorsView($request),
             'progressTrackers' => $this->renderProgressTrackersView($request),
+            'radio' => $this->renderRadioView($request),
             'select' => $this->renderSelectView($request),
             'tab' => $this->renderTabView($request),
             'tables' => $this->renderTablesView($request),
@@ -476,6 +478,17 @@ final class ComponentsController
             'routeIdentifier' => 'styleguide_components',
         ]);
         return $view->renderResponse('Backend/Components/ProgressTrackers');
+    }
+
+    private function renderRadioView(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->createModuleTemplate($request, 'radio');
+        $view->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'radio',
+            'routeIdentifier' => 'styleguide_components',
+        ]);
+        return $view->renderResponse('Backend/Components/Radio');
     }
 
     private function renderSelectView(ServerRequestInterface $request): ResponseInterface

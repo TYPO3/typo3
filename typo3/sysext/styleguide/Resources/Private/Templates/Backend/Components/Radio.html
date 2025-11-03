@@ -1,0 +1,180 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    xmlns:co="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
+
+    <div class="styleguide-content">
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.radio.headline" /></h1>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.radio.section.default.headline" /></h2>
+        <f:variable name="codeSnippetDefault">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="radio-default" id="radio-default-1-<UNIQUEID>" />
+                <label class="form-check-label" for="radio-default-1-<UNIQUEID>">Label 1</label>
+            </div>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetDefault}">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="radio-default" id="radio-default-1-<UNIQUEID>" />
+                <label class="form-check-label" for="radio-default-1-<UNIQUEID>">Label 1</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="radio-default" id="radio-default-2-<UNIQUEID>" />
+                <label class="form-check-label" for="radio-default-2-<UNIQUEID>">Label 2</label>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.radio.section.card.headline" /></h2>
+        <f:variable name="codeSnippetCard">
+            <div class="form-check-card-container form-check-card-container-small">
+                <div class="form-check form-check-type-card">
+                    <input class="form-check-input" type="radio" name="radio-default-icon" id="card-default-basic-1-<UNIQUEID>">
+                    <label class="form-check-label" for="card-default-basic-1-<UNIQUEID>">
+                        <span class="form-check-label-header">
+                            Label 1
+                        </span>
+                        <span class="form-check-label-body">
+                            ...
+                        </span>
+                    </label>
+                </div>
+                <div class="form-check form-check-type-card">...</div>
+            </div>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetCard}" decodeEntities="true">
+            <div class="form-check-card-container form-check-card-container-small">
+                <div class="form-check form-check-type-card">
+                    <input class="form-check-input" type="radio" name="radio-default-icon" id="card-default-1-<UNIQUEID>">
+                    <label class="form-check-label" for="card-default-1-<UNIQUEID>">
+                        <span class="form-check-label-header">
+                            Default
+                        </span>
+                        <span class="form-check-label-body">
+                            Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat
+                            nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue
+                            duis dolore te feugait nulla facilisi.
+                        </span>
+                    </label>
+                </div>
+                <div class="form-check form-check-type-card">
+                    <input class="form-check-input" type="radio" name="radio-default-icon" id="card-default-2-<UNIQUEID>">
+                    <label class="form-check-label" for="card-default-2-<UNIQUEID>">
+                        <span class="form-check-label-header">
+                            <span class="form-check-label-header-icon">
+                                <typo3-backend-icon identifier="actions-localize" size="medium"></typo3-backend-icon>
+                            </span>
+                            With icon
+                        </span>
+                        <span class="form-check-label-body">
+                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
+                            magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+                            gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </sg:example>
+
+        <hr>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
+
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.radio.section.default.headline" /></h4>
+        <sg:colorScheme>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="radio-color-scheme-default" id="radio-default-<UNIQUEID>">
+                <label class="form-check-label" for="radio-default-<UNIQUEID>">Default</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="radio-color-scheme-default" id="radio-checked-<UNIQUEID>" checked>
+                <label class="form-check-label" for="radio-checked-<UNIQUEID>">Checked</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="radio-color-scheme-disabled" id="radio-disabled-<UNIQUEID>" disabled>
+                <label class="form-check-label" for="radio-disabled-<UNIQUEID>">Disabled</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="radio-color-scheme-disabled" id="radio-disabled-checked-<UNIQUEID>" checked disabled>
+                <label class="form-check-label" for="radio-disabled-checked-<UNIQUEID>">Disabled checked</label>
+            </div>
+        </sg:colorScheme>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.radio.section.card.headline" /></h2>
+        <sg:colorScheme>
+            <div class="form-check-card-container">
+                <div class="form-check form-check-type-card">
+                    <input class="form-check-input" type="radio" name="radio-card-color-scheme-default-icon" id="card-color-scheme-default-1-<UNIQUEID>">
+                    <label class="form-check-label" for="card-color-scheme-default-1-<UNIQUEID>">
+                        <span class="form-check-label-header">
+                            Default
+                        </span>
+                        <span class="form-check-label-body">
+                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
+                            magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+                            gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                        </span>
+                    </label>
+                </div>
+                <div class="form-check form-check-type-card">
+                    <input class="form-check-input" type="radio" name="radio-card-color-scheme-default-icon" id="card-color-scheme-default-2-<UNIQUEID>" checked>
+                    <label class="form-check-label" for="card-color-scheme-default-2-<UNIQUEID>">
+                        <span class="form-check-label-header">
+                            Checked
+                        </span>
+                        <span class="form-check-label-body">
+                            Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat
+                            nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue
+                            duis dolore te feugait nulla facilisi.
+                        </span>
+                    </label>
+                </div>
+                <div class="form-check form-check-type-card">
+                    <input class="form-check-input" type="radio" name="radio-card-color-scheme-disabled-icon" id="card-color-scheme-disabled-1-<UNIQUEID>" disabled>
+                    <label class="form-check-label" for="card-color-scheme-disabled-1-<UNIQUEID>">
+                        <span class="form-check-label-header">
+                            Disabled
+                        </span>
+                        <span class="form-check-label-body">
+                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
+                            magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+                            gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                        </span>
+                    </label>
+                </div>
+                <div class="form-check form-check-type-card">
+                    <input class="form-check-input" type="radio" name="radio-card-color-scheme-disabled-icon" id="card-color-scheme-disabled-2-<UNIQUEID>" checked disabled>
+                    <label class="form-check-label" for="card-color-scheme-disabled-2-<UNIQUEID>">
+                        <span class="form-check-label-header">
+                            Disabled checked
+                        </span>
+                        <span class="form-check-label-body">
+                            Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat
+                            nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue
+                            duis dolore te feugait nulla facilisi.
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </sg:colorScheme>
+    </div>
+
+</f:section>
+
+</html>

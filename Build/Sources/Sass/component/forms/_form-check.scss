@@ -366,6 +366,123 @@
 }
 
 //
+// Card
+//
+// Basic Usage:
+// <div class="form-check form-check-type-card">
+//     <input class="form-check-input" type="radio" id="card-1">
+//     <label class="form-check-label" for="card-1">
+//         <span class="form-check-label-header">
+//             Label 1
+//         </span>
+//         <span class="form-check-label-body">
+//             ...
+//         </span>
+//     </label>
+// </div>
+//
+// Container Usage:
+// <div class="form-check-card-container form-check-card-container-small">
+//    <div class="form-check form-check-type-card">...</div>
+//    <div class="form-check form-check-type-card">...</div>
+//    <div class="form-check form-check-type-card">...</div>
+//    <div class="form-check form-check-type-card">...</div>
+// </div>
+//
+.form-check.form-check-type-card {
+    --typo3-form-check-width: 1.5em;
+    --typo3-form-check-height: 1.5em;
+    --typo3-form-check-card-color: var(--typo3-text-color-base);
+    --typo3-form-check-card-bg: var(--typo3-surface-container-low);
+    --typo3-form-check-card-border-radius: var(--typo3-component-border-radius);
+    --typo3-form-check-card-border-color: color-mix(in srgb, var(--typo3-form-check-card-bg), var(--typo3-form-check-card-color) var(--typo3-border-mix));
+    --typo3-form-check-card-padding: 1rem;
+    background: var(--typo3-form-check-card-bg);
+    border: 1px solid var(--typo3-form-check-card-border-color);
+    border-radius: var(--typo3-form-check-card-border-radius);
+    box-shadow: var(--typo3-component-box-shadow);
+    color: var(--typo3-form-check-card-color);
+    margin-bottom: var(--typo3-spacing);
+    padding: var(--typo3-form-check-card-padding);
+    transition: var(--typo3-form-check-transition);
+
+    &:focus,
+    &:hover {
+        box-shadow: var(--typo3-component-box-shadow-strong);
+    }
+
+    &:has(> .form-check-input:focus) {
+        --typo3-form-check-card-border-color: var(--typo3-form-check-focus-border-color);
+        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-form-check-focus-border-color), transparent 25%);
+    }
+
+    &:has(> .form-check-input:checked) {
+        --typo3-form-check-card-border-color: var(--typo3-form-check-checked-border-color);
+    }
+
+    .form-check-input {
+        order: 1;
+
+        &:focus {
+            outline: none;
+        }
+
+        &:checked[type="radio"] {
+            --typo3-form-check-mask-image: var(--typo3-form-check-mask-image-check-checked);
+        }
+    }
+
+    .form-check-label {
+        display: grid;
+        align-items: self-start;
+        grid-template-rows: min-content auto;
+        gap: .5rem;
+
+        &:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: var(--typo3-form-check-card-border-radius);
+        }
+
+        &-header {
+            display: flex;
+            align-items: center;
+            font-family: inherit;
+            gap: .5rem;
+            font-size: 1rem;
+            line-height: 1.2;
+        }
+
+        &-label-body {
+            display: block;
+        }
+    }
+}
+
+.form-check-card-container {
+    --typo3-form-check-card-grid-gap: 1rem;
+    --typo3-form-check-card-min-size: 200px;
+    --typo3-form-check-card-max-size: 1fr;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--typo3-form-check-card-min-size), var(--typo3-form-check-card-max-size)));
+    gap: var(--typo3-form-check-card-grid-gap);
+    margin-bottom: var(--typo3-spacing);
+
+    &-small {
+        --typo3-form-check-card-max-size: 300px;
+    }
+
+    .form-check-type-card {
+        margin-bottom: 0;
+    }
+}
+
+//
 // Utility
 //
 // Used in .form-groups to align checkboxes with inputs

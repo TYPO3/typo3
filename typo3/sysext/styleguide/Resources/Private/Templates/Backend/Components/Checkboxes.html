@@ -105,6 +105,55 @@
             <label class="btn btn-default" for="btncheck-default-basic-<UNIQUEID>">Label XY</label>
         </sg:example>
 
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.card.headline" /></h2>
+        <f:variable name="codeSnippetCard">
+            <div class="form-check-card-container form-check-card-container-small">
+                <div class="form-check form-check-type-card">
+                    <input class="form-check-input" type="checkbox" value="" id="checkbox-card-1">
+                    <label class="form-check-label" for="checkbox-card-1">
+                        <span class="form-check-label-header">
+                            Label 1
+                        </span>
+                        <span class="form-check-label-body">
+                            ...
+                        </span>
+                    </label>
+                </div>
+                <div class="form-check form-check-type-card">...</div>
+            </div>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetCard}" decodeEntities="true">
+            <div class="form-check-card-container form-check-card-container-small">
+                <div class="form-check form-check-type-card">
+                    <input class="form-check-input" type="checkbox" value="" id="checkbox-card-1-<UNIQUEID>">
+                    <label class="form-check-label" for="checkbox-card-1-<UNIQUEID>">
+                        <span class="form-check-label-header">
+                            Default
+                        </span>
+                        <span class="form-check-label-body">
+                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
+                            magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+                            gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                        </span>
+                    </label>
+                </div>
+                <div class="form-check form-check-type-card">
+                    <input class="form-check-input" type="checkbox" value="" id="checkbox-card-2-<UNIQUEID>">
+                    <label class="form-check-label" for="checkbox-card-2-<UNIQUEID>">
+                        <span class="form-check-label-header">
+                            <typo3-backend-icon identifier="actions-localize" size="medium"></typo3-backend-icon>
+                            With icon
+                        </span>
+                        <span class="form-check-label-body">
+                            Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat
+                            nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue
+                            duis dolore te feugait nulla facilisi.
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </sg:example>
+
         <hr>
 
         <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
@@ -395,6 +444,64 @@
                 <div class="example-item">
                     <input class="btn-check" type="checkbox" value="" id="btncheck-disabled-checked-<UNIQUEID>" checked disabled>
                     <label class="btn btn-default" for="btncheck-disabled-checked-<UNIQUEID>">Disabled checked</label>
+                </div>
+            </div>
+        </sg:colorScheme>
+
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.card.headline" /></h4>
+        <sg:colorScheme>
+            <div class="form-check-card-container">
+                <div class="form-check form-check-type-card">
+                    <input class="form-check-input" type="checkbox" value="" id="card-color-scheme-default-1-<UNIQUEID>">
+                    <label class="form-check-label" for="card-color-scheme-default-1-<UNIQUEID>">
+                        <span class="form-check-label-header">
+                            Default
+                        </span>
+                        <span class="form-check-label-body">
+                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
+                            magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+                            gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                        </span>
+                    </label>
+                </div>
+                <div class="form-check form-check-type-card">
+                    <input class="form-check-input" type="checkbox" value="" id="card-color-scheme-default-2-<UNIQUEID>" checked>
+                    <label class="form-check-label" for="card-color-scheme-default-2-<UNIQUEID>">
+                        <span class="form-check-label-header">
+                            Checked
+                        </span>
+                        <span class="form-check-label-body">
+                            Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat
+                            nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue
+                            duis dolore te feugait nulla facilisi.
+                        </span>
+                    </label>
+                </div>
+                <div class="form-check form-check-type-card">
+                    <input class="form-check-input" type="checkbox" value="" id="card-color-scheme-disabled-1-<UNIQUEID>" disabled>
+                    <label class="form-check-label" for="card-color-scheme-disabled-1-<UNIQUEID>">
+                        <span class="form-check-label-header">
+                            Disabled
+                        </span>
+                        <span class="form-check-label-body">
+                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
+                            magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+                            gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                        </span>
+                    </label>
+                </div>
+                <div class="form-check form-check-type-card">
+                    <input class="form-check-input" type="checkbox" value="" id="card-color-scheme-disabled-2-<UNIQUEID>" checked disabled>
+                    <label class="form-check-label" for="card-color-scheme-disabled-2-<UNIQUEID>">
+                        <span class="form-check-label-header">
+                            Disabled checked
+                        </span>
+                        <span class="form-check-label-body">
+                            Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat
+                            nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue
+                            duis dolore te feugait nulla facilisi.
+                        </span>
+                    </label>
                 </div>
             </div>
         </sg:colorScheme>
