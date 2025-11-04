@@ -26,10 +26,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ResourceFactoryTest extends FunctionalTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
-    protected bool $backupEnvironment = true;
-
     /**
      * @var ResourceFactory
      */

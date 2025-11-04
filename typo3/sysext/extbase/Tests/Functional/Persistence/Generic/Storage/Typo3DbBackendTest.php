@@ -35,8 +35,6 @@ use TYPO3Tests\BlogExample\Domain\Repository\BlogRepository;
 
 final class Typo3DbBackendTest extends FunctionalTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
     protected array $testExtensionsToLoad = [
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
     ];

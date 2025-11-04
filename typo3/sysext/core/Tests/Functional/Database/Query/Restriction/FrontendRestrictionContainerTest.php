@@ -30,8 +30,6 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 final class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
     public static function frontendStatesDataProvider(): array
     {
         return [
