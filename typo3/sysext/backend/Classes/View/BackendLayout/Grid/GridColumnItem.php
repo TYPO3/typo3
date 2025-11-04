@@ -260,7 +260,7 @@ class GridColumnItem extends AbstractGridObject
                 $this->getBackendUser()->isAdmin()
                 || (
                     (
-                        !($this->record[$this->schema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] ?? false)
+                        !($this->getRow()[$this->schema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] ?? false)
                         && (
                             !($pagesSchema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('pages'))->hasCapability(TcaSchemaCapability::EditLock)
                             || !($pageRecord[$pagesSchema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] ?? false)
