@@ -7,5 +7,8 @@ $GLOBALS['TCA']['be_users']['columns']['disable']['displayCond'] = 'USER:' . \TY
 $GLOBALS['TCA']['be_users']['columns']['disable']['config']['default'] = 1;
 
 $GLOBALS['TCA']['be_users']['columns']['disable']['authenticationContext']['group'] = 'be.userManagement';
+$GLOBALS['TCA']['be_users']['columns']['disable']['label'] = 'core.db.accounts:enabled';
 $GLOBALS['TCA']['be_users']['columns']['starttime']['authenticationContext']['group'] = 'be.userManagement';
+$GLOBALS['TCA']['be_users']['columns']['starttime']['label'] = 'core.db.accounts:starttime';
 $GLOBALS['TCA']['be_users']['columns']['endtime']['authenticationContext']['group'] = 'be.userManagement';
+$GLOBALS['TCA']['be_users']['columns']['endtime']['label'] = 'core.db.accounts:endtime';
