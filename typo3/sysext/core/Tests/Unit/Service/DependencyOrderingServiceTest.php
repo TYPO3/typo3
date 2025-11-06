@@ -24,14 +24,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DependencyOrderingServiceTest extends UnitTestCase
 {
-    #[DataProvider('orderByDependenciesBuildsCorrectOrderDataProvider')]
-    #[Test]
-    public function orderByDependenciesBuildsCorrectOrder(array $items, string $beforeKey, string $afterKey, array $expectedOrderedItems): void
-    {
-        $orderedItems = (new DependencyOrderingService())->orderByDependencies($items, $beforeKey, $afterKey);
-        self::assertSame($expectedOrderedItems, $orderedItems);
-    }
-
     public static function orderByDependenciesBuildsCorrectOrderDataProvider(): array
     {
         return [
@@ -150,16 +142,12 @@ final class DependencyOrderingServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @throws \InvalidArgumentException
-     */
-    #[DataProvider('prepareDependenciesBuildsFullIdentifierListDataProvider')]
+    #[DataProvider('orderByDependenciesBuildsCorrectOrderDataProvider')]
     #[Test]
-    public function prepareDependenciesBuildsFullIdentifierList(array $dependencies, array $expectedDependencies): void
+    public function orderByDependenciesBuildsCorrectOrder(array $items, string $beforeKey, string $afterKey, array $expectedOrderedItems): void
     {
-        $dependencyOrderingService = $this->getAccessibleMock(DependencyOrderingService::class, null);
-        $preparedDependencies = $dependencyOrderingService->_call('prepareDependencies', $dependencies);
-        self::assertEquals($expectedDependencies, $preparedDependencies);
+        $orderedItems = (new DependencyOrderingService())->orderByDependencies($items, $beforeKey, $afterKey);
+        self::assertSame($expectedOrderedItems, $orderedItems);
     }
 
     public static function prepareDependenciesBuildsFullIdentifierListDataProvider(): array
@@ -203,12 +191,13 @@ final class DependencyOrderingServiceTest extends UnitTestCase
         ];
     }
 
-    #[DataProvider('buildDependencyGraphBuildsValidGraphDataProvider')]
+    #[DataProvider('prepareDependenciesBuildsFullIdentifierListDataProvider')]
     #[Test]
-    public function buildDependencyGraphBuildsValidGraph(array $dependencies, array $expectedGraph): void
+    public function prepareDependenciesBuildsFullIdentifierList(array $dependencies, array $expectedDependencies): void
     {
-        $graph = (new DependencyOrderingService())->buildDependencyGraph($dependencies);
-        self::assertEquals($expectedGraph, $graph);
+        $dependencyOrderingService = $this->getAccessibleMock(DependencyOrderingService::class, null);
+        $preparedDependencies = $dependencyOrderingService->_call('prepareDependencies', $dependencies);
+        self::assertEquals($expectedDependencies, $preparedDependencies);
     }
 
     public static function buildDependencyGraphBuildsValidGraphDataProvider(): array
@@ -568,19 +557,19 @@ final class DependencyOrderingServiceTest extends UnitTestCase
         ];
     }
 
-    #[DataProvider('calculateOrderResolvesCorrectOrderDataProvider')]
+    #[DataProvider('buildDependencyGraphBuildsValidGraphDataProvider')]
     #[Test]
-    public function calculateOrderResolvesCorrectOrder(array $graph, array $expectedList): void
+    public function buildDependencyGraphBuildsValidGraph(array $dependencies, array $expectedGraph): void
     {
-        $list = (new DependencyOrderingService())->calculateOrder($graph);
-        self::assertSame($expectedList, $list);
+        $graph = (new DependencyOrderingService())->buildDependencyGraph($dependencies);
+        self::assertEquals($expectedGraph, $graph);
     }
 
     public static function calculateOrderResolvesCorrectOrderDataProvider(): array
     {
         return [
             'list1' => [
-                [ // $graph
+                'graph' => [
                     1 => [
                         1 => false,
                         2 => true,
@@ -590,12 +579,12 @@ final class DependencyOrderingServiceTest extends UnitTestCase
                         2 => false,
                     ],
                 ],
-                [ // $expectedList
+                'expectedList' => [
                     2, 1,
                 ],
             ],
             'list2' => [
-                [ // $graph
+                'graph' => [
                     1 => [
                         1 => false,
                         2 => true,
@@ -612,11 +601,42 @@ final class DependencyOrderingServiceTest extends UnitTestCase
                         3 => false,
                     ],
                 ],
-                [ // $expectedList
+                'expectedList' => [
                     2, 1, 3,
                 ],
             ],
+            'list3 missing reference' => [
+                'graph' => [
+                    1 => [
+                        1 => false,
+                        2 => true,
+                        3 => false,
+                    ],
+                    2 => [
+                        1 => false,
+                        2 => false,
+                        3 => false,
+                        4 => true,
+                    ],
+                    3 => [
+                        1 => true,
+                        2 => true,
+                        3 => false,
+                    ],
+                ],
+                'expectedList' => [
+                    4, 2, 1, 3,
+                ],
+            ],
         ];
+    }
+
+    #[DataProvider('calculateOrderResolvesCorrectOrderDataProvider')]
+    #[Test]
+    public function calculateOrderResolvesCorrectOrder(array $graph, array $expectedList): void
+    {
+        $list = (new DependencyOrderingService())->calculateOrder($graph);
+        self::assertSame($expectedList, $list);
     }
 
     #[Test]
