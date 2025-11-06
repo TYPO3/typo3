@@ -106,14 +106,14 @@ final class TaskGroupsCest
         $I->amGoingTo('remove tasks from group');
         $I->click('//div[contains(@class, "panel-heading")][contains(., "' . $this->groupName . '")]//parent::div//table//button[contains(@title, "Delete")]');
         $modalDialog->canSeeDialog();
-        $modalDialog->clickButtonInDialog('OK');
+        $modalDialog->clickButtonInDialog('Delete');
 
         $I->amGoingTo('remove the empty group');
         $I->switchToContentFrame();
         $I->seeElement('//table//td[contains(., "' . $this->groupName . '")]');
         $I->click('//table//td[contains(., "' . $this->groupName . '")]/following-sibling::td/*//button[contains(@title, "Delete")]');
         $modalDialog->canSeeDialog();
-        $modalDialog->clickButtonInDialog('OK');
+        $modalDialog->clickButtonInDialog('Delete');
         $I->dontSeeElement('//table//td[contains(., "' . $this->groupName . '")]');
     }
 

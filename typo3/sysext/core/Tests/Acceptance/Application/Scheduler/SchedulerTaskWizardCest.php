@@ -94,7 +94,7 @@ final class SchedulerTaskWizardCest
 
         // Delete Task again
         $I->click('//button[contains(@title, "Delete")]');
-        $modalDialog->clickButtonInDialog('OK');
+        $modalDialog->clickButtonInDialog('Delete');
     }
 
     public function wizardSearchFunctionality(ApplicationTester $I, ModalDialog $modalDialog): void
@@ -171,13 +171,13 @@ final class SchedulerTaskWizardCest
 
         // Delete Tasks again
         $I->click('//button[contains(@title, "Delete")]');
-        $modalDialog->clickButtonInDialog('OK');
+        $modalDialog->clickButtonInDialog('Delete');
         $I->wait(1);
         $I->switchToContentFrame();
         $I->dontSee('Fileadmin garbage collection');
         $I->see('File Abstraction Layer: Update storage index');
         $I->click('//button[contains(@title, "Delete")]');
-        $modalDialog->clickButtonInDialog('OK');
+        $modalDialog->clickButtonInDialog('Delete');
         $I->wait(1);
         $I->switchToContentFrame();
 

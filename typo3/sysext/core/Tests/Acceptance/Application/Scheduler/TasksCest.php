@@ -109,7 +109,7 @@ final class TasksCest
         $I->switchToContentFrame();
         // Still see and can click the Delete button as the deletion has been canceled
         $I->click('//button[contains(@title, "Delete")]');
-        $modalDialog->clickButtonInDialog('OK');
+        $modalDialog->clickButtonInDialog('Delete');
         $I->switchToContentFrame();
         $I->see('The task was successfully deleted.');
         $I->see('No tasks found');
