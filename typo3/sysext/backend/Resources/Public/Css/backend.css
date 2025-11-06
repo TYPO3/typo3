@@ -3643,6 +3643,8 @@ typo3-backend-combobox-choice[aria-selected=true]{background-color:var(--typo3-f
 typo3-backend-combobox-choice::part(icon){-webkit-margin-end:.5rem;flex-shrink:0;margin-inline-end:.5rem}
 typo3-backend-combobox-choice::part(content){flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 typo3-backend-combobox-choice::part(indicator){color:var(--typo3-form-combobox-option-indicator);-webkit-margin-end:.25rem;margin-inline-end:.25rem;min-width:var(--typo3-form-combobox-icon-size)}
+typo3-qrcode{display:inline-block}
+typo3-qrcode .preview{margin-bottom:var(--typo3-spacing);text-align:center}
 .collapse-horizontal{height:auto;overflow:hidden;vertical-align:middle;width:0}
 .collapse-horizontal.show{display:inline-block;width:auto}
 .collapse-horizontal.collapsing{display:inline-block;transition-property:width,visibility;width:0}
