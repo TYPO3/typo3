@@ -166,12 +166,12 @@ readonly class DependencyOrderingService
             $sortedIds[] = $currentId;
 
             // Process the dependencies of the current node
-            foreach (array_filter($dependencyGraph[$currentId]) as $dependingId => $_) {
+            foreach (array_filter($dependencyGraph[$currentId] ?? []) as $dependingId => $_) {
                 // Remove the edge to this dependency
                 $dependencyGraph[$currentId][$dependingId] = false;
                 if (!$this->getIncomingEdgeCount($dependencyGraph, (string)$dependingId)) {
                     // We found a new root, lets add it to the list
-                    $rootIds[$dependingId] = count(array_filter($dependencyGraph[$dependingId]));
+                    $rootIds[$dependingId] = count(array_filter($dependencyGraph[$dependingId] ?? []));
                 }
             }
         }
@@ -201,7 +201,7 @@ readonly class DependencyOrderingService
     {
         $incomingEdgeCount = 0;
         foreach ($dependencyGraph as $dependencies) {
-            if ($dependencies[$identifier]) {
+            if ($dependencies[$identifier] ?? []) {
                 $incomingEdgeCount++;
             }
         }
@@ -239,7 +239,7 @@ readonly class DependencyOrderingService
      */
     protected function findPathInGraph(array $graph, string $from, string $to): array
     {
-        foreach (array_filter($graph[$from]) as $node => $_) {
+        foreach (array_filter($graph[$from] ?? []) as $node => $_) {
             if ($node === $to) {
                 return [$from, $to];
             }
