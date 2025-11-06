@@ -49,6 +49,7 @@
 		"ext-mbstring": "*",
 		"ext-pcre": "*",
 		"ext-session": "*",
+		"ext-sodium": "*",
 		"ext-tokenizer": "*",
 		"ext-xml": "*",
 		"composer-runtime-api": "^2.1",
