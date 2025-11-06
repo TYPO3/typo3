@@ -109,7 +109,7 @@
         }
 
         .dropdown-menu {
-            max-height: calc(100dvh - var(--scaffold-topbar-height) - var(--module-docheader-height));
+            max-height: calc(100dvh - var(--module-docheader-height));
             overflow-y: auto;
         }
     }
