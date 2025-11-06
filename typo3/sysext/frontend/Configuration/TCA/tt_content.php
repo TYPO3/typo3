@@ -243,6 +243,10 @@ return [
                         'value' => '5',
                     ],
                     [
+                        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_layout.I.h6',
+                        'value' => '6',
+                    ],
+                    [
                         'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_layout.I.6',
                         'value' => '100',
                     ],

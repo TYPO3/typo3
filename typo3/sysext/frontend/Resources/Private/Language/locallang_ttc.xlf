@@ -63,6 +63,9 @@
       <trans-unit id="header_layout.I.5">
         <source>Layout 5</source>
       </trans-unit>
+      <trans-unit id="header_layout.I.h6">
+        <source>Layout 6</source>
+      </trans-unit>
       <trans-unit id="header_layout.I.6">
         <source>Hidden</source>
       </trans-unit>
