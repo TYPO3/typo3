@@ -17,6 +17,7 @@ import Viewport from '@typo3/backend/viewport';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { UrlFactory } from '@typo3/core/factory/url-factory';
 
 enum Identifiers {
   scaffoldSelector = '.t3js-scaffold',
@@ -162,8 +163,9 @@ class WorkspacesMenu {
       // If a user has no view permission for the requested page, the first allowed page id from its rootline is
       // returned which gets appended to the URL
       if (data.pageId) {
-        let url = TYPO3.Backend.ContentContainer.getUrl();
-        url += (!url.includes('?') ? '?' : '&') + 'id=' + data.pageId;
+        const url = UrlFactory.createUrl(TYPO3.Backend.ContentContainer.getUrl(), {
+          id: data.pageId
+        });
         Viewport.ContentContainer.setUrl(url);
       } else if (currentModule === 'workspaces_publish') {
         // Reload the workspace module and override the workspace id

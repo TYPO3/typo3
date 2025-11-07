@@ -25,6 +25,7 @@ import { TreeToolbar } from '@typo3/backend/tree/tree-toolbar';
 import { TreeModuleState } from '@typo3/backend/tree/tree-module-state';
 import Modal from '../modal';
 import Severity from '../severity';
+import { UrlFactory } from '@typo3/core/factory/url-factory';
 import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
 import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
@@ -448,9 +449,10 @@ export class PageTreeNavigationComponent extends TreeModuleState(LitElement) {
 
     // Load the currently selected module with the updated URL
     const moduleMenu = top.TYPO3.ModuleMenu.App;
-    let contentUrl = ModuleUtility.getFromName(moduleMenu.getCurrentModule()).link;
-    contentUrl += contentUrl.includes('?') ? '&' : '?';
-    top.TYPO3.Backend.ContentContainer.setUrl(contentUrl + 'id=' + node.identifier);
+    const contentUrl = UrlFactory.createUrl(ModuleUtility.getFromName(moduleMenu.getCurrentModule()).link, {
+      id: node.identifier
+    });
+    top.TYPO3.Backend.ContentContainer.setUrl(contentUrl);
   };
 
   private readonly showContextMenu = (evt: CustomEvent): void => {

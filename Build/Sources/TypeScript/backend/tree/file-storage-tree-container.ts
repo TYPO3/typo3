@@ -29,6 +29,7 @@ import { Resource, type ResourceInterface } from '@typo3/backend/resource/resour
 import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types';
 import type { TreeToolbar } from '@typo3/backend/tree/tree-toolbar';
 import type { DataTransferStringItem } from '@typo3/backend/tree/tree';
+import { UrlFactory } from '@typo3/core/factory/url-factory';
 
 export const navigationComponentName: string = 'typo3-backend-navigation-component-filestoragetree';
 
@@ -352,9 +353,10 @@ export class FileStorageTreeNavigationComponent extends TreeModuleState(LitEleme
 
     // Load the currently selected module with the updated URL
     const moduleMenu = top.TYPO3.ModuleMenu.App;
-    let contentUrl = ModuleUtility.getFromName(moduleMenu.getCurrentModule()).link;
-    contentUrl += contentUrl.includes('?') ? '&' : '?';
-    top.TYPO3.Backend.ContentContainer.setUrl(contentUrl + 'id=' + node.identifier);
+    const contentUrl = UrlFactory.createUrl(ModuleUtility.getFromName(moduleMenu.getCurrentModule()).link, {
+      id: decodeURIComponent(node.identifier)
+    });
+    top.TYPO3.Backend.ContentContainer.setUrl(contentUrl);
   };
 
   private readonly showContextMenu = (evt: CustomEvent): void => {

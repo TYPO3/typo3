@@ -94,13 +94,13 @@ export class MoveContentElement {
               label: lll('moveElement.notification.elementPasted.action.open', targetPageTitle),
               action: new ImmediateAction((): void => {
                 returnUrl.searchParams.set('id', pageUid);
-                Viewport.ContentContainer.setUrl(returnUrl.toString());
+                Viewport.ContentContainer.setUrl(returnUrl);
               })
             }
           ]
         );
 
-        Viewport.ContentContainer.setUrl(returnUrl.toString());
+        Viewport.ContentContainer.setUrl(returnUrl);
       });
     }).delegateTo(container, '[data-action="paste"]');
   }
