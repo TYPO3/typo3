@@ -21,7 +21,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\Components\MultiRecordSelection\Action;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -59,7 +58,7 @@ class ManagementController
         $requestUri = $request->getAttribute('normalizedParams')->getRequestUri();
         $languageService = $this->getLanguageService();
 
-        $this->registerDocHeaderButtons($view, $requestUri, $demand);
+        $this->registerDocHeaderButtons($view, $demand);
         $view->makeDocHeaderModuleMenu();
 
         $webhookRecords = $this->webhookRepository->getWebhookRecords($demand);
@@ -100,7 +99,7 @@ class ManagementController
         ])->renderResponse('Management/Overview');
     }
 
-    protected function registerDocHeaderButtons(ModuleTemplate $view, string $requestUri, WebhookDemand $demand): void
+    protected function registerDocHeaderButtons(ModuleTemplate $view, WebhookDemand $demand): void
     {
         $languageService = $this->getLanguageService();
 
@@ -117,21 +116,18 @@ class ManagementController
             ->setShowLabelText(true)
             ->setTitle($languageService->sL('LLL:EXT:webhooks/Resources/Private/Language/module.xlf:webhook_create'))
             ->setIcon($this->iconFactory->getIcon('actions-add', IconSize::SMALL));
-        $view->addButtonToButtonBar($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
-
-        // Reload
-        $view->addButtonToButtonBar($this->componentFactory->createReloadButton($requestUri), ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->getDocHeaderComponent()->getButtonBar()->addButton($newRecordButton);
 
         // Shortcut
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier('integrations_webhooks')
-            ->setDisplayName($languageService->sL('LLL:EXT:webhooks/Resources/Private/Language/module.xlf:title'))
-            ->setArguments(array_filter([
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'integrations_webhooks',
+            displayName: $languageService->sL('LLL:EXT:webhooks/Resources/Private/Language/module.xlf:title'),
+            arguments: array_filter([
                 'demand' => $demand->getParameters(),
                 'orderField' => $demand->getOrderField(),
                 'orderDirection' => $demand->getOrderDirection(),
-            ]));
-        $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+            ])
+        );
     }
 
     protected function getLanguageService(): LanguageService

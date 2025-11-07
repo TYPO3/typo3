@@ -187,7 +187,7 @@ class SiteConfigurationController
             'formEngineFooter' => $formResultCompiler->printNeededJSFunctions(),
         ]);
 
-        $this->configureEditViewDocHeader($view, $siteIdentifier);
+        $this->configureEditViewDocHeader($view, $siteIdentifier, $request);
         $view->setTitle(
             $this->getLanguageService()->translate('title', 'backend.modules.site_configuration'),
             $siteIdentifier ?? ''
@@ -687,7 +687,7 @@ class SiteConfigurationController
     /**
      * Create document header buttons of "edit" action
      */
-    protected function configureEditViewDocHeader(ModuleTemplate $view, ?string $siteIdentifier): void
+    protected function configureEditViewDocHeader(ModuleTemplate $view, ?string $siteIdentifier, ServerRequestInterface $request): void
     {
         $lang = $this->getLanguageService();
         $closeButton = $this->componentFactory->createCloseButton('#')
@@ -696,9 +696,9 @@ class SiteConfigurationController
         $view->addButtonToButtonBar($closeButton);
         $view->addButtonToButtonBar($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         if ($siteIdentifier) {
-            $exportButton = $this->componentFactory->createLinkButton()
+            $editSiteSettingsButton = $this->componentFactory->createLinkButton()
                 ->setTitle($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:edit.editSiteSettings'))
-                ->setIcon($this->iconFactory->getIcon('actions-cog', IconSize::SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-open', IconSize::SMALL))
                 ->setShowLabelText(true)
                 ->setHref((string)$this->uriBuilder->buildUriFromRoute('site_settings.edit', [
                     'site' => $siteIdentifier,
@@ -706,8 +706,14 @@ class SiteConfigurationController
                         'site' => $siteIdentifier,
                     ]),
                 ]));
-            $view->addButtonToButtonBar($exportButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+            $view->addButtonToButtonBar($editSiteSettingsButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
         }
+        // Set shortcut context - reload button is added automatically
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'site_configuration.edit',
+            displayName: sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:labels.edit'), $siteIdentifier),
+            arguments: ['site' => $siteIdentifier]
+        );
     }
 
     /**
@@ -715,11 +721,11 @@ class SiteConfigurationController
      */
     protected function configureOverViewDocHeader(ModuleTemplate $view, string $requestUri): void
     {
-        $view->addButtonToButtonBar($this->componentFactory->createReloadButton($requestUri), ButtonBar::BUTTON_POSITION_RIGHT);
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier('site_configuration')
-            ->setDisplayName($this->getLanguageService()->translate('short_description', 'backend.modules.site_configuration'));
-        $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        // Set shortcut context - reload button is added automatically
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'site_configuration',
+            displayName: $this->getLanguageService()->translate('short_description', 'backend.modules.site_configuration')
+        );
     }
 
     /**

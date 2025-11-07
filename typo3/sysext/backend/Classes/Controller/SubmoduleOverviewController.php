@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -70,11 +69,10 @@ final readonly class SubmoduleOverviewController
             $view->getDocHeaderComponent()->setPageBreadcrumb($pageinfo);
         }
         $view->makeDocHeaderModuleMenu(['id' => $id]);
-        $view->addButtonToButtonBar($this->componentFactory->createReloadButton($request->getAttribute('normalizedParams')->getRequestUri()), ButtonBar::BUTTON_POSITION_RIGHT);
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier($currentModule->getIdentifier())
-            ->setDisplayName($this->getLanguageService()->sL($currentModule->getTitle()));
-        $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: $currentModule->getIdentifier(),
+            displayName: $this->getLanguageService()->sL($currentModule->getTitle())
+        );
 
         $view->setTitle($this->getLanguageService()->sL($currentModule->getTitle()));
         $view->assign('currentModule', $currentModule);

@@ -60,7 +60,11 @@ final class ConfigurationController
         $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle($languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang:module.configuration.title'), $selectedProviderLabel);
         $this->addProviderDropDownToDocHeader($view, $providers, $selectedProvider);
-        $this->addShortcutButtonToDocHeader($view, $selectedProvider, $selectedProviderIdentifier);
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'system_config',
+            displayName: $selectedProvider->getLabel(),
+            arguments: ['tree' => $selectedProviderIdentifier]
+        );
         $view->assignMultiple([
             'tree' => $this->renderTree($configurationArray, $selectedProviderLabelHash),
             'treeName' => $selectedProviderLabel,
@@ -164,15 +168,6 @@ final class ConfigurationController
             $menu->addMenuItem($menuItem);
         }
         $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
-    }
-
-    private function addShortcutButtonToDocHeader(ModuleTemplate $view, ProviderInterface $provider, string $providerIdentifier): void
-    {
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier('system_config')
-            ->setDisplayName($provider->getLabel())
-            ->setArguments(['tree' => $providerIdentifier]);
-        $view->addButtonToButtonBar($shortcutButton);
     }
 
     private function getLanguageService(): LanguageService

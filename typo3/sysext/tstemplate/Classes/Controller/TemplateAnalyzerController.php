@@ -22,7 +22,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -124,7 +123,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title']);
         $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);
         $this->addPreviewButtonToDocHeader($view, $pageRecord);
-        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageUid);
+        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageUid, $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:submodule.title'));
         $view->makeDocHeaderModuleMenu(['id' => $pageUid]);
         $view->assignMultiple([
             'pageUid' => $pageUid,
@@ -207,21 +206,5 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
             ->createResponse()
             ->withHeader('Content-Type', 'text/plain')
             ->withBody($this->streamFactory->createStream($source));
-    }
-
-    private function addShortcutButtonToDocHeader(ModuleTemplate $view, string $moduleIdentifier, array $pageInfo, int $pageUid): void
-    {
-        $languageService = $this->getLanguageService();
-        $shortcutTitle = sprintf(
-            '%s: %s [%d]',
-            $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:submodule.title'),
-            BackendUtility::getRecordTitle('pages', $pageInfo),
-            $pageUid
-        );
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier($moduleIdentifier)
-            ->setDisplayName($shortcutTitle)
-            ->setArguments(['id' => $pageUid]);
-        $view->addButtonToButtonBar($shortcutButton);
     }
 }

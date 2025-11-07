@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Recycler\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -98,12 +97,11 @@ readonly class RecyclerModuleController
             BackendUtility::getRecordTitle('pages', $pageRecord),
             $id
         );
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier('recycler')
-            ->setDisplayName($shortcutTitle)
-            ->setArguments(['id' => $id]);
-        $view->addButtonToButtonBar($shortcutButton);
-        $view->addButtonToButtonBar($this->componentFactory->createReloadButton('#')->setDataAttributes(['action' => 'reload']), ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'recycler',
+            displayName: $shortcutTitle,
+            arguments: ['id' => $id]
+        );
     }
 
     protected function getBackendUser(): BackendUserAuthentication

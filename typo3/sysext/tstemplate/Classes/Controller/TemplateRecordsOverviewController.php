@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Tstemplate\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
@@ -109,7 +108,8 @@ class TemplateRecordsOverviewController extends AbstractTemplateModuleController
         $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle($this->getLanguageService()->sL($currentModule->getTitle()), '');
         $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);
-        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageUid);
+        $this->addPreviewButtonToDocHeader($view, $pageRecord);
+        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageUid, $this->getLanguageService()->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_overview.xlf:typoscriptRecords.title'));
         if ($pageUid !== 0) {
             $view->makeDocHeaderModuleMenu(['id' => $pageUid]);
         }
@@ -144,21 +144,5 @@ class TemplateRecordsOverviewController extends AbstractTemplateModuleController
         // Tree node sorting by pages sorting field
         uasort($pages, static fn($a, $b) => $a['sorting'] - $b['sorting']);
         return $pages;
-    }
-
-    private function addShortcutButtonToDocHeader(ModuleTemplate $view, string $moduleIdentifier, array $pageInfo, int $pageUid): void
-    {
-        $languageService = $this->getLanguageService();
-        $shortcutTitle = sprintf(
-            '%s: %s [%d]',
-            $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_overview.xlf:typoscriptRecords.title'),
-            BackendUtility::getRecordTitle('pages', $pageInfo),
-            $pageUid
-        );
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier($moduleIdentifier)
-            ->setDisplayName($shortcutTitle)
-            ->setArguments(['id' => $pageUid]);
-        $view->addButtonToButtonBar($shortcutButton);
     }
 }

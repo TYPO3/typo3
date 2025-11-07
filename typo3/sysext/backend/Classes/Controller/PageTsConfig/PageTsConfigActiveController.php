@@ -23,8 +23,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -59,7 +57,6 @@ final class PageTsConfigActiveController
         private readonly UriBuilder $uriBuilder,
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly TsConfigTreeBuilder $tsConfigTreeBuilder,
-        private readonly ComponentFactory $componentFactory,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -176,7 +173,17 @@ final class PageTsConfigActiveController
         $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title'] ?? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? '');
         $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);
-        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageUid);
+        $shortcutTitle = sprintf(
+            '%s: %s [%d]',
+            $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active'),
+            BackendUtility::getRecordTitle('pages', $pageRecord),
+            $pageUid
+        );
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: $currentModuleIdentifier,
+            displayName: $shortcutTitle,
+            arguments: ['id' => $pageUid]
+        );
         $view->makeDocHeaderModuleMenu(['id' => $pageUid]);
         $view->assignMultiple([
             'pageUid' => $pageUid,
@@ -236,22 +243,6 @@ final class PageTsConfigActiveController
             $this->getBackendUser()->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
         }
         return $conditions;
-    }
-
-    private function addShortcutButtonToDocHeader(ModuleTemplate $view, string $moduleIdentifier, array $pageInfo, int $pageUid): void
-    {
-        $languageService = $this->getLanguageService();
-        $shortcutTitle = sprintf(
-            '%s: %s [%d]',
-            $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active'),
-            BackendUtility::getRecordTitle('pages', $pageInfo),
-            $pageUid
-        );
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier($moduleIdentifier)
-            ->setDisplayName($shortcutTitle)
-            ->setArguments(['id' => $pageUid]);
-        $view->addButtonToButtonBar($shortcutButton);
     }
 
     private function getLanguageService(): LanguageService

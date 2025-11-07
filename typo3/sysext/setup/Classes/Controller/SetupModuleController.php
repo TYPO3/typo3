@@ -152,10 +152,11 @@ class SetupModuleController
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $this->addFlashMessages($view);
         $view->addButtonToButtonBar($this->componentFactory->createSaveButton('SetupModuleController')->setName('data[save]'));
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier('user_setup')
-            ->setDisplayName($this->getLanguageService()->translate('short_description', 'setup.module'));
-        $view->addButtonToButtonBar($shortcutButton);
+        // Set shortcut context - reload button is added automatically
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'user_setup',
+            displayName: $this->getLanguageService()->translate('short_description', 'setup.module')
+        );
         $view->assignMultiple([
             'typo3Info' => $this->typo3Information,
             'isLanguageUpdate' => $this->languageUpdate,

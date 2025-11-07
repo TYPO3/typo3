@@ -1622,12 +1622,11 @@ class EditDocumentController
     {
         if ($this->returnUrl !== $this->getCloseUrl($request)) {
             $arguments = $this->getUrlQueryParamsForCurrentRequest($request);
-            $shortCutButton = $this->componentFactory->createShortcutButton()
-                ->setRouteIdentifier('record_edit')
-                ->setDisplayName($this->getShortcutTitle($request))
-                ->setArguments($arguments)
-                ->setDisabled(true);
-            $view->addButtonToButtonBar($shortCutButton, $position, $group);
+            $view->getDocHeaderComponent()->setShortcutContext(
+                routeIdentifier: 'record_edit',
+                displayName: $this->getShortcutTitle($request),
+                arguments: $arguments
+            );
         }
     }
 

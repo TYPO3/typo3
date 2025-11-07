@@ -125,6 +125,17 @@ class AdministrationController extends ActionController
         }
         $view->setFlashMessageQueue($this->getFlashMessageQueue());
 
+        $moduleTitle = $languageService->translate('title', 'indexed_search.module');
+        $shortcutTitle = $context ? $moduleTitle . ': ' . $context : $moduleTitle;
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'manage_search_index',
+            displayName: $shortcutTitle,
+            arguments: [
+                'id' => $this->pageUid,
+                'action' => $this->request->getControllerActionName(),
+            ]
+        );
+
         return $view;
     }
 

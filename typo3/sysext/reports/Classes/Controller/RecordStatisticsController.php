@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Reports\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Reports\Service\RecordStatisticsService;
@@ -35,7 +33,6 @@ final readonly class RecordStatisticsController
     public function __construct(
         protected ModuleTemplateFactory $moduleTemplateFactory,
         protected RecordStatisticsService $recordStatisticsService,
-        protected ComponentFactory $componentFactory,
     ) {}
 
     /**
@@ -50,10 +47,10 @@ final readonly class RecordStatisticsController
             $languageService->translate('title', 'reports.modules.statistics')
         );
         $view->makeDocHeaderModuleMenu();
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier('system_reports_statistics')
-            ->setDisplayName($languageService->translate('title', 'reports.modules.statistics'));
-        $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'system_reports_statistics',
+            displayName: $languageService->translate('title', 'reports.modules.statistics')
+        );
 
         return $view->assignMultiple([
             'pages' => $this->recordStatisticsService->collectPageStatistics(),

@@ -131,6 +131,7 @@ class AbstractController extends ActionController
             )
         );
 
+        $title = $activeTitle = LocalizationUtility::translate('title', 'extensionmanager.module');
         foreach ($menuItems as $menuItemConfig) {
             if ($request->getControllerName() === $menuItemConfig['controller']) {
                 $isActive = $request->getControllerActionName() === $menuItemConfig['action'];
@@ -143,15 +144,18 @@ class AbstractController extends ActionController
                 ->setActive($isActive);
             $menu->addMenuItem($menuItem);
             if ($isActive) {
-                $view->setTitle(
-                    LocalizationUtility::translate('title', 'extensionmanager.module'),
-                    $menuItemConfig['label']
-                );
+                $activeTitle = $menuItemConfig['label'];
+                $view->setTitle($title, $activeTitle);
             }
         }
 
         $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
         $view->setFlashMessageQueue($this->getFlashMessageQueue());
+
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'extensionmanager.' . $request->getControllerName() . '_' . $request->getControllerActionName(),
+            displayName: $activeTitle
+        );
 
         return $view;
     }

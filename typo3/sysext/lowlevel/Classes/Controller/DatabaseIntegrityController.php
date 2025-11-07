@@ -26,7 +26,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -238,7 +237,7 @@ class DatabaseIntegrityController
 
         $this->menuConfig($request);
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->setUpDocHeader($moduleTemplate);
+        $this->setUpDocHeader($moduleTemplate, $request);
 
         $title = $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.dbint.title');
         $moduleTemplate->setTitle($title, $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch'));
@@ -340,18 +339,18 @@ class DatabaseIntegrityController
     /**
      * Generate doc header drop-down and shortcut button.
      */
-    protected function setUpDocHeader(ModuleTemplate $moduleTemplate): void
+    protected function setUpDocHeader(ModuleTemplate $moduleTemplate, ServerRequestInterface $request): void
     {
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier($this->moduleName)
-            ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch'))
-            ->setArguments([
+        $moduleTemplate->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: $this->moduleName,
+            displayName: $this->getLanguageService()->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch'),
+            arguments: [
                 'SET' => [
                     'search' => $this->MOD_SETTINGS['search'] ?? 'raw',
                     'search_query_makeQuery' => $this->MOD_SETTINGS['search_query_makeQuery'] ?? '',
                 ],
-            ]);
-        $moduleTemplate->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+            ]
+        );
     }
 
     /**

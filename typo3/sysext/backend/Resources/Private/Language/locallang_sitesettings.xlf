@@ -48,6 +48,9 @@
 			<trans-unit id="categories.other">
 				<source>Other</source>
 			</trans-unit>
+			<trans-unit id="labels.edit">
+				<source>Edit Site Settings "%s"</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

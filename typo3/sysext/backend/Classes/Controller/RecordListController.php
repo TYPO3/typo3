@@ -497,9 +497,6 @@ class RecordListController
                 $view->addButtonToButtonBar($exportButton, ButtonBar::BUTTON_POSITION_LEFT, 50);
             }
         }
-        // Reload
-        $view->addButtonToButtonBar($this->componentFactory->createReloadButton($listUrl), ButtonBar::BUTTON_POSITION_RIGHT);
-
         // ViewMode
         $viewModeItems = [];
         if ($this->allowSearch) {
@@ -523,11 +520,10 @@ class RecordListController
             foreach ($viewModeItems as $viewModeItem) {
                 $viewModeButton->addItem($viewModeItem);
             }
-            $view->addButtonToButtonBar($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 3);
+            $view->addButtonToButtonBar($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 0);
         }
 
         // Shortcut
-        $shortCutButton = $this->componentFactory->createShortcutButton()->setRouteIdentifier('web_list');
         $arguments = [
             'id' => $this->id,
         ];
@@ -547,9 +543,11 @@ class RecordListController
         foreach ($moduleSettings as $moduleSettingKey => $moduleSettingValue) {
             $arguments['GET'][$moduleSettingKey] = $moduleSettingValue;
         }
-        $shortCutButton->setArguments($arguments);
-        $shortCutButton->setDisplayName($this->getShortcutTitle($arguments));
-        $view->addButtonToButtonBar($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'web_list',
+            displayName: $this->getShortcutTitle($arguments),
+            arguments: $arguments
+        );
 
         // Back
         if ($this->returnUrl) {

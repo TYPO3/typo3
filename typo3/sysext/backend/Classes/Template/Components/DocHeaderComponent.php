@@ -22,6 +22,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Breadcrumb\BreadcrumbContext;
 use TYPO3\CMS\Backend\Breadcrumb\BreadcrumbFactory;
 use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
+use TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
@@ -98,6 +99,16 @@ class DocHeaderComponent
      * Language selector component.
      */
     protected ?ComponentInterface $languageSelector = null;
+
+    /**
+     * The automatic shortcut button instance, if configured.
+     */
+    protected ?ShortcutButton $automaticShortcutButton = null;
+
+    /**
+     * Whether the automatic reload button should be added.
+     */
+    protected bool $automaticReloadButton = true;
 
     public function __construct(
         protected readonly MenuRegistry $menuRegistry,
@@ -306,6 +317,57 @@ class DocHeaderComponent
     }
 
     /**
+     * Sets the context for the automatic shortcut button.
+     *
+     * Controllers can use this method to provide shortcut information without
+     * manually creating and adding the shortcut button. The button will be
+     * automatically added to the button bar in the correct position.
+     *
+     * Example:
+     *
+     *     $docHeader->setShortcutContext(
+     *         routeIdentifier: 'site_configuration.edit',
+     *         displayName: sprintf('Edit site: %s', $siteIdentifier),
+     *         arguments: ['site' => $siteIdentifier]
+     *     );
+     *
+     * @param string $routeIdentifier The route identifier for the shortcut
+     * @param string $displayName The display name shown in the bookmark list
+     * @param array $arguments Optional arguments to include in the shortcut URL
+     */
+    public function setShortcutContext(
+        string $routeIdentifier,
+        string $displayName,
+        array $arguments = []
+    ): void {
+        $this->automaticShortcutButton = $this->componentFactory->createShortcutButton()
+            ->setRouteIdentifier($routeIdentifier)
+            ->setDisplayName($displayName)
+            ->setArguments($arguments);
+    }
+
+    /**
+     * Disables the automatic reload button for this module.
+     *
+     * Use this if your module needs custom reload behavior or should not
+     * have a reload button at all.
+     */
+    public function disableAutomaticReloadButton(): void
+    {
+        $this->automaticReloadButton = false;
+    }
+
+    /**
+     * Disables the automatic shortcut button for this module.
+     *
+     * Use this if your module should not have a shortcut button.
+     */
+    public function disableAutomaticShortcutButton(): void
+    {
+        $this->automaticShortcutButton = null;
+    }
+
+    /**
      * Returns the complete document header content as an array for rendering.
      *
      * This method aggregates all components (buttons, breadcrumbs) into
@@ -326,12 +388,60 @@ class DocHeaderComponent
             $this->buttonBar->addButton($moduleMenuButton, ButtonBar::BUTTON_POSITION_LEFT, 0);
         }
 
+        // Add automatic buttons (reload, shortcut)
+        $this->addAutomaticButtons($request);
+
         return [
             'enabled' => $this->isEnabled(),
             'buttons' => $this->buttonBar->getButtons(),
             'breadcrumb' => $this->breadcrumb->getBreadcrumb($request, $this->breadcrumbContext),
             'languageSelector' => $this->getLanguageSelector(),
         ];
+    }
+
+    /**
+     * Adds automatic reload and shortcut buttons to the button bar.
+     *
+     * This method is called automatically by docHeaderContent() and handles:
+     * - Adding automatic reload button (if enabled)
+     * - Adding automatic shortcut button (if configured)
+     * - Backwards compatibility detection for controllers that manually add shortcut buttons
+     * - Deprecation warnings for manual shortcut button creation
+     *
+     * The buttons are added to groups 90 and 91 on the right side, which are conventionally
+     * used for these system buttons. This ensures they appear at the end of the button bar
+     * while still allowing PSR-14 event listeners to modify or remove them via ModifyButtonBarEvent.
+     */
+    private function addAutomaticButtons(?ServerRequestInterface $request): void
+    {
+        if ($request === null) {
+            return;
+        }
+
+        // Add automatic reload button if enabled
+        if ($this->automaticReloadButton) {
+            $reloadButton = $this->componentFactory->createReloadButton(
+                $request->getAttribute('normalizedParams')->getRequestUri()
+            );
+            // Add to group 90 on the right (conventionally second-to-last position)
+            $this->buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT, 90);
+        }
+
+        // Check if shortcut button was manually added (for backwards compatibility)
+        $hasManualShortcutButton = $this->buttonBar->hasButtonOfType(ShortcutButton::class);
+
+        // Add automatic shortcut button if configured and not manually added
+        if ($this->automaticShortcutButton !== null && !$hasManualShortcutButton) {
+            // Add to group 91 on the right (conventionally last position)
+            $this->buttonBar->addButton($this->automaticShortcutButton);
+        } elseif ($hasManualShortcutButton) {
+            // Trigger deprecation if shortcut button was manually added
+            trigger_error(
+                'Manually adding ShortcutButton to the button bar is deprecated and will be removed in TYPO3 v15. ' .
+                'Use DocHeaderComponent::setShortcutContext() instead to provide the shortcut configuration.',
+                E_USER_DEPRECATED
+            );
+        }
     }
 
     /**

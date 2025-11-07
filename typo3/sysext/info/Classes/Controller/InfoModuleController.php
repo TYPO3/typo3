@@ -49,6 +49,7 @@ class InfoModuleController
 {
     protected ModuleInterface $currentModule;
     protected ?ModuleTemplate $view;
+    protected ServerRequestInterface $request;
     public array $pageinfo = [];
 
     /**
@@ -72,6 +73,7 @@ class InfoModuleController
      */
     protected function init(ServerRequestInterface $request): void
     {
+        $this->request = $request;
         $this->id = (int)($request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0);
         $this->view = $this->moduleTemplateFactory->create($request);
         $this->currentModule = $request->getAttribute('module');
@@ -141,16 +143,16 @@ class InfoModuleController
             }
         }
 
-        // Shortcut
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier($this->currentModule->getIdentifier())
-            ->setDisplayName(sprintf(
+        // Set shortcut context - reload button is added automatically
+        $this->view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: $this->currentModule->getIdentifier(),
+            displayName: sprintf(
                 '%s [%d]',
                 $this->getLanguageService()->sL($this->currentModule->getTitle()),
                 $this->id
-            ))
-            ->setArguments(['id' => $this->id]);
-        $this->view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+            ),
+            arguments: ['id' => $this->id]
+        );
     }
 
     protected function getLanguageService(): LanguageService

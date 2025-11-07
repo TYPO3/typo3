@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Styleguide\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
@@ -49,7 +48,6 @@ final class StylesController
 
     public function __construct(
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
-        private readonly ComponentFactory $componentFactory,
     ) {}
 
     /**
@@ -164,15 +162,15 @@ final class StylesController
         );
         $view->setModuleClass('module-styleguide');
         $view->makeDocHeaderModuleMenu();
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setDisplayName(sprintf(
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'styleguide_styles',
+            displayName: sprintf(
                 '%s - %s',
                 $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styleguide'),
                 $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.' . $action)
-            ))
-            ->setRouteIdentifier('styleguide_styles')
-            ->setArguments(['action' => $action]);
-        $view->addButtonToButtonBar($shortcutButton);
+            ),
+            arguments: ['action' => $action]
+        );
         return $view;
     }
 

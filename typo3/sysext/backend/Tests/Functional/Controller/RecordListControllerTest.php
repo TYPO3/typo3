@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\RecordListController;
 use TYPO3\CMS\Backend\Module\ModuleData;
@@ -80,6 +81,7 @@ final class RecordListControllerTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations] // Calls recordlist multiple times and therefore triggers deprecation notice for manual shortcut button
     public function languageSelectionIsPersistedAcrossPageNavigations(): void
     {
         // Initial request with language=1 (French) on page 1100 (has French translation)

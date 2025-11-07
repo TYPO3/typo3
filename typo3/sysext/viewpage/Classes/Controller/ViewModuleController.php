@@ -22,7 +22,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -186,19 +185,12 @@ class ViewModuleController
             ->setIcon($this->iconFactory->getIcon('actions-view-page', IconSize::SMALL));
         $view->addButtonToButtonBar($showButton);
 
-        $refreshButton = $this->componentFactory->createLinkButton()
-            ->setHref('#')
-            ->setClasses('t3js-viewpage-refresh')
-            ->setTitle($languageService->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:refreshPage'))
-            ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
-        $view->addButtonToButtonBar($refreshButton, ButtonBar::BUTTON_POSITION_RIGHT);
-
         // Shortcut
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier('page_preview')
-            ->setDisplayName($this->getShortcutTitle($pageId))
-            ->setArguments(['id' => $pageId]);
-        $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'page_preview',
+            displayName: $this->getShortcutTitle($pageId),
+            arguments: ['id' => $pageId]
+        );
     }
 
     /**

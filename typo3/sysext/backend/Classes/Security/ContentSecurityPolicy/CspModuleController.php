@@ -71,11 +71,11 @@ class CspModuleController
 
     protected function registerDocHeaderButtons(ModuleTemplate $view, ModuleInterface $currentModule): void
     {
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier($currentModule->getIdentifier())
-            ->setDisplayName($this->getLanguageService()->translate('title', 'backend.modules.content_security_policy'));
-        $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
-
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: $currentModule->getIdentifier(),
+            displayName: $this->getLanguageService()->translate('title', 'backend.modules.content_security_policy')
+        );
+        $view->getDocHeaderComponent()->disableAutomaticReloadButton();
         $reloadButton = $this->componentFactory
             ->createReloadButton((string)$this->uriBuilder->buildUriFromRoute($currentModule->getIdentifier()))
             ->setDataAttributes(['csp-reports-handler' => 'refresh']);

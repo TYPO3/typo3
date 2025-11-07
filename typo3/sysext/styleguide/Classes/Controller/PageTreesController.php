@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Styleguide\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -60,7 +59,6 @@ final class PageTreesController
         private readonly Generator $generator,
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly RecordFinder $recordFinder,
-        private readonly ComponentFactory $componentFactory,
     ) {}
 
     /**
@@ -104,15 +102,15 @@ final class PageTreesController
             $languageService->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.managePageTrees'),
         );
         $view->makeDocHeaderModuleMenu();
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setDisplayName(sprintf(
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'styleguide_pagetrees',
+            displayName: sprintf(
                 '%s - %s',
                 $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styleguide'),
                 $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.managePageTrees')
-            ))
-            ->setRouteIdentifier('styleguide_pagetrees')
-            ->setArguments(['action' => 'managePageTrees']);
-        $view->addButtonToButtonBar($shortcutButton);
+            ),
+            arguments: ['action' => 'managePageTrees']
+        );
         return $view->renderResponse('Backend/ManagePageTrees');
     }
 

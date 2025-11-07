@@ -149,6 +149,21 @@ abstract class AbstractTemplateModuleController
         }
     }
 
+    protected function addShortcutButtonToDocHeader(ModuleTemplate $view, string $moduleIdentifier, array $pageInfo, int $pageUid, string $moduleTitle): void
+    {
+        $shortcutTitle = sprintf(
+            '%s: %s [%d]',
+            $moduleTitle,
+            BackendUtility::getRecordTitle('pages', $pageInfo),
+            $pageUid
+        );
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: $moduleIdentifier,
+            displayName: $shortcutTitle,
+            arguments: ['id' => $pageUid]
+        );
+    }
+
     /**
      * Get the closest page row that has a template up in rootline
      */

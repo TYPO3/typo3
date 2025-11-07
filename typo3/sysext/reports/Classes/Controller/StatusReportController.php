@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Reports\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -36,7 +34,6 @@ final readonly class StatusReportController
     public function __construct(
         protected ModuleTemplateFactory $moduleTemplateFactory,
         protected StatusService $statusService,
-        protected ComponentFactory $componentFactory,
     ) {}
 
     /**
@@ -61,10 +58,10 @@ final readonly class StatusReportController
             $languageService->translate('title', 'reports.modules.status')
         );
         $view->makeDocHeaderModuleMenu();
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier('system_reports_status')
-            ->setDisplayName($languageService->translate('title', 'reports.modules.status'));
-        $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'system_reports_status',
+            displayName: $languageService->translate('title', 'reports.modules.status')
+        );
 
         return $view->assignMultiple([
             'statusCollection' => $statusCollection,

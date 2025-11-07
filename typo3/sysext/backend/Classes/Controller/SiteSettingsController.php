@@ -94,6 +94,12 @@ readonly class SiteSettingsController
             )
         ));
 
+        // Set shortcut context - reload button is added automatically
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'site_settings',
+            displayName: $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings_module.xlf:mlang_tabs_tab')
+        );
+
         return $view->renderResponse('SiteSettings/Overview');
     }
 
@@ -150,12 +156,18 @@ readonly class SiteSettingsController
 
         $this->addDocHeaderBreadcrumb($view, $site);
         $this->addDocHeaderCloseAndSaveButtons($view, $site, $returnUrl ?? $overviewUrl, $hasSettings);
+        $this->addDocHeaderSiteConfigurationButton($view, $site);
         $this->addDocHeaderViewModeButton($view, $site, $mode);
         if ($hasSettings) {
             $this->addDocHeaderExportButton($view, $site, $mode);
         }
+        // Set shortcut context - reload button is added automatically
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'site_settings.edit',
+            displayName: sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:labels.edit'), $site->getIdentifier()),
+            arguments: ['site' => $site->getIdentifier()]
+        );
 
-        $this->addDocHeaderSiteConfigurationButton($view, $site);
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_copytoclipboard.xlf');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf');
 
@@ -287,12 +299,12 @@ readonly class SiteSettingsController
 
     protected function addDocHeaderCloseAndSaveButtons(ModuleTemplate $moduleTemplate, Site $site, string $closeUrl, bool $saveEnabled): void
     {
-        $moduleTemplate->addButtonToButtonBar($this->componentFactory->createCloseButton($closeUrl), ButtonBar::BUTTON_POSITION_LEFT, 2);
+        $moduleTemplate->addButtonToButtonBar($this->componentFactory->createCloseButton($closeUrl), ButtonBar::BUTTON_POSITION_LEFT, 1);
         $saveButton = $this->componentFactory->createSaveButton('sitesettings_form')
             ->setName('CMD')
             ->setValue('save')
             ->setDisabled(!$saveEnabled);
-        $moduleTemplate->addButtonToButtonBar($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
+        $moduleTemplate->addButtonToButtonBar($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
     }
 
     protected function addDocHeaderViewModeButton(ModuleTemplate $moduleTemplate, Site $site, SettingsMode $mode): void
@@ -366,7 +378,7 @@ readonly class SiteSettingsController
                     'site' => $site->getIdentifier(),
                 ]),
             ]));
-        $moduleTemplate->addButtonToButtonBar($exportButton, ButtonBar::BUTTON_POSITION_RIGHT, 3);
+        $moduleTemplate->addButtonToButtonBar($exportButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
     }
 
     protected function getSiteTitle(Site $site): string

@@ -104,7 +104,12 @@ readonly class ComponentFactory
     /**
      * Creates a standardized "reload" button for reloading the current view.
      *
-     * Similar to back button but uses "actions-refresh" icon and without a displayed label.
+     * Uses "actions-refresh" icon without a displayed label.
+     *
+     * Note: As of TYPO3 v14, the reload button is automatically added to all modules
+     * by default. Controllers only need to manually create this button if they need
+     * custom reload behavior. In that case, use DocHeaderComponent::disableAutomaticReloadButton()
+     * to prevent the automatic one from being added.
      */
     public function createReloadButton(string|UriInterface $requestUri): LinkButton
     {

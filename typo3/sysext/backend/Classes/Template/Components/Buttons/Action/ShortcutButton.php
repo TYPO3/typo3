@@ -34,33 +34,36 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Renders a shortcut button in the DocHeader which automatically positions itself
- * in the top right corner (BUTTON_POSITION_RIGHT, group 91).
+ * Shortcut button for the DocHeader that enables bookmarking of backend module states.
  *
- * This button implements PositionInterface, which means the position and group
- * parameters passed to addButton() are ignored - the button always uses its own
- * predefined position.
+ * This button allows users to create shortcuts (bookmarks) to specific module views
+ * with their context (e.g., specific page, record, or configuration). The shortcut
+ * preserves the route and arguments for quick access later.
  *
- * Example:
+ * The button is automatically added to all backend modules by default when shortcut
+ * context is provided. It's positioned on the right side of the button bar as the
+ * last button (group 91).
+ *
+ * Example - Using automatic shortcut button (recommended):
  *
  * ```
- * public function __construct(
- *     protected readonly ComponentFactory $componentFactory,
- * ) {}
- *
- * public function myAction(): ResponseInterface
+ * public function myAction(ServerRequestInterface $request): ResponseInterface
  * {
- *     $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
- *     $pageId = (int)($request->getQueryParams()['id'] ?? 0);
- *     $myButton = $this->componentFactory->createShortcutButton()
- *           ->setRouteIdentifier('page_preview')
- *           ->setDisplayName('View page ' . $pageId)
- *           ->setArguments([
- *              'id' => $pageId
- *           ]);
- *     $buttonBar->addButton($myButton);
+ *     $view = $this->moduleTemplateFactory->create($request);
+ *
+ *     // Set shortcut context - button is added automatically
+ *     $view->getDocHeaderComponent()->setShortcutContext(
+ *         routeIdentifier: 'my_module',
+ *         displayName: 'My Module: ' . $pageTitle,
+ *         arguments: ['id' => $pageId]
+ *     );
+ *
+ *     return $view->renderResponse('MyTemplate');
  * }
  * ```
+ *
+ * Note: As of TYPO3 v14, manually adding ShortcutButton is deprecated.
+ * Use DocHeaderComponent::setShortcutContext() instead.
  */
 class ShortcutButton implements ButtonInterface, PositionInterface
 {

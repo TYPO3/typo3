@@ -22,9 +22,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -48,7 +45,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 final class PageTsConfigRecordsOverviewController
 {
     public function __construct(
-        private readonly ComponentFactory $componentFactory,
         private readonly IconFactory $iconFactory,
         private readonly UriBuilder $uriBuilder,
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
@@ -87,7 +83,11 @@ final class PageTsConfigRecordsOverviewController
             }
             $view->assign('id', $pageId);
             // Setting up the buttons and the module menu for the doc header
-            $this->addShortcutButtonToDocHeader($view, $currentModule, $pageId);
+            $view->getDocHeaderComponent()->setShortcutContext(
+                routeIdentifier: $currentModule->getIdentifier(),
+                displayName: $this->getLanguageService()->sL($currentModule->getTitle()),
+                arguments: ['id' => $pageId]
+            );
         }
         $view->assign('accessContent', $accessContent);
         $pagesUsingTSConfig = $this->getOverviewOfPagesUsingTSConfig($currentModule);
@@ -198,15 +198,6 @@ final class PageTsConfigRecordsOverviewController
             $lines = $this->getList($currentModule, $pageArray[$identifier . '.'] ?? [], $lines, $pageDepth + 1);
         }
         return $lines;
-    }
-
-    private function addShortcutButtonToDocHeader(ModuleTemplate $view, ModuleInterface $currentModule, ?int $pageId): void
-    {
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier($currentModule->getIdentifier())
-            ->setDisplayName($this->getLanguageService()->sL($currentModule->getTitle()))
-            ->setArguments(['id' => $pageId]);
-        $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
     private function getLanguageService(): LanguageService

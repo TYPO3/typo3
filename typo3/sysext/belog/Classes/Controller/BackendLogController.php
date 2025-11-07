@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\DateTimeFormat;
 use TYPO3\CMS\Core\Http\AllowedMethodsTrait;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -123,9 +124,12 @@ class BackendLogController extends ActionController
             $viewVariables['groupedLogEntries'] = $groupedLogEntries;
         }
 
-        return $this->moduleTemplateFactory
-            ->create($this->request)
-            ->setFlashMessageQueue($this->getFlashMessageQueue())
+        $view = $this->moduleTemplateFactory->create($this->request);
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'system_log',
+            displayName: $this->getLanguageService()->sL('LLL:EXT:belog/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab')
+        );
+        return $view->setFlashMessageQueue($this->getFlashMessageQueue())
             ->setTitle(LocalizationUtility::translate('title', 'belog.module'))
             ->assignMultiple($viewVariables)
             ->renderResponse('BackendLog/List');
@@ -333,5 +337,10 @@ class BackendLogController extends ActionController
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

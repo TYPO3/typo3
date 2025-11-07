@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Tstemplate\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -84,6 +83,7 @@ class InfoModifyController extends AbstractTemplateModuleController
         $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title']);
         $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);
         $this->addPreviewButtonToDocHeader($view, $pageRecord);
+        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageUid, $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:submodule.title'));
         $view->makeDocHeaderModuleMenu(['id' => $pageUid]);
         $view->assignMultiple([
             'pageUid' => $pageUid,
@@ -135,7 +135,7 @@ class InfoModifyController extends AbstractTemplateModuleController
         $view->setTitle($languageService->sL($currentModule->getTitle()), $pageRecord['title']);
         $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);
         $this->addPreviewButtonToDocHeader($view, $pageRecord);
-        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageUid);
+        $this->addShortcutButtonToDocHeader($view, $currentModuleIdentifier, $pageRecord, $pageUid, $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:submodule.title'));
         $view->makeDocHeaderModuleMenu(['id' => $pageUid]);
         $view->assignMultiple([
             'pageUid' => $pageUid,
@@ -146,21 +146,5 @@ class InfoModifyController extends AbstractTemplateModuleController
             'numberOfSetupLines' => trim((string)($currentTemplateRecord['config'] ?? '')) ? count(explode(LF, (string)$currentTemplateRecord['config'])) : 0,
         ]);
         return $view->renderResponse('InfoModifyMain');
-    }
-
-    private function addShortcutButtonToDocHeader(ModuleTemplate $view, string $moduleIdentifier, array $pageInfo, int $pageUid): void
-    {
-        $languageService = $this->getLanguageService();
-        $shortcutTitle = sprintf(
-            '%s: %s [%d]',
-            $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:submodule.title'),
-            BackendUtility::getRecordTitle('pages', $pageInfo),
-            $pageUid
-        );
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier($moduleIdentifier)
-            ->setDisplayName($shortcutTitle)
-            ->setArguments(['id' => $pageUid]);
-        $view->addButtonToButtonBar($shortcutButton);
     }
 }

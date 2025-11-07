@@ -207,6 +207,29 @@ class ButtonBar
     }
 
     /**
+     * Checks whether a button of the specified type has been added to the button bar.
+     *
+     * This is primarily used for backwards compatibility detection to prevent
+     * duplicate automatic buttons when controllers manually add them.
+     *
+     * @param class-string<ButtonInterface> $buttonClassName Fully qualified button class name
+     * @return bool True if a button of this type exists, false otherwise
+     */
+    public function hasButtonOfType(string $buttonClassName): bool
+    {
+        foreach ($this->buttons as $groups) {
+            foreach ($groups as $groupButtons) {
+                foreach ($groupButtons as $button) {
+                    if ($button instanceof $buttonClassName) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * @deprecated since v14, will be removed in v15. Inject ComponentFactory and use ComponentFactory::createGenericButton() instead.
      */
     public function makeGenericButton(): GenericButton

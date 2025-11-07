@@ -346,7 +346,6 @@ final class SchedulerModuleController
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.scheduler')
         );
         $view->makeDocHeaderModuleMenu();
-        $this->addDocHeaderReloadButton($view);
         if ($hasAvailableTaskTypes) {
             $addTaskUrl = (string)$this->uriBuilder->buildUriFromRoute('ajax_new_scheduler_task_wizard', [
                 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
@@ -358,14 +357,6 @@ final class SchedulerModuleController
         }
         $this->addDocHeaderShortcutButton($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.scheduler'));
         return $view->renderResponse('ListTasks');
-    }
-
-    protected function addDocHeaderReloadButton(ModuleTemplate $moduleTemplate): void
-    {
-        $moduleTemplate->addButtonToButtonBar(
-            $this->componentFactory->createReloadButton($this->uriBuilder->buildUriFromRoute('scheduler')),
-            ButtonBar::BUTTON_POSITION_RIGHT
-        );
     }
 
     protected function addDocHeaderAddTaskButton(ModuleTemplate $moduleTemplate, string $url): void
@@ -413,10 +404,10 @@ final class SchedulerModuleController
 
     protected function addDocHeaderShortcutButton(ModuleTemplate $moduleTemplate, string $name): void
     {
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier('scheduler')
-            ->setDisplayName($name);
-        $moduleTemplate->addButtonToButtonBar($shortcutButton);
+        $moduleTemplate->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'scheduler',
+            displayName: $name
+        );
     }
 
     /**

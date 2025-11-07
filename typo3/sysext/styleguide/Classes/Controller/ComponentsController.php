@@ -22,7 +22,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -79,7 +78,6 @@ final class ComponentsController
     public function __construct(
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly FlashMessageService $flashMessageService,
-        private readonly ComponentFactory $componentFactory,
         private readonly UriBuilder $uriBuilder,
     ) {}
 
@@ -548,15 +546,15 @@ final class ComponentsController
         );
         $view->setModuleClass('module-styleguide');
         $view->makeDocHeaderModuleMenu();
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setDisplayName(sprintf(
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'styleguide_components',
+            displayName: sprintf(
                 '%s - %s',
                 $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styleguide'),
                 $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.' . $action)
-            ))
-            ->setRouteIdentifier('styleguide_components')
-            ->setArguments(['action' => $action]);
-        $view->addButtonToButtonBar($shortcutButton);
+            ),
+            arguments: ['action' => $action]
+        );
         return $view;
     }
 

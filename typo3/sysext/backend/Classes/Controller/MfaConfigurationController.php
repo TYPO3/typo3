@@ -359,7 +359,6 @@ class MfaConfigurationController extends AbstractMfaController
         if (($returnUrl = $this->getReturnUrl($request)) !== '') {
             $this->view->addButtonToButtonBar($this->componentFactory->createBackButton($returnUrl));
         }
-        $this->view->addButtonToButtonBar($this->componentFactory->createReloadButton($request->getAttribute('normalizedParams')->getRequestUri()), ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
     protected function addFormButtons(): void

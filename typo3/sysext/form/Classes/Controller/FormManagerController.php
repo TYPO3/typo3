@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Form\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -520,8 +519,6 @@ class FormManagerController extends ActionController
             ->setShowLabelText(true)
             ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
         $moduleTemplate->addButtonToButtonBar($addFormButton);
-        // Reload
-        $moduleTemplate->addButtonToButtonBar($this->componentFactory->createReloadButton($this->request->getAttribute('normalizedParams')->getRequestUri()), ButtonBar::BUTTON_POSITION_RIGHT);
         // Shortcut
         $arguments = [];
         if ($searchTerm) {
@@ -532,11 +529,11 @@ class FormManagerController extends ActionController
             $arguments['tx_form_web_formformbuilder']['page'] = $page;
             $arguments['tx_form_web_formformbuilder']['controller'] = 'FormManager';
         }
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier('web_FormFormbuilder')
-            ->setArguments($arguments)
-            ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:module.shortcut_name'));
-        $moduleTemplate->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $moduleTemplate->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'web_FormFormbuilder',
+            displayName: $this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:module.shortcut_name'),
+            arguments: $arguments
+        );
         return $moduleTemplate;
     }
 

@@ -21,7 +21,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\Components\MultiRecordSelection\Action;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -57,7 +56,7 @@ class ManagementController
         $view = $this->moduleTemplateFactory->create($request);
         $demand = ReactionDemand::fromRequest($request);
 
-        $this->registerDocHeaderButtons($view, $request->getAttribute('normalizedParams')->getRequestUri(), $demand);
+        $this->registerDocHeaderButtons($view, $demand);
         $view->makeDocHeaderModuleMenu();
 
         $reactionRecords = $this->reactionRepository->getReactionRecords($demand);
@@ -101,7 +100,7 @@ class ManagementController
         ])->renderResponse('Management/Overview');
     }
 
-    protected function registerDocHeaderButtons(ModuleTemplate $view, string $requestUri, ReactionDemand $demand): void
+    protected function registerDocHeaderButtons(ModuleTemplate $view, ReactionDemand $demand): void
     {
         $languageService = $this->getLanguageService();
 
@@ -117,19 +116,17 @@ class ManagementController
             ->setShowLabelText(true)
             ->setTitle($languageService->sL('LLL:EXT:reactions/Resources/Private/Language/module.xlf:reaction_create'))
             ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
-        $view->addButtonToButtonBar($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
+        $view->getDocHeaderComponent()->getButtonBar()->addButton($newRecordButton);
 
-        $view->addButtonToButtonBar($this->componentFactory->createReloadButton($requestUri), ButtonBar::BUTTON_POSITION_RIGHT);
-
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier('integrations_reactions')
-            ->setDisplayName($languageService->sL('LLL:EXT:reactions/Resources/Private/Language/module.xlf:title'))
-            ->setArguments(array_filter([
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'integrations_reactions',
+            displayName: $languageService->sL('LLL:EXT:reactions/Resources/Private/Language/module.xlf:title'),
+            arguments: array_filter([
                 'demand' => $demand->getParameters(),
                 'orderField' => $demand->getOrderField(),
                 'orderDirection' => $demand->getOrderDirection(),
-            ]));
-        $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+            ])
+        );
     }
 
     protected function getLanguageService(): LanguageService

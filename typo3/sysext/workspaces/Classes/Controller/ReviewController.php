@@ -132,11 +132,12 @@ final readonly class ReviewController
 
     private function addShortcutButton(ModuleTemplate $view, string $activeWorkspaceTitle, string $pageTitle, int $pageId): void
     {
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier('workspaces_admin')
-            ->setDisplayName(sprintf('%s: %s [%d]', $activeWorkspaceTitle, $pageTitle, $pageId))
-            ->setArguments(['id' => (int)$pageId]);
-        $view->addButtonToButtonBar($shortcutButton);
+        // Set shortcut context - reload button is added automatically
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'workspaces_admin',
+            displayName: sprintf('%s: %s [%d]', $activeWorkspaceTitle, $pageTitle, $pageId),
+            arguments: ['id' => $pageId]
+        );
     }
 
     private function addPreviewLink(ModuleTemplate $view, int $pageUid, int $activeWorkspace): void

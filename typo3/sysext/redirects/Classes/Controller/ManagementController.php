@@ -22,7 +22,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\Components\MultiRecordSelection\Action;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -65,7 +64,7 @@ class ManagementController
         $view->setTitle(
             $this->getLanguageService()->translate('title', 'redirects.module')
         );
-        $this->registerDocHeaderButtons($view, $request->getAttribute('normalizedParams')->getRequestUri());
+        $this->registerDocHeaderButtons($view);
 
         $event = $this->eventDispatcher->dispatch(
             new ModifyRedirectManagementControllerViewDataEvent(
@@ -155,7 +154,7 @@ class ManagementController
     /**
      * Create document header buttons
      */
-    protected function registerDocHeaderButtons(ModuleTemplate $view, string $requestUri): void
+    protected function registerDocHeaderButtons(ModuleTemplate $view): void
     {
         $languageService = $this->getLanguageService();
 
@@ -177,16 +176,13 @@ class ManagementController
             ->setTitle($languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_add_text'))
             ->setShowLabelText(true)
             ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
-        $view->addButtonToButtonBar($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
-
-        // Reload
-        $view->addButtonToButtonBar($this->componentFactory->createReloadButton($requestUri), ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->getDocHeaderComponent()->getButtonBar()->addButton($newRecordButton);
 
         // Shortcut
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier('site_redirects')
-            ->setDisplayName($languageService->translate('short_description', 'redirects.module'));
-        $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'site_redirects',
+            displayName: $languageService->translate('short_description', 'redirects.module')
+        );
     }
 
     protected function getLanguageService(): LanguageService

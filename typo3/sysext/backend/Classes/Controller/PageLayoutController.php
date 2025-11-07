@@ -526,18 +526,6 @@ class PageLayoutController
             $view->addButtonToButtonBar($editButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         }
 
-        // Shortcut
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier('web_layout')
-            ->setDisplayName($this->getShortcutTitle())
-            ->setArguments([
-                'id' => $this->id,
-                'showHidden' => (bool)$this->moduleData->get('showHidden'),
-                'function' => (int)$this->moduleData->get('function'),
-                'language' => $this->currentSelectedLanguage,
-            ]);
-        $view->addButtonToButtonBar($shortcutButton);
-
         // Cache
         $clearCacheButton = $this->componentFactory->createLinkButton()
             ->setHref('#')
@@ -570,11 +558,20 @@ class PageLayoutController
             foreach ($viewModeItems as $viewModeItem) {
                 $viewModeButton->addItem($viewModeItem);
             }
-            $view->addButtonToButtonBar($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 3);
+            $view->addButtonToButtonBar($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 0);
         }
 
-        // Reload
-        $view->addButtonToButtonBar($this->componentFactory->createReloadButton($request->getAttribute('normalizedParams')->getRequestUri()), ButtonBar::BUTTON_POSITION_RIGHT);
+        // Shortcut
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'web_layout',
+            displayName: $this->getShortcutTitle(),
+            arguments: [
+                'id' => $this->id,
+                'showHidden' => (bool)$this->moduleData->get('showHidden'),
+                'function' => (int)$this->moduleData->get('function'),
+                'language' => $this->currentSelectedLanguage,
+            ]
+        );
     }
 
     /**

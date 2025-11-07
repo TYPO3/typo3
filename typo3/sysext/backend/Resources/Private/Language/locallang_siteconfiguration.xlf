@@ -102,6 +102,9 @@
 			<trans-unit id="validation.duplicateLanguageId.message">
 				<source>Two language configurations for language "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
 			</trans-unit>
+			<trans-unit id="labels.edit">
+				<source>Edit Site Configuration "%s"</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -116,7 +116,7 @@ class PermissionController
                 ContextualFeedbackSeverity::WARNING
             );
         }
-        $this->registerDocHeaderButtons($view, $action);
+        $this->registerDocHeaderButtons($view, $action, $request);
         $view->setTitle(
             $this->getLanguageService()->translate('title', 'beuser.modules.permissions'),
             $this->id !== 0 && !empty($this->pageInfo['title']) ? $this->pageInfo['title'] : ''
@@ -389,7 +389,7 @@ class PermissionController
             ->withHeader('location', $this->returnUrl);
     }
 
-    protected function registerDocHeaderButtons(ModuleTemplate $view, string $action): void
+    protected function registerDocHeaderButtons(ModuleTemplate $view, string $action, ServerRequestInterface $request): void
     {
         $lang = $this->getLanguageService();
 
@@ -429,11 +429,11 @@ class PermissionController
             $view->addButtonToButtonBar($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
         }
 
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier('permissions_pages')
-            ->setDisplayName($this->getShortcutTitle())
-            ->setArguments(['id' => $this->id, 'action' => $action]);
-        $view->addButtonToButtonBar($shortcutButton);
+        $view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'permissions_pages',
+            displayName: $this->getShortcutTitle(),
+            arguments: ['id' => $this->id, 'action' => $action]
+        );
     }
 
     protected function getTree(): array

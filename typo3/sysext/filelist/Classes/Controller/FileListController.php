@@ -503,10 +503,6 @@ class FileListController implements LoggerAwareInterface
     protected function registerAdditionalDocHeaderButtons(ServerRequestInterface $request): void
     {
         $lang = $this->getLanguageService();
-
-        // Refresh
-        $this->view->addButtonToButtonBar($this->componentFactory->createReloadButton($request->getAttribute('normalizedParams')->getRequestUri()), ButtonBar::BUTTON_POSITION_RIGHT);
-
         // ViewMode
         $viewModeItems = [];
         $viewModeItems[] = GeneralUtility::makeInstance(DropDownRadio::class)
@@ -630,18 +626,18 @@ class FileListController implements LoggerAwareInterface
         }
 
         // Shortcut
-        $shortcutButton = $this->componentFactory->createShortcutButton()
-            ->setRouteIdentifier('media_management')
-            ->setDisplayName(sprintf(
+        $this->view->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: 'media_management',
+            displayName: sprintf(
                 '%s: %s',
                 $lang->translate('title', 'filelist.module'),
                 $this->folderObject->getName() ?: $this->folderObject->getIdentifier()
-            ))
-            ->setArguments(array_filter([
+            ),
+            arguments: array_filter([
                 'id' => $this->id,
                 'searchTerm' => $this->searchTerm,
-            ]));
-        $this->view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+            ])
+        );
 
         // New file button
         if ($this->folderObject && $this->folderObject->checkActionPermission('write')
