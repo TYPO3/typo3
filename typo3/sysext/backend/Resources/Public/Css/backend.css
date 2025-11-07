@@ -2289,6 +2289,7 @@ typo3-breadcrumb{display:block;width:100%}
 @keyframes icon-spin{
 0%{transform:rotate(0deg)}
 to{transform:rotate(1turn)}}
+.icon-bidi:dir(rtl) .icon-markup{transform:scaleX(-1)}
 .icon-state-disabled .icon-markup{opacity:var(--icon-opacity-disabled)}
 .icon-size-small{--icon-size:var(--icon-size-small)}
 .icon-size-small .icon-unify{font-size:calc(var(--icon-size)*var(--icon-unify-modifier));line-height:var(--icon-size)}
@@ -3464,7 +3465,7 @@ typo3-backend-live-search-result-item-action>:first-child .livesearch-result-ite
 .settings-navigation ul li{margin-top:1px}
 .settings-navigation ul ul{-webkit-padding-start:1rem;padding-inline-start:1rem}
 .settings-navigation>ul:first-child>li:first-child{margin-top:0}
-.settings-navigation [identifier=actions-chevron-left],.settings-navigation [identifier=actions-chevron-right]{opacity:.5}
+.settings-navigation [identifier=actions-chevron-end]{opacity:.5}
 .settings-navigation-item{background-color:transparent;border:none;border-radius:calc(var(--typo3-component-border-radius) - var(--typo3-component-border-width));color:var(--typo3-component-color);cursor:pointer;display:flex;gap:.5em;padding:var(--settings-nav-item-padding-y) var(--settings-nav-item-padding-x);position:relative;text-align:start;text-decoration:none;width:100%}
 .settings-navigation-item.active,.settings-navigation-item:focus,.settings-navigation-item:hover{outline-offset:-1px;text-decoration:none;z-index:1}
 .settings-navigation-item:hover{background-color:var(--typo3-component-hover-bg);color:var(--typo3-component-hover-color);outline:1px solid var(--typo3-component-hover-border-color)}

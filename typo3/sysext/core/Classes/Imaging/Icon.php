@@ -51,6 +51,11 @@ class Icon
     protected bool $spinning = false;
 
     /**
+     * Flag to indicate if the icon should be mirrored in RTL mode
+     */
+    protected bool $bidi = false;
+
+    /**
      * Contains the state information
      *
      * @var IconState|null
@@ -177,6 +182,20 @@ class Icon
         return $this;
     }
 
+    public function isBidi(): bool
+    {
+        return $this->bidi;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setBidi(bool $bidi): self
+    {
+        $this->bidi = $bidi;
+        return $this;
+    }
+
     public function getState(): IconState
     {
         return $this->state;
@@ -223,6 +242,9 @@ class Icon
         $classes[] = 'icon-' . $this->getIdentifier();
         if ($this->isSpinning()) {
             $classes[] = 'icon-spin';
+        }
+        if ($this->isBidi()) {
+            $classes[] = 'icon-bidi';
         }
 
         $attributes = [];

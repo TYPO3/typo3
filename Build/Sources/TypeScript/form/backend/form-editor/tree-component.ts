@@ -55,7 +55,7 @@ const defaultConfiguration: Configuration = {
     abstractType: 'data-element-abstract-type'
   },
   domElementDataAttributeValues: {
-    collapse: 'actions-chevron-right',
+    collapse: 'actions-chevron-end',
     expander: 'treeExpander',
     title: 'treeTitle'
   },

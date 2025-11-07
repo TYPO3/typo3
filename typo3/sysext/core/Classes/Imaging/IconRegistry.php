@@ -282,6 +282,9 @@ class IconRegistry implements SingletonInterface
             if ($declaration['category'] === 'spinner') {
                 $iconOptions['spinning'] = true;
             }
+            if (isset($declaration['bidi']) && $declaration['bidi'] === true) {
+                $iconOptions['bidi'] = true;
+            }
 
             $this->registerIcon(
                 $declaration['identifier'],

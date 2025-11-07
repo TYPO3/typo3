@@ -65,16 +65,6 @@ export default class DomHelper {
   }
 
   /**
-   * Detects if the document is rtl
-   */
-  public static isRTL() {
-    const rootElementStyle = window.getComputedStyle(document.documentElement);
-    const direction = rootElementStyle.getPropertyValue('direction');
-
-    return direction === 'rtl';
-  }
-
-  /**
    * This is a wrapper for scrollIntoViewIfNeeded() that falls back to scrollIntoView() if the former
    * is not available.
    *

@@ -185,7 +185,7 @@ abstract class AbstractTreeView
                 $icon = $iconFactory->getIcon('actions-chevron-down', IconSize::SMALL);
             } else {
                 $class = 'treelist-control-collapsed';
-                $icon = $iconFactory->getIcon('actions-chevron-right', IconSize::SMALL);
+                $icon = $iconFactory->getIcon('actions-chevron-end', IconSize::SMALL);
             }
             return '<a class="treelist-control ' . $class . '" href="' . htmlspecialchars($aUrl) . '"' . $name . '>' . $icon->render(AbstractSvgIconProvider::MARKUP_IDENTIFIER_INLINE) . '</a>';
         }

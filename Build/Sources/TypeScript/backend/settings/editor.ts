@@ -194,8 +194,6 @@ export class SettingsEditorElement extends LitElement {
   }
 
   protected renderCategoryTree(categories: FilteredCategory[], level: number): TemplateResult {
-    const fallbackIcon = DomHelper.isRTL() ? 'actions-chevron-left' : 'actions-chevron-right';
-
     return html`
       <ul data-level=${level}>
         ${categories.map(category => html`
@@ -206,7 +204,7 @@ export class SettingsEditorElement extends LitElement {
               class="settings-navigation-item ${this.activeCategory === category.key ? 'active' : ''}"
             >
                 <span class="settings-navigation-item-icon">
-                  <typo3-backend-icon identifier=${category.icon ? category.icon : fallbackIcon} size="small"></typo3-backend-icon>
+                  <typo3-backend-icon identifier=${category.icon ? category.icon : 'actions-chevron-end'} size="small"></typo3-backend-icon>
                 </span>
               <span class="settings-navigation-item-label">${category.label}</span>
             </button>

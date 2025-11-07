@@ -24,6 +24,7 @@ body.typo3-adminPanel-noscroll{overflow:hidden}
 @keyframes icon-spin{
 0%{transform:rotate(0deg)}
 to{transform:rotate(1turn)}}
+#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .icon-bidi:dir(rtl) .icon-markup{transform:scaleX(-1)}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .icon-state-disabled .icon-markup{opacity:var(--icon-opacity-disabled)}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .icon-size-small{--icon-size:var(--icon-size-small)}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .icon-size-small .icon-unify{font-size:calc(var(--icon-size)*var(--icon-unify-modifier));line-height:var(--icon-size)}

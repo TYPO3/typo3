@@ -112,6 +112,10 @@ export class IconStyles {
           }
         }
 
+        .icon-bidi:dir(rtl) .icon-markup {
+          transform: scaleX(-1);
+        }
+
         .icon-state-disabled .icon-markup {
           opacity: var(--icon-opacity-disabled, 0.5);
         }
