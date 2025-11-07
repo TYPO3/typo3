@@ -504,6 +504,9 @@ readonly class IconFactory
         if (!empty($iconConfiguration['options']['spinning'])) {
             $icon->setSpinning(true);
         }
+        if (!empty($iconConfiguration['options']['bidi'])) {
+            $icon->setBidi(true);
+        }
         return $icon;
     }
 

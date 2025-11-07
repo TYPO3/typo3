@@ -52,11 +52,10 @@ export class PageTree extends Tree
   }
 
   protected override createNodeToggle(node: TreeNodeInterface): TemplateResult {
-    const nodeStopIconIdentifier = this.isRTL() ? 'actions-caret-left' : 'actions-caret-right';
     return html`${node.stopPageTree && node.depth !== 0
       ? html`
           <span class="node-stop" @click="${(event: PointerEvent) => { event.preventDefault(); event.stopImmediatePropagation(); document.dispatchEvent(new CustomEvent('typo3:pagetree:mountPoint', { detail: { pageId: parseInt(node.identifier, 10) } })); }}">
-            <typo3-backend-icon identifier="${nodeStopIconIdentifier}" size="small"></typo3-backend-icon>
+            <typo3-backend-icon identifier="actions-caret-end" size="small"></typo3-backend-icon>
           </span>
         `
       : super.createNodeToggle(node)

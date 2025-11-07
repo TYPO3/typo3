@@ -1073,12 +1073,11 @@ export class Tree extends LitElement {
 
   protected createNodeToggle(node: TreeNodeInterface): TemplateResult|null
   {
-    const collapsedIconIdentifier = this.isRTL() ? 'actions-chevron-left' : 'actions-chevron-right';
     return node.hasChildren === true
       ? html `
           <span class="node-toggle" @click="${(event: PointerEvent) => { event.preventDefault(); event.stopImmediatePropagation(); this.handleNodeToggle(node); }}">
             <typo3-backend-icon
-              identifier="${(node.__expanded ? 'actions-chevron-down' : collapsedIconIdentifier)}"
+              identifier="${(node.__expanded ? 'actions-chevron-down' : 'actions-chevron-end')}"
               size="small"
             ></typo3-backend-icon>
           </span>
@@ -1442,13 +1441,6 @@ export class Tree extends LitElement {
     } else {
       this.showChildren(node);
     }
-  }
-
-  protected isRTL() {
-    const rootElementStyle = window.getComputedStyle(document.documentElement);
-    const direction = rootElementStyle.getPropertyValue('direction');
-
-    return direction === 'rtl';
   }
 
   /**

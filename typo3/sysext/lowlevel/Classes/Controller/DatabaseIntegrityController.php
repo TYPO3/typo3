@@ -1784,13 +1784,13 @@ class DatabaseIntegrityController
                 if ($c != 0 && $fieldType !== 'newlevel') {
                     $lineHTML[] = ''
                         . '<button class="btn btn-default" title="New level" name="qG_nl' . htmlspecialchars($subscript) . '">'
-                        . $this->iconFactory->getIcon('actions-chevron-right', IconSize::SMALL)->render()
+                        . $this->iconFactory->getIcon('actions-chevron-end', IconSize::SMALL)->render()
                         . '</button>';
                 }
                 if ($fieldType === 'newlevel') {
                     $lineHTML[] = ''
                         . '<button class="btn btn-default" title="Collapse new level" name="qG_remnl' . htmlspecialchars($subscript) . '">'
-                        . $this->iconFactory->getIcon('actions-chevron-left', IconSize::SMALL)->render()
+                        . $this->iconFactory->getIcon('actions-chevron-start', IconSize::SMALL)->render()
                         . '</button>';
                 }
                 $lineHTML[] = '</div>';

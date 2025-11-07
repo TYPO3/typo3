@@ -117,7 +117,7 @@ abstract class AbstractTree
         });
 
         try {
-            $context->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector('.node-toggle > typo3-backend-icon[identifier=\'actions-chevron-right\']'))->click();
+            $context->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector('.node-toggle > typo3-backend-icon[identifier=\'actions-chevron-end\']'))->click();
         } catch (\Facebook\WebDriver\Exception\NoSuchElementException $e) {
             // element not found so it may be already opened...
         } catch (\Facebook\WebDriver\Exception\ElementNotVisibleException $e) {

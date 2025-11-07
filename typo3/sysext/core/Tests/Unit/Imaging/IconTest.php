@@ -194,4 +194,34 @@ final class IconTest extends UnitTestCase
         self::assertSame($width, $icon->getDimension()->getWidth());
         self::assertSame($height, $icon->getDimension()->getHeight());
     }
+
+    #[Test]
+    public function bidiIconHasBidiClass(): void
+    {
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $this->createMock(ContainerInterface::class), $this->createMock(FrontendInterface::class));
+        // actions-arrow-end has bidi: true in icons.json
+        $subject = $iconFactory->getIcon('actions-arrow-end', IconSize::SMALL);
+        self::assertTrue($subject->isBidi());
+        self::assertStringContainsString('icon-bidi', $subject->render());
+    }
+
+    #[Test]
+    public function nonBidiIconDoesNotHaveBidiClass(): void
+    {
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $this->createMock(ContainerInterface::class), $this->createMock(FrontendInterface::class));
+        // actions-close has bidi: false in icons.json
+        $subject = $iconFactory->getIcon(self::iconIdentifier, IconSize::SMALL);
+        self::assertFalse($subject->isBidi());
+        self::assertStringNotContainsString('icon-bidi', $subject->render());
+    }
+
+    #[Test]
+    public function bidiIconAliasInheritsBidiProperty(): void
+    {
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $this->createMock(ContainerInterface::class), $this->createMock(FrontendInterface::class));
+        // actions-arrow-forward is an alias for actions-arrow-end which has bidi: true
+        $subject = $iconFactory->getIcon('actions-arrow-forward', IconSize::SMALL);
+        self::assertTrue($subject->isBidi());
+        self::assertStringContainsString('icon-bidi', $subject->render());
+    }
 }

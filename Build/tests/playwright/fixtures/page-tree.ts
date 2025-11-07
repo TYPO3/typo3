@@ -117,7 +117,7 @@ export class PageTree {
       // Does not work when 2 pages have the same name and are on the same tree level
       element = this.container.locator(`[aria-level="${level}"]`, { hasText: page });
 
-      const isCollapsed = await element.locator('.node-toggle [identifier="actions-chevron-right"]').count() === 1;
+      const isCollapsed = await element.locator('.node-toggle [identifier="actions-chevron-end"]').count() === 1;
       if (isCollapsed) {
         await element.locator('.node-toggle').click();
       }
