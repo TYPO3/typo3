@@ -533,6 +533,31 @@ final class UriBuilderTest extends UnitTestCase
     }
 
     #[Test]
+    public function buildFrontendUriConvertsStringableAfterArgumentsHaveBeenMerged(): void
+    {
+        $stringable = new class () implements \Stringable {
+            public function __toString(): string
+            {
+                return 'string-from-stringable';
+            }
+        };
+        $mockContentObject = $this->createMock(ContentObjectRenderer::class);
+        $serverRequest = $this->getRequestWithRouteAttribute()
+            ->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request =  new Request($serverRequest);
+        $mockContentObject->method('createUrl')->willReturn('/benni');
+        $request = $request->withAttribute('currentContentObject', $mockContentObject);
+        $subject = $this->getAccessibleMock(UriBuilder::class, null, [], '', false);
+        $subject->setRequest($request);
+        $subject->setTargetPageUid(1);
+        $subject->setArguments(['somePrefix' => ['someStringableObject' => $stringable]]);
+        self::assertEquals([
+            'parameter' => 1,
+            'additionalParams' => '&somePrefix%5BsomeStringableObject%5D=string-from-stringable',
+        ], $subject->_call('buildTypolinkConfiguration'));
+    }
+
+    #[Test]
     public function resetSetsAllOptionsToTheirDefaultValue(): void
     {
         $subject = $this->getAccessibleMock(UriBuilder::class, null, [], '', false);

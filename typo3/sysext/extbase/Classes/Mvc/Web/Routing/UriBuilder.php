@@ -602,6 +602,8 @@ class UriBuilder
                 $arguments[$argumentKey] = $this->convertDomainObjectsToIdentityArrays($argumentValue);
             } elseif ($argumentValue instanceof \UnitEnum) {
                 $arguments[$argumentKey] = $argumentValue->value ?? $argumentValue->name;
+            } elseif ($argumentValue instanceof \Stringable) {
+                $arguments[$argumentKey] = (string)$argumentValue;
             }
         }
         return $arguments;
