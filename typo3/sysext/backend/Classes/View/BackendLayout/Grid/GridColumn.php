@@ -174,7 +174,7 @@ class GridColumn extends AbstractGridObject
             ],
             'module' => 'web_layout',
             'recTitle' => BackendUtility::getRecordTitle('pages', $pageRecord, true),
-            'returnUrl' => $this->context->getCurrentRequest()->getAttribute('normalizedParams')->getRequestUri(),
+            'returnUrl' => $this->context->getReturnUrl(),
         ]);
     }
 
@@ -188,7 +188,7 @@ class GridColumn extends AbstractGridObject
             'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
             'colPos' => $this->getColumnNumber(),
             'uid_pid' => $pageId,
-            'returnUrl' => $this->context->getCurrentRequest()->getAttribute('normalizedParams')->getRequestUri(),
+            'returnUrl' => $this->context->getReturnUrl(),
         ]);
     }
 

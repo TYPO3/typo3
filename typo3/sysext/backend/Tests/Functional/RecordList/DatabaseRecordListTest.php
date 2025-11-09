@@ -19,12 +19,14 @@ namespace TYPO3\CMS\Backend\Tests\Functional\RecordList;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Backend\Module\ModuleData;
+use TYPO3\CMS\Backend\Context\PageContextFactory;
 use TYPO3\CMS\Backend\RecordList\DatabaseRecordList;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
@@ -65,7 +67,26 @@ final class DatabaseRecordListTest extends FunctionalTestCase
             }
         );
 
-        $request = (new ServerRequest())->withAttribute('route', (new Route('/typo3/module/web/list', ['_identifier' => 'web_list'])));
+        // Create site configuration for default tests
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1100, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('FR', '/fr'),
+                $this->buildLanguageConfiguration('FR-CA', '/fr-ca'),
+                $this->buildLanguageConfiguration('ES', '/es'),
+            ]
+        );
+
+        // Create request with site and PageContext for page 1100 with default language
+        $request = (new ServerRequest('http://localhost/'))
+            ->withAttribute('route', (new Route('/typo3/module/web/list', ['_identifier' => 'web_list'])))
+            ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
+
+        $pageContextFactory = $this->get(PageContextFactory::class);
+        $pageContext = $pageContextFactory->createWithLanguages($request, 1100, [0], $this->backendUser);
+        $request = $request->withAttribute('pageContext', $pageContext);
 
         $this->recordList = $this->get(DatabaseRecordList::class);
         $this->recordList->setRequest($request);
@@ -77,15 +98,32 @@ final class DatabaseRecordListTest extends FunctionalTestCase
      */
     #[DataProvider('itemCountPerLanguageDataProvider')]
     #[Test]
-    public function listReturnsCorrectAmountOfItemsPerLanguage(int $pageId, int $language, int $expectedItemCount): void
+    public function listReturnsCorrectAmountOfItemsPerLanguage(int $pageId, array $languages, int $expectedItemCount): void
     {
-        $request = (new ServerRequest())->withAttribute('route', (new Route('/typo3/module/web/list', ['_identifier' => 'web_list'])));
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration($pageId, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('FR', '/fr'),
+                $this->buildLanguageConfiguration('FR-CA', '/fr-ca'),
+                $this->buildLanguageConfiguration('ES', '/es'),
+            ]
+        );
+
+        $request = (new ServerRequest('http://localhost/'))
+            ->withAttribute('route', (new Route('/typo3/module/web/list', ['_identifier' => 'web_list'])))
+            ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
+
+        // Create PageContext with specified languages
+        $pageContextFactory = $this->get(PageContextFactory::class);
+        $pageContext = $pageContextFactory->createWithLanguages($request, $pageId, $languages, $this->backendUser);
+        $request = $request->withAttribute('pageContext', $pageContext);
+
         $recordList = $this->get(DatabaseRecordList::class);
         $recordList->setRequest($request);
         $recordList->start($pageId, 'tt_content', 0);
 
-        $moduleData = new ModuleData('web_list', ['language' => $language], ['language' => -1]);
-        $recordList->setModuleData($moduleData);
         $listHtml = $recordList->generateList();
 
         if ($expectedItemCount === 0) {
@@ -112,32 +150,32 @@ final class DatabaseRecordListTest extends FunctionalTestCase
         return [
             'page 1100 with all languages shows all 4 content elements' => [
                 'pageId' => 1100,
-                'language' => -1,
+                'languages' => [0, 1, 2, 3], // All available languages
                 'expectedItemCount' => 4,
             ],
-            'page 1100 with default language shows 2 default content elements' => [
+            'page 1100 with default language only shows 2 default content elements' => [
                 'pageId' => 1100,
-                'language' => 0,
+                'languages' => [0],
                 'expectedItemCount' => 2,
             ],
             'page 1100 with French (1) shows 3 elements (2 default + 1 French)' => [
                 'pageId' => 1100,
-                'language' => 1,
+                'languages' => [0, 1],
                 'expectedItemCount' => 3,
             ],
             'page 1100 with French-CA (2) shows 3 elements (2 default + 1 FR-CA)' => [
                 'pageId' => 1100,
-                'language' => 2,
+                'languages' => [0, 2],
                 'expectedItemCount' => 3,
             ],
             'page 1200 with default language (no translations) shows no content' => [
                 'pageId' => 1200,
-                'language' => 0,
+                'languages' => [0],
                 'expectedItemCount' => 0,
             ],
-            'page 1200 with French (no translation) shows no content' => [
+            'page 1200 with default and French shows no content' => [
                 'pageId' => 1200,
-                'language' => 1,
+                'languages' => [0, 1],
                 'expectedItemCount' => 0,
             ],
         ];
@@ -146,16 +184,25 @@ final class DatabaseRecordListTest extends FunctionalTestCase
     #[Test]
     public function moduleDataLanguageSettingIsRespected(): void
     {
-        // Set language to French (1)
-        $moduleData = new ModuleData('web_list', ['language' => 1], ['language' => -1]);
-        $this->recordList->setModuleData($moduleData);
+        // Create PageContext with default and French languages [0, 1]
+        $request = (new ServerRequest('http://localhost/'))
+            ->withAttribute('route', (new Route('/typo3/module/web/list', ['_identifier' => 'web_list'])))
+            ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
+
+        $pageContextFactory = $this->get(PageContextFactory::class);
+        $pageContext = $pageContextFactory->createWithLanguages($request, 1100, [0, 1], $this->backendUser);
+        $request = $request->withAttribute('pageContext', $pageContext);
+
+        $recordList = $this->get(DatabaseRecordList::class);
+        $recordList->setRequest($request);
+        $recordList->start(1100, 'tt_content', 0);
 
         // Generate list for page 1100 which has French translation
-        $listHtml = $this->recordList->generateList();
+        $listHtml = $recordList->generateList();
 
         // Verify French content is shown
         self::assertStringContainsString('FR: Content Element #1', $listHtml);
-        // Default elements should also be shown when viewing a specific language
+        // Default elements should also be shown
         self::assertStringContainsString('EN: Content Element #1', $listHtml);
         self::assertStringContainsString('EN: Content Element #2', $listHtml);
     }
@@ -163,11 +210,20 @@ final class DatabaseRecordListTest extends FunctionalTestCase
     #[Test]
     public function allLanguagesModeShowsAllElements(): void
     {
-        // Set language to "all languages" (-1)
-        $moduleData = new ModuleData('web_list', ['language' => -1], ['language' => -1]);
-        $this->recordList->setModuleData($moduleData);
+        // Create PageContext with all available languages [0, 1, 2, 3]
+        $request = (new ServerRequest('http://localhost/'))
+            ->withAttribute('route', (new Route('/typo3/module/web/list', ['_identifier' => 'web_list'])))
+            ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
 
-        $listHtml = $this->recordList->generateList();
+        $pageContextFactory = $this->get(PageContextFactory::class);
+        $pageContext = $pageContextFactory->createWithLanguages($request, 1100, [0, 1, 2, 3], $this->backendUser);
+        $request = $request->withAttribute('pageContext', $pageContext);
+
+        $recordList = $this->get(DatabaseRecordList::class);
+        $recordList->setRequest($request);
+        $recordList->start(1100, 'tt_content', 0);
+
+        $listHtml = $recordList->generateList();
 
         // All content elements should be visible
         self::assertStringContainsString('EN: Content Element #1', $listHtml);
@@ -179,36 +235,49 @@ final class DatabaseRecordListTest extends FunctionalTestCase
     #[Test]
     public function languageFilterDoesNotShowWrongLanguageTranslations(): void
     {
-        // Set language to French (1)
-        $moduleData = new ModuleData('web_list', ['language' => 1], ['language' => -1]);
-        $this->recordList->setModuleData($moduleData);
+        // Create PageContext with default and French languages only [0, 1]
+        $request = (new ServerRequest('http://localhost/'))
+            ->withAttribute('route', (new Route('/typo3/module/web/list', ['_identifier' => 'web_list'])))
+            ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
 
-        $listHtml = $this->recordList->generateList();
+        $pageContextFactory = $this->get(PageContextFactory::class);
+        $pageContext = $pageContextFactory->createWithLanguages($request, 1100, [0, 1], $this->backendUser);
+        $request = $request->withAttribute('pageContext', $pageContext);
+
+        $recordList = $this->get(DatabaseRecordList::class);
+        $recordList->setRequest($request);
+        $recordList->start(1100, 'tt_content', 0);
+
+        $listHtml = $recordList->generateList();
 
         // French content should be shown
         self::assertStringContainsString('FR: Content Element #1', $listHtml);
-        // French-CA content should NOT be shown when French is selected
+        // French-CA content should NOT be shown when only French is selected
         self::assertStringNotContainsString('FR-CA: Content Element #1', $listHtml);
     }
 
     #[Test]
     public function localizationPanelDoesNotOfferLanguageWithoutPageTranslation(): void
     {
-        $request = (new ServerRequest())->withAttribute('route', (new Route('/typo3/module/web/list', ['_identifier' => 'web_list'])));
+        // Create PageContext with only default language [0] for page 1200
+        $request = (new ServerRequest('http://localhost/'))
+            ->withAttribute('route', (new Route('/typo3/module/web/list', ['_identifier' => 'web_list'])))
+            ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
+
+        $pageContextFactory = $this->get(PageContextFactory::class);
+        $pageContext = $pageContextFactory->createWithLanguages($request, 1200, [0], $this->backendUser);
+        $request = $request->withAttribute('pageContext', $pageContext);
+
         $recordList = $this->get(DatabaseRecordList::class);
         $recordList->setRequest($request);
 
         // Page 1200 has NO translations
         $recordList->start(1200, 'tt_content', 0);
 
-        // Set language filter to "all languages" (-1) to see localization panel
-        $moduleData = new ModuleData('web_list', ['language' => -1], ['language' => -1]);
-        $recordList->setModuleData($moduleData);
-
         $listHtml = $recordList->generateList();
 
         // The localization panel should NOT be present at all
-        // because the page has no translations, so there's nothing to localize to
+        // because only default language is selected and page has no translations
         self::assertStringNotContainsString('t3js-action-localize', $listHtml);
     }
 

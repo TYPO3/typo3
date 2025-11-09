@@ -190,6 +190,9 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.language">
 				<source>Language</source>
 			</trans-unit>
+			<trans-unit id="labels.languages">
+				<source>Languages</source>
+			</trans-unit>
 			<trans-unit id="labels.view">
 				<source>View</source>
 			</trans-unit>
@@ -489,6 +492,18 @@ Do you want to continue WITHOUT saving?</source>
 			</trans-unit>
 			<trans-unit id="labels.uncheckAll">
 				<source>Uncheck all</source>
+			</trans-unit>
+			<trans-unit id="labels.selectAllLanguages">
+				<source>Select all available languages</source>
+			</trans-unit>
+			<trans-unit id="labels.deselectAllLanguages">
+				<source>Deselect all languages except default</source>
+			</trans-unit>
+			<trans-unit id="labels.defaultLanguageAlwaysShown">
+				<source>Default language is always shown</source>
+			</trans-unit>
+			<trans-unit id="labels.createTranslationFor">
+				<source>Create %s translation of this page</source>
 			</trans-unit>
 			<trans-unit id="labels.selection">
 				<source>Selection:</source>

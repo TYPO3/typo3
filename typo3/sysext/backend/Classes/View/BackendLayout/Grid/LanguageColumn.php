@@ -101,7 +101,7 @@ class LanguageColumn extends AbstractGridObject
                 ],
             ],
             'module' => 'web_layout',
-            'returnUrl' => $this->context->getCurrentRequest()->getAttribute('normalizedParams')->getRequestUri(),
+            'returnUrl' => $this->context->getReturnUrl(),
         ];
         // Disallow manual adjustment of the language field for pages
         if (($languageField = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('pages')->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName()) !== '') {

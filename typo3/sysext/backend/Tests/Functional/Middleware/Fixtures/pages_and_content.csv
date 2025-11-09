@@ -1,0 +1,12 @@
+"pages"
+,"uid","pid","title","doktype","deleted"
+,1,0,"Page 1",1,0
+,2,0,"Page 2",1,0
+,3,0,"Page 3",1,0
+,4,0,"Page 4",1,0
+,5,0,"Page 5",1,0
+"tt_content"
+,"uid","pid","header","deleted"
+,1,1,"Content on page 1",0
+,2,2,"Content on page 2",0
+,3,3,"Content on page 3",0

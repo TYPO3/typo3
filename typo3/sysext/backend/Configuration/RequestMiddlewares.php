@@ -80,6 +80,12 @@ return [
                 'typo3/cms-backend/sudo-mode-interceptor',
             ],
         ],
+        'typo3/cms-backend/page-context' => [
+            'target' => \TYPO3\CMS\Backend\Middleware\PageContextInitialization::class,
+            'after' => [
+                'typo3/cms-backend/site-resolver',
+            ],
+        ],
         /** internal: do not use or reference this middleware in your own code */
         'typo3/cms-backend/csp-headers' => [
             'target' => \TYPO3\CMS\Backend\Middleware\ContentSecurityPolicyHeaders::class,

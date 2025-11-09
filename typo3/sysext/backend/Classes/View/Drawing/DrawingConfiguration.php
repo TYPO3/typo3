@@ -35,7 +35,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class DrawingConfiguration
 {
-    protected int $selectedLanguageId = 0;
+    /**
+     * Array of selected language IDs for multi-language comparison view
+     * @var int[]
+     */
+    protected array $selectedLanguageIds = [0];
 
     /**
      * Corresponds to web.layout.allowInconsistentLanguageHandling TSconfig property
@@ -93,14 +97,30 @@ class DrawingConfiguration
         return $obj;
     }
 
-    public function getSelectedLanguageId(): int
+    /**
+     * Get all selected language IDs
+     * @return int[]
+     */
+    public function getSelectedLanguageIds(): array
     {
-        return $this->selectedLanguageId;
+        return $this->selectedLanguageIds;
     }
 
-    public function setSelectedLanguageId(int $selectedLanguageId): void
+    /**
+     * Set selected language IDs
+     * @param int[] $selectedLanguageIds
+     */
+    public function setSelectedLanguageIds(array $selectedLanguageIds): void
     {
-        $this->selectedLanguageId = $selectedLanguageId;
+        $this->selectedLanguageIds = $selectedLanguageIds !== [] ? array_map('intval', $selectedLanguageIds) : [0];
+    }
+
+    /**
+     * Get the primary (first) selected language ID
+     */
+    public function getPrimaryLanguageId(): int
+    {
+        return $this->selectedLanguageIds[0] ?? 0;
     }
 
     public function getAllowInconsistentLanguageHandling(): bool

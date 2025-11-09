@@ -23,6 +23,7 @@ use Psr\Http\Message\UriInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
+use TYPO3\CMS\Backend\Context\PageContext;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\RecordList\Event\BeforeRecordDownloadPresetsAreDisplayedEvent;
@@ -411,6 +412,7 @@ class DatabaseRecordList
     protected array $showLocalizeColumn = [];
 
     protected ServerRequestInterface $request;
+    protected ?PageContext $pageContext = null;
 
     protected ?RecordIdentityMap $recordIdentityMap = null;
 
@@ -432,6 +434,10 @@ class DatabaseRecordList
     public function setRequest(ServerRequestInterface $request): void
     {
         $this->request = $request;
+        $pageContext = $request->getAttribute('pageContext');
+        if ($pageContext instanceof PageContext) {
+            $this->pageContext = $pageContext;
+        }
     }
 
     /**
@@ -795,6 +801,9 @@ class DatabaseRecordList
             $this->duplicateStack = [];
             $cc = 0;
 
+            // Build a set of UIDs already in the result set to prevent rendering duplicates
+            $resultSetUids = array_flip($currentIdList);
+
             // If no search happened it means that the selected
             // records are either default or All language and here we will not select translations
             // which point to the main record:
@@ -813,32 +822,30 @@ class DatabaseRecordList
                     $languageFieldName = $schema->isLanguageAware() ? $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName() : '';
                     // Guard clause so we can quickly return if a record is localized to "all languages"
                     // It should only be possible to localize a record off default (uid 0)
-                    $filterLanguage = (int)$this->moduleData?->get('language', -1);
+                    $filterLanguages = $this->getSelectedLanguageIds();
                     $rowLanguage = ($languageFieldName !== '' ? ($record->getRawRecord()->toArray()[$languageFieldName] ?? false) : false);
-                    if ($l10nEnabled && $rowLanguage !== -1 && $filterLanguage !== 0) {
-                        $translationsRaw = $this->translateTools->translationInfo($table, $record->getUid(), $filterLanguage !== -1 ? $filterLanguage : 0, $record->getRawRecord()->toArray(), '*');
+                    if ($l10nEnabled && $rowLanguage !== -1) {
+                        $translationsRaw = $this->translateTools->translationInfo($table, $record->getUid(), 0, $record->getRawRecord()->toArray(), '*');
                         if (is_array($translationsRaw)) {
-                            if ($filterLanguage < 1) {
-                                $translationEnabled = true;
-                            }
-                            $translations = $translationsRaw['translations'] ?? [];
-                        }
-                        // Enable translation for default records not translated into selected language
-                        if ($filterLanguage > 0 && $filterLanguage !== $rowLanguage && !array_key_exists($filterLanguage, $translations)) {
                             $translationEnabled = true;
+                            $translations = $translationsRaw['translations'] ?? [];
+                            // Filter translations to only show those in selected languages
+                            $translations = array_filter($translations, static function (array $translation) use ($languageFieldName, $filterLanguages): bool {
+                                return in_array((int)($translation[$languageFieldName] ?? 0), $filterLanguages, true);
+                            });
                         }
                     }
 
-                    // Only offer localization to filtered language if the page has a translation in that language
-                    $possibleTranslationsForRow = [];
-                    if ($filterLanguage > 0 && in_array($filterLanguage, $this->possibleTranslations, true)) {
-                        $possibleTranslationsForRow = [$filterLanguage];
-                    }
-
-                    $rowOutput .= $this->renderListRow($table, $record, 0, $translations, $translationEnabled, $possibleTranslationsForRow);
+                    // Don't pass possible translations - let makeLocalizationPanel handle filtering via moduleData
+                    $rowOutput .= $this->renderListRow($table, $record, 0, $translations, $translationEnabled);
 
                     if ($listTranslatedRecords) {
-                        foreach ($translations ?? [] as $lRow) {
+                        foreach ($translations as $lRow) {
+                            // Skip if this translation is already in the main result set to avoid duplicates
+                            if (isset($resultSetUids[$lRow['uid']])) {
+                                continue;
+                            }
+
                             if (!$this->isRowListingConditionFulfilled(
                                 $this->recordFactory->createResolvedRecordFromDatabaseRow(
                                     $table,
@@ -1190,12 +1197,11 @@ class DatabaseRecordList
      * @param int $indent Indent from left.
      * @param array $translations Array of already existing translations for the current record
      * @param bool $translationEnabled Whether the record can be translated
-     * @param int[] $possibleTranslations The possible translation language uids.
      * @return string Table row for the element
      * @internal
      * @see getTable()
      */
-    public function renderListRow($table, RecordInterface $record, int $indent, array $translations, bool $translationEnabled, array $possibleTranslations = [])
+    public function renderListRow($table, RecordInterface $record, int $indent, array $translations, bool $translationEnabled)
     {
         $titleCol = '';
         $schema = $this->tcaSchemaFactory->get($table);
@@ -1283,7 +1289,7 @@ class DatabaseRecordList
                 // Language flag and title
                 $theData[$fCol] = $this->languageFlag($table, $record);
                 // Localize record
-                $localizationPanel = $translationEnabled ? $this->makeLocalizationPanel((string)$table, $record, $translations, $possibleTranslations) : '';
+                $localizationPanel = $translationEnabled ? $this->makeLocalizationPanel((string)$table, $record, $translations) : '';
 
                 if ($localizationPanel !== '') {
                     $theData['_LOCALIZATION_b'] = '<div class="btn-group">' . $localizationPanel . '</div>';
@@ -2182,17 +2188,26 @@ class DatabaseRecordList
     /**
      * Creates the localization panel
      */
-    public function makeLocalizationPanel(string $table, RecordInterface $record, array $translations, array $possibleTranslations = []): string
+    public function makeLocalizationPanel(string $table, RecordInterface $record, array $translations): string
     {
         $out = '';
         // All records excluding pages
-        if (empty($possibleTranslations)) {
-            $possibleTranslations = $this->possibleTranslations;
-            if ($table === 'pages') {
-                // Calculate possible translations for pages
-                $possibleTranslations = array_map(static fn(SiteLanguage $siteLanguage): int => $siteLanguage->getLanguageId(), $this->languagesAllowedForUser);
-                $possibleTranslations = array_filter($possibleTranslations, static fn(int $languageUid): bool => $languageUid > 0);
-            }
+        $possibleTranslations = $this->possibleTranslations;
+        if ($table === 'pages') {
+            // Calculate possible translations for pages
+            $possibleTranslations = array_map(static fn(SiteLanguage $siteLanguage): int => $siteLanguage->getLanguageId(), $this->languagesAllowedForUser);
+            $possibleTranslations = array_filter($possibleTranslations, static fn(int $languageUid): bool => $languageUid > 0);
+        }
+
+        // Filter by currently selected languages in the language filter
+        $selectedLanguages = $this->getSelectedLanguageIds();
+        // Only show "localize to" for languages that are currently selected (excluding default 0)
+        $selectedLanguagesWithoutDefault = array_filter($selectedLanguages, static fn(int $languageId): bool => $languageId > 0);
+        // If only default language is selected, don't show any localization options
+        if (count($selectedLanguages) === 1 && in_array(0, $selectedLanguages, true)) {
+            $possibleTranslations = [];
+        } elseif ($selectedLanguagesWithoutDefault !== []) {
+            $possibleTranslations = array_intersect($possibleTranslations, $selectedLanguagesWithoutDefault);
         }
 
         // Traverse page translations and add icon for each language that does NOT yet exist and is included in site configuration:
@@ -2544,35 +2559,40 @@ class DatabaseRecordList
 
         // Additional constraints
         if ($schema->isLanguageAware()) {
-            // Only restrict to the default language if no search request is in place
-            // And if only translations should be shown
-            if ($this->searchString === '' && !$this->showOnlyTranslatedRecords) {
+            // Restrict to filtered language(s)
+            $filterLanguages = $this->getSelectedLanguageIds();
+            if (count($filterLanguages) > 1 || ($filterLanguages[0] ?? 0) > 0) {
+                // Build list of allowed languages: always include "all languages" marker (-1) + selected languages
+                $allowedLanguages = [-1, ...$filterLanguages];
+
+                // Filter to only show records in the selected languages
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->in(
+                        $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(),
+                        $queryBuilder->createNamedParameter($allowedLanguages, Connection::PARAM_INT_ARRAY)
+                    )
+                );
+
+                // For tables other than 'pages', only show original records (l10n_parent = 0).
+                // Page translations need to appear as separate records, but content translations
+                // are shown via the localization panel.
+                if ($table !== 'pages') {
+                    $queryBuilder->andWhere(
+                        $queryBuilder->expr()->eq(
+                            $schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName(),
+                            0
+                        )
+                    );
+                }
+            } elseif ($this->searchString === '' && !$this->showOnlyTranslatedRecords) {
+                // No language filter set. Only restrict to the default language if no
+                // search request is in place and if only translations should be shown.
                 $queryBuilder->andWhere(
                     $queryBuilder->expr()->or(
                         $queryBuilder->expr()->lte($schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(), 0),
                         $queryBuilder->expr()->eq($schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName(), 0)
                     )
                 );
-            }
-
-            // Restrict to filtered language
-            if ($this->moduleData?->has('language')) {
-                $filterLanguage = (int)$this->moduleData->get('language', -1);
-
-                if ($filterLanguage !== -1) {
-                    // Build list of allowed languages: always include "all language" (-1) and filtered language
-                    $allowedLanguages = [-1, $filterLanguage];
-                    // When not searching, or when filtering default language, include default language (0) as well
-                    if ($this->searchString === '' || $filterLanguage === 0) {
-                        $allowedLanguages[] = 0;
-                    }
-                    $queryBuilder->andWhere(
-                        $queryBuilder->expr()->in(
-                            $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(),
-                            $allowedLanguages
-                        )
-                    );
-                }
             }
         }
         if ($table === 'pages' && $this->showOnlyTranslatedRecords && $schema->isLanguageAware()) {
@@ -2915,8 +2935,8 @@ class DatabaseRecordList
         if (($exclList === [] || !in_array('sortRev', $exclList, true)) && $this->sortRev) {
             $urlParameters['sortRev'] = $this->sortRev;
         }
-        if (($exclList === [] || !in_array('language', $exclList, true)) && $this->moduleData->get('language')) {
-            $urlParameters['language'] = (int)$this->moduleData->get('language');
+        if ($exclList === [] || !in_array('languages', $exclList, true)) {
+            $urlParameters['languages'] = $this->getSelectedLanguageIds();
         }
 
         return $this->uriBuilder->buildUriFromRequest(
@@ -3525,5 +3545,39 @@ class DatabaseRecordList
                 )
             )
             && ($schema->isWorkspaceAware() || $this->getBackendUserAuthentication()->workspaceAllowsLiveEditingInTable($table));
+    }
+
+    /**
+     * Get selected language IDs with fallback chain:
+     * 1. PageContext (if available) - preferred source
+     * 2. ModuleData 'languages' setting - backward compatibility
+     * 3. Default language [0] - last resort
+     *
+     * @return int[]
+     */
+    protected function getSelectedLanguageIds(): array
+    {
+        // Try PageContext first (preferred)
+        if ($this->pageContext !== null) {
+            return $this->pageContext->selectedLanguageIds;
+        }
+
+        // Fall back to ModuleData for backward compatibility
+        if ($this->moduleData instanceof ModuleData) {
+            if ($this->moduleData->has('languages')) {
+                $languages = $this->moduleData->get('languages');
+                if (is_array($languages) && !empty($languages)) {
+                    return $languages;
+                }
+            } elseif ($this->moduleData->has('language')) {
+                // Backward compat: old single 'language' parameter
+                $language = $this->moduleData->get('language');
+                if ($language !== null) {
+                    return [(int)$language];
+                }
+            }
+        }
+
+        return [0];
     }
 }

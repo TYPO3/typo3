@@ -9,6 +9,7 @@ use TYPO3\CMS\Backend\Controller\RecordListController;
 use TYPO3\CMS\Backend\Controller\SiteConfigurationController;
 use TYPO3\CMS\Backend\Controller\SiteSettingsController;
 use TYPO3\CMS\Backend\Security\ContentSecurityPolicy\CspModuleController;
+use TYPO3\CMS\Backend\View\PageViewMode;
 
 /**
  * Definitions for modules provided by EXT:backend
@@ -27,7 +28,7 @@ return [
             ],
         ],
         'moduleData' => [
-            'function' => 1,
+            'viewMode' => PageViewMode::LayoutView->value,
             'language' => 0,
             'showHidden' => true,
         ],

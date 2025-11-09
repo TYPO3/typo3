@@ -33,18 +33,24 @@ final class Inline1nCest
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
-
         $I->click('List');
         $pageTree->openPath(['styleguide TCA demo', 'inline 1n']);
         $I->switchToContentFrame();
-        $I->click('.module-docheader-bar-navigation button.dropdown-toggle');
-        $I->waitForElementVisible('.module-docheader-bar-navigation .dropdown-menu');
-        $I->click('All languages', '.module-docheader-bar-navigation .dropdown-menu');
+        self::toggleAllLanguages($I);
 
         $I->waitForText('inline 1n', 20);
         $editRecordLinkCssPath = '#recordlist-tx_styleguide_inline_1n a[aria-label="Edit record"]';
         $I->click($editRecordLinkCssPath);
         $I->waitForText('Edit Form', 3, 'h1');
+    }
+
+    public function _after(ApplicationTester $I, PageTree $pageTree): void
+    {
+        $I->useExistingSession('admin');
+        $I->click('List');
+        $pageTree->openPath(['styleguide TCA demo', 'inline 1n']);
+        $I->switchToContentFrame();
+        self::toggleAllLanguages($I, false);
     }
 
     public function checkIfExpandsAndCollapseShowInput(ApplicationTester $I): void
@@ -199,5 +205,12 @@ final class Inline1nCest
         $fieldContext->click();
         $I->comment('Test value of "visible" field');
         $I->canSeeInField($inputField, $testValue);
+    }
+
+    private static function toggleAllLanguages(ApplicationTester $I, bool $check = true): void
+    {
+        $I->click('.module-docheader-bar-navigation button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-navigation .dropdown-menu');
+        $I->click($check ? 'Check all' : 'Uncheck all', '.module-docheader-bar-navigation .dropdown-menu');
     }
 }

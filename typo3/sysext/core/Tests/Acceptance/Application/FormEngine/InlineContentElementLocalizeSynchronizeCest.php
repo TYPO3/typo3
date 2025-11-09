@@ -72,11 +72,11 @@ final class InlineContentElementLocalizeSynchronizeCest
         $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
         $I->click('Language Comparison', '.module-docheader-bar-buttons .dropdown-menu');
         $I->waitForElementNotVisible('#t3js-ui-block');
-        // Switch to "All languages" in the language selector
+        // Check all languages in the language selector
         $I->waitForElementVisible('.module-docheader-bar-navigation button.dropdown-toggle');
         $I->click('.module-docheader-bar-navigation button.dropdown-toggle');
         $I->waitForElementVisible('.module-docheader-bar-navigation .dropdown-menu');
-        $I->click('All languages', '.module-docheader-bar-navigation .dropdown-menu');
+        $I->click('Check all', '.module-docheader-bar-column-right .dropdown-menu');
         $I->waitForText('Translate');
         $I->click('typo3-backend-localization-button');
         $I->wait(1);
@@ -127,5 +127,18 @@ final class InlineContentElementLocalizeSynchronizeCest
         $I->click('span[data-identifier="actions-document-localize"]');
         // Synchronized image has been opened
         $I->waitForText('Image Metadata');
+        // Uncheck all languages in the language selector to reset state
+        $I->click('.module-docheader a[title="Close"]');
+        $I->switchToWindow('typo3-backend');
+        $I->wait(1);
+        $I->waitForText('Save and close');
+        $I->click('Save and close');
+        $I->wait(1);
+        $I->waitForElementNotVisible('.t3js-modal');
+        $I->switchToContentFrame();
+        $I->waitForElementVisible('.module-docheader-bar-navigation button.dropdown-toggle');
+        $I->click('.module-docheader-bar-navigation button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-navigation .dropdown-menu');
+        $I->click('Uncheck all', '.module-docheader-bar-column-right .dropdown-menu');
     }
 }

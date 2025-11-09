@@ -18,17 +18,21 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\View;
 
 /**
- * State how to render the page layout module.
- *
  * @internal
  */
-enum PageViewMode
+enum PageViewMode: int
 {
-    case LayoutView;
+    case LayoutView = 1;
+    case LanguageComparisonView = 2;
 
     /**
-     * Indicates that the current rendering method shows multiple
-     * languages side-by-side.
+     * Get the language label key for this view mode.
      */
-    case LanguageComparisonView;
+    public function getLabel(): string
+    {
+        return match ($this) {
+            self::LayoutView => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.layout',
+            self::LanguageComparisonView => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.language_comparison',
+        };
+    }
 }

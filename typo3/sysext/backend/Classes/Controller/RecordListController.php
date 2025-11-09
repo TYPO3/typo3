@@ -24,6 +24,8 @@ use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Clipboard\Type\CountMode;
+use TYPO3\CMS\Backend\Context\PageContext;
+use TYPO3\CMS\Backend\Context\PageContextFactory;
 use TYPO3\CMS\Backend\Controller\Event\RenderAdditionalContentToRecordListEvent;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\RecordList\DatabaseRecordList;
@@ -31,16 +33,14 @@ use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Security\SudoMode\Exception\VerificationRequiredException;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\Buttons\LanguageSelectorBuilder;
+use TYPO3\CMS\Backend\Template\Components\Buttons\LanguageSelectorMode;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Error\Http\BadRequestException;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -51,37 +51,27 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
- * The Web > List module: Rendering the listing of records on a page.
+ * The Content > List module: Rendering the listing of records on a page.
  *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 #[AsController]
 class RecordListController
 {
-    /**
-     * @var Permission
-     */
-    protected $pagePermissions;
+    protected PageContext $pageContext;
 
-    protected int $id = 0;
     protected string $table = '';
     protected string $searchTerm = '';
-    protected array $pageInfo = [];
     protected string $returnUrl = '';
     protected array $modTSconfig = [];
     protected ?ModuleData $moduleData = null;
     protected bool $allowClipboard = true;
     protected bool $allowSearch = true;
-    protected int $currentSelectedLanguage;
 
     public function __construct(
         private readonly ComponentFactory $componentFactory,
@@ -92,10 +82,21 @@ class RecordListController
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
         protected readonly FlashMessageService $flashMessageService,
+        protected readonly PageContextFactory $pageContextFactory,
+        protected readonly LanguageSelectorBuilder $languageSelectorBuilder,
     ) {}
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+
+        $pageContext = $request->getAttribute('pageContext');
+        if (!$pageContext instanceof PageContext) {
+            throw new \RuntimeException(
+                'PageContext not initialized by middleware.',
+                1731415238
+            );
+        }
+        $this->pageContext = $pageContext;
         $this->moduleData = $request->getAttribute('moduleData');
 
         $languageService = $this->getLanguageService();
@@ -107,22 +108,33 @@ class RecordListController
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/element/dispatch-modal-button.js');
 
         BackendUtility::lockRecords();
-        $perms_clause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
-        $this->id = (int)($parsedBody['id'] ?? $queryParams['id'] ?? 0);
         $pointer = max(0, (int)($parsedBody['pointer'] ?? $queryParams['pointer'] ?? 0));
         $this->table = (string)($parsedBody['table'] ?? $queryParams['table'] ?? '');
         $this->searchTerm = trim((string)($parsedBody['searchTerm'] ?? $queryParams['searchTerm'] ?? ''));
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl((string)($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? ''));
         $cmd = (string)($parsedBody['cmd'] ?? $queryParams['cmd'] ?? '');
-        $siteLanguages = $request->getAttribute('site')->getAvailableLanguages($backendUser, false, $this->id);
-        $this->currentSelectedLanguage = (int)$this->moduleData->get('language');
+
+        // RecordList always requires default language (0) for proper record display
+        // Similar to PageLayoutController's comparison mode behavior
+        $languagesToDisplay = $this->pageContext->selectedLanguageIds;
+        if (!in_array(0, $languagesToDisplay, true)) {
+            $languagesToDisplay = array_merge([0], $languagesToDisplay);
+            // Create updated PageContext with modified languages and update request
+            $this->pageContext = $this->pageContextFactory->createWithLanguages(
+                $request,
+                $this->pageContext->pageId ?? 0,
+                $languagesToDisplay,
+                $backendUser
+            );
+            $request = $request->withAttribute('pageContext', $this->pageContext);
+        }
+        $this->moduleData->set('languages', $languagesToDisplay);
+
+        $siteLanguages = $this->pageContext->site->getAvailableLanguages($backendUser, false, $this->pageContext->pageId ?? 0);
+        $backendUser->pushModuleData($this->moduleData->getModuleIdentifier(), $this->moduleData->toArray());
 
         // Loading module configuration, clean up settings, current page and page access
-        $this->modTSconfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
-        $pageinfo = BackendUtility::readPageAccess($this->id, $perms_clause);
-        $access = is_array($pageinfo);
-        $this->pageInfo = is_array($pageinfo) ? $pageinfo : [];
-        $this->pagePermissions = new Permission($backendUser->calcPerms($pageinfo));
+        $this->modTSconfig = $this->pageContext->getModuleTsConfig('web_list');
 
         // Check if Clipboard is allowed to be shown:
         if (($this->modTSconfig['enableClipBoard'] ?? '') === 'activated') {
@@ -145,29 +157,28 @@ class RecordListController
         }
 
         // Get search levels from request or fall back to default, set in TSconifg
-        $search_levels = (int)($parsedBody['search_levels'] ?? $queryParams['search_levels'] ?? $this->modTSconfig['searchLevel.']['default'] ?? 0);
+        $search_levels = (int)($parsedBody['search_levels'] ?? $queryParams['search_levels'] ?? $this->modTSconfig['searchLevel']['default'] ?? 0);
 
         $dbList = GeneralUtility::makeInstance(DatabaseRecordList::class);
         $dbList->setRequest($request);
         $dbList->setModuleData($this->moduleData);
-        $dbList->calcPerms = $this->pagePermissions;
+        $dbList->calcPerms = $this->pageContext->pagePermissions;
         $dbList->returnUrl = $this->returnUrl;
         $dbList->showClipboardActions = true;
         $dbList->disableSingleTableView = $this->modTSconfig['disableSingleTableView'] ?? false;
         $dbList->listOnlyInSingleTableMode = $this->modTSconfig['listOnlyInSingleTableView'] ?? false;
         $dbList->hideTables = $this->modTSconfig['hideTables'] ?? '';
         $dbList->hideTranslations = (string)($this->modTSconfig['hideTranslations'] ?? '');
-        $dbList->tableTSconfigOverTCA = $this->modTSconfig['table.'] ?? [];
+        $dbList->tableTSconfigOverTCA = $this->modTSconfig['table'] ?? [];
         $dbList->allowedNewTables = GeneralUtility::trimExplode(',', $this->modTSconfig['allowedNewTables'] ?? '', true);
         $dbList->deniedNewTables = GeneralUtility::trimExplode(',', $this->modTSconfig['deniedNewTables'] ?? '', true);
-        $dbList->pageRow = $this->pageInfo;
+        $dbList->pageRow = $this->pageContext->pageRecord ?? [];
         $dbList->modTSconfig = $this->modTSconfig;
         $dbList->setLanguagesAllowedForUser($siteLanguages);
         $clickTitleMode = trim($this->modTSconfig['clickTitleMode'] ?? '');
         $dbList->clickTitleMode = $clickTitleMode === '' ? 'edit' : $clickTitleMode;
-        if (isset($this->modTSconfig['tableDisplayOrder.'])) {
-            $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
-            $dbList->setTableDisplayOrder($typoScriptService->convertTypoScriptArrayToPlainArray($this->modTSconfig['tableDisplayOrder.']));
+        if (isset($this->modTSconfig['tableDisplayOrder'])) {
+            $dbList->setTableDisplayOrder($this->modTSconfig['tableDisplayOrder']);
         }
         $clipboard = $this->initializeClipboard($request, (bool)$this->moduleData->get('clipBoard'));
         $dbList->clipObj = $clipboard;
@@ -176,22 +187,22 @@ class RecordListController
         $view = $this->moduleTemplateFactory->create($request);
 
         $tableListHtml = '';
-        if ($access || ($this->id === 0 && $search_levels !== 0 && $this->searchTerm !== '')) {
+        if (!empty($this->pageContext->pageRecord) || ($this->pageContext->pageId === 0 && $search_levels !== 0 && $this->searchTerm !== '')) {
             // If there is access to the page or root page is used for searching, then perform actions and render table list.
             if ($cmd === 'delete' && $request->getMethod() === 'POST') {
                 $this->deleteRecords($request, $clipboard);
             }
-            $dbList->start($this->id, $this->table, $pointer, $this->searchTerm, $search_levels);
+            $dbList->start($this->pageContext->pageId, $this->table, $pointer, $this->searchTerm, $search_levels);
             $tableListHtml = $dbList->generateList();
         }
 
-        if (!$this->id) {
+        if (!$this->pageContext->pageId) {
             $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         } else {
-            $title = $pageinfo['title'] ?? '';
+            $title = $this->pageContext->getPageTitle();
         }
         $pageTranslationsHtml = '';
-        if ($this->id && !$this->searchTerm && !$cmd && !$this->table && $this->showPageTranslations()) {
+        if ($this->pageContext->pageId && !$this->searchTerm && !$cmd && !$this->table && $this->showPageTranslations()) {
             // Show page translation table if there are any and display is allowed.
             $pageTranslationsHtml = $this->renderPageTranslations($dbList, $siteLanguages);
         }
@@ -208,12 +219,12 @@ class RecordListController
         if (empty($tableListHtml)) {
             $this->addNoRecordsFlashMessage($view, $this->table);
         }
-        if ($pageinfo) {
-            $view->getDocHeaderComponent()->setPageBreadcrumb($pageinfo);
+        if ($this->pageContext->pageRecord) {
+            $view->getDocHeaderComponent()->setPageBreadcrumb($this->pageContext->pageRecord);
         }
-        $this->getDocHeaderButtons($view, $clipboard, $request, $this->table, $dbList->listURL(), [], $siteLanguages);
+        $this->getDocHeaderButtons($view, $clipboard, $request, $this->table, $dbList->listURL(), []);
         $view->assignMultiple([
-            'pageId' => $this->id,
+            'pageId' => $this->pageContext->pageId,
             'pageTitle' => $title,
             'isPageEditable' => $this->isPageEditable(),
             'additionalContentTop' => $additionalRecordListEvent->getAdditionalContentAbove(),
@@ -390,7 +401,7 @@ class RecordListController
     protected function renderSearchBox(ServerRequestInterface $request, DatabaseRecordList $dbList, string $searchWord, int $searchLevels): string
     {
         $searchBox = GeneralUtility::makeInstance(RecordSearchBoxComponent::class)
-            ->setAllowedSearchLevels((array)($this->modTSconfig['searchLevel.']['items.'] ?? []))
+            ->setAllowedSearchLevels((array)($this->modTSconfig['searchLevel']['items'] ?? []))
             ->setSearchWord($searchWord)
             ->setSearchLevel($searchLevels)
             ->render($request, $dbList->listURL('', '-1', 'pointer,searchTerm'));
@@ -399,34 +410,32 @@ class RecordListController
 
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
-     *
-     * @param SiteLanguage[] $availableLanguages
      */
-    protected function getDocHeaderButtons(ModuleTemplate $view, Clipboard $clipboard, ServerRequestInterface $request, string $table, UriInterface $listUrl, array $moduleSettings, array $availableLanguages): void
+    protected function getDocHeaderButtons(ModuleTemplate $view, Clipboard $clipboard, ServerRequestInterface $request, string $table, UriInterface $listUrl, array $moduleSettings): void
     {
         $queryParams = $request->getQueryParams();
         $lang = $this->getLanguageService();
 
         // Language selector (top right area)
-        $this->createLanguageSelector($view, $availableLanguages);
+        $this->createLanguageSelector($view, $request);
 
         if ($table !== 'tt_content' && !($this->modTSconfig['noCreateRecordsLink'] ?? false) && $this->editLockPermissions()) {
             // New record button if: table is not tt_content - tt_content should be managed in page module, link is
             // not disabled via TSconfig, page is not 'edit locked'
             $newRecordButton = $this->componentFactory->createLinkButton()
-                ->setHref((string)$this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id, 'returnUrl' => $listUrl]))
+                ->setHref((string)$this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->pageContext->pageId, 'returnUrl' => $listUrl]))
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:newRecordGeneral'))
                 ->setShowLabelText(true)
                 ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
             $view->addButtonToButtonBar($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
 
-        if ($this->id !== 0) {
-            $uriBuilder = PreviewUriBuilder::create($this->pageInfo);
+        if ($this->pageContext->isAccessible()) {
+            $uriBuilder = PreviewUriBuilder::create($this->pageContext->pageRecord);
             if ($uriBuilder->isPreviewable()) {
                 $view->addButtonToButtonBar(
-                    $this->componentFactory->createViewButton(PreviewUriBuilder::create($this->pageInfo)
-                        ->withRootLine(BackendUtility::BEgetRootLine($this->id))
+                    $this->componentFactory->createViewButton(PreviewUriBuilder::create($this->pageContext->pageRecord)
+                        ->withRootLine($this->pageContext->rootLine)
                         ->buildDispatcherDataAttributes() ?? []),
                     ButtonBar::BUTTON_POSITION_LEFT,
                     15
@@ -438,7 +447,7 @@ class RecordListController
                 $editLink = $this->uriBuilder->buildUriFromRoute('record_edit', [
                     'edit' => [
                         'pages' => [
-                            $this->id => 'edit',
+                            $this->pageContext->pageId => 'edit',
                         ],
                     ],
                     'module' => 'web_list',
@@ -454,12 +463,12 @@ class RecordListController
         }
 
         // Paste
-        if (($this->pagePermissions->createPagePermissionIsGranted() || $this->pagePermissions->editContentPermissionIsGranted()) && $this->editLockPermissions()) {
+        if (($this->pageContext->pagePermissions->createPagePermissionIsGranted() || $this->pageContext->pagePermissions->editContentPermissionIsGranted()) && $this->editLockPermissions()) {
             $elFromTable = $clipboard->elFromTable();
             if (!empty($elFromTable)) {
-                $confirmMessage = $clipboard->confirmMsgText('pages', $this->pageInfo, 'into', CountMode::ALL);
+                $confirmMessage = $clipboard->confirmMsgText('pages', $this->pageContext->pageRecord, 'into', CountMode::ALL);
                 $pasteButton = $this->componentFactory->createLinkButton()
-                    ->setHref($clipboard->pasteUrl('', $this->id))
+                    ->setHref($clipboard->pasteUrl('', $this->pageContext->pageId))
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_paste'))
                     ->setClasses('t3js-modal-trigger')
                     ->setDataAttributes([
@@ -473,10 +482,10 @@ class RecordListController
             }
         }
         // Cache
-        if ($this->id !== 0) {
+        if ($this->pageContext->pageId) {
             $clearCacheButton = $this->componentFactory->createLinkButton()
                 ->setHref('#')
-                ->setDataAttributes(['id' => $this->id])
+                ->setDataAttributes(['id' => $this->pageContext->pageId])
                 ->setClasses('t3js-clear-page-cache')
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'))
                 ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', IconSize::SMALL));
@@ -488,7 +497,7 @@ class RecordListController
         ) {
             // Export
             if (ExtensionManagementUtility::isLoaded('impexp')) {
-                $url = (string)$this->uriBuilder->buildUriFromRoute('tx_impexp_export', ['tx_impexp' => ['list' => [$table . ':' . $this->id]]]);
+                $url = (string)$this->uriBuilder->buildUriFromRoute('tx_impexp_export', ['tx_impexp' => ['list' => [$table . ':' . $this->pageContext->pageId]]]);
                 $exportButton = $this->componentFactory->createLinkButton()
                     ->setHref($url)
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.export'))
@@ -525,7 +534,7 @@ class RecordListController
 
         // Shortcut
         $arguments = [
-            'id' => $this->id,
+            'id' => $this->pageContext->pageId,
         ];
         $potentialArguments = [
             'pointer',
@@ -576,7 +585,7 @@ class RecordListController
     {
         return $this->getBackendUserAuthentication()->isAdmin()
             || !($schema = $this->tcaSchemaFactory->get('pages'))->hasCapability(TcaSchemaCapability::EditLock)
-            || !($this->pageInfo[$schema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] ?? false);
+            || !($this->pageContext->pageRecord[$schema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] ?? false);
     }
 
     /**
@@ -595,15 +604,15 @@ class RecordListController
             }
             $tableTitle = ': ' . ($tableTitle ?: $tableName);
         }
-        if ($this->pageInfo !== []) {
-            $pageTitle = BackendUtility::getRecordTitle('pages', $this->pageInfo);
+        if ($this->pageContext->isAccessible()) {
+            $pageTitle = BackendUtility::getRecordTitle('pages', $this->pageContext->pageRecord);
         }
         return trim(sprintf(
             $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:shortcut.title'),
             $languageService->translate('title', 'backend.modules.list'),
             $tableTitle,
             $pageTitle,
-            $this->id
+            $this->pageContext->pageId
         ));
     }
 
@@ -612,8 +621,8 @@ class RecordListController
         if (!$this->getBackendUserAuthentication()->check('tables_select', 'pages')) {
             return false;
         }
-        if (isset($this->modTSconfig['table.']['pages.']['hideTable'])) {
-            return !$this->modTSconfig['table.']['pages.']['hideTable'];
+        if (isset($this->modTSconfig['table']['pages']['hideTable'])) {
+            return !$this->modTSconfig['table']['pages']['hideTable'];
         }
         $schema = $this->tcaSchemaFactory->get('pages');
         $hideTables = $this->modTSconfig['hideTables'] ?? '';
@@ -625,7 +634,7 @@ class RecordListController
     protected function renderPageTranslations(DatabaseRecordList $dbList, array $siteLanguages): string
     {
         $pageTranslationsDatabaseRecordList = clone $dbList;
-        $pageTranslationsDatabaseRecordList->id = $this->id;
+        $pageTranslationsDatabaseRecordList->id = $this->pageContext->pageId;
         $pageTranslationsDatabaseRecordList->listOnlyInSingleTableMode = false;
         $pageTranslationsDatabaseRecordList->disableSingleTableView = true;
         $pageTranslationsDatabaseRecordList->deniedNewTables = ['pages'];
@@ -638,7 +647,7 @@ class RecordListController
     protected function createModuleUri(ServerRequestInterface $request, array $params = []): string
     {
         $params = array_replace_recursive([
-            'id' => $this->id,
+            'id' => $this->pageContext->pageId,
             'table' => $this->table,
             'searchTerm' => $this->searchTerm,
         ], $params);
@@ -651,224 +660,22 @@ class RecordListController
     }
 
     /**
-     * @param SiteLanguage[] $availableLanguages
+     * Creates the language selector dropdown in the module toolbar.
      */
-    protected function createLanguageSelector(ModuleTemplate $view, array $availableLanguages): void
+    protected function createLanguageSelector(ModuleTemplate $view, ServerRequestInterface $request): void
     {
-        // Early return if less than 2 languages are available
-        if (count($availableLanguages) <= 1) {
+        if (count($this->pageContext->languageInformation->availableLanguages) <= 1) {
             return;
         }
 
-        $languageService = $this->getLanguageService();
-        $backendUser = $this->getBackendUserAuthentication();
+        $languageSelector = $this->languageSelectorBuilder->build(
+            $this->pageContext,
+            LanguageSelectorMode::MULTI_SELECT,
+            fn(array $languageIds): string => $this->buildListUrl($request, ['languages' => $languageIds]),
+            !empty($this->pageContext->languageInformation->existingTranslations)
+        );
 
-        // Check if user can create new page translations
-        $canCreateTranslations = $backendUser->check('tables_modify', 'pages');
-
-        // Get existing page translations with workspace handling
-        $existingTranslations = [];
-        if ($this->id) {
-            $schema = $this->tcaSchemaFactory->get('pages');
-            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
-            $languageField = $languageCapability->getLanguageField()->getName();
-            $translationOriginField = $languageCapability->getTranslationOriginPointerField()->getName();
-
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-            $queryBuilder->getRestrictions()->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $backendUser->workspace));
-            $queryBuilder->select('*')
-                ->from('pages')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        $translationOriginField,
-                        $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
-                    )
-                );
-            $statement = $queryBuilder->executeQuery();
-            while ($row = $statement->fetchAssociative()) {
-                BackendUtility::workspaceOL('pages', $row, $backendUser->workspace);
-                if ($row && VersionState::tryFrom($row['t3ver_state']) !== VersionState::DELETE_PLACEHOLDER) {
-                    $existingTranslations[(int)$row[$languageField]] = $row;
-                }
-            }
-        }
-
-        // Check if current selected language exists, if not we fall back to default (0)
-        // Note: -1 (all languages) is only valid when there are actual translations
-        $currentLanguageExists = $this->currentSelectedLanguage === 0
-            || ($this->currentSelectedLanguage === -1 && !empty($existingTranslations))
-            || isset($existingTranslations[$this->currentSelectedLanguage]);
-
-        $languageDropDownButton = $this->componentFactory->createDropDownButton()
-            ->setLabel($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.language'))
-            ->setShowActiveLabelText(true)
-            ->setShowLabelText(true);
-
-        $existingLanguageItems = [];
-        $newLanguageItems = [];
-
-        foreach ($availableLanguages as $siteLanguage) {
-
-            $languageId = $siteLanguage->getLanguageId();
-            $languageTitle = $siteLanguage->getTitle();
-
-            // Skip languages that don't exist and user can't create
-            if ($languageId > 0 && !isset($existingTranslations[$languageId]) && !$canCreateTranslations) {
-                continue;
-            }
-
-            if ($languageId > 0 && !isset($existingTranslations[$languageId])) {
-                $languageItem = $this->componentFactory->createDropDownItem()
-                    ->setTag('typo3-backend-localization-button')
-                    ->setIcon($this->iconFactory->getIcon($siteLanguage->getFlagIdentifier()))
-                    ->setAttribute('record-type', 'pages')
-                    ->setAttribute('record-uid', (string)$this->id)
-                    ->setAttribute('target-language', (string)$siteLanguage->getLanguageId())
-                    ->setLabel($languageTitle);
-                $newLanguageItems[] = $languageItem;
-            } else {
-                // Translation exists or is default language - just switch view
-                $href = (string)$this->uriBuilder->buildUriFromRoute('web_list', [
-                    'id' => $this->id,
-                    'language' => $languageId,
-                ]);
-                // If selected language doesn't exist, fall back to marking default (0) as active
-                if ($currentLanguageExists) {
-                    $isActive = $this->currentSelectedLanguage === $languageId;
-                } else {
-                    $isActive = $languageId === 0;
-                }
-
-                $languageItem = $this->componentFactory->createDropDownRadio()
-                    ->setActive($isActive)
-                    ->setIcon($this->iconFactory->getIcon($siteLanguage->getFlagIdentifier()))
-                    ->setHref($href)
-                    ->setLabel($languageTitle);
-                $existingLanguageItems[] = $languageItem;
-            }
-        }
-
-        // Add existing languages first
-        foreach ($existingLanguageItems as $item) {
-            $languageDropDownButton->addItem($item);
-        }
-
-        // Add "All languages" option if there are translations
-        if (!empty($existingTranslations)) {
-            $allLanguagesLabel = $languageService->sL('core.mod_web_list:multipleLanguages');
-            $isAllLanguagesActive = $this->currentSelectedLanguage === -1;
-            $allLanguagesItem = $this->componentFactory->createDropDownRadio()
-                ->setActive($isAllLanguagesActive)
-                ->setIcon($this->iconFactory->getIcon('flags-multiple'))
-                ->setHref(
-                    (string)$this->uriBuilder->buildUriFromRoute('web_list', [
-                        'id' => $this->id,
-                        'language' => -1,
-                    ])
-                )
-                ->setLabel($allLanguagesLabel);
-            $languageDropDownButton
-                ->addItem($this->componentFactory->createDropDownDivider())
-                ->addItem($allLanguagesItem);
-        }
-
-        // Add separator and new languages if any
-        if (!empty($newLanguageItems)) {
-            $languageDropDownButton->addItem($this->componentFactory->createDropDownDivider());
-            $languageDropDownButton->addItem(
-                $this->componentFactory->createDropDownHeader()
-                    ->setLabel($languageService->sL('core.core:labels.new_page_translation'))
-            );
-            foreach ($newLanguageItems as $item) {
-                $languageDropDownButton->addItem($item);
-            }
-        }
-
-        $view->getDocHeaderComponent()->setLanguageSelector($languageDropDownButton);
-    }
-
-    /**
-     * Creates the module menu configuration.
-     *
-     * @param SiteLanguage[] $availableLanguages
-     * @return array{language: array<int, string>}
-     */
-    protected function getLanguageMenuConfiguration(array $availableLanguages): array
-    {
-        $backendUser = $this->getBackendUserAuthentication();
-        $languageService = $this->getLanguageService();
-        $translations = [];
-
-        // MENU-ITEMS:
-        $languageMenuConfiguration = [
-            'language' => [
-                0 => isset($availableLanguages[0]) ? $availableLanguages[0]->getTitle() : $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage'),
-            ],
-        ];
-
-        // First, select all localized page records on the current page.
-        // Each represents a possibility for a language on the page. Add these to language selector.
-        if ($this->id) {
-            // Add all possible languages first for the cleanup to make sure we keep the selected language
-            // when the user switches between pages with/without translations
-            foreach ($availableLanguages as $language) {
-                $languageMenuConfiguration['language'][$language->getLanguageId()] = $language->getTitle();
-            }
-
-            // Compile language data for pid != 0 only. The language drop-down is not shown on pid 0
-            // since pid 0 can't be localized.
-            $availableLanguageIds = array_map(static function ($siteLanguage) {
-                return $siteLanguage->getLanguageId();
-            }, $availableLanguages);
-
-            $pageTranslations = BackendUtility::getExistingPageTranslations($this->id, $availableLanguageIds);
-            $schema = $this->tcaSchemaFactory->get('pages');
-            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
-            $languageField = $languageCapability->getLanguageField()->getName();
-            foreach ($pageTranslations as $pageTranslation) {
-                $languageId = $pageTranslation[$languageField];
-                $translations[] = $languageId;
-            }
-
-            // Add special "-1" in case translations of the current page exist
-            if (count($languageMenuConfiguration['language']) > 1) {
-                // We need to add -1 (all) here so a possible -1 value will be allowed when calling
-                // moduleData->cleanUp(). Actually, this is only relevant if we are dealing with the
-                // "languages" mode, which however can only be safely determined, after the moduleData
-                // have been cleaned up => chicken and egg problem. We therefore remove the -1 item from
-                // the menu again, as soon as we are able to determine the requested mode.
-                // @todo Replace the whole "mode" handling with some more robust solution
-                $languageMenuConfiguration['language'][-1] = $languageService->sL('core.mod_web_list:multipleLanguages');
-            }
-        }
-        // Clean up settings
-        if ($this->moduleData->cleanUp($languageMenuConfiguration)) {
-            $backendUser->pushModuleData($this->moduleData->getModuleIdentifier(), $this->moduleData->toArray());
-        }
-
-        // Remove all languages from $languageMenuConfiguration, which have no page translations after cleanup
-        foreach ($languageMenuConfiguration['language'] as $languageId => $language) {
-            if ($languageId > 0 && !in_array($languageId, $translations, true)) {
-                unset($languageMenuConfiguration['language'][$languageId]);
-            }
-        }
-
-        if ($translations === []) {
-            // Remove -1 if we have no translations
-            unset($languageMenuConfiguration['language'][-1]);
-
-            // No translations -> set module data for the current request to default language
-            $this->moduleData->set('language', 0);
-        } elseif (!isset($languageMenuConfiguration['language'][$this->moduleData->get('language')])) {
-            // If the currently selected language is not available on this page (no translation),
-            // fall back to "all languages" (-1) temporarily for this page only (not persisted).
-            // When navigating to a page with the selected language translation, it will be used again.
-            $this->moduleData->set('language', -1);
-        }
-
-        return $languageMenuConfiguration;
+        $view->getDocHeaderComponent()->setLanguageSelector($languageSelector);
     }
 
     /**
@@ -889,11 +696,51 @@ class RecordListController
             return false;
         }
 
-        return $this->pageInfo !== []
+        return !empty($this->pageContext->pageRecord)
             && $this->editLockPermissions()
-            && $this->pagePermissions->editPagePermissionIsGranted()
+            && $this->pageContext->pagePermissions->editPagePermissionIsGranted()
             && $backendUser->checkLanguageAccess(0)
             && $backendUser->check('tables_modify', 'pages');
+    }
+
+    /**
+     * Build list URL preserving relevant parameters (search, table, sort).
+     * Does NOT preserve pagination (pointer) to allow resetting to first page.
+     *
+     * @param array $additionalParams Additional parameters to add/override (e.g., ['languages' => [0, 1]])
+     */
+    protected function buildListUrl(ServerRequestInterface $request, array $additionalParams = []): string
+    {
+        $queryParams = $request->getQueryParams();
+        $parsedBody = $request->getParsedBody();
+
+        $urlParams = [
+            'id' => $this->pageContext->pageId,
+        ];
+
+        if ($this->table !== '') {
+            $urlParams['table'] = $this->table;
+        }
+        if ($this->searchTerm !== '') {
+            $urlParams['searchTerm'] = $this->searchTerm;
+        }
+        $searchLevels = (int)($parsedBody['search_levels'] ?? $queryParams['search_levels'] ?? 0);
+        if ($searchLevels > 0) {
+            $urlParams['search_levels'] = $searchLevels;
+        }
+        $sortField = (string)($parsedBody['sortField'] ?? $queryParams['sortField'] ?? '');
+        if ($sortField !== '') {
+            $urlParams['sortField'] = $sortField;
+        }
+        $sortRev = $parsedBody['sortRev'] ?? $queryParams['sortRev'] ?? null;
+        if ($sortRev !== null) {
+            $urlParams['sortRev'] = $sortRev;
+        }
+
+        // Merge with additional parameters (which can override preserved ones)
+        $urlParams = array_merge($urlParams, $additionalParams);
+
+        return (string)$this->uriBuilder->buildUriFromRoute('web_list', $urlParams);
     }
 
     protected function getBackendUserAuthentication(): BackendUserAuthentication

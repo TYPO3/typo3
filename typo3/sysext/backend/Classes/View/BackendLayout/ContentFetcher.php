@@ -122,7 +122,7 @@ readonly class ContentFetcher
     {
         $unrendered = [];
         $recordIdentityMap = $pageLayoutContext->getRecordIdentityMap();
-        $languageId = $pageLayoutContext->getDrawingConfiguration()->getSelectedLanguageId();
+        $languageId = $pageLayoutContext->getDrawingConfiguration()->getPrimaryLanguageId();
         // @todo consider to invoke the identity-map much earlier (to avoid fetching database records again)
         foreach ($this->getContentRecordsPerColumn($pageLayoutContext, null, $languageId) as $contentRecordsInColumn) {
             foreach ($contentRecordsInColumn as $contentRecord) {

@@ -42,37 +42,47 @@ final class DatabaseRecordListCest
     public function allRecordsCanBeSeen(ApplicationTester $I): void
     {
         $I->wantToTest('whether all records can be seen by default in the record list');
-        // Click the language selector dropdown button in the navigation bar
-        $I->click('.module-docheader-bar-navigation button.dropdown-toggle');
-        $I->waitForElementVisible('.module-docheader-bar-navigation .dropdown-menu');
-        $I->click('All languages', '.module-docheader-bar-navigation .dropdown-menu');
+        self::toggleAllLanguages($I);
         self::checkRowVisibility($I, ['1', '2', '3', '4', '5']);
+        self::toggleAllLanguages($I, false);
     }
 
     public function recordListCanBeFilteredByLanguage(ApplicationTester $I): void
     {
         $I->wantToTest('whether the record list can be filtered by language');
 
-        // Default language
-        $I->amGoingTo('select the default language');
+        // Default language only (default is always selected and cannot be deselected)
+        $I->amGoingTo('verify only the default language records are shown');
         $I->click('.module-docheader-bar-navigation button.dropdown-toggle');
         $I->waitForElementVisible('.module-docheader-bar-navigation .dropdown-menu');
-        $I->click('English', '.module-docheader-bar-navigation .dropdown-menu');
+        // Verify default language toggle is active (always selected)
+        $I->seeElement('.module-docheader-bar-navigation .dropdown-menu [data-dropdowntoggle-status="active"][title*="English"]');
+        $I->click('.module-docheader-bar-navigation button.dropdown-toggle'); // Close dropdown
         self::checkRowVisibility($I, ['1'], ['2', '3', '4', '5']);
 
         // Language with records having l10n_parent
-        $I->amGoingTo('select a language with records having l10n_parent');
+        $I->amGoingTo('add a language with records having l10n_parent');
         $I->click('.module-docheader-bar-navigation button.dropdown-toggle');
         $I->waitForElementVisible('.module-docheader-bar-navigation .dropdown-menu');
         $I->click('styleguide demo language german', '.module-docheader-bar-navigation .dropdown-menu');
         self::checkRowVisibility($I, ['1', '3'], ['2', '4', '5']);
 
         // Language with records not having l10n_parent
-        $I->amGoingTo('select a language with records not having l10n_parent');
+        $I->amGoingTo('add a language with records not having l10n_parent');
         $I->click('.module-docheader-bar-navigation button.dropdown-toggle');
         $I->waitForElementVisible('.module-docheader-bar-navigation .dropdown-menu');
         $I->click('styleguide demo language danish', '.module-docheader-bar-navigation .dropdown-menu');
-        self::checkRowVisibility($I, ['1', '2'], ['3', '4', '5']);
+        self::checkRowVisibility($I, ['1', '2', '3'], ['4', '5']);
+
+        // Check all languages
+        $I->amGoingTo('add all languages');
+        self::toggleAllLanguages($I);
+        self::checkRowVisibility($I, ['1', '2', '3', '4', '5']);
+
+        // Uncheck all languages
+        $I->amGoingTo('uncheck all languages');
+        self::toggleAllLanguages($I, false);
+        self::checkRowVisibility($I, ['1'], ['2', '3', '4', '5']);
     }
 
     public function searchKeepsLanguageFilter(ApplicationTester $I): void
@@ -96,7 +106,7 @@ final class DatabaseRecordListCest
         $I->click('button[name="search"]', '.recordsearchbox-container');
 
         $I->seeElementInDOM(self::$docHeader . ' .icon-flags-dk');
-        self::checkRowVisibility($I, ['2'], ['1', '3', '4', '5']);
+        self::checkRowVisibility($I, ['1', '2'], ['3', '4', '5']);
     }
 
     private static function checkRowVisibility(ApplicationTester $I, array $mustSee, array $mustNotSee = []): void
@@ -111,5 +121,12 @@ final class DatabaseRecordListCest
                 $I->cantSee($value, self::$dataTable);
             }
         }
+    }
+
+    private static function toggleAllLanguages(ApplicationTester $I, bool $check = true): void
+    {
+        $I->click('.module-docheader-bar-navigation button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-navigation .dropdown-menu');
+        $I->click($check ? 'Check all' : 'Uncheck all', '.module-docheader-bar-navigation .dropdown-menu');
     }
 }

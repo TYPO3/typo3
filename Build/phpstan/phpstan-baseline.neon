@@ -283,12 +283,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/RecordList/DatabaseRecordList.php
 
 		-
-			message: '#^Variable \$translations on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.variable
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/RecordList/DatabaseRecordList.php
-
-		-
 			message: '#^Method TYPO3\\CMS\\Backend\\Routing\\Router\:\:getRoutes\(\) should return iterable\<TYPO3\\CMS\\Backend\\Routing\\Route\> but returns ArrayIterator\<string, Symfony\\Component\\Routing\\Route\>\.$#'
 			identifier: return.type
 			count: 1

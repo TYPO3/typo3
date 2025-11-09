@@ -29,10 +29,18 @@ final class InlinePagesLocalizeResourceCest
         $I->click('List');
         $pageTree->openPath(['styleguide TCA demo', 'staticdata']);
         $I->switchToContentFrame();
-        $I->click('.module-docheader-bar-navigation button.dropdown-toggle');
-        $I->waitForElementVisible('.module-docheader-bar-navigation .dropdown-menu');
-        $I->click('All languages', '.module-docheader-bar-navigation .dropdown-menu');
+        self::toggleAllLanguages($I);
         $I->waitForText('staticdata', 20);
+    }
+
+    public function _after(ApplicationTester $I, PageTree $pageTree): void
+    {
+        $I->useExistingSession('admin');
+
+        $I->click('List');
+        $pageTree->openPath(['styleguide TCA demo', 'staticdata']);
+        $I->switchToContentFrame();
+        self::toggleAllLanguages($I, false);
     }
 
     public function addingResourceToDefaultLangPageAddResourceToLocalizedPage(ApplicationTester $I): void
@@ -61,14 +69,18 @@ final class InlinePagesLocalizeResourceCest
         $I->wait(1);
         // Edit the page translation and see if that resource has been added.
         $I->switchToContentFrame();
-        $I->click('.module-docheader-bar-navigation button.dropdown-toggle');
-        $I->waitForElementVisible('.module-docheader-bar-navigation .dropdown-menu');
-        $I->click('All languages', '.module-docheader-bar-navigation .dropdown-menu');
         $I->waitForText('staticdata - language 1');
         $I->wait(1);
         $I->click('staticdata - language 1');
         $I->waitForText('Edit Page "staticdata - language 1"', 3, 'h1');
         $I->click('Resources');
         $I->see('telephone_box.jpg');
+    }
+
+    private static function toggleAllLanguages(ApplicationTester $I, bool $check = true): void
+    {
+        $I->click('.module-docheader-bar-navigation button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-bar-navigation .dropdown-menu');
+        $I->click($check ? 'Check all' : 'Uncheck all', '.module-docheader-bar-navigation .dropdown-menu');
     }
 }

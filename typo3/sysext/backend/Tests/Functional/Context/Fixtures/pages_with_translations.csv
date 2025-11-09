@@ -1,0 +1,8 @@
+pages,,,,,,
+,uid,pid,title,hidden,perms_everybody,sys_language_uid,l10n_parent
+,1,0,"Page with German translation",0,31,0,0
+,2,0,"German translation of page 1",0,31,1,1
+,3,0,"Page without translations",0,31,0,0
+,4,0,"Page with German and French",0,31,0,0
+,5,0,"German translation of page 4",0,31,1,4
+,6,0,"French translation of page 4",0,31,2,4

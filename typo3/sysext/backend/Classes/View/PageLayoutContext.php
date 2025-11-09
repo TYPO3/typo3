@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\View;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Context\PageContext;
+use TYPO3\CMS\Backend\Domain\Model\Language\PageLanguageInformation;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayout\ContentFetcher;
@@ -33,13 +35,24 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
+ * Page Module specific rendering context.
+ *
+ * Extends generic PageContext with module-specific rendering configuration
+ * for the page module (web_layout).
+ *
+ * This context provides:
+ * - Generic page data (via delegation to PageContext)
+ * - Backend layout configuration
+ * - Drawing configuration
+ * - Content type labels
+ * - Content fetcher
+ *
  * @internal
  */
 class PageLayoutContext
 {
     protected ContentFetcher $contentFetcher;
     protected ?array $localizedPageRecord = null;
-    protected int $pageId;
 
     /**
      * @var SiteLanguage[]
@@ -67,16 +80,14 @@ class PageLayoutContext
     protected RecordIdentityMap $recordIdentityMap;
 
     public function __construct(
-        protected readonly array $pageRecord,
+        protected readonly PageContext $pageContext,
         protected readonly BackendLayout $backendLayout,
-        protected readonly SiteInterface $site,
         protected readonly DrawingConfiguration $drawingConfiguration,
         protected readonly ServerRequestInterface $request,
     ) {
-        $this->pageId = (int)($pageRecord['uid'] ?? 0);
         $this->contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class);
-        $this->siteLanguages = $this->site->getAvailableLanguages($this->getBackendUser(), true, $this->pageId);
-        $this->siteLanguage = $this->site->getDefaultLanguage();
+        $this->siteLanguages = $this->pageContext->site->getAvailableLanguages($this->getBackendUser(), true, $this->pageContext->pageId);
+        $this->siteLanguage = $this->pageContext->site->getDefaultLanguage();
         $this->recordIdentityMap = GeneralUtility::makeInstance(RecordIdentityMap::class);
     }
 
@@ -105,6 +116,41 @@ class PageLayoutContext
         }
     }
 
+    public function getPageContext(): PageContext
+    {
+        return $this->pageContext;
+    }
+
+    public function getPageId(): int
+    {
+        return $this->pageContext->pageId;
+    }
+
+    public function getPageRecord(): array
+    {
+        return $this->pageContext->pageRecord;
+    }
+
+    public function getSite(): SiteInterface
+    {
+        return $this->pageContext->site;
+    }
+
+    public function getSelectedLanguageIds(): array
+    {
+        return $this->pageContext->selectedLanguageIds;
+    }
+
+    public function getPrimaryLanguageId(): int
+    {
+        return $this->pageContext->getPrimaryLanguageId();
+    }
+
+    public function getLanguageInformation(): PageLanguageInformation
+    {
+        return $this->pageContext->languageInformation;
+    }
+
     public function getBackendLayout(): BackendLayout
     {
         return $this->backendLayout;
@@ -113,21 +159,6 @@ class PageLayoutContext
     public function getDrawingConfiguration(): DrawingConfiguration
     {
         return $this->drawingConfiguration;
-    }
-
-    public function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
-    }
-
-    public function getPageRecord(): array
-    {
-        return $this->pageRecord;
-    }
-
-    public function getPageId(): int
-    {
-        return $this->pageId;
     }
 
     /**
@@ -143,27 +174,29 @@ class PageLayoutContext
      */
     public function getLanguagesToShow(): iterable
     {
-        $selectedLanguageId = $this->drawingConfiguration->getSelectedLanguageId();
-        if ($selectedLanguageId === -1) {
-            $languages = $this->siteLanguages;
-            if (!isset($languages[0])) {
-                // $languages may not contain the default (0) in case the user does not have access to it.
-                // However, as for selected pages, it should also be displayed readonly in the "all languages" view
-                $languages = [
-                    $this->site->getDefaultLanguage(),
-                    ...$languages,
-                ];
+        $site = $this->pageContext->site;
+        $selectedLanguageIds = $this->drawingConfiguration->getSelectedLanguageIds();
+
+        // If multiple languages are selected, show default language + all selected languages
+        if (count($selectedLanguageIds) > 1 || (count($selectedLanguageIds) === 1 && $selectedLanguageIds[0] > 0)) {
+            $languagesToShow = [];
+            // Always include default language (0) first
+            $languagesToShow[] = $site->getDefaultLanguage();
+            // Add all selected languages, except default
+            foreach ($selectedLanguageIds as $languageId) {
+                try {
+                    if ($languageId > 0) {
+                        $languagesToShow[] = $site->getLanguageById($languageId);
+                    }
+                } catch (\InvalidArgumentException $e) {
+                    // Skip invalid language IDs
+                }
             }
-            return $languages;
+            return $languagesToShow;
         }
-        if ($selectedLanguageId > 0) {
-            // A specific language is selected; compose a list of default language plus selected language
-            return [
-                $this->site->getDefaultLanguage(),
-                $this->site->getLanguageById($selectedLanguageId),
-            ];
-        }
-        return [$this->site->getDefaultLanguage()];
+
+        // Single language selected (default language only)
+        return [$site->getDefaultLanguage()];
     }
 
     public function hasMultiLanguages(): bool
@@ -179,7 +212,8 @@ class PageLayoutContext
         if ($languageId === -1) {
             return $this->siteLanguages[-1];
         }
-        return $this->site->getLanguageById($languageId);
+
+        return $this->pageContext->site->getLanguageById($languageId);
     }
 
     public function isPageEditable(): bool
@@ -188,10 +222,11 @@ class PageLayoutContext
         if ($this->getBackendUser()->isAdmin()) {
             return true;
         }
-        return $this->getBackendUser()->doesUserHaveAccess($this->pageRecord, Permission::PAGE_EDIT)
+        $pageRecord = $this->pageContext->pageRecord;
+        return $this->getBackendUser()->doesUserHaveAccess($pageRecord, Permission::PAGE_EDIT)
             && (
                 !($schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('pages'))->hasCapability(TcaSchemaCapability::EditLock)
-                || !($this->pageRecord[$schema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] ?? false)
+                || !($pageRecord[$schema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] ?? false)
             );
     }
 
@@ -266,7 +301,7 @@ class PageLayoutContext
 
     public function getLocalizedPageTitle(): string
     {
-        return $this->localizedPageRecord['title'] ?? $this->pageRecord['title'];
+        return $this->localizedPageRecord['title'] ?? $this->pageContext->pageRecord['title'] ?? '';
     }
 
     public function getLocalizedPageRecord(): ?array
@@ -287,5 +322,10 @@ class PageLayoutContext
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
+    }
+
+    public function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

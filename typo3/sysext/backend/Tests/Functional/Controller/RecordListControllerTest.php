@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Backend\Context\PageContextFactory;
 use TYPO3\CMS\Backend\Controller\RecordListController;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\Route;
@@ -33,6 +34,9 @@ use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataH
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
+/**
+ * Tests for RecordListController multi-language selection functionality
+ */
 final class RecordListControllerTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
@@ -40,7 +44,7 @@ final class RecordListControllerTest extends FunctionalTestCase
     protected const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
         'FR' => ['id' => 1, 'title' => 'French', 'locale' => 'fr_FR.UTF8'],
-        'FR-CA' => ['id' => 2, 'title' => 'French (CA)', 'locale' => 'fr_CA.UTF8'],
+        'DE' => ['id' => 2, 'title' => 'German', 'locale' => 'de_DE.UTF8'],
         'ES' => ['id' => 3, 'title' => 'Spanish', 'locale' => 'es_ES.UTF8'],
     ];
 
@@ -69,12 +73,12 @@ final class RecordListControllerTest extends FunctionalTestCase
         );
 
         $this->writeSiteConfiguration(
-            'acme',
-            $this->buildSiteConfiguration(1000, 'https://acme.com/'),
+            'test-site',
+            $this->buildSiteConfiguration(1000, 'https://example.com/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
                 $this->buildLanguageConfiguration('FR', '/fr/', ['EN']),
-                $this->buildLanguageConfiguration('FR-CA', '/fr-ca/', ['FR', 'EN']),
+                $this->buildLanguageConfiguration('DE', '/de/', ['EN']),
                 $this->buildLanguageConfiguration('ES', '/es/', ['EN']),
             ]
         );
@@ -82,192 +86,219 @@ final class RecordListControllerTest extends FunctionalTestCase
 
     #[Test]
     #[IgnoreDeprecations] // Calls recordlist multiple times and therefore triggers deprecation notice for manual shortcut button
-    public function languageSelectionIsPersistedAcrossPageNavigations(): void
+    public function multipleLanguagesCanBeSelected(): void
     {
-        // Initial request with language=1 (French) on page 1100 (has French translation)
-        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('acme');
-        $moduleData = new ModuleData('web_list', ['language' => 1], ['language' => -1]);
+        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
+        $moduleData = new ModuleData('web_list', [], []);
 
-        $request = $this->createRequest(1100, $site, $moduleData);
+        // Request with multiple languages
+        $request = $this->createRequest(1100, $site, $moduleData, ['languages' => [0, 1, 2]]);
         $controller = $this->get(RecordListController::class);
-        $response = $controller->mainAction($request);
+        $controller->mainAction($request);
 
-        // Verify language 1 is set in the moduleData after processing
-        self::assertSame(1, $moduleData->get('language'), 'Language selection should be set in moduleData');
+        // Verify multiple languages are stored
+        $storedLanguages = $moduleData->get('languages');
+        self::assertIsArray($storedLanguages);
+        self::assertCount(3, $storedLanguages);
+        self::assertContains(0, $storedLanguages);
+        self::assertContains(1, $storedLanguages);
+        self::assertContains(2, $storedLanguages);
+    }
 
-        // Navigate to another page with French translation (page 1400)
-        // Use the same moduleData to simulate persistence
+    #[Test]
+    public function defaultLanguageIsAlwaysIncludedInRecordList(): void
+    {
+        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
+        $moduleData = new ModuleData('web_list', [], []);
+
+        // Try to select only translation languages (1, 2) without default
+        $request = $this->createRequest(1100, $site, $moduleData, ['languages' => [1, 2]]);
+        $controller = $this->get(RecordListController::class);
+        $controller->mainAction($request);
+
+        // Verify default language (0) was automatically added
+        $storedLanguages = $moduleData->get('languages');
+        self::assertContains(0, $storedLanguages);
+        self::assertContains(1, $storedLanguages);
+        self::assertContains(2, $storedLanguages);
+    }
+
+    #[Test]
+    public function emptyLanguageSelectionDefaultsToDefaultLanguage(): void
+    {
+        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
+        $moduleData = new ModuleData('web_list', [], []);
+
+        // Request with empty languages array
+        $request = $this->createRequest(1100, $site, $moduleData, ['languages' => []]);
+        $controller = $this->get(RecordListController::class);
+        $controller->mainAction($request);
+
+        // Verify defaults to default language
+        $storedLanguages = $moduleData->get('languages');
+        self::assertEquals([0], $storedLanguages);
+    }
+
+    #[Test]
+    public function invalidLanguageIdsAreFilteredOut(): void
+    {
+        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
+        $moduleData = new ModuleData('web_list', [], []);
+
+        // Request with mix of valid and invalid language IDs
+        $request = $this->createRequest(1100, $site, $moduleData, ['languages' => [0, 1, 999, 'invalid']]);
+        $controller = $this->get(RecordListController::class);
+        $controller->mainAction($request);
+
+        // Verify only valid languages are stored
+        $storedLanguages = $moduleData->get('languages');
+        self::assertContains(0, $storedLanguages);
+        self::assertContains(1, $storedLanguages);
+        self::assertNotContains(999, $storedLanguages);
+        self::assertNotContains('invalid', $storedLanguages);
+    }
+
+    #[Test]
+    #[IgnoreDeprecations] // Calls recordlist multiple times and therefore triggers deprecation notice for manual shortcut button
+    public function languageSelectionPersistsAcrossRequests(): void
+    {
+        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
+        $moduleData = new ModuleData('web_list', [], []);
+
+        // First request: select languages [0, 1]
+        $request = $this->createRequest(1100, $site, $moduleData, ['languages' => [0, 1]]);
+        $controller = $this->get(RecordListController::class);
+        $controller->mainAction($request);
+
+        self::assertEquals([0, 1], $moduleData->get('languages'));
+
+        // Second request: no language parameter, should use persisted value
         $request = $this->createRequest(1400, $site, $moduleData);
-        $response = $controller->mainAction($request);
+        $controller->mainAction($request);
 
-        // Verify language 1 is still selected
-        self::assertSame(1, $moduleData->get('language'), 'Language selection should persist across page changes');
+        self::assertEquals([0, 1], $moduleData->get('languages'));
     }
 
     #[Test]
-    public function languageFallsBackToAllLanguagesWhenTranslationNotAvailable(): void
+    public function requestParameterOverridesModuleDataLanguages(): void
     {
-        // Select French (language 1)
-        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('acme');
-        $moduleData = new ModuleData('web_list', ['language' => 1], ['language' => -1]);
+        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
+        $moduleData = new ModuleData('web_list', ['languages' => [0, 1]], []);
 
-        // Navigate to page 1100 which has French translation
-        $request = $this->createRequest(1100, $site, $moduleData);
+        // Request explicitly changes languages to [0, 2]
+        $request = $this->createRequest(1100, $site, $moduleData, ['languages' => [0, 2]]);
         $controller = $this->get(RecordListController::class);
         $controller->mainAction($request);
 
-        // Verify French is set
-        self::assertSame(1, $moduleData->get('language'));
-        $storedLanguage = $moduleData->get('language'); // Store the user's preference
-
-        // Create new moduleData with stored preference for page 1200 which has NO French translation
-        $moduleData2 = new ModuleData('web_list', ['language' => $storedLanguage], ['language' => -1]);
-        $request = $this->createRequest(1200, $site, $moduleData2);
-
-        // Access protected method via reflection to test the language menu configuration
-        $reflection = new \ReflectionClass($controller);
-        $method = $reflection->getMethod('getLanguageMenuConfiguration');
-        $method->setAccessible(true);
-
-        // Set up controller state
-        $idProperty = $reflection->getProperty('id');
-        $idProperty->setAccessible(true);
-        $idProperty->setValue($controller, 1200);
-
-        $moduleDataProperty = $reflection->getProperty('moduleData');
-        $moduleDataProperty->setAccessible(true);
-        $moduleDataProperty->setValue($controller, $moduleData2);
-
-        $availableLanguages = $site->getAvailableLanguages($this->backendUser, false, 1200);
-        $menuConfig = $method->invoke($controller, $availableLanguages);
-
-        // Language should temporarily fall back to 0 (default language) for this page since no translations exist
-        self::assertSame(0, $moduleData2->get('language'), 'Should fall back to default language when no translations exist on page');
+        // Verify request parameter takes precedence
+        $storedLanguages = $moduleData->get('languages');
+        self::assertContains(0, $storedLanguages);
+        self::assertContains(2, $storedLanguages);
+        self::assertNotContains(1, $storedLanguages);
     }
 
     #[Test]
-    public function languageRestoresWhenNavigatingBackToPageWithTranslation(): void
+    public function backwardCompatibilityWithOldSingleLanguageParameter(): void
     {
-        // Select French (language 1) and navigate to page with French translation
-        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('acme');
-        $moduleData = new ModuleData('web_list', ['language' => 1], ['language' => -1]);
+        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
+
+        // Old format: single 'language' value stored as integer
+        $moduleData = new ModuleData('web_list', ['language' => 1], []);
 
         $request = $this->createRequest(1100, $site, $moduleData);
         $controller = $this->get(RecordListController::class);
         $controller->mainAction($request);
 
-        // Verify French is set
-        self::assertSame(1, $moduleData->get('language'));
-        $storedLanguage = $moduleData->get('language');
-
-        // Navigate to page without French translation (page 1200)
-        $moduleData2 = new ModuleData('web_list', ['language' => $storedLanguage], ['language' => -1]);
-        $request = $this->createRequest(1200, $site, $moduleData2);
-
-        $reflection = new \ReflectionClass($controller);
-        $method = $reflection->getMethod('getLanguageMenuConfiguration');
-        $method->setAccessible(true);
-
-        $idProperty = $reflection->getProperty('id');
-        $idProperty->setAccessible(true);
-        $idProperty->setValue($controller, 1200);
-
-        $moduleDataProperty = $reflection->getProperty('moduleData');
-        $moduleDataProperty->setAccessible(true);
-        $moduleDataProperty->setValue($controller, $moduleData2);
-
-        $availableLanguages = $site->getAvailableLanguages($this->backendUser, false, 1200);
-        $menuConfig = $method->invoke($controller, $availableLanguages);
-
-        // Temporarily falls back to 0 on page without translations
-        self::assertSame(0, $moduleData2->get('language'));
-
-        // Navigate back to page WITH French translation (page 1400) using the stored preference
-        $moduleData3 = new ModuleData('web_list', ['language' => $storedLanguage], ['language' => -1]);
-        $idProperty->setValue($controller, 1400);
-        $moduleDataProperty->setValue($controller, $moduleData3);
-
-        $availableLanguages = $site->getAvailableLanguages($this->backendUser, false, 1400);
-        $menuConfig = $method->invoke($controller, $availableLanguages);
-
-        // Should restore to French (1) since page 1400 has French translation
-        self::assertSame(1, $moduleData3->get('language'), 'Should restore to French when translation is available again');
+        // Verify old parameter is converted to new array format
+        $storedLanguages = $moduleData->get('languages');
+        self::assertIsArray($storedLanguages);
+        self::assertContains(0, $storedLanguages);
+        self::assertContains(1, $storedLanguages);
     }
 
     #[Test]
-    public function defaultLanguageIsUsedWhenNoTranslationsExist(): void
+    public function languageParametersAreCastToIntegers(): void
     {
-        // Select French and navigate to page with no translations at all
-        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('acme');
-        $moduleData = new ModuleData('web_list', ['language' => 1], ['language' => -1]);
+        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
+        $moduleData = new ModuleData('web_list', [], []);
 
+        $request = $this->createRequest(1100, $site, $moduleData, ['languages' => ['0', '1', '2']]);
         $controller = $this->get(RecordListController::class);
+        $controller->mainAction($request);
 
-        $reflection = new \ReflectionClass($controller);
-        $method = $reflection->getMethod('getLanguageMenuConfiguration');
-        $method->setAccessible(true);
-
-        // Page 1200 has no translations
-        $idProperty = $reflection->getProperty('id');
-        $idProperty->setAccessible(true);
-        $idProperty->setValue($controller, 1200);
-
-        $moduleDataProperty = $reflection->getProperty('moduleData');
-        $moduleDataProperty->setAccessible(true);
-        $moduleDataProperty->setValue($controller, $moduleData);
-
-        $availableLanguages = $site->getAvailableLanguages($this->backendUser, false, 1200);
-        $menuConfig = $method->invoke($controller, $availableLanguages);
-
-        // Should fall back to default language (0) when no translations exist
-        self::assertSame(0, $moduleData->get('language'), 'Should fall back to default language when no translations exist');
+        $storedLanguages = $moduleData->get('languages');
+        foreach ($storedLanguages as $langId) {
+            self::assertIsInt($langId);
+        }
     }
 
     #[Test]
-    public function allLanguagesOptionIsOnlyAvailableWhenTranslationsExist(): void
+    public function duplicateLanguageIdsAreRemoved(): void
     {
-        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('acme');
-        $moduleData = new ModuleData('web_list', ['language' => -1], ['language' => -1]);
+        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
+        $moduleData = new ModuleData('web_list', [], []);
 
+        $request = $this->createRequest(1100, $site, $moduleData, ['languages' => [0, 1, 1, 2, 2, 0]]);
         $controller = $this->get(RecordListController::class);
-        $reflection = new \ReflectionClass($controller);
-        $method = $reflection->getMethod('getLanguageMenuConfiguration');
-        $method->setAccessible(true);
+        $controller->mainAction($request);
 
-        $moduleDataProperty = $reflection->getProperty('moduleData');
-        $moduleDataProperty->setAccessible(true);
-        $moduleDataProperty->setValue($controller, $moduleData);
-
-        // Page 1100 has translations
-        $idProperty = $reflection->getProperty('id');
-        $idProperty->setAccessible(true);
-        $idProperty->setValue($controller, 1100);
-
-        $availableLanguages = $site->getAvailableLanguages($this->backendUser, false, 1100);
-        $menuConfig = $method->invoke($controller, $availableLanguages);
-
-        self::assertArrayHasKey(-1, $menuConfig['language'], '"All languages" option should be available when translations exist');
-
-        // Page 1200 has NO translations
-        $moduleData = new ModuleData('web_list', ['language' => -1], ['language' => -1]);
-        $moduleDataProperty->setValue($controller, $moduleData);
-        $idProperty->setValue($controller, 1200);
-
-        $availableLanguages = $site->getAvailableLanguages($this->backendUser, false, 1200);
-        $menuConfig = $method->invoke($controller, $availableLanguages);
-
-        self::assertArrayNotHasKey(-1, $menuConfig['language'], '"All languages" option should NOT be available when no translations exist');
+        $storedLanguages = $moduleData->get('languages');
+        self::assertCount(3, $storedLanguages);
+        self::assertEquals([0, 1, 2], array_values(array_unique($storedLanguages)));
     }
 
-    private function createRequest(int $pageId, object $site, ModuleData $moduleData): ServerRequest
+    #[Test]
+    public function singleLanguageSelectionWorks(): void
     {
-        $request = (new ServerRequest('https://acme.com/typo3/module/web/list'))
+        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
+        $moduleData = new ModuleData('web_list', [], []);
+
+        $request = $this->createRequest(1100, $site, $moduleData, ['languages' => [0]]);
+        $controller = $this->get(RecordListController::class);
+        $controller->mainAction($request);
+
+        $storedLanguages = $moduleData->get('languages');
+        self::assertEquals([0], $storedLanguages);
+    }
+
+    #[Test]
+    public function allExistingLanguagesCanBeSelected(): void
+    {
+        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
+        $moduleData = new ModuleData('web_list', [], []);
+
+        // Page 1100 has L=0, L=1, L=2 in live workspace (L=3 only in workspace)
+        // Requesting [0,1,2,3] should filter to [0,1,2]
+        $request = $this->createRequest(1100, $site, $moduleData, ['languages' => [0, 1, 2, 3]]);
+        $controller = $this->get(RecordListController::class);
+        $controller->mainAction($request);
+
+        $storedLanguages = $moduleData->get('languages');
+        self::assertCount(3, $storedLanguages);
+        self::assertContains(0, $storedLanguages);
+        self::assertContains(1, $storedLanguages);
+        self::assertContains(2, $storedLanguages);
+        self::assertNotContains(3, $storedLanguages); // L=3 doesn't exist on this page
+    }
+
+    private function createRequest(int $pageId, object $site, ModuleData $moduleData, array $additionalParams = []): ServerRequest
+    {
+        $queryParams = array_merge(['id' => $pageId], $additionalParams);
+
+        $request = (new ServerRequest('https://example.com/typo3/module/web/list'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/typo3/module/web/list', ['_identifier' => 'web_list']))
             ->withAttribute('site', $site)
             ->withAttribute('moduleData', $moduleData)
-            ->withQueryParams(['id' => $pageId]);
+            ->withQueryParams($queryParams);
 
-        return $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+
+        // Create PageContext via factory (simulating middleware)
+        $pageContextFactory = $this->get(PageContextFactory::class);
+        $pageContext = $pageContextFactory->createFromRequest($request, $pageId, $this->backendUser);
+        $request = $request->withAttribute('pageContext', $pageContext);
+
+        return $request;
     }
 }

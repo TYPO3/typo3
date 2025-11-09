@@ -18,6 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\ViewHelpers\Be;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Backend\Context\PageContext;
+use TYPO3\CMS\Backend\Context\PageContextFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumn;
@@ -25,8 +28,8 @@ use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
 use TYPO3\CMS\Backend\View\Drawing\DrawingConfiguration;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Backend\View\PageViewMode;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Domain\RecordFactory;
-use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -37,6 +40,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Scope: backend
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class RenderContentElementPreviewViewHelper extends AbstractViewHelper
 {
     /**
@@ -45,6 +49,10 @@ final class RenderContentElementPreviewViewHelper extends AbstractViewHelper
      * @var bool
      */
     protected $escapeOutput = false;
+
+    public function __construct(
+        private readonly PageContextFactory $pageContextFactory,
+    ) {}
 
     public function initializeArguments(): void
     {
@@ -62,13 +70,20 @@ final class RenderContentElementPreviewViewHelper extends AbstractViewHelper
         }
         if (!empty($contentRecord) && $request !== null) {
             $backendLayout = GeneralUtility::makeInstance(BackendLayout::class, 'dummy', 'dummy', []);
-            $pageRow = BackendUtility::getRecord('pages', $contentRecord['pid']);
+            $pageId = (int)$contentRecord['pid'];
+            $pageContext = $request->getAttribute('pageContext');
+            if (!$pageContext instanceof PageContext) {
+                try {
+                    $pageContext = $this->pageContextFactory->createFromRequest($request, $pageId, $this->getBackendUser());
+                } catch (\Exception $e) {
+                    return '';
+                }
+            }
             $pageLayoutContext = GeneralUtility::makeInstance(
                 PageLayoutContext::class,
-                $pageRow,
+                $pageContext,
                 $backendLayout,
-                $request->getAttribute('site') ?? new NullSite(),
-                DrawingConfiguration::create($backendLayout, BackendUtility::getPagesTSconfig($contentRecord['pid']), PageViewMode::LayoutView),
+                DrawingConfiguration::create($backendLayout, BackendUtility::getPagesTSconfig($pageId), PageViewMode::LayoutView),
                 $request
             );
             $gridColumn = GeneralUtility::makeInstance(GridColumn::class, $pageLayoutContext, []);
@@ -77,5 +92,10 @@ final class RenderContentElementPreviewViewHelper extends AbstractViewHelper
             return $columnItem->getPreview();
         }
         return $content;
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

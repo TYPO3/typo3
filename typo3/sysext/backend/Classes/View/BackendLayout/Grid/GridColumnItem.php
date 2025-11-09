@@ -126,7 +126,7 @@ class GridColumnItem extends AbstractGridObject
                         ],
                     ],
                 ],
-                'redirect' => $this->context->getCurrentRequest()->getAttribute('normalizedParams')->getRequestUri(),
+                'redirect' => $this->context->getReturnUrl(),
             ]
         );
     }
@@ -300,7 +300,7 @@ class GridColumnItem extends AbstractGridObject
             'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
             'colPos' => $this->column->getColumnNumber(),
             'uid_pid' => -$this->record->getUid(),
-            'returnUrl' => $this->context->getCurrentRequest()->getAttribute('normalizedParams')->getRequestUri(),
+            'returnUrl' => $this->context->getReturnUrl(),
         ]);
     }
 
@@ -322,7 +322,7 @@ class GridColumnItem extends AbstractGridObject
                         ],
                     ],
                 ],
-                'redirect' => $this->context->getCurrentRequest()->getAttribute('normalizedParams')->getRequestUri(),
+                'redirect' => $this->context->getReturnUrl(),
             ]
         ) . '#element-' . $this->table . '-' . $this->record->getUid();
     }
@@ -361,7 +361,7 @@ class GridColumnItem extends AbstractGridObject
                 ],
             ],
             'module' => 'web_layout',
-            'returnUrl' => $this->context->getCurrentRequest()->getAttribute('normalizedParams')->getRequestUri() . '#element-' . $this->table . '-' . $this->record->getUid(),
+            'returnUrl' => $this->context->getReturnUrl() . '#element-' . $this->table . '-' . $this->record->getUid(),
         ];
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return $uriBuilder->buildUriFromRoute('record_edit', $urlParameters) . '#element-' . $this->table . '-' . $this->record->getUid();
