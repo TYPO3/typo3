@@ -231,9 +231,18 @@ class GridColumnItem extends AbstractGridObject
 
     public function isDisabled(): bool
     {
-        return ($this->schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField) && $this->record->has((string)$this->schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)) && $this->record->get((string)$this->schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)))
-                || ($this->schema->hasCapability(TcaSchemaCapability::RestrictionStartTime) && $this->record->has((string)$this->schema->getCapability(TcaSchemaCapability::RestrictionStartTime)) && $this->record->get((string)$this->schema->getCapability(TcaSchemaCapability::RestrictionStartTime)) > $GLOBALS['EXEC_TIME'])
-                || ($this->schema->hasCapability(TcaSchemaCapability::RestrictionEndTime) && $this->record->has((string)$this->schema->getCapability(TcaSchemaCapability::RestrictionEndTime)) && $this->record->get((string)$this->schema->getCapability(TcaSchemaCapability::RestrictionEndTime)) < $GLOBALS['EXEC_TIME']);
+        return (
+            $this->schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)
+            && ($this->getRow()[(string)$this->schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)] ?? false)
+        )
+            || (
+                $this->schema->hasCapability(TcaSchemaCapability::RestrictionStartTime)
+                && (($this->getRow()[(string)$this->schema->getCapability(TcaSchemaCapability::RestrictionStartTime)] ?? 0) > $GLOBALS['EXEC_TIME'])
+            )
+            || (
+                $this->schema->hasCapability(TcaSchemaCapability::RestrictionEndTime)
+                && (($this->getRow()[(string)$this->schema->getCapability(TcaSchemaCapability::RestrictionEndTime)] ?? 0) < $GLOBALS['EXEC_TIME'])
+            );
     }
 
     public function isEditable(): bool
