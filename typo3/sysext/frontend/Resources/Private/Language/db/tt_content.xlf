@@ -16,6 +16,11 @@
 				<source>Column</source>
 			</segment>
 		</unit>
+		<unit id="filelink_size">
+			<segment>
+				<source>Display file size information</source>
+			</segment>
+		</unit>
 		<unit id="header">
 			<segment>
 				<source>Header</source>
@@ -114,6 +119,11 @@
 		<unit id="space_after_class">
 			<segment>
 				<source>Space After</source>
+			</segment>
+		</unit>
+		<unit id="uploads.media">
+			<segment>
+				<source>Single files</source>
 			</segment>
 		</unit>
 	</file>

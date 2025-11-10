@@ -228,10 +228,10 @@
 			<trans-unit id="file_collections">
 				<source>File collections</source>
 			</trans-unit>
-			<trans-unit id="file_collections.ALT.uploads_formlabel">
+			<trans-unit id="file_collections.ALT.uploads_formlabel" x-unused-since="14.0">
 				<source>Select file collections</source>
 			</trans-unit>
-			<trans-unit id="filelink_size">
+			<trans-unit id="filelink_size" x-unused-since="14.0">
 				<source>Show File Size</source>
 			</trans-unit>
 			<trans-unit id="filelink_sorting">
@@ -270,7 +270,7 @@
 			<trans-unit id="filelink_sorting_direction.descending">
 					<source>Descending</source>
 			</trans-unit>
-			<trans-unit id="filelink_size_formlabel">
+			<trans-unit id="filelink_size_formlabel" x-unused-since="14.0">
 				<source>Display File Size Information</source>
 			</trans-unit>
 			<trans-unit id="target">

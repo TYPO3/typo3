@@ -121,7 +121,7 @@ $GLOBALS['TCA']['tt_content']['palettes']['tablelayout'] = [
     ],
     '
         --palette--;;headers,
-        bodytext;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:field.table.bodytext,
+        bodytext,
         --palette--;;tableconfiguration,
         table_caption,
     --div--;core.form.tabs:appearance,
@@ -133,6 +133,7 @@ $GLOBALS['TCA']['tt_content']['palettes']['tablelayout'] = [
     [
         'columnsOverrides' => [
             'bodytext' => [
+                'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:field.table.bodytext',
                 'config' => [
                     'renderType' => 'textTable',
                     'wrap' => 'off',

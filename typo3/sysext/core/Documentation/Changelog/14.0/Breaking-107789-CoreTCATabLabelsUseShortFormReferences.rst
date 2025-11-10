@@ -101,6 +101,8 @@ own label definition:
 
 -   :php:`bodytext;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext_formlabel`
     → :php:`frontend.db.tt_content:bodytext`
+-   :php:`bodytext;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:field.table.bodytext`
+    → :php:`bodytext`
 -   :php:`CType;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType_formlabel`
     → :php:`frontend.db.tt_content:type`
 -   :php:`colPos;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos_formlabel`
@@ -121,6 +123,10 @@ own label definition:
     → :php:`frontend.db.tt_content:subheader`
 -   :php:`date;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:date_formlabel`
     → :php:`frontend.db.tt_content:date`
+-   :php:`file_collections;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:file_collections.ALT.uploads_formlabel`
+    → :php:`file_collections`
+-   :php:`filelink_size;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:filelink_size_formlabel`
+    → :php:`filelink_size`
 -   :php:`image*;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_zoom`
     → :php:`frontend.db.tt_content:image_zoom`
 -   :php:`image*;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_zoom_formlabel`
@@ -145,6 +151,8 @@ own label definition:
     → :php:`frontend.db.tt_content:imagewidth`
 -   :php:`image*;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imagewidth_formlabel`
     → :php:`frontend.db.tt_content:imagewidth`
+-   :php:`media;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.ALT.uploads_formlabel`
+    → :php:`media`
 -   :php:`sectionIndex;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:sectionIndex_formlabel`
     → :php:`sectionIndex`
 -   :php:`linkToTop;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:linkToTop_formlabel`

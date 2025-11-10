@@ -27,7 +27,7 @@ defined('TYPO3') or die();
         ],
         'filelink_size' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:filelink_size',
+            'label' => 'frontend.db.tt_content:filelink_size',
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
@@ -110,9 +110,9 @@ defined('TYPO3') or die();
 $GLOBALS['TCA']['tt_content']['palettes']['uploads'] = [
     'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media',
     'showitem' => '
-        media;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.ALT.uploads_formlabel,
+        media,
         --linebreak--,
-        file_collections;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:file_collections.ALT.uploads_formlabel,
+        file_collections,
         --linebreak--,
         filelink_sorting,
         filelink_sorting_direction,
@@ -122,7 +122,7 @@ $GLOBALS['TCA']['tt_content']['palettes']['uploads'] = [
 $GLOBALS['TCA']['tt_content']['palettes']['uploadslayout'] = [
     'label' => 'core.form.palettes:downloads_layout',
     'showitem' => '
-        filelink_size;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:filelink_size_formlabel,
+        filelink_size,
         uploads_description,
         uploads_type
     ',
@@ -144,5 +144,12 @@ $GLOBALS['TCA']['tt_content']['palettes']['uploadslayout'] = [
         --palette--;;frames,
         --palette--;;appearanceLinks,
     --div--;core.form.tabs:categories,
-        categories'
+        categories',
+    [
+        'columnsOverrides' => [
+            'media' => [
+                'label' => 'frontend.db.tt_content:uploads.media',
+            ],
+        ],
+    ]
 );
