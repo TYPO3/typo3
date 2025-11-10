@@ -16,7 +16,7 @@
 				<source>Description</source>
 			</trans-unit>
 			<trans-unit id="tx_scheduler_task.parameters">
-				<source>Task parameters</source>
+				<source>Settings</source>
 			</trans-unit>
 			<trans-unit id="tx_scheduler_task.execution_details">
 				<source>Schedule</source>

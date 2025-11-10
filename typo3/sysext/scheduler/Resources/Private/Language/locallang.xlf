@@ -562,10 +562,10 @@
 			<trans-unit id="msg.group.notification.error.message">
 				<source>Could not create group</source>
 			</trans-unit>
-			<trans-unit id="scheduler.form.palettes.settings">
+			<trans-unit id="scheduler.form.palettes.settings" x-unused-since="14.0">
 				<source>Settings</source>
 			</trans-unit>
-			<trans-unit id="scheduler.form.palettes.timing">
+			<trans-unit id="scheduler.form.palettes.timing" x-unused-since="14.0">
 				<source>Timing</source>
 			</trans-unit>
 			<trans-unit id="editableGroupName.input.field.label">

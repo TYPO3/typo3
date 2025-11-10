@@ -105,6 +105,9 @@
 			<trans-unit id="advancedoptions">
 				<source>Advanced Options</source>
 			</trans-unit>
+			<trans-unit id="timing">
+				<source>Timing</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

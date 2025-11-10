@@ -47,7 +47,7 @@ final readonly class AddSchedulableCommandsAsNativeTaskTypes
                         task_group,
                         description,
                         parameters,
-                    --div--;LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:scheduler.form.palettes.timing,
+                    --div--;core.form.tabs:timing,
                         execution_details,
                         nextexecution,
                         --palette--;;lastexecution,
