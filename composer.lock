@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "adcdc79d748d8e6ffe68e948c3778277",
+    "content-hash": "00e05549dbc710bd494a1f2651dcd45a",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -9796,16 +9796,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "9.2.0",
+            "version": "9.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "14c8cbd09ea670d5d637dee62c841bf65a93bfe6"
+                "reference": "8374c8e6b43d684a132906cb5488b8ebb3d59bb9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/14c8cbd09ea670d5d637dee62c841bf65a93bfe6",
-                "reference": "14c8cbd09ea670d5d637dee62c841bf65a93bfe6",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/8374c8e6b43d684a132906cb5488b8ebb3d59bb9",
+                "reference": "8374c8e6b43d684a132906cb5488b8ebb3d59bb9",
                 "shasum": ""
             },
             "require": {
@@ -9830,6 +9830,11 @@
                 "typo3/cms-workspaces": "13.*.*@dev || 14.*.*@dev"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "9.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "TYPO3\\JsonResponse\\": "Resources/Core/Functional/Extensions/json_response/Classes/",
@@ -9863,9 +9868,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/9.2.0"
+                "source": "https://github.com/TYPO3/testing-framework/tree/9.2.1"
             },
-            "time": "2025-04-10T11:43:00+00:00"
+            "time": "2025-11-11T08:54:05+00:00"
         }
     ],
     "aliases": [],
