@@ -231,17 +231,18 @@ class GridColumnItem extends AbstractGridObject
 
     public function isDisabled(): bool
     {
+        $row = $this->getRow();
         return (
             $this->schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)
-            && ($this->getRow()[(string)$this->schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)] ?? false)
+            && ($row[(string)$this->schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)] ?? false)
         )
             || (
                 $this->schema->hasCapability(TcaSchemaCapability::RestrictionStartTime)
-                && (($this->getRow()[(string)$this->schema->getCapability(TcaSchemaCapability::RestrictionStartTime)] ?? 0) > $GLOBALS['EXEC_TIME'])
+                && ($row[(string)$this->schema->getCapability(TcaSchemaCapability::RestrictionStartTime)] ?? 0) > $GLOBALS['EXEC_TIME']
             )
             || (
                 $this->schema->hasCapability(TcaSchemaCapability::RestrictionEndTime)
-                && (($this->getRow()[(string)$this->schema->getCapability(TcaSchemaCapability::RestrictionEndTime)] ?? 0) < $GLOBALS['EXEC_TIME'])
+                && (($endTime = ($row[(string)$this->schema->getCapability(TcaSchemaCapability::RestrictionEndTime)] ?? 0)) !== 0 && $endTime < $GLOBALS['EXEC_TIME'])
             );
     }
 
