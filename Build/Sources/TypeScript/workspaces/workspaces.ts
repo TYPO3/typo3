@@ -19,6 +19,7 @@ import NProgress from 'nprogress';
 import { default as Modal, ModalElement } from '@typo3/backend/modal';
 
 export default class Workspaces {
+  protected readonly ajaxRoute: string = 'workspace_dispatch';
   private tid: number = 0;
 
   /**
@@ -129,7 +130,7 @@ export default class Workspaces {
   protected sendRemoteRequest(payload: object, progressContainer: string = '#workspace-content-wrapper'): Promise<AjaxResponse> {
     NProgress.configure({ parent: progressContainer, showSpinner: false });
     NProgress.start();
-    return (new AjaxRequest(TYPO3.settings.ajaxUrls.workspace_dispatch)).post(
+    return (new AjaxRequest(TYPO3.settings.ajaxUrls[this.ajaxRoute])).post(
       payload,
       {
         headers: {
