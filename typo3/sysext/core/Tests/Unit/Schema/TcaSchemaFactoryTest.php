@@ -436,6 +436,51 @@ final class TcaSchemaFactoryTest extends UnitTestCase
     }
 
     #[Test]
+    public function typeSpecificTitleOverridesCtrlTitle(): void
+    {
+        $cacheMock = $this->createMock(PhpFrontend::class);
+        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $subject = new TcaSchemaFactory(
+            new RelationMapBuilder($this->createMock(FlexFormTools::class)),
+            new FieldTypeFactory(),
+            '',
+            $cacheMock
+        );
+        $subject->load([
+            'myTable' => [
+                'ctrl' => [
+                    'title' => 'table_title',
+                    'type' => 'record_type',
+                ],
+                'columns' => [
+                    'record_type' => [
+                        'config' => ['type' => 'select'],
+                    ],
+                ],
+                'types' => [
+                    'type1' => [
+                        'title' => 'type1_title',
+                        'showitem' => 'record_type',
+                    ],
+                    'type2' => [
+                        'showitem' => 'record_type',
+                    ],
+                ],
+            ],
+        ]);
+        $schema = $subject->get('myTable');
+        $subSchemaType1 = $schema->getSubSchema('type1');
+        $subSchemaType2 = $schema->getSubSchema('type2');
+
+        // Main schema should have the base title
+        self::assertSame('table_title', $schema->getTitle());
+        // type1 should have its own title
+        self::assertSame('type1_title', $subSchemaType1->getTitle());
+        // type2 should inherit the base title (no override)
+        self::assertSame('table_title', $subSchemaType2->getTitle());
+    }
+
+    #[Test]
     public function recordTypesWithForeignField(): void
     {
         $cacheMock = $this->createMock(PhpFrontend::class);

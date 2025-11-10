@@ -659,8 +659,8 @@ class NewRecordController
                     ],
                 ]),
                 'icon' => $this->iconFactory->getIconForRecord($schema->getName(), [$recordTypeField => $recordTypeName], IconSize::SMALL),
-                'label' => $lang->sL($creationOptions['title'] ?? '')
-                    ?: $lang->sL(BackendUtility::getLabelFromItemListMerged($this->id, $schema->getName(), $recordTypeField, $recordTypeName))
+                'label' => $lang->sL(BackendUtility::getLabelFromItemListMerged($this->id, $schema->getName(), $recordTypeField, $recordTypeName))
+                    ?: $lang->sL($subSchema->getTitle())
                     ?: $recordTypeName,
             ];
         }

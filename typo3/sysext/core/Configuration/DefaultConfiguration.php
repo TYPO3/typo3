@@ -664,10 +664,16 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
                         ],
                     ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesCtrlOverrides::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
+                        ],
+                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesCtrlOverrides::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessCommon::class => [
@@ -955,11 +961,17 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class,
                         ],
                     ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesCtrlOverrides::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class,
+                        ],
+                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesCtrlOverrides::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class => [
@@ -1288,10 +1300,16 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
                         ],
                     ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesCtrlOverrides::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
+                        ],
+                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesCtrlOverrides::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessCommon::class => [

@@ -334,6 +334,7 @@ return [
     ],
     'types' => [
         '0' => [
+            'title' => 'core.tca:be_users.types.user',
             'showitem' => '
                 --div--;core.form.tabs:general,
                     --palette--;;account,
@@ -356,11 +357,9 @@ return [
                     description,
                 --div--;core.form.tabs:extended,
             ',
-            'creationOptions' => [
-                'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.types.user',
-            ],
         ],
         '1' => [
+            'title' => 'core.tca:be_users.types.admin',
             'showitem' => '
                 --div--;core.form.tabs:general,
                     --palette--;;account,
@@ -377,9 +376,6 @@ return [
                     description,
                 --div--;core.form.tabs:extended,
             ',
-            'creationOptions' => [
-                'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.types.admin',
-            ],
         ],
     ],
     'palettes' => [

@@ -34,8 +34,10 @@ a record types level:
     // Disable direct creation of shortcuts
     $GLOBALS['TCA']['pages']['types'][(string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_SHORTCUT]['creationOptions']['enableDirectRecordTypeCreation'] = false;
 
-With :php:`['creationOptions']['title']` it's possible to set an individual
-title for the record type, to be used as label on the creation link.
+Individual titles for each record type are automatically picked up from the
+type-specific :php:`title` configuration in the types section (see
+:doc:`Feature #108027 <Feature-108027-Type-SpecificCtrlPropertiesInTCATypes>`),
+falling back to the select item label if no type-specific title is defined.
 
 Additionally, the new PSR-14 :php:`ModifyNewRecordCreationLinksEvent` allows
 for complete customization of the creation links.

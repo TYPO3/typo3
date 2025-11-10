@@ -35,34 +35,38 @@ final class CompareUserCest
 
     public function editingBeUserRecordsFromCompareViewWorks(ApplicationTester $I): void
     {
-        // put two users into compare list
+        // put two users into compare list by selecting them by username (admin and editor)
         $I->see('Backend users');
-        $I->click('#typo3-backend-user-list > tbody > tr:nth-child(1) > td.col-control > div:nth-child(3) > button');
+
+        // Select "admin" user by finding row containing username "admin"
+        $I->click('//table[@id="typo3-backend-user-list"]//tbody//tr[contains(., "admin")]//td[@class="col-control"]/div[3]/button');
         $I->waitForElementVisible('table#typo3-backend-user-list');
-        $I->click('#typo3-backend-user-list > tbody > tr:nth-child(2) > td.col-control > div:nth-child(3) > button');
+
+        // Select "editor" user by finding row containing username "editor"
+        $I->click('//table[@id="typo3-backend-user-list"]//tbody//tr[contains(., "editor")]//td[@class="col-control"]/div[3]/button');
         $I->waitForElementVisible('table#typo3-backend-user-list-compare', 20);
         $I->canSeeNumberOfElements('#typo3-backend-user-list-compare tbody tr', 2);
         $I->click('body > div > div.module-body.t3js-module-body .t3js-acceptance-compare');
         $I->waitForElementVisible('table.table-striped-columns');
 
-        // first user can be edited
+        // first user (admin) can be edited
         $usernameFirstCompare = $I->grabTextFrom('table.beuser-comparison-table > thead > tr > th:nth-child(2) .beuser-comparison-element__title > span:nth-child(2)');
         $I->click('table.beuser-comparison-table > thead > tr > th:nth-child(2) a[title="Edit"]');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElementVisible('#EditDocumentController');
-        $I->canSee('Edit Backend user "' . trim(explode('[', $usernameFirstCompare)[0]) . '" on root level');
+        $I->canSee('Edit Admin "' . trim(explode('[', $usernameFirstCompare)[0]) . '" on root level');
 
         // back to compare view
         $I->click('.module-docheader a[title="Close"]');
         $I->waitForElementVisible('table.table-striped-columns');
         $I->canSee('Compare backend users', 'h1');
 
-        // second user can be edited
-        $usernameFirstCompare = $I->grabTextFrom('table.beuser-comparison-table > thead > tr > th:nth-child(3) .beuser-comparison-element__title > span:nth-child(2)');
+        // second user (editor) can be edited
+        $usernameSecondCompare = $I->grabTextFrom('table.beuser-comparison-table > thead > tr > th:nth-child(3) .beuser-comparison-element__title > span:nth-child(2)');
         $I->click('table.beuser-comparison-table > thead > tr > th:nth-child(3) a[title="Edit"]');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElementVisible('#EditDocumentController');
-        $I->canSee('Edit Backend user "' . trim(explode('[', $usernameFirstCompare)[0]) . '" on root level');
+        $I->canSee('Edit User "' . trim(explode('[', $usernameSecondCompare)[0]) . '" on root level');
 
         // back to compare view
         $I->click('.module-docheader a[title="Close"]');

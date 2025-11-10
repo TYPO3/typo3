@@ -228,7 +228,7 @@ final class ListUserCest
     private function openAndCloseTheEditForm(ApplicationTester $I, string $username): void
     {
         $I->waitForElementNotVisible('#t3js-ui-block');
-        $I->canSee('Edit Backend user "' . $username . '" on root level');
+        $I->canSee('Edit Admin "' . $username . '" on root level');
         $I->click('div.module-docheader .btn.t3js-editform-close');
         $I->waitForElementVisible('table.table-striped');
         $I->canSee('Backend users', 'h1');
