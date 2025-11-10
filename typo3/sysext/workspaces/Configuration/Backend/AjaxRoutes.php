@@ -14,4 +14,8 @@ return [
         'target' => \TYPO3\CMS\Workspaces\Controller\WorkspacesAjaxController::class . '::dispatch',
         'inheritAccessFromModule' => 'workspaces_admin',
     ],
+    'workspace_preview' => [
+        'path' => '/workspace/preview',
+        'target' => \TYPO3\CMS\Workspaces\Controller\WorkspacesAjaxController::class . '::preview',
+    ],
 ];

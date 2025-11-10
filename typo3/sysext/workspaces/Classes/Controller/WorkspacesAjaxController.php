@@ -83,14 +83,33 @@ final readonly class WorkspacesAjaxController
                 'sendToPrevStageExecute' => $this->sendToPrevStageExecute($call->data[0]),
                 'sendToSpecificStageWindow' => $this->sendToSpecificStageWindow((int)$call->data[0]),
                 'sendToSpecificStageExecute' => $this->sendToSpecificStageExecute($call->data[0]),
+                'publishEntireWorkspace' => $this->publishEntireWorkspace($call->data[0]),
+                'discardEntireWorkspace' => $this->discardEntireWorkspace($call->data[0]),
+                default => throw new \RuntimeException('Not implemented', 1749983978),
+            };
+            $resultObject = new \stdClass();
+            $resultObject->method = $call->method;
+            $resultObject->result = $result;
+            $results[] = $resultObject;
+        }
+        return new JsonResponse($results);
+    }
+
+    public function preview(ServerRequestInterface $request): ResponseInterface
+    {
+        $callStack = json_decode($request->getBody()->getContents());
+        if (!is_array($callStack)) {
+            $callStack = [$callStack];
+        }
+        $results = [];
+        foreach ($callStack as $call) {
+            $result = match ($call->method) {
                 'discardStagesFromPage' => $this->discardStagesFromPage((int)$call->data[0]),
                 'sendCollectionToStage' => $this->sendCollectionToStage($call->data[0]),
                 'sendPageToNextStage' => $this->sendPageToNextStage((int)$call->data[0]),
                 'sendPageToPreviousStage' => $this->sendPageToPreviousStage((int)$call->data[0]),
                 'updateStageChangeButtons' => $this->updateStageChangeButtons((int)$call->data[0], $request),
-                'publishEntireWorkspace' => $this->publishEntireWorkspace($call->data[0]),
-                'discardEntireWorkspace' => $this->discardEntireWorkspace($call->data[0]),
-                default => throw new \RuntimeException('Not implemented', 1749983978),
+                default => throw new \RuntimeException('Not implemented', 1762777405),
             };
             $resultObject = new \stdClass();
             $resultObject->method = $call->method;

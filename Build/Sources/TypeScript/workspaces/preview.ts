@@ -40,6 +40,7 @@ enum Identifiers {
  * buttons, preview mode selector, preview slider and so on.
  */
 class Preview extends Workspaces {
+  override ajaxRoute: string = 'workspace_preview';
   private currentSlidePosition: number = 100;
   private readonly elements: { [key: string]: HTMLElement } = {};
 
