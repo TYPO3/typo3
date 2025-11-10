@@ -19,6 +19,8 @@ import { default as Modal, type ModalElement } from '@typo3/backend/modal';
 import { html } from 'lit';
 
 export default class Workspaces {
+  protected readonly ajaxRoute: string = 'workspace_dispatch';
+
   /**
    * Renders the send to stage window
    * @param {Object} response
@@ -70,7 +72,7 @@ export default class Workspaces {
   protected sendRemoteRequest(payload: object, progressContainer: string = '#workspace-content-wrapper'): Promise<AjaxResponse> {
     NProgress.configure({ parent: progressContainer, showSpinner: false });
     NProgress.start();
-    return (new AjaxRequest(TYPO3.settings.ajaxUrls.workspace_dispatch)).post(
+    return (new AjaxRequest(TYPO3.settings.ajaxUrls[this.ajaxRoute])).post(
       payload,
       {
         headers: {

@@ -43,6 +43,18 @@ class AjaxDispatcher
         'Actions' => ActionHandler::class,
     ];
 
+    protected array $scopedAllowedMethods = [
+        'preview' => [
+            'Actions' => [
+                'discardStagesFromPage',
+                'sentCollectionToStage',
+                'sendPageToNextStage',
+                'sendPageToPreviousStage',
+                'updateStageChangeButtons',
+            ],
+        ],
+    ];
+
     public function __construct(
         protected RemoteServer $remoteServer,
         protected WorkspaceRepository $workspaceRepository,
@@ -69,6 +81,39 @@ class AjaxDispatcher
                 $results[] = $this->buildResultFromResponse($this->getRowDetails($call->data[0]), $call);
                 continue;
             }
+            $instance = GeneralUtility::makeInstance($className);
+            $results[] = $this->buildResultFromResponse($instance->$method(...$parameters), $call);
+        }
+        return new JsonResponse($results);
+    }
+
+    public function preview(ServerRequestInterface $request): ResponseInterface
+    {
+        $callStack = json_decode($request->getBody()->getContents());
+        if (!is_array($callStack)) {
+            $callStack = [$callStack];
+        }
+        $results = [];
+        foreach ($callStack as $call) {
+            $allowedMethods = $this->scopedAllowedMethods['preview'][$call->action] ?? [];
+            if (!in_array($call->method, $allowedMethods, true)) {
+                throw new \RuntimeException(
+                    sprintf(
+                        'Invoking %s->%s not allowed in preview handler',
+                        $call->action,
+                        $call->method
+                    ),
+                    1762853163
+                );
+            }
+            $className = $this->classMap[$call->action];
+            $method = $call->method;
+            $parameters = $call->data;
+            if (($parameters[1] ?? null) === null) {
+                // Hack to have $request as second argument.
+                unset($parameters[1]);
+            }
+            $parameters[] = $request;
             $instance = GeneralUtility::makeInstance($className);
             $results[] = $this->buildResultFromResponse($instance->$method(...$parameters), $call);
         }
