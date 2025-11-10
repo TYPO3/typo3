@@ -140,7 +140,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                             $shortcutRecord->getUid(),
                             '1'
                         );
-                        $shortcutContent .= '<li class="list-group-item">' . $icon . ' ' . htmlspecialchars(BackendUtility::getRecordTitle($shortcutTableName, $row)) . '</li>';
+                        $shortcutContent .= '<li class="list-group-item">' . $icon . ' ' . $this->linkEditContent(htmlspecialchars(BackendUtility::getRecordTitle($shortcutTableName, $row)), $shortcutRecord) . '</li>';
                     }
                     $out .= $shortcutContent ? '<ul class="list-group">' . $shortcutContent . '</ul>' : '';
                 }
