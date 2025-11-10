@@ -48,6 +48,7 @@ nbproject
 /typo3/sysext/*/Resources/Private/TypeScript/*.js
 /typo3/sysext/*/Resources/Public/JavaScript/*.js.map
 /typo3/sysext/core/Tests/AcceptanceTests-Job-*
+/typo3/sysext/*/.cache
 #
 # TypeScript stuff
 .baseDir.ts

@@ -68,7 +68,7 @@
 		"lolli42/finediff": "^1.1.1",
 		"masterminds/html5": "^2.10.0",
 		"nikic/php-parser": "^5.4.0",
-		"phpdocumentor/reflection-docblock": "^5.4.1",
+		"phpdocumentor/reflection-docblock": "^5.6.3",
 		"phpdocumentor/type-resolver": "^1.8.2",
 		"psr/container": "^2.0",
 		"psr/event-dispatcher": "^1.0",
