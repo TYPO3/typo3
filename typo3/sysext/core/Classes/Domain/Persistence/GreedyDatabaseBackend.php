@@ -108,6 +108,8 @@ readonly class GreedyDatabaseBackend
             // Subselect is doing: give me the PID of the given UIDs
             // So we can get a greedy query for all records of these PIDs
             $queryBuilderForSubselect = $queryBuilder->getConnection()->createQueryBuilder();
+            // Subselect must use same restrictions as main query
+            $queryBuilderForSubselect->setRestrictions($restrictions);
             $queryBuilderForSubselect
                 ->select('pid')
                 ->from($tableName)
