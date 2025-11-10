@@ -12,6 +12,12 @@
 			<trans-unit id="accesscapabilities">
 				<source>Access capabilities</source>
 			</trans-unit>
+			<trans-unit id="account_security">
+				<source>Account security</source>
+			</trans-unit>
+			<trans-unit id="backend_appearance">
+				<source>Backend appearance</source>
+			</trans-unit>
 			<trans-unit id="categories">
 				<source>Categories</source>
 			</trans-unit>
@@ -45,8 +51,14 @@
 			<trans-unit id="plugin">
 				<source>Plugin</source>
 			</trans-unit>
+			<trans-unit id="personalization">
+				<source>Personalization</source>
+			</trans-unit>
 			<trans-unit id="metadata">
 				<source>Metadata</source>
+			</trans-unit>
+			<trans-unit id="reset_configuration">
+				<source>Reset configuration</source>
 			</trans-unit>
 			<trans-unit id="resources">
 				<source>Resources</source>

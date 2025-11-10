@@ -21,10 +21,10 @@
 			<trans-unit id="simulate">
 				<source>Simulate backend user</source>
 			</trans-unit>
-			<trans-unit id="opening">
+			<trans-unit id="opening" x-unused-since="14.0">
 				<source>Backend appearance</source>
 			</trans-unit>
-			<trans-unit id="personal_data">
+			<trans-unit id="personal_data" x-unused-since="14.0">
 				<source>Personal data</source>
 			</trans-unit>
 			<trans-unit id="startModule">
@@ -51,7 +51,7 @@
 			<trans-unit id="editFunctionsTab">
 				<source>Edit and advanced functions</source>
 			</trans-unit>
-			<trans-unit id="personalization">
+			<trans-unit id="personalization" x-unused-since="14.0">
 				<source>Personalization</source>
 			</trans-unit>
 			<trans-unit id="setToStandard">

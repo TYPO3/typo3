@@ -2,16 +2,17 @@
 
 ..  _breaking-107789-1729603200:
 
-=======================================================================
-Breaking: #107789 - Core TCA showitem strings use short form references
-=======================================================================
+=========================================================================================
+Breaking: #107789 - Core TCA and user settings showitem strings use short form references
+=========================================================================================
 
 See :issue:`107789`
 
 Description
 ===========
 
-TYPO3 Core TCA configurations have been updated to use short form
+TYPO3 Core TCA and user settings (:php:`$GLOBALS['TYPO3_USER_SETTINGS']`)
+configurations have been updated to use short form
 translation reference formats (e.g., :php:`core.form.tabs:*`) instead of
 the full :php:`LLL:EXT:` path format in :php:`showitem` strings.
 
@@ -37,7 +38,8 @@ Examples of changed references in tab labels:
 Impact
 ======
 
-Custom extensions that programmatically manipulate TCA :php:`showitem` strings
+Custom extensions that programmatically manipulate TCA or
+:php:`$GLOBALS['TYPO3_USER_SETTINGS']` :php:`showitem` strings
 from core tables and expect the full :php:`LLL:EXT:` path format will break.
 
 This particularly affects code that:
@@ -61,6 +63,19 @@ Currently, the following label categories have been migrated to short form:
     → :php:`core.form.tabs:*`
 -   :php:`LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.tabs.*`
     → :php:`core.form.tabs:*`
+
+**Tab labels (--div--) in TYPO3_USER_SETTINGS:**
+
+-   :php:`LLL:EXT:setup/Resources/Private/Language/locallang.xlf:personal_data`
+    → :php:`core.form.tabs:personaldata`
+-   :php:`LLL:EXT:setup/Resources/Private/Language/locallang.xlf:accountSecurity`
+    → :php:`core.form.tabs:account_security`
+-   :php:`LLL:EXT:setup/Resources/Private/Language/locallang.xlf:opening`
+    → :php:`core.form.tabs:backend_appearance`
+-   :php:`LLL:EXT:setup/Resources/Private/Language/locallang.xlf:personalization`
+    → :php:`core.form.tabs:personalization`
+-   :php:`LLL:EXT:setup/Resources/Private/Language/locallang.xlf:resetTab`
+    → :php:`core.form.tabs:reset_configuration`
 
 **Palette labels (palette definitions):**
 
@@ -228,9 +243,9 @@ Affected installations
 Installations with custom extensions that:
 
 -   Programmatically read and manipulate TCA :php:`showitem` strings from
-    :php:`$GLOBALS['TCA']`
--   Override core TCA by copying and modifying existing :php:`showitem`
-    configurations
+    :php:`$GLOBALS['TCA']` or :php:`$GLOBALS['TYPO3_USER_SETTINGS']`.
+-   Override core TCA or TYPO3_USER_SETTINGS by copying and modifying
+    existing :php:`showitem` configurations
 -   Perform string operations on :php:`showitem` definitions expecting
     specific :php:`LLL:EXT:` path formats
 -   Generate documentation or analysis tools based on TCA label path references
@@ -244,6 +259,9 @@ in :php:`showitem` strings.
 
 Migration
 =========
+
+TCA Migration
+-------------
 
 Extension developers should review their :file:`Configuration/TCA/Overrides/`
 files and any PHP code that manipulates TCA :php:`showitem` strings
@@ -300,5 +318,27 @@ PHP code that works with :php:`showitem` strings for patterns like:
 
 This review is particularly important as additional TCA elements may adopt
 short form references in future versions.
+
+TYPO3_USER_SETTINGS migrations
+------------------------------
+
+Update your code to handle the new short form references:
+
+..  code-block:: php
+    :caption: EXT:my_extension/ext_tables.php
+
+    // Before - hardcoded search for old format
+    $showitem = $GLOBALS['TYPO3_USER_SETTINGS']['showitem'];
+    if (str_contains($showitem, 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:personal_data')) {
+        // Will not work in TYPO3 v14+
+    }
+
+    // After - handle new format
+    $showitem = $GLOBALS['TYPO3_USER_SETTINGS']['showitem'];
+    if (str_contains($showitem, 'core.form.tabs:personaldata')
+        || str_contains($showitem, 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:personal_data')) {
+        // Works in both versions
+    }
+
 
 ..  index:: TCA, NotScanned, ext:core
