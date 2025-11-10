@@ -1912,7 +1912,7 @@ class DatabaseRecordList
                 $deleteButton = $this->componentFactory->createGenericButton()
                     ->setIcon($this->iconFactory->getIcon($icon, IconSize::SMALL))
                     ->setTitle($linkTitle)
-                    ->setClasses('btn btn-default t3js-modal-trigger')
+                    ->setClasses('t3js-modal-trigger')
                     ->setAttributes($attributes);
             }
             $primary->add('delete', $deleteButton);
@@ -2019,6 +2019,7 @@ class DatabaseRecordList
                     ->setAttributes([
                         ...$action->getAttributes(),
                         ...$attributes,
+                        'class' => $action->getClasses(),
                         'role' => $action->getRole(),
                     ]);
                 $cellOutput .= '<li>' . $action->render() . '</li>';
