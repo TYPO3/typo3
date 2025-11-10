@@ -2,5 +2,4 @@
 
 <f:be.infobox title="{f:translate(key: 'dependencyCheck.unresolvedDependencies.title')}" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_WARNING')}">
 	<f:render partial="List/UnresolvedDependenciesMessage.html" />
-	<p><strong><f:translate key="dependencyCheck.unresolvedDependencies.question" /></strong></p>
 </f:be.infobox>

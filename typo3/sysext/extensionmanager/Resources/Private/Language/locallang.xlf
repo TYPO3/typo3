@@ -55,7 +55,7 @@
 				<source>I understand what this means and I'm able to investigate on possibly occurring issues by myself.</source>
 			</trans-unit>
 			<trans-unit id="button.resolveDependenciesIgnore">
-				<source>I know what I'm doing, continue anyway</source>
+				<source>Continue anyway</source>
 			</trans-unit>
 			<trans-unit id="extensionList.downloadsql">
 				<source>Download SQL Dump</source>
@@ -210,7 +210,7 @@
 				<source>Search again</source>
 			</trans-unit>
 			<trans-unit id="uploadTemplate.uploadButton">
-				<source>Upload!</source>
+				<source>Upload</source>
 			</trans-unit>
 			<trans-unit id="uploadTemplate.extensionLabel">
 				<source>Extension</source>
@@ -246,13 +246,13 @@
 				<source>Extension Update</source>
 			</trans-unit>
 			<trans-unit id="extensionList.updateFlashMessage.body">
-				<source>%s was updated!</source>
+				<source>%s was updated</source>
 			</trans-unit>
 			<trans-unit id="extensionList.removalConfirmation.question">
-				<source>Are you sure you want to remove the extension?</source>
+				<source>Removing the extension deletes its source files but the related database tables and data will remain unchanged. Please perform a database update to ensure integrity.</source>
 			</trans-unit>
 			<trans-unit id="dependencyCheck.unresolvedDependencies.title">
-				<source>Please read this carefully</source>
+				<source>Please read this carefully before proceeding</source>
 			</trans-unit>
 			<trans-unit id="dependencyCheck.unresolvedDependencies.message">
 				<source><![CDATA[
@@ -267,11 +267,11 @@
 					</strong>
 				]]></source>
 			</trans-unit>
-			<trans-unit id="dependencyCheck.unresolvedDependencies.question">
+			<trans-unit id="dependencyCheck.unresolvedDependencies.question" x-unused-since="14.0">
 				<source>Are you sure you want to proceed?</source>
 			</trans-unit>
 			<trans-unit id="dependencyCheck.unresolvedDependencies.proceed">
-				<source>I know what I'm doing, install the extension!</source>
+				<source>Install the extension</source>
 			</trans-unit>
 			<trans-unit id="dependencyCheck.headline">
 				<source>The following errors were found while trying to install "%s"</source>
@@ -280,17 +280,13 @@
 				<source>Required extension "%s"</source>
 			</trans-unit>
 			<trans-unit id="downloadExtension.dependencies.headline">
-				<source>The following dependencies have to be resolved before installation:
-
-
-				</source>
+				<source>The following dependencies have to be resolved before installation:</source>
 			</trans-unit>
 			<trans-unit id="downloadExtension.dependencies.extensionWithVersion">
 				<source>%1$s (new version %2$s)</source>
 			</trans-unit>
 			<trans-unit id="downloadExtension.dependencies.typeHeadline" xml:space="preserve">
-				<source>&lt;h3&gt;Extensions marked for %s:&lt;/h3&gt;
-%s
+				<source>&lt;h3&gt;Extensions marked for %s:&lt;/h3&gt;%s
 
 
 				</source>
@@ -347,10 +343,10 @@
 				<source>Extension Upload</source>
 			</trans-unit>
 			<trans-unit id="extensionList.uploadFlashMessage.message">
-				<source>%s was uploaded!</source>
+				<source>%s was uploaded</source>
 			</trans-unit>
 			<trans-unit id="extensionList.installedFlashMessage.message">
-				<source>%s was installed!</source>
+				<source>%s was installed</source>
 			</trans-unit>
 			<trans-unit id="extensionList.updateFromTerFlashMessage.title">
 				<source>Update Extension List</source>
@@ -401,7 +397,7 @@
 				<source>Not compatible with your version</source>
 			</trans-unit>
 			<trans-unit id="extensionList.remove.message">
-				<source>Extension "%s" was removed successfully!</source>
+				<source>Extension "%s" was removed successfully</source>
 			</trans-unit>
 			<trans-unit id="extensionList.distribution.key">
 				<source>Key</source>
@@ -515,7 +511,7 @@
 				<source>The typo3.org extension repository was not found. Please import the main typo3.org extension repository in the install tool wizard.</source>
 			</trans-unit>
 			<trans-unit id="report.status.mainRepository.notUpToDate.value">
-				<source>Extension list is not up to date!</source>
+				<source>Extension list is not up to date</source>
 			</trans-unit>
 			<trans-unit id="report.status.mainRepository.notUpToDate.message">
 				<source>The Main Repository extension list is older than 7 days. Please update it in the Extension manager or Scheduler.</source>
@@ -602,10 +598,10 @@
 				<source>ERROR: Could not remove extension directory "%s". Reasons</source>
 			</trans-unit>
 			<trans-unit id="fileHandling.couldNotCreateDirectory">
-				<source>ERROR: Could not create extension directory "%s"!</source>
+				<source>ERROR: Could not create extension directory "%s"</source>
 			</trans-unit>
 			<trans-unit id="fileHandling.installPathWasNoDirectory">
-				<source>ERROR: The extension install path "%s" was no directory!</source>
+				<source>ERROR: The extension install path "%s" was no directory</source>
 			</trans-unit>
 			<trans-unit id="config.automaticInstallation">
 				<source>Install extensions automatically after download from TER or file upload</source>
@@ -635,7 +631,7 @@
 				<source>Refresh</source>
 			</trans-unit>
 			<trans-unit id="extensionComposerStatus.nothingToUpdate.title">
-				<source>Good job!</source>
+				<source>Everything up to date.</source>
 			</trans-unit>
 			<trans-unit id="extensionComposerStatus.nothingToUpdate.message.single">
 				<source>Extension %s does not need to be updated.</source>
