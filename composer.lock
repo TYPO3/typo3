@@ -9825,12 +9825,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "c0c7bf9a4ab5fa81aaad4651399d36b7e2adb1b3"
+                "reference": "8374c8e6b43d684a132906cb5488b8ebb3d59bb9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/c0c7bf9a4ab5fa81aaad4651399d36b7e2adb1b3",
-                "reference": "c0c7bf9a4ab5fa81aaad4651399d36b7e2adb1b3",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/8374c8e6b43d684a132906cb5488b8ebb3d59bb9",
+                "reference": "8374c8e6b43d684a132906cb5488b8ebb3d59bb9",
                 "shasum": ""
             },
             "require": {
@@ -9856,6 +9856,11 @@
             },
             "default-branch": true,
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "9.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "TYPO3\\JsonResponse\\": "Resources/Core/Functional/Extensions/json_response/Classes/",
@@ -9891,7 +9896,7 @@
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
                 "source": "https://github.com/TYPO3/testing-framework/tree/main"
             },
-            "time": "2025-10-08T10:59:09+00:00"
+            "time": "2025-11-11T08:54:05+00:00"
         }
     ],
     "aliases": [],
