@@ -8,15 +8,15 @@
 			</segment>
 		</unit>
 		<unit id="label2">
-			<segment>
+			<segment state="final">
 				<source>This is label #2</source>
-				<target state="final">Ceci est le libellé no. 2 [approved]</target>
+				<target>Ceci est le libellé no. 2 [approved]</target>
 			</segment>
 		</unit>
 		<unit id="label3">
-			<segment>
+			<segment state="translated">
 				<source>This is label #3</source>
-				<target state="translated">Ceci est le libellé no. 3 [not approved]</target>
+				<target>Ceci est le libellé no. 3 [not approved]</target>
 			</segment>
 		</unit>
 	</file>

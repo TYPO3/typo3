@@ -230,10 +230,10 @@ final readonly class XliffLoader implements LoaderInterface
                         $translation = ($target !== false && isset($target[0])) ? (string)$target[0] : (string)$source[0];
                         $catalogue->set($unitId, $translation, $domain);
                     } else {
-                        // Check approval state (XLIFF 2.0 uses 'state' attribute on target)
+                        // Check approval state (XLIFF 2.0 uses 'state' attribute on segment)
                         $approved = 'yes';
-                        if ($target !== false && isset($target[0])) {
-                            $state = (string)$target[0]['state'];
+                        if (isset($segment['state'])) {
+                            $state = (string)$segment['state'];
                             // XLIFF 2.0 states: initial, translated, reviewed, final
                             // We consider 'final' as approved, others depend on config
                             if ($state === 'initial' || $state === 'translated') {
@@ -263,8 +263,8 @@ final readonly class XliffLoader implements LoaderInterface
                             $parsedTranslationElement[$formIndex] = $translation;
                         } else {
                             $approved = 'yes';
-                            if ($target !== false && isset($target[0])) {
-                                $state = (string)$target[0]['state'];
+                            if (isset($segment['state'])) {
+                                $state = (string)$segment['state'];
                                 if ($state === 'initial' || $state === 'translated') {
                                     $approved = 'no';
                                 }

@@ -7,13 +7,13 @@
 			</segment>
 		</unit>
 		<unit id="label2">
-			<segment>
-				<target state="final">Das ist Kennung Nummer 2 [approved]</target>
+			<segment state="final">
+				<target>Das ist Kennung Nummer 2 [approved]</target>
 			</segment>
 		</unit>
 		<unit id="label3">
-			<segment>
-				<target state="translated">Das ist Kennung Nummer 3 [not approved]</target>
+			<segment state="translated">
+				<target>Das ist Kennung Nummer 3 [not approved]</target>
 			</segment>
 		</unit>
 	</file>
