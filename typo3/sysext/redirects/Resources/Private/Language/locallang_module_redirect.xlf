@@ -24,7 +24,7 @@
 				<source>Add redirect</source>
 			</trans-unit>
 			<trans-unit id="redirect_not_found.title">
-				<source>No redirects found!</source>
+				<source>No redirects found</source>
 			</trans-unit>
 			<trans-unit id="redirect_not_found.message">
 				<source>There are currently no redirect records found in the database.</source>
@@ -34,7 +34,7 @@
 			</trans-unit>
 
 			<trans-unit id="redirect_not_found_with_filter.title">
-				<source>No redirects found!</source>
+				<source>No redirects found</source>
 			</trans-unit>
 			<trans-unit id="redirect_not_found_with_filter.message">
 				<source>With the current set of filters applied, no redirect could be found.</source>

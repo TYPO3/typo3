@@ -22,7 +22,7 @@
 				<source>Redirects integrity check</source>
 			</trans-unit>
 			<trans-unit id="status.checkIntegrityResultState.title">
-				<source>List of conflicting redirects may not be up to date!</source>
+				<source>List of conflicting redirects may not be up to date</source>
 			</trans-unit>
 			<trans-unit id="status.checkIntegrityResultState.message">
 				<source>Regularly run the console command redirects:checkintegrity.</source>

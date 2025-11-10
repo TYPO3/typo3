@@ -37,7 +37,7 @@ final class RedirectModuleCest
     public function createNewRecordIfNoneExist(ApplicationTester $I): void
     {
         $I->amGoingTo('create a new redirects record while none are in the system, yet');
-        $I->canSee('No redirects found!');
+        $I->canSee('No redirects found');
         $I->click('Create new redirect');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->canSee('Create new Redirect on root level');
