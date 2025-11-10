@@ -53,14 +53,6 @@ instead of :php:`'1'`.
     $GLOBALS['TCA']['sys_redirect']['types']['1']['label'] = 'My custom label';
 
     // After - In Configuration/TCA/Overrides/sys_redirect.php
-    $GLOBALS['TCA']['sys_redirect']['types']['default']['showitem'] = 'My custom label';
-
-Alternatively, you can use the constant from the :php:`Demand` class:
-
-.. code-block:: php
-
-    use TYPO3\CMS\Redirects\Repository\Demand;
-
-    $GLOBALS['TCA']['sys_redirect']['types'][Demand::DEFAULT_REDIRECT_TYPE]['showitem'] = 'My custom label';
+    $GLOBALS['TCA']['sys_redirect']['types']['default']['label'] = 'My custom label';
 
 ..  index:: TCA, NotScanned, ext:redirects

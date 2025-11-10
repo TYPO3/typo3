@@ -4329,10 +4329,12 @@ final class TcaMigrationTest extends UnitTestCase
             'sys_redirect' => [
                 'types' => [
                     'default' => [
+                        'label' => 'My custom label',
                         'showitem' => 'source_host, source_path',
                         'existingKey' => 'existingValue',
                     ],
                     '1' => [
+                        'label' => 'My custom label',
                         'showitem' => 'custom_field',
                         'customKey' => 'customValue',
                     ],
@@ -4343,6 +4345,7 @@ final class TcaMigrationTest extends UnitTestCase
             'sys_redirect' => [
                 'types' => [
                     'default' => [
+                        'label' => 'My custom label',
                         'showitem' => 'custom_field',
                         'existingKey' => 'existingValue',
                         'customKey' => 'customValue',
