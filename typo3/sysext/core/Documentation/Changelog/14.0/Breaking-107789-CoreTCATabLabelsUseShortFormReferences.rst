@@ -92,6 +92,12 @@ Currently, the following label categories have been migrated to short form:
 -   :php:`LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.palettes.*`
     → :php:`core.form.palettes:*`
 
+**Replaced hardcoded palette label:**
+
+-   Removed the hardcoded palette name in string `--palette--;Capabilities;capabilities`
+    in table :sql:`sys_file_storage` in favor of a label attached directly to
+    the palette using the short syntax :php:`core.form.palettes:*`.
+
 **Field label overrides removed in showitem definitions:**
 
 Field labels can be overriden in showitem definitions for types or palettes, but

@@ -21,6 +21,9 @@
 			<trans-unit id="categories">
 				<source>Categories</source>
 			</trans-unit>
+			<trans-unit id="capabilities">
+				<source>Capabilities</source>
+			</trans-unit>
 			<trans-unit id="notes">
 				<source>Notes</source>
 			</trans-unit>

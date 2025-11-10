@@ -110,7 +110,7 @@ return [
                 --div--;core.form.tabs:general,
                         name, driver, configuration, is_default, auto_extract_metadata, processingfolder,
                 --div--;core.form.tabs:accesscapabilities,
-                        --palette--;Capabilities;capabilities,
+                        --palette--;;capabilities,
                 --div--;core.form.tabs:access,
                         is_online,
                 --div--;core.form.tabs:notes,
@@ -124,6 +124,7 @@ return [
     ],
     'palettes' => [
         'capabilities' => [
+            'label' => 'core.form.tabs:capabilities',
             'showitem' => 'is_browsable, is_public, is_writable',
         ],
     ],
