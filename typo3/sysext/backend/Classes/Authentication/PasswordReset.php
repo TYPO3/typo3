@@ -258,7 +258,7 @@ readonly class PasswordReset
                 // "expiration date"
                 'e' => $expiresOn->getTimestamp(),
                 // "identity"
-                'i' => hash('sha1', $emailAddress . (string)$userId),
+                'i' => hash(HashAlgo::SHA1->value, $emailAddress . (string)$userId),
             ],
             UriBuilder::ABSOLUTE_URL
         );
@@ -307,7 +307,7 @@ readonly class PasswordReset
             // no native SHA1/ CONCAT functionality, has to be done in PHP
             $stmt = $queryBuilder->executeQuery();
             while ($row = $stmt->fetchAssociative()) {
-                if (hash_equals(hash('sha1', $row['email'] . (string)$row['uid']), $identity)) {
+                if (hash_equals(hash(HashAlgo::SHA1->value, $row['email'] . (string)$row['uid']), $identity)) {
                     $user = $row;
                     break;
                 }

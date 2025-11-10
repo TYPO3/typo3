@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\Container;
 
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 
@@ -65,7 +66,7 @@ class TabsContainer extends AbstractContainer
         $resultArray = $this->initializeResultArray();
         $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/tab.js');
 
-        $domIdPrefix = 'DTM-' . md5($this->data['tableName'] . $this->data['databaseRow']['uid']);
+        $domIdPrefix = 'DTM-' . HashAlgo::canonicalize()->hash($this->data['tableName'] . $this->data['databaseRow']['uid']);
         $tabCounter = 0;
         $tabElements = [];
         foreach ($tabsArray as $tabWithLabelAndElements) {

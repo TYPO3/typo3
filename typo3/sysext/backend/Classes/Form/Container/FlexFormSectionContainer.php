@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\Container;
 
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -71,9 +72,9 @@ class FlexFormSectionContainer extends AbstractContainer
             $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $flexFormContainerContainerResult);
         }
 
-        $containerId = sprintf('flexform-section-container-%s-%s-%s-%s', $flexFormSheetName, $this->data['fieldName'], md5($flexFormFieldName), md5($this->data['elementBaseName']));
-        $sectionContainerId = sprintf('flexform-section-%s-%s-%s-%s', $flexFormSheetName, $this->data['fieldName'], md5($flexFormFieldName), md5($this->data['elementBaseName']));
-        $hashedSectionContainerId = 'section-' . md5($sectionContainerId);
+        $containerId = sprintf('flexform-section-container-%s-%s-%s-%s', $flexFormSheetName, $this->data['fieldName'], HashAlgo::canonicalize()->hash($flexFormFieldName), HashAlgo::canonicalize()->hash($this->data['elementBaseName']));
+        $sectionContainerId = sprintf('flexform-section-%s-%s-%s-%s', $flexFormSheetName, $this->data['fieldName'], HashAlgo::canonicalize()->hash($flexFormFieldName), HashAlgo::canonicalize()->hash($this->data['elementBaseName']));
+        $hashedSectionContainerId = 'section-' . HashAlgo::canonicalize()->hash($sectionContainerId);
 
         // "New container" handling: Creates buttons for each possible container with all relevant information for the ajax call.
         $containerTemplatesHtml = [];

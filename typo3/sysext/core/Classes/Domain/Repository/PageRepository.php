@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
@@ -161,7 +162,7 @@ readonly class PageRepository
         // However, the PageRepository is generally in use for generating e.g. hundreds of links, so they would all use
         // the same cache identifier.
         $userAspect = $this->context->getAspect('frontend.user');
-        $frontendUserIdentifier = 'user_' . (int)$userAspect->get('id') . '_groups_' . md5(implode(',', $userAspect->getGroupIds()));
+        $frontendUserIdentifier = 'user_' . (int)$userAspect->get('id') . '_groups_' . HashAlgo::canonicalize()->hash(implode(',', $userAspect->getGroupIds()));
 
         // We need to respect the date aspect as we might have subrequests with a different time (e.g. backend preview links)
         $dateTimeIdentifier = $this->context->getAspect('date')->get('timestamp');
@@ -258,7 +259,7 @@ readonly class PageRepository
         $uid = $event->getPageId();
         $enableFieldsConstraint = $this->getEnableFieldsConstraint();
         $whereGroupAccess = $disableGroupAccessCheck ? '' : $this->getMultipleGroupsWhereClause('pages.fe_group', 'pages');
-        $cacheIdentifier = 'PageRepository_getPage_' . md5(
+        $cacheIdentifier = 'PageRepository_getPage_' . HashAlgo::canonicalize()->hash(
             implode(
                 '-',
                 [
@@ -605,7 +606,7 @@ readonly class PageRepository
 
             // This has cache hits for the current page and for menus (little performance gain).
             $cacheIdentifier = 'PageRepository_getPageOverlaysForLanguage_'
-                . hash('xxh3', $query->getSQL() . json_encode($query->getParameters()));
+                . HashAlgo::canonicalize()->hash($query->getSQL() . json_encode($query->getParameters()));
             $rows = $this->getRuntimeCache()->get($cacheIdentifier);
             if (!is_array($rows)) {
                 $rows = $query->executeQuery()->fetchAllAssociative();
@@ -1651,7 +1652,7 @@ readonly class PageRepository
         $userAspect = $this->context->getAspect('frontend.user');
         $memberGroups = $userAspect->getGroupIds();
         $cache = $this->getRuntimeCache();
-        $cacheIdentifier = 'PageRepository_groupAccessWhere_' . md5($field . '_' . $table . '_' . implode('_', $memberGroups));
+        $cacheIdentifier = 'PageRepository_groupAccessWhere_' . HashAlgo::canonicalize()->hash($field . '_' . $table . '_' . implode('_', $memberGroups));
         $cacheEntry = $cache->get($cacheIdentifier);
         if ($cacheEntry) {
             return $cacheEntry;

@@ -21,6 +21,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 #[Autoconfigure(public: true)]
@@ -58,7 +59,7 @@ class SoftReferenceParserFactory
         if ($parserList === '') {
             return null;
         }
-        $cacheId = 'backend-softRefList-' . md5($parserList);
+        $cacheId = 'backend-softRefList-' . HashAlgo::MD5->hash($parserList);
         $parserListCache = $this->runtimeCache->get($cacheId);
         if ($parserListCache !== false) {
             return $parserListCache;

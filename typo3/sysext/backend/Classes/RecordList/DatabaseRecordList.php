@@ -49,6 +49,7 @@ use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Backend\View\Event\ModifyDatabaseQueryForRecordListingEvent;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -3164,7 +3165,7 @@ class DatabaseRecordList
     protected function getSearchableWebmounts(int $id, int $depth): array
     {
         $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
-        $hash = 'webmounts_list' . md5($id . '-' . $depth . '-' . $this->perms_clause);
+        $hash = 'webmounts_list' . HashAlgo::canonicalize()->hash($id . '-' . $depth . '-' . $this->perms_clause);
         $idList = $runtimeCache->get($hash);
         if ($idList === false) {
             $backendUser = $this->getBackendUserAuthentication();

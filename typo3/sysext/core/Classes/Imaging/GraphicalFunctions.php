@@ -16,11 +16,12 @@
 namespace TYPO3\CMS\Core\Imaging;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
+use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Standard graphical functions
@@ -210,12 +211,16 @@ class GraphicalFunctions
      */
     protected int $avifQuality = 85;
 
+    protected Random $random;
+
     /**
      * Reads configuration information from $GLOBALS['TYPO3_CONF_VARS']['GFX']
      * and sets some values in internal variables.
      */
     public function __construct()
     {
+        $this->random = GeneralUtility::makeInstance(Random::class);
+
         $gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
         $this->colorspace = $this->getColorspaceFromConfiguration();
 
@@ -317,7 +322,7 @@ class GraphicalFunctions
     public function randomName()
     {
         GeneralUtility::mkdir_deep(Environment::getVarPath() . '/transient/');
-        return Environment::getVarPath() . '/transient/' . md5(StringUtility::getUniqueId());
+        return Environment::getVarPath() . '/transient/' . $this->random->generateRandomHexString(32);
     }
 
     /***********************************
@@ -491,9 +496,9 @@ class GraphicalFunctions
             $command .= ' -colorspace ' . CommandUtility::escapeShellArgument($this->colorspace);
         }
         if ($this->alternativeOutputKey) {
-            $theOutputName = md5($command . $processingInstructions->cropArea . basename($sourceFile) . $this->alternativeOutputKey . '[' . $frame . ']');
+            $theOutputName = HashAlgo::canonicalize()->hash($command . $processingInstructions->cropArea . basename($sourceFile) . $this->alternativeOutputKey . '[' . $frame . ']');
         } else {
-            $theOutputName = md5($command . $processingInstructions->cropArea . $sourceFile . filemtime($sourceFile) . '[' . $frame . ']');
+            $theOutputName = HashAlgo::canonicalize()->hash($command . $processingInstructions->cropArea . $sourceFile . filemtime($sourceFile) . '[' . $frame . ']');
         }
         if ($this->imageMagickConvert_forceFileNameBody) {
             $theOutputName = $this->imageMagickConvert_forceFileNameBody;

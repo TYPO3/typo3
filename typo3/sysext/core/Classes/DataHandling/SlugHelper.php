@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Core\DataHandling;
 use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
+use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -38,7 +40,6 @@ use TYPO3\CMS\Core\Slug\SlugNormalizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -82,6 +83,8 @@ class SlugHelper
 
     protected SlugNormalizer $slugNormalizer;
 
+    protected Random $random;
+
     /**
      * Slug constructor.
      *
@@ -105,6 +108,7 @@ class SlugHelper
         $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
         $this->workspaceEnabled = $schemaFactory->has($tableName) && $schemaFactory->get($tableName)->hasCapability(TcaSchemaCapability::Workspace);
         $this->slugNormalizer = GeneralUtility::makeInstance(SlugNormalizer::class);
+        $this->random = GeneralUtility::makeInstance(Random::class);
     }
 
     /**
@@ -200,7 +204,7 @@ class SlugHelper
         $slug = $this->sanitize($slug);
         // No valid data found
         if ($slug === '' || $slug === '/') {
-            $slug = 'default-' . md5((string)json_encode($recordData));
+            $slug = 'default-' . HashAlgo::canonicalize()->hash((string)json_encode($recordData));
         }
         if ($this->prependSlashInSlug && ($slug[0] ?? '') !== '/') {
             $slug = '/' . $slug;
@@ -381,8 +385,7 @@ class SlugHelper
             $newValue = $this->sanitize($rawValue . '-' . $counter);
         }
         if ($counter === 100) {
-            $uniqueId = StringUtility::getUniqueId();
-            $newValue = $this->sanitize($rawValue . '-' . md5($uniqueId));
+            $newValue = $this->sanitize($rawValue . '-' . $this->random->generateRandomHexString(32));
         }
         return $newValue;
     }

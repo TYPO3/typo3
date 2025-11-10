@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Crypto\PasswordHashing;
 
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -180,9 +181,9 @@ class PhpassPasswordHash implements PasswordHashInterface
             // consequently in lower iteration counts and hashes that are quicker to crack
             // (by non-PHP code).
             $count = 1 << $count_log2;
-            $hash = md5($salt . $password, true);
+            $hash = HashAlgo::MD5->hash($salt . $password, true);
             do {
-                $hash = md5($hash . $password, true);
+                $hash = HashAlgo::MD5->hash($hash . $password, true);
             } while (--$count);
             $saltedPW = $setting . $this->base64Encode($hash, 16);
             // base64Encode() of a 16 byte MD5 will always be 22 characters.

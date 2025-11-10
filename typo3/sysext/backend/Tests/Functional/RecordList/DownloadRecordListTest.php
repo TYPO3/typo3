@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\RecordList\DatabaseRecordList;
 use TYPO3\CMS\Backend\RecordList\DownloadRecordList;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -383,7 +384,7 @@ final class DownloadRecordListTest extends FunctionalTestCase
             'label' => 'Preset 1',
             'columns' => 'username, email, some, invalid',
         ];
-        $columnsToRender = $recordList->getColumnsToRender('be_users', false, md5('Preset 1' . 'usernameemailsomeinvalid'));
+        $columnsToRender = $recordList->getColumnsToRender('be_users', false, HashAlgo::canonicalize()->hash('Preset 1' . 'usernameemailsomeinvalid'));
         $subject = new DownloadRecordList($recordList, $this->get(TranslationConfigurationProvider::class), $this->get(TcaSchemaFactory::class));
         $headerRow = $subject->getHeaderRow($columnsToRender);
         $contentRows = $subject->getRecords('be_users', $columnsToRender, $this->user, false, true);

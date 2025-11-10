@@ -36,6 +36,7 @@ use Symfony\Component\Console\Terminal;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -337,7 +338,7 @@ final class InspectCommand extends Command
      */
     private function keysAt(string $provider, array $path): array
     {
-        $cacheIdentifier = 'keys_' . sha1($provider . "\0" . implode("\0", $path));
+        $cacheIdentifier = 'keys_' . HashAlgo::canonicalize()->hash($provider . "\0" . implode("\0", $path));
         $keys = $this->completionCache->get($cacheIdentifier);
         if (is_array($keys)) {
             return $keys;

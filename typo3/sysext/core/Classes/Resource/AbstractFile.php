@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource;
 
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -147,7 +148,7 @@ abstract class AbstractFile implements FileInterface
         if ($this->deleted) {
             throw new \RuntimeException('File has been deleted.', 1329821481);
         }
-        return $this->getStorage()->hashFile($this, 'sha1');
+        return $this->getStorage()->hashFile($this, HashAlgo::SHA1->value);
     }
 
     /**

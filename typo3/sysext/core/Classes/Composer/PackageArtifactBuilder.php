@@ -23,6 +23,7 @@ use Composer\Util\Filesystem;
 use TYPO3\CMS\Composer\Plugin\Config;
 use TYPO3\CMS\Composer\Plugin\Core\InstallerScript;
 use TYPO3\CMS\Composer\Plugin\Util\ExtensionKeyResolver;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Package\Cache\ComposerPackageArtifact;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackageManifestException;
@@ -106,7 +107,7 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
         );
         $this->registerPackage($appPackage);
         $this->packageStatesConfiguration['packages'][$appPackage->getPackageKey()] = [];
-        $cacheIdentifier = md5(serialize($composer->getLocker()->getLockData()) . $this->event->isDevMode());
+        $cacheIdentifier = HashAlgo::canonicalize()->hash(serialize($composer->getLocker()->getLockData()) . $this->event->isDevMode());
         $this->setPackageCache(new ComposerPackageArtifact($composer->getConfig()->get('vendor-dir') . '/typo3', $this->fileSystem, $cacheIdentifier));
         $this->validateResources();
         $this->saveToPackageCache();

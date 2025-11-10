@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Country\CountryProvider;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
@@ -302,7 +303,7 @@ class BackendUtility
         $beGetRootLineCache = $runtimeCache->get('backendUtilityBeGetRootLine') ?: [];
         $output = [];
         $pid = $uid;
-        $ident = $pid . '-' . $clause . '-' . $workspaceOL . ($additionalFields ? '-' . md5(implode(',', $additionalFields)) : '');
+        $ident = $pid . '-' . $clause . '-' . $workspaceOL . ($additionalFields ? '-' . HashAlgo::canonicalize()->hash(implode(',', $additionalFields)) : '');
         if (is_array($beGetRootLineCache[$ident] ?? false)) {
             $output = $beGetRootLineCache[$ident];
         } else {
@@ -376,7 +377,7 @@ class BackendUtility
     {
         $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
         $pageForRootlineCache = $runtimeCache->get('backendUtilityPageForRootLine') ?: [];
-        $statementCacheIdent = md5($clause . ($additionalFields ? '-' . implode(',', $additionalFields) : '') . ($useDeleteClause ? '-delete' : ''));
+        $statementCacheIdent = HashAlgo::canonicalize()->hash($clause . ($additionalFields ? '-' . implode(',', $additionalFields) : '') . ($useDeleteClause ? '-delete' : ''));
         $ident = $uid . '-' . $workspaceOL . '-' . $statementCacheIdent;
         if (is_array($pageForRootlineCache[$ident] ?? false)) {
             $row = $pageForRootlineCache[$ident];
@@ -642,7 +643,7 @@ class BackendUtility
                 $cacheRelevantData .= (string)$rootLine['tsconfig_includes'];
             }
         }
-        $pageTsConfigHash = hash('xxh3', $cacheRelevantData);
+        $pageTsConfigHash = HashAlgo::canonicalize()->hash($cacheRelevantData);
 
         $runtimeCache->set('pageTsConfig-pid-to-hash-' . $pageUid, $pageTsConfigHash);
         $runtimeCache->set('pageTsConfig-hash-to-object-' . $pageTsConfigHash, $pageTsConfig);

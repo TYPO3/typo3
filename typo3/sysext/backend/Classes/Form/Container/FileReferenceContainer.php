@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Form\Event\ModifyFileReferenceEnabledControlsEvent;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -144,7 +145,7 @@ class FileReferenceContainer extends AbstractContainer
         }
 
         // The hashed object id needs a non-numeric prefix, the value is used as ID selector in JavaScript
-        $hashedObjectId = 'hash-' . md5($objectId);
+        $hashedObjectId = 'hash-' . HashAlgo::canonicalize()->hash($objectId);
         $containerAttributes = [
             'id' => $objectId . '_div',
             'class' => 'form-irre-object panel panel-default ' . trim(implode(' ', $classes)),

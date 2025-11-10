@@ -177,7 +177,7 @@ final class SlugHelperTest extends UnitTestCase
             ],
             'title with only invalid characters' => [
                 '!!!',
-                'default-51cf35392ca400f2fce656a936831917',
+                'default-af1813534020ef1a5e33f1b207dd58e6',
             ],
         ];
     }
@@ -368,7 +368,7 @@ final class SlugHelperTest extends UnitTestCase
             ],
             'title with only invalid characters' => [
                 '!!!',
-                '/default-51cf35392ca400f2fce656a936831917',
+                '/default-af1813534020ef1a5e33f1b207dd58e6',
             ],
         ];
     }
@@ -548,7 +548,7 @@ final class SlugHelperTest extends UnitTestCase
             ],
             'title with only invalid characters' => [
                 '!!!',
-                '/parent-page/default-51cf35392ca400f2fce656a936831917',
+                '/parent-page/default-af1813534020ef1a5e33f1b207dd58e6',
                 [
                     'generatorOptions' => [
                         'fields' => ['title'],
@@ -647,7 +647,7 @@ final class SlugHelperTest extends UnitTestCase
             ],
             'empty fields deliver default slug' => [
                 ['title' => '', 'nav_title' => '', 'subtitle' => ''],
-                '/default-b4dac929c2d313b7ff79fc5edeedd207',
+                '/default-064934830c33048eeb751097a56b8b9a',
                 [
                     'generatorOptions' => [
                         'fields' => [
@@ -669,7 +669,7 @@ final class SlugHelperTest extends UnitTestCase
             ],
             'empty config array deliver default slug' => [
                 ['title' => 'Products', 'nav_title' => 'Best products', 'subtitle' => 'Product subtitle'],
-                '/default-e13d142b36dcca110f2c3b57ee7a2dd3',
+                '/default-8108d9f739647e8be8bac94abdf7c52b',
                 [
                     'generatorOptions' => [
                         'fields' => [
@@ -680,7 +680,7 @@ final class SlugHelperTest extends UnitTestCase
             ],
             'empty config deliver default slug' => [
                 ['title' => 'Products', 'nav_title' => 'Best products', 'subtitle' => 'Product subtitle'],
-                '/default-e13d142b36dcca110f2c3b57ee7a2dd3',
+                '/default-8108d9f739647e8be8bac94abdf7c52b',
                 [
                     'generatorOptions' => [
                         'fields' => [],

@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\Country\CountryFilter;
 use TYPO3\CMS\Core\Country\CountryProvider;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
@@ -2813,7 +2814,7 @@ class DataHandler
         $set = true;
         foreach ($evalArray as $func) {
             switch ($func) {
-                case 'md5':
+                case HashAlgo::MD5->value:
                     if (strlen($value) !== 32) {
                         $set = false;
                     }

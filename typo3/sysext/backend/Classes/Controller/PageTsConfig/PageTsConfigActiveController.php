@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -221,7 +222,12 @@ final readonly class PageTsConfigActiveController
         $conditionsFromModuleData = array_flip((array)$moduleData->get('pageTsConfigConditions'));
         $conditions = [];
         foreach ($pageTsConfigConditions as $condition) {
-            $conditionHash = hash('xxh3', $condition['value']);
+            $conditionHash = HashAlgo::canonicalize()->hash($condition['value']);
+            $legacyConditionHash = HashAlgo::XXH3->hash($condition['value']);
+            if (array_key_exists($legacyConditionHash, $conditionsFromModuleData)) {
+                unset($conditionsFromModuleData[$legacyConditionHash]);
+                $conditionsFromModuleData[$conditionHash] = true;
+            }
             $conditionActive = array_key_exists($conditionHash, $conditionsFromModuleData);
             // Note we're not feeding the post values directly to module data, but filter
             // them through available conditions to prevent polluting module data with

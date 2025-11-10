@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\Container;
 
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 
@@ -42,7 +43,7 @@ class FlexFormTabsContainer extends AbstractContainer
         $resultArray = $this->initializeResultArray();
         $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/tab.js');
 
-        $domIdPrefix = 'DTM-' . md5($this->data['parameterArray']['itemFormElName']);
+        $domIdPrefix = 'DTM-' . HashAlgo::canonicalize()->hash($this->data['parameterArray']['itemFormElName']);
         $tabCounter = 0;
         $tabElements = [];
         foreach ($flexFormDataStructureArray['sheets'] as $sheetName => $sheetDataStructure) {

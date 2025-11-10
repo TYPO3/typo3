@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Backend\CodeEditor\CodeEditorConfiguration;
 use TYPO3\CMS\Backend\CodeEditor\Exception\InvalidModeException;
 use TYPO3\CMS\Backend\CodeEditor\Mode;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -174,7 +175,7 @@ class CodeEditorElement extends AbstractFormElement
         $registeredAddons = $this->codeEditorConfiguration->getAddons();
 
         $attributes['class'] = $class;
-        $attributes['id'] = 't3editor_' . md5($name);
+        $attributes['id'] = 't3editor_' . HashAlgo::canonicalize()->hash($name);
         $attributes['name'] = $name;
 
         $settings = array_merge($this->codeEditorConfiguration->getAddonSettings(), $settings);

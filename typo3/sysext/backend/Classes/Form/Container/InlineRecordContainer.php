@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Form\Event\ModifyInlineElementControlsEvent;
 use TYPO3\CMS\Backend\Form\Event\ModifyInlineElementEnabledControlsEvent;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -158,7 +159,7 @@ class InlineRecordContainer extends AbstractContainer
             }
 
             // The hashed object id needs a non-numeric prefix, the value is used as ID selector in JavaScript
-            $hashedObjectId = 'hash-' . md5($objectId);
+            $hashedObjectId = 'hash-' . HashAlgo::canonicalize()->hash($objectId);
             $containerAttributes = [
                 'id' => $objectId . '_div',
                 'class' => 'form-irre-object panel panel-default ' . trim(implode(' ', $classes)),

@@ -22,6 +22,11 @@ namespace TYPO3\CMS\Core\Crypto;
  */
 enum HashAlgo: string
 {
+    // non-cryptographic algorithms, to be used for canonicalization only
+    case XXH3 = 'xxh3';
+    case XXH128 = 'xxh128';
+    // MD5 is not considered secure, it is kept for backward compatibility only
+    case MD5 = 'md5';
     // SHA1 is still acceptable for HMAC, but not recommended
     case SHA1 = 'sha1';
     case SHA256 = 'sha256';
@@ -32,7 +37,7 @@ enum HashAlgo: string
     case SHA3_384 = 'sha3-384';
     case SHA3_512 = 'sha3-512';
 
-    private const ALLOWED_HMAC_ALGOS = [
+    private const array ALLOWED_HMAC_ALGOS = [
         self::SHA1,
         self::SHA256,
         self::SHA384,
@@ -42,7 +47,10 @@ enum HashAlgo: string
         self::SHA3_512,
     ];
 
-    private const BINARY_LENGTHS = [
+    private const array BINARY_LENGTHS = [
+        self::XXH3->value => 8,
+        self::XXH128->value => 16,
+        self::MD5->value => 16,
         self::SHA1->value => 20,
         self::SHA256->value => 32,
         self::SHA384->value => 48,
@@ -68,6 +76,15 @@ enum HashAlgo: string
     public function equals(string $other): bool
     {
         return strtolower($this->value) === strtolower($other);
+    }
+
+    /**
+     * The algorithm to be used for non-cryptographic purposes, e.g. for building
+     * cache identifiers or DOM element ids ("canonicalization").
+     */
+    public static function canonicalize(): self
+    {
+        return self::XXH128;
     }
 
     public function hash(string $data, bool $binary = false): string

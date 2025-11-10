@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\Container\ListOfFieldsContainer;
 use TYPO3\CMS\Backend\Form\Container\PaletteAndSingleContainer;
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ListOfFieldsContainerTest extends UnitTestCase
@@ -212,7 +213,7 @@ final class ListOfFieldsContainerTest extends UnitTestCase
 
         $expected = $input;
         $expected['renderType'] = 'paletteAndSingleContainer';
-        $expected['processedTca']['palettes']['hiddenFieldsPalette' . md5('hiddenField;;,hiddenInPalette;;')] = [
+        $expected['processedTca']['palettes']['hiddenFieldsPalette' . HashAlgo::canonicalize()->hash('hiddenField;;,hiddenInPalette;;')] = [
             'isHiddenPalette' => true,
             'showitem' => 'hiddenField;;,hiddenInPalette;;',
         ];
@@ -220,7 +221,7 @@ final class ListOfFieldsContainerTest extends UnitTestCase
         $expected['fieldsArray'] = [
             'aField;;',
             'uniqueField;;',
-            '--palette--;;' . 'hiddenFieldsPalette' . md5('hiddenField;;,hiddenInPalette;;'),
+            '--palette--;;' . 'hiddenFieldsPalette' . HashAlgo::canonicalize()->hash('hiddenField;;,hiddenInPalette;;'),
         ];
 
         $nodeFactoryMock->expects($this->atLeastOnce())->method('create')->with($expected)->willReturn($paletteAndSingleContainerMock);

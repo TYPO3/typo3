@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\Container;
 
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -80,7 +81,7 @@ class FlexFormContainerContainer extends AbstractContainer
 
         $resultArray = $this->initializeResultArray();
 
-        $parentSectionContainer = sprintf('flexform-section-container-%s-%s-%s-%s', $this->data['flexFormSheetName'], $this->data['fieldName'], md5($this->data['flexFormFieldName']), md5($this->data['elementBaseName']));
+        $parentSectionContainer = sprintf('flexform-section-container-%s-%s-%s-%s', $this->data['flexFormSheetName'], $this->data['fieldName'], HashAlgo::canonicalize()->hash($this->data['flexFormFieldName']), HashAlgo::canonicalize()->hash($this->data['elementBaseName']));
         $flexFormDomContainerId = sprintf('%s-%s', $parentSectionContainer, $flexFormContainerIdentifier);
         $containerAttributes = [
             'class' => 'panel panel-default t3js-flex-section',

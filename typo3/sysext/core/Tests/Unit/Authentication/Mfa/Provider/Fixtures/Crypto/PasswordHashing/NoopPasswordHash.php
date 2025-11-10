@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Authentication\Mfa\Provider\Fixtures\Crypto\PasswordHashing;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface;
 
 /**
@@ -51,7 +52,7 @@ class NoopPasswordHash implements PasswordHashInterface
 
     public function getHashedPassword(string $password): string
     {
-        return self::PREFIX . sha1($password);
+        return self::PREFIX . HashAlgo::SHA1->hash($password);
     }
 
     public function isHashUpdateNeeded(string $passString): bool

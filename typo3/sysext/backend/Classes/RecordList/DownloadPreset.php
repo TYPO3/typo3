@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\RecordList;
 
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 final class DownloadPreset
@@ -26,7 +27,7 @@ final class DownloadPreset
         private readonly array $columns,
         private string $identifier = '',
     ) {
-        $this->identifier = $identifier ?: md5($label . implode($columns));
+        $this->identifier = $identifier ?: HashAlgo::canonicalize()->hash($label . implode($columns));
     }
 
     public function getIdentifier(): string

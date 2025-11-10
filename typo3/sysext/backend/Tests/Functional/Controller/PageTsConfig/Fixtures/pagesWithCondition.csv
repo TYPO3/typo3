@@ -1,0 +1,5 @@
+"pages"
+,"uid","pid","title","TSconfig"
+,1,0,"Root","[page[""uid""] == 1]
+mod.foo = bar
+[end]"

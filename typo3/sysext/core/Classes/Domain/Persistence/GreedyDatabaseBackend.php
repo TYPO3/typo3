@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
@@ -277,7 +278,7 @@ readonly class GreedyDatabaseBackend
         $cacheIdentifier .= $context->getAspect('workspace')->getId() . '-';
         /** @var LanguageAspect $languageAspect */
         $languageAspect = $context->getAspect('language');
-        $cacheIdentifier .= $languageAspect->getId() . '-' . $languageAspect->getOverlayType() . '-' . md5(implode('_', $languageAspect->getFallbackChain())) . '-';
+        $cacheIdentifier .= $languageAspect->getId() . '-' . $languageAspect->getOverlayType() . '-' . HashAlgo::canonicalize()->hash(implode('_', $languageAspect->getFallbackChain())) . '-';
         /** @var VisibilityAspect $visibilityAspect */
         $visibilityAspect = $context->getAspect('visibility');
         $cacheIdentifier .= $visibilityAspect->includeHiddenPages() ? '1' : '0';
@@ -294,6 +295,6 @@ readonly class GreedyDatabaseBackend
         $groupIds = $userAspect->getGroupIds();
         $cacheIdentifier .= '-' . implode('_', $groupIds);
 
-        return 'greedy_database_backend_' . hash('xxh3', $cacheIdentifier);
+        return 'greedy_database_backend_' . HashAlgo::canonicalize()->hash($cacheIdentifier);
     }
 }

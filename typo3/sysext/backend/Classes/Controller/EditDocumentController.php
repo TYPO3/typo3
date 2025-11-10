@@ -55,6 +55,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\RecordIdentity\RecordTypeLabelResolver;
 use TYPO3\CMS\Backend\View\RecordIdentityRenderer;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -1442,7 +1443,7 @@ class EditDocumentController
                 'dispatch-args' => GeneralUtility::jsonEncodeForHtmlAttribute([
                     $requestUri,
                     true, // switchFocus
-                    md5($requestUri), // windowName,
+                    HashAlgo::canonicalize()->hash($requestUri), // windowName,
                     'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1', // windowFeatures
                 ]),
             ]);

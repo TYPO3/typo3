@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Imaging;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ProcessedResourceInterface;
@@ -101,7 +102,7 @@ class ImageResource
      */
     private static function createLocalCopyOfProcessedResource(ProcessedResourceInterface $processedResource): string
     {
-        $path = Environment::getVarPath() . '/transient/system-resource-' . md5($processedResource->getResourceIdentifier() . $processedResource->getHash()) . '.' . $processedResource->getExtension();
+        $path = Environment::getVarPath() . '/transient/system-resource-' . HashAlgo::canonicalize()->hash($processedResource->getResourceIdentifier() . $processedResource->getHash()) . '.' . $processedResource->getExtension();
         if (!is_file($path)) {
             GeneralUtility::mkdir_deep(dirname($path));
             GeneralUtility::writeFile($path, $processedResource->getContents(), true);

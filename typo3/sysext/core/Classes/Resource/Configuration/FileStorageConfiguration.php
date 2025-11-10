@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Resource\Event\FileStorageConfigurationChangedEvent;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileStorageConfigurationException;
 
@@ -109,7 +110,7 @@ final class FileStorageConfiguration
      */
     private function getAllFromFile(): array
     {
-        $cacheIdentifier = self::CACHE_IDENTIFIER_PREFIX . hash('xxh3', (string)file_get_contents($this->getConfigFileName()));
+        $cacheIdentifier = self::CACHE_IDENTIFIER_PREFIX . HashAlgo::canonicalize()->hash((string)file_get_contents($this->getConfigFileName()));
         $storages = $this->cache->require($cacheIdentifier);
         if (is_array($storages)) {
             return $storages;

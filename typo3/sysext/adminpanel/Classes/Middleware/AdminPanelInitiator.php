@@ -27,7 +27,7 @@ use TYPO3\CMS\Adminpanel\ModuleApi\RequestEnricherInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\SubmoduleProviderInterface;
 use TYPO3\CMS\Adminpanel\Service\ModuleLoader;
 use TYPO3\CMS\Adminpanel\Utility\StateUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Core\Crypto\Random;
 
 /**
  * PSR-15 Middleware to initialize the admin panel
@@ -38,6 +38,7 @@ readonly class AdminPanelInitiator implements MiddlewareInterface
 {
     public function __construct(
         private ModuleLoader $moduleLoader,
+        private Random $random,
     ) {}
 
     /**
@@ -49,7 +50,7 @@ readonly class AdminPanelInitiator implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if (StateUtility::isActivatedForUser() && StateUtility::isOpen()) {
-            $request = $request->withAttribute('adminPanelRequestId', substr(md5(StringUtility::getUniqueId()), 0, 13));
+            $request = $request->withAttribute('adminPanelRequestId', $this->random->generateRandomHexString(13));
             $adminPanelModuleConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
             $modules = $this->moduleLoader->validateSortAndInitializeModules($adminPanelModuleConfiguration);
             $request = $this->initializeModules($request, $modules);

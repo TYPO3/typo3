@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Authentication\Mfa\Provider;
 
 use Base32\Base32;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -28,13 +29,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Totp
 {
-    private const array ALLOWED_ALGOS = ['sha1', 'sha256', 'sha512'];
+    private const array ALLOWED_ALGOS = [HashAlgo::SHA1->value, HashAlgo::SHA256->value, HashAlgo::SHA512->value];
     private const int MIN_LENGTH = 6;
     private const int MAX_LENGTH = 8;
 
     public function __construct(
         protected readonly string $secret,
-        protected readonly string $algo = 'sha1',
+        protected readonly string $algo = HashAlgo::SHA1->value,
         protected readonly int $length = 6,
         protected readonly int $step = 30,
         protected readonly int $epoch = 0
@@ -128,8 +129,8 @@ class Totp
         // - period: 30 (in seconds)
         // - digits 6
         // - epoch: 0
-        // Only if we differ from these assumption, the exact values must be provided.
-        if ($this->algo !== 'sha1') {
+        // Only if we differ from these assumptions, the exact values must be provided.
+        if ($this->algo !== HashAlgo::SHA1->value) {
             $parameters['algorithm'] = $this->algo;
         }
         if ($this->step !== 30) {
@@ -183,7 +184,7 @@ class Totp
             // RFC 4226 (https://tools.ietf.org/html/rfc4226#section-4) suggests 160 bit TOTP secret keys
             // HMAC-SHA1 based on static factors and a 160 bit HMAC-key lead again to 160 bits (20 bytes)
             // base64-encoding (factor 1.6) 20 bytes lead to 32 uppercase characters
-            $secret = Base32::encode(hash_hmac('sha1', $payload, random_bytes(20), true));
+            $secret = Base32::encode(hash_hmac(HashAlgo::SHA1->value, $payload, random_bytes(20), true));
         }
         return $secret;
     }

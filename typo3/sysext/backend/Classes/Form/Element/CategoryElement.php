@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -47,7 +48,7 @@ class CategoryElement extends AbstractFormElement
         $fieldName = $this->data['fieldName'];
         $tableName = $this->data['tableName'];
         $parameterArray = $this->data['parameterArray'];
-        $formElementId = md5($parameterArray['itemFormElName']);
+        $formElementId = HashAlgo::canonicalize()->hash($parameterArray['itemFormElName']);
 
         // Field configuration from TCA:
         $config = $parameterArray['fieldConf']['config'];

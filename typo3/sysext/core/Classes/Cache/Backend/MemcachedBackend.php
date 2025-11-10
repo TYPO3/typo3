@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Cache\Backend;
 use TYPO3\CMS\Core\Cache\Exception;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 
 /**
  * A caching backend which stores cache entries by using Memcached.
@@ -174,7 +175,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
     public function setCache(FrontendInterface $cache): void
     {
         parent::setCache($cache);
-        $identifierHash = substr(md5(Environment::getProjectPath() . $this->cacheIdentifier), 0, 12);
+        $identifierHash = substr(HashAlgo::canonicalize()->hash(Environment::getProjectPath() . $this->cacheIdentifier), 0, 12);
         $this->identifierPrefix = 'TYPO3_' . $identifierHash . '_';
     }
 

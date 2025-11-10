@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\DataHandling\History;
 
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
@@ -241,7 +242,7 @@ class RecordHistoryStore
         if ($correlationId !== null && $correlationId->getSubject() !== null) {
             return $correlationId;
         }
-        $subject = md5($tableName . ':' . $uid);
+        $subject = HashAlgo::canonicalize()->hash($tableName . ':' . $uid);
         return $correlationId !== null ? $correlationId->withSubject($subject) : CorrelationId::forSubject($subject);
     }
 

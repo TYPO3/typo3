@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformHelper;
@@ -2199,12 +2200,12 @@ content="benni">',
             'md5' => [
                 'bacb98acf97e0b6112b1d1b650b84971',
                 'joh316',
-                ['hash' => 'md5'],
+                ['hash' => HashAlgo::MD5->value],
             ],
             'sha1' => [
                 '063b3d108bed9f88fa618c6046de0dccadcf3158',
                 'joh316',
-                ['hash' => 'sha1'],
+                ['hash' => HashAlgo::SHA1->value],
             ],
             'stdWrap capability' => [
                 'bacb98acf97e0b6112b1d1b650b84971',

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extensionmanager\Remote;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Information\Typo3Version;
 
@@ -52,7 +53,7 @@ abstract class AbstractJsonApiClient
      */
     protected function requestJson(string $url): ?array
     {
-        $cacheIdentifier = 'remote_api_' . hash('xxh3', $url);
+        $cacheIdentifier = 'remote_api_' . HashAlgo::canonicalize()->hash($url);
         $cached = $this->cache->get($cacheIdentifier);
         if (is_array($cached)) {
             return $cached;

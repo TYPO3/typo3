@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\DataHandling\SoftReference;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 
 /**
  * A generic parser class useful if tokenID prefixes are needed.
@@ -36,7 +37,7 @@ abstract class AbstractSoftReferenceParser implements SoftReferenceParserInterfa
      */
     public function makeTokenID(string $index = ''): string
     {
-        return md5($this->tokenID_basePrefix . ':' . $index);
+        return HashAlgo::MD5->hash($this->tokenID_basePrefix . ':' . $index);
     }
 
     /**

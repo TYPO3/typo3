@@ -42,6 +42,7 @@ use Doctrine\DBAL\Types\JsonType;
 use Doctrine\DBAL\Types\SmallIntType;
 use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\TextType;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Database\Connection as Typo3Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
@@ -587,7 +588,7 @@ class ConnectionMigrator
 
             $statements = $this->connection->getDatabasePlatform()->getAlterSchemaSQL($tableOptionsSchemaDiff);
             foreach ($statements as $statement) {
-                $updateSuggestions['change'][md5($statement)] = $statement;
+                $updateSuggestions['change'][$this->canonicalize($statement)] = $statement;
             }
         }
 
@@ -657,7 +658,7 @@ class ConnectionMigrator
 
                     $statements = $databasePlatform->getAlterSchemaSQL($temporarySchemaDiff);
                     foreach ($statements as $statement) {
-                        $updateSuggestions['change'][md5($statement)] = $statement;
+                        $updateSuggestions['change'][$this->canonicalize($statement)] = $statement;
                     }
                 }
             }
@@ -721,7 +722,7 @@ class ConnectionMigrator
 
                     $statements = $databasePlatform->getAlterSchemaSQL($temporarySchemaDiff);
                     foreach ($statements as $statement) {
-                        $updateSuggestions['change'][md5($statement)] = $statement;
+                        $updateSuggestions['change'][$this->canonicalize($statement)] = $statement;
                     }
                 }
             }
@@ -798,9 +799,9 @@ class ConnectionMigrator
                     $indexedSearchPrerequisiteStatements = $this->getIndexedSearchTruncateTablePrerequisiteStatements($this->connection, $changedTable, $changedColumn);
                     if ($indexedSearchPrerequisiteStatements !== []) {
                         foreach ($indexedSearchPrerequisiteStatements as $statement => $reason) {
-                            $updateSuggestions['change'][md5($statement)] = $statement;
+                            $updateSuggestions['change'][$this->canonicalize($statement)] = $statement;
                             if ($reason !== '') {
-                                $updateSuggestions['change_currentValue'][md5($statement)] = $reason;
+                                $updateSuggestions['change_currentValue'][$this->canonicalize($statement)] = $reason;
                             }
                         }
                     }
@@ -821,8 +822,8 @@ class ConnectionMigrator
                                 continue;
                             }
                         }
-                        $updateSuggestions['change'][md5($statement)] = $statement;
-                        $updateSuggestions['change_currentValue'][md5($statement)] = $currentDeclaration;
+                        $updateSuggestions['change'][$this->canonicalize($statement)] = $statement;
+                        $updateSuggestions['change_currentValue'][$this->canonicalize($statement)] = $currentDeclaration;
                     }
                 }
             }
@@ -881,7 +882,7 @@ class ConnectionMigrator
 
                     $statements = $databasePlatform->getAlterSchemaSQL($temporarySchemaDiff);
                     foreach ($statements as $statement) {
-                        $updateSuggestions['change'][md5($statement)] = $statement;
+                        $updateSuggestions['change'][$this->canonicalize($statement)] = $statement;
                     }
                 }
             }
@@ -916,8 +917,8 @@ class ConnectionMigrator
                 $tableDiff->getOldTable()->getQuotedName($databasePlatform),
                 $tableDiff->newName
             );
-            $updateSuggestions['change_table'][md5($statement)] = $statement;
-            $updateSuggestions['tables_count'][md5($statement)] = $this->getTableRecordCount($tableDiff->getOldTable()->getName());
+            $updateSuggestions['change_table'][$this->canonicalize($statement)] = $statement;
+            $updateSuggestions['tables_count'][$this->canonicalize($statement)] = $this->getTableRecordCount($tableDiff->getOldTable()->getName());
         }
 
         return $updateSuggestions;
@@ -1190,12 +1191,12 @@ class ConnectionMigrator
 
             $statements = $this->connection->getDatabasePlatform()->getAlterSchemaSQL($tableDiff);
             foreach ($statements as $statement) {
-                $updateSuggestions['drop_table'][md5($statement)] = $statement;
+                $updateSuggestions['drop_table'][$this->canonicalize($statement)] = $statement;
             }
 
             // Only store the record count for this table for the first statement,
             // assuming that this is the actual DROP TABLE statement.
-            $updateSuggestions['tables_count'][md5($statements[0])] = $this->getTableRecordCount(
+            $updateSuggestions['tables_count'][$this->canonicalize($statements[0])] = $this->getTableRecordCount(
                 $removedTable->getName()
             );
         }
@@ -1378,7 +1379,7 @@ class ConnectionMigrator
      */
     protected function calculateUpdateSuggestionsHashes(array $statements): array
     {
-        return array_combine(array_map(md5(...), $statements), $statements);
+        return array_combine(array_map($this->canonicalize(...), $statements), $statements);
     }
 
     /**
@@ -2216,5 +2217,10 @@ class ConnectionMigrator
             ];
         }
         return [];
+    }
+
+    private function canonicalize(string $value): string
+    {
+        return HashAlgo::canonicalize()->hash($value);
     }
 }

@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -1051,7 +1052,7 @@ class Export extends ImportExport
         }
 
         $fileUid = $file->getUid();
-        $fileSha1 = $file->getStorage()->hashFile($file, 'sha1');
+        $fileSha1 = $file->getStorage()->hashFile($file, HashAlgo::SHA1->value);
         if ($fileSha1 !== $file->getProperty('sha1')) {
             $this->dat['records']['sys_file:' . $fileUid]['data']['sha1'] = $fileSha1;
             $this->addError(

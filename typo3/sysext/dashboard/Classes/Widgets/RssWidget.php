@@ -23,6 +23,7 @@ use GuzzleHttp\Psr7\Uri;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Settings\SettingDefinition;
@@ -139,7 +140,7 @@ readonly class RssWidget implements WidgetRendererInterface
     protected function getFeedItems(SettingsInterface $settings): array
     {
         $feedUrl = $this->getFeedUrl($settings);
-        $cacheHash = md5($feedUrl . '-' . $settings->get('limit'));
+        $cacheHash = HashAlgo::canonicalize()->hash($feedUrl . '-' . $settings->get('limit'));
         if ($items = $this->cache->get($cacheHash)) {
             return $items;
         }

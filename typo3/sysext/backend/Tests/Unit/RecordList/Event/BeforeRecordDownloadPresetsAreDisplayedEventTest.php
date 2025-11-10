@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\RecordList\DownloadPreset;
 use TYPO3\CMS\Backend\RecordList\Event\BeforeRecordDownloadPresetsAreDisplayedEvent;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -52,7 +53,7 @@ final class BeforeRecordDownloadPresetsAreDisplayedEventTest extends UnitTestCas
         $expected = array_map(static fn($preset) => DownloadPreset::create($preset), $arrayPresets);
 
         self::assertEquals($expected, array_values($event->getPresets()), 'Unmodified input data');
-        self::assertNotNull($event->getPresets()[md5($arrayPresets[1]['label'] . trim($arrayPresets[1]['columns']))] ?? null, 'Calculated identifier');
+        self::assertNotNull($event->getPresets()[HashAlgo::canonicalize()->hash($arrayPresets[1]['label'] . trim($arrayPresets[1]['columns']))] ?? null, 'Calculated identifier');
         self::assertEquals($request, $event->getRequest());
         self::assertEquals('be_users', $event->getDatabaseTable());
         self::assertEquals(4711, $event->getId());
@@ -165,7 +166,7 @@ final class BeforeRecordDownloadPresetsAreDisplayedEventTest extends UnitTestCas
                     new DownloadPreset(
                         'Something',
                         explode(',', 'a,b,c,d'),
-                        md5('Something' . 'abcd'),
+                        HashAlgo::canonicalize()->hash('Something' . 'abcd'),
                     ),
                 ],
             ],

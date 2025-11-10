@@ -23,6 +23,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\Mfa\Provider\Totp;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -44,7 +45,7 @@ final class TotpTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1611748791);
-        new Totp('some-secret', 'md5');
+        new Totp('some-secret', HashAlgo::MD5->value);
     }
 
     #[Test]
@@ -52,7 +53,7 @@ final class TotpTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1611748792);
-        new Totp('some-secret', 'sha1', 4);
+        new Totp('some-secret', HashAlgo::SHA1->value, 4);
     }
 
     #[DataProvider('totpDataProvider')]
@@ -83,10 +84,10 @@ final class TotpTest extends UnitTestCase
     public static function totpDataProvider(): \Generator
     {
         yield 'Default' => ['337475', []];
-        yield 'sha256 algo' => ['874487', ['sha256']];
-        yield 'sha512 algo' => ['497852', ['sha512']];
-        yield '7 digit code' => ['8337475', ['sha1', 7]];
-        yield '8 digit code' => ['48337475', ['sha1', 8]];
+        yield 'sha256 algo' => ['874487', [HashAlgo::SHA256->value]];
+        yield 'sha512 algo' => ['497852', [HashAlgo::SHA512->value]];
+        yield '7 digit code' => ['8337475', [HashAlgo::SHA1->value, 7]];
+        yield '8 digit code' => ['48337475', [HashAlgo::SHA1->value, 8]];
     }
 
     #[Test]

@@ -24,6 +24,7 @@ use TYPO3\CMS\Adminpanel\Log\DoctrineSqlLoggingMiddleware;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
@@ -104,7 +105,7 @@ class QueryInformation extends AbstractSubModule implements DataProviderInterfac
                 // skip entry if it can't be encoded
                 continue;
             }
-            $identifier = sha1($query['sql']) . sha1($backtraceString);
+            $identifier = HashAlgo::SHA1->hash($query['sql']) . HashAlgo::SHA1->hash($backtraceString);
             if (is_array($query['params'])) {
                 foreach ($query['params'] as $k => $param) {
                     if (is_array($param)) {

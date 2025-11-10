@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\JsConfirmation;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -61,7 +62,7 @@ class Clipboard
      * 'el'	:	Array of elements:
      * DB: keys = '[tablename]|[uid]'	eg. 'tt_content:123'
      * DB: values = 1 (basically insignificant)
-     * FILE: keys = '_FILE|[md5 of path]'	eg. '_FILE|9ebc7e5c74'
+     * FILE: keys = '_FILE|[hash of path]'
      * FILE: values = The full filepath, eg. '/www/htdocs/typo3/32/dummy/fileadmin/sem1_3_examples/alternative_index.php'
      * or 'C:/www/htdocs/typo3/32/dummy/fileadmin/sem1_3_examples/alternative_index.php'
      *
@@ -117,10 +118,31 @@ class Clipboard
             $index = 'tab_' . $a;
             $this->clipData[$index] = is_iterable($clipData[$index] ?? null) ? $clipData[$index] : [];
         }
+        $this->migrateFileElementIdentifiers();
         // Setting the current pad pointer ($this->current))
         $current = (string)($clipData['current'] ?? '');
         $this->current = isset($this->clipData[$current]) ? $current : 'normal';
         $this->clipData['current'] = $this->current;
+    }
+
+    /**
+     * File elements stored before TYPO3 v15 are identified by a different hash of their path.
+     */
+    protected function migrateFileElementIdentifiers(): void
+    {
+        foreach ($this->clipData as $padIdentifier => $pad) {
+            if (!is_array($pad['el'] ?? null)) {
+                continue;
+            }
+            $elements = [];
+            foreach ($pad['el'] as $identifier => $value) {
+                if (str_starts_with((string)$identifier, '_FILE|') && is_string($value) && $value !== '') {
+                    $identifier = '_FILE|' . HashAlgo::canonicalize()->hash($value);
+                }
+                $elements[$identifier] = $value;
+            }
+            $this->clipData[$padIdentifier]['el'] = $elements;
+        }
     }
 
     /**
@@ -164,7 +186,7 @@ class Clipboard
         if ($cmd['setP'] ?? false) {
             $this->setCurrentPad((string)$cmd['setP']);
         }
-        // Remove element	(value = item ident: DB; '[tablename]|[uid]'    FILE: '_FILE|[md5 hash of path]'
+        // Remove element	(value = item ident: DB; '[tablename]|[uid]'    FILE: '_FILE|[hash of path]'
         if ($cmd['remove'] ?? false) {
             $this->removeElement((string)$cmd['remove']);
             $this->changed = true;
@@ -311,7 +333,7 @@ class Clipboard
                     $linkItemText = BackendUtility::cropToTitleLength($fileObject->getName());
                     $combinedIdentifier = $fileObject->getParentFolder()->getCombinedIdentifier();
                     $records[] = [
-                        'identifier' => '_FILE|' . md5($value),
+                        'identifier' => '_FILE|' . HashAlgo::canonicalize()->hash($value),
                         'icon' => $this->iconFactory
                             ->getIconForResource($fileObject, IconSize::SMALL)
                             ->setTitle($fileObject->getName() . ' ' . $size)
@@ -493,7 +515,7 @@ class Clipboard
     {
         return $this->buildUrl(['CB' => [
             'el' => [
-                '_FILE|' . md5($path) => $deselect ? '' : $path,
+                '_FILE|' . HashAlgo::canonicalize()->hash($path) => $deselect ? '' : $path,
             ],
             'setCopyMode' => (int)$copy,
         ]]);

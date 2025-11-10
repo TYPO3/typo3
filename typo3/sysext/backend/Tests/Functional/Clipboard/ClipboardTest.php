@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Routing\RequestContextFactory;
@@ -190,5 +191,27 @@ final class ClipboardTest extends FunctionalTestCase
 
         self::assertStringStartsWith('<a href="typo3/module/file/list?', $title);
         self::assertStringContainsString('>textfile.txt</a>', $title);
+    }
+
+    #[Test]
+    public function fileElementsStoredWithLegacyIdentifierAreMigratedOnInitialization(): void
+    {
+        $this->backendUser->pushModuleData('clipboard', [
+            'normal' => ['el' => ['_FILE|' . md5('1:/textfile.txt') => '1:/textfile.txt', 'pages|1100' => '1']],
+            'tab_1' => ['el' => ['_FILE|' . md5('1:/other.txt') => '1:/other.txt']],
+            'current' => 'normal',
+        ]);
+        $subject = $this->get(Clipboard::class);
+
+        $subject->initializeClipboard();
+
+        self::assertSame(
+            ['_FILE|' . HashAlgo::canonicalize()->hash('1:/textfile.txt') => '1:/textfile.txt', 'pages|1100' => '1'],
+            $subject->clipData['normal']['el']
+        );
+        self::assertSame(
+            ['_FILE|' . HashAlgo::canonicalize()->hash('1:/other.txt') => '1:/other.txt'],
+            $subject->clipData['tab_1']['el']
+        );
     }
 }

@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Form\Behavior\UpdateBitmaskOnFieldChange;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -312,8 +313,8 @@ abstract class AbstractFormElement extends AbstractNode
                 $format = isset($formatOptions['option']) ? '%' . trim($formatOptions['option']) : '';
                 $itemValue = sprintf($format, $itemValue);
                 break;
-            case 'md5':
-                $itemValue = md5($itemValue);
+            case HashAlgo::MD5->value:
+                $itemValue = HashAlgo::MD5->hash($itemValue);
                 break;
             case 'filesize':
                 // We need to cast to int here, otherwise empty values result in empty output,

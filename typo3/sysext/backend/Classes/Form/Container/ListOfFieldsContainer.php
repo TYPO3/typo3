@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\Container;
 
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -47,7 +48,7 @@ class ListOfFieldsContainer extends AbstractContainer
             );
             if ($hiddenFieldList !== []) {
                 $hiddenFieldList = implode(',', $hiddenFieldList);
-                $hiddenPaletteName = 'hiddenFieldsPalette' . md5($hiddenFieldList);
+                $hiddenPaletteName = 'hiddenFieldsPalette' . HashAlgo::canonicalize()->hash($hiddenFieldList);
                 $options['processedTca']['palettes'][$hiddenPaletteName] = [
                     'isHiddenPalette' => true,
                     'showitem' => $hiddenFieldList,
