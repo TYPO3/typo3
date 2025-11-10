@@ -49,10 +49,10 @@ final class LocalizationUtilityTest extends FunctionalTestCase
     {
         return [
             'get translated key' =>
-            ['key1', 'da', 'Dansk label for key1'],
+            ['key1', 'label_test', 'da', 'Dansk label for key1'],
 
             'fallback to English when translation is missing for key' =>
-            ['key2', 'da', 'English label for key2'],
+            ['key2', 'label_test', 'da', 'English label for key2'],
 
             'get translated key (russian, sort order relevant)' =>
             ['key1', 'ru', 'Russian label for key1'],
@@ -61,22 +61,40 @@ final class LocalizationUtilityTest extends FunctionalTestCase
             ['key2', 'ru', 'English label for key2'],
 
             'fallback to English for non existing language' =>
-            ['key2', 'xx', 'English label for key2'],
+            ['key2', 'label_test', 'xx', 'English label for key2'],
+
+            'Traditional LLL string as key' =>
+            ['LLL:EXT:label_test/Resources/Private/Language/locallang.xlf:key1', null, 'da', 'Dansk label for key1'],
+
+            'LLL with translation domain for default file' =>
+            ['LLL:label_test.messages:key1', null, 'da', 'Dansk label for key1'],
+
+            'LLL with translation domain' =>
+            ['LLL:label_test.actions:key1', null, 'da', 'Dansk label for key1 from actions'],
+
+            'translation domain as label for default file' =>
+            ['label_test.messages:key1', null, 'da', 'Dansk label for key1'],
+
+            'translation domain as label' =>
+            ['label_test.actions:key1', null, 'da', 'Dansk label for key1 from actions'],
+
+            'translation domain as extension name' =>
+            ['key1', 'label_test.messages', 'da', 'Dansk label for key1'],
 
             'replace placeholder with argument' =>
-            ['keyWithPlaceholder', 'default', 'English label with number 100', [100]],
+            ['keyWithPlaceholder', 'label_test', 'default', 'English label with number 100', [100]],
 
             'placeholder and empty arguments in default' =>
-            ['keyWithPlaceholderAndNoArguments', 'default', '%d/%m/%Y', []],
+            ['keyWithPlaceholderAndNoArguments', 'label_test', 'default', '%d/%m/%Y', []],
 
             'placeholder and empty arguments in translation' =>
-            ['keyWithPlaceholderAndNoArguments', 'da', '%d-%m-%Y', []],
+            ['keyWithPlaceholderAndNoArguments', 'label_test', 'da', '%d-%m-%Y', []],
         ];
     }
 
     #[DataProvider('translateDataProvider')]
     #[Test]
-    public function translateTestWithBackendUserLanguage(string $key, string $languageKey, string $expected, ?array $arguments = null): void
+    public function translateTestWithBackendUserLanguage(string $key, ?string $extensionName, string $languageKey, string $expected, ?array $arguments = null): void
     {
         // No TypoScript overrides
         $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
@@ -88,13 +106,14 @@ final class LocalizationUtilityTest extends FunctionalTestCase
 
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         $GLOBALS['BE_USER']->user = ['lang' => $languageKey];
-        self::assertSame($expected, LocalizationUtility::translate($key, 'label_test', $arguments));
+        self::assertSame($expected, LocalizationUtility::translate($key, $extensionName, $arguments));
     }
 
     #[DataProvider('translateDataProvider')]
     #[Test]
     public function translateTestWithExplicitLanguageParameters(
         string $key,
+        ?string $extensionName,
         string $languageKey,
         string $expected,
         ?array $arguments = null
@@ -107,15 +126,55 @@ final class LocalizationUtilityTest extends FunctionalTestCase
             ->willReturn([]);
         GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceMock);
 
-        self::assertSame($expected, LocalizationUtility::translate($key, 'label_test', $arguments, $languageKey));
+        self::assertSame($expected, LocalizationUtility::translate($key, $extensionName, $arguments, $languageKey));
+    }
+
+    public static function translateDataOverriddenByTypoScriptProvider(): array
+    {
+        return [
+            'TS override simple key (key1)' =>
+            ['key1', 'label_test', 'da', 'key1 value from TS core'],
+
+            'TS override traditional LLL string does not work' =>
+            ['LLL:EXT:label_test/Resources/Private/Language/locallang.xlf:key1', null, 'da', 'Dansk label for key1'],
+
+            'TS override with language domain in key' =>
+            ['label_test.messages:key1', null, 'da', 'key1 value from TS core'],
+
+            'TS override language domain in key does not affect other domains' =>
+            ['label_test.actions:key1', null, 'da', 'Dansk label for key1 from actions'],
+
+            'TS override with language as extensionKey' =>
+            ['key1', 'label_test.messages', 'da', 'key1 value from TS core'],
+
+            'TS override does not affect other domains' =>
+            ['key1', 'label_test.actions', 'da', 'Dansk label for key1 from actions'],
+
+            'XLF label no override (key2)' =>
+            ['key2', 'label_test', 'da', 'English label for key2'],
+
+            'TS override key3 (top-level)' =>
+            ['key3', 'label_test', 'da', 'English label for key3 from TypoScript'],
+
+            'TS nested subkey (key3.subkey1)' =>
+            ['key3.subkey1', 'label_test', 'da', 'key3.subkey1 value from TypoScript'],
+
+            'TS nested subsubkey (key3.subkey2.subsubkey)' =>
+            ['key3.subkey2.subsubkey', 'label_test', 'da', 'key3.subkey2.subsubkey value from TypoScript'],
+        ];
     }
 
     /**
      * Tests whether labels from XLF are overwritten by TypoScript labels
      */
+    #[DataProvider('translateDataOverriddenByTypoScriptProvider')]
     #[Test]
-    public function loadTypoScriptLabels(): void
-    {
+    public function loadTypoScriptLabels(
+        string $key,
+        ?string $extensionName,
+        string $languageKey,
+        string $expected,
+    ): void {
         $request = new ServerRequest();
         $request = $request
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
@@ -141,38 +200,56 @@ final class LocalizationUtilityTest extends FunctionalTestCase
             ],
         ]);
         $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
-        self::assertSame('key1 value from TS core', LocalizationUtility::translate(key: 'key1', extensionName: 'label_test', languageKey: 'da', request: $request));
-        // Label from XLF file, no override
-        self::assertSame('English label for key2', LocalizationUtility::translate('key2', 'label_test', languageKey: 'da', request: $request));
-        self::assertSame('English label for key3 from TypoScript', LocalizationUtility::translate('key3', 'label_test', languageKey: 'da', request: $request));
-        self::assertSame('key3.subkey1 value from TypoScript', LocalizationUtility::translate('key3.subkey1', 'label_test', languageKey: 'da', request: $request));
-        self::assertSame('key3.subkey2.subsubkey value from TypoScript', LocalizationUtility::translate('key3.subkey2.subsubkey', 'label_test', languageKey: 'da', request: $request));
+        self::assertSame($expected, LocalizationUtility::translate(key: $key, extensionName: $extensionName, languageKey: $languageKey, request: $request));
     }
 
-    #[Test]
-    public function clearLabelWithTypoScript(): void
+    public static function translateDataClearLabelWithTypoScriptProvider(): array
     {
+        return [
+            'Key with extension name' =>
+            ['key1', 'label_test', 'da', ''],
+
+            'traditional LLL string does not get replaced' =>
+            ['LLL:EXT:label_test/Resources/Private/Language/locallang.xlf:key1', null, 'da', 'Dansk label for key1'],
+
+            'language domain key' =>
+            ['label_test.messages:key1', null, 'da', ''],
+
+            'language domain as extension key' =>
+            ['key1', 'label_test.messages', 'da', ''],
+
+            'Missing key with extension name' =>
+            ['missingkey', 'label_test', 'da', null],
+        ];
+    }
+
+    #[DataProvider('translateDataClearLabelWithTypoScriptProvider')]
+    #[Test]
+    public function clearLabelWithTypoScript(
+        string $key,
+        ?string $extensionName,
+        string $languageKey,
+        ?string $expected,
+    ): void {
         $request = new ServerRequest();
         $request = $request
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([
             'plugin.' => [
-                'tx_labeltest.' => ['_LOCAL_LANG.' => [
-                    'da.' => [
-                        'key1' => '',
+                'tx_labeltest.' => [
+                    '_LOCAL_LANG.' => [
+                        'da.' => [
+                            'key1' => '',
+                        ],
                     ],
-                ],
                 ],
             ],
         ]);
         $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
 
-        $result = LocalizationUtility::translate('key1', 'label_test', languageKey: 'da', request: $request);
-        self::assertSame('', $result);
-
-        $result = LocalizationUtility::translate('missingkey', 'label_test', languageKey: 'da', request: $request);
-        self::assertNull($result);
+        $result = LocalizationUtility::translate($key, $extensionName, languageKey: $languageKey, request: $request);
+        self::assertSame($expected, $result);
     }
 
     #[Test]

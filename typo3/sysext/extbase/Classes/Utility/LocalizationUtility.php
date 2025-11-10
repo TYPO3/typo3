@@ -49,7 +49,7 @@ class LocalizationUtility
         }
 
         $languageFilePath = null;
-        if (str_starts_with($key, 'LLL:')) {
+        if (str_starts_with($key, 'LLL:EXT:')) {
             $keyParts = explode(':', $key);
             unset($keyParts[0]);
             $key = array_pop($keyParts);
@@ -58,16 +58,12 @@ class LocalizationUtility
             if (str_contains($extensionName, '.')) {
                 // We assume this is a valid domain now
                 $languageFilePath = $extensionName;
+                $extensionName = self::getExtensionNameFromDomain($languageFilePath);
             } else {
                 $languageFilePath = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '.messages';
             }
         } elseif (str_contains($key, ':')) {
-            [$possibleDomain, $possibleId] = explode(':', $key, 2);
-            $domainMapper = GeneralUtility::makeInstance(TranslationDomainMapper::class);
-            if ($domainMapper->isValidDomainName($possibleDomain) && $domainMapper->mapDomainToFileName($possibleDomain) !== $possibleDomain) {
-                $languageFilePath = $possibleDomain;
-                $key = trim($possibleId);
-            }
+            [$languageFilePath, $key, $extensionName] = self::extractLanguageInfoFromDomainString($key);
         }
         if ($languageFilePath === null || $key === '') {
             throw new \InvalidArgumentException(
@@ -122,5 +118,40 @@ class LocalizationUtility
             return strtolower($request->getPluginName());
         }
         return '';
+    }
+
+    private static function getExtensionNameFromDomain(string $possibleDomain): ?string
+    {
+        [$extensionName, $filePart] = explode('.', $possibleDomain, 2);
+        if ($filePart !== 'messages') {
+            return null;
+        }
+        return $extensionName;
+    }
+
+    /**
+     * @return array<?string>
+     */
+    private static function extractLanguageInfoFromDomainString(string $key): array
+    {
+        $languageFilePath = null;
+        $extensionName = null;
+
+        if (str_starts_with($key, 'LLL:')) {
+            $key = substr($key, 4);
+        }
+
+        [$possibleDomain, $possibleId] = explode(':', $key, 2);
+        $domainMapper = GeneralUtility::makeInstance(TranslationDomainMapper::class);
+        if ($domainMapper->isValidDomainName($possibleDomain) && $domainMapper->mapDomainToFileName($possibleDomain) !== $possibleDomain) {
+            $languageFilePath = $possibleDomain;
+            $key = trim($possibleId);
+            $extensionName = self::getExtensionNameFromDomain($languageFilePath);
+        }
+        return [
+            $languageFilePath,
+            $key,
+            $extensionName,
+        ];
     }
 }
