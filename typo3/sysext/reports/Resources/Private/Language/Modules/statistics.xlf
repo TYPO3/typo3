@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/Modules/statistics.xlf" date="2026-11-10T13:37:37Z" product-name="statistics">
+		<header/>
+		<body>
+			<trans-unit id="short_description">
+				<source>Shows database record statistics</source>
+			</trans-unit>
+			<trans-unit id="description">
+				<source>Displays comprehensive statistics for records in the database including total pages, translated pages, hidden and deleted pages, page type distributions, and detailed table records with lost record detection. This report runs through the entire page tree.</source>
+			</trans-unit>
+			<trans-unit id="title">
+				<source>Record Statistics</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

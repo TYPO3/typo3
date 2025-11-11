@@ -12,11 +12,7 @@ return [
         'workspaces' => 'live',
         'path' => '/module/integrations/reactions',
         'iconIdentifier' => 'module-reactions',
-        'labels' => [
-            'title' => 'LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:title',
-            'description' => 'LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:description',
-            'shortDescription' => 'LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:shortDescription',
-        ],
+        'labels' => 'reactions.module',
         'aliases' => ['system_reactions'],
         'routes' => [
             '_default' => [

@@ -12,7 +12,7 @@ return [
         'access' => 'admin',
         'path' => '/module/system/reports',
         'iconIdentifier' => 'module-reports',
-        'labels' => 'LLL:EXT:reports/Resources/Private/Language/locallang.xlf',
+        'labels' => 'reports.modules.overview',
         'showSubmoduleOverview' => true,
     ],
     'system_reports_status' => [
@@ -20,11 +20,7 @@ return [
         'access' => 'admin',
         'path' => '/module/system/reports/status',
         'iconIdentifier' => 'module-reports',
-        'labels' => [
-            'title' => 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_report_title',
-            'shortDescription' => 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_report_description',
-            'description' => 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_report_explanation',
-        ],
+        'labels' => 'reports.modules.status',
         'routes' => [
             '_default' => [
                 'target' => StatusReportController::class . '::handleRequest',
@@ -36,11 +32,7 @@ return [
         'access' => 'admin',
         'path' => '/module/system/reports/statistics',
         'iconIdentifier' => 'module-reports',
-        'labels' => [
-            'title' => 'LLL:EXT:reports/Resources/Private/Language/locallang.xlf:recordStatistics.title',
-            'shortDescription' => 'LLL:EXT:reports/Resources/Private/Language/locallang.xlf:recordStatistics.shortDescription',
-            'description' => 'LLL:EXT:reports/Resources/Private/Language/locallang.xlf:recordStatistics.description',
-        ],
+        'labels' => 'reports.modules.statistics',
         'routes' => [
             '_default' => [
                 'target' => RecordStatisticsController::class . '::handleRequest',

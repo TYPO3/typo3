@@ -13,11 +13,7 @@ return [
         'workspaces' => 'live',
         'path' => '/module/system/dbint',
         'iconIdentifier' => 'module-dbint',
-        'labels' => [
-            'title' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.dbint.title',
-            'shortDescription' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.dbint.shortDescription',
-            'description' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.dbint.description',
-        ],
+        'labels' => 'lowlevel.modules.database_integrity',
         'routes' => [
             '_default' => [
                 'target' => DatabaseIntegrityController::class . '::handleRequest',
@@ -30,11 +26,7 @@ return [
         'workspaces' => 'live',
         'path' => '/module/system/config',
         'iconIdentifier' => 'module-config',
-        'labels' => [
-            'title' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.configuration.title',
-            'shortDescription' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.configuration.shortDescription',
-            'description' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.configuration.description',
-        ],
+        'labels' => 'lowlevel.modules.config',
         'routes' => [
             '_default' => [
                 'target' => ConfigurationController::class . '::indexAction',

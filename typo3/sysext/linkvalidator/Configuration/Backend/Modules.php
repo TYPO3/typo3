@@ -13,7 +13,7 @@ return [
         'workspaces' => 'live',
         'path' => '/module/page/link-reports',
         'iconIdentifier' => 'module-linkvalidator',
-        'labels' => 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang_mod.xlf',
+        'labels' => 'linkvalidator.module',
         'routes' => [
             '_default' => [
                 'target' => LinkValidatorController::class,

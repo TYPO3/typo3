@@ -3,13 +3,13 @@
 	<file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:35Z" product-name="reports">
 		<header/>
 		<body>
-			<trans-unit id="mlang_tabs_tab">
+			<trans-unit id="mlang_tabs_tab" x-unused-since="14.0">
 				<source>Reports</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tabdescr">
+			<trans-unit id="mlang_labels_tabdescr" x-unused-since="14.0">
 				<source>Access various system reports for monitoring and analyzing your TYPO3 installation including system status checks, database statistics, and custom reports provided by extensions.</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tablabel">
+			<trans-unit id="mlang_labels_tablabel" x-unused-since="14.0">
 				<source>System monitoring and analysis reports</source>
 			</trans-unit>
 			<trans-unit id="reports_overview">
@@ -30,13 +30,13 @@
 			<trans-unit id="link.openModuleWithTitle">
 				<source>Open %1s</source>
 			</trans-unit>
-			<trans-unit id="recordStatistics.title">
+			<trans-unit id="recordStatistics.title" x-unused-since="14.0">
 				<source>Record Statistics</source>
 			</trans-unit>
-			<trans-unit id="recordStatistics.shortDescription">
+			<trans-unit id="recordStatistics.shortDescription" x-unused-since="14.0">
 				<source>Shows database record statistics</source>
 			</trans-unit>
-			<trans-unit id="recordStatistics.description">
+			<trans-unit id="recordStatistics.description" x-unused-since="14.0">
 				<source>Displays comprehensive statistics for records in the database including total pages, translated pages, hidden and deleted pages, page type distributions, and detailed table records with lost record detection. This report runs through the entire page tree.</source>
 			</trans-unit>
 		</body>

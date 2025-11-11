@@ -3,13 +3,13 @@
 	<file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf" date="2017-12-29T20:23:34Z" product-name="redirects">
 		<header/>
 		<body>
-			<trans-unit id="mlang_labels_tablabel">
+			<trans-unit id="mlang_labels_tablabel" x-unused-since="14.0">
 				<source>Redirect Administration</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tabdescr">
+			<trans-unit id="mlang_labels_tabdescr" x-unused-since="14.0">
 				<source>This is the administration area for Web Redirects.</source>
 			</trans-unit>
-			<trans-unit id="mlang_tabs_tab">
+			<trans-unit id="mlang_tabs_tab" x-unused-since="14.0">
 				<source>Redirects</source>
 			</trans-unit>
 

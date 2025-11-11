@@ -11,7 +11,7 @@ return [
         'access' => 'user',
         'path' => '/module/user/setup',
         'iconIdentifier' => 'module-setup',
-        'labels' => 'LLL:EXT:setup/Resources/Private/Language/locallang_mod.xlf',
+        'labels' => 'setup.module',
         'routes' => [
             '_default' => [
                 'target' => SetupModuleController::class . '::mainAction',

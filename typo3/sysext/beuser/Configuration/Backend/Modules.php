@@ -14,7 +14,7 @@ return [
         'path' => '/module/system/permissions',
         'iconIdentifier' => 'module-permission',
         'navigationComponent' => '@typo3/backend/tree/page-tree-element',
-        'labels' => 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf',
+        'labels' => 'beuser.modules.permissions',
         'aliases' => ['system_BeuserTxPermission'],
         'routes' => [
             '_default' => [
@@ -28,7 +28,7 @@ return [
         'access' => 'admin',
         'path' => '/module/system/user-management',
         'iconIdentifier' => 'module-beuser',
-        'labels' => 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod.xlf',
+        'labels' => 'beuser.modules.user_management',
         'aliases' => ['system_BeuserTxBeuser'],
         'extensionName' => 'Beuser',
         'controllerActions' => [

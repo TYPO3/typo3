@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:reactions/Resources/Private/Language/Modules/reactions.xlf" date="2025-10-20T12:00:00Z" product-name="reactions">
+	<file source-language="en" datatype="plaintext" original="EXT:reactions/Resources/Private/Language/module.xlf" date="2025-10-20T12:00:00Z" product-name="reactions">
 		<header/>
 		<body>
 			<trans-unit id="title">
 				<source>Reactions</source>
 			</trans-unit>
-			<trans-unit id="shortDescription">
+			<trans-unit id="shortDescription" x-unused-since="14.0">
+				<source>Manage incoming HTTP webhooks to external system</source>
+			</trans-unit>
+			<trans-unit id="short_description">
 				<source>Manage incoming HTTP webhooks to external system</source>
 			</trans-unit>
 			<trans-unit id="description">

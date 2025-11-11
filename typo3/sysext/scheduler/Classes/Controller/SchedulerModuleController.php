@@ -342,7 +342,7 @@ final class SchedulerModuleController
             'errorClassesCollapsed' => (bool)($moduleData->get('task-group-missing', false)),
         ]);
         $view->setTitle(
-            $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
+            $languageService->translate('title', 'scheduler.module'),
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.scheduler')
         );
         $view->makeDocHeaderModuleMenu();

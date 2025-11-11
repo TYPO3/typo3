@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf" date="2025-10-20T12:00:00Z" product-name="webhooks">
+	<file source-language="en" datatype="plaintext" original="EXT:webhooks/Resources/Private/Language/module.xlf" date="2025-10-20T12:00:00Z" product-name="webhooks">
 		<header/>
 		<body>
 			<trans-unit id="title">
 				<source>Webhooks</source>
 			</trans-unit>
-			<trans-unit id="shortDescription">
+			<trans-unit id="short_description">
+				<source>Manage outgoing HTTP webhooks to external system</source>
+			</trans-unit>
+			<trans-unit id="shortDescription" x-unused-since="14.0">
 				<source>Manage outgoing HTTP webhooks to external system</source>
 			</trans-unit>
 			<trans-unit id="description">

@@ -12,7 +12,7 @@ return [
         'access' => 'user',
         'iconIdentifier' => 'module-form',
         'inheritNavigationComponentFromMainModule' => false,
-        'labels' => 'LLL:EXT:form/Resources/Private/Language/locallang_module.xlf',
+        'labels' => 'form.module',
         'path' => '/module/manage/forms',
         'extensionName' => 'Form',
         'controllerActions' => [

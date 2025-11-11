@@ -10,7 +10,7 @@ return [
         'parent' => 'system',
         'access' => 'user',
         'iconIdentifier' => 'module-belog',
-        'labels' => 'LLL:EXT:belog/Resources/Private/Language/locallang_mod.xlf',
+        'labels' => 'belog.module',
         'path' => '/module/system/log',
         'aliases' => ['system_BelogLog'],
         'extensionName' => 'Belog',

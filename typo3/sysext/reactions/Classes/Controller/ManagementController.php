@@ -88,8 +88,8 @@ class ManagementController
                     [
                         'idField' => 'uid',
                         'tableName' => 'sys_reaction',
-                        'title' => $languageService->sL('LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:labels.delete.title'),
-                        'content' => $languageService->sL('LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:labels.delete.message'),
+                        'title' => $languageService->sL('LLL:EXT:reactions/Resources/Private/Language/module.xlf:labels.delete.title'),
+                        'content' => $languageService->sL('LLL:EXT:reactions/Resources/Private/Language/module.xlf:labels.delete.message'),
                         'ok' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
                         'cancel' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'),
                         'returnUrl' => $requestUri,
@@ -115,7 +115,7 @@ class ManagementController
                 ]
             ))
             ->setShowLabelText(true)
-            ->setTitle($languageService->sL('LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:reaction_create'))
+            ->setTitle($languageService->sL('LLL:EXT:reactions/Resources/Private/Language/module.xlf:reaction_create'))
             ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
         $view->addButtonToButtonBar($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
 
@@ -123,7 +123,7 @@ class ManagementController
 
         $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('integrations_reactions')
-            ->setDisplayName($languageService->sL('LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:title'))
+            ->setDisplayName($languageService->sL('LLL:EXT:reactions/Resources/Private/Language/module.xlf:title'))
             ->setArguments(array_filter([
                 'demand' => $demand->getParameters(),
                 'orderField' => $demand->getOrderField(),

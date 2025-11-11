@@ -175,7 +175,7 @@ class FormEditorController extends ActionController
         $moduleTemplate->setModuleClass($this->request->getPluginName() . '_' . $this->request->getControllerName());
         $moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
         $moduleTemplate->setTitle(
-            $this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/locallang_module.xlf:mlang_tabs_tab'),
+            $this->getLanguageService()->translate('title', 'form.module'),
             $formDefinition['label']
         );
         return $moduleTemplate->renderResponse('Backend/FormEditor/Index');

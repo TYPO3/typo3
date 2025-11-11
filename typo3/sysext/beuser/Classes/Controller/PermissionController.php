@@ -118,7 +118,7 @@ class PermissionController
         }
         $this->registerDocHeaderButtons($view, $action);
         $view->setTitle(
-            $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:mlang_tabs_tab'),
+            $this->getLanguageService()->translate('title', 'beuser.modules.permissions'),
             $this->id !== 0 && !empty($this->pageInfo['title']) ? $this->pageInfo['title'] : ''
         );
         $view->getDocHeaderComponent()->setPageBreadcrumb($this->pageInfo);
@@ -523,7 +523,7 @@ class PermissionController
     {
         return sprintf(
             '%s: %s [%d]',
-            $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
+            $this->getLanguageService()->translate('title', 'beuser.modules.permissions'),
             BackendUtility::getRecordTitle('pages', $this->pageInfo),
             $this->id
         );

@@ -75,7 +75,7 @@ readonly class RecyclerModuleController
         }
 
         $view->setTitle(
-            $this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
+            $this->getLanguageService()->translate('title', 'recycler.module'),
             $pageRecord['title'] ?? ''
         );
 
@@ -94,7 +94,7 @@ readonly class RecyclerModuleController
         $languageService = $this->getLanguageService();
         $shortcutTitle = sprintf(
             '%s: %s [%d]',
-            $languageService->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
+            $languageService->translate('title', 'recycler.module'),
             BackendUtility::getRecordTitle('pages', $pageRecord),
             $id
         );

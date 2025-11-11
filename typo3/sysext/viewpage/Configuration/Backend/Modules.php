@@ -12,7 +12,7 @@ return [
         'access' => 'user',
         'path' => '/module/page-preview',
         'iconIdentifier' => 'module-viewpage',
-        'labels' => 'viewpage.modules.preview',
+        'labels' => 'viewpage.module',
         'aliases' => ['web_ViewpageView'],
         'routes' => [
             '_default' => [

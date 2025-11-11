@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/Modules/permissions.xlf" date="2026-11-10T13:37:37Z" product-name="permissions">
+		<header/>
+		<body>
+			<trans-unit id="short_description">
+				<source>Page editing permissions</source>
+			</trans-unit>
+			<trans-unit id="description">
+				<source>Setting of page permissions is vital for controlling backend user access to pages. You can assign a user and a group as owners of a page and set access permissions for each.</source>
+			</trans-unit>
+			<trans-unit id="title">
+				<source>Permissions</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

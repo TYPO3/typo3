@@ -20,7 +20,7 @@ return [
         'access' => 'user',
         'path' => '/module/web/layout',
         'iconIdentifier' => 'module-page',
-        'labels' => 'LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf',
+        'labels' => 'backend.modules.layout',
         'routes' => [
             '_default' => [
                 'target' => PageLayoutController::class . '::mainAction',
@@ -38,7 +38,7 @@ return [
         'access' => 'user',
         'path' => '/module/web/list',
         'iconIdentifier' => 'module-list',
-        'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf',
+        'labels' => 'backend.modules.list',
         'routes' => [
             '_default' => [
                 'target' => RecordListController::class . '::mainAction',
@@ -57,7 +57,7 @@ return [
         'access' => 'admin',
         'path' => '/module/site/configuration',
         'iconIdentifier' => 'module-sites',
-        'labels' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf',
+        'labels' => 'backend.modules.site_configuration',
         'routes' => [
             '_default' => [
                 'target' => SiteConfigurationController::class . '::overviewAction',
@@ -82,7 +82,7 @@ return [
         'access' => 'admin',
         'path' => '/module/site/settings',
         'iconIdentifier' => 'module-site-settings',
-        'labels' => 'LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings_module.xlf',
+        'labels' => 'backend.modules.site_settings',
         'routes' => [
             '_default' => [
                 'target' => SiteSettingsController::class . '::overviewAction',
@@ -106,7 +106,7 @@ return [
         'access' => 'user',
         'path' => '/module/help/about',
         'iconIdentifier' => 'module-about',
-        'labels' => 'LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf',
+        'labels' => 'backend.modules.about',
         'aliases' => ['help_AboutAbout'],
         'routes' => [
             '_default' => [
@@ -119,11 +119,7 @@ return [
         'access' => 'admin',
         'path' => '/module/pagetsconfig',
         'iconIdentifier' => 'module-tsconfig',
-        'labels' => [
-            'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig.title',
-            'description' => 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig.description',
-            'shortDescription' => 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig.shortDescription',
-        ],
+        'labels' => 'backend.modules.pagetsconfig',
         'navigationComponent' => '@typo3/backend/tree/page-tree-element',
     ],
     'pagetsconfig_pages' => [
@@ -131,9 +127,7 @@ return [
         'access' => 'admin',
         'path' => '/module/pagetsconfig/records',
         'iconIdentifier' => 'module-tsconfig',
-        'labels' => [
-            'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_pages',
-        ],
+        'labels' => 'backend.modules.pagetsconfig_pages',
         'routes' => [
             '_default' => [
                 'target' => PageTsConfigRecordsOverviewController::class . '::handleRequest',
@@ -145,9 +139,7 @@ return [
         'access' => 'admin',
         'path' => '/module/pagetsconfig/active',
         'iconIdentifier' => 'module-tsconfig',
-        'labels' => [
-            'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active',
-        ],
+        'labels' => 'backend.modules.pagetsconfig_active',
         'routes' => [
             '_default' => [
                 'target' => PageTsConfigActiveController::class . '::handleRequest',
@@ -165,9 +157,7 @@ return [
         'access' => 'admin',
         'path' => '/module/pagetsconfig/includes',
         'iconIdentifier' => 'module-tsconfig',
-        'labels' => [
-            'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes',
-        ],
+        'labels' => 'backend.modules.pagetsconfig_includes',
         'routes' => [
             '_default' => [
                 'target' => PageTsConfigIncludesController::class . '::indexAction',
@@ -184,7 +174,7 @@ return [
         'parent' => 'tools',
         'access' => 'systemMaintainer',
         'iconIdentifier' => 'module-security',
-        'labels' => 'LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf',
+        'labels' => 'backend.modules.content_security_policy',
         'routes' => [
             '_default' => [
                 'target' => CspModuleController::class . '::mainAction',

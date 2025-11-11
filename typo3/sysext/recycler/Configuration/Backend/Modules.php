@@ -12,7 +12,7 @@ return [
         'workspaces' => 'live',
         'path' => '/module/web/recycler',
         'iconIdentifier' => 'module-recycler',
-        'labels' => 'LLL:EXT:recycler/Resources/Private/Language/locallang_mod.xlf',
+        'labels' => 'recycler.module',
         'aliases' => ['web_RecyclerRecycler'],
         'routes' => [
             '_default' => [

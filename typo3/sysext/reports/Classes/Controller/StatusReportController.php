@@ -57,13 +57,13 @@ final readonly class StatusReportController
         $languageService = $this->getLanguageService();
         $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle(
-            $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:mlang_tabs_tab'),
-            $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_report_title')
+            $languageService->translate('title', 'reports.modules.overview'),
+            $languageService->translate('title', 'reports.modules.status')
         );
         $view->makeDocHeaderModuleMenu();
         $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('system_reports_status')
-            ->setDisplayName($languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_report_title'));
+            ->setDisplayName($languageService->translate('title', 'reports.modules.status'));
         $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         return $view->assignMultiple([

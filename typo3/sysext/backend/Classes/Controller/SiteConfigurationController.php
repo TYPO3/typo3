@@ -110,7 +110,7 @@ class SiteConfigurationController
         $view = $this->moduleTemplateFactory->create($request);
         $this->configureOverViewDocHeader($view, $request->getAttribute('normalizedParams')->getRequestUri());
         $view->setTitle(
-            $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf:mlang_tabs_tab')
+            $this->getLanguageService()->translate('title', 'backend.modules.site_configuration')
         );
         $view->assignMultiple([
             'pages' => $pages,
@@ -189,7 +189,7 @@ class SiteConfigurationController
 
         $this->configureEditViewDocHeader($view, $siteIdentifier);
         $view->setTitle(
-            $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf:mlang_tabs_tab'),
+            $this->getLanguageService()->translate('title', 'backend.modules.site_configuration'),
             $siteIdentifier ?? ''
         );
         return $view->renderResponse('SiteConfiguration/Edit');
@@ -718,7 +718,7 @@ class SiteConfigurationController
         $view->addButtonToButtonBar($this->componentFactory->createReloadButton($requestUri), ButtonBar::BUTTON_POSITION_RIGHT);
         $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('site_configuration')
-            ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf:mlang_labels_tablabel'));
+            ->setDisplayName($this->getLanguageService()->translate('short_description', 'backend.modules.site_configuration'));
         $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 

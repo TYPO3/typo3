@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/Modules/translations.xlf" date="2026-11-10T13:37:37Z" product-name="translations">
+		<header/>
+		<body>
+			<trans-unit id="description">
+				<source>Check translation status and manage localized content for pages.</source>
+			</trans-unit>
+			<trans-unit id="title">
+				<source>Localization Overview</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

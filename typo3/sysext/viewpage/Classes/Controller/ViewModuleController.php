@@ -77,7 +77,7 @@ class ViewModuleController
         $view = $this->moduleTemplateFactory->create($request);
         $view->setModuleId('typo3-module-viewpage');
         $view->setTitle(
-            $languageService->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
+            $languageService->translate('title', 'viewpage.module'),
             $pageInfo['title'] ?? ''
         );
 
@@ -316,7 +316,7 @@ class ViewModuleController
         }
         return sprintf(
             '%s: %s [%d]',
-            $this->getLanguageService()->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang_mod.xlf:mlang_labels_tablabel'),
+            $this->getLanguageService()->translate('short_description', 'viewpage.module'),
             $pageTitle,
             $pageId
         );

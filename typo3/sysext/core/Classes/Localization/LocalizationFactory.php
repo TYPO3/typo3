@@ -51,11 +51,36 @@ readonly class LocalizationFactory
         'EXT:impexp/Resources/Private/Language/locallang_tca.xlf' => 'EXT:impexp/Resources/Private/Language/db.xlf',
         'EXT:linkvalidator/Resources/Private/Language/locallang.xlf' => 'EXT:linkvalidator/Resources/Private/Language/db.xlf',
         'EXT:seo/Resources/Private/Language/locallang_tca.xlf' => 'EXT:seo/Resources/Private/Language/db.xlf',
+        'EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf' => 'EXT:webhooks/Resources/Private/Language/module.xlf',
+        'EXT:reactions/Resources/Private/Language/Modules/webhooks.xlf' => 'EXT:reactions/Resources/Private/Language/module.xlf',
     ];
 
     protected const DEPRECATED_FILES = [
         // @todo: remove the following files in TYPO3 v15.0
         'EXT:backend/Resources/Private/Language/locallang_view_help.xlf',
+        'EXT:backend/Resources/Private/Language/locallang_view_help.xlf',
+        'EXT:backend/Resources/Private/Language/locallang_sitesettings_module.xlf',
+        'EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf',
+        'EXT:backend/Resources/Private/Language/locallang_mod.xlf',
+        'EXT:belog/Resources/Private/Language/locallang_mod.xlf',
+        'EXT:beuser/Resources/Private/Language/locallang_mod.xlf',
+        'EXT:core/Resources/Private/Language/locallang_mod_usertools.xlf',
+        'EXT:core/Resources/Private/Language/locallang_mod_system.xlf',
+        'EXT:core/Resources/Private/Language/locallang_mod_site.xlf',
+        'EXT:core/Resources/Private/Language/locallang_mod_help.xlf',
+        'EXT:core/Resources/Private/Language/locallang_mod_admintools.xlf',
+        'EXT:dashboard/Resources/Private/Language/locallang_mod.xlf',
+        'EXT:extensionmanager/Resources/Private/Language/locallang_mod.xlf',
+        'EXT:form/Resources/Private/Language/locallang_module.xlf',
+        'EXT:indexed_search/Resources/Private/Language/locallang_mod.xlf',
+        'EXT:install/Resources/Private/Language/ModuleInstallUpgrade.xlf',
+        'EXT:install/Resources/Private/Language/ModuleInstallSettings.xlf',
+        'EXT:install/Resources/Private/Language/ModuleInstallMaintenance.xlf',
+        'EXT:install/Resources/Private/Language/ModuleInstallEnvironment.xlf',
+        'EXT:install/Resources/Private/Language/BackendModule.xlf',
+        'EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf',
+        'EXT:linkvalidator/Resources/Private/Language/Module/locallang_mod.xlf',
+        'EXT:recycler/Resources/Private/Language/locallang_mod.xlf',
     ];
 
     public function __construct(

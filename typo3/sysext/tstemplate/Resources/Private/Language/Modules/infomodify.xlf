@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/Modules/infomodify.xlf" date="2026-11-10T13:37:37Z" product-name="infomodify">
+		<header/>
+		<body>
+			<trans-unit id="title">
+				<source>Edit TypoScript Record</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

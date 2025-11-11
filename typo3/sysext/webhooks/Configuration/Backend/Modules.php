@@ -12,11 +12,7 @@ return [
         'workspaces' => 'live',
         'path' => '/module/integrations/webhooks',
         'iconIdentifier' => 'module-webhooks',
-        'labels' => [
-            'title' => 'LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:title',
-            'description' => 'LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:description',
-            'shortDescription' => 'LLL:EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf:shortDescription',
-        ],
+        'labels' => 'webhooks.module',
         'aliases' => ['webhooks_management'],
         'routes' => [
             '_default' => [

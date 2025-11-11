@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/Modules/overview.xlf" date="2026-11-10T13:37:37Z" product-name="overview">
+		<header/>
+		<body>
+			<trans-unit id="short_description">
+				<source>System monitoring and analysis reports</source>
+			</trans-unit>
+			<trans-unit id="description">
+				<source>Access various system reports for monitoring and analyzing your TYPO3 installation including system status checks, database statistics, and custom reports provided by extensions.</source>
+			</trans-unit>
+			<trans-unit id="title">
+				<source>Reports</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

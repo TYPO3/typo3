@@ -3,13 +3,23 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf" date="2023-01-11T00:00:00Z" product-name="typo3-cms-backend">
 		<header/>
 		<body>
-			<trans-unit id="mlang_labels_tablabel">
+			<trans-unit id="mlang_labels_tablabel" x-unused-since="14.0">
 				<source>Content Security Policy</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tabdescr">
+			<trans-unit id="mlang_labels_tabdescr" x-unused-since="14.0">
 				<source>Allows to manage Content Security Policy settings.</source>
 			</trans-unit>
-			<trans-unit id="mlang_tabs_tab">
+			<trans-unit id="mlang_tabs_tab" x-unused-since="14.0">
+				<source>Content Security Policy</source>
+			</trans-unit>
+
+			<trans-unit id="short_description">
+				<source>Content Security Policy</source>
+			</trans-unit>
+			<trans-unit id="description">
+				<source>Allows to manage Content Security Policy settings.</source>
+			</trans-unit>
+			<trans-unit id="title">
 				<source>Content Security Policy</source>
 			</trans-unit>
 

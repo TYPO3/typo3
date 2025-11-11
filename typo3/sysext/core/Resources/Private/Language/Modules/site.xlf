@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Modules/site.xlf" date="2026-11-10T13:37:37Z" product-name="site">
+		<header/>
+		<body>
+			<trans-unit id="short_description">
+				<source>Configuration and management tools for sites</source>
+			</trans-unit>
+			<trans-unit id="description">
+				<source>>This main module holds all optimization for Site Integrators to manage different websites within one TYPO3 installation, templates, TypoScript and routing options.</source>
+			</trans-unit>
+			<trans-unit id="title">
+				<source>Site Management</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

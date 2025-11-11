@@ -12,7 +12,7 @@ return [
         'access' => 'user',
         'path' => '/module/manage/workspaces',
         'iconIdentifier' => 'module-workspaces',
-        'labels' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf',
+        'labels' => 'workspaces.module',
         'aliases' => ['web_WorkspacesWorkspaces'],
         'routes' => [
             '_default' => [

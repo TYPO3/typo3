@@ -12,7 +12,7 @@ return [
         'access' => 'user',
         'path' => '/module/web/info',
         'iconIdentifier' => 'module-info',
-        'labels' => 'LLL:EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf',
+        'labels' => 'info.modules.info',
         'navigationComponent' => '@typo3/backend/tree/page-tree-element',
         'appearance' => [
             'dependsOnSubmodules' => true,
@@ -24,10 +24,7 @@ return [
         'access' => 'user',
         'path' => '/module/web/info/overview',
         'iconIdentifier' => 'module-info',
-        'labels' => [
-            'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:mod_tx_cms_webinfo_page',
-            'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:mod_tx_cms_webinfo_page.description',
-        ],
+        'labels' => 'info.modules.overview',
         'routes' => [
             '_default' => [
                 'target' => PageInformationController::class . '::handleRequest',
@@ -44,10 +41,7 @@ return [
         'access' => 'user',
         'path' => '/module/web/info/translations',
         'iconIdentifier' => 'module-info',
-        'labels' => [
-            'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:mod_tx_cms_webinfo_lang',
-            'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:mod_tx_cms_webinfo_lang.description',
-        ],
+        'labels' => 'info.modules.translations',
         'routes' => [
             '_default' => [
                 'target' => TranslationStatusController::class . '::handleRequest',

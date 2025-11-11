@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:styleguide/Resources/Private/Language/Modules/overview.xlf" date="2026-11-10T13:37:37Z" product-name="overview">
+		<header/>
+		<body>
+			<trans-unit id="short_description">
+				<source>The module offers the creation of a page tree either with TCA demo records or content elements.&lt;br /&gt;In addition, the most well-known backend components that come with the TYPO3 CMS are presented.</source>
+			</trans-unit>
+			<trans-unit id="description">
+				<source>Styleguide of the TYPO3 CMS</source>
+			</trans-unit>
+			<trans-unit id="title">
+				<source>Styleguide</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

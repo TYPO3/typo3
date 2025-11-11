@@ -73,7 +73,7 @@ class CspModuleController
     {
         $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier($currentModule->getIdentifier())
-            ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf:mlang_tabs_tab'));
+            ->setDisplayName($this->getLanguageService()->translate('title', 'backend.modules.content_security_policy'));
         $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         $reloadButton = $this->componentFactory

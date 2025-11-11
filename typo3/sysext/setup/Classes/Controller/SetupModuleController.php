@@ -152,7 +152,7 @@ class SetupModuleController
         $view->addButtonToButtonBar($this->componentFactory->createSaveButton('SetupModuleController')->setName('data[save]'));
         $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('user_setup')
-            ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang_mod.xlf:mlang_labels_tablabel'));
+            ->setDisplayName($this->getLanguageService()->translate('short_description', 'setup.module'));
         $view->addButtonToButtonBar($shortcutButton);
         $view->assignMultiple([
             'isLanguageUpdate' => $this->languageUpdate,

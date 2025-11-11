@@ -12,7 +12,7 @@ return [
         'access' => 'user',
         'path' => '/module/dashboard',
         'iconIdentifier' => 'module-dashboard',
-        'labels' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_mod.xlf',
+        'labels' => 'dashboard.module',
         'routes' => [
             '_default' => [
                 'target' => DashboardController::class . '::mainAction',

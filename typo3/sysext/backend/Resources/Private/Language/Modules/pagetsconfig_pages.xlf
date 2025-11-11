@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/pagetsconfig_pages.xlf" date="2026-11-10T13:37:37Z" product-name="pagetsconfig_pages">
+		<header/>
+		<body>
+			<trans-unit id="title">
+				<source>Pages containing page TSconfig</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

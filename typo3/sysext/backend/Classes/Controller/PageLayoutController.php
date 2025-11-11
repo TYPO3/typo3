@@ -123,7 +123,7 @@ class PageLayoutController
         $view = $this->moduleTemplateFactory->create($request);
         if ($this->id === 0 || $this->pageinfo === false) {
             // Page uid 0 or no access.
-            $view->setTitle($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'));
+            $view->setTitle($languageService->translate('title', 'backend.modules.layout'));
             $view->assignMultiple([
                 'pageId' => $this->id,
                 'siteName' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? '',
@@ -144,7 +144,7 @@ class PageLayoutController
         $mainLayoutHtml = $this->backendLayoutRenderer->drawContent($request, $pageLayoutContext);
         $pageLocalizationRecord = $this->getLocalizedPageRecord($this->currentSelectedLanguage);
 
-        $view->setTitle($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'), $this->pageinfo['title']);
+        $view->setTitle($languageService->translate('title', 'backend.modules.layout'), $this->pageinfo['title']);
         $view->getDocHeaderComponent()->setPageBreadcrumb($this->pageinfo);
         $view->assignMultiple([
             'pageId' => $this->id,
@@ -958,7 +958,7 @@ class PageLayoutController
     {
         return sprintf(
             '%s: %s [%d]',
-            $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf:mlang_labels_tablabel'),
+            $this->getLanguageService()->translate('short_description', 'backend.modules.layout'),
             BackendUtility::getRecordTitle('pages', (array)$this->pageinfo),
             $this->id
         );

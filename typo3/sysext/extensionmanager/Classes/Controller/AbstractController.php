@@ -144,7 +144,7 @@ class AbstractController extends ActionController
             $menu->addMenuItem($menuItem);
             if ($isActive) {
                 $view->setTitle(
-                    $this->translate('LLL:EXT:extensionmanager/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
+                    LocalizationUtility::translate('title', 'extensionmanager.module'),
                     $menuItemConfig['label']
                 );
             }

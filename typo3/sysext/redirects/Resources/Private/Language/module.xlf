@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/module.xlf" date="2026-11-10T13:37:37Z" product-name="redirects">
+		<header/>
+		<body>
+			<trans-unit id="short_description">
+				<source>Redirect Administration</source>
+			</trans-unit>
+			<trans-unit id="description">
+				<source>This is the administration area for Web Redirects.</source>
+			</trans-unit>
+			<trans-unit id="title">
+				<source>Redirects</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

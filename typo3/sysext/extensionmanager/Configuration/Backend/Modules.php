@@ -17,7 +17,7 @@ return [
         'parent' => 'tools',
         'access' => 'systemMaintainer',
         'iconIdentifier' => 'module-extensionmanager',
-        'labels' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang_mod.xlf',
+        'labels' => 'extensionmanager.module',
         'aliases' => ['tools_ExtensionmanagerExtensionmanager'],
         'path' => '/module/tools/extensionmanager',
         'extensionName' => 'Extensionmanager',

@@ -114,7 +114,7 @@ class AdministrationController extends ActionController
 
         $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
         $view->setTitle(
-            $languageService->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
+            $languageService->translate('title', 'indexed_search.module'),
             $context
         );
 

@@ -11,11 +11,7 @@ return [
         'workspaces' => 'live',
         'path' => '/module/system/styleguide',
         'iconIdentifier' => 'module-styleguide',
-        'labels' => [
-            'title' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.title',
-            'shortDescription' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.shortDescription',
-            'description' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.description',
-        ],
+        'labels' => 'styleguide.modules.overview',
         'aliases' => ['help_styleguide'],
         'appearance' => [
             'dependsOnSubmodules' => true,
@@ -27,11 +23,7 @@ return [
         'access' => 'admin',
         'workspaces' => 'live',
         'path' => '/module/system/styleguide/components',
-        'labels' => [
-            'title' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.components.title',
-            'shortDescription' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.components.shortDescription',
-            'description' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.components.description',
-        ],
+        'labels' => 'styleguide.modules.components',
         'routes' => [
             '_default' => [
                 'target' => ComponentsController::class . '::handleRequest',
@@ -43,11 +35,7 @@ return [
         'access' => 'admin',
         'workspaces' => 'live',
         'path' => '/module/system/styleguide/styles',
-        'labels' => [
-            'title' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.styles.title',
-            'shortDescription' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.styles.shortDescription',
-            'description' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.styles.description',
-        ],
+        'labels' => 'styleguide.modules.styles',
         'routes' => [
             '_default' => [
                 'target' => StylesController::class . '::handleRequest',
@@ -59,11 +47,7 @@ return [
         'access' => 'admin',
         'workspaces' => 'live',
         'path' => '/module/system/styleguide/manage-page-trees',
-        'labels' => [
-            'title' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.pageTrees.title',
-            'shortDescription' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.pageTrees.shortDescription',
-            'description' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:module.configuration.pageTrees.description',
-        ],
+        'labels' => 'styleguide.modules.pagetrees',
         'routes' => [
             '_default' => [
                 'target' => PageTreesController::class . '::handleRequest',

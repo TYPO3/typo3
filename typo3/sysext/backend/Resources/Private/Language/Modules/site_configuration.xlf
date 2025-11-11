@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/site_configuration.xlf" date="2026-11-10T13:37:37Z" product-name="site_configuration">
+		<header/>
+		<body>
+			<trans-unit id="short_description">
+				<source>Site configuration</source>
+			</trans-unit>
+			<trans-unit id="description">
+				<source>This module allows you to configure your entrypoints (called sites).</source>
+			</trans-unit>
+			<trans-unit id="title">
+				<source>Sites</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

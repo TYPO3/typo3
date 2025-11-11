@@ -46,13 +46,13 @@ final readonly class RecordStatisticsController
         $languageService = $this->getLanguageService();
         $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle(
-            $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:mlang_tabs_tab'),
-            $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:recordStatistics.title')
+            $languageService->translate('title', 'reports.modules.overview'),
+            $languageService->translate('title', 'reports.modules.statistics')
         );
         $view->makeDocHeaderModuleMenu();
         $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('system_reports_statistics')
-            ->setDisplayName($languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:recordStatistics.title'));
+            ->setDisplayName($languageService->translate('title', 'reports.modules.statistics'));
         $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         return $view->assignMultiple([

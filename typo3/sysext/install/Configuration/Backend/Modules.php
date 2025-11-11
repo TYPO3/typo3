@@ -12,7 +12,7 @@ return [
         'access' => 'systemMaintainer',
         'path' => '/module/tools/maintenance',
         'iconIdentifier' => 'module-install-maintenance',
-        'labels' => 'LLL:EXT:install/Resources/Private/Language/ModuleInstallMaintenance.xlf',
+        'labels' => 'install.modules.maintenance',
         'routes' => [
             '_default' => [
                 'target' => BackendModuleController::class . '::maintenanceAction',
@@ -30,7 +30,7 @@ return [
         'access' => 'systemMaintainer',
         'path' => '/module/tools/settings',
         'iconIdentifier' => 'module-install-settings',
-        'labels' => 'LLL:EXT:install/Resources/Private/Language/ModuleInstallSettings.xlf',
+        'labels' => 'install.modules.settings',
         'routes' => [
             '_default' => [
                 'target' => BackendModuleController::class . '::settingsAction',
@@ -48,7 +48,7 @@ return [
         'access' => 'systemMaintainer',
         'path' => '/module/tools/upgrade',
         'iconIdentifier' => 'module-install-upgrade',
-        'labels' => 'LLL:EXT:install/Resources/Private/Language/ModuleInstallUpgrade.xlf',
+        'labels' => 'install.modules.upgrade',
         'routes' => [
             '_default' => [
                 'target' => BackendModuleController::class . '::upgradeAction',
@@ -66,7 +66,7 @@ return [
         'access' => 'systemMaintainer',
         'path' => '/module/tools/environment',
         'iconIdentifier' => 'module-install-environment',
-        'labels' => 'LLL:EXT:install/Resources/Private/Language/ModuleInstallEnvironment.xlf',
+        'labels' => 'install.modules.environment',
         'routes' => [
             '_default' => [
                 'target' => BackendModuleController::class . '::environmentAction',

@@ -3,21 +3,27 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf" date="2023-01-19T14:41:00Z" product-name="cms">
 		<header/>
 		<body>
-			<trans-unit id="module.pagetsconfig.title">
+			<trans-unit id="module.pagetsconfig.title" x-unused-since="14.0">
 				<source>Page TSconfig</source>
 			</trans-unit>
-			<trans-unit id="module.pagetsconfig.description">
+			<trans-unit id="module.pagetsconfig.description" x-unused-since="14.0">
 				<source>The page TSconfig module lets you manage configuration overrides for editors and option display throughout the Backend.</source>
 			</trans-unit>
-			<trans-unit id="module.pagetsconfig.shortDescription">
+			<trans-unit id="module.pagetsconfig.shortDescription" x-unused-since="14.0">
 				<source>Page TSconfig tools</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_pages" x-unused-since="14.0">
+				<source>Pages containing page TSconfig</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_active" x-unused-since="14.0">
+				<source>Active page TSconfig</source>
+			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes" x-unused-since="14.0">
+				<source>Included page TSconfig</source>
 			</trans-unit>
 
 			<trans-unit id="module.pagetsconfig.noAccess">
 				<source>Access to this module denied.</source>
-			</trans-unit>
-			<trans-unit id="module.pagetsconfig_pages">
-				<source>Pages containing page TSconfig</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_pages.headline">
 				<source>Pages containing page TSconfig</source>
@@ -35,9 +41,6 @@
 				<source>Number of lines of code in field "TSconfig"</source>
 			</trans-unit>
 
-			<trans-unit id="module.pagetsconfig_active">
-				<source>Active page TSconfig</source>
-			</trans-unit>
 			<trans-unit id="module.pagetsconfig_active.headline">
 				<source>Active page TSconfig of page "%s"</source>
 			</trans-unit>
@@ -84,9 +87,6 @@
 				<source>Constant usage: [%s]</source>
 			</trans-unit>
 
-			<trans-unit id="module.pagetsconfig_includes">
-				<source>Included page TSconfig</source>
-			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.headline">
 				<source>Included page TSconfig of page "%s"</source>
 			</trans-unit>

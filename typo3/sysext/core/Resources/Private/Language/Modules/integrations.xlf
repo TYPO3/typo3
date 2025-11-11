@@ -6,7 +6,10 @@
 			<trans-unit id="title">
 				<source>Integrations</source>
 			</trans-unit>
-			<trans-unit id="shortDescription">
+			<trans-unit id="shortDescription" x-unused-since="14.0">
+				<source>External system integrations</source>
+			</trans-unit>
+			<trans-unit id="short_description">
 				<source>External system integrations</source>
 			</trans-unit>
 			<trans-unit id="description">

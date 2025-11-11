@@ -15,11 +15,7 @@ return [
         'access' => 'admin',
         'path' => '/module/web/ts',
         'iconIdentifier' => 'module-template',
-        'labels' => [
-            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:module.typoscript.title',
-            'shortDescription' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:module.typoscript.shortDescription',
-            'description' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:module.typoscript.description',
-        ],
+        'labels' => 'tstemplate.modules.ts',
         'navigationComponent' => '@typo3/backend/tree/page-tree-element',
     ],
     'web_typoscript_recordsoverview' => [
@@ -27,9 +23,7 @@ return [
         'access' => 'admin',
         'path' => '/module/web/typoscript/records-overview',
         'iconIdentifier' => 'module-template',
-        'labels' => [
-            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:submodules.option.typoscriptOverview',
-        ],
+        'labels' => 'tstemplate.modules.recordsoverview',
         'routes' => [
             '_default' => [
                 'target' => TemplateRecordsOverviewController::class . '::handleRequest',
@@ -41,9 +35,7 @@ return [
         'access' => 'admin',
         'path' => '/module/web/typoscript/constant-editor',
         'iconIdentifier' => 'module-template',
-        'labels' => [
-            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:submodules.option.constantEditor',
-        ],
+        'labels' => 'tstemplate.modules.constanteditor',
         'routes' => [
             '_default' => [
                 'target' => ConstantEditorController::class . '::handleRequest',
@@ -59,9 +51,7 @@ return [
         'access' => 'admin',
         'path' => '/module/web/typoscript/overview',
         'iconIdentifier' => 'module-template',
-        'labels' => [
-            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:submodules.option.infoModify',
-        ],
+        'labels' => 'tstemplate.modules.infomodify',
         'routes' => [
             '_default' => [
                 'target' => InfoModifyController::class . '::handleRequest',
@@ -76,9 +66,7 @@ return [
         'access' => 'admin',
         'path' => '/module/typoscript/active',
         'iconIdentifier' => 'module-template',
-        'labels' => [
-            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:submodules.option.active',
-        ],
+        'labels' => 'tstemplate.modules.active',
         'routes' => [
             '_default' => [
                 'target' => ActiveTypoScriptController::class . '::indexAction',
@@ -105,9 +93,7 @@ return [
         'access' => 'admin',
         'path' => '/module/web/typoscript/analyzer',
         'iconIdentifier' => 'module-template',
-        'labels' => [
-            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:submodules.option.templateAnalyzer',
-        ],
+        'labels' => 'tstemplate.modules.analyzer',
         'routes' => [
             '_default' => [
                 'target' => TemplateAnalyzerController::class . '::indexAction',

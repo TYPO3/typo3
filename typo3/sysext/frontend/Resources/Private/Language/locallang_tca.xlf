@@ -3,18 +3,19 @@
 	<file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:32Z" product-name="cms">
 		<header/>
 		<body>
-			<trans-unit id="mod_tx_cms_webinfo_page">
+			<trans-unit id="mod_tx_cms_webinfo_page" x-unused-since="14.0">
 				<source>Pagetree Overview</source>
 			</trans-unit>
-			<trans-unit id="mod_tx_cms_webinfo_page.description">
+			<trans-unit id="mod_tx_cms_webinfo_page.description" x-unused-since="14.0">
 				<source>View page records and settings in a tree structure with detailed metadata.</source>
 			</trans-unit>
-			<trans-unit id="mod_tx_cms_webinfo_lang">
+			<trans-unit id="mod_tx_cms_webinfo_lang" x-unused-since="14.0">
 				<source>Localization Overview</source>
 			</trans-unit>
-			<trans-unit id="mod_tx_cms_webinfo_lang.description">
+			<trans-unit id="mod_tx_cms_webinfo_lang.description" x-unused-since="14.0">
 				<source>Check translation status and manage localized content for pages.</source>
 			</trans-unit>
+
 			<trans-unit id="pages.palettes.standard" x-unused-since="14.0">
 				<source>Page</source>
 			</trans-unit>

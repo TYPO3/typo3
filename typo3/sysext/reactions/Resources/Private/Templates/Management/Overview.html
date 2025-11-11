@@ -12,7 +12,7 @@
     <f:asset.module identifier="@typo3/backend/multi-record-selection-edit-action.js"/>
     <f:asset.module identifier="@typo3/backend/multi-record-selection-delete-action.js"/>
 
-    <h1><f:translate key="LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:heading_text"/></h1>
+    <h1><f:translate key="LLL:EXT:reactions/Resources/Private/Language/module.xlf:heading_text"/></h1>
     <f:variable
         name="returnUrl"
         value="{f:be.uri(route:'integrations_reactions')}"
@@ -26,13 +26,13 @@
             <f:if condition="{demand.constraints}">
                 <f:then>
                     <f:render section="filter" arguments="{_all}" />
-                    <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::NOTICE')}" title="{f:translate(key: 'LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:reaction_not_found_with_filter.title')}">
-                        <p><f:translate key="LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:reaction_not_found_with_filter.message"/></p>
+                    <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::NOTICE')}" title="{f:translate(key: 'LLL:EXT:reactions/Resources/Private/Language/module.xlf:reaction_not_found_with_filter.title')}">
+                        <p><f:translate key="LLL:EXT:reactions/Resources/Private/Language/module.xlf:reaction_not_found_with_filter.message"/></p>
                         <a class="btn btn-default" href="{f:be.uri(route:'integrations_reactions')}">
-                            <f:translate key="LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:reaction_no_filter"/>
+                            <f:translate key="LLL:EXT:reactions/Resources/Private/Language/module.xlf:reaction_no_filter"/>
                         </a>
                         <be:link.newRecord returnUrl="{returnUrl}" class="btn btn-primary" table="sys_reaction">
-                            <f:translate key="LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:reaction_create"/>
+                            <f:translate key="LLL:EXT:reactions/Resources/Private/Language/module.xlf:reaction_create"/>
                         </be:link.newRecord>
                     </f:be.infobox>
 
@@ -42,10 +42,10 @@
                     </form>
                 </f:then>
                 <f:else>
-                    <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}" title="{f:translate(key: 'LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:reaction_not_found.title')}">
-                        <p><f:translate key="LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:reaction_not_found.message"/></p>
+                    <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}" title="{f:translate(key: 'LLL:EXT:reactions/Resources/Private/Language/module.xlf:reaction_not_found.title')}">
+                        <p><f:translate key="LLL:EXT:reactions/Resources/Private/Language/module.xlf:reaction_not_found.message"/></p>
                         <be:link.newRecord returnUrl="{returnUrl}" class="btn btn-primary" table="sys_reaction">
-                            <f:translate key="LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:reaction_create"/>
+                            <f:translate key="LLL:EXT:reactions/Resources/Private/Language/module.xlf:reaction_create"/>
                         </be:link.newRecord>
                     </f:be.infobox>
                 </f:else>
@@ -165,7 +165,7 @@
                             </td>
                             <td colspan="2">
                                 <span class="badge badge-danger">
-                                    <f:translate key="LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:reaction_no_implementation_class" arguments="{0: reaction.type}" />
+                                    <f:translate key="LLL:EXT:reactions/Resources/Private/Language/module.xlf:reaction_no_implementation_class" arguments="{0: reaction.type}" />
                                 </span>
                             </td>
                             <td class="col-control">
@@ -259,13 +259,13 @@
         <input type="hidden" name="orderDirection" value="{demand.orderDirection}">
         <div class="form-row">
             <div class="form-group">
-                <label for="demand-name" class="form-label"><f:translate key="LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:filter.name"/></label>
+                <label for="demand-name" class="form-label"><f:translate key="LLL:EXT:reactions/Resources/Private/Language/module.xlf:filter.name"/></label>
                 <input type="text" id="demand-name" class="form-control" name="demand[name]" value="{demand.name}"/>
             </div>
             <div class="form-group">
-                <label for="demand-reaction-type" class="form-label"><f:translate key="LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:filter.reaction_type"/></label>
+                <label for="demand-reaction-type" class="form-label"><f:translate key="LLL:EXT:reactions/Resources/Private/Language/module.xlf:filter.reaction_type"/></label>
                 <select id="demand-reaction-type" class="form-select" name="demand[reaction_type]" data-on-change="submit">
-                    <option value=""><f:translate key="LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:filter.reaction_type.showAll"/></option>
+                    <option value=""><f:translate key="LLL:EXT:reactions/Resources/Private/Language/module.xlf:filter.reaction_type.showAll"/></option>
                     <f:for each="{reactionTypes}" key="type" as="reaction">
                         <option value="{type}" {f:if(condition: '{type} == {demand.reactionType}', then: 'selected')}>
                             <f:translate key="{reaction.description}" default="{reaction.description}"/>
@@ -274,8 +274,8 @@
                 </select>
             </div>
             <div class="form-group align-self-end">
-                <input type="submit" value="{f:translate(key: 'LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:filter.sendButton')}" class="btn btn-default" />
-                <a href="{f:be.uri(route:'integrations_reactions')}" class="btn btn-link"><f:translate key="LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:filter.resetButton"/></a>
+                <input type="submit" value="{f:translate(key: 'LLL:EXT:reactions/Resources/Private/Language/module.xlf:filter.sendButton')}" class="btn btn-default" />
+                <a href="{f:be.uri(route:'integrations_reactions')}" class="btn btn-link"><f:translate key="LLL:EXT:reactions/Resources/Private/Language/module.xlf:filter.resetButton"/></a>
             </div>
         </div>
     </form>
@@ -286,7 +286,7 @@
         <f:be.uri route="reaction" referenceType="url" />/{reaction.identifier}
     </code>
     <button type="button" class="btn btn-default" data-bs-target="#codesnippet-{reaction.identifier}" data-bs-toggle="collapse">
-        <f:translate key="LLL:EXT:reactions/Resources/Private/Language/Modules/reactions.xlf:reaction_example" />
+        <f:translate key="LLL:EXT:reactions/Resources/Private/Language/module.xlf:reaction_example" />
     </button>
     <div class="collapse" id="codesnippet-{reaction.identifier}">
 <pre class="my-1 p-2 bg-dark text-bg-primary">

@@ -11,7 +11,7 @@ return [
         'access' => 'user',
         'path' => '/module/file/list',
         'iconIdentifier' => 'module-filelist',
-        'labels' => 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf',
+        'labels' => 'filelist.module',
         'aliases' => ['file_FilelistList'],
         'routes' => [
             '_default' => [

@@ -339,6 +339,17 @@ Now, labels can use more speaking identifiers:
         ],
     ];
 
+The naming for the short-hand translation domain for modules should follow
+the following pattern as best practice:
+
+*  `<extensionkey>.modules.<modulename>` - **when multiple modules exist for an extension**.
+   Both `extensionKey` and `modulename` should use lower snake case ("some_long_module_name"),
+   ideally without underscores (`qrcode.modules.generator` is more readable than
+   `qrcode.modules.backend_image_generator` for example). Files are put into
+   :file:`EXT:extensionkey/Resources/Private/Languages/Modules/modulename.xlf`.
+*  `<extensionkey>.module` - **single backend module only**
+   The file is saved as :file:`EXT:extensionkey/Resources/Private/Languages/module.xlf`.
+
 To summarize, the key changes are:
 
 #.  Use a speaking XLIFF file inside :directory:`/Resources/Private/Languages/Modules` (best practice, could be any sub-directory)
@@ -348,6 +359,10 @@ To summarize, the key changes are:
     - "description" instead of "mlang_labels_tabdescr"
 #.  Use short-form identifiers ("my_extension.modules.my_module" instead of "LLL:EXT:my_extension/Resources/Private/Language/locallang_mod.xlf")
     inside the :file:`Backend/Modules.php` registration.
+
+All TYPO3 Core backend modules that used the old label identifiers have been migrated to the new syntax, the utilized
+files are now deprecated, see :ref:`deprecation <deprecation-107938-1762181263>`. TYPO3 Core also uses
+singular module language containers like `workspaces.module` instead of `workspaces.modules.workspaces`.
 
 Impact
 ======

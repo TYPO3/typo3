@@ -10,7 +10,7 @@ return [
         'parent' => 'content',
         'access' => 'user',
         'iconIdentifier' => 'module-indexed_search',
-        'labels' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_mod.xlf',
+        'labels' => 'indexed_search.module',
         'path' => 'module/manage/search-index',
         'aliases' => ['web_IndexedSearchIsearch'],
         'extensionName' => 'IndexedSearch',

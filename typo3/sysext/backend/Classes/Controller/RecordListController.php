@@ -204,7 +204,7 @@ class RecordListController
             $clipboardHtml = '<hr class="spacer"><typo3-backend-clipboard-panel return-url="' . htmlspecialchars((string)$dbList->listURL()) . '"></typo3-backend-clipboard-panel>';
         }
 
-        $view->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:mlang_tabs_tab'), $title);
+        $view->setTitle($languageService->translate('title', 'backend.modules.list'), $title);
         if (empty($tableListHtml)) {
             $this->addNoRecordsFlashMessage($view, $this->table);
         }
@@ -602,7 +602,7 @@ class RecordListController
         }
         return trim(sprintf(
             $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:shortcut.title'),
-            $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:mlang_tabs_tab'),
+            $languageService->translate('title', 'backend.modules.list'),
             $tableTitle,
             $pageTitle,
             $this->id

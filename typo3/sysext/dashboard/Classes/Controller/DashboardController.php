@@ -45,7 +45,7 @@ class DashboardController
         $view = $this->moduleTemplateFactory->create($request);
         $this->preparePageRenderer();
         $this->addFrontendResources();
-        $view->setTitle($this->getLanguageService()->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'));
+        $view->setTitle($this->getLanguageService()->translate('title', 'dashboard.module'));
         $view->getDocHeaderComponent()->disable();
 
         return $view->renderResponse('Dashboard/Main');

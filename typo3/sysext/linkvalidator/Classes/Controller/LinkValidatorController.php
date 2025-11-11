@@ -489,9 +489,8 @@ class LinkValidatorController
 
     protected function getModuleTitle(): string
     {
-        $languageService = $this->getLanguageService();
         $pageTitle = '';
-        $moduleName = $languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang_mod.xlf:mlang_labels_tablabel');
+        $moduleName = $this->getLanguageService()->translate('short_description', 'linkvalidator.module');
         if ($this->id === 0) {
             $pageTitle = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         } elseif ($this->pageRecord !== []) {

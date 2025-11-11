@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/module.xlf" date="2026-11-10T13:37:37Z" product-name="scheduler">
+		<header/>
+		<body>
+			<trans-unit id="short_description">
+				<source>TYPO3 Scheduler</source>
+			</trans-unit>
+			<trans-unit id="description">
+				<source>Scheduler administration module. Check all registered tasks. Add, modify or delete tasks.</source>
+			</trans-unit>
+			<trans-unit id="title">
+				<source>Scheduler</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

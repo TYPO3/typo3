@@ -3,41 +3,40 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2013-05-01T00:00:000" product-name="styleguide">
 		<header/>
 		<body>
-			<trans-unit id="module.configuration.title">
+			<trans-unit id="module.configuration.title" x-unused-since="14.0">
 				<source>Styleguide</source>
 			</trans-unit>
-			<trans-unit id="module.configuration.shortDescription">
+			<trans-unit id="module.configuration.shortDescription" x-unused-since="14.0">
 				<source>Styleguide of the TYPO3 CMS</source>
 			</trans-unit>
-			<trans-unit id="module.configuration.description">
+			<trans-unit id="module.configuration.description" x-unused-since="14.0">
 				<source>The module offers the creation of a page tree either with TCA demo records or content elements.&lt;br /&gt;In addition, the most well-known backend components that come with the TYPO3 CMS are presented.</source>
 			</trans-unit>
-
-			<trans-unit id="module.configuration.components.title">
+			<trans-unit id="module.configuration.components.title" x-unused-since="14.0">
 				<source>Component Library: Components</source>
 			</trans-unit>
-			<trans-unit id="module.configuration.components.shortDescription">
+			<trans-unit id="module.configuration.components.shortDescription" x-unused-since="14.0">
 				<source>Backend UI Components</source>
 			</trans-unit>
-			<trans-unit id="module.configuration.components.description">
+			<trans-unit id="module.configuration.components.description" x-unused-since="14.0">
 				<source>Browse and explore the TYPO3 backend component library including buttons, forms, cards, tables, and other UI elements.</source>
 			</trans-unit>
-			<trans-unit id="module.configuration.pageTrees.title">
+			<trans-unit id="module.configuration.pageTrees.title" x-unused-since="14.0">
 				<source>Manage example page trees</source>
 			</trans-unit>
-			<trans-unit id="module.configuration.pageTrees.shortDescription">
+			<trans-unit id="module.configuration.pageTrees.shortDescription" x-unused-since="14.0">
 				<source>Demo Page Trees</source>
 			</trans-unit>
-			<trans-unit id="module.configuration.pageTrees.description">
+			<trans-unit id="module.configuration.pageTrees.description" x-unused-since="14.0">
 				<source>Create and manage example page trees with TCA demo records or content elements for testing and demonstration purposes.</source>
 			</trans-unit>
-			<trans-unit id="module.configuration.styles.title">
+			<trans-unit id="module.configuration.styles.title" x-unused-since="14.0">
 				<source>Component Library: Styles</source>
 			</trans-unit>
-			<trans-unit id="module.configuration.styles.shortDescription">
+			<trans-unit id="module.configuration.styles.shortDescription" x-unused-since="14.0">
 				<source>Design Tokens and Styles</source>
 			</trans-unit>
-			<trans-unit id="module.configuration.styles.description">
+			<trans-unit id="module.configuration.styles.description" x-unused-since="14.0">
 				<source>Explore design tokens, color schemes, typography, shadows, and other styling elements used in the TYPO3 backend.</source>
 			</trans-unit>
 

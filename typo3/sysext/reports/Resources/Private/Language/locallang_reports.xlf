@@ -3,13 +3,13 @@
 	<file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_reports.xlf" date="2011-10-17T20:22:35Z" product-name="reports">
 		<header/>
 		<body>
-			<trans-unit id="status_report_title">
+			<trans-unit id="status_report_title" x-unused-since="14.0">
 				<source>Status Report</source>
 			</trans-unit>
-			<trans-unit id="status_report_description">
+			<trans-unit id="status_report_description" x-unused-since="14.0">
 				<source>Get a status report about your site's operation and any detected problems.</source>
 			</trans-unit>
-			<trans-unit id="status_report_explanation">
+			<trans-unit id="status_report_explanation" x-unused-since="14.0">
 				<source>Here you can find a short overview of your site's parameters as well as any problems detected with your installation. It may be useful to copy and paste this information into support requests filed on TYPO3's support mailing lists and project issue trackers.</source>
 			</trans-unit>
 			<trans-unit id="status_ok">

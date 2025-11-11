@@ -120,7 +120,7 @@ final readonly class ReviewController
             'selectedStage' => (int)$moduleData->get('stage'),
         ]);
         $view->setTitle(
-            $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab') . ' [' . $activeWorkspaceTitle . ']',
+            $this->getLanguageService()->translate('title', 'workspaces.module') . ' [' . $activeWorkspaceTitle . ']',
             $pageTitle
         );
         $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);

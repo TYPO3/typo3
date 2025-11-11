@@ -12,7 +12,7 @@ return [
         'path' => '/module/system/scheduler',
         'workspaces' => 'live',
         'iconIdentifier' => 'module-scheduler',
-        'labels' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf',
+        'labels' => 'scheduler.module',
         'routes' => [
             '_default' => [
                 'target' => SchedulerModuleController::class . '::handleRequest',

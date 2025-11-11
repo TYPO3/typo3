@@ -63,7 +63,7 @@ class ManagementController
         $demand = Demand::fromRequest($request);
 
         $view->setTitle(
-            $this->getLanguageService()->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:mlang_tabs_tab')
+            $this->getLanguageService()->translate('title', 'redirects.module')
         );
         $this->registerDocHeaderButtons($view, $request->getAttribute('normalizedParams')->getRequestUri());
 
@@ -185,7 +185,7 @@ class ManagementController
         // Shortcut
         $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('site_redirects')
-            ->setDisplayName($languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:mlang_labels_tablabel'));
+            ->setDisplayName($languageService->translate('short_description', 'redirects.module'));
         $view->addButtonToButtonBar($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 

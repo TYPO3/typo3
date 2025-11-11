@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/module.xlf" date="2026-11-10T13:37:37Z" product-name="filelist">
+		<header/>
+		<body>
+			<trans-unit id="short_description">
+				<source>Listing of files in the directory</source>
+			</trans-unit>
+			<trans-unit id="description">
+				<source>This is the file administration system in TYPO3. It allows you to access the file mounts of your login. Through this module you can upload, copy, move an delete files on the server.</source>
+			</trans-unit>
+			<trans-unit id="title">
+				<source>Filelist</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
