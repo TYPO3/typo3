@@ -431,7 +431,11 @@ class PageLayoutController
                     'state' => InfoboxViewHelper::STATE_ERROR,
                 ];
             } else {
-                $externalUrl = $this->resolveExternalUrl($this->pageinfo, $request);
+                if ($this->currentSelectedLanguage > 0 && ($overlayRecord = $this->getLocalizedPageRecord($this->currentSelectedLanguage)) !== null) {
+                    $externalUrl = $this->resolveExternalUrl($overlayRecord, $request);
+                } else {
+                    $externalUrl = $this->resolveExternalUrl($this->pageinfo, $request);
+                }
                 if ($externalUrl !== '') {
                     $externalUrl = htmlspecialchars($externalUrl);
                     $externalUrlHtml = '<a href="' . $externalUrl . '" target="_blank" rel="noreferrer">' . $externalUrl . '</a>';
