@@ -262,6 +262,9 @@ readonly class ResourceFactory implements SingletonInterface
         }
         if (MathUtility::canBeInterpretedAsInteger($storageId)) {
             $storage = $this->storageRepository->findByUid($storageId);
+            if ($storage === null) {
+                throw new ResourceDoesNotExistException('Storage ' . $storageId . ' does not exist', 1762852423);
+            }
             if ($storage->hasFile($objectIdentifier)) {
                 return $storage->getFile($objectIdentifier);
             }
