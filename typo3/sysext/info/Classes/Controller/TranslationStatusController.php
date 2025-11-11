@@ -221,6 +221,9 @@ class TranslationStatusController extends InfoModuleController
                         if (!$row['_HIDDEN']) {
                             $status = 'success';
                         }
+                        if ($row['_COUNT'] > 1) {
+                            $status = 'warning';
+                        }
                         $info = ($showPageId ? ' [' . (int)$row['uid'] . ']' : '') . ' ' . htmlspecialchars(
                             GeneralUtility::fixed_lgd_cs($row['title'], $titleLen)
                         ) . ((string)$row['nav_title'] !== '' ? ' [Nav: <em>' . htmlspecialchars(
