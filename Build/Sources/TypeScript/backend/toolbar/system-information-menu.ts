@@ -17,6 +17,7 @@ import Icons from '../icons';
 import PersistentStorage from '../storage/persistent';
 import Viewport from '../viewport';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import '../element/status-indicator-element';
 
 /**
  * Explicit selectors to avoid nesting queries

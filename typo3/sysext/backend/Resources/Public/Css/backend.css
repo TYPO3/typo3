@@ -1803,6 +1803,7 @@ a:not([href]):not([class]),a:not([href]):not([class]):hover{color:inherit;text-d
 .dropdown-table td[data-type=title],.dropdown-table th[data-type=title]{max-width:10rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .dropdown-table td[data-type=icon]:first-child,.dropdown-table th[data-type=icon]:first-child{-webkit-padding-end:0;padding-inline-end:0}
 .dropdown-table td[data-type=icon] .icon,.dropdown-table th[data-type=icon] .icon{vertical-align:unset}
+.dropdown-table td[data-type=status],.dropdown-table th[data-type=status]{width:0;-webkit-padding-end:0;padding-inline-end:0}
 .dropdown-table td[data-type=value],.dropdown-table th[data-type=value]{word-break:break-word}
 .dropdown-list{list-style:none;margin:0;padding:0}
 .dropdown-list li{display:flex;gap:1px}
