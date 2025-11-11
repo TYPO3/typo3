@@ -200,6 +200,18 @@ final class TranslateViewHelperTest extends FunctionalTestCase
                 '<f:translate key="apple:tree" default="apple:tree"/>',
                 'apple:tree',
             ],
+            'valid translation domain with underscored domain attribute for existing label fails' => [
+                '<f:translate key="module.headline" domain="backend.modules.content-security-policy" />',
+                '',
+            ],
+            'valid translation domain with underscored domain attribute for existing label' => [
+                '<f:translate key="module.headline" domain="backend.modules.content_security_policy" />',
+                'Content Security Policy',
+            ],
+            'valid translation domain in key attribute for existing label' => [
+                '<f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf:module.headline" />',
+                'Content Security Policy',
+            ],
         ];
     }
 

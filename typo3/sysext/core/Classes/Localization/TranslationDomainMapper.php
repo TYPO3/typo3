@@ -348,7 +348,8 @@ readonly class TranslationDomainMapper
     {
         // Insert underscores before uppercase letters (except at start) and convert to lowercase
         $result = preg_replace('/([a-z0-9])([A-Z])/', '$1_$2', $input);
-        return strtolower($result ?? $input);
+        $result = strtolower($result ?? $input);
+        return str_replace('-', '_', $result);
     }
 
     /**
