@@ -14,6 +14,7 @@
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { InputTransformer, type GenericKeyValue } from './input-transformer';
 import type { RequestMiddleware, RequestHandler } from '@typo3/core/ajax/ajax-request-types';
+import { UrlFactory } from '@typo3/core/factory/url-factory';
 
 /**
  * @example send data as `Content-Type: multipart/form-data` (default)
@@ -54,8 +55,10 @@ class AjaxRequest {
   public withQueryArguments(data: string | Array<string> | GenericKeyValue | URLSearchParams): AjaxRequest {
     const clone = this.clone();
 
-    if (!(data instanceof URLSearchParams)) {
-      data = new URLSearchParams(InputTransformer.toSearchParams(data));
+    if (Array.isArray(data)) {
+      data = new URLSearchParams(data.join('&'));
+    } else if (!(data instanceof URLSearchParams)) {
+      data = UrlFactory.createSearchParams(data);
     }
     for (const [key, value] of data.entries()) {
       this.url.searchParams.append(key, value);
