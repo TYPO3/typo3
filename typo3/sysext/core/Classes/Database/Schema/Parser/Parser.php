@@ -58,6 +58,7 @@ use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\TimestampDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\TinyBlobDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\TinyIntDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\TinyTextDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\UuidDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\VarBinaryDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\VarCharDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\YearDataType;
@@ -748,6 +749,7 @@ final class Parser
      *   | ENUM(value1,value2,value3,...) [CHARACTER SET charset_name] [COLLATE collation_name]
      *   | SET(value1,value2,value3,...) [CHARACTER SET charset_name] [COLLATE collation_name]
      *   | JSON
+     *   | UUID
      *
      * @throws StatementException
      */
@@ -928,6 +930,10 @@ final class Parser
             case Lexer::T_JSON:
                 $this->match(Lexer::T_JSON);
                 $dataType = new JsonDataType();
+                break;
+            case Lexer::T_UUID:
+                $this->match(Lexer::T_UUID);
+                $dataType = new UuidDataType();
                 break;
             default:
                 $this->syntaxError(

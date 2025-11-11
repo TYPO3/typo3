@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Parser;
 use Doctrine\DBAL\Schema\ForeignKeyConstraint;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types\GuidType;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\SmallIntType;
 use Doctrine\DBAL\Types\StringType;
@@ -236,5 +237,23 @@ final class TableBuilderTest extends UnitTestCase
         self::assertSame('', $subject->getDefault());
         self::assertTrue($subject->getNotnull());
         self::assertTrue($subject->getFixed());
+    }
+
+    #[Test]
+    public function isExpectedUuidOne(): void
+    {
+        $subject = $this->table->getColumn('uuid_one');
+        self::assertInstanceOf(GuidType::class, $subject->getType());
+        self::assertSame('c6e9c385-d15b-4ae1-9302-931c78f1a458', $subject->getDefault());
+        self::assertTrue($subject->getNotnull());
+    }
+
+    #[Test]
+    public function isExpectedUuidTwo(): void
+    {
+        $subject = $this->table->getColumn('uuid_two');
+        self::assertInstanceOf(GuidType::class, $subject->getType());
+        self::assertNull($subject->getDefault());
+        self::assertFalse($subject->getNotnull());
     }
 }
