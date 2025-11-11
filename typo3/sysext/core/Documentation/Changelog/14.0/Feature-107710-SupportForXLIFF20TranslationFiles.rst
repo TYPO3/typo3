@@ -64,7 +64,7 @@ Example XLIFF 1.2:
 **XLIFF 2.0 Structure:**
 
 *   Uses ``<unit>`` elements containing ``<segment>`` elements
-*   Translation state via ``state`` attribute on ``<target>`` (``initial``,
+*   Translation state via ``state`` attribute on ``<segment>`` (``initial``,
     ``translated``, ``reviewed``, ``final``)
 *   More granular and modern structure
 *   Namespace: ``urn:oasis:names:tc:xliff:document:2.0``
@@ -78,9 +78,9 @@ Example XLIFF 2.0:
            srcLang="en" trgLang="de">
         <file id="f1">
             <unit id="button.submit">
-                <segment>
+                <segment state="final">
                     <source>Submit</source>
-                    <target state="final">Absenden</target>
+                    <target>Absenden</target>
                 </segment>
             </unit>
         </file>
