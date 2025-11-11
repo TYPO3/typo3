@@ -254,7 +254,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
                 'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.sysinfo.database',
                 'titleAddition' => $connectionName,
                 'value' => $serverVersion,
-                'status' => $success ?: InformationStatus::WARNING->value,
+                'status' => $success ? InformationStatus::NOTICE->value : InformationStatus::ERROR->value,
                 'iconIdentifier' => 'information-database',
             ];
         }
@@ -266,7 +266,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
         $this->systemInformation[] = [
             'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.sysinfo.applicationcontext',
             'value' => (string)$applicationContext,
-            'status' => $applicationContext->isProduction() ? InformationStatus::OK->value : InformationStatus::WARNING->value,
+            'status' => $applicationContext->isProduction() ? InformationStatus::NOTICE->value : InformationStatus::WARNING->value,
             'iconIdentifier' => 'information-application-context',
         ];
     }

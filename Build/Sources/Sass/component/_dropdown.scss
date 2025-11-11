@@ -375,6 +375,11 @@ button.dropdown-item,
             }
         }
 
+        &[data-type="status"] {
+            width: 0;
+            padding-inline-end: 0;
+        }
+
         &[data-type="value"] {
             word-break: break-word;
         }

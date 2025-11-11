@@ -30,7 +30,13 @@
                     <f:translate key="{info.title}" default="{info.title}"/>
                     <f:if condition="{info.titleAddition}"> ({info.titleAddition -> f:format.htmlspecialchars()})</f:if>
                 </th>
-                <td data-type="value">
+                <f:if condition="{info.status}">
+                    <td data-type="status">
+                        <typo3-backend-status-indicator state="{info.status}"></typo3-backend-status-indicator>
+                    </td>
+                </f:if>
+                <td {f:if(condition: info.status, else: 'colspan="2"')} data-type="value">
+
                     {info.value}
                 </td>
             </tr>

@@ -88,7 +88,6 @@ final class ToolbarItemProvider
                 $label = 'automatically';
                 if ($this->lastRunInformation['type'] === 'manual') {
                     $label = 'manually';
-                    $severity = InformationStatus::INFO;
                 }
                 $type = $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.' . $label);
                 $message = sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:systeminformation.lastRunValue'), $startDate, $startTime, $duration, $type);
