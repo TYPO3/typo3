@@ -319,24 +319,6 @@ abstract class ActionController implements ControllerInterface
     }
 
     /**
-     * Collects the base validators which were defined for the data type of each
-     * controller argument and adds them to the argument's validator chain.
-     *
-     * @internal
-     */
-    public function initializeControllerArgumentsBaseValidators(): void
-    {
-        /** @var Argument $argument */
-        foreach ($this->arguments as $argument) {
-            $validator = $this->validatorResolver->getBaseValidatorConjunction(
-                $argument->getDataType(),
-                $this->request
-            );
-            $argument->setValidator($validator);
-        }
-    }
-
-    /**
      * Handles an incoming request and returns a response object
      *
      * @internal
