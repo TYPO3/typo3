@@ -87,6 +87,9 @@ class ViewModuleController
                 '',
                 ContextualFeedbackSeverity::INFO
             );
+            if (is_array($pageInfo)) {
+                $view->getDocHeaderComponent()->setPageBreadcrumb($pageInfo);
+            }
             return $view->renderResponse('Empty');
         }
 
