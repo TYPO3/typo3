@@ -233,7 +233,7 @@ class GridDataService implements LoggerAwareInterface
                 $messages = $this->getIntegrityService()->getIssueMessages($identifier);
                 $element['integrity'] = [
                     'status' => $this->getIntegrityService()->getStatusRepresentation($identifier),
-                    'messages' => htmlspecialchars(implode('<br>', $messages)),
+                    'messages' => implode('<br>', $messages),
                 ];
             }
         }

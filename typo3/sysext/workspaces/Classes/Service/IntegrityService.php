@@ -131,13 +131,13 @@ class IntegrityService
                     $this->addIssue(
                         $element->getLiveRecord()->getIdentifier(),
                         self::STATUS_Warning,
-                        sprintf($languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:integrity.dependsOnDefaultLanguageRecord'), $title)
+                        sprintf($languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:integrity.dependsOnDefaultLanguageRecord'), htmlspecialchars($title))
                     );
                     // Add info for related localization parent record:
                     $this->addIssue(
                         $table . ':' . $languageParentRecord['uid'],
                         self::STATUS_Info,
-                        sprintf($languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:integrity.isDefaultLanguageRecord'), $title)
+                        sprintf($languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:integrity.isDefaultLanguageRecord'), htmlspecialchars($title))
                     );
                 }
             }
