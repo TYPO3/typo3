@@ -35,7 +35,7 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
     protected array $configurationToUseInTestInstance = [
         'FE' => [
             'cacheHash' => [
-                'excludedParameters' => ['testAbsRefPrefix', 'testCompressor'],
+                'excludedParameters' => ['testAbsRefPrefix'],
             ],
         ],
     ];
@@ -89,147 +89,35 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
     public static function urisAreRenderedUsingAbsRefPrefixDataProvider(): array
     {
         return [
-            // no compression settings
-            'none - none' => [
-                'none', 'none',
+            'none' => [
+                'none',
                 [
                     'local' => '"{{CANDIDATE}}"',
                     'extension' => '"/{{CANDIDATE}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
             ],
-            'auto - none' => [
-                'auto', 'none',
+            'auto' => [
+                'auto',
                 [
                     'local' => '"/{{CANDIDATE}}"',
                     'extension' => '"/{{CANDIDATE}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
             ],
-            'absolute-with-host - none' => [
-                'absolute-with-host', 'none',
+            'absolute-with-host' => [
+                'absolute-with-host',
                 [
                     'local' => '"http://localhost/{{CANDIDATE}}"',
                     'extension' => '"http://localhost/{{CANDIDATE}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
             ],
-            'absolute-without-host - none' => [
-                'absolute-without-host', 'none',
+            'absolute-without-host' => [
+                'absolute-without-host',
                 [
                     'local' => '"/{{CANDIDATE}}"',
                     'extension' => '"/{{CANDIDATE}}\?\d+"',
-                    'external' => '"{{CANDIDATE}}"',
-                ],
-            ],
-            // concatenation
-            'none - concatenate' => [
-                'none', 'concatenate',
-                [
-                    '!extension' => '{{CANDIDATE}}',
-                    'local' => '"{{CANDIDATE}}"',
-                    'extension' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
-                    'external' => '"{{CANDIDATE}}"',
-                ],
-            ],
-            'auto - concatenate' => [
-                'auto', 'concatenate',
-                [
-                    '!extension' => '{{CANDIDATE}}',
-                    'local' => '"/{{CANDIDATE}}"',
-                    'extension' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
-                    'external' => '"{{CANDIDATE}}"',
-                ],
-            ],
-            'absolute-with-host - concatenate' => [
-                'absolute-with-host', 'concatenate',
-                [
-                    '!extension' => '{{CANDIDATE}}',
-                    'local' => '"http://localhost/{{CANDIDATE}}"',
-                    'extension' => '"http://localhost/typo3temp/assets/compressed/merged-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
-                    'external' => '"{{CANDIDATE}}"',
-                ],
-            ],
-            'absolute-without-host - concatenate' => [
-                'absolute-without-host', 'concatenate',
-                [
-                    '!extension' => '{{CANDIDATE}}',
-                    'local' => '"/{{CANDIDATE}}"',
-                    'extension' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
-                    'external' => '"{{CANDIDATE}}"',
-                ],
-            ],
-            // compression
-            'none - compress' => [
-                'none', 'compress',
-                [
-                    '!extension' => '{{CANDIDATE}}',
-                    'local' => '"{{CANDIDATE}}"',
-                    'extension' => '"/typo3temp/assets/compressed/{{CANDIDATE-FILENAME}}-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
-                    'external' => '"{{CANDIDATE}}"',
-                ],
-            ],
-            'auto - compress' => [
-                'auto', 'compress',
-                [
-                    '!extension' => '{{CANDIDATE}}',
-                    'local' => '"/{{CANDIDATE}}"',
-                    'extension' => '"/typo3temp/assets/compressed/{{CANDIDATE-FILENAME}}-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
-                    'external' => '"{{CANDIDATE}}"',
-                ],
-            ],
-            'absolute-with-host - compress' => [
-                'absolute-with-host', 'compress',
-                [
-                    '!extension' => '{{CANDIDATE}}',
-                    'local' => '"http://localhost/{{CANDIDATE}}"',
-                    'extension' => '"http://localhost/typo3temp/assets/compressed/{{CANDIDATE-FILENAME}}-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
-                    'external' => '"{{CANDIDATE}}"',
-                ],
-            ],
-            'absolute-without-host - compress' => [
-                'absolute-without-host', 'compress',
-                [
-                    '!extension' => '{{CANDIDATE}}',
-                    'local' => '"/{{CANDIDATE}}"',
-                    'extension' => '"/typo3temp/assets/compressed/{{CANDIDATE-FILENAME}}-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
-                    'external' => '"{{CANDIDATE}}"',
-                ],
-            ],
-            // concatenation & compression
-            'none - concatenate-and-compress' => [
-                'none', 'concatenate-and-compress',
-                [
-                    '!extension' => '{{CANDIDATE}}',
-                    'local' => '"{{CANDIDATE}}"',
-                    'extension' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
-                    'external' => '"{{CANDIDATE}}"',
-                ],
-            ],
-            'auto - concatenate-and-compress' => [
-                'auto', 'concatenate-and-compress',
-                [
-                    '!extension' => '{{CANDIDATE}}',
-                    'local' => '"/{{CANDIDATE}}"',
-                    'extension' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
-                    'external' => '"{{CANDIDATE}}"',
-                ],
-            ],
-            'absolute-with-host - concatenate-and-compress' => [
-                'absolute-with-host', 'concatenate-and-compress',
-                [
-                    '!extension' => '{{CANDIDATE}}',
-                    'local' => '"http://localhost/{{CANDIDATE}}"',
-                    'extension' => '"http://localhost/typo3temp/assets/compressed/merged-[a-z0-9]+-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
-                    'external' => '"{{CANDIDATE}}"',
-                ],
-            ],
-            'absolute-without-host - concatenate-and-compress' => [
-                'absolute-without-host', 'concatenate-and-compress',
-                [
-                    '!extension' => '{{CANDIDATE}}',
-                    'local' => '"/{{CANDIDATE}}"',
-                    'extension' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
             ],
@@ -238,13 +126,12 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
 
     #[DataProvider('urisAreRenderedUsingAbsRefPrefixDataProvider')]
     #[Test]
-    public function urisAreRenderedUsingAbsRefPrefix(string $absRefPrefixAspect, string $compressorAspect, array $expectations): void
+    public function urisAreRenderedUsingAbsRefPrefix(string $absRefPrefixAspect, array $expectations): void
     {
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withQueryParameters([
                 'id' => 1,
                 'testAbsRefPrefix' => $absRefPrefixAspect,
-                'testCompressor' => $compressorAspect,
             ])
         );
         $content = (string)$response->getBody();

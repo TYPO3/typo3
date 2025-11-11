@@ -79,7 +79,6 @@ final class InstallStatusReport implements StatusProviderInterface
         $checkWritable = [
             $sitePath . '/typo3temp/' => 2,
             $sitePath . '/typo3temp/assets/' => 2,
-            $sitePath . '/typo3temp/assets/compressed/' => 2,
             // only needed when GraphicalFunctions is used
             $sitePath . '/typo3temp/assets/images/' => 0,
             // used in PageGenerator (inlineStyle2Temp) and Backend + Language JS files

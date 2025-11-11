@@ -1323,4 +1323,29 @@ return [
             'Feature-107784-AutoconfigureBackendLayoutDataProviders.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'cssConcatenateHandler\']' => [
+        'restFiles' => [
+            'Breaking-108055-RemovedPageRendererRelatedHooksAndMethods.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'cssCompressHandler\']' => [
+        'restFiles' => [
+            'Breaking-108055-RemovedPageRendererRelatedHooksAndMethods.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'jsConcatenateHandler\']' => [
+        'restFiles' => [
+            'Breaking-108055-RemovedPageRendererRelatedHooksAndMethods.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'jsCompressHandler\']' => [
+        'restFiles' => [
+            'Breaking-108055-RemovedPageRendererRelatedHooksAndMethods.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_div.php\'][\'minifyJavaScript\']' => [
+        'restFiles' => [
+            'Breaking-108055-RemovedPageRendererRelatedHooksAndMethods.rst',
+        ],
+    ],
 ];

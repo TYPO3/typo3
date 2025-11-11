@@ -3,8 +3,6 @@ page {
   includeCSS {
     forceOnTopCSS = {$forceOnTopCSS}
     forceOnTopCSS.external = 1
-    forceOnTopCSS.excludeFromConcatenation = 1
-    forceOnTopCSS.disableCompression = 1
     forceOnTopCSS.forceOnTop = 1
 
     alternateCSS = {$alternateCSS}
@@ -22,8 +20,6 @@ page {
   includeCSSLibs {
     forceOnTopCSS = {$forceOnTopCSSLib}
     forceOnTopCSS.external = 1
-    forceOnTopCSS.excludeFromConcatenation = 1
-    forceOnTopCSS.disableCompression = 1
     forceOnTopCSS.forceOnTop = 1
 
     alternateCSS = {$alternateCSSLib}
@@ -41,8 +37,6 @@ page {
   includeJS {
     forceOnTopJS = {$forceOnTopJS}
     forceOnTopJS.external = 1
-    forceOnTopJS.excludeFromConcatenation = 1
-    forceOnTopJS.disableCompression = 1
     forceOnTopJS.forceOnTop = 1
 
     alternateJS = {$alternateJS}
@@ -64,8 +58,6 @@ page {
   includeJSLibs {
     forceOnTopJS = {$forceOnTopJSLib}
     forceOnTopJS.external = 1
-    forceOnTopJS.excludeFromConcatenation = 1
-    forceOnTopJS.disableCompression = 1
     forceOnTopJS.forceOnTop = 1
 
     alternateJS = {$alternateJSLib}
@@ -85,8 +77,6 @@ page {
   includeJSFooterlibs {
     forceOnTopJS = {$forceOnTopJSLibFooter}
     forceOnTopJS.external = 1
-    forceOnTopJS.excludeFromConcatenation = 1
-    forceOnTopJS.disableCompression = 1
     forceOnTopJS.forceOnTop = 1
 
     alternateJS = {$alternateJSLibFooter}
@@ -102,11 +92,4 @@ page {
     dataJS.somethingCustom = someValue
     dataJS.data-attribute = value
   }
-}
-
-config {
-  concatenateCss = 0
-  concatenateJs = 0
-  compressCss = 0
-  compressJs = 0
 }

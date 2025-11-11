@@ -6698,6 +6698,90 @@ return [
             'Breaking-107884-ReworkActionsToUseButtonsAPI.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Page\PageRenderer->disableConcatenateCss' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-108055-RemovedPageRendererRelatedHooksAndMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->enableConcatenateCss' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-108055-RemovedPageRendererRelatedHooksAndMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->getConcatenateCss' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-108055-RemovedPageRendererRelatedHooksAndMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->disableCompressCss' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-108055-RemovedPageRendererRelatedHooksAndMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->enableCompressCss' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-108055-RemovedPageRendererRelatedHooksAndMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->getCompressCss' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-108055-RemovedPageRendererRelatedHooksAndMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->disableConcatenateJavascript' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-108055-RemovedPageRendererRelatedHooksAndMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->enableConcatenateJavascript' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-108055-RemovedPageRendererRelatedHooksAndMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->getConcatenateJavascript' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-108055-RemovedPageRendererRelatedHooksAndMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->disableCompressJavascript' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-108055-RemovedPageRendererRelatedHooksAndMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->enableCompressJavascript' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-108055-RemovedPageRendererRelatedHooksAndMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Page\PageRenderer->getCompressJavascript' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-108055-RemovedPageRendererRelatedHooksAndMethods.rst',
+        ],
+    ],
     /** Note (leave this at the bottom):
      *  The FQCN object definitions here are not actually checked, only
      *  the method name itself. That means, never list generic method names

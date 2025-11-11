@@ -211,6 +211,8 @@ class SilentConfigurationUpgradeService
         'SYS/lang/parser',
         // #107943
         'BE/compressionLevel',
+        // #108055
+        'FE/compressionLevel',
     ];
 
     public function __construct(private readonly ConfigurationManager $configurationManager) {}

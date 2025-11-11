@@ -5,16 +5,12 @@ page {
     extensionCSS = {$extensionCSS}
     externalCSS = {$externalCSS}
     externalCSS.external = 1
-    externalCSS.excludeFromConcatenation = 1
-    externalCSS.disableCompression = 1
   }
 
   includeJS {
     extensionJS = {$extensionJS}
     externalJS = {$externalJS}
     externalJS.external = 1
-    externalJS.excludeFromConcatenation = 1
-    externalJS.disableCompression = 1
   }
   # added so we can also test the inclusion of these types in FE
   includeCSSLibs {
@@ -38,23 +34,4 @@ page {
   config.absRefPrefix = http://localhost/
 [traverse(request.getQueryParams(), 'testAbsRefPrefix') == 'absolute-without-host' || traverse(request.getParsedBody(), 'testAbsRefPrefix') == 'absolute-without-host']
   config.absRefPrefix = /
-[end]
-
-[traverse(request.getQueryParams(), 'testCompressor') == 'concatenate' || traverse(request.getParsedBody(), 'testCompressor') == 'concatenate']
-  config {
-    concatenateCss = 1
-    concatenateJs = 1
-  }
-[traverse(request.getQueryParams(), 'testCompressor') == 'compress' || traverse(request.getParsedBody(), 'testCompressor') == 'compress']
-  config {
-    compressCss = 1
-    compressJs = 1
-  }
-[traverse(request.getQueryParams(), 'testCompressor') == 'concatenate-and-compress' || traverse(request.getParsedBody(), 'testCompressor') == 'concatenate-and-compress']
-  config {
-    concatenateCss = 1
-    concatenateJs = 1
-    compressCss = 1
-    compressJs = 1
-  }
 [end]

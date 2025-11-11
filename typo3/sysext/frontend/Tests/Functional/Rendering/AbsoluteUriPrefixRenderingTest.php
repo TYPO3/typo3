@@ -35,7 +35,7 @@ final class AbsoluteUriPrefixRenderingTest extends FunctionalTestCase
     protected array $configurationToUseInTestInstance = [
         'FE' => [
             'cacheHash' => [
-                'excludedParameters' => ['useAbsoluteUrls', 'testCompressor'],
+                'excludedParameters' => ['useAbsoluteUrls'],
             ],
         ],
     ];
@@ -88,9 +88,8 @@ final class AbsoluteUriPrefixRenderingTest extends FunctionalTestCase
 
     public static function urisAreRenderedUsingForceAbsoluteUrlsDataProvider(): \Generator
     {
-        // no compression settings
-        yield 'none - none' => [
-            'none', 'none',
+        yield 'none' => [
+            'none',
             [
                 'local' => ['url' => '"/{{CANDIDATE}}"', 'count' => 1],
                 'extension' => ['url' => '"/{{CANDIDATE}}\?\d+"', 'count' => 3],
@@ -98,74 +97,11 @@ final class AbsoluteUriPrefixRenderingTest extends FunctionalTestCase
                 'link' => ['url' => 'href="{{CANDIDATE}}"', 'count' => 1],
             ],
         ];
-        yield 'with-prefix - none' => [
-            '1', 'none',
+        yield 'with-prefix' => [
+            '1',
             [
                 'local' => ['url' => '"http://localhost/{{CANDIDATE}}"', 'count' => 1],
                 'extension' => ['url' => '"http://localhost/{{CANDIDATE}}\?\d+"', 'count' => 3],
-                'external' => ['url' => '"{{CANDIDATE}}"', 'count' => 1],
-                'link' => ['url' => 'href="http://localhost{{CANDIDATE}}"', 'count' => 1],
-            ],
-        ];
-        // concatenation
-        yield 'none - concatenate' => [
-            '0', 'concatenate',
-            [
-                '!extension' => ['url' => '{{CANDIDATE}}', 'count' => 0],
-                'local' => ['url' => '"/{{CANDIDATE}}"', 'count' => 1],
-                'extension' => ['url' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"', 'count' => 2],
-                'external' => ['url' => '"{{CANDIDATE}}"', 'count' => 1],
-                'link' => ['url' => 'href="{{CANDIDATE}}"', 'count' => 1],
-            ],
-        ];
-        yield 'with-prefix - concatenate' => [
-            '1', 'concatenate',
-            [
-                '!extension' => ['url' => 'http://localhost/{{CANDIDATE}}', 'count' => 0],
-                'local' => ['url' => '"http://localhost/{{CANDIDATE}}"', 'count' => 1],
-                'extension' => ['url' => '"http://localhost/typo3temp/assets/compressed/merged-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"', 'count' => 2],
-                'external' => ['url' => '"{{CANDIDATE}}"', 'count' => 1],
-                'link' => ['url' => 'href="http://localhost{{CANDIDATE}}"', 'count' => 1],
-            ],
-        ];
-        // compression
-        yield 'none - compress' => [
-            '0', 'compress',
-            [
-                '!extension' => ['url' => '/{{CANDIDATE}}', 'count' => 0],
-                'local' => ['url' => '"/{{CANDIDATE}}"', 'count' => 1],
-                'extension' => ['url' => '"/typo3temp/assets/compressed/{{CANDIDATE-FILENAME}}-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"', 'count' => 2],
-                'external' => ['url' => '"{{CANDIDATE}}"', 'count' => 1],
-                'link' => ['url' => 'href="{{CANDIDATE}}"', 'count' => 1],
-            ],
-        ];
-        yield 'with-prefix - compress' => [
-            '1', 'compress',
-            [
-                '!extension' => ['url' => 'http://localhost/{{CANDIDATE}}', 'count' => 0],
-                'local' => ['url' => '"http://localhost/{{CANDIDATE}}"', 'count' => 1],
-                'extension' => ['url' => '"http://localhost/typo3temp/assets/compressed/{{CANDIDATE-FILENAME}}-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"', 'count' => 2],
-                'external' => ['url' => '"{{CANDIDATE}}"', 'count' => 1],
-                'link' => ['url' => 'href="http://localhost{{CANDIDATE}}"', 'count' => 1],
-            ],
-        ];
-        // concatenation & compression
-        yield 'no prefix - concatenate-and-compress' => [
-            '0', 'concatenate-and-compress',
-            [
-                '!extension' => ['url' => '/{{CANDIDATE}}', 'count' => 0],
-                'local' => ['url' => '"/{{CANDIDATE}}"', 'count' => 1],
-                'extension' => ['url' => '"/typo3temp/assets/compressed/merged-[a-z0-9]+-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"', 'count' => 2],
-                'external' => ['url' => '"{{CANDIDATE}}"', 'count' => 1],
-                'link' => ['url' => 'href="{{CANDIDATE}}"', 'count' => 1],
-            ],
-        ];
-        yield 'with prefix - concatenate-and-compress' => [
-            '1', 'concatenate-and-compress',
-            [
-                '!extension' => ['url' => 'http://localhost/{{CANDIDATE}}', 'count' => 0],
-                'local' => ['url' => '"http://localhost/{{CANDIDATE}}"', 'count' => 1],
-                'extension' => ['url' => '"http://localhost/typo3temp/assets/compressed/merged-[a-z0-9]+-[a-z0-9]+\.{{CANDIDATE-EXTENSION}}\?\d+"', 'count' => 2],
                 'external' => ['url' => '"{{CANDIDATE}}"', 'count' => 1],
                 'link' => ['url' => 'href="http://localhost{{CANDIDATE}}"', 'count' => 1],
             ],
@@ -174,13 +110,12 @@ final class AbsoluteUriPrefixRenderingTest extends FunctionalTestCase
 
     #[DataProvider('urisAreRenderedUsingForceAbsoluteUrlsDataProvider')]
     #[Test]
-    public function urisAreRenderedUsingAbsRefPrefix(string $useAbsoluteUrls, string $compressorAspect, array $expectations): void
+    public function urisAreRenderedUsingAbsRefPrefix(string $useAbsoluteUrls, array $expectations): void
     {
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withQueryParameters([
                 'id' => 1,
                 'useAbsoluteUrls' => $useAbsoluteUrls,
-                'testCompressor' => $compressorAspect,
             ])
         );
         $content = (string)$response->getBody();

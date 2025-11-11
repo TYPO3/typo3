@@ -376,11 +376,6 @@ final readonly class DefaultFactory
             'targetPermission' => $directoryPermission,
             'children' => [
                 [
-                    'name' => 'compressed',
-                    'type' => DirectoryNode::class,
-                    'targetPermission' => $directoryPermission,
-                ],
-                [
                     'name' => 'css',
                     'type' => DirectoryNode::class,
                     'targetPermission' => $directoryPermission,

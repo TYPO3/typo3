@@ -1533,7 +1533,6 @@ return [
     'FE' => [ // Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
         'addAllowedPaths' => '',
         'debug' => false,
-        'compressionLevel' => 0,
         'pageNotFoundOnCHashError' => true,
         'pageUnavailable_force' => false,
         'checkFeUserPid' => true,

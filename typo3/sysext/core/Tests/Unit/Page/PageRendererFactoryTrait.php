@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\AssetRenderer;
 use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
-use TYPO3\CMS\Core\Resource\ResourceCompressor;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
@@ -66,10 +65,6 @@ trait PageRendererFactoryTrait
             new MetaTagManagerRegistry(),
             new AssetRenderer(new AssetCollector(), new NoopEventDispatcher(), $resourcePublisher, $resourceFactory),
             new AssetCollector(),
-            new ResourceCompressor(
-                $resourceFactory,
-                $resourcePublisher
-            ),
             new RelativeCssPathFixer(),
             new LanguageServiceFactory(
                 new Locales(),

@@ -379,7 +379,7 @@ class RequestHandler implements RequestHandlerInterface
                 }
             }
             if (!empty($stylesFromPlugins)) {
-                $this->addCssToPageRenderer($request, $stylesFromPlugins, false, 'InlineDefaultCss');
+                $this->addCssToPageRenderer($request, $stylesFromPlugins, 'InlineDefaultCss');
             }
         }
         if (is_array($typoScriptPageArray['includeCSS.'] ?? false)) {
@@ -404,10 +404,10 @@ class RequestHandler implements RequestHandlerInterface
                     ($cssResourceConfig['alternate'] ?? false) ? 'alternate stylesheet' : 'stylesheet',
                     ($cssResourceConfig['media'] ?? false) ?: 'all',
                     ($cssResourceConfig['title'] ?? false) ?: '',
-                    empty($cssResourceConfig['external']) && empty($cssResourceConfig['inline']) && empty($cssResourceConfig['disableCompression']),
+                    null,
                     (bool)($cssResourceConfig['forceOnTop'] ?? false),
                     $cssResourceConfig['allWrap'] ?? '',
-                    ($cssResourceConfig['excludeFromConcatenation'] ?? false) || ($cssResourceConfig['inline'] ?? false),
+                    null,
                     $cssResourceConfig['allWrap.']['splitChar'] ?? '|',
                     (bool)($cssResourceConfig['inline'] ?? false),
                     $additionalAttributes
@@ -436,10 +436,10 @@ class RequestHandler implements RequestHandlerInterface
                     ($cssResourceConfig['alternate'] ?? false) ? 'alternate stylesheet' : 'stylesheet',
                     ($cssResourceConfig['media'] ?? false) ?: 'all',
                     ($cssResourceConfig['title'] ?? false) ?: '',
-                    empty($cssResourceConfig['external']) && empty($cssResourceConfig['inline']) && empty($cssResourceConfig['disableCompression']),
+                    null,
                     (bool)($cssResourceConfig['forceOnTop'] ?? false),
                     $cssResourceConfig['allWrap'] ?? '',
-                    ($cssResourceConfig['excludeFromConcatenation'] ?? false) || ($cssResourceConfig['inline'] ?? false),
+                    null,
                     $cssResourceConfig['allWrap.']['splitChar'] ?? '|',
                     (bool)($cssResourceConfig['inline'] ?? false),
                     $additionalAttributes
@@ -448,7 +448,7 @@ class RequestHandler implements RequestHandlerInterface
         }
         $style = $contentObjectRenderer->cObjGet($typoScriptPageArray['cssInline.'] ?? null, 'cssInline.');
         if (trim($style)) {
-            $this->addCssToPageRenderer($request, $style, true, 'additionalTSFEInlineStyle');
+            $this->addCssToPageRenderer($request, $style, 'additionalTSFEInlineStyle');
         }
 
         // JavaScript includes
@@ -477,10 +477,10 @@ class RequestHandler implements RequestHandlerInterface
                     $key,
                     $jsResource,
                     $jsResourceConfig['type'] ?? null,
-                    empty($jsResourceConfig['external']) && empty($jsResourceConfig['disableCompression']),
+                    null,
                     (bool)($jsResourceConfig['forceOnTop'] ?? false),
                     $jsResourceConfig['allWrap'] ?? '',
-                    (bool)($jsResourceConfig['excludeFromConcatenation'] ?? false),
+                    null,
                     $jsResourceConfig['allWrap.']['splitChar'] ?? '|',
                     (bool)($jsResourceConfig['async'] ?? false),
                     $jsResourceConfig['integrity'] ?? '',
@@ -516,10 +516,10 @@ class RequestHandler implements RequestHandlerInterface
                     $key,
                     $jsResource,
                     $jsResourceConfig['type'] ?? null,
-                    empty($jsResourceConfig['external']) && empty($jsResourceConfig['disableCompression']),
+                    null,
                     (bool)($jsResourceConfig['forceOnTop'] ?? false),
                     $jsResourceConfig['allWrap'] ?? '',
-                    (bool)($jsResourceConfig['excludeFromConcatenation'] ?? false),
+                    null,
                     $jsResourceConfig['allWrap.']['splitChar'] ?? '|',
                     (bool)($jsResourceConfig['async'] ?? false),
                     $jsResourceConfig['integrity'] ?? '',
@@ -553,10 +553,10 @@ class RequestHandler implements RequestHandlerInterface
                 $pageRenderer->addJsFile(
                     $jsResource,
                     $jsResourceConfig['type'] ?? null,
-                    empty($jsResourceConfig['external']) && empty($jsResourceConfig['disableCompression']),
+                    null,
                     (bool)($jsResourceConfig['forceOnTop'] ?? false),
                     $jsResourceConfig['allWrap'] ?? '',
-                    (bool)($jsResourceConfig['excludeFromConcatenation'] ?? false),
+                    null,
                     $jsResourceConfig['allWrap.']['splitChar'] ?? '|',
                     (bool)($jsResourceConfig['async'] ?? false),
                     $jsResourceConfig['integrity'] ?? '',
@@ -591,10 +591,10 @@ class RequestHandler implements RequestHandlerInterface
                 $pageRenderer->addJsFooterFile(
                     $jsResource,
                     $jsResourceConfig['type'] ?? null,
-                    empty($jsResourceConfig['external']) && empty($jsResourceConfig['disableCompression']),
+                    null,
                     (bool)($jsResourceConfig['forceOnTop'] ?? false),
                     $jsResourceConfig['allWrap'] ?? '',
-                    (bool)($jsResourceConfig['excludeFromConcatenation'] ?? false),
+                    null,
                     $jsResourceConfig['allWrap.']['splitChar'] ?? '|',
                     (bool)($jsResourceConfig['async'] ?? false),
                     $jsResourceConfig['integrity'] ?? '',
@@ -631,7 +631,6 @@ class RequestHandler implements RequestHandlerInterface
         $inlineJS = implode(LF, $contentObjectRenderer->cObjGetSeparated($typoScriptPageArray['jsInline.'] ?? null, 'jsInline.'));
         $inlineFooterJs = implode(LF, $contentObjectRenderer->cObjGetSeparated($typoScriptPageArray['jsFooterInline.'] ?? null, 'jsFooterInline.'));
 
-        $compressJs = (bool)($typoScriptConfigArray['compressJs'] ?? false);
         if (($typoScriptConfigArray['removeDefaultJS'] ?? 'external') === 'external') {
             // "removeDefaultJS" is "external" by default
             // This keeps inlineJS from *_INT Objects from being moved to external files.
@@ -642,26 +641,26 @@ class RequestHandler implements RequestHandlerInterface
             $inlineJSint = '';
             $this->stripIntObjectPlaceholder($inlineJS, $inlineJSint);
             if ($inlineJSint) {
-                $pageRenderer->addJsInlineCode('TS_inlineJSint', $inlineJSint, $compressJs);
+                $pageRenderer->addJsInlineCode('TS_inlineJSint', $inlineJSint);
             }
             if (trim($inlineJS)) {
-                $pageRenderer->addJsFile(GeneralUtility::writeJavaScriptContentToTemporaryFile($inlineJS), null, $compressJs);
+                $pageRenderer->addJsFile(GeneralUtility::writeJavaScriptContentToTemporaryFile($inlineJS), null);
             }
             if ($inlineFooterJs) {
                 $inlineFooterJSint = '';
                 $this->stripIntObjectPlaceholder($inlineFooterJs, $inlineFooterJSint);
                 if ($inlineFooterJSint) {
-                    $pageRenderer->addJsFooterInlineCode('TS_inlineFooterJSint', $inlineFooterJSint, $compressJs);
+                    $pageRenderer->addJsFooterInlineCode('TS_inlineFooterJSint', $inlineFooterJSint);
                 }
-                $pageRenderer->addJsFooterFile(GeneralUtility::writeJavaScriptContentToTemporaryFile($inlineFooterJs), null, $compressJs);
+                $pageRenderer->addJsFooterFile(GeneralUtility::writeJavaScriptContentToTemporaryFile($inlineFooterJs), null);
             }
         } else {
             // Include only inlineJS
             if ($inlineJS) {
-                $pageRenderer->addJsInlineCode('TS_inlineJS', $inlineJS, $compressJs);
+                $pageRenderer->addJsInlineCode('TS_inlineJS', $inlineJS);
             }
             if ($inlineFooterJs) {
-                $pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs, $compressJs);
+                $pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs);
             }
         }
         if (is_array($typoScriptPageArray['inlineLanguageLabelFiles.'] ?? false)) {
@@ -682,19 +681,6 @@ class RequestHandler implements RequestHandlerInterface
         }
         if (is_array($typoScriptPageArray['inlineSettings.'] ?? false)) {
             $pageRenderer->addInlineSettingArray('TS', $typoScriptPageArray['inlineSettings.']);
-        }
-        // Compression and concatenate settings
-        if ($typoScriptConfigArray['compressCss'] ?? false) {
-            $pageRenderer->enableCompressCss();
-        }
-        if ($compressJs) {
-            $pageRenderer->enableCompressJavascript();
-        }
-        if ($typoScriptConfigArray['concatenateCss'] ?? false) {
-            $pageRenderer->enableConcatenateCss();
-        }
-        if ($typoScriptConfigArray['concatenateJs'] ?? false) {
-            $pageRenderer->enableConcatenateJavascript();
         }
         // Header complete, now the body tag is added so the regular content can be applied later-on
         if ($typoScriptConfigArray['disableBodyTag'] ?? false) {
@@ -781,27 +767,17 @@ class RequestHandler implements RequestHandlerInterface
      * Adds inline CSS code, by respecting the inlineStyle2TempFile option
      *
      * @param string $cssStyles the inline CSS styling
-     * @param bool $excludeFromConcatenation option to see if it should be concatenated
      * @param string $inlineBlockName the block name to add it
      */
-    protected function addCssToPageRenderer(ServerRequestInterface $request, string $cssStyles, bool $excludeFromConcatenation, string $inlineBlockName): void
+    protected function addCssToPageRenderer(ServerRequestInterface $request, string $cssStyles, string $inlineBlockName): void
     {
         $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
         $pageRenderer = $this->getPageRenderer();
         // This option is enabled by default on purpose
         if (empty($typoScriptConfigArray['inlineStyle2TempFile'] ?? true)) {
-            $pageRenderer->addCssInlineBlock($inlineBlockName, $cssStyles, !empty($typoScriptConfigArray['compressCss'] ?? false));
+            $pageRenderer->addCssInlineBlock($inlineBlockName, $cssStyles);
         } else {
-            $pageRenderer->addCssFile(
-                'PKG:typo3/app:' . Environment::getRelativePublicPath() . GeneralUtility::writeStyleSheetContentToTemporaryFile($cssStyles),
-                'stylesheet',
-                'all',
-                '',
-                (bool)($typoScriptConfigArray['compressCss'] ?? false),
-                false,
-                '',
-                $excludeFromConcatenation
-            );
+            $pageRenderer->addCssFile('PKG:typo3/app:' . Environment::getRelativePublicPath() . GeneralUtility::writeStyleSheetContentToTemporaryFile($cssStyles));
         }
     }
 
@@ -947,8 +923,6 @@ class RequestHandler implements RequestHandlerInterface
             $additionalAttributes['external'],
             $additionalAttributes['allWrap'],
             $additionalAttributes['allWrap.'],
-            $additionalAttributes['disableCompression'],
-            $additionalAttributes['excludeFromConcatenation'],
             $additionalAttributes['forceOnTop']
         );
 

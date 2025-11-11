@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\AssetRenderer;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
-use TYPO3\CMS\Core\Resource\ResourceCompressor;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
@@ -67,10 +66,6 @@ final class PageRendererTest extends FunctionalTestCase
             $this->get(MetaTagManagerRegistry::class),
             $this->get(AssetRenderer::class),
             $this->get(AssetCollector::class),
-            new ResourceCompressor(
-                $this->get(SystemResourceFactory::class),
-                $this->get(SystemResourcePublisherInterface::class),
-            ),
             new RelativeCssPathFixer(),
             $this->get(LanguageServiceFactory::class),
             $this->get(ResponseFactoryInterface::class),
@@ -133,18 +128,18 @@ final class PageRendererTest extends FunctionalTestCase
             'test',
             '/fileadmin/test.js',
             'text/javascript',
-            false,
+            null,
             false,
             'wrapBeforeXwrapAfter',
-            false,
+            null,
             'X'
         );
         $expectedJsLibraryRegExp = '#wrapBefore<script src="/fileadmin/test\\.js\?da39a3ee5e6b4b0d3255bfef95601890afd80709" type="text/javascript"></script>wrapAfter#';
 
-        $subject->addJsFile('/fileadmin/test.js', 'text/javascript', false, false, 'wrapBeforeXwrapAfter', false, 'X');
+        $subject->addJsFile('/fileadmin/test.js', 'text/javascript', null, false, 'wrapBeforeXwrapAfter', null, 'X');
         $expectedJsFileRegExp = '#wrapBefore<script src="/fileadmin/test\\.js\?da39a3ee5e6b4b0d3255bfef95601890afd80709" type="text/javascript"></script>wrapAfter#';
 
-        $subject->addJsFile('/fileadmin/test-plain.js', '', false, false, 'wrapBeforeXwrapAfter', false, 'X');
+        $subject->addJsFile('/fileadmin/test-plain.js', '', null, false, 'wrapBeforeXwrapAfter', null, 'X');
         $expectedJsFileWithoutTypeRegExp = '#wrapBefore<script src="/fileadmin/test-plain\\.js\?da39a3ee5e6b4b0d3255bfef95601890afd80709"></script>wrapAfter#';
 
         $jsInlineCode = $expectedJsInlineCodeString = 'var x = "' . StringUtility::getUniqueId('jsInline-') . '"';
@@ -154,7 +149,7 @@ final class PageRendererTest extends FunctionalTestCase
         $absolutePath = $this->file->ensureFilesExistInPublicFolder('/typo3temp/assets/' . $cssFile);
         $expectedCssUrl = '/' . PathUtility::stripPathSitePrefix($absolutePath) . '?' . filemtime($absolutePath);
         $expectedCssFileString = 'wrapBefore<link rel="stylesheet" href="' . $expectedCssUrl . '" media="print">wrapAfter';
-        $subject->addCssFile('typo3temp/assets/' . $cssFile, 'stylesheet', 'print', '', true, false, 'wrapBeforeXwrapAfter', false, 'X');
+        $subject->addCssFile('typo3temp/assets/' . $cssFile, 'stylesheet', 'print', '', null, false, 'wrapBeforeXwrapAfter', null, 'X');
 
         $expectedCssInlineBlockOnTopString = '/*general3*/' . LF . 'h1 {margin:20px;}' . LF . '/*general2*/' . LF . 'body {margin:20px;}';
         $subject->addCssInlineBlock('general2', 'body {margin:20px;}');
@@ -249,10 +244,10 @@ final class PageRendererTest extends FunctionalTestCase
             'test',
             '/fileadmin/test.js',
             'text/javascript',
-            false,
+            null,
             false,
             'wrapBeforeXwrapAfter',
-            false,
+            null,
             'X'
         );
 
@@ -260,10 +255,10 @@ final class PageRendererTest extends FunctionalTestCase
         $subject->addJsFooterFile(
             '/fileadmin/test.js',
             'text/javascript',
-            false,
+            null,
             false,
             'wrapBeforeXwrapAfter',
-            false,
+            null,
             'X'
         );
 
@@ -334,10 +329,10 @@ final class PageRendererTest extends FunctionalTestCase
             'test',
             '/fileadmin/test.js',
             'text/javascript',
-            false,
+            null,
             false,
             '',
-            false,
+            null,
             '|',
             false,
             '',
@@ -351,10 +346,10 @@ final class PageRendererTest extends FunctionalTestCase
             'test2',
             '/fileadmin/test2.js',
             'text/javascript',
-            false,
+            null,
             false,
             '',
-            false,
+            null,
             '|',
             false,
             '',
@@ -367,10 +362,10 @@ final class PageRendererTest extends FunctionalTestCase
         $subject->addJsFile(
             '/fileadmin/test3.js',
             'text/javascript',
-            false,
+            null,
             false,
             '',
-            false,
+            null,
             '|',
             false,
             '',
@@ -383,10 +378,10 @@ final class PageRendererTest extends FunctionalTestCase
         $subject->addJsFooterFile(
             '/fileadmin/test4.js',
             'text/javascript',
-            false,
+            null,
             false,
             '',
-            false,
+            null,
             '|',
             false,
             '',

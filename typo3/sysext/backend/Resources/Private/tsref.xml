@@ -530,63 +530,6 @@ config.removeDefaultJS = 1]]></description>
             <default><![CDATA[
 ]]></default>
         </property>
-        <property name="compressJs" type="boolean">
-            <description><![CDATA[Enabling this option together with $TYPO3_CONF_VARS['FE']['compressionLevel'] in the Install Tool delivers Frontend JavaScript files using GZIP compression.
-
-This can significantly reduce file sizes of linked JavaScript files and thus decrease loading times.
-
-Please not that this requires .htaccess to be adjusted, as otherwise the files will not be readable by the user agent. Please see the description of $TYPO3_CONF_VARS['FE']['compressionLevel'] in the Install Tool.
-
-Example:
-
-config.compressJs = 1
-            ]]></description>
-            <default><![CDATA[false]]></default>
-        </property>
-        <property name="compressCss" type="boolean">
-            <description><![CDATA[If set, CSS and JS files will be minified and compressed.
-
-If enabled, CSS and JS files will be pre-compressed to reduce file size. This
-setting has no effect on files included via page.headerData.
-
-Compression is applied if $TYPO3_CONF_VARS['FE']['compressionLevel'] is set to a
-non-zero value in the Install Tool. To serve compressed files correctly, make
-sure that gzip-related options are enabled in .htaccess; otherwise, browsers may
-not be able to read the compressed output.
-
-Example:
-
-config.compressCss = 1]]></description>
-            <default><![CDATA[false]]></default>
-        </property>
-        <property name="concatenateJs" type="boolean">
-            <description><![CDATA[Setting config.concatenateJs merges Javascript files referenced in the Frontend together.
-
-Example:
-
-config.concatenateJs = 1
-
-Note: TYPO3 comes with a built-in concatenation handler, but you can also register your own one using $GLOBALS['TYPO3_CONF_VARS']['FE']['jsConcatenateHandler'].
-
-Example:
-
-$GLOBALS['TYPO3_CONF_VARS']['FE']['jsConcatenateHandler'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('myext') . 'Classes/class.tx_myext_jsConcatenateHandler.php:tx_myext_jsConcatenateHandler->concatenateJs';]]></description>
-            <default><![CDATA[false]]></default>
-        </property>
-        <property name="concatenateCss" type="boolean">
-            <description><![CDATA[Setting config.concatenateCss merges Stylesheet files referenced in the Frontend together.
-
-Example:
-
-config.concatenateCss = 1
-
-Note: TYPO3 comes with a built-in concatenation handler, but you can also register your own using $GLOBALS['TYPO3_CONF_VARS']['FE']['cssConcatenateHandler'].
-
-Example:
-
-$GLOBALS['TYPO3_CONF_VARS']['FE']['cssConcatenateHandler'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('myext') . 'Classes/class.tx_myext_cssConcatenateHandler.php:tx_myext_cssConcatenateHandler->concatenateCss';]]></description>
-            <default><![CDATA[false]]></default>
-        </property>
         <property name="sendCacheHeaders" type="boolean">
             <description><![CDATA[If set, TYPO3 will output cache-control headers to the client based mainly on  whether the page was cached internally. This feature allows client browsers and/or reverse proxies to take load of TYPO3 websites.
 
@@ -3861,10 +3804,6 @@ Each file has optional properties:
 
 .external - If set, there is no file existence check. Useful for inclusion of external files.
 
-.disableCompression - If config.minifyCSS is enabled, this disables the compression of this file.
-
-.excludeFromConcatenation - If config.concatenateCss is enabled, this prevents the file from being concatenated.
-
 .inline - Inline the contents of the CSS file using a <style> tag.
 
 Example:
@@ -3900,10 +3839,6 @@ Each file has optional properties:
 .allWrap - wraps the complete tag, useful for conditional comments.
 
 .external - If set, there is no file existence check. Useful for inclusion of external files.
-
-.disableCompression - If config.minifyJS is enabled, this disables the compression of this file.
-
-.excludeFromConcatenation - If config.concatenateJs is enabled, this prevents the file from being concatenated.
 
 Example:
 
@@ -3979,7 +3914,6 @@ page.jsInline {
 Note:
 
 with config.removeDefaultJS = external, the inlineJS is moved to external file.
-with config.compressJs = 1, the jsInline will be minified as well.
 ]]></description>
             <default><![CDATA[
 ]]></default>

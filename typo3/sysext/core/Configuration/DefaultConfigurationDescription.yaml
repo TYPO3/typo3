@@ -179,7 +179,7 @@ SYS:
           description: 'A list of function names, which will not trigger an error but only a warning, if they can be found in your php.ini setting "disable_functions".'
         generateApacheHtaccess:
             type: bool
-            description: 'TYPO3 can create <em>.htaccess</em> files which are used by Apache Webserver. They are useful for access protection or performance improvements. Currently <em>.htaccess</em> files in the following directories are created, if they do not exist: <ul><li>typo3temp/compressor/</li></ul>You want to disable this feature, if you are not running Apache or want to use own rulesets.'
+            description: 'TYPO3 can create <em>.htaccess</em> files which are used by Apache Webserver. They are useful for access protection or performance improvements. Currently <em>.htaccess</em> files in the following directories are created, if they do not exist: <ul><li>typo3temp/var/log/</li></ul>You want to disable this feature, if you are not running Apache or want to use own rulesets.'
         ipAnonymization:
             type: int
             allowedValues:
@@ -436,9 +436,6 @@ FE:
         debug:
             type: bool
             description: 'If enabled, the total parsetime of the page is added as HTTP response header "X-TYPO3-Parsetime". This can also be enabled/disabled via the TypoScript option <code>config.debug = 0</code>.'
-        compressionLevel:
-          type: int
-          description: 'Defines the compression level for pre-compressing generated CSS and JS files (used with config.compressCss / config.compressJs). Requires zlib. Range 0–9 (0=off, 9=max). "true" uses PHP default (usually 5).'
         pageNotFoundOnCHashError:
             type: bool
             description: 'If TRUE, a page not found call is made when cHash evaluation error occurs, otherwise caching is disabled and page output is displayed.'
