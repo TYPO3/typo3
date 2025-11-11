@@ -21,6 +21,14 @@ services:
     tags:
       - { name: 'console.command', command: 'backend:user:create', description: 'Create a backend user', schedulable: false }
 
+  TYPO3\CMS\Backend\Command\DebugBackendModulesCommand:
+    tags:
+      - { name: 'console.command', command: 'debug:backend:modules', description: 'Show a list of the backend module tree (only for development purpose)', schedulable: false }
+
+  TYPO3\CMS\Backend\Command\DebugBackendRoutesCommand:
+    tags:
+      - { name: 'console.command', command: 'debug:backend:routes', description: 'Debugging: List all registered backend routes (only for development purpose)', schedulable: false }
+
   TYPO3\CMS\Backend\Clipboard\Clipboard:
     shared: false
     public: true
