@@ -32,6 +32,7 @@ integration various php 8.2 pre-merge:
     - Build/Scripts/runTests.sh -s checkComposer -p 8.2
     - Build/Scripts/runTests.sh -s checkIntegrityPhp -p 8.2
     - Build/Scripts/runTests.sh -s checkIntegritySetLabels -p 8.2
+    - Build/Scripts/runTests.sh -s checkIntegrityXliff -p 8.5
     - Build/Scripts/runTests.sh -s lintServicesYaml -p 8.2
     - Build/Scripts/runTests.sh -s lintYaml -p 8.2
     - Build/Scripts/runTests.sh -s checkFilesAndPathsForSpaces -p 8.2

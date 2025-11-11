@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Wizards/move_page.xlf" date="2024-03-08T20:22:34Z" product-name="backend">
+	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/move_content_elements.xlf" date="2024-03-08T20:22:34Z" product-name="backend">
 		<header/>
 		<body>
 			<trans-unit id="headline.move">

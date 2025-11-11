@@ -9,6 +9,10 @@
 			<trans-unit id="title">
 				<source>Pagetree Overview</source>
 			</trans-unit>
+			<!-- intentionally left blank, not utilized (for now) -->
+			<trans-unit id="short_description">
+				<source></source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

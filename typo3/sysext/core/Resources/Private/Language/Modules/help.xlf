@@ -9,6 +9,10 @@
 			<trans-unit id="title">
 				<source>Help</source>
 			</trans-unit>
+			<!-- intentionally left blank, not utilized (for now) -->
+			<trans-unit id="description">
+				<source></source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

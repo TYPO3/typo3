@@ -6,6 +6,13 @@
 			<trans-unit id="title">
 				<source>Included page TSconfig</source>
 			</trans-unit>
+			<!-- intentionally left blank, not utilized (for now) -->
+			<trans-unit id="short_description">
+				<source></source>
+			</trans-unit>
+			<trans-unit id="description">
+				<source></source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
