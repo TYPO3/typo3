@@ -8,13 +8,13 @@
 				<source>SEO</source>
 			</trans-unit>
 			<trans-unit id="widget.pagesWithoutMetaDescription.title">
-				<source>Pages missing Meta Description</source>
+				<source>Pages missing meta description</source>
 			</trans-unit>
 			<trans-unit id="widget.pagesWithoutMetaDescription.description">
 				<source>Find and display pages with missing meta description</source>
 			</trans-unit>
 			<trans-unit id="widget.pagesWithoutMetaDescription.noMissingDescriptions">
-				<source>There are no pages with missing description. Good job!</source>
+				<source>All pages have a proper meta description — everything looks good.</source>
 			</trans-unit>
 		</body>
 	</file>
