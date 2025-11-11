@@ -456,7 +456,7 @@ readonly class GridDataService
                 $messages = $this->integrityService->getIssueMessages($integrityIssues, $identifier);
                 $element['integrity'] = [
                     'status' => $this->integrityService->getStatusRepresentation($integrityIssues, $identifier),
-                    'messages' => htmlspecialchars(implode('<br>', $messages)),
+                    'messages' => implode('<br>', $messages),
                 ];
             }
         }
