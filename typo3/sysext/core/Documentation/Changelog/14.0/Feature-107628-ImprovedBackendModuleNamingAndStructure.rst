@@ -83,6 +83,21 @@ to digital content assets.
         ],
     ];
 
+View => Preview
+---------------
+
+The second-level :guilabel:`View` module has been renamed to :guilabel:`Preview`
+to better match its scope. It has also been moved one position down after :guilabel:`List`,
+as that module is considered more important for daily work.
+
+**Rationale:** The term "Preview" is a more precise term, because it triggers
+a frontend preview, and cannot be misunderstood as "viewing" a page in the backend page
+context.
+
+**Migration:** Since the module is already internally referred to as `page_preview`, no
+changes in referencing modules are required.
+
+
 Impact
 ======
 

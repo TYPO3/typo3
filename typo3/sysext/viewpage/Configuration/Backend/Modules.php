@@ -8,11 +8,11 @@ use TYPO3\CMS\Viewpage\Controller\ViewModuleController;
 return [
     'page_preview' => [
         'parent' => 'content',
-        'position' => ['after' => 'web_layout'],
+        'position' => ['after' => 'web_list'],
         'access' => 'user',
-        'path' => '/module/web/viewpage',
+        'path' => '/module/page-preview',
         'iconIdentifier' => 'module-viewpage',
-        'labels' => 'LLL:EXT:viewpage/Resources/Private/Language/locallang_mod.xlf',
+        'labels' => 'viewpage.modules.preview',
         'aliases' => ['web_ViewpageView'],
         'routes' => [
             '_default' => [

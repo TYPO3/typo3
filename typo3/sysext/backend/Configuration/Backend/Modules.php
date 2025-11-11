@@ -34,7 +34,7 @@ return [
     ],
     'web_list' => [
         'parent' => 'content',
-        'position' => ['after' => 'page_preview'],
+        'position' => ['after' => 'web_layout'],
         'access' => 'user',
         'path' => '/module/web/list',
         'iconIdentifier' => 'module-list',

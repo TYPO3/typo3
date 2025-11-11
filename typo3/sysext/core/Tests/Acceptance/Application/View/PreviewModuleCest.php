@@ -20,13 +20,13 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Application\View;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
-final class ViewModuleCest
+final class PreviewModuleCest
 {
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
         $I->switchToMainFrame();
-        $I->click('View');
+        $I->click('Preview');
         $pageTree->openPath(['styleguide frontend demo']);
         $I->switchToContentFrame();
     }
