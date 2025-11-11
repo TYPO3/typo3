@@ -16,6 +16,8 @@ CREATE TABLE aTestTable (
 	fixed_title char(200) DEFAULT '' NOT NULL,
 	flexible_binary varbinary(200) DEFAULT '' NOT NULL,
 	fixed_binary binary(200) DEFAULT '' NOT NULL,
+	uuid_one UUID DEFAULT 'c6e9c385-d15b-4ae1-9302-931c78f1a458' NOT NULL,
+	uuid_two UUID,
 	PRIMARY KEY (uid),
   UNIQUE `parent` (pid,`deleted`,sorting),
 	KEY noCache (`no_cache`),

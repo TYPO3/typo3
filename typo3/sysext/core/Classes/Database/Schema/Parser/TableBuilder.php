@@ -56,6 +56,7 @@ use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\TimestampDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\TinyBlobDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\TinyIntDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\TinyTextDataType;
+use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\UuidDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\VarBinaryDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\VarCharDataType;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\DataType\YearDataType;
@@ -394,6 +395,12 @@ class TableBuilder
                 // range of 1901 to 2155.
                 // Using a SMALLINT covers the value range and ensures database compatibility.
                 $doctrineType = Types::SMALLINT;
+                break;
+            case UuidDataType::class:
+                // UUID/GUID is only supported by PostgreSQL for now, but Doctrine DBAL implemented a fallback
+                // for other platforms and we can safely use `Types::GUID` here in case `UUID` has been set in
+                // `ext_tables.sql` for a table column.
+                $doctrineType = Types::GUID;
                 break;
             default:
                 throw new \RuntimeException(

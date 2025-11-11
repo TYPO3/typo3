@@ -21,11 +21,11 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
-use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\BigIntType;
 use Doctrine\DBAL\Types\EnumType;
+use Doctrine\DBAL\Types\GuidType;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\JsonType;
 use Doctrine\DBAL\Types\StringType;
@@ -35,26 +35,14 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestWith;
-use Psr\Container\ContainerInterface;
-use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Schema\DefaultTcaSchema;
-use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 use TYPO3\CMS\Core\Database\Schema\SchemaDiff;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
-use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Database\Schema\TableDiff;
 use TYPO3\CMS\Core\Database\Schema\Types\DateTimeType;
 use TYPO3\CMS\Core\Database\Schema\Types\DateType;
 use TYPO3\CMS\Core\Database\Schema\Types\SetType;
 use TYPO3\CMS\Core\Database\Schema\Types\TimeType;
-use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
-use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\Schema\FieldTypeFactory;
-use TYPO3\CMS\Core\Schema\RelationMapBuilder;
-use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
-use TYPO3\TestingFramework\Core\Testbase;
 
 /**
  * Note that this test disables the normal database schema creation for all loaded extensions albeit creating
@@ -62,175 +50,29 @@ use TYPO3\TestingFramework\Core\Testbase;
  * against a empty database not taking usual instance table creation into account. Clean database creation with
  * all system extension will be added in a dedicated test case.
  */
-final class SchemaMigratorTest extends FunctionalTestCase
+final class SchemaMigratorTest extends AbstractSchemaBasedTestCase
 {
-    private ?array $backupTableOptions = null;
-
     protected function setUp(): void
     {
-        $this->initializeDatabase = false;
+        $this->tablesToDrop = [
+            'a_test_table',
+            'zzz_deleted_a_test_table',
+            'another_test_table',
+            'a_textfield_test_table',
+        ];
         parent::setUp();
-
-        $providedData = $this->providedData();
-        if (($providedData['emptyDefaultTableOptions'] ?? null) === true) {
-            $connection = $this->getConnectionPool()->getConnectionByName('Default');
-            $this->backupTableOptions = $connection->getParams()['defaultTableOptions'] ?? null;
-            \Closure::bind(static function () use ($connection): void {
-                unset($connection->params['defaultTableOptions']);
-            }, null, Connection::class)();
-        }
-
-        $this->verifyCleanDatabaseState();
-        $this->verifyNoDatabaseTablesExists();
     }
 
-    protected function tearDown(): void
+    protected function prepareTestTable(SchemaMigrator $schemaMigrator, ?string $sqlCodeFile = null): void
     {
-        $connection = $this->getConnectionPool()->getConnectionByName('Default');
-        if ($this->backupTableOptions !== null) {
-            $backupTableOptions = $this->backupTableOptions;
-            \Closure::bind(static function () use ($connection, $backupTableOptions): void {
-                $connection->params['defaultTableOptions'] = $backupTableOptions;
-            }, null, Connection::class)();
-            $this->backupTableOptions = null;
-        }
-        $schemaManager = $connection->createSchemaManager();
-        // Clean up for next test
-        if ($schemaManager->tablesExist(['a_test_table'])) {
-            $schemaManager->dropTable('a_test_table');
-        }
-        if ($schemaManager->tablesExist(['zzz_deleted_a_test_table'])) {
-            $schemaManager->dropTable('zzz_deleted_a_test_table');
-        }
-        if ($schemaManager->tablesExist(['another_test_table'])) {
-            $schemaManager->dropTable('another_test_table');
-        }
-        if ($schemaManager->tablesExist(['a_textfield_test_table'])) {
-            $schemaManager->dropTable('a_textfield_test_table');
-        }
-        $this->verifyCleanDatabaseState();
-        $this->verifyNoDatabaseTablesExists();
-        parent::tearDown();
+        $sqlCodeFile ??= __DIR__ . '/../Fixtures/newTable.sql';
+        parent::prepareTestTable($schemaMigrator, $sqlCodeFile);
     }
 
-    private function verifyCleanDatabaseState(string $additionalCreateStatementsString = ''): void
+    protected function getTableDetails(?string $tableName = null): Table
     {
-        $sqlReader = $this->createSqlReader();
-        $schemaMigrator = $this->createSchemaMigrator();
-        $sqlStatements = $sqlReader->getCreateTableStatementArray($sqlReader->getTablesDefinitionString() . $additionalCreateStatementsString);
-        $addCreateChange = $schemaMigrator->getUpdateSuggestions($sqlStatements);
-        foreach ($addCreateChange['Default'] as $operation => $targets) {
-            if (!empty($targets)) {
-                self::fail("Schema probably polluted by previous test, unclean operation: $operation");
-            }
-        }
-        $dropRename = $schemaMigrator->getUpdateSuggestions($sqlStatements, true);
-        foreach ($dropRename['Default'] as $operation => $targets) {
-            if (!empty($targets)) {
-                self::fail("Schema probably polluted by previous test, unclean operation: $operation");
-            }
-        }
-    }
-
-    private function verifyNoDatabaseTablesExists(): void
-    {
-        self::assertCount(0, $this->getConnectionPool()->getConnectionByName('Default')->createSchemaManager()->listTableNames());
-    }
-
-    private function verifyMigrationResult(array $result): void
-    {
-        if ($result === []) {
-            return;
-        }
-        foreach ($result as $hash => $message) {
-            self::assertSame('', $message, $hash . ' failed: ' . $message);
-        }
-    }
-
-    private function getSchemaManager(): AbstractSchemaManager
-    {
-        return $this->get(ConnectionPool::class)->getConnectionByName('Default')->createSchemaManager();
-    }
-
-    private function createSqlReader(): SqlReader
-    {
-        // Ensure SqlReader is not taking any extension into account to retrieve extension table structure files.
-        $packageManagerMock = $this->createMock(PackageManager::class);
-        $packageManagerMock->method('getActivePackages')->willReturn([]);
-        return new SqlReader(new NoopEventDispatcher(), $packageManagerMock);
-    }
-
-    private function createSchemaMigrator(): SchemaMigrator
-    {
-        $tcaSchemaFactory = new TcaSchemaFactory(
-            $this->get(RelationMapBuilder::class),
-            $this->get(FieldTypeFactory::class),
-            $this->get('package-dependent-cache-identifier')->withPrefix('SchemaMigratorTest')->toString(),
-            new NullFrontend('test-core')
-        );
-        $tcaSchemaFactory->load([], true);
-        $defaultTcaSchemaMock = $this->createMock(DefaultTcaSchema::class);
-        $defaultTcaSchemaMock->method('enrich')->willReturnArgument(0);
-        return new SchemaMigrator(
-            $this->get(ConnectionPool::class),
-            $this->get(Parser::class),
-            $defaultTcaSchemaMock,
-            $tcaSchemaFactory,
-            $this->get('cache.runtime'),
-        );
-    }
-
-    /**
-     * Note executed only for the first test permutation for testcase.
-     *
-     * @internal only. Protected for special case \TYPO3\CMS\Core\Tests\Functional\Database\Schema\SchemaMigratorTest
-     */
-    protected function initializeTestDatabase(
-        ContainerInterface $container,
-        Testbase $testbase,
-        string $dbDriver,
-        bool $initializeDatabase,
-        string $dbName,
-        string $originalDatabaseName,
-        string $dbPathSqliteEmpty,
-    ): void {
-        // parent call omitted by intention.
-        $testbase->setUpTestDatabase($dbName, $originalDatabaseName);
-        if ($dbDriver === 'pdo_sqlite') {
-            $this->getConnectionPool()->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->executeQuery('SELECT 1');
-            // Copy sqlite file '/path/functional-sqlite-dbs/test_123.sqlite' to
-            // '/path/functional-sqlite-dbs/test_123.empty.sqlite'. This is re-used for consecutive tests.
-            copy($dbName, $dbPathSqliteEmpty);
-        }
-    }
-
-    /**
-     * Note only executed for subsequential test permutations for testcase, not the first one.
-     *
-     * @internal only. Protected for special case \TYPO3\CMS\Core\Tests\Functional\Database\Schema\SchemaMigratorTest
-     */
-    protected function initializeTestDatabaseAndTruncateTables(Testbase $testbase, bool $initializeDatabase, string $dbPathSqlite, string $dbPathSqliteEmpty): void
-    {
-        parent::initializeTestDatabaseAndTruncateTables($testbase, true, $dbPathSqlite, $dbPathSqliteEmpty);
-    }
-
-    /**
-     * Create the base table for all migration tests
-     */
-    private function prepareTestTable(SchemaMigrator $schemaMigrator, ?string $sqlCodeFile = null): void
-    {
-        $sqlCode = file_get_contents($sqlCodeFile ?? __DIR__ . '/../Fixtures/newTable.sql');
-        $result = $schemaMigrator->install($this->createSqlReader()->getCreateTableStatementArray($sqlCode));
-        $this->verifyMigrationResult($result);
-        $this->verifyCleanDatabaseState($sqlCode);
-    }
-
-    /**
-     * Helper to return the Doctrine Table object for the test table
-     */
-    private function getTableDetails(?string $tableName = null): Table
-    {
-        return $this->getSchemaManager()->introspectTable($tableName ?? 'a_test_table');
+        $tableName ??= 'a_test_table';
+        return parent::getTableDetails($tableName);
     }
 
     #[TestWith(['emptyDefaultTableOptions' => false])]
@@ -1269,6 +1111,14 @@ final class SchemaMigratorTest extends FunctionalTestCase
             'tableName' => 'a_test_table',
             'fieldName' => 'test_field',
             'expectedType' => JsonType::class,
+            'expectedLength' => null,
+            'expectedFixed' => null,
+        ];
+        yield 'uuid => GuidType' => [
+            'createTableDDL' => 'CREATE TABLE a_test_table (test_field UUID);',
+            'tableName' => 'a_test_table',
+            'fieldName' => 'test_field',
+            'expectedType' => GuidType::class,
             'expectedLength' => null,
             'expectedFixed' => null,
         ];

@@ -18,7 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Platform\Traits;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
+use Doctrine\DBAL\Types\GuidType;
 use Doctrine\DBAL\Types\JsonType;
 use Doctrine\DBAL\Types\Type;
 
@@ -109,6 +112,13 @@ trait GetColumnDeclarationSQLCommentTypeAwareTrait
         $map = [
             SQLitePlatform::class => [
                 JsonType::class,
+                GuidType::class,
+            ],
+            MariaDBPlatform::class => [
+                GuidType::class,
+            ],
+            MySQLPlatform::class => [
+                GuidType::class,
             ],
             AbstractPlatform::class => [],
         ];
