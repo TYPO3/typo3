@@ -220,13 +220,13 @@
 				<source>Ignore PID differences globally</source>
 			</trans-unit>
 			<trans-unit id="importdata_ifYouSetThis">
-				<source>If you set this option, the position of updated elements will not be updated to match the structure of the input file.</source>
+				<source>The position of updated elements will not be updated to match the structure of the input file.</source>
 			</trans-unit>
 			<trans-unit id="importdata_force_all_UIDS">
 				<source>Force ALL UIDs values</source>
 			</trans-unit>
 			<trans-unit id="importdata_force_all_UIDS_descr">
-				<source>With this option the original UID value of all imported records are forced to be the same. BE VERY CAREFUL WITH THIS! (Admin Only).</source>
+				<source>BE VERY CAREFUL WITH THIS: the original UID value of all imported records will be forced to be the same (Admin Only).</source>
 			</trans-unit>
 			<trans-unit id="importdata_options">
 				<source>Options</source>
@@ -235,7 +235,7 @@
 				<source>Do not show differences in records</source>
 			</trans-unit>
 			<trans-unit id="importdata_greenValuesAreFrom">
-				<source>Green values are from the import file, red values from the current database record and black values are similar in both versions.</source>
+				<source>Hides the resulting differences for each field of every imported records in the preview table.</source>
 			</trans-unit>
 			<trans-unit id="importdata_action">
 				<source>Action</source>
@@ -256,7 +256,7 @@
 				<source>Write individual database actions during import to the log</source>
 			</trans-unit>
 			<trans-unit id="importdata_thisIsDisabledBy">
-				<source>This is disabled by default since there may be hundred of entries generated.</source>
+				<source>This is disabled by default since there might be hundred of entries generated.</source>
 			</trans-unit>
 			<trans-unit id="importdata_uploadFileFromLocal">
 				<source>Upload file from local computer</source>
