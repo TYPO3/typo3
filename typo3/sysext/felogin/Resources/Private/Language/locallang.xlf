@@ -38,7 +38,7 @@ Another possibility is that cookies might be disabled in your web browser.</sour
 			<trans-unit id="status_message">
 				<source>This is your current status</source>
 			</trans-unit>
-			<trans-unit id="cookie_warning">
+			<trans-unit id="cookie_warning" x-unused-since="12.3">
 				<source>Warning: There is a possibility that cookies are not enabled in your web browser! If your login disappears on your next click that is the case and you should enable cookies (or accept cookies from this website) immediately!</source>
 			</trans-unit>
 			<trans-unit id="username">
