@@ -14,8 +14,6 @@
 import { html, LitElement, type TemplateResult, render, type PropertyValues, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators';
 import { classMap } from 'lit/directives/class-map';
-import ModuleMenu from '../module-menu';
-import { InputTransformer } from '@typo3/core/ajax/input-transformer';
 import '@typo3/backend/element/icon-element';
 import 'bootstrap'; // for data-bs-toggle="dropdown"
 
@@ -24,15 +22,10 @@ interface BreadcrumbNodeInterface {
   label: string;
   icon: string|null;
   iconOverlay: string|null;
+  url: string|null;
   forceShowIcon: boolean;
-  route: BreadcrumbNodeRouteInterface|null;
   // calculated properties
   __width?: number;
-}
-
-interface BreadcrumbNodeRouteInterface {
-  module: string;
-  params: Record<string, string>,
 }
 
 /**
@@ -213,7 +206,7 @@ export class Breadcrumb extends LitElement
 
   private renderDropdownItem(node: BreadcrumbNodeInterface): TemplateResult|null
   {
-    return node.route !== null ? html`
+    return node.url !== null ? html`
       <button
         type="button"
         class="dropdown-item"
@@ -236,7 +229,7 @@ export class Breadcrumb extends LitElement
 
   private renderBreadcrumbElement(node: BreadcrumbNodeInterface): TemplateResult|null
   {
-    return node.route !== null ? html`
+    return node.url !== null ? html`
       <button
         type="button"
         class="breadcrumb-element"
@@ -274,12 +267,9 @@ export class Breadcrumb extends LitElement
 
   private triggerAction(e: Event, node: BreadcrumbNodeInterface): void
   {
-    const params = new URLSearchParams(InputTransformer.toSearchParams(node.route.params)).toString();
-    ModuleMenu.App.showModule(
-      node.route.module,
-      params,
-      e,
-    );
+    import('@typo3/backend/viewport').then(({ default: Viewport }): void => {
+      Viewport.ContentContainer.setUrl(node.url);
+    });
   }
 
   private isFirstNode(node: BreadcrumbNodeInterface) {

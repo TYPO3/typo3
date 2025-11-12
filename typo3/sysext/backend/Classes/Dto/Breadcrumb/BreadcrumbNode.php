@@ -33,7 +33,7 @@ final readonly class BreadcrumbNode implements \JsonSerializable
      * @param string $label Display text shown to the user
      * @param string|null $icon Icon identifier from the icon registry (e.g., 'actions-page-open', 'apps-pagetree-root')
      * @param string|null $iconOverlay Overlay icon identifier for additional visual context (e.g., 'overlay-new', 'overlay-hidden')
-     * @param BreadcrumbNodeRoute|null $route Navigation target when clicking the node. Null means node is not clickable (typically the current item)
+     * @param string|null $url Backend URL to navigate to when clicking the node. Null means node is not clickable (typically the current item)
      * @param bool|null $forceShowIcon Forces icon display even in contexts where icons are normally hidden (e.g., module nodes)
      */
     public function __construct(
@@ -41,7 +41,7 @@ final readonly class BreadcrumbNode implements \JsonSerializable
         public string $label,
         public ?string $icon = null,
         public ?string $iconOverlay = null,
-        public ?BreadcrumbNodeRoute $route = null,
+        public ?string $url = null,
         public ?bool $forceShowIcon = false,
     ) {}
 

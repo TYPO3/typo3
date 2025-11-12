@@ -21,9 +21,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
-use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNodeRoute;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleResolver;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -44,6 +44,7 @@ final class RecordBreadcrumbProvider implements BreadcrumbProviderInterface, Log
     public function __construct(
         private readonly IconFactory $iconFactory,
         private readonly ModuleResolver $moduleResolver,
+        private readonly UriBuilder $uriBuilder,
     ) {}
 
     public function supports(?BreadcrumbContext $context): bool
@@ -61,20 +62,19 @@ final class RecordBreadcrumbProvider implements BreadcrumbProviderInterface, Log
         $breadcrumb = [];
         $currentModule = $this->moduleResolver->resolveModule($request);
         $showRootline = $this->shouldShowRootline($currentModule);
-        $targetModule = $currentModule?->getIdentifier() ?? $this->getTargetModule();
+        $targetModule = $currentModule !== null
+            ? $this->extractRouteIdentifier($request, $currentModule)
+            : $this->getTargetModule();
 
         // Add module hierarchy (for third-level modules, this includes parent modules)
         if ($currentModule !== null) {
-            $breadcrumb = array_merge($breadcrumb, $this->buildModuleHierarchy($currentModule, $showRootline));
+            $breadcrumb = array_merge($breadcrumb, $this->buildModuleHierarchy($currentModule, $request, $showRootline));
         } else {
             $breadcrumb[] = new BreadcrumbNode(
                 identifier: '0',
                 label: (string)$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
                 icon: 'apps-pagetree-root',
-                route: new BreadcrumbNodeRoute(
-                    module: $targetModule,
-                    params: $showRootline ? ['id' => '0'] : [],
-                ),
+                url: (string)$this->uriBuilder->buildUriFromRoute($targetModule, $showRootline ? ['id' => '0'] : []),
             );
         }
 
@@ -135,10 +135,7 @@ final class RecordBreadcrumbProvider implements BreadcrumbProviderInterface, Log
                         label: $item['title'] ?? '',
                         icon: $icon->getIdentifier(),
                         iconOverlay: $icon->getOverlayIcon()?->getIdentifier(),
-                        route: new BreadcrumbNodeRoute(
-                            module: $targetModule,
-                            params: ['id' => $item['uid']],
-                        ),
+                        url: (string)$this->uriBuilder->buildUriFromRoute($targetModule, ['id' => $item['uid']]),
                     );
                 } catch (\Exception $e) {
                     $this->logger?->warning(
@@ -177,10 +174,7 @@ final class RecordBreadcrumbProvider implements BreadcrumbProviderInterface, Log
                 ),
                 icon: $icon->getIdentifier(),
                 iconOverlay: $icon->getOverlayIcon()?->getIdentifier(),
-                route: $record->getMainType() !== 'pages' ? null : new BreadcrumbNodeRoute(
-                    module: $targetModule,
-                    params: ['id' => (string)$record->getUid()],
-                ),
+                url: $record->getMainType() === 'pages' ? (string)$this->uriBuilder->buildUriFromRoute($targetModule, ['id' => (string)$record->getUid()]) : null,
             );
         } catch (\Exception $e) {
             $this->logger?->error(
@@ -205,7 +199,7 @@ final class RecordBreadcrumbProvider implements BreadcrumbProviderInterface, Log
      *
      * @return BreadcrumbNode[]
      */
-    private function buildModuleHierarchy(ModuleInterface $currentModule, bool $showRootline): array
+    private function buildModuleHierarchy(ModuleInterface $currentModule, ?ServerRequestInterface $request, bool $showRootline): array
     {
         $modules = [];
         $moduleChain = [];
@@ -226,15 +220,16 @@ final class RecordBreadcrumbProvider implements BreadcrumbProviderInterface, Log
         }
 
         // Build breadcrumb nodes for each module in the chain
-        foreach ($moduleChain as $module) {
+        foreach ($moduleChain as $index => $module) {
+            $isLastModule = $index === count($moduleChain) - 1;
+            // For the last module (current), use the full route identifier to preserve route/action
+            // For parent modules, use base module identifier
+            $routeIdentifier = $isLastModule ? $this->extractRouteIdentifier($request, $module) : $module->getIdentifier();
             $modules[] = new BreadcrumbNode(
                 identifier: $module->getIdentifier(),
                 label: $this->getLanguageService()->sL($module->getTitle()),
                 icon: $module->getIconIdentifier(),
-                route: new BreadcrumbNodeRoute(
-                    module: $module->getIdentifier(),
-                    params: $showRootline ? ['id' => '0'] : [],
-                ),
+                url: (string)$this->uriBuilder->buildUriFromRoute($routeIdentifier, $showRootline ? ['id' => '0'] : []),
                 forceShowIcon: true,
             );
         }
@@ -252,6 +247,29 @@ final class RecordBreadcrumbProvider implements BreadcrumbProviderInterface, Log
         // @todo This is quite implicit, but using the page-tree-element as navigation component
         //       signals that the current module can handle ?id= as a page parameter.
         return $currentModule === null || $currentModule->getNavigationComponent() === '@typo3/backend/tree/page-tree-element';
+    }
+
+    /**
+     * Extracts the route identifier from the current request.
+     *
+     * This returns the full route identifier (e.g., 'manage_search_index.Administration_externalDocuments')
+     * to preserve sub-routes and actions in breadcrumb navigation.
+     *
+     * @return string The route identifier or module identifier as fallback
+     */
+    private function extractRouteIdentifier(?ServerRequestInterface $request, ModuleInterface $module): string
+    {
+        // Try to get the full route identifier from routing attribute
+        if ($request !== null
+            && ($routeResult = $request->getAttribute('routing')) !== null
+            && ($route = $routeResult->getRoute()) !== null
+            && !empty(($routeIdentifier = $route->getOption('_identifier')))
+        ) {
+            return $routeIdentifier;
+        }
+
+        // Fallback to module identifier
+        return $module->getIdentifier();
     }
 
     private function getLanguageService(): LanguageService

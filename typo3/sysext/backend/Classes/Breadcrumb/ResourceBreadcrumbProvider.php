@@ -21,8 +21,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
-use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNodeRoute;
 use TYPO3\CMS\Backend\Module\ModuleResolver;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -46,6 +46,7 @@ final class ResourceBreadcrumbProvider implements BreadcrumbProviderInterface, L
     public function __construct(
         private readonly IconFactory $iconFactory,
         private readonly ModuleResolver $moduleResolver,
+        private readonly UriBuilder $uriBuilder,
     ) {}
 
     public function supports(?BreadcrumbContext $context): bool
@@ -71,10 +72,7 @@ final class ResourceBreadcrumbProvider implements BreadcrumbProviderInterface, L
                 label: $languageService->sL($currentModule->getTitle()),
                 icon: $currentModule->getIconIdentifier(),
                 iconOverlay: null,
-                route: new BreadcrumbNodeRoute(
-                    module: $currentModule->getIdentifier(),
-                    params: ['id' => ''],
-                ),
+                url: (string)$this->uriBuilder->buildUriFromRoute($currentModule->getIdentifier(), ['id' => '']),
                 forceShowIcon: true,
             );
         }
@@ -99,10 +97,7 @@ final class ResourceBreadcrumbProvider implements BreadcrumbProviderInterface, L
                     label: $label,
                     icon: $icon->getIdentifier(),
                     iconOverlay: $icon->getOverlayIcon()?->getIdentifier(),
-                    route: new BreadcrumbNodeRoute(
-                        module: $this->getTargetModule(),
-                        params: ['id' => $combinedIdentifier],
-                    ),
+                    url: (string)$this->uriBuilder->buildUriFromRoute($this->getTargetModule(), ['id' => $combinedIdentifier]),
                 );
             } catch (\Exception $e) {
                 $this->logger?->warning(

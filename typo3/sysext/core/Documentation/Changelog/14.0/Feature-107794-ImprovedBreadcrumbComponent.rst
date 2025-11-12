@@ -36,6 +36,10 @@ Module awareness
   Breadcrumbs remember which module you're in and keep you in that module when
   navigating (e.g., staying in Info module instead of switching to Page module).
 
+Route preservation
+  When navigating through breadcrumbs, the current module action or sub-route is
+  preserved (e.g., staying in "edit" view when clicking parent pages).
+
 Responsive design
   On smaller screens, breadcrumb items automatically collapse into a dropdown
   to save space while maintaining full functionality.
@@ -160,22 +164,25 @@ states or actions such as:
 
 **Example: Clickable suffix nodes**
 
-Suffix nodes can also be clickable by providing a route:
+Suffix nodes can also be clickable by providing a URL:
 
 ..  code-block:: php
 
     use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
-    use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNodeRoute;
+    use TYPO3\CMS\Backend\Routing\UriBuilder;
+
+    $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+    $url = (string)$uriBuilder->buildUriFromRoute(
+        'web_layout',
+        ['id' => $pageUid, 'mode' => 'preview']
+    );
 
     $docHeader->addBreadcrumbSuffixNode(
         new BreadcrumbNode(
             identifier: 'preview',
             label: 'Preview Mode',
             icon: 'actions-view',
-            route: new BreadcrumbNodeRoute(
-                'web_layout',
-                ['id' => $pageUid, 'mode' => 'preview']
-            )
+            url: $url
         )
     );
 

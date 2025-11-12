@@ -19,9 +19,9 @@ namespace TYPO3\CMS\Backend\Breadcrumb;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
-use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNodeRoute;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleResolver;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 
@@ -38,6 +38,7 @@ final class NullContextBreadcrumbProvider implements BreadcrumbProviderInterface
     public function __construct(
         private readonly ModuleResolver $moduleResolver,
         private readonly StorageRepository $storageRepository,
+        private readonly UriBuilder $uriBuilder,
     ) {}
 
     public function supports(?BreadcrumbContext $context): bool
@@ -129,10 +130,7 @@ final class NullContextBreadcrumbProvider implements BreadcrumbProviderInterface
                 identifier: $module->getIdentifier(),
                 label: $this->getLanguageService()->sL($module->getTitle()),
                 icon: $module->getIconIdentifier(),
-                route: new BreadcrumbNodeRoute(
-                    module: $module->getIdentifier(),
-                    params: $module->getNavigationComponent() === '@typo3/backend/tree/page-tree-element' ? ['id' => '0'] : [],
-                ),
+                url: (string)$this->uriBuilder->buildUriFromRoute($module->getIdentifier(), $module->getNavigationComponent() === '@typo3/backend/tree/page-tree-element' ? ['id' => '0'] : []),
                 forceShowIcon: true,
             );
         }

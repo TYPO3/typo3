@@ -128,34 +128,44 @@ final class SubmoduleOverviewControllerTest extends FunctionalTestCase
 
         $content = (string)$response->getBody();
 
-        self::assertStringContainsString(htmlspecialchars(json_encode([
-            [
-                'identifier' => 'web_info',
-                'label' => 'Info',
-                'icon' => 'module-info',
-                'iconOverlay' => null,
-                'route' => [
-                    'module' => 'web_info',
-                    'params' => [
-                        'id' => '0',
-                    ],
-                ],
-                'forceShowIcon' => true,
-            ],
-            [
-                'identifier' => '1',
-                'label' => 'Root',
-                'icon' => 'apps-pagetree-page-default',
-                'iconOverlay' => null,
-                'route' => [
-                    'module' => 'web_info',
-                    'params' => [
-                        'id' => '1',
-                    ],
-                ],
-                'forceShowIcon' => false,
-            ],
-        ]), ENT_QUOTES), $content);
+        // The breadcrumb data is embedded in HTML as JSON within the typo3-breadcrumb element's nodes attribute
+        // Check that the breadcrumb element exists
+        self::assertStringContainsString('<typo3-breadcrumb', $content, 'Should contain breadcrumb element');
+
+        // Extract the nodes attribute content using regex
+        preg_match('/nodes=\'([^\']+)\'/', $content, $matches);
+        self::assertCount(2, $matches, 'Should find nodes attribute');
+
+        // Decode the JSON nodes data
+        $nodesJson = html_entity_decode($matches[1], ENT_QUOTES);
+        $nodes = json_decode($nodesJson, true);
+        self::assertIsArray($nodes, 'Nodes should be valid JSON array');
+        self::assertCount(2, $nodes, 'Should have two breadcrumb nodes (module and page)');
+
+        // First node should be the module
+        self::assertSame('web_info', $nodes[0]['identifier'], 'First node should be module identifier');
+        self::assertSame('Info', $nodes[0]['label'], 'First node should be module label');
+        self::assertSame('module-info', $nodes[0]['icon'], 'First node should be module icon');
+        self::assertNull($nodes[0]['iconOverlay'], 'Module should have no icon overlay');
+        self::assertTrue($nodes[0]['forceShowIcon'], 'Module should force show icon');
+        self::assertArrayHasKey('url', $nodes[0], 'Module node should have url field');
+        self::assertNotNull($nodes[0]['url'], 'Module should have URL');
+        self::assertStringContainsString('/module/web/info', $nodes[0]['url'], 'Module URL should contain module path');
+
+        // Second node should be the page
+        self::assertSame('1', $nodes[1]['identifier'], 'Second node should be page identifier');
+        self::assertSame('Root', $nodes[1]['label'], 'Second node should be page label');
+        self::assertSame('apps-pagetree-page-default', $nodes[1]['icon'], 'Second node should be page icon');
+        self::assertNull($nodes[1]['iconOverlay'], 'Page should have no icon overlay');
+        self::assertFalse($nodes[1]['forceShowIcon'], 'Page should not force show icon');
+        self::assertArrayHasKey('url', $nodes[1], 'Page node should have url field');
+        self::assertNotNull($nodes[1]['url'], 'Page should have URL');
+        self::assertStringContainsString('/module/web/info', $nodes[1]['url'], 'Page URL should contain module path');
+        self::assertStringContainsString('id=1', $nodes[1]['url'], 'Page URL should contain page id');
+
+        // Verify no old route structure exists
+        self::assertArrayNotHasKey('route', $nodes[0], 'Module node should not have old route structure');
+        self::assertArrayNotHasKey('route', $nodes[1], 'Page node should not have old route structure');
     }
 
     #[Test]

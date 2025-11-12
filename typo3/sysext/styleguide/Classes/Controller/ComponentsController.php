@@ -21,7 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
-use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNodeRoute;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -80,6 +80,7 @@ final class ComponentsController
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly FlashMessageService $flashMessageService,
         private readonly ComponentFactory $componentFactory,
+        private readonly UriBuilder $uriBuilder,
     ) {}
 
     /**
@@ -161,48 +162,41 @@ final class ComponentsController
     private function renderBreadcrumbsView(ServerRequestInterface $request): ResponseInterface
     {
         $breadcrumb = [];
-
-        $route = new BreadcrumbNodeRoute(
-            module: 'styleguide_components',
-            params: [
-                'action' => 'breadcrumbs',
-            ]
-        );
-
+        $url = (string)$this->uriBuilder->buildUriFromRoute('styleguide_components', ['action' => 'breadcrumbs']);
         $breadcrumb[] = new BreadcrumbNode(
             identifier: '0',
             label: 'Root',
             icon: 'apps-pagetree-root',
             iconOverlay: null,
-            route: $route,
+            url: $url,
         );
         $breadcrumb[] = new BreadcrumbNode(
             identifier: '1',
             label: 'Menu Entry Level 1',
             icon: 'apps-pagetree-page',
             iconOverlay: null,
-            route: $route,
+            url: $url,
         );
         $breadcrumb[] = new BreadcrumbNode(
             identifier: '2',
             label: 'Menu Entry Level 2',
             icon: 'apps-pagetree-page',
             iconOverlay: null,
-            route: $route,
+            url: $url,
         );
         $breadcrumb[] = new BreadcrumbNode(
             identifier: '3',
             label: 'Menu Entry Level 3',
             icon: 'apps-pagetree-page',
             iconOverlay: null,
-            route: $route,
+            url: $url,
         );
         $breadcrumb[] = new BreadcrumbNode(
             identifier: '4',
             label: 'Menu Entry Level 4',
             icon: 'apps-pagetree-page',
             iconOverlay: null,
-            route: $route,
+            url: $url,
         );
         $breadcrumb[] = new BreadcrumbNode(
             identifier: '5',
