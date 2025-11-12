@@ -235,31 +235,31 @@
 				<source>Image processing via ImageMagick/GraphicsMagick is disabled</source>
 			</trans-unit>
 			<trans-unit id="status_imageprocessing_webp_not_configured">
-				<source>Support for WebP image generation is not configured in $TYPO3_CONF_VARS[GFX][imagefile_ext]. No WebP image files will be generated.</source>
+				<source>WebP image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext]. No WebP image files will be generated.</source>
 			</trans-unit>
 			<trans-unit id="status_imageprocessing_webp_available">
-				<source>Support for WebP image generation is not configured in $TYPO3_CONF_VARS[GFX][imagefile_ext], but ImageMagick/GraphicsMagick supports generation of WebP image files.</source>
+				<source>WebP image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is supported by ImageMagick/GraphicsMagick.</source>
 			</trans-unit>
 			<trans-unit id="status_imageprocessing_webp_not_available">
-				<source>Support for WebP image generation is configured in $TYPO3_CONF_VARS[GFX][imagefile_ext], but ImageMagick/GraphicsMagick does NOT support generation of WebP image files, update your system environment or disable webp support in TYPO3 Configuration.</source>
+				<source>WebP image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is NOT supported by ImageMagick/GraphicsMagick. Please update your system environment or disable webp support in TYPO3 Configuration.</source>
 			</trans-unit>
 			<trans-unit id="status_imageprocessing_webp_available_and_configured">
-				<source>Support for WebP image generation is configured in $TYPO3_CONF_VARS[GFX][imagefile_ext] and ImageMagick/GraphicsMagick supports generation of WebP image files - all fine!</source>
+				<source>WebP image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext] and supported by ImageMagick/GraphicsMagick — Everything is configured correctly.</source>
 			</trans-unit>
 			<trans-unit id="status_imageprocessing_avif">
 				<source>AVIF support and availability</source>
 			</trans-unit>
 			<trans-unit id="status_imageprocessing_avif_not_configured">
-				<source>Support for AVIF image generation is not configured in $TYPO3_CONF_VARS[GFX][imagefile_ext]. No AVIF image files will be generated.</source>
+				<source>AVIF image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext]. No AVIF image files will be generated.</source>
 			</trans-unit>
 			<trans-unit id="status_imageprocessing_avif_available">
-				<source>Support for AVIF image generation is not configured in $TYPO3_CONF_VARS[GFX][imagefile_ext], but ImageMagick/GraphicsMagick supports generation of AVIF image files.</source>
+				<source>AVIF image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is supported by ImageMagick/GraphicsMagick.</source>
 			</trans-unit>
 			<trans-unit id="status_imageprocessing_avif_not_available">
-				<source>Support for AVIF image generation is configured in $TYPO3_CONF_VARS[GFX][imagefile_ext], but ImageMagick/GraphicsMagick does NOT support generation of AVIF image files, update your system environment or disable AVIF support in TYPO3 Configuration.</source>
+				<source>AVIF image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is NOT supported by ImageMagick/GraphicsMagick. Please update your system environment or disable AVIF support in TYPO3 Configuration.</source>
 			</trans-unit>
 			<trans-unit id="status_imageprocessing_avif_available_and_configured">
-				<source>Support for AVIF image generation is configured in $TYPO3_CONF_VARS[GFX][imagefile_ext] and ImageMagick/GraphicsMagick supports generation of AVIF image files - all fine!</source>
+				<source>AVIF image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext] and supported by ImageMagick/GraphicsMagick — Everything is configured correctly.</source>
 			</trans-unit>
 		</body>
 	</file>
