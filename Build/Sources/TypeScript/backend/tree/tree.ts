@@ -1117,22 +1117,26 @@ export class Tree extends LitElement {
 
   protected createNodeContentLabel(node: TreeNodeInterface): TemplateResult
   {
-    let label = (node.prefix || '') + node.name + (node.suffix || '');
-    // make a text node out of it, and strip out any HTML (this is because the return value uses html()
-    // instead of text() which is needed to avoid XSS in a page title
-    const labelNode = document.createElement('div');
-    labelNode.textContent = label;
-    label = labelNode.innerHTML;
+    const label = (node.prefix || '') + node.name + (node.suffix || '');
+
+    let nodeContent: Array<TemplateResult|string> | string = label;
     if (this.searchTerm) {
       // Escape all meta characters of regular expressions: ( ) [ ] $ * + ? . { } / | ^ -
-      const regexp = new RegExp(this.searchTerm.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&'), 'gi');
-      label = label.replace(regexp, '<span class="node-highlight-text">$&</span>');
+      // Also wrap the search term in a capture group so the regex split retains the separator
+      const regexp = new RegExp(`(${this.searchTerm.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
+      const parts = label.split(regexp);
+      if (parts.length > 1) {
+        // grouped regex splits contain the match in every second spot, to keep things short we use a modulo-flip with the index
+        nodeContent = parts.map((part, index): TemplateResult | string =>
+          (index % 2 === 1) ? html`<span class="node-highlight-text">${part}</span>` : part
+        );
+      }
     }
 
     return html`
       <div class="node-contentlabel">
-      <div class="node-name" .innerHTML="${label}"></div>
-      ${node.note ? html`<div class="node-note">${node.note}</div>` : nothing }
+        <div class="node-name">${nodeContent}</div>
+        ${node.note ? html`<div class="node-note">${node.note}</div>` : nothing}
       </div>`;
   }
 
