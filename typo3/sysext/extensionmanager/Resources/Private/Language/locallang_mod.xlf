@@ -3,7 +3,7 @@
 	<file source-language="en" datatype="plaintext" original="EXT:extensionmanager/Resources/Private/Language/locallang_mod.xlf" date="2011-10-17T20:22:38Z" product-name="workspaces">
 		<header/>
 		<body>
-			<!-- TODO: Delete with TYPO3 15.0 -->
+			<!-- @deprecated since v14, will be removed in v15. Delete whole file. -->
 			<trans-unit id="mlang_tabs_tab" x-unused-since="14.0">
 				<source>Extensions</source>
 			</trans-unit>

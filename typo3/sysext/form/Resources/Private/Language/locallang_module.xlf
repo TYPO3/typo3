@@ -3,7 +3,7 @@
     <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_module.xlf" date="2016-06-04T20:22:33Z" product-name="form">
         <header/>
         <body>
-			<!-- TODO: Delete with TYPO3 15.0 -->
+			<!-- @deprecated since v14, will be removed in v15. Delete whole file. -->
             <trans-unit id="mlang_labels_tablabel" x-unused-since="14.0">
                 <source>Build custom forms</source>
             </trans-unit>
