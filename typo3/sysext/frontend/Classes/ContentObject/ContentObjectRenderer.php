@@ -1173,6 +1173,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     } else {
                         // Call the function with the prefix stdWrap_ to make sure nobody can execute functions just by adding their name to the TS Array
                         $functionName = 'stdWrap_' . $functionName;
+                        // @phpstan-ignore-next-line phpstan complains about some methods not having a second argument, which is not required/useful - doing reflection here would be too intense.
                         $content = $this->{$functionName}($content, $singleConf);
                     }
                 } elseif ($functionType === 'boolean' && !($conf[$functionName] ?? null)) {
