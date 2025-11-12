@@ -1315,24 +1315,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/EventDispatcher/ListenerProvider.php
 
 		-
-			message: '#^Call to function is_string\(\) with non\-falsy\-string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Hooks/TcaItemsProcessorFunctions.php
-
-		-
-			message: '#^Result of && is always true\.$#'
-			identifier: booleanAnd.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Hooks/TcaItemsProcessorFunctions.php
-
-		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Hooks/TcaItemsProcessorFunctions.php
-
-		-
 			message: '#^Comparison operation "\>" between 1\|2\|3\|6\|7\|8 and 0 is always true\.$#'
 			identifier: greater.alwaysTrue
 			count: 1
@@ -2434,12 +2416,6 @@ parameters:
 			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 2
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Core\\Utility\\GeneralUtility\:\:intExplode\(\) should return array\<int\> but returns array\<int\<0, max\>, string\>\.$#'
-			identifier: return.type
-			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
 		-
