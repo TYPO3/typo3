@@ -222,6 +222,10 @@ The following upgrade wizards have been removed:
 - Migrate sys_log entries to a JSON formatted value
 - Migrate storage and folder to the new folder_identifier property of the "sys_file_collection" table
 
+The following row updater has been removed:
+
+- :php:`\TYPO3\CMS\Install\Updates\RowUpdater\SysRedirectRootPageMoveMigration`
+
 The following database table fields have been removed:
 
 - :sql:`tt_content.list_type` :ref:`(Deprecation entry) <deprecation-105076-1726923626>`

@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 use TYPO3\CMS\Install\Updates\RowUpdater\RowUpdaterInterface;
-use TYPO3\CMS\Install\Updates\RowUpdater\SysRedirectRootPageMoveMigration;
 
 /**
  * This is a generic updater to migrate content of TCA rows.
@@ -48,10 +47,9 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
 {
     /**
      * @var array Single classes that may update rows
+     * @todo No RowUpdater remaining allowing us to move the registration to attribute/interface based locator.
      */
-    protected $rowUpdater = [
-        SysRedirectRootPageMoveMigration::class,
-    ];
+    protected $rowUpdater = [];
 
     /**
      * @internal
