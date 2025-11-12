@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures/setup-fixtures';
+import { test, expect } from '../../fixtures/setup-fixtures';
 
 test.beforeEach( async ({page}) => {
   await page.goto('module/web/layout');

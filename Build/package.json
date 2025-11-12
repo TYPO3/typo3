@@ -16,7 +16,7 @@
     "@ckeditor/ckeditor5-dev-utils": "^46.1.0",
     "@csstools/postcss-sass": "^5.1.1",
     "@open-wc/testing": "^4.0.0",
-    "@playwright/test": "^1.55.0",
+    "@playwright/test": "^1.56.1",
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@stylistic/eslint-plugin": "^2.6.2",

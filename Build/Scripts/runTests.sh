@@ -809,7 +809,7 @@ IMAGE_PHP="ghcr.io/typo3/core-testing-$(echo "php${PHP_VERSION}" | sed -e 's/\./
 
 IMAGE_NODEJS="ghcr.io/typo3/core-testing-nodejs22:1.3"
 IMAGE_NODEJS_CHROME="ghcr.io/typo3/core-testing-nodejs22-chrome:1.3"
-IMAGE_PLAYWRIGHT="mcr.microsoft.com/playwright:v1.55.0-noble"
+IMAGE_PLAYWRIGHT="mcr.microsoft.com/playwright:v1.56.1-noble"
 IMAGE_ALPINE="docker.io/alpine:3.8"
 # HEADS UP: We need to pin to <132 for --headless=old support until https://issues.chromium.org/issues/362522328 is resolved
 IMAGE_SELENIUM="docker.io/selenium/standalone-chromium:131.0-20250101"
