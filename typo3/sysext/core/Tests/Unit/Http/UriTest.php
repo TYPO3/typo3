@@ -110,33 +110,32 @@ final class UriTest extends UnitTestCase
     public function noSchemeWithDomainAlikeIsInterpretedAsPath(): void
     {
         $subject = new Uri('www.example.com');
-        // This is counter intuitive, but interpreted as path.
-        // Although we'd like to see protocol independent `//` here,
-        // we must not change this, as…
-        self::assertEquals('/www.example.com', (string)$subject);
+        // Although this looks intuitive, it is important to understand,
+        // that www.example.com is interpreted as path, not as host name,
+        // since the authority separator "//" is missing.
+        self::assertEquals('www.example.com', (string)$subject);
 
-        // …this behaviour is security relevant.
-        // This invalid domain name – given without a scheme – is
-        // only "save" because they are considered to be paths
+        // This invalid domain name – given without an authority separator – is
+        // only "safe" because it is considered to be a path
         // (invalid hostname alike is not parsed as a hostname):
         $subject = new Uri('evil.tld\\@host.tld');
-        self::assertEquals('/evil.tld%5C@host.tld', (string)$subject);
+        self::assertEquals('evil.tld%5C@host.tld', (string)$subject);
 
         $subject = new Uri('evil.tld\\\\\\@host.tld');
-        self::assertEquals('/evil.tld%5C%5C%5C@host.tld', (string)$subject);
+        self::assertEquals('evil.tld%5C%5C%5C@host.tld', (string)$subject);
     }
 
     #[Test]
     public function noSchemeWithDomainAlikeAndTrailingSlashIsInterpretedAsPath(): void
     {
         $subject = new Uri('www.example.com/');
-        self::assertEquals('/www.example.com/', (string)$subject);
+        self::assertEquals('www.example.com/', (string)$subject);
 
         $subject = new Uri('evil.tld\\@host.tld/');
-        self::assertEquals('/evil.tld%5C@host.tld/', (string)$subject);
+        self::assertEquals('evil.tld%5C@host.tld/', (string)$subject);
 
         $subject = new Uri('evil.tld\\\\\\@host.tld/');
-        self::assertEquals('/evil.tld%5C%5C%5C@host.tld/', (string)$subject);
+        self::assertEquals('evil.tld%5C%5C%5C@host.tld/', (string)$subject);
     }
 
     public static function validPortsDataProvider(): array
@@ -199,7 +198,56 @@ final class UriTest extends UnitTestCase
     public function noPortAndNoSchemeDoesNotRenderPort(): void
     {
         $subject = new Uri('www.example.com');
-        self::assertEquals('/www.example.com', (string)$subject);
+        self::assertEquals('www.example.com', (string)$subject);
+    }
+
+    #[Test]
+    public function rootlessPathWithNoAuthorityIsNotPrefixedWithSlash(): void
+    {
+        $subject = new Uri('foo/bar/baz');
+        self::assertEquals('foo/bar/baz', (string)$subject);
+    }
+
+    #[Test]
+    public function relativePathWithNoAuthorityIsNotPrefixedWithSlash(): void
+    {
+        $subject = new Uri('./foo/bar/baz');
+        self::assertEquals('./foo/bar/baz', (string)$subject);
+    }
+
+    #[Test]
+    public function rootlessPathWithAuthorityIsPrefixedWithSlash(): void
+    {
+        $subject = (new Uri('//example.com'))->withPath('foo/bar/baz');
+        self::assertEquals('//example.com/foo/bar/baz', (string)$subject);
+    }
+
+    #[Test]
+    public function relativePathWithAuthorityIsPrefixedWithSlash(): void
+    {
+        $subject = (new Uri('//example.com'))->withPath('./foo/bar/baz');
+        self::assertEquals('//example.com/./foo/bar/baz', (string)$subject);
+    }
+
+    #[Test]
+    public function rootlessPathWithColonInFirstSegmentAndNoAuthorityIsNotPrefixedWithDotSlash(): void
+    {
+        $subject = (new Uri(''))->withPath('foo:bar/baz');
+        self::assertEquals('./foo:bar/baz', (string)$subject);
+    }
+
+    #[Test]
+    public function rootlessPathWithColonInOnlySegmentAndNoAuthorityIsNotPrefixedWithDotSlash(): void
+    {
+        $subject = (new Uri(''))->withPath('foo:bar');
+        self::assertEquals('./foo:bar', (string)$subject);
+    }
+
+    #[Test]
+    public function rootlessPathWithColonInSegmentAndAuthorityIsNotPrefixedWithSlash(): void
+    {
+        $subject = (new Uri('//example.com'))->withPath('foo:bar');
+        self::assertEquals('//example.com/foo:bar', (string)$subject);
     }
 
     #[Test]

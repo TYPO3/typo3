@@ -48,10 +48,12 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
         $backendUser->workspace = 0;
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
+        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams->method('getSitePath')->willReturn('/');
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('route', new Route('/record/importexport/export', []))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-            ->withAttribute('normalizedParams', new NormalizedParams([], [], '', ''));
+            ->withAttribute('normalizedParams', $normalizedParams);
     }
 
     /**

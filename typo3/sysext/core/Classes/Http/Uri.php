@@ -618,11 +618,7 @@ class Uri implements UriInterface
             $uri .= '//' . $authority;
         }
 
-        $path = $this->getPath();
-        if ($path !== '' && !str_starts_with($path, '/')) {
-            $path = '/' . $path;
-        }
-        $uri .= $path;
+        $uri .= $this->normalizePathForStringification($authority, $this->getPath());
 
         if ($this->query) {
             $uri .= '?' . $this->query;
@@ -631,6 +627,23 @@ class Uri implements UriInterface
             $uri .= '#' . $this->fragment;
         }
         return $uri;
+    }
+
+    private function normalizePathForStringification(string $authority, string $path): string
+    {
+        $isRootless = $path !== '' && !str_starts_with($path, '/');
+        if ($isRootless) {
+            if ($authority === '') {
+                // See: https://datatracker.ietf.org/doc/html/rfc3986#page-26:~:text=A%20path%20segment%20that%20contains%20a%20colon%20character%20(e.g.%2C%20%22this%3Athat%22)
+                $pathParts = explode('/', $path, 2);
+                if (str_contains($pathParts[0], ':')) {
+                    $path = './' . $path;
+                }
+            } else {
+                $path = '/' . $path;
+            }
+        }
+        return $path;
     }
 
     /**

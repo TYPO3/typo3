@@ -269,8 +269,8 @@ class ImportMap
             //        here and adding the site prefix, which is passed during rendering later on
             //        This should be done asap, because other implementations of SystemResourcePublisherInterface
             //        might not evaluate the uriPrefix options
-            $url = ltrim((string)PathUtility::getSystemResourceUri($resourceIdentifier, null, new UriGenerationOptions(uriPrefix: '', cacheBusting: false))
-                ->withQuery('bust=' . $bust), '/');
+            $url = (string)PathUtility::getSystemResourceUri($resourceIdentifier, null, new UriGenerationOptions(uriPrefix: '', cacheBusting: false))
+                ->withQuery('bust=' . $bust);
             $map[$specifier] = $url;
         }
 
@@ -312,7 +312,7 @@ class ImportMap
             //        here and adding the site prefix, which is passed during rendering later on
             //        This should be done asap, because other implementations of SystemResourcePublisherInterface
             //        might not evaluate the uriPrefix options
-            $imports[$specifier] = ltrim((string)$uri, '/');
+            $imports[$specifier] = (string)$uri;
         }
 
         return $imports + array_merge(...$cacheBustingSpecifiers);

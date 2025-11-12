@@ -27,6 +27,7 @@ use TYPO3\CMS\Backend\Module\ModuleFactory;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -57,7 +58,11 @@ final class BackendModuleValidatorTest extends FunctionalTestCase
             $this->get(FlashMessageService::class),
             $this->get(TcaSchemaFactory::class),
         );
-        $this->request = new ServerRequest('/some/uri');
+        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams->method('getSitePath')
+            ->willReturn('/');
+        $this->request = (new ServerRequest('/some/uri'))
+            ->withAttribute('normalizedParams', $normalizedParams);
         $this->requestHandler = new class () implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {

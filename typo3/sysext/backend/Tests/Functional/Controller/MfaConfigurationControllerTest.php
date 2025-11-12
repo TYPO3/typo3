@@ -66,10 +66,16 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
         );
         $this->subject->injectMfaProviderRegistry($this->get(MfaProviderRegistry::class));
         $this->hashService = new HashService();
+        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams->method('getSitePath')
+            ->willReturn('/');
+        $normalizedParams->method('getRequestUri')
+            ->willReturn('/foo/bar/');
         $this->request = (new ServerRequest('https://example.com/typo3/'))
+            ->withAttribute('normalizedParams', $normalizedParams)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
-        $this->normalizedParams = new NormalizedParams([], [], '', '');
+        $this->normalizedParams = $normalizedParams;
     }
 
     #[Test]

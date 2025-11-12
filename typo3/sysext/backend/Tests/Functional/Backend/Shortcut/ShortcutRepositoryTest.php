@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -45,7 +46,11 @@ final class ShortcutRepositoryTest extends FunctionalTestCase
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
-        $request = new ServerRequest('https://localhost/typo3/');
+        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams->method('getSitePath')
+            ->willReturn('/');
+        $request = (new ServerRequest('https://localhost/typo3/'))
+            ->withAttribute('normalizedParams', $normalizedParams);
         $requestContextFactory = $this->get(RequestContextFactory::class);
         $uriBuilder = $this->get(UriBuilder::class);
         $uriBuilder->setRequestContext($requestContextFactory->fromBackendRequest($request));

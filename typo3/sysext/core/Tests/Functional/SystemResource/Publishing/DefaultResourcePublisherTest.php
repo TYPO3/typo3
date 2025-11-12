@@ -171,6 +171,36 @@ final class DefaultResourcePublisherTest extends FunctionalTestCase
         self::assertSame($url, (string)$resourcePublisher->generateUri($resource, null, new UriGenerationOptions(cacheBusting: false)));
     }
 
+    public static function generatesUriWithCustomPrefixDataProvider(): \Generator
+    {
+        yield 'no prefix' => [
+            null,
+        ];
+        yield 'empty prefix' => [
+            '',
+        ];
+        yield 'authority prefix' => [
+            '//example.com/',
+        ];
+        yield 'path prefix' => [
+            '/prefix/',
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('generatesUriWithCustomPrefixDataProvider')]
+    public function generatesUriWithCustomPrefix(?string $uriPrefix): void
+    {
+        $resourceString = 'PKG:typo3tests/test-system-resources:Resources/Public/Icons/Extension.svg';
+        // Default prefix is "/"
+        $uriPrefix ??= '/';
+        $expectedUri = $uriPrefix . 'typo3conf/ext/test_system_resources/Resources/Public/Icons/Extension.svg';
+        $resourceFactory = $this->get(SystemResourceFactory::class);
+        $resourcePublisher = $this->get(DefaultSystemResourcePublisher::class);
+        $resource = $resourceFactory->createPublicResource($resourceString);
+        self::assertSame($expectedUri, (string)$resourcePublisher->generateUri($resource, null, new UriGenerationOptions(uriPrefix: $uriPrefix, cacheBusting: false)));
+    }
+
     #[Test]
     public function generatesUriWithCacheBustingInFileName(): void
     {

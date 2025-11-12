@@ -118,7 +118,7 @@ class PathUtility
         }
         // Other implementations of SystemResourcePublisherInterface
         // might not evaluate the uriPrefix options, so good this method is deprecated and will be removed
-        return ltrim((string)self::getSystemResourceUri($resourcePath, null, new UriGenerationOptions(uriPrefix: '', cacheBusting: false)), '/');
+        return (string)self::getSystemResourceUri($resourcePath, null, new UriGenerationOptions(uriPrefix: '', cacheBusting: false));
     }
 
     /**

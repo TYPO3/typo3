@@ -93,7 +93,7 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
                 'none',
                 [
                     'local' => '"{{CANDIDATE}}"',
-                    'extension' => '"/{{CANDIDATE}}\?\d+"',
+                    'extension' => '"{{CANDIDATE}}\?\d+"',
                     'external' => '"{{CANDIDATE}}"',
                 ],
             ],
