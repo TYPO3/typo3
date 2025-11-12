@@ -273,15 +273,7 @@ class ModuleMenu {
 
   private static getFirstChildItem(item: HTMLElement): HTMLElement {
     // the first <li> of the <ul> following the <element>, then down down its <element>
-    const nextSibling = item.nextElementSibling;
-    if (nextSibling && nextSibling.firstElementChild) {
-      return nextSibling.firstElementChild.firstElementChild as HTMLElement;
-    }
-    return null;
-  }
-
-  private static hasExpandableChildren(item: HTMLElement): boolean {
-    return item.nextElementSibling !== null && item.nextElementSibling.classList.contains('modulemenu-group-container');
+    return item.nextElementSibling.firstElementChild.firstElementChild as HTMLElement;
   }
 
   /**
@@ -356,25 +348,15 @@ class ModuleMenu {
         item = ModuleMenu.getNextItem(menuItem.element);
         break;
       case KeyTypesEnum.LEFT:
-        if (menuItem.collapsible && menuItem.expanded) {
-          // If expanded and has children, collapse it
+        if (menuItem.collapsible) {
           ModuleMenu.toggleModuleGroup(menuItem.element, false);
-        } else if (menuItem.level > 1) {
-          // Otherwise navigate to parent
+        }
+        if (menuItem.level > 1) {
           item = ModuleMenu.getParentItem(menuItem.element);
         }
         break;
       case KeyTypesEnum.RIGHT:
         if (menuItem.collapsible) {
-          if (!menuItem.expanded) {
-            // Expand if collapsed
-            ModuleMenu.toggleModuleGroup(menuItem.element, true);
-          } else {
-            // Already expanded, navigate to first child
-            item = ModuleMenu.getFirstChildItem(menuItem.element);
-          }
-        } else if (menuItem.level === 2 && ModuleMenu.hasExpandableChildren(menuItem.element)) {
-          // Level 2 item with level 3 children - expand to show them
           ModuleMenu.toggleModuleGroup(menuItem.element, true);
           item = ModuleMenu.getFirstChildItem(menuItem.element);
         }
@@ -407,11 +389,7 @@ class ModuleMenu {
           // Always select the first element of sub-menu on ENTER/SPACE. Open sub-menu if necessary.
           ModuleMenu.toggleModuleGroup(menuItem.element, true);
           item = ModuleMenu.getFirstChildItem(menuItem.element);
-        } else if (menuItem.level === 2 && ModuleMenu.hasExpandableChildren(menuItem.element)) {
-          // Level 2 item with level 3 children - toggle the expansion
-          ModuleMenu.toggleModuleGroup(menuItem.element);
         } else {
-          // Regular clickable item without children (level 2 without children or level 3)
           menuItem.element.click();
         }
         break;
@@ -444,22 +422,6 @@ class ModuleMenu {
 
     new RegularEvent('click', (event: Event, target: HTMLElement): void => {
       event.preventDefault();
-
-      // Check if this is a level 2 link with level 3 children
-      const menuItem = ModuleMenu.getModuleMenuItemFromElement(target);
-      if (menuItem.level === 2 && ModuleMenu.hasExpandableChildren(target)) {
-        // Level 2 item with level 3 children - check if click was on the indicator
-        const clickedElement = event.target as HTMLElement;
-        if (clickedElement.classList.contains('modulemenu-indicator') ||
-            clickedElement.closest('.modulemenu-indicator')) {
-          // Click was on indicator - toggle expansion only
-          event.stopPropagation();
-          ModuleMenu.toggleModuleGroup(target);
-          return;
-        }
-      }
-
-      // Regular link click - navigate to module
       const moduleRoute = ModuleUtility.getRouteFromElement(target);
       this.showModule(moduleRoute.identifier, moduleRoute.params, event);
     }).delegateTo(moduleMenu, ModuleSelector.link);
