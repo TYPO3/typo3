@@ -166,7 +166,7 @@ The following palette labels are now available via the :php:`core.form.palettes:
 -   :php:`core.form.palettes:page_layout` - "Page Layout"
 -   :php:`core.form.palettes:use_as_container` - "Use as Container"
 -   :php:`core.form.palettes:replace` - "Replace Content"
--   :php:`core.form.palettes:links_page` - "Links to this Page"
+-   :php:`core.form.palettes:links` - "Links to this Page"
 -   :php:`core.form.palettes:caching` - "Caching"
 -   :php:`core.form.palettes:language` - "Language"
 -   :php:`core.form.palettes:miscellaneous` - "Miscellaneous"

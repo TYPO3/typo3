@@ -911,7 +911,7 @@ return [
             'showitem' => 'content_from_pid',
         ],
         'links' => [
-            'label' => 'core.form.palettes:links_page',
+            'label' => 'core.form.palettes:links',
             'showitem' => 'target;core.db.pages:link.target',
         ],
         'caching' => [
