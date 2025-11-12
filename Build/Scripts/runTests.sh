@@ -247,12 +247,165 @@ runPlaywright() {
 
 executeRstRendering() {
     local systemExtensionName="$1"
-    systemExtensionFolder="typo3/sysext/${systemExtensionName}"
+    local systemExtensionFolder="typo3/sysext/${systemExtensionName}"
     if [[ ! -d "${systemExtensionFolder}/Documentation" ]]; then
         return 1
     fi
     echo "Processing RST directory: ${systemExtensionFolder}/Documentation"
     ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name check-rst-rendering-${systemExtensionName}-${SUFFIX}  -w /project -v "${CORE_ROOT}/${systemExtensionFolder}:/project" ${IMAGE_RSTRENDERING} --fail-on-log --fail-on-error --no-progress --config=Documentation Documentation
+    local exitCode=$?
+    echo "Render result for ${systemExtensionFolder}: ${exitCode}"
+    return ${exitCode}
+}
+
+executeRstRenderingWithWatch() {
+    local GREEN='\033[0;32m'
+    local YELLOW='\033[1;33m'
+    local RED='\033[1;31m'
+    local NC='\033[0m' # No Color
+
+    local systemExtensionName="$1"
+    local entryFile="$2"
+    local portOverride="$3"
+
+    if [[ "${portOverride}x" != "x" ]]; then
+        local actualRstPort="${portOverride}"
+    else
+        local actualRstPort="${RST_PORT}"
+    fi
+
+    local systemExtensionFolder="typo3/sysext/${systemExtensionName}"
+    if [[ ! -d "${systemExtensionFolder}/Documentation" ]]; then
+        return 1
+    fi
+
+    if [[ "${systemExtensionKey}" == "core" ]]; then
+        echo -e "${GREEN}Hint:${NC} For the 'core' documentation (Changelog), a second argument can directly create/use a new entry."
+        echo -e "Use '${YELLOW}interactive${NC}' for an interactive file creation process."
+        echo "Example:"
+        echo "# Create a new file (if the file already exists, it is utilized)"
+        echo "./Build/Scripts/runTests.sh -s watchRst core Changelog/${RST_TYPO3_MAIN_VERSION}/Feature-12343-MyFeature.rst"
+        echo "# Interactively ask for the target file, created in "${RST_TYPO3_MAIN_VERSION}" (branch dependent)"
+        echo "./Build/Scripts/runTests.sh -s watchRst core interactive"
+        echo "# Run on port different than ${RST_PORT}"
+        echo "./Build/Scripts/runTests.sh -s watchRst core interactive 4711"
+        echo ""
+
+        if [[ "${entryFile}x" != "x" ]]; then
+            if [[ "${entryFile}" == "interactive" ]]; then
+                echo "What kind of changelog should be created?"
+                echo "1) Feature"
+                echo "2) Breaking"
+                echo "3) Important"
+                echo "4) Deprecation"
+                echo -en "${GREEN}Enter your choice (1-4)${NC}: "
+                read -r choice
+
+                case $choice in
+                    1) local issueType="Feature" ;;
+                    2) local issueType="Breaking" ;;
+                    3) local issueType="Important" ;;
+                    4) local issueType="Deprecation" ;;
+                    *)
+                        echo -e "${RED}Invalid choice. Exiting.${NC}"
+                        return 1
+                        ;;
+                esac
+
+                echo -en "${GREEN}Enter issue number for this ${YELLOW}${issueType}${GREEN} file${NC}: "
+                read -r issueNumber
+                local issueNumber=$(echo "$issueNumber" | sed 's/[^0-9]//g')
+
+                echo -en "${GREEN}Enter title for issue #${issueNumber} (spaces are removed in filename) ${NC}: "
+                read -r issueTitle
+
+                local issueFileTitle=$(echo "$issueTitle" | sed 's/[^a-zA-Z_0-9-]//g')
+
+                local newFile="Changelog/${RST_TYPO3_MAIN_VERSION}/${issueType}-${issueNumber}-${issueFileTitle}.rst"
+            else
+                # non-interactive mode and file not existing. Let's evaluate some stuff!
+                local pattern='^Changelog/([0-9.]+)/(Breaking|Important|Feature|Deprecation)-([0-9]+)-(.+)\.rst$'
+                if [[ $entryFile =~ $pattern ]]; then
+                    local issueType="${BASH_REMATCH[2]}"
+                    local issueNumber="${BASH_REMATCH[3]}"
+                    local issueFileTitle="${BASH_REMATCH[4]}"
+                    local issueTitle="${issueFileTitle}"
+                else
+                    echo -e "${RED}Invalid filename, does not match changelog pattern: ${YELLOW}${pattern}${RED} - exiting.${NC}"
+                    return 1
+                fi
+                local newFile="${entryFile}"
+            fi
+
+            local fullTargetFile="${systemExtensionFolder}/Documentation/${newFile}"
+            local templateFile="rstTemplate${issueType}.rst"
+
+            # This will also be triggered for a filename "interactive", since this will not yet exist
+            if [[ ! -f "${fullTargetFile}" ]]; then
+                local fullTemplateFile="${THIS_SCRIPT_DIR}/${templateFile}"
+                echo -e "Creating: ${GREEN}${fullTargetFile}${NC}"
+                echo -e "Template: ${YELLOW}${fullTemplateFile}${NC}"
+
+                local escapedTitle=$(printf '%s\n' "$issueTitle" | sed 's/[&/\]/\\&/g')
+                local escapedIssue=$(printf '%s\n' "$issueNumber" | sed 's/[&/\]/\\&/g')
+                local escapedTimestamp=$(date +%s)
+
+                local creationPath=$(dirname "${fullTargetFile}")
+                if [[ ! -d "${creationPath}" ]]; then
+                    echo -e "${RED}${creationPath}${NC} is not a valid directory, no file could be created."
+                    return 1
+                fi
+
+                sed -e "s/{ISSUE}/$escapedIssue/g;" \
+                    -e "s/{TITLE}/$escapedTitle/g;" \
+                    -e "s/{TIMESTAMP}/$escapedTimestamp/g;" \
+                    "${fullTemplateFile}" > "${fullTargetFile}"
+
+                echo -e "${GREEN} ✓ New file created${NC}"
+                echo ""
+            fi
+
+            if [[ ! -f "${fullTargetFile}" ]]; then
+                echo -e "${RED}${fullTargetFile}${NC} could not be found and could not be created."
+                return 1
+            fi
+        fi
+    else
+        echo -e "${YELLOW}HINT: File creation only works for EXT:core context."
+        echo -e "For other manuals, please create files distinctively, because the follow no pattern."
+        echo -e "Filename input is ignored.${NC}"
+        echo ""
+    fi
+
+    echo -e "${YELLOW}NOTICE: Live documentation rendering is an experimental feature.${NC}"
+    echo "  - Adding new files after the process is running will not include them"
+    echo "  - Navigation / Menus on live-rendering may not fully work"
+    echo "  - Leaving the process running for a long time may cause memory leaks / consumption"
+    echo ""
+    echo "After the initial rendering is done, you can access the local browser and edit the file"
+    echo "simultaneously. Every time the file is changed, your browser will automaticelly reload"
+    echo "the page, and scroll to the last position."
+    echo ""
+
+    local htmlFile="${newFile%.rst}.html"
+    echo -e "Processing RST directory: ${GREEN}${systemExtensionFolder}/Documentation${NC}"
+    if [[ -f "${fullTargetFile}" ]]; then
+        echo -e "Working on: ${GREEN}${newFile}${NC}"
+        echo -e "Browser URL: ${GREEN}http://localhost:${actualRstPort}/${htmlFile}${NC}"
+    else
+        echo -e "Browser URL: ${GREEN}http://localhost:${actualRstPort}/${NC}"
+    fi
+
+    echo -e "(Press ${RED}Control-C${NC} when finished writing documentation)"
+    echo ""
+
+    # Command taken from Playwright example
+    if [ ${CONTAINER_BIN} = "docker" ]; then
+        ${CONTAINER_BIN} run -it --name watch-rst-rendering-${systemExtensionName}-${SUFFIX} -p ${actualRstPort}:${actualRstPort} --network ${NETWORK} --network-alias watch-rst --add-host "${CONTAINER_HOST}:host-gateway" -w /project -v "${CORE_ROOT}/${systemExtensionFolder}:/project" ${IMAGE_RSTRENDERING} --port ${actualRstPort} --watch --config=Documentation Documentation
+    else
+        ${CONTAINER_BIN} run -it ${CI_PARAMS} --name watch-rst-rendering-${systemExtensionName}-${SUFFIX} -p ${actualRstPort}:${actualRstPort} --network ${NETWORK} --network-alias watch-rst -w /project -v "${CORE_ROOT}/${systemExtensionFolder}:/project" ${IMAGE_RSTRENDERING} --port ${actualRstPort} --watch --config=Documentation Documentation
+    fi
+
     local exitCode=$?
     echo "Render result for ${systemExtensionFolder}: ${exitCode}"
     return ${exitCode}
@@ -292,6 +445,7 @@ Options:
             - checkRst: test .rst files for integrity
             - checkRstRenderingAll: Test all system extension .rst files for rendering errors
             - checkRstRenderingSingle: Test specified system extension .rst files for rendering errors
+            - watchRst: Live documentation editing of specified system extension (can interactively create changelog entries).
             - clean: clean up build, cache and testing related files and folders
             - cleanBuild: clean up build related files and folders
             - cleanCache: clean up cache related files and folders
@@ -501,6 +655,8 @@ if [ ${CI_JOB_ID} ]; then
 fi
 NETWORK="typo3-core-${SUFFIX}"
 CONTAINER_HOST="host.docker.internal"
+RST_TYPO3_MAIN_VERSION="13.4.x"
+RST_PORT="1337"
 
 # Option parsing updates above default vars
 # Reset in case getopts has been used previously in the shell
@@ -628,7 +784,7 @@ IMAGE_MARIADB="docker.io/mariadb:${DBMS_VERSION}"
 IMAGE_MYSQL="docker.io/mysql:${DBMS_VERSION}"
 IMAGE_POSTGRES="docker.io/postgres:${DBMS_VERSION}-alpine"
 # Not a bug; render-guides has no "1.x" release yet.
-IMAGE_RSTRENDERING="ghcr.io/typo3-documentation/render-guides:0.34"
+IMAGE_RSTRENDERING="ghcr.io/typo3-documentation/render-guides:0.35"
 
 # Remove handled options and leaving the rest in the line, so it can be passed raw to commands
 shift $((OPTIND - 1))
@@ -1005,6 +1161,24 @@ case ${TEST_SUITE} in
                 SUITE_EXIT_CODE=1
             else
                 executeRstRendering "${systemExtensionKey}"
+                SUITE_EXIT_CODE=$?
+            fi
+        else
+            echo "Error: No system extension key provided as first argument"
+            SUITE_EXIT_CODE=1
+        fi
+        ;;
+    watchRst)
+        systemExtensionKey="${1}"
+        if [ -n "${systemExtensionKey}" ]; then
+            if [[ ! -d "typo3/sysext/${systemExtensionKey}" ]]; then
+                echo "Error: Invalid system extension key provided: \"${systemExtensionKey}\""
+                SUITE_EXIT_CODE=1
+            elif [[ ! -d "typo3/sysext/${systemExtensionKey}/Documentation" ]]; then
+                echo "Error: Valid system extension \"${systemExtensionKey}\" does not contain a \"Documentation\" folder"
+                SUITE_EXIT_CODE=1
+            else
+                executeRstRenderingWithWatch "${systemExtensionKey}" "${2}"
                 SUITE_EXIT_CODE=$?
             fi
         else
