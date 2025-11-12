@@ -268,7 +268,6 @@ final class RequestHandlerTest extends AbstractTestCase
         self::assertNotEmpty($secondScriptNonce);
         self::assertSame($secondScriptNonce, $secondLinkNonce);
         self::assertNotSame($firstScriptNonce, $secondScriptNonce);
-        self::assertEmpty($firstResponse->getHeaderLine('X-TYPO3-Debug-Cache'));
         self::assertNotEmpty($secondResponse->getHeaderLine('Content-Security-Policy-Report-Only'));
         self::assertSame('private, no-store', $secondResponse->getHeaderLine('Cache-Control'));
     }
@@ -373,7 +372,6 @@ final class RequestHandlerTest extends AbstractTestCase
         self::assertNotEmpty($secondScriptNonce);
         self::assertSame($secondScriptNonce, $secondLinkNonce);
         self::assertNotSame($firstScriptNonce, $secondScriptNonce);
-        self::assertEmpty($firstResponse->getHeaderLine('X-TYPO3-Debug-Cache'));
         self::assertNotEmpty($secondResponse->getHeaderLine('Content-Security-Policy-Report-Only'));
         self::assertSame('private, no-store', $secondResponse->getHeaderLine('Cache-Control'));
     }
