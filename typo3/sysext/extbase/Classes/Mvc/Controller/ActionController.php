@@ -530,9 +530,6 @@ abstract class ActionController implements ControllerInterface
      *
      * The default implementation sets a flash message, request errors and forwards back
      * to the originating action. This is suitable for most actions dealing with form input.
-     *
-     * We clear the page cache by default on an error as well, as we need to make sure the
-     * data is re-evaluated when the user changes something.
      */
     protected function errorAction(): ResponseInterface
     {
