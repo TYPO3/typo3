@@ -8,9 +8,10 @@ use TYPO3\CMS\Install\Controller\BackendModuleController;
  */
 return [
     'tools_toolsmaintenance' => [
-        'parent' => 'tools',
+        'parent' => 'system',
         'access' => 'systemMaintainer',
-        'path' => '/module/tools/maintenance',
+        'position' => ['before' => '*'],
+        'path' => '/module/system/maintenance',
         'iconIdentifier' => 'module-install-maintenance',
         'labels' => 'install.modules.maintenance',
         'routes' => [
@@ -26,9 +27,10 @@ return [
         ],
     ],
     'tools_toolssettings' => [
-        'parent' => 'tools',
+        'parent' => 'system',
         'access' => 'systemMaintainer',
-        'path' => '/module/tools/settings',
+        'position' => ['before' => '*'],
+        'path' => '/module/system/settings',
         'iconIdentifier' => 'module-install-settings',
         'labels' => 'install.modules.settings',
         'routes' => [
@@ -44,9 +46,10 @@ return [
         ],
     ],
     'tools_toolsupgrade' => [
-        'parent' => 'tools',
+        'parent' => 'system',
         'access' => 'systemMaintainer',
-        'path' => '/module/tools/upgrade',
+        'position' => ['before' => '*'],
+        'path' => '/module/system/upgrade',
         'iconIdentifier' => 'module-install-upgrade',
         'labels' => 'install.modules.upgrade',
         'routes' => [
@@ -62,9 +65,10 @@ return [
         ],
     ],
     'tools_toolsenvironment' => [
-        'parent' => 'tools',
+        'parent' => 'system',
         'access' => 'systemMaintainer',
-        'path' => '/module/tools/environment',
+        'position' => ['before' => '*'],
+        'path' => '/module/system/environment',
         'iconIdentifier' => 'module-install-environment',
         'labels' => 'install.modules.environment',
         'routes' => [

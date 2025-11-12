@@ -14,12 +14,13 @@ use TYPO3\CMS\Extensionmanager\Controller\UploadExtensionFileController;
  */
 return [
     'extensionmanager' => [
-        'parent' => 'tools',
+        'parent' => 'system',
         'access' => 'systemMaintainer',
         'iconIdentifier' => 'module-extensionmanager',
+        'position' => ['before' => '*'],
         'labels' => 'extensionmanager.module',
         'aliases' => ['tools_ExtensionmanagerExtensionmanager'],
-        'path' => '/module/tools/extensionmanager',
+        'path' => '/module/extensions',
         'extensionName' => 'Extensionmanager',
         'controllerActions' => [
             ListController::class => [

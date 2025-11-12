@@ -171,7 +171,7 @@ return [
         ],
     ],
     'tools_csp' => [
-        'parent' => 'tools',
+        'parent' => 'system',
         'access' => 'systemMaintainer',
         'iconIdentifier' => 'module-security',
         'labels' => 'backend.modules.content_security_policy',

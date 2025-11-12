@@ -9,6 +9,7 @@ use TYPO3\CMS\Lowlevel\Controller\DatabaseIntegrityController;
 return [
     'system_dbint' => [
         'parent' => 'system',
+        'position' => ['after' => '*'],
         'access' => 'admin',
         'workspaces' => 'live',
         'path' => '/module/system/dbint',
@@ -22,6 +23,7 @@ return [
     ],
     'system_config' => [
         'parent' => 'system',
+        'position' => ['after' => '*'],
         'access' => 'admin',
         'workspaces' => 'live',
         'path' => '/module/system/config',

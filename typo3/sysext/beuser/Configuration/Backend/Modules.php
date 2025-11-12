@@ -8,10 +8,10 @@ use TYPO3\CMS\Beuser\Controller\PermissionController;
  */
 return [
     'permissions_pages' => [
-        'parent' => 'system',
+        'parent' => 'tools',
         'position' => ['before' => '*'],
         'access' => 'admin',
-        'path' => '/module/system/permissions',
+        'path' => '/module/users/permissions',
         'iconIdentifier' => 'module-permission',
         'navigationComponent' => '@typo3/backend/tree/page-tree-element',
         'labels' => 'beuser.modules.permissions',
@@ -23,10 +23,10 @@ return [
         ],
     ],
     'backend_user_management' => [
-        'parent' => 'system',
+        'parent' => 'tools',
         'position' => ['after' => 'permissions_pages'],
         'access' => 'admin',
-        'path' => '/module/system/user-management',
+        'path' => '/module/users/management',
         'iconIdentifier' => 'module-beuser',
         'labels' => 'beuser.modules.user_management',
         'aliases' => ['system_BeuserTxBeuser'],

@@ -6,10 +6,10 @@ use TYPO3\CMS\Styleguide\Controller\StylesController;
 
 return [
     'styleguide' => [
-        'parent' => 'system',
+        'parent' => 'tools',
         'access' => 'admin',
         'workspaces' => 'live',
-        'path' => '/module/system/styleguide',
+        'path' => '/module/styleguide',
         'iconIdentifier' => 'module-styleguide',
         'labels' => 'styleguide.modules.overview',
         'aliases' => ['help_styleguide'],
@@ -22,7 +22,7 @@ return [
         'parent' => 'styleguide',
         'access' => 'admin',
         'workspaces' => 'live',
-        'path' => '/module/system/styleguide/components',
+        'path' => '/module/styleguide/components',
         'labels' => 'styleguide.modules.components',
         'routes' => [
             '_default' => [
@@ -34,7 +34,7 @@ return [
         'parent' => 'styleguide',
         'access' => 'admin',
         'workspaces' => 'live',
-        'path' => '/module/system/styleguide/styles',
+        'path' => '/module/styleguide/styles',
         'labels' => 'styleguide.modules.styles',
         'routes' => [
             '_default' => [
@@ -46,7 +46,7 @@ return [
         'parent' => 'styleguide',
         'access' => 'admin',
         'workspaces' => 'live',
-        'path' => '/module/system/styleguide/manage-page-trees',
+        'path' => '/module/styleguide/manage-page-trees',
         'labels' => 'styleguide.modules.pagetrees',
         'routes' => [
             '_default' => [

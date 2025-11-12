@@ -7,9 +7,9 @@ use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
  */
 return [
     'scheduler' => [
-        'parent' => 'system',
+        'parent' => 'tools',
         'access' => 'admin',
-        'path' => '/module/system/scheduler',
+        'path' => '/module/scheduler',
         'workspaces' => 'live',
         'iconIdentifier' => 'module-scheduler',
         'labels' => 'scheduler.module',

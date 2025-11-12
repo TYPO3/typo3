@@ -38,7 +38,7 @@ return [
         'iconIdentifier' => 'modulegroup-system',
     ],
     'integrations' => [
-        'parent' => 'system',
+        'parent' => 'tools',
         'position' => ['after' => 'backend_user_management'],
         'access' => 'admin',
         'workspaces' => 'live',
