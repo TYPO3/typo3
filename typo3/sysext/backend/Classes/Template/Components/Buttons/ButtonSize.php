@@ -21,5 +21,5 @@ enum ButtonSize: string
 {
     case SMALL = 'btn-sm';
     case MEDIUM = '';
-    case LARGE = 'btn-lg';
+    // large does not exist on purpose, see styleguide
 }

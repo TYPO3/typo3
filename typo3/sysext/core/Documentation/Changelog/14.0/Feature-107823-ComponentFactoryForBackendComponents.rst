@@ -120,7 +120,7 @@ Improvements to Button API types
 The following button types can use :php:`getSize()` and :php:`setSize()`
 methods in their instance to set the icon size with the
 :php:`TYPO3\CMS\Backend\Template\Components\Buttons\ButtonSize` enum,
-choosing between a small, medium and large variant (utilizing CSS classes
+choosing between a small and medium variant (utilizing CSS classes
 internally):
 
 * :php:`TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton`
