@@ -26,10 +26,10 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Upgrades\ChattyInterface;
 use TYPO3\CMS\Core\Upgrades\ConfirmableInterface;
 use TYPO3\CMS\Core\Upgrades\RepeatableInterface;
+use TYPO3\CMS\Core\Upgrades\RowUpdater\RowUpdaterInterface;
 use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 use TYPO3\CMS\Core\Upgrades\UpgradeWizardRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Updates\RowUpdater\RowUpdaterInterface;
 
 /**
  * Service class helps to manage upgrade wizards.
@@ -83,7 +83,6 @@ final class UpgradeWizardsService
             if (!class_exists($rowUpdaterClassName)) {
                 continue;
             }
-            /** @var RowUpdaterInterface $rowUpdater */
             $rowUpdater = GeneralUtility::makeInstance($rowUpdaterClassName);
             if (!$rowUpdater instanceof RowUpdaterInterface) {
                 throw new \RuntimeException(

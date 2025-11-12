@@ -1183,6 +1183,12 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Upgrades/AbstractListTypeToCTypeUpdate.php
 
 		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Upgrades/DatabaseRowsUpdateWizard.php
+
+		-
 			message: '#^Call to function is_array\(\) with non\-empty\-array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -2617,22 +2623,10 @@ parameters:
 			path: ../../typo3/sysext/install/Classes/Service/SetupDatabaseService.php
 
 		-
-			message: '#^Instanceof between TYPO3\\CMS\\Install\\Updates\\RowUpdater\\RowUpdaterInterface and TYPO3\\CMS\\Install\\Updates\\RowUpdater\\RowUpdaterInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/install/Classes/Service/UpgradeWizardsService.php
-
-		-
 			message: '#^Method TYPO3\\CMS\\Install\\Service\\UpgradeWizardsService\:\:markWizardAsDone\(\) has RuntimeException in PHPDoc @throws tag but it''s not thrown\.$#'
 			identifier: throws.unusedType
 			count: 1
 			path: ../../typo3/sysext/install/Classes/Service/UpgradeWizardsService.php
-
-		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: ../../typo3/sysext/install/Classes/Updates/DatabaseRowsUpdateWizard.php
 
 		-
 			message: '#^Instanceof between TYPO3\\CMS\\Core\\Messaging\\FlashMessage and TYPO3\\CMS\\Core\\Messaging\\FlashMessage will always evaluate to true\.$#'

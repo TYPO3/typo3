@@ -36,11 +36,11 @@ use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\Upgrades\DatabaseRowsUpdateWizard;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Configuration\Exception;
 use TYPO3\CMS\Install\Database\PermissionsCheck;
 use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck;
-use TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard;
 
 /**
  * Service class helping to manage database related settings and operations required to set up TYPO3

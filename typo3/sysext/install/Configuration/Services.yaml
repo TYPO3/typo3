@@ -12,9 +12,6 @@ services:
     autoconfigure: true
     public: false
 
-  TYPO3\CMS\Install\Updates\:
-    resource: '../Classes/Updates/*'
-
   TYPO3\CMS\Install\Controller\BackendModuleController:
     tags: ['backend.controller']
 
