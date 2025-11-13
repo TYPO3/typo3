@@ -14,12 +14,12 @@
                     <label class="form-label" for="t3-install-form-password">Password</label>
                     <input class="form-control t3-install-form-input-text" id="t3-install-form-password" type="password" name="install[password]" autofocus="autofocus" />
                 </div>
-                <div class="form-group">
+                <div class="form-group d-flex justify-content-between">
                     <button type="button" class="btn btn-primary t3js-login-login">
                         Login
                     </button>
                     <f:if condition="!{installToolEnableFilePermanent}">
-                        <button type="button" class="btn btn-default t3js-login-lockInstallTool">
+                        <button type="button" class="btn btn-link t3js-login-lockInstallTool">
                             <core:icon identifier="actions-lock" size="small" /> Lock Install Tool again
                         </button>
                     </f:if>
