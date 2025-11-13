@@ -144,7 +144,7 @@ abstract class AbstractTemplateModuleController
             $view->addButtonToButtonBar($this->componentFactory->createViewButton(
                 $previewUriBuilder
                     ->withRootLine(BackendUtility::BEgetRootLine($pageRecord['uid']))
-                    ->buildDispatcherDataAttributes()
+                    ->buildDispatcherDataAttributes() ?? []
             ), ButtonBar::BUTTON_POSITION_LEFT, 99);
         }
     }
