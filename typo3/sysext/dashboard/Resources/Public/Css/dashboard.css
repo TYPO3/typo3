@@ -73,8 +73,6 @@ typo3-dashboard{display:block;width:100%}
 .widget-cta:focus{--widget-cta-color:var(--widget-cta-focus-color);--widget-cta-bg:var(--widget-cta-focus-bg);text-decoration:none}
 .widget-cta:focus-visible{outline:var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb,var(--widget-cta-bg),transparent 25%)}
 .widget-cta-icon{align-items:center;display:flex;height:18px;justify-content:center;width:18px;-webkit-margin-end:12px;color:var(--widget-cta-color);margin-inline-end:12px}
-.widget-doughnut--value{font-size:36px;font-weight:900;line-height:1.3;text-align:center}
-.widget-doughnut--meta{color:var(--token-color-neutral-60);font-style:italic;margin-top:10px;text-align:center}
 .widget-number{align-items:center;display:flex;height:100%}
 .widget-number-icon{align-items:center;display:flex;width:42px;-webkit-margin-end:20px;margin-inline-end:20px}
 .widget-number-content{display:flex;flex-direction:column;justify-content:center}
