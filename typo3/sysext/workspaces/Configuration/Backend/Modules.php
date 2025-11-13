@@ -8,7 +8,7 @@ use TYPO3\CMS\Workspaces\Controller\ReviewController;
 return [
     'workspaces_publish' => [
         'parent' => 'content',
-        'position' => ['before' => 'content_status'],
+        'position' => ['after' => 'page_preview'],
         'access' => 'user',
         'workspaces' => 'offline',
         'path' => '/module/manage/workspaces',

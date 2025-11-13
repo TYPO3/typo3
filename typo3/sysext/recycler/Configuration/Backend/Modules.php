@@ -8,6 +8,7 @@ use TYPO3\CMS\Recycler\Controller\RecyclerModuleController;
 return [
     'recycler' => [
         'parent' => 'content',
+        'position' => ['after' => 'content_status'],
         'access' => 'user',
         'workspaces' => 'live',
         'path' => '/module/web/recycler',
