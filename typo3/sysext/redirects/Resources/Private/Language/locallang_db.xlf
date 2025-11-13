@@ -6,6 +6,9 @@
 			<trans-unit id="sys_redirect">
 				<source>Redirect</source>
 			</trans-unit>
+			<trans-unit id="sys_redirect.redirect_type.qr_code">
+				<source>QR Code</source>
+			</trans-unit>
 			<trans-unit id="sys_redirect.source_host">
 				<source>Source Domain</source>
 			</trans-unit>

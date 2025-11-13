@@ -172,27 +172,27 @@ class RedirectRepository
     /**
      * Get all used hosts
      */
-    public function findHostsOfRedirects(): array
+    public function findHostsOfRedirects(?string $type = null): array
     {
-        return $this->getGroupedRows('source_host', 'name');
+        return $this->getGroupedRows('source_host', 'name', $type);
     }
 
     /**
      * Get all used status codes
      */
-    public function findStatusCodesOfRedirects(): array
+    public function findStatusCodesOfRedirects(?string $type = null): array
     {
-        return $this->getGroupedRows('target_statuscode', 'code');
+        return $this->getGroupedRows('target_statuscode', 'code', $type);
     }
 
     /**
      * Get all used creation types
      */
-    public function findCreationTypes(): array
+    public function findCreationTypes(?string $type = null): array
     {
         $types = [];
         $availableTypes = $this->schema->getField('creation_type')->getConfiguration()['items'];
-        foreach ($this->getGroupedRows('creation_type', 'type') as $row) {
+        foreach ($this->getGroupedRows('creation_type', 'type', $type) as $row) {
             foreach ($availableTypes as $availableType) {
                 if ($availableType['value'] === $row['type']) {
                     $types[$row['type']] = $availableType['label'];
@@ -206,11 +206,11 @@ class RedirectRepository
     /**
      * Get all used integrity status codes
      */
-    public function findIntegrityStatusCodes(): array
+    public function findIntegrityStatusCodes(?string $type = null): array
     {
         $statusCodes = [];
         $availableStatusCodes = $this->schema->getField('integrity_status')->getConfiguration()['items'];
-        foreach ($this->getGroupedRows('integrity_status', 'status_code') as $row) {
+        foreach ($this->getGroupedRows('integrity_status', 'status_code', $type) as $row) {
             foreach ($availableStatusCodes as $availableStatusCode) {
                 if ($availableStatusCode['value'] === $row['status_code']) {
                     $statusCodes[$row['status_code']] = $availableStatusCode['label'];
@@ -235,12 +235,18 @@ class RedirectRepository
         return array_column($result->fetchAllAssociative(), 'redirect_type');
     }
 
-    protected function getGroupedRows(string $field, string $as): array
+    protected function getGroupedRows(string $field, string $as, ?string $type = 'default'): array
     {
-        return $this->getQueryBuilder()
+        $queryBuilder = $this->getQueryBuilder();
+        $queryBuilder
             ->select(sprintf('%s as %s', $field, $as))
-            ->from('sys_redirect')
-            ->orderBy($field)
+            ->from('sys_redirect');
+
+        if ($type !== null) {
+            $queryBuilder->where($queryBuilder->expr()->eq('redirect_type', $queryBuilder->createNamedParameter($type)));
+        }
+
+        return $queryBuilder->orderBy($field)
             ->groupBy($field)
             ->executeQuery()
             ->fetchAllAssociative();

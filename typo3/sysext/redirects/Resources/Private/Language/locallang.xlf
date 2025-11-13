@@ -48,6 +48,9 @@
 			<trans-unit id="not_tracked">
 				<source>[Not Tracked]</source>
 			</trans-unit>
+			<trans-unit id="no_qrcode">
+				<source>Not enough information for generating a QR Code.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

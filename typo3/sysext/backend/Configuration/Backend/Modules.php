@@ -109,6 +109,18 @@ return [
             'settingsMode' => SetupSettingsViewMode::BASIC->value,
         ],
     ],
+    'link_management' => [
+        'parent' => 'site',
+        'position' => ['after' => 'site_configuration'],
+        'access' => 'user',
+        'path' => '/module/link-management',
+        'iconIdentifier' => 'module-urls',
+        'labels' => 'backend.modules.link_management',
+        'appearance' => [
+            'dependsOnSubmodules' => true,
+        ],
+        'showSubmoduleOverview' => true,
+    ],
     'about' => [
         'parent' => 'help',
         'position' => ['before' => '*'],

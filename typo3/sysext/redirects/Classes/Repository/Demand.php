@@ -27,6 +27,7 @@ use Symfony\Component\Console\Input\InputInterface;
 class Demand
 {
     public const DEFAULT_REDIRECT_TYPE = 'default';
+    public const QRCODE_REDIRECT_TYPE = 'qrcode';
 
     protected const ORDER_DESCENDING = 'desc';
     protected const ORDER_ASCENDING = 'asc';

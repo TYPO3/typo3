@@ -40,6 +40,7 @@ class UserPermissionsForRenamedModulesMigration implements UpgradeWizardInterfac
         'web_list' => 'records',
         'web_info' => 'content_status',
         'workspaces_admin' => 'workspaces_publish',
+        'site_redirects' => 'redirects',
     ];
 
     public function getTitle(): string

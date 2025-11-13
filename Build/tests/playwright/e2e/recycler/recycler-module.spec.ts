@@ -7,8 +7,9 @@ test('Delete page and check recycler', async ({ page, backend }) => {
   await test.step('Add page for recycler test', async () => {
     await backend.gotoModule('records');
     await backend.pageTree.open('styleguide TCA demo');
-    await backend.contentFrame.getByRole('button', { name: 'Create new record' }).click();
-    await backend.formEngine.formEngineLoaded();
+    let formEngineLoaded = backend.formEngine.formEngineLoaded();
+    backend.contentFrame.getByRole('button', { name: 'Create new record' }).click();
+    await formEngineLoaded;
     await backend.contentFrame.getByRole('button', { name: 'Page (inside)' }).click();
     await backend.contentFrame.getByRole('link', { name: 'Standard' }).click();
 
@@ -21,7 +22,10 @@ test('Delete page and check recycler', async ({ page, backend }) => {
     await test.step('Add sys note on new page', async () => {
       await backend.pageTree.open('styleguide TCA demo', newPageTitle);
       await backend.contentFrame.getByRole('button', { name: 'Create new record' }).click();
-      await backend.formEngine.formEngineLoaded();
+
+      formEngineLoaded = backend.formEngine.formEngineLoaded();
+      backend.formEngine.formEngineLoaded();
+      await formEngineLoaded;
       await backend.contentFrame.getByRole('link', { name: 'Internal note' }).click();
 
       await expect(backend.contentFrame.locator('h1')).toContainText(`Create new Internal note on page "${newPageTitle}"`);
@@ -32,8 +36,9 @@ test('Delete page and check recycler', async ({ page, backend }) => {
 
     await test.step('Delete page', async () => {
       await backend.pageTree.open('styleguide TCA demo', newPageTitle);
-      await backend.contentFrame.getByRole('button', { name: 'Edit page properties' }).click();
-      await backend.formEngine.formEngineLoaded();
+      formEngineLoaded = backend.formEngine.formEngineLoaded();
+      backend.contentFrame.getByRole('button', { name: 'Edit page properties' }).click();
+      await formEngineLoaded;
       const deleteButton = backend.contentFrame.getByRole('button', { name: 'Delete' });
       await backend.modal.open(deleteButton);
 

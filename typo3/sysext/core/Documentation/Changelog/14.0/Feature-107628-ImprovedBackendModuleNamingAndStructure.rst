@@ -307,6 +307,29 @@ actions :php:`edit`, :php:`save` and :php:`dump` have been renamed to
 :php:`editSettings`, :php:`saveSettings` and :php:`dumpSettings` as part of the
 `site_configuration` module identifier.
 
+Link Management
+~~~~~~~~~~~~~~~
+
+A new second-level :guilabel:`Link Management` module has been introduced
+under the :guilabel:`Sites` top-level menu to provide a unified location
+for managing URL-related features.
+
+This new module serves as a parent for two third-level modules:
+
+- :guilabel:`Redirects` - The existing redirects module for managing URL redirects
+- :guilabel:`QR Codes` - A new module for creating and managing scannable QR codes (see :ref:`feature-107756-1763294102`)
+
+**Rationale:** Grouping these URL management features under a common parent module
+creates better organization and discoverability. Both redirects and QR codes deal
+with URL handling and link management, making them natural companions in the
+module structure. The new parent module provides a logical home for current and
+future URL-related functionality.
+
+**Migration:** The existing :guilabel:`Redirects` module, previously a second-level
+module under :guilabel:`Site`, has been moved to become a third-level module
+under :guilabel:`Sites > Link Management`. The module identifier `site_redirects`
+has changed to `redirects`. An alias ensures backward compatibility. Use the new
+identifier when registering custom modules.
 
 System > Backend Users => Administration > Users
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

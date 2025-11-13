@@ -17,11 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Controller;
 
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\Components\MultiRecordSelection\Action;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -31,32 +31,30 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Redirects\Event\ModifyRedirectManagementControllerViewDataEvent;
 use TYPO3\CMS\Redirects\Repository\Demand;
 use TYPO3\CMS\Redirects\Repository\RedirectRepository;
 use TYPO3\CMS\Redirects\Service\ModulePaginationService;
 use TYPO3\CMS\Redirects\Utility\RedirectConflict;
 
 /**
- * Lists all redirects in the TYPO3 Backend as a module.
+ * Lists all QR Codes in the TYPO3 Backend as a module.
  *
  * @internal This class is a specific TYPO3 Backend controller implementation and is not part of the Public TYPO3 API.
  */
 #[AsController]
-class ManagementController
+class QrCodeModuleController
 {
     public function __construct(
         protected UriBuilder $uriBuilder,
         protected IconFactory $iconFactory,
         protected RedirectRepository $redirectRepository,
         protected ModuleTemplateFactory $moduleTemplateFactory,
-        private EventDispatcherInterface $eventDispatcher,
         protected ComponentFactory $componentFactory,
         protected ModulePaginationService $modulePaginationService,
     ) {}
 
     /**
-     * Injects the request object for the current request, and renders the overview of all redirects
+     * Injects the request object for the current request, and renders the overview of all QR Codes
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
@@ -65,39 +63,23 @@ class ManagementController
         $redirectType = $demand->getRedirectType();
 
         $view->setTitle(
-            $this->getLanguageService()->translate('title', 'redirects.modules.redirects')
+            $this->getLanguageService()->translate('title', 'redirects.modules.qrcodes')
         );
+
         $view->makeDocHeaderModuleMenu();
         $this->registerDocHeaderButtons($view);
 
-        $event = $this->eventDispatcher->dispatch(
-            new ModifyRedirectManagementControllerViewDataEvent(
-                $demand,
-                $this->redirectRepository->findRedirectsByDemand($demand),
-                $this->redirectRepository->findHostsOfRedirects($redirectType),
-                $this->redirectRepository->findStatusCodesOfRedirects($redirectType),
-                $this->redirectRepository->findCreationTypes($redirectType),
-                GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('redirects.hitCount'),
-                $view,
-                $request,
-                $this->redirectRepository->findIntegrityStatusCodes($redirectType),
-            )
-        );
         $requestUri = $request->getAttribute('normalizedParams')->getRequestUri();
-        $pagination = $this->modulePaginationService->preparePagination($demand);
         $languageService = $this->getLanguageService();
-        $view = $event->getView();
+        $pagination = $this->modulePaginationService->preparePagination($demand);
         $view->assignMultiple([
-            'redirects' => $event->getRedirects(),
-            'hosts' => $event->getHosts(),
-            'statusCodes' => $event->getStatusCodes(),
-            'creationTypes' => $event->getCreationTypes(),
-            'integrityStatusCodes' => $event->getIntegrityStatusCodes(),
+            'redirects' => $this->redirectRepository->findRedirectsByDemand($demand),
+            'hosts' => $this->redirectRepository->findHostsOfRedirects($redirectType),
             'defaultIntegrityStatus' => RedirectConflict::NO_CONFLICT,
-            'demand' => $event->getDemand(),
-            'showHitCounter' => $event->getShowHitCounter(),
+            'demand' => $demand,
+            'showHitCounter' => GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('redirects.hitCount'),
             'pagination' => $pagination,
-            'returnUrl' => $this->uriBuilder->buildUriFromRoute('redirects', [
+            'returnUrl' => $this->uriBuilder->buildUriFromRoute('qrcodes', [
                 'page' => $pagination['current'],
                 'demand' =>  $demand->getParameters(),
                 'orderField' => $demand->getOrderField(),
@@ -119,8 +101,8 @@ class ManagementController
                     [
                         'idField' => 'uid',
                         'tableName' => 'sys_redirect',
-                        'title' => $languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:labels.delete.title'),
-                        'content' => $languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:labels.delete.message'),
+                        'title' => $languageService->translate('delete.title', 'redirects.modules.qrcodes'),
+                        'content' => $languageService->translate('delete.message', 'redirects.modules.qrcodes'),
                         'ok' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
                         'cancel' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'),
                         'returnUrl' => $requestUri,
@@ -130,11 +112,11 @@ class ManagementController
                 ),
             ],
         ]);
-        return $view->renderResponse('Management/Overview');
+        return $view->renderResponse('QrCode/Overview');
     }
 
     /**
-     * Create document header buttons
+     * Create document header buttons for QR codes
      */
     protected function registerDocHeaderButtons(ModuleTemplate $view): void
     {
@@ -146,24 +128,23 @@ class ManagementController
                 'record_edit',
                 [
                     'edit' => ['sys_redirect' => ['new']],
-                    'module' => 'redirects',
+                    'module' => 'qrcodes',
                     'defVals' => [
                         'sys_redirect' => [
-                            'redirect_type' => Demand::DEFAULT_REDIRECT_TYPE,
+                            'redirect_type' => Demand::QRCODE_REDIRECT_TYPE,
                         ],
                     ],
-                    'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('redirects'),
+                    'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('qrcodes'),
                 ]
             ))
-            ->setTitle($languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_add_text'))
+            ->setTitle($languageService->translate('add_text', 'redirects.modules.qrcodes'))
             ->setShowLabelText(true)
             ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
-        $view->getDocHeaderComponent()->getButtonBar()->addButton($newRecordButton);
+        $view->addButtonToButtonBar($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
 
-        // Shortcut
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'redirects',
-            displayName: $languageService->translate('short_description', 'redirects.modules.redirects')
+            'qrcodes',
+            $languageService->translate('short_description', 'redirects.modules.qrcodes')
         );
     }
 

@@ -32,7 +32,8 @@ final class ValuePickerItemDataProviderTest extends UnitTestCase
                 'source_host' => [
                     'config' => [
                         'valuePicker' => [
-                            'items' => [],
+                            'items' => [
+                            ],
                         ],
                     ],
                 ],
@@ -66,6 +67,7 @@ final class ValuePickerItemDataProviderTest extends UnitTestCase
         $actualResult = $valuePickerItemDataProvider->addData($this->sysRedirectResultSet);
         $expected = $this->sysRedirectResultSet;
         $expected['processedTca']['columns']['source_host']['config']['valuePicker']['items'] = [
+            ['label' => '*', 'value' => '*'],
             ['label' => 'bar.test', 'value' => 'bar.test'],
             ['label' => 'foo.test', 'value' => 'foo.test'],
         ];
@@ -79,7 +81,10 @@ final class ValuePickerItemDataProviderTest extends UnitTestCase
         $siteFinderMock->expects($this->once())->method('getAllSites')->willReturn([]);
         $valuePickerItemDataProvider = new ValuePickerItemDataProvider($siteFinderMock);
         $actualResult = $valuePickerItemDataProvider->addData($this->sysRedirectResultSet);
-
-        self::assertSame($this->sysRedirectResultSet, $actualResult);
+        $expected = $this->sysRedirectResultSet;
+        $expected['processedTca']['columns']['source_host']['config']['valuePicker']['items'] = [
+            ['label' => '*', 'value' => '*'],
+        ];
+        self::assertSame($expected, $actualResult);
     }
 }

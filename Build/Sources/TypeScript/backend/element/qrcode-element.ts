@@ -92,7 +92,7 @@ export class QrCodeElement extends LitElement {
             </select>
           </div>
           <div class="form-group">
-            <button type="submit" class="btn btn-default">${downloadLabel}</button>
+            <button type="submit" class="btn btn-primary">${downloadLabel}</button>
           </div>
         </div>
       </form>`;

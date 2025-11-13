@@ -56,7 +56,7 @@ final class ManagementControllerTest extends FunctionalTestCase
         $request = $request
             ->withAttribute('normalizedParams', $this->normalizedParams)
             ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-redirects']))
-            ->withAttribute('moduleData', new ModuleData('site_redirects', ['redirectType' => Demand::DEFAULT_REDIRECT_TYPE]));
+            ->withAttribute('moduleData', new ModuleData('redirects', ['redirectType' => Demand::DEFAULT_REDIRECT_TYPE]));
         $GLOBALS['TYPO3_REQUEST'] = $request;
 
         $setHosts = ['*', 'example.com'];

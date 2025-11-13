@@ -25,8 +25,10 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
+        'typeicon_column' => 'redirect_type',
         'typeicon_classes' => [
             'default' => 'mimetypes-x-sys_redirect',
+            'qrcode' => 'actions-qrcode',
         ],
         'type' => 'redirect_type',
     ],
@@ -37,6 +39,21 @@ return [
                 --div--;redirects.db:tabs.redirectCount, disable_hitcount, hitcount, lasthiton, createdon,
                 --div--;core.form.tabs:access, --palette--;;visibility,
                 --div--;core.form.tabs:notes, description, redirect_type',
+            'columnsOverrides' => [
+                'source_host' => [
+                    'config' => [
+                        'default' => '*',
+                    ],
+                ],
+            ],
+        ],
+        'qrcode' => [
+            'title' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.redirect_type.qr_code',
+            'showitem' => '
+                --div--;core.form.tabs:general, --palette--;;qrcode_target,qrcode_display,
+                --div--;redirects.db:tabs.redirectCount, disable_hitcount, hitcount, lasthiton, createdon,
+                --div--;core.form.tabs:notes, description, redirect_type
+                ',
         ],
     ],
     'palettes' => [
@@ -52,12 +69,21 @@ return [
         'internals' => [
             'showitem' => 'creation_type, integrity_status, --linebreak--, createdby',
         ],
+        'qrcode_target' => [
+            'showitem' => 'source_host, target, --linebreak--, createdby, force_https',
+        ],
     ],
     'columns' => [
         'redirect_type' => [
             'config' => [
                 'type' => 'passthrough',
                 'default' => 'default',
+            ],
+        ],
+        'qrcode_display' => [
+            'config' => [
+                'type' => 'none',
+                'renderType' => 'qrCode',
             ],
         ],
         'source_host' => [
@@ -67,14 +93,7 @@ return [
                 'required' => true,
                 'eval' => 'trim,' . \TYPO3\CMS\Redirects\Evaluation\SourceHost::class,
                 // items will be extended by local sys_domain records using dataprovider TYPO3\CMS\Redirects\FormDataProvider\ValuePickerItemDataProvider
-                'valuePicker' => [
-                    'items' => [
-                        [   'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_host_global_text',
-                            'value' => '*',
-                        ],
-                    ],
-                ],
-                'default' => '*',
+                'valuePicker' => [],
             ],
         ],
         'source_path' => [

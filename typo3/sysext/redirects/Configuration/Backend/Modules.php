@@ -1,18 +1,19 @@
 <?php
 
 use TYPO3\CMS\Redirects\Controller\ManagementController;
+use TYPO3\CMS\Redirects\Controller\QrCodeModuleController;
 
 /**
  * Definitions for modules provided by EXT:redirects
  */
 return [
-    'site_redirects' => [
-        'parent' => 'site',
-        'position' => ['after' => 'site_configuration'],
+    'redirects' => [
+        'parent' => 'link_management',
         'access' => 'user',
-        'path' => '/module/site/redirects',
+        'path' => '/module/link-management/redirects',
         'iconIdentifier' => 'module-redirects',
-        'labels' => 'redirects.module',
+        'labels' => 'redirects.modules.redirects',
+        'aliases' => ['site_redirects'],
         'routes' => [
             '_default' => [
                 'target' => ManagementController::class . '::handleRequest',
@@ -20,6 +21,21 @@ return [
         ],
         'moduleData' => [
             'redirectType' => 'default',
+        ],
+    ],
+    'qrcodes' => [
+        'parent' => 'link_management',
+        'access' => 'user',
+        'path' => '/module/link-management/qrcodes',
+        'iconIdentifier' => 'actions-qrcode',
+        'labels' => 'redirects.modules.qrcodes',
+        'routes' => [
+            '_default' => [
+                'target' => QrCodeModuleController::class . '::handleRequest',
+            ],
+        ],
+        'moduleData' => [
+            'redirectType' => 'qrcode',
         ],
     ],
 ];

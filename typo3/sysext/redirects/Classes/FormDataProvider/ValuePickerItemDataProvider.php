@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Redirects\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Redirects\Repository\Demand;
 
 /**
  * Inject available domain hosts into a valuepicker form
@@ -46,6 +47,15 @@ class ValuePickerItemDataProvider implements FormDataProviderInterface
     public function addData(array $result): array
     {
         if ($result['tableName'] === 'sys_redirect' && isset($result['processedTca']['columns']['source_host'])) {
+            // Don't add the wildcard domain for the qrcode type,
+            // because this case does not exist in context of a qrcode
+            if (($result['databaseRow']['redirect_type'] ?? '') !== Demand::QRCODE_REDIRECT_TYPE) {
+                $result['processedTca']['columns']['source_host']['config']['valuePicker']['items'][] = [
+                    'label' => '*',
+                    'value' => '*',
+                ];
+            }
+
             $domains = $this->getHosts();
             foreach ($domains as $domain) {
                 $result['processedTca']['columns']['source_host']['config']['valuePicker']['items'][] =

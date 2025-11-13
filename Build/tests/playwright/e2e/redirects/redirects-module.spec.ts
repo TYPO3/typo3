@@ -1,7 +1,10 @@
 import { test, expect } from '../../fixtures/setup-fixtures';
 
 test.beforeEach(async ({ backend }) => {
-  await backend.gotoModule('site_redirects');
+  await backend.gotoModule('link_management');
+  const moduleLoaded = backend.moduleLoaded('redirects');
+  backend.docHeader.selectInDropDown('Module Overview', 'Redirects');
+  await moduleLoaded;
 });
 
 test('See redirect management module', async ({ backend }) => {

@@ -13,7 +13,7 @@ groupMods:
   - web_info_overview
   - web_info_translations
   - media_management
-  - site_redirects
+  - redirects
   - user_setup
   - system_log
 pageTypesSelect:
