@@ -28,6 +28,7 @@ final class AsCommandAttributeTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_di',
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_schedulable_command',
     ];
 
     #[Test]
@@ -81,5 +82,25 @@ final class AsCommandAttributeTest extends FunctionalTestCase
 
         self::assertEquals('This is a visible command.', $visibleCommand->getDescription());
         self::assertEquals('This is a hidden command.', $hiddenCommand->getDescription());
+    }
+
+    #[Test]
+    public function asCommandIsSchedulable(): void
+    {
+        $commandRegistry = $this->get(CommandRegistry::class);
+
+        $schedulableCommand = $commandRegistry->get('testschedulable:schedulable');
+        $nonSchedulableCommand = $commandRegistry->get('testschedulable:nonschedulable');
+
+        self::assertEquals('This is schedulable.', $schedulableCommand->getDescription());
+        self::assertEquals('This is not schedulable.', $nonSchedulableCommand->getDescription());
+
+        $collection = [];
+        foreach ($commandRegistry->getSchedulableCommands() as $command) {
+            $collection[$command->getName()] = true;
+        }
+
+        self::assertArrayHasKey('testschedulable:schedulable', $collection);
+        self::assertArrayNotHasKey('testschedulable:nonschedulable', $collection);
     }
 }

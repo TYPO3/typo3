@@ -79,7 +79,8 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
                     'command' => $name,
                     'description' => $attribute->description,
                     'hidden' => $hidden,
-                    // The `schedulable` flag is not configurable via symfony attribute parameters, use sane defaults
+                    // The `schedulable` flag is not configurable via symfony attribute parameters, use sane defaults.
+                    // It can be overridden by using the Attribute #[AsNonSchedulableCommand] on a class.
                     'schedulable' => true,
                 ]
             );

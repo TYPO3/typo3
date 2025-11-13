@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,6 +26,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
+use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
+
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -39,6 +42,8 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * Create a new backend user
  */
+#[AsCommand('backend:user:create', 'Create a backend user.')]
+#[AsNonSchedulableCommand]
 class CreateBackendUserCommand extends Command
 {
     public function __construct(

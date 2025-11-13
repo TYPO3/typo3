@@ -15,11 +15,14 @@
 
 namespace TYPO3\CMS\Scheduler\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
+
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
@@ -33,6 +36,8 @@ use TYPO3\CMS\Scheduler\Validation\Validator\TaskValidator;
  *
  * @internal Specific command implementation, not part of TYPO3 API.
  */
+#[AsCommand('scheduler:run', 'Start the TYPO3 Scheduler from the command line.')]
+#[AsNonSchedulableCommand]
 class SchedulerCommand extends Command
 {
     /**

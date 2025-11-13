@@ -18,11 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Command;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Package\Event\PackageInitializationEvent;
 use TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent;
@@ -33,6 +35,8 @@ use TYPO3\CMS\Core\Package\PackageManager;
 /**
  * Command for setting up all extensions via CLI.
  */
+#[AsCommand('extension:setup', 'Set up extensions and perform database migrations.')]
+#[AsNonSchedulableCommand]
 class SetupExtensionsCommand extends Command
 {
     public function __construct(

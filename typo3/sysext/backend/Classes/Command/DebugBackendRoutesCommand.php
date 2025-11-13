@@ -25,12 +25,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Backend\Module\ModuleRegistry;
 use TYPO3\CMS\Backend\Routing\Router;
+use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
 
 /**
  * Debug backend routes, including module routes, AJAX routes and regular routes.
  * Similar to Symfony's debug:router command.
  * @internal only for development purposes
  */
+#[AsNonSchedulableCommand]
 class DebugBackendRoutesCommand extends Command
 {
     public function __construct(

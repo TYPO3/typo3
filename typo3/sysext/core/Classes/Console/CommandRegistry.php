@@ -22,6 +22,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use Symfony\Component\Console\Descriptor\ApplicationDescription;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
+use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
@@ -77,6 +78,9 @@ class CommandRegistry implements CommandLoaderInterface, SingletonInterface
 
     /**
      * Get the configuration form all commands which are schedulable.
+     * By using the #[AsNonSchedulableCommand] attribute, all commands
+     * are filtered out which utilize this attribute, as the Symfony
+     * #[AsCommand] attribute does not allow to set additional meta-data.
      */
     public function getSchedulableCommandsConfiguration(): array
     {
@@ -185,6 +189,22 @@ class CommandRegistry implements CommandLoaderInterface, SingletonInterface
         bool $schedulable = false,
         ?string $aliasFor = null
     ): void {
+
+        if ($schedulable) {
+            // Workaround: Symfony #[AsCommand] can not utilize an extra 'schedulable' key. Thus, we
+            // evaluate the additional #[AsUnschedulableCommand] as well.
+            try {
+                $reflection = new \ReflectionClass($serviceName);
+                $attributes = $reflection->getAttributes(AsNonSchedulableCommand::class);
+                if ($attributes !== []) {
+                    // The presence of the attribute alone is sufficient, no further reflection
+                    // or construction is required at this time. Might be needed if the attribute
+                    // ever gets properties.
+                    $schedulable = false;
+                }
+            } catch (\ReflectionException $e) {
+            }
+        }
         $this->commandConfigurations[$commandName] = [
             'name' => $aliasFor ?? $commandName,
             'serviceName' => $serviceName,

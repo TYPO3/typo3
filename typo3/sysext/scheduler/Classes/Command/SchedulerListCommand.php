@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Scheduler\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableCell;
@@ -28,6 +29,8 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\ConsoleSectionOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
+
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -38,6 +41,8 @@ use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 /**
  * CLI command for EXT:scheduler to list tasks
  */
+#[AsCommand('scheduler:list', 'List all TYPO3 Scheduler tasks.')]
+#[AsNonSchedulableCommand]
 class SchedulerListCommand extends Command
 {
     protected SymfonyStyle $io;

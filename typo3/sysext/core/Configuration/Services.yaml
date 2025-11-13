@@ -15,49 +15,11 @@ services:
     arguments: ['core']
     public: true
 
-  TYPO3\CMS\Core\Command\ExtensionListCommand:
-    tags:
-      - name: 'console.command'
-        command: 'extension:list'
-        description: 'Shows the list of extensions available to the system'
-        schedulable: false
-
   TYPO3\CMS\Core\Command\SendEmailCommand:
     tags:
       - name: 'console.command'
-        command: 'mailer:spool:send'
-        description: 'Sends emails from the spool'
-      - name: 'console.command'
         command: 'swiftmailer:spool:send'
         alias: true
-        schedulable: false
-
-  TYPO3\CMS\Core\Command\SiteListCommand:
-    tags:
-      - name: 'console.command'
-        command: 'site:list'
-        description: 'Shows the list of sites available to the system'
-        schedulable: false
-
-  TYPO3\CMS\Core\Command\SiteShowCommand:
-    tags:
-      - name: 'console.command'
-        command: 'site:show'
-        description: 'Shows the configuration of the specified site'
-        schedulable: false
-
-  TYPO3\CMS\Core\Command\SiteSetsListCommand:
-    tags:
-      - name: 'console.command'
-        command: 'site:sets:list'
-        description: 'Shows the list of available site sets'
-        schedulable: false
-
-  TYPO3\CMS\Core\Command\SetupExtensionsCommand:
-    tags:
-      - name: 'console.command'
-        description: 'Set up extensions'
-        command: 'extension:setup'
         schedulable: false
 
   TYPO3\CMS\Core\Package\UnitTestPackageManager:

@@ -28,6 +28,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Backend\Module\ModuleFactory;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleRegistry;
+use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
 use TYPO3\CMS\Core\Core\BootService;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -37,6 +38,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Command for showing all backend modules and their associated labels
  * @internal only for development purposes
  */
+#[AsNonSchedulableCommand]
 class DebugBackendModulesCommand extends Command
 {
     private LanguageService $languageService;

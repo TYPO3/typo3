@@ -1,0 +1,19 @@
+{
+	"name": "typo3tests/test-schedulable-command",
+	"type": "typo3-cms-extension",
+	"description": "This extension contains Symfony Command DI fixtures.",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "14.0.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_schedulable_command"
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\TestSchedulableCommand\\": "Classes/"
+		}
+	}
+}

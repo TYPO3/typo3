@@ -17,16 +17,20 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
 use TYPO3\CMS\Core\Site\SiteFinder;
 
 /**
  * Command for listing all configured sites
  */
+#[AsCommand('site:list', 'Shows the list of sites available to the system.')]
+#[AsNonSchedulableCommand]
 class SiteListCommand extends Command
 {
     public function __construct(protected readonly SiteFinder $siteFinder)

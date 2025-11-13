@@ -17,18 +17,22 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Set\SetRegistry;
 
 /**
  * Command for listing all configured sites
  */
+#[AsCommand('site:sets:list', 'Shows the list of available site sets.')]
+#[AsNonSchedulableCommand]
 class SiteSetsListCommand extends Command
 {
     public function __construct(

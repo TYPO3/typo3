@@ -17,12 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Lowlevel\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Localization\TranslationDomainMapper;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -35,6 +37,8 @@ use TYPO3\CMS\Core\Package\PackageManager;
  * the file location in EXT: syntax.
  * @internal only for development purposes
  */
+#[AsCommand('language:domain:list', 'Lists all translation domains and their label resource file locations.')]
+#[AsNonSchedulableCommand]
 class TranslationDomainListCommand extends Command
 {
     public function __construct(

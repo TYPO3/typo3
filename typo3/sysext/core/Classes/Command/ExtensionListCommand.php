@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Helper\Table;
@@ -25,6 +26,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
 use TYPO3\CMS\Core\Package\PackageManager;
 
 /**
@@ -32,6 +34,8 @@ use TYPO3\CMS\Core\Package\PackageManager;
  *
  * If the command is called with the verbose option, also shows the description of the package.
  */
+#[AsCommand('extension:list', 'Shows the list of extensions available to the system.')]
+#[AsNonSchedulableCommand]
 class ExtensionListCommand extends Command
 {
     public function __construct(private readonly PackageManager $packageManager)

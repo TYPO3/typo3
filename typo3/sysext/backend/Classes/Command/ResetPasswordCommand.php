@@ -18,12 +18,15 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Command;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
+use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
+
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -35,6 +38,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Triggers the workflow to request a new password for a user.
  */
+#[AsCommand('backend:resetpassword', 'Trigger a password reset for a backend user.')]
+#[AsNonSchedulableCommand]
 class ResetPasswordCommand extends Command
 {
     public function __construct(private readonly Context $context, private readonly PasswordReset $passwordReset)

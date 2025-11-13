@@ -4,5 +4,5 @@ services:
     autoconfigure: true
     public: false
 
-  TYPO3\CMS\Scheduler\:
+  TYPO3Tests\TestSchedulableCommand\:
     resource: '../Classes/*'
