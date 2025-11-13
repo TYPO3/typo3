@@ -100,7 +100,7 @@
 				<source>Password was updated.</source>
 			</trans-unit>
 			<trans-unit id="passwordPolicyFailed">
-				<source>The password was NOT updated, since it does not meet the password policy requirements.</source>
+				<source>The password was not updated, since it does not meet the password policy requirements.</source>
 			</trans-unit>
 			<trans-unit id="accountSecurity">
 				<source>Account security</source>
@@ -115,7 +115,7 @@
 				<source>Use multi-factor authentication to secure your account by providing another factor next to your password.</source>
 			</trans-unit>
 			<trans-unit id="mfaProviders.lockedMfaProviders">
-				<source>Some providers are currently locked!</source>
+				<source>Some providers are currently locked</source>
 			</trans-unit>
 			<trans-unit id="mfaProviders.enabled">
 				<source>Enabled</source>
@@ -130,10 +130,10 @@
 				<source>User settings were updated.</source>
 			</trans-unit>
 			<trans-unit id="newPassword_failed">
-				<source>Password was NOT updated because you didn't enter the same password twice.</source>
+				<source>Password was not updated because the entered passwords do not match.</source>
 			</trans-unit>
 			<trans-unit id="oldPassword_failed">
-				<source>Password was NOT updated because you didn't enter the correct current password.</source>
+				<source>Password was not updated because the current password entered is incorrect.</source>
 			</trans-unit>
 			<trans-unit id="settingsAreReset">
 				<source>The user settings have been reset to default values and temporary data has been cleared.</source>
