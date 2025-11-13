@@ -49,7 +49,7 @@
 				<source>Edit all translated page properties</source>
 			</trans-unit>
 			<trans-unit id="lang_renderl10n_badThingThereAre">
-				<source>This language has more than one page overlay record, but only one is allowed. Please remove the extra records.</source>
+				<source>Multiple translated page records exist for this language, but only one is allowed. Please remove the extra records.</source>
 			</trans-unit>
 			<trans-unit id="lang_renderl10n_page">
 				<source>Page</source>
