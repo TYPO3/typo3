@@ -39,7 +39,7 @@ return [
     ],
     'integrations' => [
         'parent' => 'tools',
-        'position' => ['after' => 'backend_user_management'],
+        'position' => ['after' => 'permissions_pages'],
         'access' => 'admin',
         'workspaces' => 'live',
         'path' => '/module/integrations',
