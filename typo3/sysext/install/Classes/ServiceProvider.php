@@ -46,6 +46,7 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Service\DatabaseUpgradeWizardsService;
+use TYPO3\CMS\Core\Service\SilentConfigurationUpgradeService;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\TypoScript\AST\CommentAwareAstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
@@ -86,7 +87,6 @@ class ServiceProvider extends AbstractServiceProvider
             Service\LanguagePackService::class => self::getLanguagePackService(...),
             Service\LateBootService::class => self::getLateBootService(...),
             Service\LoadTcaService::class => self::getLoadTcaService(...),
-            Service\SilentConfigurationUpgradeService::class => self::getSilentConfigurationUpgradeService(...),
             Service\SilentTemplateFileUpgradeService::class => self::getSilentTemplateFileUpgradeService(...),
             Service\WebServerConfigurationFileService::class => self::getWebServerConfigurationFileService(...),
             Service\SessionService::class => self::getSessionService(...),
@@ -103,9 +103,6 @@ class ServiceProvider extends AbstractServiceProvider
             Controller\SettingsController::class => self::getSettingsController(...),
             Controller\UpgradeController::class => self::getUpgradeController(...),
             Command\LanguagePackCommand::class => self::getLanguagePackCommand(...),
-            Command\UpgradeWizardRunCommand::class => self::getUpgradeWizardRunCommand(...),
-            Command\UpgradeWizardListCommand::class => self::getUpgradeWizardListCommand(...),
-            Command\UpgradeWizardMarkUndoneCommand::class => self::getUpgradeWizardMarkUndoneCommand(...),
             Command\PasswordSetCommand::class => self::getPasswordGenerateCommand(...),
             Command\SetupCommand::class => self::getSetupCommand(...),
             Command\SetupDefaultBackendUserGroupsCommand::class => self::getSetupDefaultBackendUserGroupsCommand(...),
@@ -205,13 +202,6 @@ class ServiceProvider extends AbstractServiceProvider
         );
     }
 
-    public static function getSilentConfigurationUpgradeService(ContainerInterface $container): Service\SilentConfigurationUpgradeService
-    {
-        return new Service\SilentConfigurationUpgradeService(
-            $container->get(ConfigurationManager::class)
-        );
-    }
-
     public static function getSilentTemplateFileUpgradeService(ContainerInterface $container): Service\SilentTemplateFileUpgradeService
     {
         return new Service\SilentTemplateFileUpgradeService(
@@ -307,7 +297,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return new Controller\LayoutController(
             $container->get(FailsafePackageManager::class),
-            $container->get(Service\SilentConfigurationUpgradeService::class),
+            $container->get(SilentConfigurationUpgradeService::class),
             $container->get(Service\SilentTemplateFileUpgradeService::class),
             $container->get(BackendEntryPointResolver::class),
             $container->get(HashService::class),
@@ -369,32 +359,6 @@ class ServiceProvider extends AbstractServiceProvider
         );
     }
 
-    public static function getUpgradeWizardRunCommand(ContainerInterface $container): Command\UpgradeWizardRunCommand
-    {
-        return new Command\UpgradeWizardRunCommand(
-            'upgrade:run',
-            $container->get(Service\LateBootService::class),
-            $container->get(DatabaseUpgradeWizardsService::class),
-            $container->get(Service\SilentConfigurationUpgradeService::class)
-        );
-    }
-
-    public static function getUpgradeWizardListCommand(ContainerInterface $container): Command\UpgradeWizardListCommand
-    {
-        return new Command\UpgradeWizardListCommand(
-            'upgrade:list',
-            $container->get(Service\LateBootService::class),
-        );
-    }
-
-    public static function getUpgradeWizardMarkUndoneCommand(ContainerInterface $container): Command\UpgradeWizardMarkUndoneCommand
-    {
-        return new Command\UpgradeWizardMarkUndoneCommand(
-            'upgrade:mark:undone',
-            $container->get(Service\LateBootService::class),
-        );
-    }
-
     public static function getSetupCommand(ContainerInterface $container): Command\SetupCommand
     {
         return new Command\SetupCommand(
@@ -442,21 +406,6 @@ class ServiceProvider extends AbstractServiceProvider
             'Update the language files of all activated extensions',
             false,
             true
-        );
-        $commandRegistry->addLazyCommand(
-            'upgrade:run',
-            Command\UpgradeWizardRunCommand::class,
-            'Run upgrade wizard. Without arguments all available wizards will be run.'
-        );
-        $commandRegistry->addLazyCommand(
-            'upgrade:list',
-            Command\UpgradeWizardListCommand::class,
-            'List available upgrade wizards.'
-        );
-        $commandRegistry->addLazyCommand(
-            'upgrade:mark:undone',
-            Command\UpgradeWizardMarkUndoneCommand::class,
-            'Mark upgrade wizard as undone.'
         );
         $commandRegistry->addLazyCommand(
             'setup',

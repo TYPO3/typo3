@@ -13,7 +13,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Service;
+namespace TYPO3\CMS\Core\Service;
 
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\Exception\SettingsWriteException;
@@ -24,9 +24,9 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash;
 use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Service\Exception\ConfigurationChangedException;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 
 /**
  * Execute "silent" LocalConfiguration upgrades if needed.

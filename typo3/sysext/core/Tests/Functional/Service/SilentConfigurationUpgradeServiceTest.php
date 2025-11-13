@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Tests\Functional\Service;
+namespace TYPO3\CMS\Core\Tests\Functional\Service;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
@@ -28,10 +28,10 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
 use TYPO3\CMS\Core\Localization\Parser\XliffParser;
+use TYPO3\CMS\Core\Service\Exception\ConfigurationChangedException;
+use TYPO3\CMS\Core\Service\SilentConfigurationUpgradeService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache;
-use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
-use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase

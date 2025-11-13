@@ -15,13 +15,13 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Command\Exception;
+namespace TYPO3\CMS\Core\Command\Exception;
 
-use TYPO3\CMS\Install\Exception as Typo3InstallException;
+use TYPO3\CMS\Core\Exception as Typo3InstallException;
 
 /**
- * This exception is thrown in the UpgradeWizardRunCommand, if a requested wizard is already marked as done.
+ * This exception is thrown in UpgradeWizardRunCommand, if a requested wizard could not be found.
  *
  * @internal for use in UpgradeWizardRunCommand only and not part of public API.
  */
-final class WizardMarkedAsDoneException extends Typo3InstallException {}
+final class WizardNotFoundException extends Typo3InstallException {}

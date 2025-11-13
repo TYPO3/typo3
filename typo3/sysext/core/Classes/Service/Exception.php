@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,13 +13,9 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Command\Exception;
-
-use TYPO3\CMS\Install\Exception as Typo3InstallException;
+namespace TYPO3\CMS\Core\Service;
 
 /**
- * This exception is thrown in UpgradeWizardRunCommand, if a requested wizard could not be found.
- *
- * @internal for use in UpgradeWizardRunCommand only and not part of public API.
+ * A service exception
  */
-final class WizardNotFoundException extends Typo3InstallException {}
+class Exception extends \TYPO3\CMS\Core\Exception {}

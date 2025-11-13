@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Command;
+namespace TYPO3\CMS\Core\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -23,14 +23,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
+use TYPO3\CMS\Core\Core\BootService;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Install\Service\LateBootService;
-use TYPO3\CMS\Install\Service\UpgradeWizardsService;
+use TYPO3\CMS\Core\Service\UpgradeWizardsService;
 
 /**
  * Upgrade wizard command for marking wizards as undone
  *
- * @internal
+ * @internal not part of public API.
  */
 class UpgradeWizardMarkUndoneCommand extends Command
 {
@@ -38,7 +38,7 @@ class UpgradeWizardMarkUndoneCommand extends Command
 
     public function __construct(
         string $name,
-        private readonly LateBootService $lateBootService
+        private readonly BootService $bootService,
     ) {
         parent::__construct($name);
     }
@@ -48,8 +48,8 @@ class UpgradeWizardMarkUndoneCommand extends Command
      */
     protected function bootstrap(): void
     {
-        $this->upgradeWizardsService = $this->lateBootService
-            ->loadExtLocalconfDatabaseAndExtTables(false)
+        $this->upgradeWizardsService = $this->bootService
+            ->loadExtLocalconfDatabaseAndExtTables(false, false)
             ->get(UpgradeWizardsService::class);
         Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class);
         Bootstrap::initializeBackendAuthentication();

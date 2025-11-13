@@ -15,11 +15,13 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Service\Exception;
+namespace TYPO3\CMS\Core\Command\Exception;
 
-use TYPO3\CMS\Install\Service\Exception;
+use TYPO3\CMS\Core\Exception as Typo3InstallException;
 
 /**
- * An exception thrown if the silent configuration updater changed configuration
+ * This exception is thrown in the UpgradeWizardRunCommand, if a requested wizard is already marked as done.
+ *
+ * @internal for use in UpgradeWizardRunCommand only and not part of public API.
  */
-class ConfigurationChangedException extends Exception {}
+final class WizardMarkedAsDoneException extends Typo3InstallException {}

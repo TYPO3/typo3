@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Service\UpgradeWizardsService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Upgrades\DatabaseRowsUpdateWizard;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

@@ -31,10 +31,10 @@ use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Page\ImportMap;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
-use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
-use TYPO3\CMS\Install\Service\Exception\SilentConfigurationUpgradeReadonlyException;
+use TYPO3\CMS\Core\Service\Exception\ConfigurationChangedException;
+use TYPO3\CMS\Core\Service\Exception\SilentConfigurationUpgradeReadonlyException;
+use TYPO3\CMS\Core\Service\SilentConfigurationUpgradeService;
 use TYPO3\CMS\Install\Service\Exception\TemplateFileChangedException;
-use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 use TYPO3\CMS\Install\Service\SilentTemplateFileUpgradeService;
 
 /**
@@ -128,7 +128,7 @@ class LayoutController extends AbstractController
         } catch (ConfigurationChangedException) {
             $success = false;
         } catch (SettingsWriteException $e) {
-            throw new SilentConfigurationUpgradeReadonlyException(code: 1688462974, throwable: $e);
+            throw new SilentConfigurationUpgradeReadonlyException(1688462974, $e);
         }
         return new JsonResponse([
             'success' => $success,

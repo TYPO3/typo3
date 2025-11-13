@@ -27,6 +27,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDi
 use TYPO3\CMS\Core\Adapter\EventDispatcherAdapter as SymfonyEventDispatcher;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Configuration\Tca\TcaMigration;
@@ -40,6 +41,8 @@ use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
+use TYPO3\CMS\Core\Service\DatabaseUpgradeWizardsService;
+use TYPO3\CMS\Core\Service\SilentConfigurationUpgradeService;
 use TYPO3\CMS\Core\Type\Map;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 
@@ -78,6 +81,9 @@ class ServiceProvider extends AbstractServiceProvider
             Command\CacheFlushTagsCommand::class => self::getCacheFlushTagsCommand(...),
             Command\CacheWarmupCommand::class => self::getCacheWarmupCommand(...),
             Command\DumpAutoloadCommand::class => self::getDumpAutoloadCommand(...),
+            Command\UpgradeWizardRunCommand::class => self::getUpgradeWizardRunCommand(...),
+            Command\UpgradeWizardListCommand::class => self::getUpgradeWizardListCommand(...),
+            Command\UpgradeWizardMarkUndoneCommand::class => self::getUpgradeWizardMarkUndoneCommand(...),
             Console\CommandApplication::class => self::getConsoleCommandApplication(...),
             Console\CommandRegistry::class => self::getConsoleCommandRegistry(...),
             Context\Context::class => self::getContext(...),
@@ -118,6 +124,7 @@ class ServiceProvider extends AbstractServiceProvider
             // @deprecated since TYPO3 v14, will be removed in TYPO3 v15
             Service\FlexFormService::class => self::getFlexFormService(...),
             Service\OpcodeCacheService::class => self::getOpcodeCacheService(...),
+            Service\SilentConfigurationUpgradeService::class => self::getSilentConfigurationUpgradeService(...),
             TypoScript\TypoScriptStringFactory::class => self::getTypoScriptStringFactory(...),
             TypoScript\TypoScriptService::class => self::getTypoScriptService(...),
             TypoScript\AST\Traverser\AstTraverser::class => self::getAstTraverser(...),
@@ -279,6 +286,32 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getDumpAutoloadCommand(ContainerInterface $container): Command\DumpAutoloadCommand
     {
         return new Command\DumpAutoloadCommand();
+    }
+
+    public static function getUpgradeWizardRunCommand(ContainerInterface $container): Command\UpgradeWizardRunCommand
+    {
+        return new Command\UpgradeWizardRunCommand(
+            'upgrade:run',
+            $container->get(Core\BootService::class),
+            $container->get(DatabaseUpgradeWizardsService::class),
+            $container->get(SilentConfigurationUpgradeService::class)
+        );
+    }
+
+    public static function getUpgradeWizardListCommand(ContainerInterface $container): Command\UpgradeWizardListCommand
+    {
+        return new Command\UpgradeWizardListCommand(
+            'upgrade:list',
+            $container->get(Core\BootService::class),
+        );
+    }
+
+    public static function getUpgradeWizardMarkUndoneCommand(ContainerInterface $container): Command\UpgradeWizardMarkUndoneCommand
+    {
+        return new Command\UpgradeWizardMarkUndoneCommand(
+            'upgrade:mark:undone',
+            $container->get(Core\BootService::class),
+        );
     }
 
     public static function getConsoleCommandApplication(ContainerInterface $container): Console\CommandApplication
@@ -686,6 +719,13 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Service\DatabaseUpgradeWizardsService::class);
     }
 
+    public static function getSilentConfigurationUpgradeService(ContainerInterface $container): Service\SilentConfigurationUpgradeService
+    {
+        return new Service\SilentConfigurationUpgradeService(
+            $container->get(ConfigurationManager::class)
+        );
+    }
+
     public static function provideFallbackEventDispatcher(
         ContainerInterface $container,
         ?EventDispatcherInterface $eventDispatcher = null
@@ -742,6 +782,22 @@ class ServiceProvider extends AbstractServiceProvider
 
         $commandRegistry->addLazyCommand('lint:yaml', SymfonyLintCommand::class, 'Lint yaml files.');
         $commandRegistry->addLazyCommand('completion', SymfonyDumpCompletionCommand::class, 'Dump the shell completion script');
+
+        $commandRegistry->addLazyCommand(
+            'upgrade:run',
+            Command\UpgradeWizardRunCommand::class,
+            'Run upgrade wizard. Without arguments all available wizards will be run.'
+        );
+        $commandRegistry->addLazyCommand(
+            'upgrade:list',
+            Command\UpgradeWizardListCommand::class,
+            'List available upgrade wizards.'
+        );
+        $commandRegistry->addLazyCommand(
+            'upgrade:mark:undone',
+            Command\UpgradeWizardMarkUndoneCommand::class,
+            'Mark upgrade wizard as undone.'
+        );
 
         return $commandRegistry;
     }

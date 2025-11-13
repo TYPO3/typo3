@@ -15,10 +15,11 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Service;
+namespace TYPO3\CMS\Core\Service;
 
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\StreamOutput;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Registry;
@@ -34,8 +35,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Service class helps to manage upgrade wizards.
  *
- * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
+ * @internal This class is only meant to be used within `EXT:core` and `EXT:install` and is not part of the TYPO3 Core API.
  */
+#[Autoconfigure(public: true)]
 final class UpgradeWizardsService
 {
     private StreamOutput $output;
@@ -302,8 +304,6 @@ final class UpgradeWizardsService
     /**
      * Marks some wizard as being "seen" so that it not shown again.
      * Writes the info in system/settings.php
-     *
-     * @throws \RuntimeException
      */
     public function markWizardAsDone(UpgradeWizardInterface $upgradeWizard): void
     {

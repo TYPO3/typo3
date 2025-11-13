@@ -39,6 +39,7 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Service\DatabaseUpgradeWizardsService;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
+use TYPO3\CMS\Core\Service\UpgradeWizardsService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -76,7 +77,6 @@ use TYPO3\CMS\Install\Service\CoreUpdateService;
 use TYPO3\CMS\Install\Service\CoreVersionService;
 use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\LoadTcaService;
-use TYPO3\CMS\Install\Service\UpgradeWizardsService;
 use TYPO3\CMS\Install\UpgradeAnalysis\DocumentationFile;
 use TYPO3\CMS\Install\WebserverType;
 
