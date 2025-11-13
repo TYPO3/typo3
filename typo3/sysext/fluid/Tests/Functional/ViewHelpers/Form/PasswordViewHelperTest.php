@@ -43,8 +43,36 @@ final class PasswordViewHelperTest extends FunctionalTestCase
     {
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
-        $context->getTemplatePaths()->setTemplateSource('<f:form.password name="NameOfTextbox" value="Current value" />');
-        self::assertSame('<input type="password" name="NameOfTextbox" value="Current value" />', (new TemplateView($context))->render());
+        $context->getTemplatePaths()->setTemplateSource('<f:form.password name="myPassword" value="Current value" />');
+        self::assertSame('<input type="password" name="myPassword" value="Current value" />', (new TemplateView($context))->render());
+    }
+
+    #[Test]
+    public function renderDoesOutputSubmittedPasswordValueIfRespectSubmittedDataValueIsDefinedAndValidationErrorOccurs(): void
+    {
+        $originalRequestExtbaseRequestParameters = new ExtbaseRequestParameters();
+        $originalRequestExtbaseRequestParameters->setArgument('myPassword', 'Submitted value');
+        $originalRequest = (new Request((new ServerRequest())->withAttribute('extbase', $originalRequestExtbaseRequestParameters)));
+        $extbaseRequestParameters = new ExtbaseRequestParameters();
+        $extbaseRequestParameters->setOriginalRequest($originalRequest);
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters);
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form.password name="myPassword" respectSubmittedDataValue="1" />');
+        self::assertSame('<input type="password" name="myPassword" value="Submitted value" />', (new TemplateView($context))->render());
+    }
+
+    #[Test]
+    public function renderDoesNotOutputSubmittedPasswordValueIfRespectSubmittedDataValueIsDefinedAndValidationErrorOccurs(): void
+    {
+        $originalRequestExtbaseRequestParameters = new ExtbaseRequestParameters();
+        $originalRequestExtbaseRequestParameters->setArgument('myPassword', 'Submitted value');
+        $originalRequest = (new Request((new ServerRequest())->withAttribute('extbase', $originalRequestExtbaseRequestParameters)));
+        $extbaseRequestParameters = new ExtbaseRequestParameters();
+        $extbaseRequestParameters->setOriginalRequest($originalRequest);
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters);
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form.password name="myPassword" respectSubmittedDataValue="0" />');
+        self::assertSame('<input type="password" name="myPassword" value="" />', (new TemplateView($context))->render());
     }
 
     #[Test]

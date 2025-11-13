@@ -37,13 +37,20 @@ final class PasswordViewHelper extends AbstractFormFieldViewHelper
     {
         parent::initializeArguments();
         $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this ViewHelper', false, 'f3-form-error');
+        $this->registerArgument(
+            'respectSubmittedDataValue',
+            'bool',
+            'If set to false (default), any user-submitted data is not displayed in the output. If set to true, the password is emitted as clear text in the response. This is not recommended from a security point of view.',
+            false,
+            false
+        );
     }
 
     public function render(): string
     {
         $name = $this->getName();
         $this->registerFieldNameForFormTokenGeneration($name);
-        $this->setRespectSubmittedDataValue(true);
+        $this->setRespectSubmittedDataValue($this->arguments['respectSubmittedDataValue']);
 
         $this->tag->addAttribute('type', 'password');
         $this->tag->addAttribute('name', $name);
