@@ -65,6 +65,11 @@ services:
     tags:
       - { name: 'livesearch.provider', priority: 60 }
 
+  # Localization handler registry
+  TYPO3\CMS\Backend\Localization\LocalizationHandlerRegistry:
+    arguments:
+      - !tagged_iterator backend.localization.handler
+
   TYPO3\CMS\Backend\ElementBrowser\DatabaseBrowser:
     shared: false
 

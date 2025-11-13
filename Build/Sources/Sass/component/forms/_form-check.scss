@@ -434,9 +434,14 @@
 
     .form-check-label {
         display: grid;
+        flex-grow: 1;
         align-items: self-start;
-        grid-template-rows: min-content auto;
         gap: .5rem;
+        user-select: none;
+
+        &:has(> .form-check-label-body) {
+            grid-template-rows: min-content auto;
+        }
 
         &:after {
             content: '';
@@ -456,6 +461,11 @@
             gap: .5rem;
             font-size: 1rem;
             line-height: 1.2;
+
+            &-inherit {
+                font-size: inherit;
+                line-height: inherit;
+            }
         }
 
         &-label-body {

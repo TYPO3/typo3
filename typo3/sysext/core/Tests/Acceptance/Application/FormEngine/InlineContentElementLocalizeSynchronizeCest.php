@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\FormEngine;
 
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
 final class InlineContentElementLocalizeSynchronizeCest
@@ -32,7 +33,7 @@ final class InlineContentElementLocalizeSynchronizeCest
         $I->waitForText('staticdata', 20);
     }
 
-    public function addingResourceToDefaultLangPageAddResourceToLocalizedPage(ApplicationTester $I): void
+    public function addingResourceToDefaultLangPageAddResourceToLocalizedPage(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         // Add a content element type images and localize it
         $I->click('.module-body td[data-language-uid="0"] span[data-identifier="actions-plus"]');
@@ -77,13 +78,22 @@ final class InlineContentElementLocalizeSynchronizeCest
         $I->waitForElementVisible('.module-docheader-bar-navigation .dropdown-menu');
         $I->click('All languages', '.module-docheader-bar-navigation .dropdown-menu');
         $I->waitForText('Translate');
-        $I->click('Translate');
-        $I->switchToWindow('typo3-backend');
-        $I->waitForText('Localize page "staticdata - language 1" into styleguide demo language danish');
-        $I->click('label[data-action="localize"]');
+        $I->click('typo3-backend-localization-button');
+        $I->wait(1);
+        $modalDialog->canSeeDialog();
+        // The wizard may skip some steps automatically, so we just wait for each step and click Next
+        $I->waitForText('Select source language');
         $I->click('Next');
-        $I->waitForText('Normal');
+        $I->waitForText('Select records to localize');
         $I->click('Next');
+        $I->waitForText('Select localization mode');
+        $I->click('Next');
+        $I->waitForText('Confirm localization');
+        $I->click('Localize');
+        $I->waitForText('Finish');
+        $I->click('Finish');
+        $I->wait(1);
+        $I->waitForElementNotVisible('.t3js-modal[open]');
         $I->switchToContentFrame();
         $I->waitForText('(copy 1)');
         // Edit default language content element again and add another image

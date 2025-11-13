@@ -48,19 +48,16 @@
                                 </a>
                             </f:if>
                             <f:if condition="{allowEditContent} && {languageColumn.context.siteLanguage.languageId} && {languageColumn.translationData.untranslatedRecordUids}">
-                                <a href="#" class="btn btn-default btn-sm t3js-localize disabled"
+                                <typo3-backend-localization-button
+                                    class="btn btn-default btn-sm"
                                     title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPageContent_translate')}"
-                                    data-page="{languageColumn.context.localizedPageRecord.title}"
-                                    data-has-elements="{languageColumn.translationData.hasTranslations as integer}"
-                                    data-allow-copy="{languageColumn.allowTranslateCopy as integer}"
-                                    data-allow-translate="{languageColumn.allowTranslate as integer}"
-                                    data-table="tt_content"
-                                    data-page-id="{context.pageId}"
-                                    data-language-id="{languageColumn.context.siteLanguage.languageId}"
-                                    data-language-name="{languageColumn.context.siteLanguage.title}">
+                                    record-type="pages"
+                                    record-uid="{context.pageId}"
+                                    target-language="{languageColumn.context.siteLanguage.languageId}"
+                                >
                                     <core:icon identifier="actions-localize" />
-                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPageContent_translate" />
-                                </a>
+                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:localize.wizard.button.translate" />
+                                </typo3-backend-localization-button>
                             </f:if>
                         </div>
                         {languageColumn.pageIcon -> f:format.raw()}

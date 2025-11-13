@@ -346,6 +346,9 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.createNewRecord">
 				<source>Create new %s on page "%s"</source>
 			</trans-unit>
+			<trans-unit id="labels.createNewTranslation">
+				<source>Create a %s translation</source>
+			</trans-unit>
 			<trans-unit id="labels.createNewRecordRootLevel">
 				<source>Create new %s on root level</source>
 			</trans-unit>

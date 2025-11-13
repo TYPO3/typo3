@@ -2205,27 +2205,17 @@ class DatabaseRecordList
                 && !isset($translations[$lUid_OnPage])
                 && $this->getBackendUserAuthentication()->checkLanguageAccess($lUid_OnPage)
             ) {
-                $redirectUrl = (string)$this->uriBuilder->buildUriFromRoute(
-                    'record_edit',
-                    [
-                        'justLocalized' => $table . ':' . $record->getUid() . ':' . $lUid_OnPage,
-                        'returnUrl' => $this->listURL(),
-                    ]
-                );
-                $params = [];
-                $params['redirect'] = $redirectUrl;
-                $params['cmd'][$table][$record->getUid()]['localize'] = $lUid_OnPage;
-                $href = (string)$this->uriBuilder->buildUriFromRoute('tce_db', $params);
                 $title = htmlspecialchars($languageInformation[$lUid_OnPage]['title'] ?? '');
-
                 $lC = ($languageInformation[$lUid_OnPage]['flagIcon'] ?? false)
                     ? $this->iconFactory->getIcon($languageInformation[$lUid_OnPage]['flagIcon'], IconSize::SMALL)->setTitle($title)->render()
                     : $title;
-
-                $out .= '<a href="' . htmlspecialchars($href) . '"'
-                    . ' class="btn btn-default t3js-action-localize"'
-                    . ' title="' . $title . '">'
-                    . $lC . '</a> ';
+                $out .= '<typo3-backend-localization-button class="btn btn-default"'
+                    . ' record-type="' . $table . '"'
+                    . ' record-uid="' . $record->getUid() . '"'
+                    . ' target-language="' . $lUid_OnPage . '"'
+                    . '>'
+                    . $lC
+                    . '</typo3-backend-localization-button>';
             }
         }
         return $out;

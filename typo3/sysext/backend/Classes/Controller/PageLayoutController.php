@@ -702,39 +702,12 @@ class PageLayoutController
             }
 
             if ($languageId > 0 && !isset($existingTranslations[$languageId])) {
-                // Translation doesn't exist - build URL to create it via DataHandler
-                $returnUrl = (string)$this->uriBuilder->buildUriFromRoute(
-                    'web_layout',
-                    [
-                        'id' => $this->id,
-                        'function' => (int)$this->moduleData->get('function'),
-                        'language' => $languageId,
-                    ]
-                );
-                $href = (string)$this->uriBuilder->buildUriFromRoute(
-                    'tce_db',
-                    [
-                        'cmd' => [
-                            'pages' => [
-                                $this->id => [
-                                    'localize' => $languageId,
-                                ],
-                            ],
-                        ],
-                        'redirect' => (string)$this->uriBuilder->buildUriFromRoute(
-                            'record_edit',
-                            [
-                                'justLocalized' => 'pages:' . $this->id . ':' . $languageId,
-                                'module' => 'web_layout',
-                                'returnUrl' => $returnUrl,
-                            ]
-                        ),
-                    ]
-                );
                 $languageItem = $this->componentFactory->createDropDownItem()
-                    ->setActive(false)
+                    ->setTag('typo3-backend-localization-button')
                     ->setIcon($this->iconFactory->getIcon($siteLanguage->getFlagIdentifier()))
-                    ->setHref($href)
+                    ->setAttribute('record-type', 'pages')
+                    ->setAttribute('record-uid', (string)$this->id)
+                    ->setAttribute('target-language', (string)$siteLanguage->getLanguageId())
                     ->setLabel($languageTitle);
                 $newLanguageItems[] = $languageItem;
             } else {

@@ -879,6 +879,7 @@ class EditDocumentController
         $this->R_URI = $this->R_URL_parts['path'] . HttpUtility::buildQueryString($this->R_URL_getvars, '?');
 
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/Wizards/localization.xlf');
         $this->pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('show_item'));
 
         $event = new AfterFormEnginePageInitializedEvent($this, $request);
@@ -2021,9 +2022,11 @@ class EditDocumentController
                     if ($addOption && !in_array($languageId, $noAddOption, true)) {
                         if ($isNewLanguage) {
                             $languageItem = $this->componentFactory->createDropDownItem()
-                                ->setLabel($selectorOptionLabel)
-                                ->setHref($href)
-                                ->setActive(false);
+                                ->setTag('typo3-backend-localization-button')
+                                ->setAttribute('record-type', $table)
+                                ->setAttribute('record-uid', (string)$rowsByLang[0]['uid'])
+                                ->setAttribute('target-language', (string)$languageId)
+                                ->setLabel($selectorOptionLabel);
                             if (!empty($language['flagIcon'])) {
                                 $languageItem->setIcon($this->iconFactory->getIcon($language['flagIcon']));
                             }

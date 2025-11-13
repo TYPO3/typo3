@@ -370,25 +370,34 @@ return [
         'target' => \TYPO3\CMS\Backend\Controller\LinkBrowserController::class . '::encodeTypoLink',
     ],
 
-    // Get languages in page
-    'page_languages' => [
-        'path' => '/records/localize/get-languages',
-        'target' => Controller\Page\LocalizationController::class . '::getUsedLanguagesInPage',
-        'inheritAccessFromModule' => 'web_layout',
+    // Localization Wizard
+    'wizard_localization_get_record' => [
+        'path' => '/wizard/localization/record',
+        'target' => Controller\Wizard\LocalizationController::class . '::getRecord',
     ],
-
-    // Get summary of records to localize
-    'records_localize_summary' => [
-        'path' => '/records/localize/summary',
-        'target' => Controller\Page\LocalizationController::class . '::getRecordLocalizeSummary',
-        'inheritAccessFromModule' => 'web_layout',
+    'wizard_localization_get_targets' => [
+        'path' => '/wizard/localization/targets',
+        'target' => Controller\Wizard\LocalizationController::class . '::getTargets',
     ],
-
-    // Localize the records
-    'records_localize' => [
-        'path' => '/records/localize',
-        'target' => Controller\Page\LocalizationController::class . '::localizeRecords',
-        'inheritAccessFromModule' => 'web_layout',
+    'wizard_localization_get_sources' => [
+        'path' => '/wizard/localization/sources',
+        'target' => Controller\Wizard\LocalizationController::class . '::getSources',
+    ],
+    'wizard_localization_get_modes' => [
+        'path' => '/wizard/localization/modes',
+        'target' => Controller\Wizard\LocalizationController::class . '::getModes',
+    ],
+    'wizard_localization_get_handlers' => [
+        'path' => '/wizard/localization/handlers',
+        'target' => Controller\Wizard\LocalizationController::class . '::getHandlers',
+    ],
+    'wizard_localization_get_content' => [
+        'path' => '/wizard/localization/content',
+        'target' => Controller\Wizard\LocalizationController::class . '::getContent',
+    ],
+    'wizard_localization_localize' => [
+        'path' => '/wizard/localization/localize',
+        'target' => Controller\Wizard\LocalizationController::class . '::localize',
     ],
 
     // column selector

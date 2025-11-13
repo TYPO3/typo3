@@ -11,6 +11,7 @@ use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\ProviderInterface;
 use TYPO3\CMS\Backend\ElementBrowser\ElementBrowserInterface;
 use TYPO3\CMS\Backend\Form\NodeInterface;
+use TYPO3\CMS\Backend\Localization\LocalizationHandlerInterface;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchProviderInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\DependencyInjection\PublicServicePass;
@@ -21,6 +22,7 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
     $containerBuilder->registerForAutoconfiguration(ProviderInterface::class)->addTag('backend.contextmenu.itemprovider');
     $containerBuilder->registerForAutoconfiguration(SearchProviderInterface::class)->addTag('livesearch.provider');
     $containerBuilder->registerForAutoconfiguration(NodeInterface::class)->addTag('backend.form.node');
+    $containerBuilder->registerForAutoconfiguration(LocalizationHandlerInterface::class)->addTag('backend.localization.handler');
 
     $containerBuilder->addCompilerPass(new PublicServicePass('backend.controller'));
 

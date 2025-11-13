@@ -1,0 +1,42 @@
+@use "sass:list";
+
+.pagelayout {
+    --pagelayout-grid-spacing: 1rem;
+    --pagelayout-cell-spacing: 1rem;
+    --pagelayout-cell-color: var(--typo3-component-color);
+    --pagelayout-cell-bg: var(--typo3-component-bg);
+    --pagelayout-cell-border-radius: 4px;
+    --pagelayout-cell-border-color: var(--typo3-component-border-color);
+    --pagelayout-cell-shadow: var(--typo3-component-box-shadow-strong);
+    display: grid;
+    gap: var(--pagelayout-grid-spacing);
+    width: 100%;
+    grid-auto-columns: 1fr;
+}
+
+// Cell
+.pagelayout-cell {
+    --pagelayout-cell-col-start: var(--pagelayout-cell-col, 1);
+    --pagelayout-cell-col-end: calc(var(--pagelayout-cell-col, 1) + var(--pagelayout-cell-colspan, 1));
+    --pagelayout-cell-row-start: var(--pagelayout-cell-row, 1);
+    --pagelayout-cell-row-end: calc(var(--pagelayout-cell-row, 1) + var(--pagelayout-cell-rowspan, 1));
+    grid-column: list.slash(var(--pagelayout-cell-col-start), var(--pagelayout-cell-col-end));
+    grid-row: list.slash(var(--pagelayout-cell-row-start), var(--pagelayout-cell-row-end));
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+.pagelayout-cell-content {
+    color: var(--pagelayout-cell-color);
+    border: 1px solid var(--pagelayout-cell-border-color);
+    padding: var(--pagelayout-cell-spacing);
+    background-color: var(--pagelayout-cell-bg);
+    border-radius: var(--pagelayout-cell-border-radius);
+    box-shadow: var(--pagelayout-cell-shadow);
+
+    > *:last-child {
+        margin-bottom: 0;
+    }
+}

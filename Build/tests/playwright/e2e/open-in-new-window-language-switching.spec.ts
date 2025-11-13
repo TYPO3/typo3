@@ -5,7 +5,7 @@ test('Switch between languages in "Open in new window"', async ({
   backend,
 }) => {
   await backend.gotoModule('web_layout');
-  await backend.pageTree.open('styleguide TCA demo');
+  await backend.pageTree.open('styleguide TCA demo', 'staticdata');
 
   const standalonePage =
     await test.step('open standalone edit window', async () => {
@@ -37,9 +37,12 @@ test('Switch between languages in "Open in new window"', async ({
       standalonePage
         .locator('.t3-form-original-language')
         .filter({
-          has: standalonePage.locator('[data-identifier="flags-us"]'),
-          hasText: 'styleguide TCA demo'
-        }),
+          has: standalonePage.locator('[data-identifier="flags-us"]')
+        })
+        .filter({
+          hasText: /staticdata/
+        })
+        .first(),
       'Original english text must be shown'
     );
 
@@ -48,32 +51,32 @@ test('Switch between languages in "Open in new window"', async ({
       await expect(async () => {
         await languageButton.click();
         await standalonePage.getByRole('link', { name: 'Danish' }).click();
-        await expectOriginalEnglishText.toBeVisible({ timeout: 500 });
+        await expectOriginalEnglishText.toBeAttached({ timeout: 500 });
       }).toPass();
       await expect(languageButton).toContainText('styleguide demo language danish');
     });
 
     await test.step('make sure saving works on danish', async () => {
-      await standalonePage.getByLabel('Page Title').fill('dansk stilguide TCA demo');
+      await standalonePage.getByLabel('Page Title').fill('dansk staticdata');
       await standalonePage.getByRole('button', { name: 'Save' }).click();
       await expect(standalonePage.getByLabel('Record saved')).toBeVisible();
-      await expectOriginalEnglishText.toBeVisible();
+      await expectOriginalEnglishText.toBeAttached();
       await expect(languageButton).toContainText('styleguide demo language danish');
     });
 
     await test.step('switch to english', async () => {
       await languageButton.click();
       await standalonePage.getByRole('link', { name: 'English' }).click();
-      await expectOriginalEnglishText.not.toBeVisible();
+      await expectOriginalEnglishText.not.toBeAttached();
       await expect(languageButton).toContainText('English');
     });
 
     await test.step('switch to danish', async () => {
       await languageButton.click();
       await standalonePage.getByRole('link', { name: 'Danish' }).click();
-      await expectOriginalEnglishText.toBeVisible();
+      await expectOriginalEnglishText.toBeAttached();
       await expect(languageButton).toContainText('styleguide demo language danish');
-      await expect(standalonePage.getByLabel('Page Title')).toHaveValue('dansk stilguide TCA demo');
+      await expect(standalonePage.getByLabel('Page Title')).toHaveValue('dansk staticdata');
     });
   } finally {
     try {
