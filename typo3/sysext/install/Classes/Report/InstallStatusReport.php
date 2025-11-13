@@ -189,7 +189,7 @@ final class InstallStatusReport implements StatusProviderInterface
             // At least one incomplete wizard was found
             $value = $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateIncomplete');
             $severity = ContextualFeedbackSeverity::WARNING;
-            $url = (string)$uriBuilder->buildUriFromRoute('tools_toolsupgrade');
+            $url = (string)$uriBuilder->buildUriFromRoute('system_upgrade');
             $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.install_update'), '<a href="' . htmlspecialchars($url) . '">', '</a>');
         }
 

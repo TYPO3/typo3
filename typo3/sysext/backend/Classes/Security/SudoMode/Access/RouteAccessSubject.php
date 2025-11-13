@@ -26,7 +26,7 @@ namespace TYPO3\CMS\Backend\Security\SudoMode\Access;
 class RouteAccessSubject implements AccessSubjectInterface
 {
     /**
-     * The route subject, e.g. `/module/tools/maintenance`
+     * The route subject, e.g. `/module/system/maintenance`
      */
     protected string $subject;
     /**

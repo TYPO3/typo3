@@ -10,7 +10,7 @@
 				<source>Here you can check the integrity of the database tables configured by the $TCA. For instance all records must belong to a page record. You can also get a view of the total pagetree including deleted pages. Finally you've got access to a global database search facility.</source>
 			</trans-unit>
 			<trans-unit id="title">
-				<source>DB Check</source>
+				<source>Database</source>
 			</trans-unit>
 		</body>
 	</file>

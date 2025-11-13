@@ -431,7 +431,7 @@ return [
         'access' => 'systemMaintainer',
         'path' => '/security/csp/control',
         'target' => \TYPO3\CMS\Backend\Security\ContentSecurityPolicy\CspAjaxController::class . '::handleRequest',
-        'inheritAccessFromModule' => 'tools_csp',
+        'inheritAccessFromModule' => 'content_security_policy',
     ],
 
     'sudo_mode_control' => [

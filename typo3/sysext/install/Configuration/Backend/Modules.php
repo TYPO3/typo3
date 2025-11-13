@@ -7,11 +7,12 @@ use TYPO3\CMS\Install\Controller\BackendModuleController;
  * Definitions for modules provided by EXT:insatall
  */
 return [
-    'tools_toolsmaintenance' => [
+    'system_maintenance' => [
         'parent' => 'system',
         'access' => 'systemMaintainer',
         'position' => ['before' => '*'],
         'path' => '/module/system/maintenance',
+        'aliases' => ['tools_toolsmaintenance'],
         'iconIdentifier' => 'module-install-maintenance',
         'labels' => 'install.modules.maintenance',
         'routes' => [
@@ -26,11 +27,12 @@ return [
             ],
         ],
     ],
-    'tools_toolssettings' => [
+    'system_settings' => [
         'parent' => 'system',
         'access' => 'systemMaintainer',
         'position' => ['before' => '*'],
         'path' => '/module/system/settings',
+        'aliases' => ['tools_toolssettings'],
         'iconIdentifier' => 'module-install-settings',
         'labels' => 'install.modules.settings',
         'routes' => [
@@ -45,11 +47,12 @@ return [
             ],
         ],
     ],
-    'tools_toolsupgrade' => [
+    'system_upgrade' => [
         'parent' => 'system',
         'access' => 'systemMaintainer',
         'position' => ['before' => '*'],
         'path' => '/module/system/upgrade',
+        'aliases' => ['tools_toolsupgrade'],
         'iconIdentifier' => 'module-install-upgrade',
         'labels' => 'install.modules.upgrade',
         'routes' => [
@@ -64,11 +67,12 @@ return [
             ],
         ],
     ],
-    'tools_toolsenvironment' => [
+    'system_environment' => [
         'parent' => 'system',
         'access' => 'systemMaintainer',
         'position' => ['before' => '*'],
         'path' => '/module/system/environment',
+        'aliases' => ['tools_toolsenvironment'],
         'iconIdentifier' => 'module-install-environment',
         'labels' => 'install.modules.environment',
         'routes' => [

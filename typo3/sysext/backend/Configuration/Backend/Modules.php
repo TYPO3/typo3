@@ -170,11 +170,12 @@ return [
             ],
         ],
     ],
-    'tools_csp' => [
+    'content_security_policy' => [
         'parent' => 'system',
         'access' => 'systemMaintainer',
         'iconIdentifier' => 'module-security',
         'labels' => 'backend.modules.content_security_policy',
+        'aliases' => ['tools_csp'],
         'routes' => [
             '_default' => [
                 'target' => CspModuleController::class . '::mainAction',
