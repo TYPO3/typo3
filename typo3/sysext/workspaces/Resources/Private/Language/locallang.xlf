@@ -51,7 +51,7 @@
 				<source>Please select a page in the page tree to review and publish changes.</source>
 			</trans-unit>
 			<trans-unit id="admin.noWorkspaceSetup.title" xml:space="preserve">
-				<source>No workspace set up!</source>
+				<source>No workspace set up</source>
 			</trans-unit>
 			<trans-unit id="admin.noWorkspaceSetup.message" xml:space="preserve">
 				<source>There are currently no workspace records configured in the database. To use the workspace
@@ -278,7 +278,7 @@
 				<source>Stage not found</source>
 			</trans-unit>
 			<trans-unit id="info.newpage">
-				<source>New Page!</source>
+				<source>New Page</source>
 			</trans-unit>
 			<trans-unit id="info.newpage.detail">
 				<source>The previewed page has been created in a workspace and has no live counterpart.</source>
