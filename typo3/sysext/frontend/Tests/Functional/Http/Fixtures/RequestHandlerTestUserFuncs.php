@@ -56,6 +56,6 @@ final readonly class RequestHandlerTestUserFuncs
     {
         return GeneralUtility::makeInstance(LanguageServiceFactory::class)
             ->createFromSiteLanguage($request->getAttribute('language'))
-            ->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:mod_tx_cms_webinfo_page');
+            ->sL('LLL:EXT:frontend/Resources/Private/Language/db/tt_content.xlf:imageborder');
     }
 }

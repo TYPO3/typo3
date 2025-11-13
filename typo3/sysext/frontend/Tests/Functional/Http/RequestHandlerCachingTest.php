@@ -151,7 +151,7 @@ alert(yes);', $body);
 
         $response = $this->executeFrontendSubRequest((new InternalRequest('https://website.local/en/'))->withPageId(88));
         $body = (string)$response->getBody();
-        self::assertStringContainsString('Pagetree Overview', $body);
+        self::assertStringContainsString('Border around each element', $body);
     }
 
     #[Test]

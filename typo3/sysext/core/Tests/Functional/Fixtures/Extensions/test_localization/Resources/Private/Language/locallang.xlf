@@ -12,6 +12,18 @@
 			<trans-unit id="label3">
 				<source>This is label #3</source>
 			</trans-unit>
+			<trans-unit id="label4.x-unused">
+				<source>This is label #4 is deprecated</source>
+			</trans-unit>
+			<trans-unit id="label5" x-unused-since="4.5">
+				<source>This is label #5 is deprecated in english.</source>
+			</trans-unit>
+			<trans-unit id="label6">
+				<source>This is label #6 is deprecated in french.</source>
+			</trans-unit>
+			<trans-unit id="deprecated_label" x-unused-since="4.5">
+				<source>This is label is deprecated</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

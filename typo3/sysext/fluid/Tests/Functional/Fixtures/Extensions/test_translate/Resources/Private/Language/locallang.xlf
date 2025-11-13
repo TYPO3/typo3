@@ -32,6 +32,9 @@
 			<trans-unit id="not.localized.to.en">
 				<source>EN label</source>
 			</trans-unit>
+			<trans-unit id="my_deprecated_label" x-unused-since="4.5">
+				<source>My label is deprecated!</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

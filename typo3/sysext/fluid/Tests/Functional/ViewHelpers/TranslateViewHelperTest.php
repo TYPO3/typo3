@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -230,6 +231,29 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         self::assertSame($expected, (new TemplateView($context))->render());
     }
 
+    public static function deprecatedLabelDataProvider(): array
+    {
+        return [
+            'Deprecated label' => [
+                'template' => '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:my_deprecated_label" />',
+                'expected' => 'My label is deprecated!',
+            ],
+        ];
+    }
+
+    #[IgnoreDeprecations]
+    #[DataProvider('deprecatedLabelDataProvider')]
+    #[Test]
+    public function renderingDeprecatedLabelsIsDeprecatedInNonExtbaseContext(string $template, string $expected): void
+    {
+        $this->expectUserDeprecationMessageMatches('/.*/');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($template);
+        self::assertSame($expected, (new TemplateView($context))->render());
+    }
+
     public static function fallbackChainInNonExtbaseContextDataProvider(): array
     {
         return [
@@ -426,6 +450,33 @@ final class TranslateViewHelperTest extends FunctionalTestCase
     #[DataProvider('renderReturnsStringInExtbaseContextDataProvider')]
     #[Test]
     public function renderReturnsStringInExtbaseContext(string $template, string $expected): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+        $GLOBALS['BE_USER']->user['lang'] = 'de-AT';
+        $extbaseRequestParameters = new ExtbaseRequestParameters();
+        $extbaseRequestParameters->setControllerExtensionName('test_translate');
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $extbaseRequest = (new Request($serverRequest));
+        $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
+        $context->getTemplatePaths()->setTemplateSource($template);
+        self::assertSame($expected, (new TemplateView($context))->render());
+    }
+
+    public static function renderDeprecatedLabelThrowsDeprecationProvider(): array
+    {
+        return [
+            'key given for not existing label, fallback to child' => [
+                'template' => '<f:translate key="my_deprecated_label" />',
+                'expected' => 'My label is deprecated!',
+            ],
+        ];
+    }
+
+    #[IgnoreDeprecations]
+    #[DataProvider('renderDeprecatedLabelThrowsDeprecationProvider')]
+    #[Test]
+    public function renderDeprecatedLabelThrowsDeprecationInExtbase(string $template, string $expected): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);

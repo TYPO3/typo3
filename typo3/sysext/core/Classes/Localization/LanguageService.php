@@ -222,11 +222,28 @@ class LanguageService
         $cacheIdentifier = 'labels_' . (string)$this->locale . '_' . md5($domain . ':' . $id);
         $result = $this->runtimeCache->get($cacheIdentifier);
         if (!is_string($result) && !is_null($result)) {
+            // Only log deprecations when the label is written to the cache for the first time
+            if (str_ends_with($id, '.x-unused')) {
+                trigger_error(
+                    'Label reference ' . $id . ' in domain ' . $domain . ' is deprecated.',
+                    E_USER_DEPRECATED
+                );
+            }
             $labelsFromDomain = $this->readLLfile($domain);
             if (is_array($this->overrideLabels[$domain] ?? null)) {
                 $labelsFromDomain = array_replace_recursive($labelsFromDomain, $this->overrideLabels[$domain]);
             }
             $result = $this->getLLL($id, $labelsFromDomain, true);
+            if ($result === null) {
+                $result = $this->getLLL($id . '.x-unused', $labelsFromDomain, true);
+                if ($result !== null) {
+                    // Only log deprecations when the label is written to the cache for the first time
+                    trigger_error(
+                        'Label reference ' . $id . ' in domain ' . $domain . ' is deprecated.',
+                        E_USER_DEPRECATED
+                    );
+                }
+            }
             // Check if a value was explicitly set to "" via TypoScript, if so, we need to ensure that this is "" and not null
             if (isset($this->overrideLabels[$domain][$id]) && $this->overrideLabels[$domain][$id] === '') {
                 $result = '';

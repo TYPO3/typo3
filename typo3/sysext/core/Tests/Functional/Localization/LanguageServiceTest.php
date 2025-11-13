@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Localization;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -27,6 +28,7 @@ final class LanguageServiceTest extends FunctionalTestCase
 {
     // Constants to access the various language files
     private const LANGUAGE_FILE = 'EXT:test_localization/Resources/Private/Language/locallang.xlf';
+    private const LANGUAGE_FILE_XLIFF_2 = 'EXT:test_localization/Resources/Private/Language/messages_2.xlf';
     private const LANGUAGE_FILE_OVERRIDE = 'EXT:test_localization/Resources/Private/Language/locallang_override.xlf';
     private const LANGUAGE_FILE_OVERRIDE_DE = 'EXT:test_localization/Resources/Private/Language/de.locallang_override.xlf';
     private const LANGUAGE_FILE_OVERRIDE_FR = 'EXT:test_localization/Resources/Private/Language/fr.locallang_override.xlf';
@@ -284,5 +286,105 @@ final class LanguageServiceTest extends FunctionalTestCase
                 ],
             ],
         ];
+    }
+
+    public static function deprecatedLabelReferenceProvider(): \Generator
+    {
+        yield 'DeprecatedLabelXliff1' => [
+            'expected' => 'This is label is deprecated',
+            'longLabel' => self::LANGUAGE_FILE . ':deprecated_label',
+            'label' => 'deprecated_label',
+            'domain' => 'test_localization.messages',
+            'locale' => 'default',
+        ];
+        yield 'DeprecatedLabelIsDeprecatedXliff1' => [
+            'expected' => 'This is label #4 is deprecated',
+            'longLabel' => self::LANGUAGE_FILE . ':label4.x-unused',
+            'label' => 'label4.x-unused',
+            'domain' => 'test_localization.messages',
+            'locale' => 'default',
+        ];
+        yield 'DeprecatedLabelFrenchFallbackXliff1' => [
+            'expected' => 'This is label is deprecated',
+            'longLabel' => self::LANGUAGE_FILE . ':deprecated_label',
+            'label' => 'deprecated_label',
+            'domain' => 'test_localization.messages',
+            'locale' => 'fr',
+        ];
+        yield 'DeprecatedLabelXliff2' => [
+            'expected' => 'Expiration Date',
+            'longLabel' => self::LANGUAGE_FILE_XLIFF_2 . ':expiration_date',
+            'label' => 'expiration_date',
+            'domain' => 'test_localization.messages_2',
+            'locale' => 'default',
+        ];
+        yield 'DeprecatedLabelIsDeprecatedXliff2' => [
+            'expected' => 'This is label #4 is deprecated',
+            'longLabel' => self::LANGUAGE_FILE_XLIFF_2 . ':label4.x-unused',
+            'label' => 'label4.x-unused',
+            'domain' => 'test_localization.messages_2',
+            'locale' => 'default',
+        ];
+    }
+
+    #[IgnoreDeprecations]
+    #[DataProvider('deprecatedLabelReferenceProvider')]
+    #[Test]
+    public function referencingDeprecatedLabelViaSLIsDeprecatedTest(string $expected, string $longLabel, string $label, string $domain, string $locale): void
+    {
+        $this->expectUserDeprecationMessageMatches('/.*/');
+        $subject = $this->get(LanguageServiceFactory::class)->create($locale);
+        self::assertEquals($expected, $subject->sL($longLabel));
+    }
+
+    #[DataProvider('deprecatedLabelReferenceProvider')]
+    #[IgnoreDeprecations]
+    #[Test]
+    public function referencingDeprecatedLabelViaIsDeprecatedTest(string $expected, string $longLabel, string $label, string $domain, string $locale): void
+    {
+        $this->expectUserDeprecationMessageMatches('/.*/');
+        $subject = $this->get(LanguageServiceFactory::class)->create($locale);
+        self::assertEquals($expected, $subject->translate($label, $domain));
+    }
+
+    public static function nonDeprecatedLabelReferenceProvider(): \Generator
+    {
+        yield 'DeprecatedLabelInEnglishIsNotDeprecatedInFrenchXliff1' => [
+            'expected' => 'Cette étiquette n° 5 est obsolète en anglais.',
+            'longLabel' => self::LANGUAGE_FILE . ':label5',
+            'label' => 'label5',
+            'domain' => 'test_localization.messages',
+            'locale' => 'fr',
+        ];
+        yield 'DeprecatedLabelInEnglishIsNotDeprecatedInFrenchXliff2' => [
+            'expected' => 'Ceci est l’étiquette n°5 (obsolète en anglais)',
+            'longLabel' => self::LANGUAGE_FILE_XLIFF_2 . ':label5',
+            'label' => 'label5',
+            'domain' => 'test_localization.messages_2',
+            'locale' => 'fr',
+        ];
+        yield 'DeprecatedLabelInFrenchFallsBackToEnglishXliff2' => [
+            'expected' => 'This is label #1',
+            'longLabel' => self::LANGUAGE_FILE_XLIFF_2 . ':label1',
+            'label' => 'label1',
+            'domain' => 'test_localization.messages_2',
+            'locale' => 'en',
+        ];
+    }
+
+    #[DataProvider('nonDeprecatedLabelReferenceProvider')]
+    #[Test]
+    public function referencingNonDeprecatedLabelViaSLIsNotDeprecatedTest(string $expected, string $longLabel, string $label, string $domain, string $locale): void
+    {
+        $subject = $this->get(LanguageServiceFactory::class)->create($locale);
+        self::assertEquals($expected, $subject->sL($longLabel));
+    }
+
+    #[DataProvider('nonDeprecatedLabelReferenceProvider')]
+    #[Test]
+    public function referencingNonDeprecatedLabelViaIsNotDeprecatedTest(string $expected, string $longLabel, string $label, string $domain, string $locale): void
+    {
+        $subject = $this->get(LanguageServiceFactory::class)->create($locale);
+        self::assertEquals($expected, $subject->translate($label, $domain));
     }
 }

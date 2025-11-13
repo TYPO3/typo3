@@ -131,18 +131,20 @@ final readonly class XliffLoader implements LoaderInterface
 
         if ($bodyOfFileTag instanceof \SimpleXMLElement) {
             foreach ($bodyOfFileTag->children() as $translationElement) {
+                $deprecated = false;
                 /** @var \SimpleXMLElement $translationElement */
                 if ($translationElement->getName() === 'trans-unit' && !isset($translationElement['restype'])) {
                     // Regular translation unit
                     $id = (string)$translationElement['id'];
+                    $deprecated = isset($translationElement['x-unused-since']);
                     if ($locale === 'en') {
                         // Default language from XLIFF template (no target element)
                         $translation = (string)($translationElement->target) ?: (string)$translationElement->source;
-                        $catalogue->set($id, $translation, $domain);
+                        $catalogue->set($id . ($deprecated ? '.x-unused' : ''), $translation, $domain);
                     } else {
                         $approved = (string)($translationElement['approved'] ?? 'yes');
                         if (!$requireApprovedLocalizations || $approved === 'yes') {
-                            $catalogue->set($id, (string)$translationElement->target, $domain);
+                            $catalogue->set($id . ($deprecated ? '.x-unused' : ''), (string)$translationElement->target, $domain);
                         }
                     }
                 } elseif ($translationElement->getName() === 'group' && isset($translationElement['restype']) && (string)$translationElement['restype'] === 'x-gettext-plurals') {
@@ -151,6 +153,7 @@ final readonly class XliffLoader implements LoaderInterface
                     foreach ($translationElement->children() as $translationPluralForm) {
                         /** @var \SimpleXMLElement $translationPluralForm */
                         if ($translationPluralForm->getName() === 'trans-unit') {
+                            $deprecated = isset($translationPluralForm['x-unused-since']);
                             // Extract plural form index from ID like "1[0]", "1[1]"
                             $formIndex = substr((string)$translationPluralForm['id'], strpos((string)$translationPluralForm['id'], '[') + 1, -1);
                             if ($locale === 'en') {
@@ -173,7 +176,7 @@ final readonly class XliffLoader implements LoaderInterface
                             $id = substr($id, 0, (int)strpos($id, '['));
                         }
                         // Handle plurals - Symfony uses ICU format
-                        $catalogue->set($id, $this->convertToIcuPlural(array_values($parsedTranslationElement)), $domain);
+                        $catalogue->set($id . ($deprecated ? '.x-unused' : ''), $this->convertToIcuPlural(array_values($parsedTranslationElement)), $domain);
                     }
                 }
             }
@@ -225,10 +228,12 @@ final readonly class XliffLoader implements LoaderInterface
                     $source = $segment->xpath('.//xliff:source');
                     $target = $segment->xpath('.//xliff:target');
 
+                    $deprecated = ((string)($segment['subState'] ?? '')) === 'deprecated';
+
                     if ($locale === 'en') {
                         // Default language from XLIFF template
                         $translation = ($target !== false && isset($target[0])) ? (string)$target[0] : (string)$source[0];
-                        $catalogue->set($unitId, $translation, $domain);
+                        $catalogue->set($unitId . ($deprecated ? '.x-unused' : ''), $translation, $domain);
                     } else {
                         // Check approval state (XLIFF 2.0 uses 'state' attribute on segment)
                         $approved = 'yes';
@@ -243,7 +248,7 @@ final readonly class XliffLoader implements LoaderInterface
 
                         if (!$requireApprovedLocalizations || $approved === 'yes') {
                             if ($target !== false && isset($target[0])) {
-                                $catalogue->set($unitId, (string)$target[0], $domain);
+                                $catalogue->set($unitId . ($deprecated ? '.x-unused' : ''), (string)$target[0], $domain);
                             }
                         }
                     }
@@ -251,12 +256,14 @@ final readonly class XliffLoader implements LoaderInterface
                     // Plural forms (multiple segments)
                     $parsedTranslationElement = [];
                     $formIndex = 0;
+                    $deprecated = false;
 
                     foreach ($segments as $segment) {
                         $segment->registerXPathNamespace('xliff', $ns);
 
                         $source = $segment->xpath('.//xliff:source');
                         $target = $segment->xpath('.//xliff:target');
+                        $deprecated = $deprecated || ((string)($segment['subState'] ?? '')) === 'deprecated';
 
                         if ($locale === 'en') {
                             $translation = ($target !== false && isset($target[0])) ? (string)$target[0] : (string)$source[0];
@@ -280,7 +287,7 @@ final readonly class XliffLoader implements LoaderInterface
                     }
 
                     if ($parsedTranslationElement !== []) {
-                        $catalogue->set($unitId, $this->convertToIcuPlural(array_values($parsedTranslationElement)), $domain);
+                        $catalogue->set($unitId . ($deprecated ? '.x-unused' : ''), $this->convertToIcuPlural(array_values($parsedTranslationElement)), $domain);
                     }
                 }
             }
