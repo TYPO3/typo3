@@ -81,7 +81,7 @@ You must prefix them with `mod.linkvalidator`, for example
     ..  code-block:: typoscript
         :caption: config/sites/my-site/page.tsconfig
 
-        mod.linkvalidator.linktypesConfig.searchFields {
+        mod.linkvalidator.searchFields {
             # Usually you want to append fields:
             tt_content := addToList(mysitepackage_carousel_morelink)
 
