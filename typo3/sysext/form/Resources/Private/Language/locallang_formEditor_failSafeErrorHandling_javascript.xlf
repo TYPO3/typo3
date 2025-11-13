@@ -4,7 +4,7 @@
         <header/>
         <body>
             <trans-unit id="formEditor.error.headline" xml:space="preserve">
-                <source>Oops! Something went wrong.</source>
+                <source>The form editor has stopped working.</source>
             </trans-unit>
             <trans-unit id="formEditor.error.message" xml:space="preserve">
                 <source>Please contact your administrator.</source>
