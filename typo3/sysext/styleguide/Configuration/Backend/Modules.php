@@ -6,7 +6,7 @@ use TYPO3\CMS\Styleguide\Controller\StylesController;
 
 return [
     'styleguide' => [
-        'parent' => 'tools',
+        'parent' => 'admin',
         'position' => ['after' => 'system_reports'],
         'access' => 'admin',
         'workspaces' => 'live',

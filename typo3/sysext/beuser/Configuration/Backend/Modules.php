@@ -8,7 +8,7 @@ use TYPO3\CMS\Beuser\Controller\PermissionController;
  */
 return [
     'permissions_pages' => [
-        'parent' => 'tools',
+        'parent' => 'admin',
         'position' => ['after' => 'scheduler'],
         'access' => 'admin',
         'path' => '/module/users/permissions',
@@ -23,7 +23,7 @@ return [
         ],
     ],
     'backend_user_management' => [
-        'parent' => 'tools',
+        'parent' => 'admin',
         'position' => ['before' => '*'],
         'access' => 'admin',
         'path' => '/module/users/management',

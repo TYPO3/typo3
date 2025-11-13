@@ -8,7 +8,7 @@ use TYPO3\CMS\Reports\Controller\StatusReportController;
  */
 return [
     'system_reports' => [
-        'parent' => 'tools',
+        'parent' => 'admin',
         'position' => ['after' => 'system_log'],
         'access' => 'admin',
         'path' => '/module/system/reports',

@@ -29,16 +29,17 @@ return [
             'renderInModuleMenu' => false,
         ],
     ],
-    'tools' => [
-        'labels' => 'core.modules.tools',
+    'admin' => [
+        'labels' => 'core.modules.admin',
         'iconIdentifier' => 'modulegroup-tools',
+        'aliases' => ['tools'],
     ],
     'system' => [
         'labels' => 'core.modules.system',
         'iconIdentifier' => 'modulegroup-system',
     ],
     'integrations' => [
-        'parent' => 'tools',
+        'parent' => 'admin',
         'position' => ['after' => 'permissions_pages'],
         'access' => 'admin',
         'workspaces' => 'live',

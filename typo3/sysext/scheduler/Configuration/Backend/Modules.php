@@ -7,7 +7,7 @@ use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
  */
 return [
     'scheduler' => [
-        'parent' => 'tools',
+        'parent' => 'admin',
         'position' => ['after' => 'backend_user_management', 'before' => 'permissions_pages'],
         'access' => 'admin',
         'path' => '/module/scheduler',

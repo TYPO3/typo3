@@ -39,8 +39,11 @@ Module Renamings
 
 The following modules have been renamed:
 
+Top level modules
+-----------------
+
 Web => Content
---------------
+~~~~~~~~~~~~~~
 
 The top-level :guilabel:`Web` module has been renamed to :guilabel:`Content`.
 
@@ -62,7 +65,7 @@ nobody outside the TYPO3 ecosystem understood what "Web" meant in this context.
 
 
 File => Media
--------------
+~~~~~~~~~~~~~
 
 The top-level :guilabel:`File` module has been renamed to :guilabel:`Media`.
 
@@ -83,8 +86,49 @@ to digital content assets.
         ],
     ];
 
+Admin (tools) <=> System
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+The top-level module formerly known as :guilabel:`Admin tools` is now called
+:guilabel:`Admin`.
+
+The purpose of this top-level module has changed. It now contains those modules
+useful to a backend admin, such as user and permission management, the Scheduler,
+Integrations, etc.
+
+Most modules formerly found in :guilabel:`Admin tools` are now located in
+:guilabel:`System`.
+
+**Rationale:**
+The top-level module :guilabel:`Admin` now contains modules that
+are used by backend administrators in their daily work. Modules that require
+system maintainer permissions are found in the module named :guilabel:`System`.
+
+**Migration:**
+Modules generally accessible to backend administrators should be
+moved to the top-level module with the identifier `admin`.
+Modules that require
+system maintainer permissions or are mainly useful to system maintainers and
+DevOps should be moved to `system`.
+
+..  code-block:: php
+
+    return [
+        'my_administration_module' => [
+            'parent' => 'admin',  // Previously: 'system'
+            'access' => 'admin',
+        ],
+        'my_maintainer_module' => [
+            'parent' => 'system',  // Previously: 'tools'
+            'access' => 'systemMaintainer',
+        ],
+    ];
+
+Second level modules
+--------------------
+
 View => Preview
----------------
+~~~~~~~~~~~~~~~
 
 The second-level :guilabel:`View` module has been renamed to :guilabel:`Preview`
 to better match its scope. It has also been moved one position down after :guilabel:`List`,

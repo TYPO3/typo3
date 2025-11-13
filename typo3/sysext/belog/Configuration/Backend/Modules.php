@@ -7,7 +7,7 @@ use TYPO3\CMS\Belog\Controller\BackendLogController;
  */
 return [
     'system_log' => [
-        'parent' => 'tools',
+        'parent' => 'admin',
         'position' => ['after' => 'integrations'],
         'access' => 'user',
         'iconIdentifier' => 'module-belog',
