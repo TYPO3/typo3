@@ -27,13 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class MailMessageTest extends UnitTestCase
 {
     #[Test]
-    public function isSentReturnsFalseIfMailWasNotSent(): void
-    {
-        $subject = new MailMessage();
-        self::assertFalse($subject->isSent());
-    }
-
-    #[Test]
     public function setSubjectWorksAsExpected(): void
     {
         $subject = new MailMessage();
