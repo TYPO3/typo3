@@ -302,7 +302,7 @@ class EditDocumentController
     /**
      * Pointer to the first element in $elementsData
      *
-     * @var array
+     * @var array|null
      */
     protected $firstEl;
 
@@ -948,7 +948,9 @@ class EditDocumentController
         // Access check...
         // The page will show only if there is a valid page and if this page may be viewed by the user
         $this->pageinfo = BackendUtility::readPageAccess($this->viewId, $this->perms_clause) ?: [];
-        $this->setIsSavedRecord();
+        $this->isSavedRecord = is_array($this->firstEl)
+            && $this->firstEl['cmd'] !== 'new'
+            && MathUtility::canBeInterpretedAsInteger($this->firstEl['uid']);
         // Setting up the buttons, markers for doc header and navigation component state
         $this->createBreadcrumb($view);
         $this->getButtons($view, $request);
@@ -1255,17 +1257,6 @@ class EditDocumentController
         $this->registerInfoButtonToButtonBar($view, ButtonBar::BUTTON_POSITION_RIGHT, 2);
         $this->registerOpenInNewWindowButtonToButtonBar($view, ButtonBar::BUTTON_POSITION_RIGHT, 3, $request);
         $this->registerShortcutButtonToButtonBar($view, ButtonBar::BUTTON_POSITION_RIGHT, 4, $request);
-    }
-
-    /**
-     * Set the boolean to check if the record is saved
-     */
-    protected function setIsSavedRecord(): void
-    {
-        $this->isSavedRecord = (
-            $this->firstEl['cmd'] !== 'new'
-            && MathUtility::canBeInterpretedAsInteger($this->firstEl['uid'])
-        );
     }
 
     /**
