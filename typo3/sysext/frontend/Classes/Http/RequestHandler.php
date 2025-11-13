@@ -86,37 +86,12 @@ class RequestHandler implements RequestHandlerInterface
     ) {}
 
     /**
-     * Sets the global GET and POST to the values, so if people access $_GET and $_POST
-     * Within hooks starting NOW (e.g. cObject), they get the "enriched" data from query params.
-     *
-     * This needs to be run after the request object has been enriched with modified GET/POST variables.
-     *
-     * @param ServerRequestInterface $request
-     * @internal this safety net will be removed in TYPO3 v10.0.
-     */
-    protected function resetGlobalsToCurrentRequest(ServerRequestInterface $request)
-    {
-        if ($request->getQueryParams() !== $_GET) {
-            $queryParams = $request->getQueryParams();
-            $_GET = $queryParams;
-            $GLOBALS['HTTP_GET_VARS'] = $_GET;
-        }
-        if ($request->getMethod() === 'POST') {
-            $parsedBody = $request->getParsedBody();
-            if (is_array($parsedBody) && $parsedBody !== $_POST) {
-                $_POST = $parsedBody;
-                $GLOBALS['HTTP_POST_VARS'] = $_POST;
-            }
-        }
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-    }
-
-    /**
      * Handles a frontend request, after finishing running middlewares
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $this->resetGlobalsToCurrentRequest($request);
+        // b/w compat
+        $GLOBALS['TYPO3_REQUEST'] = $request;
 
         // Forward `ConsumableNonce` containing a nonce to `PageRenderer`
         $nonce = $request->getAttribute('nonce');

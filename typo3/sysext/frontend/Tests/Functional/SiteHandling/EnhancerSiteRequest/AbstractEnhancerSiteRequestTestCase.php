@@ -99,7 +99,6 @@ abstract class AbstractEnhancerSiteRequestTestCase extends AbstractTestCase
         $expectation['pageId'] = $testSet->getTargetPageId();
         $expectation['languageId'] = $expectedLanguageId;
         $expectation['requestQueryParams'] = $allParameters;
-        $expectation['_GET'] = $allParameters;
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($targetUri),
@@ -136,7 +135,6 @@ abstract class AbstractEnhancerSiteRequestTestCase extends AbstractTestCase
         $expectation['pageType'] = '0';
         $expectation['languageId'] = $expectedLanguageId;
         $expectation['requestQueryParams'] = $allParameters;
-        $expectation['_GET'] = $allParameters;
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($targetUri),

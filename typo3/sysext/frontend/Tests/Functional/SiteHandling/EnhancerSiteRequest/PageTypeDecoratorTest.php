@@ -116,7 +116,6 @@ final class PageTypeDecoratorTest extends AbstractEnhancerSiteRequestTestCase
         $expectation['pageId'] = $testSet->getTargetPageId();
         $expectation['languageId'] = $expectedLanguageId;
         $expectation['requestQueryParams'] = $allParameters;
-        $expectation['_GET'] = $allParameters;
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($targetUri),

@@ -191,7 +191,9 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface, LoggerAwareI
         if ($type) {
             $parameter .= ',' . $type;
         }
-        return GeneralUtility::makeInstance(ContentObjectRenderer::class)->createUrl([
+        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $contentObjectRenderer->setRequest($request);
+        return $contentObjectRenderer->createUrl([
             'parameter' => $parameter,
             'addQueryString' => 'untrusted',
             'addQueryString.' => ['exclude' => 'id,type'],

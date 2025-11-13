@@ -78,7 +78,6 @@ class LinkHandlingController
             'dynamicArguments' => $pageArguments->getDynamicArguments(),
             'queryArguments' => $pageArguments->getQueryArguments(),
             'requestQueryParams' => $request->getQueryParams(),
-            '_GET' => $_GET,
         ], $flags);
     }
 }

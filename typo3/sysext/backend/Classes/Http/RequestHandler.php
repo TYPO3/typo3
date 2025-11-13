@@ -58,32 +58,6 @@ class RequestHandler implements RequestHandlerInterface
     }
 
     /**
-     * Sets the global GET and POST to the values, so if people access $_GET and $_POST
-     * Within hooks starting NOW (e.g. cObject), they get the "enriched" data from query params.
-     *
-     * This needs to be run after the request object has been enriched with modified GET/POST variables.
-     *
-     * @param ServerRequestInterface $request
-     * @internal this safety net will be removed in TYPO3 v11.0.
-     */
-    protected function resetGlobalsToCurrentRequest(ServerRequestInterface $request)
-    {
-        if ($request->getQueryParams() !== $_GET) {
-            $queryParams = $request->getQueryParams();
-            $_GET = $queryParams;
-            $GLOBALS['HTTP_GET_VARS'] = $_GET;
-        }
-        if ($request->getMethod() === 'POST') {
-            $parsedBody = $request->getParsedBody();
-            if (is_array($parsedBody) && $parsedBody !== $_POST) {
-                $_POST = $parsedBody;
-                $GLOBALS['HTTP_POST_VARS'] = $_POST;
-            }
-        }
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-    }
-
-    /**
      * Handles a backend request, after finishing running middlewares
      * Dispatch the request to the appropriate controller through the
      * Backend Dispatcher which resolves the routing
@@ -96,9 +70,10 @@ class RequestHandler implements RequestHandlerInterface
             PublicUrlPrefixer::class,
             'prefixWithSitePath'
         );
-        // safety net to have the fully-added request object globally available as long as
-        // there are Core classes that need the Request object but do not get it handed in
-        $this->resetGlobalsToCurrentRequest($request);
+
+        // b/w compat
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+
         try {
             // Check if the router has the available route and dispatch.
             return $this->dispatcher->dispatch($request);

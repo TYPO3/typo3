@@ -260,9 +260,6 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
 
             $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
 
-            // b/w compat
-            $GLOBALS['TYPO3_REQUEST'] = $request;
-
             return $handler->handle($request);
         } finally {
             // Whatever happens in a middleware below, this finally is called, even when exceptions
