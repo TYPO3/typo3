@@ -23,7 +23,7 @@ services:
 
   TYPO3\CMS\Backend\Command\DebugBackendModulesCommand:
     tags:
-      - { name: 'console.command', command: 'debug:backend:modules', description: 'Show a list of the backend module tree (only for development purpose)', schedulable: false }
+      - { name: 'console.command', command: 'debug:backend:modules', description: 'Debugging: Show a list of the backend module tree (only for development purpose)', schedulable: false }
 
   TYPO3\CMS\Backend\Command\DebugBackendRoutesCommand:
     tags:

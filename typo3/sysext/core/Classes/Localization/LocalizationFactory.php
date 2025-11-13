@@ -115,7 +115,7 @@ readonly class LocalizationFactory
      * @param string $fileReference Input is a file-reference (see \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName). That file is expected to be a supported locallang file format
      * @param string $languageKey Language key
      *
-     * @return array<string, array<int, array<string, string>>>
+     * @return array<string, string|array<int, array<string, string>>>
      */
     public function getParsedData(string $fileReference, string $languageKey): array
     {

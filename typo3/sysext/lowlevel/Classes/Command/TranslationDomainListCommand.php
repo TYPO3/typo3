@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Command;
+namespace TYPO3\CMS\Lowlevel\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Package\PackageManager;
  * This command scans all active packages (or all available packages with --all option)
  * for language resource files (XLF/XML) and displays the translation domain name alongside
  * the file location in EXT: syntax.
+ * @internal only for development purposes
  */
 class TranslationDomainListCommand extends Command
 {

@@ -174,7 +174,7 @@ compared to full file paths.
 CLI Command
 ===========
 
-The command :bash:`bin/typo3 language:domain:list` lists all available translation domains
+The development command :bash:`bin/typo3 language:domain:list` lists all available translation domains
 with their available translations and label counts:
 
 .. code-block:: bash
@@ -198,6 +198,10 @@ Output:
 
 The **Labels** column displays the number of translatable labels within
 the English source file.
+
+On top of this, the development command :bash:`bin/typo3 language:domain:search`
+can be used to search for specific label contents. Both commands are provided
+in the `EXT:lowlevel` extension.
 
 ..  _feature-93334-psr14:
 
