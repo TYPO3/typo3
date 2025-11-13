@@ -3217,6 +3217,12 @@ parameters:
 			path: ../../typo3/sysext/fluid/Classes/Command/SchemaCommand.php
 
 		-
+			message: '#^Method TYPO3Fluid\\Fluid\\View\\ViewInterface\:\:render\(\) invoked with 1 parameter, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../typo3/sysext/fluid/Classes/View/FluidViewAdapter.php
+
+		-
 			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
