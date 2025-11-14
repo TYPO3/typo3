@@ -1,0 +1,17 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  TYPO3Tests\TestRowUpdater\:
+    resource: '../Classes/*'
+
+  TYPO3Tests\TestRowUpdater\Upgrades\RowUpdater\ManualIdentifier:
+    tags:
+      - name: 'install.rowupdater'
+        identifier: 'manualRegisteredRowUpdaterWithCustomIdentifier'
+
+  TYPO3Tests\TestRowUpdater\Upgrades\RowUpdater\ManualNoIdentifier:
+    tags:
+      - name: 'install.rowupdater'

@@ -40,7 +40,6 @@ use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Service\UpgradeWizardsService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Upgrades\DatabaseRowsUpdateWizard;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Configuration\Exception;
 use TYPO3\CMS\Install\Database\PermissionsCheck;
@@ -714,10 +713,11 @@ class SetupDatabaseService
 
     public function markWizardsDone(ContainerInterface $container): void
     {
-        foreach ($container->get(UpgradeWizardsService::class)->getNonRepeatableUpgradeWizards() as $className) {
+        $upgradeWizardService = $container->get(UpgradeWizardsService::class);
+        foreach ($upgradeWizardService->getNonRepeatableUpgradeWizards() as $className) {
             $this->registry->set('installUpdate', $className, 1);
         }
-        $this->registry->set('installUpdateRows', 'rowUpdatersDone', GeneralUtility::makeInstance(DatabaseRowsUpdateWizard::class)->getAvailableRowUpdater());
+        $this->registry->set('installUpdateRows', 'rowUpdatersDone', $upgradeWizardService->getAllRowUpdaterIdentifiers());
     }
 
     /**

@@ -17,6 +17,7 @@ use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Attribute\AsFileRenderer;
 use TYPO3\CMS\Core\Attribute\AsMetaTagManager;
 use TYPO3\CMS\Core\Attribute\AsModuleAccessGate;
+use TYPO3\CMS\Core\Attribute\AsRowUpdater;
 use TYPO3\CMS\Core\Attribute\AsTextExtractor;
 use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Imaging\IconProviderInterface;
@@ -165,6 +166,13 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
                 'before' => implode(',', $attribute->before),
                 'after' => implode(',', $attribute->after),
             ]);
+        },
+    );
+
+    $containerBuilder->registerAttributeForAutoconfiguration(
+        AsRowUpdater::class,
+        static function (ChildDefinition $definition, AsRowUpdater $attribute): void {
+            $definition->addTag(AsRowUpdater::TAG_NAME, ['identifier' => $attribute->identifier ?: $definition->getClass()]);
         },
     );
 

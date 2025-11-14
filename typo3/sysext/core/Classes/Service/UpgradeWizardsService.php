@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Upgrades\ChattyInterface;
 use TYPO3\CMS\Core\Upgrades\ConfirmableInterface;
 use TYPO3\CMS\Core\Upgrades\RepeatableInterface;
-use TYPO3\CMS\Core\Upgrades\RowUpdater\RowUpdaterInterface;
+use TYPO3\CMS\Core\Upgrades\RowUpdater\RowUpdaterRegistry;
 use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 use TYPO3\CMS\Core\Upgrades\UpgradeWizardRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -44,6 +44,7 @@ final class UpgradeWizardsService
 
     public function __construct(
         private readonly UpgradeWizardRegistry $upgradeWizardRegistry,
+        private readonly RowUpdaterRegistry $rowUpdaterRegistry,
         private readonly Registry $registry,
     ) {
         $fileName = 'php://temp';
@@ -73,28 +74,29 @@ final class UpgradeWizardsService
     }
 
     /**
+     * @return string[] Identifiers of all registered row updaters
+     */
+    public function getAllRowUpdaterIdentifiers(): array
+    {
+        return $this->rowUpdaterRegistry->getRowUpdaterIdentifiers();
+    }
+
+    /**
      * @return array List of row updaters marked as done in registry
-     * @throws \RuntimeException
      */
     public function listOfRowUpdatersDone(): array
     {
-        $rowUpdatersDoneClassNames = $this->registry->get('installUpdateRows', 'rowUpdatersDone', []);
+        $rowUpdatersDoneIdentifiers = $this->registry->get('installUpdateRows', 'rowUpdatersDone', []);
         $rowUpdatersDone = [];
-        foreach ($rowUpdatersDoneClassNames as $rowUpdaterClassName) {
-            // Silently skip non-existing DatabaseRowsUpdateWizards
-            if (!class_exists($rowUpdaterClassName)) {
+        foreach ($rowUpdatersDoneIdentifiers as $identifier) {
+            // Silently skip row updaters which are not registered (anymore)
+            if (!$this->rowUpdaterRegistry->hasRowUpdater($identifier)) {
                 continue;
             }
-            $rowUpdater = GeneralUtility::makeInstance($rowUpdaterClassName);
-            if (!$rowUpdater instanceof RowUpdaterInterface) {
-                throw new \RuntimeException(
-                    'Row updater must implement RowUpdaterInterface',
-                    1484152906
-                );
-            }
+            $rowUpdater = $this->rowUpdaterRegistry->getRowUpdater($identifier);
             $rowUpdatersDone[] = [
-                'class' => $rowUpdaterClassName,
-                'identifier' => $rowUpdaterClassName,
+                'class' => $rowUpdater::class,
+                'identifier' => $identifier,
                 'title' => $rowUpdater->getTitle(),
             ];
         }
@@ -127,7 +129,7 @@ final class UpgradeWizardsService
                 if ($rowUpdater['identifier'] === $identifier) {
                     $aWizardHasBeenMarkedUndone = true;
                     foreach ($registryArray as $rowUpdaterMarkedAsDonePosition => $rowUpdaterMarkedAsDone) {
-                        if ($rowUpdaterMarkedAsDone === $rowUpdater['class']) {
+                        if ($rowUpdaterMarkedAsDone === $rowUpdater['identifier']) {
                             unset($registryArray[$rowUpdaterMarkedAsDonePosition]);
                             break;
                         }
@@ -161,11 +163,12 @@ final class UpgradeWizardsService
     {
         $this->assertIdentifierIsValid($identifier);
 
-        if (is_subclass_of($identifier, RowUpdaterInterface::class)) {
+        if ($this->rowUpdaterRegistry->hasRowUpdater($identifier)) {
+            $rowUpdater = $this->rowUpdaterRegistry->getRowUpdater($identifier);
             return [
-                'class' => $identifier,
+                'class' => $rowUpdater::class,
                 'identifier' => $identifier,
-                'title' => $identifier,
+                'title' => $rowUpdater->getTitle(),
                 'shouldRenderWizard' => false,
                 'explanation' => '',
             ];
@@ -365,11 +368,11 @@ final class UpgradeWizardsService
         if ($identifier === '') {
             throw new \RuntimeException('Empty upgrade wizard identifier given', 1650579934);
         }
-        if (!is_subclass_of($identifier, RowUpdaterInterface::class)
-            && !$this->upgradeWizardRegistry->hasUpgradeWizard($identifier)
+        if (!$this->upgradeWizardRegistry->hasUpgradeWizard($identifier)
+            && !$this->rowUpdaterRegistry->hasRowUpdater($identifier)
         ) {
             throw new \RuntimeException(
-                'The upgrade wizard identifier "' . $identifier . '" must either be registered as upgrade wizard or it must implement TYPO3\CMS\Install\Updates\RowUpdater\RowUpdaterInterface',
+                'The upgrade wizard identifier "' . $identifier . '" must either be registered as upgrade wizard or as row updater',
                 1650546252
             );
         }
