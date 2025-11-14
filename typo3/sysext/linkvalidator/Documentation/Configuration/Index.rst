@@ -61,7 +61,7 @@ You must prefix them with `mod.linkvalidator`, for example
 ..  confval:: searchFields.[table]
     :name: tsconfig-searchfields-key
     :type: string
-    :Path: mod.linkvalidator.linktypesConfig.searchFields.[table]
+    :Path: mod.linkvalidator.searchFields.[table]
     :Default: See :ref:`Checked Fields <checked-fields>`
 
     Comma separated list of table fields in which to check for
