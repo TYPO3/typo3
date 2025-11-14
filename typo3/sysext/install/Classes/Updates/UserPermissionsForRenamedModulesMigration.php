@@ -36,7 +36,9 @@ class UserPermissionsForRenamedModulesMigration implements UpgradeWizardInterfac
     /**
      * @var array <string, string> an array with the old module identifier as key and the new one as value
      */
-    protected array $moduleRenaming = [];
+    protected array $moduleRenaming = [
+        'web_info' => 'content_status',
+    ];
 
     public function getTitle(): string
     {

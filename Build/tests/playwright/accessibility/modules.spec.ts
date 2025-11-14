@@ -13,8 +13,8 @@ test.describe('modules', () => {
       'route': 'module/web/list?id=204',
     },
     'mod_info': {
-      'label': 'the info module',
-      'route': 'module/web/info',
+      'label': 'the status module',
+      'route': 'module/content/status',
     },
     'mod_site_settings': {
       'label': 'the site settings module',

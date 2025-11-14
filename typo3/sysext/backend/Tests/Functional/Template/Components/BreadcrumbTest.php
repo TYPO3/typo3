@@ -255,21 +255,21 @@ final class BreadcrumbTest extends FunctionalTestCase
 
         $context = new BreadcrumbContext($pageRecord);
 
-        $request = $this->createMockRequest('web_info');
+        $request = $this->createMockRequest('content_status');
 
         $breadcrumb = $this->get(Breadcrumb::class);
         $nodes = $breadcrumb->getBreadcrumb($request, $context);
 
         self::assertGreaterThanOrEqual(2, count($nodes));
 
-        self::assertSame('web_info', $nodes[0]->identifier);
+        self::assertSame('content_status', $nodes[0]->identifier);
         self::assertNotNull($nodes[0]->url);
-        self::assertStringContainsString('/module/web/info', $nodes[0]->url, 'Module node should use web_info');
+        self::assertStringContainsString('/module/content/status', $nodes[0]->url, 'Module node should use content_status');
 
         $urlCount = 0;
         foreach ($nodes as $node) {
             if ($node->url !== null) {
-                self::assertStringContainsString('/module/web/info', $node->url, 'All URLs should use detected module web_info');
+                self::assertStringContainsString('/module/content/status', $node->url, 'All URLs should use detected module content_status');
                 $urlCount++;
             }
         }
@@ -360,17 +360,17 @@ final class BreadcrumbTest extends FunctionalTestCase
 
         $context = new BreadcrumbContext($pageRecord);
 
-        // web_info_overview is a third-level module (parent: web_info, grandparent: content)
+        // web_info_overview is a third-level module (parent: content_status, grandparent: content)
         $request = $this->createMockRequest('web_info_overview');
 
         $breadcrumb = $this->get(Breadcrumb::class);
         $nodes = $breadcrumb->getBreadcrumb($request, $context);
 
-        // Should have: web_info (parent) + web_info_overview (current) + page
+        // Should have: content_status (parent) + web_info_overview (current) + page
         self::assertGreaterThanOrEqual(3, count($nodes), 'Should have parent module, current module, and page');
 
-        // First node should be the parent module (web_info)
-        self::assertSame('web_info', $nodes[0]->identifier, 'First node should be parent module');
+        // First node should be the parent module (content_status)
+        self::assertSame('content_status', $nodes[0]->identifier, 'First node should be parent module');
 
         // Second node should be the current third-level module
         self::assertSame('web_info_overview', $nodes[1]->identifier, 'Second node should be current third-level module');
@@ -393,11 +393,11 @@ final class BreadcrumbTest extends FunctionalTestCase
         $breadcrumb = $this->get(Breadcrumb::class);
         $nodes = $breadcrumb->getBreadcrumb($request, null);
 
-        // Should have: web_info (parent) + web_info_translations (current) + virtual root
+        // Should have: content_status (parent) + web_info_translations (current) + virtual root
         self::assertGreaterThanOrEqual(3, count($nodes), 'Should have parent module, current module, and virtual root');
 
-        // First node should be the parent module (web_info)
-        self::assertSame('web_info', $nodes[0]->identifier, 'First node should be parent module');
+        // First node should be the parent module (content_status)
+        self::assertSame('content_status', $nodes[0]->identifier, 'First node should be parent module');
 
         // Second node should be the current third-level module
         self::assertSame('web_info_translations', $nodes[1]->identifier, 'Second node should be current third-level module');
@@ -415,15 +415,15 @@ final class BreadcrumbTest extends FunctionalTestCase
 
         $context = new BreadcrumbContext($pageRecord);
 
-        // web_info is a second-level module (parent: content, which should be skipped)
-        $request = $this->createMockRequest('web_info');
+        // content_status is a second-level module (parent: content, which should be skipped)
+        $request = $this->createMockRequest('content_status');
 
         $breadcrumb = $this->get(Breadcrumb::class);
         $nodes = $breadcrumb->getBreadcrumb($request, $context);
 
-        // Should have: web_info (current module) + page
+        // Should have: content_status (current module) + page
         // Should NOT have: content (top-level parent is skipped)
-        self::assertSame('web_info', $nodes[0]->identifier, 'First node should be the second-level module');
+        self::assertSame('content_status', $nodes[0]->identifier, 'First node should be the second-level module');
         self::assertNotSame('content', $nodes[0]->identifier, 'Should not show top-level parent module');
     }
 
@@ -444,13 +444,13 @@ final class BreadcrumbTest extends FunctionalTestCase
         $breadcrumb = $this->get(Breadcrumb::class);
         $nodes = $breadcrumb->getBreadcrumb($request, $context);
 
-        // Should have: web_info (parent) + web_info_overview (current) + page
+        // Should have: content_status (parent) + web_info_overview (current) + page
         self::assertGreaterThanOrEqual(3, count($nodes), 'Should have parent module, current module, and page');
 
-        // First node should be the parent module (web_info) - uses base module identifier
-        self::assertSame('web_info', $nodes[0]->identifier, 'First node should be parent module');
+        // First node should be the parent module (content_status) - uses base module identifier
+        self::assertSame('content_status', $nodes[0]->identifier, 'First node should be parent module');
         self::assertNotNull($nodes[0]->url, 'Parent module should have URL');
-        self::assertStringContainsString('/module/web/info', $nodes[0]->url);
+        self::assertStringContainsString('/module/content/status', $nodes[0]->url);
 
         // Second node should be the current module with its URL
         self::assertSame('web_info_overview', $nodes[1]->identifier, 'Second node should be current module');
@@ -470,11 +470,11 @@ final class BreadcrumbTest extends FunctionalTestCase
         // 1. With routing attribute containing different route identifier (simulates sub-route like 'web_info.action')
         // 2. Without routing attribute (falls back to module identifier)
         //
-        // We use web_info_overview and web_info to demonstrate:
+        // We use web_info_overview and content_status to demonstrate:
         // - When routing is set to 'web_info_overview', it should be used
         // - When no routing attribute, it falls back to the module's base identifier
         $moduleWithSubRoute = 'web_info_overview';
-        $fallbackModule = 'web_info';
+        $fallbackModule = 'content_status';
 
         $requestWithRoutingAttr = $this->createMockRequestWithSubRoute($moduleWithSubRoute, $moduleWithSubRoute);
         $requestWithoutRoutingAttr = $this->createMockRequest($fallbackModule);
@@ -490,11 +490,11 @@ final class BreadcrumbTest extends FunctionalTestCase
         self::assertSame('web_info_overview', $nodesWithRoutingAttr[1]->identifier, 'Second node should be current module');
         self::assertNotNull($nodesWithRoutingAttr[1]->url, 'Current module with routing attribute should have URL');
 
-        self::assertSame('web_info', $nodesWithoutRoutingAttr[0]->identifier, 'First node should be current module');
+        self::assertSame('content_status', $nodesWithoutRoutingAttr[0]->identifier, 'First node should be current module');
         self::assertNotNull($nodesWithoutRoutingAttr[0]->url, 'Module without routing attribute should have URL');
 
         self::assertStringContainsString('/module/web/info/overview', $nodesWithRoutingAttr[1]->url, 'Should use route from routing attribute');
-        self::assertStringContainsString('/module/web/info', $nodesWithoutRoutingAttr[0]->url, 'Should use module identifier as fallback');
+        self::assertStringContainsString('/module/content/status', $nodesWithoutRoutingAttr[0]->url, 'Should use module identifier as fallback');
         self::assertNotSame($nodesWithRoutingAttr[1]->url, $nodesWithoutRoutingAttr[0]->url, 'URLs should differ based on route identifier used');
     }
 

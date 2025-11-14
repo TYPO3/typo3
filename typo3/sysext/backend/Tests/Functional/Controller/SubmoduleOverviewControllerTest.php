@@ -43,13 +43,13 @@ final class SubmoduleOverviewControllerTest extends FunctionalTestCase
     public function handleRequestRendersOverviewWithAccessibleSubmodules(): void
     {
         $moduleProvider = $this->get(ModuleProvider::class);
-        $module = $moduleProvider->getModule('web_info', $GLOBALS['BE_USER']);
+        $module = $moduleProvider->getModule('content_status', $GLOBALS['BE_USER']);
 
-        $request = (new ServerRequest('https://example.com/typo3/module/web/info'))
+        $request = (new ServerRequest('https://example.com/typo3/module/content/status'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-            ->withAttribute('route', new Route('/module/web/info', [
+            ->withAttribute('route', new Route('/module/content/status', [
                 'packageName' => 'typo3/cms-info',
-                '_identifier' => 'web_info',
+                '_identifier' => 'content_status',
             ]))
             ->withAttribute('module', $module);
 
@@ -80,13 +80,13 @@ final class SubmoduleOverviewControllerTest extends FunctionalTestCase
     public function handleRequestIncludesDocHeaderElements(): void
     {
         $moduleProvider = $this->get(ModuleProvider::class);
-        $module = $moduleProvider->getModule('web_info', $GLOBALS['BE_USER']);
+        $module = $moduleProvider->getModule('content_status', $GLOBALS['BE_USER']);
 
-        $request = (new ServerRequest('https://example.com/typo3/module/web/info'))
+        $request = (new ServerRequest('https://example.com/typo3/module/content/status'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-            ->withAttribute('route', new Route('/module/web/info', [
+            ->withAttribute('route', new Route('/module/content/status', [
                 'packageName' => 'typo3/cms-info',
-                '_identifier' => 'web_info',
+                '_identifier' => 'content_status',
             ]))
             ->withAttribute('module', $module);
 
@@ -110,14 +110,14 @@ final class SubmoduleOverviewControllerTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
 
         $moduleProvider = $this->get(ModuleProvider::class);
-        $module = $moduleProvider->getModule('web_info', $GLOBALS['BE_USER']);
+        $module = $moduleProvider->getModule('content_status', $GLOBALS['BE_USER']);
 
-        $request = (new ServerRequest('https://example.com/typo3/module/web/info'))
+        $request = (new ServerRequest('https://example.com/typo3/module/content/status'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(['id' => 1])
-            ->withAttribute('route', new Route('/module/web/info', [
+            ->withAttribute('route', new Route('/module/content/status', [
                 'packageName' => 'typo3/cms-info',
-                '_identifier' => 'web_info',
+                '_identifier' => 'content_status',
             ]))
             ->withAttribute('module', $module);
 
@@ -143,14 +143,14 @@ final class SubmoduleOverviewControllerTest extends FunctionalTestCase
         self::assertCount(2, $nodes, 'Should have two breadcrumb nodes (module and page)');
 
         // First node should be the module
-        self::assertSame('web_info', $nodes[0]['identifier'], 'First node should be module identifier');
-        self::assertSame('Info', $nodes[0]['label'], 'First node should be module label');
+        self::assertSame('content_status', $nodes[0]['identifier'], 'First node should be module identifier');
+        self::assertSame('Status', $nodes[0]['label'], 'First node should be module label');
         self::assertSame('module-info', $nodes[0]['icon'], 'First node should be module icon');
         self::assertNull($nodes[0]['iconOverlay'], 'Module should have no icon overlay');
         self::assertTrue($nodes[0]['forceShowIcon'], 'Module should force show icon');
         self::assertArrayHasKey('url', $nodes[0], 'Module node should have url field');
         self::assertNotNull($nodes[0]['url'], 'Module should have URL');
-        self::assertStringContainsString('/module/web/info', $nodes[0]['url'], 'Module URL should contain module path');
+        self::assertStringContainsString('/module/content/status', $nodes[0]['url'], 'Module URL should contain module path');
 
         // Second node should be the page
         self::assertSame('1', $nodes[1]['identifier'], 'Second node should be page identifier');
@@ -160,7 +160,7 @@ final class SubmoduleOverviewControllerTest extends FunctionalTestCase
         self::assertFalse($nodes[1]['forceShowIcon'], 'Page should not force show icon');
         self::assertArrayHasKey('url', $nodes[1], 'Page node should have url field');
         self::assertNotNull($nodes[1]['url'], 'Page should have URL');
-        self::assertStringContainsString('/module/web/info', $nodes[1]['url'], 'Page URL should contain module path');
+        self::assertStringContainsString('/module/content/status', $nodes[1]['url'], 'Page URL should contain module path');
         self::assertStringContainsString('id=1', $nodes[1]['url'], 'Page URL should contain page id');
 
         // Verify no old route structure exists
@@ -171,11 +171,11 @@ final class SubmoduleOverviewControllerTest extends FunctionalTestCase
     #[Test]
     public function handleRequestWithoutModuleAttributeRendersEmptyPage(): void
     {
-        $request = (new ServerRequest('https://example.com/typo3/module/web/info'))
+        $request = (new ServerRequest('https://example.com/typo3/module/content/status'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-            ->withAttribute('route', new Route('/module/web/info', [
+            ->withAttribute('route', new Route('/module/content/status', [
                 'packageName' => 'typo3/cms-info',
-                '_identifier' => 'web_info',
+                '_identifier' => 'content_status',
             ]));
 
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
@@ -195,15 +195,15 @@ final class SubmoduleOverviewControllerTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
 
         $moduleProvider = $this->get(ModuleProvider::class);
-        $module = $moduleProvider->getModule('web_info', $GLOBALS['BE_USER']);
+        $module = $moduleProvider->getModule('content_status', $GLOBALS['BE_USER']);
 
         $pageId = 42;
-        $request = (new ServerRequest('https://example.com/typo3/module/web/info'))
+        $request = (new ServerRequest('https://example.com/typo3/module/content/status'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(['id' => $pageId])
-            ->withAttribute('route', new Route('/module/web/info', [
+            ->withAttribute('route', new Route('/module/content/status', [
                 'packageName' => 'typo3/cms-info',
-                '_identifier' => 'web_info',
+                '_identifier' => 'content_status',
             ]))
             ->withAttribute('module', $module);
 
@@ -234,16 +234,16 @@ final class SubmoduleOverviewControllerTest extends FunctionalTestCase
         $backendUser = $this->setUpBackendUser(2);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
-        // Get the web_info module for the restricted user
+        // Get the content_status module for the restricted user
         // The module exists but has no accessible submodules for this user
         $moduleProvider = $this->get(ModuleProvider::class);
-        $module = $moduleProvider->getModule('web_info', $backendUser);
+        $module = $moduleProvider->getModule('content_status', $backendUser);
 
-        $request = (new ServerRequest('https://example.com/typo3/module/web/info'))
+        $request = (new ServerRequest('https://example.com/typo3/module/content/status'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-            ->withAttribute('route', new Route('/module/web/info', [
+            ->withAttribute('route', new Route('/module/content/status', [
                 'packageName' => 'typo3/cms-info',
-                '_identifier' => 'web_info',
+                '_identifier' => 'content_status',
             ]))
             ->withAttribute('module', $module);
 

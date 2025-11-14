@@ -127,6 +127,9 @@ DevOps should be moved to `system`.
 Second level modules
 --------------------
 
+For modules, where the module identifier changed, the upgrade wizard
+"Migrate module permissions" migrates module level group and user permissions.
+
 View => Preview
 ~~~~~~~~~~~~~~~
 
@@ -140,6 +143,35 @@ context.
 
 **Migration:** Since the module is already internally referred to as `page_preview`, no
 changes in referencing modules are required.
+
+Info, Indexing, Check Links => Status
+--------------------------------------
+
+The second-level :guilabel:`Info` module has been renamed to :guilabel:`Status`
+to better match its scope. It has also been moved into EXT:backend so it is
+always available and displayed if it contains at least one module.
+
+**Rationale:** The module was moved to EXT:backend to make it always available
+and to provide a common place for page and site status information.
+
+The renaming to :guilabel:`Status` better reflects its purpose and removes
+unnecessary dependencies between informational extensions.
+
+**Migration:** The module identifier has been renamed from `web_info` to
+`content_status` an alias is in place. Use the new identifier to place custom
+modules.
+
+..  code-block:: diff
+
+     return [
+         'my_page_information' => [
+    -        'parent' => 'web_info',
+    +        'parent' => 'content_status',
+         ],
+     ];
+
+Extensions placing third level modules into the module now called
+:guilabel:`Status` do not need to require :composer:`typo3/cms-info` anymore.
 
 Filelist => Media
 ~~~~~~~~~~~~~~~~~

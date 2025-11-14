@@ -52,6 +52,20 @@ return [
             'language' => -1,
         ],
     ],
+    'content_status' => [
+        'parent' => 'content',
+        'position' => ['after' => 'web_FormFormbuilder', 'before' => 'recycler'],
+        'access' => 'user',
+        'path' => '/module/content/status',
+        'iconIdentifier' => 'module-info',
+        'labels' => 'backend.modules.status',
+        'aliases' => ['web_info'],
+        'navigationComponent' => '@typo3/backend/tree/page-tree-element',
+        'appearance' => [
+            'dependsOnSubmodules' => true,
+        ],
+        'showSubmoduleOverview' => true,
+    ],
     'site_configuration' => [
         'parent' => 'site',
         'position' => ['before' => '*'],

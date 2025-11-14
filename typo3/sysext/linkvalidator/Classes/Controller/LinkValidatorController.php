@@ -155,6 +155,7 @@ class LinkValidatorController
             displayName: $this->getModuleTitle(),
             arguments: ['id' => $this->id, 'action' => $action]
         );
+        $view->makeDocHeaderModuleMenu(['id' => $this->id]);
 
         $checkFormEnabled = false;
         if (($this->modTS['showCheckLinkTab'] ?? '') === '1') {

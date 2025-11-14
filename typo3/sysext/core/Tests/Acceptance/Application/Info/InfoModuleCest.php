@@ -30,7 +30,7 @@ final class InfoModuleCest
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
-        $I->click('[data-modulemenu-identifier="web_info"]');
+        $I->click('[data-modulemenu-identifier="content_status"]');
         $pageTree->openPath(['styleguide TCA demo']);
         $I->switchToContentFrame();
         $I->see('Info', 'h1');

@@ -7,7 +7,8 @@ use TYPO3\CMS\IndexedSearch\Controller\AdministrationController;
  */
 return [
     'manage_search_index' => [
-        'parent' => 'content',
+        'parent' => 'content_status',
+        'position' => ['after' => 'web_info_translations'],
         'access' => 'user',
         'iconIdentifier' => 'module-indexed_search',
         'labels' => 'indexed_search.module',

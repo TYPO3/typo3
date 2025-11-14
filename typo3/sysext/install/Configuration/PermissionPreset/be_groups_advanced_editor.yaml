@@ -9,7 +9,7 @@ groupMods:
   - page_preview
   - web_list
   - web_FormFormbuilder
-  - web_info
+  - content_status
   - web_info_overview
   - web_info_translations
   - media_management

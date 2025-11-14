@@ -4,5 +4,5 @@ be_groups,,,,,,,,,,,,
 ,2,0,first level group,0,40,1544454571,1542360853,0,0,3,,,
 ,3,0,first level subgroup,0,40,1544454571,1542360853,0,0,"2,5",test.default.groupValue = from_group_3\ntest.default.userValue = never_seen\n,"web_layout,web_list",
 ,4,0,random group for filelist,0,,1544454571,1542360853,0,0,,test.default.groupValue = from_group_4,file_filelist,"1,2,3"
-,5,0,subgroup level 2,0,,1544454571,1542360853,0,0,,test.default.groupValue = from_group_5,web_info,
+,5,0,subgroup level 2,0,,1544454571,1542360853,0,0,,test.default.groupValue = from_group_5,content_status,
 ,6,0,random group for filelist,0,,1544454571,1542360853,0,0,2,test.default.groupValue = from_group_6,file_filelist,

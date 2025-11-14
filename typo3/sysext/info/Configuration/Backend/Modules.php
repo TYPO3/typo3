@@ -7,20 +7,9 @@ use TYPO3\CMS\Info\Controller\TranslationStatusController;
  * Definitions for modules provided by EXT:info
  */
 return [
-    'web_info' => [
-        'parent' => 'content',
-        'access' => 'user',
-        'path' => '/module/web/info',
-        'iconIdentifier' => 'module-info',
-        'labels' => 'info.modules.info',
-        'navigationComponent' => '@typo3/backend/tree/page-tree-element',
-        'appearance' => [
-            'dependsOnSubmodules' => true,
-        ],
-        'showSubmoduleOverview' => true,
-    ],
     'web_info_overview' => [
-        'parent' => 'web_info',
+        'parent' => 'content_status',
+        'position' => ['before' => '*'],
         'access' => 'user',
         'path' => '/module/web/info/overview',
         'iconIdentifier' => 'module-info',
@@ -37,7 +26,8 @@ return [
         ],
     ],
     'web_info_translations' => [
-        'parent' => 'web_info',
+        'parent' => 'content_status',
+        'position' => ['after' => 'web_info_overview'],
         'access' => 'user',
         'path' => '/module/web/info/translations',
         'iconIdentifier' => 'module-info',

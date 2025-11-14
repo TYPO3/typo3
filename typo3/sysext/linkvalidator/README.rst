@@ -3,7 +3,7 @@ TYPO3 extension ``linkvalidator``
 =================================
 
 The Link Validator checks for broken links and displays results in the
-(Info>LinkValidator) backend module.
+(Status > Check Links) backend module.
 
 It can validate all types of links: internal, external and file links. The
 Scheduler can run the validator periodically, including the option to

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -58,6 +59,7 @@ class AdministrationController extends ActionController
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly ConnectionPool $connectionPool,
         protected readonly ComponentFactory $componentFactory,
+        protected readonly UriBuilder $backendUriBuilder,
     ) {}
 
     /**
@@ -112,6 +114,10 @@ class AdministrationController extends ActionController
             }
         }
 
+        $view->addButtonToButtonBar(
+            $this->componentFactory->createBackButton($this->backendUriBuilder->buildUriFromRoute('content_status', ['id' => $this->pageUid]))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:moduleMenu.dropdown.overview'))
+        );
         $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
         $view->setTitle(
             $languageService->translate('title', 'indexed_search.module'),
