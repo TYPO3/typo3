@@ -3,14 +3,14 @@
 	<file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/module.xlf" date="2026-11-10T13:37:37Z" product-name="recycler">
 		<header/>
 		<body>
-			<trans-unit id="short_description">
-				<source>TYPO3 Recycler</source>
-			</trans-unit>
-			<trans-unit id="description">
-				<source>The recycler offers the possibility to restore deleted records or remove them from the database permanently. These actions can be applied to a single record, multiple records, and recursively to child records (ex. restoring a page can restore all content elements on that page). Filtering by page and by table provides a quick overview of deleted records before taking action on them.</source>
-			</trans-unit>
 			<trans-unit id="title">
 				<source>Recycler</source>
+			</trans-unit>
+			<trans-unit id="short_description">
+				<source>Restore or permanently remove deleted records</source>
+			</trans-unit>
+			<trans-unit id="description">
+				<source>Allows you to restore deleted records or remove them permanently from the database. Supports single, multiple, and recursive actions, such as restoring a page with all its content elements. Filter by page or table to review deleted records before taking action.</source>
 			</trans-unit>
 		</body>
 	</file>
