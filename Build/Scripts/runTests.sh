@@ -282,6 +282,7 @@ Options:
             - checkCharsets: Verify "updateCharsetTables.php" does not change anything
             - checkComposer: check composer.json files for version integrity
             - checkIntegritySetLabels: check labels.xlf file integrity of site sets
+            - checkIntegrityXliff: checks for all xlf files for validity and deprecated usages
             - checkExtensionScannerRst: test all .rst files referenced by extension scanner exist
             - checkFilePathLength: test core file paths do not exceed maximum length
             - checkFilesAndPathsForSpaces: test paths and files for spaces

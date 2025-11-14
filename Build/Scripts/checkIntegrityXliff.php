@@ -42,15 +42,17 @@ final readonly class CheckIntegrityXliff
         'short_description',
     ];
     private const XliffDeprecationKey = 'x-unused-since';
-
-    public function execute(): int
+    public function execute(array $argv = []): int
     {
+        $isVerbose = in_array('-v', $argv, true) || in_array('--verbose', $argv, true);
+
         $filesToProcess = $this->findXliff();
         $output = new ConsoleOutput();
         $output->setFormatter(new OutputFormatter(true));
 
         $testResults = [];
         $errors = [];
+
         /** @var \SplFileInfo $labelFile */
         foreach ($filesToProcess as $labelFile) {
             $fullFilePath = $labelFile->getRealPath();
@@ -65,47 +67,49 @@ final readonly class CheckIntegrityXliff
             return 1;
         }
 
-        $table = new Table($output);
-        $table->setHeaders([
-            'EXT',
-            'File',
-            'Status',
-            'Errorcode',
-        ]);
-        foreach ($testResults as $result) {
-            $table->addRow([
-                $result['extensionKey'],
-                $result['shortLabelFile'],
-                (!isset($result['error']) ? "\xF0\x9F\x91\x8C" : "\xF0\x9F\x92\x80"),
-                $result['errorcode'] ?? '',
-            ]);
+        // Only show full table output if verbose is on
+        if ($isVerbose) {
+            $table = new Table($output);
+            $table->setHeaders(['EXT', 'File', 'Status', 'Errorcode']);
+            foreach ($testResults as $result) {
+                $table->addRow([
+                    $result['extensionKey'],
+                    $result['shortLabelFile'],
+                    (!isset($result['error']) ? "\xF0\x9F\x91\x8C" : "\xF0\x9F\x92\x80"),
+                    $result['errorcode'] ?? '',
+                ]);
+            }
+            $table->setFooterTitle(count($testResults) . ' files, ' . count($errors) . ' Errors');
+            $table->render();
+        } else {
+            // Non-verbose: just show a summary line
+            if ($errors !== []) {
+                $output->writeln('<error>' . count($errors) . ' error(s) found in ' . count($testResults) . ' files.</error>');
+            }
         }
-        $table->setFooterTitle(count($testResults) . ' files, ' . count($errors) . ' Errors');
-        $table->render();
 
         if ($errors === []) {
             return 0;
         }
 
-        $output->writeln('');
-        $table = new Table($output);
-        $table->setHeaders([
-            'File',
-            'Error',
-        ]);
-        foreach ($errors as $file => $errorMessage) {
-            $table->addRow([
-                $file,
-                $errorMessage,
-            ]);
-            $table->addRow([
-                new TableSeparator(),
-                new TableSeparator(),
-            ]);
+        // Only show detailed error table if verbose
+        if ($isVerbose) {
+            $output->writeln('');
+            $table = new Table($output);
+            $table->setHeaders(['File', 'Error']);
+            foreach ($errors as $file => $errorMessage) {
+                $table->addRow([$file, $errorMessage]);
+                $table->addRow([new TableSeparator(), new TableSeparator()]);
+            }
+            $table->setColumnMaxWidth(0, 40);
+            $table->setColumnMaxWidth(1, 80);
+            $table->render();
+        } else {
+            // Compact error summary
+            foreach ($errors as $file => $message) {
+                $output->writeln("<error>$file:</error> $message");
+            }
         }
-        $table->setColumnMaxWidth(0, 40);
-        $table->setColumnMaxWidth(1, 80);
-        $table->render();
 
         return 1;
     }
@@ -251,4 +255,4 @@ final readonly class CheckIntegrityXliff
     }
 }
 
-exit((new CheckIntegrityXliff())->execute());
+exit((new CheckIntegrityXliff())->execute($argv));
