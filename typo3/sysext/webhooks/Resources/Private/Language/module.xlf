@@ -13,13 +13,13 @@
 				<source>Manage outgoing HTTP webhooks to external system</source>
 			</trans-unit>
 			<trans-unit id="description">
-				<source>Empower TYPO3 to talk to the outside world! Automatically notify external services whenever something important happens in the system. Perfect for integrating with Slack, Discord, payment gateways, CRM systems, and countless other platforms.</source>
+				<source>Enables TYPO3 to communicate with external systems. Automatically notifies third-party services when defined system events occur, supporting integrations with platforms such as Slack, Discord, payment providers, CRM systems, and more.</source>
 			</trans-unit>
 			<trans-unit id="heading_text">
 				<source>Webhooks — Manage Outgoing HTTP Webhooks</source>
 			</trans-unit>
 			<trans-unit id="webhook_not_found.title">
-				<source>No webhooks found!</source>
+				<source>No webhooks found</source>
 			</trans-unit>
 			<trans-unit id="webhook_not_found.message">
 				<source>There are currently no webhooks records found in the database.</source>
@@ -28,7 +28,7 @@
 				<source>Create new webhook</source>
 			</trans-unit>
 			<trans-unit id="webhook_not_found_with_filter.title">
-				<source>No webhooks found!</source>
+				<source>No webhooks found</source>
 			</trans-unit>
 			<trans-unit id="webhook_not_found_with_filter.message">
 				<source>With the current set of filters applied, no webhooks could be found.</source>
@@ -85,7 +85,7 @@
 				<source>Delete webhooks</source>
 			</trans-unit>
 			<trans-unit id="labels.delete.message">
-				<source>Are you sure you want to delete all marked webhooks?</source>
+				<source>Delete all marked webhooks? You can restore deleted webhooks from the TYPO3 recycler.</source>
 			</trans-unit>
 		</body>
 	</file>
