@@ -228,6 +228,8 @@ class FileListController implements LoggerAwareInterface
         $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-delete.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-menu.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/clipboard-panel.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/localization.js');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/Wizards/localization.xlf');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/multi-record-selection.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/column-selector-button.js');
 

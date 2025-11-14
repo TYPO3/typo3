@@ -422,10 +422,6 @@ class EditDocumentController
         $queryParams = $request->getQueryParams();
         $this->module = $this->moduleProvider->getModule((string)($queryParams['module'] ?? ''), $this->getBackendUser());
 
-        if ($response = $this->localizationRedirect($request)) {
-            return $response;
-        }
-
         $parsedBody = $request->getParsedBody();
 
         $this->editconf = $parsedBody['edit'] ?? $queryParams['edit'] ?? [];
@@ -1950,8 +1946,7 @@ class EditDocumentController
                     $selectorOptionLabel = $language['title'];
                     // Create url for creating a localized record
                     $addOption = true;
-                    $href = '';
-                    $isNewLanguage = false;
+                    $createNewLanguageLink = '';
 
                     if (!isset($rowsByLang[$languageId])) {
                         // Translation in this language does not exist
@@ -1964,29 +1959,6 @@ class EditDocumentController
                             // TODO: Actually tt_content is able to localize from another l10n_source then L=0.
                             //       This however is currently only possible via the translation wizard.
                             $addOption = false;
-                        } else {
-                            // Build the link to add the localization
-                            $href = (string)$this->uriBuilder->buildUriFromRoute(
-                                'tce_db',
-                                [
-                                    'cmd' => [
-                                        $table => [
-                                            $rowsByLang[0]['uid'] => [
-                                                'localize' => $languageId,
-                                            ],
-                                        ],
-                                    ],
-                                    'redirect' => (string)$this->uriBuilder->buildUriFromRoute(
-                                        'record_edit',
-                                        [
-                                            'justLocalized' => $table . ':' . $rowsByLang[0]['uid'] . ':' . $languageId,
-                                            'module' => $this->module?->getIdentifier() ?? '',
-                                            'returnUrl' => $this->retUrl,
-                                        ]
-                                    ),
-                                ]
-                            );
-                            $isNewLanguage = true;
                         }
                     } else {
                         $params = [
@@ -2005,10 +1977,10 @@ class EditDocumentController
                                 ],
                             ];
                         }
-                        $href = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
+                        $createNewLanguageLink = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
                     }
                     if ($addOption && !in_array($languageId, $noAddOption, true)) {
-                        if ($isNewLanguage) {
+                        if (!$createNewLanguageLink) {
                             $languageItem = $this->componentFactory->createDropDownItem()
                                 ->setTag('typo3-backend-localization-button')
                                 ->setAttribute('record-type', $table)
@@ -2023,7 +1995,7 @@ class EditDocumentController
                             $isActive = $languageId === $currentLanguage;
                             $languageItem = $this->componentFactory->createDropDownRadio()
                                 ->setLabel($selectorOptionLabel)
-                                ->setHref($href)
+                                ->setHref($createNewLanguageLink)
                                 ->setActive($isActive);
                             if (!empty($language['flagIcon'])) {
                                 $languageItem->setIcon($this->iconFactory->getIcon($language['flagIcon']));
@@ -2053,62 +2025,6 @@ class EditDocumentController
                 $view->getDocHeaderComponent()->setLanguageSelector($languageDropDownButton);
             }
         }
-    }
-
-    /**
-     * Redirects to FormEngine with new parameters to edit a just created localized record.
-     */
-    protected function localizationRedirect(ServerRequestInterface $request): ?ResponseInterface
-    {
-        $justLocalized = $request->getQueryParams()['justLocalized'] ?? null;
-        if (empty($justLocalized)) {
-            return null;
-        }
-
-        [$table, $origUid, $language] = explode(':', $justLocalized);
-
-        if (!$this->tcaSchemaFactory->has($table)) {
-            return null;
-        }
-        $schema = $this->tcaSchemaFactory->get($table);
-        if (!$schema->isLanguageAware()) {
-            return null;
-        }
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
-        $localizedRecord = $queryBuilder->select('uid')
-            ->from($table)
-            ->where(
-                $queryBuilder->expr()->eq(
-                    $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(),
-                    $queryBuilder->createNamedParameter($language, Connection::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    $schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName(),
-                    $queryBuilder->createNamedParameter($origUid, Connection::PARAM_INT)
-                )
-            )
-            ->executeQuery()
-            ->fetchAssociative();
-        if (is_array($localizedRecord)) {
-            // Create redirect response to self to edit just created record
-            $returnUrl = $request->getParsedBody()['returnUrl'] ?? $request->getQueryParams()['returnUrl'] ?? '';
-            return new RedirectResponse(
-                (string)$this->uriBuilder->buildUriFromRoute(
-                    'record_edit',
-                    [
-                        'edit[' . $table . '][' . $localizedRecord['uid'] . ']' => 'edit',
-                        'module' => $this->module?->getIdentifier() ?? '',
-                        'returnUrl' => GeneralUtility::sanitizeLocalUrl($returnUrl),
-                    ]
-                ),
-                303
-            );
-        }
-        return null;
     }
 
     /**

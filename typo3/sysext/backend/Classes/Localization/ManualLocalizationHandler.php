@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -126,11 +127,17 @@ class ManualLocalizationHandler implements LocalizationHandlerInterface
             return LocalizationResult::error(errors: $dataHandler->errorLog);
         }
 
-        // Get the newly created record UID for redirect generation
-        $newUid = $dataHandler->copyMappingArray_merged[$type][$uid] ?? $uid;
+        // Get the newly created record UID from DataHandler's copy mapping
+        $newUid = $dataHandler->copyMappingArray_merged[$type][$uid] ?? null;
+
+        // If no UID was found in copy mapping, try to find the translated record
+        if ($newUid === null) {
+            $translations = BackendUtility::getRecordLocalization($type, $uid, $targetLanguage);
+            $newUid = !empty($translations) ? (int)$translations[0]['uid'] : null;
+        }
 
         // Generate redirect finisher or use reload finisher as fallback
-        $redirectUrl = $this->generateRedirectUrl($type, $newUid, $targetLanguage);
+        $redirectUrl = $newUid !== null ? $this->generateRedirectUrl($type, $newUid, $targetLanguage) : null;
 
         return LocalizationResult::success(
             finisher: $redirectUrl !== null
@@ -220,6 +227,32 @@ class ManualLocalizationHandler implements LocalizationHandlerInterface
         // For other record types, redirect to the edit form of the translated record
         $record = BackendUtility::getRecord($type, $uid);
         if ($record && isset($record['pid'])) {
+            $returnUrl = null;
+
+            if ($type === 'sys_file_metadata') {
+                // Get the file from the metadata record and build return URL to filelist module
+                try {
+                    $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject((int)$record['file']);
+                    $parentFolder = $file->getParentFolder();
+                    $returnUrl = (string)$this->uriBuilder->buildUriFromRoute(
+                        'media_management',
+                        ['id' => $parentFolder->getCombinedIdentifier()]
+                    );
+                } catch (\Exception) {
+                    // File not found or inaccessible, fall back to default return URL
+                }
+            }
+
+            if ($returnUrl === null) {
+                $returnUrl = (string)$this->uriBuilder->buildUriFromRoute(
+                    'web_layout',
+                    [
+                        'id' => $record['pid'],
+                        'language' => $targetLanguage,
+                    ]
+                );
+            }
+
             // Redirect to edit form for the newly created record
             return (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
@@ -227,10 +260,7 @@ class ManualLocalizationHandler implements LocalizationHandlerInterface
                         $uid => 'edit',
                     ],
                 ],
-                'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('web_layout', [
-                    'id' => $record['pid'],
-                    'language' => $targetLanguage,
-                ]),
+                'returnUrl' => $returnUrl,
             ]);
         }
 

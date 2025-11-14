@@ -1276,30 +1276,22 @@ class FileList
                     ]
                 );
             } else {
-                // Set options for "create new" action of a new translation
+                // Set options for "create new" action of a new translation using localization wizard
                 $title = sprintf($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:createMetadataForLanguage'), $language['title']);
                 $actionType = 'new';
                 $metaDataRecordId = (int)($metaDataRecord['uid'] ?? 0);
-                $url = (string)$this->uriBuilder->buildUriFromRoute(
-                    'tce_db',
-                    [
-                        'cmd' => [
-                            'sys_file_metadata' => [
-                                $metaDataRecordId => [
-                                    'localize' => $languageId,
-                                ],
-                            ],
-                        ],
-                        'redirect' => (string)$this->uriBuilder->buildUriFromRoute(
-                            'record_edit',
-                            [
-                                'justLocalized' => 'sys_file_metadata:' . $metaDataRecordId . ':' . $languageId,
-                                'module' => 'media_management',
-                                'returnUrl' => $this->createModuleUri(),
-                            ]
-                        ),
-                    ]
-                );
+
+                $dropdownItem = $this->componentFactory->createDropDownItem()
+                    ->setTag('typo3-backend-localization-button')
+                    ->setAttribute('record-type', 'sys_file_metadata')
+                    ->setAttribute('record-uid', (string)$metaDataRecordId)
+                    ->setAttribute('target-language', (string)$languageId)
+                    ->setLabel($title);
+                if (!empty($language['flagIcon'])) {
+                    $dropdownItem->setIcon($this->iconFactory->getIcon($language['flagIcon'], IconSize::SMALL, 'overlay-' . $actionType));
+                }
+                $dropdownItems[] = $dropdownItem;
+                continue;
             }
 
             $dropdownItem = $this->componentFactory->createDropDownItem();

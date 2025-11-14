@@ -485,7 +485,6 @@ class PageInformationController extends InfoModuleController
                     if ($this->getBackendUser()->doesUserHaveAccess($row, 2) && $row['uid'] > 0) {
                         $uid = (int)$row['uid'];
                         $urlParameters = [
-                            'justLocalized' => 'pages:' . $this->id . ':' . $row[$languageFieldName],
                             'edit' => [
                                 'pages' => [
                                     $row['uid'] => 'edit',
