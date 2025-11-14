@@ -90,7 +90,7 @@ Admin (tools) <=> System
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 The top-level module formerly known as :guilabel:`Admin tools` is now called
-:guilabel:`Admin`.
+:guilabel:`Administration`.
 
 The purpose of this top-level module has changed. It now contains those modules
 useful to a backend admin, such as user and permission management, the Scheduler,
@@ -100,7 +100,7 @@ Most modules formerly found in :guilabel:`Admin tools` are now located in
 :guilabel:`System`.
 
 **Rationale:**
-The top-level module :guilabel:`Admin` now contains modules that
+The top-level module :guilabel:`Administration` now contains modules that
 are used by backend administrators in their daily work. Modules that require
 system maintainer permissions are found in the module named :guilabel:`System`.
 
