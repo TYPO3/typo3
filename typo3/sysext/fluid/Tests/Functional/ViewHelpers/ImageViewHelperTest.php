@@ -139,7 +139,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $this->expectExceptionCode($expectedExceptionCode);
         $this->expectExceptionMessage($message);
 
-        $cObj = new ContentObjectRenderer();
+        $cObj = $this->get(ContentObjectRenderer::class);
         $serverRequest = (new ServerRequest())
             ->withAttribute('currentContentObject', $cObj)
             ->withAttribute('extbase', new ExtbaseRequestParameters())

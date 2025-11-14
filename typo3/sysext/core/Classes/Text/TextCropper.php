@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Text;
 
-class TextCropper
+readonly class TextCropper
 {
     /**
      * Implements "cropHTML" which is a modified "substr" function allowing to limit a string length to a certain number

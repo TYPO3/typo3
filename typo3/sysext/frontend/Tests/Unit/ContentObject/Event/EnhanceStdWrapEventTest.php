@@ -29,11 +29,9 @@ final class EnhanceStdWrapEventTest extends UnitTestCase
     {
         $content = 'content';
         $configuration = ['foo' => 'bar'];
-        $contentObjectRenderer = new ContentObjectRenderer();
-
-        // Note: We are using a child event since EnhanceStdWrapEvent is abstract
+        $contentObjectRenderer = $this->createMock(ContentObjectRenderer::class);
+        // Using a child event since EnhanceStdWrapEvent is abstract
         $event = new BeforeStdWrapFunctionsInitializedEvent($content, $configuration, $contentObjectRenderer);
-
         self::assertEquals($content, $event->getContent());
         self::assertEquals($configuration, $event->getConfiguration());
         self::assertEquals($contentObjectRenderer, $event->getContentObjectRenderer());
@@ -42,15 +40,12 @@ final class EnhanceStdWrapEventTest extends UnitTestCase
     #[Test]
     public function setContentOverwritesStdWrapResult(): void
     {
-        // Note: We are using a child event since EnhanceStdWrapEvent is abstract
-        $event = new BeforeStdWrapFunctionsInitializedEvent(null, [], new ContentObjectRenderer());
-
+        // Using a child event since EnhanceStdWrapEvent is abstract
+        $event = new BeforeStdWrapFunctionsInitializedEvent(null, [], $this->createMock(ContentObjectRenderer::class));
         self::assertNull($event->getContent());
-
         $content = 'modified content';
         $event->setContent($content);
         self::assertEquals($content, $event->getContent());
-
         // unset content again
         $event->setContent('');
         self::assertEmpty($event->getContent());

@@ -33,5 +33,4 @@ interface SystemResourcePublisherInterface
     public function publishResources(PackageInterface $package): void;
 
     public function generateUri(PublicResourceInterface $publicResource, ?ServerRequestInterface $request, ?UriGenerationOptions $options = null): UriInterface;
-
 }

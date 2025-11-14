@@ -1105,17 +1105,15 @@ readonly class RequestHandler implements RequestHandlerInterface
                 if (!empty($nonCacheableConfig)) {
                     $label = 'Include ' . $nonCacheableConfig['type'];
                     $this->timeTracker->push($label);
-                    $nonCacheableContent = '';
-                    $contentObjectRendererForNonCacheable = unserialize($nonCacheableConfig['cObj']);
-                    if ($contentObjectRendererForNonCacheable instanceof ContentObjectRenderer) {
-                        $contentObjectRendererForNonCacheable->setRequest($request);
-                        $nonCacheableContent = match ($nonCacheableConfig['type']) {
-                            'COA' => $contentObjectRendererForNonCacheable->cObjGetSingle('COA', $nonCacheableConfig['conf']),
-                            'FUNC' => $contentObjectRendererForNonCacheable->cObjGetSingle('USER', $nonCacheableConfig['conf']),
-                            'POSTUSERFUNC' => $contentObjectRendererForNonCacheable->callUserFunction($nonCacheableConfig['postUserFunc'], $nonCacheableConfig['conf'], $nonCacheableConfig['content']),
-                            default => '',
-                        };
-                    }
+                    $contentObjectRendererForNonCacheable = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+                    $contentObjectRendererForNonCacheable->setRequest($request);
+                    $contentObjectRendererForNonCacheable->updateState(unserialize($nonCacheableConfig['cObjData']));
+                    $nonCacheableContent = match ($nonCacheableConfig['type']) {
+                        'COA' => $contentObjectRendererForNonCacheable->cObjGetSingle('COA', $nonCacheableConfig['conf']),
+                        'FUNC' => $contentObjectRendererForNonCacheable->cObjGetSingle('USER', $nonCacheableConfig['conf']),
+                        'POSTUSERFUNC' => $contentObjectRendererForNonCacheable->callUserFunction($nonCacheableConfig['postUserFunc'], $nonCacheableConfig['conf'], $nonCacheableConfig['content']),
+                        default => '',
+                    };
                     $content .= $nonCacheableContent;
                     $content .= substr($contentPart, 35);
                     $this->timeTracker->pull($nonCacheableContent);

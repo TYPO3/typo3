@@ -42,7 +42,7 @@ class ContentObjectArrayInternalContentObject extends AbstractContentObject
         $pageParts->addNotCachedContentElement([
             'substKey' => $substKey,
             'conf' => $conf,
-            'cObj' => serialize($this->cObj),
+            'cObjData' => serialize($this->cObj->getState()),
             'type' => 'COA',
         ]);
         return '<!--' . $substKey . '-->';

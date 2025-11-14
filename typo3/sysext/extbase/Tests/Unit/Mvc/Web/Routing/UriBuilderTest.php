@@ -44,7 +44,6 @@ use TYPO3\CMS\Extbase\Tests\Fixture\StringBackedEnum;
 use TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing\Fixtures\EntityFixture;
 use TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing\Fixtures\ValueObjectFixture;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class UriBuilderTest extends UnitTestCase
@@ -597,25 +596,6 @@ final class UriBuilderTest extends UnitTestCase
         $subject = $this->getAccessibleMock(UriBuilder::class, null, [], '', false);
         $subject->setTargetPageUid(321);
         $expectedConfiguration = ['parameter' => 321];
-        self::assertEquals($expectedConfiguration, $subject->_call('buildTypolinkConfiguration'));
-    }
-
-    #[Test]
-    public function buildTypolinkConfigurationUsesCurrentPageUidIfTargetPageUidIsNotSet(): void
-    {
-        $pageInformation = new PageInformation();
-        $pageInformation->setId(123);
-        $request = (new ServerRequest())
-            ->withAttribute('frontend.page.information', $pageInformation)
-            ->withAttribute('extbase', new ExtbaseRequestParameters());
-        $request = (new Request($request));
-        $currentContentObject = new ContentObjectRenderer();
-        $currentContentObject->setRequest($request);
-        $request = $request->withAttribute('currentContentObject', $currentContentObject);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-        $expectedConfiguration = ['parameter' => 123];
-        $subject = $this->getAccessibleMock(UriBuilder::class, null, [], '', false);
-        $subject->setRequest($request);
         self::assertEquals($expectedConfiguration, $subject->_call('buildTypolinkConfiguration'));
     }
 

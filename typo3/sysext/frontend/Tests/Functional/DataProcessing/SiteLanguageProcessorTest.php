@@ -15,16 +15,16 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Frontend\Tests\Unit\DataProcessing;
+namespace TYPO3\CMS\Frontend\Tests\Functional\DataProcessing;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\DataProcessing\SiteLanguageProcessor;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class SiteLanguageProcessorTest extends UnitTestCase
+final class SiteLanguageProcessorTest extends FunctionalTestCase
 {
     #[Test]
     public function siteLanguageIsRetrieved(): void
@@ -34,7 +34,7 @@ final class SiteLanguageProcessorTest extends UnitTestCase
         $request = new ServerRequest('https://example.com/lotus/');
         $siteLanguage = new SiteLanguage(123, 'de-de', $request->getUri(), ['customValue' => 'test']);
         $request = $request->withAttribute('language', $siteLanguage);
-        $cObj = new ContentObjectRenderer();
+        $cObj = $this->get(ContentObjectRenderer::class);
         $cObj->setRequest($request);
 
         $subject = new SiteLanguageProcessor();
@@ -48,7 +48,7 @@ final class SiteLanguageProcessorTest extends UnitTestCase
         $expectedName = 'currentSiteLanguage';
         $processorConfiguration = ['as' => $expectedName];
         $request = new ServerRequest('https://example.com/lotus/');
-        $cObj = new ContentObjectRenderer();
+        $cObj = $this->get(ContentObjectRenderer::class);
         $cObj->setRequest($request);
 
         $subject = new SiteLanguageProcessor();

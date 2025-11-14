@@ -23,7 +23,7 @@ namespace TYPO3\CMS\Core\TypoScript;
  *
  * @internal
  */
-class TypoScriptService
+readonly class TypoScriptService
 {
     /**
      * Removes all trailing dots recursively from TS settings array

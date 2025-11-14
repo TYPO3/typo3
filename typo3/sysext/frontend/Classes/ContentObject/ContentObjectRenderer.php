@@ -20,11 +20,12 @@ use Doctrine\DBAL\Result;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use TYPO3\CMS\Core\Cache\CacheManager;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\CacheTag;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Context\Context;
@@ -33,6 +34,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DocumentTypeExclusionRestriction;
@@ -51,7 +53,6 @@ use TYPO3\CMS\Core\Imaging\ImageResource;
 use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Page\DefaultJavaScriptAssetTrait;
 use TYPO3\CMS\Core\Page\PageLayoutResolver;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -108,10 +109,14 @@ use TYPO3\HtmlSanitizer\Builder\BuilderInterface;
  *
  * When you call your own PHP-code typically through a USER or USER_INT cObject then it is this
  * class that instantiates the object and calls the main method.
+ *
+ * Note this class should never be injected since it is stateful and "tainted" after use. Similar to
+ * other stateful service classes, an instance should be retrieved using GeneralUtility::makeInstance()
+ * per single use until the "#[Autoconfigure(shared: false)]" attribute below vanishes.
  */
-class ContentObjectRenderer implements LoggerAwareInterface
+#[Autoconfigure(shared: false)]
+class ContentObjectRenderer
 {
-    use LoggerAwareTrait;
     use DefaultJavaScriptAssetTrait;
 
     /**
@@ -120,6 +125,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @see ContentObjectRender::$userObjectType
      */
     public const OBJECTTYPE_USER_INT = 1;
+
     /**
      * Indicates that object type is USER.
      *
@@ -280,11 +286,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     ];
 
     /**
-     * @var ContainerInterface|null
-     */
-    protected $container;
-
-    /**
      * Loaded with the current data-record.
      *
      * If the instance of this class is used to render records from the database those records are found in this array.
@@ -382,10 +383,39 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     private ?ServerRequestInterface $request = null;
 
-    public function __construct(?ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
+    public function __construct(
+        private readonly ContainerInterface $container,
+        private readonly Context $context,
+        private readonly LoggerInterface $logger,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ConnectionPool $connectionPool,
+        private readonly ResourceFactory $resourceFactory,
+        private readonly Features $features,
+        private readonly CacheLifetimeCalculator $cacheLifetimeCalculator,
+        #[Autowire(service: 'cache.hash')]
+        private readonly FrontendInterface $cacheHash,
+        private readonly HashService $hashService,
+        private readonly FrontendUrlPrefix $frontendUrlPrefix,
+        private readonly Locales $locales,
+        private readonly TypoScriptService $typoScriptService,
+        private readonly SanitizerBuilderFactory $sanitizerBuilderFactory,
+        private readonly TextCropper $textCropper,
+        private readonly HtmlCropper $htmlCropper,
+        private readonly LinkVarsCalculator $linkVarsCalculator,
+        private readonly SystemResourceFactory $systemResourceFactory,
+        private readonly SystemResourcePublisherInterface $systemResourcePublisher,
+        private readonly PageLayoutResolver $pageLayoutResolver,
+        private readonly LanguageServiceFactory $languageServiceFactory,
+        private readonly FlexFormTools $flexFormTools,
+        private readonly LinkFactory $linkFactory,
+        // TimeTracker is a stateful singleton, we would usually not inject this. This
+        // instance however is set up early in middlewares and carried around with its accumulating
+        // state throughout entire FE rendering. As such, it is ok to get it injected here,
+        // similar to PageRenderer and Context, which are designed in a similar way.
+        private readonly TimeTracker $timeTracker,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
+        private readonly PageRenderer $pageRenderer,
+    ) {}
 
     public function setRequest(ServerRequestInterface $request): void
     {
@@ -393,61 +423,85 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * Prevent several objects from being serialized.
-     * If currentFile is set, it is either a File or a FileReference object. As the object itself can't be serialized,
-     * we have store a hash and restore the object in __wakeup()
+     * Used strictly internally to preserve state when dealing with non-cached elements.
      *
-     * @return array
+     * @internal These are not the methods you are looking for.
      */
-    public function __sleep()
+    public function getState(): array
     {
-        $vars = get_object_vars($this);
-        unset($vars['logger'], $vars['container'], $vars['request']);
+        // Request is of course NOT returned!
+        // @todo: A lot of data should not cached at all, for example lastTypoLinkResult.
+        $state = [
+            'data' => $this->data,
+            'table' => $this->table,
+            'parameters' => $this->parameters,
+            'currentValKey' => $this->currentValKey,
+            'currentRecord' => $this->currentRecord,
+            'currentRecordNumber' => $this->currentRecordNumber,
+            'parentRecordNumber' => $this->parentRecordNumber,
+            'parentRecord' => $this->parentRecord,
+            'checkPid_badDoktypeList' => $this->checkPid_badDoktypeList,
+            'lastTypoLinkResult' => $this->lastTypoLinkResult,
+            'doConvertToUserIntObject' => $this->doConvertToUserIntObject,
+            'userObjectType' => $this->userObjectType,
+            'stopRendering' => $this->stopRendering,
+            'stdWrapRecursionLevel' => $this->stdWrapRecursionLevel,
+            'currentFile' => null,
+        ];
         if ($this->currentFile instanceof FileReference) {
-            $this->currentFile = 'FileReference:' . $this->currentFile->getUid();
+            $state['currentFile'] = 'FileReference:' . $this->currentFile->getUid();
         } elseif ($this->currentFile instanceof File) {
-            $this->currentFile = 'File:' . $this->currentFile->getIdentifier();
-        } else {
-            unset($vars['currentFile']);
+            $state['currentFile'] = 'File:' . $this->currentFile->getIdentifier();
         }
-        return array_keys($vars);
+        return $state;
     }
 
     /**
-     * Restore currentFile from hash.
-     * If currentFile references a File, the identifier equals file identifier.
-     * If it references a FileReference the identifier equals the uid of the reference.
+     * Counterpart of getState()
+     *
+     * @internal
      */
-    public function __wakeup()
+    public function updateState(array $state): void
     {
-        if (is_string($this->currentFile)) {
-            [$objectType, $identifier] = explode(':', $this->currentFile, 2);
+        $this->data = $state['data'];
+        $this->table = $state['table'];
+        $this->parameters = $state['parameters'];
+        $this->currentValKey = $state['currentValKey'];
+        $this->currentRecord = $state['currentRecord'];
+        $this->currentRecordNumber = $state['currentRecordNumber'];
+        $this->parentRecordNumber = $state['parentRecordNumber'];
+        $this->parentRecord = $state['parentRecord'];
+        $this->checkPid_badDoktypeList = $state['checkPid_badDoktypeList'];
+        $this->lastTypoLinkResult = $state['lastTypoLinkResult'];
+        $this->doConvertToUserIntObject = $state['doConvertToUserIntObject'];
+        $this->userObjectType = $state['userObjectType'];
+        $this->stopRendering = $state['stopRendering'];
+        $this->stdWrapRecursionLevel = $state['stdWrapRecursionLevel'];
+        $this->currentFile = null;
+        if (is_string($state['currentFile'])) {
+            [$objectType, $identifier] = explode(':', $state['currentFile'], 2);
             try {
                 if ($objectType === 'File') {
-                    $this->currentFile = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($identifier);
+                    $this->currentFile = $this->resourceFactory->retrieveFileOrFolderObject($identifier);
                 } elseif ($objectType === 'FileReference') {
-                    $this->currentFile = GeneralUtility::makeInstance(ResourceFactory::class)->getFileReferenceObject((int)$identifier);
+                    $this->currentFile = $this->resourceFactory->getFileReferenceObject((int)$identifier);
                 }
             } catch (ResourceDoesNotExistException $e) {
-                $this->currentFile = null;
+                // Keep $this->currentFile null
             }
         }
-        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-        $this->container = GeneralUtility::getContainer();
-
-        // We do not derive $this->request from globals here. The request is expected to be injected
-        // using setRequest(), a fallback to $GLOBALS['TYPO3_REQUEST'] is available in getRequest() for BC.
     }
 
     /**
-     * Class constructor.
-     * Well, it has to be called manually since it is not a real constructor function.
-     * So after making an instance of the class, call this function and pass to it a database record and the tablename from where the record is from. That will then become the "current" record loaded into memory and accessed by the .fields property found in eg. stdWrap.
+     * After making an instance of the class, call this function and pass to it a
+     * database record and the tablename from where the record is from. That will
+     * then become the "current" record loaded into memory and accessed by the .fields
+     * property found in eg. stdWrap.
      *
      * @param array|int|string $data The record data that is rendered.
      * @param string $table The table that the data record is from.
      */
-    public function start($data, $table = '')
+    public function start($data, $table = ''): void
     {
         $this->data = $data;
         $this->table = $table;
@@ -456,14 +510,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
             : '';
         $this->parameters = [];
 
-        GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
-            new AfterContentObjectRendererInitializedEvent($this)
-        );
+        $this->eventDispatcher->dispatch(new AfterContentObjectRendererInitializedEvent($this));
 
-        $autoTagging = GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('frontend.cache.autoTagging');
+        $autoTagging = $this->features->isFeatureEnabled('frontend.cache.autoTagging');
         if (is_array($this->data) && $this->currentRecord !== '' && $autoTagging) {
-            $cacheLifetimeCalculator = GeneralUtility::makeInstance(CacheLifetimeCalculator::class);
-            $lifetime = $cacheLifetimeCalculator->calculateLifetimeForRow($this->table, $this->data);
+            $lifetime = $this->cacheLifetimeCalculator->calculateLifetimeForRow($this->table, $this->data);
             $cacheTags = [
                 sprintf('%s_%s', $this->table, ($this->data['uid'] ?? 0)),
             ];
@@ -491,13 +542,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
     /**
      * Sets the internal variable parentRecord with information about current record.
-     * If the ContentObjectRender was started from CONTENT, RECORD or SEARCHRESULT cObject's this array has two keys, 'data' and 'currentRecord' which indicates the record and data for the parent cObj.
+     * If the ContentObjectRender was started from CONTENT, RECORD or SEARCHRESULT cObject's this array has two
+     * keys, 'data' and 'currentRecord' which indicates the record and data for the parent cObj.
      *
      * @param array $data The record array
      * @param string $currentRecord This is set to the [table]:[uid] of the record delivered in the $data-array, if the cObjects CONTENT or RECORD is in operation.
      * @internal
      */
-    public function setParent($data, $currentRecord)
+    public function setParent($data, $currentRecord): void
     {
         $this->parentRecord = [
             'data' => $data,
@@ -505,11 +557,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
         ];
     }
 
-    /***********************************************
-     *
-     * CONTENT_OBJ:
-     *
-     ***********************************************/
     /**
      * Returns the "current" value.
      * The "current" value is just an internal variable that can be used by functions to pass a single value on to another function later in the TypoScript processing.
@@ -527,9 +574,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Sets the "current" value.
      *
      * @param mixed $value The variable that you want to set as "current
-     * @see getCurrentVal()
      */
-    public function setCurrentVal($value)
+    public function setCurrentVal($value): void
     {
         $this->data[$this->currentValKey] = $value;
     }
@@ -585,10 +631,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function cObjGetSingle(string $name, $conf, $TSkey = '__')
     {
-        $timeTracker = $this->getTimeTracker();
         $name = trim($name);
-        if ($timeTracker->LR) {
-            $timeTracker->push($TSkey, $name);
+        if ($this->timeTracker->LR) {
+            $this->timeTracker->push($TSkey, $name);
         }
         $fullConfigArray = [
             'tempKey' => $name,
@@ -601,8 +646,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ($contentObject) {
             $content = $this->render($contentObject, $fullConfigArray['tempKey.']);
         }
-        if ($timeTracker->LR) {
-            $timeTracker->pull($content);
+        if ($this->timeTracker->LR) {
+            $this->timeTracker->pull($content);
         }
         return $content;
     }
@@ -610,22 +655,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Returns a new content object of type $name.
      *
-     * @param string $name
      * @throws ContentRenderingException
      */
-    public function getContentObject($name): ?AbstractContentObject
+    public function getContentObject(string $name): ?AbstractContentObject
     {
-        $contentObjectFactory = $this->container
-            ? $this->container->get(ContentObjectFactory::class)
-            : GeneralUtility::makeInstance(ContentObjectFactory::class);
+        $contentObjectFactory = $this->container->get(ContentObjectFactory::class);
         return $contentObjectFactory->getContentObject($name, $this->getRequest(), $this);
     }
 
-    /********************************************
-     *
-     * Functions rendering content objects (cObjects)
-     *
-     ********************************************/
     /**
      * Renders a content object by taking exception and cache handling
      * into consideration
@@ -674,14 +711,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ($cacheConfiguration !== null && $this->getRequest()->getAttribute('frontend.cache.instruction')->isCachingAllowed()) {
             $key = $this->calculateCacheKey($cacheConfiguration);
             if (!empty($key)) {
-                $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
                 $tags = $this->calculateCacheTags($cacheConfiguration);
                 $cacheLifetime = $this->calculateCacheLifetime($cacheConfiguration);
                 $cachedData = [
                     'content' => $content,
                     'cacheTags' => $tags,
                 ];
-                $cacheFrontend->set($key, $cachedData, $tags, $cacheLifetime);
+                $this->cacheHash->set($key, $cachedData, $tags, $cacheLifetime);
 
                 // If no tags are given, we restrict the maximum lifetime of the cache to the lifetime of the cache entry.
                 if ($tags === []) {
@@ -775,7 +811,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param mixed $userObjectType
      */
-    public function setUserObjectType($userObjectType)
+    public function setUserObjectType($userObjectType): void
     {
         $this->userObjectType = $userObjectType;
     }
@@ -783,26 +819,22 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Requests the current USER object to be converted to USER_INT.
      */
-    public function convertToUserIntObject()
+    public function convertToUserIntObject(): void
     {
         if ($this->userObjectType !== self::OBJECTTYPE_USER) {
-            $this->getTimeTracker()->setTSlogMessage(self::class . '::convertToUserIntObject() is called in the wrong context or for the wrong object type', LogLevel::WARNING);
+            $this->timeTracker->setTSlogMessage(self::class . '::convertToUserIntObject() is called in the wrong context or for the wrong object type', LogLevel::WARNING);
         } else {
             $this->doConvertToUserIntObject = true;
         }
     }
 
-    /************************************
-     *
-     * Various helper functions for content objects:
-     *
-     ************************************/
     /**
      * Converts a given config in Flexform to a conf-array
      *
      * @param string|array $flexData Flexform data
      * @param array $conf Array to write the data into, by reference
      * @param bool $recursive Is set if called recursive. Don't call function with this parameter, it's used inside the function only
+     * @todo: unused. remove.
      */
     public function readFlexformIntoConf($flexData, &$conf, $recursive = false)
     {
@@ -859,7 +891,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ($pidList === '') {
             $pidList = 'this';
         }
-        $pageRepository = $this->getPageRepository();
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         $listArr = null;
         if (trim($pidList)) {
             $contentPid = $this->getRequest()->getAttribute('frontend.page.information')->getContentFromPid();
@@ -905,9 +937,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $file = $imageFile->getOriginalFile();
         } else {
             if (MathUtility::canBeInterpretedAsInteger($imageFile)) {
-                $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject((int)$imageFile);
+                $file = $this->resourceFactory->getFileObject((int)$imageFile);
             } else {
-                $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier($imageFile);
+                $file = $this->resourceFactory->getFileObjectFromCombinedIdentifier($imageFile);
             }
         }
 
@@ -928,13 +960,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 }
             }
             $parametersEncoded = base64_encode((string)json_encode($parameters));
-            $hashService = GeneralUtility::makeInstance(HashService::class);
-            $hmac = $hashService->hmac(implode('|', [$file->getUid(), $parametersEncoded]), 'tx_cms_showpic');
+            $hmac = $this->hashService->hmac(implode('|', [$file->getUid(), $parametersEncoded]), 'tx_cms_showpic');
             $params = '&md5=' . $hmac;
             foreach (str_split($parametersEncoded, 64) as $index => $chunk) {
                 $params .= '&parameters' . rawurlencode('[') . $index . rawurlencode(']') . '=' . rawurlencode($chunk);
             }
-            $absRefPrefix = GeneralUtility::makeInstance(FrontendUrlPrefix::class)->getUrlPrefix($this->getRequest());
+            $absRefPrefix = $this->frontendUrlPrefix->getUrlPrefix($this->getRequest());
             $url = $absRefPrefix . 'index.php?eID=tx_cms_showpic&file=' . $file->getUid() . $params;
             $directImageLink = $this->stdWrapValue('directImageLink', $conf ?? []);
             if ($directImageLink) {
@@ -1037,7 +1068,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Sets the SYS_LASTCHANGED timestamp if input timestamp is larger than current value.
      * The SYS_LASTCHANGED timestamp can be used by various caching/indexing applications to determine if the page has new content.
-     * Therefore you should call this function with the last-changed timestamp of any element you display.
+     * Therefore, you should call this function with the last-changed timestamp of any element you display.
      *
      * @param RecordInterface|int|string|float|null $item a record objet or a Unix timestamp (number of seconds since 1970)
      */
@@ -1056,18 +1087,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
     }
 
-    /***********************************************
-     *
-     * HTML template processing functions
-     *
-     ***********************************************/
-
     /**
      * Sets the current file object during iterations over files.
      *
      * @param File|FileReference|Folder|FileInterface|FolderInterface|string|null $fileObject The file object.
      */
-    public function setCurrentFile($fileObject)
+    public function setCurrentFile($fileObject): void
     {
         $this->currentFile = $fileObject;
     }
@@ -1082,17 +1107,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
         return $this->currentFile;
     }
 
-    /***********************************************
-     *
-     * "stdWrap" + sub functions
-     *
-     ***********************************************/
     /**
      * The "stdWrap" function. This is the implementation of what is known as "stdWrap properties" in TypoScript.
-     * Basically "stdWrap" performs some processing of a value based on properties in the input $conf array(holding the TypoScript "stdWrap properties")
-     * See the link below for a complete list of properties and what they do. The order of the table with properties found in TSref (the link) follows the actual order of implementation in this function.
+     * Basically "stdWrap" performs some processing of a value based on properties in the input $conf array, holding
+     * the TypoScript "stdWrap properties".
      *
-     * @param string $content Input value undergoing processing in this function. Possibly substituted by other values fetched from another source.
+     * @param string $content Input value undergoing processing in this function.
      * @param array $conf TypoScript "stdWrap properties".
      * @return string|null The processed input value
      */
@@ -1109,7 +1129,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $conf[AfterStdWrapFunctionsInitializedEvent::class] = 1;
         $conf[BeforeStdWrapFunctionsExecutedEvent::class] = 1;
         $conf[AfterStdWrapFunctionsExecutedEvent::class] = 1;
-        $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
 
         // Cache handling
         if (is_array($conf['cache.'] ?? null)) {
@@ -1169,11 +1188,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $isExecuted[$functionProperties] = true;
                     if ($functionType === 'event') {
                         // @phpstan-ignore-next-line phpstan does not understand $functionName is only called on 'event' types
-                        $content = $eventDispatcher->dispatch(new $functionName($content, $conf, $this))->getContent();
+                        $content = $this->eventDispatcher->dispatch(new $functionName($content, $conf, $this))->getContent();
                     } else {
                         // Call the function with the prefix stdWrap_ to make sure nobody can execute functions just by adding their name to the TS Array
                         $functionName = 'stdWrap_' . $functionName;
-                        // @phpstan-ignore-next-line phpstan complains about some methods not having a second argument, which is not required/useful - doing reflection here would be too intense.
+                        // @phpstan-ignore-next-line phpstan complains about some methods not having a second argument, which is notrequired/useful - doing reflection here would be too intense.
                         $content = $this->{$functionName}($content, $singleConf);
                     }
                 } elseif ($functionType === 'boolean' && !($conf[$functionName] ?? null)) {
@@ -1248,8 +1267,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * setContentToCurrent
-     * actually it just does the contrary: Sets the value of 'current' based on current content
+     * Actually it just does the contrary: Set the value of 'current' based on current content. Wait. What?
      *
      * @param string $content Input value undergoing processing in this function.
      * @return string The processed input value
@@ -1261,7 +1279,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * setCurrent
      * Sets the value of 'current' based on the outcome of stdWrap operations
      *
      * @param string $content Input value undergoing processing in this function.
@@ -1275,7 +1292,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * lang
      * Translates content based on the language currently used by the FE
      *
      * @param string $content Input value undergoing processing in this function.
@@ -1295,8 +1311,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         } else {
             // @todo: use the Locale object and its dependencies in TYPO3 v13
             // Check language dependencies
-            $locales = GeneralUtility::makeInstance(Locales::class);
-            foreach ($locales->getLocaleDependencies($currentLanguageCode) as $languageCode) {
+            foreach ($this->locales->getLocaleDependencies($currentLanguageCode) as $languageCode) {
                 if (isset($conf['lang.'][$languageCode])) {
                     $content = $conf['lang.'][$languageCode];
                     break;
@@ -1319,7 +1334,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * field
      * Gets content from a DB field
      *
      * @param string $content Input value undergoing processing in this function.
@@ -1332,21 +1346,17 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * current
      * Gets content that has been previously set as 'current'
      * Can be set via setContentToCurrent or setCurrent or will be set automatically i.e. inside the split function
      *
-     * @param string $content Input value undergoing processing in this function.
-     * @param array $conf stdWrap properties for current.
      * @return string The processed input value
      */
-    public function stdWrap_current($content = '', $conf = [])
+    public function stdWrap_current(mixed $_ = null, mixed $__ = null)
     {
         return $this->getCurrentVal();
     }
 
     /**
-     * cObject
      * Will replace the content with the value of an official TypoScript cObject
      * like TEXT, COA, HMENU
      *
@@ -1360,21 +1370,17 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * numRows
-     * Counts the number of returned records of a DB operation
-     * makes use of select internally
+     * Counts the number of returned records of a DB operation, using select.
      *
-     * @param string $content Input value undergoing processing in this function.
+     * @param string $_ Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for numRows.
-     * @return string The processed input value
      */
-    public function stdWrap_numRows($content = '', $conf = [])
+    public function stdWrap_numRows($_ = '', $conf = []): int
     {
         return $this->numRows($conf['numRows.']);
     }
 
     /**
-     * preUserFunc
      * Will execute a user public function before the content will be modified by any other stdWrap function
      *
      * @param string $content Input value undergoing processing in this function.
@@ -1387,7 +1393,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * override
      * Will override the current value of content with its own value'
      *
      * @param string $content Input value undergoing processing in this function.
@@ -1403,7 +1408,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * preIfEmptyListNum
      * Gets a value off a CSV list before the following ifEmpty check
      * Makes sure that the result of ifEmpty will be TRUE in case the CSV does not contain a value at the position given by preIfEmptyListNum
      *
@@ -1417,7 +1421,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * ifNull
      * Will set content to a replacement value in case the value of content is NULL
      *
      * @param string|null $content Input value undergoing processing in this function.
@@ -1430,7 +1433,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * ifEmpty
      * Will set content to a replacement value in case the trimmed value of content returns FALSE
      * 0 (zero) will be replaced as well
      *
@@ -1447,7 +1449,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * ifBlank
      * Will set content to a replacement value in case the trimmed value of content has no length
      * 0 (zero) will not be replaced
      *
@@ -1464,7 +1465,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * listNum
      * Gets a value off a CSV list after ifEmpty check
      * Might return an empty value in case the CSV does not contain a value at the position given by listNum
      * Use preIfEmptyListNum to avoid that behaviour
@@ -1479,26 +1479,22 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * trim
-     * Cuts off any whitespace at the beginning and the end of the content
+     * Cut off any whitespace at the beginning and the end of the content
      *
      * @param string $content Input value undergoing processing in this function.
-     * @return string The processed input value
      */
-    public function stdWrap_trim($content = '')
+    public function stdWrap_trim($content = ''): string
     {
         return trim((string)$content);
     }
 
     /**
-     * strPad
-     * Will return a string padded left/right/on both sides, based on configuration given as stdWrap properties
+     * Return a string padded left/right/on both sides, based on configuration given as stdWrap properties
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for strPad.
-     * @return string The processed input value
      */
-    public function stdWrap_strPad($content = '', $conf = [])
+    public function stdWrap_strPad($content = '', $conf = []): string
     {
         // Must specify a length in conf for this to make sense
         $length = (int)$this->stdWrapValue('length', $conf['strPad.'] ?? [], 0);
@@ -1506,7 +1502,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $padWith = (string)$this->stdWrapValue('padWith', $conf['strPad.'] ?? [], ' ');
         // Padding on the right side is PHP-default
         $padType = STR_PAD_RIGHT;
-
         if (!empty($conf['strPad.']['type'])) {
             $type = (string)$this->stdWrapValue('type', $conf['strPad.']);
             if (strtolower($type) === 'left') {
@@ -1519,7 +1514,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * stdWrap
      * A recursive call of the stdWrap function set
      * This enables the user to execute stdWrap functions in another than the predefined order
      * It modifies the content, not the property
@@ -1535,7 +1529,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * required
      * Will immediately stop rendering and return an empty value
      * when there is no content at this point
      *
@@ -1552,7 +1545,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * if
      * Will immediately stop rendering and return an empty value
      * when the result of the checks returns FALSE
      *
@@ -1570,7 +1562,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * fieldRequired
      * Will immediately stop rendering and return an empty value
      * when there is no content in the field given by fieldRequired
      *
@@ -1607,7 +1598,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * parseFunc
      * Will parse the content based on functions given as stdWrap properties
      * Heavily used together with RTE based content
      *
@@ -1621,7 +1611,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * HTMLparser
      * Will parse HTML content based on functions given as stdWrap properties
      * Heavily used together with RTE based content
      *
@@ -1638,13 +1627,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * split
-     * Will split the content by a given token and treat the results separately
+     * Split the content by a given token and treat the results separately
      * Automatically fills 'current' with a single result
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for split.
-     * @return string The processed input value
+     * @return string|int The processed input value
      */
     public function stdWrap_split($content = '', $conf = [])
     {
@@ -1652,7 +1640,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * replacement
      * Will execute replacements on the content (optionally with preg-regex)
      *
      * @param string $content Input value undergoing processing in this function.
@@ -1661,19 +1648,75 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_replacement($content = '', $conf = [])
     {
-        return $this->replacement($content, $conf['replacement.']);
+        $configuration = $conf['replacement.'] ?? [];
+        // Sort actions in configuration by numeric index
+        ksort($configuration, SORT_NUMERIC);
+        foreach ($configuration as $index => $action) {
+            // Check whether we have a valid action and a numeric key ending with a dot ("10.")
+            if (is_array($action)
+                && str_ends_with($index, '.')
+                && MathUtility::canBeInterpretedAsInteger(substr($index, 0, -1))
+                && (isset($action['search']) || isset($action['search.']))
+                && (isset($action['replace']) || isset($action['replace.']))
+            ) {
+                $search = (string)$this->stdWrapValue('search', $action);
+                $replace = (string)$this->stdWrapValue('replace', $action, null);
+                // Determines whether regular expression shall be used
+                $useRegularExpression = (bool)$this->stdWrapValue('useRegExp', $action, false);
+                // Determines whether replace-pattern uses option-split
+                $useOptionSplitReplace = (bool)$this->stdWrapValue('useOptionSplitReplace', $action, false);
+                // Performs a replacement by preg_replace()
+                if ($useRegularExpression) {
+                    // Get separator-character which precedes the string and separates search-string from the modifiers
+                    $separator = $search[0];
+                    $startModifiers = strrpos($search, $separator);
+                    if ($separator !== false && $startModifiers > 0) {
+                        $modifiers = substr($search, $startModifiers + 1);
+                        // remove "e" (eval-modifier), which would otherwise allow to run arbitrary PHP-code
+                        $modifiers = str_replace('e', '', $modifiers);
+                        $search = substr($search, 0, $startModifiers + 1) . $modifiers;
+                    }
+                    if ($useOptionSplitReplace) {
+                        // init for replacement
+                        $splitCount = preg_match_all($search, $content);
+                        $replaceArray = $this->typoScriptService->explodeConfigurationForOptionSplit([$replace], $splitCount);
+                        $replaceCount = 0;
+                        $replaceCallback = static function ($match) use ($replaceArray, $search, &$replaceCount) {
+                            $replaceCount++;
+                            return preg_replace($search, $replaceArray[$replaceCount - 1][0], $match[0]);
+                        };
+                        $content = preg_replace_callback($search, $replaceCallback, $content);
+                    } else {
+                        $content = preg_replace($search, $replace, $content);
+                    }
+                } elseif ($useOptionSplitReplace) {
+                    // turn search-string into a preg-pattern
+                    $searchPreg = '#' . preg_quote($search, '#') . '#';
+                    // init for replacement
+                    $splitCount = preg_match_all($searchPreg, $content);
+                    $replaceArray = $this->typoScriptService->explodeConfigurationForOptionSplit([$replace], $splitCount);
+                    $replaceCount = 0;
+                    $replaceCallback = static function () use ($replaceArray, &$replaceCount) {
+                        $replaceCount++;
+                        return $replaceArray[$replaceCount - 1][0];
+                    };
+                    $content = preg_replace_callback($searchPreg, $replaceCallback, $content);
+                } else {
+                    $content = str_replace($search, $replace, $content);
+                }
+            }
+        }
+        return $content;
     }
 
     /**
-     * prioriCalc
      * Will use the content as a mathematical term and calculate the result
      * Can be set to 1 to just get a calculated value or 'intval' to get the integer of the result
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for prioriCalc.
-     * @return string The processed input value
      */
-    public function stdWrap_prioriCalc($content = '', $conf = [])
+    public function stdWrap_prioriCalc($content = '', $conf = []): string|int
     {
         $content = MathUtility::calculateWithParentheses($content);
         if (!empty($conf['prioriCalc']) && $conf['prioriCalc'] === 'intval') {
@@ -1683,29 +1726,23 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * char
      * Returns a one-character string containing the character specified by ascii code.
-     *
      * Reliable results only for character codes in the integer range 0 - 127.
      *
      * @see https://php.net/manual/en/function.chr.php
-     * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for char.
-     * @return string The processed input value
      */
-    public function stdWrap_char($content = '', $conf = [])
+    public function stdWrap_char($_ = '', $conf = []): string
     {
         return chr((int)$conf['char']);
     }
 
     /**
-     * intval
      * Will return an integer value of the current content
      *
      * @param string $content Input value undergoing processing in this function.
-     * @return string The processed input value
      */
-    public function stdWrap_intval($content = '')
+    public function stdWrap_intval($content = ''): int
     {
         return (int)$content;
     }
@@ -1715,10 +1752,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for hash.
-     * @return string The processed input value
      * @link https://php.net/manual/de/function.hash-algos.php for a list of supported hash algorithms
      */
-    public function stdWrap_hash($content = '', array $conf = [])
+    public function stdWrap_hash($content = '', array $conf = []): string
     {
         $algorithm = (string)$this->stdWrapValue('hash', $conf ?? []);
         if (in_array($algorithm, hash_algos())) {
@@ -1734,28 +1770,31 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for round.
-     * @return string The processed input value
      */
-    public function stdWrap_round($content = '', $conf = [])
+    public function stdWrap_round($content = '', $conf = []): float
     {
-        return $this->round($content, $conf['round.']);
+        $decimals = (int)$this->stdWrapValue('decimals', $conf['round.'] ?? [], 0);
+        $type = $this->stdWrapValue('roundType', $conf['round.'] ?? []);
+        $floatVal = (float)$content;
+        return match ($type) {
+            'ceil' => ceil($floatVal),
+            'floor' => floor($floatVal),
+            default => round($floatVal, $decimals),
+        };
     }
 
     /**
-     * numberFormat
      * Will return a formatted number based on configuration given as stdWrap properties
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for numberFormat.
-     * @return string The processed input value
      */
-    public function stdWrap_numberFormat($content = '', $conf = [])
+    public function stdWrap_numberFormat($content = '', $conf = []): string
     {
         return $this->numberFormat((float)$content, $conf['numberFormat.'] ?? []);
     }
 
     /**
-     * expandList
      * Will return a formatted number based on configuration given as stdWrap properties
      *
      * @param string $content Input value undergoing processing in this function.
@@ -1767,24 +1806,20 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * date
      * Will return a formatted date based on configuration given according to PHP date/gmdate properties
      * Will return gmdate when the property GMT returns TRUE
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for date.
-     * @return string The processed input value
      */
-    public function stdWrap_date($content = '', $conf = [])
+    public function stdWrap_date($content = '', $conf = []): string
     {
         // Check for zero length string to mimic default case of date/gmdate.
         $content = (string)$content === '' ? $GLOBALS['EXEC_TIME'] : (int)$content;
-        $content = !empty($conf['date.']['GMT']) ? gmdate($conf['date'] ?? null, $content) : date($conf['date'] ?? null, $content);
-        return $content;
+        return !empty($conf['date.']['GMT']) ? gmdate($conf['date'] ?? null, $content) : date($conf['date'] ?? null, $content);
     }
 
     /**
-     * strftime
      * Will return a formatted date based on configuration given according to PHP strftime/gmstrftime properties
      * Will return gmstrftime when the property GMT returns TRUE
      *
@@ -1807,14 +1842,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * strtotime
      * Will return a timestamp based on configuration given according to PHP strtotime
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for strtotime.
-     * @return string The processed input value
      */
-    public function stdWrap_strtotime($content = '', $conf = [])
+    public function stdWrap_strtotime($content = '', $conf = []): int|false
     {
         if ($conf['strtotime'] !== '1') {
             $content .= ' ' . $conf['strtotime'];
@@ -1823,13 +1856,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * php-intl dateformatted
+     * php-intl date format
      * Will return a timestamp based on configuration given according to PHP-intl DateFormatter->format()
      * see https://unicode-org.github.io/icu/userguide/format_parse/datetime/#datetime-format-syntax
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for formattedDate.
-     * @return string The processed input value
      */
     public function stdWrap_formattedDate(string $content, array $conf): string
     {
@@ -1839,20 +1871,19 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $locale = $conf['formattedDate.']['locale'] ?? $language->getLocale();
 
         if ($content === '' || $content === '0') {
-            $content = GeneralUtility::makeInstance(Context::class)->getAspect('date')->getDateTime();
+            $content = $this->context->getAspect('date')->getDateTime();
         } else {
             // format this to a timestamp now
             $content = strtotime((MathUtility::canBeInterpretedAsInteger($content) ? '@' : '') . $content);
             if ($content === false) {
-                $content = GeneralUtility::makeInstance(Context::class)->getAspect('date')->getDateTime();
+                $content = $this->context->getAspect('date')->getDateTime();
             }
         }
         return (new DateFormatter())->format($content, $pattern, $locale);
     }
 
     /**
-     * age
-     * Will return the age of a given timestamp based on configuration given by stdWrap properties
+     * Return the age of a given timestamp based on configuration given by stdWrap properties
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for age.
@@ -1864,21 +1895,18 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * case
-     * Will transform the content to be upper or lower case only
+     * Transform the content to be upper or lower case only
      * Leaves HTML tags untouched
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for case.
-     * @return string The processed input value
      */
-    public function stdWrap_case($content = '', $conf = [])
+    public function stdWrap_case($content = '', $conf = []): string
     {
         return $this->HTMLcaseshift($content, $conf['case']);
     }
 
     /**
-     * bytes
      * Will return the size of a given number in Bytes	 *
      *
      * @param string $content Input value undergoing processing in this function.
@@ -1891,20 +1919,21 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * substring
      * Will return a substring based on position information given by stdWrap properties
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for substring.
-     * @return string The processed input value
      */
-    public function stdWrap_substring($content = '', $conf = [])
+    public function stdWrap_substring($content = '', $conf = []): string
     {
-        return $this->substring($content, $conf['substring']);
+        $options = GeneralUtility::intExplode(',', ($conf['substring'] ?? '') . ',');
+        if ($options[1]) {
+            return mb_substr($content, $options[0], $options[1], 'utf-8');
+        }
+        return mb_substr($content, $options[0], null, 'utf-8');
     }
 
     /**
-     * cropHTML
      * Crops content to a given size while leaving HTML tags untouched
      *
      * @param string $content Input value undergoing processing in this function.
@@ -1917,50 +1946,40 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * stripHtml
      * Completely removes HTML tags from content
      *
      * @param string $content Input value undergoing processing in this function.
-     * @return string The processed input value
      */
-    public function stdWrap_stripHtml($content = '')
+    public function stdWrap_stripHtml($content = ''): string
     {
         return strip_tags((string)$content);
     }
 
     /**
-     * crop
      * Crops content to a given size without caring about HTML tags
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for crop.
-     * @return string The processed input value
      */
-    public function stdWrap_crop($content = '', $conf = [])
+    public function stdWrap_crop($content = '', $conf = []): string
     {
         return $this->crop($content, $conf['crop']);
     }
 
     /**
-     * rawUrlEncode
-     * Encodes content to be used within URLs
-     *
-     * @param string $content Input value undergoing processing in this function.
-     * @return string The processed input value
+     * Encode content to be used within URLs
      */
-    public function stdWrap_rawUrlEncode($content = '')
+    public function stdWrap_rawUrlEncode($content = ''): string
     {
         return rawurlencode($content);
     }
 
     /**
-     * htmlSpecialChars
      * Transforms HTML tags to readable text by replacing special characters with their HTML entity
      * When preserveEntities returns TRUE, existing entities will be left untouched
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for htmlSpecialChars.
-     * @return string The processed input value
      */
     public function stdWrap_htmlSpecialChars($content = '', $conf = [])
     {
@@ -1973,19 +1992,16 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * encodeForJavaScriptValue
      * Escapes content to be used inside JavaScript strings. Single quotes are added around the value.
      *
      * @param string $content Input value undergoing processing in this function
-     * @return string The processed input value
      */
-    public function stdWrap_encodeForJavaScriptValue($content = '')
+    public function stdWrap_encodeForJavaScriptValue($content = ''): string
     {
         return GeneralUtility::quoteJSvalue($content);
     }
 
     /**
-     * doubleBrTag
      * Searches for double line breaks and replaces them with the given value
      *
      * @param string $content Input value undergoing processing in this function.
@@ -1998,34 +2014,28 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * br
      * Searches for single line breaks and replaces them with a <br />/<br> tag
      * according to the doctype
      *
      * @param string $content Input value undergoing processing in this function.
-     * @return string The processed input value
      */
-    public function stdWrap_br($content = '')
+    public function stdWrap_br($content = ''): string
     {
-        $docType = GeneralUtility::makeInstance(PageRenderer::class)->getDocType();
-        return nl2br($content, $docType->isXmlCompliant());
+        return nl2br($content, $this->pageRenderer->getDocType()->isXmlCompliant());
     }
 
     /**
-     * brTag
      * Searches for single line feeds and replaces them with the given value
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for brTag.
-     * @return string The processed input value
      */
-    public function stdWrap_brTag($content = '', $conf = [])
+    public function stdWrap_brTag($content = '', $conf = []): string
     {
         return str_replace(LF, (string)($conf['brTag'] ?? ''), $content);
     }
 
     /**
-     * encapsLines
      * Modifies text blocks by searching for lines which are not surrounded by HTML tags yet
      * and wrapping them with values given by stdWrap properties
      *
@@ -2039,21 +2049,17 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * keywords
      * Transforms content into a CSV list to be used i.e. as keywords within a meta tag
      *
      * @param string $content Input value undergoing processing in this function.
-     * @return string The processed input value
      */
-    public function stdWrap_keywords($content = '')
+    public function stdWrap_keywords($content = ''): string
     {
         return $this->keywords($content);
     }
 
     /**
-     * innerWrap
      * First of a set of different wraps which will be applied in a certain order before or after other functions that modify the content
-     * See wrap
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for innerWrap.
@@ -2065,9 +2071,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * innerWrap2
      * Second of a set of different wraps which will be applied in a certain order before or after other functions that modify the content
-     * See wrap
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for innerWrap2.
@@ -2079,7 +2083,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * preCObject
      * A content object that is prepended to the current content but between the innerWraps and the rest of the wraps
      *
      * @param string $content Input value undergoing processing in this function.
@@ -2092,7 +2095,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * postCObject
      * A content object that is appended to the current content but between the innerWraps and the rest of the wraps
      *
      * @param string $content Input value undergoing processing in this function.
@@ -2105,9 +2107,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * wrapAlign
      * Wraps content with a div container having the style attribute text-align set to the given value
-     * See wrap
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for wrapAlign.
@@ -2123,10 +2123,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * typolink
      * Wraps the content with a link tag
      * URLs and other attributes are created automatically by the values given in the stdWrap properties
-     * See wrap
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for typolink.
@@ -2138,7 +2136,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * wrap
      * This is the "mother" of all wraps
      * Third of a set of different wraps which will be applied in a certain order before or after other functions that modify the content
      * Basically it will put additional content before and after the current content using a split character as a placeholder for the current content
@@ -2151,15 +2148,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_wrap($content = '', $conf = [])
     {
-        return $this->wrap(
-            $content,
-            $conf['wrap'] ?? null,
-            $conf['wrap.']['splitChar'] ?? '|'
-        );
+        return $this->wrap($content, $conf['wrap'] ?? null, $conf['wrap.']['splitChar'] ?? '|');
     }
 
     /**
-     * noTrimWrap
      * Fourth of a set of different wraps which will be applied in a certain order before or after other functions that modify the content
      * The major difference to any other wrap is, that this one can make use of whitespace without trimming	 *
      *
@@ -2175,16 +2167,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ($splitChar === null || $splitChar === '') {
             $splitChar = '|';
         }
-        $content = $this->noTrimWrap(
-            $content,
-            $conf['noTrimWrap'],
-            $splitChar
-        );
-        return $content;
+        return $this->noTrimWrap($content, $conf['noTrimWrap'], $splitChar);
     }
 
     /**
-     * wrap2
      * Fifth of a set of different wraps which will be applied in a certain order before or after other functions that modify the content
      * The default split character is | but it can be replaced with other characters by the property splitChar
      *
@@ -2194,15 +2180,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_wrap2($content = '', $conf = [])
     {
-        return $this->wrap(
-            $content,
-            $conf['wrap2'] ?? null,
-            $conf['wrap2.']['splitChar'] ?? '|'
-        );
+        return $this->wrap($content, $conf['wrap2'] ?? null, $conf['wrap2.']['splitChar'] ?? '|');
     }
 
     /**
-     * dataWrap
      * Sixth of a set of different wraps which will be applied in a certain order before or after other functions that modify the content
      * Can fetch additional content the same way data does (i.e. {field:whatever}) and apply it to the wrap before that is applied to the content
      *
@@ -2216,7 +2197,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * prepend
      * A content object that will be prepended to the current content after most of the wraps have already been applied
      *
      * @param string $content Input value undergoing processing in this function.
@@ -2229,7 +2209,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * append
      * A content object that will be appended to the current content after most of the wraps have already been applied
      *
      * @param string $content Input value undergoing processing in this function.
@@ -2242,7 +2221,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * wrap3
      * Seventh of a set of different wraps which will be applied in a certain order before or after other functions that modify the content
      * The default split character is | but it can be replaced with other characters by the property splitChar
      *
@@ -2252,15 +2230,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_wrap3($content = '', $conf = [])
     {
-        return $this->wrap(
-            $content,
-            $conf['wrap3'] ?? null,
-            $conf['wrap3.']['splitChar'] ?? '|'
-        );
+        return $this->wrap($content, $conf['wrap3'] ?? null, $conf['wrap3.']['splitChar'] ?? '|');
     }
 
     /**
-     * orderedStdWrap
      * Calls stdWrap for each entry in the provided array
      *
      * @param string $content Input value undergoing processing in this function.
@@ -2277,7 +2250,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * outerWrap
      * Eighth of a set of different wraps which will be applied in a certain order before or after other functions that modify the content
      *
      * @param string $content Input value undergoing processing in this function.
@@ -2290,19 +2262,16 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * insertData
      * Can fetch additional content the same way data does and replaces any occurrence of {field:whatever} with this content
      *
      * @param string $content Input value undergoing processing in this function.
-     * @return string The processed input value
      */
-    public function stdWrap_insertData($content = '')
+    public function stdWrap_insertData($content = ''): string
     {
         return $this->insertData($content);
     }
 
     /**
-     * postUserFunc
      * Will execute a user function after the content has been modified by any other stdWrap function
      *
      * @param string $content Input value undergoing processing in this function.
@@ -2315,15 +2284,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * postUserFuncInt
      * Will execute a user function after the content has been created and each time it is fetched from Cache
      * The result of this function itself will not be cached
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for postUserFuncInt.
-     * @return string The processed input value
      */
-    public function stdWrap_postUserFuncInt($content = '', $conf = [])
+    public function stdWrap_postUserFuncInt($content = '', $conf = []): string
     {
         $substKey = 'INT_SCRIPT.' . md5(StringUtility::getUniqueId());
         $pageParts = $this->getRequest()->getAttribute('frontend.page.parts');
@@ -2333,14 +2300,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
             'postUserFunc' => $conf['postUserFuncInt'],
             'conf' => $conf['postUserFuncInt.'],
             'type' => 'POSTUSERFUNC',
-            'cObj' => serialize($this),
+            'cObjData' => serialize($this->getState()),
         ]);
         return '<!--' . $substKey . '-->';
     }
 
     /**
-     * prefixComment
-     * Will add HTML comments to the content to make it easier to identify certain content elements within the HTML output later on
+     * Add HTML comments to the content to make it easier to identify certain content elements within the HTML output later on
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for prefixComment.
@@ -2349,8 +2315,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function stdWrap_prefixComment($content = '', $conf = [])
     {
         $typoScriptConfigArray = $this->getRequest()->getAttribute('frontend.typoscript')->getConfigArray();
-        if (
-            (!isset($typoScriptConfigArray['disablePrefixComment']) || !$typoScriptConfigArray['disablePrefixComment'])
+        if ((!isset($typoScriptConfigArray['disablePrefixComment']) || !$typoScriptConfigArray['disablePrefixComment'])
             && !empty($conf['prefixComment'])
         ) {
             $content = $this->prefixComment($conf['prefixComment'], [], $content);
@@ -2361,11 +2326,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function stdWrap_htmlSanitize(string $content = '', array $conf = []): string
     {
         $build = $conf['build'] ?? 'default';
+        // @todo: Simplify: There is a factory to build a builder, and this is wrapped here
+        //        to build a different builder. This is not one, but two levels too complex.
         if (class_exists($build) && is_a($build, BuilderInterface::class, true)) {
             $builder = GeneralUtility::makeInstance($build);
         } else {
-            $factory = GeneralUtility::makeInstance(SanitizerBuilderFactory::class);
-            $builder = $factory->build($build);
+            $builder = $this->sanitizerBuilderFactory->build($build);
         }
         $sanitizer = $builder->build();
         $initiator = $this->shallDebug()
@@ -2390,8 +2356,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if (empty($key)) {
             return $content;
         }
-
-        $event = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+        $event = $this->eventDispatcher->dispatch(
             new BeforeStdWrapContentStoredInCacheEvent(
                 content: $content,
                 tags: $this->calculateCacheTags($conf['cache.']),
@@ -2401,41 +2366,32 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 contentObjectRenderer: $this
             )
         );
-
-        GeneralUtility::makeInstance(CacheManager::class)
-            ->getCache('hash')
-            ->set(
-                $event->getKey(),
-                ['content' => $event->getContent(), 'cacheTags' => $event->getTags()],
-                $event->getTags(),
-                $event->getLifetime()
-            );
-
-        // If no tags are given, we restrict the maximum lifetime of the cache to the lifetime of the cache entry.
-        if ($event->getTags() === []) {
-            $this->getRequest()->getAttribute('frontend.cache.collector')->restrictMaximumLifetime($event->getLifetime());
-        }
-
-        $this->getRequest()->getAttribute('frontend.cache.collector')->addCacheTags(
-            ...array_map(fn(string $tag) => new CacheTag($tag, $event->getLifetime()), $event->getTags())
+        $this->cacheHash->set(
+            $event->getKey(),
+            ['content' => $event->getContent(), 'cacheTags' => $event->getTags()],
+            $event->getTags(),
+            $event->getLifetime()
         );
+        // If no tags are given, we restrict the maximum lifetime of the cache to the lifetime of the cache entry.
+        $cacheCollector = $this->getRequest()->getAttribute('frontend.cache.collector');
+        if ($event->getTags() === []) {
+            $cacheCollector->restrictMaximumLifetime($event->getLifetime());
+        }
+        $cacheCollector->addCacheTags(...array_map(fn(string $tag) => new CacheTag($tag, $event->getLifetime()), $event->getTags()));
         return $event->getContent();
     }
 
     /**
-     * debug
      * Will output the content as readable HTML code
      *
      * @param string $content Input value undergoing processing in this function.
-     * @return string The processed input value
      */
-    public function stdWrap_debug($content = '')
+    public function stdWrap_debug($content = ''): string
     {
         return '<pre>' . htmlspecialchars($content) . '</pre>';
     }
 
     /**
-     * debugFunc
      * Will output the content in a debug table
      *
      * @param string $content Input value undergoing processing in this function.
@@ -2449,7 +2405,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * debugData
      * Will output the data used by the current record in a debug table
      *
      * @param string $content Input value undergoing processing in this function.
@@ -2466,33 +2421,32 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Implements the stdWrap "numRows" property
      *
      * @param array $conf TypoScript properties for the property (see link to "numRows")
-     * @return int The number of rows found by the select
      * @internal
-     * @see stdWrap()
      */
-    public function numRows($conf)
+    public function numRows($conf): int
     {
         $conf['select.']['selectFields'] = 'count(*)';
         $statement = $this->exec_getQuery($conf['table'], $conf['select.']);
-
         return (int)$statement->fetchOne();
     }
 
     /**
-     * Explode a string by the $delimeter value and return the value of index $listNum
+     * Explode a string by the $delimiter value and return the value of index $listNum
      *
      * @param string $content String to explode
-     * @param string $listNum Index-number | 'last' | 'rand' | arithmetic expression. You can place the word "last" in it and it will be substituted with the pointer to the last value. You can use math operators like "+-/*" (passed to calc())
-     * @param string $delimeter Either a string used to explode the content string or an integer value (as string) which will then be changed into a character, eg. "10" for a linebreak char.
+     * @param string $listNum Index-number | 'last' | 'rand' | arithmetic expression. You can place the word "last" in it and it will be
+     *                        substituted with the pointer to the last value. You can use math operators like "+-/*" (passed to calc())
+     * @param string $delimiter Either a string used to explode the content string or an integer value (as string) which will then be
+     *                          changed into a character, eg. "10" for a linebreak char.
      * @return string
      */
-    public function listNum($content, $listNum, $delimeter = ',')
+    public function listNum($content, $listNum, $delimiter = ',')
     {
-        $delimeter = $delimeter ?: ',';
-        if (MathUtility::canBeInterpretedAsInteger($delimeter)) {
-            $delimeter = chr((int)$delimeter);
+        $delimiter = $delimiter ?: ',';
+        if (MathUtility::canBeInterpretedAsInteger($delimiter)) {
+            $delimiter = chr((int)$delimiter);
         }
-        $temp = explode($delimeter, $content);
+        $temp = explode($delimiter, $content);
         if ($temp === ['']) {
             return '';
         }
@@ -2608,12 +2562,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string $theValue The value to parse by the class \TYPO3\CMS\Core\Html\HtmlParser
      * @param array $conf TypoScript properties for the parser. See link.
-     * @return string Return value.
      * @see stdWrap()
-     * @see \TYPO3\CMS\Core\Html\HtmlParser::HTMLparserConfig()
-     * @see \TYPO3\CMS\Core\Html\HtmlParser::HTMLcleaner()
+     * @internal
      */
-    public function HTMLparser_TSbridge($theValue, $conf)
+    public function HTMLparser_TSbridge($theValue, $conf): string
     {
         $htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
         $htmlParserCfg = $htmlParser->HTMLparserConfig($conf);
@@ -2644,12 +2596,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * the current pages title field value.
      *
      * @param string $str Input value
-     * @return string Processed input value
      * @see getData()
      * @see stdWrap()
      * @see dataWrap()
+     * @internal
      */
-    public function insertData($str)
+    public function insertData($str): string
     {
         $inside = 0;
         $newVal = '';
@@ -2677,16 +2629,15 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * Returns a HTML comment with the second part of input string (divided by "|") where first part is an integer telling how many trailing tabs to put before the comment on a new line.
-     * Notice; this function (used by stdWrap) can be disabled by a "config.disablePrefixComment" setting in TypoScript.
+     * Returns an HTML comment with the second part of input string (divided by "|") where first part is
+     * an integer telling how many trailing tabs to put before the comment on a new line.
+     * This function (used by stdWrap) can be disabled by a "config.disablePrefixComment" setting in TypoScript.
      *
      * @param string $str Input value
-     * @param array $conf TypoScript Configuration (not used at this point.)
      * @param string $content The content to wrap the comment around.
-     * @return string Processed input value
-     * @see stdWrap()
+     * @internal
      */
-    public function prefixComment($str, $conf, $content)
+    public function prefixComment($str, $_, $content): string
     {
         if (empty($str)) {
             return $content;
@@ -2694,30 +2645,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $parts = explode('|', $str);
         $indent = (int)$parts[0];
         $comment = htmlspecialchars($this->insertData($parts[1]));
-        $output = LF
+        return LF
             . str_pad('', $indent, "\t") . '<!-- ' . $comment . ' [begin] -->' . LF
             . str_pad('', $indent + 1, "\t") . $content . LF
             . str_pad('', $indent, "\t") . '<!-- ' . $comment . ' [end] -->' . LF
             . str_pad('', $indent + 1, "\t");
-        return $output;
-    }
-
-    /**
-     * Implements the stdWrap property "substring" which is basically a TypoScript implementation of the PHP function, substr()
-     *
-     * @param string $content The string to perform the operation on
-     * @param string $options The parameters to substring, given as a comma list of integers where the first and second number is passed as arg 1 and 2 to substr().
-     * @return string The processed input value.
-     * @internal
-     * @see stdWrap()
-     */
-    public function substring($content, $options)
-    {
-        $options = GeneralUtility::intExplode(',', $options . ',');
-        if ($options[1]) {
-            return mb_substr($content, $options[0], $options[1], 'utf-8');
-        }
-        return mb_substr($content, $options[0], null, 'utf-8');
     }
 
     /**
@@ -2729,19 +2661,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @see stdWrap()
      * @internal
      */
-    public function crop($content, $options)
+    public function crop($content, $options): string
     {
         $options = explode('|', $options);
         $numberOfChars = (int)$options[0];
         $replacementForEllipsis = trim($options[1] ?? '');
         $cropToSpace = trim($options[2] ?? '') === '1';
-        return GeneralUtility::makeInstance(TextCropper::class)
-            ->crop(
-                content: $content,
-                numberOfChars: $numberOfChars,
-                replacementForEllipsis: $replacementForEllipsis,
-                cropToSpace: $cropToSpace
-            );
+        return $this->textCropper->crop($content, $numberOfChars, $replacementForEllipsis, $cropToSpace);
     }
 
     /**
@@ -2763,13 +2689,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $numberOfChars = (int)$options[0];
         $replacementForEllipsis = trim($options[1] ?? '');
         $cropToSpace = trim($options[2] ?? '') === '1';
-        return GeneralUtility::makeInstance(HtmlCropper::class)
-            ->crop(
-                content: $content,
-                numberOfChars: $numberOfChars,
-                replacementForEllipsis: $replacementForEllipsis,
-                cropToSpace: $cropToSpace
-            );
+        return $this->htmlCropper->crop($content, $numberOfChars, $replacementForEllipsis, $cropToSpace);
     }
 
     /**
@@ -2779,7 +2699,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @return int The result (might be a float if you did a division of the numbers).
      * @see \TYPO3\CMS\Core\Utility\MathUtility::calculateWithPriorityToAdditionAndSubtraction()
      */
-    public function calc($val)
+    public function calc($val): int
     {
         $parts = GeneralUtility::splitCalc($val, '+-*/');
         $value = 0;
@@ -2857,8 +2777,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ($wrap !== '' || $cObjNumSplitConf !== '') {
             $splitArr['wrap'] = $wrap;
             $splitArr['cObjNum'] = $cObjNumSplitConf;
-            $splitArr = GeneralUtility::makeInstance(TypoScriptService::class)
-                ->explodeConfigurationForOptionSplit($splitArr, $splitCount);
+            $splitArr = $this->typoScriptService->explodeConfigurationForOptionSplit($splitArr, $splitCount);
         }
         $content = '';
         for ($a = 0; $a < $splitCount; $a++) {
@@ -2881,130 +2800,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * Processes ordered replacements on content data.
-     *
-     * @param string $content The content to be processed
-     * @param array $configuration The TypoScript configuration for stdWrap.replacement
-     * @return string The processed content data
-     */
-    protected function replacement($content, array $configuration)
-    {
-        // Sorts actions in configuration by numeric index
-        ksort($configuration, SORT_NUMERIC);
-        foreach ($configuration as $index => $action) {
-            // Checks whether we have a valid action and a numeric key ending with a dot ("10.")
-            if (is_array($action) && substr($index, -1) === '.' && MathUtility::canBeInterpretedAsInteger(substr($index, 0, -1))) {
-                $content = $this->replacementSingle($content, $action);
-            }
-        }
-        return $content;
-    }
-
-    /**
-     * Processes a single search/replace on content data.
-     *
-     * @param string $content The content to be processed
-     * @param array $configuration The TypoScript of the search/replace action to be processed
-     * @return string The processed content data
-     */
-    protected function replacementSingle($content, array $configuration)
-    {
-        if ((isset($configuration['search']) || isset($configuration['search.'])) && (isset($configuration['replace']) || isset($configuration['replace.']))) {
-            // Gets the strings
-            $search = (string)$this->stdWrapValue('search', $configuration ?? []);
-            $replace = (string)$this->stdWrapValue('replace', $configuration, null);
-
-            // Determines whether regular expression shall be used
-            $useRegularExpression = (bool)$this->stdWrapValue('useRegExp', $configuration, false);
-
-            // Determines whether replace-pattern uses option-split
-            $useOptionSplitReplace = (bool)$this->stdWrapValue('useOptionSplitReplace', $configuration, false);
-
-            // Performs a replacement by preg_replace()
-            if ($useRegularExpression) {
-                // Get separator-character which precedes the string and separates search-string from the modifiers
-                $separator = $search[0];
-                $startModifiers = strrpos($search, $separator);
-                if ($separator !== false && $startModifiers > 0) {
-                    $modifiers = substr($search, $startModifiers + 1);
-                    // remove "e" (eval-modifier), which would otherwise allow to run arbitrary PHP-code
-                    $modifiers = str_replace('e', '', $modifiers);
-                    $search = substr($search, 0, $startModifiers + 1) . $modifiers;
-                }
-                if ($useOptionSplitReplace) {
-                    // init for replacement
-                    $splitCount = preg_match_all($search, $content);
-                    $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
-                    $replaceArray = $typoScriptService->explodeConfigurationForOptionSplit([$replace], $splitCount);
-                    $replaceCount = 0;
-
-                    $replaceCallback = static function ($match) use ($replaceArray, $search, &$replaceCount) {
-                        $replaceCount++;
-                        return preg_replace($search, $replaceArray[$replaceCount - 1][0], $match[0]);
-                    };
-                    $content = preg_replace_callback($search, $replaceCallback, $content);
-                } else {
-                    $content = preg_replace($search, $replace, $content);
-                }
-            } elseif ($useOptionSplitReplace) {
-                // turn search-string into a preg-pattern
-                $searchPreg = '#' . preg_quote($search, '#') . '#';
-
-                // init for replacement
-                $splitCount = preg_match_all($searchPreg, $content);
-                $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
-                $replaceArray = $typoScriptService->explodeConfigurationForOptionSplit([$replace], $splitCount);
-                $replaceCount = 0;
-
-                $replaceCallback = static function () use ($replaceArray, &$replaceCount) {
-                    $replaceCount++;
-                    return $replaceArray[$replaceCount - 1][0];
-                };
-                $content = preg_replace_callback($searchPreg, $replaceCallback, $content);
-            } else {
-                $content = str_replace($search, $replace, $content);
-            }
-        }
-        return $content;
-    }
-
-    /**
-     * Implements the "round" property of stdWrap
-     * This is a Wrapper function for PHP's rounding functions (round,ceil,floor), defaults to round()
-     *
-     * @param string $content Value to process
-     * @param array $conf TypoScript configuration for round
-     * @return string The formatted number
-     */
-    protected function round($content, array $conf = [])
-    {
-        $decimals = (int)$this->stdWrapValue('decimals', $conf, 0);
-        $type = $this->stdWrapValue('roundType', $conf);
-        $floatVal = (float)$content;
-        switch ($type) {
-            case 'ceil':
-                $content = ceil($floatVal);
-                break;
-            case 'floor':
-                $content = floor($floatVal);
-                break;
-            case 'round':
-
-            default:
-                $content = round($floatVal, $decimals);
-        }
-        return $content;
-    }
-
-    /**
      * Implements the stdWrap property "numberFormat"
      * This is a Wrapper function for php's number_format()
      *
      * @param float $content Value to process
      * @param array $conf TypoScript Configuration for numberFormat
-     * @return string The formatted number
+     * @internal
      */
-    public function numberFormat($content, $conf)
+    public function numberFormat($content, $conf): string
     {
         $decimals = (int)$this->stdWrapValue('decimals', $conf, 0);
         $dec_point = (string)$this->stdWrapValue('dec_point', $conf, '.');
@@ -3160,7 +2963,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $theValue The value to process.
      * @param array $conf TypoScript configuration for parseFunc
      * @return string The processed value
-     * @internal
      */
     protected function parseFuncInternal($theValue, $conf)
     {
@@ -3502,7 +3304,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $data The string in which to search for "http://
      * @param array $conf Configuration for makeLinks, see link
      * @return string The processed input string, being returned.
-     * @internal
      */
     protected function http_makelinks(string $data, array $conf): string
     {
@@ -3563,7 +3364,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $data The string in which to search for "mailto:
      * @param array $conf Configuration for makeLinks, see link
      * @return string The processed input string, being returned.
-     * @internal
      */
     protected function mailto_makelinks(string $data, array $conf): string
     {
@@ -3616,7 +3416,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param array $fileArray TypoScript properties for the imgResource type
      * @return ImageResource|null
      * @see cImage()
-     * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder
      */
     public function getImgResource($file, $fileArray)
     {
@@ -3651,18 +3450,18 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     if (MathUtility::canBeInterpretedAsInteger($file)) {
                         $treatIdAsReference = $this->stdWrapValue('treatIdAsReference', $fileArray);
                         if (!empty($treatIdAsReference)) {
-                            $fileReference = $this->getResourceFactory()->getFileReferenceObject((int)$file);
+                            $fileReference = $this->resourceFactory->getFileReferenceObject((int)$file);
                             $fileObject = $fileReference->getOriginalFile();
                         } else {
-                            $fileObject = $this->getResourceFactory()->getFileObject((int)$file);
+                            $fileObject = $this->resourceFactory->getFileObject((int)$file);
                         }
                     } elseif (preg_match('/^(0|[1-9][0-9]*):/', $file)) { // combined identifier
-                        $fileObject = $this->getResourceFactory()->retrieveFileOrFolderObject($file);
+                        $fileObject = $this->resourceFactory->retrieveFileOrFolderObject($file);
                     } else {
                         if ($importedFile && !empty($fileArray['import'])) {
                             $file = $fileArray['import'] . $file;
                         }
-                        $fileObject = $this->getResourceFactory()->retrieveFileOrFolderObject($file);
+                        $fileObject = $this->resourceFactory->retrieveFileOrFolderObject($file);
                     }
                 } catch (Exception $exception) {
                     $this->logger->warning('The image "{file}" could not be found and won\'t be included in frontend output', [
@@ -3716,7 +3515,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
         }
 
-        return GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+        return $this->eventDispatcher->dispatch(
             new AfterImageResourceResolvedEvent($file, $fileArray, $imageResource)
         )->getImageResource();
     }
@@ -3747,7 +3546,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $fileCropArea = $this->createCropAreaFromJsonString((string)$fileReference->getProperty('crop'), $cropVariant);
             return $fileCropArea->isEmpty() ? null : $fileCropArea->makeAbsoluteBasedOnFile($fileReference);
         }
-
         return $this->getCropAreaFromFromTypoScriptSettings($fileReference, $fileArray);
     }
 
@@ -3765,7 +3563,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $cropSettings = isset($fileArray['crop.'])
             ? $this->stdWrap($fileArray['crop'] ?? '', $fileArray['crop.'])
             : ($fileArray['crop'] ?? null);
-
         if (is_string($cropSettings)) {
             // Set crop variant from TypoScript settings. If not set, use default.
             $cropVariant = $fileArray['cropVariant'] ?? 'default';
@@ -3773,43 +3570,35 @@ class ContentObjectRenderer implements LoggerAwareInterface
             // CropVariantCollection::create does json_decode.
             $jsonCropArea = $this->createCropAreaFromJsonString($cropSettings, $cropVariant);
             $cropArea = $jsonCropArea->isEmpty() ? null : $jsonCropArea->makeAbsoluteBasedOnFile($file);
-
             // Cropping is configured in TypoScript in the following way: file.crop = 50,50,100,100
             if ($jsonCropArea->isEmpty() && preg_match('/^[0-9]+,[0-9]+,[0-9]+,[0-9]+$/', $cropSettings)) {
                 $cropSettings = explode(',', $cropSettings);
                 if (count($cropSettings) === 4) {
                     $cropSettings = array_map(floatval(...), $cropSettings);
-                    $stringCropArea = GeneralUtility::makeInstance(
-                        Area::class,
-                        ...$cropSettings
-                    );
+                    $stringCropArea = GeneralUtility::makeInstance(Area::class, ...$cropSettings);
                     $cropArea = $stringCropArea->isEmpty() ? null : $stringCropArea;
                 }
             }
         }
-
         return $cropArea;
     }
 
     /**
-     * Takes a JSON string and creates CropVariantCollection and fetches the corresponding
-     * CropArea for that.
+     * Takes a JSON string and creates CropVariantCollection and fetches the corresponding CropArea for that.
      */
     protected function createCropAreaFromJsonString(string $cropSettings, string $cropVariant): Area
     {
         return CropVariantCollection::create($cropSettings)->getCropArea($cropVariant);
     }
 
-    /***********************************************
-     *
-     * Data retrieval etc.
-     *
-     ***********************************************/
     /**
-     * Returns the value for the field from $this->data. If "//" is found in the $field value that token will split the field values apart and the first field having a non-blank value will be returned.
+     * Returns the value for the field from $this->data. If "//" is found in the $field value that token will split
+     * the field values apart and the first field having a non-blank value will be returned.
      *
-     * @param string $field The fieldname, eg. "title" or "navtitle // title" (in the latter case the value of $this->data[navtitle] is returned if not blank, otherwise $this->data[title] will be)
+     * @param string $field The fieldname, e.g. "title" or "navtitle // title" (in the latter case the value of
+     *                      $this->data[navtitle] is returned if not blank, otherwise $this->data[title] will be)
      * @return string|null
+     * @internal
      */
     public function getFieldVal($field)
     {
@@ -3822,7 +3611,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 return $this->data[$k];
             }
         }
-
         return '';
     }
 
@@ -3834,8 +3622,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *                       In the latter case and example of how the value is FIRST split by "//" is shown
      * @param array|null $fieldArray Alternative field array; If you set this to an array this variable will be used to
      *                               look up values for the "field" key. Otherwise, the current page record is used.
-     * @return string The value fetched
-     * @see getFieldVal()
+     * @return mixed The value fetched
      */
     public function getData($string, $fieldArray = null)
     {
@@ -3874,12 +3661,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         } elseif (($valueParts[0] ?? '') === 'linkVars') {
                             $typoScriptConfigArray = $this->getRequest()->getAttribute('frontend.typoscript')->getConfigArray();
                             $typoScriptConfigLinkVars = (string)($typoScriptConfigArray['linkVars'] ?? '');
-                            $retVal = GeneralUtility::makeInstance(LinkVarsCalculator::class)
-                                ->getAllowedLinkVarsFromRequest(
-                                    $typoScriptConfigLinkVars,
-                                    $this->getRequest()->getQueryParams(),
-                                    GeneralUtility::makeInstance(Context::class)
-                                );
+                            $retVal = $this->linkVarsCalculator->getAllowedLinkVarsFromRequest($typoScriptConfigLinkVars, $this->getRequest()->getQueryParams(), $this->context);
                         } elseif (($valueParts[0] ?? '') === 'id') {
                             $retVal = $this->getRequest()->getAttribute('frontend.page.information')->getId();
                         } elseif (($valueParts[0] ?? '') === 'contentPid') {
@@ -3900,7 +3682,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $retVal = getenv($key);
                         break;
                     case 'getindpenv':
-                        $retVal = $this->getEnvironmentVariable($key);
+                        if ($key === 'REQUEST_URI') {
+                            $retVal = $this->getRequest()->getAttribute('normalizedParams')->getRequestUri();
+                        } else {
+                            $retVal = GeneralUtility::getIndpEnv($key);
+                        }
                         break;
                     case 'field':
                         $retVal = $this->getGlobal($key, $fieldArray);
@@ -3915,8 +3701,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             $options = new UriGenerationOptions(cacheBusting: false);
                         }
                         try {
-                            $resource = GeneralUtility::makeInstance(SystemResourceFactory::class)->createPublicResource($key);
-                            $retVal = (string)GeneralUtility::makeInstance(SystemResourcePublisherInterface::class)->generateUri($resource, $this->getRequest(), $options);
+                            $resource = $this->systemResourceFactory->createPublicResource($key);
+                            $retVal = (string)$this->systemResourcePublisher->generateUri($resource, $this->getRequest(), $options);
                         } catch (Exception) {
                             $retVal = null;
                         }
@@ -3994,8 +3780,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         break;
                     case 'pagelayout':
                         $pageInformation = $this->getRequest()->getAttribute('frontend.page.information');
-                        $pageLayoutResolver = GeneralUtility::makeInstance(PageLayoutResolver::class);
-                        $retVal = $pageLayoutResolver->getLayoutIdentifierForPage($pageInformation->getPageRecord(), $pageInformation->getRootLine());
+                        $retVal = $this->pageLayoutResolver->getLayoutIdentifierForPage($pageInformation->getPageRecord(), $pageInformation->getRootLine());
                         break;
                     case 'current':
                         $retVal = $this->data[$this->currentValKey] ?? null;
@@ -4005,7 +3790,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         if (!isset($selectParts[1])) {
                             break;
                         }
-                        $pageRepository = $this->getPageRepository();
+                        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
                         $dbRecord = $pageRepository->getRawRecord($selectParts[0], (int)$selectParts[1]);
                         if (is_array($dbRecord) && isset($selectParts[2])) {
                             $retVal = $dbRecord[$selectParts[2]] ?? '';
@@ -4014,7 +3799,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     case 'lll':
                         // @todo: Check when/if there are scenarios where attribute 'language' is not yet set in $request.
                         $language = $this->getRequest()->getAttribute('language') ?? $this->getRequest()->getAttribute('site')->getDefaultLanguage();
-                        $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromSiteLanguage($language);
+                        $languageService = $this->languageServiceFactory->createFromSiteLanguage($language);
                         $retVal = $languageService->sL('LLL:' . $key);
                         break;
                     case 'cobj':
@@ -4048,9 +3833,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         if (count($keyParts) === 2 && isset($this->data[$keyParts[0]])) {
                             $flexFormContent = $this->data[$keyParts[0]];
                             if (!empty($flexFormContent)) {
-                                $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
                                 $flexFormKey = str_replace('.', '|', $keyParts[1]);
-                                $settings = $flexFormTools->convertFlexFormContentToArray($flexFormContent);
+                                $settings = $this->flexFormTools->convertFlexFormContentToArray($flexFormContent);
                                 $retVal = $this->getGlobal($flexFormKey, $settings);
                             }
                         }
@@ -4074,9 +3858,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         }
                         break;
                     case 'context':
-                        $context = GeneralUtility::makeInstance(Context::class);
                         [$aspectName, $propertyName] = GeneralUtility::trimExplode(':', $key, true, 2);
-                        $retVal = $context->getPropertyFromAspect($aspectName, $propertyName, '');
+                        $retVal = $this->context->getPropertyFromAspect($aspectName, $propertyName, '');
                         if (is_array($retVal)) {
                             $retVal = implode(',', $retVal);
                         }
@@ -4146,7 +3929,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
         }
 
-        return GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+        return $this->eventDispatcher->dispatch(
             new AfterGetDataResolvedEvent($string, $fieldArray, $retVal, $this)
         )->getResult();
     }
@@ -4167,8 +3950,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if ($fileUidOrCurrentKeyword === 'current') {
                 $fileObject = $this->getCurrentFile();
             } elseif (MathUtility::canBeInterpretedAsInteger($fileUidOrCurrentKeyword)) {
-                $fileFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-                $fileObject = $fileFactory->getFileObject((int)$fileUidOrCurrentKeyword);
+                $fileObject = $this->resourceFactory->getFileObject((int)$fileUidOrCurrentKeyword);
             } else {
                 $fileObject = null;
             }
@@ -4222,8 +4004,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param bool $slideBack If set, then we will traverse through the rootline from outer level towards the root level until the value found is TRUE
      * @param mixed $altRootLine If you supply an array for this it will be used as an alternative root line array
      * @return string The value from the field of the rootline.
-     * @internal
-     * @see getData()
      */
     protected function rootLineValue($key, $field, $slideBack = false, $altRootLine = ''): string
     {
@@ -4250,8 +4030,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string $keyString Global var key, eg. "HTTP_GET_VAR" or "HTTP_GET_VARS|id" to get the GET parameter "id" back.
      * @param array $source Alternative array than $GLOBAL to get variables from.
-     * @return mixed Whatever value. If none, then blank string.
-     * @see getData()
+     * @return float|int|string Whatever value. If none, then blank string.
      */
     public function getGlobal($keyString, $source = null)
     {
@@ -4265,8 +4044,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * This method recursively checks for values in methods, arrays, objects, but
      * does not fall back to $GLOBALS object instead of getGlobal().
-     *
-     * see getGlobal()
      */
     protected function getValueFromRecursiveData(array $keys, mixed $startValue): int|float|string
     {
@@ -4307,7 +4084,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param array $arr array in which the key should be found.
      * @return int The processed integer key value.
      * @internal
-     * @see getData()
      */
     public function getKey($key, $arr)
     {
@@ -4322,12 +4098,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
         return $key;
     }
-
-    /***********************************************
-     *
-     * Link functions (typolink)
-     *
-     ***********************************************/
 
     /**
      * Implements the "typolink" property of stdWrap (and others)
@@ -4396,13 +4166,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function createLink(string $linkText, array $conf): LinkResultInterface
     {
         $this->lastTypoLinkResult = null;
-        try {
-            $linkResult = GeneralUtility::makeInstance(LinkFactory::class)->create($linkText, $conf, $this);
-        } catch (UnableToLinkException $e) {
-            // URL could not be generated
-            throw $e;
-        }
-
+        $linkResult = $this->linkFactory->create($linkText, $conf, $this);
         $this->lastTypoLinkResult = $linkResult;
         return $linkResult;
     }
@@ -4420,7 +4184,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         try {
             return $this->createLink('', $conf)->getUrl();
-        } catch (UnableToLinkException $e) {
+        } catch (UnableToLinkException) {
+            // @todo: Inconsistent. createLink() throws it, but createUrl() eats it?
             // URL could not be generated
             return '';
         }
@@ -4431,18 +4196,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param array $conf TypoScript properties for "typolink"
      * @return string The URL of the link-tag that typoLink() would by itself return
-     * @see typoLink()
      */
-    public function typoLink_URL($conf)
+    public function typoLink_URL($conf): string
     {
         return $this->createUrl($conf ?? []);
     }
 
-    /***********************************************
-     *
-     * Miscellaneous functions, stand alone
-     *
-     ***********************************************/
     /**
      * Wrapping a string.
      * Implements the TypoScript "wrap" property.
@@ -4471,7 +4230,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $wrap The wrap value, eg. " | <strong> | </strong>
      * @param string $char The char used to split the wrapping value, default is "|"
      * @return string Wrapped input string, eg. " <strong> HELLO WORD </strong>
-     * @see wrap()
      */
     public function noTrimWrap($content, $wrap, $char = '|')
     {
@@ -4500,12 +4258,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if (count($parts) === 2) {
             // Check whether PHP class is available
             if (class_exists($parts[0])) {
-                if ($this->container && $this->container->has($parts[0])) {
+                if ($this->container->has($parts[0])) {
                     $classObj = $this->container->get($parts[0]);
                 } else {
                     $classObj = GeneralUtility::makeInstance($parts[0]);
                 }
-                $methodName = (string)$parts[1];
+                $methodName = $parts[1];
                 $callable = [$classObj, $methodName];
 
                 if (is_object($classObj) && method_exists($classObj, $parts[1]) && is_callable($callable)) {
@@ -4514,26 +4272,26 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     }
                     $content = $callable($content, $conf, $this->getRequest()->withAttribute('currentContentObject', $this));
                 } else {
-                    $this->getTimeTracker()->setTSlogMessage('Method "' . $parts[1] . '" did not exist in class "' . $parts[0] . '"', LogLevel::ERROR);
+                    $this->timeTracker->setTSlogMessage('Method "' . $parts[1] . '" did not exist in class "' . $parts[0] . '"', LogLevel::ERROR);
                 }
             } else {
-                $this->getTimeTracker()->setTSlogMessage('Class "' . $parts[0] . '" did not exist', LogLevel::ERROR);
+                $this->timeTracker->setTSlogMessage('Class "' . $parts[0] . '" did not exist', LogLevel::ERROR);
             }
         } elseif (function_exists($funcName)) {
             $content = $funcName($content, $conf, $this->getRequest()->withAttribute('currentContentObject', $this));
         } else {
-            $this->getTimeTracker()->setTSlogMessage('Function "' . $funcName . '" did not exist', LogLevel::ERROR);
+            $this->timeTracker->setTSlogMessage('Function "' . $funcName . '" did not exist', LogLevel::ERROR);
         }
         return $content;
     }
 
     /**
-     * Cleans up a string of keywords. Keywords at splitted by "," (comma)  ";" (semi colon) and linebreak
+     * Cleans up a string of keywords. Keywords are split by "," (comma)  ";" (semicolon) and linebreak
      *
      * @param string $content String of keywords
      * @return string Cleaned up string, keywords will be separated by a comma only.
      */
-    public function keywords($content)
+    public function keywords($content): string
     {
         $listArr = preg_split('/[,;' . LF . ']/', $content);
         if ($listArr === false) {
@@ -4551,7 +4309,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $theValue The string to change case for.
      * @param string $case The direction; either "upper" or "lower
      * @return string
-     * @see HTMLcaseshift()
+     * @internal
      */
     public function caseshift($theValue, $case)
     {
@@ -4592,10 +4350,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string $theValue The string to change case for.
      * @param string $case The direction; either "upper" or "lower"
-     * @return string
-     * @see caseshift()
+     * @internal
      */
-    public function HTMLcaseshift($theValue, $case)
+    public function HTMLcaseshift($theValue, $case): string
     {
         $inside = 0;
         $newVal = '';
@@ -4621,9 +4378,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param int $seconds Seconds to return age for. Example: "70" => "1 min", "3601" => "1 hrs
      * @param string|int|null $labels The labels of the individual units. Defaults to : ' min| hrs| days| yrs'
-     * @return string The formatted string
      */
-    public function calcAge($seconds, $labels = null)
+    public function calcAge($seconds, $labels = null): string
     {
         $now = DateTimeFactory::createFromTimestamp($GLOBALS['EXEC_TIME']);
         $then = DateTimeFactory::createFromTimestamp($GLOBALS['EXEC_TIME'] - $seconds);
@@ -4688,32 +4444,25 @@ class ContentObjectRenderer implements LoggerAwareInterface
         return $this->mergeTSRef($typoScriptArray, $propertyName);
     }
 
-    /***********************************************
-     *
-     * Database functions, making of queries
-     *
-     ***********************************************/
-
     /**
      * Generates a search where clause based on the input search words (AND operation - all search words must be found in record.)
-     * Example: The $sw is "content management, system" (from an input form) and the $searchFieldList is "bodytext,header" then the output will be ' AND (bodytext LIKE "%content%" OR header LIKE "%content%") AND (bodytext LIKE "%management%" OR header LIKE "%management%") AND (bodytext LIKE "%system%" OR header LIKE "%system%")'
+     * Example: The $sw is "content management, system" (from an input form) and the $searchFieldList is "bodytext,header" then
+     * the output will be ' AND (bodytext LIKE "%content%" OR header LIKE "%content%") AND (bodytext LIKE "%management%" OR header
+     * LIKE "%management%") AND (bodytext LIKE "%system%" OR header LIKE "%system%")'
      *
      * @param string $searchWords The search words. These will be separated by space and comma.
      * @param string $searchFieldList The fields to search in
      * @param string $searchTable The table name you search in (recommended for DBAL compliance. Will be prepended field names as well)
      * @return string The WHERE clause.
      */
-    public function searchWhere($searchWords, $searchFieldList, $searchTable)
+    public function searchWhere($searchWords, $searchFieldList, $searchTable): string
     {
         if (!$searchWords) {
             return '';
         }
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($searchTable);
-
         $prefixTableName = $searchTable ? $searchTable . '.' : '';
-
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($searchTable);
         $where = $queryBuilder->expr()->and();
         $searchFields = explode(',', $searchFieldList);
         $searchWords = preg_split('/[ ,]/', $searchWords);
@@ -4739,7 +4488,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             return '';
         }
 
-        return ' AND (' . (string)$where . ')';
+        return ' AND (' . $where . ')';
     }
 
     /**
@@ -4749,13 +4498,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $table The table name
      * @param array $conf The TypoScript configuration properties
      * @return Result
-     * @see getQuery()
      */
     public function exec_getQuery($table, $conf)
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+        $connection = $this->connectionPool->getConnectionForTable($table);
         $statement = $this->getQuery($connection, $table, $conf);
-
         return $connection->executeQuery($statement);
     }
 
@@ -4765,55 +4512,44 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string $tableName the name of the TCA database table
      * @param array $queryConfiguration The TypoScript configuration properties, see .select in TypoScript reference
-     * @return array The records
      * @throws \UnexpectedValueException
      */
-    public function getRecords($tableName, array $queryConfiguration)
+    public function getRecords($tableName, array $queryConfiguration): array
     {
         $records = [];
-
         $statement = $this->exec_getQuery($tableName, $queryConfiguration);
-
-        $pageRepository = $this->getPageRepository();
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         while ($row = $statement->fetchAssociative()) {
             // Versioning preview:
             $pageRepository->versionOL($tableName, $row, true);
-
             // Language overlay:
             if (is_array($row)) {
                 $row = $pageRepository->getLanguageOverlay($tableName, $row);
             }
-
             // Might be unset in the language overlay
             if (is_array($row)) {
                 $records[] = $row;
             }
         }
-
-        if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('frontend.cache.autoTagging')) {
-            $cacheLifetimeCalculator = GeneralUtility::makeInstance(CacheLifetimeCalculator::class);
+        if ($this->features->isFeatureEnabled('frontend.cache.autoTagging')) {
             $cacheTags = array_map(fn(array $record) => new CacheTag(
                 name: sprintf('%s_%s', $tableName, ($record['uid'] ?? 0)),
-                lifetime: $cacheLifetimeCalculator->calculateLifetimeForRow($tableName, $record)
+                lifetime: $this->cacheLifetimeCalculator->calculateLifetimeForRow($tableName, $record)
             ), $records);
             $this->getRequest()->getAttribute('frontend.cache.collector')?->addCacheTags(...$cacheTags);
         }
-
         return $records;
     }
 
     /**
-     * Creates and returns a SELECT query for records from $table and with conditions
-     * based on the configuration in the $conf array.
-     * Implements the "select" function in TypoScript.
+     * Creates and returns a SELECT query for records from $table and with conditions based on the
+     * configuration in the $conf array. Implements the "select" function in TypoScript.
      *
      * @param string $table See ->exec_getQuery()
      * @param array $conf See ->exec_getQuery()
-     * @return string A SELECT query
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      * @internal
-     * @see numRows()
      */
     public function getQuery(Connection $connection, string $table, array $conf): string
     {
@@ -4883,7 +4619,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $storagePid = $this->getRequest()->getAttribute('frontend.page.information')->getId();
                     }
                 });
-                $pageRepository = $this->getPageRepository();
+                $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
                 $expandedPidList = $pageRepository->getPageIdsRecursive($pidList, $conf['recursive']);
                 $conf['pidInList'] = implode(',', $expandedPidList);
             }
@@ -4942,7 +4678,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $conf['begin'] = str_ireplace('total', $count, (string)$conf['begin']);
                     }
                 } catch (DBALException $e) {
-                    $this->getTimeTracker()->setTSlogMessage($e->getMessage());
+                    $this->timeTracker->setTSlogMessage($e->getMessage());
                     return '';
                 }
             }
@@ -5002,7 +4738,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $table The table name
      * @param array $conf The TypoScript configuration properties
      * @return array Associative array containing the prepared data for WHERE, ORDER BY and GROUP BY fragments
-     * @throws \InvalidArgumentException
      * @see getQuery()
      */
     protected function getQueryConstraints(Connection $connection, string $table, array $conf): array
@@ -5020,8 +4755,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             'orderBy' => null,
         ];
 
-        $context = GeneralUtility::makeInstance(Context::class);
-        $isInWorkspace = $context->getPropertyFromAspect('workspace', 'isOffline');
+        $isInWorkspace = $this->context->getPropertyFromAspect('workspace', 'isOffline');
 
         if (trim($conf['uidInList'] ?? '')) {
             $listArr = GeneralUtility::intExplode(',', str_replace('this', (string)$contentPid, $conf['uidInList']));
@@ -5082,17 +4816,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
         // Check if the default language should be fetched (= doing overlays), or if only the records of a language should be fetched
         // but only do this for TCA tables that have languages enabled
-        $languageConstraint = $this->getLanguageRestriction($expressionBuilder, $table, $conf, $context);
+        $languageConstraint = $this->getLanguageRestriction($expressionBuilder, $table, $conf);
         if ($languageConstraint !== null) {
             $constraints[] = $languageConstraint;
         }
 
         // default constraints from TCA
-        $pageRepository = $this->getPageRepository();
-        $constraints = array_merge(
-            $constraints,
-            array_values($pageRepository->getDefaultConstraints($table, $enableFieldsIgnore))
-        );
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        $constraints = array_merge($constraints, array_values($pageRepository->getDefaultConstraints($table, $enableFieldsIgnore)));
 
         // MAKE WHERE:
         if ($constraints !== []) {
@@ -5133,10 +4864,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * If the language aspect has NO overlays enabled, it behaves as in "free mode" (= only fetch the records
      * for the current language.
      *
-     * @return string|\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression|null
-     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
+     * @return string|CompositeExpression|null
      */
-    protected function getLanguageRestriction(ExpressionBuilder $expressionBuilder, string $table, array $conf, Context $context)
+    protected function getLanguageRestriction(ExpressionBuilder $expressionBuilder, string $table, array $conf)
     {
         $languageField = '';
         $localizationParentField = '';
@@ -5161,7 +4891,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         /** @var LanguageAspect $languageAspect */
-        $languageAspect = $context->getAspect('language');
+        $languageAspect = $this->context->getAspect('language');
         if ($languageAspect->doOverlays() && !empty($localizationParentField)) {
             // Sys language content is set to zero/-1 - and it is expected that whatever routine processes the output will
             // OVERLAY the records with localized versions!
@@ -5200,11 +4930,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * This functions checks if the necessary fields are part of the select
      * and adds them if necessary.
      *
-     * @return string Sanitized select part
-     * @internal
      * @see getQuery
      */
-    protected function sanitizeSelectPart(Connection $connection, string $selectPart, string $table)
+    protected function sanitizeSelectPart(Connection $connection, string $selectPart, string $table): string
     {
         // Pattern matching parts
         $matchStart = '/(^\\s*|,\\s*|' . $table . '\\.)';
@@ -5261,7 +4989,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
             // is a doktype whose content should be rendered, so there is no need to check that again.
             return $pageIds;
         }
-        $pageRepository = $this->getPageRepository();
         $restrictionContainer = GeneralUtility::makeInstance(FrontendRestrictionContainer::class);
         if ($this->checkPid_badDoktypeList) {
             $restrictionContainer->add(GeneralUtility::makeInstance(
@@ -5270,19 +4997,22 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 GeneralUtility::intExplode(',', (string)$this->checkPid_badDoktypeList, true)
             ));
         }
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         return $pageRepository->filterAccessiblePageIds($pageIds, $restrictionContainer);
     }
 
     /**
      * Builds list of marker values for handling PDO-like parameter markers in select parts.
-     * Marker values support stdWrap functionality thus allowing a way to use stdWrap functionality in various properties of 'select' AND prevents SQL-injection problems by quoting and escaping of numeric values, strings, NULL values and comma separated lists.
+     * Marker values support stdWrap functionality thus allowing a way to use stdWrap functionality in various
+     * properties of 'select' AND prevents SQL-injection problems by quoting and escaping of numeric values,
+     * strings, NULL values and comma separated lists.
      *
      * @param array $conf Select part of CONTENT definition
      * @return array List of values to replace markers with
      * @internal
      * @see getQuery()
      */
-    public function getQueryMarkers(Connection $connection, $conf)
+    public function getQueryMarkers(Connection $connection, $conf): array
     {
         if (!isset($conf['markers.']) || !is_array($conf['markers.'])) {
             return [];
@@ -5347,37 +5077,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
         return $markerValues;
     }
 
-    protected function getResourceFactory(): ResourceFactory
-    {
-        return GeneralUtility::makeInstance(ResourceFactory::class);
-    }
-
-    protected function getPageRepository(): PageRepository
-    {
-        return GeneralUtility::makeInstance(PageRepository::class);
-    }
-
     /**
-     * Wrapper function for GeneralUtility::getIndpEnv()
-     *
-     * @see GeneralUtility::getIndpEnv
-     * @param string $key Name of the "environment variable"/"server variable" you wish to get.
-     * @return string
-     */
-    protected function getEnvironmentVariable($key)
-    {
-        if ($key === 'REQUEST_URI') {
-            return $this->getRequest()->getAttribute('normalizedParams')->getRequestUri();
-        }
-        return GeneralUtility::getIndpEnv($key);
-    }
-
-    /**
-     * Fetches content from cache
+     * Fetch content from cache
      *
      * @param array $configuration Array
      * @return string|bool FALSE on cache miss
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
     protected function getFromCache(array $configuration)
     {
@@ -5388,9 +5092,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if (empty($cacheKey)) {
             return false;
         }
-
-        $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
-        $cachedData = $cacheFrontend->get($cacheKey);
+        $cachedData = $this->cacheHash->get($cacheKey);
         if ($cachedData === false) {
             return false;
         }
@@ -5453,26 +5155,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
         return $this->stdWrapValue('key', $configuration);
     }
 
-    protected function getTimeTracker(): TimeTracker
-    {
-        return GeneralUtility::makeInstance(TimeTracker::class);
-    }
-
     protected function getTcaSchema(string $table): ?TcaSchema
     {
-        $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
-        if ($schemaFactory->has($table)) {
-            return $schemaFactory->get($table);
-        }
-        return null;
+        return $this->tcaSchemaFactory->has($table) ? $this->tcaSchemaFactory->get($table) : null;
     }
 
     /**
      * Get content length of the current tag that could also contain nested tag contents
-     *
      * Helper method of parseFuncInternal().
-     *
-     * @internal
      */
     protected function getContentLengthOfCurrentTag(string $theValue, int $pointer, string $currentTag): int
     {
@@ -5532,7 +5222,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *        This is why getRequest() is currently public here.
      *        A potential refactoring could:
      *        * Create interfaces to pass both where needed (or pass a combined context object)
-     *        * Deprecate access to getRequest() here afterwards
+     *        * Deprecate access to getRequest() here afterward
      *        A circular dependency that the instance of ContentObjectRenderer holds a
      *        request with the instance of itself as attribute must be avoided.
      *        This is currently achieved by adding a new request with

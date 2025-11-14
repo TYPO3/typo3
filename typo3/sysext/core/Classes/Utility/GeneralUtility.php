@@ -432,7 +432,7 @@ class GeneralUtility
      * @param string $list Comma-separated list of integers with ranges (string)
      * @return string New comma-separated list of items
      */
-    public static function expandList($list)
+    public static function expandList($list): string
     {
         $items = explode(',', $list);
         $list = [];

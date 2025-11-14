@@ -32,7 +32,7 @@ final class BeforeStdWrapContentStoredInCacheEventTest extends UnitTestCase
         $key = 'cache-key';
         $lifetime = 1234;
         $configuration = ['cache.' => [$key]];
-        $contentObjectRenderer = new ContentObjectRenderer();
+        $contentObjectRenderer = $this->createMock(ContentObjectRenderer::class);
 
         $event = new BeforeStdWrapContentStoredInCacheEvent(
             content: $content,
@@ -59,7 +59,7 @@ final class BeforeStdWrapContentStoredInCacheEventTest extends UnitTestCase
         $key = 'cache-key';
         $lifetime = 1234;
         $configuration = ['cache.' => [$key]];
-        $contentObjectRenderer = new ContentObjectRenderer();
+        $contentObjectRenderer = $this->createMock(ContentObjectRenderer::class);
 
         $event = new BeforeStdWrapContentStoredInCacheEvent(
             content: $content,

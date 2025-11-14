@@ -33,34 +33,17 @@ use TYPO3\HtmlSanitizer\Builder\BuilderInterface;
  *
  * @internal
  */
-class SanitizerBuilderFactory
+final readonly class SanitizerBuilderFactory
 {
-    /**
-     * @var array
-     */
-    protected $configuration;
-
-    public function __construct(?array $configuration = null)
-    {
-        $this->configuration = $configuration ?? $GLOBALS['TYPO3_CONF_VARS']['SYS']['htmlSanitizer'] ?? [];
-    }
-
     public function build(string $identifier): BuilderInterface
     {
-        if (empty($this->configuration[$identifier])) {
-            throw new \LogicException(
-                sprintf('Undefined `htmlSanitizer` identifier `%s`', $identifier),
-                1624876139
-            );
+        if (empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['htmlSanitizer'][$identifier])) {
+            throw new \LogicException(sprintf('Undefined `htmlSanitizer` identifier `%s`', $identifier), 1624876139);
         }
-        $builder = GeneralUtility::makeInstance($this->configuration[$identifier]);
+        $builder = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SYS']['htmlSanitizer'][$identifier]);
         if (!$builder instanceof BuilderInterface) {
             throw new \LogicException(
-                sprintf(
-                    'Builder `%s` must implement interface `%s`',
-                    get_class($builder),
-                    BuilderInterface::class
-                ),
+                sprintf('Builder `%s` must implement interface `%s`', get_class($builder), BuilderInterface::class),
                 1624876266
             );
         }

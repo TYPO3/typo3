@@ -40,7 +40,7 @@ final class ModifyImageSourceCollectionEventTest extends UnitTestCase
         $sourceRenderConfiguration = [
             'file' => 'foo.jpg',
         ];
-        $contentObjectRenderer = (new ContentObjectRenderer());
+        $contentObjectRenderer = $this->createMock(ContentObjectRenderer::class);
         $event = new ModifyImageSourceCollectionEvent(
             $sourceCollection,
             $fullSourceCollection,
@@ -48,7 +48,6 @@ final class ModifyImageSourceCollectionEventTest extends UnitTestCase
             $sourceRenderConfiguration,
             $contentObjectRenderer
         );
-
         self::assertEquals($sourceCollection, $event->getSourceCollection());
         self::assertEquals($fullSourceCollection, $event->getFullSourceCollection());
         self::assertEquals($sourceConfiguration, $event->getSourceConfiguration());
@@ -64,13 +63,10 @@ final class ModifyImageSourceCollectionEventTest extends UnitTestCase
             '',
             [],
             [],
-            new ContentObjectRenderer()
+            $this->createMock(ContentObjectRenderer::class)
         );
-
         self::assertEquals('---foo---', $event->getSourceCollection());
-
         $event->setSourceCollection('---modified---');
-
         self::assertEquals('---modified---', $event->getSourceCollection());
 
     }

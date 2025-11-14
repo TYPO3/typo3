@@ -36,7 +36,7 @@ class UserInternalContentObject extends AbstractContentObject
         $pageParts->addNotCachedContentElement([
             'substKey' => $substKey,
             'conf' => $conf,
-            'cObj' => serialize($this->cObj),
+            'cObjData' => serialize($this->cObj->getState()),
             'type' => 'FUNC',
         ]);
         $this->cObj->setUserObjectType(false);

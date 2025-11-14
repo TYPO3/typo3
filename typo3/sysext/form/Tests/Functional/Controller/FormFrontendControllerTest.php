@@ -61,7 +61,7 @@ final class FormFrontendControllerTest extends FunctionalTestCase
         );
         $request = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($request));
-        $contentObject = new ContentObjectRenderer();
+        $contentObject = $this->get(ContentObjectRenderer::class);
         $request = $request->withAttribute('currentContentObject', $contentObject);
         $contentObject->setRequest($request);
         $subjectMock->_set('request', $request);
@@ -183,7 +183,7 @@ final class FormFrontendControllerTest extends FunctionalTestCase
         );
         $request = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($request));
-        $contentObject = new ContentObjectRenderer();
+        $contentObject = $this->get(ContentObjectRenderer::class);
         $request = $request->withAttribute('currentContentObject', $contentObject);
         $contentObject->setRequest($request);
         $subjectMock->_set('request', $request);
@@ -329,7 +329,7 @@ final class FormFrontendControllerTest extends FunctionalTestCase
         );
         $request = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($request));
-        $contentObject = new ContentObjectRenderer();
+        $contentObject = $this->get(ContentObjectRenderer::class);
         $request = $request->withAttribute('currentContentObject', $contentObject);
         $contentObject->setRequest($request);
         $mockController->_set('request', $request);

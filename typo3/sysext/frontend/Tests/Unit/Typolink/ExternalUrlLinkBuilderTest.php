@@ -36,7 +36,7 @@ final class ExternalUrlLinkBuilderTest extends UnitTestCase
             'target' => 'custom-target',
         ];
         $request = $this->prepareRequest();
-        $subject = $this->buildSubject($request);
+        $subject = new ExternalUrlLinkBuilder();
         $actualResult = $subject->buildLink($linkDetails, [], $request);
         self::assertSame('https://example.com', $actualResult->getLinkText());
         self::assertSame('https://example.com', $actualResult->getUrl());
@@ -51,7 +51,7 @@ final class ExternalUrlLinkBuilderTest extends UnitTestCase
             'url' => 'https://example.com',
         ];
         $request = $this->prepareRequest();
-        $subject = $this->buildSubject($request);
+        $subject = new ExternalUrlLinkBuilder();
         $actualResult = $subject->buildLink($linkDetails, [], $request);
         self::assertSame('externalFallback', $actualResult->getTarget());
     }
@@ -65,10 +65,11 @@ final class ExternalUrlLinkBuilderTest extends UnitTestCase
             'url' => '//example.com',
         ];
         $request = $this->prepareRequest();
-        $subject = $this->buildSubject($request);
+        $subject = new ExternalUrlLinkBuilder();
         $actualResult = $subject->buildLink($linkDetails, [], $request);
         self::assertSame('externalFallback', $actualResult->getTarget());
     }
+
     #[Test]
     public function targetFallbackIsAppliedForAbsolutePath(): void
     {
@@ -77,24 +78,16 @@ final class ExternalUrlLinkBuilderTest extends UnitTestCase
             'url' => '/other-system-like-a-blog-on-the-same-domain',
         ];
         $request = $this->prepareRequest();
-        $subject = $this->buildSubject($request);
+        $subject = new ExternalUrlLinkBuilder();
         $actualResult = $subject->buildLink($linkDetails, [], $request);
         self::assertSame('internalFallback', $actualResult->getTarget());
-    }
-
-    private function buildSubject(ServerRequestInterface &$request): ExternalUrlLinkBuilder
-    {
-        $contentObject = new ContentObjectRenderer();
-        $request = $request->withAttribute('currentContentObject', $contentObject);
-        $contentObject->setRequest($request);
-        return new ExternalUrlLinkBuilder();
     }
 
     private function prepareRequest(): ServerRequestInterface
     {
         $request = new ServerRequest('https://example.com');
         $request = $request->withAttribute('routing', new PageArguments(1, '', [], [], []));
-        return $request->withAttribute('frontend.typoscript', new class () {
+        $request = $request->withAttribute('frontend.typoscript', new class () {
             public function getConfigArray(): array
             {
                 return [
@@ -103,5 +96,9 @@ final class ExternalUrlLinkBuilderTest extends UnitTestCase
                 ];
             }
         });
+        $contentObject = $this->createMock(ContentObjectRenderer::class);
+        $contentObject->method('getRequest')->willReturn($request);
+        $contentObject->method('stdWrap')->willReturnArgument(0);
+        return $request->withAttribute('currentContentObject', $contentObject);
     }
 }

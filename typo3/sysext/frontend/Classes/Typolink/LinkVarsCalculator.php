@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * to always append these query parameters (if available in an existing request)
  * to a URL when using TypoLink for pages.
  */
-class LinkVarsCalculator
+readonly class LinkVarsCalculator
 {
     /**
      * Calculates and sets the internal linkVars based upon the current request's GET parameters

@@ -51,7 +51,7 @@ final class ContentContentObjectTest extends FunctionalTestCase
         $eventListener = $container->get(ListenerProvider::class);
         $eventListener->addListener(ModifyRecordsAfterFetchingContentEvent::class, 'modify-records-after-fetching-content-listener');
 
-        $contentObjectRenderer = new ContentObjectRenderer();
+        $contentObjectRenderer = $this->get(ContentObjectRenderer::class);
         $pageInformation = new PageInformation();
         $pageInformation->setId(1);
         $pageInformation->setContentFromPid(1);

@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 
 use TYPO3\CMS\Core\Html\HtmlCropper;
 use TYPO3\CMS\Core\Text\TextCropper;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -43,6 +42,11 @@ final class CropViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
+    public function __construct(
+        private readonly TextCropper $textCropper,
+        private readonly HtmlCropper $htmlCropper,
+    ) {}
+
     public function initializeArguments(): void
     {
         $this->registerArgument('maxCharacters', 'int', 'Place where to truncate the string', true);
@@ -58,14 +62,8 @@ final class CropViewHelper extends AbstractViewHelper
         $respectWordBoundaries = (bool)($this->arguments['respectWordBoundaries']);
         $respectHtml = (bool)$this->arguments['respectHtml'];
         $stringToTruncate = (string)$this->renderChildren();
-        $cropperClass = $respectHtml
-            ? HtmlCropper::class
-            : TextCropper::class;
-        return GeneralUtility::makeInstance($cropperClass)->crop(
-            content: $stringToTruncate,
-            numberOfChars: $maxCharacters,
-            replacementForEllipsis: $append,
-            cropToSpace: $respectWordBoundaries
-        );
+        return $respectHtml
+            ? $this->htmlCropper->crop($stringToTruncate, $maxCharacters, $append, $respectWordBoundaries)
+            : $this->textCropper->crop($stringToTruncate, $maxCharacters, $append, $respectWordBoundaries);
     }
 }

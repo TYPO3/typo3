@@ -15,50 +15,27 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Frontend\Tests\Unit\Processor;
+namespace TYPO3\CMS\Frontend\Tests\Functional\Processor;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
-use Psr\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\DependencyInjection\Container;
-use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Resource\FileReference;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 use TYPO3\CMS\Frontend\DataProcessing\GalleryProcessor;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class GalleryProcessorTest extends UnitTestCase
+final class GalleryProcessorTest extends FunctionalTestCase
 {
-    protected ContentObjectRenderer&MockObject $contentObjectRenderer;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->contentObjectRenderer = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->onlyMethods([])
-            ->getMock();
-    }
-
     #[Test]
     public function processThrowsExceptionWhenFilesProcessedDataKeyIsNotFound(): void
     {
         $this->expectException(ContentRenderingException::class);
         $this->expectExceptionCode(1436809789);
         $processor = new GalleryProcessor();
-        $processor->process(
-            $this->contentObjectRenderer,
-            [],
-            [],
-            []
-        );
+        $processor->process($this->get(ContentObjectRenderer::class), [], [], []);
     }
 
-    /**
-     * Gallery position test data provider
-     */
     public static function galleryPositionDataProvider(): array
     {
         return [
@@ -152,7 +129,7 @@ final class GalleryProcessorTest extends UnitTestCase
     {
         $processor = new GalleryProcessor();
         $processedData = $processor->process(
-            $this->contentObjectRenderer,
+            $this->get(ContentObjectRenderer::class),
             [],
             $processorConfiguration,
             ['files' => []]
@@ -166,7 +143,7 @@ final class GalleryProcessorTest extends UnitTestCase
     {
         $processor = new GalleryProcessor();
         $processedData = $processor->process(
-            $this->contentObjectRenderer,
+            $this->get(ContentObjectRenderer::class),
             [],
             ['maxGalleryWidth' => 200, 'maxGalleryWidthInText' => 100],
             ['files' => []]
@@ -180,7 +157,7 @@ final class GalleryProcessorTest extends UnitTestCase
     {
         $processor = new GalleryProcessor();
         $processedData = $processor->process(
-            $this->contentObjectRenderer,
+            $this->get(ContentObjectRenderer::class),
             [],
             ['maxGalleryWidth' => 200, 'maxGalleryWidthInText' => 100, 'mediaOrientation' => 26],
             ['files' => []]
@@ -189,9 +166,6 @@ final class GalleryProcessorTest extends UnitTestCase
         self::assertEquals(100, $processedData['gallery']['width']);
     }
 
-    /**
-     * Count test data provider
-     */
     public static function countDataProvider(): array
     {
         return [
@@ -248,13 +222,11 @@ final class GalleryProcessorTest extends UnitTestCase
         for ($i = 0; $i < $numberOfFiles; $i++) {
             $files[] = $this->createMock(FileReference::class);
         }
-        $this->contentObjectRenderer->data = $data;
-        $container = new Container();
-        $container->set(EventDispatcherInterface::class, new NoopEventDispatcher());
-        GeneralUtility::setContainer($container);
+        $cObj = $this->get(ContentObjectRenderer::class);
+        $cObj->data = $data;
         $processor = new GalleryProcessor();
         $processedData = $processor->process(
-            $this->contentObjectRenderer,
+            $cObj,
             [],
             $processorConfiguration,
             ['files' => $files]
@@ -263,9 +235,6 @@ final class GalleryProcessorTest extends UnitTestCase
         self::assertEquals($expected, $processedData['gallery']['count']);
     }
 
-    /**
-     * Data provider for calculateMediaWidthsAndHeightsTest
-     */
     public static function calculateMediaWidthsAndHeightsDataProvider(): array
     {
         return [
@@ -444,7 +413,7 @@ final class GalleryProcessorTest extends UnitTestCase
 
         $processor = new GalleryProcessor();
         $processedData = $processor->process(
-            $this->contentObjectRenderer,
+            $this->get(ContentObjectRenderer::class),
             [],
             $processorConfiguration,
             ['files' => $files]

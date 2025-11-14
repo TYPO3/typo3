@@ -100,8 +100,7 @@ final class GifBuilderTest extends FunctionalTestCase
             Environment::getPublicPath() . '/fileadmin/kasper-skarhoj-gifbuilder.jpg'
         );
 
-        $contentObjectRenderer = new ContentObjectRenderer();
-        $result = $contentObjectRenderer->cObjGetSingle(
+        $result = $this->get(ContentObjectRenderer::class)->cObjGetSingle(
             'IMAGE',
             [
                 'file' => 'GIFBUILDER',
@@ -130,8 +129,7 @@ final class GifBuilderTest extends FunctionalTestCase
             Environment::getPublicPath() . '/fileadmin/kasper-skarhoj-gifbuilder-imageresource.jpg'
         );
 
-        $contentObjectRenderer = new ContentObjectRenderer();
-        $result = $contentObjectRenderer->cObjGetSingle(
+        $result = $this->get(ContentObjectRenderer::class)->cObjGetSingle(
             'IMG_RESOURCE',
             [
                 'file' => 'GIFBUILDER',
@@ -160,8 +158,7 @@ final class GifBuilderTest extends FunctionalTestCase
             Environment::getPublicPath() . '/fileadmin/kasper-skarhoj-gifbuilder.jpg'
         );
 
-        $contentObjectRenderer = new ContentObjectRenderer();
-        $result = $contentObjectRenderer->cObjGetSingle(
+        $result = $this->get(ContentObjectRenderer::class)->cObjGetSingle(
             'IMAGE',
             [
                 'file' => 'GIFBUILDER',

@@ -18,8 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Typolink;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -38,18 +37,18 @@ use TYPO3\CMS\Frontend\Event\AfterLinkIsGeneratedEvent;
  * Contains all logic for the infamous typolink() functionality.
  */
 #[Autoconfigure(public: true)]
-class LinkFactory implements LoggerAwareInterface
+readonly class LinkFactory
 {
     use DefaultJavaScriptAssetTrait;
-    use LoggerAwareTrait;
 
     public function __construct(
-        protected readonly LinkService $linkService,
-        protected readonly EventDispatcherInterface $eventDispatcher,
-        protected readonly TypoLinkCodecService $typoLinkCodecService,
+        protected LinkService $linkService,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected TypoLinkCodecService $typoLinkCodecService,
         #[Autowire(service: 'cache.runtime')]
-        protected readonly FrontendInterface $runtimeCache,
-        protected readonly SiteFinder $siteFinder,
+        protected FrontendInterface $runtimeCache,
+        protected SiteFinder $siteFinder,
+        protected LoggerInterface $logger,
     ) {}
 
     /**

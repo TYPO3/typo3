@@ -30,7 +30,7 @@ use Symfony\Component\DependencyInjection\Attribute\AsAlias;
  *
  * -- Naming --
  *
- * Feature names should NEVER named "enable" or having a negation, or containing versions or years
+ * Feature names should NEVER be named "enable" or have a negation, or contain versions or years
  *    "enableFeatureXyz"
  *    "disableOverlays"
  *    "schedulerRevamped"
@@ -55,14 +55,14 @@ use Symfony\Component\DependencyInjection\Attribute\AsAlias;
  * }
  */
 #[AsAlias('features', public: true)]
-class Features
+readonly class Features
 {
     /**
      * A list of features that are always activated (mainly happens if a previous feature switch is now always
      * "turned on" to enforce a behaviour, but still valid for extension authors to ensure the feature switch
      * returns "enabled" for future versions.
      */
-    protected array $alwaysActiveFeatures = [
+    private const ALWAYS_ACTIVE_FEATURES = [
         // Enabled since v13.0 at any time.
         'security.usePasswordPolicyForFrontendUsers',
         'security.backend.enforceContentSecurityPolicy',
@@ -86,9 +86,10 @@ class Features
      */
     public function isFeatureEnabled(string $featureName): bool
     {
-        if (in_array($featureName, $this->alwaysActiveFeatures, true)) {
+        if (in_array($featureName, self::ALWAYS_ACTIVE_FEATURES, true)) {
             return true;
         }
-        return isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['features'][$featureName]) && $GLOBALS['TYPO3_CONF_VARS']['SYS']['features'][$featureName] === true;
+        return isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['features'][$featureName])
+            && $GLOBALS['TYPO3_CONF_VARS']['SYS']['features'][$featureName] === true;
     }
 }

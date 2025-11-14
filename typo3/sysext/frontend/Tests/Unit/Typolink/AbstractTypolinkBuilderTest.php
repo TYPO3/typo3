@@ -19,13 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\Container;
-use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Tests\Unit\Typolink\Fixtures\AbstractTypolinkBuilderFixture;
@@ -33,18 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AbstractTypolinkBuilderTest extends UnitTestCase
 {
-    protected bool $resetSingletonInstances = true;
-    protected bool $backupEnvironment = true;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $logManagerMock = $this->getMockBuilder(LogManager::class)->getMock();
-        $loggerMock = $this->getMockBuilder(LoggerInterface::class)->getMock();
-        $logManagerMock->method('getLogger')->willReturn($loggerMock);
-        GeneralUtility::setSingletonInstance(LogManager::class, $logManagerMock);
-    }
-
     public static function forceAbsoluteUrlReturnsCorrectAbsoluteUrlDataProvider(): array
     {
         return [
@@ -142,8 +124,6 @@ final class AbstractTypolinkBuilderTest extends UnitTestCase
     #[Test]
     public function forceAbsoluteUrlReturnsCorrectAbsoluteUrl(string $expected, string $url, array $configuration): void
     {
-        $cObj = new ContentObjectRenderer();
-        // Force hostname
         $serverRequest = new ServerRequest(
             'http://localhost/index.php',
             'GET',
@@ -151,8 +131,6 @@ final class AbstractTypolinkBuilderTest extends UnitTestCase
             [],
             ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/index.php']
         );
-        $serverRequest = $serverRequest->withAttribute('currentContentObject', $cObj);
-        $cObj->setRequest($serverRequest);
         $subject = new AbstractTypolinkBuilderFixture();
         self::assertEquals($expected, $subject->forceAbsoluteUrl($url, $configuration, $serverRequest));
     }
@@ -160,8 +138,6 @@ final class AbstractTypolinkBuilderTest extends UnitTestCase
     #[Test]
     public function forceAbsoluteUrlReturnsCorrectAbsoluteUrlWithSubfolder(): void
     {
-        $cObj = new ContentObjectRenderer();
-        // Force hostname
         $serverRequest = new ServerRequest(
             'http://localhost/subfolder/index.php',
             'GET',
@@ -169,8 +145,6 @@ final class AbstractTypolinkBuilderTest extends UnitTestCase
             [],
             ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/subfolder/index.php']
         );
-        $cObj->setRequest($serverRequest);
-        $serverRequest = $serverRequest->withAttribute('currentContentObject', $cObj);
         $subject = new AbstractTypolinkBuilderFixture();
         $expected = 'http://localhost/subfolder/fileadmin/my.pdf';
         $url = 'fileadmin/my.pdf';
@@ -185,50 +159,36 @@ final class AbstractTypolinkBuilderTest extends UnitTestCase
         $targetName = StringUtility::getUniqueId('name_');
         $target = StringUtility::getUniqueId('target_');
         return [
-            'Take target from $conf, if $conf[$targetName] is set.' =>
-                [
-                    'expected' => $target,
-                    'conf' => [$targetName => $target], // $targetName is set
-                    'name' => $targetName,
-                ],
-            ' If all hopes fail, an empty string is returned. ' =>
-                [
-                    'expected' => '',
-                    'conf' => [],
-                    'name' => $targetName,
-                ],
-            'It finally applies stdWrap' =>
-                [
-                    'expected' => 'wrap_target',
-                    'conf' => [$targetName . '.' =>
-                        [ 'ifEmpty' => 'wrap_target' ],
-                    ],
-                    'name' => $targetName,
-                ],
+            'Take target from $conf, if $conf[$targetName] is set.' => [
+                'expected' => $target,
+                'conf' => [$targetName => $target], // $targetName is set
+                'name' => $targetName,
+            ],
+            ' If all hopes fail, an empty string is returned. ' => [
+                'expected' => '',
+                'conf' => [],
+                'name' => $targetName,
+            ],
         ];
     }
 
     #[DataProvider('resolveTargetAttributeDataProvider')]
     #[Test]
-    public function canResolveTheTargetAttribute(
-        string $expected,
-        array $conf,
-        string $name,
-    ): void {
-        $cObj = new ContentObjectRenderer();
-        $serverRequest = new ServerRequest(
-            'http://localhost/subfolder/index.php',
-            'GET',
-            null,
-            [],
-            ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/subfolder/index.php']
-        );
-        $serverRequest = $serverRequest->withAttribute('currentContentObject', $cObj);
-        $cObj->setRequest($serverRequest);
-        $container = new Container();
-        $container->set(EventDispatcherInterface::class, new NoopEventDispatcher());
-        GeneralUtility::setContainer($container);
+    public function canResolveTheTargetAttribute(string $expected, array $conf, string $name): void
+    {
+        $cObj = $this->createMock(ContentObjectRenderer::class);
+        $cObj->method('stdWrap')->willReturnArgument(0);
         $subject = new AbstractTypolinkBuilderFixture();
         self::assertEquals($expected, $subject->resolveTargetAttribute($conf, $name, $cObj));
+    }
+
+    #[Test]
+    public function resolveTargetAttributeAppliesStdWrap(): void
+    {
+        $cObj = $this->createMock(ContentObjectRenderer::class);
+        $cObj->expects($this->once())->method('stdWrap')->willReturn('called');
+        $subject = new AbstractTypolinkBuilderFixture();
+        $conf = ['target' . '.' => ['ifEmpty' => 'wrap_target']];
+        self::assertEquals('called', $subject->resolveTargetAttribute($conf, 'target', $cObj));
     }
 }

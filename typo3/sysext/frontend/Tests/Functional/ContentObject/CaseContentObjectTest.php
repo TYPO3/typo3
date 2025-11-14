@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
+namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
@@ -25,20 +25,18 @@ use TYPO3\CMS\Frontend\ContentObject\CaseContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class CaseContentObjectTest extends UnitTestCase
+final class CaseContentObjectTest extends FunctionalTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
-    protected CaseContentObject $subject;
+    private CaseContentObject $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $request = new ServerRequest();
-        $contentObjectRenderer = new ContentObjectRenderer();
+        $contentObjectRenderer = $this->get(ContentObjectRenderer::class);
         $contentObjectRenderer->setRequest($request);
         $cObjectFactoryMock = $this->getMockBuilder(ContentObjectFactory::class)->disableOriginalConstructor()->getMock();
 

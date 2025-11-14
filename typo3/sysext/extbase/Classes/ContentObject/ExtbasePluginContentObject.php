@@ -57,7 +57,7 @@ class ExtbasePluginContentObject extends AbstractContentObject
             $pageParts->addNotCachedContentElement([
                 'substKey' => $substKey,
                 'conf' => $conf,
-                'cObj' => serialize($this->cObj),
+                'cObjData' => serialize($this->cObj->getState()),
                 'type' => 'FUNC',
             ]);
         } elseif (isset($conf['stdWrap.'])) {

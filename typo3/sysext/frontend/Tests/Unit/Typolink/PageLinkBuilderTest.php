@@ -57,8 +57,8 @@ final class PageLinkBuilderTest extends UnitTestCase
         $request = new ServerRequest('https://example.com');
         $request = $request->withQueryParams($queryParameters);
         $request = $request->withAttribute('routing', new PageArguments(1, '', $queryParameters, [], []));
-        $cObj = new ContentObjectRenderer();
-        $cObj->setRequest($request);
+        $cObj = $this->createMock(ContentObjectRenderer::class);
+        $cObj->method('getRequest')->willReturn($request);
         $subject = $this->getAccessibleMock(PageLinkBuilder::class, null, [], '', false);
         $subject->_set('contentObjectRenderer', $cObj);
         $actualResult = $subject->_call('getQueryArguments', $queryInformation, $configuration);

@@ -17,13 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Html;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 
-class HtmlCropper implements LoggerAwareInterface
+readonly class HtmlCropper
 {
-    use LoggerAwareTrait;
-
     protected const TAGS = 'a|abbr|address|area|article|aside|audio|b|bdi|bdo|blockquote|body|br|button|caption|cite|code|col|colgroup|data|datalist|dd|del|dfn|div|dl|dt|em|embed|fieldset|figcaption|figure|font|footer|form|h1|h2|h3|h4|h5|h6|header|hr|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|main|map|mark|meter|nav|object|ol|optgroup|option|output|p|param|pre|progress|q|rb|rp|rt|rtc|ruby|s|samp|section|select|small|source|span|strong|sub|sup|table|tbody|td|textarea|tfoot|th|thead|time|tr|track|u|ul|ut|var|video|wbr';
 
     protected const TAGS_REG_EXP = '
@@ -66,6 +63,11 @@ class HtmlCropper implements LoggerAwareInterface
             )
             /?>								# closing the tag with \'>\' or \'/>\'
         )';
+
+    public function __construct(
+        private LoggerInterface $logger,
+    ) {}
+
     /**
      * Implements "cropHTML" which is a modified "substr" function allowing to limit a string length to a certain number
      * of chars (from either start or end of string) and having a pre/postfix applied if the string really was cropped.
