@@ -25,21 +25,18 @@ use TYPO3\CMS\Core\Cache\CacheEntry;
 use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\CMS\Frontend\Cache\MetaDataState;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
 use TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent;
-use TYPO3\CMS\Frontend\Page\FrontendUrlPrefix;
 
 /**
  * Main controller class of the TypoScript based frontend.
@@ -175,8 +172,6 @@ readonly class TypoScriptFrontendController
      */
     public function generatePage_postProcessing(ServerRequestInterface $request, string $content): string
     {
-        $absRefPrefix = GeneralUtility::makeInstance(FrontendUrlPrefix::class)->getUrlPrefix($request);
-        $content = $this->setAbsRefPrefixInContent($content, $absRefPrefix);
         $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
         $usePageCache = $request->getAttribute('frontend.cache.instruction')->isCachingAllowed();
         $cacheDataCollector = $request->getAttribute('frontend.cache.collector');
@@ -318,8 +313,6 @@ readonly class TypoScriptFrontendController
         $content = $pageRenderer->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($content, $pageParts->getPageRendererSubstitutionHash());
         // Replace again, because header and footer data and page renderer replacements may introduce additional placeholders (see #44825)
         $content = $this->recursivelyReplaceIntPlaceholdersInContent($request, $content);
-        $absRefPrefix = GeneralUtility::makeInstance(FrontendUrlPrefix::class)->getUrlPrefix($request);
-        $content = $this->setAbsRefPrefixInContent($content, $absRefPrefix);
         $this->getTimeTracker()->pull();
         return $content;
     }
@@ -544,36 +537,6 @@ readonly class TypoScriptFrontendController
         $isCachingAllowed = $request->getAttribute('frontend.cache.instruction')->isCachingAllowed();
         $pageParts = $request->getAttribute('frontend.page.parts');
         return $isCachingAllowed && !$pageParts->hasNotCachedContentElements() && !$this->context->getAspect('frontend.user')->isUserOrGroupSet();
-    }
-
-    /**
-     * Converts relative paths in the HTML source to absolute paths for fileadmin/, typo3conf/ext/ and media/ folders.
-     */
-    protected function setAbsRefPrefixInContent(string $content, string $absRefPrefix): string
-    {
-        if ($absRefPrefix === '') {
-            return $content;
-        }
-        $encodedAbsRefPrefix = htmlspecialchars($absRefPrefix, ENT_QUOTES | ENT_HTML5);
-        $search = [
-            '"_assets/',
-            '"typo3temp/',
-            '"' . PathUtility::stripPathSitePrefix(Environment::getExtensionsPath()) . '/',
-            '"' . PathUtility::stripPathSitePrefix(Environment::getFrameworkBasePath()) . '/',
-        ];
-        $replace = [
-            '"' . $encodedAbsRefPrefix . '_assets/',
-            '"' . $encodedAbsRefPrefix . 'typo3temp/',
-            '"' . $encodedAbsRefPrefix . PathUtility::stripPathSitePrefix(Environment::getExtensionsPath()) . '/',
-            '"' . $encodedAbsRefPrefix . PathUtility::stripPathSitePrefix(Environment::getFrameworkBasePath()) . '/',
-        ];
-        // Process additional directories
-        $directories = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['additionalAbsRefPrefixDirectories'], true);
-        foreach ($directories as $directory) {
-            $search[] = '"' . $directory;
-            $replace[] = '"' . $encodedAbsRefPrefix . $directory;
-        }
-        return str_replace($search, $replace, $content);
     }
 
     /**

@@ -213,6 +213,8 @@ class SilentConfigurationUpgradeService
         'BE/compressionLevel',
         // #108055
         'FE/compressionLevel',
+        // #108114
+        'FE/additionalAbsRefPrefixDirectories',
     ];
 
     public function __construct(private readonly ConfigurationManager $configurationManager) {}

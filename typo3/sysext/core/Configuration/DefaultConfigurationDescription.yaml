@@ -520,9 +520,6 @@ FE:
             type: multiline
             description: 'Enter lines of default TypoScript, setup-field.'
             compareValuesWithCurrentConfiguration: false
-        additionalAbsRefPrefixDirectories:
-            type: text
-            description: 'Enter additional directories to be prepended with absRefPrefix. Directories must be comma-separated. TYPO3 already prepends the following directories: typo3/, typo3temp/, typo3conf/ext/ and all local storages'
         enable_mount_pids:
             type: bool
             description: 'If enabled, the mount_pid feature allowing ''symlinks'' in the page tree (for frontend operation) is allowed.'
