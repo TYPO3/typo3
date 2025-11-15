@@ -219,6 +219,11 @@ final readonly class CheckIntegrityXliff
                     $result['errorcode'] = 'trans-unit';
                     return $result;
                 }
+                if (isset($seenKeys[$unitId])) {
+                    $result['error'] = 'Duplicate trans-unit id: ' . $unitId;
+                    $result['errorcode'] = 'trans-unit.duplicate-id';
+                    return $result;
+                }
 
                 if (in_array($unitId, self::expectedXliffDeprecations, true)
                     && ($unitAttributes['@attributes'][self::XliffDeprecationKey] ?? '') === ''
@@ -246,6 +251,32 @@ final readonly class CheckIntegrityXliff
                 $result['error'] = 'Missing file.id';
                 $result['errorcode'] = 'file.id';
                 return $result;
+            }
+
+            $ns = 'urn:oasis:names:tc:xliff:document:2.0';
+            $xml->registerXPathNamespace('x', $ns);
+
+            // In XLIFF 2.0, translatable content is in <unit id="...">
+            $units = $xml->xpath('/x:xliff/x:file/x:unit');
+            $seenUnitIds = [];
+
+            foreach ($units as $unit) {
+                $attrs = $unit->attributes();
+                $unitId = isset($attrs['id']) ? (string)$attrs['id'] : '';
+
+                if ($unitId === '') {
+                    $result['error'] = 'Unit without ID specified.';
+                    $result['errorcode'] = 'unit';
+                    return $result;
+                }
+
+                if (isset($seenUnitIds[$unitId])) {
+                    $result['error'] = 'Duplicate unit id: ' . $unitId;
+                    $result['errorcode'] = 'unit.duplicate-id';
+                    return $result;
+                }
+
+                $seenUnitIds[$unitId] = true;
             }
 
             // XLIFF 2.0 has no deprecation syntax check yet.

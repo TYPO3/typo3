@@ -366,9 +366,6 @@
 			<trans-unit id="localize.wizard.step.chooseLanguage">
 				<source>Source Language</source>
 			</trans-unit>
-			<trans-unit id="localize.wizard.step.chooseLanguage">
-				<source>Source Language</source>
-			</trans-unit>
 			<trans-unit id="localize.wizard.step.selectRecords">
 				<source>Records</source>
 			</trans-unit>

@@ -285,7 +285,7 @@
 			<trans-unit id="msg.noLastRun">
 				<source>The Scheduler has never yet run or the information about the last run has been lost.</source>
 			</trans-unit>
-			<trans-unit id="msg.invalidTaskType">
+			<trans-unit id="msg.invalidRunningType">
 				<source>The selected task type must be either "single execution" or "recurring execution".</source>
 			</trans-unit>
 			<trans-unit id="msg.noTasks">

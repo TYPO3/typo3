@@ -69,9 +69,6 @@
 			<trans-unit id="languages">
 				<source>Languages</source>
 			</trans-unit>
-			<trans-unit id="fileMounts">
-				<source>File Mounts</source>
-			</trans-unit>
 			<trans-unit id="categories">
 				<source>Categories</source>
 			</trans-unit>

@@ -174,7 +174,7 @@ final readonly class SchedulerTaskPersistenceValidator
         $result = true;
         if ($runningType !== AbstractTask::TYPE_SINGLE && $runningType !== AbstractTask::TYPE_RECURRING) {
             $result = false;
-            $this->addErrorMessage($dataHandler, $taskId, 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskType');
+            $this->addErrorMessage($dataHandler, $taskId, 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidRunningType');
         }
         if (empty($startTime)) {
             $result = false;
