@@ -4,8 +4,8 @@
         <type>array</type>
         <el>
             <basePath>
-                <label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_basePath</label>
-                <description>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_basePath_placeholder</description>
+                <label>core.db.sys_file_storage:local_driver.base_path</label>
+                <description>core.db.sys_file_storage:local_driver.base_path_placeholder</description>
                 <config>
                     <type>input</type>
                     <required>1</required>
@@ -13,16 +13,16 @@
                 </config>
             </basePath>
             <pathType>
-                <label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_pathType</label>
+                <label>core.db.sys_file_storage:local_driver.path_type</label>
                 <config>
                     <type>radio</type>
                     <items type="array">
                         <numIndex index="0" type="array">
-                            <label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_pathType_relative</label>
+                            <label>core.db.sys_file_storage:local_driver.path_type_relative</label>
                             <value>relative</value>
                         </numIndex>
                         <numIndex index="1" type="array">
-                            <label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_pathType_absolute</label>
+                            <label>core.db.sys_file_storage:local_driver.path_type_absolute</label>
                             <value>absolute</value>
                         </numIndex>
                     </items>
@@ -30,15 +30,15 @@
                 </config>
             </pathType>
             <baseUri>
-                <label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_baseUri</label>
-                <description>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_baseUri_placeholder</description>
+                <label>core.db.sys_file_storage:local_driver.base_uri</label>
+                <description>core.db.sys_file_storage:local_driver.base_uri_placeholder</description>
                 <config>
                     <type>input</type>
                     <size>30</size>
                 </config>
             </baseUri>
             <caseSensitive>
-                <label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_caseSensitive</label>
+                <label>core.db.sys_file_storage:local_driver.case_sensitive</label>
                 <config>
                     <type>check</type>
                     <default>1</default>

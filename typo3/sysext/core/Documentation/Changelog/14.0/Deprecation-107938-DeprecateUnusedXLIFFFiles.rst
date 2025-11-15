@@ -23,6 +23,7 @@ TYPO3 Core anymore:
 *   `EXT:core/Resources/Private/Language/locallang_mod_usertools.xlf`
 *   `EXT:core/Resources/Private/Language/locallang_mod_system.xlf`
 *   `EXT:core/Resources/Private/Language/locallang_mod_site.xlf`
+*   `EXT:core/Resources/Private/Language/locallang_mod_file.xlf`
 *   `EXT:core/Resources/Private/Language/locallang_mod_help.xlf`
 *   `EXT:core/Resources/Private/Language/locallang_mod_admintools.xlf`
 *   `EXT:core/Resources/Private/Language/locallang_tsfe.xlf`

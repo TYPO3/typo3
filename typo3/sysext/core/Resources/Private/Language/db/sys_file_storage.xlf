@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en">
+  <file id="f1">
+    <unit id="is_offline">
+      <segment>
+        <source>offline</source>
+      </segment>
+    </unit>
+    <unit id="local_driver.base_path">
+      <segment>
+        <source>Base path</source>
+      </segment>
+    </unit>
+    <unit id="local_driver.base_path_placeholder">
+      <segment>
+        <source>Add storage path here. For example: myPath/folder/</source>
+      </segment>
+    </unit>
+    <unit id="local_driver.base_uri">
+      <segment>
+        <source>Base URI</source>
+      </segment>
+    </unit>
+    <unit id="local_driver.base_uri_placeholder">
+      <segment>
+        <source>Use this URI to build the public URL of files, instead of deriving the URI from base path</source>
+      </segment>
+    </unit>
+    <unit id="local_driver.path_type">
+      <segment>
+        <source>Path type</source>
+      </segment>
+    </unit>
+    <unit id="local_driver.path_type_relative">
+      <segment>
+        <source>relative</source>
+      </segment>
+    </unit>
+    <unit id="local_driver.path_type_absolute">
+      <segment>
+        <source>absolute</source>
+      </segment>
+    </unit>
+    <unit id="local_driver.case_sensitive">
+      <segment>
+        <source>Uses case sensitive identifiers</source>
+      </segment>
+    </unit>
+  </file>
+</xliff>

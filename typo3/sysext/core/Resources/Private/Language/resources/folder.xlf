@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en">
+  <file id="f1">
+    <unit id="role_folder_temporary">
+      <segment>
+        <source>Temporary files</source>
+      </segment>
+    </unit>
+    <unit id="role_folder_recycler">
+      <segment>
+        <source>Recycler</source>
+      </segment>
+    </unit>
+  </file>
+</xliff>

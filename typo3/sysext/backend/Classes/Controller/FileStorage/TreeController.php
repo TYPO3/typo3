@@ -177,7 +177,7 @@ readonly class TreeController
             $isStorage = $item['recordType'] !== 'sys_file';
             $item['resourceType'] = $isStorage ? 'storage' : 'folder';
             if ($isStorage && !$folder->getStorage()->isOnline()) {
-                $item['name'] .= ' (' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.isOffline') . ')';
+                $item['name'] .= ' (' . $this->getLanguageService()->translate('is_offline', 'core.db.sys_file_storage') . ')';
             }
             $icon = $this->iconFactory->getIconForResource($folder, IconSize::SMALL, null, $isStorage ? ['mount-root' => true] : []);
             $item['icon'] = $icon->getIdentifier();
