@@ -3,6 +3,7 @@
 	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_tsfe.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
+			<!-- @deprecated since v14, will be removed in v15. Delete whole file. -->
 			<trans-unit id="adminOptions">
 				<source>ADMIN PANEL</source>
 			</trans-unit>

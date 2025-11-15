@@ -71,6 +71,7 @@ readonly class LocalizationFactory
         'EXT:core/Resources/Private/Language/locallang_mod_site.xlf',
         'EXT:core/Resources/Private/Language/locallang_mod_help.xlf',
         'EXT:core/Resources/Private/Language/locallang_mod_admintools.xlf',
+        'EXT:core/Resources/Private/Language/locallang_tsfe.xlf',
         'EXT:dashboard/Resources/Private/Language/locallang_mod.xlf',
         'EXT:extensionmanager/Resources/Private/Language/locallang_mod.xlf',
         'EXT:form/Resources/Private/Language/locallang_module.xlf',

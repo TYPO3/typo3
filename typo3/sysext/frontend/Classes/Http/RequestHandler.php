@@ -894,7 +894,7 @@ readonly class RequestHandler implements RequestHandlerInterface
         if ($typoScriptConfigArray['message_preview'] ?? '') {
             $message = $typoScriptConfigArray['message_preview'];
         } else {
-            $label = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_tsfe.xlf:preview');
+            $label = $this->getLanguageService()->translate('preview', 'frontend.general');
             $styles = [];
             $styles[] = 'position: fixed';
             $styles[] = 'top: 15px';
