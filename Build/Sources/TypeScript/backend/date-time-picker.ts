@@ -190,6 +190,13 @@ class DateTimePicker {
               self.altInput.classList.toggle('has-error', !e.detail.isValid);
             }
           });
+
+          // Move the hidden input (self.input) to right after the clearable wrapper
+          // This prevents it from affecting :first-child CSS selectors while maintaining proper DOM order
+          const wrapper = self.altInput.closest('.form-control-clearable-wrapper');
+          if (wrapper !== null) {
+            wrapper.insertAdjacentElement('afterend', self.input);
+          }
         }
       },
       onChange: (dates: Date[], currentDateString: string, self: flatpickr.Instance): void => {
