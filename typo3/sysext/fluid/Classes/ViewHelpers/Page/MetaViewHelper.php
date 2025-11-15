@@ -43,13 +43,13 @@ final class MetaViewHelper extends AbstractViewHelper
         $this->registerArgument('replace', 'bool', 'Replace existing meta tags with the same property', false, false);
     }
 
-    public function render(): void
+    public function render(): string
     {
         $property = $this->arguments['property'];
         $content = $this->renderChildren();
 
         if ($content === null || $content === '') {
-            return;
+            return '';
         }
 
         $metaTagManager = $this->metaTagManagerRegistry->getManagerForProperty($property);
@@ -61,5 +61,6 @@ final class MetaViewHelper extends AbstractViewHelper
             $this->arguments['replace'],
             $this->arguments['type'] ?? ''
         );
+        return '';
     }
 }
