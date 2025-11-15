@@ -3,14 +3,14 @@
 	<file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/Modules/user_management.xlf" date="2026-11-10T13:37:37Z" product-name="user_management">
 		<header/>
 		<body>
+			<trans-unit id="title">
+				<source>Users</source>
+			</trans-unit>
 			<trans-unit id="short_description">
-				<source>Backend Users</source>
+				<source>Backend users management</source>
 			</trans-unit>
 			<trans-unit id="description">
-				<source>Admin backend users</source>
-			</trans-unit>
-			<trans-unit id="title">
-				<source>Backend Users</source>
+				<source>Administers backend user accounts and groups, and defines access permissions on records, files, and modules. Page-level read and write permissions can be managed separately in the Permissions module.</source>
 			</trans-unit>
 		</body>
 	</file>

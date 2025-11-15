@@ -241,6 +241,24 @@ this section defines behavior (languages, domains, routes), not content.
 **Migration:** Since the module identifier `site_configuration` is kept, no
 changes in referencing modules are required.
 
+System > Backend Users => Administration > Users
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The second-level :guilabel:`System > Backend Users` module has been renamed
+to :guilabel:`Administration > Users` to better match its scope.
+
+It has also been moved to the top of the to :guilabel:`Administration` top level
+menu as it is frequently used by administrators.
+
+**Rationale:** The new name "Users" is shorter and easier to recognize in the
+module menu. While "Backend Users" was technically precise, the simpler term
+improves readability and usability, making the module easier to find for
+administrators performing common user management tasks.
+
+**Migration:** The identifier `backend_user_management` is kept unchanged, no
+migration needed.
+
+
 Impact
 ======
 
