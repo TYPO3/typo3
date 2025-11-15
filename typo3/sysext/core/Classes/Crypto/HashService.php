@@ -29,6 +29,8 @@ final readonly class HashService
      * and the secret TYPO3 encryption key.
      *
      * @param non-empty-string $additionalSecret
+     *
+     * @return non-empty-string
      */
     public function hmac(string $input, string $additionalSecret): string
     {
@@ -43,6 +45,8 @@ final readonly class HashService
      * Appends a hash (HMAC) to a given string and additional secret and returns the result
      *
      * @param non-empty-string $additionalSecret
+     *
+     * @return non-empty-string
      */
     public function appendHmac(string $string, string $additionalSecret): string
     {
