@@ -23,7 +23,7 @@ namespace TYPO3\CMS\Form\Mvc\Persistence;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Form\Enum\SortDirection;
+use TYPO3\CMS\Form\Domain\DTO\SearchCriteria;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
 
 /**
@@ -44,7 +44,7 @@ interface FormPersistenceManagerInterface
      *        as plugin using FormFrontendController or formvh:render, empty array in all BE usages.
      *        Intended to override details like labels of single forms.
      */
-    public function load(string $persistenceIdentifier, array $formSettings, ?array $typoScriptSettings = null, ?ServerRequestInterface $request = null): array;
+    public function load(string $persistenceIdentifier, ?array $typoScriptSettings = null, ?ServerRequestInterface $request = null): array;
 
     /**
      * Save the array form representation identified by $persistenceIdentifier
@@ -69,7 +69,7 @@ interface FormPersistenceManagerInterface
      *
      * @return array in the format [['name' => 'Form 01', 'persistenceIdentifier' => 'path1'], [ .... ]]
      */
-    public function listForms(array $formSettings, string $orderField = '', ?SortDirection $orderDirection = null): array;
+    public function listForms(array $formSettings, SearchCriteria $searchCriteria): array;
 
     /**
      * Check if any form definition is available

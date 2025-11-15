@@ -89,7 +89,7 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer
                         $this->extbaseConfigurationManager->setRequest($request);
                         $typoScriptSettings = $this->extbaseConfigurationManager->getConfiguration(ExtbaseConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'form');
                         $formSettings = $this->extFormConfigurationManager->getYamlConfiguration($typoScriptSettings, false);
-                        $formDefinition = $this->formPersistenceManager->load($persistenceIdentifier, $formSettings);
+                        $formDefinition = $this->formPersistenceManager->load($persistenceIdentifier);
                         $formLabel = $formDefinition['label'];
                     } else {
                         $formLabel = sprintf(

@@ -28,7 +28,6 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConf
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Domain\Factory\FormFactoryInterface;
-use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -85,9 +84,7 @@ final class RenderViewHelper extends AbstractViewHelper
             $extbaseConfigurationManager = GeneralUtility::makeInstance(ExtbaseConfigurationManagerInterface::class);
             $extbaseConfigurationManager->setRequest($request);
             $typoScriptSettings = $extbaseConfigurationManager->getConfiguration(ExtbaseConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'form');
-            $extFormConfigurationManager = GeneralUtility::makeInstance(ExtFormConfigurationManagerInterface::class);
-            $formSettings = $extFormConfigurationManager->getYamlConfiguration($typoScriptSettings, true, $request);
-            $formConfiguration = $this->formPersistenceManager->load($persistenceIdentifier, $formSettings, $typoScriptSettings, $request);
+            $formConfiguration = $this->formPersistenceManager->load($persistenceIdentifier, $typoScriptSettings, $request);
             ArrayUtility::mergeRecursiveWithOverrule($formConfiguration, $overrideConfiguration);
             $overrideConfiguration = $formConfiguration;
             $overrideConfiguration['persistenceIdentifier'] = $persistenceIdentifier;

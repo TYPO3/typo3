@@ -1,0 +1,14 @@
+identifier: filemount-test-form
+prototypeName: standard
+label: 'Test Filemount Form'
+renderables:
+  -
+    identifier: page-1
+    type: Page
+    label: 'Page 1'
+    renderables:
+      -
+        identifier: email-1
+        type: Email
+        label: 'Email Address'
+

@@ -1,0 +1,14 @@
+identifier: test-extension-form
+prototypeName: standard
+label: 'Test Extension Form'
+renderables:
+  -
+    identifier: page-1
+    type: Page
+    label: 'Page 1'
+    renderables:
+      -
+        identifier: text-1
+        type: Text
+        label: 'Text Field'
+

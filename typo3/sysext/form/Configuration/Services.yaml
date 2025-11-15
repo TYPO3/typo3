@@ -19,3 +19,12 @@ services:
         priority: 10
         target: TYPO3\CMS\Form\Type\FormDefinitionArray
         sources: string
+
+  TYPO3\CMS\Form\Storage\StorageAdapterFactory:
+    public: true
+    arguments:
+      $adapters: !tagged_iterator form.storage.adapter
+
+  _instanceof:
+    TYPO3\CMS\Form\Storage\StorageAdapterInterface:
+       tags: [ 'form.storage.adapter' ]

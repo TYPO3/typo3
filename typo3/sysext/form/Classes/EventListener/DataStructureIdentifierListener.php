@@ -38,6 +38,7 @@ use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessor;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\FlexformConfiguration\Processors\FinisherOptionGenerator;
 use TYPO3\CMS\Form\Domain\Configuration\FlexformConfiguration\Processors\ProcessorDto;
+use TYPO3\CMS\Form\Domain\DTO\SearchCriteria;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\ParseErrorException;
@@ -155,21 +156,20 @@ readonly class DataStructureIdentifierListener
         try {
             // Add list of existing forms to drop down if we find our key in the identifier
             $formIsAccessible = false;
-            foreach ($this->formPersistenceManager->listForms($formSettings) as $form) {
-                $invalidFormDefinition = $form['invalid'] ?? false;
-                if ($form['persistenceIdentifier'] === $identifier['ext-form-persistenceIdentifier']) {
+            foreach ($this->formPersistenceManager->listForms($formSettings, new SearchCriteria()) as $formMetadata) {
+                if ($formMetadata->persistenceIdentifier === $identifier['ext-form-persistenceIdentifier']) {
                     $formIsAccessible = true;
                 }
-                if ($invalidFormDefinition) {
+                if ($formMetadata->invalid) {
                     $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['config']['items'][] = [
-                        'label' => $form['name'] . ' (' . $form['persistenceIdentifier'] . ')',
-                        'value' => $form['persistenceIdentifier'],
+                        'label' => $formMetadata->name . ' (' . $formMetadata->persistenceIdentifier . ')',
+                        'value' => $formMetadata->persistenceIdentifier,
                         'icon' => 'overlay-missing',
                     ];
                 } else {
                     $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['config']['items'][] = [
-                        'label' => $form['name'] . ' (' . $form['persistenceIdentifier'] . ')',
-                        'value' => $form['persistenceIdentifier'],
+                        'label' => $formMetadata->name . ' (' . $formMetadata->persistenceIdentifier . ')',
+                        'value' => $formMetadata->persistenceIdentifier,
                         'icon' => 'content-form',
                     ];
                 }
@@ -187,7 +187,7 @@ readonly class DataStructureIdentifierListener
             // If a specific form is selected and if finisher override is active, add finisher sheets
             if (!empty($identifier['ext-form-persistenceIdentifier']) && $formIsAccessible) {
                 $persistenceIdentifier = $identifier['ext-form-persistenceIdentifier'];
-                $formDefinition = $this->formPersistenceManager->load($persistenceIdentifier, $formSettings);
+                $formDefinition = $this->formPersistenceManager->load($persistenceIdentifier);
                 $translationFile = 'LLL:EXT:form/Resources/Private/Language/Database.xlf';
                 $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.overrideFinishers'] = [
                     'label' => $translationFile . ':tt_content.pi_flexform.formframework.overrideFinishers',

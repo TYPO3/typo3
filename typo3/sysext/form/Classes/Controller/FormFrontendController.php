@@ -29,7 +29,6 @@ use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessor;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters\FinisherOptionsFlexFormOverridesConverter;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters\FlexFormFinisherOverridesConverterDto;
-use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 
 /**
@@ -44,7 +43,6 @@ class FormFrontendController extends ActionController
         protected readonly ConfigurationService $configurationService,
         protected readonly FormPersistenceManagerInterface $formPersistenceManager,
         protected readonly FlexFormTools $flexFormTools,
-        protected readonly ExtFormConfigurationManagerInterface $extFormConfigurationManager,
     ) {}
 
     /**
@@ -61,8 +59,7 @@ class FormFrontendController extends ActionController
         $formDefinition = [];
         if (!empty($this->settings['persistenceIdentifier'])) {
             $typoScriptSettings = $this->configurationManager->getConfiguration(ExtbaseConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'form');
-            $formSettings = $this->extFormConfigurationManager->getYamlConfiguration($typoScriptSettings, true, $this->request);
-            $formDefinition = $this->formPersistenceManager->load($this->settings['persistenceIdentifier'], $formSettings, $typoScriptSettings, $this->request);
+            $formDefinition = $this->formPersistenceManager->load($this->settings['persistenceIdentifier'], $typoScriptSettings, $this->request);
             $formDefinition['persistenceIdentifier'] = $this->settings['persistenceIdentifier'];
             $formDefinition = $this->overrideByFlexFormSettings($formDefinition);
             $formDefinition = ArrayUtility::setValueByPath($formDefinition, 'renderingOptions._originalIdentifier', $formDefinition['identifier'], '.');

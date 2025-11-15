@@ -38,7 +38,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
-use TYPO3\CMS\Form\Enum\SortDirection;
+use TYPO3\CMS\Form\Domain\DTO\SearchCriteria;
 use TYPO3\CMS\Form\Event\BeforeFormIsCreatedEvent;
 use TYPO3\CMS\Form\Event\BeforeFormIsDeletedEvent;
 use TYPO3\CMS\Form\Event\BeforeFormIsDuplicatedEvent;
@@ -80,11 +80,12 @@ class FormManagerController extends ActionController
     /**
      * Display the Form Manager. The main showing available forms.
      */
-    protected function indexAction(int $page = 1, string $searchTerm = '', string $orderField = '', ?SortDirection $orderDirection = null): ResponseInterface
+    protected function indexAction(int $page = 1, string $searchTerm = '', string $orderField = '', ?string $orderDirection = null): ResponseInterface
     {
         $formSettings = $this->getFormSettings();
         $hasForms = $this->formPersistenceManager->hasForms($formSettings);
-        $forms = $hasForms ? $this->getAvailableFormDefinitions($formSettings, trim($searchTerm), $orderField, $orderDirection) : [];
+        $searchCriteria = new SearchCriteria(searchTerm: trim($searchTerm), orderField: $orderField, orderDirection: $orderDirection);
+        $forms = $hasForms ? $this->getAvailableFormDefinitions($formSettings, $searchCriteria) : [];
         $arrayPaginator = new ArrayPaginator($forms, $page, self::PAGINATION_MAX);
         $pagination = new SimplePagination($arrayPaginator);
         $moduleTemplate = $this->initializeModuleTemplate($this->request, $page, $searchTerm);
@@ -210,7 +211,7 @@ class FormManagerController extends ActionController
         if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier, $formSettings)) {
             throw new PersistenceManagerException(sprintf('Read of "%s" is not allowed', $formPersistenceIdentifier), 1614500659);
         }
-        $formToDuplicate = $this->formPersistenceManager->load($formPersistenceIdentifier, $formSettings);
+        $formToDuplicate = $this->formPersistenceManager->load($formPersistenceIdentifier);
         $formToDuplicate['label'] = $formName;
         $formToDuplicate['identifier'] = $this->formPersistenceManager->getUniqueIdentifier($formSettings, $this->convertFormNameToIdentifier($formName));
         $formPersistenceIdentifier = $this->formPersistenceManager->getUniquePersistenceIdentifier($formToDuplicate['identifier'], $savePath, $formSettings);
@@ -406,31 +407,37 @@ class FormManagerController extends ActionController
     }
 
     /**
-     * List all formDefinitions which can be loaded through t form persistence
+     * List all formDefinitions which can be loaded through form persistence
      * manager. Enrich this data by a reference counter.
      */
-    protected function getAvailableFormDefinitions(array $formSettings, string $searchTerm = '', string $orderField = '', ?SortDirection $orderDirection = null): array
+    protected function getAvailableFormDefinitions(array $formSettings, SearchCriteria $searchCriteria): array
     {
         $allReferencesForFileUid = $this->databaseService->getAllReferencesForFileUid();
         $allReferencesForPersistenceIdentifier = $this->databaseService->getAllReferencesForPersistenceIdentifier();
         $availableFormDefinitions = [];
-        foreach ($this->formPersistenceManager->listForms($formSettings, $orderField, $orderDirection) as $formDefinition) {
-            $referenceCount  = 0;
-            if (isset($formDefinition['fileUid'])
-                && array_key_exists($formDefinition['fileUid'], $allReferencesForFileUid)
+
+        foreach ($this->formPersistenceManager->listForms($formSettings, $searchCriteria) as $formMetadata) {
+            $referenceCount = 0;
+            if (isset($formMetadata->fileUid)
+                && array_key_exists($formMetadata->fileUid, $allReferencesForFileUid)
             ) {
-                $referenceCount = $allReferencesForFileUid[$formDefinition['fileUid']];
-            } elseif (array_key_exists($formDefinition['persistenceIdentifier'], $allReferencesForPersistenceIdentifier)) {
-                $referenceCount = $allReferencesForPersistenceIdentifier[$formDefinition['persistenceIdentifier']];
+                $referenceCount = $allReferencesForFileUid[$formMetadata->fileUid];
+            } elseif ($formMetadata->persistenceIdentifier && array_key_exists($formMetadata->persistenceIdentifier, $allReferencesForPersistenceIdentifier)) {
+                $referenceCount = $allReferencesForPersistenceIdentifier[$formMetadata->persistenceIdentifier];
             }
-            $formDefinition['referenceCount'] = $referenceCount;
-            if ($searchTerm === ''
-                || $this->valueContainsSearchTerm($formDefinition['name'], $searchTerm)
-                || $this->valueContainsSearchTerm($formDefinition['persistenceIdentifier'], $searchTerm)
+
+            if ($referenceCount > 0) {
+                $formMetadata = $formMetadata->withReferenceCount($referenceCount);
+            }
+
+            if ($searchCriteria->searchTerm === ''
+                || $this->valueContainsSearchTerm($formMetadata->name, $searchCriteria->searchTerm)
+                || ($formMetadata->persistenceIdentifier && $this->valueContainsSearchTerm($formMetadata->persistenceIdentifier, $searchCriteria->searchTerm))
             ) {
-                $availableFormDefinitions[] = $formDefinition;
+                $availableFormDefinitions[] = $formMetadata;
             }
         }
+
         return $availableFormDefinitions;
     }
 

@@ -24,7 +24,6 @@ use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Form\Controller\FormFrontendController;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
-use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -48,7 +47,6 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 $configurationServiceMock,
                 $this->createMock(FormPersistenceManagerInterface::class),
                 $this->get(FlexFormTools::class),
-                $this->createMock(ConfigurationManagerInterface::class),
             ],
         );
         $sheetIdentifier = md5(
@@ -170,7 +168,6 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 $configurationServiceMock,
                 $this->createMock(FormPersistenceManagerInterface::class),
                 $this->get(FlexFormTools::class),
-                $this->createMock(ConfigurationManagerInterface::class),
             ],
         );
         $sheetIdentifier = md5(
@@ -315,7 +312,6 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 $configurationServiceMock,
                 $this->createMock(FormPersistenceManagerInterface::class),
                 $this->get(FlexFormTools::class),
-                $this->createMock(ConfigurationManagerInterface::class),
             ],
         );
 

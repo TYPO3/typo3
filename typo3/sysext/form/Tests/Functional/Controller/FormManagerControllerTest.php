@@ -38,6 +38,8 @@ use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder as ExtbaseUriBuilder;
 use TYPO3\CMS\Form\Controller\FormManagerController;
+use TYPO3\CMS\Form\Domain\DTO\FormMetadata;
+use TYPO3\CMS\Form\Domain\DTO\SearchCriteria;
 use TYPO3\CMS\Form\Event\BeforeFormIsCreatedEvent;
 use TYPO3\CMS\Form\Event\BeforeFormIsDeletedEvent;
 use TYPO3\CMS\Form\Event\BeforeFormIsDuplicatedEvent;
@@ -212,16 +214,19 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->createMock(ComponentFactory::class),
             ],
         );
+        $formMetadata = new FormMetadata(
+            identifier: 'ext-form-identifier',
+            type: 'Form',
+            prototypeName: 'Standard',
+            name: 'some name',
+            persistenceIdentifier: '1:/user_uploads/someFormName.yaml',
+            readOnly: false,
+            removable: true,
+            storageType: 'filemount',
+            duplicateIdentifier: false,
+        );
         $formPersistenceManagerMock->method('listForms')->willReturn([
-            0 => [
-                'identifier' => 'ext-form-identifier',
-                'name' => 'some name',
-                'persistenceIdentifier' => '1:/user_uploads/someFormName.yaml',
-                'readOnly' => false,
-                'removable' => true,
-                'location' => 'storage',
-                'duplicateIdentifier' => false,
-            ],
+            0 => $formMetadata,
         ]);
         $databaseServiceMock->method('getAllReferencesForFileUid')->willReturn([
             0 => 0,
@@ -230,18 +235,9 @@ final class FormManagerControllerTest extends FunctionalTestCase
             '1:/user_uploads/someFormName.yaml' => 2,
         ]);
         $expected = [
-            0 => [
-                'identifier' => 'ext-form-identifier',
-                'name' => 'some name',
-                'persistenceIdentifier' => '1:/user_uploads/someFormName.yaml',
-                'readOnly' => false,
-                'removable' => true,
-                'location' => 'storage',
-                'duplicateIdentifier' => false,
-                'referenceCount' => 2,
-            ],
+            0 => $formMetadata->withReferenceCount(2),
         ];
-        self::assertSame($expected, $subjectMock->_call('getAvailableFormDefinitions', []));
+        self::assertSame(2, $subjectMock->_call('getAvailableFormDefinitions', [], new SearchCriteria(''))[0]->referenceCount);
     }
 
     #[Test]

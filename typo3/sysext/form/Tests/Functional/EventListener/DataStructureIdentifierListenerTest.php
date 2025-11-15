@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
+use TYPO3\CMS\Form\Domain\DTO\FormMetadata;
 use TYPO3\CMS\Form\EventListener\DataStructureIdentifierListener;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
@@ -199,11 +200,14 @@ final class DataStructureIdentifierListenerTest extends FunctionalTestCase
     {
         return [
             'simple' => [
-                [
-                    'persistenceIdentifier' => 'hugo1',
-                    'name' => 'myHugo1',
-                    'location' => 'extension',
-                ],
+                new FormMetadata(
+                    identifier: 'hugo1',
+                    type: 'Form',
+                    name: 'myHugo1',
+                    prototypeName: 'Standard',
+                    persistenceIdentifier: 'hugo1',
+                    storageType: 'extension'
+                ),
                 [
                     'label' => 'myHugo1 (hugo1)',
                     'value' => 'hugo1',
@@ -211,13 +215,15 @@ final class DataStructureIdentifierListenerTest extends FunctionalTestCase
                 ],
             ],
             'invalid' => [
-                [
-                    'persistenceIdentifier' => 'Error.yaml',
-                    'label' => 'Test Error Label',
-                    'name' => 'Test Error Name',
-                    'location' => 'extension',
-                    'invalid' => true,
-                ],
+                new FormMetadata(
+                    identifier: 'testError',
+                    type: 'Form',
+                    name: 'Test Error Name',
+                    prototypeName: 'Standard',
+                    persistenceIdentifier: 'Error.yaml',
+                    invalid: true,
+                    storageType: 'extension',
+                ),
                 [
                     'label' => 'Test Error Name (Error.yaml)',
                     'value' => 'Error.yaml',
@@ -229,7 +235,7 @@ final class DataStructureIdentifierListenerTest extends FunctionalTestCase
 
     #[DataProvider('modifyDataStructureDataProvider')]
     #[Test]
-    public function modifyDataStructureAddsExistingFormItems(array $formDefinition, array $expectedItem): void
+    public function modifyDataStructureAddsExistingFormItems(FormMetadata $formMetadata, array $expectedItem): void
     {
         $incomingDataStructure = [
             'sheets' => [
@@ -277,7 +283,7 @@ final class DataStructureIdentifierListenerTest extends FunctionalTestCase
             ['ext-form-persistenceIdentifier' => ''],
         );
         $formPersistenceManagerMock = $this->createMock(FormPersistenceManagerInterface::class);
-        $formPersistenceManagerMock->expects($this->atLeastOnce())->method('listForms')->willReturn([$formDefinition]);
+        $formPersistenceManagerMock->expects($this->atLeastOnce())->method('listForms')->willReturn([$formMetadata]);
         $subject = new DataStructureIdentifierListener(
             $formPersistenceManagerMock,
             $this->createMock(ConfigurationService::class),
