@@ -832,7 +832,7 @@ class DatabaseIntegrityController
                 'redirect' => (string)$this->uriBuilder->buildUriFromRoute($this->moduleName),
             ]);
             $undeleteAction = '<a class="btn btn-default" href="' . htmlspecialchars($undeleteActionUrl) . '"'
-                . ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf:undelete_only')) . '">'
+                . ' title="' . htmlspecialchars($languageService->translate('undelete_only', 'lowlevel.module.database_integrity')) . '">'
                 . $this->iconFactory->getIcon('actions-edit-restore', IconSize::SMALL)->render()
                 . '</a>';
             $out .= '<div class="btn-group" role="group">' . $undeleteAction . '</div>';
@@ -2523,7 +2523,7 @@ class DatabaseIntegrityController
                     $saveStoreArray = 1;
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
-                        sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf:query_loaded'), $storeArray[$storeIndex])
+                        sprintf($languageService->translate('query_loaded', 'lowlevel.module.database_integrity'), $storeArray[$storeIndex])
                     );
                 }
             } elseif ($storeControl['SAVE'] ?? false) {
@@ -2539,14 +2539,14 @@ class DatabaseIntegrityController
                     $saveStoreArray = 1;
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
-                        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf:query_saved')
+                        $languageService->translate('query_saved', 'lowlevel.module.database_integrity')
                     );
                 }
             } elseif ($storeControl['REMOVE'] ?? false) {
                 if ($storeIndex > 0) {
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
-                        sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf:query_removed'), $storeArray[$storeControl['STORE']])
+                        sprintf($languageService->translate('query_removed', 'lowlevel.module.database_integrity'), $storeArray[$storeControl['STORE']])
                     );
                     // Removing
                     unset($storeArray[$storeControl['STORE']]);

@@ -53,6 +53,7 @@ readonly class LocalizationFactory
         'EXT:seo/Resources/Private/Language/locallang_tca.xlf' => 'EXT:seo/Resources/Private/Language/db.xlf',
         'EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf' => 'EXT:webhooks/Resources/Private/Language/module.xlf',
         'EXT:reactions/Resources/Private/Language/Modules/webhooks.xlf' => 'EXT:reactions/Resources/Private/Language/module.xlf',
+        'EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf' => 'EXT:lowlevel/Resources/Private/Language/Modules/database_integrity.xlf',
     ];
 
     protected const DEPRECATED_FILES = [

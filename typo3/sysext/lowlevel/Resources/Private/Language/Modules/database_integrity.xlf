@@ -12,6 +12,18 @@
 			<trans-unit id="title">
 				<source>Database</source>
 			</trans-unit>
+			<trans-unit id="query_loaded">
+				<source>Query "%s" loaded</source>
+			</trans-unit>
+			<trans-unit id="query_saved">
+				<source>Query saved</source>
+			</trans-unit>
+			<trans-unit id="query_removed">
+				<source>"%s" query entry removed</source>
+			</trans-unit>
+			<trans-unit id="undelete_only">
+				<source>Undelete</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
