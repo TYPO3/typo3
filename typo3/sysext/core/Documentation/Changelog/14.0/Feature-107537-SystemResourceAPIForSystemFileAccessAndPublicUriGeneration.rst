@@ -115,6 +115,10 @@ URIs relative to the current host,
 can be specified with prefixing them with `URI:` like so:
 `URI:/path/to/my/image.svg`
 
+The string after the `URI:` prefix **must** be a valid URI. This means,
+that TYPO3 will now throw an exception, rather than rendering an invalid URI
+to HTML, when an invalid URI is provided.
+
 Legacy resource annotations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

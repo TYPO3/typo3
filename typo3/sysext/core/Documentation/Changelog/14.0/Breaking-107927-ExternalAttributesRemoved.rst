@@ -18,7 +18,7 @@ is now obsolete.
 
 This also obsoletes the :ref:`External option in AssetRenderer <feature-102255-1726090749>`.
 
-Both are removed in favor of the new unified :ref:`URI resource definition <feature-107927-1763052530>`.
+Both are removed in favor of the new unified :ref:`URI resource definition <feature-107537-1759136314>`.
 
 Instead of marking URIs as URIs with an additional option, prefix the URI, that shall be used with `URI:`,
 or simply use absolute URLs starting with `http(s)://`, where the prefix is not required.
@@ -64,8 +64,8 @@ TypoScript after:
 
   page = PAGE
   page.includeCSS {
-        main = https://example.com/styles/main.css
-        other = URI:/styles/main.css
+      main = https://example.com/styles/main.css
+      other = URI:/styles/main.css
   }
 
 
