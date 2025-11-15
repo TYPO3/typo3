@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\LinkHandler;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Controller\AbstractLinkBrowserController;
+use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList;
 use TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -228,6 +229,9 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
         $pointer = (int)($request->getParsedBody()['pointer'] ?? $request->getQueryParams()['pointer'] ?? 0);
         $searchLevels = (int)($request->getParsedBody()['search_levels'] ?? $request->getQueryParams()['search_levels'] ?? $modTSconfig['searchLevel.']['default'] ?? 0);
 
+        $existingModuleData = $backendUser->getModuleData('web_list');
+        $moduleData = new ModuleData('web_list', is_array($existingModuleData) ? $existingModuleData : []);
+
         // If table is 'pages', add a pre-entry to make selected page selectable directly.
         $titleLen = (int)$backendUser->uc['titleLen'];
         $mainPageRecord = BackendUtility::getRecordWSOL('pages', $selectedPage);
@@ -247,6 +251,7 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
 
         $dbList = $this->elementBrowserRecordList;
         $dbList->setRequest($request);
+        $dbList->setModuleData($moduleData);
         $dbList->setOverrideUrlParameters(array_merge($this->getUrlParameters([]), ['mode' => 'db', 'expandPage' => $selectedPage]), $request);
         $dbList->setIsEditable(false);
         $dbList->calcPerms = new Permission($backendUser->calcPerms($pageInfo));
