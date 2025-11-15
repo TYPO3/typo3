@@ -239,7 +239,7 @@
 				<source>There are no broken links for the selected link type restriction.</source>
 			</trans-unit>
 			<trans-unit id="no.access.title">
-				<source>No access!</source>
+				<source>No access</source>
 			</trans-unit>
 			<trans-unit id="no.access">
 				<source>You do not have access to these listings.</source>

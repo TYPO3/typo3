@@ -34,13 +34,13 @@
 				<source>Email template name (without the extension)</source>
 			</trans-unit>
 			<trans-unit id="tasks.validate.invalidEmail">
-				<source>Invalid email format!</source>
+				<source>Invalid email format</source>
 			</trans-unit>
 			<trans-unit id="tasks.validate.invalidPage">
-				<source>Invalid page uid, please enter a valid page uid!</source>
+				<source>Invalid page uid, please enter a valid page uid</source>
 			</trans-unit>
 			<trans-unit id="tasks.validate.invalidDepth">
-				<source>There is no depth set, please set it to one of the offered values!</source>
+				<source>There is no depth set, please set it to one of the offered values</source>
 			</trans-unit>
 			<trans-unit id="tasks.notice.useDefaultTemplate">
 				<source>
@@ -50,16 +50,16 @@
 				</source>
 			</trans-unit>
 			<trans-unit id="tasks.error.emptyToEmail">
-				<source>There must be at least one recipient defined!</source>
+				<source>There must be at least one recipient defined</source>
 			</trans-unit>
 			<trans-unit id="tasks.error.invalidToEmail">
-				<source>Invalid format of one or more of the recipient email addresses!</source>
+				<source>Invalid format of one or more of the recipient email addresses</source>
 			</trans-unit>
 			<trans-unit id="tasks.error.invalidFromEmail">
 				<source>Invalid format of the email address in the from header</source>
 			</trans-unit>
 			<trans-unit id="tasks.error.invalidPageUid">
-				<source>The given page id %d is invalid!</source>
+				<source>The given page id %d is invalid</source>
 			</trans-unit>
 			<trans-unit id="tasks.email.title">
 				<source>TYPO3 LinkValidator report</source>
