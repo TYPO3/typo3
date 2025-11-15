@@ -30,6 +30,9 @@
     // <body> by 75% and any base font size below 14px would
     // become less than 10px for default text.
     font-size: max(1em, 14px);
+    container-type: inline-size;
+    min-height: 100dvh;
+    overscroll-behavior: none;
 
     // General
     --typo3-font-size: .75rem;

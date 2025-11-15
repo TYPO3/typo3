@@ -890,7 +890,7 @@ export default (function() {
    * to prevent operations (e.g. save) on slow connections before the page is actually reloaded.
    */
   FormEngine.disableDocHeaderButtons = function(): void {
-    const docHeaderBar = document.querySelector('.t3js-module-docheader-bar-buttons');
+    const docHeaderBar = document.querySelector('.t3js-module-docheader-buttons');
     if (!docHeaderBar) {
       return;
     }
@@ -912,7 +912,7 @@ export default (function() {
    * Called after FormEngine initialization is complete to restore button interactivity.
    */
   FormEngine.enableDocHeaderButtons = function(): void {
-    const docHeaderBar = document.querySelector('.t3js-module-docheader-bar-buttons');
+    const docHeaderBar = document.querySelector('.t3js-module-docheader-buttons');
     if (!docHeaderBar) {
       return;
     }

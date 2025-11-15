@@ -34,7 +34,7 @@ export default class DomHelper {
   /**
    * Get the next scrollable parent element
    */
-  public static scrollableParent(element: Element) {
+  public static scrollableParent(element: Element): Element {
     let parent = element.parentElement;
 
     while (parent) {
@@ -48,6 +48,16 @@ export default class DomHelper {
     }
 
     return document.documentElement;
+  }
+
+  /**
+   * Get the scroll event target for an element.
+   * When the scrollable parent is document.documentElement, scroll events
+   * actually fire on the document object, not on the element itself.
+   */
+  public static scrollEventTarget(element: Element): Element | Document {
+    const scrollableParent = this.scrollableParent(element);
+    return scrollableParent === document.documentElement ? document : scrollableParent;
   }
 
   /**

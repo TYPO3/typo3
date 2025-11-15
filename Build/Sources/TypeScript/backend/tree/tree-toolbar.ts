@@ -57,7 +57,7 @@ export class TreeToolbar extends LitElement {
         <div class="tree-toolbar__submenu">
           <button
             type="button"
-            class="tree-toolbar__menuitem dropdown-toggle dropdown-toggle-no-chevron float-end"
+            class="btn btn-sm btn-icon btn-default btn-borderless"
             data-bs-toggle="dropdown"
             aria-expanded="false"
             aria-label="${lll('labels.openTreeOptionsMenu')}"

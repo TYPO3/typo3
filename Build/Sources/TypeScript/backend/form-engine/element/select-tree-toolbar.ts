@@ -41,23 +41,25 @@ export class SelectTreeToolbar extends LitElement {
 
   protected override render(): TemplateResult {
     return html`
-      <div class="tree-toolbar btn-toolbar">
-        <div class="input-group">
-          <span class="input-group-text input-group-icon filter">
-            <typo3-backend-icon identifier="actions-filter" size="small"></typo3-backend-icon>
-          </span>
-          <input type="search" class="form-control ${this.settings.searchInput}" placeholder="${lll('tcatree.findItem')}" @input="${(evt: InputEvent) => this.filter(evt)}">
-        </div>
-        <div class="btn-group">
-          <button type="button" class="btn btn-default ${this.settings.expandAllBtn}" title="${lll('tcatree.expandAll')}" @click="${() => this.expandAll()}">
-            <typo3-backend-icon identifier="apps-pagetree-category-expand-all" size="small"></typo3-backend-icon>
-          </button>
-          <button type="button" class="btn btn-default ${this.settings.collapseAllBtn}" title="${lll('tcatree.collapseAll')}" @click="${(evt: MouseEvent) => this.collapseAll(evt)}">
-            <typo3-backend-icon identifier="apps-pagetree-category-collapse-all" size="small"></typo3-backend-icon>
-          </button>
-          <button type="button" class="btn btn-default ${this.settings.toggleHideUnchecked}" title="${lll('tcatree.toggleHideUnchecked')}" @click="${() => this.toggleHideUnchecked()}">
-            <typo3-backend-icon identifier="apps-pagetree-category-toggle-hide-checked" size="small"></typo3-backend-icon>
-          </button>
+      <div class="tree-toolbar">
+        <div class="tree-toolbar__buttons">
+          <div class="input-group">
+            <span class="input-group-text input-group-icon filter">
+              <typo3-backend-icon identifier="actions-filter" size="small"></typo3-backend-icon>
+            </span>
+            <input type="search" class="form-control ${this.settings.searchInput}" placeholder="${lll('tcatree.findItem')}" @input="${(evt: InputEvent) => this.filter(evt)}">
+          </div>
+          <div class="btn-group">
+            <button type="button" class="btn btn-default ${this.settings.expandAllBtn}" title="${lll('tcatree.expandAll')}" @click="${() => this.expandAll()}">
+              <typo3-backend-icon identifier="apps-pagetree-category-expand-all" size="small"></typo3-backend-icon>
+            </button>
+            <button type="button" class="btn btn-default ${this.settings.collapseAllBtn}" title="${lll('tcatree.collapseAll')}" @click="${(evt: MouseEvent) => this.collapseAll(evt)}">
+              <typo3-backend-icon identifier="apps-pagetree-category-collapse-all" size="small"></typo3-backend-icon>
+            </button>
+            <button type="button" class="btn btn-default ${this.settings.toggleHideUnchecked}" title="${lll('tcatree.toggleHideUnchecked')}" @click="${() => this.toggleHideUnchecked()}">
+              <typo3-backend-icon identifier="apps-pagetree-category-toggle-hide-checked" size="small"></typo3-backend-icon>
+            </button>
+          </div>
         </div>
       </div>
     `;

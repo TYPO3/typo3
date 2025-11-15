@@ -18,7 +18,7 @@
 }
 
 .module-body typo3-backend-settings-editor {
-    --settings-parent-offset: var(--module-body-padding-y);
+    --settings-parent-offset: var(--module-docheader-bar-height);
 }
 
 .modal-body typo3-backend-settings-editor {
@@ -41,7 +41,7 @@
 
     &-search {
         position: sticky;
-        top: calc(var(--settings-parent-offset) * -1);
+        top: var(--settings-parent-offset);
         z-index: 5;
         height: var(--settings-search-height);
         display: flex;
@@ -93,7 +93,7 @@
 
         &:has(.settings-search) {
             .settings-navigation-inner {
-                top: calc(var(--settings-search-height) - var(--settings-parent-offset));
+                top: calc(var(--settings-search-height) + var(--settings-parent-offset));
             }
         }
     }

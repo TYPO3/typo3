@@ -74,10 +74,10 @@ export class ResizableNavigation extends LitElement {
   protected override render(): TemplateResult {
     return html`
       <div class="scaffold-content-navigation-switcher">
-        <button @click="${this.toggleNavigation}" class="btn btn-sm btn-default btn-borderless scaffold-content-navigation-switcher-btn scaffold-content-navigation-switcher-open" role="button" title="${lll('viewport_navigation_show')}">
+        <button @click="${this.toggleNavigation}" class="btn btn-sm btn-icon btn-default btn-borderless scaffold-content-navigation-switcher-btn scaffold-content-navigation-switcher-open" role="button" title="${lll('viewport_navigation_show')}">
           <typo3-backend-icon identifier="actions-chevron-end" size="small"></typo3-backend-icon>
         </button>
-        <button @click="${this.toggleNavigation}" class="btn btn-sm btn-default btn-borderless scaffold-content-navigation-switcher-btn scaffold-content-navigation-switcher-close" role="button" title="${lll('viewport_navigation_hide')}">
+        <button @click="${this.toggleNavigation}" class="btn btn-sm btn-icon btn-default btn-borderless scaffold-content-navigation-switcher-btn scaffold-content-navigation-switcher-close" role="button" title="${lll('viewport_navigation_hide')}">
           <typo3-backend-icon identifier="actions-chevron-start" size="small"></typo3-backend-icon>
         </button>
       </div>

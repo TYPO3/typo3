@@ -508,7 +508,7 @@ class PageTreeToolbar extends TreeToolbar {
       }
           <button
             type="button"
-            class="tree-toolbar__menuitem dropdown-toggle dropdown-toggle-no-chevron float-end"
+            class="btn btn-sm btn-icon btn-default btn-borderless"
             data-bs-toggle="dropdown"
             aria-expanded="false"
             aria-label="${lll('labels.openPageTreeOptionsMenu')}"

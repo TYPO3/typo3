@@ -135,15 +135,25 @@ export class SettingsEditorElement extends LitElement {
     if (container) {
       const scrollableParentRect = scrollableParent.getBoundingClientRect();
       const navigationRect = settingsNavigationElement.getBoundingClientRect();
-      const startPosition = settingsSearchElement?.getBoundingClientRect().bottom ?? Math.max(scrollableParentRect.top, container.getBoundingClientRect().top);
-      const maxHeight = scrollableParentRect.bottom - Math.max(0, scrollableParentRect.bottom - navigationRect.bottom) - startPosition;
+
+      // For sticky elements, getBoundingClientRect() returns the actual visual position
+      // which is what we need for calculating available space
+      const startPosition = settingsSearchElement?.getBoundingClientRect().bottom ??
+        Math.max(scrollableParentRect.top, container.getBoundingClientRect().top);
+
+      // When scrollableParent is document.documentElement, its bottom can exceed viewport height
+      // We need to consider both the viewport height and how much of the navigation is visible
+      const viewportConstrainedBottom = Math.min(scrollableParentRect.bottom, window.innerHeight);
+      const availableBottomSpace = Math.max(0, viewportConstrainedBottom - navigationRect.bottom);
+      const maxHeight = viewportConstrainedBottom - startPosition - availableBottomSpace;
+
       container.style.maxHeight = `${maxHeight}px`;
     }
   }
 
   protected override firstUpdated(): void {
-    const scrollableParent = DomHelper.scrollableParent(this);
-    scrollableParent.addEventListener('scroll', () => {
+    const scrollTarget = DomHelper.scrollEventTarget(this);
+    scrollTarget.addEventListener('scroll', () => {
       this.adjustNavigationSize();
     });
   }
@@ -153,6 +163,7 @@ export class SettingsEditorElement extends LitElement {
       this.observer?.disconnect();
       this.observer = null;
     } else if (changedProperties.has('mode') && this.mode !== SettingsMode.minimal) {
+      const scrollableParent = DomHelper.scrollableParent(this);
       this.observer = new IntersectionObserver(
         (entries) => {
           entries.forEach(entry => {
@@ -166,7 +177,8 @@ export class SettingsEditorElement extends LitElement {
           }
         },
         {
-          root: DomHelper.scrollableParent(this),
+          // IntersectionObserver expects null for viewport, not document.documentElement
+          root: scrollableParent === document.documentElement ? null : scrollableParent,
           threshold: 0.1,
         }
       );

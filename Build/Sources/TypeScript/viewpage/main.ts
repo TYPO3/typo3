@@ -20,7 +20,8 @@ import type { ResizeEvent } from '@interactjs/actions/resize/plugin';
 
 enum Selectors {
   resizableContainerIdentifier = '.t3js-viewpage-resizeable',
-  moduleDocheaderSelector = '.t3js-module-docheader',
+  moduleDocheaderNavigationSelector = '.t3js-module-docheader-navigation',
+  moduleDocheaderButtonsSelector = '.t3js-module-docheader-buttons',
   moduleBodySelector = '.t3js-module-body',
   customSelector = '.t3js-preset-custom',
   customWidthSelector = '.t3js-preset-custom-width',
@@ -228,14 +229,15 @@ class ViewPage {
   private calculateContainerMaxHeight(): number {
     this.resizableContainer.hidden = true;
 
-    const docheaderHeight: number = document.querySelector(Selectors.moduleDocheaderSelector).getBoundingClientRect().height;
+    const docheaderNavigationHeight: number = document.querySelector(Selectors.moduleDocheaderNavigationSelector)?.getBoundingClientRect().height ?? 0;
+    const docheaderButtonsHeight: number = document.querySelector(Selectors.moduleDocheaderButtonsSelector)?.getBoundingClientRect().height ?? 0;
     const computedStyleOfModuleBody = getComputedStyle(document.querySelector(Selectors.moduleBodySelector));
     const padding = parseFloat(computedStyleOfModuleBody.getPropertyValue('padding-top')) + parseFloat(computedStyleOfModuleBody.getPropertyValue('padding-bottom'));
     const documentHeight: number = document.body.getBoundingClientRect().height;
     const topbarHeight = (document.querySelector(Selectors.topbarContainerSelector) as HTMLElement).getBoundingClientRect().height;
 
     this.resizableContainer.hidden = false;
-    return documentHeight - docheaderHeight - padding - topbarHeight - 8;
+    return documentHeight - docheaderNavigationHeight - docheaderButtonsHeight - padding - topbarHeight - 8;
   }
 
   private calculateContainerMaxWidth(): number {

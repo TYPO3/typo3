@@ -8,50 +8,52 @@
 <f:layout name="Module" />
 
 <f:section name="Content">
-    <div class="formeditor-loader" data-identifier="moduleLoadingIndicator">
-        <core:icon identifier="spinner-circle" size="medium" />
-        <div><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.loading" /></div>
-    </div>
-    <div class="formeditor-module hidden" data-identifier="moduleWrapper">
-        <f:format.raw>{formEditorTemplates}</f:format.raw>
-        <section class="formeditor-sidebar formeditor-sidebar-navigation" data-identifier="structureSection">
-            <div class="formeditor-sidebar-toggle">
-                <button
-                    type="button"
-                    class="btn btn-default btn-sm"
-                    title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.button_toggle_structure')}"
-                    data-identifier="formeditorStructureToggle"
-                    >
-                    <span class="caret"></span>
-                    <span class="visually-hidden">{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.button_toggle_structure')}</span>
-                </button>
-            </div>
-            <div class="formeditor-sidebar-inner">
-                <f:render section="ElementSidebarTree" />
-            </div>
-        </section>
-        <section class="formeditor-stage" data-identifier="stageContainer">
-            <div class="formeditor-stage-inner" data-identifier="stageContainerInner">
-                <f:render section="Header" />
-                <f:render section="Stage" />
-            </div>
-        </section>
-        <section class="formeditor-sidebar formeditor-sidebar-inspector" data-identifier="inspectorSection">
-            <div class="formeditor-sidebar-toggle">
-                <button
-                    type="button"
-                    class="btn btn-default btn-sm"
-                    title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.button_toggle_inspector')}"
-                    data-identifier="formeditorInspectorToggle"
-                    >
-                    <span class="caret"></span>
-                    <span class="visually-hidden">{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.button_toggle_inspector')}</span>
-                </button>
-            </div>
-            <div class="formeditor-sidebar-inner">
-                <f:render section="Inspector" />
-            </div>
-        </section>
+    <div class="formeditor">
+        <div class="formeditor-loader" data-identifier="moduleLoadingIndicator">
+            <core:icon identifier="spinner-circle" size="medium" />
+            <div><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.loading" /></div>
+        </div>
+        <div class="formeditor-module hidden" data-identifier="moduleWrapper">
+            <f:format.raw>{formEditorTemplates}</f:format.raw>
+            <section class="formeditor-sidebar formeditor-sidebar-navigation" data-identifier="structureSection">
+                <div class="formeditor-sidebar-toggle">
+                    <button
+                        type="button"
+                        class="btn btn-default btn-sm"
+                        title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.button_toggle_structure')}"
+                        data-identifier="formeditorStructureToggle"
+                        >
+                        <span class="caret"></span>
+                        <span class="visually-hidden">{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.button_toggle_structure')}</span>
+                    </button>
+                </div>
+                <div class="formeditor-sidebar-inner">
+                    <f:render section="ElementSidebarTree" />
+                </div>
+            </section>
+            <section class="formeditor-stage" data-identifier="stageContainer">
+                <div class="formeditor-stage-inner" data-identifier="stageContainerInner">
+                    <f:render section="Header" />
+                    <f:render section="Stage" />
+                </div>
+            </section>
+            <section class="formeditor-sidebar formeditor-sidebar-inspector" data-identifier="inspectorSection">
+                <div class="formeditor-sidebar-toggle">
+                    <button
+                        type="button"
+                        class="btn btn-default btn-sm"
+                        title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.button_toggle_inspector')}"
+                        data-identifier="formeditorInspectorToggle"
+                        >
+                        <span class="caret"></span>
+                        <span class="visually-hidden">{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.button_toggle_inspector')}</span>
+                    </button>
+                </div>
+                <div class="formeditor-sidebar-inner">
+                    <f:render section="Inspector" />
+                </div>
+            </section>
+        </div>
     </div>
 </f:section>
 

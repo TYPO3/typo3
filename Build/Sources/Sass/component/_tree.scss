@@ -23,6 +23,20 @@
     --tree-drag-dropzone-delete-color: #fff;
     --tree-drag-dropzone-delete-bg: #{$danger};
     --tree-drag-dropindicator-color: #{tint-color($primary, 20%)};
+    // toolbar
+    --tree-toolbar-padding-y: .75rem;
+    --tree-toolbar-padding-x: .75rem;
+    --tree-toolbar-padding: var(--tree-toolbar-padding-y) var(--tree-toolbar-padding-x);
+    --tree-toolbar-spacing-y: 1rem;
+    --tree-toolbar-spacing-x: .5rem;
+    --tree-toolbar-spacing: var(--tree-toolbar-spacing-y) var(--tree-toolbar-spacing-x);
+    --tree-toolbar-bg: var(--tree-bg);
+    --tree-toolbar-border-color: color-mix(in srgb, var(--tree-toolbar-bg), var(--tree-color) 10%);
+    --tree-toolbar-border-width: 1px;
+    --tree-toolbar-element-height: 1.78125rem; // 28.5px / 16 - to match input small height
+    --tree-toolbar-bar-height: calc((var(--tree-toolbar-padding-y) * 2) + var(--tree-toolbar-element-height));
+    --tree-toolbar-height: calc(var(--tree-toolbar-bar-height) * 2 + var(--tree-toolbar-border-width));
+    --tree-toolbar-box-shadow: var(--typo3-shadow-2);
 }
 
 .tree {
@@ -473,63 +487,63 @@ typo3-backend-form-selecttree-toolbar {
 }
 
 .scaffold-content .tree-toolbar {
-    min-height: var(--module-docheader-height);
+    min-height: var(--tree-toolbar-height);
 }
 
 .tree-toolbar {
-    padding: var(--module-docheader-padding-y) 12px;
-    color: var(--module-color);
-    border-bottom: 1px solid var(--module-docheader-border-color);
-    background-color: var(--module-docheader-bg);
+    color: var(--tree-color);
+    background-color: var(--tree-bg);
 
     &__menu {
-        padding-inline-end: 32px;
-        min-height: var(--module-docheader-bar-height);
+        padding: var(--tree-toolbar-padding);
+        padding-inline-end: calc(var(--tree-toolbar-padding-x) + 30px);
+        min-height: calc(var(--tree-toolbar-bar-height) + var(--tree-toolbar-border-width));
+        border-bottom: var(--tree-toolbar-border-width) solid var(--tree-toolbar-border-color);
+    }
+
+    &__submenu {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        padding: var(--tree-toolbar-padding);
+        min-height: var(--tree-toolbar-bar-height);
+        box-shadow: var(--tree-toolbar-box-shadow);
+
+        .btn {
+            margin-inline-start: auto;
+        }
+    }
+
+    &__buttons {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        gap: var(--tree-toolbar-spacing-x);
+        align-items: center;
+        padding: var(--tree-toolbar-padding);
+        min-height: var(--tree-toolbar-bar-height);
+        box-shadow: var(--tree-toolbar-box-shadow);
     }
 
     &__search {
         flex: 1 0 auto;
-        margin: 0 .5rem 0 .25rem;
     }
 
     &__menuitem {
         color: inherit;
         display: inline-flex;
-        padding: 0 .25rem;
+        padding: .25rem;
         border: 1px solid transparent;
         background: 0 0;
         font-size: var(--typo3-font-size-small);
         justify-content: center;
         align-items: center;
-        height: var(--module-docheader-bar-height);
         border-radius: var(--typo3-input-border-radius);
         outline-offset: 0;
-
-        &:is(button) {
-            &:hover {
-                border-color: var(--typo3-state-default-hover-border-color);
-                color: var(--typo3-state-default-hover-color);
-                background-color: var(--typo3-state-default-hover-bg);
-            }
-
-            &:focus {
-                border-color: var(--typo3-state-default-focus-border-color);
-                color: var(--typo3-state-default-focus-color);
-                background-color: var(--typo3-state-default-focus-bg);
-            }
-
-            &:focus-visible {
-                outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-state-default-focus-border-color), transparent 25%);
-            }
-        }
     }
 
     &__drag-node {
         cursor: move;
-    }
-
-    &__submenu {
-        margin-top: var(--module-docheader-spacing-y);
-        min-height: var(--module-docheader-bar-height);
     }
 }

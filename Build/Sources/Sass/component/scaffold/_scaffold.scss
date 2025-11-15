@@ -29,16 +29,10 @@
     --scaffold-content-navigation-drag-bg-hover: color-mix(in srgb, var(--typo3-surface-container-high), var(--typo3-text-color-base) 15%);
     --scaffold-content-navigation-switcher-bg: var(--typo3-surface-container-base);
     --scaffold-content-navigation-switcher-border: color-mix(in srgb, var(--typo3-surface-container-base), var(--typo3-text-color-base) 10%);
-    container-type: inline-size;
 }
 
 * {
     scrollbar-color: color-mix(in srgb, var(--typo3-text-color-base), transparent 75%) transparent;
-}
-
-:root {
-    height: 100%;
-    overscroll-behavior: none;
 }
 
 :root,
@@ -318,7 +312,7 @@ iframe {
         height: 30px;
         border-inline-end: 0;
         background: transparent;
-        transform: translate(calc(-41px * var(--typo3-position-modifier)), var(--module-docheader-padding-y));
+        transform: translate(calc((-1 * (var(--tree-toolbar-padding-x) + 28px)) * var(--typo3-position-modifier)), var(--tree-toolbar-padding-y));
         z-index: 3;
         padding: 0;
     }

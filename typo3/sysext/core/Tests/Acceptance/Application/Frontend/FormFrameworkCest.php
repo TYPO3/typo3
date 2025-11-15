@@ -42,9 +42,9 @@ final class FormFrameworkCest
         $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
         $I->click('Layout', '.module-docheader-bar-buttons .dropdown-menu');
         $I->waitForElementNotVisible('#t3js-ui-block');
-        $I->waitForElementVisible('.t3js-module-docheader-bar a[title="View webpage"]');
+        $I->waitForElementVisible('.t3js-module-docheader-buttons a[title="View webpage"]');
         $I->wait(1);
-        $I->click('.t3js-module-docheader-bar a[title="View webpage"]');
+        $I->click('.t3js-module-docheader-buttons a[title="View webpage"]');
         $I->wait(1);
         $I->executeInSelenium(static function (RemoteWebDriver $webdriver) {
             $handles = $webdriver->getWindowHandles();

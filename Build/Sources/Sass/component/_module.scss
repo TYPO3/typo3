@@ -10,21 +10,27 @@
 :root {
     --module-bg: var(--typo3-surface-base);
     --module-color: var(--typo3-text-color-base);
-    --module-docheader-padding-y: .5rem;
+    --module-docheader-zindex: var(--typo3-zindex-header);
+    --module-docheader-padding-y: .75rem;
     --module-docheader-padding-x: 1.5rem;
     --module-docheader-padding: var(--module-docheader-padding-y) var(--module-docheader-padding-x);
-    --module-docheader-spacing-y: 4px;
-    --module-docheader-spacing-x: 8px;
+    --module-docheader-spacing-y: 1rem;
+    --module-docheader-spacing-x: .5rem;
     --module-docheader-spacing: var(--module-docheader-spacing-y) var(--module-docheader-spacing-x);
-    --module-docheader-bg: var(--typo3-surface-container-high);
+    --module-docheader-bg: var(--module-bg);
     --module-docheader-border-color: color-mix(in srgb, var(--module-docheader-bg), var(--module-color) 10%);
     --module-docheader-border-width: 1px;
-    --module-docheader-bar-height: calc((28.5px - 16px) + 1em);
+    --module-docheader-bar-height: calc((var(--module-docheader-padding-y) * 2) + 1.78125rem); // 28.5px / 16 - to match input small height
     --module-docheader-scroll-offset: calc(-1 * (var(--module-docheader-bar-height) + var(--module-docheader-padding-y)));
-    --module-docheader-height: calc(var(--module-docheader-bar-height) * 2 + var(--module-docheader-padding-y) * 2 + var(--module-docheader-spacing-y) + var(--module-docheader-border-width));
+    --module-docheader-height: calc(var(--module-docheader-bar-height) * 2 + var(--module-docheader-border-width));
+    --module-docheader-box-shadow: var(--typo3-shadow-2);
     --module-body-padding-y: 1.5rem;
     --module-body-padding-x: 1.5rem;
     --module-body-padding: var(--module-body-padding-y) var(--module-body-padding-x);
+}
+
+body:has(.module) *:target {
+    scroll-margin-top: var(--module-docheader-height);
 }
 
 //
@@ -33,17 +39,19 @@
 .module {
     display: grid;
     grid-template-areas:
-        "moduleDocHeader"
+        "moduleDocHeaderNavigation"
+        "moduleDocHeaderButtons"
         "moduleBody";
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto auto 1fr;
     position: relative;
-    height: 100%;
+    min-height: 100%;
+    max-width: 100%;
     width: 100%;
     background-color: var(--module-bg);
     color: var(--module-color);
 
     body > & {
-        height: 100dvh;
+        min-height: 100dvh;
     }
 }
 
@@ -66,52 +74,72 @@
 // Docheader
 //
 .module-docheader {
-    grid-area: moduleDocHeader;
+    position: relative;
+    z-index: var(--typo3-zindex-header);
     display: flex;
-    flex-direction: column;
-    min-height: var(--module-docheader-height);
-    background-color: var(--module-docheader-bg);
-    border-bottom: 1px solid var(--module-docheader-border-color);
-    padding: var(--module-docheader-padding);
+    justify-content: space-between;
+    flex-wrap: wrap;
     gap: var(--module-docheader-spacing);
+    padding: var(--module-docheader-padding);
+    min-height: var(--module-docheader-bar-height);
+    background-color: var(--module-docheader-bg);
 
-    .module-docheader-bar {
+    &-column {
+        align-items: center;
         display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
+        max-width: 100%;
+    }
+
+    &-column-grow {
+        flex-grow: 1;
+    }
+
+    &-container {
+        display: flex;
         gap: var(--module-docheader-spacing);
-        min-height: var(--module-docheader-bar-height);
-        line-height: var(--module-docheader-bar-height);
-        contain: inline-size;
+        flex-wrap: wrap;
+    }
 
-        &-column-left,
-        &-column-right {
-            max-width: 100%;
-        }
+    .dropdown-menu {
+        max-height: calc(100dvh - var(--module-docheader-height));
+        overflow-y: auto;
+    }
+}
 
-        &-column-grow {
-            flex-grow: 1;
-        }
+//
+// DocHeader Navigation
+//
+.module-docheader-navigation {
+    grid-area: moduleDocHeaderNavigation;
+    min-height: calc(var(--module-docheader-bar-height) + var(--module-docheader-border-width));
+    border-bottom: var(--module-docheader-border-width) solid var(--module-docheader-border-color);
+}
 
-        label {
-            margin-top: 0;
-            margin-bottom: 0;
-        }
+//
+// DocHeader Buttons
+//
+.module-docheader-buttons:has(.module-docheader-column:empty) {
+    padding: 0;
+}
 
-        .form-group {
-            margin: 0;
-        }
+// Sticky and Animation
+.module-docheader-buttons {
+    z-index: calc(var(--typo3-zindex-header) - 1);
+    grid-area: moduleDocHeaderButtons;
+    position: sticky;
+    top: 0;
+    animation: module-docheader-buttons-shadow linear forwards;
+    animation-timeline: scroll(root);
+    animation-range: 0 calc(var(--module-docheader-bar-height) + 1px);
+}
 
-        &-container {
-            display: flex;
-            gap: var(--module-docheader-spacing);
-            flex-wrap: wrap;
-        }
+@keyframes module-docheader-buttons-shadow {
+    from {
+        box-shadow: 0 0 0 transparent;
+    }
 
-        .dropdown-menu {
-            max-height: calc(100dvh - var(--module-docheader-height));
-            overflow-y: auto;
-        }
+    to {
+        box-shadow: var(--module-docheader-box-shadow);
     }
 }
 
@@ -122,8 +150,8 @@
     grid-area: moduleBody;
     position: relative;
     padding: var(--module-body-padding);
-    overflow: auto;
     background-color: var(--module-bg);
+    contain: inline-size;
 
     > .container {
         padding-left: 0;
