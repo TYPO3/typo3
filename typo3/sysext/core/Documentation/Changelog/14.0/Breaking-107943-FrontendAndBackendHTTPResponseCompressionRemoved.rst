@@ -43,12 +43,10 @@ The default configuration of commonly used web servers enables this feature.
 Migration
 =========
 
-The configuration toggle for the Backend :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel']`
-is obsolete, existing settings in :file:`settings.php` configuration files are actively removed
-when first using the install tool after upgrade to TYPO3 v14. Its counterpart for the Frontend
-:php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel']` is kept since it is
-still used to enable frontend resource pre-compression (JS and CSS files) among further
-configuration using TypoScript.
+The configuration toggles for the backend :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel']`
+and the frontend :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel']` are
+obsolete, existing settings in :file:`settings.php` configuration files are
+actively removed when first using the install tool after upgrade to TYPO3 v14.
 
 
 ..  index:: Backend, Frontend, LocalConfiguration, NotScanned, ext:core
