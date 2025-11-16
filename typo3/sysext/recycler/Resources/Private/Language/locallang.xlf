@@ -31,7 +31,7 @@
 				<source>Delete {0} records</source>
 			</trans-unit>
 			<trans-unit id="button.undo">
-				<source>Recover</source>
+				<source>Restore</source>
 			</trans-unit>
 			<trans-unit id="button.expand">
 				<source>Expand record</source>
@@ -40,7 +40,7 @@
 				<source>Open context menu for multiselect options</source>
 			</trans-unit>
 			<trans-unit id="button.undoselected">
-				<source>Recover {0} records</source>
+				<source>Restore {0} records</source>
 			</trans-unit>
 			<trans-unit id="button.reload">
 				<source>Reload</source>
@@ -49,31 +49,31 @@
 				<source>Confirm deletion</source>
 			</trans-unit>
 			<trans-unit id="modal.undo.header">
-				<source>Recover records</source>
+				<source>Restore records</source>
 			</trans-unit>
 			<trans-unit id="modal.undo.recursive">
-				<source>Recover content and subpages recursively</source>
+				<source>Restore content and subpages recursively</source>
 			</trans-unit>
 			<trans-unit id="modal.deletecontent.text">
-				<source>Do you really want to delete the record "{0}" {1} permanently? You cannot revert this action!</source>
+				<source>Delete the record "{0}" {1} permanently? You cannot undo this action.</source>
 			</trans-unit>
 			<trans-unit id="modal.massdelete.text">
-				<source>Do you really want to delete all selected records and potential subpages? You cannot revert this action!</source>
+				<source>Delete all selected records and potential subpages? You cannot undo this action.</source>
 			</trans-unit>
 			<trans-unit id="modal.deletepage.text">
-				<source>Do you really want to delete the page "{0}" {1} and all of its contents (records and pages) permanently? You cannot revert this action!</source>
+				<source>Delete the page "{0}" {1} and all of its contents (records and pages) permanently? You cannot undo this action.</source>
 			</trans-unit>
 			<trans-unit id="modal.undocontent.text">
-				<source>Do you really want to recover the record "{0}" {1}?</source>
+				<source>Restore the record "{0}" {1}?</source>
 			</trans-unit>
 			<trans-unit id="modal.undopage.text">
-				<source>Do you really want to recover the page "{0}" {1}, its contents and optionally all of its subpages?</source>
+				<source>Restore the page "{0}" {1}, its contents and optionally all of its subpages?</source>
 			</trans-unit>
 			<trans-unit id="modal.undo.parentpages">
-				<source>All parent pages have been restored to ensure a valid rootline!</source>
+				<source>All parent pages have been restored to ensure a valid rootline.</source>
 			</trans-unit>
 			<trans-unit id="modal.massundo.text">
-				<source>Do you really want to recover all selected records and optionally potential subpages?</source>
+				<source>Do you really want to restore all selected records and optionally potential subpages?</source>
 			</trans-unit>
 			<trans-unit id="flashmessage.delete.norecordsselected">
 				<source>No records set to delete.</source>
@@ -91,19 +91,19 @@
 				<source>Could not delete %d records.</source>
 			</trans-unit>
 			<trans-unit id="flashmessage.undo.norecordsselected">
-				<source>No records set to recover.</source>
+				<source>No records set to restore.</source>
 			</trans-unit>
 			<trans-unit id="flashmessage.undo.success.singular">
-				<source>One record was recovered.</source>
+				<source>One record was restored.</source>
 			</trans-unit>
 			<trans-unit id="flashmessage.undo.success.plural">
-				<source>%d records were recovered.</source>
+				<source>%d records were restored.</source>
 			</trans-unit>
 			<trans-unit id="flashmessage.undo.failure.singular">
-				<source>Could not recover one record.</source>
+				<source>Could not restore one record.</source>
 			</trans-unit>
 			<trans-unit id="flashmessage.undo.failure.plural">
-				<source>Could not recover %d records.</source>
+				<source>Could not restore %d records.</source>
 			</trans-unit>
 			<trans-unit id="alert.noDeletedRecords">
 				<source>No deleted records have been found.</source>
