@@ -103,7 +103,7 @@ final class UploadDeleteCheckboxViewHelper extends AbstractTagBasedViewHelper
 
         $this->tag->addAttribute('id', $idAttribute);
         $this->tag->addAttribute('name', $nameAttribute);
-        $this->tag->addAttribute('value', $valueAttribute);
+        $this->tag->addAttribute('value', (string)$valueAttribute);
         if ($checked === true) {
             $this->tag->addAttribute('checked', 'checked');
         }

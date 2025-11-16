@@ -39,7 +39,7 @@ final class SubmitViewHelper extends AbstractFormFieldViewHelper
         $this->registerFieldNameForFormTokenGeneration($name);
 
         $this->tag->addAttribute('type', 'submit');
-        $this->tag->addAttribute('value', $this->getValueAttribute());
+        $this->tag->addAttribute('value', (string)$this->getValueAttribute());
         if (!empty($name)) {
             $this->tag->addAttribute('name', $name);
         }

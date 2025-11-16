@@ -83,7 +83,7 @@ final class CheckboxViewHelper extends AbstractFormFieldViewHelper
 
         $this->registerFieldNameForFormTokenGeneration($nameAttribute);
         $this->tag->addAttribute('name', $nameAttribute);
-        $this->tag->addAttribute('value', $valueAttribute);
+        $this->tag->addAttribute('value', (string)$valueAttribute);
         if ($checked === true) {
             $this->tag->addAttribute('checked', 'checked');
         }

@@ -59,7 +59,7 @@ final class OptionViewHelper extends AbstractFormFieldViewHelper
         if ($this->arguments['selected'] ?? $this->isValueSelected((string)$value)) {
             $this->tag->addAttribute('selected', 'selected');
         }
-        $this->tag->addAttribute('value', $value);
+        $this->tag->addAttribute('value', (string)$value);
         $parentRequestedFormTokenFieldName = $this->renderingContext->getViewHelperVariableContainer()->get(
             SelectViewHelper::class,
             'registerFieldNameForFormTokenGeneration'

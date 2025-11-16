@@ -53,7 +53,7 @@ final class HiddenViewHelper extends AbstractFormFieldViewHelper
 
         $this->tag->addAttribute('type', 'hidden');
         $this->tag->addAttribute('name', $name);
-        $this->tag->addAttribute('value', $this->getValueAttribute());
+        $this->tag->addAttribute('value', (string)$this->getValueAttribute());
 
         $this->addAdditionalIdentityPropertiesIfNeeded();
 
