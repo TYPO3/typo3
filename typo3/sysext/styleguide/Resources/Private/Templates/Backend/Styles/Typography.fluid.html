@@ -18,11 +18,14 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.headline" /></h1>
-
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.headings.headline" /></h2>
+        <h1><f:translate key="styles.typography.headline" domain="styleguide.messages" /></h1>
         <p>
-            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.headings.text" /></f:sanitize.html>
+            <f:sanitize.html><f:translate key="styles.typography.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+
+        <h2><f:translate key="styles.typography.section.headings.headline" domain="styleguide.messages" /></h2>
+        <p>
+            <f:sanitize.html><f:translate key="styles.typography.section.headings.text" domain="styleguide.messages" /></f:sanitize.html>
         </p>
         <sg:example codePreview="true" codeLanguage="html">
             <h1>H1: Headline</h1>
@@ -31,7 +34,7 @@
             <h4>H4: Headline</h4>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.paragraph.headline" /></h2>
+        <h2><f:translate key="styles.typography.section.paragraph.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <p>
                 This is a paragraph. Paragraphs are preset with a font size, line height and spacing to match the overall
@@ -42,19 +45,19 @@
             </p>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.smallText.headline" /></h2>
-        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.smallText.text" /></p>
+        <h2><f:translate key="styles.typography.section.smallText.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="styles.typography.section.smallText.text" domain="styleguide.messages" /></p>
         <sg:example codePreview="true" codeLanguage="html">
             <small>Small text</small>
             <p><small>Small text inside a paragraph</small></p>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.links.headline" /></h2>
+        <h2><f:translate key="styles.typography.section.links.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <p>Paragraph with embedded <a href="#">link (without a class)</a>.</p>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.textColor.headline" /></h2>
+        <h2><f:translate key="styles.typography.section.textColor.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <span class="text-base">base</span><br>
             <span class="text-muted">muted</span><br>
@@ -70,19 +73,19 @@
             <span class="text-reset">reset</span>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.lists.headline" /></h2>
+        <h2><f:translate key="styles.typography.section.lists.headline" domain="styleguide.messages" /></h2>
         <p>
-            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.lists.text" /></f:sanitize.html>
+            <f:sanitize.html><f:translate key="styles.typography.section.lists.text" domain="styleguide.messages" /></f:sanitize.html>
         </p>
 
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.lists.ordered.headline" /></h3>
+        <h3><f:translate key="styles.typography.section.lists.ordered.headline" domain="styleguide.messages" /></h3>
         <sg:example codePreview="true" codeLanguage="html">
             <ol>
                 <f:render section="listItems" />
             </ol>
         </sg:example>
 
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.lists.unordered.headline" /></h3>
+        <h3><f:translate key="styles.typography.section.lists.unordered.headline" domain="styleguide.messages" /></h3>
         <sg:example codePreview="true" codeLanguage="html">
             <ul>
                 <f:render section="listItems" />
@@ -93,13 +96,11 @@
             </ul>
         </sg:example>
 
-        <hr>
+        <h2><f:translate key="section.frontend.headline" domain="styleguide.messages" /></h2>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
+        <h3><f:translate key="section.colorScheme.headline" domain="styleguide.messages" /></h3>
 
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
-
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.headings.headline" /></h4>
+        <h4><f:translate key="styles.typography.section.headings.headline" domain="styleguide.messages" /></h4>
         <sg:colorScheme>
             <h1>H1: Headline <a href="#">(example link)</a></h1>
             <h2>H2: Headline <a href="#">(example link)</a></h2>
@@ -107,7 +108,7 @@
             <h4>H4: Headline <a href="#">(example link)</a></h4>
         </sg:colorScheme>
 
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.paragraph.headline" /></h4>
+        <h4><f:translate key="styles.typography.section.paragraph.headline" domain="styleguide.messages" /></h4>
         <sg:colorScheme>
             <p>
                 This is a paragraph. Paragraphs are preset with a font size, line height and spacing to match the overall
@@ -118,7 +119,7 @@
             </p>
         </sg:colorScheme>
 
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.smallText.headline" /></h4>
+        <h4><f:translate key="styles.typography.section.smallText.headline" domain="styleguide.messages" /></h4>
         <sg:colorScheme>
             <small>Small text</small>
             <p><small>Small text inside a paragraph</small></p>
@@ -129,14 +130,14 @@
             <h4>H4: Headline <small>small text</small></h4>
         </sg:colorScheme>
 
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.links.headline" /></h4>
+        <h4><f:translate key="styles.typography.section.links.headline" domain="styleguide.messages" /></h4>
         <sg:colorScheme>
             <p>
                 Paragraph with embedded <a href="#">link (without a class)</a>.
             </p>
         </sg:colorScheme>
 
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.textColor.headline" /></h4>
+        <h4><f:translate key="styles.typography.section.textColor.headline" domain="styleguide.messages" /></h4>
         <sg:colorScheme>
             <div class="row">
                 <div class="col-6">
@@ -174,7 +175,7 @@
             </div>
         </sg:colorScheme>
 
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.lists.ordered.headline" /></h4>
+        <h4><f:translate key="styles.typography.section.lists.ordered.headline" domain="styleguide.messages" /></h4>
         <sg:colorScheme>
             <ol>
                 <f:render section="listItems" />
@@ -185,7 +186,7 @@
             </ol>
         </sg:colorScheme>
 
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.lists.unordered.headline" /></h4>
+        <h4><f:translate key="styles.typography.section.lists.unordered.headline" domain="styleguide.messages" /></h4>
         <sg:colorScheme>
             <ul>
                 <f:render section="listItems" />

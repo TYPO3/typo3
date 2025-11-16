@@ -24,9 +24,12 @@
 
     <div class="styleguide-content">
 
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.panels.headline" /></h1>
+        <h1><f:translate key="component.panels.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="component.panels.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.panels.collapsible.headline" /></h2>
+        <h2><f:translate key="component.panels.collapsible.headline" domain="styleguide.messages" /></h2>
         <sg:colorScheme>
             <div class="panel-group" id="panel-group-<UNIQUEID>">
                 <f:for each="{0:1, 1:2, 2:3, 3:4}" as="element">
@@ -63,7 +66,7 @@
             </div>
         </sg:colorScheme>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.panels.header.headline" /></h2>
+        <h2><f:translate key="component.panels.header.headline" domain="styleguide.messages" /></h2>
         <sg:colorScheme>
             <div class="panel panel-default">
                 <h3 class="panel-heading">Simple</h3>
@@ -142,7 +145,7 @@
             </div>
         </sg:colorScheme>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.panels.variants.headline" /></h2>
+        <h2><f:translate key="component.panels.variants.headline" domain="styleguide.messages" /></h2>
         <sg:colorScheme>
             <f:for each="{variants}" as="variant">
                 <div class="panel panel-{variant}">
@@ -169,7 +172,7 @@
             </f:for>
         </sg:colorScheme>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.panels.loader.headline" /></h2>
+        <h2><f:translate key="component.panels.loader.headline" domain="styleguide.messages" /></h2>
         <sg:colorScheme>
             <div class="panel panel-default">
                 <div class="panel-loader">
@@ -178,7 +181,7 @@
             </div>
         </sg:colorScheme>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.panels.size.headline" /></h2>
+        <h2><f:translate key="component.panels.size.headline" domain="styleguide.messages" /></h2>
         <sg:colorScheme>
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -198,7 +201,7 @@
             </div>
         </sg:colorScheme>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.panels.progress.headline" /></h2>
+        <h2><f:translate key="component.panels.progress.headline" domain="styleguide.messages" /></h2>
         <sg:colorScheme>
             <div class="panel panel-default panel-has-progress">
                 <div class="panel-progress">
@@ -242,7 +245,7 @@
             </div>
         </sg:colorScheme>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.panels.progressComponent.headline" /></h2>
+        <h2><f:translate key="component.panels.progressComponent.headline" domain="styleguide.messages" /></h2>
         <sg:colorScheme>
             <div class="panel panel-default">
                 <typo3-backend-progress-bar></typo3-backend-progress-bar>
@@ -276,7 +279,7 @@
             </div>
         </sg:colorScheme>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.panels.body.headline" /></h2>
+        <h2><f:translate key="component.panels.body.headline" domain="styleguide.messages" /></h2>
         <sg:colorScheme>
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -306,7 +309,7 @@
             </div>
         </sg:colorScheme>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.panels.footer.headline" /></h2>
+        <h2><f:translate key="component.panels.footer.headline" domain="styleguide.messages" /></h2>
         <sg:colorScheme>
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -320,7 +323,7 @@
             </div>
         </sg:colorScheme>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.panels.list.headline" /></h2>
+        <h2><f:translate key="component.panels.list.headline" domain="styleguide.messages" /></h2>
         <sg:colorScheme>
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -333,7 +336,7 @@
             </div>
         </sg:colorScheme>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.panels.table.headline" /></h2>
+        <h2><f:translate key="component.panels.table.headline" domain="styleguide.messages" /></h2>
         <sg:colorScheme>
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab">
@@ -365,7 +368,7 @@
             </div>
         </sg:colorScheme>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.panels.nesting.headline" /></h2>
+        <h2><f:translate key="component.panels.nesting.headline" domain="styleguide.messages" /></h2>
         <sg:colorScheme>
             <div class="panel-group" id="panel-group-<UNIQUEID>">
                 <f:for each="{0:1, 1:2, 2:3, 3:4}" as="element">

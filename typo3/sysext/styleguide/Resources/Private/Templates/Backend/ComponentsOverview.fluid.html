@@ -18,7 +18,7 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:componentsOverview.headline" /></h1>
+        <h1><f:translate key="componentsOverview.headline" domain="styleguide.messages" /></h1>
 
         <div class="card-container">
             <f:for each="{actions}" as="action">
@@ -26,8 +26,13 @@
                     <div class="card card-size-fixed-small">
                         <div class="card-header">
                             <div class="card-header-body">
-                                <h2 class="card-title"><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.{action}" /></h3>
+                                <h2 class="card-title"><f:translate key="action.{action}" domain="styleguide.messages" /></h2>
                             </div>
+                        </div>
+                        <div class="card-body">
+                            <p>
+                                <f:sanitize.html><f:translate key="action.{action}.description" domain="styleguide.messages" /></f:sanitize.html>
+                            </p>
                         </div>
                         <div class="card-footer">
                             <f:be.link
@@ -35,8 +40,8 @@
                                 parameters="{action: action}"
                                 class="btn btn-default"
                             >
-                                <f:variable name="componentTitle"><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.{action}"/></f:variable>
-                                <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:componentsOverview.link.title" arguments="{0: componentTitle}" />
+                                <f:variable name="componentTitle"><f:translate key="action.{action}" domain="styleguide.messages"/></f:variable>
+                                <f:translate key="componentsOverview.link.title" domain="styleguide.messages" arguments="{0: componentTitle}" />
                             </f:be.link>
                         </div>
                     </div>

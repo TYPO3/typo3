@@ -19,11 +19,13 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.headline" /></h1>
-        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.introtext" /></p>
+        <h1><f:translate key="component.card.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="component.card.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.default.headline" /></h2>
-        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.default.text" /></p>
+        <h2><f:translate key="component.card.section.default.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.card.section.default.text" domain="styleguide.messages" /></p>
 
         <f:variable name="codeSnippetDefault">
             <f:render
@@ -48,9 +50,9 @@
             />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.multipleCards.headline" /></h2>
+        <h2><f:translate key="component.card.section.multipleCards.headline" domain="styleguide.messages" /></h2>
         <p>
-            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.multipleCards.text" /></f:sanitize.html>
+            <f:sanitize.html><f:translate key="component.card.section.multipleCards.text" domain="styleguide.messages" /></f:sanitize.html>
         </p>
         <f:variable name="codeSnippetMultiple">
             <div class="card-container">
@@ -88,9 +90,9 @@
             </div>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.alignment.headline" /></h2>
+        <h2><f:translate key="component.card.section.alignment.headline" domain="styleguide.messages" /></h2>
         <p>
-            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.alignment.text" /></f:sanitize.html>
+            <f:sanitize.html><f:translate key="component.card.section.alignment.text" domain="styleguide.messages" /></f:sanitize.html>
         </p>
         <sg:example>
             <div class="card-container">
@@ -113,9 +115,9 @@
             </div>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.size.headline" /></h2>
+        <h2><f:translate key="component.card.section.size.headline" domain="styleguide.messages" /></h2>
         <p>
-            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.size.text" /></f:sanitize.html>
+            <f:sanitize.html><f:translate key="component.card.section.size.text" domain="styleguide.messages" /></f:sanitize.html>
         </p>
         <sg:example>
             <div class="card-container">
@@ -203,9 +205,9 @@
             </div>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.color.headline" /></h2>
+        <h2><f:translate key="component.card.section.color.headline" domain="styleguide.messages" /></h2>
         <p>
-            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.color.text" /></f:sanitize.html>
+            <f:sanitize.html><f:translate key="component.card.section.color.text" domain="styleguide.messages" /></f:sanitize.html>
         </p>
         <f:variable name="codeSnippetColor">
             <f:for each="{variants}" as="variant">
@@ -227,18 +229,17 @@
             </div>
         </sg:example>
 
-        <hr>
+        <h2><f:translate key="section.frontend.headline" domain="styleguide.messages" /></h2>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
-
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.formFieldsInCards.headline" /></h3>
+        <h3><f:translate key="component.card.section.formFieldsInCards.headline" domain="styleguide.messages" /></h3>
         <f:variable name="UriExtensionManagerModule" value="{f:be.uri(route: 'extensionmanager')}" />
         <f:variable name="UriSettingsModule" value="{f:be.uri(route: 'system_settings')}" />
         <f:variable name="UriDBCheckModule" value="{f:be.uri(route: 'system_dbint')}" />
         <p>
             <f:sanitize.html>
                 <f:translate
-                    key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.formFieldsInCards.text"
+                    key="component.card.section.formFieldsInCards.text"
+                    domain="styleguide.messages"
                     arguments="{
                         0: '{UriExtensionManagerModule}',
                         1: '{UriSettingsModule}',
@@ -269,8 +270,8 @@
             </form>
         </sg:example>
 
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.rowsInCards.headline" /></h3>
-        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.rowsInCards.text" /></p>
+        <h3><f:translate key="component.card.section.rowsInCards.headline" domain="styleguide.messages" /></h3>
+        <p><f:translate key="component.card.section.rowsInCards.text" domain="styleguide.messages" /></p>
         <sg:example>
             <div class="card-container">
                 <div class="card card-size-medium">
@@ -299,8 +300,8 @@
             </div>
         </sg:example>
 
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.extensionManangerModule.headline" /></h4>
-        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.extensionManangerModule.text" /></p>
+        <h4><f:translate key="component.card.section.extensionManangerModule.headline" domain="styleguide.messages" /></h4>
+        <p><f:translate key="component.card.section.extensionManangerModule.text" domain="styleguide.messages" /></p>
 
         <sg:colorScheme>
             <div class="card-container">
@@ -342,7 +343,7 @@
             </div>
         </sg:colorScheme>
 
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+        <h3><f:translate key="section.colorScheme.headline" domain="styleguide.messages" /></h3>
         <sg:colorScheme>
             <div class="card-container">
                 <f:for each="{variants}" as="variant">

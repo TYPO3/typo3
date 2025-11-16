@@ -18,9 +18,12 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.select.headline" /></h1>
+        <h1><f:translate key="component.select.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="component.select.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.select.section.default.headline" /></h2>
+        <h2><f:translate key="component.select.section.default.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <f:render
                 partial="Backend/Form/Select"
@@ -33,7 +36,7 @@
             />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.select.section.multiple.headline" /></h2>
+        <h2><f:translate key="component.select.section.multiple.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <f:render
                 partial="Backend/Form/Select"
@@ -46,8 +49,8 @@
             />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.select.section.optgroup.headline" /></h2>
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.select.section.optgroup.single.headline" /></h3>
+        <h2><f:translate key="component.select.section.optgroup.headline" domain="styleguide.messages" /></h2>
+        <h3><f:translate key="component.select.section.optgroup.single.headline" domain="styleguide.messages" /></h3>
         <sg:example codePreview="true" codeLanguage="html">
             <f:render
                 partial="Backend/Form/Select"
@@ -59,7 +62,7 @@
             />
         </sg:example>
 
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.select.section.optgroup.multiple.headline" /></h3>
+        <h3><f:translate key="component.select.section.optgroup.multiple.headline" domain="styleguide.messages" /></h3>
         <sg:example codePreview="true" codeLanguage="html">
             <f:render
                 partial="Backend/Form/Select"
@@ -72,7 +75,53 @@
             />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.select.section.state.headline" /></h2>
+        <h2><f:translate key="component.select.section.size.headline" domain="styleguide.messages" /></h2>
+
+        <h3><f:translate key="component.select.section.size.default.headline" domain="styleguide.messages" /></h3>
+        <f:variable name="codeSnippetSizeDefault">
+            <select class="form-select">
+                <option>Open this select menu</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetSizeDefault}" decodeEntities="true">
+            <div class="example-container">
+                <div class="example-item">
+                    <select class="form-select">
+                        <option>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+            </div>
+        </sg:example>
+
+        <h3><f:translate key="component.select.section.size.small.headline" domain="styleguide.messages" /></h3>
+        <f:variable name="codeSnippetSizeSmall">
+            <select class="form-select form-select-sm">
+                <option>Open this select menu</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetSizeSmall}" decodeEntities="true">
+            <div class="example-container">
+                <div class="example-item">
+                    <select class="form-select form-select-sm">
+                        <option>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="component.select.section.state.headline" domain="styleguide.messages" /></h2>
         <sg:example>
             <f:render
                 partial="Backend/Form/Select"
@@ -116,13 +165,11 @@
             />
         </sg:example>
 
-        <hr>
+        <h2><f:translate key="section.frontend.headline" domain="styleguide.messages" /></h2>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
+        <h3><f:translate key="section.colorScheme.headline" domain="styleguide.messages" /></h3>
 
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
-
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.select.section.colorScheme.optgroup.single.headline" /></h4>
+        <h4><f:translate key="component.select.section.colorScheme.optgroup.single.headline" domain="styleguide.messages" /></h4>
         <sg:colorScheme>
             <f:render
                 partial="Backend/Form/Select"
@@ -170,7 +217,7 @@
             />
         </sg:colorScheme>
 
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.select.section.colorScheme.optgroup.multiple.headline" /></h4>
+        <h4><f:translate key="component.select.section.colorScheme.optgroup.multiple.headline" domain="styleguide.messages" /></h4>
         <sg:colorScheme>
             <f:render
                 partial="Backend/Form/Select"

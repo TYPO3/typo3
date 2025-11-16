@@ -19,9 +19,12 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.pagination.headline" /></h1>
+        <h1><f:translate key="component.pagination.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="component.pagination.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.pagination.section.default.headline" /></h2>
+        <h2><f:translate key="component.pagination.section.default.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetDefault">
             <f:render section="navigationCodeExample" arguments="{_all}" />
             <f:render section="tableCodeExample" arguments="{_all}" />
@@ -31,9 +34,9 @@
             <f:render section="table" arguments="{_all}" />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
+        <h2><f:translate key="section.frontend.headline" domain="styleguide.messages" /></h2>
 
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+        <h3><f:translate key="section.colorScheme.headline" domain="styleguide.messages" /></h3>
         <sg:colorScheme>
             <f:render section="navigation" arguments="{_all}" />
             <f:render section="table" arguments="{_all}" />

@@ -19,32 +19,30 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.headline" /></h1>
+        <h1><f:translate key="component.avatar.headline" domain="styleguide.messages" /></h1>
         <p>
-            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.introtext" /></f:sanitize.html>
+            <f:sanitize.html><f:translate key="component.avatar.introtext" domain="styleguide.messages" /></f:sanitize.html>
         </p>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.section.default.headline" /></h2>
-        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.section.default.text" /></p>
+        <h2><f:translate key="component.avatar.section.default.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.avatar.section.default.text" domain="styleguide.messages" /></p>
 
         <f:variable name="codeSnippetDefault">&lt;be:avatar /&gt;</f:variable>
         <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetDefault}" decodeEntities="true">
             <be:avatar />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.section.withStatus.headline" /></h2>
-        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.section.withStatus.text" /></p>
+        <h2><f:translate key="component.avatar.section.withStatus.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.avatar.section.withStatus.text" domain="styleguide.messages" /></p>
 
         <f:variable name="codeSnippetStatus">&lt;be:avatar showIcon="true" /&gt;</f:variable>
         <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetStatus}" decodeEntities="true">
             <be:avatar showIcon="true" />
         </sg:example>
 
-        <hr>
+        <h2><f:translate key="section.frontend.headline" domain="styleguide.messages" /></h2>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
-
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+        <h3><f:translate key="section.colorScheme.headline" domain="styleguide.messages" /></h3>
         <sg:colorScheme>
             <be:avatar showIcon="true" />
         </sg:colorScheme>

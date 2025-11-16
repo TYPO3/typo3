@@ -20,9 +20,12 @@
 
     <div class="styleguide-content">
 
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.navs.headline" /></h1>
+        <h1><f:translate key="component.navs.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="component.navs.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.navs.basic.headline" /></h2>
+        <h2><f:translate key="component.navs.basic.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <ul class="nav">
                 <li class="nav-item">
@@ -40,7 +43,7 @@
             </ul>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.navs.flat.headline" /></h2>
+        <h2><f:translate key="component.navs.flat.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <nav class="nav">
                 <a class="nav-link active" aria-current="page" href="#">Active</a>
@@ -50,7 +53,7 @@
             </nav>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.navs.tabs.headline" /></h2>
+        <h2><f:translate key="component.navs.tabs.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <div role="tabpanel">
                 <ul class="nav nav-tabs" role="tablist">
@@ -106,7 +109,7 @@
             </div>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.navs.pills.headline" /></h2>
+        <h2><f:translate key="component.navs.pills.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <ul class="nav nav-pills">
                 <li class="nav-item">

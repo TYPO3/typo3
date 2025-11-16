@@ -23,9 +23,12 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.form.headline" /></h1>
+        <h1><f:translate key="component.form.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="component.form.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.form.section.loginFormExample.headline" /></h2>
+        <h2><f:translate key="component.form.section.loginFormExample.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <form method="post" action="" autocomplete="off">
                 <f:render
@@ -49,7 +52,7 @@
             </form>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.form.section.allFields.headline" /></h2>
+        <h2><f:translate key="component.form.section.allFields.headline" domain="styleguide.messages" /></h2>
         <sg:example>
             <form method="post" action="" autocomplete="off">
                 <f:render
@@ -133,7 +136,7 @@
             </form>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.form.section.formFieldsInRows.headline" /></h2>
+        <h2><f:translate key="component.form.section.formFieldsInRows.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetFieldRows">
             <div class="form-row">
                 <div class="form-group">
@@ -208,11 +211,9 @@
             </div>
         </sg:example>
 
-        <hr>
+        <h2><f:translate key="section.frontend.headline" domain="styleguide.messages" /></h2>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
-
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.form.section.allFieldsRtlDirection.headline" /></h3>
+        <h3><f:translate key="component.form.section.allFieldsRtlDirection.headline" domain="styleguide.messages" /></h3>
         <sg:example rtlDirection="true">
             <form method="post" action="" autocomplete="off">
                 <f:render
@@ -296,7 +297,7 @@
             </form>
         </sg:example>
 
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+        <h3><f:translate key="section.colorScheme.headline" domain="styleguide.messages" /></h3>
         <sg:colorScheme>
             <form method="post" action="" autocomplete="off">
                 <f:render

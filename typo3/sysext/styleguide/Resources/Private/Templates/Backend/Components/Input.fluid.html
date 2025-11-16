@@ -18,9 +18,12 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.input.headline" /></h1>
+        <h1><f:translate key="component.input.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="component.input.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.input.section.default.headline" /></h2>
+        <h2><f:translate key="component.input.section.default.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <f:render
                 partial="Backend/Form/Input"
@@ -32,7 +35,7 @@
             />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.input.section.placeholder.headline" /></h2>
+        <h2><f:translate key="component.input.section.placeholder.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <f:render
                 partial="Backend/Form/Input"
@@ -45,7 +48,7 @@
             />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.input.section.disabled.headline" /></h2>
+        <h2><f:translate key="component.input.section.disabled.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <f:render
                 partial="Backend/Form/Input"
@@ -59,7 +62,7 @@
             />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.input.section.additionalText.headline" /></h2>
+        <h2><f:translate key="component.input.section.additionalText.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <f:render
                 partial="Backend/Form/Input"
@@ -72,7 +75,33 @@
             />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.input.section.state.headline" /></h2>
+        <h2><f:translate key="component.input.section.size.headline" domain="styleguide.messages" /></h2>
+
+        <h3><f:translate key="component.input.section.size.default.headline" domain="styleguide.messages" /></h3>
+        <f:variable name="codeSnippetSizeDefault">
+            <input type="text" class="form-control" placeholder="Default input">
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetSizeDefault}" decodeEntities="true">
+            <div class="example-container">
+                <div class="example-item">
+                    <input type="text" class="form-control" placeholder="Default input">
+                </div>
+            </div>
+        </sg:example>
+
+        <h3><f:translate key="component.input.section.size.small.headline" domain="styleguide.messages" /></h3>
+        <f:variable name="codeSnippetSizeSmall">
+            <input type="text" class="form-control form-control-sm" placeholder="Small input">
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetSizeSmall}" decodeEntities="true">
+            <div class="example-container">
+                <div class="example-item">
+                    <input type="text" class="form-control form-control-sm" placeholder="Small input">
+                </div>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="component.input.section.state.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetState">
             .has-change
             .has-error
@@ -122,7 +151,7 @@
             />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.input.section.fileUpload.headline" /></h2>
+        <h2><f:translate key="component.input.section.fileUpload.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <f:render
                 partial="Backend/Form/Input"
@@ -134,7 +163,7 @@
             />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.input.section.email.headline" /></h2>
+        <h2><f:translate key="component.input.section.email.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <f:render
                 partial="Backend/Form/Input"
@@ -146,7 +175,7 @@
             />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.input.section.password.headline" /></h2>
+        <h2><f:translate key="component.input.section.password.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <f:render
                 partial="Backend/Form/Input"
@@ -158,11 +187,9 @@
             />
         </sg:example>
 
-        <hr>
+        <h2><f:translate key="section.frontend.headline" domain="styleguide.messages" /></h2>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
-
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+        <h3><f:translate key="section.colorScheme.headline" domain="styleguide.messages" /></h3>
         <sg:colorScheme>
             <f:render
                 partial="Backend/Form/Input"

@@ -22,32 +22,32 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressIndicator.headline" /></h1>
+        <h1><f:translate key="component.progressIndicator.headline" domain="styleguide.messages" /></h1>
         <p>
-            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressIndicator.introtext" /></f:sanitize.html>
+            <f:sanitize.html><f:translate key="component.progressIndicator.introtext" domain="styleguide.messages" /></f:sanitize.html>
         </p>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressIndicator.section.default.headline" /></h2>
-        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressIndicator.section.default.text" /></p>
+        <h2><f:translate key="component.progressIndicator.section.default.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.progressIndicator.section.default.text" domain="styleguide.messages" /></p>
         <f:variable name="codeSnippetDefault">&lt;typo3-backend-progress-bar&gt;&lt;/typo3-backend-progress-bar&gt;</f:variable>
         <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetDefault}" decodeEntities="true">
             <typo3-backend-progress-bar></typo3-backend-progress-bar>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressIndicator.section.customLabel.headline" /></h2>
-        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressIndicator.section.customLabel.text" /></p>
+        <h2><f:translate key="component.progressIndicator.section.customLabel.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.progressIndicator.section.customLabel.text" domain="styleguide.messages" /></p>
         <f:variable name="codeSnippetCustomLabel">&lt;typo3-backend-progress-bar label="Custom label"&gt;&lt;/typo3-backend-progress-bar&gt;</f:variable>
         <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetCustomLabel}" decodeEntities="true">
             <typo3-backend-progress-bar label="Custom label"></typo3-backend-progress-bar>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressIndicator.section.value.headline" /></h2>
+        <h2><f:translate key="component.progressIndicator.section.value.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetValue">&lt;typo3-backend-progress-bar value="33" label="Progress with value=33"&gt;&lt;/typo3-backend-progress-bar&gt;</f:variable>
         <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetValue}" decodeEntities="true">
             <typo3-backend-progress-bar value="33" label="Progress with value=33"></typo3-backend-progress-bar>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressIndicator.section.maxValue.headline" /></h2>
+        <h2><f:translate key="component.progressIndicator.section.maxValue.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetMaxValue">
             &lt;typo3-backend-progress-bar value="0.5" max="1" label="Progress with value=0.5, max=1"&gt;&lt;/typo3-backend-progress-bar&gt;
         </f:variable>
@@ -55,7 +55,7 @@
             <typo3-backend-progress-bar value="0.5" max="1" label="Progress with value=0.5, max=1"></typo3-backend-progress-bar>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressIndicator.section.ridiculousMaxValue.headline" /></h2>
+        <h2><f:translate key="component.progressIndicator.section.ridiculousMaxValue.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetMaxValue">
             &lt;typo3-backend-progress-bar value="33934584568974" max="3393458456897459" label="Progress with a ridiculous max value"&gt;&lt;/typo3-backend-progress-bar&gt;
         </f:variable>
@@ -63,7 +63,7 @@
             <typo3-backend-progress-bar value="239345845689745928946789" max="339345845689745928946756" label="Progress with a ridiculous max value"></typo3-backend-progress-bar>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressIndicator.section.severity.headline" /></h2>
+        <h2><f:translate key="component.progressIndicator.section.severity.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetSeverity">
             /
             severity="-1"
@@ -79,9 +79,9 @@
             <typo3-backend-progress-bar value="5" max="10" label="error" severity="2"></typo3-backend-progress-bar>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
+        <h2><f:translate key="section.frontend.headline" domain="styleguide.messages" /></h2>
 
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+        <h3><f:translate key="section.colorScheme.headline" domain="styleguide.messages" /></h3>
         <sg:colorScheme>
             <typo3-backend-progress-bar value="5" max="10" label="default"></typo3-backend-progress-bar><br>
             <typo3-backend-progress-bar value="5" max="10" label="info" severity="-1"></typo3-backend-progress-bar><br>

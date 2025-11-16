@@ -24,9 +24,12 @@
 
     <div class="styleguide-content">
 
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.combobox.headline" /></h1>
+        <h1><f:translate key="component.combobox.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="component.combobox.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.combobox.section.default.headline" /></h2>
+        <h2><f:translate key="component.combobox.section.default.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <f:render
                 partial="Backend/Form/Combobox"
@@ -51,7 +54,7 @@
             />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.combobox.section.placeholder.headline" /></h2>
+        <h2><f:translate key="component.combobox.section.placeholder.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <f:render
                 partial="Backend/Form/Combobox"
@@ -76,7 +79,7 @@
             />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.combobox.section.disabled.headline" /></h2>
+        <h2><f:translate key="component.combobox.section.disabled.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <f:render
                 partial="Backend/Form/Combobox"
@@ -102,7 +105,7 @@
             />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.combobox.section.readonly.headline" /></h2>
+        <h2><f:translate key="component.combobox.section.readonly.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <f:render
                 partial="Backend/Form/Combobox"
@@ -129,7 +132,7 @@
             />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.combobox.section.additionalText.headline" /></h2>
+        <h2><f:translate key="component.combobox.section.additionalText.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <f:render
                 partial="Backend/Form/Combobox"
@@ -154,7 +157,7 @@
             />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.combobox.section.state.headline" /></h2>
+        <h2><f:translate key="component.combobox.section.state.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetState">
             .has-change
             .has-error

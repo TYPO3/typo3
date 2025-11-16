@@ -28,7 +28,10 @@
 
     <div class="styleguide-content">
 
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.breadcrumb.headline" /></h1>
+        <h1><f:translate key="component.breadcrumb.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="component.breadcrumb.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
 
         <h2>Basic</h2>
         <sg:example codePreview="true" codeLanguage="html">

@@ -54,6 +54,7 @@
     .example-container {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
         gap: var(--typo3-spacing);
 
         &.example-container--large-spacing {
@@ -136,6 +137,8 @@
 @container (min-width: 740px) {
     .styleguide-navigation {
         position: sticky;
-        top: 0;
+        top: calc(var(--module-docheader-bar-height) + var(--module-body-padding-y));
+        max-height: calc(100dvh - var(--module-docheader-height) - var(--module-body-padding-y) * 2);
+        overflow: auto;
     }
 }

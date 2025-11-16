@@ -18,9 +18,12 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.textarea.headline" /></h1>
+        <h1><f:translate key="component.textarea.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="component.textarea.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.textarea.section.default.headline" /></h2>
+        <h2><f:translate key="component.textarea.section.default.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <f:render
                 partial="Backend/Form/Textarea"
@@ -31,7 +34,7 @@
             />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.textarea.section.placeholder.headline" /></h2>
+        <h2><f:translate key="component.textarea.section.placeholder.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <f:render
                 partial="Backend/Form/Textarea"
@@ -43,7 +46,7 @@
             />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.textarea.section.disabled.headline" /></h2>
+        <h2><f:translate key="component.textarea.section.disabled.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <f:render
                 partial="Backend/Form/Textarea"
@@ -56,7 +59,33 @@
             />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.textarea.section.state.headline" /></h2>
+        <h2><f:translate key="component.textarea.section.size.headline" domain="styleguide.messages" /></h2>
+
+        <h3><f:translate key="component.textarea.section.size.default.headline" domain="styleguide.messages" /></h3>
+        <f:variable name="codeSnippetSizeDefault">
+            <textarea class="form-control" rows="3" placeholder="Default textarea"></textarea>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetSizeDefault}" decodeEntities="true">
+            <div class="example-container">
+                <div class="example-item">
+                    <textarea class="form-control" rows="3" placeholder="Default textarea"></textarea>
+                </div>
+            </div>
+        </sg:example>
+
+        <h3><f:translate key="component.textarea.section.size.small.headline" domain="styleguide.messages" /></h3>
+        <f:variable name="codeSnippetSizeSmall">
+            <textarea class="form-control form-control-sm" rows="3" placeholder="Small textarea"></textarea>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetSizeSmall}" decodeEntities="true">
+            <div class="example-container">
+                <div class="example-item">
+                    <textarea class="form-control form-control-sm" rows="3" placeholder="Small textarea"></textarea>
+                </div>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="component.textarea.section.state.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetState">
             has-change
             has-error
@@ -102,11 +131,9 @@
             />
         </sg:example>
 
-        <hr>
+        <h2><f:translate key="section.frontend.headline" domain="styleguide.messages" /></h2>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
-
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+        <h3><f:translate key="section.colorScheme.headline" domain="styleguide.messages" /></h3>
         <sg:colorScheme>
             <f:render
                 partial="Backend/Form/Textarea"

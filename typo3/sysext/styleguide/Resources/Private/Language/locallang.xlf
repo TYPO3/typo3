@@ -63,107 +63,212 @@
 			<trans-unit id="action.accordion">
 				<source>Accordion</source>
 			</trans-unit>
+			<trans-unit id="action.accordion.description">
+				<source>Collapsible content sections that expand and collapse to show or hide information.</source>
+			</trans-unit>
 			<trans-unit id="action.avatar">
 				<source>Avatar</source>
+			</trans-unit>
+			<trans-unit id="action.avatar.description">
+				<source>Display images representing backend users with optional status indicators.</source>
 			</trans-unit>
 			<trans-unit id="action.badges">
 				<source>Badges</source>
 			</trans-unit>
+			<trans-unit id="action.badges.description">
+				<source>Small labels for displaying status, counts, or categorization information.</source>
+			</trans-unit>
 			<trans-unit id="action.breadcrumbs">
 				<source>Breadcrumbs</source>
+			</trans-unit>
+			<trans-unit id="action.breadcrumbs.description">
+				<source>Navigation trail showing the current location in the backend hierarchy, including modules and records.</source>
 			</trans-unit>
 			<trans-unit id="action.buttons">
 				<source>Buttons</source>
 			</trans-unit>
+			<trans-unit id="action.buttons.description">
+				<source>Interactive elements for triggering actions with various styles, sizes, and states.</source>
+			</trans-unit>
 			<trans-unit id="action.cards">
 				<source>Cards</source>
+			</trans-unit>
+			<trans-unit id="action.cards.description">
+				<source>Flexible containers for grouping related content, displayed individually or in groups.</source>
 			</trans-unit>
 			<trans-unit id="action.checkboxes">
 				<source>Checkboxes</source>
 			</trans-unit>
+			<trans-unit id="action.checkboxes.description">
+				<source>Form controls for selecting one or more options, including toggles and switches.</source>
+			</trans-unit>
 			<trans-unit id="action.comboboxes">
 				<source>Comboboxes</source>
+			</trans-unit>
+			<trans-unit id="action.comboboxes.description">
+				<source>Input fields with dropdown suggestions for selecting or entering values.</source>
 			</trans-unit>
 			<trans-unit id="action.colorTokens">
 				<source>Color Tokens</source>
 			</trans-unit>
+			<trans-unit id="action.colorTokens.description">
+				<source>Predefined color values and design tokens used throughout the TYPO3 backend interface.</source>
+			</trans-unit>
 			<trans-unit id="action.componentsOverview">
 				<source>Components overview</source>
+			</trans-unit>
+			<trans-unit id="action.componentsOverview.description">
+				<source>Browse all available UI components in the TYPO3 backend component library.</source>
 			</trans-unit>
 			<trans-unit id="action.developerTools">
 				<source>Developer Tools</source>
 			</trans-unit>
+			<trans-unit id="action.developerTools.description">
+				<source>Specialized components and utilities for development and debugging purposes.</source>
+			</trans-unit>
 			<trans-unit id="action.dropdown">
 				<source>Dropdown</source>
+			</trans-unit>
+			<trans-unit id="action.dropdown.description">
+				<source>Toggleable overlays for displaying lists, menus, and contextual actions.</source>
 			</trans-unit>
 			<trans-unit id="action.flashMessages">
 				<source>Flash messages</source>
 			</trans-unit>
+			<trans-unit id="action.flashMessages.description">
+				<source>Temporary notifications for displaying feedback about user actions and system events.</source>
+			</trans-unit>
 			<trans-unit id="action.form">
 				<source>Form</source>
+			</trans-unit>
+			<trans-unit id="action.form.description">
+				<source>Complete form layouts combining various input fields and controls.</source>
 			</trans-unit>
 			<trans-unit id="action.icons">
 				<source>Icons</source>
 			</trans-unit>
+			<trans-unit id="action.icons.description">
+				<source>Complete library of icons available for use in the TYPO3 backend interface.</source>
+			</trans-unit>
 			<trans-unit id="action.infobox">
 				<source>Infobox</source>
+			</trans-unit>
+			<trans-unit id="action.infobox.description">
+				<source>Highlighted containers for displaying important information and contextual help.</source>
 			</trans-unit>
 			<trans-unit id="action.input">
 				<source>Input</source>
 			</trans-unit>
+			<trans-unit id="action.input.description">
+				<source>Text input fields with support for various types, states, and sizes.</source>
+			</trans-unit>
 			<trans-unit id="action.managePageTrees">
 				<source>Manage example page trees</source>
+			</trans-unit>
+			<trans-unit id="action.managePageTrees.description">
+				<source>Create and manage example page trees with TCA demo records or content elements for testing purposes.</source>
 			</trans-unit>
 			<trans-unit id="action.modal">
 				<source>Modal</source>
 			</trans-unit>
+			<trans-unit id="action.modal.description">
+				<source>Dialog windows that appear on top of page content for focused interactions.</source>
+			</trans-unit>
 			<trans-unit id="action.navs">
 				<source>Navs</source>
+			</trans-unit>
+			<trans-unit id="action.navs.description">
+				<source>Navigation components including tabs, pills, and flat navigation styles.</source>
 			</trans-unit>
 			<trans-unit id="action.notifications">
 				<source>Notifications</source>
 			</trans-unit>
+			<trans-unit id="action.notifications.description">
+				<source>Temporary messages for informing users about events with optional action buttons.</source>
+			</trans-unit>
 			<trans-unit id="action.pagination">
 				<source>Pagination</source>
+			</trans-unit>
+			<trans-unit id="action.pagination.description">
+				<source>Controls for navigating through multi-page content and data sets.</source>
 			</trans-unit>
 			<trans-unit id="action.panels">
 				<source>Panels</source>
 			</trans-unit>
+			<trans-unit id="action.panels.description">
+				<source>Collapsible content containers for organizing information into sections.</source>
+			</trans-unit>
 			<trans-unit id="action.progressIndicators">
 				<source>Progress indicators</source>
+			</trans-unit>
+			<trans-unit id="action.progressIndicators.description">
+				<source>Visual indicators showing completion status of tasks and processes.</source>
 			</trans-unit>
 			<trans-unit id="action.progressTrackers">
 				<source>Progress trackers</source>
 			</trans-unit>
+			<trans-unit id="action.progressTrackers.description">
+				<source>Segmented progress displays for multi-step processes like wizards.</source>
+			</trans-unit>
 			<trans-unit id="action.radio">
 				<source>Radio</source>
+			</trans-unit>
+			<trans-unit id="action.radio.description">
+				<source>Form controls for selecting a single option from multiple choices.</source>
 			</trans-unit>
 			<trans-unit id="action.select">
 				<source>Select</source>
 			</trans-unit>
+			<trans-unit id="action.select.description">
+				<source>Dropdown menus for choosing one or more options from a list.</source>
+			</trans-unit>
 			<trans-unit id="action.shadows">
 				<source>Shadows</source>
+			</trans-unit>
+			<trans-unit id="action.shadows.description">
+				<source>Shadow effects and elevation styles used to create depth in the interface.</source>
 			</trans-unit>
 			<trans-unit id="action.stylesOverview">
 				<source>Styles overview</source>
 			</trans-unit>
+			<trans-unit id="action.stylesOverview.description">
+				<source>Browse all available design styles including colors, typography, and visual tokens.</source>
+			</trans-unit>
 			<trans-unit id="action.surfaces">
 				<source>Surfaces</source>
+			</trans-unit>
+			<trans-unit id="action.surfaces.description">
+				<source>Background surfaces and container styles that define the visual hierarchy.</source>
 			</trans-unit>
 			<trans-unit id="action.tab">
 				<source>Tabs</source>
 			</trans-unit>
+			<trans-unit id="action.tab.description">
+				<source>Organized content sections with clickable headers for switching between views.</source>
+			</trans-unit>
 			<trans-unit id="action.tables">
 				<source>Tables</source>
+			</trans-unit>
+			<trans-unit id="action.tables.description">
+				<source>Structured layouts for displaying tabular data with optional action icons.</source>
 			</trans-unit>
 			<trans-unit id="action.textarea">
 				<source>Textarea</source>
 			</trans-unit>
+			<trans-unit id="action.textarea.description">
+				<source>Multi-line text input fields for entering longer content.</source>
+			</trans-unit>
 			<trans-unit id="action.trees">
 				<source>Trees</source>
 			</trans-unit>
+			<trans-unit id="action.trees.description">
+				<source>Hierarchical tree structures for displaying nested data and navigation.</source>
+			</trans-unit>
 			<trans-unit id="action.typography">
 				<source>Typography</source>
+			</trans-unit>
+			<trans-unit id="action.typography.description">
+				<source>Font styles, sizes, weights, and text formatting used throughout the backend.</source>
 			</trans-unit>
 
 			<trans-unit id="pageTreeProcessingError">
@@ -276,6 +381,9 @@
 			<trans-unit id="component.badge.headline">
 				<source>Badges</source>
 			</trans-unit>
+			<trans-unit id="component.badge.introtext">
+				<source>Small labels for displaying status, counts, or categorization information in a compact format.</source>
+			</trans-unit>
 			<trans-unit id="component.badge.section.color.headline">
 				<source>Color</source>
 			</trans-unit>
@@ -289,14 +397,20 @@
 				<source>Usage within headings</source>
 			</trans-unit>
 
-			<!-- Component: Button -->
+			<!-- Component: Breadcrumb -->
 			<trans-unit id="component.breadcrumb.headline">
 				<source>Breadcrumb</source>
+			</trans-unit>
+			<trans-unit id="component.breadcrumb.introtext">
+				<source>Navigation trail showing the current location in the backend hierarchy, including modules and pages.</source>
 			</trans-unit>
 
 			<!-- Component: Button -->
 			<trans-unit id="component.button.headline">
 				<source>Buttons</source>
+			</trans-unit>
+			<trans-unit id="component.button.introtext">
+				<source>Interactive elements for triggering actions, available in various colors, sizes, and states.</source>
 			</trans-unit>
 			<trans-unit id="component.button.section.color.headline">
 				<source>Color</source>
@@ -315,6 +429,15 @@
 			</trans-unit>
 			<trans-unit id="component.button.section.withIcon.headline">
 				<source>Additional icon</source>
+			</trans-unit>
+			<trans-unit id="component.button.section.size.headline">
+				<source>Size</source>
+			</trans-unit>
+			<trans-unit id="component.button.section.size.default.headline">
+				<source>Default size</source>
+			</trans-unit>
+			<trans-unit id="component.button.section.size.small.headline">
+				<source>Small size</source>
 			</trans-unit>
 
 			<!-- Component: Card -->
@@ -377,6 +500,9 @@
 			<trans-unit id="component.checkbox.headline">
 				<source>Checkboxes</source>
 			</trans-unit>
+			<trans-unit id="component.checkbox.introtext">
+				<source>Form controls for selecting one or more options, including standard checkboxes, toggles, and switches.</source>
+			</trans-unit>
 			<trans-unit id="component.checkbox.section.card.headline">
 				<source>Card-Layout</source>
 			</trans-unit>
@@ -403,6 +529,9 @@
 			<trans-unit id="component.combobox.headline">
 				<source>Comboboxes</source>
 			</trans-unit>
+			<trans-unit id="component.combobox.introtext">
+				<source>Input fields with dropdown suggestions for selecting or entering values, combining text input with selection capabilities.</source>
+			</trans-unit>
 			<trans-unit id="component.combobox.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
@@ -425,6 +554,9 @@
 			<!-- Component: Dropdown -->
 			<trans-unit id="component.dropdown.headline">
 				<source>Dropdown</source>
+			</trans-unit>
+			<trans-unit id="component.dropdown.introtext">
+				<source>Toggleable overlays for displaying lists, menus, and contextual actions in a compact dropdown format.</source>
 			</trans-unit>
 			<trans-unit id="component.dropdown.section.toggles.headline">
 				<source>Toggles</source>
@@ -461,6 +593,9 @@
 			<trans-unit id="component.developerTools.headline">
 				<source>Developer Tools</source>
 			</trans-unit>
+			<trans-unit id="component.developerTools.introtext">
+				<source>Specialized components and utilities designed for development, debugging, and testing purposes.</source>
+			</trans-unit>
 			<trans-unit id="component.developerTools.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
@@ -468,6 +603,9 @@
 			<!-- Component: Flash message -->
 			<trans-unit id="component.flashMessage.headline">
 				<source>Flash messages</source>
+			</trans-unit>
+			<trans-unit id="component.flashMessage.introtext">
+				<source>Temporary notifications for displaying feedback about user actions and system events in various severity levels.</source>
 			</trans-unit>
 			<trans-unit id="component.flashMessage.section.color.headline">
 				<source>Color</source>
@@ -482,6 +620,9 @@
 			<!-- Component: Form -->
 			<trans-unit id="component.form.headline">
 				<source>Form</source>
+			</trans-unit>
+			<trans-unit id="component.form.introtext">
+				<source>Complete form layouts combining various input fields, controls, and validation patterns.</source>
 			</trans-unit>
 			<trans-unit id="component.form.section.allFields.headline">
 				<source>Form with all fields and labels</source>
@@ -523,6 +664,9 @@
 			<trans-unit id="component.input.headline">
 				<source>Input</source>
 			</trans-unit>
+			<trans-unit id="component.input.introtext">
+				<source>Text input fields supporting various types, states, and sizes for single-line data entry.</source>
+			</trans-unit>
 			<trans-unit id="component.input.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
@@ -546,6 +690,15 @@
 			</trans-unit>
 			<trans-unit id="component.input.section.state.headline">
 				<source>State</source>
+			</trans-unit>
+			<trans-unit id="component.input.section.size.headline">
+				<source>Size</source>
+			</trans-unit>
+			<trans-unit id="component.input.section.size.default.headline">
+				<source>Default size</source>
+			</trans-unit>
+			<trans-unit id="component.input.section.size.small.headline">
+				<source>Small size</source>
 			</trans-unit>
 
 			<!-- Component: Modal -->
@@ -572,6 +725,9 @@
 			<trans-unit id="component.navs.headline">
 				<source>Navs</source>
 			</trans-unit>
+			<trans-unit id="component.navs.introtext">
+				<source>Navigation components including tabs, pills, and flat navigation styles for organizing content.</source>
+			</trans-unit>
 			<trans-unit id="component.navs.basic.headline">
 				<source>Basic</source>
 			</trans-unit>
@@ -589,6 +745,9 @@
 			<!-- Component: Notification -->
 			<trans-unit id="component.notification.headline">
 				<source>Notifications</source>
+			</trans-unit>
+			<trans-unit id="component.notification.introtext">
+				<source>Temporary messages for informing users about events with optional action buttons and different severity levels. Error notifications persist until dismissed.</source>
 			</trans-unit>
 			<trans-unit id="component.notification.section.actionButtons.headline">
 				<source>Action Buttons</source>
@@ -628,6 +787,9 @@
 			<trans-unit id="component.pagination.headline">
 				<source>Pagination</source>
 			</trans-unit>
+			<trans-unit id="component.pagination.introtext">
+				<source>Controls for navigating through multi-page content and data sets with page numbers and navigation arrows.</source>
+			</trans-unit>
 			<trans-unit id="component.pagination.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
@@ -635,6 +797,9 @@
 			<!-- Component: Panels -->
 			<trans-unit id="component.panels.headline">
 				<source>Panels</source>
+			</trans-unit>
+			<trans-unit id="component.panels.introtext">
+				<source>Collapsible content containers for organizing information into expandable and collapsible sections.</source>
 			</trans-unit>
 			<trans-unit id="component.panels.collapsible.headline">
 				<source>Collapsible</source>
@@ -726,6 +891,9 @@
 			<trans-unit id="component.radio.headline">
 				<source>Radio buttons</source>
 			</trans-unit>
+			<trans-unit id="component.radio.introtext">
+				<source>Form controls for selecting a single exclusive option from multiple mutually exclusive choices.</source>
+			</trans-unit>
 			<trans-unit id="component.radio.section.card.headline">
 				<source>Card-Layout</source>
 			</trans-unit>
@@ -736,6 +904,9 @@
 			<!-- Component: Select -->
 			<trans-unit id="component.select.headline">
 				<source>Select</source>
+			</trans-unit>
+			<trans-unit id="component.select.introtext">
+				<source>Dropdown menus for choosing one or more options from a predefined list of values.</source>
 			</trans-unit>
 			<trans-unit id="component.select.section.default.headline">
 				<source>Default</source>
@@ -755,6 +926,15 @@
 			<trans-unit id="component.select.section.state.headline">
 				<source>State</source>
 			</trans-unit>
+			<trans-unit id="component.select.section.size.headline">
+				<source>Size</source>
+			</trans-unit>
+			<trans-unit id="component.select.section.size.default.headline">
+				<source>Default size</source>
+			</trans-unit>
+			<trans-unit id="component.select.section.size.small.headline">
+				<source>Small size</source>
+			</trans-unit>
 			<trans-unit id="component.select.section.colorScheme.optgroup.single.headline">
 				<source>Single selection with option groups</source>
 			</trans-unit>
@@ -765,6 +945,9 @@
 			<!-- Component: Tabs -->
 			<trans-unit id="component.tabs.headline">
 				<source>Tab</source>
+			</trans-unit>
+			<trans-unit id="component.tabs.introtext">
+				<source>Organized content sections with clickable headers for switching between different views and panels.</source>
 			</trans-unit>
 			<trans-unit id="component.tabs.section.default.headline">
 				<source>Default</source>
@@ -803,6 +986,9 @@
 			<trans-unit id="component.textarea.headline">
 				<source>Textarea</source>
 			</trans-unit>
+			<trans-unit id="component.textarea.introtext">
+				<source>Multi-line text input fields for entering and editing longer content and formatted text.</source>
+			</trans-unit>
 			<trans-unit id="component.textarea.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
@@ -815,10 +1001,22 @@
 			<trans-unit id="component.textarea.section.state.headline">
 				<source>State</source>
 			</trans-unit>
+			<trans-unit id="component.textarea.section.size.headline">
+				<source>Size</source>
+			</trans-unit>
+			<trans-unit id="component.textarea.section.size.default.headline">
+				<source>Default size</source>
+			</trans-unit>
+			<trans-unit id="component.textarea.section.size.small.headline">
+				<source>Small size</source>
+			</trans-unit>
 
 			<!-- Component: Tree -->
 			<trans-unit id="component.tree.headline">
 				<source>Trees</source>
+			</trans-unit>
+			<trans-unit id="component.tree.introtext">
+				<source>Hierarchical tree structures for displaying and navigating nested data with expandable and collapsible nodes.</source>
 			</trans-unit>
 			<trans-unit id="component.tree.section.collapsibleTree.headline">
 				<source>Collapsible tree</source>
@@ -907,6 +1105,9 @@
 			<!-- Styles: Typography -->
 			<trans-unit id="styles.typography.headline">
 				<source>Typography</source>
+			</trans-unit>
+			<trans-unit id="styles.typography.introtext">
+				<source>Font styles, sizes, weights, and text formatting guidelines used throughout the TYPO3 backend.</source>
 			</trans-unit>
 			<trans-unit id="styles.typography.section.headings.headline">
 				<source>Headings</source>

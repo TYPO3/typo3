@@ -19,20 +19,23 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.badge.headline" /></h1>
+        <h1><f:translate key="component.badge.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="component.badge.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.badge.section.default.headline" /></h2>
+        <h2><f:translate key="component.badge.section.default.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <span class="badge badge-default">default badge</span>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.badge.section.shape.headline" /></h2>
+        <h2><f:translate key="component.badge.section.shape.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <span class="badge badge-pill badge-default">pill shaped badge</span>
             <span class="badge badge-pill badge-default">1</span>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.badge.section.color.headline" /></h2>
+        <h2><f:translate key="component.badge.section.color.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetColor">
             <f:for each="{variants}" as="variant">
             badge-{variant}
@@ -48,11 +51,9 @@
             </div>
         </sg:example>
 
-        <hr>
+        <h2><f:translate key="section.frontend.headline" domain="styleguide.messages" /></h2>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
-
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.badge.section.withinHeadlines.headline" /></h3>
+        <h3><f:translate key="component.badge.section.withinHeadlines.headline" domain="styleguide.messages" /></h3>
         <sg:example>
             <h1>h1. Example heading <span class="badge badge-primary">New</span> <span class="badge badge-pill badge-danger">1</span></h1>
             <h2>h2. Example heading <span class="badge badge-primary">New</span> <span class="badge badge-pill badge-danger">2</span></h2>
@@ -62,7 +63,7 @@
             <h6>h6. Example heading <span class="badge badge-primary">New</span> <span class="badge badge-pill badge-danger">6</span></h6>
         </sg:example>
 
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+        <h3><f:translate key="section.colorScheme.headline" domain="styleguide.messages" /></h3>
         <sg:colorScheme>
             <div class="example-container">
                 <f:for each="{variants}" as="variant">

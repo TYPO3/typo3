@@ -22,12 +22,12 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressTrackers.headline" /></h1>
+        <h1><f:translate key="component.progressTrackers.headline" domain="styleguide.messages" /></h1>
         <p>
-            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressTrackers.introtext" /></f:sanitize.html>
+            <f:sanitize.html><f:translate key="component.progressTrackers.introtext" domain="styleguide.messages" /></f:sanitize.html>
         </p>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressTrackers.section.default.headline" /></h2>
+        <h2><f:translate key="component.progressTrackers.section.default.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetDefault">
             <typo3-backend-progress-tracker stages='["Stage 1","Stage 2","Stage 3","Stage 4"]'></typo3-backend-progress-tracker>
         </f:variable>
@@ -35,7 +35,7 @@
             {codeSnippetDefault}
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressTrackers.section.activeStage.headline" /></h2>
+        <h2><f:translate key="component.progressTrackers.section.activeStage.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetActive">
             <typo3-backend-progress-tracker active='2' stages='["Stage 1","Stage 2","Stage 3","Stage 4"]'></typo3-backend-progress-tracker>
         </f:variable>
@@ -43,7 +43,7 @@
             {codeSnippetActive}
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressTrackers.section.demo.headline" /></h2>
+        <h2><f:translate key="component.progressTrackers.section.demo.headline" domain="styleguide.messages" /></h2>
         <sg:colorScheme>
             <typo3-backend-progress-tracker id="progressTrackerDemo" stages='["Stage 1","Stage 2","Stage 3","Stage 4"]'></typo3-backend-progress-tracker>
             <button type="button" id="progressTrackerDemoMinus" class="btn btn-default">- Stage</button>
@@ -61,16 +61,16 @@
             });
         </f:asset.script>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
+        <h2><f:translate key="section.frontend.headline" domain="styleguide.messages" /></h2>
 
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+        <h3><f:translate key="section.colorScheme.headline" domain="styleguide.messages" /></h3>
 
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressTrackers.section.default.headline" /></h4>
+        <h4><f:translate key="component.progressTrackers.section.default.headline" domain="styleguide.messages" /></h4>
         <sg:colorScheme>
             {codeSnippetDefault}
         </sg:colorScheme>
 
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressTrackers.section.activeStage.headline" /></h4>
+        <h4><f:translate key="component.progressTrackers.section.activeStage.headline" domain="styleguide.messages" /></h4>
         <sg:colorScheme>
             {codeSnippetActive}
         </sg:colorScheme>

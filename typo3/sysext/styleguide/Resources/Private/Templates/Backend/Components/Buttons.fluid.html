@@ -19,14 +19,17 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.button.headline" /></h1>
+        <h1><f:translate key="component.button.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="component.button.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.button.section.default.headline" /></h2>
+        <h2><f:translate key="component.button.section.default.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <button class="btn btn-default">Button title</button>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.button.section.withIcon.headline" /></h2>
+        <h2><f:translate key="component.button.section.withIcon.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetIcon">
             <button class="btn btn-default">&lt;core:icon identifier="actions-open" /&gt; Button title</button>
         </f:variable>
@@ -34,7 +37,7 @@
             <button class="btn btn-default"><core:icon identifier="actions-open" /> Button title</button>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.button.section.color.headline" /></h2>
+        <h2><f:translate key="component.button.section.color.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetColor">
             <f:for each="{variants}" as="variant">
             btn-{variant}
@@ -50,11 +53,43 @@
             </div>
         </sg:example>
 
-        <hr>
+        <h2><f:translate key="component.button.section.size.headline" domain="styleguide.messages" /></h2>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
+        <h3><f:translate key="component.button.section.size.default.headline" domain="styleguide.messages" /></h3>
+        <f:variable name="codeSnippetSizeDefault">
+            <button class="btn btn-default">Default</button>
+            <button class="btn btn-primary">Primary</button>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetSizeDefault}" decodeEntities="true">
+            <div class="example-container">
+                <div class="example-item">
+                    <button class="btn btn-default">Default</button>
+                </div>
+                <div class="example-item">
+                    <button class="btn btn-primary">Primary</button>
+                </div>
+            </div>
+        </sg:example>
 
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.button.section.types.headline" /></h3>
+        <h3><f:translate key="component.button.section.size.small.headline" domain="styleguide.messages" /></h3>
+        <f:variable name="codeSnippetSizeSmall">
+            <button class="btn btn-default btn-sm">Default</button>
+            <button class="btn btn-primary btn-sm">Primary</button>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetSizeSmall}" decodeEntities="true">
+            <div class="example-container">
+                <div class="example-item">
+                    <button class="btn btn-default btn-sm">Default</button>
+                </div>
+                <div class="example-item">
+                    <button class="btn btn-primary btn-sm">Primary</button>
+                </div>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="section.frontend.headline" domain="styleguide.messages" /></h2>
+
+        <h3><f:translate key="component.button.section.types.headline" domain="styleguide.messages" /></h3>
         <sg:example codePreview="true" codeLanguage="html">
             <button class="btn btn-default">button</button>
             <input type="button" class="btn btn-default" value="input type='button'" />
@@ -62,9 +97,9 @@
             <a href="#" class="btn btn-default">a tag</a>
         </sg:example>
 
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+        <h3><f:translate key="section.colorScheme.headline" domain="styleguide.messages" /></h3>
 
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.button.section.stateActive.headline" /></h4>
+        <h4><f:translate key="component.button.section.stateActive.headline" domain="styleguide.messages" /></h4>
         <sg:colorScheme>
             <div class="example-container">
             <f:for each="{variants}" as="variant">
@@ -75,7 +110,7 @@
             </div>
         </sg:colorScheme>
 
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.button.section.stateDisabled.headline" /></h4>
+        <h4><f:translate key="component.button.section.stateDisabled.headline" domain="styleguide.messages" /></h4>
         <sg:colorScheme>
             <div class="example-container">
             <f:for each="{variants}" as="variant">

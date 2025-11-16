@@ -19,9 +19,12 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.radio.headline" /></h1>
+        <h1><f:translate key="component.radio.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="component.radio.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.radio.section.default.headline" /></h2>
+        <h2><f:translate key="component.radio.section.default.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetDefault">
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="radio-default" id="radio-default-1-<UNIQUEID>" />
@@ -39,7 +42,7 @@
             </div>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.radio.section.card.headline" /></h2>
+        <h2><f:translate key="component.radio.section.card.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetCard">
             <div class="form-check-card-container form-check-card-container-small">
                 <div class="form-check form-check-type-card">
@@ -90,13 +93,11 @@
             </div>
         </sg:example>
 
-        <hr>
+        <h2><f:translate key="section.frontend.headline" domain="styleguide.messages" /></h2>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
+        <h3><f:translate key="section.colorScheme.headline" domain="styleguide.messages" /></h3>
 
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
-
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.radio.section.default.headline" /></h4>
+        <h4><f:translate key="component.radio.section.default.headline" domain="styleguide.messages" /></h4>
         <sg:colorScheme>
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="radio-color-scheme-default" id="radio-default-<UNIQUEID>">
@@ -116,7 +117,7 @@
             </div>
         </sg:colorScheme>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.radio.section.card.headline" /></h2>
+        <h2><f:translate key="component.radio.section.card.headline" domain="styleguide.messages" /></h2>
         <sg:colorScheme>
             <div class="form-check-card-container">
                 <div class="form-check form-check-type-card">

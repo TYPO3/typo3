@@ -27,9 +27,12 @@
             value="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
         />
 
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.notification.headline"/></h1>
+        <h1><f:translate key="component.notification.headline" domain="styleguide.messages"/></h1>
+        <p>
+            <f:sanitize.html><f:translate key="component.notification.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.notification.section.default.headline" /></h2>
+        <h2><f:translate key="component.notification.section.default.headline" domain="styleguide.messages" /></h2>
         <div class="styleguide-example">
             <div class="styleguide-example-content">
                 <button
@@ -45,7 +48,7 @@
                 </button>
             </div>
             <div class="styleguide-example-code">
-                <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.notification.implementation.html" /></p>
+                <p><f:translate key="component.notification.implementation.html" domain="styleguide.messages" /></p>
                 <sg:code language="html" disableOuterWrap="true">
                     <button
                         class="btn btn-default"
@@ -60,7 +63,7 @@
                     </button>
                 </sg:code>
 
-                <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.notification.implementation.script" /></p>
+                <p><f:translate key="component.notification.implementation.script" domain="styleguide.messages" /></p>
                 <sg:code language="javascript" disableOuterWrap="true">
                     <script type="module">
                         import Notification from '@typo3/backend/notification.js';
@@ -73,14 +76,14 @@
             </div>
         </div>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.notification.section.actionButtons.headline" /></h2>
-        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.notification.section.actionButtons.text" /></p>
+        <h2><f:translate key="component.notification.section.actionButtons.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.notification.section.actionButtons.text" domain="styleguide.messages" /></p>
 
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.notification.section.actionButtons.immediateAction.headline" /></h3>
-        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.notification.section.actionButtons.immediateAction.text" /></p>
+        <h3><f:translate key="component.notification.section.actionButtons.immediateAction.headline" domain="styleguide.messages" /></h3>
+        <p><f:translate key="component.notification.section.actionButtons.immediateAction.text" domain="styleguide.messages" /></p>
 
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.notification.section.actionButtons.deferredAction.headline" /></h3>
-        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.notification.section.actionButtons.deferredAction.text" /></p>
+        <h3><f:translate key="component.notification.section.actionButtons.deferredAction.headline" domain="styleguide.messages" /></h3>
+        <p><f:translate key="component.notification.section.actionButtons.deferredAction.text" domain="styleguide.messages" /></p>
 
         <div class="styleguide-example">
             <div class="styleguide-example-content">
@@ -97,7 +100,7 @@
                 </button>
             </div>
             <div class="styleguide-example-code">
-                <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.notification.implementation.html" /></p>
+                <p><f:translate key="component.notification.implementation.html" domain="styleguide.messages" /></p>
                 <sg:code language="html" disableOuterWrap="true">
                     <button
                         class="btn btn-default"
@@ -112,7 +115,7 @@
                     </button>
                 </sg:code>
 
-                <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.notification.implementation.script" /></p>
+                <p><f:translate key="component.notification.implementation.script" domain="styleguide.messages" /></p>
                 <sg:code language="javascript" disableOuterWrap="true">
                     <script type="module">
                         import Notification from '@typo3/backend/notification.js';
@@ -143,8 +146,8 @@
             </div>
         </div>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.notification.section.severity.headline" /></h2>
-        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.notification.section.severity.text" /></p>
+        <h2><f:translate key="component.notification.section.severity.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.notification.section.severity.text" domain="styleguide.messages" /></p>
 
         <div class="styleguide-example">
             <div class="styleguide-example-content">
@@ -173,14 +176,14 @@
                 </div>
             </div>
             <div class="styleguide-example-code">
-                <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.notification.implementation.html" /></p>
+                <p><f:translate key="component.notification.implementation.html" domain="styleguide.messages" /></p>
                 <sg:code language="html" disableOuterWrap="true">
                     <f:for each="{variants}" as="variant">
                     data-severity="{variant}"
                     </f:for>
                 </sg:code>
 
-                <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.notification.implementation.script" /></p>
+                <p><f:translate key="component.notification.implementation.script" domain="styleguide.messages" /></p>
                 <sg:code language="javascript" disableOuterWrap="true">
                     <script type="module">
                         import Notification from '@typo3/backend/notification.js';

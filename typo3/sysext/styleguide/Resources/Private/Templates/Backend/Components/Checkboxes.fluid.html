@@ -24,9 +24,12 @@
 
     <div class="styleguide-content">
 
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.headline" /></h1>
+        <h1><f:translate key="component.checkbox.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="component.checkbox.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.default.headline" /></h2>
+        <h2><f:translate key="component.checkbox.section.default.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="checkbox-default-<UNIQUEID>">
@@ -34,7 +37,7 @@
             </div>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.switch.headline" /></h2>
+        <h2><f:translate key="component.checkbox.section.switch.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" value="" id="switch-default-<UNIQUEID>">
@@ -42,7 +45,7 @@
             </div>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.toggle.headline" /></h2>
+        <h2><f:translate key="component.checkbox.section.toggle.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <div class="form-check form-check-type-toggle">
                 <input class="form-check-input" type="checkbox" value="" id="toggle-default-<UNIQUEID>">
@@ -50,7 +53,7 @@
             </div>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.iconToggle.headline" /></h2>
+        <h2><f:translate key="component.checkbox.section.iconToggle.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetIconToggle">
             <div class="form-check form-check-type-icon-toggle">
                 <input class="form-check-input" type="checkbox" value="" id="icontoggle-default-basic-<UNIQUEID>">
@@ -84,7 +87,7 @@
             </div>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.labeledToggle.headline" /></h2>
+        <h2><f:translate key="component.checkbox.section.labeledToggle.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <div class="form-check form-check-type-labeled-toggle">
                 <input
@@ -99,13 +102,13 @@
             </div>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.checkBoxToggleButton.headline" /></h2>
+        <h2><f:translate key="component.checkbox.section.checkBoxToggleButton.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <input class="btn-check" type="checkbox" value="" id="btncheck-default-basic-<UNIQUEID>">
             <label class="btn btn-default" for="btncheck-default-basic-<UNIQUEID>">Label XY</label>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.card.headline" /></h2>
+        <h2><f:translate key="component.checkbox.section.card.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetCard">
             <div class="form-check-card-container form-check-card-container-small">
                 <div class="form-check form-check-type-card">
@@ -154,13 +157,11 @@
             </div>
         </sg:example>
 
-        <hr>
+        <h2><f:translate key="section.frontend.headline" domain="styleguide.messages" /></h2>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
+        <h3><f:translate key="section.colorScheme.headline" domain="styleguide.messages" /></h3>
 
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
-
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.default.headline" /></h4>
+        <h4><f:translate key="component.checkbox.section.default.headline" domain="styleguide.messages" /></h4>
         <sg:colorScheme>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="checkbox-default-<UNIQUEID>">
@@ -188,7 +189,7 @@
             </div>
         </sg:colorScheme>
 
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.switch.headline" /></h4>
+        <h4><f:translate key="component.checkbox.section.switch.headline" domain="styleguide.messages" /></h4>
         <sg:colorScheme>
             <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" value="" id="switch-default-<UNIQUEID>">
@@ -216,7 +217,7 @@
             </div>
         </sg:colorScheme>
 
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.toggle.headline" /></h4>
+        <h4><f:translate key="component.checkbox.section.toggle.headline" domain="styleguide.messages" /></h4>
         <sg:colorScheme>
             <div class="form-check form-check-type-toggle">
                 <input class="form-check-input" type="checkbox" value="" id="toggle-default-<UNIQUEID>">
@@ -244,7 +245,7 @@
             </div>
         </sg:colorScheme>
 
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.iconToggle.headline" /></h4>
+        <h4><f:translate key="component.checkbox.section.iconToggle.headline" domain="styleguide.messages" /></h4>
         <sg:colorScheme>
             <div class="form-check form-check-type-icon-toggle">
                 <input class="form-check-input" type="checkbox" value="" id="icontoggle-default-<UNIQUEID>">
@@ -364,7 +365,7 @@
             </div>
         </sg:colorScheme>
 
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.labeledToggle.headline" /></h4>
+        <h4><f:translate key="component.checkbox.section.labeledToggle.headline" domain="styleguide.messages" /></h4>
         <sg:colorScheme>
             <div class="example-container example-container--large-spacing">
                 <div class="example-item">
@@ -426,7 +427,7 @@
             </div>
         </sg:colorScheme>
 
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.checkBoxToggleButton.headline" /></h4>
+        <h4><f:translate key="component.checkbox.section.checkBoxToggleButton.headline" domain="styleguide.messages" /></h4>
         <sg:colorScheme>
             <div class="example-container">
                 <div class="example-item">
@@ -448,7 +449,7 @@
             </div>
         </sg:colorScheme>
 
-        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.card.headline" /></h4>
+        <h4><f:translate key="component.checkbox.section.card.headline" domain="styleguide.messages" /></h4>
         <sg:colorScheme>
             <div class="form-check-card-container">
                 <div class="form-check form-check-type-card">

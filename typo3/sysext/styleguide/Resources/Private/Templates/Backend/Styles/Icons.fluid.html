@@ -23,10 +23,12 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.headline" /></h1>
-        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.introtext" /></p>
+        <h1><f:translate key="styles.icons.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="styles.icons.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.default.headline" /></h2>
+        <h2><f:translate key="styles.icons.section.default.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetDefault">
             &lt;core:icon identifier="actions-brand-typo3" size="small" /&gt;
         </f:variable>
@@ -34,10 +36,10 @@
             <core:icon identifier="actions-brand-typo3" size="small" />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.usage.headline" /></h2>
+        <h2><f:translate key="styles.icons.section.usage.headline" domain="styleguide.messages" /></h2>
 
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.usage.svg.headline" /></h3>
-        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.usage.registration" /></p>
+        <h3><f:translate key="styles.icons.section.usage.svg.headline" domain="styleguide.messages" /></h3>
+        <p><f:translate key="styles.icons.section.usage.registration" domain="styleguide.messages" /></p>
         <sg:code language="php">
             $iconRegistry->registerIcon(
                 'provider-svg',
@@ -46,7 +48,7 @@
             );
         </sg:code>
 
-        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.usage.implementation" /></p>
+        <p><f:translate key="styles.icons.section.usage.implementation" domain="styleguide.messages" /></p>
         <f:variable name="codeSnippetImplementationSvg">
             &lt;core:icon identifier="provider-svg" size="small" /&gt;
         </f:variable>
@@ -54,8 +56,8 @@
             <core:icon identifier="provider-svg" size="small" />
         </sg:example>
 
-        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.usage.bitmap.headline" /></h3>
-        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.usage.registration" /></p>
+        <h3><f:translate key="styles.icons.section.usage.bitmap.headline" domain="styleguide.messages" /></h3>
+        <p><f:translate key="styles.icons.section.usage.registration" domain="styleguide.messages" /></p>
         <sg:code language="php">
             $iconRegistry->registerIcon(
                 'provider-bitmap',
@@ -64,7 +66,7 @@
             );
         </sg:code>
 
-        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.usage.implementation" /></p>
+        <p><f:translate key="styles.icons.section.usage.implementation" domain="styleguide.messages" /></p>
         <f:variable name="codeSnippetImplementationBitmap">
             &lt;core:icon identifier="provider-bitmap" size="small" /&gt;
         </f:variable>
@@ -72,7 +74,7 @@
             <core:icon identifier="provider-bitmap" size="small" />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.size.headline" /></h2>
+        <h2><f:translate key="styles.icons.section.size.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetSize">
             &lt;core:icon identifier="actions-brand-typo3" size="default" /&gt;
             &lt;core:icon identifier="actions-brand-typo3" size="small" /&gt;
@@ -100,7 +102,7 @@
             </div>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.overlay.headline" /></h2>
+        <h2><f:translate key="styles.icons.section.overlay.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetOverlay">
             &lt;core:icon identifier="actions-brand-typo3" size="small" overlay="overlay-readonly" /&gt;
         </f:variable>
@@ -108,7 +110,7 @@
             <core:icon identifier="actions-brand-typo3" size="small" overlay="overlay-readonly" />
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.overview.headline" /></h2>
+        <h2><f:translate key="styles.icons.section.overview.headline" domain="styleguide.messages" /></h2>
 
         <div>
             <ul class="nav nav-tabs form-section-tabs t3js-tabs" role="tablist">

@@ -18,15 +18,17 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.modal.headline" /></h1>
-        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.modal.introtext" /></p>
+        <h1><f:translate key="component.modal.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="component.modal.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.modal.section.default.headline" /></h2>
+        <h2><f:translate key="component.modal.section.default.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <button type="button" class="btn btn-default t3js-modal-trigger">Open modal</button>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.modal.section.customTitleContent.headline" /></h2>
+        <h2><f:translate key="component.modal.section.customTitleContent.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetCustomTitle">
             <button type="button" class="btn btn-default t3js-modal-trigger" data-title="Custom modal title" data-content="Lorem ipsum dolor...">Open modal</button>
         </f:variable>
@@ -41,7 +43,7 @@
             </button>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.modal.section.severity.headline" /></h2>
+        <h2><f:translate key="component.modal.section.severity.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetSeverity">
             <f:for each="{variants}" as="variant">
             data-severity="{variant}"
@@ -64,7 +66,7 @@
             </div>
         </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.modal.section.size.headline" /></h2>
+        <h2><f:translate key="component.modal.section.size.headline" domain="styleguide.messages" /></h2>
         <f:variable name="codeSnippetSeverity">
             <f:for each="{sizes}" as="size">
             data-size="{size}"
