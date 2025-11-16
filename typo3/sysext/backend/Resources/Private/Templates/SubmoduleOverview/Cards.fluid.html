@@ -8,68 +8,70 @@
 <f:layout name="Module"/>
 
 <f:section name="Content">
-    <f:if condition="{currentModule}">
-        <f:then>
-            <h1>{f:translate(key: currentModule.title, default: currentModule.title)}</h1>
-            <f:if condition="{currentModule.description}">
-                <f:then>
-                    <p>{f:translate(key: currentModule.description, default: currentModule.description) -> f:transform.html()}</p>
-                </f:then>
-                <f:else if="{currentModule.shortDescription}">
-                    <p>{f:translate(key: currentModule.shortDescription, default: currentModule.shortDescription)}</p>
-                </f:else>
-            </f:if>
-            <f:if condition="{submodules}">
-                <f:then>
-                    <div class="card-container">
-                        <f:for each="{submodules}" as="subModule">
-                            <div class="card card-size-small">
-                                <div class="card-header">
-                                    <div class="card-icon">
-                                        <core:icon identifier="{subModule.iconIdentifier}" size="medium"/>
+    <div class="container">
+        <f:if condition="{currentModule}">
+            <f:then>
+                <h1>{f:translate(key: currentModule.title, default: currentModule.title)}</h1>
+                <f:if condition="{currentModule.description}">
+                    <f:then>
+                        <p>{f:translate(key: currentModule.description, default: currentModule.description) -> f:transform.html()}</p>
+                    </f:then>
+                    <f:else if="{currentModule.shortDescription}">
+                        <p>{f:translate(key: currentModule.shortDescription, default: currentModule.shortDescription)}</p>
+                    </f:else>
+                </f:if>
+                <f:if condition="{submodules}">
+                    <f:then>
+                        <div class="card-container">
+                            <f:for each="{submodules}" as="subModule">
+                                <div class="card card-size-small">
+                                    <div class="card-header">
+                                        <div class="card-icon">
+                                            <core:icon identifier="{subModule.iconIdentifier}" size="medium"/>
+                                        </div>
+                                        <div class="card-header-body">
+                                            <h2 class="card-title">{f:translate(key: subModule.title, default: subModule.title)}</h2>
+                                            <f:if condition="{subModule.shortDescription}">
+                                                <span class="card-subtitle">{f:translate(key: subModule.shortDescription, default: subModule.shortDescription)}</span>
+                                            </f:if>
+                                        </div>
                                     </div>
-                                    <div class="card-header-body">
-                                        <h2 class="card-title">{f:translate(key: subModule.title, default: subModule.title)}</h2>
-                                        <f:if condition="{subModule.shortDescription}">
-                                            <span class="card-subtitle">{f:translate(key: subModule.shortDescription, default: subModule.shortDescription)}</span>
+                                    <div class="card-body">
+                                        <f:if condition="{subModule.description}">
+                                            <p class="card-text">{f:translate(key: subModule.description, default: subModule.description)}</p>
                                         </f:if>
                                     </div>
+                                    <div class="card-footer">
+                                        <f:variable name="moduleTitle">{f:translate(key: subModule.title, default: subModule.title)}</f:variable>
+                                        <a
+                                            href="{f:be.uri(route: subModule.identifier, parameters: additionalParameters)}"
+                                            class="btn btn-default"
+                                            aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:submoduleOverview.openModuleWithTitle', arguments: {0: moduleTitle})}"
+                                        >
+                                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:submoduleOverview.openModule" />
+                                        </a>
+                                    </div>
                                 </div>
-                                <div class="card-body">
-                                    <f:if condition="{subModule.description}">
-                                        <p class="card-text">{f:translate(key: subModule.description, default: subModule.description)}</p>
-                                    </f:if>
-                                </div>
-                                <div class="card-footer">
-                                    <f:variable name="moduleTitle">{f:translate(key: subModule.title, default: subModule.title)}</f:variable>
-                                    <a
-                                        href="{f:be.uri(route: subModule.identifier, parameters: additionalParameters)}"
-                                        class="btn btn-default"
-                                        aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:submoduleOverview.openModuleWithTitle', arguments: {0: moduleTitle})}"
-                                    >
-                                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:submoduleOverview.openModule" />
-                                    </a>
-                                </div>
-                            </div>
-                        </f:for>
-                    </div>
-                </f:then>
-                <f:else>
-                    <f:be.infobox
-                        title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:submoduleOverview.noAccess.title')}"
-                        message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:submoduleOverview.noAccess.message')}"
-                        state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}"
-                    />
-                </f:else>
-            </f:if>
-        </f:then>
-        <f:else>
-            <f:be.infobox
-                title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:module.noAccess.title')}"
-                state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR')}"
-            />
-        </f:else>
-    </f:if>
+                            </f:for>
+                        </div>
+                    </f:then>
+                    <f:else>
+                        <f:be.infobox
+                            title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:submoduleOverview.noAccess.title')}"
+                            message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:submoduleOverview.noAccess.message')}"
+                            state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}"
+                        />
+                    </f:else>
+                </f:if>
+            </f:then>
+            <f:else>
+                <f:be.infobox
+                    title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:module.noAccess.title')}"
+                    state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR')}"
+                />
+            </f:else>
+        </f:if>
+    </div>
 </f:section>
 
 </html>
