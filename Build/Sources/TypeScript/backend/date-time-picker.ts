@@ -179,6 +179,8 @@ class DateTimePicker {
           // collides with using altInput – sigh.
           self.altInput.id = self.input.id;
           self.input.removeAttribute('id');
+          // Disable browser autofill to prevent interference with the datepicker
+          self.altInput.setAttribute('autocomplete', 'off');
           self.altInput.clearable();
           if (self.input.dataset.formengineInputName !== undefined) {
             self.altInput.dataset.formengineDatepickerRealInputName = self.input.dataset.formengineInputName;
