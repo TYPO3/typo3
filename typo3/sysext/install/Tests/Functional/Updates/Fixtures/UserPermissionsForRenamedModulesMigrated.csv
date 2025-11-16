@@ -1,0 +1,16 @@
+be_users
+,uid,userMods
+,1,"new_module_a,recordlist"
+,2,"file,task"
+,3," content ,new_module_b"
+,4,""
+,5,"new_module_b,new_module_b,new_module_b,new_module_b"
+,6," content ,new_module_b, content ,new_module_b, content ,new_module_b"
+,7,"file,,,,,,task"
+,8,"old_module_a_b,recordlist"
+,9,"old_module_a old_module_b,recordlist"
+be_groups
+,uid,groupMods
+,10,"new_module_a"
+,11,"new_module_a"
+,12,"new_module_a,old_module_a_abc,new_module_b"
