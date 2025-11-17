@@ -186,7 +186,7 @@ readonly class TreeController
             $tsConfigLabels = $this->getBackendUser()->getTSConfig()['options.']['folderTree.']['label.'] ?? [];
             if (trim($tsConfigLabels[$folder->getCombinedIdentifier() . '.']['label'] ?? '') !== '') {
                 $item['labels'][] = new Label(
-                    label: (string)($tsConfigLabels[$folder->getCombinedIdentifier() . '.']['label']),
+                    label: $this->getLanguageService()->sL($tsConfigLabels[$folder->getCombinedIdentifier() . '.']['label']),
                     color: (string)($tsConfigLabels[$folder->getCombinedIdentifier() . '.']['color'] ?? '#ff8722'),
                 );
             }
