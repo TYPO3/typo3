@@ -119,7 +119,7 @@
                     value="{f:if(condition: constraint.manualDateStart, then: \"{f:format.date(format:'Y-m-d\TH:i:s\Z', date: '{constraint.manualDateStart}')}\")}"
                     id="manualDateStart"
                     additionalAttributes="{'autocomplete': 'off'}"
-                    class="form-control form-control-clearable t3js-datetimepicker t3js-clearable"
+                    class="form-control form-control-clearable t3js-datetimepicker"
                     data="{date-type: 'datetime'}"
                 />
                 <label class="btn btn-default" for="manualDateStart">
@@ -136,7 +136,7 @@
                     value="{f:format.date(format:'Y-m-d\TH:i:s\Z', date: '{constraint.manualDateStop}')}"
                     additionalAttributes="{'autocomplete': 'off'}"
                     id="manualDateStop"
-                    class="form-control form-control-clearable t3js-datetimepicker t3js-clearable"
+                    class="form-control form-control-clearable t3js-datetimepicker"
                     data="{date-type: 'datetime'}"
                 />
                 <label class="btn btn-default" for="manualDateStop">
