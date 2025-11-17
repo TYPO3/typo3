@@ -1,20 +1,26 @@
-@use 'sass:color';
-
 //
 // Colors
 //
-:root {
-    --token-color-neutral-base: #{$natural-base};
+@layer color {
+    :root {
+        --token-color-neutral-base: #{$natural-base};
 
-    @each $shade in $neutral-shades {
-        --token-color-neutral-#{$shade}: #{color.change($natural-base, $lightness: 100% - $shade)};
-    }
+        @each $name, $value in $base-colors {
+            --token-color-#{$name}-base: #{$value};
+        }
 
-    @each $name, $value in $base-colors {
-        --token-color-#{$name}-base: #{$value};
+        @layer neutral {
+            @each $shade in $neutral-shades {
+                --token-color-neutral-#{$shade}: hsl(from var(--token-color-neutral-base) h s #{100 - $shade}%);
+            }
+        }
 
-        @each $shade in $base-shades {
-            --token-color-#{$name}-#{$shade}: #{color.change($value, $lightness: 100% - $shade)};
+        @each $name, $value in $base-colors {
+            @layer #{$name} {
+                @each $shade in $base-shades {
+                    --token-color-#{$name}-#{$shade}: hsl(from var(--token-color-#{$name}-base) h s #{100 - $shade}%);
+                }
+            }
         }
     }
 }
