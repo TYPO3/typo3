@@ -389,7 +389,7 @@ class TreeController
         }
         if (!empty($this->labels[$pageId . '.']) && isset($this->labels[$pageId . '.']['label']) && trim($this->labels[$pageId . '.']['label']) !== '') {
             $labels[] = new Label(
-                label: (string)($this->labels[$pageId . '.']['label']),
+                label: $this->getLanguageService()->sL($this->labels[$pageId . '.']['label']),
                 color: (string)($this->labels[$pageId . '.']['color'] ?? '#ff8700'),
             );
         }
