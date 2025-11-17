@@ -191,7 +191,7 @@ final class ActionViewHelper extends AbstractViewHelper
     public static function createUriWithExtbaseContext(ExtbaseRequestInterface $request, array $arguments): string
     {
         $format = $arguments['format'];
-        $pageUid = isset($arguments['pageUid']) ? (int)$arguments['pageUid'] : null;
+        $pageUid = (int)($arguments['pageUid'] ?? 0);
         $pageType = (int)$arguments['pageType'];
         $noCache = (bool)($arguments['noCache'] ?? false);
         $language = isset($arguments['language']) ? (string)$arguments['language'] : null;
@@ -230,7 +230,7 @@ final class ActionViewHelper extends AbstractViewHelper
                 ->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString);
         }
 
-        if ($pageUid !== null) {
+        if ($pageUid > 0) {
             $uriBuilder->setTargetPageUid($pageUid);
         }
 

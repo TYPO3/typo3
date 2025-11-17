@@ -95,6 +95,16 @@ final class ActionViewHelperTest extends FunctionalTestCase
             '<a href="/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=5c6aa07f6ceee30ae2ea8dbf574cf26c">link to root page with plugin</a>',
         ];
 
+        yield 'link to current page (root page) with empty pageUid attribute with plugin' => [
+            '<f:link.action pageUid="" extensionName="examples" pluginName="haiku" controller="Detail" action="show">link to current page with plugin</f:link.action>',
+            '<a href="/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=5c6aa07f6ceee30ae2ea8dbf574cf26c">link to current page with plugin</a>',
+        ];
+
+        yield 'link to current page (root page) with no pageUid attribute with plugin' => [
+            '<f:link.action extensionName="examples" pluginName="haiku" controller="Detail" action="show">link to current page with plugin</f:link.action>',
+            '<a href="/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=5c6aa07f6ceee30ae2ea8dbf574cf26c">link to current page with plugin</a>',
+        ];
+
         yield 'link to root page with plugin and section' => [
             '<f:link.action pageUid="1" extensionName="examples" pluginName="haiku" controller="Detail" action="show" section="c13">link to root page with plugin and section</f:link.action>',
             '<a href="/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=5c6aa07f6ceee30ae2ea8dbf574cf26c#c13">link to root page with plugin and section</a>',
@@ -183,6 +193,10 @@ final class ActionViewHelperTest extends FunctionalTestCase
         ];
         yield 'link to root page in extbase context' => [
             '<f:link.action pageUid="1">linkMe</f:link.action>',
+            '<a href="/?tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=1d5a12de6bf2d5245b654deb866ee9c3">linkMe</a>',
+        ];
+        yield 'link to current page (root page) with empty pageUid in extbase context' => [
+            '<f:link.action pageUid="">linkMe</f:link.action>',
             '<a href="/?tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=1d5a12de6bf2d5245b654deb866ee9c3">linkMe</a>',
         ];
         yield 'link to root page with section' => [
