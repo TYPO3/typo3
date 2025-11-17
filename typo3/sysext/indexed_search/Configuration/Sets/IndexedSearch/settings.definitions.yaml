@@ -18,7 +18,7 @@ settings:
     category: indexedsearch.templates
   indexedsearch.targetPid:
     default: 0
-    type: int
+    type: page
     category: indexedsearch
   indexedsearch.rootPidList:
     default: ''
