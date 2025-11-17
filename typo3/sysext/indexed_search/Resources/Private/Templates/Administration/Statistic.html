@@ -128,27 +128,29 @@
                                                 </f:defaultCase>
                                             </f:switch>
                                             <td class="col-control">
-                                                <f:form action="deleteIndexedItem" class="btn-group btn-group-sm">
-                                                    <f:link.action
-                                                        action="statisticDetails"
-                                                        arguments="{pageHash:l.phash}"
-                                                        title="{f:translate(key:'administration.btn.details.title')}"
-                                                        class="btn btn-default"
-                                                    >
-                                                        <core:icon identifier="actions-options" />
-                                                    </f:link.action>
+                                                <f:form action="deleteIndexedItem">
+                                                    <div class="btn-group btn-group-sm">
+                                                        <f:link.action
+                                                            action="statisticDetails"
+                                                            arguments="{pageHash:l.phash}"
+                                                            title="{f:translate(key:'administration.btn.details.title')}"
+                                                            class="btn btn-default"
+                                                        >
+                                                            <core:icon identifier="actions-options" />
+                                                        </f:link.action>
 
-                                                    <f:form.hidden name="itemId" value="{l.phash}" />
-                                                    <f:form.hidden name="depth" value="{depth}" />
-                                                    <f:form.hidden name="mode" value="{mode}" />
+                                                        <f:form.hidden name="itemId" value="{l.phash}" />
+                                                        <f:form.hidden name="depth" value="{depth}" />
+                                                        <f:form.hidden name="mode" value="{mode}" />
 
-                                                    <button
-                                                        type="submit"
-                                                        title="{f:translate(key:'administration.removeEntry')}"
-                                                        class="btn btn-default"
-                                                    >
-                                                        <core:icon identifier="actions-edit-delete" />
-                                                    </button>
+                                                        <button
+                                                            type="submit"
+                                                            title="{f:translate(key:'administration.removeEntry')}"
+                                                            class="btn btn-default"
+                                                        >
+                                                            <core:icon identifier="actions-edit-delete" />
+                                                        </button>
+                                                    </div>
                                                 </f:form>
                                             </td>
                                         </tr>
