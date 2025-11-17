@@ -1737,7 +1737,7 @@ class DatabaseIntegrityController
         $html = [];
         $html[] = '<div class="form-group">';
         $html[] = '  <div class="input-group" id="' . $id . '-wrapper">';
-        $html[] = '	   <input data-formengine-input-name="' . htmlspecialchars($name) . '" value="' . $value . '" class="form-control form-control-clearable t3js-datetimepicker t3js-clearable" data-date-type="' . htmlspecialchars($type) . '" type="text" id="' . $id . '">';
+        $html[] = '	   <input data-formengine-input-name="' . htmlspecialchars($name) . '" value="' . $value . '" class="form-control form-control-clearable t3js-datetimepicker" data-date-type="' . htmlspecialchars($type) . '" type="text" id="' . $id . '">';
         $html[] = '	   <input name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($timestamp) . '" type="hidden">';
         $html[] = '	   <button class="btn btn-default" type="button" data-global-event="click" data-action-focus="#' . $id . '">';
         $html[] =          $this->iconFactory->getIcon('actions-calendar-alternative', IconSize::SMALL)->render();
