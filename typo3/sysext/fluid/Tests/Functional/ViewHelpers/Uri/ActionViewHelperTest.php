@@ -104,6 +104,16 @@ final class ActionViewHelperTest extends FunctionalTestCase
             '<f:uri.action pageUid="1" extensionName="examples" pluginName="haiku" controller="Detail" action="show" pageType="1234" />',
             '/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;type=1234&amp;cHash=5c6aa07f6ceee30ae2ea8dbf574cf26c',
         ];
+
+        yield 'link to current page (root page) when pageUid is empty string' => [
+            '<f:uri.action pageUid="" extensionName="examples" pluginName="haiku" controller="Detail" action="show" />',
+            '/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=5c6aa07f6ceee30ae2ea8dbf574cf26c',
+        ];
+
+        yield 'link to current page (root page) when pageUid is not provided' => [
+            '<f:uri.action extensionName="examples" pluginName="haiku" controller="Detail" action="show" />',
+            '/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=5c6aa07f6ceee30ae2ea8dbf574cf26c',
+        ];
     }
 
     #[DataProvider('renderInFrontendWithCoreContextAndAllNecessaryExtbaseArgumentsDataProvider')]
@@ -148,6 +158,10 @@ final class ActionViewHelperTest extends FunctionalTestCase
         ];
         yield 'link to root page in extbase context' => [
             '<f:uri.action pageUid="1" />',
+            '/?tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=1d5a12de6bf2d5245b654deb866ee9c3',
+        ];
+        yield 'link to current page (root page) with empty pageUid in extbase context' => [
+            '<f:uri.action pageUid="" />',
             '/?tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=1d5a12de6bf2d5245b654deb866ee9c3',
         ];
         yield 'link to root page with section' => [
