@@ -209,6 +209,14 @@
     }
 }
 
+.flatpickr-prev-month {
+    border-start-start-radius: calc(var(--typo3-input-border-radius) - 1px);
+}
+
+.flatpickr-next-month {
+    border-start-end-radius: calc(var(--typo3-input-border-radius) - 1px);
+}
+
 .numInputWrapper {
     position: relative;
     height: auto;
@@ -622,6 +630,8 @@
     border-top: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
     background-color: var(--typo3-component-bg);
     color: var(--typo3-component-color);
+    border-end-start-radius: calc(var(--typo3-input-border-radius) - 1px);
+    border-end-end-radius: calc(var(--typo3-input-border-radius) - 1px);
 }
 
 .shortcut-buttons-flatpickr-label {

@@ -2,18 +2,18 @@
 // Variables
 //
 :root {
-    --pagemodule-grid-border-radius: 5px;
+    --pagemodule-grid-border-radius: .75em;
     --pagemodule-grid-border-color: color-mix(in srgb, var(--module-bg), currentColor 30%);
     --pagemodule-grid-spacing: 1rem;
     --pagemodule-grid-inner-spacing: 1rem;
     --pagemodule-grid-cell-header-size: 1em;
-    --pagemodule-grid-cell-border-radius: 4px;
+    --pagemodule-grid-cell-border-radius: calc(var(--pagemodule-grid-border-radius) - 3px);
     --pagemodule-grid-cell-bg: color-mix(in srgb, var(--module-bg), currentColor 5%);
     --pagemodule-grid-cell-restricted-bg: var(--typo3-surface-container-warning);
     --pagemodule-grid-column-unused-bg: var(--typo3-surface-container-warning);
     --pagemodule-element-spacing: 1rem;
     --pagemodule-element-bg: var(--typo3-surface-bright);
-    --pagemodule-element-border-radius: 4px;
+    --pagemodule-element-border-radius: .75em;
     --pagemodule-element-border-color: color-mix(in srgb, var(--pagemodule-element-bg), currentColor 15%);
     --pagemodule-element-warning-bg: var(--typo3-surface-container-warning);
     --pagemodule-element-hidden-bg: var(--pagemodule-grid-cell-bg);

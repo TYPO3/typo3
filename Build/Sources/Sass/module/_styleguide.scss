@@ -82,6 +82,16 @@
     box-shadow: var(--typo3-example-box-shadow);
     margin-bottom: calc(var(--typo3-example-margin-bottom) * 1.5);
 
+    > *:first-child {
+        border-start-start-radius: calc(var(--typo3-example-border-radius) - var(--typo3-example-border-width));
+        border-start-end-radius: calc(var(--typo3-example-border-radius) - var(--typo3-example-border-width));
+    }
+
+    > *:last-child {
+        border-end-start-radius: calc(var(--typo3-example-border-radius) - var(--typo3-example-border-width));
+        border-end-end-radius: calc(var(--typo3-example-border-radius) - var(--typo3-example-border-width));
+    }
+
     .styleguide-example-content {
         @include background-checkered();
         padding: var(--typo3-example-content-padding);

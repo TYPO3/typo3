@@ -41,6 +41,7 @@
     --typo3-panel-header-color: var(--typo3-text-color-base);
     --typo3-panel-box-shadow: var(--typo3-component-box-shadow);
     --typo3-panel-progress-bg: var(--typo3-state-primary-bg);
+    --typo3-panel-progress-height: 3px;
 
     @each $state in $base-variants {
         --typo3-panel-#{$state}-header-color: var(--typo3-surface-container-#{$state}-text);
@@ -109,16 +110,15 @@
     position: absolute;
     top: 0;
     inset-inline-start: 0;
-    height: 3px;
+    height: max(calc(2 * var(--typo3-panel-border-radius-inner-top)), var(--typo3-panel-progress-height));
     width: 100%;
     z-index: 1;
     background-color: transparent;
     overflow: hidden;
     border-radius: var(--typo3-panel-border-radius-inner-top) var(--typo3-panel-border-radius-inner-top) 0 0;
-
-    &:last-child {
-        border-radius: var(--typo3-panel-border-radius-inner-top);
-    }
+    mask-image: linear-gradient(to bottom, #000 0, #000 var(--typo3-panel-progress-height), transparent var(--typo3-panel-progress-height));
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
 
     .panel-progress-bar {
         display: block;
@@ -138,22 +138,18 @@
 // <typo3-backend-progress-bar>
 //
 .panel {
-    &:has(typo3-backend-progress-bar) {
-        min-height: 5px;
-    }
-
     > typo3-backend-progress-bar {
         --progress-border-radius: var(--typo3-panel-border-radius-inner-top) var(--typo3-panel-border-radius-inner-top) 0 0;
-        --progress-bar-height: 3px;
+        --progress-bar-height: max(calc(2 * var(--typo3-panel-border-radius-inner-top)), var(--typo3-panel-progress-height));
         position: absolute;
         top: 0;
         inset-inline-start: 0;
         width: 100%;
         z-index: 1;
-
-        &:last-child {
-            --progress-border-radius: var(--typo3-panel-border-radius-inner-top);
-        }
+        overflow: hidden;
+        mask-image: linear-gradient(to bottom, #000 0, #000 var(--typo3-panel-progress-height), transparent var(--typo3-panel-progress-height));
+        mask-size: 100% 100%;
+        mask-repeat: no-repeat;
     }
 }
 

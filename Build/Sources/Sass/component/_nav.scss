@@ -177,11 +177,19 @@
     > .active {
         display: block;
     }
+
+    > .form-section {
+        --typo3-form-section-radius-top: 0;
+    }
 }
 
 .tab-pane {
     > .panel {
         --typo3-panel-border-radius-top: 0;
+    }
+
+    > .form-section {
+        --typo3-form-section-radius-top: 0;
     }
 
     > .visually-hidden:first-child + .form-section,

@@ -35,7 +35,7 @@
     line-height: var(--typo3-form-select-line-height);
     color: var(--typo3-form-select-color);
     background-color: var(--typo3-form-select-bg);
-    background-clip: padding-box;
+    background-clip: border-box;
     background-size: var(--typo3-form-select-icon-size);
     background-repeat: no-repeat;
     background-position: var(--typo3-position-end) var(--typo3-form-select-padding-x) top 50%;

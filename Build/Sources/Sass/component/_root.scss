@@ -273,7 +273,7 @@
     --typo3-component-link-hover-color: color-mix(in srgb, var(--typo3-component-link-color), var(--typo3-component-color) 15%);
     --typo3-component-font-size: var(--typo3-font-size);
     --typo3-component-line-height: var(--typo3-line-height);
-    --typo3-component-border-radius: 4px;
+    --typo3-component-border-radius: .75em;
     --typo3-component-border-width: 1px;
     --typo3-component-border-color: color-mix(in srgb, var(--typo3-component-bg), var(--typo3-component-color) var(--typo3-border-mix));
     --typo3-component-padding-y: .75rem;
@@ -323,7 +323,7 @@
     --typo3-input-sm-padding-x: .5rem;
     --typo3-input-sm-font-size: .6875rem;
     --typo3-input-border-width: 1px;
-    --typo3-input-border-radius: var(--typo3-component-border-radius);
+    --typo3-input-border-radius: .75em;
     --typo3-input-color: var(--typo3-text-color-base);
     --typo3-input-bg: var(--typo3-surface-container-lowest);
     --typo3-input-group-addon-bg: color-mix(in srgb, var(--typo3-input-bg), var(--typo3-input-color) 10%);
@@ -358,7 +358,7 @@
     --typo3-scaffold-header-box-shadow: var(--typo3-shadow-2);
     --typo3-scaffold-header-item-height: 2.5rem;
     --typo3-scaffold-header-item-width: 2.5rem;
-    --typo3-scaffold-header-item-border-radius: .25rem;
+    --typo3-scaffold-header-item-border-radius: .75rem;
     --typo3-scaffold-header-padding-y: .5rem;
     --typo3-scaffold-header-padding-x: .5rem;
     --typo3-scaffold-header-foldout-bg: var(--typo3-surface-container-high);

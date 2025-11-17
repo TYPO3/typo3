@@ -6,16 +6,25 @@
     --typo3-form-section-bg: var(--typo3-surface-container-low);
     --typo3-form-section-border-width: 1px;
     --typo3-form-section-border-color: color-mix(in srgb, var(--typo3-form-section-bg), var(--typo3-form-section-color) var(--typo3-border-mix));
+    --typo3-form-section-radius: var(--typo3-component-border-radius);
+    --typo3-form-section-radius-top: var(--typo3-form-section-radius);
+    --typo3-form-section-radius-bottom: var(--typo3-form-section-radius);
     --typo3-form-section-padding-y: 1rem;
     --typo3-form-section-padding-x: 1rem;
     --typo3-form-section-headline-font-size: 1rem;
     --treelist-bg: var(--typo3-form-section-bg);
     color: var(--typo3-form-section-color);
     border: var(--typo3-form-section-border-width) solid var(--typo3-form-section-border-color);
+    border-radius: var(--typo3-form-section-radius-top) var(--typo3-form-section-radius-top) var(--typo3-form-section-radius-bottom) var(--typo3-form-section-radius-bottom);
     background-color: var(--typo3-form-section-bg);
     padding: var(--typo3-form-section-padding-y) var(--typo3-form-section-padding-x);
 
+    &:has(+ .form-section) {
+        --typo3-form-section-radius-bottom: 0;
+    }
+
     & + & {
+        --typo3-form-section-radius-top: 0;
         margin-top: calc(var(--typo3-form-section-border-width) * -1);
     }
 

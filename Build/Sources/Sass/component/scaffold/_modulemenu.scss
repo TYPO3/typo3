@@ -13,14 +13,14 @@
     --modulemenu-padding-y: .75rem;
     --modulemenu-group-spacer: .5rem;
     --modulemenu-icon-size: 32px;
-    --modulemenu-icon-border-radius: 4px;
+    --modulemenu-icon-border-radius: calc(var(--modulemenu-action-border-radius) - var(--modulemenu-action-padding));
     --modulemenu-action-bg: transparent;
     --modulemenu-action-color: var(--modulemenu-color);
     --modulemenu-action-border-width: 1px;
     --modulemenu-action-border-color: transparent;
     --modulemenu-action-min-width: 42px;
     --modulemenu-action-padding: 4px;
-    --modulemenu-action-border-radius: 5px;
+    --modulemenu-action-border-radius: .75em;
     --modulemenu-action-bg-state: initial;
     --modulemenu-action-color-state: initial;
     --modulemenu-action-border-color-state: initial;
