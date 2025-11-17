@@ -7,34 +7,36 @@
 <f:layout name="Module" />
 
 <f:section name="Content">
-    <h1>
-        <f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_report_title" />
-    </h1>
-    <p>
-        <f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_report_explanation" />
-    </p>
+    <div class="container">
+        <h1>
+            <f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_report_title" />
+        </h1>
+        <p>
+            <f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_report_explanation" />
+        </p>
 
-    <f:for each="{statusCollection}" as="statuses" key="title">
-        <h2>{title}</h2>
-        <div class="statusreport-wrapper">
-            <f:for each="{statuses}" as="status">
-                <div class="statusreport" data-severity="{status.severity.cssClass}">
-                    <div class="statusreport-indicator">
-                        <div class="statusreport-indicator-icon">
-                            <core:icon identifier="{severityIconMapping.{status.severity.value}}" size="default" />
+        <f:for each="{statusCollection}" as="statuses" key="title">
+            <h2>{title}</h2>
+            <div class="statusreport-wrapper">
+                <f:for each="{statuses}" as="status">
+                    <div class="statusreport" data-severity="{status.severity.cssClass}">
+                        <div class="statusreport-indicator">
+                            <div class="statusreport-indicator-icon">
+                                <core:icon identifier="{severityIconMapping.{status.severity.value}}" size="default" />
+                            </div>
+                        </div>
+                        <div class="statusreport-title">
+                            {status.title}
+                        </div>
+                        <div class="statusreport-body">
+                            <strong>{status.value}</strong><br>
+                            {status.message -> f:format.raw()}
                         </div>
                     </div>
-                    <div class="statusreport-title">
-                        {status.title}
-                    </div>
-                    <div class="statusreport-body">
-                        <strong>{status.value}</strong><br>
-                        {status.message -> f:format.raw()}
-                    </div>
-                </div>
-            </f:for>
-        </div>
-    </f:for>
+                </f:for>
+            </div>
+        </f:for>
+    </div>
 </f:section>
 
 </html>
