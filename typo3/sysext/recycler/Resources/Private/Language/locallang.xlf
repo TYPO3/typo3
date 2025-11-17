@@ -73,7 +73,7 @@
 				<source>All parent pages have been restored to ensure a valid rootline.</source>
 			</trans-unit>
 			<trans-unit id="modal.massundo.text">
-				<source>Do you really want to restore all selected records and optionally potential subpages?</source>
+				<source>Restore all selected records and optionally potential subpages?</source>
 			</trans-unit>
 			<trans-unit id="flashmessage.delete.norecordsselected">
 				<source>No records set to delete.</source>
