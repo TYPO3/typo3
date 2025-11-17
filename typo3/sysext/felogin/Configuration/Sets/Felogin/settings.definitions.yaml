@@ -71,15 +71,15 @@ settings:
     category: felogin
   felogin.redirectPageLogin:
     default: 0
-    type: int
+    type: page
     category: felogin
   felogin.redirectPageLoginError:
     default: 0
-    type: int
+    type: page
     category: felogin
   felogin.redirectPageLogout:
     default: 0
-    type: int
+    type: page
     category: felogin
   felogin.redirectDisable:
     default: false
