@@ -8,8 +8,8 @@
 // Variables
 //
 :root {
-    --module-bg: var(--typo3-surface-base);
     --module-color: var(--typo3-text-color-base);
+    --module-bg: var(--typo3-surface-container-lowest);
     --module-docheader-zindex: var(--typo3-zindex-header);
     --module-docheader-padding-y: .75rem;
     --module-docheader-padding-x: 1.5rem;
