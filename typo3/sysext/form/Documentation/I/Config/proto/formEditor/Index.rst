@@ -297,7 +297,7 @@ formEditorFluidConfiguration
 
          formEditor:
            formEditorFluidConfiguration:
-             templatePathAndFilename: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/InlineTemplates.html'
+             templatePathAndFilename: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/InlineTemplates.fluid.html'
              partialRootPaths:
                10: 'EXT:form/Resources/Private/Backend/Partials/FormEditor/'
              layoutRootPaths:
@@ -335,7 +335,7 @@ formEditorFluidConfiguration.templatePathAndFilename
 
          formEditor:
            formEditorFluidConfiguration:
-             templatePathAndFilename: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/InlineTemplates.html'
+             templatePathAndFilename: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/InlineTemplates.fluid.html'
              partialRootPaths:
                10: 'EXT:form/Resources/Private/Backend/Partials/FormEditor/'
              layoutRootPaths:
@@ -372,7 +372,7 @@ formEditorFluidConfiguration.partialRootPaths
 
          formEditor:
            formEditorFluidConfiguration:
-             templatePathAndFilename: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/InlineTemplates.html'
+             templatePathAndFilename: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/InlineTemplates.fluid.html'
              partialRootPaths:
                10: 'EXT:form/Resources/Private/Backend/Partials/FormEditor/'
              layoutRootPaths:
@@ -410,7 +410,7 @@ formEditorFluidConfiguration.layoutRootPaths
 
          formEditor:
            formEditorFluidConfiguration:
-             templatePathAndFilename: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/InlineTemplates.html'
+             templatePathAndFilename: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/InlineTemplates.fluid.html'
              partialRootPaths:
                10: 'EXT:form/Resources/Private/Backend/Partials/FormEditor/'
              layoutRootPaths:

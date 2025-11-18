@@ -76,7 +76,7 @@ prototypes:
       stylesheets:
         200: 'EXT:form/Resources/Public/Css/form.css'
       formEditorFluidConfiguration:
-        templatePathAndFilename: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/InlineTemplates.html'
+        templatePathAndFilename: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/InlineTemplates.fluid.html'
         partialRootPaths:
           10: 'EXT:form/Resources/Private/Backend/Partials/FormEditor/'
         layoutRootPaths:
