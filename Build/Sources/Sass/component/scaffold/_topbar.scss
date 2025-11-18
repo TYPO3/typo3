@@ -4,16 +4,23 @@
 //
 .topbar {
     --topbar-site-bg: transparent;
+    --topbar-item-color: var(--typo3-scaffold-header-color);
+    --topbar-item-bg: var(--typo3-scaffold-header-bg);
+    --topbar-item-border-color: transparent;
+    --topbar-item-height: var(--typo3-scaffold-header-item-height);
+    --topbar-item-width: var(--typo3-scaffold-header-item-width);
+    --topbar-item-border-radius: var(--typo3-scaffold-header-item-border-radius);
     --topbar-item-color-state: initial;
     --topbar-item-bg-state: initial;
     --topbar-item-border-color-state: initial;
-    --topbar-item-color: var(--scaffold-header-color);
-    --topbar-item-bg: var(--scaffold-header-bg);
-    --topbar-item-border-color: transparent;
-    --topbar-item-height: var(--scaffold-header-item-height);
-    --topbar-item-width: var(--scaffold-header-item-width);
-    --topbar-item-border-radius: var(--scaffold-header-item-border-radius);
     --topbar-workspace-bg: light-dark(var(--token-color-blue-20), var(--token-color-blue-80));
+    // Internal state definitions
+    --topbar-item-hover-color: var(--typo3-scaffold-header-color);
+    --topbar-item-hover-bg: color-mix(in srgb, var(--topbar-item-bg), var(--topbar-item-color) 5%);
+    --topbar-item-hover-border-color: color-mix(in srgb, var(--topbar-item-bg), var(--topbar-item-color) 20%);
+    --topbar-item-focus-color: var(--typo3-scaffold-header-color);
+    --topbar-item-focus-bg: color-mix(in srgb, var(--topbar-item-bg), var(--topbar-item-color) 10%);
+    --topbar-item-focus-border-color: color-mix(in srgb, var(--topbar-item-bg), var(--topbar-item-color) 25%);
     position: relative;
     display: flex;
     align-items: center;
@@ -44,15 +51,15 @@
     }
 
     &:hover {
-        --topbar-item-color-state: var(--typo3-state-default-hover-color);
-        --topbar-item-bg-state: var(--typo3-state-default-hover-bg);
-        --topbar-item-border-color: var(--typo3-state-default-hover-border-color);
+        --topbar-item-color-state: var(--topbar-item-hover-color);
+        --topbar-item-bg-state: var(--topbar-item-hover-bg);
+        --topbar-item-border-color-state: var(--topbar-item-hover-border-color);
     }
 
     &:focus {
-        --topbar-item-color-state: var(--typo3-state-default-focus-color);
-        --topbar-item-bg-state: var(--typo3-state-default-focus-bg);
-        --topbar-item-border-color: var(--typo3-state-default-focus-border-color);
+        --topbar-item-color-state: var(--topbar-item-focus-color);
+        --topbar-item-bg-state: var(--topbar-item-focus-bg);
+        --topbar-item-border-color-state: var(--topbar-item-focus-border-color);
     }
 
     &:focus,
@@ -61,7 +68,7 @@
     }
 
     &:focus-visible {
-        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--topbar-item-border-color), transparent var(--typo3-outline-transparent-mix));
+        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--topbar-item-border-color-state), transparent var(--typo3-outline-transparent-mix));
         z-index: 2;
     }
 
@@ -127,7 +134,7 @@
     }
 
     &:focus-visible {
-        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-state-default-focus-border-color), transparent var(--typo3-outline-transparent-mix));
+        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--topbar-item-focus-border-color), transparent var(--typo3-outline-transparent-mix));
     }
 }
 
@@ -158,5 +165,5 @@
 }
 
 .topbar-site-version {
-    color: var(--typo3-text-color-variant);
+    opacity: .5;
 }

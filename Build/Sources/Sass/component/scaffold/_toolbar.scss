@@ -43,7 +43,7 @@
 .toolbar-item {
     .dropdown-menu {
         width: 350px;
-        max-height: calc(100dvh - var(--scaffold-header-height) - 1rem);
+        max-height: calc(100dvh - var(--typo3-scaffold-header-height) - 1rem);
         overflow-y: auto;
 
         @include media-breakpoint-up('lg') {
@@ -114,15 +114,21 @@
 // Toolbar Item Link
 //
 .toolbar-item-link {
-    --toolbar-item-link-height: var(--scaffold-header-item-height);
-    --toolbar-item-link-width: var(--scaffold-header-item-width);
-    --toolbar-item-link-border-radius: var(--scaffold-header-item-border-radius);
+    --toolbar-item-link-height: var(--typo3-scaffold-header-item-height);
+    --toolbar-item-link-width: var(--typo3-scaffold-header-item-width);
+    --toolbar-item-link-border-radius: var(--typo3-scaffold-header-item-border-radius);
+    --toolbar-item-link-color: var(--typo3-scaffold-header-color);
+    --toolbar-item-link-bg: var(--typo3-scaffold-header-bg);
+    --toolbar-item-link-border-color: color-mix(in srgb, var(--typo3-scaffold-header-bg), var(--typo3-scaffold-header-color) var(--typo3-border-mix));
     --toolbar-item-link-color-state: initial;
     --toolbar-item-link-bg-state: initial;
     --toolbar-item-link-border-color-state: initial;
-    --toolbar-item-link-color: var(--typo3-state-default-color);
-    --toolbar-item-link-bg: var(--typo3-state-default-bg);
-    --toolbar-item-link-border-color: var(--typo3-state-default-border-color);
+    --toolbar-item-link-hover-color: var(--toolbar-item-link-color);
+    --toolbar-item-link-hover-bg: color-mix(in srgb, var(--toolbar-item-link-bg), var(--toolbar-item-link-color) 10%);
+    --toolbar-item-link-hover-border-color: color-mix(in srgb, var(--toolbar-item-link-bg), var(--toolbar-item-link-color) 20%);
+    --toolbar-item-link-focus-color: var(--toolbar-item-link-color);
+    --toolbar-item-link-focus-bg: color-mix(in srgb, var(--toolbar-item-link-bg), var(--toolbar-item-link-color) 15%);
+    --toolbar-item-link-focus-border-color: color-mix(in srgb, var(--toolbar-item-link-bg), var(--toolbar-item-link-color) 25%);
 
     @include media-breakpoint-up('lg') {
         --toolbar-item-link-color-state: inherit;
@@ -140,7 +146,7 @@
     align-items: center;
     gap: .75em;
     // (item-width - border-width * 2 - icon-width) / 2;
-    padding: 0 calc((var(--scaffold-header-item-width) - 18px) / 2);
+    padding: 0 calc((var(--typo3-scaffold-header-item-width) - 18px) / 2);
     text-decoration: none;
     height: var(--toolbar-item-link-height);
     min-width: var(--toolbar-item-link-width);
@@ -162,17 +168,17 @@
     }
 
     &:hover {
-        --toolbar-item-link-color-state: var(--typo3-state-default-hover-color);
-        --toolbar-item-link-bg-state: var(--typo3-state-default-hover-bg);
-        --toolbar-item-link-border-color-state: var(--typo3-state-default-hover-border-color);
+        --toolbar-item-link-color-state: var(--toolbar-item-link-hover-color);
+        --toolbar-item-link-bg-state: var(--toolbar-item-link-hover-bg);
+        --toolbar-item-link-border-color-state: var(--toolbar-item-link-hover-border-color);
     }
 
     .open &,
     &.show,
     &:focus {
-        --toolbar-item-link-color-state: var(--typo3-state-default-focus-color);
-        --toolbar-item-link-bg-state: var(--typo3-state-default-focus-bg);
-        --toolbar-item-link-border-color-state: var(--typo3-state-default-focus-border-color);
+        --toolbar-item-link-color-state: var(--toolbar-item-link-focus-color);
+        --toolbar-item-link-bg-state: var(--toolbar-item-link-focus-bg);
+        --toolbar-item-link-border-color-state: var(--toolbar-item-link-focus-border-color);
     }
 
     &:hover,

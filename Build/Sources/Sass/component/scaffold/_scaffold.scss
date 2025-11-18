@@ -2,43 +2,14 @@
 // Scaffold
 // ========
 //
-:root {
-    --scaffold-color: var(--typo3-text-color-base);
-    --scaffold-bg: var(--typo3-surface-base);
-    --scaffold-border-color: color-mix(in srgb, var(--typo3-surface-base), var(--scaffold-color) var(--typo3-border-mix));
-    --scaffold-gap: .5rem;
-    --scaffold-header-height: 3.75rem;
-    --scaffold-header-color: var(--typo3-text-color-base);
-    --scaffold-header-bg: var(--typo3-surface-bright);
-    --scaffold-header-box-shadow: var(--typo3-shadow-2);
-    --scaffold-header-item-height: 2.5rem;
-    --scaffold-header-item-width: 2.5rem;
-    --scaffold-header-item-border-radius: .25rem;
-    --scaffold-header-padding-y: .5rem;
-    --scaffold-header-padding-x: .5rem;
-    --scaffold-header-foldout-bg: var(--typo3-surface-container-high);
-    --scaffold-header-zindex: var(--typo3-zindex-header);
-    --scaffold-modulemenu-color: var(--typo3-text-color-base);
-    --scaffold-modulemenu-bg: var(--typo3-surface-container-high);
-    --scaffold-modulemenu-collapsed-width: minmax(0, min-content);
-    --scaffold-modulemenu-expanded-width: 240px;
-    --scaffold-modulemenu-box-shadow: var(--typo3-shadow-2);
-    --scaffold-modulemenu-width: var(--scaffold-modulemenu-collapsed-width);
-    --scaffold-content-navigation-width: 300px;
-    --scaffold-content-navigation-drag-bg: color-mix(in srgb, var(--typo3-surface-container-high), var(--typo3-text-color-base) 10%);
-    --scaffold-content-navigation-drag-bg-hover: color-mix(in srgb, var(--typo3-surface-container-high), var(--typo3-text-color-base) 15%);
-    --scaffold-content-navigation-switcher-bg: var(--typo3-surface-container-base);
-    --scaffold-content-navigation-switcher-border: color-mix(in srgb, var(--typo3-surface-container-base), var(--typo3-text-color-base) 10%);
-}
-
 * {
-    scrollbar-color: color-mix(in srgb, var(--typo3-text-color-base), transparent 75%) transparent;
+    scrollbar-color: color-mix(in srgb, currentColor, transparent 75%) transparent;
 }
 
 :root,
 body {
-    color: var(--scaffold-color);
-    background-color: var(--scaffold-bg);
+    color: var(--typo3-scaffold-color);
+    background-color: var(--typo3-scaffold-bg);
 }
 
 body {
@@ -47,8 +18,8 @@ body {
 }
 
 iframe {
-    color: var(--scaffold-color);
-    background-color: var(--scaffold-bg);
+    color: var(--typo3-scaffold-color);
+    background-color: var(--typo3-scaffold-bg);
 }
 
 //
@@ -56,21 +27,21 @@ iframe {
 //
 .scaffold {
     display: grid;
-    background-color: var(--scaffold-bg);
-    color: var(--scaffold-color);
+    background-color: var(--typo3-scaffold-bg);
+    color: var(--typo3-scaffold-color);
     position: relative;
     height: 100dvh;
     width: 100%;
     contain: strict;
 
     &-modulemenu-expanded {
-        --scaffold-modulemenu-width: var(--scaffold-modulemenu-expanded-width);
+        --typo3-scaffold-modulemenu-width: var(--typo3-scaffold-modulemenu-expanded-width);
     }
 }
 
 .scaffold {
     grid-template-rows: auto 1fr;
-    grid-template-columns: clamp(0%, var(--scaffold-modulemenu-expanded-width), 75%) 1fr;
+    grid-template-columns: clamp(0%, var(--typo3-scaffold-modulemenu-expanded-width), 75%) 1fr;
 }
 
 .scaffold-header {
@@ -94,7 +65,7 @@ iframe {
 
 @container (min-width: 992px) {
     .scaffold {
-        grid-template-columns: var(--scaffold-modulemenu-width) 1fr;
+        grid-template-columns: var(--typo3-scaffold-modulemenu-width) 1fr;
     }
 
     .scaffold-modulemenu {
@@ -110,13 +81,13 @@ iframe {
 .scaffold-header {
     display: flex;
     align-items: center;
-    gap: var(--scaffold-gap);
-    padding: var(--scaffold-header-padding-y) var(--scaffold-header-padding-x);
-    height: var(--scaffold-header-height);
-    color: var(--scaffold-header-color);
-    background-color: var(--scaffold-header-bg);
-    box-shadow: var(--scaffold-header-box-shadow);
-    z-index: var(--scaffold-header-zindex);
+    gap: var(--typo3-scaffold-gap);
+    padding: var(--typo3-scaffold-header-padding-y) var(--typo3-scaffold-header-padding-x);
+    height: var(--typo3-scaffold-header-height);
+    color: var(--typo3-scaffold-header-color);
+    background-color: var(--typo3-scaffold-header-bg);
+    box-shadow: var(--typo3-scaffold-header-box-shadow);
+    z-index: var(--typo3-scaffold-header-zindex);
 }
 
 //
@@ -132,13 +103,13 @@ iframe {
 // ModuleMenu
 //
 .scaffold-modulemenu {
-    background-color: var(--scaffold-modulemenu-bg);
-    color: var(--scaffold-modulemenu-color);
-    z-index: calc(var(--scaffold-header-zindex) - 1);
+    background-color: var(--typo3-scaffold-modulemenu-bg);
+    color: var(--typo3-scaffold-modulemenu-color);
+    z-index: calc(var(--typo3-scaffold-header-zindex) - 1);
     overflow-y: auto;
     overflow-x: hidden;
-    box-shadow: var(--scaffold-modulemenu-box-shadow);
-    border-inline-end: 1px solid color-mix(in srgb, var(--scaffold-modulemenu-bg), var(--scaffold-modulemenu-color) var(--typo3-border-mix));
+    box-shadow: var(--typo3-scaffold-modulemenu-box-shadow);
+    border-inline-end: 1px solid color-mix(in srgb, var(--typo3-scaffold-modulemenu-bg), var(--typo3-scaffold-modulemenu-color) var(--typo3-border-mix));
 }
 
 //
@@ -164,18 +135,18 @@ iframe {
                 content: "";
                 height: 1px;
                 position: fixed;
-                top: calc(var(--scaffold-header-height) - 1px);
+                top: calc(var(--typo3-scaffold-header-height) - 1px);
                 inset-inline: 0;
-                box-shadow: var(--scaffold-header-box-shadow);
+                box-shadow: var(--typo3-scaffold-header-box-shadow);
             }
             position: absolute;
-            top: var(--scaffold-header-height);
+            top: var(--typo3-scaffold-header-height);
             inset-inline: 0;
-            height: calc(100dvh - var(--scaffold-header-height));
+            height: calc(100dvh - var(--typo3-scaffold-header-height));
             padding: 1rem .5rem;
             display: block;
             overflow: auto;
-            background-color: var(--scaffold-header-foldout-bg);
+            background-color: var(--typo3-scaffold-header-foldout-bg);
         }
     }
 }
@@ -186,7 +157,7 @@ iframe {
 .scaffold-content {
     position: relative !important;
     display: flex;
-    background: var(--scaffold-bg);
+    background: var(--typo3-scaffold-bg);
 }
 
 .scaffold-content-module-iframe {
@@ -205,7 +176,7 @@ iframe {
     flex-direction: column;
     inset-inline-start: 0;
     height: 100%;
-    width: var(--scaffold-content-navigation-width);
+    width: var(--typo3-scaffold-content-navigation-width);
 
     &-component {
         flex: 1 0 auto;
@@ -224,7 +195,7 @@ iframe {
 .scaffold-content-overlay {
     display: none;
     position: absolute;
-    z-index: calc(var(--scaffold-header-zindex) - 2);
+    z-index: calc(var(--typo3-scaffold-header-zindex) - 2);
     top: 0;
     left: 0;
     right: 0;
@@ -248,16 +219,16 @@ iframe {
     height: 100%;
     user-select: none;
     z-index: 3;
-    color: var(--scaffold-color);
-    background-color: var(--scaffold-content-navigation-drag-bg);
+    color: var(--typo3-scaffold-color);
+    background-color: var(--typo3-scaffold-content-navigation-drag-bg);
     transition: background-color .2s ease-in-out, border .2s ease-in-out;
 
     &:hover {
-        --scaffold-content-navigation-drag-bg: var(--scaffold-content-navigation-drag-bg-hover);
-        background-color: var(--scaffold-content-navigation-drag-bg);
+        --typo3-scaffold-content-navigation-drag-bg: var(--typo3-scaffold-content-navigation-drag-bg-hover);
+        background-color: var(--typo3-scaffold-content-navigation-drag-bg);
 
         &:after {
-            border-inline-end: 2px solid var(--scaffold-content-navigation-drag-bg);
+            border-inline-end: 2px solid var(--typo3-scaffold-content-navigation-drag-bg);
         }
     }
 
@@ -299,10 +270,10 @@ iframe {
         display: flex;
         position: relative;
         flex-direction: column;
-        color: var(--scaffold-color);
-        border-inline-end: 1px solid var(--scaffold-content-navigation-switcher-border);
+        color: var(--typo3-scaffold-color);
+        border-inline-end: 1px solid var(--typo3-scaffold-content-navigation-switcher-border);
         padding: 4px;
-        background: var(--scaffold-content-navigation-switcher-bg);
+        background: var(--typo3-scaffold-content-navigation-switcher-bg);
     }
 
     .scaffold-content-navigation-available.scaffold-content-navigation-expanded & {

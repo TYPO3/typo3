@@ -7,24 +7,37 @@
 // Component
 //
 .modulemenu {
+    --modulemenu-color: var(--typo3-scaffold-modulemenu-color);
+    --modulemenu-bg: var(--typo3-scaffold-modulemenu-bg);
     --modulemenu-padding-x: .5rem;
     --modulemenu-padding-y: .75rem;
     --modulemenu-group-spacer: .5rem;
     --modulemenu-icon-size: 32px;
     --modulemenu-icon-border-radius: 4px;
-    --modulemenu-action-bg-state: initial;
-    --modulemenu-action-color-state: initial;
-    --modulemenu-action-border-color-state: initial;
     --modulemenu-action-bg: transparent;
-    --modulemenu-action-color: inherit;
+    --modulemenu-action-color: var(--modulemenu-color);
     --modulemenu-action-border-width: 1px;
     --modulemenu-action-border-color: transparent;
     --modulemenu-action-min-width: 42px;
     --modulemenu-action-padding: 4px;
     --modulemenu-action-border-radius: 5px;
+    --modulemenu-action-bg-state: initial;
+    --modulemenu-action-color-state: initial;
+    --modulemenu-action-border-color-state: initial;
+    --modulemenu-action-hover-color: var(--modulemenu-color);
+    --modulemenu-action-hover-bg: color-mix(in srgb, var(--modulemenu-bg), var(--modulemenu-color) 5%);
+    --modulemenu-action-hover-border-color: color-mix(in srgb, var(--modulemenu-bg), var(--modulemenu-color) 20%);
+    --modulemenu-action-focus-color: var(--modulemenu-color);
+    --modulemenu-action-focus-bg: color-mix(in srgb, var(--modulemenu-bg), var(--modulemenu-color) 10%);
+    --modulemenu-action-focus-border-color: color-mix(in srgb, var(--modulemenu-bg), var(--modulemenu-color) 25%);
+    --modulemenu-action-active-color: var(--modulemenu-color);
+    --modulemenu-action-active-bg: color-mix(in srgb, var(--modulemenu-bg), var(--modulemenu-color) 10%);
+    --modulemenu-action-active-border-color: color-mix(in srgb, var(--modulemenu-bg), var(--modulemenu-color) 25%);
     margin: 0;
     padding: var(--modulemenu-padding-y) var(--modulemenu-padding-x);
     list-style: none;
+    background-color: var(--modulemenu-bg);
+    color: var(--modulemenu-color);
 
     > ul {
         min-width: var(--modulemenu-action-min-width);
@@ -64,9 +77,9 @@
 
     &:hover,
     &:focus-visible {
-        --modulemenu-action-color-state: var(--typo3-state-default-hover-color);
-        --modulemenu-action-bg-state: var(--typo3-state-default-hover-bg);
-        --modulemenu-action-border-color-state: var(--typo3-state-default-hover-border-color);
+        --modulemenu-action-color-state: var(--modulemenu-action-hover-color);
+        --modulemenu-action-bg-state: var(--modulemenu-action-hover-bg);
+        --modulemenu-action-border-color-state: var(--modulemenu-action-hover-border-color);
     }
 
     &:focus-visible {
@@ -74,9 +87,9 @@
     }
 
     &.modulemenu-action-active:not(:has(~ ul.collapse.show)) {
-        --modulemenu-action-color-state: var(--typo3-state-default-focus-color);
-        --modulemenu-action-bg-state: var(--typo3-state-default-focus-bg);
-        --modulemenu-action-border-color-state: var(--typo3-state-default-focus-border-color);
+        --modulemenu-action-color-state: var(--modulemenu-action-active-color);
+        --modulemenu-action-bg-state: var(--modulemenu-action-active-bg);
+        --modulemenu-action-border-color-state: var(--modulemenu-action-active-border-color);
     }
 }
 
