@@ -113,6 +113,9 @@
                                     <span class="btn btn-default disabled"><core:icon identifier="empty-empty" /></span>
                                 </f:then>
                                 <f:else>
+                                    <form action="{backend:moduleLink(route:'tce_db', currentUrlParameterName:'redirect')}" name="be_user_remove_{backendUser.uid}" id="be_user_remove_{backendUser.uid}" method="post">
+                                        <input name="cmd[be_users][{backendUser.uid}][delete]=1" type="hidden" value="{group.uid}">
+                                    </form>
                                     <button
                                         type="submit"
                                         class="btn btn-default t3js-modal-trigger"
@@ -126,9 +129,6 @@
                                     >
                                         <core:icon identifier="actions-edit-delete" />
                                     </button>
-                                    <form action="{backend:moduleLink(route:'tce_db', currentUrlParameterName:'redirect')}" name="be_user_remove_{backendUser.uid}" id="be_user_remove_{backendUser.uid}" method="post">
-                                        <input name="cmd[be_users][{backendUser.uid}][delete]=1" type="hidden" value="{group.uid}">
-                                    </form>
                                 </f:else>
                             </f:if>
                         </div>
