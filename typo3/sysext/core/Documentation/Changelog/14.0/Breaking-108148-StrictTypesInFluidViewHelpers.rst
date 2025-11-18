@@ -63,16 +63,16 @@ Example:
 
 ..  code-block:: html
 
-    <f:form.textfield name="myTextBox" value="{variableThatMightBeNull}" />
+    <f:form.textfield name="myTextBox" placeholder="{variableThatMightBeNull}" />
 
 If the variable is :php:`null` (the PHP value), Fluid 4 and below generated
 the following output:
 
 ..  code-block:: html
 
-    <input type="text" name="myTextBox" value="" />
+    <input type="text" name="myTextBox" placeholder="" />
 
-Fluid 5 omits the :html:`value=""`:
+Fluid 5 omits the :html:`placeholder=""`:
 
 ..  code-block:: html
 
@@ -120,9 +120,9 @@ Custom ViewHelper implementations need to make sure that they declare
 proper return types in the ViewHelper class to conform to Fluid 5's
 interface changes, for example:
 
-* `render()` must specify a return type other than `void`; Though a
-  specific type is recommended, `mixed` can be used as well.
 * `initializeArguments()` must specify `void` as return type
+* `render()` should specify a return type other than `void`. Even though a
+  specific type is recommended, it is not required, and `mixed` can be used as well.
 
 Note that properties in ViewHelper classes are **not** affected.
 The following example doesn't need to be adjusted, no types can/should
