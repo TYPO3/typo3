@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Command;
 
 use Psr\Container\ContainerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableSeparator;
@@ -38,6 +39,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Command for showing all backend modules and their associated labels
  * @internal only for development purposes
  */
+#[AsCommand('debug:backend:modules', 'Debugging: Show a list of the backend module tree (only for development purpose)')]
 #[AsNonSchedulableCommand]
 class DebugBackendModulesCommand extends Command
 {

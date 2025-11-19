@@ -15,13 +15,6 @@ services:
     arguments: ['core']
     public: true
 
-  TYPO3\CMS\Core\Command\SendEmailCommand:
-    tags:
-      - name: 'console.command'
-        command: 'swiftmailer:spool:send'
-        alias: true
-        schedulable: false
-
   TYPO3\CMS\Core\Package\UnitTestPackageManager:
     autoconfigure: false
 

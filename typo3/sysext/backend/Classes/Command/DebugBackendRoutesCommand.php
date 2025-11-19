@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,6 +33,7 @@ use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
  * Similar to Symfony's debug:router command.
  * @internal only for development purposes
  */
+#[AsCommand('debug:backend:routes', 'Debugging: List all registered backend routes (only for development purpose)')]
 #[AsNonSchedulableCommand]
 class DebugBackendRoutesCommand extends Command
 {

@@ -36,7 +36,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @link https://github.com/symfony/swiftmailer-bundle/blob/master/Command/SendEmailCommand.php
  */
-#[AsCommand('mailer:spool:send', 'Sends emails from the spool.')]
+#[AsCommand('mailer:spool:send', 'Sends emails from the spool.', ['swiftmailer:spool:send'])]
 #[AsNonSchedulableCommand]
 class SendEmailCommand extends Command
 {
@@ -48,8 +48,7 @@ class SendEmailCommand extends Command
         $this
             ->addOption('message-limit', null, InputOption::VALUE_REQUIRED, 'The maximum number of messages to send.')
             ->addOption('time-limit', null, InputOption::VALUE_REQUIRED, 'The time limit for sending messages (in seconds).')
-            ->addOption('recover-timeout', null, InputOption::VALUE_REQUIRED, 'The timeout for recovering messages that have taken too long to send (in seconds).')
-            ->setAliases(['swiftmailer:spool:send']);
+            ->addOption('recover-timeout', null, InputOption::VALUE_REQUIRED, 'The timeout for recovering messages that have taken too long to send (in seconds).');
     }
 
     /**
