@@ -3,6 +3,8 @@
 editor:
   config:
     htmlSupport:
+      # if you want to allow empty icon-tags
+      allowEmpty: ['i']
       allow:
         - { name: 'iframe', attributes: true, classes: true, styles: true }
         # multiple definitions for the same tag name are possible
