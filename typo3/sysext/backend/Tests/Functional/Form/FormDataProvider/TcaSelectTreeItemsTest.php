@@ -158,6 +158,7 @@ final class TcaSelectTreeItemsTest extends FunctionalTestCase
                             ],
                             'foreign_table' => 'foreign_table',
                             'items' => [
+                                ['label' => 'static empty value item', 'value' => '', 'icon' => 'foo-icon'],
                                 ['label' => 'static item foo', 'value' => 1, 'icon' => 'foo-icon'],
                                 ['label' => 'static item bar', 'value' => 2, 'icon' => 'bar-icon'],
                             ],
@@ -180,6 +181,7 @@ final class TcaSelectTreeItemsTest extends FunctionalTestCase
                                     ],
                                 ],
                             ],
+                            'altLabels' => 'alt static empty value item',
                             'altLabels.' => [
                                 1 => 'alt static item foo',
                                 2 => 'alt static item bar',
@@ -203,6 +205,16 @@ final class TcaSelectTreeItemsTest extends FunctionalTestCase
 
         $resultItems = $result['processedTca']['columns']['select_tree']['config']['items'];
         $expectedItems = [
+            [
+                'identifier' => '',
+                'name' => 'alt static empty value item',
+                'icon' => 'foo-icon',
+                'iconOverlay' => '', // @todo for non-static items this is called `overlayIcon`. Bug?
+                'depth' => 0,
+                'hasChildren' => false,
+                'selectable' => true,
+                'checked' => false,
+            ],
             [
                 'identifier' => 1,
                 'name' => 'alt static item foo',

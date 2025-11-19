@@ -1424,14 +1424,17 @@ class BackendUtility
             );
         }
 
-        $keys = GeneralUtility::trimExplode(',', $keyList, true);
+        // We must also respect empty values, so we can also overwrite options with empty values
+        $keys = GeneralUtility::trimExplode(',', $keyList);
         $labels = [];
         // Loop on all selected values
         foreach ($keys as $key) {
             $label = null;
             if ($columnTsConfig) {
                 // Check if label has been defined or redefined via pageTsConfig
-                if (isset($columnTsConfig['addItems.'][$key])) {
+                if ($key === '' && isset($columnTsConfig['altLabels'])) {
+                    $label = $columnTsConfig['altLabels'];
+                } elseif (isset($columnTsConfig['addItems.'][$key])) {
                     $label = $columnTsConfig['addItems.'][$key];
                 } elseif (isset($columnTsConfig['altLabels.'][$key])) {
                     $label = $columnTsConfig['altLabels.'][$key];
