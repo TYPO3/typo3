@@ -199,11 +199,7 @@
                     <f:for each="{compareUserList}" as="compareData">
                         <td>
                             <f:if condition="{compareData.pageContentTypes}">
-                                <div class="panel">
-                                    <div class="panel-body">
-                                        <f:render partial="Compare/Information" section="pageContentTypes" arguments="{pageContentTypes: compareData.pageContentTypes, showUid: showUid}" />
-                                    </div>
-                                </div>
+                                <f:render partial="Compare/Information" section="pageContentTypes" arguments="{pageContentTypes: compareData.pageContentTypes, showUid: showUid}" />
                             </f:if>
                         </td>
                     </f:for>
