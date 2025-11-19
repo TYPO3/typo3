@@ -71,8 +71,6 @@
         grid-area: statusreport-body;
     }
 
-    @include link-reset();
-
     .statusreport-indicator-icon {
         position: relative;
         display: inline-flex;

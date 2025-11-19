@@ -2654,8 +2654,6 @@ pre[class*=language-]{border-radius:4px;margin-bottom:var(--typo3-spacing);overf
 .statusreport-indicator{display:flex;grid-area:statusreport-indicator;justify-content:center}
 .statusreport-title{grid-area:statusreport-title}
 .statusreport-body{grid-area:statusreport-body}
-.statusreport a:not([class]){color:#205eb5;text-decoration:underline}
-.statusreport a:not([class]):hover{color:#1a4b91;text-decoration:underline}
 .statusreport .statusreport-indicator-icon{align-items:center;color:var(--typo3-statusreport-icon-color);display:inline-flex;font-size:var(--typo3-statusreport-icon-size);height:var(--typo3-statusreport-icon-size);justify-content:center;position:relative;width:var(--typo3-statusreport-icon-size)}
 .statusreport .statusreport-indicator-icon:before{background-color:var(--typo3-statusreport-icon-bg);border-radius:50%;content:" ";height:calc(var(--typo3-statusreport-icon-size)*1.5);left:50%;position:absolute;top:50%;transform:translate(calc(-50%*var(--typo3-position-modifier)),-50%);width:calc(var(--typo3-statusreport-icon-size)*1.5)}
 .statusreport-wrapper{border-radius:var(--typo3-statusreport-border-radius);box-shadow:var(--typo3-statusreport-box-shadow);margin-bottom:var(--typo3-spacing)}
