@@ -3240,6 +3240,14 @@ final class TcaSelectItemsTest extends FunctionalTestCase
                                     'group' => null,
                                     'description' => null,
                                 ],
+                                1 => [
+                                    'label' => 'option with no value',
+                                    'value' => '',
+                                    'icon' => null,
+                                    'iconOverlay' => null,
+                                    'group' => null,
+                                    'description' => null,
+                                ],
                             ],
                             'maxitems' => 99999,
                         ],
@@ -3250,6 +3258,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [
+                            'altLabels' => 'labelOverride option has empty value',
                             'altLabels.' => [
                                 'aValue' => 'labelOverride',
                             ],
@@ -3262,6 +3271,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = ['aValue'];
         $expected['processedTca']['columns']['aField']['config']['items'][0]['label'] = 'labelOverride';
+        $expected['processedTca']['columns']['aField']['config']['items'][1]['label'] = 'labelOverride option has empty value';
 
         self::assertSame($expected, (new TcaSelectItems($this->get(SelectItemProcessor::class)))->addData($input));
     }

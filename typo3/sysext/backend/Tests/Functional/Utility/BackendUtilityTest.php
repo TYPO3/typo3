@@ -984,6 +984,98 @@ final class BackendUtilityTest extends FunctionalTestCase
                 ],
                 'aFooLabel, aBarDiffLabel, aNewLabel', // expected
             ],
+            'page TSconfig overrules TCA for selectSingle renderType with empty value' => [
+                'foobar', // table
+                'someColumn', // col
+                ',foo', // keyList
+                [ // TCA
+                    'columns' => [
+                        'someColumn' => [
+                            'config' => [
+                                'type' => 'select',
+                                'renderType' => 'selectSingle',
+                                'items' => [
+                                    ['label' => 'aEmptyValueOptionLabel', 'value' => ''],
+                                    ['label' => 'a option with value', 'value' => 'foo'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [ // page TSconfig
+                    'altLabels' => 'aEmptyValueOptionLabelOverride',
+                ],
+                'aEmptyValueOptionLabelOverride, a option with value', // expected
+            ],
+            'page TSconfig overrules TCA for selectCheckBox renderTyp with empty value' => [
+                'foobar', // table
+                'someColumn', // col
+                ',foo', // keyList
+                [ // TCA
+                    'columns' => [
+                        'someColumn' => [
+                            'config' => [
+                                'type' => 'select',
+                                'renderType' => 'selectCheckBox',
+                                'items' => [
+                                    ['label' => 'aEmptyValueOptionLabel', 'value' => ''],
+                                    ['label' => 'a option with value', 'value' => 'foo'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [ // page TSconfig
+                    'altLabels' => 'aEmptyValueOptionLabelOverride',
+                ],
+                'aEmptyValueOptionLabelOverride, a option with value', // expected
+            ],
+            'page TSconfig overrules TCA for selectMultipleSideBySide renderTyp with empty value' => [
+                'foobar', // table
+                'someColumn', // col
+                ',foo', // keyList
+                [ // TCA
+                    'columns' => [
+                        'someColumn' => [
+                            'config' => [
+                                'type' => 'select',
+                                'renderType' => 'selectMultipleSideBySide',
+                                'items' => [
+                                    ['label' => 'aEmptyValueOptionLabel', 'value' => ''],
+                                    ['label' => 'a option with value', 'value' => 'foo'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [ // page TSconfig
+                    'altLabels' => 'aEmptyValueOptionLabelOverride',
+                ],
+                'aEmptyValueOptionLabelOverride, a option with value', // expected
+            ],
+            'page TSconfig overrules TCA for selectTree renderTyp with empty value' => [
+                'foobar', // table
+                'someColumn', // col
+                ',foo', // keyList
+                [ // TCA
+                    'columns' => [
+                        'someColumn' => [
+                            'config' => [
+                                'type' => 'select',
+                                'renderType' => 'selectTree',
+                                'items' => [
+                                    ['label' => 'aEmptyValueOptionLabel', 'value' => ''],
+                                    ['label' => 'a option with value', 'value' => 'foo'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [ // page TSconfig
+                    'altLabels' => 'aEmptyValueOptionLabelOverride',
+                ],
+                'aEmptyValueOptionLabelOverride, a option with value', // expected
+            ],
             'itemsProcFunc is evaluated' => [
                 'foobar', // table
                 'someColumn', // col
