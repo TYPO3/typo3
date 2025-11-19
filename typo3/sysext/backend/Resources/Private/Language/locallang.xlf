@@ -64,7 +64,7 @@
 				<source>Forgot your password?</source>
 			</trans-unit>
 			<trans-unit id="login.error.capslock">
-				<source>Attention: Caps lock enabled!</source>
+				<source>Attention: Caps lock enabled</source>
 			</trans-unit>
 			<trans-unit id="login.error.capslockStatus">
 				<source>Caps lock enabled</source>
@@ -100,13 +100,13 @@
 				<source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
 			</trans-unit>
 			<trans-unit id="login.error.javascript">
-				<source>Please activate JavaScript!</source>
+				<source>Please activate JavaScript</source>
 			</trans-unit>
 			<trans-unit id="login.error.cookies">
-				<source>Please activate Cookies!</source>
+				<source>Please activate Cookies</source>
 			</trans-unit>
 			<trans-unit id="login.error.referrer">
-				<source>TYPO3 relies on HTTP referrers for security reasons in the backend. It seems your browser refused to send this information.</source>
+				<source>TYPO3 relies on HTTP referrers for security reasons in the backend. It looks like your browser was not able to send this information, which may be due to privacy or security settings.</source>
 			</trans-unit>
 			<trans-unit id="login.process">
 				<source>Verifying Login Data ...</source>
