@@ -77,24 +77,24 @@
                                     <f:for each="{line.lines}" as="l" iteration="i">
                                         <tr>
                                             <td class="col-title-flexible">
-                                                <f:if condition="{i.index} == 0">
-                                                    <f:then>
-                                                        <div class="treeline-container">
-                                                            {line.depthData -> f:format.raw()}{line.HTML -> f:format.raw()}
-                                                            <f:if condition="{line.icon}">{line.icon -> f:format.raw()}</f:if>
-                                                            <span>
+                                                <div class="treeline-container">
+                                                    <f:if condition="{i.index} == 0">
+                                                        <f:then>
+                                                                {line.depthData -> f:format.raw()}{line.HTML -> f:format.raw()}
+                                                                <f:if condition="{line.icon}">{line.icon -> f:format.raw()}</f:if>
+                                                                <span>
+                                                                    <f:format.crop maxCharacters="{backendUserTitleLength}" respectHtml="false">{line.row.title}</f:format.crop>
+                                                                </span>
+                                                        </f:then>
+                                                        <f:else>
+                                                            {line.depthData -> f:format.raw()}
+                                                            <span class="visually-hidden">
+                                                                <f:if condition="{line.icon}">{line.icon -> f:format.raw()}</f:if>
                                                                 <f:format.crop maxCharacters="{backendUserTitleLength}" respectHtml="false">{line.row.title}</f:format.crop>
                                                             </span>
-                                                        </div>
-                                                    </f:then>
-                                                    <f:else>
-                                                        {line.depthData -> f:format.raw()}
-                                                        <span class="visually-hidden">
-                                                            <f:if condition="{line.icon}">{line.icon -> f:format.raw()}</f:if>
-                                                            <f:format.crop maxCharacters="{backendUserTitleLength}" respectHtml="false">{line.row.title}</f:format.crop>
-                                                        </span>
-                                                    </f:else>
-                                                </f:if>
+                                                        </f:else>
+                                                    </f:if>
+                                                </div>
                                             </td>
                                             <td class="col-title-flexible">
                                                 <f:image src="{l.icon}" />

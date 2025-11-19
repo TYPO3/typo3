@@ -37,14 +37,16 @@
                             </f:comment>
 
                             <td class="permission-column-name">
-                                <f:spaceless>
-                                    {data.depthData -> f:format.raw()}{data.HTML -> f:format.raw()}
-                                    <f:if condition="{data.icon}">{data.icon -> f:format.raw()}</f:if>
-                                </f:spaceless>
-                                <a
-                                    href="{editUrl}"
-                                    title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:ch_permissions')}"
-                                >{data.row.title -> f:format.crop(maxCharacters:20)}</a>
+                                <div class="treeline-container">
+                                    <f:spaceless>
+                                        {data.depthData -> f:format.raw()}{data.HTML -> f:format.raw()}
+                                        <f:if condition="{data.icon}">{data.icon -> f:format.raw()}</f:if>
+                                    </f:spaceless>
+                                    <a
+                                        href="{editUrl}"
+                                        title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:ch_permissions')}"
+                                    >{data.row.title -> f:format.crop(maxCharacters:20)}</a>
+                                </div>
                             </td>
 
                             <td class="permission-column-list">

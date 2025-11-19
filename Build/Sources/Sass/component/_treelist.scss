@@ -36,9 +36,9 @@
 .treeline-container {
     --treelist-color: var(--typo3-text-color-base);
     --treelist-comment-color: var(--typo3-text-color-variant);
-    --treelist-bg: var(--typo3-surface-base);
+    --treelist-bg: var(--typo3-surface-container-lowest);
     --treelist-border-width: 1px;
-    --treelist-border-color: color-mix(in srgb, var(--treelist-bg), var(--treelist-color) 10%);
+    --treelist-border-color: color-mix(in srgb, var(--treelist-bg), var(--treelist-color) 20%);
     --treelist-indentation: 1rem;
     --treelist-indentation-spacer: .5rem;
     --treelist-item-spacer: 2px;
@@ -240,6 +240,14 @@
 //
 // Adaptions
 //
+.example {
+    .treelist,
+    .treeline-container {
+        --treelist-color: var(--typo3-example-color);
+        --treelist-bg: var(--typo3-example-bg);
+    }
+}
+
 .panel {
     .treelist,
     .treeline-container {
