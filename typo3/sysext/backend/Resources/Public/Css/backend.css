@@ -4077,8 +4077,8 @@ td.permission-column-group{-webkit-padding-start:0;padding-inline-start:0;white-
 .viewpage-topbar-orientation a{color:inherit;opacity:.5;transition:all .2s ease-in-out}
 .viewpage-topbar-orientation a:hover{opacity:1}
 .viewpage-topbar-size{direction:ltr}
-.viewpage-topbar-size input{background-color:transparent;border:0;border-bottom:1px solid rgba(32,94,181,.5);color:inherit;padding-left:0;padding-right:0;transition:all .5s ease-in-out}
-.viewpage-topbar-size input:focus,.viewpage-topbar-size input:hover{border-bottom-color:#205eb5;outline:0}
+.viewpage-topbar-size input{background-color:transparent;border:0;border-bottom:1px solid var(--typo3-state-primary-border-color);color:inherit;padding-left:0;padding-right:0;transition:all .5s ease-in-out}
+.viewpage-topbar-size input:focus,.viewpage-topbar-size input:hover{border-bottom-color:var(--typo3-state-primary-focus-border-color);outline:0}
 .viewpage-resizeable{background-color:var(--typo3-surface-container-low);border-radius:0 var(--viewpage-item-radius) var(--viewpage-item-radius)}
 .workspace-panel tr.collapsing{transition:none}
 .workspace-panel tr.collapse{display:none}

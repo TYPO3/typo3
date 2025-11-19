@@ -97,14 +97,14 @@
         padding-left: 0;
         padding-right: 0;
         border: 0;
-        border-bottom: 1px solid rgba($primary, .5);
+        border-bottom: 1px solid var(--typo3-state-primary-border-color);
         transition: all .5s ease-in-out;
         color: inherit;
 
         &:focus,
         &:hover {
             outline: 0;
-            border-bottom-color: rgba($primary, 1);
+            border-bottom-color: var(--typo3-state-primary-focus-border-color);
         }
     }
 }
