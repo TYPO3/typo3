@@ -279,6 +279,7 @@ export class ExtensionMatrixElement extends LitElement {
             <button class="btn btn-default" title=${tooltip}
               @click=${() => this.dispatchEvent(new CustomEvent<DownloadPacksEvent>('download-packs', eventData))}>
               <typo3-backend-icon identifier="actions-download" size="small"></typo3-backend-icon>
+              ${language}
             </button>
           </td>
         `;
