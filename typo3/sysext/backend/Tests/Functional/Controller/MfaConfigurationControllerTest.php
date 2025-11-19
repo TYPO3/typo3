@@ -207,49 +207,49 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
             'setup',
             '',
             false,
-            'Selected MFA provider was not found!',
+            'Selected MFA provider was not found',
         ];
         yield 'Invalid provider' => [
             'setup',
             'unknown',
             false,
-            'Selected MFA provider was not found!',
+            'Selected MFA provider was not found',
         ];
         yield 'Inactive provider on edit' => [
             'edit',
             'totp',
             false,
-            'Selected MFA provider has to be active to perform this action!',
+            'This action requires an active MFA provider.',
         ];
         yield 'Inactive provider on update' => [
             'save',
             'totp',
             false,
-            'Selected MFA provider has to be active to perform this action!',
+            'This action requires an active MFA provider.',
         ];
         yield 'Inactive provider on deactivate' => [
             'deactivate',
             'totp',
             false,
-            'Selected MFA provider has to be active to perform this action!',
+            'This action requires an active MFA provider.',
         ];
         yield 'Inactive provider on unlock' => [
             'unlock',
             'totp',
             false,
-            'Selected MFA provider has to be active to perform this action!',
+            'This action requires an active MFA provider.',
         ];
         yield 'Active provider on setup' => [
             'setup',
             'totp',
             true,
-            'Selected MFA provider has to be inactive to perform this action!',
+            'This action requires an inactive MFA provider.',
         ];
         yield 'Active provider on activate' => [
             'activate',
             'totp',
             true,
-            'Selected MFA provider has to be inactive to perform this action!',
+            'This action requires an inactive MFA provider.',
         ];
     }
 

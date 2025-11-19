@@ -54,23 +54,28 @@
 			<trans-unit id="overview.noProviders.message">
 				<source>There are currently no multi-factor authentication providers available.</source>
 			</trans-unit>
-			<trans-unit id="overview.noProviders.errorMessage">
+			<trans-unit id="noprovider_error_message">
+				<source>
+					Multi-factor authentification (MFA) setup is required, but no providers are currently available for you to activate. This might be a misconfiguration, so please contact your administrator for assistance.
+				</source>
+			</trans-unit>
+			<trans-unit id="overview.noProviders.errorMessage" x-unused-since="14.0">
 				<source>
 					You are required to setup MFA but there are no providers to activate available. You should contact
 					your administrator to solve this.
 				</source>
 			</trans-unit>
 			<trans-unit id="providerNotFound">
-				<source>Selected MFA provider was not found!</source>
+				<source>Selected MFA provider was not found</source>
 			</trans-unit>
 			<trans-unit id="providerNotActive">
-				<source>Selected MFA provider has to be active to perform this action!</source>
+				<source>This action requires an active MFA provider.</source>
 			</trans-unit>
 			<trans-unit id="providerActive">
-				<source>Selected MFA provider has to be inactive to perform this action!</source>
+				<source>This action requires an inactive MFA provider.</source>
 			</trans-unit>
 			<trans-unit id="providerIsLocked">
-				<source>Selected MFA provider has to be unlocked to perform this action!</source>
+				<source>This action requires an unlocked MFA provider.</source>
 			</trans-unit>
 			<trans-unit id="setup.instructions">
 				<source>Setup instructions</source>
@@ -159,7 +164,7 @@
 					available providers below.
 				</source>
 			</trans-unit>
-			<trans-unit id="standalone.selection.noAvailableProviders">
+			<trans-unit id="standalone.selection.noAvailableProviders" x-unused-since="14.0">
 				<source>
 					You are required to set up MFA. However, there are no MFA providers available for you to use.
 					This might be a misconfiguration. Please get in touch with your administrator to find a solution.
