@@ -635,7 +635,7 @@ class SiteConfigurationController
                 $validChildren[] = $child;
             } else {
                 $message = sprintf(
-                    $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.duplicateLanguageId.title'),
+                    $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.duplicateLanguageId.message'),
                     $child['languageId']
                 );
                 $messageTitle = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.duplicateLanguageId.title');
