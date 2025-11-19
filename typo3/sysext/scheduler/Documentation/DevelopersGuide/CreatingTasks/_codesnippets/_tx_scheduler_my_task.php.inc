@@ -17,7 +17,7 @@ if (isset($GLOBALS['TCA']['tx_scheduler_task'])) {
             'iconOverlay' => 'content-clock',
             'group' => 'my_extension',
         ],
-        $GLOBALS['TCA']['tx_scheduler_task']['0']['showitem'],
+        $GLOBALS['TCA']['tx_scheduler_task']['types']['0']['showitem'],
         [],
         '',
         'tx_scheduler_task'
