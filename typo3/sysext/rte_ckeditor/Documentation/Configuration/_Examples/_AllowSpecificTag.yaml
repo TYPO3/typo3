@@ -3,6 +3,8 @@
 editor:
   config:
     htmlSupport:
+      # if you want to allow that an inline tag like `<i>` can also be empty
+      allowEmpty: ['i']
       allow:
         - { name: 'iframe', attributes: true, classes: true, styles: true }
         # multiple definitions for the same tag name are possible
