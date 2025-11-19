@@ -64,6 +64,9 @@
                                     <td class="align-top">{errorClass.errorMessage}</td>
                                     <td class="align-top col-control">
                                         <div class="btn-group float-end" role="group">
+                                            <form name="tx_scheduler_form_error_class_{errorClass.uid}" id="tx_scheduler_form_error_class_{errorClass.uid}" method="post">
+                                                <input name="action[delete]" type="hidden" value="{errorClass.uid}">
+                                            </form>
                                             <button
                                                 type="submit"
                                                 class="btn btn-default t3js-modal-trigger"
@@ -76,9 +79,6 @@
                                             >
                                                 <core:icon identifier="actions-edit-delete"/>
                                             </button>
-                                            <form name="tx_scheduler_form_error_class_{errorClass.uid}" id="tx_scheduler_form_error_class_{errorClass.uid}" method="post">
-                                                <input name="action[delete]" type="hidden" value="{errorClass.uid}">
-                                            </form>
                                         </div>
                                     </td>
                                 </tr>
@@ -457,6 +457,9 @@
                                                             </button>
                                                         </f:else>
                                                     </f:if>
+                                                    <form name="tx_scheduler_form_task_delete_{task.uid}" id="tx_scheduler_form_task_delete_{task.uid}" method="post">
+                                                        <input name="action[delete]" type="hidden" value="{task.uid}">
+                                                    </form>
                                                     <button
                                                         type="submit"
                                                         class="btn btn-default t3js-modal-trigger"
@@ -469,9 +472,6 @@
                                                     >
                                                         <core:icon identifier="actions-edit-delete"/>
                                                     </button>
-                                                    <form name="tx_scheduler_form_task_delete_{task.uid}" id="tx_scheduler_form_task_delete_{task.uid}" method="post">
-                                                        <input name="action[delete]" type="hidden" value="{task.uid}">
-                                                    </form>
                                                 </div>
                                                 <div class="btn-group" role="group">
                                                     <button
