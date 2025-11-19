@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -74,7 +75,7 @@ readonly class TcaFolder implements FormDataProviderInterface
                             'folder' => $folder,
                         ];
                     }
-                } catch (ResourceDoesNotExistException) {
+                } catch (ResourceDoesNotExistException | InsufficientFolderAccessPermissionsException) {
                     continue;
                 }
             }
