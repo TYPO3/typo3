@@ -15,14 +15,12 @@
     --tree-node-selected-bg: var(--typo3-component-active-bg);
     --tree-node-selected-border-color: var(--typo3-component-active-border-color);
     // special
-    --tree-node-version-bg: #{rgba(#f7c898, .5)};
-    --tree-info-bg: #{tint-color($info, 60%)};
-    --tree-info-color: #{color-contrast(tint-color($info, 60%))};
+    --tree-info-bg: var(--typo3-surface-info);
+    --tree-info-color: var(--typo3-surface-info-text);
     // drag
     --tree-drop-position-bg: var(--typo3-component-primary-color);
-    --tree-drag-dropzone-delete-color: #fff;
-    --tree-drag-dropzone-delete-bg: #{$danger};
-    --tree-drag-dropindicator-color: #{tint-color($primary, 20%)};
+    --tree-drag-dropzone-delete-color: var(--typo3-surface-danger-text);
+    --tree-drag-dropzone-delete-bg: var(--typo3-surface-danger);
     // toolbar
     --tree-toolbar-padding-y: .75rem;
     --tree-toolbar-padding-x: .75rem;
