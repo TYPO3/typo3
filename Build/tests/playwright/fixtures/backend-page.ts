@@ -1,6 +1,7 @@
 import {Page, FrameLocator, expect} from '@playwright/test';
-import {PageTree} from "./page-tree";
-import {FormEngine} from "./form-engine";
+import {PageTree} from './page-tree';
+import {FormEngine} from './form-engine';
+import {DocHeader} from './doc-header';
 
 export class BackendPage {
   private readonly page: Page;
@@ -8,12 +9,14 @@ export class BackendPage {
   readonly contentFrame: FrameLocator;
   readonly pageTree: PageTree;
   readonly formEngine: FormEngine;
+  readonly docHeader: DocHeader;
 
   constructor(page: Page) {
     this.page = page;
     this.contentFrame = this.page.frameLocator('#typo3-contentIframe');
     this.pageTree = new PageTree(page);
     this.formEngine = new FormEngine(page);
+    this.docHeader = new DocHeader(page);
   }
 
   async gotoModule(identifier: string) {
