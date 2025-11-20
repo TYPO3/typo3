@@ -11,10 +11,14 @@ return [
         'aliases' => ['web'],
     ],
     'media' => [
+        'position' => ['after' => 'content'],
         'labels' => 'core.modules.media',
         'iconIdentifier' => 'modulegroup-file',
         'navigationComponent' => '@typo3/backend/tree/file-storage-tree-container',
         'aliases' => ['file'],
+        'appearance' => [
+            'promotesSingleSubmoduleToStandalone' => true,
+        ],
     ],
     'site' => [
         'labels' => 'core.modules.site',

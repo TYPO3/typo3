@@ -154,8 +154,56 @@ final class ModuleRegistry
                 $subModule->setParentModule($module);
             }
         }
+
+        // Promote single submodules to standalone modules and rebuild top-level modules afterwards
+        $topLevelModules = array_filter(
+            $this->promoteSingleSubmodulesToStandalone($modules, $topLevelModules),
+            static fn(ModuleInterface $module): bool => !$module->hasParentModule() || $module->isStandalone()
+        );
+
         // Sort top level modules and return all modules (flat) with the correct sorting
         return $this->flattenModules($this->applySorting($topLevelModules));
+    }
+
+    /**
+     * Promotes submodules to standalone if their parent module has only one submodule and is not
+     * standalone itself. This makes single submodules behave like standalone top-level modules.
+     *
+     * @param ModuleInterface[] $modules
+     * @param ModuleInterface[] $topLevelModules
+     * @return ModuleInterface[]
+     */
+    protected function promoteSingleSubmodulesToStandalone(array $modules, array $topLevelModules): array
+    {
+        foreach ($topLevelModules as $parentIdentifier => $parentModule) {
+            // Skip already standalone modules
+            if ($parentModule->isStandalone()) {
+                continue;
+            }
+            // Only promote if explicitly enabled via appearance setting
+            if (!($parentModule->getAppearance()['promotesSingleSubmoduleToStandalone'] ?? false)) {
+                continue;
+            }
+            $subModules = $parentModule->getSubModules();
+            if (count($subModules) !== 1) {
+                continue;
+            }
+
+            /** @var BaseModule $subModule */
+            $subModule = reset($subModules);
+
+            // Promote the submodule to standalone, inheriting parent properties
+            $subModule->promoteToStandalone(
+                $parentModule->getNavigationComponent(),
+                $parentModule->getPosition(),
+                $parentModule->getAliases()
+            );
+
+            // Remove parent module from registry
+            unset($modules[$parentIdentifier]);
+        }
+
+        return $modules;
     }
 
     /**

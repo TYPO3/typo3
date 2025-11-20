@@ -198,6 +198,25 @@ abstract class BaseModule
         return $this->defaultModuleData;
     }
 
+    /**
+     * Promotes this module to a standalone top-level module, inheriting properties from its parent.
+     *
+     * @internal Only to be used by ModuleRegistry
+     */
+    public function promoteToStandalone(string $navigationComponent, array $position, array $additionalAliases): void
+    {
+        $this->standalone = true;
+        $this->parent = '';
+        $this->parentModule = null;
+        if ($this->getNavigationComponent() === '') {
+            $this->navigationComponent = $navigationComponent;
+        }
+        if ($this->position === []) {
+            $this->position = $position;
+        }
+        $this->aliases = array_merge($this->aliases, $additionalAliases);
+    }
+
     public static function createFromConfiguration(string $identifier, array $configuration): static
     {
         $obj = new static($identifier);
