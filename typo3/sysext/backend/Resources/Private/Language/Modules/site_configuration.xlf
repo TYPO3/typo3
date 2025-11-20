@@ -4,13 +4,13 @@
 		<header/>
 		<body>
 			<trans-unit id="short_description">
-				<source>Site configuration</source>
+				<source>Configure sites and routing behavior</source>
 			</trans-unit>
 			<trans-unit id="description">
-				<source>This module allows you to configure your entrypoints (called sites).</source>
+				<source>This module contains the full configuration interface for individual sites. You can define languages, error handling, routes, entry points, and domain behavior. It is the central place for setting up and maintaining the technical foundation of each site.</source>
 			</trans-unit>
 			<trans-unit id="title">
-				<source>Sites</source>
+				<source>Setup</source>
 			</trans-unit>
 		</body>
 	</file>

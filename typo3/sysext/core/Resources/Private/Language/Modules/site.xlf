@@ -7,10 +7,10 @@
 				<source>Configuration and management tools for sites</source>
 			</trans-unit>
 			<trans-unit id="description">
-				<source>>This main module holds all optimization for Site Integrators to manage different websites within one TYPO3 installation, templates, TypoScript and routing options.</source>
+				<source>>This module provides access to all configured sites within the installation. It offers an overview of domains, routing behavior, language setups, and site-related settings. From here, you can quickly navigate to the configuration of individual sites and manage multi-site environments.</source>
 			</trans-unit>
 			<trans-unit id="title">
-				<source>Site Management</source>
+				<source>Sites</source>
 			</trans-unit>
 		</body>
 	</file>

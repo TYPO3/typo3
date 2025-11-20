@@ -86,6 +86,21 @@ to digital content assets.
         ],
     ];
 
+
+Site Management => Sites
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+The top-level :guilabel:`Site Management` module has been renamed to :guilabel:`Sites`.
+
+**Rationale:** The former label "Site Management" was long and formal, and did
+not align with TYPO3’s evolving, concise module naming strategy. The
+simplified name "Sites" improves scanability in the module menu and matches
+the naming of other top-level modules. It also better reflects the purpose
+of the module: providing an overview entry point for all configured (web)sites.
+
+**Migration:** The top-level module identifier :php:`site` is kept. No migration
+is necessary.
+
 Admin (tools) <=> System
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -211,6 +226,20 @@ module easier to understand for new users.
 
 **Migration:** Since the module is already internally referred to as `media_management`,
 no changes in referencing modules are required.
+
+Sites => Setup
+~~~~~~~~~~~~~~~
+
+The second-level :guilabel:`Sites` module has been renamed to :guilabel:`Setup`.
+
+**Rationale:** The old submodule name "Sites" would duplicate the new top-level
+name and cause confusion. The new name "Setup" therefore makes the purpose
+clearer: It is the place where integrators set up their sites. "Setup"
+emphasizes the technical nature of the module and better communicates that
+this section defines behavior (languages, domains, routes), not content.
+
+**Migration:** Since the module identifier `site_configuration` is kept, no
+changes in referencing modules are required.
 
 Impact
 ======
