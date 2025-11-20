@@ -352,7 +352,7 @@ MESSAGE;
                 $validatorNames = array_column($validators, 'name');
 
                 throw new InvalidValidationConfigurationException(
-                    'Invalid validate annotation in ' . $this->className . '->' . $methodName . '(): The following validators have been defined for missing param "$' . $parameterName . '": ' . implode(', ', $validatorNames),
+                    'Invalid #[Validate] attribute in ' . $this->className . '->' . $methodName . '(): The following validators have been defined for missing param "$' . $parameterName . '": ' . implode(', ', $validatorNames),
                     1515073585
                 );
             }

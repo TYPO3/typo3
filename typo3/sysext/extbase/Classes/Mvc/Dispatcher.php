@@ -59,7 +59,7 @@ class Dispatcher
             if ($dispatchLoopCount++ > 99) {
                 throw new InfiniteLoopException(
                     'Could not ultimately dispatch the request after ' . $dispatchLoopCount
-                    . ' iterations. Most probably, a #[' . IgnoreValidation::class . ']'
+                    . ' iterations. Most probably, an #[' . IgnoreValidation::class . ']'
                     . ' attribute is missing on re-displaying a form with validation errors.',
                     1217839467
                 );

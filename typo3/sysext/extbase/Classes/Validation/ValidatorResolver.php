@@ -91,10 +91,10 @@ class ValidatorResolver implements SingletonInterface
      * Builds a base validator conjunction for the given data type.
      *
      * The base validation rules are those which were declared directly in a class (typically
-     * a model) through some validate annotations on properties.
+     * a model) through some #[Validate] attributes on properties.
      *
      * If a property holds a class for which a base validator exists, that property will be
-     * checked as well, regardless of a validation annotation.
+     * checked as well, regardless of a validation attribute.
      *
      * Additionally, if a custom validator was defined for the class in question, it will be added
      * to the end of the conjunction. A custom validator is found if it follows the naming convention
@@ -189,7 +189,7 @@ class ValidatorResolver implements SingletonInterface
                 }
                 if ($newValidator === null) {
                     throw new NoSuchValidatorException(
-                        'Invalid validate annotation in ' . $targetClassName . '::' . $property->getName() . ': ' .
+                        'Invalid #[Validate] attribute in ' . $targetClassName . '::' . $property->getName() . ': ' .
                         'Could not resolve class name for validator "' . $validatorDefinition['className'] . '".',
                         1241098027
                     );

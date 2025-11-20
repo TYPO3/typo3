@@ -53,7 +53,7 @@ class FileUpload
 
             if (isset($values['duplicationBehavior'])) {
                 if (!$values['duplicationBehavior'] instanceof DuplicationBehavior) {
-                    throw new \RuntimeException('Wrong annotation configuration for "duplicationBehavior". Ensure, that the value is a valid DuplicationBehavior.', 1711453150);
+                    throw new \RuntimeException('Wrong attribute configuration for "duplicationBehavior". Ensure, that the value is a valid DuplicationBehavior.', 1711453150);
                 }
 
                 $this->duplicationBehavior = $values['duplicationBehavior'];

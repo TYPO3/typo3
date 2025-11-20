@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3Tests\TestValidators\Domain\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use TYPO3\CMS\Extbase\Annotation\Validate;
+use TYPO3\CMS\Extbase\Attribute\Validate;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**

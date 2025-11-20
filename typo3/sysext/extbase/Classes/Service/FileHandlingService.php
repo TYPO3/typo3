@@ -125,7 +125,7 @@ class FileHandlingService implements SingletonInterface
             }
         }
 
-        // Skip unsupported classes for FileUpload annotation or properties with empty FileUpload configuration
+        // Skip unsupported classes for #[FileUpload] attribute or properties with empty FileUpload configuration
         if ($propertyTargetClassName !== FileReference::class || $property->getFileUpload() === null) {
             return;
         }

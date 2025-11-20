@@ -48,7 +48,7 @@ class FileUploadConfiguration
 
     /**
      * Initializes the object with the given configuration array. Typically used with configuration from
-     * FileUpload annotation/attribute.
+     * #[FileUpload] attribute.
      */
     public function initializeWithConfiguration(array $configuration): self
     {

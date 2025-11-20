@@ -106,7 +106,7 @@ final class ClassSchemaTest extends UnitTestCase
     public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAttributesForMissingParam(): void
     {
         $this->expectException(InvalidValidationConfigurationException::class);
-        $this->expectExceptionMessage('Invalid validate annotation in TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAttributeWithoutParam->methodWithValidateAttributesAction(): The following validators have been defined for missing param "$fooParam": NotEmpty, StringLength');
+        $this->expectExceptionMessage('Invalid #[Validate] attribute in TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAttributeWithoutParam->methodWithValidateAttributesAction(): The following validators have been defined for missing param "$fooParam": NotEmpty, StringLength');
         $this->expectExceptionCode(1515073585);
 
         new ClassSchema(DummyControllerWithValidateAttributeWithoutParam::class);

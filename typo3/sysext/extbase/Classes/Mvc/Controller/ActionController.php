@@ -268,8 +268,8 @@ abstract class ActionController implements ControllerInterface
      * Adds the needed validators to the Arguments:
      *
      * - Validators checking the data type from the param annotation
-     * - Custom validators specified with validate annotations.
-     * - Model-based validators (validate annotations in the model)
+     * - Custom validators specified with #[Validate] attributes.
+     * - Model-based validators (#[Validate] attributes in the model)
      * - Custom model validator classes
      *
      * @internal
@@ -285,8 +285,8 @@ abstract class ActionController implements ControllerInterface
         /** @var Argument $argument */
         foreach ($this->arguments as $argument) {
             $classSchemaMethodParameter = $classSchemaMethod->getParameter($argument->getName());
-            // At this point validation is skipped if there is an IgnoreValidation annotation.
-            // @todo: IgnoreValidation annotations could be evaluated in the ClassSchema and result in
+            // At this point validation is skipped if there is an #[IgnoreValidation] attribute.
+            // @todo: IgnoreValidation attributes could be evaluated in the ClassSchema and result in
             //        no validators being applied to the method parameter.
             if ($classSchemaMethodParameter->ignoreValidation()) {
                 continue;

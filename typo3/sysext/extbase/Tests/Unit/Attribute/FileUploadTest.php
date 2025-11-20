@@ -56,7 +56,7 @@ final class FileUploadTest extends UnitTestCase
     public function constructorThrowsExceptionIfInvalidValueForDuplicationBehaviorIsPassed(): void
     {
         $this->expectExceptionObject(
-            new \RuntimeException('Wrong annotation configuration for "duplicationBehavior". Ensure, that the value is a valid DuplicationBehavior.', 1711453150),
+            new \RuntimeException('Wrong attribute configuration for "duplicationBehavior". Ensure, that the value is a valid DuplicationBehavior.', 1711453150),
         );
 
         new FileUpload([

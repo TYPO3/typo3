@@ -125,7 +125,7 @@ final class ValidatorResolverTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function buildBaseValidatorConjunctionAddsValidatorsDefinedByAnnotationsInTheClassToTheReturnedConjunction(): void
+    public function buildBaseValidatorConjunctionAddsValidatorsDefinedByAttributesInTheClassToTheReturnedConjunction(): void
     {
         $subject = $this->getAccessibleMock(
             ValidatorResolver::class,
