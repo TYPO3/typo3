@@ -29,8 +29,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class MfaAjaxControllerTest extends FunctionalTestCase
 {
-    protected MfaAjaxController $subject;
-    protected ServerRequest $request;
+    private MfaAjaxController $subject;
+    private ServerRequest $request;
 
     protected function setUp(): void
     {

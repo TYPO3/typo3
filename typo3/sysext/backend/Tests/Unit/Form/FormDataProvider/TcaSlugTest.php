@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaSlugTest extends UnitTestCase
 {
-    protected TcaSlug $subject;
+    private TcaSlug $subject;
 
     protected function setUp(): void
     {

@@ -34,7 +34,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ShortcutRepositoryTest extends FunctionalTestCase
 {
-    protected ShortcutRepository $subject;
+    private ShortcutRepository $subject;
 
     protected array $coreExtensionsToLoad = ['filelist'];
 

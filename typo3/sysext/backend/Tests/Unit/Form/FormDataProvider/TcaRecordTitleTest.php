@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaRecordTitleTest extends UnitTestCase
 {
-    protected string $timeZone;
+    private string $timeZone;
 
     public function setUp(): void
     {

@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DatabaseRecordOverrideValuesTest extends UnitTestCase
 {
-    protected DatabaseRecordOverrideValues $subject;
+    private DatabaseRecordOverrideValues $subject;
 
     protected function setUp(): void
     {

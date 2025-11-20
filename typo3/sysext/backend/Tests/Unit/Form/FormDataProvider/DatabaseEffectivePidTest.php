@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DatabaseEffectivePidTest extends UnitTestCase
 {
-    protected DatabaseEffectivePid $subject;
+    private DatabaseEffectivePid $subject;
 
     protected function setUp(): void
     {

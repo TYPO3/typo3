@@ -30,7 +30,7 @@ final class DocumentationViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    protected ServerRequest $request;
+    private ServerRequest $request;
 
     public function setUp(): void
     {

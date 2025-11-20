@@ -29,7 +29,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    protected ServerRequest $request;
+    private ServerRequest $request;
 
     public function setUp(): void
     {

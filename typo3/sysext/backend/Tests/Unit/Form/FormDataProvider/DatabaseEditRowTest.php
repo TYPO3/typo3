@@ -30,7 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DatabaseEditRowTest extends UnitTestCase
 {
-    protected DatabaseEditRow&MockObject $subject;
+    private DatabaseEditRow&MockObject $subject;
 
     protected function setUp(): void
     {

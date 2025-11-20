@@ -25,8 +25,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class BackendUserConfigurationTest extends UnitTestCase
 {
-    protected BackendUserConfiguration $backendUserConfiguration;
-    protected BackendUserAuthentication&MockObject $backendUserMock;
+    private BackendUserConfiguration $backendUserConfiguration;
+    private BackendUserAuthentication&MockObject $backendUserMock;
 
     protected function setUp(): void
     {

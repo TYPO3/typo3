@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class InitializeProcessedTcaTest extends UnitTestCase
 {
-    protected InitializeProcessedTca $subject;
+    private InitializeProcessedTca $subject;
 
     protected function setUp(): void
     {

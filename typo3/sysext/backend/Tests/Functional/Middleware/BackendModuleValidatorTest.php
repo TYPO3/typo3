@@ -40,9 +40,9 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class BackendModuleValidatorTest extends FunctionalTestCase
 {
-    protected BackendModuleValidator $subject;
-    protected ServerRequestInterface $request;
-    protected RequestHandlerInterface $requestHandler;
+    private BackendModuleValidator $subject;
+    private ServerRequestInterface $request;
+    private RequestHandlerInterface $requestHandler;
 
     protected function setUp(): void
     {

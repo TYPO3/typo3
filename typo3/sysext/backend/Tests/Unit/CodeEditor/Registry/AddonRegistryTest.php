@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class AddonRegistryTest extends UnitTestCase
 {
-    protected AddonRegistry $subject;
+    private AddonRegistry $subject;
 
     protected function setUp(): void
     {

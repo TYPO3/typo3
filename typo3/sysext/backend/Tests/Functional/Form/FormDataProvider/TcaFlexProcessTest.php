@@ -31,7 +31,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class TcaFlexProcessTest extends FunctionalTestCase
 {
-    protected BackendUserAuthentication&MockObject $backendUserMock;
+    private BackendUserAuthentication&MockObject $backendUserMock;
 
     protected function setUp(): void
     {

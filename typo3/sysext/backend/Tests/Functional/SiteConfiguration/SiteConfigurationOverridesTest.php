@@ -25,7 +25,7 @@ final class SiteConfigurationOverridesTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    protected array $subject;
+    private array $subject;
 
     protected array $testExtensionsToLoad = [
         'typo3/sysext/backend/Tests/Functional/Fixtures/Extensions/test_configoverride_first',

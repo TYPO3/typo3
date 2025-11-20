@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DatabaseRecordTypeValueTest extends UnitTestCase
 {
-    protected DatabaseRecordTypeValue&MockObject $subject;
+    private DatabaseRecordTypeValue&MockObject $subject;
 
     protected function setUp(): void
     {

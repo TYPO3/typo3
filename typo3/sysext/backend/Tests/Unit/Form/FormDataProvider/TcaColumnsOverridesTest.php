@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaColumnsOverridesTest extends UnitTestCase
 {
-    protected TcaColumnsOverrides $subject;
+    private TcaColumnsOverrides $subject;
 
     protected function setUp(): void
     {

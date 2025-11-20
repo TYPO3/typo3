@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ComponentFactoryTest extends FunctionalTestCase
 {
-    protected ComponentFactory $subject;
+    private ComponentFactory $subject;
 
     protected function setUp(): void
     {

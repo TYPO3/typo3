@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PageTsConfigMergedTest extends UnitTestCase
 {
-    protected PageTsConfigMerged $subject;
+    private PageTsConfigMerged $subject;
 
     protected function setUp(): void
     {

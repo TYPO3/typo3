@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class OnTheFlyTest extends UnitTestCase
 {
-    protected OnTheFly $subject;
+    private OnTheFly $subject;
 
     protected function setUp(): void
     {

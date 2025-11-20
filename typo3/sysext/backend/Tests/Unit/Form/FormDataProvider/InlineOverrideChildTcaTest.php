@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class InlineOverrideChildTcaTest extends UnitTestCase
 {
-    protected InlineOverrideChildTca $subject;
+    private InlineOverrideChildTca $subject;
 
     protected function setUp(): void
     {

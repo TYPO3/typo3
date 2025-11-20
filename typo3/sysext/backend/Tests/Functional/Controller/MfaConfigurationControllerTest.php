@@ -40,10 +40,10 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class MfaConfigurationControllerTest extends FunctionalTestCase
 {
-    protected MfaConfigurationController $subject;
-    protected ServerRequest $request;
-    protected HashService $hashService;
-    protected NormalizedParams $normalizedParams;
+    private MfaConfigurationController $subject;
+    private ServerRequest $request;
+    private HashService $hashService;
+    private NormalizedParams $normalizedParams;
 
     protected array $configurationToUseInTestInstance = [
         'BE' => [

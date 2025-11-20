@@ -40,9 +40,9 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class MfaSetupControllerTest extends FunctionalTestCase
 {
-    protected MfaSetupController $subject;
-    protected ServerRequest $request;
-    protected HashService $hashService;
+    private MfaSetupController $subject;
+    private ServerRequest $request;
+    private HashService $hashService;
 
     /**
      * Some tests trigger backendUser->logOff() which destroys the backend user session.

@@ -38,8 +38,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class MfaControllerTest extends FunctionalTestCase
 {
-    protected MfaController $subject;
-    protected ServerRequest $request;
+    private MfaController $subject;
+    private ServerRequest $request;
 
     /**
      * Some tests trigger backendUser->logOff() which destroys the backend user session.

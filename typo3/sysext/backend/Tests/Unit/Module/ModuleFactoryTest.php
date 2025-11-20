@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ModuleFactoryTest extends UnitTestCase
 {
-    protected ModuleFactory $subject;
+    private ModuleFactory $subject;
 
     protected function setUp(): void
     {

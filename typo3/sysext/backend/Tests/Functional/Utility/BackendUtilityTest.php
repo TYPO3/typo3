@@ -44,7 +44,7 @@ final class BackendUtilityTest extends FunctionalTestCase
         'DE' => ['id' => 2, 'title' => 'German', 'locale' => 'de_DE.UTF8'],
     ];
 
-    protected BackendUserAuthentication $backendUser;
+    private BackendUserAuthentication $backendUser;
 
     public function setUp(): void
     {

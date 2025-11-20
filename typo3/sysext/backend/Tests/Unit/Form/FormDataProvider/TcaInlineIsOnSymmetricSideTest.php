@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaInlineIsOnSymmetricSideTest extends UnitTestCase
 {
-    protected TcaInlineIsOnSymmetricSide $subject;
+    private TcaInlineIsOnSymmetricSide $subject;
 
     /**
      * Initializes the mock object.

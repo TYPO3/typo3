@@ -25,9 +25,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ModifyNewContentElementWizardItemsEventTest extends UnitTestCase
 {
-    protected ModifyNewContentElementWizardItemsEvent $subject;
+    private ModifyNewContentElementWizardItemsEvent $subject;
 
-    protected array $queryParams = ['a' => 'b'];
+    private array $queryParams = ['a' => 'b'];
 
     protected function setUp(): void
     {

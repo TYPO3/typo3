@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
 {
-    protected TcaColumnsProcessFieldDescriptions $subject;
+    private TcaColumnsProcessFieldDescriptions $subject;
 
     protected function setUp(): void
     {

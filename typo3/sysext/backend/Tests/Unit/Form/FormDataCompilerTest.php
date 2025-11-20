@@ -26,8 +26,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FormDataCompilerTest extends UnitTestCase
 {
-    protected FormDataCompiler $subject;
-    protected FormDataGroupInterface&MockObject $formDataGroupMock;
+    private FormDataCompiler $subject;
+    private FormDataGroupInterface&MockObject $formDataGroupMock;
 
     protected function setUp(): void
     {

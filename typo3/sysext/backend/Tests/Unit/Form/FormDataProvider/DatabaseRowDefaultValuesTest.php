@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DatabaseRowDefaultValuesTest extends UnitTestCase
 {
-    protected DatabaseRowDefaultValues $subject;
+    private DatabaseRowDefaultValues $subject;
 
     protected function setUp(): void
     {

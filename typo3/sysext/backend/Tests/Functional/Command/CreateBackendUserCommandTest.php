@@ -31,7 +31,7 @@ final class CreateBackendUserCommandTest extends AbstractCommandTestCase
      *     groups: string,
      * }
      */
-    protected array $userDefaults = [
+    private array $userDefaults = [
         'username' => 'picard',
         'password' => 'Engage1701D!',
         'email' => 'starcommand@example.com',

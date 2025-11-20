@@ -32,8 +32,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ShortcutControllerTest extends FunctionalTestCase
 {
-    protected ShortcutController $subject;
-    protected ServerRequest $request;
+    private ShortcutController $subject;
+    private ServerRequest $request;
 
     protected function setUp(): void
     {

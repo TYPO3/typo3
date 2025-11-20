@@ -40,7 +40,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DatabaseUserPermissionCheckTest extends UnitTestCase
 {
-    protected BackendUserAuthentication&MockObject $beUserMock;
+    private BackendUserAuthentication&MockObject $beUserMock;
 
     protected function setUp(): void
     {

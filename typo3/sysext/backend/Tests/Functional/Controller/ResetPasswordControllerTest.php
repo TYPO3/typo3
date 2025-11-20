@@ -42,8 +42,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ResetPasswordControllerTest extends FunctionalTestCase
 {
-    protected ResetPasswordController $subject;
-    protected ServerRequestInterface $request;
+    private ResetPasswordController $subject;
+    private ServerRequestInterface $request;
 
     protected array $configurationToUseInTestInstance = [
         'EXTENSIONS' => [

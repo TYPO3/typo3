@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaColumnsRemoveUnusedTest extends UnitTestCase
 {
-    protected TcaColumnsRemoveUnused $subject;
+    private TcaColumnsRemoveUnused $subject;
 
     protected function setUp(): void
     {

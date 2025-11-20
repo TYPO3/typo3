@@ -35,7 +35,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FileControllerTest extends UnitTestCase
 {
-    protected File&MockObject $fileResourceMock;
+    private File&MockObject $fileResourceMock;
 
     protected function setUp(): void
     {

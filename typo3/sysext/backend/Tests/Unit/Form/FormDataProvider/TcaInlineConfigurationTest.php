@@ -26,7 +26,7 @@ final class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @var array Set of default controls
      */
-    protected array $defaultConfig = [
+    private array $defaultConfig = [
         'type' => 'inline',
         'foreign_table' => 'aForeignTableName',
         'minitems' => 0,

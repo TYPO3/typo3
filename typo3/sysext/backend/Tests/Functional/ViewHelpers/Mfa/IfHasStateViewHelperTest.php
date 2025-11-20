@@ -28,7 +28,7 @@ final class IfHasStateViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    protected TemplateView $view;
+    private TemplateView $view;
 
     protected function setUp(): void
     {

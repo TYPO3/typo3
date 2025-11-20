@@ -33,7 +33,7 @@ final class DatetimeElementTest extends UnitTestCase
     /**
      * @var string Selected timezone backup
      */
-    protected string $timezoneBackup = '';
+    private string $timezoneBackup = '';
 
     /**
      * We're fiddling with hard timestamps in the tests, but time methods in

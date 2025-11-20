@@ -31,7 +31,7 @@ final class SwitchUserControllerTest extends UnitTestCase
      */
     protected const RECENT_USERS_LIMIT = 3;
 
-    protected SwitchUserController&MockObject&AccessibleObjectInterface $subject;
+    private SwitchUserController&MockObject&AccessibleObjectInterface $subject;
 
     protected function setUp(): void
     {

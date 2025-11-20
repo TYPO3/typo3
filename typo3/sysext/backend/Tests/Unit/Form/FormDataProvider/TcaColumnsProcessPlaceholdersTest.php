@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaColumnsProcessPlaceholdersTest extends UnitTestCase
 {
-    protected TcaColumnsProcessPlaceholders $subject;
+    private TcaColumnsProcessPlaceholders $subject;
 
     protected function setUp(): void
     {

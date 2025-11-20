@@ -28,7 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class ModeRegistryTest extends UnitTestCase
 {
-    protected ModeRegistry $subject;
+    private ModeRegistry $subject;
 
     protected function setUp(): void
     {

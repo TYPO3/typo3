@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DatabaseUniqueUidNewRowTest extends UnitTestCase
 {
-    protected DatabaseUniqueUidNewRow $subject;
+    private DatabaseUniqueUidNewRow $subject;
 
     protected function setUp(): void
     {

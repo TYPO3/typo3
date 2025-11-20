@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DatabaseParentPageRowTest extends UnitTestCase
 {
-    protected DatabaseParentPageRow&MockObject $subject;
+    private DatabaseParentPageRow&MockObject $subject;
 
     protected function setUp(): void
     {

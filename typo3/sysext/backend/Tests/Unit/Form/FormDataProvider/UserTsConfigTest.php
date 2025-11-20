@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class UserTsConfigTest extends UnitTestCase
 {
-    protected UserTsConfig $subject;
+    private UserTsConfig $subject;
 
     protected function setUp(): void
     {
