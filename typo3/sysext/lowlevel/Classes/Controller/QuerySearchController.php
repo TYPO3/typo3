@@ -20,14 +20,11 @@ namespace TYPO3\CMS\Lowlevel\Controller;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
-use Doctrine\DBAL\Types\Types;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -61,12 +58,12 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
- * "DB Check" module.
+ * "Database > Advanced query" module.
  *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 #[AsController]
-class DatabaseIntegrityController
+class QuerySearchController
 {
     /**
      * The module menu items array.
@@ -79,7 +76,7 @@ class DatabaseIntegrityController
     protected array $MOD_SETTINGS = [];
 
     protected string $formName = '';
-    protected string $moduleName = 'system_dbint';
+    protected string $moduleName = 'system_database_query';
 
     /**
      * If the current user is an admin and $GLOBALS['TYPO3_CONF_VARS']['BE']['debug']
@@ -233,15 +230,56 @@ class DatabaseIntegrityController
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $languageService = $this->getLanguageService();
+        $lang = $this->getLanguageService();
 
         $this->menuConfig($request);
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->setUpDocHeader($moduleTemplate, $request);
+        $moduleTemplate->makeDocHeaderModuleMenu();
+        $moduleTemplate->getDocHeaderComponent()->setShortcutContext(
+            routeIdentifier: $this->moduleName,
+            displayName: $this->getLanguageService()->translate('fullSearch', 'lowlevel.messages'),
+            arguments: [
+                'SET' => [
+                    'search_query_makeQuery' => $this->MOD_SETTINGS['search_query_makeQuery'] ?? '',
+                ],
+            ]
+        );
+        $this->showFieldAndTableNames = $this->getBackendUserAuthentication()->shallDisplayDebugInformation();
 
-        $title = $languageService->translate('title', 'lowlevel.modules.database_integrity');
-        $moduleTemplate->setTitle($title, $languageService->translate('fullSearch', 'lowlevel.messages'));
-        return $this->searchAction($moduleTemplate, $request);
+        $title = $lang->translate('title', 'lowlevel.modules.database_integrity');
+        $moduleTemplate->setTitle($title, $lang->translate('title', 'lowlevel.modules.database_query'));
+
+        $queryTypeSelect = '<div class="form-group">';
+        $queryTypeSelect .=   '<label for="search-query-make-query" class="form-label">' . $lang->translate('fullSearch.form.field.makeQuery.label', 'lowlevel.messages') . '</label>';
+        $queryTypeSelect .=   '<div class="input-group">' . $this->getDropdownMenu('SET[search_query_makeQuery]', $this->MOD_SETTINGS['search_query_makeQuery'], $this->MOD_MENU['search_query_makeQuery'], $request) . '</div>';
+        $queryTypeSelect .= '</div>';
+
+        $queryOptions = '<div class="form-row">';
+        $queryOptions .=   '<div class="form-group">';
+        $queryOptions .=     '<fieldset>';
+        $queryOptions .=       '<legend class="form-label">' . $lang->translate('fullSearch.section.queryOptions', 'lowlevel.messages') . '</legend>';
+        $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'] ?? '', $request, 'id="checkSearch_query_smallparts"')
+            . '<label class="form-check-label" for="checkSearch_query_smallparts">' . $lang->translate('showSQL', 'lowlevel.messages') . '</label></div>';
+        $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'] ?? '', $request, 'id="checkSearch_result_labels"')
+            . '<label class="form-check-label" for="checkSearch_result_labels">' . $lang->translate('useFormattedStrings', 'lowlevel.messages') . '</label></div>';
+        $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix'] ?? '', $request, 'id="checkLabels_noprefix"')
+            . '<label class="form-check-label" for="checkLabels_noprefix">' . $lang->translate('dontUseOrigValues', 'lowlevel.messages') . '</label></div>';
+        $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel'] ?? '', $request, 'id="checkOptions_sortlabel"')
+            . '<label class="form-check-label" for="checkOptions_sortlabel">' . $lang->translate('sortOptions', 'lowlevel.messages') . '</label></div>';
+        $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'] ?? 0, $request, 'id="checkShow_deleted"')
+            . '<label class="form-check-label" for="checkShow_deleted">' . $lang->translate('showDeleted', 'lowlevel.messages') . '</label></div>';
+        $queryOptions .=     '</fieldset>';
+        $queryOptions .=   '</div>';
+        $queryOptions .= '</div>';
+
+        $moduleTemplate->assign('queryMaker', $this->queryMaker($request));
+
+        $moduleTemplate->assignMultiple([
+            'queryOptions' => $queryOptions,
+            'queryTypeSelect' => $queryTypeSelect,
+        ]);
+
+        return $moduleTemplate->renderResponse('SearchQuery');
     }
 
     /**
@@ -258,10 +296,6 @@ class DatabaseIntegrityController
         // If empty string it's just a variable, that'll be saved.
         // Values NOT in this array will not be saved in the settings-array for the module.
         $this->MOD_MENU = [
-            'search' => [
-                'raw' => $lang->translate('rawSearch', 'lowlevel.messages'),
-                'query' => $lang->translate('advancedQuery', 'lowlevel.messages'),
-            ],
             'search_query_smallparts' => '',
             'search_result_labels' => '',
             'labels_noprefix' => '',
@@ -334,86 +368,6 @@ class DatabaseIntegrityController
             }
             $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $this->MOD_SETTINGS, $this->moduleName, 'ses');
         }
-    }
-
-    /**
-     * Generate doc header drop-down and shortcut button.
-     */
-    protected function setUpDocHeader(ModuleTemplate $moduleTemplate, ServerRequestInterface $request): void
-    {
-        $moduleTemplate->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: $this->moduleName,
-            displayName: $this->getLanguageService()->translate('fullSearch', 'lowlevel.messages'),
-            arguments: [
-                'SET' => [
-                    'search' => $this->MOD_SETTINGS['search'] ?? 'raw',
-                    'search_query_makeQuery' => $this->MOD_SETTINGS['search_query_makeQuery'] ?? '',
-                ],
-            ]
-        );
-    }
-
-    /**
-     * Search (Full / Advanced)
-     */
-    protected function searchAction(ModuleTemplate $view, ServerRequestInterface $request): ResponseInterface
-    {
-        $lang = $this->getLanguageService();
-        $this->showFieldAndTableNames = $this->getBackendUserAuthentication()->shallDisplayDebugInformation();
-        $searchMode = $this->MOD_SETTINGS['search'];
-
-        $searchTypeSelect = '';
-        $searchTypeSelect .= '<div class="form-group">';
-        $searchTypeSelect .=   '<label for="search" class="form-label">' . $lang->translate('fullSearch.form.field.searchType.label', 'lowlevel.messages') . '</label>';
-        $searchTypeSelect .=   '<div class="input-group">' . $this->getDropdownMenu('SET[search]', $searchMode, $this->MOD_MENU['search'], $request) . '</div>';
-        $searchTypeSelect .= '</div>';
-
-        $queryTypeSelect = '';
-        $queryOptions = '';
-        if ($searchMode === 'query') {
-            $queryTypeSelect .= '<div class="form-group">';
-            $queryTypeSelect .=   '<label for="search-search-query-make-query" class="form-label">' . $lang->translate('fullSearch.form.field.makeQuery.label', 'lowlevel.messages') . '</label>';
-            $queryTypeSelect .=   '<div class="input-group">' . $this->getDropdownMenu('SET[search_query_makeQuery]', $this->MOD_SETTINGS['search_query_makeQuery'], $this->MOD_MENU['search_query_makeQuery'], $request) . '</div>';
-            $queryTypeSelect .= '</div>';
-
-            $queryOptions .= '<div class="form-row">';
-            $queryOptions .=   '<div class="form-group">';
-            $queryOptions .=     '<fieldset>';
-            $queryOptions .=       '<legend class="form-label">' . $lang->translate('fullSearch.section.queryOptions', 'lowlevel.messages') . '</legend>';
-            $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'] ?? '', $request, 'id="checkSearch_query_smallparts"')
-                . '<label class="form-check-label" for="checkSearch_query_smallparts">' . $lang->translate('showSQL', 'lowlevel.messages') . '</label></div>';
-            $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'] ?? '', $request, 'id="checkSearch_result_labels"')
-                . '<label class="form-check-label" for="checkSearch_result_labels">' . $lang->translate('useFormattedStrings', 'lowlevel.messages') . '</label></div>';
-            $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix'] ?? '', $request, 'id="checkLabels_noprefix"')
-                . '<label class="form-check-label" for="checkLabels_noprefix">' . $lang->translate('dontUseOrigValues', 'lowlevel.messages') . '</label></div>';
-            $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel'] ?? '', $request, 'id="checkOptions_sortlabel"')
-                . '<label class="form-check-label" for="checkOptions_sortlabel">' . $lang->translate('sortOptions', 'lowlevel.messages') . '</label></div>';
-            $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'] ?? 0, $request, 'id="checkShow_deleted"')
-                . '<label class="form-check-label" for="checkShow_deleted">' . $lang->translate('showDeleted', 'lowlevel.messages') . '</label></div>';
-            $queryOptions .=     '</fieldset>';
-            $queryOptions .=   '</div>';
-            $queryOptions .= '</div>';
-        }
-
-        $view->assignMultiple([
-            'queryOptions' => $queryOptions,
-            'queryTypeSelect' => $queryTypeSelect,
-            'searchMode' => $searchMode,
-            'searchTypeSelect' => $searchTypeSelect,
-        ]);
-
-        switch ($searchMode) {
-            case 'query':
-                $view->assign('queryMaker', $this->queryMaker($request));
-                break;
-            case 'raw':
-            default:
-                $view->assign('sword', (string)($this->MOD_SETTINGS['sword'] ?? ''));
-                $view->assign('results', $this->search($request));
-                $view->assign('isSearching', $request->getMethod() === 'POST');
-        }
-
-        return $view->renderResponse('CustomSearch');
     }
 
     protected function queryMaker(ServerRequestInterface $request): string
@@ -801,7 +755,7 @@ class DatabaseIntegrityController
                         $row['uid'] => 'edit',
                     ],
                 ],
-                'module' => 'system_dbint',
+                'module' => 'system_database',
                 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
                     . HttpUtility::buildQueryString(['SET' => $request->getParsedBody()['SET'] ?? []], '&'),
             ]);
@@ -2621,115 +2575,6 @@ class DatabaseIntegrityController
         }
 
         return $storeArray;
-    }
-
-    protected function search(ServerRequestInterface $request): string
-    {
-        $swords = $this->MOD_SETTINGS['sword'] ?? '';
-        if ($swords === '') {
-            return '';
-        }
-        $out = '';
-        /** @var TcaSchema $schema */
-        foreach ($this->tcaSchemaFactory->all() as $table => $schema) {
-            // Avoid querying tables with no columns
-            if ($schema->getFields()->count() === 0) {
-                continue;
-            }
-            // Get fields list
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
-            $tableColumnInfos = $connection->getSchemaInformation()->listTableColumnInfos($table);
-            $normalizedTableColumns = [];
-            $fields = [];
-            foreach ($tableColumnInfos as $column) {
-                if (!$schema->hasField($column->name)) {
-                    continue;
-                }
-                $fields[] = $column->name;
-                $normalizedTableColumns[$column->name] = $column;
-            }
-            $queryBuilder = $connection->createQueryBuilder();
-            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            $queryBuilder->count('*')->from($table);
-            $likes = [];
-            $escapedLikeString = '%' . $queryBuilder->escapeLikeWildcards($swords) . '%';
-            foreach ($fields as $field) {
-                $quotedField = $queryBuilder->quoteIdentifier($field);
-                $column = $normalizedTableColumns[$field] ?? $normalizedTableColumns[$quotedField] ?? null;
-                if ($column !== null
-                    && $connection->getDatabasePlatform() instanceof DoctrinePostgreSQLPlatform
-                    && !in_array($column->typeName, [Types::STRING, Types::ASCII_STRING], true)
-                ) {
-                    if ($column->typeName === Types::SMALLINT) {
-                        // we need to cast smallint to int first, otherwise text case below won't work
-                        $quotedField .= '::int';
-                    }
-                    $quotedField .= '::text';
-                }
-                $likes[] = $queryBuilder->expr()->comparison(
-                    $quotedField,
-                    'LIKE',
-                    $queryBuilder->createNamedParameter($escapedLikeString)
-                );
-            }
-            $queryBuilder->orWhere(...$likes);
-            $count = $queryBuilder->executeQuery()->fetchOne();
-
-            if ($count > 0) {
-                $queryBuilder = $connection->createQueryBuilder();
-                $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-                $queryBuilder
-                    ->select('uid')
-                    ->from($table)
-                    ->setMaxResults(200);
-                if ($schema->hasCapability(TcaSchemaCapability::Label) && $schema->getCapability(TcaSchemaCapability::Label)->hasPrimaryField()) {
-                    $queryBuilder->addSelect($schema->getCapability(TcaSchemaCapability::Label)->getPrimaryFieldName());
-                }
-                $likes = [];
-                foreach ($fields as $field) {
-                    $quotedField = $queryBuilder->quoteIdentifier($field);
-                    $column = $normalizedTableColumns[$field] ?? $normalizedTableColumns[$quotedField] ?? null;
-                    if ($column !== null
-                        && $connection->getDatabasePlatform() instanceof DoctrinePostgreSQLPlatform
-                        && !in_array($column->typeName, [Types::STRING, Types::ASCII_STRING], true)
-                    ) {
-                        if ($column->typeName === Types::SMALLINT) {
-                            // we need to cast smallint to int first, otherwise text case below won't work
-                            $quotedField .= '::int';
-                        }
-                        $quotedField .= '::text';
-                    }
-                    $likes[] = $queryBuilder->expr()->comparison(
-                        $quotedField,
-                        'LIKE',
-                        $queryBuilder->createNamedParameter($escapedLikeString)
-                    );
-                }
-                $statement = $queryBuilder->orWhere(...$likes)->executeQuery();
-                $lastRow = null;
-                $rowArr = [];
-                while ($row = $statement->fetchAssociative()) {
-                    $rowArr[] = $this->resultRowDisplay($row, $table, $request);
-                    $lastRow = $row;
-                }
-                $markup = [];
-                $markup[] = '<div class="panel panel-default">';
-                $markup[] = '  <div class="panel-heading">';
-                // TODO: why 3 dots in the sL function here?
-                $markup[] = htmlspecialchars($schema->getTitle($this->getLanguageService()->sL(...))) . ' (' . $count . ')';
-                $markup[] = '  </div>';
-                $markup[] = '  <div class="table-fit">';
-                $markup[] = '    <table class="table table-striped table-hover">';
-                $markup[] = $this->resultRowTitles((array)$lastRow, $table);
-                $markup[] = implode(LF, $rowArr);
-                $markup[] = '    </table>';
-                $markup[] = '  </div>';
-                $markup[] = '</div>';
-
-                $out .= implode(LF, $markup);
-            }
-        }
-        return $out;
     }
 
     protected function getBackendUserAuthentication(): BackendUserAuthentication

@@ -2,12 +2,15 @@ import { test, expect } from '../../fixtures/setup-fixtures';
 
 test.describe('Database Module', () => {
   test.beforeEach(async ({ backend }) => {
-    await backend.gotoModule('system_dbint');
+    await backend.gotoModule('system_database');
   });
 
   test('Full search', async ({ page, backend }) => {
     const contentFrame = backend.contentFrame;
-    await expect(contentFrame.locator('h1')).toHaveText('Search whole Database');
+    await expect(contentFrame.locator('h1')).toHaveText('Database');
+
+    await backend.docHeader.selectInDropDown('Module overview', 'Raw search');
+    await expect(contentFrame.locator('h1')).toHaveText('Raw search');
 
     await contentFrame.locator('input[name="SET[sword]"]').fill('styleguide demo group 1');
     await contentFrame.getByRole('button', { name: 'Search All Records' }).click();

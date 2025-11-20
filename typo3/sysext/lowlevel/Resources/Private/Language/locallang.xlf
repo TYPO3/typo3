@@ -113,10 +113,10 @@
 			<trans-unit id="findFilename" x-unused-since="14.0">
 				<source>Find filename</source>
 			</trans-unit>
-			<trans-unit id="rawSearch">
+			<trans-unit id="rawSearch" x-unused-since="14.0">
 				<source>Raw search in all fields</source>
 			</trans-unit>
-			<trans-unit id="advancedQuery">
+			<trans-unit id="advancedQuery" x-unused-since="14.0">
 				<source>Advanced query</source>
 			</trans-unit>
 			<trans-unit id="selectRecords">

@@ -234,7 +234,7 @@
         <h3><f:translate key="component.card.section.formFieldsInCards.headline" domain="styleguide.messages" /></h3>
         <f:variable name="UriExtensionManagerModule" value="{f:be.uri(route: 'extensionmanager')}" />
         <f:variable name="UriSettingsModule" value="{f:be.uri(route: 'system_settings')}" />
-        <f:variable name="UriDBCheckModule" value="{f:be.uri(route: 'system_dbint')}" />
+        <f:variable name="UriRawSearchModule" value="{f:be.uri(route: 'system_database_raw')}" />
         <p>
             <f:sanitize.html>
                 <f:translate
@@ -243,7 +243,7 @@
                     arguments="{
                         0: '{UriExtensionManagerModule}',
                         1: '{UriSettingsModule}',
-                        2: '{UriDBCheckModule}'
+                        2: '{UriRawSearchModule}'
                     }"
                 />
             </f:sanitize.html>

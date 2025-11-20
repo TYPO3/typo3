@@ -152,10 +152,10 @@ Page => Layout
 The second-level :guilabel:`Page` module has been renamed to :guilabel:`Layout`
 to better match its scope.
 
-**Rationale:** The previous module name “Page” did not clearly convey the
+**Rationale:** The previous module name "Page" did not clearly convey the
 module’s purpose or workflow. TYPO3 provides multiple ways to interact with
-a page (e.g. structure, properties, preview), and the term “Page” alone did
-not describe which aspect was being managed. The renamed module “Layout”
+a page (e.g. structure, properties, preview), and the term "Page" alone did
+not describe which aspect was being managed. The renamed module "Layout"
 more accurately reflects what editors do inside the module: maintain the
 page layout, manage content elements, and organize them into the correct
 columns and grids. This provides clearer expectations, improves usability
@@ -233,7 +233,7 @@ Filelist => Media
 The second-level :guilabel:`Filelist` module has been renamed to :guilabel:`Media`
 to more accurately reflect its current functionality and scope.
 
-**Rationale:** The former “Filelist” no longer reflected what the module
+**Rationale:** The former "Filelist" no longer reflected what the module
 actually does. Over the years, its scope has evolved from simply listing files
 to offering a full set of media-management capabilities. Today, the module is
 used to upload and create files and folders, manage metadata, organize assets,
@@ -292,6 +292,34 @@ administrators performing common user management tasks.
 **Migration:** The identifier `backend_user_management` is kept unchanged, no
 migration needed.
 
+System > DB Check => System > Database
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The second-level :guilabel:`DB Check` module has been renamed to
+:guilabel:`Database` to better reflect its purpose.
+
+**Rationale:** The name "Database" is clearer and avoids the ambiguity of the
+abbreviation "DB". The module now focuses solely on search and query
+functionality and no longer performs database integrity checks.
+
+**Migration:** The module identifier has changed from `system_dbint` to
+`system_database`. An alias ensures backward compatibility. Use the new
+identifier when registering custom modules.
+
+..  code-block:: diff
+
+     return [
+         'my_database_tool' => [
+    -        'parent' => 'system_dbint',
+    +        'parent' => 'system_database',
+         ],
+     ];
+
+.. note::
+
+    The module now exposes its actions "Search query" and "Raw query" through
+    the new submodule overview. This gives users clearer, detailed information
+    about the purpose of each action.
 
 Impact
 ======

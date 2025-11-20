@@ -30,10 +30,10 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\CMS\Lowlevel\Controller\DatabaseIntegrityController;
+use TYPO3\CMS\Lowlevel\Controller\QuerySearchController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class DatabaseIntegrityControllerTest extends FunctionalTestCase
+final class QuerySearchControllerTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = [
         'lowlevel',
@@ -52,7 +52,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
     {
         $id = 1;
         $depth = 0;
-        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth);
         self::assertEquals($id, $treeList);
     }
@@ -62,7 +62,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
     {
         $id = 0;
         $depth = 1;
-        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth);
         self::assertEquals($id, $treeList);
     }
@@ -72,7 +72,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
     {
         $id = -1;
         $depth = 0;
-        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth);
         self::assertEquals(1, $treeList);
     }
@@ -83,7 +83,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         $id = 0;
         $depth = 0;
         $begin = 1;
-        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth, $begin);
         self::assertSame('', $treeList);
     }
@@ -93,7 +93,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
     {
         $id = 1;
         $depth = 1;
-        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth);
         self::assertEquals($id, $treeList);
     }
@@ -104,7 +104,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeStraightTreeSet.csv');
         $id = 1;
         $depth = 99;
-        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth, 0, 'hidden=0');
         self::assertSame('1,2,3,4,5', $treeList);
     }
@@ -140,7 +140,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
     public function getTreeListReturnsListOfIdsWithBeginSetToZero(int $id, int $depth, string $expectation): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeStraightTreeSet.csv');
-        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth);
         self::assertSame($expectation, $treeList);
     }
@@ -176,7 +176,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
     public function getTreeListReturnsListOfIdsWithBeginSetToMinusOne(int $id, int $depth, string $expectation): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeStraightTreeSet.csv');
-        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth, -1);
         self::assertSame($expectation, $treeList);
     }
@@ -187,7 +187,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         $id = 1;
         $depth = 3;
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeBranchedTreeSet.csv');
-        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth);
         self::assertSame('1,2,3,4,5', $treeList);
     }
@@ -199,7 +199,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         $depth = 3;
         $begin = 1;
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeBranchedTreeSet.csv');
-        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth, $begin);
         self::assertSame('2,3,4,5', $treeList);
     }
@@ -211,7 +211,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         $depth = 3;
         $begin = 2;
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeBranchedTreeSet.csv');
-        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
         $treeList = $subject->_call('getTreeList', $id, $depth, $begin);
         self::assertSame('3,5', $treeList);
     }
@@ -286,7 +286,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         ];
         $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);
         $tcaSchemaFactory->load($tca);
-        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [
             $this->get(IconFactory::class),
             $this->get(UriBuilder::class),
             $this->get(ModuleTemplateFactory::class),
@@ -310,7 +310,7 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
             // ' ECT
             'INJ %quoteCharacter%%commentStart% %commentEnd%%quoteCharacter% ECT',
         ];
-        $subjectReflection = new \ReflectionClass(DatabaseIntegrityController::class);
+        $subjectReflection = new \ReflectionClass(QuerySearchController::class);
         $comparisons = array_keys($subjectReflection->getProperty('compSQL')->getDefaultValue());
         foreach ($injectors as $injector) {
             foreach ($comparisons as $comparison) {
@@ -362,11 +362,11 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         $iconFactoryMock = $this->getMockBuilder(IconFactory::class)->disableOriginalConstructor()->getMock();
         $iconFactoryMock->method('getIcon')->willReturn($iconMock);
 
-        $route = $this->get(Router::class)->getRoute('system_dbint');
-        $route->setOption('_identifier', 'system_dbint');
+        $route = $this->get(Router::class)->getRoute('system_database');
+        $route->setOption('_identifier', 'system_database');
         $request = (new ServerRequest())->withAttribute('route', $route);
 
-        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [
             $iconFactoryMock,
             $this->get(UriBuilder::class),
             $this->get(ModuleTemplateFactory::class),
