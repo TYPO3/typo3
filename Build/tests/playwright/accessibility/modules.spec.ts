@@ -12,10 +12,6 @@ test.describe('modules', () => {
       'label': 'the list module',
       'route': 'module/web/list?id=204',
     },
-    'mod_workspaces': {
-      'label': 'the workspace module',
-      'route': 'module/manage/workspaces',
-    },
     'mod_info': {
       'label': 'the info module',
       'route': 'module/web/info',

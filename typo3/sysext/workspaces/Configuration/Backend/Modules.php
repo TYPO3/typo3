@@ -10,6 +10,7 @@ return [
         'parent' => 'content',
         'position' => ['before' => 'web_info'],
         'access' => 'user',
+        'workspaces' => 'offline',
         'path' => '/module/manage/workspaces',
         'iconIdentifier' => 'module-workspaces',
         'labels' => 'workspaces.module',
