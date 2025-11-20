@@ -1,0 +1,3 @@
+"be_users"
+,"uid","pid","tstamp","crdate","admin","username","password"
+,1,0,1680000000,1680000000,1,"admin","$2y$12$xxx"

@@ -52,19 +52,19 @@ final class SharedUserPreferences
         ?array $moduleDataLanguages = null
     ): array {
         // 1. Explicit request parameter (highest priority)
-        if ($requestLanguages !== null && $requestLanguages !== []) {
-            return array_map('intval', $requestLanguages);
+        if (!empty($requestLanguages)) {
+            return array_unique(array_map(intval(...), $requestLanguages));
         }
 
         // 2. Page-specific preference (shared across modules)
         $pageSpecific = $backendUser->uc['pageLanguages'][$pageId] ?? null;
-        if ($pageSpecific !== null) {
+        if (is_array($pageSpecific)) {
             return $pageSpecific;
         }
 
         // 3. ModuleData from request (for backward compat)
-        if ($moduleDataLanguages !== null && $moduleDataLanguages !== []) {
-            return array_map('intval', $moduleDataLanguages);
+        if (!empty($moduleDataLanguages)) {
+            return array_unique(array_map(intval(...), $moduleDataLanguages));
         }
 
         // 4. Default

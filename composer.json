@@ -301,6 +301,7 @@
 			"TYPO3\\CMS\\Seo\\Tests\\": "typo3/sysext/seo/Tests/",
 			"TYPO3\\CMS\\Styleguide\\Tests\\": "typo3/sysext/styleguide/Tests/",
 			"TYPO3\\CMS\\SysNote\\Tests\\": "typo3/sysext/sys_note/Tests/",
+			"TYPO3\\CMS\\Viewpage\\Tests\\": "typo3/sysext/viewpage/Tests/",
 			"TYPO3\\CMS\\Webhooks\\Tests\\": "typo3/sysext/webhooks/Tests/",
 			"TYPO3\\CMS\\Workspaces\\Tests\\": "typo3/sysext/workspaces/Tests/",
 			"TYPO3\\CMS\\Recycler\\Tests\\": "typo3/sysext/recycler/Tests/",

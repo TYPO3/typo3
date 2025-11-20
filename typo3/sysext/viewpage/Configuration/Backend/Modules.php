@@ -19,8 +19,5 @@ return [
                 'target' => ViewModuleController::class . '::handleRequest',
             ],
         ],
-        'moduleData' => [
-            'language' => 0,
-        ],
     ],
 ];

@@ -430,7 +430,7 @@ class RecordListController
             $view->addButtonToButtonBar($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
 
-        if ($this->pageContext->isAccessible()) {
+        if ($this->pageContext->isAccessible() && $this->pageContext->pageId > 0) {
             $uriBuilder = PreviewUriBuilder::create($this->pageContext->pageRecord);
             if ($uriBuilder->isPreviewable()) {
                 $view->addButtonToButtonBar(
@@ -593,7 +593,6 @@ class RecordListController
      */
     protected function getShortcutTitle(array $arguments): string
     {
-        $pageTitle = '';
         $tableTitle = '';
         $languageService = $this->getLanguageService();
         if (isset($arguments['table'])) {
@@ -604,14 +603,11 @@ class RecordListController
             }
             $tableTitle = ': ' . ($tableTitle ?: $tableName);
         }
-        if ($this->pageContext->isAccessible()) {
-            $pageTitle = BackendUtility::getRecordTitle('pages', $this->pageContext->pageRecord);
-        }
         return trim(sprintf(
             $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:shortcut.title'),
             $languageService->translate('title', 'backend.modules.list'),
             $tableTitle,
-            $pageTitle,
+            $this->pageContext->getPageTitle(),
             $this->pageContext->pageId
         ));
     }

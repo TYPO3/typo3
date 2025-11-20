@@ -23,7 +23,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Context\PageContext;
-use TYPO3\CMS\Backend\Context\PageContextFactory;
 use TYPO3\CMS\Backend\Controller\Event\ModifyPageLayoutContentEvent;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
@@ -86,7 +85,6 @@ class PageLayoutController
         protected readonly BackendLayoutView $backendLayoutView,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
         protected readonly ConnectionPool $connectionPool,
-        protected readonly PageContextFactory $pageContextFactory,
         protected readonly LanguageSelectorBuilder $languageSelectorBuilder,
     ) {}
 
@@ -100,12 +98,14 @@ class PageLayoutController
 
         $languageService = $this->getLanguageService();
         $view = $this->moduleTemplateFactory->create($request);
-        if (!$this->pageContext->isAccessible()) {
+        if (!$this->pageContext->isAccessible() || $this->pageContext->pageId === 0) {
+            // In case page could not be resolved or we are on pid=0, show info to select a valid page in the tree
             $view->setTitle($languageService->translate('title', 'backend.modules.layout'));
             $view->assignMultiple([
                 'pageId' => $this->pageContext->pageId,
                 'siteName' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? '',
             ]);
+            $view->getDocHeaderComponent()->disableAutomaticReloadButton();
             return $view->renderResponse('PageLayout/PageModuleNoAccess');
         }
 
@@ -129,7 +129,7 @@ class PageLayoutController
             JavaScriptModuleInstruction::create('@typo3/backend/page-actions.js')
         );
 
-        $view->setTitle($languageService->translate('title', 'backend.modules.layout'), $this->pageContext->getPageTitle(0));
+        $view->setTitle($languageService->translate('title', 'backend.modules.layout'), $this->pageContext->getPageTitle());
         $view->getDocHeaderComponent()->setPageBreadcrumb($this->pageContext->pageRecord);
         $view->assignMultiple([
             'pageId' => $this->pageContext->pageId,
@@ -483,7 +483,12 @@ class PageLayoutController
         // Shortcut
         $view->getDocHeaderComponent()->setShortcutContext(
             routeIdentifier: 'web_layout',
-            displayName: $this->getShortcutTitle(),
+            displayName: sprintf(
+                '%s: %s [%d]',
+                $this->getLanguageService()->translate('short_description', 'backend.modules.layout'),
+                $this->pageContext->getPageTitle(),
+                $this->pageContext->pageId
+            ),
             arguments: [
                 'id' => $this->pageContext->pageId,
                 'showHidden' => (bool)$this->moduleData->get('showHidden'),
@@ -747,19 +752,6 @@ class PageLayoutController
     {
         $fieldName = $this->schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName();
         return !($targetPage[$fieldName] ?? false) ? $targetPage : [];
-    }
-
-    /**
-     * Returns the shortcut title for the current page
-     */
-    protected function getShortcutTitle(): string
-    {
-        return sprintf(
-            '%s: %s [%d]',
-            $this->getLanguageService()->translate('short_description', 'backend.modules.layout'),
-            BackendUtility::getRecordTitle('pages', $this->pageContext->pageRecord ?? []),
-            $this->pageContext->pageId
-        );
     }
 
     /**

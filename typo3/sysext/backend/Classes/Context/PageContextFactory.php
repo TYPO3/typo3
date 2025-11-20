@@ -130,20 +130,12 @@ final readonly class PageContextFactory
 
         // Use SharedUserPreferences fallback chain (page-specific > ModuleData > default)
         // This ensures page-specific preferences are shared across modules
-        $resolvedLanguages = $languagesFromRequest
-            ?? $this->sharedPreferences->resolveLanguages(
-                $backendUser,
-                null,
-                $pageId,
-                $moduleDataLanguages
-            );
-
-        // Ensure array and cast to integers
-        if (!is_array($resolvedLanguages)) {
-            $resolvedLanguages = [(int)$resolvedLanguages];
-        } else {
-            $resolvedLanguages = array_unique(array_map('intval', $resolvedLanguages));
-        }
+        $resolvedLanguages = $this->sharedPreferences->resolveLanguages(
+            $backendUser,
+            $languagesFromRequest,
+            $pageId,
+            $moduleDataLanguages
+        );
 
         // Validate against languages
         // - For page 0: accept requested languages (child pages from different sites might have various translations)
@@ -167,7 +159,6 @@ final readonly class PageContextFactory
         $validLanguages = array_values($validLanguages);
 
         // Store preference in SharedUserPreferences when explicitly changed via request
-        // This ensures language selection is shared between Page Module, List Module, etc.
         if ($languagesFromRequest !== null) {
             $this->sharedPreferences->setPageLanguages($backendUser, $pageId, $validLanguages);
         }

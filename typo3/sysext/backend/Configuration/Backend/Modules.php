@@ -29,7 +29,6 @@ return [
         ],
         'moduleData' => [
             'viewMode' => PageViewMode::LayoutView->value,
-            'language' => 0,
             'showHidden' => true,
         ],
     ],
@@ -49,7 +48,6 @@ return [
             'clipBoard' => true,
             'searchBox' => false,
             'collapsedTables' => [],
-            'language' => -1,
         ],
     ],
     'content_status' => [

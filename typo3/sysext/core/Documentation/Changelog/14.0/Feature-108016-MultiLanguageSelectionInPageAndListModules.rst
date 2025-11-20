@@ -22,6 +22,13 @@ A fallback mechanism is in place for switching between view modes (Layout
 and Language Comparison) as well as navigating to a page not available
 in the current language selection.
 
+.. note::
+
+    The :guilabel:`Content > Preview` module has been migrated to the
+    new shared language API, too. Therefore, a selected language is also
+    kept when navigation to or from this module.
+
+
 Impact
 ======
 
