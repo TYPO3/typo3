@@ -4,13 +4,13 @@
 		<header/>
 		<body>
 			<trans-unit id="short_description">
-				<source>Page content</source>
+				<source>Manage page layout and structured content editing</source>
 			</trans-unit>
 			<trans-unit id="description">
-				<source>This module allows you to create and edit webpages, view page hit statistics, manage different languages and columns of content per page and access special page contents like guestbooks and shopping items.</source>
+				<source>The Layout module provides a structured space for editing page content. It allows you to manage the visual layout of a page, arrange content elements in the correct columns, and maintain the overall structure of your site.</source>
 			</trans-unit>
 			<trans-unit id="title">
-				<source>Page</source>
+				<source>Layout</source>
 			</trans-unit>
 		</body>
 	</file>

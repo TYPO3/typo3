@@ -130,6 +130,25 @@ Second level modules
 For modules, where the module identifier changed, the upgrade wizard
 "Migrate module permissions" migrates module level group and user permissions.
 
+Page => Layout
+~~~~~~~~~~~~~~
+
+The second-level :guilabel:`Page` module has been renamed to :guilabel:`Layout`
+to better match its scope.
+
+**Rationale:** The previous module name “Page” did not clearly convey the
+module’s purpose or workflow. TYPO3 provides multiple ways to interact with
+a page (e.g. structure, properties, preview), and the term “Page” alone did
+not describe which aspect was being managed. The renamed module “Layout”
+more accurately reflects what editors do inside the module: maintain the
+page layout, manage content elements, and organize them into the correct
+columns and grids. This provides clearer expectations, improves usability
+for new editors, and aligns the module name with modern TYPO3 workflows
+and terminology.
+
+**Migration:** Since the module is just renamed, there are no migations
+necessary.
+
 View => Preview
 ~~~~~~~~~~~~~~~
 

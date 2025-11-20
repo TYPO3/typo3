@@ -205,7 +205,7 @@ final class BreadcrumbTest extends FunctionalTestCase
 
         // First node should be the module
         self::assertSame('web_layout', $nodes[0]->identifier);
-        self::assertSame('Page', $nodes[0]->label);
+        self::assertSame('Layout', $nodes[0]->label);
         self::assertSame('module-page', $nodes[0]->icon);
         self::assertTrue($nodes[0]->forceShowIcon);
 
