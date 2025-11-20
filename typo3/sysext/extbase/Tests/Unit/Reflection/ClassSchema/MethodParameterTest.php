@@ -92,40 +92,6 @@ final class MethodParameterTest extends UnitTestCase
     }
 
     #[Test]
-    public function classSchemaDetectsValidateAnnotationsOfControllerActions(): void
-    {
-        $classSchema = new ClassSchema(DummyController::class);
-        self::assertSame(
-            [
-                [
-                    'name' => 'StringLength',
-                    'options' => [
-                        'minimum' => 1,
-                        'maximum' => 10,
-                    ],
-                    'className' => StringLengthValidator::class,
-                ],
-                [
-                    'name' => 'NotEmpty',
-                    'options' => [],
-                    'className' => NotEmptyValidator::class,
-                ],
-                [
-                    'name' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator',
-                    'options' => [],
-                    'className' => NotEmptyValidator::class,
-                ],
-                [
-                    'name' => NotEmptyValidator::class,
-                    'options' => [],
-                    'className' => NotEmptyValidator::class,
-                ],
-            ],
-            $classSchema->getMethod('methodWithValidateAttributesAction')->getParameter('fooParam')->getValidators()
-        );
-    }
-
-    #[Test]
     public function classSchemaDetectsValidateAttributesOfControllerActions(): void
     {
         $classSchema = new ClassSchema(DummyController::class);
