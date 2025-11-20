@@ -1,0 +1,109 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
+
+    <div class="styleguide-content">
+        <h1><f:translate key="component.listGroups.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="component.listGroups.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+
+        <h2><f:translate key="component.listGroups.section.default.headline" domain="styleguide.messages" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    List item 1
+                </li>
+                <li class="list-group-item">
+                    List item 2 - Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                </li>
+                <li class="list-group-item">
+                    List item 3
+                </li>
+            </ul>
+        </sg:example>
+
+        <h2><f:translate key="component.listGroups.section.state.headline" domain="styleguide.messages" /></h2>
+
+        <sg:example codePreview="true" codeLanguage="html">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    Default item
+                </li>
+                <li class="list-group-item active">
+                    Active item
+                </li>
+                <li class="list-group-item disabled">
+                    Disabled item
+                </li>
+            </ul>
+        </sg:example>
+
+        <h2><f:translate key="component.listGroups.section.links.headline" domain="styleguide.messages" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action">
+                    Default item
+                </a>
+                <a href="#" class="list-group-item list-group-item-action active">
+                    Active item
+                </a>
+                <a href="#" class="list-group-item list-group-item-action disabled">
+                    Disabled item
+                </a>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="section.frontend.headline" domain="styleguide.messages" /></h2>
+
+        <h3><f:translate key="section.colorScheme.headline" domain="styleguide.messages" /></h3>
+
+        <h4><f:translate key="component.listGroups.section.state.headline" domain="styleguide.messages" /></h4>
+        <sg:colorScheme>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    Default item
+                </li>
+                <li class="list-group-item active">
+                    Active item
+                </li>
+                <li class="list-group-item disabled">
+                    Disabled item
+                </li>
+            </ul>
+        </sg:colorScheme>
+
+        <h4><f:translate key="component.listGroups.section.links.headline" domain="styleguide.messages" /></h4>
+        <sg:colorScheme>
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action">
+                    Default item
+                </a>
+                <a href="#" class="list-group-item list-group-item-action active">
+                    Active item
+                </a>
+                <a href="#" class="list-group-item list-group-item-action disabled">
+                    Disabled item
+                </a>
+            </div>
+        </sg:colorScheme>
+    </div>
+
+</f:section>
+</html>

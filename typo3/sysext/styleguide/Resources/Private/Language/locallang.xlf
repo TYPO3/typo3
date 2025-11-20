@@ -168,6 +168,12 @@
 			<trans-unit id="action.input.description">
 				<source>Text input fields with support for various types, states, and sizes.</source>
 			</trans-unit>
+			<trans-unit id="action.listGroups">
+				<source>List groups</source>
+			</trans-unit>
+			<trans-unit id="action.listGroups.description">
+				<source>Lists for displaying a series of content.</source>
+			</trans-unit>
 			<trans-unit id="action.managePageTrees">
 				<source>Manage example page trees</source>
 			</trans-unit>
@@ -705,6 +711,23 @@
 			</trans-unit>
 			<trans-unit id="component.input.section.size.small.headline">
 				<source>Small size</source>
+			</trans-unit>
+
+			<!-- Component: List groups -->
+			<trans-unit id="component.listGroups.headline">
+				<source>List groups</source>
+			</trans-unit>
+			<trans-unit id="component.listGroups.introtext">
+				<source>Lists for displaying a series of content.</source>
+			</trans-unit>
+			<trans-unit id="component.listGroups.section.default.headline">
+				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="component.listGroups.section.links.headline">
+				<source>Links and buttons</source>
+			</trans-unit>
+			<trans-unit id="component.listGroups.section.state.headline">
+				<source>State</source>
 			</trans-unit>
 
 			<!-- Component: Modal -->

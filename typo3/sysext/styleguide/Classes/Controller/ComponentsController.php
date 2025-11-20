@@ -60,6 +60,7 @@ final class ComponentsController
         'form',
         'infobox',
         'input',
+        'listGroups',
         'modal',
         'navs',
         'notifications',
@@ -103,6 +104,7 @@ final class ComponentsController
             'flashMessages' => $this->renderFlashMessagesView($request),
             'form' => $this->renderFormView($request),
             'infobox' => $this->renderInfoboxView($request),
+            'listGroups' => $this->renderListGroupsView($request),
             'input' => $this->renderInputView($request),
             'modal' => $this->renderModalView($request),
             'navs' => $this->renderNavsView($request),
@@ -346,6 +348,17 @@ final class ComponentsController
             'routeIdentifier' => 'styleguide_components',
         ]);
         return $view->renderResponse('Backend/Components/Input');
+    }
+
+    private function renderListGroupsView(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->createModuleTemplate($request, 'listGroups');
+        $view->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'listGroups',
+            'routeIdentifier' => 'styleguide_components',
+        ]);
+        return $view->renderResponse('Backend/Components/ListGroups');
     }
 
     private function renderModalView(ServerRequestInterface $request): ResponseInterface
