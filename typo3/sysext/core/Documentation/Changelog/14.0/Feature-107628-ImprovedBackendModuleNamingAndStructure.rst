@@ -141,6 +141,25 @@ context.
 **Migration:** Since the module is already internally referred to as `page_preview`, no
 changes in referencing modules are required.
 
+Filelist => Media
+~~~~~~~~~~~~~~~~~
+
+The second-level :guilabel:`Filelist` module has been renamed to :guilabel:`Media`
+to more accurately reflect its current functionality and scope.
+
+**Rationale:** The former “Filelist” no longer reflected what the module
+actually does. Over the years, its scope has evolved from simply listing files
+to offering a full set of media-management capabilities. Today, the module is
+used to upload and create files and folders, manage metadata, organize assets,
+handle online media, and prepare files for use across the CMS.
+
+To make its purpose clearer and more intuitive for editors and integrators,
+the module has been renamed to "Media". The new name better represents its
+broader functionality, aligns with modern CMS terminology, and makes the
+module easier to understand for new users.
+
+**Migration:** Since the module is already internally referred to as `media_management`,
+no changes in referencing modules are required.
 
 Impact
 ======
