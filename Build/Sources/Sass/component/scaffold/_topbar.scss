@@ -13,7 +13,7 @@
     --topbar-item-color-state: initial;
     --topbar-item-bg-state: initial;
     --topbar-item-border-color-state: initial;
-    --topbar-workspace-bg: light-dark(var(--token-color-blue-20), var(--token-color-blue-80));
+    --topbar-workspace-bg: light-dark(var(--token-color-primary-20), var(--token-color-primary-80));
     // Internal state definitions
     --topbar-item-hover-color: var(--typo3-scaffold-header-color);
     --topbar-item-hover-bg: color-mix(in srgb, var(--topbar-item-bg), var(--topbar-item-color) 5%);

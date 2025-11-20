@@ -114,6 +114,12 @@
 			<trans-unit id="action.colorTokens.description">
 				<source>Predefined color values and design tokens used throughout the TYPO3 backend interface.</source>
 			</trans-unit>
+			<trans-unit id="action.accentAndState">
+				<source>Accent and State</source>
+			</trans-unit>
+			<trans-unit id="action.accentAndState.description">
+				<source>Stateful color variants for interactive elements including accent colors and semantic states.</source>
+			</trans-unit>
 			<trans-unit id="action.componentsOverview">
 				<source>Components overview</source>
 			</trans-unit>
@@ -1043,6 +1049,14 @@
 			</trans-unit>
 			<trans-unit id="styles.colorTokens.introtext">
 				<source><![CDATA[Surfaces used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
+			</trans-unit>
+
+			<!-- Styles: Accent and State -->
+			<trans-unit id="styles.accentAndState.headline">
+				<source>Accent and State</source>
+			</trans-unit>
+			<trans-unit id="styles.accentAndState.introtext">
+				<source><![CDATA[Stateful color variants used for interactive elements in the TYPO3 Backend, for <strong>internal usage only</strong>. These include accent colors (primary, secondary) and semantic state colors (info, success, warning, danger, notice) with their respective default, hover, focus, and disabled variants.]]></source>
 			</trans-unit>
 
 			<!-- Styles: Icons -->

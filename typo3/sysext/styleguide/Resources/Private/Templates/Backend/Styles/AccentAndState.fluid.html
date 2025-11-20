@@ -1,0 +1,215 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
+
+    <div class="styleguide-content">
+        <h1><f:translate key="styles.accentAndState.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="styles.accentAndState.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+
+        <f:asset.css identifier="styleguide-states-demo">
+            .state-tokens-grid {
+                display: grid;
+                gap: 1rem;
+            }
+
+            .state-token-section h3 {
+                margin-top: 0;
+                margin-bottom: 1rem;
+                text-transform: capitalize;
+            }
+
+            .state-variants-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+
+            .state-variant-header {
+                font-weight: 600;
+                font-size: 0.6875rem;
+                text-transform: capitalize;
+                margin-bottom: 0.5rem;
+            }
+
+            .state-variant-demo {
+                padding: 1rem;
+                border-radius: calc(var(--typo3-component-border-radius) * 0.5);
+                margin-bottom: 0.75rem;
+                text-align: center;
+                font-weight: 500;
+            }
+
+            .state-property-list {
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+                font-size: 0.6875rem;
+                font-family: var(--typo3-font-family-monospace);
+            }
+
+            .state-property-item {
+                display: flex;
+                gap: 0.5rem;
+                padding: 0.25rem 0;
+                align-items: center;
+                color: var(--typo3-text-color-base);
+                font-weight: 600;
+            }
+
+            .state-property-color-tile {
+                width: 1rem;
+                height: 1rem;
+                border-radius: 0.125rem;
+                flex-shrink: 0;
+            }
+        </f:asset.css>
+
+        <sg:colorScheme>
+            <div class="state-tokens-grid">
+                <h2>Accent Colors</h2>
+                <f:for each="{accentColors}" as="color">
+                    <div class="state-token-section">
+                        <h3>{color}</h3>
+                        <div class="state-variants-grid">
+                            <f:for each="{stateVariants}" as="variant">
+                                <div>
+                                    <div class="state-variant-header">{variant}</div>
+                                    <f:if condition="{variant} == 'default'">
+                                        <f:then>
+                                            <div class="state-variant-demo" style="
+                                                color: var(--typo3-state-{color}-color);
+                                                background: var(--typo3-state-{color}-bg);
+                                                border: 2px solid var(--typo3-state-{color}-border-color);
+                                            ">
+                                                Sample Text
+                                            </div>
+                                            <div class="state-property-list">
+                                                <div class="state-property-item">
+                                                    <span class="state-property-color-tile" style="background: var(--typo3-state-{color}-color);"></span>
+                                                    --typo3-state-{color}-color
+                                                </div>
+                                                <div class="state-property-item">
+                                                    <span class="state-property-color-tile" style="background: var(--typo3-state-{color}-bg);"></span>
+                                                    --typo3-state-{color}-bg
+                                                </div>
+                                                <div class="state-property-item">
+                                                    <span class="state-property-color-tile" style="background: var(--typo3-state-{color}-border-color);"></span>
+                                                    --typo3-state-{color}-border-color
+                                                </div>
+                                            </div>
+                                        </f:then>
+                                        <f:else>
+                                            <div class="state-variant-demo" style="
+                                                color: var(--typo3-state-{color}-{variant}-color);
+                                                background: var(--typo3-state-{color}-{variant}-bg);
+                                                border: 2px solid var(--typo3-state-{color}-{variant}-border-color);
+                                            ">
+                                                Sample Text
+                                            </div>
+                                            <div class="state-property-list">
+                                                <div class="state-property-item">
+                                                    <span class="state-property-color-tile" style="background: var(--typo3-state-{color}-{variant}-color);"></span>
+                                                    --typo3-state-{color}-{variant}-color
+                                                </div>
+                                                <div class="state-property-item">
+                                                    <span class="state-property-color-tile" style="background: var(--typo3-state-{color}-{variant}-bg);"></span>
+                                                    --typo3-state-{color}-{variant}-bg
+                                                </div>
+                                                <div class="state-property-item">
+                                                    <span class="state-property-color-tile" style="background: var(--typo3-state-{color}-{variant}-border-color);"></span>
+                                                    --typo3-state-{color}-{variant}-border-color
+                                                </div>
+                                            </div>
+                                        </f:else>
+                                    </f:if>
+                                </div>
+                            </f:for>
+                        </div>
+                    </div>
+                </f:for>
+
+                <h2>State Colors</h2>
+                <f:for each="{stateColors}" as="color">
+                    <div class="state-token-section">
+                        <h3>{color}</h3>
+                        <div class="state-variants-grid">
+                            <f:for each="{stateVariants}" as="variant">
+                                <div>
+                                    <div class="state-variant-header">{variant}</div>
+                                    <f:if condition="{variant} == 'default'">
+                                        <f:then>
+                                            <div class="state-variant-demo" style="
+                                                color: var(--typo3-state-{color}-color);
+                                                background: var(--typo3-state-{color}-bg);
+                                                border: 2px solid var(--typo3-state-{color}-border-color);
+                                            ">
+                                                Sample Text
+                                            </div>
+                                            <div class="state-property-list">
+                                                <div class="state-property-item">
+                                                    <span class="state-property-color-tile" style="background: var(--typo3-state-{color}-color);"></span>
+                                                    --typo3-state-{color}-color
+                                                </div>
+                                                <div class="state-property-item">
+                                                    <span class="state-property-color-tile" style="background: var(--typo3-state-{color}-bg);"></span>
+                                                    --typo3-state-{color}-bg
+                                                </div>
+                                                <div class="state-property-item">
+                                                    <span class="state-property-color-tile" style="background: var(--typo3-state-{color}-border-color);"></span>
+                                                    --typo3-state-{color}-border-color
+                                                </div>
+                                            </div>
+                                        </f:then>
+                                        <f:else>
+                                            <div class="state-variant-demo" style="
+                                                color: var(--typo3-state-{color}-{variant}-color);
+                                                background: var(--typo3-state-{color}-{variant}-bg);
+                                                border: 2px solid var(--typo3-state-{color}-{variant}-border-color);
+                                            ">
+                                                Sample Text
+                                            </div>
+                                            <div class="state-property-list">
+                                                <div class="state-property-item">
+                                                    <span class="state-property-color-tile" style="background: var(--typo3-state-{color}-{variant}-color);"></span>
+                                                    --typo3-state-{color}-{variant}-color
+                                                </div>
+                                                <div class="state-property-item">
+                                                    <span class="state-property-color-tile" style="background: var(--typo3-state-{color}-{variant}-bg);"></span>
+                                                    --typo3-state-{color}-{variant}-bg
+                                                </div>
+                                                <div class="state-property-item">
+                                                    <span class="state-property-color-tile" style="background: var(--typo3-state-{color}-{variant}-border-color);"></span>
+                                                    --typo3-state-{color}-{variant}-border-color
+                                                </div>
+                                            </div>
+                                        </f:else>
+                                    </f:if>
+                                </div>
+                            </f:for>
+                        </div>
+                    </div>
+                </f:for>
+            </div>
+        </sg:colorScheme>
+    </div>
+
+</f:section>
+
+</html>

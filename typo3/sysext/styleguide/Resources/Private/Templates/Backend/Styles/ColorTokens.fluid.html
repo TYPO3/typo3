@@ -32,15 +32,19 @@
                 padding: 1.5rem 0;
             }
 
+            .color-palettes-neutral .color-palette {
+                max-width: 43.5rem;
+            }
+
+            .color-palettes-state .color-palette {
+                max-width: 43.5rem;
+            }
+
             .color-palette {
                 display: flex;
                 flex-wrap: wrap;
                 gap: .25rem;
                 max-width: 20rem;
-            }
-
-            .color-palette-neutral {
-                max-width: 43.5rem;
             }
 
             .color-palette-item {
@@ -58,8 +62,11 @@
             }
         </f:asset.css>
 
+
+        <h2>Neutral</h2>
         <sg:colorScheme>
-            <div class="color-palettes">
+
+            <div class="color-palettes color-palettes-neutral">
                 <f:for each="{neutralColors}" as="color">
                     <div class="color-palette color-palette-{color}">
                         <f:for each="{neutralSteps}" as="step">
@@ -71,10 +78,16 @@
                     </div>
                 </f:for>
             </div>
-            <div class="color-palettes">
-                <f:for each="{accentColors}" as="color">
+
+        </sg:colorScheme>
+
+        <h2>State</h2>
+        <sg:colorScheme>
+
+            <div class="color-palettes color-palettes-state">
+                <f:for each="{stateColors}" as="color">
                     <div class="color-palette color-palette-{color}">
-                        <f:for each="{accentSteps}" as="step">
+                        <f:for each="{stateSteps}" as="step">
                             <div class="color-palette-item">
                                 <div class="color-palette-item-plate" style="background: var(--token-color-{color}-{step});"></div>
                                 <div class="color-palette-item-label">{color}-{step}</div>
@@ -83,6 +96,25 @@
                     </div>
                 </f:for>
             </div>
+
+        </sg:colorScheme>
+
+        <h2>Base Colors</h2>
+        <sg:colorScheme>
+
+            <div class="color-palettes">
+                <f:for each="{baseColors}" as="color">
+                    <div class="color-palette color-palette-{color}">
+                        <f:for each="{baseSteps}" as="step">
+                            <div class="color-palette-item">
+                                <div class="color-palette-item-plate" style="background: var(--token-color-{color}-{step});"></div>
+                                <div class="color-palette-item-label">{color}-{step}</div>
+                            </div>
+                        </f:for>
+                    </div>
+                </f:for>
+            </div>
+
         </sg:colorScheme>
     </div>
 

@@ -11,8 +11,18 @@
 // TYPO3
 // =====
 //
-$natural-base: #000;
+$neutral-base: #000;
 $neutral-shades: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100);
+$state-colors: (
+    'primary': #205eb5,
+    'secondary': #737373,
+    'info': #abdced,
+    'success': #247554,
+    'warning': #fc3,
+    'danger': #d13a2e,
+    'notice': #737373,
+);
+$state-shades: (1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 96, 97, 98, 99);
 $base-colors: (
     'blue': #205eb5,
     'purple': #5e4db2,
