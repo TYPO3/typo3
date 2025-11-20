@@ -132,7 +132,7 @@ readonly class DefaultDataProvider implements DataProviderInterface
         $references = $this->fileRepository->findByRelation('backend_layout', 'icon', (int)$icon['uid']);
         if (!empty($references)) {
             $icon = reset($references);
-            return $icon->getPublicUrl();
+            return $icon->getPublicUrl() ?? '';
         }
         return '';
     }
