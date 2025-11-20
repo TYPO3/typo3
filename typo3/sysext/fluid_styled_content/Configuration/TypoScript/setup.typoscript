@@ -7,7 +7,6 @@
 @import './ContentElement/Header.typoscript'
 @import './ContentElement/Html.typoscript'
 @import './ContentElement/Image.typoscript'
-@import './ContentElement/List.typoscript'
 @import './ContentElement/Shortcut.typoscript'
 @import './ContentElement/Table.typoscript'
 @import './ContentElement/Text.typoscript'
