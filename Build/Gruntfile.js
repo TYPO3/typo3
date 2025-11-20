@@ -328,9 +328,12 @@ module.exports = function (grunt) {
         files: [
           {
             expand: true,
-            cwd: '<%= paths.node_modules %>source-sans/WOFF2/VAR/',
-            src: ['*.otf.woff2'],
-            dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/SourceSans'
+            cwd: '<%= paths.node_modules %>@fontsource-variable/open-sans/files/',
+            src: [
+              'open-sans-latin-wdth-normal.woff2',
+              'open-sans-latin-wdth-italic.woff2'
+            ],
+            dest: '<%= paths.sysext %>backend/Resources/Public/Fonts/OpenSans'
           }
         ]
       },
@@ -532,6 +535,18 @@ module.exports = function (grunt) {
   grunt.registerTask('ts', ['exec:ts', 'process-javascript:ts']);
 
   /**
+   * grunt fonts task
+   *
+   * call "$ grunt fonts"
+   *
+   * this task does the following things:
+   * - 1) Remove previously built font files
+   * - 2) Copy font files from node_modules to public folders
+   * - 3) Compile webfonts SCSS file to CSS
+   */
+  grunt.registerTask('fonts', ['clear-fonts', 'copy:fonts', 'postcss:webfonts']);
+
+  /**
    * grunt clear-build task
    *
    * call "$ grunt clear-build"
@@ -556,6 +571,17 @@ module.exports = function (grunt) {
     if (grunt.file.isDir('JavaScript')) {
       grunt.file.delete('JavaScript');
     }
+  });
+
+  /**
+   * Removes previously built font files
+   */
+  grunt.registerTask('clear-fonts', function () {
+    const fontPath = '../typo3/sysext/backend/Resources/Public/Fonts';
+    if (grunt.file.isDir(fontPath)) {
+      grunt.file.delete(fontPath, { force: true });
+    }
+    grunt.log.ok(`Cleared ${fontPath}.`);
   });
 
   grunt.task.registerMultiTask('process-javascript', function () {

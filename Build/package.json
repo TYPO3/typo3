@@ -76,6 +76,7 @@
     "build-css": "./node_modules/.bin/grunt css",
     "build-js": "./node_modules/.bin/grunt scripts",
     "build-flags": "./node_modules/.bin/grunt flags-build",
+    "build-fonts": "./node_modules/.bin/grunt fonts",
     "update": "./node_modules/.bin/grunt update",
     "lint": "./node_modules/.bin/grunt lint",
     "test": "wtr",
@@ -142,6 +143,7 @@
     "@codemirror/state": "^6.4.1",
     "@codemirror/theme-one-dark": "^6.1.2",
     "@codemirror/view": "^6.32.0",
+    "@fontsource-variable/open-sans": "^5.2.7",
     "@lezer/common": "^1.2.1",
     "@lezer/lr": "^1.4.2",
     "@lit-labs/motion": "^1.0.8",
@@ -172,7 +174,6 @@
     "select-pure": "^2.1.4",
     "shortcut-buttons-flatpickr": "^0.4.0",
     "sortablejs": "^1.15.2",
-    "source-sans": "^3.46.0",
     "tablesort": "^5.3.0",
     "taboverride": "^4.0.3"
   },
