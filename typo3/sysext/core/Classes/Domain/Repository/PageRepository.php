@@ -2037,25 +2037,23 @@ class PageRepository implements LoggerAwareInterface
                     }
                 }
                 // Next level
-                if (!$row['php_tree_stop']) {
-                    // Normal mode:
-                    if (is_array($mount_info) && !$mount_info['overlay']) {
-                        $next_id = (int)$mount_info['mount_pid'];
-                    }
-                    // Call recursively, if the id is not in prevID_array:
-                    if (!in_array($next_id, $prevId_array, true)) {
-                        $descendantPageIds = array_merge(
-                            $descendantPageIds,
-                            $this->getSubpagesRecursive(
-                                $next_id,
-                                $depth - 1,
-                                $begin - 1,
-                                $excludePageIds,
-                                $bypassEnableFieldsCheck,
-                                $prevId_array
-                            )
-                        );
-                    }
+                // Normal mode:
+                if (is_array($mount_info) && !$mount_info['overlay']) {
+                    $next_id = (int)$mount_info['mount_pid'];
+                }
+                // Call recursively, if the id is not in prevID_array:
+                if (!in_array($next_id, $prevId_array, true)) {
+                    $descendantPageIds = array_merge(
+                        $descendantPageIds,
+                        $this->getSubpagesRecursive(
+                            $next_id,
+                            $depth - 1,
+                            $begin - 1,
+                            $excludePageIds,
+                            $bypassEnableFieldsCheck,
+                            $prevId_array
+                        )
+                    );
                 }
             }
         }
