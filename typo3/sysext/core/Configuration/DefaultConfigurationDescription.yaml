@@ -190,6 +190,17 @@ SYS:
         systemMaintainers:
             type: array
             description: 'A list of backend user IDs allowed to access the Install Tool'
+        SystemResources:
+            type: container
+            description: 'Options for system resources API'
+            items:
+                filesystemPublishingType:
+                    type: dropdown
+                    description: 'Can "mirror", "link", or "auto" (based on TYPO3_CONTEXT).'
+                    allowedValues:
+                        link: 'Link public resources to the public directory'
+                        mirror: 'Mirror Resources/Public folder to the public directory (deletes stale public files)'
+                        auto: 'Link in development context and mirror in production context'
         features:
             type: container
             description: 'New features of TYPO3 that are activated on new installations but upgrading installations can still use the old behaviour'

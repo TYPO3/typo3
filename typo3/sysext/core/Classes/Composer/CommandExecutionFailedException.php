@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,17 +15,16 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Package\Exception;
+namespace TYPO3\CMS\Core\Composer;
 
-use TYPO3\CMS\Core\Package\Exception;
-
-class PackageAssetsPublishingFailedException extends Exception
+class CommandExecutionFailedException extends \Exception
 {
     public function __construct(
-        public readonly string $publishingStrategy,
-        int $code = 0,
-        ?\Throwable $previous = null,
+        public array $typo3Command,
+        public string $errorOutput = '',
+        int $code = 1765277390,
     ) {
-        parent::__construct(sprintf('Asset publishing by "%s" failed', $publishingStrategy), $code, $previous);
+        $message = sprintf('Failed to run command %s', implode(' ', $this->typo3Command));
+        parent::__construct($message, $code);
     }
 }

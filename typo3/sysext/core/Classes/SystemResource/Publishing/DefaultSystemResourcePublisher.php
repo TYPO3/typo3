@@ -21,10 +21,18 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Package\Exception\PackageAssetsPublishingFailedException;
 use TYPO3\CMS\Core\Package\PackageInterface;
+use TYPO3\CMS\Core\Package\Resource\ResourceCollectionInterface;
 use TYPO3\CMS\Core\SystemResource\Exception\CanNotGenerateUriException;
+use TYPO3\CMS\Core\SystemResource\Publishing\FileSystem\FileSystemPublisherInterface;
 use TYPO3\CMS\Core\SystemResource\Type\PublicResourceInterface;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This implementation publishes (when implemented) public assets from extension
@@ -37,10 +45,85 @@ use TYPO3\CMS\Core\SystemResource\Type\PublicResourceInterface;
 final readonly class DefaultSystemResourcePublisher implements SystemResourcePublisherInterface
 {
     private const PUBLISHING_DIRECTORY = '_assets/';
+    private const PUBLISHING_DIRECTORY_INSTALL = '_assets_install/';
 
-    public function publishResources(PackageInterface $package): void
-    {
-        // TODO: Implement and make use of publishResources() method.
+    /**
+     * @var FileSystemPublisherInterface[]
+     */
+    private array $fileSystemPublishers;
+
+    private string $publishingDirectory;
+
+    public function __construct(
+        array $fileSystemPublishers = [],
+        bool $failsafe = false,
+    ) {
+        $this->fileSystemPublishers = $fileSystemPublishers;
+        $this->publishingDirectory = $failsafe ? self::PUBLISHING_DIRECTORY_INSTALL : self::PUBLISHING_DIRECTORY;
+    }
+
+    public function publishResources(
+        PackageInterface $package,
+    ): FlashMessageQueue {
+        $queue = new FlashMessageQueue('asset:publish');
+        $fileSystemResourcesPath = $package->getPackagePath() . ResourceCollectionInterface::PACKAGE_DEFAULT_PUBLIC_DIR;
+        if (str_starts_with($fileSystemResourcesPath, Environment::getPublicPath())) {
+            $queue->addMessage(new FlashMessage(
+                sprintf(
+                    'Skipping asset publishing for extension "%s",'
+                    . chr(10)
+                    . 'because its public resources directory is already public.',
+                    $package->getPackageKey(),
+                ),
+                $package->getPackageKey(),
+                ContextualFeedbackSeverity::NOTICE,
+            ));
+            return $queue;
+        }
+        $relativePath = substr($fileSystemResourcesPath, strlen(Environment::getProjectPath()));
+        if (!file_exists($fileSystemResourcesPath)) {
+            $queue->addMessage(new FlashMessage(
+                sprintf(
+                    'Skipping assets publishing for extension "%s",'
+                    . chr(10)
+                    . 'because its public resources directory "%s" does not exist.',
+                    $package->getPackageKey(),
+                    '.' . $relativePath,
+                ),
+                $package->getPackageKey(),
+                ContextualFeedbackSeverity::NOTICE,
+            ));
+            return $queue;
+        }
+        [$relativePrefix] = explode(ResourceCollectionInterface::PACKAGE_DEFAULT_PUBLIC_DIR, $relativePath);
+        $publicResourcesPath = Environment::getPublicPath() . '/' . $this->publishingDirectory . md5($relativePrefix);
+        GeneralUtility::mkdir(dirname($publicResourcesPath));
+        try {
+            foreach ($this->fileSystemPublishers as $publisher) {
+                if (!$publisher->canPublish($fileSystemResourcesPath, $publicResourcesPath)) {
+                    continue;
+                }
+                $publisher->publishFolder($fileSystemResourcesPath, $publicResourcesPath);
+                break;
+            }
+        } catch (PackageAssetsPublishingFailedException $e) {
+            $queue->addMessage(new FlashMessage(
+                sprintf(
+                    'Could not publish public resources for extension "%s" by using the "%s" strategy.'
+                    . chr(10)
+                    . 'Check whether the target directory "%s" already exists'
+                    . chr(10)
+                    . 'and TYPO3 has permissions to write inside the "_assets" directory.',
+                    $package->getPackageKey(),
+                    $e->publishingStrategy,
+                    '.' . substr($publicResourcesPath, strlen(Environment::getProjectPath())),
+                ),
+                $package->getPackageKey(),
+                ContextualFeedbackSeverity::ERROR,
+            ));
+        }
+
+        return $queue;
     }
 
     /**
@@ -55,7 +138,7 @@ final readonly class DefaultSystemResourcePublisher implements SystemResourcePub
         $options ??= new UriGenerationOptions();
         return $publicResource->getPublicUri(
             new DefaultSystemResourceUriGenerator(
-                self::PUBLISHING_DIRECTORY,
+                $this->publishingDirectory,
                 $this->extractPublicPrefixFromRequest($request, $options->uriPrefix),
                 $request,
                 $options,

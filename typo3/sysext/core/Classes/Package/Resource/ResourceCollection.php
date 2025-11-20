@@ -33,7 +33,7 @@ final class ResourceCollection implements ResourceCollectionInterface
 
     public function isPublicPath(string $relativePath): bool
     {
-        return str_starts_with($relativePath, 'Resources/Public');
+        return str_starts_with($relativePath, self::PACKAGE_DEFAULT_PUBLIC_DIR);
     }
 
     public function getPackageIcon(): ?PublicPackageFile

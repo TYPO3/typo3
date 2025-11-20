@@ -17,13 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Composer;
 
-use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Repository\PlatformRepository;
 use Composer\Script\Event;
 use Composer\Util\Filesystem;
-use Composer\Util\Platform;
-use Symfony\Component\Filesystem\Exception\IOException;
 use TYPO3\CMS\Composer\Plugin\Config;
 use TYPO3\CMS\Composer\Plugin\Core\InstallerScript;
 use TYPO3\CMS\Composer\Plugin\Util\ExtensionKeyResolver;
@@ -32,7 +29,6 @@ use TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackageManifestException;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackageStateException;
-use TYPO3\CMS\Core\Package\Exception\PackageAssetsPublishingFailedException;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
@@ -102,16 +98,7 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
         $composer = $this->event->getComposer();
         $basePath = $this->config->get('base-dir');
         $this->packagesBasePath = $basePath . '/';
-        $installedTypo3Packages = $this->extractPackageMapFromComposer();
-        $messages = $this->publishResources($installedTypo3Packages);
-        foreach ($messages as $message) {
-            $io->writeError(
-                $this->formatMessage($message),
-                true,
-                $message['verbosity'],
-            );
-        }
-        foreach ($installedTypo3Packages as [$composerPackage, $path, $extensionKey]) {
+        foreach ($this->extractPackageMapFromComposer() as [$composerPackage, $path, $extensionKey]) {
             $packagePath = PathUtility::sanitizeTrailingSeparator($path);
             $package = new Package($this, $extensionKey, $packagePath, true);
             $package->makePathRelative($this->fileSystem, $basePath);
@@ -214,127 +201,5 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
                 }
             )
         );
-    }
-
-    /**
-     * @param IOMessage $message
-     * @return string
-     */
-    private function formatMessage(array $message): string
-    {
-        if ($message['severity'] === 'title') {
-            return sprintf('<info>%s</info>', $message['message']);
-        }
-
-        return sprintf(
-            ' * <%2$s>%s</%2$s>',
-            sprintf(str_replace(chr(10), '</%1$s>' . chr(10) . '   <%1$s>', $message['message']), $message['severity']),
-            $message['severity'],
-        );
-    }
-
-    /**
-     * @param packageMap $installedTypo3Packages
-     * @return array<int, IOMessage>
-     */
-    private function publishResources(array $installedTypo3Packages): array
-    {
-        $publishingMessages = [
-            [
-                'severity' => 'title',
-                'verbosity' => IOInterface::NORMAL,
-                'message' => 'Publishing public assets of TYPO3 extensions',
-            ],
-        ];
-        $baseDir = $this->config->get('base-dir');
-        foreach ($installedTypo3Packages as [$composerPackage, $path, $extensionKey]) {
-            $fileSystemResourcesPath = ($path === '' ? $baseDir : $path) . '/Resources/Public';
-            $relativePath = substr($fileSystemResourcesPath, strlen($baseDir));
-            if (!file_exists($fileSystemResourcesPath)) {
-                $publishingMessages[] = [
-                    'severity' => 'info',
-                    'verbosity' => IOInterface::VERBOSE,
-                    'message' => sprintf(
-                        'Skipping assets publishing for extension "%s",'
-                            . chr(10) . 'because its public resources directory "%s" does not exist.',
-                        $composerPackage->getName(),
-                        '.' . $relativePath,
-                    ),
-                ];
-                continue;
-            }
-            [$relativePrefix] = explode('Resources/Public', $relativePath);
-            $publicResourcesPath = $this->fileSystem->normalizePath($this->config->get('web-dir') . '/_assets/' . md5($relativePrefix));
-            $this->fileSystem->ensureDirectoryExists(dirname($publicResourcesPath));
-            try {
-                if (Platform::isWindows()) {
-                    $this->ensureJunctionExists($fileSystemResourcesPath, $publicResourcesPath, $composerPackage);
-                } else {
-                    $this->ensureSymlinkExists($fileSystemResourcesPath, $publicResourcesPath, $composerPackage);
-                }
-            } catch (PackageAssetsPublishingFailedException $e) {
-                $publishingMessages[] = [
-                    'severity' => 'warning',
-                    'verbosity' => IOInterface::NORMAL,
-                    'message' => sprintf(
-                        'Could not publish public resources for extension "%s" by using the "%s" strategy.'
-                        . chr(10) . 'Check whether the target directory "%s" already exists'
-                        . chr(10) . 'and Composer has permissions to write inside the "_assets" directory.',
-                        $e->packageName,
-                        $e->publishingStrategy,
-                        '.' . substr($publicResourcesPath, strlen($baseDir)),
-                    ),
-                ];
-            }
-        }
-        $publishingMessages[] =             [
-            'severity' => 'title',
-            'verbosity' => IOInterface::NORMAL,
-            'message' => 'Published public assets',
-        ];
-
-        return $publishingMessages;
-    }
-
-    /**
-     * @throws PackageAssetsPublishingFailedException
-     */
-    private function ensureJunctionExists(string $target, string $junction, PackageInterface $package): void
-    {
-        $e = null;
-        if (!$this->fileSystem->isJunction($junction)) {
-            try {
-                $this->fileSystem->junction($target, $junction);
-            } catch (IOException $e) {
-            }
-        }
-
-        if ($e !== null || realpath($target) !== realpath($junction)) {
-            throw new PackageAssetsPublishingFailedException(
-                'junction',
-                $package->getName(),
-                1717488535,
-                $e,
-            );
-        }
-    }
-
-    /**
-     * @throws PackageAssetsPublishingFailedException
-     */
-    private function ensureSymlinkExists(string $target, string $link, PackageInterface $package): void
-    {
-        $success = true;
-        if (!$this->fileSystem->isSymlinkedDirectory($link)) {
-            $success = $this->fileSystem->relativeSymlink($target, $link);
-        }
-
-        if (!$success || realpath($target) !== realpath($link)) {
-            throw new PackageAssetsPublishingFailedException(
-                'symlink',
-                $package->getName(),
-                1717488536,
-            );
-        }
     }
 }

@@ -22,6 +22,7 @@ use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Package\Resource\ResourceCollectionInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\SystemResource\Exception\CanNotGenerateUriException;
 use TYPO3\CMS\Core\SystemResource\Http\CacheBustingUri;
@@ -102,7 +103,7 @@ readonly class DefaultSystemResourceUriGenerator implements SystemResourceUriGen
             return $this->prefix . substr($absoluteResourcePath, strlen(Environment::getPublicPath()) + 1);
         }
         [$relativePrefix, $relativeAssetPath] = explode(
-            'Resources/Public',
+            ResourceCollectionInterface::PACKAGE_DEFAULT_PUBLIC_DIR,
             substr($absoluteResourcePath, strlen(Environment::getProjectPath())),
             2
         );

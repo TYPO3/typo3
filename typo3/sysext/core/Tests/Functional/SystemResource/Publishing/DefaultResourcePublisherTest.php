@@ -19,19 +19,24 @@ namespace TYPO3\CMS\Core\Tests\Functional\SystemResource\Publishing;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\SystemResource\Exception\CanNotGenerateUriException;
 use TYPO3\CMS\Core\SystemResource\Publishing\DefaultSystemResourcePublisher;
+use TYPO3\CMS\Core\SystemResource\Publishing\FileSystem\SymlinkPublisher;
 use TYPO3\CMS\Core\SystemResource\Publishing\UriGenerationOptions;
 use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\SystemResource\Type\PackageResource;
 use TYPO3\CMS\Core\SystemResource\Type\PublicPackageFile;
 use TYPO3\CMS\Core\Tests\Functional\Fixtures\DummyFileCreationService;
+use TYPO3\CMS\Core\Utility\File\FileSystem;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class DefaultResourcePublisherTest extends FunctionalTestCase
@@ -52,6 +57,55 @@ final class DefaultResourcePublisherTest extends FunctionalTestCase
     {
         parent::tearDown();
         $this->file->cleanupCreatedFiles();
+    }
+
+    #[Test]
+    public function publishesAssetsToAssetsDirectory(): void
+    {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            true,
+            Environment::getProjectPath(),
+            Environment::getPublicPath() . '/typo3temp/public',
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getCurrentScript(),
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp');
+        $resourcePublisher = $this->get(DefaultSystemResourcePublisher::class);
+        $packageManager = $this->get(PackageManager::class);
+        $resourcePublisher->publishResources($packageManager->getPackage('core'));
+        self::assertFileExists(Environment::getPublicPath() . '/_assets/d25de869aebcd01495d2fe67ad5b0e25/Icons/Extension.svg');
+        unlink(Environment::getPublicPath() . '/_assets/d25de869aebcd01495d2fe67ad5b0e25');
+    }
+
+    #[Test]
+    public function failsafePublishesAssetsToInstallAssetsDirectory(): void
+    {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            true,
+            Environment::getProjectPath(),
+            Environment::getPublicPath() . '/typo3temp/public',
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getCurrentScript(),
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp');
+        $resourcePublisher = new DefaultSystemResourcePublisher(
+            [
+                new SymlinkPublisher(new FileSystem()),
+            ],
+            true,
+        );
+        $packageManager = $this->get(PackageManager::class);
+        $resourcePublisher->publishResources($packageManager->getPackage('core'));
+        self::assertFileExists(Environment::getPublicPath() . '/_assets_install/d25de869aebcd01495d2fe67ad5b0e25/Icons/Extension.svg');
+        unlink(Environment::getPublicPath() . '/_assets_install/d25de869aebcd01495d2fe67ad5b0e25');
     }
 
     public static function generatesUriForAllKindsOfResourcesDataProvider(): \Generator

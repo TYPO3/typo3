@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Resource;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -33,7 +34,9 @@ use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceException;
+use TYPO3\CMS\Core\SystemResource\Publishing\DefaultSystemResourcePublisher;
 use TYPO3\CMS\Core\SystemResource\Publishing\UriGenerationOptions;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -194,7 +197,7 @@ readonly class ResourceFactory implements SingletonInterface
                     //        this will be resolved once fallback storage is deprecated
                     //        This should be done asap, because other implementations of SystemResourcePublisherInterface
                     //        might not evaluate the uriPrefix options
-                    $potentialPathRelativeToPublicDir = (string)PathUtility::getSystemResourceUri($input, null, new UriGenerationOptions(uriPrefix: '/', cacheBusting: false));
+                    $potentialPathRelativeToPublicDir = (string)$this->getSystemResourceUri($input, null, new UriGenerationOptions(uriPrefix: '/', cacheBusting: false));
                     if (!file_exists(Environment::getPublicPath() . $potentialPathRelativeToPublicDir)) {
                         throw new ResourceDoesNotExistException(sprintf('File "%s" does not exist in fallback compatibility storage.', $input), 1760532790);
                     }
@@ -218,6 +221,14 @@ readonly class ResourceFactory implements SingletonInterface
             return $this->getFolderObjectFromCombinedIdentifier(ltrim($input, '/'));
         }
         return null;
+    }
+
+    private function getSystemResourceUri(string $resourceIdentifier, ?ServerRequestInterface $request = null, ?UriGenerationOptions $options = null): UriInterface
+    {
+        $resourceFactory = GeneralUtility::makeInstance(SystemResourceFactory::class);
+        $resource = $resourceFactory->createPublicResource($resourceIdentifier);
+        $resourcePublisher = GeneralUtility::makeInstance(DefaultSystemResourcePublisher::class);
+        return $resourcePublisher->generateUri($resource, $request, $options);
     }
 
     /**

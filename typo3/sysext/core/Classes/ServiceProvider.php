@@ -27,6 +27,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDi
 use TYPO3\CMS\Core\Adapter\EventDispatcherAdapter as SymfonyEventDispatcher;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Command\Output\MessageRenderer;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
@@ -48,6 +49,7 @@ use TYPO3\CMS\Core\Service\SilentConfigurationUpgradeService;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\Type\Map;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
+use TYPO3\CMS\Core\Utility\File\FileSystem;
 
 /**
  * @internal
@@ -80,6 +82,7 @@ class ServiceProvider extends AbstractServiceProvider
             Configuration\SiteWriter::class => self::getSiteWriter(...),
             Command\ListCommand::class => self::getListCommand(...),
             HelpCommand::class => self::getHelpCommand(...),
+            Command\AssetPublishCommand::class => self::getAssetPublishCommand(...),
             Command\CacheFlushCommand::class => self::getCacheFlushCommand(...),
             Command\CacheFlushTagsCommand::class => self::getCacheFlushTagsCommand(...),
             Command\CacheWarmupCommand::class => self::getCacheWarmupCommand(...),
@@ -264,6 +267,15 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getSymfonyDumpCompletionCommand(ContainerInterface $container): SymfonyDumpCompletionCommand
     {
         return new SymfonyDumpCompletionCommand();
+    }
+
+    public static function getAssetPublishCommand(ContainerInterface $container): Command\AssetPublishCommand
+    {
+        return new Command\AssetPublishCommand(
+            $container->get(Core\BootService::class),
+            $container->get(Package\PackageManager::class),
+            new MessageRenderer(),
+        );
     }
 
     public static function getCacheFlushCommand(ContainerInterface $container): Command\CacheFlushCommand
@@ -802,7 +814,14 @@ class ServiceProvider extends AbstractServiceProvider
         ?SystemResource\Publishing\SystemResourcePublisherInterface $resourcePublisher = null
     ): SystemResource\Publishing\SystemResourcePublisherInterface {
         // Provide a simplified resource factory for the install tool when $resourcePublisher is null (that means when we run without symfony DI)
-        return $resourcePublisher ?? new SystemResource\Publishing\DefaultSystemResourcePublisher();
+        return $resourcePublisher ?? new SystemResource\Publishing\DefaultSystemResourcePublisher(
+            [
+                new SystemResource\Publishing\FileSystem\SymlinkPublisher(new FileSystem()),
+                new SystemResource\Publishing\FileSystem\JunctionPublisher(new FileSystem()),
+                new SystemResource\Publishing\FileSystem\MirrorPublisher(),
+            ],
+            true,
+        );
     }
 
     public static function configureCommands(ContainerInterface $container, Console\CommandRegistry $commandRegistry): Console\CommandRegistry
@@ -810,6 +829,8 @@ class ServiceProvider extends AbstractServiceProvider
         $commandRegistry->addLazyCommand('list', Command\ListCommand::class, 'Lists commands');
 
         $commandRegistry->addLazyCommand('help', HelpCommand::class, 'Displays help for a command');
+
+        $commandRegistry->addLazyCommand('asset:publish', Command\AssetPublishCommand::class, 'Publishes public assets. Needs to be run after composer install.');
 
         $commandRegistry->addLazyCommand('cache:warmup', Command\CacheWarmupCommand::class, 'Cache warmup for all, system or, if implemented, frontend caches.');
 

@@ -48,6 +48,7 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Service\DatabaseUpgradeWizardsService;
 use TYPO3\CMS\Core\Service\SilentConfigurationUpgradeService;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\TypoScript\AST\CommentAwareAstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
@@ -94,6 +95,7 @@ class ServiceProvider extends AbstractServiceProvider
             Service\SetupDatabaseService::class => self::getSetupDatabaseService(...),
             Middleware\Installer::class => self::getInstallerMiddleware(...),
             Middleware\Maintenance::class => self::getMaintenanceMiddleware(...),
+            Middleware\AssetPublishing::class => self::getAssetPublishing(...),
             Middleware\JavaScriptLanguageDomainProvider::class => self::getJavaScriptLanguageDomainProvider(...),
             Controller\EnvironmentController::class => self::getEnvironmentController(...),
             Controller\IconController::class => self::getIconController(...),
@@ -138,6 +140,7 @@ class ServiceProvider extends AbstractServiceProvider
         $dispatcher->lazy(ResponsePropagationMiddleware::class);
         $dispatcher->lazy(Middleware\Installer::class);
         $dispatcher->add($container->get(Middleware\Maintenance::class));
+        $dispatcher->add($container->get(Middleware\AssetPublishing::class));
         $dispatcher->add($container->get(Middleware\JavaScriptLanguageDomainProvider::class));
         $dispatcher->lazy(NormalizedParamsMiddleware::class);
 
@@ -267,6 +270,14 @@ class ServiceProvider extends AbstractServiceProvider
         return new Middleware\JavaScriptLanguageDomainProvider(
             $container->get(LanguageServiceFactory::class),
             $container->get(TranslationDomainMapper::class),
+        );
+    }
+
+    public static function getAssetPublishing(ContainerInterface $container): Middleware\AssetPublishing
+    {
+        return new Middleware\AssetPublishing(
+            $container->get(PackageManager::class),
+            $container->get(SystemResourcePublisherInterface::class),
         );
     }
 

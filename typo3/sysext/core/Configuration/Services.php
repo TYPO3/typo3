@@ -15,10 +15,12 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Attribute\UpgradeWizard;
+use TYPO3\CMS\Core\SystemResource\Publishing\FileSystem\FileSystemPublisherInterface;
 
 return static function (ContainerConfigurator $container, ContainerBuilder $containerBuilder) {
     $containerBuilder->registerForAutoconfiguration(SingletonInterface::class)->addTag('typo3.singleton');
     $containerBuilder->registerForAutoconfiguration(LoggerAwareInterface::class)->addTag('psr.logger_aware');
+    $containerBuilder->registerForAutoconfiguration(FileSystemPublisherInterface::class)->addTag('asset.filesystem_publisher');
 
     // Services, to be read from container-aware dispatchers (on demand), therefore marked 'public'
     $containerBuilder->registerForAutoconfiguration(MiddlewareInterface::class)->addTag('typo3.middleware');
@@ -133,6 +135,7 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
     $containerBuilder->addCompilerPass(new DependencyInjection\ConsoleCommandPass('console.command'));
     $containerBuilder->addCompilerPass(new DependencyInjection\MessageHandlerPass('messenger.message_handler'));
     $containerBuilder->addCompilerPass(new DependencyInjection\MessengerMiddlewarePass('messenger.middleware'));
+    $containerBuilder->addCompilerPass(new DependencyInjection\AssetFileSystemPublisherPass('asset.filesystem_publisher'));
     $containerBuilder->addCompilerPass(new DependencyInjection\AllowedCallablePass(AsAllowedCallable::TAG_NAME));
     $containerBuilder->addCompilerPass(new DependencyInjection\AutowireInjectMethodsPass());
 };

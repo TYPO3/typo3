@@ -36,6 +36,7 @@ class InstallerScripts implements InstallerScriptsRegistration
                 'index.php'
             )
         );
+
         if ($event->getComposer()->getPackage()->getName() === 'typo3/cms') {
             // We only need to provide the binary in monorepo classic mode (regular Composer mode receives it via typo3/cms-cli)
             $source = dirname(__DIR__, 2) . '/Resources/Private/Php/cli.php';
@@ -43,7 +44,16 @@ class InstallerScripts implements InstallerScriptsRegistration
             $scriptDispatcher->addInstallerScript(new CliEntryPoint($source, $target));
         } else {
             // Provide package artifact in regular composer mode (not needed for monorepo classic mode)
-            $scriptDispatcher->addInstallerScript(new PackageArtifactBuilder());
+            $scriptDispatcher->addInstallerScript(
+                new PackageArtifactBuilder()
+            );
+            if (!(bool)getenv('TYPO3_SKIP_ASSET_PUBLISH')) {
+                $scriptDispatcher->addInstallerScript(
+                    new ConsoleCommand(
+                        ['asset:publish']
+                    )
+                );
+            }
         }
     }
 }

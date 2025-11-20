@@ -95,6 +95,9 @@ return [
                 ],
             ],
         ],
+        'SystemResources' => [
+            'filesystemPublishingType' => 'link',
+        ],
         'fileCreateMask' => '0664',
         'folderCreateMask' => '2775',
         'features' => [

@@ -75,9 +75,11 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
         }
     }
 
-    public function addMessage(FlashMessage $message)
+    public function addMessage(FlashMessage ...$messages)
     {
-        $this->enqueue($message);
+        foreach ($messages as $message) {
+            $this->enqueue($message);
+        }
     }
 
     /**

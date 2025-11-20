@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\SystemResource\Publishing;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\SystemResource\Type\PublicResourceInterface;
 
@@ -30,7 +31,7 @@ use TYPO3\CMS\Core\SystemResource\Type\PublicResourceInterface;
  */
 interface SystemResourcePublisherInterface
 {
-    public function publishResources(PackageInterface $package): void;
+    public function publishResources(PackageInterface $package): FlashMessageQueue;
 
     public function generateUri(PublicResourceInterface $publicResource, ?ServerRequestInterface $request, ?UriGenerationOptions $options = null): UriInterface;
 }

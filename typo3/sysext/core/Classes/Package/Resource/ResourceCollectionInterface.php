@@ -24,6 +24,11 @@ use TYPO3\CMS\Core\SystemResource\Type\PublicPackageFile;
  */
 interface ResourceCollectionInterface
 {
+    /**
+     * @internal Only to be used in TYPO3\CMS\Core\SystemResource and TYPO3\CMS\Core\Package\Resource namespaces
+     */
+    public const PACKAGE_DEFAULT_PUBLIC_DIR = 'Resources/Public';
+
     public function isPublicPath(string $relativePath): bool;
 
     public function getPackageIcon(): ?PublicPackageFile;
