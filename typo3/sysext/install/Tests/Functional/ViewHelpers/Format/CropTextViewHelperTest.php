@@ -23,39 +23,38 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
-final class PhpErrorCodeViewHelperTest extends FunctionalTestCase
+final class CropTextViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    public static function errorCodesDataProvider(): array
+    public static function renderCorrectlyDataProvider(): array
     {
         return [
-            [
-                'errorCode' => E_ERROR,
-                'expectedString' => 'E_ERROR',
+            'not cropped' => [
+                'input' => 'i am not cropped',
+                'maxCharacters' => 20,
+                'expected' => 'i am not cropped',
             ],
-            [
-                'errorCode' => E_ALL,
-                'expectedString' => 'E_ALL',
+            'crop 20' => [
+                'input' => 'i am too long so i get cropped somewhere',
+                'maxCharacters' => 20,
+                'expected' => 'i am too long so i g…',
             ],
-            [
-                'errorCode' => E_ERROR ^ E_WARNING ^ E_PARSE,
-                'expectedString' => 'E_ERROR | E_WARNING | E_PARSE',
-            ],
-            [
-                'errorCode' => E_RECOVERABLE_ERROR ^ E_USER_DEPRECATED,
-                'expectedString' => 'E_RECOVERABLE_ERROR | E_USER_DEPRECATED',
+            'crop 30' => [
+                'input' => 'i am too long so i get cropped somewhere',
+                'maxCharacters' => 30,
+                'expected' => 'i am too long so i get cropped…',
             ],
         ];
     }
 
-    #[DataProvider('errorCodesDataProvider')]
+    #[DataProvider('renderCorrectlyDataProvider')]
     #[Test]
-    public function renderPhpCodesCorrectly(int $errorCode, string $expectedString): void
+    public function renderCorrectly(string $input, int $maxCharacters, string $expected): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getViewHelperResolver()->addNamespace('install', 'TYPO3\\CMS\\Install\\ViewHelpers');
-        $context->getTemplatePaths()->setTemplateSource('<install:format.phpErrorCode phpErrorCode="' . $errorCode . '" />');
-        self::assertSame($expectedString, (new TemplateView($context))->render());
+        $context->getTemplatePaths()->setTemplateSource('<install:format.cropText maxCharacters="' . $maxCharacters . '">' . $input . '</install:format.cropText>');
+        self::assertSame($expected, (new TemplateView($context))->render());
     }
 }
