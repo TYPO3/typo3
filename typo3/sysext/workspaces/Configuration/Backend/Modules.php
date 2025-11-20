@@ -6,7 +6,7 @@ use TYPO3\CMS\Workspaces\Controller\ReviewController;
  * Definitions for modules provided by EXT:workspaces
  */
 return [
-    'workspaces_admin' => [
+    'workspaces_publish' => [
         'parent' => 'content',
         'position' => ['before' => 'content_status'],
         'access' => 'user',
@@ -14,7 +14,7 @@ return [
         'path' => '/module/manage/workspaces',
         'iconIdentifier' => 'module-workspaces',
         'labels' => 'workspaces.module',
-        'aliases' => ['web_WorkspacesWorkspaces'],
+        'aliases' => ['workspaces_admin', 'web_WorkspacesWorkspaces'],
         'routes' => [
             '_default' => [
                 'target' => ReviewController::class . '::handleRequest',

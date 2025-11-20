@@ -38,6 +38,7 @@ class UserPermissionsForRenamedModulesMigration implements UpgradeWizardInterfac
      */
     protected array $moduleRenaming = [
         'web_info' => 'content_status',
+        'workspaces_admin' => 'workspaces_publish',
     ];
 
     public function getTitle(): string

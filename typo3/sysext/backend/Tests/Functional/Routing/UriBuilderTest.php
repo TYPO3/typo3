@@ -34,9 +34,9 @@ final class UriBuilderTest extends FunctionalTestCase
     public function buildUriFromRouteResolvesAliasWhenLinking(): void
     {
         $subject = $this->get(UriBuilder::class);
-        $route = $subject->buildUriFromRoute('workspaces_admin');
-        $routeFromAlias = $subject->buildUriFromRoute('web_WorkspacesWorkspaces');
-        self::assertEquals($routeFromAlias->getPath(), $route->getPath());
+        $route = $subject->buildUriFromRoute('workspaces_publish');
+        self::assertEquals($subject->buildUriFromRoute('workspaces_admin')->getPath(), $route->getPath());
+        self::assertEquals($subject->buildUriFromRoute('web_WorkspacesWorkspaces')->getPath(), $route->getPath());
     }
 
     #[Test]

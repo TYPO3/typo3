@@ -70,7 +70,7 @@ final readonly class WorkspaceProvider implements SearchProviderInterface
             $actions = [];
             $actions[] = (new ResultItemAction('open_workspace'))
                 ->setLabel($this->languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:action.switchToWorkspace'))
-                ->setUrl((string)$this->uriBuilder->buildUriFromRoute('workspaces_admin', [
+                ->setUrl((string)$this->uriBuilder->buildUriFromRoute('workspaces_publish', [
                     'workspace' => $workspaceId,
                     'id' => $searchDemand->getPageId(),
                 ]))
@@ -84,7 +84,7 @@ final readonly class WorkspaceProvider implements SearchProviderInterface
                         ],
                     ],
                     // @todo attach module context to live search
-                    'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('workspaces_admin', ['id' => $searchDemand->getPageId()]),
+                    'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('workspaces_publish', ['id' => $searchDemand->getPageId()]),
                 ]);
 
                 $actions[] = (new ResultItemAction('configure_workspace'))

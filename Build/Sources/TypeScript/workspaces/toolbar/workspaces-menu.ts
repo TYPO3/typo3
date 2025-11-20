@@ -165,7 +165,7 @@ class WorkspacesMenu {
         let url = TYPO3.Backend.ContentContainer.getUrl();
         url += (!url.includes('?') ? '?' : '&') + 'id=' + data.pageId;
         Viewport.ContentContainer.setUrl(url);
-      } else if (currentModule === 'workspaces_admin') {
+      } else if (currentModule === 'workspaces_publish') {
         // Reload the workspace module and override the workspace id
         ModuleMenu.App.showModule(currentModule, 'workspace=' + workspaceId);
       } else if (currentModule?.startsWith('web_')) {

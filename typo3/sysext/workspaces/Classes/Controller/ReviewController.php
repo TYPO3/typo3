@@ -134,7 +134,7 @@ final readonly class ReviewController
     {
         // Set shortcut context - reload button is added automatically
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'workspaces_admin',
+            routeIdentifier: 'workspaces_publish',
             displayName: sprintf('%s: %s [%d]', $activeWorkspaceTitle, $pageTitle, $pageId),
             arguments: ['id' => $pageId]
         );
@@ -171,8 +171,8 @@ final readonly class ReviewController
                         $activeWorkspace => 'edit',
                     ],
                 ],
-                'module' => 'workspaces_admin',
-                'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('workspaces_admin', ['id' => $pageUid]),
+                'module' => 'workspaces_publish',
+                'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('workspaces_publish', ['id' => $pageUid]),
             ]);
             $editSettingsButton = $this->componentFactory->createLinkButton()
                 ->setHref($editWorkspaceRecordUrl)

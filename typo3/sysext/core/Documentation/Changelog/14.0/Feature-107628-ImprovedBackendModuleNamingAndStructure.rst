@@ -161,7 +161,7 @@ columns and grids. This provides clearer expectations, improves usability
 for new editors, and aligns the module name with modern TYPO3 workflows
 and terminology.
 
-**Migration:** Since the module is just renamed, there are no migations
+**Migration:** Since the module is just renamed, there are no migrations
 necessary.
 
 View => Preview
@@ -177,6 +177,24 @@ context.
 
 **Migration:** Since the module is already internally referred to as `page_preview`, no
 changes in referencing modules are required.
+
+Workspaces => Publish
+~~~~~~~~~~~~~~~~~~~~~
+
+The second-level :guilabel:`Workspaces` module has been renamed to
+:guilabel:`Publish` to better match its current scope.
+
+**Rationale:** The initially introduced "Workspaces administration" tool
+has been reworked to move content through a publishing process in past
+versions. For this reason, it is now renamed to "Publish" and
+is only visible when inside a workspace.
+
+**Migration:** The module has internally been renamed to `workspaces_publish`.
+A module alias is in place, so references to the old `workspaces_admin`
+identifier keep working as before, but it is recommended to adapt usages.
+
+The upgrade wizard "Migrate module permissions" migrates backend user and
+group-level permissions for this module.
 
 Info, Indexing, Check Links => Status
 --------------------------------------

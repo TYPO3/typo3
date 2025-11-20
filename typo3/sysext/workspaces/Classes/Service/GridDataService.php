@@ -425,7 +425,7 @@ readonly class GridDataService
                 $versionArray['allowedAction_versionPageOpen'] = $this->isPageModuleAllowed() && !$isDeletedPage;
                 $versionArray['state_Workspace'] = $recordState;
                 $versionArray['hasChanges'] = $recordState !== 'unchanged';
-                $versionArray['urlToPage'] = (string)$this->uriBuilder->buildUriFromRoute('workspaces_admin', [
+                $versionArray['urlToPage'] = (string)$this->uriBuilder->buildUriFromRoute('workspaces_publish', [
                     'workspace' => $backendUser->workspace,
                     'id' => $record['pid'] ?? 0,
                 ]);
