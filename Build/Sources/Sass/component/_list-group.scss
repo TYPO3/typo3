@@ -4,6 +4,7 @@
 .list-group {
     --typo3-list-group-border-width: var(--typo3-component-border-width);
     --typo3-list-group-border-radius: var(--typo3-component-border-radius);
+    --typo3-list-group-margin-y: 1rem;
     --typo3-list-group-padding-x: 1rem;
     --typo3-list-group-padding-y: .5rem;
     --typo3-list-group-color: var(--typo3-component-color);
@@ -104,5 +105,32 @@
 
     &[aria-expanded="false"] .caret {
         --typo3-caret-rotation: calc(-90deg * var(--typo3-position-modifier));
+    }
+}
+
+//
+// Adaptions
+//
+.card-header + .list-group {
+    margin-top: var(--typo3-list-group-margin-y);
+}
+
+//
+// Utilities
+//
+.list-group-flush {
+    --typo3-list-group-border-radius: 0;
+
+    .list-group-item {
+        border-right: 0;
+        border-left: 0;
+
+        &:first-child {
+            border-top: 0;
+        }
+
+        &:last-child {
+            border-bottom: 0;
+        }
     }
 }

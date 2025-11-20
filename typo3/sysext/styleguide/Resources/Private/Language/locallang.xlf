@@ -489,6 +489,9 @@
 			<trans-unit id="component.card.section.formFieldsInCards.text">
 				<source><![CDATA[It is also possible to display forms and form fields in cards. This is done, for example, in the "Upload Extension" section of the <a href="%1s">"Extensions" module</a>, in the "Feature Toggles" overlay in the <a href="%2s">"Settings" module</a> and in the "Full search" submodule of the <a href="%3s">"DB Check" module</a>.]]></source>
 			</trans-unit>
+			<trans-unit id="component.card.section.listsInCards.headline">
+				<source>Lists in cards</source>
+			</trans-unit>
 			<trans-unit id="component.card.section.multipleCards.headline">
 				<source>Multiple cards</source>
 			</trans-unit>
@@ -719,6 +722,12 @@
 			</trans-unit>
 			<trans-unit id="component.listGroups.introtext">
 				<source>Lists for displaying a series of content.</source>
+			</trans-unit>
+			<trans-unit id="component.listGroups.section.borderless.headline">
+				<source>Borderless</source>
+			</trans-unit>
+			<trans-unit id="component.listGroups.section.borderless.text">
+				<source><![CDATA[Add <code>.list-group-flush</code> to remove the surrounding border and display the list group borderless in a parent container (e.g., cards)]]></source>
 			</trans-unit>
 			<trans-unit id="component.listGroups.section.default.headline">
 				<source>Default</source>
