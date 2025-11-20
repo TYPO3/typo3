@@ -61,7 +61,11 @@
 
                 <div class="element-browser-main-content">
                     <div class="element-browser-attributes">
-                        <f:format.raw>{linkAttributes}</f:format.raw>
+                        <f:if condition="{linkAttributes}">
+                            <div class="row">
+                                <f:format.raw>{linkAttributes}</f:format.raw>
+                            </div>
+                        </f:if>
                         <f:if condition="{showUpdateParametersButton}">
                             <button class="btn btn-default t3js-linkCurrent" type="submit">
                                 {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:update')}

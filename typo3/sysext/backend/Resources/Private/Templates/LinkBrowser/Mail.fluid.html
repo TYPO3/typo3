@@ -7,7 +7,7 @@
 
 <f:section name="Content">
     <form action="" id="lmailform">
-        <div class="element-browser-form-group">
+        <div class="form-group">
             <label for="lemail" class="form-label">
                 <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:emailAddress" />
             </label>
@@ -20,7 +20,7 @@
                 required />
         </div>
         <f:if condition="{allowedLinkAttributes.subject}">
-            <div class="element-browser-form-group">
+            <div class="form-group">
                 <label for="emailSubject" class="form-label">
                     <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:email.subject" />
                 </label>
@@ -33,7 +33,7 @@
             </div>
         </f:if>
         <f:if condition="{allowedLinkAttributes.cc}">
-            <div class="element-browser-form-group">
+            <div class="form-group">
                 <label for="emailCc" class="form-label">
                     <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:email.cc" />
                 </label>
@@ -46,7 +46,7 @@
             </div>
         </f:if>
         <f:if condition="{allowedLinkAttributes.bcc}">
-            <div class="element-browser-form-group">
+            <div class="form-group">
                 <label for="emailBcc" class="form-label">
                     <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:email.bcc" />
                 </label>
@@ -59,7 +59,7 @@
             </div>
         </f:if>
         <f:if condition="{allowedLinkAttributes.body}">
-            <div class="element-browser-form-group">
+            <div class="form-group">
                 <label for="emailBody" class="form-label">
                     <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:email.body" />
                 </label>
@@ -73,7 +73,7 @@
                     data-mailto-part="body">{body}</textarea>
             </div>
         </f:if>
-        <div class="element-browser-form-group">
+        <div class="form-group">
             <input class="btn btn-primary" type="submit" value="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:setLink')}" />
         </div>
     </form>

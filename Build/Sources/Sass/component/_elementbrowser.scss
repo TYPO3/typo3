@@ -140,29 +140,3 @@
 .element-browser-main-content {
     container-type: inline-size;
 }
-
-.element-browser-form-group {
-    margin-bottom: calc(var(--typo3-spacing) / 2);
-
-    .form-label {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-}
-
-@container (min-width: 500px) {
-    .element-browser-form-group {
-        display: flex;
-        align-items: center;
-        gap: calc(var(--typo3-spacing) / 2);
-
-        .form-label {
-            width: 180px;
-            flex-shrink: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin-bottom: 0 !important;
-        }
-    }
-}
