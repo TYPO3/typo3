@@ -13,6 +13,7 @@
 
 import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, query } from 'lit/decorators';
+import { lll } from '@typo3/core/lit-helper';
 import '@typo3/backend/element/icon-element';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import '@typo3/backend/tree/tree-toolbar';
@@ -291,7 +292,8 @@ export class FileStorageTreeNavigationComponent extends TreeModuleState(LitEleme
       dataUrl: top.TYPO3.settings.ajaxUrls.filestorage_tree_data,
       rootlineUrl: top.TYPO3.settings.ajaxUrls.filestorage_tree_rootline,
       filterUrl: top.TYPO3.settings.ajaxUrls.filestorage_tree_filter,
-      showIcons: true
+      showIcons: true,
+      searchPlaceholder: lll('tree.searchFolderTree')
     };
 
     return html`

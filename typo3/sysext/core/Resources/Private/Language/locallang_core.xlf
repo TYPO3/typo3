@@ -1338,6 +1338,12 @@ Do you want to refresh it now?</source>
 			<trans-unit id="tree.searchTermInfo">
 				<source>Enter search term</source>
 			</trans-unit>
+			<trans-unit id="tree.searchPageTree">
+				<source>Search page tree</source>
+			</trans-unit>
+			<trans-unit id="tree.searchFolderTree">
+				<source>Search folder tree</source>
+			</trans-unit>
 			<trans-unit id="warning.file_deny_pattern">
 				<source>The value of fileDenyPattern is not set to its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
 			</trans-unit>

@@ -51,7 +51,7 @@ export class TreeToolbar extends LitElement {
               <label for="toolbarSearch" class="visually-hidden">
                 ${lll('labels.label.searchString')}
               </label>
-              <input type="search" id="toolbarSearch" class="form-control form-control-sm search-input" placeholder="${lll('tree.searchTermInfo')}">
+              <input type="search" id="toolbarSearch" class="form-control form-control-sm search-input" placeholder="${this.tree?.setup?.searchPlaceholder || lll('tree.searchTermInfo')}">
           </div>
         </div>
         <div class="tree-toolbar__submenu">
