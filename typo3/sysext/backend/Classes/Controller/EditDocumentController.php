@@ -572,11 +572,6 @@ class EditDocumentController
 
         $tce->setControl($parsedBody['control'] ?? []);
 
-        // Set internal vars
-        if (isset($beUser->uc['neverHideAtCopy']) && $beUser->uc['neverHideAtCopy']) {
-            $tce->neverHideAtCopy = true;
-        }
-
         // Set default values fetched previously from GET / POST vars
         if (is_array($this->defVals) && $this->defVals !== []) {
             $tce->defaultValues = array_merge_recursive($this->defVals, $tce->defaultValues);

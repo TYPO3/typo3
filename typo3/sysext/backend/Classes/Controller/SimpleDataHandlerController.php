@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Script Class, creating object of \TYPO3\CMS\Core\DataHandling\DataHandler and
@@ -178,14 +177,6 @@ class SimpleDataHandlerController
         $this->redirect = GeneralUtility::sanitizeLocalUrl((string)($parsedBody['redirect'] ?? $queryParams['redirect'] ?? ''));
         // Creating DataHandler object
         $this->tce = GeneralUtility::makeInstance(DataHandler::class);
-        // Configuring based on user prefs.
-        if ($beUser->uc['copyLevels'] ?? false) {
-            // Set to number of page-levels to copy.
-            $this->tce->copyTree = MathUtility::forceIntegerInRange($beUser->uc['copyLevels'], 0, 100);
-        }
-        if ($beUser->uc['neverHideAtCopy'] ?? false) {
-            $this->tce->neverHideAtCopy = true;
-        }
         // Reverse order.
         if ($this->flags['reverseOrder'] ?? false) {
             $this->tce->reverseOrder = true;

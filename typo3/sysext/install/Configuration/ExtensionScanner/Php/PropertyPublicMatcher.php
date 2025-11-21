@@ -1199,4 +1199,19 @@ return [
             'Breaking-107831-RemovedTypoScriptFrontendController.rst',
         ],
     ],
+    'TYPO3\CMS\Core\DataHandling\DataHandler->copyWhichTables' => [
+        'restFiles' => [
+            'Breaking-107856-DataHandlerRemoveInternalPropertyCopyWhichTablesandPropertiesNeverHideAtCopyandCopyTree.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\DataHandling\DataHandler->neverHideAtCopy' => [
+        'restFiles' => [
+            'Breaking-107856-DataHandlerRemoveInternalPropertyCopyWhichTablesandPropertiesNeverHideAtCopyandCopyTree.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\DataHandling\DataHandler->copyTree' => [
+        'restFiles' => [
+            'Breaking-107856-DataHandlerRemoveInternalPropertyCopyWhichTablesandPropertiesNeverHideAtCopyandCopyTree.rst',
+        ],
+    ],
 ];

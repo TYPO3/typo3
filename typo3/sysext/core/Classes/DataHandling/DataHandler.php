@@ -124,11 +124,6 @@ class DataHandler
     public bool $reverseOrder = false;
 
     /**
-     * If set, then the 'hideAtCopy' flag for tables will be ignored.
-     */
-    public bool $neverHideAtCopy = false;
-
-    /**
      * If set, then the TCE class has been instantiated during an import action of a T3D
      */
     public bool $isImporting = false;
@@ -150,23 +145,6 @@ class DataHandler
      * YOU MUST KNOW what you are doing if you use this feature!
      */
     public bool $bypassAccessCheckForRecords = false;
-
-    /**
-     * Comma-separated list. This list of tables decides which tables will be copied. If empty then none will.
-     * If '*' then all will (that the user has permission to of course)
-     *
-     * @internal should only be used from within TYPO3 Core
-     */
-    public string $copyWhichTables = '*';
-
-    /**
-     * If 0 then branch is NOT copied.
-     * If 1 then pages on the 1st level is copied.
-     * If 2 then pages on the second level is copied ... and so on
-     *
-     * @var int
-     */
-    public $copyTree = 0;
 
     /**
      * [table][fields]=value: New records are created with default values and you can set this array on the
@@ -3500,7 +3478,7 @@ class DataHandler
                     // Hide at copy may override:
                     if ($first && $field === $disabledField?->getName()
                         && $schema->hasCapability(TcaSchemaCapability::HideRecordsAtCopy)
-                        && !$this->neverHideAtCopy
+                        && !($this->BE_USER->uc['neverHideAtCopy'] ?? false)
                         && !($tE['disableHideAtCopy'] ?? false)
                     ) {
                         $value = 1;
@@ -3573,16 +3551,20 @@ class DataHandler
         $uid = (int)$uid;
         $destPid = (int)$destPid;
 
-        $copyTablesAlongWithPage = $this->getAllowedTablesToCopyWhenCopyingAPage();
+        $copyTablesAlongWithPage = $this->BE_USER->isAdmin()
+            ? $this->tcaSchemaFactory->all()->getNames()
+            : explode(',', $this->BE_USER->groupData['tables_modify']);
+        $copyTablesAlongWithPage = array_unique($copyTablesAlongWithPage);
+
         // Begin to copy pages if we're allowed to:
         if ($this->BE_USER->isAdmin() || in_array('pages', $copyTablesAlongWithPage, true)) {
             // Copy this page we're on. And set first-flag (this will trigger that the record is hidden if that is configured)
             // This method also copies the localizations of a page
             $theNewRootID = $this->copySpecificPage($uid, $destPid, $copyTablesAlongWithPage, true);
             // If we're going to copy recursively
-            if ($theNewRootID && $this->copyTree) {
+            if ($theNewRootID && MathUtility::forceIntegerInRange($this->BE_USER->uc['copyLevels'] ?? 0, 0, 100) > 0) {
                 // Get ALL subpages to copy (read-permissions are respected!):
-                $CPtable = $this->int_pageTreeInfo([], $uid, (int)$this->copyTree, $theNewRootID);
+                $CPtable = $this->int_pageTreeInfo([], $uid, MathUtility::forceIntegerInRange($this->BE_USER->uc['copyLevels'] ?? 0, 0, 100), $theNewRootID);
                 // Now copying the subpages:
                 foreach ($CPtable as $thePageUid => $thePagePid) {
                     $newPid = $this->copyMappingArray['pages'][$thePagePid] ?? null;
@@ -3599,34 +3581,6 @@ class DataHandler
         }
     }
 
-    /**
-     * Compile a list of tables that should be copied along when a page is about to be copied.
-     *
-     * First, get the list that the user is allowed to modify (all if admin),
-     * and then check against a possible limitation within "DataHandler->copyWhichTables" if not set to "*"
-     * to limit the list further down
-     */
-    protected function getAllowedTablesToCopyWhenCopyingAPage(): array
-    {
-        // Finding list of tables to copy.
-        // These are the tables, the user may modify
-        $copyTablesArray = $this->BE_USER->isAdmin() ? $this->tcaSchemaFactory->all()->getNames() : explode(',', $this->BE_USER->groupData['tables_modify']);
-        // If not all tables are allowed then make a list of allowed tables.
-        // That is the tables that figure in both allowed tables AND the copyTable-list
-        if (!str_contains($this->copyWhichTables, '*')) {
-            $definedTablesToCopy = GeneralUtility::trimExplode(',', $this->copyWhichTables, true);
-            // Pages are always allowed
-            $definedTablesToCopy[] = 'pages';
-            $definedTablesToCopy = array_flip($definedTablesToCopy);
-            foreach ($copyTablesArray as $k => $table) {
-                if (!$table || !isset($definedTablesToCopy[$table])) {
-                    unset($copyTablesArray[$k]);
-                }
-            }
-        }
-        $copyTablesArray = array_unique($copyTablesArray);
-        return $copyTablesArray;
-    }
     /**
      * Copying a single page ($uid) to $destPid and all tables in the array copyTablesArray.
      *
@@ -4936,7 +4890,7 @@ class DataHandler
                     $tableEntries = $this->getTableEntries($table, $TSConfig);
                     if (
                         $schema->hasCapability(TcaSchemaCapability::HideRecordsAtCopy)
-                        && !$this->neverHideAtCopy
+                        && !($this->BE_USER->uc['neverHideAtCopy'] ?? false)
                         && !($tableEntries['disableHideAtCopy'] ?? false)
                     ) {
                         $overrideValues[$hiddenFieldName] = 1;
@@ -6669,7 +6623,6 @@ class DataHandler
     protected function getLocalTCE(): DataHandler
     {
         $copyTCE = GeneralUtility::makeInstance(DataHandler::class);
-        $copyTCE->copyTree = $this->copyTree;
         $copyTCE->enableLogging = $this->enableLogging;
         // Transformations should NOT be carried out during copy
         $copyTCE->dontProcessTransformations = true;
