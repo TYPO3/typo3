@@ -84,16 +84,24 @@ final readonly class PageContext
     }
 
     /**
-     * Get primary (first) selected language.
+     * Get primary selected language for single-language views.
      *
-     * This is useful for operations that need a single language,
-     * like "View webpage" button or editing the page title.
+     * Logic:
+     * - If exactly 1 non-default language is selected → use that translation
+     * - If 0 or 2+ non-default languages are selected → use default (0)
      *
-     * @return int Primary language ID (first in selection)
+     * This ensures that when switching from multi-language to single-language view,
+     * the user's focused translation is preserved (when they had one selected).
+     *
+     * @return int Primary language ID
      */
     public function getPrimaryLanguageId(): int
     {
-        return $this->selectedLanguageIds[0] ?? 0;
+        $nonDefaultLanguages = array_filter($this->selectedLanguageIds, static fn(int $id): bool => $id > 0);
+        if (count($nonDefaultLanguages) === 1) {
+            return reset($nonDefaultLanguages);
+        }
+        return 0;
     }
 
     /**

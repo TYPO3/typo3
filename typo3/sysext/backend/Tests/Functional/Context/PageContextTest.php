@@ -358,7 +358,7 @@ final class PageContextTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function getPrimaryLanguageIdReturnsFirstSelectedLanguage(): void
+    public function getPrimaryLanguageIdReturnsSingleNonDefaultLanguage(): void
     {
         $site = new Site('test-site', 1, [
             'base' => 'https://example.com/',
@@ -373,7 +373,7 @@ final class PageContextTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', $site)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()))
-            ->withQueryParams(['languages' => [1, 2]]);
+            ->withQueryParams(['languages' => [0, 1]]);
 
         $pageContextFactory = $this->get(PageContextFactory::class);
         $pageContext = $pageContextFactory->createFromRequest(
@@ -382,7 +382,65 @@ final class PageContextTest extends FunctionalTestCase
             $this->backendUser
         );
 
+        // With exactly 1 non-default language selected, return that translation
         self::assertSame(1, $pageContext->getPrimaryLanguageId());
+    }
+
+    #[Test]
+    public function getPrimaryLanguageIdReturnsDefaultWhenMultipleNonDefaultSelected(): void
+    {
+        $site = new Site('test-site', 1, [
+            'base' => 'https://example.com/',
+            'languages' => [
+                ['languageId' => 0, 'locale' => 'en-US', 'base' => '/', 'title' => 'English'],
+                ['languageId' => 1, 'locale' => 'de-DE', 'base' => '/de', 'title' => 'German'],
+                ['languageId' => 2, 'locale' => 'fr-FR', 'base' => '/fr', 'title' => 'French'],
+            ],
+        ]);
+
+        $request = (new ServerRequest('https://example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('site', $site)
+            ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()))
+            ->withQueryParams(['languages' => [0, 1, 2]]);
+
+        $pageContextFactory = $this->get(PageContextFactory::class);
+        $pageContext = $pageContextFactory->createFromRequest(
+            $request,
+            4, // Page 4 has translations for L=1 and L=2
+            $this->backendUser
+        );
+
+        // With 2+ non-default languages selected, return default (0)
+        self::assertSame(0, $pageContext->getPrimaryLanguageId());
+    }
+
+    #[Test]
+    public function getPrimaryLanguageIdReturnsDefaultWhenOnlyDefaultSelected(): void
+    {
+        $site = new Site('test-site', 1, [
+            'base' => 'https://example.com/',
+            'languages' => [
+                ['languageId' => 0, 'locale' => 'en-US', 'base' => '/', 'title' => 'English'],
+                ['languageId' => 1, 'locale' => 'de-DE', 'base' => '/de', 'title' => 'German'],
+            ],
+        ]);
+
+        $request = (new ServerRequest('https://example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('site', $site)
+            ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()))
+            ->withQueryParams(['languages' => [0]]);
+
+        $pageContextFactory = $this->get(PageContextFactory::class);
+        $pageContext = $pageContextFactory->createFromRequest(
+            $request,
+            4,
+            $this->backendUser
+        );
+
+        // With only default language selected, return default (0)
+        self::assertSame(0, $pageContext->getPrimaryLanguageId());
     }
 
     #[Test]
