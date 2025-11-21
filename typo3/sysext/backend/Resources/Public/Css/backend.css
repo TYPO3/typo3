@@ -4081,7 +4081,7 @@ td.permission-column-group{-webkit-padding-start:0;padding-inline-start:0;white-
 #SetupModuleController .form-section>.form-group{width:50%}}
 [data-module-id=typo3-module-viewpage]{--viewpage-topbar-height:40px;--viewpage-resizable-size:5px;--viewpage-item-radius:5px}
 [data-module-id=typo3-module-viewpage] .module-body{text-align:center}
-[data-module-id=typo3-module-viewpage] .module-body .typo3-messages{text-align:start}
+[data-module-id=typo3-module-viewpage] .module-body .callout{text-align:start}
 [data-module-id=typo3-module-viewpage] .resizable-e,[data-module-id=typo3-module-viewpage] .resizable-s,[data-module-id=typo3-module-viewpage] .resizable-w{position:absolute;z-index:90}
 [data-module-id=typo3-module-viewpage] .resizable-w{height:100%;left:calc(var(--viewpage-resizable-size)*-1);top:0;width:var(--viewpage-resizable-size)}
 [data-module-id=typo3-module-viewpage] .resizable-s{bottom:calc(var(--viewpage-resizable-size)*-1);height:var(--viewpage-resizable-size);width:100%}

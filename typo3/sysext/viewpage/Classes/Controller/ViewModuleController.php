@@ -40,7 +40,6 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationCollection;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationMode;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyRegistry;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\UriValue;
-use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -85,13 +84,8 @@ final class ViewModuleController
         }
 
         if (!$this->isValidPage()) {
-            $view->addFlashMessage(
-                $languageService->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:noValidPageSelected'),
-                '',
-                ContextualFeedbackSeverity::INFO
-            );
             $view->getDocHeaderComponent()->disableAutomaticReloadButton();
-            return $view->renderResponse('Empty');
+            return $view->assign('info', $languageService->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:noValidPageSelected'))->renderResponse('Empty');
         }
 
         $previewLanguages = $this->getPreviewLanguages();
@@ -113,12 +107,7 @@ final class ViewModuleController
             ->buildUri();
         $targetUrl = (string)$targetUri;
         if ($targetUri === null || $targetUrl === '') {
-            $view->addFlashMessage(
-                $languageService->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:noSiteConfiguration'),
-                '',
-                ContextualFeedbackSeverity::WARNING
-            );
-            return $view->renderResponse('Empty');
+            return $view->assign('info', $languageService->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:noValidPageSelected'))->renderResponse('Empty');
         }
 
         $this->registerDocHeader($view, $previewLanguages, $languageId, $targetUrl);

@@ -5,6 +5,8 @@
 
 <f:layout name="Module" />
 
-<f:section name="Content"></f:section>
+<f:section name="Content">
+    <f:if condition="{info}"><f:be.infobox message="{info}" state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}" /></f:if>
+</f:section>
 
 </html>
