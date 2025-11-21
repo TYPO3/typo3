@@ -73,11 +73,6 @@ final readonly class AllowedCallableAssertion
                 || is_object($callable[0])
             )
         ) {
-            $className = is_object($callable[0]) ? get_class($callable[0]) : $callable[0];
-            // @todo remove, when testing-framework has been adjusted
-            if (str_starts_with($className, 'TYPO3\\TestingFramework\\')) {
-                return true;
-            }
             // lookup autoconfigured attributes
             $mapKey = [is_object($callable[0]) ? get_class($callable[0]) : $callable[0], $callable[1]];
             if (in_array($mapKey, $this->items, true)) {
