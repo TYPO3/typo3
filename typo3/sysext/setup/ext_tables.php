@@ -104,6 +104,7 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
             'type' => 'select',
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:theme',
             'items' => [
+                'fresh' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:theme.fresh',
                 'modern' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:theme.modern',
                 'classic' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:theme.classic',
             ],

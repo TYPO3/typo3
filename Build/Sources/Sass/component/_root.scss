@@ -91,9 +91,9 @@
     --typo3-text-color-default: var(--typo3-text-color-base);
 
     // Surfaces
-    --typo3-surface-dim: light-dark(var(--token-color-neutral-15), var(--token-color-neutral-91));
+    --typo3-surface-dim: light-dark(var(--token-color-neutral-15), var(--token-color-neutral-93));
     --typo3-surface-base: light-dark(var(--token-color-neutral-4), var(--token-color-neutral-91));
-    --typo3-surface-bright: light-dark(var(--token-color-neutral-4), var(--token-color-neutral-80));
+    --typo3-surface-bright: light-dark(var(--token-color-neutral-1), var(--token-color-neutral-80));
     --typo3-surface-container-lowest: light-dark(var(--token-color-neutral-1), var(--token-color-neutral-93));
     --typo3-surface-container-low: light-dark(var(--token-color-neutral-3), var(--token-color-neutral-92));
     --typo3-surface-container-base: light-dark(var(--token-color-neutral-5), var(--token-color-neutral-90));
@@ -149,7 +149,8 @@
         color .15s ease-in-out,
         background-color .15s ease-in-out,
         border-color .15s ease-in-out,
-        box-shadow .15s ease-in-out;
+        box-shadow .15s ease-in-out,
+        opacity .15s ease-in-out;
 
     &.t3js-disable-transitions {
         --typo3-transition-color: none;
@@ -157,7 +158,7 @@
 
     // Stateful Variants
     --typo3-state-default-color: light-dark(var(--token-color-neutral-90), var(--token-color-neutral-15));
-    --typo3-state-default-bg: light-dark(var(--token-color-neutral-5), var(--token-color-neutral-85));
+    --typo3-state-default-bg: light-dark(var(--token-color-neutral-3), var(--token-color-neutral-85));
     --typo3-state-default-border-color: light-dark(var(--token-color-neutral-25), var(--token-color-neutral-75));
     --typo3-state-default-hover-color: var(--typo3-state-default-color);
     --typo3-state-default-hover-bg: light-dark(var(--token-color-neutral-10), var(--token-color-neutral-80));
@@ -408,6 +409,16 @@
     .scaffold-modulemenu {
         color-scheme: only dark;
     }
+}
+
+[data-theme="fresh"] {
+    --typo3-color-neutral-mix: 20%;
+    --token-color-primary-base: #5033c7;
+    --token-color-secondary-base: hsl(from var(--token-color-primary-base) h 10% l);
+
+    // Scaffold
+    --typo3-scaffold-modulemenu-bg: light-dark(hsl(from var(--typo3-surface-primary) h 40% 20), hsl(from var(--typo3-surface-primary) h 20% 10));
+    --typo3-scaffold-modulemenu-color: var(--typo3-surface-primary-text);
 }
 
 :root.t3js-disable-transitions {

@@ -285,9 +285,9 @@ class PageRenderer implements SingletonInterface
                     $userTS = $GLOBALS['BE_USER']->getTSConfig();
 
                     $themeDisabled = $userTS['setup.']['fields.']['theme.']['disabled'] ?? '0';
-                    $theme = $GLOBALS['BE_USER']->uc['theme'] ?? $userTS['setup.']['fields.']['theme'] ?? 'auto';
+                    $theme = $GLOBALS['BE_USER']->uc['theme'] ?? $userTS['setup.']['fields.']['theme'] ?? 'fresh';
                     if ($themeDisabled === '1') {
-                        $theme = $userTS['setup.']['fields.']['theme'] ?? 'modern';
+                        $theme = $userTS['setup.']['fields.']['theme'] ?? 'fresh';
                     }
                     if ($theme !== 'modern') {
                         $attributes['data-theme'] = $theme;

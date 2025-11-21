@@ -219,6 +219,9 @@
 			<trans-unit id="theme.modern">
 				<source>Modern</source>
 			</trans-unit>
+			<trans-unit id="theme.fresh">
+				<source>Fresh</source>
+			</trans-unit>
 			<trans-unit id="colorScheme">
 				<source>Color scheme</source>
 			</trans-unit>

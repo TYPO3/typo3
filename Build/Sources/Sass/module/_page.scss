@@ -6,7 +6,7 @@
     --pagemodule-grid-border-color: color-mix(in srgb, var(--module-bg), currentColor 30%);
     --pagemodule-grid-spacing: 1rem;
     --pagemodule-grid-inner-spacing: 1rem;
-    --pagemodule-grid-cell-header-size: 1em;
+    --pagemodule-grid-cell-header-size: .875rem;
     --pagemodule-grid-cell-border-radius: calc(var(--pagemodule-grid-border-radius) - 3px);
     --pagemodule-grid-cell-bg: var(--typo3-surface-container-base);
     --pagemodule-grid-cell-restricted-bg: var(--typo3-surface-container-warning);
@@ -96,11 +96,12 @@
 }
 
 .t3-page-column-header-icons {
-    @include transition(opacity .15s ease-in);
-    opacity: .3;
+    color: var(--typo3-text-color-primary);
+    opacity: .65;
     position: absolute;
     inset-inline-end: calc(var(--pagemodule-grid-inner-spacing) * -1);
     bottom: 0;
+    transition: var(--typo3-transition-color);
 
     &:hover,
     &:focus-within {
