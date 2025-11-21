@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 final class PageTreeFilterCest
 {
     private string $filterInputField = '#typo3-pagetree #typo3-pagetree-toolbar .search-input';
-    private string $pageTreeSecondaryOptions = '#typo3-pagetree #typo3-pagetree-toolbar .dropdown-toggle';
+    private string $pageTreeSecondaryOptions = '#typo3-pagetree #typo3-pagetree-toolbar [data-bs-toggle="dropdown"]';
     private string $pageTreeReloadButton = '#typo3-pagetree #typo3-pagetree-toolbar typo3-backend-icon[identifier=actions-refresh]';
     private string $inPageTree = '#typo3-pagetree-tree .nodes-list';
 

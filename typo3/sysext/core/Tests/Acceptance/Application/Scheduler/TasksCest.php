@@ -74,9 +74,10 @@ final class TasksCest
         $I->waitForText('Edit Scheduler task "System Status Update" on root level');
         $I->seeInField('//textarea[contains(@data-formengine-input-name, "data[tx_scheduler_task]") and contains(@data-formengine-input-name, "[tx_reports_notification_email]")]', 'test@local.typo3.org');
         $I->fillField('//textarea[contains(@data-formengine-input-name, "data[tx_scheduler_task]") and contains(@data-formengine-input-name, "[tx_reports_notification_email]")]', 'foo@local.typo3.org');
-        $I->click('button[title="Save"]', '.module-docheader');
+        $I->click('h1');
+        $I->click('.module-docheader [name="_savedok"]');
         $I->waitForText('Edit Scheduler task');
-        $I->click('a[title="Close"]', '.module-docheader');
+        $I->click('.module-docheader a[title="Close"]');
     }
 
     public function canEnableAndDisableTask(ApplicationTester $I): void

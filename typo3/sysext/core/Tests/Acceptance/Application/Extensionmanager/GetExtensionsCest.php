@@ -48,9 +48,9 @@ final class GetExtensionsCest
 
         $I->waitForElementVisible('#typo3-extension-list');
 
-        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
-        $I->click('Get Extensions', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
+        $I->click('Get Extensions', '.module-docheader-buttons .dropdown-menu');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElementVisible('#terTable');
 

@@ -214,13 +214,13 @@ final class UsersCest extends AbstractCest
     private function setModAccess(ApplicationTester $I, int $userGroupId, array $modAccessByName): void
     {
         $I->switchToMainFrame();
-        $I->click('Backend Users');
+        $I->click('Users');
         $I->switchToContentFrame();
 
-        $I->waitForElementVisible($this->inModuleHeader . ' .module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->click($this->inModuleHeader . ' .module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementVisible($this->inModuleHeader . ' .module-docheader-bar-buttons .dropdown-menu');
-        $I->click('Backend user groups', $this->inModuleHeader . ' .module-docheader-bar-buttons .dropdown-menu');
+        $I->waitForElementVisible($this->inModuleHeader . ' .module-docheader-column .btn-group button.dropdown-toggle');
+        $I->click($this->inModuleHeader . ' .module-docheader-column .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible($this->inModuleHeader . ' .module-docheader-column .dropdown-menu');
+        $I->click('Backend user groups', $this->inModuleHeader . ' .module-docheader-column .dropdown-menu');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForText('Backend user groups');
         $I->click('//table/tbody/tr[descendant::button[@data-contextmenu-uid="' . $userGroupId . '"]]/td[2]/a');
@@ -260,16 +260,16 @@ final class UsersCest extends AbstractCest
             $I->seeElement($this->inModuleHeader . ' .btn-group button.dropdown-toggle');
         } catch (\Exception $e) {
             $I->switchToMainFrame();
-            $I->click('Backend Users');
+            $I->click('Users');
             $I->switchToContentFrame();
         }
 
         $codeMirrorSelector = 'typo3-t3editor-codemirror[name="data[be_users][' . $userId . '][TSconfig]"]';
 
-        $I->waitForElementVisible($this->inModuleHeader . ' .module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->click($this->inModuleHeader . ' .module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementVisible($this->inModuleHeader . ' .module-docheader-bar-buttons .dropdown-menu');
-        $I->click('Backend users', $this->inModuleHeader . ' .module-docheader-bar-buttons .dropdown-menu');
+        $I->waitForElementVisible($this->inModuleHeader . ' .module-docheader-column .btn-group button.dropdown-toggle');
+        $I->click($this->inModuleHeader . ' .module-docheader-column .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible($this->inModuleHeader . ' .module-docheader-column .dropdown-menu');
+        $I->click('Backend users', $this->inModuleHeader . ' .module-docheader-column .dropdown-menu');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElement('#typo3-backend-user-list');
         $I->click('//table[@id="typo3-backend-user-list"]/tbody/tr[descendant::button[@data-contextmenu-uid="' . $userId . '"]]//a[@title="Edit"]');

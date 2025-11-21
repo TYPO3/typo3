@@ -5,9 +5,8 @@ set -e
 cd "$(dirname $(realpath $0))/../../"
 
 PROJECT_PATH=${1:-typo3temp/var/tests/acceptance-composer/}
-export TYPO3_DB_DRIVER=${2:-${TYPO3_DB_DRIVER:-sqlite}}
-EXTRA_PACKAGES="${3}"
-ACCEPTANCE_TOPIC="${4}"
+EXTRA_PACKAGES="${2}"
+ACCEPTANCE_TOPIC="${3}"
 
 mkdir -p "${PROJECT_PATH}"
 ln -snf $(echo "${PROJECT_PATH}" | sed -e 's/[^\/][^\/]*/../g' -e 's/\/$//')/typo3/sysext "${PROJECT_PATH}/typo3-sysext"

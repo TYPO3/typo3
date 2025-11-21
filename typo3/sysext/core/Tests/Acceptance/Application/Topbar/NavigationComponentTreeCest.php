@@ -32,7 +32,7 @@ final class NavigationComponentTreeCest
     public function checkTreeExpandsAndCollapseByPageModule(ApplicationTester $I): void
     {
         $treeArea = '.scaffold-content-navigation-expanded';
-        $I->click('Page');
+        $I->click('Layout');
         $I->waitForElement($treeArea);
         $I->see('New TYPO3 site', $treeArea);
 
@@ -49,7 +49,7 @@ final class NavigationComponentTreeCest
     {
         $treeArea = '.scaffold-content-navigation-expanded';
 
-        $I->click('Filelist');
+        $I->click('Media');
 
         // Make sure 'fileadmin' is selected since FileClipboardCest clicks around on file tree, too.
         // @todo: Working on file tree could be extracted like Helper/PageTree

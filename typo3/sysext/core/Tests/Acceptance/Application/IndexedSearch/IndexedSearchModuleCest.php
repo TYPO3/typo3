@@ -31,14 +31,16 @@ final class IndexedSearchModuleCest
 
     public function checkExpectedTextOnIndexedSearchPages(ApplicationTester $I): void
     {
-        $I->click('[data-modulemenu-identifier="manage_search_index"]');
+        $I->click('[data-modulemenu-identifier="content_status"]');
         // click on PID=0
         $I->clickWithLeftButton('#typo3-pagetree-treeContainer [role="treeitem"][data-id="0"] .node-contentlabel');
         $I->switchToContentFrame();
+        $I->see('Status', 'h1');
+        $I->click('a[aria-label="Open Indexing module"]');
         // Click the module actions dropdown button and select "General statistics"
-        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
-        $I->click('General statistics', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
+        $I->click('General statistics', '.module-docheader-buttons .dropdown-menu');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->see('General statistics', '.t3js-module-body');
         $I->see('Row count by database table', '.t3js-module-body');
@@ -50,23 +52,23 @@ final class IndexedSearchModuleCest
         }
 
         // Click the module actions dropdown button and select "List of indexed pages"
-        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
-        $I->click('List of indexed pages', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
+        $I->click('List of indexed pages', '.module-docheader-buttons .dropdown-menu');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->see('List of indexed pages', '.t3js-module-body');
 
         // Click the module actions dropdown button and select "List of indexed external documents"
-        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
-        $I->click('List of indexed external documents', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
+        $I->click('List of indexed external documents', '.module-docheader-buttons .dropdown-menu');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->see('List of indexed external documents', '.t3js-module-body');
 
         // Click the module actions dropdown button and select "Detailed statistics"
-        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
-        $I->click('Detailed statistics', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
+        $I->click('Detailed statistics', '.module-docheader-buttons .dropdown-menu');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->see('Detailed statistics', '.t3js-module-body');
         $I->see('Please select a page in the page tree.', '.t3js-module-body');

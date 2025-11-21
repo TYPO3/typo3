@@ -28,13 +28,10 @@ final class ContentElementsCest
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
-        $I->click('Page');
+        $I->click('Layout');
         $pageTree->openPath(['styleguide frontend demo']);
         $I->switchToContentFrame();
-        $I->waitForElementVisible('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
-        $I->click('Layout', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->waitForElementVisible('.module-docheader-buttons .btn-group button.dropdown-toggle');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElementVisible('.t3js-module-docheader-buttons a[title="View webpage"]');
         $I->wait(1);

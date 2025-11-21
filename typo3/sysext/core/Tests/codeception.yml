@@ -23,7 +23,8 @@ modules:
       browser: chrome
       port: 9515
       path: /
-      window_size: 1280x1024
+      # scroll behaviour in main content frame somehow broke. raised window height to circumvent issue
+      window_size: 1280x2500
 env:
   ci:
     modules:

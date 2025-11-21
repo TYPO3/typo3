@@ -33,7 +33,7 @@ final class SiteModuleCest
     public function editExistingRecord(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $I->amGoingTo('Access the site module');
-        $I->click('Sites');
+        $I->click('Setup');
         $I->switchToContentFrame();
         $I->see('Site Configuration', 'h1');
 

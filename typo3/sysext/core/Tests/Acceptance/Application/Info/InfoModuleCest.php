@@ -33,8 +33,8 @@ final class InfoModuleCest
         $I->click('[data-modulemenu-identifier="content_status"]');
         $pageTree->openPath(['styleguide TCA demo']);
         $I->switchToContentFrame();
-        $I->see('Info', 'h1');
-        $I->see('The Web>Info module is focused on statistic information about pages.');
+        $I->see('Status', 'h1');
+        $I->see('The Status module provides an overview of site- and page-level information.');
     }
 
     private function infoMenuDataProvider(): array

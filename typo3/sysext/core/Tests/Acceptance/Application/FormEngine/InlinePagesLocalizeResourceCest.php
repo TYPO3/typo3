@@ -79,8 +79,8 @@ final class InlinePagesLocalizeResourceCest
 
     private static function toggleAllLanguages(ApplicationTester $I, bool $check = true): void
     {
-        $I->click('.module-docheader-bar-navigation button.dropdown-toggle');
-        $I->waitForElementVisible('.module-docheader-bar-navigation .dropdown-menu');
-        $I->click($check ? 'Check all' : 'Uncheck all', '.module-docheader-bar-navigation .dropdown-menu');
+        $I->click('.module-docheader-navigation button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-navigation .dropdown-menu');
+        $I->click($check ? 'Check all' : 'Uncheck all', '.module-docheader-navigation .dropdown-menu');
     }
 }

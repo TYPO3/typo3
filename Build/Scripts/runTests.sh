@@ -7,6 +7,35 @@ if [ "${CI}" != "true" ]; then
     trap 'echo "runTests.sh SIGINT signal emitted";cleanUp;exit 2' SIGINT
 fi
 
+printSummary() {
+    cleanUp
+
+    echo "" >&2
+    echo "###########################################################################" >&2
+    echo "Result of ${TEST_SUITE}" >&2
+    echo "Container runtime: ${CONTAINER_BIN}" >&2
+    echo "Container suffix: ${SUFFIX}"
+    echo "PHP: ${PHP_VERSION}" >&2
+    if [[ ${TEST_SUITE} =~ ^(functional|acceptance|acceptanceComposer|acceptanceInstall)$ ]]; then
+        case "${DBMS}" in
+            mariadb|mysql|postgres)
+                echo "DBMS: ${DBMS}  version ${DBMS_VERSION}  driver ${DATABASE_DRIVER}" >&2
+                ;;
+            sqlite)
+                echo "DBMS: ${DBMS}" >&2
+                ;;
+        esac
+    fi
+    if [[ ${SUITE_EXIT_CODE} -eq 0 ]]; then
+        echo "SUCCESS" >&2
+    else
+        echo "FAILURE" >&2
+    fi
+    echo "###########################################################################" >&2
+    echo "" >&2
+    exit ${SUITE_EXIT_CODE}
+}
+
 waitFor() {
     local HOST=${1}
     local PORT=${2}
@@ -186,7 +215,7 @@ runPlaywright() {
 
     if [ "${PLAYWRIGHT_USE_EXISTING_INSTANCE}x" = "x" ]; then
         rm -rf "${CORE_ROOT}/typo3temp/var/tests/playwright-composer" "${CORE_ROOT}/typo3temp/var/tests/playwright-reports" "${CORE_ROOT}/typo3temp/var/tests/playwright-results"
-        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-prepare ${XDEBUG_MODE} -e COMPOSER_CACHE_DIR=${CORE_ROOT}/.cache/composer -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${PREPAREPARAMS} ${IMAGE_PHP} "${CORE_ROOT}/Build/Scripts/setupAcceptanceComposer.sh" "typo3temp/var/tests/playwright-composer" sqlite
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-prepare ${XDEBUG_MODE} -e COMPOSER_CACHE_DIR=${CORE_ROOT}/.cache/composer -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${PREPAREPARAMS} ${IMAGE_PHP} "${CORE_ROOT}/Build/Scripts/setupAcceptanceComposer.sh" "typo3temp/var/tests/playwright-composer"
         if [[ $? -gt 0 ]]; then
             kill -SIGINT -$$
         fi
@@ -207,10 +236,14 @@ runPlaywright() {
 
     if [ ${CONTAINER_BIN} = "docker" ]; then
         ${CONTAINER_BIN} run --rm -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -e PHPFPM_USER=${HOST_UID} -e PHPFPM_GROUP=${HOST_PID} -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm ${PHP_FPM_OPTIONS} >/dev/null
+        SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
         ${CONTAINER_BIN} run --rm -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
+        SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
     else
         ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm ${USERSET} -e PHPFPM_USER=0 -e PHPFPM_GROUP=0 -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm -R ${PHP_FPM_OPTIONS} >/dev/null
+        SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
         ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
+        SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
     fi
 
     waitFor web 80
@@ -829,6 +862,7 @@ case ${TEST_SUITE} in
         fi
         if [ "${CHUNKS}" -gt 0 ]; then
             ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-splitter-${SUFFIX} ${IMAGE_PHP} php -dxdebug.mode=off Build/Scripts/splitAcceptanceTests.php -v ${CHUNKS}
+            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
             COMMAND=(bin/codecept run Application -d -g AcceptanceTests-Job-${THISCHUNK} -c typo3/sysext/core/Tests/codeception.yml ${CODECEPION_ENV} "$@" --html reports.html)
         else
             COMMAND=(bin/codecept run Application -d -c typo3/sysext/core/Tests/codeception.yml ${CODECEPION_ENV} "$@" --html reports.html)
@@ -838,15 +872,22 @@ case ${TEST_SUITE} in
             SELENIUM_GRID="-p 7900:7900 -e SE_VNC_NO_PASSWORD=1 -e VNC_NO_PASSWORD=1"
         fi
         rm -rf "${CORE_ROOT}/typo3temp/var/tests/acceptance" "${CORE_ROOT}/typo3temp/var/tests/AcceptanceReports"
+        SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
         mkdir -p "${CORE_ROOT}/typo3temp/var/tests/acceptance"
+        SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
         APACHE_OPTIONS="-e APACHE_RUN_USER=#${HOST_UID} -e APACHE_RUN_SERVERNAME=web -e APACHE_RUN_GROUP=#${HOST_PID} -e APACHE_RUN_DOCROOT=${CORE_ROOT}/typo3temp/var/tests/acceptance -e PHPFPM_HOST=phpfpm -e PHPFPM_PORT=9000"
         ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d ${SELENIUM_GRID} --name ac-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec ${IMAGE_SELENIUM} >/dev/null
+        SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
         if [ ${CONTAINER_BIN} = "docker" ]; then
             ${CONTAINER_BIN} run --rm -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -e PHPFPM_USER=${HOST_UID} -e PHPFPM_GROUP=${HOST_PID} -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm ${PHP_FPM_OPTIONS} >/dev/null
+            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
             ${CONTAINER_BIN} run --rm -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
+            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
         else
             ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm ${USERSET} -e PHPFPM_USER=0 -e PHPFPM_GROUP=0 -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm -R ${PHP_FPM_OPTIONS} >/dev/null
+            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
             ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
+            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
         fi
         waitFor chrome 4444
         if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ]; then
@@ -861,6 +902,7 @@ case ${TEST_SUITE} in
         case ${DBMS} in
             mariadb)
                 ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mariadb-ac-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MARIADB} >/dev/null
+                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
                 waitFor mariadb-ac-${SUFFIX} 3306
                 CONTAINERPARAMS="-e typo3DatabaseName=func_test -e typo3DatabaseUsername=root -e typo3DatabasePassword=funcp -e typo3DatabaseHost=mariadb-ac-${SUFFIX}"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-mariadb ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} "${COMMAND[@]}"
@@ -868,6 +910,7 @@ case ${TEST_SUITE} in
                 ;;
             mysql)
                 ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mysql-ac-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MYSQL} >/dev/null
+                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
                 waitFor mysql-ac-${SUFFIX} 3306
                 CONTAINERPARAMS="-e typo3DatabaseName=func_test -e typo3DatabaseUsername=root -e typo3DatabasePassword=funcp -e typo3DatabaseHost=mysql-ac-${SUFFIX}"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-mysql ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} "${COMMAND[@]}"
@@ -875,6 +918,7 @@ case ${TEST_SUITE} in
                 ;;
             postgres)
                 ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name postgres-ac-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_PASSWORD=funcp -e POSTGRES_USER=funcu --tmpfs /var/lib/postgresql/data:rw,noexec,nosuid ${IMAGE_POSTGRES} >/dev/null
+                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
                 waitFor postgres-ac-${SUFFIX} 5432
                 CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_pgsql -e typo3DatabaseName=func_test -e typo3DatabaseUsername=funcu -e typo3DatabasePassword=funcp -e typo3DatabaseHost=postgres-ac-${SUFFIX}"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-postgres ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} "${COMMAND[@]}"
@@ -882,7 +926,9 @@ case ${TEST_SUITE} in
                 ;;
             sqlite)
                 rm -rf "${CORE_ROOT}/typo3temp/var/tests/acceptance-sqlite-dbs/"
+                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
                 mkdir -p "${CORE_ROOT}/typo3temp/var/tests/acceptance-sqlite-dbs/"
+                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
                 CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_sqlite"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-sqlite ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} "${COMMAND[@]}"
                 SUITE_EXIT_CODE=$?
@@ -897,29 +943,32 @@ case ${TEST_SUITE} in
         case ${DBMS} in
             mariadb)
                 ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mariadb-ac-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=acp -e MYSQL_DATABASE=ac_test --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MARIADB} >/dev/null
+                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
                 waitFor mariadb-ac-${SUFFIX} 3306
-                PREPAREPARAMS="-e TYPO3_DB_DRIVER=mysqli -e TYPO3_DB_DBNAME=ac_test -e TYPO3_DB_USERNAME=root -e TYPO3_DB_PASSWORD=acp -e TYPO3_DB_HOST=mariadb-ac-${SUFFIX} -e TYPO3_DB_PORT=3306"
+                PREPAREPARAMS="-e TYPO3_DB_DRIVER=${DATABASE_DRIVER} -e TYPO3_DB_DBNAME=ac_test -e TYPO3_DB_USERNAME=root -e TYPO3_DB_PASSWORD=acp -e TYPO3_DB_HOST=mariadb-ac-${SUFFIX} -e TYPO3_DB_PORT=3306"
                 TESTPARAMS="-e typo3DatabaseName=ac_test -e typo3DatabaseUsername=root -e typo3DatabasePassword=funcp -e typo3DatabaseHost=mariadb-ac-${SUFFIX}"
                 ;;
             mysql)
                 ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mysql-ac-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=acp -e MYSQL_DATABASE=ac_test --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MYSQL} >/dev/null
+                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
                 waitFor mysql-ac-${SUFFIX} 3306
-                PREPAREPARAMS="-e TYPO3_DB_DRIVER=mysqli -e TYPO3_DB_DBNAME=ac_test -e TYPO3_DB_USERNAME=root -e TYPO3_DB_PASSWORD=acp -e TYPO3_DB_HOST=mysql-ac-${SUFFIX} -e TYPO3_DB_PORT=3306"
+                PREPAREPARAMS="-e TYPO3_DB_DRIVER=${DATABASE_DRIVER} -e TYPO3_DB_DBNAME=ac_test -e TYPO3_DB_USERNAME=root -e TYPO3_DB_PASSWORD=acp -e TYPO3_DB_HOST=mysql-ac-${SUFFIX} -e TYPO3_DB_PORT=3306"
                 TESTPARAMS="-e typo3DatabaseName=ac_test -e typo3DatabaseUsername=root -e typo3DatabasePassword=funcp -e typo3DatabaseHost=mysql-ac-${SUFFIX}"
                 ;;
             postgres)
                 ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name postgres-ac-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_DB=ac_test -e POSTGRES_PASSWORD=acp -e POSTGRES_USER=ac_test --tmpfs /var/lib/postgresql/data:rw,noexec,nosuid ${IMAGE_POSTGRES} >/dev/null
+                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
                 waitFor postgres-ac-${SUFFIX} 5432
                 PREPAREPARAMS="-e TYPO3_DB_DRIVER=postgres -e TYPO3_DB_DBNAME=ac_test -e TYPO3_DB_USERNAME=ac_test -e TYPO3_DB_PASSWORD=acp -e TYPO3_DB_HOST=postgres-ac-${SUFFIX} -e TYPO3_DB_PORT=5432"
-                TESTPARAMS="-e typo3DatabaseDriver=pdo_pgsql -e typo3DatabaseName=ac_test -e typo3DatabaseUsername=ac_test -e typo3DatabasePassword=acp -e typo3DatabaseHost=postgres-ac-${SUFFIX}"
+                TESTPARAMS="-e typo3DatabaseDriver=postgres -e typo3DatabaseName=ac_test -e typo3DatabaseUsername=ac_test -e typo3DatabasePassword=acp -e typo3DatabaseHost=postgres-ac-${SUFFIX}"
                 ;;
             sqlite)
                 PREPAREPARAMS="-e TYPO3_DB_DRIVER=sqlite"
-                TESTPARAMS="-e typo3DatabaseDriver=pdo_sqlite"
+                TESTPARAMS="-e typo3DatabaseDriver=sqlite"
                 ;;
         esac
 
-        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name acceptance-prepare ${XDEBUG_MODE} -e COMPOSER_CACHE_DIR=${CORE_ROOT}/.cache/composer -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${PREPAREPARAMS} ${IMAGE_PHP} "${CORE_ROOT}/Build/Scripts/setupAcceptanceComposer.sh" "typo3temp/var/tests/acceptance-composer" sqlite "" "${ACCEPTANCE_TOPIC}"
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name acceptance-prepare ${XDEBUG_MODE} -e COMPOSER_CACHE_DIR=${CORE_ROOT}/.cache/composer -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${PREPAREPARAMS} ${IMAGE_PHP} "${CORE_ROOT}/Build/Scripts/setupAcceptanceComposer.sh" "typo3temp/var/tests/acceptance-composer" "" "${ACCEPTANCE_TOPIC}"
         SUITE_EXIT_CODE=$?
         if [[ ${SUITE_EXIT_CODE} -eq 0 ]]; then
             CODECEPION_ENV="--env ci,composer,${ACCEPTANCE_TOPIC}"
@@ -928,6 +977,7 @@ case ${TEST_SUITE} in
             fi
             if [ "${CHUNKS}" -gt 0 ]; then
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-splitter-${SUFFIX} ${IMAGE_PHP} php -dxdebug.mode=off Build/Scripts/splitAcceptanceTests.php -v ${CHUNKS}
+                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
                 COMMAND=(bin/codecept run Application -d -g AcceptanceTests-Job-${THISCHUNK} -c typo3/sysext/core/Tests/codeception.yml ${CODECEPION_ENV} "$@" --html reports.html)
             else
                 COMMAND=(bin/codecept run Application -d -c typo3/sysext/core/Tests/codeception.yml ${CODECEPION_ENV} "$@" --html reports.html)
@@ -938,12 +988,17 @@ case ${TEST_SUITE} in
             fi
             APACHE_OPTIONS="-e APACHE_RUN_USER=#${HOST_UID} -e APACHE_RUN_SERVERNAME=web -e APACHE_RUN_GROUP=#${HOST_PID} -e APACHE_RUN_DOCROOT=${CORE_ROOT}/typo3temp/var/tests/acceptance-composer/public -e PHPFPM_HOST=phpfpm -e PHPFPM_PORT=9000"
             ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d ${SELENIUM_GRID} --name ac-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec ${IMAGE_SELENIUM} >/dev/null
+            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
             if [ ${CONTAINER_BIN} = "docker" ]; then
                 ${CONTAINER_BIN} run --rm -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -e PHPFPM_USER=${HOST_UID} -e PHPFPM_GROUP=${HOST_PID} -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm ${PHP_FPM_OPTIONS} >/dev/null
+                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
                 ${CONTAINER_BIN} run --rm -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
+                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
             else
                 ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm ${USERSET} -e PHPFPM_USER=0 -e PHPFPM_GROUP=0 -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm -R ${PHP_FPM_OPTIONS} >/dev/null
+                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
                 ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
+                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
             fi
             waitFor chrome 4444
             if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ]; then
@@ -955,7 +1010,6 @@ case ${TEST_SUITE} in
             elif [ "${ACCEPTANCE_HEADLESS}" -eq 0 ] && type "open" >/dev/null; then
                 open http://localhost:7900/?autoconnect=1 >/dev/null
             fi
-
             ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-${DBMS}-composer ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${TESTPARAMS} ${IMAGE_PHP} "${COMMAND[@]}"
             SUITE_EXIT_CODE=$?
         fi
@@ -966,15 +1020,22 @@ case ${TEST_SUITE} in
             SELENIUM_GRID="-p 7900:7900 -e SE_VNC_NO_PASSWORD=1 -e VNC_NO_PASSWORD=1"
         fi
         rm -rf "${CORE_ROOT}/typo3temp/var/tests/acceptance" "${CORE_ROOT}/typo3temp/var/tests/AcceptanceReports"
+        SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
         mkdir -p "${CORE_ROOT}/typo3temp/var/tests/acceptance"
+        SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
         APACHE_OPTIONS="-e APACHE_RUN_USER=#${HOST_UID} -e APACHE_RUN_SERVERNAME=web -e APACHE_RUN_GROUP=#${HOST_PID} -e APACHE_RUN_DOCROOT=${CORE_ROOT}/typo3temp/var/tests/acceptance -e PHPFPM_HOST=phpfpm -e PHPFPM_PORT=9000"
         ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d ${SELENIUM_GRID} --name ac-install-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec ${IMAGE_SELENIUM} >/dev/null
+        SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
         if [ ${CONTAINER_BIN} = "docker" ]; then
             ${CONTAINER_BIN} run --rm -d --name ac-install-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -e PHPFPM_USER=${HOST_UID} -e PHPFPM_GROUP=${HOST_PID} -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm ${PHP_FPM_OPTIONS} >/dev/null
+            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
             ${CONTAINER_BIN} run --rm -d --name ac-install-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
+            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
         else
             ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-install-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm ${USERSET} -e PHPFPM_USER=0 -e PHPFPM_GROUP=0 -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm -R ${PHP_FPM_OPTIONS} >/dev/null
+            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
             ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-install-web-${SUFFIX} --network ${NETWORK} --network-alias web -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
+            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
         fi
         waitFor chrome 4444
         if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ]; then
@@ -993,6 +1054,7 @@ case ${TEST_SUITE} in
                     CODECEPION_ENV="--env ci,mysql,headless"
                 fi
                 ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mariadb-ac-install-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MARIADB} >/dev/null
+                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
                 waitFor mariadb-ac-install-${SUFFIX} 3306
                 CONTAINERPARAMS="-e typo3InstallMysqlDatabaseName=func_test -e typo3InstallMysqlDatabaseUsername=root -e typo3InstallMysqlDatabasePassword=funcp -e typo3InstallMysqlDatabaseHost=mariadb-ac-install-${SUFFIX}"
                 COMMAND="bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${CODECEPION_ENV} --html reports.html"
@@ -1005,6 +1067,7 @@ case ${TEST_SUITE} in
                     CODECEPION_ENV="--env ci,mysql,headless"
                 fi
                 ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mysql-ac-install-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MYSQL} >/dev/null
+                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
                 waitFor mysql-ac-install-${SUFFIX} 3306
                 CONTAINERPARAMS="-e typo3InstallMysqlDatabaseName=func_test -e typo3InstallMysqlDatabaseUsername=root -e typo3InstallMysqlDatabasePassword=funcp -e typo3InstallMysqlDatabaseHost=mysql-ac-install-${SUFFIX}"
                 COMMAND="bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${CODECEPION_ENV} --html reports.html"
@@ -1017,6 +1080,7 @@ case ${TEST_SUITE} in
                     CODECEPION_ENV="--env ci,postgresql,headless"
                 fi
                 ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name postgres-ac-install-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_PASSWORD=funcp -e POSTGRES_USER=funcu --tmpfs /var/lib/postgresql/data:rw,noexec,nosuid ${IMAGE_POSTGRES} >/dev/null
+                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
                 waitFor postgres-ac-install-${SUFFIX} 5432
                 CONTAINERPARAMS="-e typo3InstallPostgresqlDatabasePort=5432 -e typo3InstallPostgresqlDatabaseName=${USER} -e typo3InstallPostgresqlDatabaseHost=postgres-ac-install-${SUFFIX} -e typo3InstallPostgresqlDatabaseUsername=funcu -e typo3InstallPostgresqlDatabasePassword=funcp"
                 COMMAND="bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${CODECEPION_ENV} --html reports.html"
@@ -1025,7 +1089,9 @@ case ${TEST_SUITE} in
                 ;;
             sqlite)
                 rm -rf "${CORE_ROOT}/typo3temp/var/tests/acceptance-sqlite-dbs/"
+                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
                 mkdir -p "${CORE_ROOT}/typo3temp/var/tests/acceptance-sqlite-dbs/"
+                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
                 CODECEPION_ENV="--env ci,sqlite"
                 if [ "${ACCEPTANCE_HEADLESS}" -eq 1 ]; then
                     CODECEPION_ENV="--env ci,sqlite,headless"
@@ -1379,32 +1445,5 @@ case ${TEST_SUITE} in
         ;;
 esac
 
-cleanUp
-
-# Print summary
-echo "" >&2
-echo "###########################################################################" >&2
-echo "Result of ${TEST_SUITE}" >&2
-echo "Container runtime: ${CONTAINER_BIN}" >&2
-echo "Container suffix: ${SUFFIX}"
-echo "PHP: ${PHP_VERSION}" >&2
-if [[ ${TEST_SUITE} =~ ^(functional|acceptance|acceptanceComposer|acceptanceInstall)$ ]]; then
-    case "${DBMS}" in
-        mariadb|mysql|postgres)
-            echo "DBMS: ${DBMS}  version ${DBMS_VERSION}  driver ${DATABASE_DRIVER}" >&2
-            ;;
-        sqlite)
-            echo "DBMS: ${DBMS}" >&2
-            ;;
-    esac
-fi
-if [[ ${SUITE_EXIT_CODE} -eq 0 ]]; then
-    echo "SUCCESS" >&2
-else
-    echo "FAILURE" >&2
-fi
-echo "###########################################################################" >&2
-echo "" >&2
-
-# Exit with code of test suite - This script return non-zero if the executed test failed.
-exit $SUITE_EXIT_CODE
+# Cleanup, print summary && exit with exitcode
+printSummary

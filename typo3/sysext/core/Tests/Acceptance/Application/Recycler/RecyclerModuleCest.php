@@ -89,7 +89,7 @@ final class RecyclerModuleCest
         $I->click('button[data-multi-record-selection-action="massundo"]');
         $this->modalDialog->canSeeDialog();
         $I->click('#undo-recursive');
-        $this->modalDialog->clickButtonInDialog('Recover');
+        $this->modalDialog->clickButtonInDialog('Restore');
 
         $I->amGoingTo('See if page and content got restored');
         $I->switchToMainFrame();

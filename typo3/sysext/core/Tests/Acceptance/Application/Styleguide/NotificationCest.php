@@ -24,13 +24,17 @@ final class NotificationCest
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
-        $I->amOnPage('/typo3/module/system/styleguide/components?action=notifications');
+        $I->click('Styleguide', '.scaffold-modulemenu');
     }
 
     public function seeClearAllButton(ApplicationTester $I): void
     {
         $I->amGoingTo('Open a notification');
         $I->switchToContentFrame();
+        $I->click('a[aria-label="Open Component Library: Components module"]');
+        $I->waitForText('Open Notifications component');
+        $I->click('Open Notifications component');
+        $I->waitForText('Notifications');
         $I->click('.styleguide-content .styleguide-example button');
         $I->switchToMainFrame();
         $I->waitForElement('#alert-container');

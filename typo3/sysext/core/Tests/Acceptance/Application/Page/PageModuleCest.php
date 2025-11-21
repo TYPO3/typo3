@@ -35,7 +35,7 @@ final class PageModuleCest
     {
         // Select the root page
         $I->switchToMainFrame();
-        $I->click('Page');
+        $I->click('Layout');
         // click on PID=0
         $I->clickWithLeftButton('#typo3-pagetree-treeContainer [role="treeitem"][data-id="0"] .node-contentlabel');
         $I->switchToContentFrame();
@@ -51,7 +51,7 @@ final class PageModuleCest
 
         // Select module 'Page' and select page 'A'
         $I->switchToMainFrame();
-        $I->click('Page');
+        $I->click('Layout');
         $pageTree->openPath($pagePathA);
         $I->switchToContentFrame();
         $I->canSee($pageTitleA);
@@ -70,7 +70,7 @@ final class PageModuleCest
 
         // Switch to module 'Page': page must still be 'B'
         $I->switchToMainFrame();
-        $I->click('Page');
+        $I->click('Layout');
         $I->switchToContentFrame();
         $I->canSee($pageTitleB);
     }
@@ -81,7 +81,7 @@ final class PageModuleCest
         $newPageTitle = 'styleguide TCA demo page';
 
         $I->switchToMainFrame();
-        $I->click('Page');
+        $I->click('Layout');
         $pageTree->openPath([$oldPageTitle]);
         $I->switchToContentFrame();
 

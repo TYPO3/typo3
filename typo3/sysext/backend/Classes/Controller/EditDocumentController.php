@@ -490,10 +490,13 @@ class EditDocumentController
 
         $view->setModuleName($this->module->getIdentifier());
 
-        $parentIdentifier = null;
-        $parent = $this->module->getParentModule();
-        while ($parent->getParentModule() !== null) {
-            $parent = $parent->getParentModule();
+        if ($this->module->isStandalone()) {
+            $parent = $this->module;
+        } else {
+            $parent = $this->module->getParentModule();
+            while ($parent?->getParentModule() !== null) {
+                $parent = $parent->getParentModule();
+            }
         }
         if ($parent === null) {
             return;

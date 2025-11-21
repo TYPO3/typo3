@@ -38,7 +38,7 @@ final class TaskGroupsCest
 
     public function createASchedulerGroup(ApplicationTester $I, ModalDialog $modalDialog): void
     {
-        $I->click('.t3js-create-group', '.module-docheader');
+        $I->click('.module-docheader .t3js-create-group');
         $modalDialog->canSeeDialog();
         $I->fillField('input[name="action[createGroup]"]', $this->groupName);
         $modalDialog->clickButtonInDialog('Create group');
@@ -58,10 +58,10 @@ final class TaskGroupsCest
         $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div.form-wizards-wrap';
         $select = $formWizardsWrap . ' > div:nth-of-type(1) > select';
         $I->seeOptionIsSelected($select, $this->groupName . ' [tx_scheduler_task_group_1]');
-        $I->click('button[title="Save"]', '.module-docheader');
+        $I->click('.module-docheader button[title="Save"]');
         // Show the "Edit record" screen (= it is saved)
         $I->waitForText('Edit Scheduler task');
-        $I->click('a[title="Close"]', '.module-docheader');
+        $I->click('.module-docheader a[title="Close"]');
         $I->seeElement('//div[contains(@class, "panel-heading")][contains(., "' . $this->groupName . '")]');
     }
 
@@ -92,10 +92,10 @@ final class TaskGroupsCest
 
         $I->fillField('textarea[data-formengine-input-name="data[tx_scheduler_task_group][1][description]"]', $groupDescription);
 
-        $I->click('button[title="Save"]', '.module-docheader');
+        $I->click('.module-docheader button[title="Save"]');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForText('Edit Scheduler task group');
-        $I->click('a[title="Close"]', '.module-docheader');
+        $I->click('.module-docheader a[title="Close"]');
 
         $I->seeElement('//div[contains(@class, "panel")][contains(., "' . $this->groupName . '")][contains(@style, "border-left") and contains(@style, "#FF8700")]');
         $I->see($groupDescription, '//div[contains(@class, "panel-title")][contains(., "' . $this->groupName . '")]//p[contains(@class, "text-muted")]');
@@ -121,7 +121,7 @@ final class TaskGroupsCest
     {
         $newGroupName = 'Group via Edit';
 
-        $I->click('.t3js-create-group', '.module-docheader');
+        $I->click('.module-docheader .t3js-create-group');
         $modalDialog->canSeeDialog();
         $I->fillField('input[name="action[createGroup]"]', $newGroupName);
         $I->click('Edit', $modalDialog::$openedModalSelector);

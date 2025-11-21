@@ -27,8 +27,6 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
  */
 final class RecordDownloadWithPresetCest
 {
-    private string $inModuleHeader = '.module-docheader';
-
     public function recordsCanBeExportedWithPreset(ApplicationTester $I, PageTree $pageTree, ModalDialog $modalDialog): void
     {
         $I->useExistingSession('admin');
@@ -83,19 +81,19 @@ final class RecordDownloadWithPresetCest
     private function setUserTsConfig(ApplicationTester $I, int $userId, string $userTsConfig): void
     {
         try {
-            $I->seeElement($this->inModuleHeader . ' .btn-group button.dropdown-toggle');
+            $I->seeElement('.module-docheader .btn-group button.dropdown-toggle');
         } catch (\Exception $e) {
             $I->switchToMainFrame();
-            $I->click('Backend Users');
+            $I->click('Users');
             $I->switchToContentFrame();
         }
 
         $codeMirrorSelector = 'typo3-t3editor-codemirror[name="data[be_users][' . $userId . '][TSconfig]"]';
 
-        $I->waitForElementVisible($this->inModuleHeader . ' .module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->click($this->inModuleHeader . ' .module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementVisible($this->inModuleHeader . ' .module-docheader-bar-buttons .dropdown-menu');
-        $I->click('Backend users', $this->inModuleHeader . ' .module-docheader-bar-buttons .dropdown-menu');
+        $I->waitForElementVisible('.module-docheader .module-docheader-column .btn-group button.dropdown-toggle');
+        $I->click('.module-docheader .module-docheader-column .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader .module-docheader-column .dropdown-menu');
+        $I->click('Backend users', '.module-docheader .module-docheader-column .dropdown-menu');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElement('#typo3-backend-user-list');
         $I->click('//table[@id="typo3-backend-user-list"]/tbody/tr[descendant::button[@data-contextmenu-uid="' . $userId . '"]]//a[@title="Edit"]');
@@ -104,7 +102,7 @@ final class RecordDownloadWithPresetCest
         $I->click('//form[@id="EditDocumentController"]//ul/li[3]/button');
         $I->waitForElementVisible($codeMirrorSelector);
         $I->executeJS("document.querySelector('" . $codeMirrorSelector . "').setContent('" . $userTsConfig . "')");
-        $I->click($this->inModuleHeader . ' .btn[title="Save"]');
+        $I->click('.module-docheader .btn[title="Save"]');
         $I->wait(0.5);
         $I->switchToMainFrame();
         try {
@@ -119,7 +117,7 @@ final class RecordDownloadWithPresetCest
         }
         $I->switchToContentFrame();
         $I->wait(0.5);
-        $I->click($this->inModuleHeader . ' .btn[title="Close"]');
+        $I->click('.module-docheader .btn[title="Close"]');
         $I->waitForElement('#typo3-backend-user-list');
     }
 

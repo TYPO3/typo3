@@ -30,7 +30,7 @@ final class SitemapXmlCest
     public function _before(ApplicationTester $I, PageTree $pageTree)
     {
         $I->useExistingSession('admin');
-        $I->click('Page');
+        $I->click('Layout');
         $pageTree->openPath(['styleguide frontend demo']);
         $I->switchToContentFrame();
         $I->waitForElementVisible('a[title="View webpage"]');

@@ -50,12 +50,12 @@ final class TemplateCest
         // click on website root page
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
-        $I->waitForElementVisible('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .btn-group button.dropdown-toggle');
         $I->waitForElementNotVisible('#nprogress', 120);
         // Click the module actions dropdown button and select "Edit TypoScript Record"
-        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
-        $I->click('Edit TypoScript Record', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
+        $I->click('Edit TypoScript Record', '.module-docheader-buttons .dropdown-menu');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForText('No TypoScript record');
         $I->see('No TypoScript record on the current page');
@@ -67,23 +67,23 @@ final class TemplateCest
         $I->switchToMainFrame();
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
-        $I->waitForElementVisible('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .btn-group button.dropdown-toggle');
         $I->waitForElementNotVisible('#nprogress', 120);
         // Click the module actions dropdown button and select "Constant Editor"
-        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
-        $I->click('Constant Editor', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
+        $I->click('Constant Editor', '.module-docheader-buttons .dropdown-menu');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->wait(3);
         $I->waitForText('Root TypoScript record');
         $I->click("//input[@name='newWebsite']");
 
         // change to Override TypoScript and see the TypoScript record overview table
-        $I->waitForElementVisible('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .btn-group button.dropdown-toggle');
         $I->waitForElementNotVisible('#nprogress', 120);
-        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
-        $I->click('Edit TypoScript Record', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
+        $I->click('Edit TypoScript Record', '.module-docheader-buttons .dropdown-menu');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->wait(3);
         $I->waitForElement('.table-striped');
@@ -120,11 +120,11 @@ final class TemplateCest
         $I->see('Acceptance Test Site');
 
         // change the TypoScript record within the TypoScript Object Browser
-        $I->waitForElementVisible('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .btn-group button.dropdown-toggle');
         $I->waitForElementNotVisible('#nprogress', 120);
-        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
-        $I->click('Active TypoScript', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
+        $I->click('Active TypoScript', '.module-docheader-buttons .dropdown-menu');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->click('#panel-tree-heading-setup');
         $I->waitForText('Setup');
@@ -157,11 +157,11 @@ final class TemplateCest
             $pageTree->openPath(['styleguide frontend demo', 'menu_sitemap_pages']);
         }
         $I->switchToContentFrame();
-        $I->waitForElementVisible('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .btn-group button.dropdown-toggle');
         $I->waitForElementNotVisible('#nprogress', 120);
-        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
-        $I->click('Constant Editor', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
+        $I->click('Constant Editor', '.module-docheader-buttons .dropdown-menu');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForText('No TypoScript record');
         $I->see('No TypoScript record on the current page');
@@ -170,11 +170,11 @@ final class TemplateCest
         $I->clickWithLeftButton('//a[text()[normalize-space(.) = "Select this TypoScript record"]]');
 
         // see the page has a TypoScript record
-        $I->waitForElementVisible('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .btn-group button.dropdown-toggle');
         $I->waitForElementNotVisible('#nprogress', 120);
-        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
-        $I->click('Edit TypoScript Record', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
+        $I->click('Edit TypoScript Record', '.module-docheader-buttons .dropdown-menu');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElement('.table-striped');
         $I->waitForText('Title');
@@ -200,22 +200,22 @@ final class TemplateCest
         $pageTree->openPath(['styleguide frontend demo', 'menu_sitemap_pages']);
         $I->clickWithLeftButton('//*[text()=\'menu_sitemap_pages\']');
         $I->switchToContentFrame();
-        $I->waitForElementVisible('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .btn-group button.dropdown-toggle');
         $I->waitForElementNotVisible('#nprogress', 120);
-        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
-        $I->click('Constant Editor', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
+        $I->click('Constant Editor', '.module-docheader-buttons .dropdown-menu');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForText('No TypoScript record');
         $I->see('No TypoScript record on the current page');
         $I->see('You need to create a TypoScript record in order to edit your configuration.');
         $I->clickWithLeftButton('//input[@name=\'createExtension\']');
         // see the page has a TypoScript record
-        $I->waitForElementVisible('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .btn-group button.dropdown-toggle');
         $I->waitForElementNotVisible('#nprogress', 120);
-        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
-        $I->click('Edit TypoScript Record', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
+        $I->click('Edit TypoScript Record', '.module-docheader-buttons .dropdown-menu');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElement('.table-striped');
         $I->waitForText('Title');
@@ -241,11 +241,11 @@ final class TemplateCest
         $I->switchToMainFrame();
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
-        $I->waitForElementVisible('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .btn-group button.dropdown-toggle');
         $I->waitForElementNotVisible('#nprogress', 120);
-        $I->click('.module-docheader-bar-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementVisible('.module-docheader-bar-buttons .dropdown-menu');
-        $I->click('Active TypoScript', '.module-docheader-bar-buttons .dropdown-menu');
+        $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
+        $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
+        $I->click('Active TypoScript', '.module-docheader-buttons .dropdown-menu');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForText('Active TypoScript for record');
         $I->amGoingTo('type "styles" into the search field and submit.');

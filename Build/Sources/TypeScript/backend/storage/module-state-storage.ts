@@ -35,6 +35,11 @@ export class ModuleStateStorage {
 
   public static update(module: string, identifier: string|number): CurrentState
   {
+    // @todo: Please double-check - Just a temporary fix
+    if(identifier === null) {
+      identifier = 0;
+    }
+
     if (typeof identifier === 'number') {
       identifier = identifier.toString(10);
     } else if (typeof identifier !== 'string') {

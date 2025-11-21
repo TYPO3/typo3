@@ -85,7 +85,7 @@ final class FalMetadataCest
 
         $I->amGoingTo('Change default metadata');
         $I->switchToMainFrame();
-        $I->click('Filelist');
+        $I->click('Media');
         $I->waitForText('fileadmin');
         $fileTree->openPath(['fileadmin', 'styleguide']);
 
@@ -243,7 +243,7 @@ final class FalMetadataCest
     private function goToPageModule(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->switchToMainFrame();
-        $I->click('Page');
+        $I->click('Layout');
         $pageTree->openPath(['styleguide TCA demo']);
         $I->switchToContentFrame();
         $I->waitForText('styleguide TCA demo');

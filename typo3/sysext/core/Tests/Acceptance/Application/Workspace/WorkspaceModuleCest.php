@@ -48,7 +48,7 @@ final class WorkspaceModuleCest
      */
     public function editPageTitleAndSeeChangeInWorkspaceModule(ApplicationTester $I, PageTree $pageTree): void
     {
-        $I->click('Page');
+        $I->click('Layout');
         $pageTree->openPath([self::$currentPageTitle]);
 
         $I->comment('Rename page');
@@ -78,7 +78,7 @@ final class WorkspaceModuleCest
      */
     public function chooseMassActionPublish(ApplicationTester $I, ModalDialog $modalDialog): void
     {
-        $I->click('Workspaces');
+        $I->click('Publish');
         $I->switchToContentFrame();
         $I->waitForElementVisible('select[name=mass-action]');
         $I->selectOption('select[name=mass-action]', 'Publish');

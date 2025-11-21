@@ -119,8 +119,7 @@ final class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
 
     public function moveTableColumnsAndRows(ApplicationTester $I): void
     {
-        $formSection = $this->getTable($I);
-        $formSection->getLocationOnScreenOnceScrolledIntoView();
+        $this->getTable($I)->getLocationOnScreenOnceScrolledIntoView();
 
         $I->fillField('input[data-row="0"][data-col="0"]', 'Test Column 1');
         $I->fillField('input[data-row="0"][data-col="1"]', 'Test Column 2');
@@ -138,6 +137,7 @@ final class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
         $I->assertEquals($textOriginColumn, $textNewColumn);
 
         $I->amGoingTo('move column to the left');
+        $this->getTable($I)->getLocationOnScreenOnceScrolledIntoView();
         $textOriginColumn = $I->grabValueFrom('input[data-row="0"][data-col="1"]');
         $I->click('typo3-formengine-table-wizard tr > th:nth-child(3) button[title="Move left"]');
         $I->click(self::$saveButtonLink);
@@ -150,6 +150,7 @@ final class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
         $I->assertEquals($textOriginColumn, $textNewColumn);
 
         $I->amGoingTo('move row down');
+        $this->getTable($I)->getLocationOnScreenOnceScrolledIntoView();
         $textOriginColumn = $I->grabValueFrom('input[data-row="0"][data-col="0"]');
         $I->click('typo3-formengine-table-wizard tbody tr:first-child > td button[title="Move down"]');
         $I->click(self::$saveButtonLink);
@@ -162,6 +163,7 @@ final class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
         $I->assertEquals($textOriginColumn, $textNewColumn);
 
         $I->amGoingTo('move row up');
+        $this->getTable($I)->getLocationOnScreenOnceScrolledIntoView();
         $textOriginColumn = $I->grabValueFrom('input[data-row="2"][data-col="0"]');
         $I->click('typo3-formengine-table-wizard tbody tr:nth-child(3) > td button[title="Move up"]');
         $I->click(self::$saveButtonLink);
@@ -197,6 +199,7 @@ final class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
     {
         $I->amGoingTo('check for expected initial columns');
         $formSection = $this->getTable($I);
+        $formSection->getLocationOnScreenOnceScrolledIntoView();
         $I->click('button[title="Remove column"]');
         $I->click('button[title="Remove row"]');
 

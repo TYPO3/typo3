@@ -30,7 +30,7 @@ final class CategoryTreeCest
         $I->useExistingSession('admin');
         // Ensure to select PID=0 in navigation component, enforcing page module to mitigate state issue
         // when acceptance tests get resorted or re-grouped.
-        $I->click('Page');
+        $I->click('Layout');
         $pageTree->openPath(['styleguide TCA demo', 'New TYPO3 site']);
     }
 

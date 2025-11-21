@@ -65,7 +65,6 @@ final class ExportCest extends AbstractCest
         $rootPageTitle = 'New TYPO3 site';
         $tablePageTitle = 'elements t3editor';
         $tableTitle = 'Form engine elements - t3editor';
-        $listModuleHeader = '.module-docheader';
         $listModuleBtnExport = 'a[title="Export"]';
 
         $pageTree->openPath(['styleguide TCA demo', $tablePageTitle]);
@@ -75,8 +74,8 @@ final class ExportCest extends AbstractCest
         $I->waitForElementNotVisible('#nprogress');
         $I->click($tableTitle);
 
-        $I->waitForElementVisible($listModuleHeader . ' ' . $listModuleBtnExport, 5);
-        $I->click($listModuleBtnExport, $listModuleHeader);
+        $I->waitForElementVisible('.module-docheader-column ' . $listModuleBtnExport, 5);
+        $I->click($listModuleBtnExport, '.module-docheader-column .btn-toolbar');
         $I->waitForElementVisible($this->inTabConfiguration, 5);
         $I->see($rootPageTitle, $this->inModuleHeader);
         $I->dontSee($tablePageTitle, $this->inModuleHeader);
@@ -203,7 +202,6 @@ final class ExportCest extends AbstractCest
         $rootPage = '#typo3-pagetree-treeContainer [role="treeitem"][data-id="0"] .node-contentlabel';
         $rootPageTitle = 'New TYPO3 site';
         $beUsergroupTableTitle = 'Backend usergroup';
-        $listModuleHeader = '.module-docheader';
         $listModuleBtnExport = 'a[title="Export"]';
         $tabExport = 'button[data-bs-target="#export-filepreset"]';
         $contentExport = '#export-filepreset';
@@ -216,8 +214,8 @@ final class ExportCest extends AbstractCest
         $I->waitForElementNotVisible('#nprogress');
 
         $I->click($beUsergroupTableTitle);
-        $I->waitForElementVisible($listModuleHeader . ' ' . $listModuleBtnExport, 5);
-        $I->click($listModuleBtnExport, $listModuleHeader);
+        $I->waitForElementVisible('.module-docheader-column ' . $listModuleBtnExport, 5);
+        $I->click($listModuleBtnExport, '.module-docheader-column .btn-toolbar');
 
         $I->waitForElementVisible($tabExport, 5);
         $I->canSee('No tree exported - only tables on the page.', $this->inModuleTabsBody);
