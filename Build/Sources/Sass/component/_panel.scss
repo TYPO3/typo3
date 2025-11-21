@@ -122,6 +122,7 @@
     mask-image: linear-gradient(to bottom, #000 0, #000 var(--typo3-panel-progress-height), transparent var(--typo3-panel-progress-height));
     mask-size: 100% 100%;
     mask-repeat: no-repeat;
+    user-select: none;
 
     .panel-progress-bar {
         display: block;
@@ -153,6 +154,7 @@
         mask-image: linear-gradient(to bottom, #000 0, #000 var(--typo3-panel-progress-height), transparent var(--typo3-panel-progress-height));
         mask-size: 100% 100%;
         mask-repeat: no-repeat;
+        user-select: none;
     }
 }
 
