@@ -39,6 +39,16 @@ can be set through this method.
         color = #ff8700
     }
 
+Labels also support locallang keys:
+
+..  code-block:: typoscript
+    :caption: EXT:my_extension/Configuration/user.tsconfig
+
+    options.pageTree.label.<pageid> {
+        label = LLL:EXT:my_extension/Resources/Private/Language/locallang.xlf:labels.pageTree.campaign
+        color = #ff8700
+    }
+
 The labels can also be added by using the event
 :php:`\TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent`.
 
