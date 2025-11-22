@@ -209,7 +209,8 @@ module.exports = function (grunt) {
     eslint: {
       options: {
         cache: true,
-        cacheLocation: './.cache/eslintcache/'
+        cacheLocation: './.cache/eslintcache/',
+        fix: grunt.option('fix')
       },
       files: {
         src: [

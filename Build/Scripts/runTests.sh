@@ -646,6 +646,9 @@ Examples:
     ./Build/Scripts/runTests.sh -s npm -- run build
     ./Build/Scripts/runTests.sh -s npm -- run watch:build
     ./Build/Scripts/runTests.sh -s npm -- install --save bootstrap@^5.3.2
+
+    # Run lintTypescript fixer
+    ./Build/Scripts/runTests.sh -s lintTypescript -- --fix
 EOF
 }
 
@@ -1380,7 +1383,7 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         ;;
     lintTypescript)
-        COMMAND="cd Build; npm ci || exit 1; node_modules/grunt/bin/grunt eslint"
+        COMMAND="cd Build; npm ci || exit 1; node_modules/grunt/bin/grunt eslint $@"
         ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name lint-typescript-${SUFFIX} -e HOME=${CORE_ROOT}/.cache ${IMAGE_NODEJS} /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
         ;;
