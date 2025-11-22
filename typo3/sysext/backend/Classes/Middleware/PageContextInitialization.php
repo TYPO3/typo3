@@ -25,6 +25,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Context\PageContextFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
 /**
  * Initializes PageContext for backend modules that work with pages.
@@ -60,6 +61,12 @@ class PageContextInitialization implements MiddlewareInterface, LoggerAwareInter
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $backendUser = $request->getAttribute('backend.user', $GLOBALS['BE_USER']);
+
+        // Only process if user is authenticated in the backend
+        if (!($backendUser instanceof BackendUserAuthentication) || !$backendUser->user) {
+            return $handler->handle($request);
+        }
+
         $pageId = $this->determinePageId($request);
         try {
             $request = $request->withAttribute(
