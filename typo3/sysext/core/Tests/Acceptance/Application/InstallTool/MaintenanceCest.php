@@ -37,6 +37,7 @@ final class MaintenanceCest extends AbstractCest
         $I->see('Caches cleared', '.alert-success .alert-title');
     }
 
+    #[Env('classic')]
     public function analyzeDatabaseStructureWorks(ApplicationTester $I): void
     {
         $I->click('Analyze database…');
