@@ -72,6 +72,14 @@
         margin-bottom: 0;
     }
 
+    > .table-fit:first-child,
+    .panel-collapse > form > .table-fit:first-child,
+    &:first-child .panel-collapse > .table-fit:first-child {
+        border-top: 0;
+        border-start-start-radius: var(--typo3-panel-border-radius-inner-bottom);
+        border-start-end-radius: var(--typo3-panel-border-radius-inner-bottom);
+    }
+
     > .table-fit:last-child,
     .panel-collapse > form > .table-fit:last-child,
     &:last-child .panel-collapse > .table-fit:last-child {
