@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Configuration\Features;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\Response;
@@ -136,7 +137,7 @@ EOF;
         /* For backwards compatibility the HMAC is transported within the md5 param */
         $hmacParameter = $this->request->getQueryParams()['md5'] ?? null;
         $hashService = GeneralUtility::makeInstance(HashService::class);
-        $hmac = $hashService->hmac(implode('|', [$fileUid, $parametersEncoded]), 'tx_cms_showpic');
+        $hmac = $hashService->hmac(implode('|', [$fileUid, $parametersEncoded]), 'tx_cms_showpic', HashAlgo::SHA3_256);
         if (!is_string($hmacParameter) || !hash_equals($hmac, $hmacParameter)) {
             throw new \InvalidArgumentException('hash does not match', 1476048456);
         }

@@ -20,9 +20,11 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Extbase\Security\HashScope;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
@@ -99,10 +101,10 @@ final class BlogPostEditingControllerTest extends FunctionalTestCase
                     '@extension' => 'BlogExample',
                     '@controller' => 'BlogPostEditing',
                     '@action' => 'edit',
-                    'arguments' => 'YTozOntzOjY6ImFjdGlvbiI7czo0OiJlZGl0IjtzOjQ6ImJsb2ciO3M6MToiMSI7czoxMDoiY29udHJvbGxlciI7czoxNToiQmxvZ1Bvc3RFZGl0aW5nIjt99ed507271464fbec158ce0628d6f8855f895f144',
-                    '@request' => '{"@extension":"BlogExample","@controller":"BlogPostEditing","@action":"edit"}4d9253a8ab4cef10413988c74786fdd79e33d8cb',
+                    'arguments' => 'YTozOntzOjY6ImFjdGlvbiI7czo0OiJlZGl0IjtzOjQ6ImJsb2ciO3M6MToiMSI7czoxMDoiY29udHJvbGxlciI7czoxNToiQmxvZ1Bvc3RFZGl0aW5nIjt9752ab689b2d660a727f9a5171abf7fb78da3c1224514b8d9441956c39197ac68',
+                    '@request' => '{"@extension":"BlogExample","@controller":"BlogPostEditing","@action":"edit"}501c75e4c5bdd3c610586f4acd8d2c829038591a2e67b3454d744d8a1fbe02f5',
                 ],
-                '__trustedProperties' => '{"blog":{"title":1,"categories":[1,1,1,1],"__identity":1},"submit":1}e97f2e81f4d7495dcf02d833db3bb407645755a4',
+                '__trustedProperties' => '{"blog":{"title":1,"categories":[1,1,1,1],"__identity":1},"submit":1}9e8b66dfa5641715e8d0a9e0596300de351ac23da8f8c11fe38700de2c1b0a80',
                 //this variant with ":1" instead of ":[1,1,1,1]" does not work
                 //'__trustedProperties' => '{"blog":{"title":1,"categories":1,"__identity":1},"submit":1}e446d223c1caf949a45b4eb08744955b00e3741a',
             ],
@@ -293,9 +295,9 @@ final class BlogPostEditingControllerTest extends FunctionalTestCase
         self::assertStringContainsString('<input type="hidden" name="tx_blogexample_blogpostediting[__referrer][@extension]" value="BlogExample"', $content);
         self::assertStringContainsString('<input type="hidden" name="tx_blogexample_blogpostediting[__referrer][@controller]" value="BlogPostEditing"', $content);
         self::assertStringContainsString('<input type="hidden" name="tx_blogexample_blogpostediting[__referrer][@action]" value="edit"', $content);
-        self::assertStringContainsString('<input type="hidden" name="tx_blogexample_blogpostediting[__referrer][arguments]" value="YTozOntzOjY6ImFjdGlvbiI7czo0OiJlZGl0IjtzOjQ6ImJsb2ciO3M6MToiMSI7czoxMDoiY29udHJvbGxlciI7czoxNToiQmxvZ1Bvc3RFZGl0aW5nIjt99ed507271464fbec158ce0628d6f8855f895f144"', $content);
-        self::assertStringContainsString('<input type="hidden" name="tx_blogexample_blogpostediting[__referrer][@request]" value="{&quot;@extension&quot;:&quot;BlogExample&quot;,&quot;@controller&quot;:&quot;BlogPostEditing&quot;,&quot;@action&quot;:&quot;edit&quot;}4d9253a8ab4cef10413988c74786fdd79e33d8cb"', $content);
-        self::assertStringContainsString('<input type="hidden" name="tx_blogexample_blogpostediting[__trustedProperties]" value="{&quot;blog&quot;:{&quot;title&quot;:1,&quot;categories&quot;:[1,1,1,1],&quot;__identity&quot;:1},&quot;submit&quot;:1}e97f2e81f4d7495dcf02d833db3bb407645755a4"', $content);
+        self::assertStringContainsString('<input type="hidden" name="tx_blogexample_blogpostediting[__referrer][arguments]" value="YTozOntzOjY6ImFjdGlvbiI7czo0OiJlZGl0IjtzOjQ6ImJsb2ciO3M6MToiMSI7czoxMDoiY29udHJvbGxlciI7czoxNToiQmxvZ1Bvc3RFZGl0aW5nIjt9752ab689b2d660a727f9a5171abf7fb78da3c1224514b8d9441956c39197ac68"', $content);
+        self::assertStringContainsString('<input type="hidden" name="tx_blogexample_blogpostediting[__referrer][@request]" value="{&quot;@extension&quot;:&quot;BlogExample&quot;,&quot;@controller&quot;:&quot;BlogPostEditing&quot;,&quot;@action&quot;:&quot;edit&quot;}501c75e4c5bdd3c610586f4acd8d2c829038591a2e67b3454d744d8a1fbe02f5"', $content);
+        self::assertStringContainsString('<input type="hidden" name="tx_blogexample_blogpostediting[__trustedProperties]" value="{&quot;blog&quot;:{&quot;title&quot;:1,&quot;categories&quot;:[1,1,1,1],&quot;__identity&quot;:1},&quot;submit&quot;:1}9e8b66dfa5641715e8d0a9e0596300de351ac23da8f8c11fe38700de2c1b0a80"', $content);
 
         // Ensure f:form.textfield
         self::assertStringContainsString('<input id="persist-title" type="text" name="tx_blogexample_blogpostediting[blog][title]" value="Blog1 EN" required="required" />', $content);
@@ -357,9 +359,9 @@ final class BlogPostEditingControllerTest extends FunctionalTestCase
         self::assertStringContainsString('<input type="hidden" name="tx_blogexample_blogpostediting[__referrer][@extension]" value="BlogExample"', $content);
         self::assertStringContainsString('<input type="hidden" name="tx_blogexample_blogpostediting[__referrer][@controller]" value="BlogPostEditing"', $content);
         self::assertStringContainsString('<input type="hidden" name="tx_blogexample_blogpostediting[__referrer][@action]" value="edit"', $content);
-        self::assertStringContainsString('<input type="hidden" name="tx_blogexample_blogpostediting[__referrer][arguments]" value="YTozOntzOjY6ImFjdGlvbiI7czo0OiJlZGl0IjtzOjQ6ImJsb2ciO3M6MToiMSI7czoxMDoiY29udHJvbGxlciI7czoxNToiQmxvZ1Bvc3RFZGl0aW5nIjt99ed507271464fbec158ce0628d6f8855f895f144"', $content);
-        self::assertStringContainsString('<input type="hidden" name="tx_blogexample_blogpostediting[__referrer][@request]" value="{&quot;@extension&quot;:&quot;BlogExample&quot;,&quot;@controller&quot;:&quot;BlogPostEditing&quot;,&quot;@action&quot;:&quot;edit&quot;}4d9253a8ab4cef10413988c74786fdd79e33d8cb"', $content);
-        self::assertStringContainsString('<input type="hidden" name="tx_blogexample_blogpostediting[__trustedProperties]" value="{&quot;blog&quot;:{&quot;title&quot;:1,&quot;categories&quot;:[1,1,1,1],&quot;__identity&quot;:1},&quot;submit&quot;:1}e97f2e81f4d7495dcf02d833db3bb407645755a4"', $content);
+        self::assertStringContainsString('<input type="hidden" name="tx_blogexample_blogpostediting[__referrer][arguments]" value="YTozOntzOjY6ImFjdGlvbiI7czo0OiJlZGl0IjtzOjQ6ImJsb2ciO3M6MToiMSI7czoxMDoiY29udHJvbGxlciI7czoxNToiQmxvZ1Bvc3RFZGl0aW5nIjt9752ab689b2d660a727f9a5171abf7fb78da3c1224514b8d9441956c39197ac68"', $content);
+        self::assertStringContainsString('<input type="hidden" name="tx_blogexample_blogpostediting[__referrer][@request]" value="{&quot;@extension&quot;:&quot;BlogExample&quot;,&quot;@controller&quot;:&quot;BlogPostEditing&quot;,&quot;@action&quot;:&quot;edit&quot;}501c75e4c5bdd3c610586f4acd8d2c829038591a2e67b3454d744d8a1fbe02f5"', $content);
+        self::assertStringContainsString('<input type="hidden" name="tx_blogexample_blogpostediting[__trustedProperties]" value="{&quot;blog&quot;:{&quot;title&quot;:1,&quot;categories&quot;:[1,1,1,1],&quot;__identity&quot;:1},&quot;submit&quot;:1}9e8b66dfa5641715e8d0a9e0596300de351ac23da8f8c11fe38700de2c1b0a80"', $content);
 
         // Ensure f:form.textfield
         self::assertStringContainsString('<input id="persist-title" type="text" name="tx_blogexample_blogpostediting[blog][title]" value="Blog1 DE" required="required" />', $content);
@@ -460,10 +462,10 @@ final class BlogPostEditingControllerTest extends FunctionalTestCase
                     '@extension' => 'BlogExample',
                     '@controller' => 'BlogPostEditing',
                     '@action' => 'new',
-                    'arguments' => 'YToyOntzOjY6ImFjdGlvbiI7czozOiJuZXciO3M6MTA6ImNvbnRyb2xsZXIiO3M6MTU6IkJsb2dQb3N0RWRpdGluZyI7fQ==fa17ac3725a7ae6f84fa9df1367bf78e7d937563',
-                    '@request' => '{"@extension":"BlogExample","@controller":"BlogPostEditing","@action":"new"}f6dda277fa3350125290608ec08cdef1a8695f93',
+                    'arguments' => 'YToyOntzOjY6ImFjdGlvbiI7czozOiJuZXciO3M6MTA6ImNvbnRyb2xsZXIiO3M6MTU6IkJsb2dQb3N0RWRpdGluZyI7fQ==' . $this->calculateHmac('YToyOntzOjY6ImFjdGlvbiI7czozOiJuZXciO3M6MTA6ImNvbnRyb2xsZXIiO3M6MTU6IkJsb2dQb3N0RWRpdGluZyI7fQ==', HashScope::ReferringArguments),
+                    '@request' => '{"@extension":"BlogExample","@controller":"BlogPostEditing","@action":"new"}' . $this->calculateHmac('{"@extension":"BlogExample","@controller":"BlogPostEditing","@action":"new"}', HashScope::ReferringRequest),
                 ],
-                '__trustedProperties' => '{"blog":{"title":1,"categories":[1,1,1,1]},"submit":1}8915f6b454fda6161f6b61dbec880ed18c369ab4',
+                '__trustedProperties' => '{"blog":{"title":1,"categories":[1,1,1,1]},"submit":1}' . $this->calculateHmac('{"blog":{"title":1,"categories":[1,1,1,1]},"submit":1}', HashScope::TrustedProperties),
             ],
         ];
         $requestContext = new InternalRequestContext();
@@ -523,10 +525,10 @@ final class BlogPostEditingControllerTest extends FunctionalTestCase
                     '@extension' => 'BlogExample',
                     '@controller' => 'BlogPostEditing',
                     '@action' => 'new',
-                    'arguments' => 'YToyOntzOjY6ImFjdGlvbiI7czozOiJuZXciO3M6MTA6ImNvbnRyb2xsZXIiO3M6MTU6IkJsb2dQb3N0RWRpdGluZyI7fQ==fa17ac3725a7ae6f84fa9df1367bf78e7d937563',
-                    '@request' => '{"@extension":"BlogExample","@controller":"BlogPostEditing","@action":"new"}f6dda277fa3350125290608ec08cdef1a8695f93',
+                    'arguments' => 'YToyOntzOjY6ImFjdGlvbiI7czozOiJuZXciO3M6MTA6ImNvbnRyb2xsZXIiO3M6MTU6IkJsb2dQb3N0RWRpdGluZyI7fQ==' . $this->calculateHmac('YToyOntzOjY6ImFjdGlvbiI7czozOiJuZXciO3M6MTA6ImNvbnRyb2xsZXIiO3M6MTU6IkJsb2dQb3N0RWRpdGluZyI7fQ==', HashScope::ReferringArguments),
+                    '@request' => '{"@extension":"BlogExample","@controller":"BlogPostEditing","@action":"new"}' . $this->calculateHmac('{"@extension":"BlogExample","@controller":"BlogPostEditing","@action":"new"}', HashScope::ReferringRequest),
                 ],
-                '__trustedProperties' => '{"blog":{"title":1,"categories":[1,1,1,1]},"submit":1}8915f6b454fda6161f6b61dbec880ed18c369ab4',
+                '__trustedProperties' => '{"blog":{"title":1,"categories":[1,1,1,1]},"submit":1}' . $this->calculateHmac('{"blog":{"title":1,"categories":[1,1,1,1]},"submit":1}', HashScope::TrustedProperties),
             ],
         ];
         $requestContext = new InternalRequestContext();
@@ -557,5 +559,11 @@ final class BlogPostEditingControllerTest extends FunctionalTestCase
         $arguments['cHash'] = GeneralUtility::makeInstance(CacheHashCalculator::class)
             ->generateForParameters(HttpUtility::buildQueryString($arguments));
         return $arguments;
+    }
+
+    private function calculateHmac(string $value, HashScope $hashScope): string
+    {
+        $secret = $this->configurationToUseInTestInstance['SYS']['encryptionKey'] . $hashScope->prefix();
+        return hash_hmac(HashAlgo::SHA3_256->value, $value, $secret);
     }
 }

@@ -124,7 +124,7 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 't3://page?uid=1200&type=1&param-a=a&param-b=b#fragment',
-                '<a href="/features?param-a=a&amp;param-b=b&amp;type=1&amp;cHash=92aa5284d0ad18f7934fe94b52f6c1a5#fragment">EN: Features</a>',
+                '<a href="/features?param-a=a&amp;param-b=b&amp;type=1&amp;cHash=777c17819ec3b618fc86851f3715ce96ce9e5fcf5148a74e49304380d67072dc#fragment">EN: Features</a>',
             ],
             [
                 't3://page?uid=1300&additional=1&param-a=a#fragment',
@@ -152,7 +152,7 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 '1200,1 target class title &param-a=a',
-                '<a href="/features?param-a=a&amp;type=1&amp;cHash=62ac35c73f425af5e13cfff14c04424e" target="target" title="title" class="class">EN: Features</a>',
+                '<a href="/features?param-a=a&amp;type=1&amp;cHash=8a88d3a71566510800212aec956a526771fce82b2ff634efb8713152d657fa8f" target="target" title="title" class="class">EN: Features</a>',
             ],
             [
                 'user@example.org target class title &other=other',

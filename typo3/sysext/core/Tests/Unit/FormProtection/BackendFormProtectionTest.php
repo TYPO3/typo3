@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\FormProtection\AbstractFormProtection;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
@@ -70,7 +71,8 @@ final class BackendFormProtectionTest extends UnitTestCase
 
         $tokenId = $this->hashService->hmac(
             $formName . $action . $formInstanceName . $sessionToken,
-            AbstractFormProtection::class
+            AbstractFormProtection::class,
+            HashAlgo::SHA3_256
         );
 
         $this->backendUserMock

@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Authentication\Mfa\Provider\Totp;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -288,7 +289,7 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
             $timestamp = $this->get(Context::class)->getPropertyFromAspect('date', 'timestamp');
             $parsedBody['totp'] = (new Totp('KRMVATZTJFZUC53FONXW2ZJB'))->generateTotp((int)floor($timestamp / 30));
             $parsedBody['secret'] = 'KRMVATZTJFZUC53FONXW2ZJB';
-            $parsedBody['checksum'] = $this->hashService->hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup');
+            $parsedBody['checksum'] = $this->hashService->hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup', HashAlgo::SHA3_256);
         }
 
         $request = $this->request

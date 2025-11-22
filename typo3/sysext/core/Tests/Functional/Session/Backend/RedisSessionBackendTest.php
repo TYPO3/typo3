@@ -36,7 +36,7 @@ final class RedisSessionBackendTest extends FunctionalTestCase
 
     protected array $testSessionRecord = [
         // RedisSessionBackend::hash('randomSessionId') with encryption key 12345
-        'ses_id' => '21c0e911565a67315cdc384889c470fd291feafbfa62e31ecf7409430640bc7a',
+        'ses_id' => 'ef88b5c11865f33ab671a1dfb36868e9641bbb2f917980e35f76d9f70b407122',
         'ses_userid' => 1,
         // serialize(['foo' => 'bar', 'boo' => 'far'])
         'ses_data' => 'a:2:{s:3:"foo";s:3:"bar";s:3:"boo";s:3:"far";}',

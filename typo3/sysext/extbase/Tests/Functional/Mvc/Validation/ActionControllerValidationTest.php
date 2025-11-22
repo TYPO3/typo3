@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Validation;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -86,7 +87,7 @@ final class ActionControllerValidationTest extends FunctionalTestCase
         $referrerRequest['@action'] = 'testForm';
         $request = $request->withArgument(
             '__referrer',
-            ['@request' => (new HashService())->appendHmac(json_encode($referrerRequest), HashScope::ReferringRequest->prefix())]
+            ['@request' => (new HashService())->appendHmac(json_encode($referrerRequest), HashScope::ReferringRequest->prefix(), HashAlgo::SHA3_256)]
         );
 
         $titleMappingResults = new Result();
@@ -149,7 +150,7 @@ final class ActionControllerValidationTest extends FunctionalTestCase
         $referrerRequest['@action'] = 'testForm';
         $request = $request->withArgument(
             '__referrer',
-            ['@request' => (new HashService())->appendHmac(json_encode($referrerRequest), HashScope::ReferringRequest->prefix())]
+            ['@request' => (new HashService())->appendHmac(json_encode($referrerRequest), HashScope::ReferringRequest->prefix(), HashAlgo::SHA3_256)]
         );
 
         $isDispatched = false;
@@ -209,7 +210,7 @@ final class ActionControllerValidationTest extends FunctionalTestCase
         $referrerRequest['@action'] = 'testForm';
         $request = $request->withArgument(
             '__referrer',
-            ['@request' => (new HashService())->appendHmac(json_encode($referrerRequest), HashScope::ReferringRequest->prefix())]
+            ['@request' => (new HashService())->appendHmac(json_encode($referrerRequest), HashScope::ReferringRequest->prefix(), HashAlgo::SHA3_256)]
         );
         $GLOBALS['TYPO3_REQUEST'] = $request;
 

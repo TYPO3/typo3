@@ -34,6 +34,9 @@ final class SiteRequestTest extends AbstractTestCase
 {
     protected function setUp(): void
     {
+        // enable fallback to legacy MD5 cache-hash when validating cache-hashes
+        $this->configurationToUseInTestInstance['FE']['cacheHash']['fallbackToLegacyHash'] = true;
+
         parent::setUp();
         $this->withDatabaseSnapshot(function () {
             $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
@@ -821,7 +824,11 @@ final class SiteRequestTest extends AbstractTestCase
         // '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6'
         $queries = [
             // @todo Currently fails since cHash is verified after(!) redirect to page 1100
+            // '?&cHash=76796a848e61a31b6cf1f1ae696e12409189abfc7a06364e8a971c7a2eb40922&id=1000',
+            // default SHA3-256 HMAC
+            '?&cHash=1a3af6ba153b6210cf8abb271ca8b360b9b06163a22790a43540df76ded1ba31&id=1100',
             // '?&cHash=7d1f13fa91159dac7feb3c824936b39d&id=1000',
+            // legacy MD5 "HMAC"
             '?&cHash=f42b850e435f0cedd366f5db749fc1af&id=1100',
         ];
         $customQueries = [
@@ -937,7 +944,7 @@ final class SiteRequestTest extends AbstractTestCase
                 307,
                 [
                     'X-Redirect-By' => ['TYPO3 Shortcut/Mountpoint'],
-                    'location' => ['https://blog.local/authors?additional=value&type=1&cHash=9a534a0ab3d092ac113a3d8b5ea577ba'],
+                    'location' => ['https://blog.local/authors?additional=value&type=1&cHash=df7d1c0cb17b047ce35e079a81bdd62b54d7283208346958fba89eec4da91bd6'],
                 ],
             ],
         ];

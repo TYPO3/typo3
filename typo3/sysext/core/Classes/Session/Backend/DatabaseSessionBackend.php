@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Session\Backend;
 
 use Doctrine\DBAL\Exception as DBALException;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -73,9 +75,8 @@ class DatabaseSessionBackend implements SessionBackendInterface, HashableSession
 
     public function hash(string $sessionId): string
     {
-        // The sha1 hash ensures we have good length for the key.
-        $key = sha1($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . 'core-session-backend');
-        return hash_hmac('sha256', $sessionId, $key);
+        return GeneralUtility::makeInstance(HashService::class)
+            ->hmac($sessionId, 'core-session-backend', HashAlgo::SHA3_256);
     }
 
     /**

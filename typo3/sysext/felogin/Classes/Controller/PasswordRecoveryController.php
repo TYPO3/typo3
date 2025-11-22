@@ -22,6 +22,7 @@ use Symfony\Component\RateLimiter\RateLimiterFactory;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -78,7 +79,7 @@ class PasswordRecoveryController extends ActionController
             !$this->hasExceededMaximumAttemptsForReset($userData['email'])
         ) {
             $hash = $this->recoveryConfiguration->getForgotHash();
-            $this->userRepository->updateForgotHashForUserByUid($userData['uid'], $this->hashService->hmac($hash, self::class));
+            $this->userRepository->updateForgotHashForUserByUid($userData['uid'], $this->hashService->hmac($hash, self::class, HashAlgo::SHA3_256));
             $this->recoveryService->sendRecoveryEmail($this->request, $userData, $hash);
         }
 
@@ -123,7 +124,7 @@ class PasswordRecoveryController extends ActionController
         $currentTimestamp = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
 
         // timestamp is expired or hash can not be assigned to a user
-        if ($currentTimestamp > $timestamp || !$this->userRepository->existsUserWithHash($this->hashService->hmac($hash, self::class))) {
+        if ($currentTimestamp > $timestamp || !$this->userRepository->existsUserWithHash($this->hashService->hmac($hash, self::class, HashAlgo::SHA3_256))) {
             /** @var ExtbaseRequestParameters $extbaseRequestParameters */
             $extbaseRequestParameters = clone $this->request->getAttribute('extbase');
             $originalResult = $extbaseRequestParameters->getOriginalRequestMappingResults();
@@ -219,11 +220,11 @@ class PasswordRecoveryController extends ActionController
             ->getDefaultHashInstance('FE')
             ->getHashedPassword($newPass);
 
-        $user = $this->userRepository->findOneByForgotPasswordHash($this->hashService->hmac($hash, self::class));
+        $user = $this->userRepository->findOneByForgotPasswordHash($this->hashService->hmac($hash, self::class, HashAlgo::SHA3_256));
         $event = new PasswordChangeEvent($user, $hashedPassword, $newPass, $this->request);
         $this->eventDispatcher->dispatch($event);
 
-        $this->userRepository->updatePasswordAndInvalidateHash($this->hashService->hmac($hash, self::class), $hashedPassword);
+        $this->userRepository->updatePasswordAndInvalidateHash($this->hashService->hmac($hash, self::class, HashAlgo::SHA3_256), $hashedPassword);
         $this->invalidateUserSessions($user['uid']);
 
         $this->addFlashMessage($this->getTranslation('change_password_done_message'));
@@ -244,7 +245,7 @@ class PasswordRecoveryController extends ActionController
         }
 
         $hash = $this->request->getArgument('hash');
-        $userData = $this->userRepository->findOneByForgotPasswordHash($this->hashService->hmac($hash, self::class));
+        $userData = $this->userRepository->findOneByForgotPasswordHash($this->hashService->hmac($hash, self::class, HashAlgo::SHA3_256));
 
         // Validate against password policy
         $passwordPolicyValidator = $this->getPasswordPolicyValidator();

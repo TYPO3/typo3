@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderInterface;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -121,7 +122,7 @@ final readonly class TotpProvider implements MfaProviderInterface
 
         $secret = (string)($request->getParsedBody()['secret'] ?? '');
         $checksum = (string)($request->getParsedBody()['checksum'] ?? '');
-        if ($secret === '' || !hash_equals($this->hashService->hmac($secret, 'totp-setup'), $checksum)) {
+        if ($secret === '' || !hash_equals($this->hashService->hmac($secret, 'totp-setup', HashAlgo::SHA3_256), $checksum)) {
             // Return since the request does not contain the initially created secret
             return false;
         }
@@ -220,7 +221,7 @@ final readonly class TotpProvider implements MfaProviderInterface
                 'totpAuthUrl' => $totpAuthUrl,
                 'qrCode' => $this->getSvgQrCode($totpAuthUrl),
                 // Generate hmac of the secret to prevent it from being changed in the setup from
-                'checksum' => $this->hashService->hmac($secret, 'totp-setup'),
+                'checksum' => $this->hashService->hmac($secret, 'totp-setup', HashAlgo::SHA3_256),
                 'providerIdentifier' => $propertyManager->getIdentifier(),
             ]);
             return new HtmlResponse($view->render('Authentication/MfaProvider/Totp/Setup'));

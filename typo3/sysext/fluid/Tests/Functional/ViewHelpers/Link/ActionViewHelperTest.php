@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Link;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
@@ -30,6 +31,7 @@ use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
@@ -90,34 +92,36 @@ final class ActionViewHelperTest extends FunctionalTestCase
 
     public static function renderInFrontendWithCoreContextAndAllNecessaryExtbaseArgumentsDataProvider(): \Generator
     {
+        $cHash = self::calculateCacheHash(['id' => '1', 'tx_examples_haiku[action]' => 'show', 'tx_examples_haiku[controller]' => 'Detail']);
         yield 'link to root page with plugin' => [
             '<f:link.action pageUid="1" extensionName="examples" pluginName="haiku" controller="Detail" action="show">link to root page with plugin</f:link.action>',
-            '<a href="/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=5c6aa07f6ceee30ae2ea8dbf574cf26c">link to root page with plugin</a>',
+            '<a href="/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash . '">link to root page with plugin</a>',
         ];
 
         yield 'link to current page (root page) with empty pageUid attribute with plugin' => [
             '<f:link.action pageUid="" extensionName="examples" pluginName="haiku" controller="Detail" action="show">link to current page with plugin</f:link.action>',
-            '<a href="/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=5c6aa07f6ceee30ae2ea8dbf574cf26c">link to current page with plugin</a>',
+            '<a href="/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash . '">link to current page with plugin</a>',
         ];
 
         yield 'link to current page (root page) with no pageUid attribute with plugin' => [
             '<f:link.action extensionName="examples" pluginName="haiku" controller="Detail" action="show">link to current page with plugin</f:link.action>',
-            '<a href="/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=5c6aa07f6ceee30ae2ea8dbf574cf26c">link to current page with plugin</a>',
+            '<a href="/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash . '">link to current page with plugin</a>',
         ];
 
         yield 'link to root page with plugin and section' => [
             '<f:link.action pageUid="1" extensionName="examples" pluginName="haiku" controller="Detail" action="show" section="c13">link to root page with plugin and section</f:link.action>',
-            '<a href="/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=5c6aa07f6ceee30ae2ea8dbf574cf26c#c13">link to root page with plugin and section</a>',
+            '<a href="/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash . '#c13">link to root page with plugin and section</a>',
         ];
 
         yield 'link to root page with page type' => [
             '<f:link.action pageUid="1" extensionName="examples" pluginName="haiku" controller="Detail" action="show" pageType="1234">link to root page with page type</f:link.action>',
-            '<a href="/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;type=1234&amp;cHash=5c6aa07f6ceee30ae2ea8dbf574cf26c">link to root page with page type</a>',
+            '<a href="/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;type=1234&amp;cHash=' . $cHash . '">link to root page with page type</a>',
         ];
         // see: https://forge.typo3.org/issues/101432
+        $cHash = self::calculateCacheHash(['id' => '3', 'tx_examples_haiku[action]' => 'show', 'tx_examples_haiku[controller]' => 'Detail']);
         yield 'link with target renders the correct target attribute if intTarget is configured' => [
             '<f:link.action pageUid="3" target="home" extensionName="examples" pluginName="haiku" controller="Detail" action="show">link me</f:link.action>',
-            '<a target="home" href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=47522c99ab9100cb401cdaeb02504e1f">link me</a>',
+            '<a target="home" href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash . '">link me</a>',
             [
                 'config.' => [
                     'intTarget' => '_self',
@@ -127,7 +131,7 @@ final class ActionViewHelperTest extends FunctionalTestCase
         // see: https://forge.typo3.org/issues/101432
         yield 'link skips configured intTarget if no target viewhelper attribute is provided' => [
             '<f:link.action pageUid="3" extensionName="examples" pluginName="haiku" controller="Detail" action="show">link me</f:link.action>',
-            '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=47522c99ab9100cb401cdaeb02504e1f">link me</a>',
+            '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash . '">link me</a>',
             [
                 'config' => [
                     'intTarget' => '_self',
@@ -135,11 +139,16 @@ final class ActionViewHelperTest extends FunctionalTestCase
             ],
         ];
         // see: https://forge.typo3.org/issues/105367
+        $cHash1 = self::calculateCacheHash(['id' => '3', 'tx_examples_haiku[action]' => 'step1', 'tx_examples_haiku[controller]' => 'Detail']);
+        $cHash2 = self::calculateCacheHash(['id' => '3', 'tx_examples_haiku[action]' => 'step2', 'tx_examples_haiku[controller]' => 'Detail']);
+        $cHash3 = self::calculateCacheHash(['id' => '3', 'tx_examples_haiku[action]' => 'summary', 'tx_examples_haiku[controller]' => 'Detail']);
         yield 'link title can be evaluated even with integer as content' => [
             '<f:for each="{1:\'step1\', 2:\'step2\', 3:\'summary\'}" as="i" iteration="iterator" key="k">'
             . '<f:link.action pageUid="3" extensionName="examples" pluginName="haiku" controller="Detail" action="show" action="{i}">{k}</f:link.action>'
             . '</f:for>',
-            '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=step1&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=8289b13d46f6ece7cc2003ef108b9546">1</a><a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=step2&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=30fda037f04fe77f30a216db68da633c">2</a><a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=summary&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=940a948bf00b30077124fe3835ba79d4">3</a>',
+            '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=step1&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash1 . '">1</a>'
+                . '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=step2&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash2 . '">2</a>'
+                . '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=summary&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash3 . '">3</a>',
         ];
     }
 
@@ -168,65 +177,71 @@ final class ActionViewHelperTest extends FunctionalTestCase
     public static function renderInFrontendWithExtbaseContextDataProvider(): \Generator
     {
         // with all extbase arguments provided
+        $cHash = self::calculateCacheHash(['id' => '1', 'tx_examples_haiku[action]' => 'show', 'tx_examples_haiku[controller]' => 'Detail']);
         yield 'link to root page with plugin' => [
             '<f:link.action pageUid="1" extensionName="examples" pluginName="haiku" controller="Detail" action="show">link to root page with plugin</f:link.action>',
-            '<a href="/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=5c6aa07f6ceee30ae2ea8dbf574cf26c">link to root page with plugin</a>',
+            '<a href="/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash . '">link to root page with plugin</a>',
         ];
 
         yield 'link to root page with plugin and section' => [
             '<f:link.action pageUid="1" extensionName="examples" pluginName="haiku" controller="Detail" action="show" section="c13">link to root page with plugin and section</f:link.action>',
-            '<a href="/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=5c6aa07f6ceee30ae2ea8dbf574cf26c#c13">link to root page with plugin and section</a>',
+            '<a href="/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash . '#c13">link to root page with plugin and section</a>',
         ];
 
         yield 'link to root page with page type' => [
             '<f:link.action pageUid="1" extensionName="examples" pluginName="haiku" controller="Detail" action="show" pageType="1234">link to root page with page type</f:link.action>',
-            '<a href="/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;type=1234&amp;cHash=5c6aa07f6ceee30ae2ea8dbf574cf26c">link to root page with page type</a>',
+            '<a href="/?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;type=1234&amp;cHash=' . $cHash . '">link to root page with page type</a>',
         ];
         // without all extbase arguments provided
+        $cHash = self::calculateCacheHash(['id' => '1', 'tx_examples_haiku[controller]' => 'Detail']);
         yield 'renderProvidesATagForValidLinkTarget' => [
             '<f:link.action>index.php</f:link.action>',
-            '<a href="/?tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=1d5a12de6bf2d5245b654deb866ee9c3">index.php</a>',
+            '<a href="/?tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash . '">index.php</a>',
         ];
         yield 'renderWillProvideEmptyATagForNonValidLinkTarget' => [
             '<f:link.action></f:link.action>',
-            '<a href="/?tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=1d5a12de6bf2d5245b654deb866ee9c3"></a>',
+            '<a href="/?tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash . '"></a>',
         ];
         yield 'link to root page in extbase context' => [
             '<f:link.action pageUid="1">linkMe</f:link.action>',
-            '<a href="/?tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=1d5a12de6bf2d5245b654deb866ee9c3">linkMe</a>',
+            '<a href="/?tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash . '">linkMe</a>',
         ];
         yield 'link to current page (root page) with empty pageUid in extbase context' => [
             '<f:link.action pageUid="">linkMe</f:link.action>',
-            '<a href="/?tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=1d5a12de6bf2d5245b654deb866ee9c3">linkMe</a>',
+            '<a href="/?tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash . '">linkMe</a>',
         ];
         yield 'link to root page with section' => [
             '<f:link.action pageUid="1" section="c13">linkMe</f:link.action>',
-            '<a href="/?tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=1d5a12de6bf2d5245b654deb866ee9c3#c13">linkMe</a>',
+            '<a href="/?tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash . '#c13">linkMe</a>',
         ];
         yield 'link to root page with page type in extbase context' => [
             '<f:link.action pageUid="1" pageType="1234">linkMe</f:link.action>',
-            '<a href="/?tx_examples_haiku%5Bcontroller%5D=Detail&amp;type=1234&amp;cHash=1d5a12de6bf2d5245b654deb866ee9c3">linkMe</a>',
+            '<a href="/?tx_examples_haiku%5Bcontroller%5D=Detail&amp;type=1234&amp;cHash=' . $cHash . '">linkMe</a>',
         ];
         yield 'link to root page with untrusted query arguments' => [
             '<f:link.action addQueryString="untrusted"></f:link.action>',
-            '<a href="/?tx_examples_haiku%5Bcontroller%5D=Detail&amp;untrusted=123&amp;cHash=1d5a12de6bf2d5245b654deb866ee9c3"></a>',
+            '<a href="/?tx_examples_haiku%5Bcontroller%5D=Detail&amp;untrusted=123&amp;cHash=' . $cHash . '"></a>',
         ];
+        $cHash = self::calculateCacheHash(['id' => '3', 'tx_examples_haiku[controller]' => 'Detail']);
         yield 'link to page sub page' => [
             '<f:link.action pageUid="3">linkMe</f:link.action>',
-            '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=d9289022f99f8cbc8080832f61e46509">linkMe</a>',
+            '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash . '">linkMe</a>',
         ];
+        $cHash = self::calculateCacheHash(['id' => '3', 'tx_examples_haiku[controller]' => 'Detail', 'tx_examples_haiku[foo]' => 'bar']);
         yield 'arguments one level' => [
             '<f:link.action pageUid="3" arguments="{foo: \'bar\'}">haiku title</f:link.action>',
-            '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Bcontroller%5D=Detail&amp;tx_examples_haiku%5Bfoo%5D=bar&amp;cHash=74dd4635cee85b19b67cd9b497ec99e9">haiku title</a>',
+            '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Bcontroller%5D=Detail&amp;tx_examples_haiku%5Bfoo%5D=bar&amp;cHash=' . $cHash . '">haiku title</a>',
         ];
+        $cHash = self::calculateCacheHash(['id' => '3', 'tx_examples_haiku[action]' => 'show', 'tx_examples_haiku[controller]' => 'Detail', 'tx_examples_haiku[haiku]' => '42']);
         yield 'additional parameters two levels' => [
             '<f:link.action pageUid="3" additionalParams="{tx_examples_haiku: {action: \'show\', haiku: 42}}">haiku title</f:link.action>',
-            '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;tx_examples_haiku%5Bhaiku%5D=42&amp;cHash=aefc37bc2323ebd8c8e39c222adb7413">haiku title</a>',
+            '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;tx_examples_haiku%5Bhaiku%5D=42&amp;cHash=' . $cHash . '">haiku title</a>',
         ];
         // see: https://forge.typo3.org/issues/101432
+        $cHash = self::calculateCacheHash(['id' => '3', 'tx_examples_haiku[action]' => 'show', 'tx_examples_haiku[controller]' => 'Detail']);
         yield 'link with target renders the correct target attribute if intTarget is configured' => [
             '<f:link.action pageUid="3" target="home" extensionName="examples" pluginName="haiku" controller="Detail" action="show">link me</f:link.action>',
-            '<a target="home" href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=47522c99ab9100cb401cdaeb02504e1f">link me</a>',
+            '<a target="home" href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash . '">link me</a>',
             [
                 'config.' => [
                     'intTarget' => '_self',
@@ -236,7 +251,7 @@ final class ActionViewHelperTest extends FunctionalTestCase
         // see: https://forge.typo3.org/issues/101432
         yield 'link skips configured intTarget if no target viewhelper attribute is provided' => [
             '<f:link.action pageUid="3" extensionName="examples" pluginName="haiku" controller="Detail" action="show">link me</f:link.action>',
-            '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=47522c99ab9100cb401cdaeb02504e1f">link me</a>',
+            '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash . '">link me</a>',
             [
                 'config' => [
                     'intTarget' => '_self',
@@ -244,11 +259,16 @@ final class ActionViewHelperTest extends FunctionalTestCase
             ],
         ];
         // see: https://forge.typo3.org/issues/105367
+        $cHash1 = self::calculateCacheHash(['id' => '3', 'tx_examples_haiku[action]' => 'step1', 'tx_examples_haiku[controller]' => 'Detail']);
+        $cHash2 = self::calculateCacheHash(['id' => '3', 'tx_examples_haiku[action]' => 'step2', 'tx_examples_haiku[controller]' => 'Detail']);
+        $cHash3 = self::calculateCacheHash(['id' => '3', 'tx_examples_haiku[action]' => 'summary', 'tx_examples_haiku[controller]' => 'Detail']);
         yield 'link title can be evaluated even with integer as content' => [
             '<f:for each="{1:\'step1\', 2:\'step2\', 3:\'summary\'}" as="i" iteration="iterator" key="k">'
             . '<f:link.action pageUid="3" extensionName="examples" pluginName="haiku" controller="Detail" action="show" action="{i}">{k}</f:link.action>'
             . '</f:for>',
-            '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=step1&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=8289b13d46f6ece7cc2003ef108b9546">1</a><a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=step2&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=30fda037f04fe77f30a216db68da633c">2</a><a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=summary&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=940a948bf00b30077124fe3835ba79d4">3</a>',
+            '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=step1&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash1 . '">1</a>'
+                . '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=step2&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash2 . '">2</a>'
+                . '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=summary&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=' . $cHash3 . '">3</a>',
         ];
 
     }
@@ -288,5 +308,14 @@ final class ActionViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource($template);
         $result = (new TemplateView($context))->render();
         self::assertSame($expected, $result);
+    }
+
+    private static function calculateCacheHash(
+        array $params,
+        string $encryptionKey = 'i-am-not-a-secure-encryption-key'
+    ): string {
+        ksort($params);
+        $secret = $encryptionKey . CacheHashCalculator::class;
+        return hash_hmac(HashAlgo::SHA3_256->value, serialize($params), $secret);
     }
 }

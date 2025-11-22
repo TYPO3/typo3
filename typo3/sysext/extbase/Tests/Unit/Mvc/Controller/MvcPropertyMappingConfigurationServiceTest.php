@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Error\Http\BadRequestException;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -156,7 +157,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
                 'hu' => 1,
             ],
         ];
-        $expectedHash = 'b0f49cabac3153cee385184e17925f2184d88fe6';
+        $expectedHash = '7c0354f5a8d3da54a22a1a9f72c88cdd4deaf8d7fa3c4773bbb0a08b9081cffa';
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'bar';
         $hashService = new HashService();
@@ -204,7 +205,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     {
         $hashService = new HashService();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'bar';
-        $extbaseAttribute = (new ExtbaseRequestParameters())->setArgument('__trustedProperties', 'garbage' . $hashService->hmac('garbage', HashScope::TrustedProperties->prefix()));
+        $extbaseAttribute = (new ExtbaseRequestParameters())->setArgument('__trustedProperties', 'garbage' . $hashService->hmac('garbage', HashScope::TrustedProperties->prefix(), HashAlgo::SHA3_256));
         $coreRequest = (new ServerRequest())->withAttribute('extbase', $extbaseAttribute);
         $extbaseRequest = (new Request($coreRequest));
 
@@ -224,7 +225,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     {
         $hashService = new HashService();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'bar';
-        $extbaseAttribute = (new ExtbaseRequestParameters())->setArgument('__trustedProperties', 'a:1:{s:3:"foo";s:3:"bar";}' . $hashService->hmac('a:1:{s:3:"foo";s:3:"bar";}', HashScope::TrustedProperties->prefix()));
+        $extbaseAttribute = (new ExtbaseRequestParameters())->setArgument('__trustedProperties', 'a:1:{s:3:"foo";s:3:"bar";}' . $hashService->hmac('a:1:{s:3:"foo";s:3:"bar";}', HashScope::TrustedProperties->prefix(), HashAlgo::SHA3_256));
         $coreRequest = (new ServerRequest())->withAttribute('extbase', $extbaseAttribute);
         $extbaseRequest = (new Request($coreRequest));
 
@@ -328,7 +329,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'bar';
         $hashService = new HashService();
-        $trustedPropertiesToken = $hashService->appendHmac(json_encode($trustedProperties), HashScope::TrustedProperties->prefix());
+        $trustedPropertiesToken = $hashService->appendHmac(json_encode($trustedProperties), HashScope::TrustedProperties->prefix(), HashAlgo::SHA3_256);
 
         $extbaseAttribute = (new ExtbaseRequestParameters())->setArgument('__trustedProperties', $trustedPropertiesToken);
         $coreRequest = (new ServerRequest())->withAttribute('extbase', $extbaseAttribute);

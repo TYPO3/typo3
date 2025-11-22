@@ -22,6 +22,7 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Event\ModifyFileDumpEvent;
@@ -177,7 +178,7 @@ readonly class FileDumpController
     protected function isTokenValid(array $parameters, ServerRequestInterface $request): bool
     {
         return hash_equals(
-            $this->hashService->hmac(implode('|', $parameters), 'resourceStorageDumpFile'),
+            $this->hashService->hmac(implode('|', $parameters), 'resourceStorageDumpFile', HashAlgo::SHA3_256),
             $request->getQueryParams()['token'] ?? ''
         );
     }

@@ -23,6 +23,7 @@ use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -43,6 +44,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
+use TYPO3\CMS\Frontend\Page\CacheHashConfiguration;
 
 /**
  * Page Router - responsible for a page based on a request, by looking up the slug of the page path.
@@ -87,7 +89,11 @@ class PageRouter implements RouterInterface
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->enhancerFactory = GeneralUtility::makeInstance(EnhancerFactory::class);
         $this->aspectFactory = GeneralUtility::makeInstance(AspectFactory::class, $this->context);
-        $this->cacheHashCalculator = GeneralUtility::makeInstance(CacheHashCalculator::class);
+        $this->cacheHashCalculator = GeneralUtility::makeInstance(
+            CacheHashCalculator::class,
+            GeneralUtility::makeInstance(CacheHashConfiguration::class),
+            GeneralUtility::makeInstance(HashService::class)
+        );
         $this->requestContextFactory = GeneralUtility::makeInstance(RequestContextFactory::class);
     }
 

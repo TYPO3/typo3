@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Crypto;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Exception\Crypto\InvalidHashStringException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -33,6 +35,13 @@ final class HashServiceTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
     }
 
+    public static function hashAlgoDataProvider(): \Generator
+    {
+        yield 'SHA1' => [HashAlgo::SHA1];
+        yield 'SHA256' => [HashAlgo::SHA256];
+        yield 'SHA3-256' => [HashAlgo::SHA3_256];
+    }
+
     #[Test]
     public function hmacThrowsExceptionIfEmptyAdditionalSecretProvided(): void
     {
@@ -43,19 +52,24 @@ final class HashServiceTest extends UnitTestCase
     }
 
     #[Test]
-    public function hmacReturnsHashOfProperLength(): void
+    #[DataProvider('hashAlgoDataProvider')]
+    public function hmacReturnsHashOfProperLength(HashAlgo $algo): void
     {
-        $hmac = $this->subject->hmac('message', 'additional-secret');
-        self::assertSame(strlen($hmac), 40);
+        $hmac = $this->subject->hmac('message', 'additional-secret', $algo);
+        self::assertSame(strlen($hmac), $algo->length());
     }
 
     #[Test]
-    public function hmacReturnsEqualHashesForEqualInput(): void
+    #[DataProvider('hashAlgoDataProvider')]
+    public function hmacReturnsEqualHashesForEqualInput(HashAlgo $algo): void
     {
         $additionalSecret = 'additional-secret';
         $string1 = 'input';
         $string2 = 'input';
-        self::assertSame($this->subject->hmac($string1, $additionalSecret), $this->subject->hmac($string2, $additionalSecret));
+        self::assertSame(
+            $this->subject->hmac($string1, $additionalSecret, $algo),
+            $this->subject->hmac($string2, $additionalSecret, $algo)
+        );
     }
 
     #[Test]
@@ -68,12 +82,13 @@ final class HashServiceTest extends UnitTestCase
     }
 
     #[Test]
-    public function generatedHmacCanBeValidatedAgain(): void
+    #[DataProvider('hashAlgoDataProvider')]
+    public function generatedHmacCanBeValidatedAgain(HashAlgo $algo): void
     {
         $string = 'some input';
         $additionalSecret = 'additional-secret';
-        $hash = $this->subject->hmac($string, $additionalSecret);
-        self::assertTrue($this->subject->validateHmac($string, $additionalSecret, $hash));
+        $hash = $this->subject->hmac($string, $additionalSecret, $algo);
+        self::assertTrue($this->subject->validateHmac($string, $additionalSecret, $hash, $algo));
     }
 
     #[Test]

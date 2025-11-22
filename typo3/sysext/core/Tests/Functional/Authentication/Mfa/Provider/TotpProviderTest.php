@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
 use TYPO3\CMS\Core\Authentication\Mfa\Provider\Totp;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -151,7 +152,7 @@ final class TotpProviderTest extends FunctionalTestCase
         $parsedBody = [
             'totp' => (new Totp($secret))->generateTotp((int)floor($timestamp / 30)),
             'secret' => $secret,
-            'checksum' => $this->hashService->hmac($secret, 'totp-setup'),
+            'checksum' => $this->hashService->hmac($secret, 'totp-setup', HashAlgo::SHA3_256),
 
         ];
         self::assertTrue($this->subject->activate($request->withParsedBody($parsedBody), $propertyManager));

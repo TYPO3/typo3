@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
 use TYPO3\CMS\Core\Authentication\Mfa\Provider\RecoveryCodes;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
@@ -141,7 +142,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
         $codes = (new RecoveryCodes('BE'))->generatePlainRecoveryCodes();
         $parsedBody = [
             'recoveryCodes' => implode(PHP_EOL, $codes),
-            'checksum' => $this->hashService->hmac(json_encode($codes) ?: '', 'recovery-codes-setup'),
+            'checksum' => $this->hashService->hmac(json_encode($codes) ?: '', 'recovery-codes-setup', HashAlgo::SHA3_256),
         ];
         self::assertTrue($this->subject->activate($request->withParsedBody($parsedBody), $propertyManager));
     }

@@ -15,28 +15,24 @@
 
 namespace TYPO3\CMS\Frontend\Page;
 
-use TYPO3\CMS\Core\SingletonInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Logic for cHash calculation
  */
-class CacheHashCalculator implements SingletonInterface
+#[Autoconfigure(public: true)]
+class CacheHashCalculator
 {
     /**
-     * @var CacheHashConfiguration
-     */
-    protected $configuration;
-
-    /**
      * Initialise class properties by using the relevant TYPO3 configuration
-     *
-     * @param CacheHashConfiguration|null $configuration
      */
-    public function __construct(?CacheHashConfiguration $configuration = null)
-    {
-        $this->configuration = $configuration ?? GeneralUtility::makeInstance(CacheHashConfiguration::class);
-    }
+    public function __construct(
+        protected CacheHashConfiguration $configuration,
+        protected HashService $hashService,
+    ) {}
 
     /**
      * Calculates the cHash based on the provided parameters
@@ -44,9 +40,29 @@ class CacheHashCalculator implements SingletonInterface
      * @param array $params Array of cHash key-value pairs
      * @return string Hash of all the values
      */
-    public function calculateCacheHash(array $params)
+    public function calculateCacheHash(array $params): string
     {
-        return !empty($params) ? md5(serialize($params)) : '';
+        if ($params === []) {
+            return '';
+        }
+        unset($params['encryptionKey']);
+        ksort($params);
+        $hashService = GeneralUtility::makeInstance(HashService::class);
+        return !empty($params) ? $hashService->hmac(serialize($params), self::class, HashAlgo::SHA3_256) : '';
+    }
+
+    /**
+     * @internal only used for `fallbackToLegacyHash` behavior, will be removed in TYPO3 v15.0
+     * @deprecated will be removed in TYPO3 v15.0
+     */
+    public function calculateLegacyCacheHash(array $params): string
+    {
+        if ($params === []) {
+            return '';
+        }
+        $params['encryptionKey'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
+        ksort($params);
+        return md5(serialize($params));
     }
 
     /**
@@ -94,6 +110,7 @@ class CacheHashCalculator implements SingletonInterface
      * @return array Array with key/value pairs of query-parameters WITHOUT a certain list of
      * @throws \RuntimeException
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink()
+     * @internal
      */
     public function getRelevantParameters($queryString)
     {
@@ -117,7 +134,6 @@ class CacheHashCalculator implements SingletonInterface
             }
             $relevantParameters['id'] = $parameters['id'];
             // Finish and sort parameters array by keys:
-            $relevantParameters['encryptionKey'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
             ksort($relevantParameters);
         }
         return $relevantParameters;

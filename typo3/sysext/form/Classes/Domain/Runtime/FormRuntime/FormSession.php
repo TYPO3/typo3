@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Error\Http\BadRequestException;
@@ -63,7 +64,7 @@ class FormSession
     {
         return GeneralUtility::makeInstance(HashService::class)
             // restrict string expansion by adding some char ('|')
-            ->appendHmac($this->identifier . '|', HashScope::FormSession->prefix());
+            ->appendHmac($this->identifier . '|', HashScope::FormSession->prefix(), HashAlgo::SHA3_256);
     }
 
     protected function generateIdentifier(): string
@@ -78,7 +79,7 @@ class FormSession
     {
         try {
             $identifier = GeneralUtility::makeInstance(HashService::class)
-                ->validateAndStripHmac($authenticatedIdentifier, HashScope::FormSession->prefix());
+                ->validateAndStripHmac($authenticatedIdentifier, HashScope::FormSession->prefix(), HashAlgo::SHA3_256);
             return rtrim($identifier, '|');
         } catch (InvalidHashStringException $e) {
             throw new BadRequestException('The HMAC of the form session could not be validated.', 1613300274);

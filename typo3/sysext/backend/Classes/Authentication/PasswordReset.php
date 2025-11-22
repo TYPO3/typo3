@@ -29,6 +29,7 @@ use Symfony\Component\RateLimiter\RateLimiterFactory;
 use TYPO3\CMS\Backend\Authentication\Event\PasswordHasBeenResetEvent;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
@@ -241,7 +242,7 @@ readonly class PasswordReset
         $currentTime = $context->getAspect('date')->getDateTime();
         $expiresOn = $currentTime->modify(self::TOKEN_VALID_UNTIL);
         // Create a hash ("one time password") out of the token including the timestamp of the expiration date
-        $hash = $this->hashService->hmac($token . '|' . $expiresOn->getTimestamp() . '|' . $emailAddress . '|' . $userId, 'password-reset');
+        $hash = $this->hashService->hmac($token . '|' . $expiresOn->getTimestamp() . '|' . $emailAddress . '|' . $userId, 'password-reset', HashAlgo::SHA3_256);
 
         // Set the token in the database, which is hashed
         $this->connectionPool
@@ -321,7 +322,7 @@ readonly class PasswordReset
         }
 
         // Validate hash by rebuilding the hash from the parameters and the URL and see if this matches against the stored password_reset_token
-        $hash = $this->hashService->hmac($token . '|' . $expirationTimestamp . '|' . $user['email'] . '|' . $user['uid'], 'password-reset');
+        $hash = $this->hashService->hmac($token . '|' . $expirationTimestamp . '|' . $user['email'] . '|' . $user['uid'], 'password-reset', HashAlgo::SHA3_256);
         if (!$this->passwordHashFactory->getDefaultHashInstance('BE')->checkPassword($hash, $user['password_reset_token'] ?? '')) {
             return null;
         }

@@ -221,11 +221,11 @@ final class PageViewHelperTest extends FunctionalTestCase
             ],
             'additional parameters one level' => [
                 '<f:link.page pageUid="3" additionalParams="{tx_examples_haiku: \'foo\'}">haiku title</f:link.page>',
-                '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku=foo&amp;cHash=3ed8716f46e97ba37335fa4b28ce2d8a">haiku title</a>',
+                '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku=foo&amp;cHash=501ccc2fda90b3fba326bb85c2ec7278b5ecc1620f2308736731c1be8719ac90">haiku title</a>',
             ],
             'additional parameters two levels' => [
                 '<f:link.page pageUid="3" additionalParams="{tx_examples_haiku: {action: \'show\', haiku: 42}}">haiku title</f:link.page>',
-                '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bhaiku%5D=42&amp;cHash=1e0eb1e54d6bacf0138a50107c6ae29a">haiku title</a>',
+                '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=show&amp;tx_examples_haiku%5Bhaiku%5D=42&amp;cHash=327cab050fcf697a13539ed02d78f727aad4892ca3449f051d8eb08ce86c1390">haiku title</a>',
             ],
             // see: https://forge.typo3.org/issues/101432
             'link with target renders the correct target attribute if intTarget is configured' => [

@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Authentication\Mfa\Provider\Totp;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -284,7 +285,7 @@ final class MfaSetupControllerTest extends FunctionalTestCase
             'identifier' => 'totp',
             'totp' => (new Totp('KRMVATZTJFZUC53FONXW2ZJB'))->generateTotp((int)floor($timestamp / 30)),
             'secret' => 'KRMVATZTJFZUC53FONXW2ZJB',
-            'checksum' => $this->hashService->hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup'),
+            'checksum' => $this->hashService->hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup', HashAlgo::SHA3_256),
         ];
 
         $request = $this->request->withMethod('POST')->withQueryParams($queryParams)->withParsedBody($parsedBody);
@@ -331,7 +332,7 @@ final class MfaSetupControllerTest extends FunctionalTestCase
             'identifier' => 'totp',
             'totp' => '123456', // invalid !!!
             'secret' => 'KRMVATZTJFZUC53FONXW2ZJB',
-            'checksum' => $this->hashService->hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup'),
+            'checksum' => $this->hashService->hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup', HashAlgo::SHA3_256),
         ];
 
         $request = $this->request->withMethod('POST')->withQueryParams($queryParams)->withParsedBody($parsedBody);

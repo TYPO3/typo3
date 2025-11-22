@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -39,6 +40,7 @@ use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScriptFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageInformationFactory;
 use TYPO3\CMS\Redirects\Event\BeforeRedirectMatchDomainEvent;
 use TYPO3\CMS\Redirects\Service\RedirectCacheService;
@@ -408,7 +410,7 @@ final class RedirectServiceTest extends FunctionalTestCase
             ],
             // this should redirect and not pass through
             'flat - with query parameters' => [
-                'https://acme.com/flat-samehost-1?param1=value1&cHash=e0527192caa60a6dac1e30af7cfeaf64',
+                'https://acme.com/flat-samehost-1?param1=value1&cHash=' . self::calculateCacheHash(['id' => '10', 'param1' => 'value1']),
                 'https://acme.com/',
                 301,
                 'https://acme.com/flat-samehost-1',
@@ -422,7 +424,7 @@ final class RedirectServiceTest extends FunctionalTestCase
                 null,
             ],
             'flat keep_query_parameters - with query parameters' => [
-                'https://acme.com/flat-samehost-2?param1=value1&cHash=e0527192caa60a6dac1e30af7cfeaf64',
+                'https://acme.com/flat-samehost-2?param1=value1&cHash=' . self::calculateCacheHash(['id' => '11', 'param1' => 'value1']),
                 'https://acme.com/',
                 200,
                 null,
@@ -451,7 +453,7 @@ final class RedirectServiceTest extends FunctionalTestCase
                 null,
             ],
             'flat respect_query_parameters and keep_query_parameters - with query parameters' => [
-                'https://acme.com/flat-samehost-4?param1=value1&cHash=caa2156411affc2d7c8c5169652c6e13',
+                'https://acme.com/flat-samehost-4?param1=value1&cHash=' . self::calculateCacheHash(['id' => '13', 'param1' => 'value1']),
                 'https://acme.com/',
                 200,
                 null,
@@ -480,7 +482,7 @@ final class RedirectServiceTest extends FunctionalTestCase
                 null,
             ],
             'regexp keep_query_parameters - with query parameters' => [
-                'https://acme.com/regexp-samehost-2?param1=value1&cHash=feced69fa13ce7d3bf0483c21ff03064',
+                'https://acme.com/regexp-samehost-2?param1=value1&cHash=' . self::calculateCacheHash(['id' => '21', 'param1' => 'value1']),
                 'https://acme.com/',
                 200,
                 null,
@@ -491,7 +493,7 @@ final class RedirectServiceTest extends FunctionalTestCase
                 'https://acme.com/regexp-samehost-2?param1=value1',
                 'https://acme.com/',
                 301,
-                'https://acme.com/regexp-samehost-2?param1=value1&cHash=feced69fa13ce7d3bf0483c21ff03064',
+                'https://acme.com/regexp-samehost-2?param1=value1&cHash=' . self::calculateCacheHash(['id' => '21', 'param1' => 'value1']),
                 6,
             ],
             'regexp respect_query_parameters' => [
@@ -510,7 +512,7 @@ final class RedirectServiceTest extends FunctionalTestCase
                 7,
             ],
             'same host as external target with query arguments in another order than target should pass instead of redirect' => [
-                'https://acme.com/sanatize-samehost-3?param1=value1&param2=value2&param3=&cHash=69f1b01feb7ed14b95b85cbc66ee2a3a',
+                'https://acme.com/sanatize-samehost-3?param1=value1&param2=value2&param3=&cHash=' . self::calculateCacheHash(['id' => '102', 'param1' => 'value1', 'param2' => 'value2', 'param3' => '']),
                 'https://acme.com/',
                 200,
                 null,
@@ -564,7 +566,7 @@ final class RedirectServiceTest extends FunctionalTestCase
             ],
             // this should redirect and not pass through
             'flat - with query parameters' => [
-                'https://acme.com/flat-samehost-1?param1=value1&cHash=e0527192caa60a6dac1e30af7cfeaf64',
+                'https://acme.com/flat-samehost-1?param1=value1&cHash=' . self::calculateCacheHash(['id' => '10', 'param1' => 'value1']),
                 'https://acme.com/',
                 301,
                 '//acme.com/flat-samehost-1',
@@ -578,7 +580,7 @@ final class RedirectServiceTest extends FunctionalTestCase
                 null,
             ],
             'flat keep_query_parameters - with query parameters' => [
-                'https://acme.com/flat-samehost-2?param1=value1&cHash=e0527192caa60a6dac1e30af7cfeaf64',
+                'https://acme.com/flat-samehost-2?param1=value1&cHash=' . self::calculateCacheHash(['id' => '11', 'param1' => 'value1']),
                 'https://acme.com/',
                 200,
                 null,
@@ -607,7 +609,7 @@ final class RedirectServiceTest extends FunctionalTestCase
                 null,
             ],
             'flat respect_query_parameters and keep_query_parameters - with query parameters' => [
-                'https://acme.com/flat-samehost-4?param1=value1&cHash=caa2156411affc2d7c8c5169652c6e13',
+                'https://acme.com/flat-samehost-4?param1=value1&cHash=' . self::calculateCacheHash(['id' => '13', 'param1' => 'value1']),
                 'https://acme.com/',
                 200,
                 null,
@@ -636,7 +638,7 @@ final class RedirectServiceTest extends FunctionalTestCase
                 null,
             ],
             'regexp keep_query_parameters - with query parameters' => [
-                'https://acme.com/regexp-samehost-2?param1=value1&cHash=feced69fa13ce7d3bf0483c21ff03064',
+                'https://acme.com/regexp-samehost-2?param1=value1&cHash=' . self::calculateCacheHash(['id' => '21', 'param1' => 'value1']),
                 'https://acme.com/',
                 200,
                 null,
@@ -1273,5 +1275,12 @@ final class RedirectServiceTest extends FunctionalTestCase
         self::assertSame($expectedRedirectStatusCode, $response->getStatusCode());
         self::assertSame($expectedRedirectUri, ($response->getHeader('location')[0] ?? ''));
         self::assertSame('TYPO3 Redirect ' . $expectedMatchedRedirectRecordUid, ($response->getHeader('X-Redirect-By')[0] ?? ''));
+    }
+
+    private static function calculateCacheHash(array $params, string $encryptionKey = 'i-am-not-a-secure-encryption-key'): string
+    {
+        ksort($params);
+        $secret = $encryptionKey . CacheHashCalculator::class;
+        return hash_hmac(HashAlgo::SHA3_256->value, serialize($params), $secret);
     }
 }

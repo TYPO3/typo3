@@ -32,13 +32,16 @@ final readonly class HashService
      *
      * @return non-empty-string
      */
-    public function hmac(string $input, string $additionalSecret): string
+    public function hmac(string $input, string $additionalSecret, HashAlgo $algo = HashAlgo::SHA1): string
     {
         if ($additionalSecret === '') {
             throw new \LogicException('The ' . __METHOD__ . ' function requires a non-empty additional secret.', 1704453167);
         }
+        if (!$algo->isAllowedForHmac()) {
+            throw new \LogicException('The ' . __METHOD__ . ' function does not allow "' . $algo->value . '".', 1763812644);
+        }
         $secret = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . $additionalSecret;
-        return hash_hmac('sha1', $input, $secret);
+        return hash_hmac($algo->value, $input, $secret);
     }
 
     /**
@@ -48,9 +51,9 @@ final readonly class HashService
      *
      * @return non-empty-string
      */
-    public function appendHmac(string $string, string $additionalSecret): string
+    public function appendHmac(string $string, string $additionalSecret, HashAlgo $algo = HashAlgo::SHA1): string
     {
-        return $string . $this->hmac($string, $additionalSecret);
+        return $string . $this->hmac($string, $additionalSecret, $algo);
     }
 
     /**
@@ -58,9 +61,9 @@ final readonly class HashService
      *
      * @param non-empty-string $additionalSecret
      */
-    public function validateHmac(string $string, string $additionalSecret, string $hmac): bool
+    public function validateHmac(string $string, string $additionalSecret, string $hmac, HashAlgo $algo = HashAlgo::SHA1): bool
     {
-        return hash_equals($this->hmac($string, $additionalSecret), $hmac);
+        return hash_equals($this->hmac($string, $additionalSecret, $algo), $hmac);
     }
 
     /**
@@ -71,13 +74,21 @@ final readonly class HashService
      * @param non-empty-string $string
      * @param non-empty-string $additionalSecret
      */
-    public function validateAndStripHmac(string $string, string $additionalSecret): string
+    public function validateAndStripHmac(string $string, string $additionalSecret, HashAlgo $algo = HashAlgo::SHA1): string
     {
-        if (strlen($string) < 40) {
-            throw new InvalidHashStringException('A hashed string must contain at least 40 characters, the given string was only ' . strlen($string) . ' characters long.', 1704454152);
+        $hashLength = $algo->length();
+        if (strlen($string) < $hashLength) {
+            throw new InvalidHashStringException(
+                sprintf(
+                    'A hashed string must contain at least %d characters, the given string was only %d characters long.',
+                    $hashLength,
+                    strlen($string)
+                ),
+                1704454152
+            );
         }
-        $stringWithoutHmac = substr($string, 0, -40);
-        if ($this->validateHmac($stringWithoutHmac, $additionalSecret, substr($string, -40)) !== true) {
+        $stringWithoutHmac = substr($string, 0, -$hashLength);
+        if ($this->validateHmac($stringWithoutHmac, $additionalSecret, substr($string, -$hashLength), $algo) !== true) {
             throw new InvalidHashStringException('The given string was not appended with a valid HMAC.', 1704454157);
         }
         return $stringWithoutHmac;

@@ -432,15 +432,27 @@ final class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
             ->withApplicableSet(
                 VariablesContext::create(Variables::create([
                     'pathSuffix' => '?any%5Bother%5D=other&cHash=[[cHash]]',
-                    'cHash' => 'a655d1f1d346f7d3fa7aef5459a6547f',
+                    'cHash' => self::calculateCacheHash([
+                        'id' => '1100',
+                        'any[other]' => 'other',
+                        'known[value]' => 'known',
+                    ]),
                 ]))->withRequiredApplicables($enhancers['Simple']),
                 VariablesContext::create(Variables::create([
                     'pathSuffix' => '?testing%5Bany%5D%5Bother%5D=other&cHash=[[cHash]]',
-                    'cHash' => 'bfd5274d1f8a5051f44ca703a0dbd359',
+                    'cHash' => self::calculateCacheHash([
+                        'id' => '1100',
+                        'testing[any][other]' => 'other',
+                        'testing[known][value]' => 'known',
+                    ]),
                 ]))->withRequiredApplicables($enhancers['Plugin']),
                 VariablesContext::create(Variables::create([
                     'pathSuffix' => '?tx_testing_link%5Bany%5D%5Bother%5D=other&cHash=[[cHash]]',
-                    'cHash' => '0d1b27ac1cc957c16c9c02cf24f90af4',
+                    'cHash' => self::calculateCacheHash([
+                        'id' => '1100',
+                        'tx_testing_link[any][other]' => 'other',
+                        'tx_testing_link[known][value]' => 'known',
+                    ]),
                 ]))->withRequiredApplicables($enhancers['Extbase'])
             )
             ->permute()

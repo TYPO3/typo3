@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
@@ -157,7 +158,7 @@ final readonly class RecoveryCodesProvider implements MfaProviderInterface
                 'providerIdentifier' => $propertyManager->getIdentifier(),
                 'recoveryCodes' => implode(PHP_EOL, $codes),
                 // Generate hmac of the recovery codes to prevent them from being changed in the setup from
-                'checksum' => $this->hashService->hmac(json_encode($codes) ?: '', 'recovery-codes-setup'),
+                'checksum' => $this->hashService->hmac(json_encode($codes) ?: '', 'recovery-codes-setup', HashAlgo::SHA3_256),
             ]);
             return new HtmlResponse($view->render('Authentication/MfaProvider/RecoveryCodes/Setup'));
         }
@@ -200,7 +201,7 @@ final readonly class RecoveryCodesProvider implements MfaProviderInterface
         $recoveryCodes = GeneralUtility::trimExplode(PHP_EOL, (string)($request->getParsedBody()['recoveryCodes'] ?? ''));
         $checksum = (string)($request->getParsedBody()['checksum'] ?? '');
         if ($recoveryCodes === []
-            || !hash_equals($this->hashService->hmac(json_encode($recoveryCodes) ?: '', 'recovery-codes-setup'), $checksum)
+            || !hash_equals($this->hashService->hmac(json_encode($recoveryCodes) ?: '', 'recovery-codes-setup', HashAlgo::SHA3_256), $checksum)
         ) {
             // Return since the request does not contain the initially created recovery codes
             return false;

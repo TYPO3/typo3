@@ -63,7 +63,7 @@ final class PageRouterTest extends AbstractTestCase
 
     public static function generateUriSanitizesSuperfluousParametersDataProvider(): \Generator
     {
-        $keyValueCHash = '&cHash=45138aa76e1556149edc5a8c4a4d0eca';
+        $keyValueCHash = '&cHash=00f30ec5eab6013fefccbd5739cc3ca2bf529a043866bea353c7cb4eade8a8d7';
         yield 'none' => [[], 'https://acme.us/'];
         yield 'page-id as id parameter' => [['id' => 1000], 'https://acme.us/'];
         yield 'any value as id parameter' => [['id' => 123], 'https://acme.us/'];

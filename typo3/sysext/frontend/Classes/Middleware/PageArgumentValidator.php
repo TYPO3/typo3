@@ -132,6 +132,12 @@ readonly class PageArgumentValidator implements MiddlewareInterface
         if (hash_equals($calculatedCacheHash, $cHash)) {
             return true;
         }
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['fallbackToLegacyHash'])) {
+            $calculatedFallbackCacheHash = $this->cacheHashCalculator->calculateLegacyCacheHash($relevantParameters);
+            if (hash_equals($calculatedFallbackCacheHash, $cHash)) {
+                return true;
+            }
+        }
         // Early return to trigger the error controller
         if ($pageNotFoundOnCacheHashError) {
             return false;

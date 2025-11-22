@@ -46,20 +46,20 @@ final class LocaleModifierTest extends AbstractEnhancerSiteRequestTestCase
         $variableContexts = [
             VariablesContext::create(
                 Variables::create([
-                    'cHash' => '46227b4ce096dc78a4e71463326c9020',
-                    'cHash2' => 'f80d112e877175ce8e7d54c35bebe12c',
+                    'cHash' => self::calculateCacheHash(['id' => '1100', 'value' => '100']),
+                    'cHash2' => self::calculateCacheHash(['id' => '3000', 'value' => '100']),
                 ])
             )->withRequiredApplicables($enhancers['Simple']),
             VariablesContext::create(
                 Variables::create([
-                    'cHash' => 'e24d3d2d5503baba670d827c3b9470c8',
-                    'cHash2' => '54f45ea94a5e812fbae944792dac940d',
+                    'cHash' => self::calculateCacheHash(['id' => '1100', 'testing[value]' => '100']),
+                    'cHash2' => self::calculateCacheHash(['id' => '3000', 'testing[value]' => '100']),
                 ])
             )->withRequiredApplicables($enhancers['Plugin']),
             VariablesContext::create(
                 Variables::create([
-                    'cHash' => 'eef21771ab3c3dac3514b4479eedd5ff',
-                    'cHash2' => 'c822555d4ebd106b0d1687e43a4db9c9',
+                    'cHash' => self::calculateCacheHash(['id' => '1100', 'tx_testing_link[value]' => '100']),
+                    'cHash2' => self::calculateCacheHash(['id' => '3000', 'tx_testing_link[value]' => '100']),
                 ])
             )->withRequiredApplicables($enhancers['Extbase']),
         ];

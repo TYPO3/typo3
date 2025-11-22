@@ -119,9 +119,9 @@ final class SlugSiteWithoutRequiredCHashRequestTest extends AbstractTestCase
         // '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6'
         $queries = [
             // @todo Currently fails since cHash is verified after(!) redirect to page 1100
-            // '?cHash=7d1f13fa91159dac7feb3c824936b39d',
-            // '?cHash=7d1f13fa91159dac7feb3c824936b39d',
-            'welcome?cHash=f42b850e435f0cedd366f5db749fc1af',
+            // '?cHash=76796a848e61a31b6cf1f1ae696e12409189abfc7a06364e8a971c7a2eb40922',
+            // '?cHash=76796a848e61a31b6cf1f1ae696e12409189abfc7a06364e8a971c7a2eb40922',
+            'welcome?cHash=1a3af6ba153b6210cf8abb271ca8b360b9b06163a22790a43540df76ded1ba31',
         ];
         $customQueries = [
             '&testing[value]=1',

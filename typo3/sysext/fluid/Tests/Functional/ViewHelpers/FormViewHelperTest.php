@@ -217,9 +217,9 @@ final class FormViewHelperTest extends FunctionalTestCase
 <input type="hidden" name="prefix[__referrer][@extension]" value="extensionName" >
 <input type="hidden" name="prefix[__referrer][@controller]" value="controllerName" >
 <input type="hidden" name="prefix[__referrer][@action]" value="controllerActionName" >
-<input type="hidden" name="prefix[__referrer][arguments]" value="YTowOnt99e84bd507db45be875f9238be42d954813180d05" >
-<input type="hidden" name="prefix[__referrer][@request]" value="{&quot;@extension&quot;:&quot;extensionName&quot;,&quot;@controller&quot;:&quot;controllerName&quot;,&quot;@action&quot;:&quot;controllerActionName&quot;}d5e7bc06c14881c8fe6f373c2236c4b62d13465c" >
-<input type="hidden" name="prefix[__trustedProperties]" value="{&quot;myObjectName&quot;:{&quot;__identity&quot;:1}}9e6686e8fe21e9b4d3f5a89a66fed4193f4758b4" >
+<input type="hidden" name="prefix[__referrer][arguments]" value="YTowOnt9f989c1910ba0da37460b71147bf7dee693f0508269fbec73671c8a74b39d1a6c" >
+<input type="hidden" name="prefix[__referrer][@request]" value="{&quot;@extension&quot;:&quot;extensionName&quot;,&quot;@controller&quot;:&quot;controllerName&quot;,&quot;@action&quot;:&quot;controllerActionName&quot;}56fe63bb220641c2178ef3f1d29c7d8b506eb032ca8b20a085e3bd6427918ed6" >
+<input type="hidden" name="prefix[__trustedProperties]" value="{&quot;myObjectName&quot;:{&quot;__identity&quot;:1}}2d7c45d172ee496869555c905578e4ad506d76c6a97342f533c64b3f88478fd4" >
 </div>
 </form>';
         self::assertSame($expected, $view->render());

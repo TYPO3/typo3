@@ -20,6 +20,7 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\UriInterface;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -583,13 +584,17 @@ abstract class ActionController implements ControllerInterface
         $referringRequestArguments = $extbaseRequestParameters->getInternalArgument('__referrer') ?? null;
         if (is_string($referringRequestArguments['@request'] ?? null)) {
             $referrerArray = json_decode(
-                $this->hashService->validateAndStripHmac($referringRequestArguments['@request'], HashScope::ReferringRequest->prefix()),
+                $this->hashService->validateAndStripHmac($referringRequestArguments['@request'], HashScope::ReferringRequest->prefix(), HashAlgo::SHA3_256),
                 true
             );
             $arguments = [];
             if (is_string($referringRequestArguments['arguments'] ?? null)) {
                 $arguments = unserialize(
-                    base64_decode($this->hashService->validateAndStripHmac($referringRequestArguments['arguments'], HashScope::ReferringArguments->prefix()))
+                    base64_decode($this->hashService->validateAndStripHmac(
+                        $referringRequestArguments['arguments'],
+                        HashScope::ReferringArguments->prefix(),
+                        HashAlgo::SHA3_256
+                    ))
                 );
             }
             $replacedArguments = array_replace_recursive($arguments, $referrerArray);

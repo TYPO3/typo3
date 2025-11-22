@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\FormProtection\AbstractFormProtection;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
@@ -44,7 +45,8 @@ final class InstallToolFormProtectionTest extends UnitTestCase
         $formInstanceName = '42';
         $tokenId = $this->hashService->hmac(
             $formName . $action . $formInstanceName . $sessionToken,
-            AbstractFormProtection::class
+            AbstractFormProtection::class,
+            HashAlgo::SHA3_256
         );
         $_SESSION['installToolFormToken'] = $sessionToken;
         $subject = $this->getAccessibleMock(InstallToolFormProtection::class, null);

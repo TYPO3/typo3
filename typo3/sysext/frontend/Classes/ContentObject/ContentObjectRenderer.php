@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -962,7 +963,7 @@ class ContentObjectRenderer
                 }
             }
             $parametersEncoded = base64_encode((string)json_encode($parameters));
-            $hmac = $this->hashService->hmac(implode('|', [$file->getUid(), $parametersEncoded]), 'tx_cms_showpic');
+            $hmac = $this->hashService->hmac(implode('|', [$file->getUid(), $parametersEncoded]), 'tx_cms_showpic', HashAlgo::SHA3_256);
             $params = '&md5=' . $hmac;
             foreach (str_split($parametersEncoded, 64) as $index => $chunk) {
                 $params .= '&parameters' . rawurlencode('[') . $index . rawurlencode(']') . '=' . rawurlencode($chunk);

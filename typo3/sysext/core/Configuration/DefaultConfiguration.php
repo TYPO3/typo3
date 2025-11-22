@@ -1630,6 +1630,8 @@ return [
             'excludeAllEmptyParameters' => false,
             'excludedParametersIfEmpty' => [],
             'enforceValidation' => false,
+            // @deprecated drop backward compatibility with TYPO3 v15.0
+            'fallbackToLegacyHash' => true,
         ],
         'additionalCanonicalizedUrlParameters' => [],
         'workspacePreviewLogoutTemplate' => '',

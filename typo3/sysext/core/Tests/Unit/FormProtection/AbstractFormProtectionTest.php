@@ -109,7 +109,7 @@ final class AbstractFormProtectionTest extends UnitTestCase
     public function generateTokenReturns32CharacterHexToken(): void
     {
         $subject = new FormProtectionTesting();
-        self::assertMatchesRegularExpression('/^[0-9a-f]{40}$/', $subject->generateToken('foo'));
+        self::assertMatchesRegularExpression('/^[0-9a-f]{64}$/', $subject->generateToken('foo'));
     }
 
     #[Test]

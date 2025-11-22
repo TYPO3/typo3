@@ -59,11 +59,11 @@ final class TypolinkViewHelperTest extends FunctionalTestCase
             ],
             'uri: with add query string' => [
                 '<f:uri.typolink parameter="1" addQueryString="untrusted" />',
-                '/en/?foo=bar&amp;temp=test&amp;cHash=286759dfcd3f566fa21091a0d77e9831',
+                '/en/?foo=bar&amp;temp=test&amp;cHash=aad29f8fed213a294e265642dd11ae9d143babfd824629b771aea51022589fb3',
             ],
             'uri: with add query string and exclude' => [
                 '<f:uri.typolink parameter="1" addQueryString="untrusted" addQueryStringExclude="temp" />',
-                '/en/?foo=bar&amp;cHash=afa4b37588ab917af3cfe2cd4464029d',
+                '/en/?foo=bar&amp;cHash=626dbb5a2e0bcc17f77dc364642237e24deaafe0d981c475563b038c4ad68138',
             ],
             't3://url uri: default' => [
                 '<f:uri.typolink parameter="t3://url?url=https://example.org?param=1&other=dude" />',

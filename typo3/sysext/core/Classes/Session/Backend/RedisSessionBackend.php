@@ -19,9 +19,12 @@ namespace TYPO3\CMS\Core\Session\Backend;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotCreatedException;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotUpdatedException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This session backend takes these optional configuration options: 'hostname' (default '127.0.0.1'),
@@ -100,9 +103,8 @@ class RedisSessionBackend implements SessionBackendInterface, HashableSessionBac
 
     public function hash(string $sessionId): string
     {
-        // The sha1 hash ensures we have good length for the key.
-        $key = sha1($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . 'core-session-backend');
-        return hash_hmac('sha256', $sessionId, $key);
+        return GeneralUtility::makeInstance(HashService::class)
+            ->hmac($sessionId, 'core-session-backend', HashAlgo::SHA3_256);
     }
 
     /**
