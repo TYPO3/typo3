@@ -145,6 +145,7 @@
     margin-bottom: calc(var(--typo3-spacing) / 2);
 
     .form-label {
+        display: block;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -158,7 +159,7 @@
         gap: calc(var(--typo3-spacing) / 2);
 
         .form-label {
-            width: 180px;
+            width: 200px;
             flex-shrink: 0;
             overflow: hidden;
             text-overflow: ellipsis;
