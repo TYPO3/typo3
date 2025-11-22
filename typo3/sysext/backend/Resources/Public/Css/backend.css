@@ -3209,10 +3209,10 @@ typo3-backend-form-selecttree-toolbar{display:block}
 .element-browser-main-content{min-width:calc(100% - 38px)}}
 .element-browser-main-content{container-type:inline-size}
 .element-browser-form-group{margin-bottom:calc(var(--typo3-spacing)/2)}
-.element-browser-form-group .form-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.element-browser-form-group .form-label{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 @container (min-width: 500px){
 .element-browser-form-group{align-items:center;display:flex;gap:calc(var(--typo3-spacing)/2)}
-.element-browser-form-group .form-label{flex-shrink:0;margin-bottom:0!important;overflow:hidden;text-overflow:ellipsis;width:180px}}
+.element-browser-form-group .form-label{flex-shrink:0;margin-bottom:0!important;overflow:hidden;text-overflow:ellipsis;width:200px}}
 .media{display:grid;grid-template-columns:2rem auto;grid-gap:1rem}
 .media .media-body{grid-column:1/3;overflow:hidden}
 .media .media-left+.media-body{align-self:center;grid-column:2/3}
