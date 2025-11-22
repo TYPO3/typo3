@@ -164,7 +164,7 @@ class PaletteAndSingleContainer extends AbstractContainer
                 if (!empty($element['paletteDescription'])) {
                     $html[] = '<p class="form-section-description text-body-secondary">' . nl2br(htmlspecialchars($element['paletteDescription'])) . '</p>';
                 }
-                $html[] = '<div class="row">' . $this->renderInnerPaletteContent($element) . '</div>';
+                $html[] = $this->renderInnerPaletteContent($element);
                 $html[] = '</fieldset>';
                 $content[] = implode(LF, $html);
             } else {
@@ -237,79 +237,54 @@ class PaletteAndSingleContainer extends AbstractContainer
      */
     protected function renderInnerPaletteContent(array $elementArray): string
     {
-        // Group fields
-        $groupedFields = [];
-        $row = 0;
-        $lastLineWasLinebreak = true;
+        $result = [];
+        $currentGroup = [];
+
         foreach ($elementArray['elements'] as $element) {
             if ($element['type'] === 'linebreak') {
-                if (!$lastLineWasLinebreak) {
-                    $row++;
-                    $groupedFields[$row][] = $element;
-                    $row++;
-                    $lastLineWasLinebreak = true;
+                // Render current group before linebreak
+                if (!empty($currentGroup)) {
+                    $result[] = $this->renderFieldGroup($currentGroup);
+                    $currentGroup = [];
                 }
             } else {
-                $lastLineWasLinebreak = false;
-                $groupedFields[$row][] = $element;
+                $currentGroup[] = $element;
             }
         }
 
+        // Render remaining group
+        if (!empty($currentGroup)) {
+            $result[] = $this->renderFieldGroup($currentGroup);
+        }
+
+        return implode(LF, $result);
+    }
+
+    /**
+     * Renders a group of fields within a form-grid container
+     *
+     * @param array $fields Array of field elements
+     * @return string Rendered HTML
+     */
+    protected function renderFieldGroup(array $fields): string
+    {
+        $numberOfItems = count($fields);
         $result = [];
-        // Process fields
-        foreach ($groupedFields as $fields) {
-            $numberOfItems = count($fields);
-            $colWidth = (int)floor(12 / $numberOfItems);
-            // Column class calculation
-            $colClass = 'col-md-12';
-            $colClear = [];
-            if ($colWidth == 6) {
-                $colClass = 'col col-sm-6';
-                $colClear = [
-                    2 => 'd-sm-block d-md-none',
-                ];
-            } elseif ($colWidth === 4) {
-                $colClass = 'col col-sm-4';
-                $colClear = [
-                    3 => 'd-sm-block d-md-none',
-                ];
-            } elseif ($colWidth === 3) {
-                $colClass = 'col col-sm-6 col-md-3';
-                $colClear = [
-                    2 => 'd-sm-block d-md-none',
-                    4 => 'd-sm-block d-md-block d-xl-none',
-                ];
-            } elseif ($colWidth <= 2) {
-                $colClass = 'col col-sm-6 col-md-3 col-lg-2';
-                $colClear = [
-                    2 => 'd-sm-block',
-                    4 => 'd-sm-block d-md-none',
-                    6 => 'd-sm-block d-md-block d-lg-none',
-                ];
-            }
 
-            // Render fields
-            for ($counter = 0; $counter < $numberOfItems; $counter++) {
-                $element = $fields[$counter];
-                if ($element['type'] === 'linebreak') {
-                    if ($counter !== $numberOfItems) {
-                        $result[] = '<div class="clearfix"></div>';
-                    }
-                } else {
-                    $result[] = '<div class="form-group t3js-formengine-validation-marker t3js-formengine-palette-field ' . $colClass . '">';
-                    $result[] =     $element['fieldHtml'];
-                    $result[] = '</div>';
-                    // Breakpoints
-                    if ($counter + 1 < $numberOfItems && !empty($colClear)) {
-                        foreach ($colClear as $rowBreakAfter => $clearClass) {
-                            if (($counter + 1) % $rowBreakAfter === 0) {
-                                $result[] = '<div class="clearfix ' . $clearClass . '"></div>';
-                            }
-                        }
-                    }
-                }
-            }
+        if ($numberOfItems > 1) {
+            $result[] = '<div class="form-grid" style="--typo3-form-grid-columns: ' . $numberOfItems . '">';
         }
+
+        foreach ($fields as $element) {
+            $result[] = '<div class="form-group t3js-formengine-validation-marker t3js-formengine-palette-field">';
+            $result[] =     $element['fieldHtml'];
+            $result[] = '</div>';
+        }
+
+        if ($numberOfItems > 1) {
+            $result[] = '</div>';
+        }
+
         return implode(LF, $result);
     }
 

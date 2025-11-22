@@ -2399,16 +2399,24 @@ typo3-backend-formengine-suggest-result-item .formengine-suggest-result-item-lab
 .badge-space-end{-webkit-margin-end:1em;margin-inline-end:1em}
 .badge-pill{--typo3-badge-border-radius:1em}
 .badge-list{display:flex;flex-wrap:wrap;gap:.25rem;list-style:none;margin:0;padding:0}
-.form-section{--typo3-form-section-color:var(--typo3-text-color-base);--typo3-form-section-bg:var(--typo3-surface-container-low);--typo3-form-section-border-width:1px;--typo3-form-section-border-color:color-mix(in srgb,var(--typo3-form-section-bg),var(--typo3-form-section-color) var(--typo3-border-mix));--typo3-form-section-radius:var(--typo3-component-border-radius);--typo3-form-section-radius-top:var(--typo3-form-section-radius);--typo3-form-section-radius-bottom:var(--typo3-form-section-radius);--typo3-form-section-padding-y:1rem;--typo3-form-section-padding-x:1rem;--typo3-form-section-headline-font-size:1rem;--treelist-bg:var(--typo3-form-section-bg);background-color:var(--typo3-form-section-bg);border:var(--typo3-form-section-border-width) solid var(--typo3-form-section-border-color);border-radius:var(--typo3-form-section-radius-top) var(--typo3-form-section-radius-top) var(--typo3-form-section-radius-bottom) var(--typo3-form-section-radius-bottom);color:var(--typo3-form-section-color);padding:var(--typo3-form-section-padding-y) var(--typo3-form-section-padding-x)}
+.form-section{--typo3-form-section-color:var(--typo3-text-color-base);--typo3-form-section-bg:var(--typo3-surface-container-low);--typo3-form-section-border-width:1px;--typo3-form-section-border-color:color-mix(in srgb,var(--typo3-form-section-bg),var(--typo3-form-section-color) var(--typo3-border-mix));--typo3-form-section-radius:var(--typo3-component-border-radius);--typo3-form-section-radius-top:var(--typo3-form-section-radius);--typo3-form-section-radius-bottom:var(--typo3-form-section-radius);--typo3-form-section-padding-y:1rem;--typo3-form-section-padding-x:1rem;--typo3-form-section-headline-font-size:1rem;--treelist-bg:var(--typo3-form-section-bg);background-color:var(--typo3-form-section-bg);border:var(--typo3-form-section-border-width) solid var(--typo3-form-section-border-color);border-radius:var(--typo3-form-section-radius-top) var(--typo3-form-section-radius-top) var(--typo3-form-section-radius-bottom) var(--typo3-form-section-radius-bottom);color:var(--typo3-form-section-color);container-type:inline-size;padding:var(--typo3-form-section-padding-y) var(--typo3-form-section-padding-x)}
 .form-section:has(+.form-section){--typo3-form-section-radius-bottom:0}
 .form-section+.form-section{--typo3-form-section-radius-top:0;margin-top:calc(var(--typo3-form-section-border-width)*-1)}
-.form-section .form-group:last-of-type{margin-bottom:0}
+.form-section>:last-child{margin-bottom:0}
 .form-section-headline{font-size:var(--typo3-form-section-headline-font-size);margin-bottom:var(--typo3-spacing);margin-top:0}
 .form-section-headline+.form-section-description{margin-bottom:var(--typo3-spacing);margin-top:calc(var(--typo3-spacing)/2*-1)}
+.form-section-description{color:var(--typo3-text-color-variant)}
 .form-section-tabs{--typo3-nav-tabs-bg:var(--typo3-surface-container-low)}
 .form-group{margin-bottom:var(--typo3-spacing)}
+.form-group>:first-child{margin-top:0}
+.form-group>:last-child{margin-bottom:0}
 .form-group-dashed+.form-group-dashed{border-top:var(--typo3-component-border-width) dashed var(--typo3-component-border-color);padding-top:var(--typo3-spacing)}
 .form-multigroup-wrap{display:grid;gap:var(--typo3-spacing);grid-template-columns:1fr 1fr;width:100%}
+.form-grid{--typo3-form-grid-columns:1;--typo3-form-grid-min-col-width:220px;--typo3-form-grid-spacing:var(--typo3-spacing);--typo3-form-grid-spacing-y:var(--typo3-form-grid-spacing);--typo3-form-grid-total-gap:calc((var(--typo3-form-grid-columns) - 1)*var(--typo3-form-grid-spacing));--typo3-form-grid-ideal-col-width:calc((100% - var(--typo3-form-grid-total-gap))/var(--typo3-form-grid-columns));--typo3-form-grid-col-width:clamp(var(--typo3-form-grid-min-col-width),var(--typo3-form-grid-ideal-col-width),100%);display:grid;gap:var(--typo3-form-grid-spacing-y) var(--typo3-form-grid-spacing);margin-bottom:var(--typo3-form-grid-spacing)}
+.form-grid>*{margin-bottom:0;margin-top:0}
+@container (min-width: 600px){
+.form-grid{grid-template-columns:repeat(auto-fit,minmax(var(--typo3-form-grid-col-width),1fr))}}
+.form-grid:has(>.form-group>.form-check:only-child){--typo3-form-grid-spacing-y:calc(var(--typo3-form-grid-spacing)/2)}
 .form-row{align-items:flex-end;display:flex;flex-wrap:wrap;gap:var(--typo3-spacing);margin-bottom:var(--typo3-spacing)}
 .form-row>.form-group,.form-row>.form-group>[class*=form-row]{margin-bottom:0}
 @media (min-width:576px){

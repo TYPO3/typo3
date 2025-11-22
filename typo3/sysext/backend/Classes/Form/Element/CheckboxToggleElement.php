@@ -84,24 +84,14 @@ class CheckboxToggleElement extends AbstractFormElement
         $formElementValue = (int)($this->data['parameterArray']['itemFormElValue'] ?? 0);
         $cols = (int)($this->data['parameterArray']['fieldConf']['config']['cols'] ?? 0);
         if ($cols > 1) {
-            [$colClass, $colClear] = $this->calculateColumnMarkup($cols);
-            $elementHtml .= '<div class="row">';
-            $counter = 0;
+            $elementHtml .= '<div class="form-grid" style="--typo3-form-grid-columns: ' . $cols . ';">';
             // $itemKey is important here, because items could have been removed via TSConfig
             foreach ($items as $itemKey => $itemDefinition) {
                 $label = $itemDefinition['label'];
                 $elementHtml .=
-                    '<div class="' . $colClass . '">'
+                    '<div class="form-group">'
                         . $this->renderSingleCheckboxElement($label, $itemKey, $formElementValue, $numberOfItems, $this->data['parameterArray'], $disabled) .
                     '</div>';
-                ++$counter;
-                if ($counter < $numberOfItems && !empty($colClear)) {
-                    foreach ($colClear as $rowBreakAfter => $clearClass) {
-                        if ($counter % $rowBreakAfter === 0) {
-                            $elementHtml .= '<div class="clearfix ' . $clearClass . '"></div>';
-                        }
-                    }
-                }
             }
             $elementHtml .= '</div>';
         } else {

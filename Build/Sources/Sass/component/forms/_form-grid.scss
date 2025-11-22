@@ -1,0 +1,29 @@
+//
+// Form grid
+//
+.form-grid {
+    --typo3-form-grid-columns: 1;
+    --typo3-form-grid-min-col-width: 220px;
+    --typo3-form-grid-spacing: var(--typo3-spacing);
+    --typo3-form-grid-spacing-y: var(--typo3-form-grid-spacing);
+    --typo3-form-grid-total-gap: calc((var(--typo3-form-grid-columns) - 1) * var(--typo3-form-grid-spacing));
+    --typo3-form-grid-ideal-col-width: calc((100% - var(--typo3-form-grid-total-gap)) / var(--typo3-form-grid-columns));
+    --typo3-form-grid-col-width: clamp(var(--typo3-form-grid-min-col-width), var(--typo3-form-grid-ideal-col-width), 100%);
+    display: grid;
+    gap: var(--typo3-form-grid-spacing-y) var(--typo3-form-grid-spacing);
+    margin-bottom: var(--typo3-form-grid-spacing);
+
+    > * {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    @container (min-width: 600px) {
+        grid-template-columns: repeat(auto-fit, minmax(var(--typo3-form-grid-col-width), 1fr));
+    }
+
+    // Reduce vertical spacing for grids containing only checkboxes
+    &:has(> .form-group > .form-check:only-child) {
+        --typo3-form-grid-spacing-y: calc(var(--typo3-form-grid-spacing) / 2);
+    }
+}

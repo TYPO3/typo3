@@ -13,6 +13,7 @@
     --typo3-form-section-padding-x: 1rem;
     --typo3-form-section-headline-font-size: 1rem;
     --treelist-bg: var(--typo3-form-section-bg);
+    container-type: inline-size;
     color: var(--typo3-form-section-color);
     border: var(--typo3-form-section-border-width) solid var(--typo3-form-section-border-color);
     border-radius: var(--typo3-form-section-radius-top) var(--typo3-form-section-radius-top) var(--typo3-form-section-radius-bottom) var(--typo3-form-section-radius-bottom);
@@ -28,7 +29,7 @@
         margin-top: calc(var(--typo3-form-section-border-width) * -1);
     }
 
-    .form-group:last-of-type {
+    > *:last-child {
         margin-bottom: 0;
     }
 }
@@ -42,6 +43,10 @@
         margin-top: calc(var(--typo3-spacing) / 2 * -1);
         margin-bottom: var(--typo3-spacing);
     }
+}
+
+.form-section-description {
+    color: var(--typo3-text-color-variant);
 }
 
 .form-section-tabs {
