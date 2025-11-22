@@ -23,7 +23,9 @@ test('System note can be created and edited from list module', async ({ backend 
   });
 
   await test.step('Edit the created system note', async () => {
-    await backend.contentFrame.getByRole('link', { name: 'Edit note record' }).first().click();
+    const loaded = backend.moduleLoaded('web_list');
+    backend.contentFrame.getByRole('link', { name: 'Edit note record' }).first().click();
+    await loaded;
 
     await expect(backend.contentFrame.locator('h1')).toContainText('Edit Internal note "new sys_note" on page "styleguide TCA demo"');
     await backend.contentFrame.getByText('[subject]').fill('edited sys_note');

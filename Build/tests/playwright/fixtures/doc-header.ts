@@ -19,10 +19,15 @@ export class DocHeader {
     await expect(triggerButton).toBeVisible();
     await triggerButton.click();
 
-    // Select dropdown item
-    const optionButton = this.container.locator('.dropdown-menu.show .dropdown-item', { hasText: option });
-    await expect(optionButton).toBeAttached();
-    await optionButton.click();
+    // Wait for dropdown menu to be visible
+    const dropdownMenu = this.container.locator('.dropdown-menu.show');
+    await expect(dropdownMenu).toBeVisible();
+
+    // Select dropdown item using title attribute for precise matching
+    // Use force:true since we've verified visibility and the element can detach during navigation
+    const optionButton = dropdownMenu.locator(`.dropdown-item[title="${option}"]`);
+    await expect(optionButton).toBeVisible();
+    await optionButton.click({ force: true });
 
     // Wait for the trigger button to be stable/enabled again
     await expect(triggerButton).toBeEnabled();
@@ -34,10 +39,14 @@ export class DocHeader {
     await expect(triggerButton).toBeVisible();
     await triggerButton.click();
 
+    // Wait for dropdown menu to be visible
+    const dropdownMenu = this.container.locator('.dropdown-menu.show');
+    await expect(dropdownMenu).toBeVisible();
+
     // Select dropdown item
-    const optionButton = this.container.locator('.dropdown-menu.show .dropdown-item').nth(index);
-    await expect(optionButton).toBeAttached();
-    await optionButton.click();
+    const optionButton = dropdownMenu.locator('.dropdown-item').nth(index);
+    await expect(optionButton).toBeVisible();
+    await optionButton.click({ force: true });
 
     // Wait for the trigger button to be stable/enabled again
     await expect(triggerButton).toBeEnabled();

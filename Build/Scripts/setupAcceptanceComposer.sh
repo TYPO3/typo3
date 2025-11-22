@@ -30,6 +30,17 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '.*';
 $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor'] = 'GraphicsMagick';
 $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport'] = 'mbox';
 $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport_mbox_file'] = \TYPO3\CMS\Core\Core\Environment::getVarPath() . '/log/mail.mbox';
+
+// SQLite optimization: enable WAL mode and busy timeout to prevent "database is locked" errors
+if (($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['driver'] ?? '') === 'pdo_sqlite') {
+    $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['driverOptions'] = [
+        \PDO::ATTR_TIMEOUT => 120,
+    ];
+    $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['initCommands'] =
+        'PRAGMA journal_mode = WAL;' . LF .
+        'PRAGMA busy_timeout = 120000;' . LF .
+        'PRAGMA synchronous = NORMAL;';
+}
 EOF
 
 # `composer require` will implicitly perform an initial `composer install` since there is no composer.lock

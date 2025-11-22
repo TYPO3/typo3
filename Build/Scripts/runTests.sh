@@ -230,17 +230,17 @@ runPlaywright() {
         fi
 
     APACHE_OPTIONS="-e APACHE_RUN_USER=#${HOST_UID} -e APACHE_RUN_SERVERNAME=web -e APACHE_RUN_GROUP=#${HOST_PID} -e APACHE_RUN_DOCROOT=${CORE_ROOT}/typo3temp/var/tests/playwright-composer/public -e PHPFPM_HOST=phpfpm -e PHPFPM_PORT=9000"
-    if [[ ${PLAYWRIGHT_PREPARE_ONLY} -eq 1 ]]; then
+    if [[ ${PLAYWRIGHT_PREPARE_ONLY} -eq 1 || ${PLAYWRIGHT_BROWSER} -eq 1 ]]; then
         APACHE_OPTIONS="${APACHE_OPTIONS} -p 127.0.0.1::80"
     fi
 
     if [ ${CONTAINER_BIN} = "docker" ]; then
-        ${CONTAINER_BIN} run --rm -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -e PHPFPM_USER=${HOST_UID} -e PHPFPM_GROUP=${HOST_PID} -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm ${PHP_FPM_OPTIONS} >/dev/null
+        ${CONTAINER_BIN} run --rm -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -e PHPFPM_USER=${HOST_UID} -e PHPFPM_GROUP=${HOST_PID} -e PHPFPM_USER=0 -e PHPFPM_GROUP=0 -e PHPFPM_PM_MAX_CHILDREN=50 -e PHPFPM_PM_START_SERVERS=10 -e PHPFPM_PM_MIN_SPARE_SERVERS=5 -e PHPFPM_PM_MAX_SPARE_SERVERS=15 -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm ${PHP_FPM_OPTIONS} >/dev/null
         SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
         ${CONTAINER_BIN} run --rm -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
         SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
     else
-        ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm ${USERSET} -e PHPFPM_USER=0 -e PHPFPM_GROUP=0 -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm -R ${PHP_FPM_OPTIONS} >/dev/null
+        ${CONTAINER_BIN} run ${CI_PARAMS} -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm ${USERSET} -e PHPFPM_USER=0 -e PHPFPM_GROUP=0 -e PHPFPM_PM_MAX_CHILDREN=50 -e PHPFPM_PM_START_SERVERS=10 -e PHPFPM_PM_MIN_SPARE_SERVERS=5 -e PHPFPM_PM_MAX_SPARE_SERVERS=15 -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm -R ${PHP_FPM_OPTIONS} >/dev/null
         SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
         ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
         SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
@@ -248,9 +248,37 @@ runPlaywright() {
 
     waitFor web 80
 
-    COMMAND="npm --prefix=${CORE_ROOT}/Build run playwright:run ${PLAYWRIGHT_PROJECT}"
-    COMMAND_UI="npm --prefix=${CORE_ROOT}/Build run playwright:open ${PLAYWRIGHT_PROJECT}"
-    if [[ ${PLAYWRIGHT_PREPARE_ONLY} -eq 0 ]]; then
+    COMMAND="npm --prefix=${CORE_ROOT}/Build run playwright:run -- ${PLAYWRIGHT_PROJECT}"
+    COMMAND_UI="npm --prefix=${CORE_ROOT}/Build run playwright:open -- ${PLAYWRIGHT_PROJECT}"
+    PLAYWRIGHT_GUI_PORT=43837
+
+    if [[ ${PLAYWRIGHT_PREPARE_ONLY} -eq 0 && ${PLAYWRIGHT_BROWSER} -eq 1 ]]; then
+        PLAYWRIGHT_BASE_URL="http://$(${CONTAINER_BIN} port ac-web-${SUFFIX} 80/tcp)/typo3/"
+        ${CONTAINER_BIN} run -d ${CONTAINER_COMMON_PARAMS} --name ac-browser-${SUFFIX} -p $PLAYWRIGHT_GUI_PORT -e CHROME_SANDBOX=false -e PLAYWRIGHT_BASE_URL=http://web:80/typo3/ ${IMAGE_PLAYWRIGHT} ${COMMAND} --ui --ui-port=$PLAYWRIGHT_GUI_PORT --ui-host=0.0.0.0 > /dev/null 2>&1
+        SUITE_EXIT_CODE=$?
+        PLAYWRIGHT_BROWSER_URL="http://127.0.0.1:$(${CONTAINER_BIN} port ac-browser-${SUFFIX} ${PLAYWRIGHT_GUI_PORT}/tcp | head -n 1 | cut -d: -f2)"
+
+        echo -en "\033[32m✓\033[0m Playwright is ready..."
+        echo -en "\n  * Playwright GUI $PLAYWRIGHT_BROWSER_URL or press \"\033[32mo\033[0m\"."
+        echo -en "\n  * TYPO3 test installation $PLAYWRIGHT_BASE_URL or press \"\033[32mt\033[0m\"."
+        echo
+
+        if [ "$(uname)" = "Darwin" ]; then
+          OPEN_COMMAND=open
+        elif command -v xdg-open > /dev/null 2>&1; then
+          OPEN_COMMAND=xdg-open
+        fi
+
+        while true; do
+        read -rsn1 key
+        if [ "$key" = "o" ]; then
+            ${OPEN_COMMAND} "$PLAYWRIGHT_BROWSER_URL"
+        fi
+        if [ "$key" = "t" ]; then
+            ${OPEN_COMMAND} "$PLAYWRIGHT_BASE_URL"
+        fi
+        done </dev/tty
+    elif [[ ${PLAYWRIGHT_PREPARE_ONLY} -eq 0 ]]; then
         ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name accessibility-${SUFFIX} -e CHROME_SANDBOX=false -e CI=1 ${IMAGE_PLAYWRIGHT} ${COMMAND}
         SUITE_EXIT_CODE=$?
     else
@@ -503,6 +531,8 @@ Options:
             - npm: "npm" command dispatcher, to execute various npm commands directly
             - accessibility: accessibility tests (use accessibility-prepare for manual execution)
             - e2e: end to end tests (use e2e-prepare for manual execution)
+            - e2e-prepare: Start a test instance of TYPO3
+            - e2e-browser: end to end tests with the GUI running on http://127.0.0.1:43837
             - phpstan: phpstan tests
             - phpstanGenerateBaseline: regenerate phpstan baseline, handy after phpstan updates
             - unit (default): PHP unit tests
@@ -1109,6 +1139,12 @@ case ${TEST_SUITE} in
     e2e)
         PLAYWRIGHT_PROJECT="--project e2e"
         PLAYWRIGHT_PREPARE_ONLY=0
+        runPlaywright
+        ;;
+    e2e-browser)
+        PLAYWRIGHT_PROJECT="--project e2e"
+        PLAYWRIGHT_PREPARE_ONLY=0
+        PLAYWRIGHT_BROWSER=1
         runPlaywright
         ;;
     e2e-prepare)
