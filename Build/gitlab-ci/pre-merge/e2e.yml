@@ -7,7 +7,8 @@ e2e playwright composer sqlite 8.2 pre-merge:
       - schedules
       - main
   artifacts:
-    when: on_failure
+    when: always
+    expire_in: 1 week
     paths:
       - typo3temp/var/tests/playwright-composer/var/log
       - typo3temp/var/tests/playwright-reports
