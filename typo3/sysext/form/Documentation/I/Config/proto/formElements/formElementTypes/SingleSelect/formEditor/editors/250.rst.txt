@@ -31,5 +31,5 @@ formEditor.editors.250
                  templateName: Inspector-TextEditor
                  label: formEditor.elements.SelectionMixin.editor.inactiveOption.label
                  propertyPath: properties.prependOptionLabel
-                 fieldExplanationText: formEditor.elements.SelectionMixin.editor.inactiveOption.fieldExplanationText
+                 description: formEditor.elements.SelectionMixin.editor.inactiveOption.description
                  doNotSetIfPropertyValueIsEmpty: true

@@ -133,7 +133,7 @@ prototypes:
                 numbersOfColumnsToUse:
                   label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
                   propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
-                  fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
+                  description: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.description
             800:
               identifier: requiredValidator
               templateName: Inspector-RequiredValidatorEditor
@@ -145,7 +145,7 @@ prototypes:
                 validationErrorMessage:
                   label: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label
                   propertyPath: properties.validationErrorMessages
-                  fieldExplanationText: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.fieldExplanationText
+                  description: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.description
                   errorCodes:
                     10: 1221560910
                     20: 1221560718
@@ -195,7 +195,7 @@ prototypes:
                     identifier: validationErrorMessage
                     templateName: Inspector-ValidationErrorMessageEditor
                     label: formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.label
-                    fieldExplanationText: formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.fieldExplanationText
+                    description: formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.description
                     errorCodes:
                       10: 1221551320
                     propertyPath: properties.validationErrorMessages
@@ -213,7 +213,7 @@ prototypes:
                     identifier: validationErrorMessage
                     templateName: Inspector-ValidationErrorMessageEditor
                     label: formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.label
-                    fieldExplanationText: formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.fieldExplanationText
+                    description: formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.description
                     errorCodes:
                       10: 1221565786
                     propertyPath: properties.validationErrorMessages
@@ -249,7 +249,7 @@ prototypes:
                     identifier: validationErrorMessage
                     templateName: Inspector-ValidationErrorMessageEditor
                     label: formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.label
-                    fieldExplanationText: formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.fieldExplanationText
+                    description: formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.description
                     errorCodes:
                       10: 1238110957
                       20: 1269883975
@@ -271,7 +271,7 @@ prototypes:
                     identifier: validationErrorMessage
                     templateName: Inspector-ValidationErrorMessageEditor
                     label: formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.label
-                    fieldExplanationText: formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.fieldExplanationText
+                    description: formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.description
                     errorCodes:
                       10: 1221559976
                     propertyPath: properties.validationErrorMessages
@@ -289,7 +289,7 @@ prototypes:
                     identifier: validationErrorMessage
                     templateName: Inspector-ValidationErrorMessageEditor
                     label: formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.label
-                    fieldExplanationText: formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.fieldExplanationText
+                    description: formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.description
                     errorCodes:
                       10: 1221560494
                     propertyPath: properties.validationErrorMessages
@@ -307,7 +307,7 @@ prototypes:
                     identifier: validationErrorMessage
                     templateName: Inspector-ValidationErrorMessageEditor
                     label: formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.label
-                    fieldExplanationText: formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.fieldExplanationText
+                    description: formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.description
                     errorCodes:
                       10: 1221560288
                     propertyPath: properties.validationErrorMessages
@@ -343,7 +343,7 @@ prototypes:
                     identifier: validationErrorMessage
                     templateName: Inspector-ValidationErrorMessageEditor
                     label: formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.label
-                    fieldExplanationText: formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.fieldExplanationText
+                    description: formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.description
                     errorCodes:
                       10: 1221563685
                       20: 1221561046
@@ -362,7 +362,7 @@ prototypes:
                     identifier: regex
                     templateName: Inspector-TextEditor
                     label: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.label
-                    fieldExplanationText: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.fieldExplanationText
+                    description: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.description
                     propertyPath: options.regularExpression
                     propertyValidators:
                       10: NotEmpty
@@ -371,7 +371,7 @@ prototypes:
                     identifier: validationErrorMessage
                     templateName: Inspector-ValidationErrorMessageEditor
                     label: formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.label
-                    fieldExplanationText: formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.fieldExplanationText
+                    description: formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.description
                     errorCodes:
                       10: 1221565130
                     propertyPath: properties.validationErrorMessages

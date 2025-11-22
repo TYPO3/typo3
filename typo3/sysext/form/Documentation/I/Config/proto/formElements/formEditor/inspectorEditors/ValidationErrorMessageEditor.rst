@@ -59,9 +59,9 @@ templateName
 .. include:: properties/PropertyPath.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.fieldexplanationtext-validationerrormessageeditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.description-validationerrormessageeditor:
 
-fieldExplanationText
+description
 --------------------
 
 :aspect:`Data type`

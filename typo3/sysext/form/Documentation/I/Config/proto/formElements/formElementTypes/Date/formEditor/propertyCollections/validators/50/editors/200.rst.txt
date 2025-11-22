@@ -30,7 +30,7 @@ formEditor.propertyCollections.validators.50.editors.200
                        identifier: validationErrorMessage
                        templateName: Inspector-ValidationErrorMessageEditor
                        label: formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.label
-                       fieldExplanationText: formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.fieldExplanationText
+                       description: formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.description
                        errorCodes:
                          10: 1221560494
                        propertyPath: properties.validationErrorMessages

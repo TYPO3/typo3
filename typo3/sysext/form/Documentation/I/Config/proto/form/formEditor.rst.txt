@@ -107,7 +107,7 @@ formEditor
                        propertyPath: options.recipients
                        propertyValidators:
                          10: NotEmpty
-                       fieldExplanationText: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.fieldExplanationText
+                       description: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.description
                        isSortable: true
                        enableAddRow: true
                        enableDeleteRow: true
@@ -198,7 +198,7 @@ formEditor
                        templateName: Inspector-CheckboxEditor
                        label: formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.label
                        propertyPath: options.addHtmlPart
-                       fieldExplanationText: formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.fieldExplanationText
+                       description: formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.description
                      1100:
                        identifier: attachUploads
                        templateName: Inspector-CheckboxEditor
@@ -218,7 +218,7 @@ formEditor
                        templateName: Inspector-TextEditor
                        label: formEditor.elements.Form.finisher.EmailToSender.editor.title.label
                        propertyPath: options.title
-                       fieldExplanationText: formEditor.elements.Form.finisher.EmailToSender.editor.title.fieldExplanationText
+                       description: formEditor.elements.Form.finisher.EmailToSender.editor.title.description
                        enableFormelementSelectionButton: true
                        propertyValidators:
                          10: FormElementIdentifierWithinCurlyBracesInclusive
@@ -248,7 +248,7 @@ formEditor
                        propertyPath: options.recipients
                        propertyValidators:
                          10: NotEmpty
-                       fieldExplanationText: formEditor.elements.Form.finisher.EmailToReceiver.editor.recipients.fieldExplanationText
+                       description: formEditor.elements.Form.finisher.EmailToReceiver.editor.recipients.description
                        isSortable: true
                        enableAddRow: true
                        enableDeleteRow: true
@@ -339,7 +339,7 @@ formEditor
                        templateName: Inspector-CheckboxEditor
                        label: formEditor.elements.Form.finisher.EmailToReceiver.editor.addHtmlPart.label
                        propertyPath: options.addHtmlPart
-                       fieldExplanationText: formEditor.elements.Form.finisher.EmailToReceiver.editor.addHtmlPart.fieldExplanationText
+                       description: formEditor.elements.Form.finisher.EmailToReceiver.editor.addHtmlPart.description
                      1100:
                        identifier: attachUploads
                        templateName: Inspector-CheckboxEditor
@@ -359,7 +359,7 @@ formEditor
                        templateName: Inspector-TextEditor
                        label: formEditor.elements.Form.finisher.EmailToReceiver.editor.title.label
                        propertyPath: options.title
-                       fieldExplanationText: formEditor.elements.Form.finisher.EmailToReceiver.editor.title.fieldExplanationText
+                       description: formEditor.elements.Form.finisher.EmailToReceiver.editor.title.description
                        enableFormelementSelectionButton: true
                        propertyValidators:
                          10: FormElementIdentifierWithinCurlyBracesInclusive
@@ -398,7 +398,7 @@ formEditor
                        browsableType: tt_content
                        iconIdentifier: mimetypes-x-content-text
                        propertyPath: options.fragment
-                       fieldExplanationText: formEditor.elements.Form.finisher.Redirect.editor.fragment.fieldExplanationText
+                       description: formEditor.elements.Form.finisher.Redirect.editor.fragment.description
                      9999:
                        identifier: removeButton
                        templateName: Inspector-RemoveElementEditor
@@ -436,7 +436,7 @@ formEditor
                        templateName: Inspector-TextareaEditor
                        label: formEditor.elements.Form.finisher.Confirmation.editor.message.label
                        propertyPath: options.message
-                       fieldExplanationText: formEditor.elements.Form.finisher.Confirmation.editor.message.fieldExplanationText
+                       description: formEditor.elements.Form.finisher.Confirmation.editor.message.description
                      9999:
                        identifier: removeButton
                        templateName: Inspector-RemoveElementEditor

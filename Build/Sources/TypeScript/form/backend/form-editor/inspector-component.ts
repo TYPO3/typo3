@@ -1071,15 +1071,7 @@ export function renderTextEditor(
   getHelper()
     .getTemplatePropertyDomElement('label', editorHtml)
     .append(editorConfiguration.label);
-  if (getUtility().isNonEmptyString(editorConfiguration.fieldExplanationText)) {
-    getHelper()
-      .getTemplatePropertyDomElement('fieldExplanationText', editorHtml)
-      .text(editorConfiguration.fieldExplanationText);
-  } else {
-    getHelper()
-      .getTemplatePropertyDomElement('fieldExplanationText', editorHtml)
-      .remove();
-  }
+  renderDescription(editorConfiguration, editorHtml);
 
   if (getUtility().isNonEmptyString(editorConfiguration.placeholder)) {
     getHelper()
@@ -1171,15 +1163,7 @@ export function renderValidationErrorMessageEditor(
   getHelper()
     .getTemplatePropertyDomElement('label', editorHtml)
     .append(editorConfiguration.label);
-  if (getUtility().isNonEmptyString(editorConfiguration.fieldExplanationText)) {
-    getHelper()
-      .getTemplatePropertyDomElement('fieldExplanationText', editorHtml)
-      .text(editorConfiguration.fieldExplanationText);
-  } else {
-    getHelper()
-      .getTemplatePropertyDomElement('fieldExplanationText', editorHtml)
-      .remove();
-  }
+  renderDescription(editorConfiguration, editorHtml);
 
   const propertyPath = getFormEditorApp().buildPropertyPath(
     editorConfiguration.propertyPath
@@ -1247,6 +1231,7 @@ export function renderCountrySelectEditor(
   getHelper()
     .getTemplatePropertyDomElement('label', editorHtml)
     .append(editorConfiguration.label);
+  renderDescription(editorConfiguration, editorHtml);
 
   const selectElement = getHelper()
     .getTemplatePropertyDomElement('selectOptions', editorHtml);
@@ -1331,6 +1316,7 @@ export function renderSingleSelectEditor(
   getHelper()
     .getTemplatePropertyDomElement('label', editorHtml)
     .append(editorConfiguration.label);
+  renderDescription(editorConfiguration, editorHtml);
 
   const selectElement = getHelper()
     .getTemplatePropertyDomElement('selectOptions', editorHtml);
@@ -1404,6 +1390,7 @@ export function renderMultiSelectEditor(
   getHelper()
     .getTemplatePropertyDomElement('label', editorHtml)
     .append(editorConfiguration.label);
+  renderDescription(editorConfiguration, editorHtml);
 
   const selectElement = getHelper()
     .getTemplatePropertyDomElement('selectOptions', editorHtml);
@@ -1530,8 +1517,8 @@ export function renderGridColumnViewPortConfigurationEditor(
       );
 
     getHelper()
-      .getTemplatePropertyDomElement('numbersOfColumnsToUse-fieldExplanationText', numbersOfColumnsTemplateClone)
-      .append(editorConfiguration.configurationOptions.numbersOfColumnsToUse.fieldExplanationText);
+      .getTemplatePropertyDomElement('numbersOfColumnsToUse-description', numbersOfColumnsTemplateClone)
+      .append(editorConfiguration.configurationOptions.numbersOfColumnsToUse.description);
 
     const propertyPath = editorConfiguration.configurationOptions.numbersOfColumnsToUse.propertyPath
       .replace('{@viewPortIdentifier}', element.data('viewPortIdentifier'));
@@ -1631,15 +1618,7 @@ export function renderPropertyGridEditor(
 
   getHelper().getTemplatePropertyDomElement('label', editorHtml)
     .append(editorConfiguration.label);
-  if (getUtility().isNonEmptyString(editorConfiguration.fieldExplanationText)) {
-    getHelper()
-      .getTemplatePropertyDomElement('fieldExplanationText', editorHtml)
-      .text(editorConfiguration.fieldExplanationText);
-  } else {
-    getHelper()
-      .getTemplatePropertyDomElement('fieldExplanationText', editorHtml)
-      .remove();
-  }
+  renderDescription(editorConfiguration, editorHtml);
 
   const propertyPathPrefix = (() => {
     const path = getFormEditorApp().buildPropertyPath(undefined, collectionElementIdentifier, collectionName, undefined, true);
@@ -1835,8 +1814,8 @@ export function renderRequiredValidatorEditor(
       .append(editorConfiguration.configurationOptions.validationErrorMessage.label);
 
     getHelper()
-      .getTemplatePropertyDomElement('validationErrorMessage-fieldExplanationText', validationErrorMessageTemplateClone)
-      .append(editorConfiguration.configurationOptions.validationErrorMessage.fieldExplanationText);
+      .getTemplatePropertyDomElement('validationErrorMessage-description', validationErrorMessageTemplateClone)
+      .append(editorConfiguration.configurationOptions.validationErrorMessage.description);
 
     propertyData = getCurrentlySelectedFormElement().get(validationErrorMessagePropertyPath);
     if (getUtility().isUndefinedOrNull(propertyData)) {
@@ -1947,15 +1926,7 @@ export function renderCheckboxEditor(
   getHelper()
     .getTemplatePropertyDomElement('label', editorHtml)
     .append(editorConfiguration.label);
-  if (getUtility().isNonEmptyString(editorConfiguration.fieldExplanationText)) {
-    getHelper()
-      .getTemplatePropertyDomElement('fieldExplanationText', editorHtml)
-      .text(editorConfiguration.fieldExplanationText);
-  } else {
-    getHelper()
-      .getTemplatePropertyDomElement('fieldExplanationText', editorHtml)
-      .remove();
-  }
+  renderDescription(editorConfiguration, editorHtml);
 
   const propertyPath = getFormEditorApp()
     .buildPropertyPath(editorConfiguration.propertyPath, collectionElementIdentifier, collectionName);
@@ -2022,16 +1993,7 @@ export function renderTextareaEditor(
 
   getHelper()
     .getTemplatePropertyDomElement('label', editorHtml).append(editorConfiguration.label);
-
-  if (getUtility().isNonEmptyString(editorConfiguration.fieldExplanationText)) {
-    getHelper()
-      .getTemplatePropertyDomElement('fieldExplanationText', editorHtml)
-      .text(editorConfiguration.fieldExplanationText);
-  } else {
-    getHelper()
-      .getTemplatePropertyDomElement('fieldExplanationText', editorHtml)
-      .remove();
-  }
+  renderDescription(editorConfiguration, editorHtml);
 
   const propertyData = getCurrentlySelectedFormElement().get(propertyPath);
   $('textarea', $(editorHtml)).val(propertyData);
@@ -2090,15 +2052,7 @@ export function renderTypo3WinBrowserEditor(
     .getTemplatePropertyDomElement('buttonLabel', editorHtml)
     .append(editorConfiguration.buttonLabel);
 
-  if (getUtility().isNonEmptyString(editorConfiguration.fieldExplanationText)) {
-    getHelper()
-      .getTemplatePropertyDomElement('fieldExplanationText', editorHtml)
-      .text(editorConfiguration.fieldExplanationText);
-  } else {
-    getHelper()
-      .getTemplatePropertyDomElement('fieldExplanationText', editorHtml)
-      .remove();
-  }
+  renderDescription(editorConfiguration, editorHtml);
 
   $('form', $(editorHtml)).prop('name', editorConfiguration.propertyPath);
 
@@ -2256,6 +2210,21 @@ export function buildTitleByFormElement(formElement?: FormElement): HTMLElement 
   const span = document.createElement('span');
   span.textContent = label;
   return span;
+}
+
+export function renderDescription(
+  editorConfiguration: EditorConfiguration,
+  editorHtml: HTMLElement | JQuery
+): void {
+  if (getUtility().isNonEmptyString(editorConfiguration.description)) {
+    getHelper()
+      .getTemplatePropertyDomElement('description', editorHtml)
+      .text(editorConfiguration.description);
+  } else {
+    getHelper()
+      .getTemplatePropertyDomElement('description', editorHtml)
+      .remove();
+  }
 }
 
 export function bootstrap(

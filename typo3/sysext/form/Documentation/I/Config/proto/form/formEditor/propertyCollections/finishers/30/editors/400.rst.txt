@@ -35,4 +35,4 @@ formEditor.propertyCollections.finishers.30.editors.400
                        browsableType: tt_content
                        iconIdentifier: mimetypes-x-content-text
                        propertyPath: options.fragment
-                       fieldExplanationText: formEditor.elements.Form.finisher.Redirect.editor.fragment.fieldExplanationText
+                       description: formEditor.elements.Form.finisher.Redirect.editor.fragment.description

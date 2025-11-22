@@ -151,9 +151,9 @@ configurationOptions.numbersOfColumnsToUse.propertyPath
       The path to the property of the form element which should be written.
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.configurationOptions.numbersOfColumnsToUse.fieldExplanationText-gridcolumnviewportconfigurationeditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.configurationOptions.numbersOfColumnsToUse.description-gridcolumnviewportconfigurationeditor:
 
-configurationOptions.numbersOfColumnsToUse.fieldExplanationText
+configurationOptions.numbersOfColumnsToUse.description
 ---------------------------------------------------------------
 
 :aspect:`Data type`

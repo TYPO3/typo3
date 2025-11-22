@@ -402,7 +402,7 @@
       <trans-unit id="formEditor.elements.TextMixin.editor.pattern.label">
         <source>Pattern</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.TextMixin.editor.pattern.fieldExplanationText">
+      <trans-unit id="formEditor.elements.TextMixin.editor.pattern.description">
         <source>Additional client-side validation as JavaScript regular expression</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.TextMixin.editor.step.label">
@@ -450,7 +450,7 @@
       <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.label">
         <source>Custom error message</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.fieldExplanationText">
+      <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.description">
         <source>Error message which is shown if the validation does not succeed</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.header.label">
@@ -459,7 +459,7 @@
       <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.label">
         <source>Custom error message</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.fieldExplanationText">
+      <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.description">
         <source>Error message which is shown if the validation does not succeed</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.header.label">
@@ -468,7 +468,7 @@
       <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.label">
         <source>Custom error message</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.fieldExplanationText">
+      <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.description">
         <source>Error message which is shown if the validation does not succeed</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.header.label">
@@ -477,7 +477,7 @@
       <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.label">
         <source>Custom error message</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.fieldExplanationText">
+      <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.description">
         <source>Error message which is shown if the validation does not succeed</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.header.label">
@@ -486,7 +486,7 @@
       <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.label">
         <source>Custom error message</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.fieldExplanationText">
+      <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.description">
         <source>Error message which is shown if the validation does not succeed</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.header.label">
@@ -495,7 +495,7 @@
       <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.label">
         <source>Custom error message</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.fieldExplanationText">
+      <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.description">
         <source>Error message which is shown if the validation does not succeed</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.TextMixin.validators.Number.editor.header.label">
@@ -507,7 +507,7 @@
       <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.label">
         <source>Custom error message</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.fieldExplanationText">
+      <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.description">
         <source>Error message which is shown if the validation does not succeed</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.header.label">
@@ -516,13 +516,13 @@
       <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.label">
         <source>Regular expression</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.fieldExplanationText">
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.description">
         <source>Enter a valid PHP PCRE regular expression here.</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.label">
         <source>Custom error message</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.fieldExplanationText">
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.description">
         <source>Error message which is shown if the validation does not succeed</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label">
@@ -531,13 +531,13 @@
       <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.validationErrorMessage.label">
         <source>Custom error message</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.validationErrorMessage.fieldExplanationText">
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.validationErrorMessage.description">
         <source>Error message which is shown if the validation does not succeed</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.SelectionMixin.editor.inactiveOption.label">
         <source>First option (empty value)</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.SelectionMixin.editor.inactiveOption.fieldExplanationText">
+      <trans-unit id="formEditor.elements.SelectionMixin.editor.inactiveOption.description">
         <source>If set, this label will be shown as first option.</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.SelectionMixin.editor.options.label">
@@ -600,7 +600,7 @@
       <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.label">
         <source>Recipients</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.fieldExplanationText">
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.description">
         <source>The email addresses and names of the website visitors to which the email should be sent.</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title">
@@ -612,13 +612,13 @@
       <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.label">
         <source>Sender address</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.fieldExplanationText">
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.description">
         <source>The email address of the sender (e.g. your company's email address) which appears in the website visitor email client.</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderName.label">
         <source>Sender name</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderName.fieldExplanationText">
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderName.description">
         <source>The name of the sender (e.g. your company's name) which appears in the website visitor email client.</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.replyToRecipients.label">
@@ -633,7 +633,7 @@
       <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.label">
         <source>Add HTML part</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.fieldExplanationText">
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.description">
         <source>If enabled, the email will contain a plaintext and an HTML part, otherwise only a plaintext part.</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.attachUploads.label">
@@ -651,7 +651,7 @@
       <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.title.label">
         <source>Title</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.title.fieldExplanationText">
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.title.description">
         <source>The title, being shown in the Email. The title is rendered in the header section right above the email body. Do not confuse this field with the subject of your email.</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label">
@@ -663,19 +663,19 @@
       <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipients.label">
         <source>Recipients</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipients.fieldExplanationText">
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipients.description">
         <source>The email addresses and names of the recipients to which the email should be sent (e.g. your company's email addresses).</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.label">
         <source>Sender address</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.fieldExplanationText">
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.description">
         <source>The email address of the sender which appears in your email client. Use the "insert formelement identifier" dropdown if you need to select a form element which contains the website visitor's email address instead.</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.label">
         <source>Sender name</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.fieldExplanationText">
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.description">
         <source>The name of the sender which appears in your email client. Use the "insert formelement identifier" dropdown if you need to choose one or more form elements which contain the website visitor's name</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.replyToRecipients.label">
@@ -690,7 +690,7 @@
       <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.addHtmlPart.label">
         <source>Add HTML part</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.addHtmlPart.fieldExplanationText">
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.addHtmlPart.description">
         <source>If enabled, the email will contain a plaintext and an HTML part, otherwise only a plaintext part.</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.attachUploads.label">
@@ -708,7 +708,7 @@
       <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.title.label">
         <source>Title</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.title.fieldExplanationText">
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.title.description">
         <source>The title, being shown in the Email. The title is rendered in the header section right above the email body. Do not confuse this field with the subject of your email.</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.header.label">
@@ -729,7 +729,7 @@
       <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.fragment.buttonLabel">
         <source>Page Content</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.fragment.fieldExplanationText">
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.fragment.description">
         <source>You can use a content element identifier as URL fragment or set a custom fragment identifier.</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.Form.finisher.DeleteUploads.editor.header.label">
@@ -747,7 +747,7 @@
       <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.message.label">
         <source>Text</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.message.fieldExplanationText">
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.message.description">
         <source>Will be ignored if "Content element" is set</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.Form.finisher.Closure.editor.header.label">
@@ -894,7 +894,7 @@
       <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label">
         <source>Custom error message</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.fieldExplanationText">
+      <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.description">
         <source>Error message which is shown if the validation does not succeed</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.FormElement.validators.DateRange.editor.header.label">
@@ -924,7 +924,7 @@
       <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label">
         <source>Numbers of columns for viewport "{@viewPortLabel}"</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText">
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.description">
         <source>Leave empty for auto calculation</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.Page.label">
@@ -1038,7 +1038,7 @@
       <trans-unit id="formEditor.elements.Date.editor.defaultValue.placeholder">
         <source>A date in format Y-m-d (e.g 2018-03-17)</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.Date.editor.step.fieldExplanationText">
+      <trans-unit id="formEditor.elements.Date.editor.step.description">
         <source>Specify the number of days between each occurrence of this event.</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.Date.editor.step.label">
@@ -1152,7 +1152,7 @@
       <trans-unit id="formEditor.elements.DatePicker.validators.DateTime.editor.validationErrorMessage.label">
         <source>Custom error message</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.DatePicker.validators.DateTime.editor.validationErrorMessage.fieldExplanationText">
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateTime.editor.validationErrorMessage.description">
         <source>Error message which is shown if the validation does not succeed</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.StaticText.label">

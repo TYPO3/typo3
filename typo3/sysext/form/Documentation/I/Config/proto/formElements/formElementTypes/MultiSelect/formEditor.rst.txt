@@ -40,7 +40,7 @@ formEditor
                  templateName: Inspector-TextEditor
                  label: formEditor.elements.SelectionMixin.editor.inactiveOption.label
                  propertyPath: properties.prependOptionLabel
-                 fieldExplanationText: formEditor.elements.SelectionMixin.editor.inactiveOption.fieldExplanationText
+                 description: formEditor.elements.SelectionMixin.editor.inactiveOption.description
                  doNotSetIfPropertyValueIsEmpty: true
                300:
                  identifier: options
@@ -74,7 +74,7 @@ formEditor
                    numbersOfColumnsToUse:
                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
                      propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
-                     fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
+                     description: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.description
                800:
                  identifier: requiredValidator
                  templateName: Inspector-RequiredValidatorEditor

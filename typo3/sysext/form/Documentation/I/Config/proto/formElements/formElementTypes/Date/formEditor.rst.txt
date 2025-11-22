@@ -47,7 +47,7 @@ formEditor
                  identifier: 'step'
                  templateName: 'Inspector-TextEditor'
                  label: 'formEditor.elements.Date.editor.step.label'
-                 fieldExplanationText: 'formEditor.elements.Date.editor.step.fieldExplanationText'
+                 description: 'formEditor.elements.Date.editor.step.description'
                  propertyPath: 'properties.fluidAdditionalAttributes.step'
                  propertyValidators:
                    10: 'Integer'
@@ -72,7 +72,7 @@ formEditor
                    numbersOfColumnsToUse:
                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
                      propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
-                     fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
+                     description: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.description
                800:
                  identifier: requiredValidator
                  templateName: Inspector-RequiredValidatorEditor
@@ -84,7 +84,7 @@ formEditor
                    validationErrorMessage:
                      label: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label
                      propertyPath: properties.validationErrorMessages
-                     fieldExplanationText: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.fieldExplanationText
+                     description: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.description
                        errorCodes:
                          10: 1221560910
                          20: 1221560718

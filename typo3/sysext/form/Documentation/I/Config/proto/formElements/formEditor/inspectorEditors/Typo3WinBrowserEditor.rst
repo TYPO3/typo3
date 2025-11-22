@@ -198,9 +198,9 @@ propertyValidatorsMode
       If set to 'OR' then at least one validator must be valid to accept the ``inspector editor`` value. If set to 'AND' then all validators must be valid.
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.fieldexplanationtext-typo3winbrowsereditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.description-typo3winbrowsereditor:
 
-fieldExplanationText
+description
 --------------------
 
 :aspect:`Data type`

@@ -1817,7 +1817,7 @@ In this example, 'GenderSelect' is basically a radio button form element with so
                    numbersOfColumnsToUse:
                      label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
                      propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
-                     fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
+                     description: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.description
                800:
                  identifier: requiredValidator
                  templateName: Inspector-RequiredValidatorEditor
@@ -1829,7 +1829,7 @@ In this example, 'GenderSelect' is basically a radio button form element with so
                    validationErrorMessage:
                      label: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label
                      propertyPath: properties.validationErrorMessages
-                     fieldExplanationText: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.fieldExplanationText
+                     description: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.description
                      errorCodes:
                        10: 1221560910
                        20: 1221560718

@@ -46,7 +46,7 @@ formEditor.propertyCollections.finishers.10
                        propertyPath: options.recipients
                        propertyValidators:
                          10: NotEmpty
-                       fieldExplanationText: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.fieldExplanationText
+                       description: formEditor.elements.Form.finisher.EmailToSender.editor.recipients.description
                        isSortable: true
                        enableAddRow: true
                        enableDeleteRow: true
@@ -137,7 +137,7 @@ formEditor.propertyCollections.finishers.10
                        templateName: Inspector-CheckboxEditor
                        label: formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.label
                        propertyPath: options.addHtmlPart
-                       fieldExplanationText: formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.fieldExplanationText
+                       description: formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.description
                      1100:
                        identifier: attachUploads
                        templateName: Inspector-CheckboxEditor
@@ -157,7 +157,7 @@ formEditor.propertyCollections.finishers.10
                        templateName: Inspector-TextEditor
                        label: formEditor.elements.Form.finisher.EmailToSender.editor.title.label
                        propertyPath: options.title
-                       fieldExplanationText: formEditor.elements.Form.finisher.EmailToSender.editor.title.fieldExplanationText
+                       description: formEditor.elements.Form.finisher.EmailToSender.editor.title.description
                        enableFormelementSelectionButton: true
                        propertyValidators:
                          10: FormElementIdentifierWithinCurlyBracesInclusive

@@ -32,5 +32,5 @@ formEditor.propertyCollections.finishers.10.editors.1050
                        templateName: Inspector-CheckboxEditor
                        label: formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.label
                        propertyPath: options.addHtmlPart
-                       fieldExplanationText: formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.fieldExplanationText
+                       description: formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.description
 

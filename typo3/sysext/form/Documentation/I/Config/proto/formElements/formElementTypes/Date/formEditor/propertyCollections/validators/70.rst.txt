@@ -52,7 +52,7 @@ formEditor.propertyCollections.validators.70
                        identifier: validationErrorMessage
                        templateName: Inspector-ValidationErrorMessageEditor
                        label: formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.label
-                       fieldExplanationText: formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.fieldExplanationText
+                       description: formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.description
                        errorCodes:
                          10: 1221563685
                          20: 1221561046

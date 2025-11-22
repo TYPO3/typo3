@@ -36,7 +36,7 @@ formEditor.editors.800
                    validationErrorMessage:
                      label: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label
                      propertyPath: properties.validationErrorMessages
-                     fieldExplanationText: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.fieldExplanationText
+                     description: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.description
                      errorCodes:
                        10: 1221560910
                        20: 1221560718

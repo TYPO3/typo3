@@ -54,7 +54,7 @@ formEditor.propertyCollections.finishers.30
                        browsableType: tt_content
                        iconIdentifier: mimetypes-x-content-text
                        propertyPath: options.fragment
-                       fieldExplanationText: formEditor.elements.Form.finisher.Redirect.editor.fragment.fieldExplanationText
+                       description: formEditor.elements.Form.finisher.Redirect.editor.fragment.description
                      9999:
                        identifier: removeButton
                        templateName: Inspector-RemoveElementEditor

@@ -34,7 +34,7 @@ formEditor.propertyCollections.finishers.20.editors.350
                        propertyPath: options.recipients
                        propertyValidators:
                          10: NotEmpty
-                       fieldExplanationText: formEditor.elements.Form.finisher.EmailToReceiver.editor.recipients.fieldExplanationText
+                       description: formEditor.elements.Form.finisher.EmailToReceiver.editor.recipients.description
                        isSortable: true
                        enableAddRow: true
                        enableDeleteRow: true

@@ -25,12 +25,12 @@ export type EditorConfiguration = {
     numbersOfColumnsToUse?: {
       label: string,
       propertyPath: string,
-      fieldExplanationText: string,
+      description: string,
     },
     validationErrorMessage?: {
       label: string,
       propertyPath: string,
-      fieldExplanationText?: string,
+      description?: string,
       errorCodes?: string[]
     },
     viewPorts?: Array<{
@@ -43,7 +43,7 @@ export type EditorConfiguration = {
   enableDeleteRow?: boolean,
   enableFormelementSelectionButton?: boolean,
   errorCodes?: string[],
-  fieldExplanationText?: string,
+  description?: string,
   gridColumns?: Array<{
     name: string,
     title: string,

@@ -32,7 +32,7 @@ formEditor.propertyCollections.finishers.10.editors.1400
                        templateName: Inspector-TextEditor
                        label: formEditor.elements.Form.finisher.EmailToSender.editor.title.label
                        propertyPath: options.title
-                       fieldExplanationText: formEditor.elements.Form.finisher.EmailToSender.editor.title.fieldExplanationText
+                       description: formEditor.elements.Form.finisher.EmailToSender.editor.title.description
                        enableFormelementSelectionButton: true
                        propertyValidators:
                          10: FormElementIdentifierWithinCurlyBracesInclusive

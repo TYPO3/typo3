@@ -48,7 +48,7 @@ formEditor.propertyCollections.finishers.50
                        templateName: Inspector-TextareaEditor
                        label: formEditor.elements.Form.finisher.Confirmation.editor.message.label
                        propertyPath: options.message
-                       fieldExplanationText: formEditor.elements.Form.finisher.Confirmation.editor.message.fieldExplanationText
+                       description: formEditor.elements.Form.finisher.Confirmation.editor.message.description
                      9999:
                        identifier: removeButton
                        templateName: Inspector-RemoveElementEditor
