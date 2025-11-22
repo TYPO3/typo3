@@ -1,12 +1,11 @@
-import {Page, expect, Locator, FrameLocator} from '@playwright/test';
+import { Page, expect, Locator, FrameLocator } from '@playwright/test';
 
 export class FormEngine {
-  private readonly page: Page;
-
   readonly contentFrame: FrameLocator;
   readonly container: Locator;
   readonly saveButton: Locator;
   readonly closeButton: Locator;
+  private readonly page: Page;
 
   constructor(page: Page) {
     this.page = page;
@@ -33,7 +32,7 @@ export class FormEngine {
    * Close the form engine
    */
   async close() {
-    let formEngineLoaded = this.formEngineLoaded();
+    const formEngineLoaded = this.formEngineLoaded();
     await this.closeButton.click();
     await formEngineLoaded;
 
@@ -43,7 +42,7 @@ export class FormEngine {
   async formEngineLoaded() {
     return this.page.waitForFunction(() => {
       return new Promise((resolve) => {
-        document.addEventListener('typo3-module-loaded', resolve, {once: true});
+        document.addEventListener('typo3-module-loaded', resolve, { once: true });
       });
     });
   }

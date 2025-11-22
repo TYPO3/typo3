@@ -1,5 +1,5 @@
 import { test, expect } from '../../fixtures/setup-fixtures';
-import {DocHeader} from "../../fixtures/doc-header";
+import { DocHeader } from '../../fixtures/doc-header';
 
 test('Switch between languages in "Open in new window"', async ({
   page,
@@ -12,7 +12,7 @@ test('Switch between languages in "Open in new window"', async ({
   // if display mode isn't visible, the language comparison mode is not available (no languages besides the default
   // language is available).
   // Skip test only when running tests multiple times
-  let areLanguagesAvailable = await backend.contentFrame.getByRole('button', { name: 'Display mode' }).isVisible()
+  const areLanguagesAvailable = await backend.contentFrame.getByRole('button', { name: 'Display mode' }).isVisible();
   test.skip(areLanguagesAvailable === false, 'No additional languages available, skipping language switch test.');
 
   const standalonePage =
@@ -35,8 +35,8 @@ test('Switch between languages in "Open in new window"', async ({
     const languageButton = standalonePage.locator('button[data-bs-toggle="dropdown"]').filter({ hasText: /Language:/i });
 
     // docHeader fixture not available on standalone page by default
-    let docHeader = new DocHeader(standalonePage);
-    docHeader.setContainerLocator(standalonePage.locator('.t3js-module-docheader-navigation'))
+    const docHeader = new DocHeader(standalonePage);
+    docHeader.setContainerLocator(standalonePage.locator('.t3js-module-docheader-navigation'));
 
     await expect(languageButton).toContainText('English');
 
@@ -52,7 +52,7 @@ test('Switch between languages in "Open in new window"', async ({
         const saveResponse = standalonePage.waitForResponse(response =>
           response.url().includes('/typo3/record/edit') && response.status() === 200
         );
-        await standalonePage.getByRole('button', {name: 'Save'}).click();
+        await standalonePage.getByRole('button', { name: 'Save' }).click();
         await saveResponse;
 
         await expect(languageButton).toContainText('styleguide demo language');
@@ -73,6 +73,6 @@ test('Switch between languages in "Open in new window"', async ({
   } finally {
     try {
       await standalonePage.close();
-    } catch { }
+    } catch { /* empty */ }
   }
 });

@@ -1,12 +1,11 @@
-import {Page, Locator, expect} from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
 
 export class Modal {
-  private readonly page: Page;
-
-  readonly frameSelector = 'typo3-backend-modal iframe[name="modal_frame"]'
+  readonly frameSelector = 'typo3-backend-modal iframe[name="modal_frame"]';
   readonly element: Locator;
   readonly header: Locator;
   readonly footer: Locator;
+  private readonly page: Page;
 
   constructor(page: Page) {
     this.page = page;

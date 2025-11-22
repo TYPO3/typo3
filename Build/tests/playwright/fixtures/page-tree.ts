@@ -1,11 +1,10 @@
 import { Page, expect, Locator } from '@playwright/test';
 
 export class PageTree {
-  private readonly page: Page;
-
   readonly container: Locator;
   readonly toolbar: Locator;
   readonly root: Locator;
+  private readonly page: Page;
 
   constructor(page: Page) {
     this.page = page;
@@ -33,7 +32,7 @@ export class PageTree {
    * @param nodeType Derived from data-node-type, defaults to 1 (Standard)
    */
   async dragNewPageTo(targetElement: Locator, nodeType = 1) {
-    await this.toolbar.locator(`[data-node-type="${nodeType}"]`).dragTo(targetElement)
+    await this.toolbar.locator(`[data-node-type="${nodeType}"]`).dragTo(targetElement);
   }
 
   /**
@@ -86,7 +85,9 @@ export class PageTree {
    */
   async dragDeletePage(pageToDelete: Locator) {
     const box = await pageToDelete.boundingBox();
-    if (!box) throw new Error('Unable to get bounding box for the page to delete');
+    if (!box) {
+      throw new Error('Unable to get bounding box for the page to delete');
+    }
     await pageToDelete.dragTo(pageToDelete, {
       sourcePosition: { x: 10, y: box.height / 2 },
       targetPosition: { x: box.width - 10, y: box.height / 2 }

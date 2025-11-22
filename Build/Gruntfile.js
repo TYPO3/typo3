@@ -70,9 +70,11 @@ module.exports = function (grunt) {
     pkg: grunt.file.readJSON('package.json'),
     paths: {
       sources: 'Sources/',
+      tests: 'tests/',
       root: '../',
       sass: '<%= paths.sources %>Sass/',
       typescript: '<%= paths.sources %>TypeScript/',
+      playwright: '<%= paths.tests %>playwright/',
       sysext: '<%= paths.root %>typo3/sysext/',
       form: '<%= paths.sysext %>form/Resources/',
       dashboard: '<%= paths.sysext %>dashboard/Resources/',
@@ -212,7 +214,8 @@ module.exports = function (grunt) {
       files: {
         src: [
           '<%= paths.typescript %>/**/*.ts',
-          './types/**/*.ts'
+          './types/**/*.ts',
+          '<%= paths.playwright %>/**/*.ts'
         ]
       }
     },

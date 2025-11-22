@@ -1,17 +1,16 @@
-import {Page, FrameLocator, expect} from '@playwright/test';
-import {PageTree} from './page-tree';
-import {FormEngine} from './form-engine';
-import {DocHeader} from './doc-header';
-import {Modal} from './modal';
+import { Page, FrameLocator, expect } from '@playwright/test';
+import { PageTree } from './page-tree';
+import { FormEngine } from './form-engine';
+import { DocHeader } from './doc-header';
+import { Modal } from './modal';
 
 export class BackendPage {
-  private readonly page: Page;
-
   readonly contentFrame: FrameLocator;
   readonly pageTree: PageTree;
   readonly formEngine: FormEngine;
   readonly docHeader: DocHeader;
   readonly modal: Modal;
+  private readonly page: Page;
 
   constructor(page: Page) {
     this.page = page;
@@ -24,8 +23,8 @@ export class BackendPage {
 
   async gotoModule(identifier: string) {
     await this.page.goto('module/web/layout');
-    let moduleLink = this.page.locator(`a[data-modulemenu-identifier="${identifier}"]`);
-    let moduleLoaded = this.moduleLoaded(identifier);
+    const moduleLink = this.page.locator(`a[data-modulemenu-identifier="${identifier}"]`);
+    const moduleLoaded = this.moduleLoaded(identifier);
     moduleLink.click();
     await moduleLoaded;
 
@@ -33,12 +32,12 @@ export class BackendPage {
   }
 
   async moduleLoaded(identifier: string) {
-    return this.page.waitForFunction((moduleId) => {
+    return this.page.waitForFunction(() => {
       return new Promise((resolve) => {
         // Listen for module loaded event and verify it's the right module
         document.addEventListener('typo3-module-loaded', () => {
           resolve(true);
-        }, {once: true});
+        }, { once: true });
       });
     }, identifier);
   }

@@ -2,6 +2,7 @@
     "extends": "./tsconfig.json",
     "include": [
         "Sources/TypeScript/**/*.ts",
-        "types/**/*.ts"
+        "types/**/*.ts",
+		"tests/playwright/**/*.ts"
     ]
 }

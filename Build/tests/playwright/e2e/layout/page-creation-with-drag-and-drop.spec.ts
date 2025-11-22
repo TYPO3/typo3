@@ -1,8 +1,8 @@
 import { test, expect } from '../../fixtures/setup-fixtures';
 
-test.beforeEach( async ({page}) => {
+test.beforeEach( async ({ page }) => {
   await page.goto('module/web/layout');
-})
+});
 
 test('Drag and drop new page in node without children', async ({ backend }) => {
   const dummySiteTitle = 'Dummy page tree';
@@ -14,7 +14,7 @@ test('Drag and drop new page in node without children', async ({ backend }) => {
   await backend.pageTree.dragDeletePage(newPageElement);
 });
 
-test('Drag and drop new page in node with children', async ({ backend}) => {
+test('Drag and drop new page in node with children', async ({ backend }) => {
   const dummySiteTitle = 'Dummy page tree with children';
   const pageTitle = 'Dummy page tree child';
 
@@ -45,7 +45,7 @@ test('Drag and drop new page and quit page creation', async ({ page, backend }) 
 });
 
 test('Drag and drop new page and leave page title empty', async ({ page, backend }) => {
-  let pageTitle = 'Dummy empty title';
+  const pageTitle = 'Dummy empty title';
   await backend.pageTree.dragNewPageTo(backend.pageTree.root);
   await page.keyboard.press('Enter');
 

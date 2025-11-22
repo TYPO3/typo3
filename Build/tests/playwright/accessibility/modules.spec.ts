@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
-import AxeBuilder from "@axe-core/playwright";
-import config from '../config';
+import AxeBuilder from '@axe-core/playwright';
 
 test.describe('modules', () => {
   const dataprovider = {
@@ -32,9 +31,9 @@ test.describe('modules', () => {
       'label': 'the recycler module',
       'route': 'module/web/recycler',
     },
-  }
+  };
   const defaultDisableRules = ['color-contrast'];
-  for (let [key, data] of Object.entries(dataprovider)) {
+  for (const [key, data] of Object.entries(dataprovider)) {
     test(key + ':' + data.label, async ({ page }) => {
       const url = `${data.route}`;
       await page.goto(url);

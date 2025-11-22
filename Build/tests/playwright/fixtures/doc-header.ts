@@ -1,4 +1,4 @@
-import {expect, Locator, Page} from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 
 export class DocHeader {
   private readonly page: Page;
@@ -15,12 +15,12 @@ export class DocHeader {
 
   async selectInDropDown(triggerName: string, option: string): Promise<void> {
     // Open dropdown
-    let triggerButton = this.container.getByRole('button', {name: triggerName});
-    await expect(triggerButton).toBeVisible()
+    const triggerButton = this.container.getByRole('button', { name: triggerName });
+    await expect(triggerButton).toBeVisible();
     await triggerButton.click();
 
     // Select dropdown item
-    let optionButton = this.container.locator('.dropdown-menu.show .dropdown-item', {hasText: option});
+    const optionButton = this.container.locator('.dropdown-menu.show .dropdown-item', { hasText: option });
     await expect(optionButton).toBeAttached();
     await optionButton.click();
 
@@ -30,12 +30,12 @@ export class DocHeader {
 
   async selectItemInDropDownByIndex(triggerName: string | RegExp, index: number = 0): Promise<void> {
     // Open dropdown
-    let triggerButton = this.container.getByRole('button', {name: triggerName});
-    await expect(triggerButton).toBeVisible()
+    const triggerButton = this.container.getByRole('button', { name: triggerName });
+    await expect(triggerButton).toBeVisible();
     await triggerButton.click();
 
     // Select dropdown item
-    let optionButton = this.container.locator('.dropdown-menu.show .dropdown-item').nth(index);
+    const optionButton = this.container.locator('.dropdown-menu.show .dropdown-item').nth(index);
     await expect(optionButton).toBeAttached();
     await optionButton.click();
 
@@ -45,13 +45,13 @@ export class DocHeader {
 
   async countItemsInDropDown(triggerName: string | RegExp): Promise<number> {
     // Open dropdown
-    let triggerButton = this.container.getByRole('button', {name: triggerName});
+    const triggerButton = this.container.getByRole('button', { name: triggerName });
     await expect(triggerButton).toBeVisible();
     await triggerButton.click();
 
     // Count dropdown items
-    let optionButtons = this.container.locator('.dropdown-menu.show .dropdown-item');
-    let count = await optionButtons.count();
+    const optionButtons = this.container.locator('.dropdown-menu.show .dropdown-item');
+    const count = await optionButtons.count();
 
     // Close dropdown again to be in a stable state
     await triggerButton.click();

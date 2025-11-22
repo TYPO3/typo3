@@ -1,11 +1,11 @@
-import {test, expect} from '../../fixtures/setup-fixtures';
+import { test, expect } from '../../fixtures/setup-fixtures';
 
 test.describe('Configuration Module Provider', () => {
-  test.beforeEach(async ({backend}) => {
+  test.beforeEach(async ({ backend }) => {
     await backend.gotoModule('system_config');
   });
 
-  test('Select and display configuration', async ({backend}) => {
+  test('Select and display configuration', async ({ backend }) => {
     const contentFrame = backend.contentFrame;
 
     // Explicitly select the default provider (TYPO3_CONF_VARS) to ensure clean state
@@ -25,7 +25,7 @@ test.describe('Configuration Module Provider', () => {
     await expect(contentFrame.getByText('typo3/cms-frontend/authentication').first()).toBeVisible();
   });
 
-  test('See all pages in dropdown', async ({backend}) => {
+  test('See all pages in dropdown', async ({ backend }) => {
     const contentFrame = backend.contentFrame;
 
     const itemList = [
@@ -46,7 +46,7 @@ test.describe('Configuration Module Provider', () => {
     ];
 
     for (const item of itemList) {
-      await backend.docHeader.selectInDropDown('Configuration to show', item)
+      await backend.docHeader.selectInDropDown('Configuration to show', item);
 
       await expect(contentFrame.locator('h1')).toContainText(`Configuration of "${item}"`);
     }

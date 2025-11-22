@@ -1,7 +1,7 @@
-import { test as base, Locator } from '@playwright/test';
+import { test as base } from '@playwright/test';
 import { BackendPage } from './backend-page';
 import { PageTree } from './page-tree';
-import {Modal} from "./modal";
+import { Modal } from './modal';
 
 // Declare the types of your fixtures.
 type BackendFixtures = {

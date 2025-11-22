@@ -1,18 +1,18 @@
-import {test, expect} from '../../fixtures/setup-fixtures';
-import {FrameLocator, Page} from '@playwright/test';
-import {BackendPage} from "../../fixtures/backend-page";
+import { test, expect } from '../../fixtures/setup-fixtures';
+import { FrameLocator } from '@playwright/test';
+import { BackendPage } from '../../fixtures/backend-page';
 
 test.describe('Backend Users module', () => {
   const expectedUsersMax = 5;
   const expectedUsersMin = 3;
 
-  test.beforeEach(async ({page, backend}) => {
+  test.beforeEach(async ({ backend }) => {
     await backend.gotoModule('backend_user_management');
 
     const contentFrame = backend.contentFrame;
     await contentFrame.locator('.t3js-module-docheader-buttons').locator('.dropdown-toggle', { hasText: 'Module Menu:' }).click();
     const moduleResponse = backend.waitForModuleResponse();
-    await contentFrame.locator('.t3js-module-docheader-buttons .dropdown-menu').getByRole('link', {name: 'Backend users'}).click();
+    await contentFrame.locator('.t3js-module-docheader-buttons .dropdown-menu').getByRole('link', { name: 'Backend users' }).click();
     await moduleResponse;
 
     await expect(contentFrame.locator('h1')).toContainText('Backend users');
@@ -22,7 +22,7 @@ test.describe('Backend Users module', () => {
     await expect(contentFrame.locator('#typo3-backend-user-list tbody > tr')).toHaveCount(expectedUsersMax);
 
     // Clear compare list if it exists to prevent state leakage between tests
-    const clearButton = contentFrame.getByRole('button', {name: 'Clear compare list'});
+    const clearButton = contentFrame.getByRole('button', { name: 'Clear compare list' });
     if (await clearButton.isVisible()) {
       await clearButton.click();
       // Wait for the compare list table to disappear
@@ -31,20 +31,20 @@ test.describe('Backend Users module', () => {
   });
 
 
-  test('Shows heading and lists backend users', async ({backend}) => {
+  test('Shows heading and lists backend users', async ({ backend }) => {
     await checkCountOfUsers(backend.contentFrame, expectedUsersMax);
   });
 
-  test('Filter users by username', async ({page, backend}) => {
+  test('Filter users by username', async ({ backend }) => {
     const contentFrame = backend.contentFrame;
-    let inputUsername = contentFrame.getByLabel('Username')
+    const inputUsername = contentFrame.getByLabel('Username');
 
     await expect(contentFrame.locator('#typo3-backend-user-list tbody > tr')).toHaveCount(expectedUsersMax);
 
     // Filter the list of user by valid username admin
     await inputUsername.fill('admin');
 
-    const filterButton = contentFrame.getByRole('button', {name: 'Filter'});
+    const filterButton = contentFrame.getByRole('button', { name: 'Filter' });
 
     // Wait for filter HTTP response
     const filterResponse1 = backend.waitForModuleResponse();
@@ -68,15 +68,15 @@ test.describe('Backend Users module', () => {
 
     // We expect exact no fitting Backend User created from the Fixtures
     await checkCountOfUsers(contentFrame, 0);
-  })
+  });
 
-  test('Filter users by admin', async ({page, backend}) => {
+  test('Filter users by admin', async ({ backend }) => {
     const contentFrame = backend.contentFrame;
     await expect(contentFrame.locator('#typo3-backend-user-list')).toBeVisible();
     await expect(contentFrame.locator('#typo3-backend-user-list tbody tr')).toHaveCount(expectedUsersMax);
 
     await contentFrame.locator('#tx_Beuser_usertype').selectOption('Admin');
-    const filterButton = contentFrame.getByRole('button', {name: 'Filter'});
+    const filterButton = contentFrame.getByRole('button', { name: 'Filter' });
 
     // Wait for filter HTTP response
     const filterResponse1 = backend.waitForModuleResponse();
@@ -97,7 +97,7 @@ test.describe('Backend Users module', () => {
     await expect(contentFrame.locator('#typo3-backend-user-list')).toBeVisible();
   });
 
-  test('Filter users by status', async ({page, backend}) => {
+  test('Filter users by status', async ({ backend }) => {
     const contentFrame = backend.contentFrame;
     await expect(contentFrame.locator('#typo3-backend-user-list')).toBeVisible();
 
@@ -108,7 +108,7 @@ test.describe('Backend Users module', () => {
 
     await checkCountOfUsers(contentFrame, expectedUsersMax);
 
-    const filterButton = contentFrame.getByRole('button', {name: 'Filter'});
+    const filterButton = contentFrame.getByRole('button', { name: 'Filter' });
     await contentFrame.locator('#tx_Beuser_status').selectOption('Enabled');
 
     // Wait for filter HTTP response
@@ -133,13 +133,13 @@ test.describe('Backend Users module', () => {
     await checkCountOfUsers(contentFrame, 2);
   });
 
-  test('Filter users by login', async ({page, backend}) => {
+  test('Filter users by login', async ({ backend }) => {
     const contentFrame = backend.contentFrame;
     await expect(contentFrame.locator('#typo3-backend-user-list')).toBeVisible();
 
     await checkCountOfUsers(contentFrame, expectedUsersMax);
 
-    const filterButton = contentFrame.getByRole('button', {name: 'Filter'});
+    const filterButton = contentFrame.getByRole('button', { name: 'Filter' });
     await contentFrame.locator('#tx_Beuser_logins').selectOption('Logged in before');
 
     // Wait for filter HTTP response
@@ -164,15 +164,15 @@ test.describe('Backend Users module', () => {
     await checkCountOfUsers(contentFrame, expectedUsersMin);
   });
 
-  test('Filter users by user group', async ({page, backend}) => {
+  test('Filter users by user group', async ({ backend }) => {
     const contentFrame = backend.contentFrame;
     await expect(contentFrame.locator('#typo3-backend-user-list')).toBeVisible();
 
     await checkCountOfUsers(contentFrame, expectedUsersMax);
 
     // Expect one Backend User created from the Fixtures has the usergroup named 'editor-group'
-    const filterButton = contentFrame.getByRole('button', {name: 'Filter'});
-    let selectGroup = contentFrame.getByLabel('Group');
+    const filterButton = contentFrame.getByRole('button', { name: 'Filter' });
+    const selectGroup = contentFrame.getByLabel('Group');
     await selectGroup.selectOption('editor-group');
 
     // Wait for filter HTTP response
@@ -186,39 +186,39 @@ test.describe('Backend Users module', () => {
     await checkCountOfUsers(contentFrame, 1);
   });
 
-  test('Can edit users from index list view', async ({page}) => {
+  test('Can edit users from index list view', async ({ page }) => {
     const contentFrame = page.frameLocator('#typo3-contentIframe');
     await expect(contentFrame.locator('h1')).toContainText('Backend users');
     await expect(contentFrame.locator('#typo3-backend-user-list')).toBeVisible();
 
-    let username = 'admin';
-    let adminRow = contentFrame.locator('#typo3-backend-user-list tr', {has: contentFrame.getByRole('link', {name: 'Klaus Admin online (admin)'})});
+    const username = 'admin';
+    const adminRow = contentFrame.locator('#typo3-backend-user-list tr', { has: contentFrame.getByRole('link', { name: 'Klaus Admin online (admin)' }) });
 
     await contentFrame.locator('button[value="reset-filters"]').click();
 
     await test.step('test the edit button', async () => {
-      await adminRow.getByRole('button', {name: 'Edit'}).click();
-      await openAndCloseTheEditForm(page, contentFrame, username);
+      await adminRow.getByRole('button', { name: 'Edit' }).click();
+      await openAndCloseTheEditForm(contentFrame, username);
     });
 
     await test.step('test the edit link', async () => {
       contentFrame.getByRole('button', { name: 'Reset' });
-      await adminRow.getByRole('link', {name: 'Klaus Admin online (admin)'}).click();
-      await openAndCloseTheEditForm(page, contentFrame, username);
+      await adminRow.getByRole('link', { name: 'Klaus Admin online (admin)' }).click();
+      await openAndCloseTheEditForm(contentFrame, username);
     });
   });
 
-  test('Editing BE user records from compare view works', async ({page, backend}) => {
+  test('Editing BE user records from compare view works', async ({ page, backend }) => {
     const contentFrame = backend.contentFrame;
 
     await test.step('Put two users into compare list', async () => {
       // Add first user to compare list (using first button)
-      await contentFrame.locator('#typo3-backend-user-list').locator('[form="form-add-to-compare-list"]').getByText('Compare').first().click()
+      await contentFrame.locator('#typo3-backend-user-list').locator('[form="form-add-to-compare-list"]').getByText('Compare').first().click();
       await expect(contentFrame.locator('#typo3-backend-user-list-compare tbody').getByRole('row')).toHaveCount(1);
 
       // Add second user to compare list (using first remaining button)
       // await contentFrame.locator('#typo3-backend-user-list [data-identifier="actions-plus"]').first().click();
-      await contentFrame.locator('#typo3-backend-user-list').locator('[form="form-add-to-compare-list"]').getByText('Compare').first().click()
+      await contentFrame.locator('#typo3-backend-user-list').locator('[form="form-add-to-compare-list"]').getByText('Compare').first().click();
 
       await expect(contentFrame.locator('#typo3-backend-user-list-compare tbody').getByRole('row')).toHaveCount(2);
 
@@ -239,7 +239,7 @@ test.describe('Backend Users module', () => {
 
       await expect(contentFrame.locator('table.table-striped-columns')).toBeVisible();
       await expect(contentFrame.locator('h1')).toContainText('Compare backend users');
-    })
+    });
 
     await test.step('Second user can be edited', async () => {
       const usernameSecondCompare = await contentFrame.locator('.beuser-comparison-table thead tr > th:nth-child(3)').textContent();
@@ -258,7 +258,7 @@ test.describe('Backend Users module', () => {
 
       // locator('#typo3-backend-user-list-compare').getByRole('row').locator('button[name="uid"]')
       await contentFrame.locator('#typo3-backend-user-list-compare').getByTitle('Remove from compare list').first().click();
-      await expect(page.frameLocator('iframe[name="list_frame"]').getByRole('row', { name: 'Open context menu Klaus Admin online (admin)', exact: true }).getByRole('link')).not.toBeVisible()
+      await expect(page.frameLocator('iframe[name="list_frame"]').getByRole('row', { name: 'Open context menu Klaus Admin online (admin)', exact: true }).getByRole('link')).not.toBeVisible();
 
       await contentFrame.locator('#typo3-backend-user-list-compare').getByTitle('Remove from compare list').first().click();
       await expect(contentFrame.locator('#typo3-backend-user-list-compare')).not.toBeVisible();
@@ -272,10 +272,10 @@ test.describe('Backend Users module', () => {
     }
     await expect(contentFrame.locator('#typo3-backend-user-list tbody > tr')).toHaveCount(countOfUsers);
     await expect(contentFrame.locator('#typo3-backend-user-list tfoot tr')).toHaveCount(1);
-    await expect(contentFrame.locator('#typo3-backend-user-list tfoot tr')).toContainText(countOfUsers + ' User')
+    await expect(contentFrame.locator('#typo3-backend-user-list tfoot tr')).toContainText(countOfUsers + ' User');
   }
 
-  async function openAndCloseTheEditForm(page: Page, contentFrame: FrameLocator, username: string) {
+  async function openAndCloseTheEditForm(contentFrame: FrameLocator, username: string) {
     await expect(contentFrame.locator('#t3js-ui-block')).not.toBeVisible();
     await expect(contentFrame.locator('h1')).toContainText('Edit Admin "' + username + '" on root level');
 
@@ -292,12 +292,12 @@ test.describe('Backend Users module', () => {
 test.describe('Backend user group module', () => {
   test.describe.configure({ mode: 'serial' });
 
-  test.beforeEach(async ({ page, backend }) => {
+  test.beforeEach(async ({ backend }) => {
     await backend.gotoModule('backend_user_management');
 
     const contentFrame = backend.contentFrame;
     await contentFrame.locator('.t3js-module-docheader-buttons .dropdown-toggle', { hasText: 'Module Menu:' }).click();
-    await contentFrame.locator('.t3js-module-docheader-buttons').getByRole('link', {name: 'Backend user groups'}).click();
+    await contentFrame.locator('.t3js-module-docheader-buttons').getByRole('link', { name: 'Backend user groups' }).click();
 
     // Wait for the module to fully load
     await backend.waitForModuleResponse();
@@ -309,7 +309,7 @@ test.describe('Backend user group module', () => {
     await contentFrame.locator('button[value="reset-filters"]').click();
     await resetResponse;
 
-    const clearButton = contentFrame.getByRole('button', {name: 'Clear compare list'});
+    const clearButton = contentFrame.getByRole('button', { name: 'Clear compare list' });
     if (await clearButton.isVisible()) {
       await clearButton.click();
       // Wait for the compare list table to disappear
@@ -319,7 +319,7 @@ test.describe('Backend user group module', () => {
 
   test('Can edit BE groups from list view', async ({ backend }) => {
     const contentFrame = backend.contentFrame;
-    let group = contentFrame.locator('table.table-striped > tbody > tr:nth-child(1) > td.col-50 > a');
+    const group = contentFrame.locator('table.table-striped > tbody > tr:nth-child(1) > td.col-50 > a');
     const groupName = await group.innerText();
 
     await group.click();
@@ -331,22 +331,22 @@ test.describe('Backend user group module', () => {
 
   test('Can edit sub group from list view', async ({ backend }) => {
     const contentFrame = backend.contentFrame;
-    let group = contentFrame.locator('table.table-striped > tbody > tr:nth-child(1) > td.col-50 > a');
+    const group = contentFrame.locator('table.table-striped > tbody > tr:nth-child(1) > td.col-50 > a');
     const groupName = await group.innerText();
     await group.click();
 
     await openAndCloseTheEditForm(backend, groupName);
   });
 
-  test('Accessing group compare view works', async ({ page, backend }) => {
+  test('Accessing group compare view works', async ({ backend }) => {
     const contentFrame = backend.contentFrame;
     await addGroupToCompareList(backend, 1);
     await addGroupToCompareList(backend, 2);
     await addGroupToCompareList(backend, 3);
 
-    await expect(contentFrame.locator('.t3js-acceptance-compare')).toBeAttached()
+    await expect(contentFrame.locator('.t3js-acceptance-compare')).toBeAttached();
 
-    let wait = backend.waitForModuleResponse();
+    const wait = backend.waitForModuleResponse();
     await contentFrame.locator('.t3js-acceptance-compare').click();
     await wait;
 
@@ -375,12 +375,12 @@ test.describe('Backend user group module', () => {
   }
 
   async function addGroupToCompareList(backend: BackendPage, count: number) {
-    let addToCompare = backend.contentFrame.locator('#typo3-backend-user-group-list [form="form-add-group-to-compare-list"]');
+    const addToCompare = backend.contentFrame.locator('#typo3-backend-user-group-list [form="form-add-group-to-compare-list"]');
 
-    await expect(addToCompare.getByText('Compare').first()).toBeEnabled()
+    await expect(addToCompare.getByText('Compare').first()).toBeEnabled();
 
-    let wait = backend.waitForModuleResponse();
-    await addToCompare.getByText('Compare').first().click()
+    const wait = backend.waitForModuleResponse();
+    await addToCompare.getByText('Compare').first().click();
     await wait;
 
     await expect(backend.contentFrame.locator('#typo3-backend-user-list-compare tbody').getByRole('row')).toHaveCount(count);
