@@ -181,7 +181,7 @@ class Indexer
             // If the contentHash is the same, then we can rest assured that this page is already indexed and regardless of mtime and origContent we don't need to do anything more.
             // This will also prevent pages from being indexed if a fe_users has logged in, and it turns out that the page content is not changed anyway. fe_users logged in should always search with hash_gr_list = "0,-1" OR "[their_group_list]". This situation will be prevented only if the page has been indexed with no user login on before hand. Else the page will be indexed by users until that event. However that does not present a serious problem.
             $checkCHash = $this->checkContentHash();
-            if (!is_array($checkCHash) || $reindexingRequired) {
+            if (!is_array($checkCHash)) {
                 $Pstart = $this->milliseconds();
                 $this->timeTracker->push('Converting entities of content');
                 $this->charsetEntity2utf8($this->indexingDataStringDto);
