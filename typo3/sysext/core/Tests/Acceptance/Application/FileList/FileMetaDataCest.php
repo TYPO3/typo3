@@ -31,8 +31,6 @@ final class FileMetaDataCest
 
     public function metaDataCanBeEdited(ApplicationTester $I): void
     {
-        $I->markTestSkipped('Broken. Needs investigation.');
-
         $I->click('Media');
 
         $I->switchToContentFrame();
