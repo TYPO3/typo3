@@ -74,7 +74,7 @@ class RecordsOverview extends AbstractNode
             $recordsOverviewHtml[] =    '</td>';
             $recordsOverviewHtml[] =    '<td class="col-title">';
             $recordsOverviewHtml[] =        $linkedTitle;
-            $recordsOverviewHtml[] =        '<span class="text-body-secondary">';
+            $recordsOverviewHtml[] =        '<span class="text-variant">';
             $recordsOverviewHtml[] =            ' [' . $selectedItem['uid'] . ']';
             $recordsOverviewHtml[] =            ' ' . htmlspecialchars($pathToContainingPage);
             $recordsOverviewHtml[] =        '</span>';

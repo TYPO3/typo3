@@ -126,7 +126,7 @@ final class ClipboardTest extends FunctionalTestCase
                 1,
                 '_FILE',
                 [
-                    '<span class="text-body-secondary">FR: Interne</span>',
+                    '<span class="text-variant">FR: Interne</span>',
                 ],
             ],
         ];

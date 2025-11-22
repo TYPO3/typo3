@@ -46,7 +46,7 @@ final class RenderCreationInformation extends AbstractFormElement
         $realName = (string)($backendUser['realName'] ?? '');
         $userName = (string)($backendUser['username'] ?? '');
         if ($realName !== '') {
-            $userHtml = '<strong>' . htmlspecialchars($realName) . '</strong> <span class="text-muted">(' . htmlspecialchars($userName) . ')</span>';
+            $userHtml = '<strong>' . htmlspecialchars($realName) . '</strong> <span class="text-variant">(' . htmlspecialchars($userName) . ')</span>';
         } elseif ($userName !== '') {
             $userHtml = '<strong>' . htmlspecialchars($userName) . '</strong>';
         } elseif ($userId > 0) {

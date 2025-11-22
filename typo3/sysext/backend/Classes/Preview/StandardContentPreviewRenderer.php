@@ -353,7 +353,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             $uid = (int)$uid;
             $pageRecord = BackendUtility::getRecord($table, $uid, 'title');
             if ($pageRecord) {
-                $content .= '<li class="list-group-item">' . htmlspecialchars($pageRecord['title']) . ' <span class="text-body-secondary">[' . $uid . ']</span></li>';
+                $content .= '<li class="list-group-item">' . htmlspecialchars($pageRecord['title']) . ' <span class="text-variant">[' . $uid . ']</span></li>';
             }
         }
         return $content ? '<ul class="list-group">' . $content . '</ul>' : '';

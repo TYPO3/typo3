@@ -98,7 +98,7 @@ final class TaskGroupsCest
         $I->click('.module-docheader a[title="Close"]');
 
         $I->seeElement('//div[contains(@class, "panel")][contains(., "' . $this->groupName . '")][contains(@style, "border-left") and contains(@style, "#FF8700")]');
-        $I->see($groupDescription, '//div[contains(@class, "panel-title")][contains(., "' . $this->groupName . '")]//p[contains(@class, "text-muted")]');
+        $I->see($groupDescription, '//div[contains(@class, "panel-title")][contains(., "' . $this->groupName . '")]//p[contains(@class, "text-variant")]');
     }
 
     public function removeGroup(ApplicationTester $I, ModalDialog $modalDialog): void

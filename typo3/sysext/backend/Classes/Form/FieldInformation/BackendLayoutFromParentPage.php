@@ -87,7 +87,7 @@ class BackendLayoutFromParentPage extends AbstractNode
         }
 
         if ($backendLayoutInformation !== '') {
-            $resultArray['html'] = '<p class="text-body-secondary">' . htmlspecialchars($backendLayoutInformation) . '</p>';
+            $resultArray['html'] = '<p class="text-variant">' . htmlspecialchars($backendLayoutInformation) . '</p>';
         }
 
         return $resultArray;

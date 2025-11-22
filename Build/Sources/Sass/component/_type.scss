@@ -51,55 +51,44 @@ a {
 //
 // Colors
 //
-.text-base,
-.text-base-emphasis {
+.text-base {
     color: var(--typo3-text-color-base) !important;
 }
 
 .text-muted,
-.text-muted-emphasis,
-.text-variant,
-.text-variant-emphasis {
+.text-variant {
     color: var(--typo3-text-color-variant) !important;
 }
 
-.text-primary,
-.text-primary-emphasis {
+.text-primary {
     color: var(--typo3-text-color-primary) !important;
 }
 
-.text-secondary,
-.text-secondary-emphasis {
+.text-secondary {
     color: var(--typo3-text-color-secondary) !important;
 }
 
-.text-info,
-.text-info-emphasis {
+.text-info {
     color: var(--typo3-text-color-info) !important;
 }
 
-.text-success,
-.text-success-emphasis {
+.text-success {
     color: var(--typo3-text-color-success) !important;
 }
 
-.text-warning,
-.text-warning-emphasis {
+.text-warning {
     color: var(--typo3-text-color-warning) !important;
 }
 
-.text-danger,
-.text-danger-emphasis {
+.text-danger {
     color: var(--typo3-text-color-danger) !important;
 }
 
-.text-notice,
-.text-notice-emphasis {
+.text-notice {
     color: var(--typo3-text-color-notice) !important;
 }
 
-.text-default,
-.text-default-emphasis {
+.text-default {
     color: var(--typo3-text-color-default) !important;
 }
 
@@ -109,8 +98,7 @@ a {
 }
 
 code,
-.text-code,
-.text-code-emphasis {
+.text-code {
     color: var(--typo3-text-color-code) !important;
 }
 

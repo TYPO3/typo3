@@ -162,7 +162,7 @@ class PaletteAndSingleContainer extends AbstractContainer
                     $html[] = '<h3 class="form-section-headline">' . htmlspecialchars($element['paletteLegend']) . '</h3>';
                 }
                 if (!empty($element['paletteDescription'])) {
-                    $html[] = '<p class="form-section-description text-body-secondary">' . nl2br(htmlspecialchars($element['paletteDescription'])) . '</p>';
+                    $html[] = '<p class="form-section-description">' . nl2br(htmlspecialchars($element['paletteDescription'])) . '</p>';
                 }
                 $html[] = $this->renderInnerPaletteContent($element);
                 $html[] = '</fieldset>';

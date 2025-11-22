@@ -32,7 +32,7 @@
                                         <f:then>
                                             {page.realName}
                                             <f:if condition="{page.userName}">
-                                                <div class="text-muted">({page.userName})</div>
+                                                <div class="text-variant">({page.userName})</div>
                                             </f:if>
                                         </f:then>
                                         <f:else>
@@ -58,7 +58,7 @@
                                 <td class="col-title">
                                     {page.pageRecord.title}
                                     <f:if condition="{page.rootline}">
-                                        <div><small class="text-muted" title="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.page.pagetree')}">{page.rootline}</small></div>
+                                        <div><small class="text-variant" title="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.page.pagetree')}">{page.rootline}</small></div>
                                     </f:if>
                                 </td>
                                 <td class="col-control nowrap">

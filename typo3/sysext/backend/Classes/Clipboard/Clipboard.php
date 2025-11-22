@@ -422,7 +422,7 @@ class Clipboard
             $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $record), (int)$this->getBackendUser()->uc['titleLen']));
             if (!$isRequestedTable) {
                 // In case the current table is not the requested table, e.g. "_FILE", wrap title in "muted" style
-                $title = '<span class="text-body-secondary">' . $title . '</span>';
+                $title = '<span class="text-variant">' . $title . '</span>';
             }
             $records[] = [
                 'icon' => $this->iconFactory->getIconForRecord($table, $record, IconSize::SMALL)->render(),
@@ -471,14 +471,14 @@ class Clipboard
                 // Wrap in link to corresponding page in recordlist in case current requested table matches
                 $itemText = '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('web_list', ['id' => $reference['pid']])) . '">' . $itemText . '</a>';
             } else {
-                $itemText = '<span class="text-body-secondary">' . $itemText . '</span>';
+                $itemText = '<span class="text-variant">' . $itemText . '</span>';
             }
         } elseif (is_string($reference)) {
             if ($isRequestedTable && ExtensionManagementUtility::isLoaded('filelist')) {
                 // Wrap in link to the files folder in case current requested table matches and filelist is loaded
                 $itemText = '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('media_management', ['id' => $reference])) . '">' . $itemText . '</a>';
             } else {
-                $itemText = '<span class="text-body-secondary">' . $itemText . '</span>';
+                $itemText = '<span class="text-variant">' . $itemText . '</span>';
             }
         }
         return $itemText;

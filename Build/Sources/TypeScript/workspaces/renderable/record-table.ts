@@ -245,7 +245,7 @@ export class RecordTableElement extends LitElement {
               <span>${data.lastEditorRealName || data.lastEditorName}</span>
             </span>
           ` : html`
-            <span class="text-muted">${TYPO3.lang['column.editor.unknown']}</span>
+            <span class="text-variant">${TYPO3.lang['column.editor.unknown']}</span>
           `}
             ${data.lastChangedFormatted}
           </div>

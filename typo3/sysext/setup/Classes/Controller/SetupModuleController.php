@@ -477,8 +477,8 @@ class SetupModuleController
 
                     if ($addPasswordRequirementsDescription) {
                         $description = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_password_policy.xlf:passwordRequirements.description');
-                        $html .= '<div id="description_' . htmlspecialchars($fieldName) . '"><p class="mt-2 mb-1 text-body-secondary">' . htmlspecialchars($description) . '</p>';
-                        $html .= '<ul class="mb-0"><li class="text-body-secondary">' . implode('</li><li class="text-body-secondary">', $this->passwordPolicyValidator->getRequirements()) . '</li></ul></div>';
+                        $html .= '<div id="description_' . htmlspecialchars($fieldName) . '"><p class="mt-2 mb-1 text-variant">' . htmlspecialchars($description) . '</p>';
+                        $html .= '<ul class="mb-0"><li class="text-variant">' . implode('</li><li class="text-variant">', $this->passwordPolicyValidator->getRequirements()) . '</li></ul></div>';
                     }
 
                     break;

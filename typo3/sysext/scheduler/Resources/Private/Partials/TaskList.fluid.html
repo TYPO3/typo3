@@ -124,7 +124,7 @@
                             </f:else>
                         </f:if>
                         <f:if condition="{group.description}">
-                            <p class="text-muted mb-0">{group.description}</p>
+                            <p class="text-variant mb-0">{group.description}</p>
                         </f:if>
                     </div>
                     <div class="panel-actions">
@@ -299,7 +299,7 @@
                                             </be:link.editRecord>
                                         </div>
                                         <f:if condition="{task.description} != ''">
-                                            <div class="text-body-secondary" style="margin-top: 0.5em;"><f:format.nl2br>{task.description}</f:format.nl2br></div>
+                                            <div class="text-variant" style="margin-top: 0.5em;"><f:format.nl2br>{task.description}</f:format.nl2br></div>
                                         </f:if>
                                     </td>
                                     <td class="align-top col-min">
@@ -379,10 +379,10 @@
                                                 <f:format.date format="{dateFormat.day} {dateFormat.time}" date="{task.lastExecutionTime}" /><br>
                                                 <f:if condition="{task.lastExecutionContext} == 'CLI'">
                                                     <f:then>
-                                                        <span class="text-body-secondary"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.cron" /></span>
+                                                        <span class="text-variant"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.cron" /></span>
                                                     </f:then>
                                                     <f:else>
-                                                        <span class="text-body-secondary"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.manual" /></span>
+                                                        <span class="text-variant"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.manual" /></span>
                                                     </f:else>
                                                 </f:if>
                                             </f:then>
