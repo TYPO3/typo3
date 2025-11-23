@@ -2,66 +2,79 @@
 
 ..  _breaking-107831-1761307521:
 
-========================================================
-Breaking: #107831 - Removed TypoScriptFrontendController
-========================================================
+==========================================================
+Breaking: #107831 - Removed `TypoScriptFrontendController`
+==========================================================
 
 See :issue:`107831`
 
 Description
 ===========
 
-All remaining properties have been removed from :php:`TypoScriptFrontendController`,
-making the class a readonly service, used TYPO3 core internally only. The class
-will vanish during further TYPO3 v14 development.
+All remaining properties have been removed from
+:php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController`, making the
+class a readonly internal service used by the TYPO3 Core only.
+
+The class will be fully removed in a later TYPO3 v14 release.
 
 The following instance access patterns have been removed:
 
-.. code-block:: php
+*   `$GLOBALS['TSFE']`
+*   `$request->getAttribute('frontend.controller')`
+*   `$contentObjectRenderer->getTypoScriptFrontendController()`
 
-    $GLOBALS['TSFE']
-    $request->getAttribute('frontend.controller')
-    AbstractContentObject->getTypoScriptFrontendController()
-
-All API methods that returned an instance of :php:`TypoScriptFrontendController`,
-usually called :php:`getTypoScriptFrontendController` or similar.
+All API methods that returned an instance of
+:php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` -
+usually named :php:`getTypoScriptFrontendController()` or similar - have been
+removed as well.
 
 Impact
 ======
 
-Remaining direct and indirect usages of :php:`TypoScriptFrontendController` will fail.
-
+Any remaining direct or indirect usage of
+:php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` will
+now result in a fatal PHP error.
 
 Affected installations
 ======================
 
-Some extensions may still have used details of :php:`TypoScriptFrontendController`
-directly, even though the class has been marked breaking and internal with
-TYPO3 v13 already.
+Extensions that still relied on properties or methods of
+:php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` are
+affected.
 
-In particular, extensions that utilized :php:`AbstractContentObject->getTypoScriptFrontendController()`
-can now access relevant parts from the request object, e.g.
-:php:`$request->getAttribute('frontend.page.information')`.
+The class was already marked *internal* and *breaking* in TYPO3 v13.
 
+In particular, extensions that used
+:php:`AbstractContentObject->getTypoScriptFrontendController()` can now access
+the relevant data from the PSR-7 request object, for example:
+
+..  code-block:: php
+
+    $pageInformation = $request->getAttribute('frontend.page.information');
 
 Migration
 =========
 
-See :ref:`breaking-102621-1701937690` for a list of old properties and their
-substitutions.
+See :ref:`breaking-102621-1701937690` for a detailed list of removed properties
+and their replacements.
 
-One last and not yet mentioned detail, old code:
+As a specific example, old code that added additional header data like this:
 
-.. code-block:: php
+..  code-block:: php
 
-    $request->getAttribute('frontend.controller')->additionalHeaderData[] = $myAdditionalHeaderData;
+    $frontendController = $request->getAttribute('frontend.controller');
+    $frontendController->additionalHeaderData[] = $myAdditionalHeaderData;
 
-New code:
+should now use:
 
-.. code-block:: php
+..  code-block:: php
 
-    GeneralUtility::makeInstance(PageRenderer::class)->addHeaderData($myAdditionalHeaderData);
+    use TYPO3\CMS\Core\Page\PageRenderer;
+    use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-The same strategy can be used for :php:`additionalFooterData`.
+    $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+    $pageRenderer->addHeaderData($myAdditionalHeaderData);
+
+The same approach applies to :php:`additionalFooterData`.
 
 ..  index:: Frontend, NotScanned, ext:frontend

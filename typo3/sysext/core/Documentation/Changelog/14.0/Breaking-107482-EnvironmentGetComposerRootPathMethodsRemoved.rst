@@ -11,40 +11,42 @@ See :issue:`107482`
 Description
 ===========
 
-The following method in :php:`TYPO3\CMS\Core\Core\Environment` has been
+The following method in :php:`\TYPO3\CMS\Core\Core\Environment` has been
 removed in TYPO3 v14.0:
 
-* :php:`Environment::getComposerRootPath()`
+*   :php:`Environment::getComposerRootPath()`
 
-Since composer installers v4/v5 which are required since TYPO3 v12
-:php:`getComposerRootPath()` and :php:`getProjectPath()` are the same,
-since the project path can not be changed any more through configuration.
+Since composer installers v4/v5 (which are required since TYPO3 v12),
+:php:`getComposerRootPath()` and :php:`getProjectPath()` return the same
+value, because the project path can no longer be changed through
+configuration.
 
-Therefore the method :php:`Environment::getComposerRootPath()` can be removed.
-
-This method was marked internal from the beginning.
+Therefore, the method :php:`Environment::getComposerRootPath()` has been
+removed. It was marked as internal from the beginning.
 
 Impact
 ======
 
-Calling this method will trigger a PHP error.
+Calling this method will result in a PHP error.
 
 Affected installations
 ======================
 
-TYPO3 installations with custom extensions or code that directly call the
-deprecated method:
+TYPO3 installations with custom extensions or custom code that directly
+call the removed method are affected:
 
 * :php:`Environment::getComposerRootPath()`
 
-The extension scanner will report any usage as strong match.
+The extension scanner will report any usage as a strong match.
 
 Migration
 =========
 
-Instead of calculating relative paths manually, use absolute paths or the
-appropriate TYPO3 APIs for path handling:
+Instead of calculating relative paths manually, use absolute paths or
+the appropriate TYPO3 APIs for path handling.
 
-* Use :php:`Environment::getProjectPath()` instead
+Use the following replacement:
+
+*   :php:`Environment::getProjectPath()`
 
 ..  index:: PHP-API, FullyScanned, ext:core

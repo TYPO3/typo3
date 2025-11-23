@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _deprecation-107537-1761162068:
+..  _deprecation-107537-1761162068:
 
 =====================================================================================
 Deprecation: #107537 - `TYPO3\CMS\Core\Utility\PathUtility::getPublicResourceWebPath`
@@ -11,14 +11,17 @@ See :issue:`107537`
 Description
 ===========
 
-The static method :php:`PathUtility::getPublicResourceWebPath($extResource)` was marked internal
-since it was introduced. Since there weren't good alternatives to this API, it is not removed
-but deprecated first before it will be removed with TYPO3 v15
+The static method
+:php:`\TYPO3\CMS\Core\Utility\PathUtility::getPublicResourceWebPath($extResource)`
+was marked internal since its introduction. Since there were no good
+alternatives to this API, it is now deprecated first, before being removed with
+TYPO3 v15.0.
 
 Impact and affected installations
 =================================
 
-TYPO3 installations using :php:`PathUtility::getPublicResourceWebPath($extResource)` will get a
+TYPO3 installations using
+:php:`PathUtility::getPublicResourceWebPath($extResource)` will receive a
 deprecation message for each call of this method.
 
 Migration
@@ -31,6 +34,8 @@ Before:
 ..  code-block:: php
     :caption: MyClass
 
+    use TYPO3\CMS\Core\Utility\PathUtility;
+
     public function renderUrl(string $extResource): string
     {
         return PathUtility::getPublicResourceWebPath($extResource);
@@ -41,14 +46,23 @@ After:
 ..  code-block:: php
     :caption: MyClass
 
+    use TYPO3\CMS\Core\Http\ServerRequestInterface;
+    use TYPO3\CMS\Core\Resource\SystemResourceFactory;
+    use TYPO3\CMS\Core\Resource\SystemResourcePublisherInterface;
+    use TYPO3\CMS\Core\Resource\UriGenerationOptions;
+
     public function __construct(
         private readonly SystemResourceFactory $systemResourceFactory,
         private readonly SystemResourcePublisherInterface $resourcePublisher,
     ) {}
 
-    public function renderUrl(string $resourceIdentifier, ServerRequestInterface $request): string
-    {
-        $resource = $this->systemResourceFactory->createPublicResource($resourceIdentifier);
+    public function renderUrl(
+        string $resourceIdentifier,
+        ServerRequestInterface $request
+    ): string {
+        $resource = $this->systemResourceFactory->createPublicResource(
+            $resourceIdentifier
+        );
         return (string)$this->resourcePublisher->generateUri(
             $resource,
             $request,

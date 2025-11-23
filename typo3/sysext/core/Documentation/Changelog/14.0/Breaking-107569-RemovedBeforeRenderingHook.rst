@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _breaking-107569-1759906416:
+..  _breaking-107569-1759906416:
 
 ==================================================
 Breaking: #107569 - Removed "beforeRendering" hook
@@ -11,28 +11,34 @@ See :issue:`107569`
 Description
 ===========
 
-The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering']`
-has been removed in favor of the more powerful PSR-14 :php:`TYPO3\CMS\Form\Event\BeforeRenderableIsRenderedEvent`.
+The hook
+:php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering']`
+has been removed in favor of the PSR-14 event
+:php:`\TYPO3\CMS\Form\Event\BeforeRenderableIsRenderedEvent`.
 
 Impact
 ======
 
-Any hook implementation registered is not executed anymore in TYPO3 v14.0+.
+Hook implementations registered under :php:`beforeRendering` are no longer
+executed in TYPO3 v14.0 and later.
 
 Affected installations
 ======================
 
-TYPO3 installations with custom extensions using this hook. The extension
-scanner reports any usage as weak match.
+TYPO3 installations with custom extensions using this hook are affected.
+
+The extension scanner reports any usage as a weak match.
 
 Migration
 =========
 
-The hook is removed without deprecation in order to allow extensions
-to work with TYPO3 v13 (using the hook) and v14+ (using the new event)
-when implementing the event as well without any further deprecations.
-Use the :ref:`PSR-14 Event <feature-107569-1759906422>` to allow greater
-influence in the functionality. Especially because the event is dispatched
-later, it allows more modifications than the previous hook.
+The hook was removed without a deprecation phase to allow extensions to work
+with both TYPO3 v13 (using the hook) and TYPO3 v14+ (using the new event)
+simultaneously.
 
-.. index:: Backend, ext:form, FullyScanned
+Use the :ref:`PSR-14 event <feature-107569-1759906422>` instead to allow
+greater influence over the rendering process. Since the event is dispatched
+at a later point, it allows more extensive modifications than the previous
+hook.
+
+..  index:: Backend, ext:form, FullyScanned

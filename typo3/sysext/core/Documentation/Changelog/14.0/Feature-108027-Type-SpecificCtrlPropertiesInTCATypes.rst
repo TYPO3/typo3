@@ -12,51 +12,60 @@ Description
 ===========
 
 It is now possible to define a type-specific :php:`title` in the TCA
-:php:`types` section, which overrides the global table title defined in
-:php:`ctrl['title']` for that specific record type.
+:php:`types` section. This value overrides the global table title defined in
+:php:`ctrl['title']` for the respective record type.
 
 This allows different record types of the same table to display different
-titles in the TYPO3 backend UI, making it clearer which type of record is
-being created or displayed.
+titles in the TYPO3 backend user interface, making it clearer which kind of
+record is being created or displayed.
 
 ..  note::
 
     In addition to :php:`title`, the :php:`previewRenderer` property can also
     be overridden per type. This was already possible through explicit evaluation
-    and Schema API usage, but is now consistently respected in FormEngine as well.
+    and use of the Schema API, but is now consistently respected by FormEngine
+    as well.
+
 
 Implementation
 --------------
 
-This feature is implemented in two places to ensure consistent behavior:
+This feature has been implemented in two areas to ensure consistent behavior:
 
-1. **Schema API** (:php:`TcaSchemaFactory`): Type-specific configuration is merged
-   into sub-schemas via :php:`array_replace_recursive()`, making type-specific
-   titles available when using :php:`$schema->getTitle()`.
+1. **Schema API**
+   The :php-short:`\TYPO3\CMS\Core\Schema\TcaSchemaFactory` merges
+   type-specific configuration into sub-schemas using
+   :php:`array_replace_recursive()`. This makes type-specific titles available
+   through :php:`$schema->getTitle()`.
 
-2. **FormEngine** (:php:`TcaTypesCtrlOverrides` data provider): The type-specific
-   :php:`title` (and :php:`previewRenderer`) is merged into :php:`processedTca['ctrl']`
-   during form rendering, ensuring FormEngine and legacy code that access ctrl
-   directly see the type-specific values.
+2. **FormEngine**
+   The data provider
+   :php-short:`\TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesCtrlOverrides`
+   merges the type-specific :php:`title` and :php:`previewRenderer` into
+   :php:`processedTca['ctrl']` during form rendering. This ensures that both
+   FormEngine and any legacy code accessing :php:`ctrl` directly will see the
+   correct type-specific values.
+
 
 Example
 -------
 
 ..  code-block:: php
+    :caption: EXT:my_extension/Configuration/TCA/tx_my_table.php
 
     return [
         'ctrl' => [
-            'title' => 'LLL:EXT:myext/Resources/Private/Language/locallang.xlf:tx_myext_table',
+            'title' => 'my_extension.db:tx_my_table',
             'type' => 'record_type',
             // ... other ctrl configuration
         ],
         'types' => [
             'article' => [
-                'title' => 'LLL:EXT:myext/Resources/Private/Language/locallang.xlf:tx_myext_table.type.article',
+                'title' => 'my_extension.db:tx_my_table.type.article',
                 'showitem' => 'title, content, author',
             ],
             'news' => [
-                'title' => 'LLL:EXT:myext/Resources/Private/Language/locallang.xlf:tx_myext_table.type.news',
+                'title' => 'my_extension.db:tx_my_table.type.news',
                 'showitem' => 'title, content, publish_date',
             ],
             'event' => [
@@ -69,25 +78,28 @@ Example
 
 In this example:
 
-- The "article" type will display with the title defined in the language file
-  key :php:`tx_myext_table.type.article`
-- The "news" type will display with the title defined in the language file
-  key :php:`tx_myext_table.type.news`
-- The "event" type will display with the global table title from
-  :php:`tx_myext_table`
+*   The **article** type displays the title defined in the language file key
+    :php:`tx_my_table.type.article`.
+*   The **news** type displays the title defined in
+    :php:`tx_my_table.type.news`.
+*   The **event** type falls back to the global table title from
+    :php:`ctrl['title']`.
+
 
 Impact
 ======
 
-Tables with multiple record types can now provide more specific and descriptive
-titles for each type in the backend UI. This improves the user experience by
-making it clearer which type of record is being created or displayed.
+Tables with multiple record types can now define more specific and descriptive
+titles for each type in the backend user interface. This improves usability and
+clarity for editors by making it immediately obvious which type of record is
+being created or edited.
 
-This is particularly useful for:
+This feature is especially useful for:
 
-- Content element tables like :sql:`tt_content` with different CTypes
-- Tables with distinct record types that serve different purposes
-- Plugin records with different functionality per type
-- Any table where the record type significantly changes the record's purpose
+*   Content element tables such as :sql:`tt_content` with different :php:`CType`
+    values
+*   Tables with distinct record types serving different purposes
+*   Plugin records with varying functionality per type
+*   Any table where the record type changes the record's purpose or meaning
 
 ..  index:: TCA, Backend, ext:core

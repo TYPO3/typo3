@@ -11,26 +11,26 @@ See :issue:`107047`
 Description
 ===========
 
-One of the main features of TCA are the *record types*. This allows using
-a single table for different purposes and in different contexts. The most
-well-known examples are the "Page Types" of the :sql:`pages` table and the
-"Content Types" of the :sql:`tt_content` table. For every specific type,
-it's possible to define which fields to display and customize their
+One of the main features of TCA is the concept of *record types*. This allows
+using a single table for different purposes and in different contexts. The
+most well-known examples are the "Page Types" of the :sql:`pages` table and the
+"Content Types" of the :sql:`tt_content` table. For every specific type, it is
+possible to define which fields to display and to customize their
 configuration.
 
-A special case historically has been the plugin registration, which for a
-long time used the so-called *sub types* feature of TCA. This was an
-additional layer below record types, configured using
-`subtype_value_field` (commonly `list_type`), and optionally
-`subtypes_addlist` and `subtypes_excludelist` to add or remove
-fields depending on the selected subtype.
+A special case historically has been plugin registration, which for a long
+time used the so-called *subtypes* feature of TCA. This was an additional layer
+below record types, configured using `subtype_value_field` (commonly
+`list_type`), and optionally `subtypes_addlist` and
+`subtypes_excludelist` to add or remove fields depending on the selected
+subtype.
 
 FlexForms attached to such subtypes were configured using
-`ds_pointerField` (typically pointing to `list_type,CType`). This
- came in combination with corresponding `ds` configuration, which
- was an array with keys combining the pointer fields, e.g.:
+`ds_pointerField` (typically pointing to `list_type,CType`). This came in
+combination with the corresponding `ds` configuration, which was an array
+with keys combining the pointer fields, for example:
 
-.. code-block:: php
+..  code-block:: php
 
     'ds_pointerField' => 'list_type,CType',
     'ds' => [
@@ -38,81 +38,89 @@ FlexForms attached to such subtypes were configured using
         'default' => 'FILE:...'
     ],
 
-Over recent TYPO3 versions, this approach has been deprecated in favor
-of using record types exclusively for plugin registration via the
-`CType` field, making configuration cleaner and easier to understand.
+Over recent TYPO3 versions, this approach has been deprecated in favor of
+using record types exclusively for plugin registration via the `CType` field,
+making configuration cleaner and easier to understand.
 
 The special plugin content element (`CType=list`) and the corresponding plugin
-subtype field `list_type` have been deprecated in :ref:`deprecation-105076-1726923626`
-and have been removed in :ref:`breaking-105377-1729513863`. You should also
-check corresponding information regarding the usage of :php:`ExtensionUtility::configurePlugin()`
-and :php:`ExtensionManagementUtility::addTcaSelectItemGroup()`, see :ref:`important-105538-1730752784`.
+subtype field `list_type` have been deprecated in
+:ref:`deprecation-105076-1726923626` and removed in
+:ref:`breaking-105377-1729513863`.
+See also :ref:`important-105538-1730752784` for related information about
+:php:`ExtensionUtility::configurePlugin()` and
+:php:`ExtensionManagementUtility::addTcaSelectItemGroup()`.
 
-With this change, support for `ds_pointerField` and the multi-entry `ds` array
-format has now been removed. The `ds` option now points to a single FlexForm,
-either directly or via a `FILE:` reference.
+With this change, support for `ds_pointerField` and the multi-entry
+`ds` array format has now been removed. The `ds` option now points to
+a single FlexForm, either directly or via a `FILE:` reference.
 
 FlexForms must instead be assigned via standard `types` configuration
 using `columnsOverrides`.
 
-This also affects the "data structure identifier", which in the commonly used
-"tca" type the `dataStructureKey`, which is now set to `default` in case the
-table does not support record types or no record type specific configuration
-exists. Otherwise the `dataStructureKey` is set to the corresponding record
-type value, e.g. `textpic`.
+This also affects the *data structure identifier*, which in the commonly used
+`tca` type is the `dataStructureKey`. It is now set to `default` if the
+table does not support record types or no record type-specific configuration
+exists. Otherwise, the `dataStructureKey` is set to the corresponding
+record type value, for example `textpic`.
 
-This affects the related PSR-14 events:
+This change affects the following PSR-14 events:
 
-* :php:`\TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureIdentifierInitializedEvent`
-* :php:`\TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent`
-* :php:`TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureIdentifierInitializedEvent`
-* :php:`TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureParsedEvent`
+*   :php-short:`\TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureIdentifierInitializedEvent`
+*   :php-short:`\TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent`
+*   :php-short:`\TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureIdentifierInitializedEvent`
+*   :php-short:`\TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureParsedEvent`
 
-There is a fallback for v14 in place, resolving a comma-separated `dataStructureKey`,
-e.g. `list_type,CType` to `CType`.
+A fallback for TYPO3 v14 resolves comma-separated `dataStructureKey`
+values (for example, `list_type,CType`) to `CType`.
 
-To address circular dependencies during schema building, :php:`FlexFormTools`
-has been enhanced to support both TCA Schema objects and raw TCA configuration
-arrays as input. The following methods now accept a union type :php:`array|TcaSchema`
-for the new :php:`$schema` parameter:
+To address circular dependencies during schema building,
+:php-short:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools` now supports
+both TCA Schema objects and raw TCA configuration arrays as input. The
+following methods accept a union type :php:`array|TcaSchema` for the new
+:php:`$schema` parameter:
 
-* :php:`getDataStructureIdentifier()`
-* :php:`parseDataStructureByIdentifier()`
-* :php:`cleanFlexFormXML()`
+*   :php:`getDataStructureIdentifier()`
+*   :php:`parseDataStructureByIdentifier()`
+*   :php:`cleanFlexFormXML()`
 
-These methods previously relied on :php:`$GLOBALS['TCA']` internally, which caused
-architectural issues and is resolved now by working with the given schema directly.
+Previously, these methods relied on :php:`$GLOBALS['TCA']` internally, which
+caused architectural issues. They now operate directly on the provided schema.
 
-Therefore, all calls to these methods should provide the :php:`$schema` with either
-a TcaSchema or raw TCA configuration array. However, since data structure resolution
-can be customized by extensions, the :php:`$schema` parameter is not strictly mandatory.
-But, it is strongly recommended to provide it in most cases, as an :php:`InvalidTcaSchemaException`
+All calls to these methods should provide the :php:`$schema` parameter with
+either a :php-short:`\TYPO3\CMS\Core\Schema\TcaSchema` instance or a raw TCA
+configuration array. Since data structure resolution can be customized by
+extensions, the parameter is not strictly mandatory, but it is strongly
+recommended to provide it in most cases. An
+:php-short:`\TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaSchemaException`
 will be thrown if schema resolution is required but no schema is passed.
 
-This change further allows components like :php:`RelationMapBuilder` to use
-:php:`FlexFormTools` during schema building processes where only raw TCA is available.
+This change also enables components like
+:php-short:`\TYPO3\CMS\Core\Schema\RelationMapBuilder` to use
+:php-short:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools` during schema
+building, even when only raw TCA is available.
 
-For more details on the enhanced FlexFormTools functionality, see
+For further details on the enhanced FlexFormTools functionality, see
 :ref:`feature-107047-1751984817`.
 
-The following classes have been removed as they serve no further purpose:
+The following class has been removed as it is no longer required:
 
-* :php:`TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidCombinedPointerFieldException`
+* :php-short:`\TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidCombinedPointerFieldException`
 
 Impact
 ======
 
 **FlexForm Pointer Field Removal**
 
-Any TCA definition that still uses `ds_pointerField` or a `ds`
-array with multiple entries (e.g., like `news_pi1,list`) will
-no longer work and might cause errors on rendering.
+Any TCA definition that still uses :php:`ds_pointerField` or a `ds`
+array with multiple entries (for example `news_pi1,list`) will no longer work
+and might cause rendering errors.
 
 **FlexFormTools Schema Parameter**
 
-All code calling :php:`FlexFormTools` methods (:php:`getDataStructureIdentifier()`,
-:php:`parseDataStructureByIdentifier()`, :php:`cleanFlexFormXML()`) must be updated
-to provide the required :php:`$schema` parameter.
+All code calling :php-short:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools`
+methods (:php:`getDataStructureIdentifier()`,
+:php:`parseDataStructureByIdentifier()`, :php:`cleanFlexFormXML()`) must be
+updated to provide the required :php:`$schema` parameter.
 
 Affected installations
 ======================
@@ -121,29 +129,36 @@ Affected installations
 
 All installations using :php:`ds_pointerField` (as the pointer field
 functionality has been removed entirely) or an array-like structure for
-:php:`ds` in their TCA type `flex` configuration.
+`ds` in their TCA field type `flex` configuration.
 
 **FlexFormTools Schema Parameter**
 
-All installations with custom code that directly calls :php:`FlexFormTools`
-methods without providing the schema parameter. This includes custom extensions
-or TYPO3 Core patches that use these methods directly.
+All installations with custom code that directly call
+:php-short:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools` methods
+without providing the :php:`$schema` parameter.
+This includes custom extensions or TYPO3 Core patches using these methods.
 
-A TcaMigration converts single-entry :php:`ds` arrays automatically. Multi-entry
-definitions require manual migration, since they have to be matched with the
-correct record type configuration, which might require additional configuration
-changes beforehand.
+A TCA migration automatically converts single-entry `ds` arrays.
+Multi-entry definitions require manual migration, as they must be aligned with
+the correct record type configuration, which may require additional
+configuration changes beforehand.
 
-Example for the single-entry migration:
+Example for single-entry migration:
 
-.. code-block:: php
+**Before:**
 
-    // before
+..  code-block:: php
+    :caption: Migration of single-entry ds configuration (before)
+
     'ds' => [
         'default' => '<T3DataStructure>...',
     ],
 
-    // after
+**After:**
+
+..  code-block:: php
+    :caption: Migration of single-entry ds configuration (after)
+
     'ds' => '<T3DataStructure>...',
 
 Migration
@@ -151,9 +166,9 @@ Migration
 
 **FlexForm Pointer Field Migration**
 
-Before:
+**Before:**
 
-.. code-block:: php
+..  code-block:: php
 
     'ds_pointerField' => 'list_type,CType',
     'ds' => [
@@ -161,9 +176,9 @@ Before:
         'default' => '<T3DataStructure>...',
     ],
 
-After:
+**After:**
 
-.. code-block:: php
+..  code-block:: php
 
     'columns' => [
         'pi_flexform' => [
@@ -184,14 +199,17 @@ After:
         ],
     ],
 
-If no `columnsOverrides` is defined, the default `ds` value of the field
-configuration will be used, as usual behaviour.
+If no `columnsOverrides` is defined, the default `ds` value of the
+field configuration will be used as before.
 
 **FlexFormTools Schema Parameter Migration**
 
-Before:
+**Before:**
 
-.. code-block:: php
+..  code-block:: php
+
+    use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+    use TYPO3\CMS\Core\Utility\GeneralUtility;
 
     $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
     $identifier = $flexFormTools->getDataStructureIdentifier(
@@ -201,13 +219,18 @@ Before:
         $row
     );
 
-After:
+**After:**
 
-.. code-block:: php
+..  code-block:: php
+
+    use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+    use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+    use TYPO3\CMS\Core\Utility\GeneralUtility;
 
     $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
 
     // Option 1: Using TCA Schema object (recommended for normal usage)
+    $tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
     $tcaSchema = $tcaSchemaFactory->get('tt_content');
     $identifier = $flexFormTools->getDataStructureIdentifier(
         $fieldTca,

@@ -13,38 +13,41 @@ Description
 
 The TypoScript condition function :typoscript:`getTSFE()` has been removed.
 
-After various properties like :typoscript:`getTSFE().type` have already been removed
-in TYPO3 v13, last remains of this functionality have been removed with TYPO3 v14.
+After various properties like :typoscript:`getTSFE().type` were already removed
+in TYPO3 v13, the remaining parts of this functionality have now been removed
+in TYPO3 v14.
 
-The most common remaining usage was accessing the current page id using
-:typoscript:`getTSFE().id`, which can be substituted by
-:typoscript:`request.getPageArguments().getPageId()`
-
+The most common remaining use was accessing the current page ID via
+:typoscript:`getTSFE().id`, which can be replaced with
+:typoscript:`request.getPageArguments().getPageId()`.
 
 Impact
 ======
 
-Using a condition like :typoscript:`getTSFE()` will never evaluate to true
-and needs adaption.
-
+Conditions using :typoscript:`getTSFE()` will no longer evaluate to true and
+must be updated.
 
 Affected installations
 ======================
 
-Instances with TypoScript conditions using function :typoscript:`getTSFE()` are affected.
+Instances with TypoScript conditions that use the function
+:typoscript:`getTSFE()` are affected.
 
 Migration
 =========
 
-Adapt :typoscript:`getTSFE()` to an alternative. Example:
+Replace :typoscript:`getTSFE()` with an equivalent condition. For example:
+
+**Before:**
 
 ..  code-block:: typoscript
 
-    # Before
     [getTSFE() && getTSFE().id == 42]
 
-    # After
-    [request?.getPageArguments()?.getPageId() == 42]
+**After:**
 
+..  code-block:: typoscript
+
+    [request?.getPageArguments()?.getPageId() == 42]
 
 ..  index:: TypoScript, NotScanned, ext:frontend

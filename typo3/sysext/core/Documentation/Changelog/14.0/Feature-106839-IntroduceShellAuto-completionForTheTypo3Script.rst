@@ -2,26 +2,31 @@
 
 ..  _feature-106839-1749197278:
 
-=========================================================================
-Feature: #106839 - Introduce shell auto-completion for the `typo3` script
-=========================================================================
+==========================================================================
+Feature: #106839 - Introduce shell auto-completion for the `typo3` command
+==========================================================================
 
 See :issue:`106839`
 
 Description
 ===========
 
-The new `bin/typo3 completion` command is introduced to the :shell:`typo3` CLI
-dispatcher script, allowing to register auto-completion for supported shells.
-This makes using the CLI dispatcher more fun by having the ability to simply
-use the `TAB` key (tabulator key) to trigger suggestions (multiple options), or
-complete the command or option in case there is only one.
+A new CLI command :bash:`vendor/bin/typo3 completion` has been added to the
+:shell:`typo3` CLI dispatcher script.
 
-The command `completion` is provided by :php:`symfony/console` and is not a custom
-implementation, thus allowing to be enhanced by constant improvements of the Symfony
-community, and getting support based on an even broader user base.
+This command enables **shell auto-completion** for supported shells, allowing
+developers to use the :kbd:`Tab` key to trigger command and option suggestions.
 
-Supported shells:
+The :shell:`completion` command is provided by the
+:composer:`symfony/console` package and is not a custom implementation.
+
+This ensures compatibility with ongoing improvements in the Symfony ecosystem
+and benefits from a broad user base and community support.
+
+Supported shells
+----------------
+
+The command reports unsupported shells and lists available ones:
 
 ..  code-block:: bash
 
@@ -29,89 +34,82 @@ Supported shells:
     Detected shell "shell", which is not supported by Symfony shell completion
     (supported shells: "bash", "fish", "zsh").
 
-The command provides two basic installation modes, `static` and `dynamic` which
-is explained by the command itself:
+Installation modes
+------------------
+
+The command supports two installation modes — *static* and *dynamic*.
+Run `vendor/bin/typo3 completion --help` to see detailed usage instructions and
+the supported shells (bash, fish, zsh).
+
+Static installation
+~~~~~~~~~~~~~~~~~~~
+
+Dump the completion script to a file and source it manually or install it
+globally, for example:
 
 ..  code-block:: bash
 
-    $ bin/typo3 completion --help
-    Description:
-      Dump the shell completion script
+    vendor/bin/typo3 completion bash | sudo tee /etc/bash_completion.d/typo3
 
-    Usage:
-      completion [options] [--] [<shell>]
+Or dump the script to a local file and source it:
 
-    Arguments:
-      shell                 The shell type (e.g. "bash"), the value of the "$SHELL" env var will be used if this is not given
+..  code-block:: bash
 
-    Options:
-          --debug           Tail the completion debug log
-      -h, --help            Display help for the given command. When no command is given display help for the list command
-          --silent          Do not output any message
-      -q, --quiet           Only errors are displayed. All other output is suppressed
-      -V, --version         Display this application version
-          --ansi|--no-ansi  Force (or disable --no-ansi) ANSI output
-      -n, --no-interaction  Do not ask any interactive question
-      -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+    bin/typo3 completion bash > completion.sh
+    source completion.sh
 
-    Help:
-      The completion command dumps the shell completion script required
-      to use shell autocompletion (currently, bash, fish, zsh completion are supported).
+To make it permanent, add the following line to your "~/.bashrc" file:
 
-      Static installation
-      -------------------
+..  code-block:: bash
+    :caption: ~/.bashrc
 
-      Dump the script to a global completion file and restart your shell:
+    source /path/to/completion.sh
 
-          bin/typo3 completion bash | sudo tee /etc/bash_completion.d/typo3
+Dynamic installation
+~~~~~~~~~~~~~~~~~~~~
 
-      Or dump the script to a local file and source it:
+Add an `eval` line to your shell configuration file (for example `~/.bashrc`):
 
-          bin/typo3 completion bash > completion.sh
+..  code-block:: bash
 
-          # source the file whenever you use the project
-          source completion.sh
-
-          # or add this line at the end of your "~/.bashrc" file:
-          source /path/to/completion.sh
-
-      Dynamic installation
-      --------------------
-
-      Add this to the end of your shell configuration file (e.g. "~/.bashrc"):
-
-          eval "$(/var/www/work/t3c/core-main/core-main/bin/typo3 completion bash)"
-
-Usually, this completion will be set within the project's specific environment (for example
-in DDEV or Docker containers), because commands can vary if multiple projects are involved.
+    eval "$(/var/www/html/vendor/bin/typo3 completion bash)"
 
 Impact
 ======
 
-Improve the experience using the `typo3` CLI command dispatcher script, without
-impacting current usages. Also, this allows further improvements on existing commands or
-new commands by declaring completion behaviour for command options.
+The :shell:`typo3` CLI dispatcher now supports shell auto-completion, improving
+the user experience without affecting existing command usage.
+This also lays the foundation for further enhancements such as improved
+auto-completion for command options and arguments.
 
-The following commands are using autocompletion in (some of) their arguments as well:
+The following existing commands already provide completion for their arguments:
 
-* `redirects:cleanup`
-* `redirects:checkintegrity`
-
+*   :shell:`redirects:cleanup`
+*   :shell:`redirects:checkintegrity`
 
 Example
 -------
 
+The following example shows how to add auto-completion support to a custom
+Symfony console command:
+
 ..  code-block:: php
-    :caption: GreetCommand.php
+    :caption: EXT:my_extension/Classes/Command/GreetCommand.php
 
     <?php
 
-    namespace Vendor\MyPackage\Command;
+    declare(strict_types=1);
 
+    namespace MyVendor\MyExtension\Command;
+
+    use Symfony\Component\Console\Attribute\AsCommand;
     use Symfony\Component\Console\Command\Command;
     use Symfony\Component\Console\Completion\CompletionInput;
     use Symfony\Component\Console\Input\InputArgument;
 
+    #[AsCommand(
+        name: 'myextension:greet',
+    )]
     class GreetCommand extends Command
     {
         protected function configure(): void
@@ -123,18 +121,16 @@ Example
                     'Who do you want to greet (separate multiple names with a space)?',
                     null,
                     function (CompletionInput $input): array {
-                        // the value the user already typed, e.g. when typing "myext:greet Fa"
-                        // before pressing Tab, this will contain "Fa"
+                        // Value already typed by the user, e.g. "myextension:greet Fa"
+                        // before pressing Tab — this will contain "Fa"
                         $currentValue = $input->getCompletionValue();
 
-                        // get the list of username names from somewhere (e.g. the database)
-                        // you may use $currentValue to filter down the names
+                        // Example of available usernames
                         $availableUsernames = ['jane', 'jon'];
 
                         return $availableUsernames;
                     }
-                )
-            ;
+                );
         }
     }
 

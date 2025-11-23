@@ -11,30 +11,30 @@ See :issue:`106118`
 Description
 ===========
 
-Public property :php:`TYPO3\CMS\Core\DataHandling\DataHandler->storeLogMessages`
-has been removed without substitution. It should not be used by extensions anymore.
-
+The public property
+:php:`\TYPO3\CMS\Core\DataHandling\DataHandler->storeLogMessages` has
+been removed without substitution. It should no longer be used by extensions.
 
 Impact
 ======
 
-Setting or reading the property in extension raises a PHP warning level error.
-
+Setting or reading the property in an extension will now raise a PHP warning-
+level error.
 
 Affected installations
 ======================
 
-Instances with extensions dealing with the property. This should be a very rare
-use case, no TER extension was affected when looking this up. The extension scanner
-is configured to find usages as weak match.
-
+Instances with extensions that access this property are affected. This should
+be a very rare use case. No TYPO3 Extension Repository (TER) extensions were
+affected during verification. The extension scanner is configured to find
+usages as a weak match.
 
 Migration
 =========
 
-The property has been removed, setting or reading it from :php:`DataHandler` instances
-should be removed. The :php:`DataHandler->log()` method now always writes given
-:php:`$details` to table :sql:`sys_log`.
-
+The property has been removed. Any code setting or reading it from
+:php:`\TYPO3\CMS\Core\DataHandling\DataHandler` instances should be removed. The
+:php:`DataHandler->log()` method now always writes the given :php:`$details`
+to the :sql:`sys_log` table.
 
 ..  index:: PHP-API, FullyScanned, ext:core

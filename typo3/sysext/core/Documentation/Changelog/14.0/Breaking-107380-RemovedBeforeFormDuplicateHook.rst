@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _breaking-107380-1756896552:
+..  _breaking-107380-1756896552:
 
 ======================================================
 Breaking: #107380 - Removed "beforeFormDuplicate" hook
@@ -11,30 +11,32 @@ See :issue:`107380`
 Description
 ===========
 
-The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDuplicate']`
-has been removed in favor of the more powerful PSR-14 :php:`TYPO3\CMS\Form\Event\BeforeFormIsDuplicatedEvent`.
-
+The hook
+:php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDuplicate']`
+has been removed in favor of the more powerful PSR-14 event
+:php-short:`\TYPO3\CMS\Form\Event\BeforeFormIsDuplicatedEvent`.
 
 Impact
 ======
 
-Any hook implementation registered is not executed anymore in TYPO3 v14.0+.
-
+Implementations of the removed hook are no longer executed in TYPO3 v14.0
+and later.
 
 Affected installations
 ======================
 
-TYPO3 installations with custom extensions using this hook. The extensions
-scanner reports any usage as weak match.
-
+TYPO3 installations with custom extensions using this hook. The extension
+scanner reports any usage as a weak match.
 
 Migration
 =========
 
-The hook is removed without deprecation in order to allow extensions
-to work with TYPO3 v13 (using the hook) and v14+ (using the new event)
-when implementing the event as well without any further deprecations.
-Use the :ref:`PSR-14 Event <feature-107380-1756896691>` to allow greater
-influence in the functionality.
+The hook has been removed without deprecation to allow extensions to remain
+compatible with both TYPO3 v13 (using the hook) and TYPO3 v14+ (using the new
+event). When implementing the event as well, no further deprecations will
+occur.
 
-.. index:: Backend, ext:form, FullyScanned
+Use the :ref:`PSR-14 Event <feature-107380-1756896691>` to achieve the same
+or greater functionality.
+
+..  index:: Backend, ext:form, FullyScanned

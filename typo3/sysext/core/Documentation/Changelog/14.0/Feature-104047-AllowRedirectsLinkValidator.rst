@@ -12,20 +12,21 @@ Description
 ===========
 
 A new Page TSconfig option
-:typoscript:`mod.linkvalidator.linktypesConfig.external.allowRedirects`
-has been added to the link validator to report HTTP redirects
-with external links as problems.
+:tsconfig:`mod.linkvalidator.linktypesConfig.external.allowRedirects`
+has been introduced to the link validator. It allows redirects
+(HTTP 3xx responses) to be reported as problems when validating external links.
 
-.. code-block:: typoscript
+..  code-block:: typoscript
+    :caption: EXT:my_extension/Configuration/page.tsconfig
 
     mod.linkvalidator.linktypesConfig.external.allowRedirects = 0
 
-Redirects are not reported as problems by default.
+By default, redirects are *not* reported as problems.
 
 Impact
 ======
 
-Integrators can now configure HTTP redirects of external links
-to be reported as problems via Page TSconfig.
+Integrators can now configure whether HTTP redirects of external links
+should be reported as problems in the Link Validator via page TSconfig.
 
 .. index:: Backend, TSConfig, ext:linkvalidator

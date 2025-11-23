@@ -11,31 +11,33 @@ See :issue:`107322`
 Description
 ===========
 
-A new PSR-14 event :php:`\TYPO3\CMS\Core\Configuration\Event\AfterRichtextConfigurationPreparedEvent`
+A new PSR-14 event
+:php-short:`\TYPO3\CMS\Core\Configuration\Event\AfterRichtextConfigurationPreparedEvent`
 has been added.
 
 To modify the configuration, the following methods are available:
 
--   :php:`setConfiguration()`
--   :php:`getConfiguration()`
+*   :php:`setConfiguration()`
+*   :php:`getConfiguration()`
 
 Example
--------
+=======
 
 The corresponding event listener class:
 
 ..  code-block:: php
+    :caption: Example event listener class
 
     <?php
 
-    namespace MyVendor\MyPackage\Configuration\EventListener;
+    namespace MyVendor\MyExtension\Configuration\EventListener;
 
     use TYPO3\CMS\Core\Configuration\Event\AfterRichtextConfigurationPreparedEvent;
     use TYPO3\CMS\Core\Attribute\AsEventListener;
 
     final class AfterRichtextConfigurationPreparedEventListener
     {
-        #[AsEventListener('my-package/configuration/modify-richtext-configuration')]
+        #[AsEventListener('my_extension/configuration/modify-rich-text-configuration')]
         public function __invoke(AfterRichtextConfigurationPreparedEvent $event): void
         {
             $config = $event->getConfiguration();
@@ -44,10 +46,10 @@ The corresponding event listener class:
         }
     }
 
-
 Impact
 ======
 
-It is now possible to modify the richtext configuration after it has been fetched and prepared.
+It is now possible to modify the rich-text configuration after it has been
+fetched and prepared.
 
 ..  index:: PHP-API, TCA, ext:core

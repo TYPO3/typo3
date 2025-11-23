@@ -8,29 +8,29 @@ Feature: #107047 - FlexForm enhancements: Direct plugin registration and raw TCA
 
 See :issue:`107047`
 
-FlexForm Direct Plugin Registration
-====================================
+FlexForm direct plugin registration
+===================================
 
 The methods :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin()`
-and :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin()`
-have been extended to accept a FlexForm definition directly via an additional
-:php:`$flexForm` argument.
+and :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin()` have been
+extended to accept a FlexForm definition directly via an additional :php:`$flexForm`
+argument.
 
-This new argument allows extensions to provide the FlexForm data
-structure when registering a plugin.
+This new argument allows extensions to provide the FlexForm data structure when
+registering a plugin. The FlexForm can either be a reference to a FlexForm
+XML file (for example, `FILE:EXT:my_extension/Configuration/FlexForm.xml`) or
+the XML content itself.
 
-The FlexForm can either be a reference to a FlexForm XML file
-(e.g., `FILE:EXT:myext/Configuration/FlexForm.xml`) or the XML content itself.
-
-This simplifies the configuration and avoids the need to define the
-FlexForm separately in TCA.
+This simplifies configuration and avoids the need to define the FlexForm separately
+in TCA.
 
 Examples
 ========
 
-**Direct FlexForm Plugin Registration**
+**Direct FlexForm plugin registration**
 
-.. code-block:: php
+..  code-block:: php
+    :caption: EXT:my_extension/Configuration/TCA/Overrides/tt_content.php
 
     ExtensionUtility::registerPlugin(
         'MyExtension',
@@ -39,12 +39,13 @@ Examples
         'my-extension-icon',
         'plugins',
         'Plugin description',
-        'FILE:EXT:myext/Configuration/FlexForm.xml'
+        'FILE:EXT:my_extension/Configuration/FlexForm.xml'
     );
 
 Alternatively, using :php:`addPlugin()` when not using Extbase:
 
-.. code-block:: php
+..  code-block:: php
+    :caption: EXT:my_extension/Configuration/TCA/Overrides/tt_content.php
 
     ExtensionManagementUtility::addPlugin(
         [
@@ -52,45 +53,51 @@ Alternatively, using :php:`addPlugin()` when not using Extbase:
             'my_plugin',
             'my-extension-icon'
         ],
-        'FILE:EXT:myext/Configuration/FlexForm.xml'
+        'FILE:EXT:my_extension/Configuration/FlexForm.xml'
     );
 
 Internally, this adds the FlexForm definition to the `ds` option of the plugin
-via the `columnsOverrides` configuration and also adds the `pi_flexform` field
-to the `showitem` list. For more information on this, check :ref:`breaking-107047-1751982363`,
-which describes the migration of the `ds` option from multi-entry to single-entry.
+via the :php:`columnsOverrides` configuration and also adds the `pi_flexform`
+field to the `showitem` list. For more information, see
+:ref:`breaking-107047-1751982363`, which describes the migration of the `ds`
+option from multi-entry to single-entry.
 
-FlexFormTools Schema Parameter Requirement
-===========================================
+FlexFormTools schema parameter requirement
+==========================================
 
-The :php:`FlexFormTools` service has been fundamentally changed to eliminate
-its previous dependency on :php:`$GLOBALS['TCA']`, which caused architectural
-issues.
+The service :php-short:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools`
+has been refactored to remove its dependency on :php:`$GLOBALS['TCA']`, which caused
+architectural issues.
 
-The following methods now support an explicit :php:`$schema` parameter
-that accepts either a TcaSchema object or raw TCA configuration array:
+The following methods now support an explicit :php:`$schema` parameter that accepts
+either a :php-short:`\TYPO3\CMS\Core\Schema\TcaSchema` object or a raw TCA
+configuration array:
 
-* :php:`getDataStructureIdentifier()`
-* :php:`parseDataStructureByIdentifier()`
-* :php:`cleanFlexFormXML()`
+*   :php:`getDataStructureIdentifier()`
+*   :php:`parseDataStructureByIdentifier()`
+*   :php:`cleanFlexFormXML()`
 
 Previously, these methods had no schema parameter and relied on
-:php:`$GLOBALS['TCA']` internally, which was problematic for schema
-building processes.
+:php:`$GLOBALS['TCA']` internally, which was problematic during schema building.
 
-Calling code must now explicitly provide the schema data, either as:
+Calling code must now explicitly provide schema data, either as:
 
-- A resolved TcaSchema object (for normal application usage)
-- A raw TCA configuration array (for schema building contexts)
+*   A resolved :php-short:`\TYPO3\CMS\Core\Schema\TcaSchema` object (for normal usage)
+*   A raw TCA configuration array (for schema building contexts)
 
 This architectural improvement eliminates circular dependencies and allows
-:php:`FlexFormTools` to be used during schema building processes where TCA
-Schema objects are not yet available, resolving issues in components like the
-:php:`RelationMapBuilder`.
+:php-short:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools` to be used
+during schema building processes where TCA Schema
+objects are not yet available, resolving issues in components such as the
+:php-short:`\TYPO3\CMS\Core\Schema\RelationMapBuilder`.
 
 **FlexFormTools with TCA Schema**
 
-.. code-block:: php
+..  code-block:: php
+    :caption: Example using TCA Schema
+
+    use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+    use TYPO3\CMS\Core\Utility\GeneralUtility;
 
     $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
 
@@ -106,7 +113,11 @@ Schema objects are not yet available, resolving issues in components like the
 
 **FlexFormTools with raw TCA array**
 
-.. code-block:: php
+..  code-block:: php
+    :caption: Example using raw TCA configuration
+
+    use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+    use TYPO3\CMS\Core\Utility\GeneralUtility;
 
     $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
 
@@ -122,7 +133,11 @@ Schema objects are not yet available, resolving issues in components like the
 
 **Schema building context**
 
-.. code-block:: php
+..  code-block:: php
+    :caption: Example usage in RelationMapBuilder
+
+    use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+    use TYPO3\CMS\Core\Utility\GeneralUtility;
 
     // In RelationMapBuilder - previously not possible
     $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
@@ -133,7 +148,7 @@ Schema objects are not yet available, resolving issues in components like the
                 // Can now use raw TCA during schema building
                 $dataStructure = $flexFormTools->parseDataStructureByIdentifier(
                     $identifier,
-                    $tableConfig  // Raw TCA array
+                    $tableConfig // Raw TCA array
                 );
             }
         }
@@ -142,27 +157,25 @@ Schema objects are not yet available, resolving issues in components like the
 Impact
 ======
 
-**Direct FlexForm Plugin Registration**
+**Direct FlexForm plugin registration**
 
-This change allows simplifying configuration of plugins and corresponding
-FlexForms, since they can directly be added on registration. This makes
-e.g. the usual `ExtensionManagementUtility::addPiFlexFormValue()` call superfluous.
-Therefore this method has been deprecated, see:
-:ref:`deprecation-107047-1751984220`.
+This enhancement simplifies plugin configuration and FlexForm integration, as
+FlexForms can now be registered directly with the plugin. The call
+:php:`ExtensionManagementUtility::addPiFlexFormValue()` is no longer required.
+This method has been deprecated; see :ref:`deprecation-107047-1751984220`.
 
-**FlexFormTools Schema support**
+**FlexFormTools schema support**
 
 The service now automatically detects the input type and uses the appropriate
-resolution strategy for both TCA Schema objects and raw TCA arrays. It does
-no longer rely on :php:`$GLOBALS['TCA']`. This allows to directly influence
-the service. It furthermore allows usage during schema building where no
-TCA Schema is available.
+resolution strategy for both TCA Schema objects and raw TCA arrays. It no longer
+relies on :php:`$GLOBALS['TCA']`, allowing direct control over the service and
+making it usable during schema building where no TCA Schema is available.
 
-**Technical Details**
+**Technical details**
 
-The service uses PHP's union types (:php:`array|TcaSchema`) and automatically
-routes to the appropriate internal methods. Both input types produce identical
-normalized output, ensuring that consumers of the :php:`FlexFormTools` service
-receive consistent data structures regardless of the used input type.
+The service uses PHP union types (:php:`array|TcaSchema`) and automatically routes
+to the appropriate internal methods. Both input types produce identical normalized
+output, ensuring consistent data structures for all
+:php-short:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools` consumers.
 
 ..  index:: Backend, FlexForm, TCA, ext:core

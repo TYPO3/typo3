@@ -20,30 +20,28 @@ XLIFF (XML Localization Interchange File Format) is an XML-based format for
 storing translatable content. While TYPO3 has traditionally used XLIFF 1.2,
 the XLIFF 2.x standard brings improvements in structure and simplification.
 
-
-Version Detection
+Version detection
 -----------------
 
 The XLIFF loader automatically detects the file version by examining:
 
-1. The XML namespace (``urn:oasis:names:tc:xliff:document:2.0`` for XLIFF 2.0)
-2. The ``version`` attribute in the root element
+1. The XML namespace (`urn:oasis:names:tc:xliff:document:2.0` for XLIFF 2.0)
+2. The `version` attribute in the root element
 
 No configuration or manual intervention is required - both formats work
 transparently side by side.
 
-
-Key Differences Between XLIFF 1.2 and XLIFF 2.x
-------------------------------------------------
+Key differences between XLIFF 1.2 and XLIFF 2.x
+-----------------------------------------------
 
 For integrators working with translation files, here are the main structural
 differences:
 
-**XLIFF 1.2 Structure:**
+**XLIFF 1.2 structure:**
 
-*   Uses ``<trans-unit>`` elements directly within ``<body>``
-*   Translation approval via ``approved`` attribute (``yes``/``no``)
-*   Namespace: ``urn:oasis:names:tc:xliff:document:1.2``
+*   Uses `<trans-unit>` elements directly within `<body>`
+*   Translation approval via `approved` attribute (`yes`/`no`)
+*   Namespace: `urn:oasis:names:tc:xliff:document:1.2`
 
 Example XLIFF 1.2:
 
@@ -61,13 +59,13 @@ Example XLIFF 1.2:
         </file>
     </xliff>
 
-**XLIFF 2.0 Structure:**
+**XLIFF 2.0 structure:**
 
-*   Uses ``<unit>`` elements containing ``<segment>`` elements
-*   Translation state via ``state`` attribute on ``<segment>`` (``initial``,
-    ``translated``, ``reviewed``, ``final``)
+*   Uses `<unit>` elements containing `<segment>` elements
+*   Translation state via `state` attribute on `<segment>` (`initial`,
+    `translated`, `reviewed`, `final`)
 *   More granular and modern structure
-*   Namespace: ``urn:oasis:names:tc:xliff:document:2.0``
+*   Namespace: `urn:oasis:names:tc:xliff:document:2.0`
 
 Example XLIFF 2.0:
 
@@ -86,19 +84,17 @@ Example XLIFF 2.0:
         </file>
     </xliff>
 
+Translation approval handling
+-----------------------------
 
-Translation Approval Handling
-------------------------------
-
-TYPO3's ``requireApprovedLocalizations`` configuration is respected for both
+TYPO3's `requireApprovedLocalizations` configuration is respected for both
 formats:
 
-*   **XLIFF 1.2**: Translations with ``approved="no"`` are skipped when
-    approval is required
-*   **XLIFF 2.x**: Translations with ``state="initial"`` or ``state="translated"``
-    are treated as not approved, while ``state="final"`` and ``state="reviewed"``
+*   **XLIFF 1.2**: Translations with `approved="no"` are skipped when approval
+    is required
+*   **XLIFF 2.x**: Translations with `state="initial"` or `state="translated"`
+    are treated as not approved, while `state="final"` and `state="reviewed"`
     are considered approved
-
 
 Impact
 ======

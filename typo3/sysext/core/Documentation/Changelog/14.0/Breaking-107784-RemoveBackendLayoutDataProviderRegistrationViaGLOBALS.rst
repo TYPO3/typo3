@@ -2,51 +2,57 @@
 
 ..  _breaking-107784-1760947244:
 
-========================================================================================
-Breaking: #107784 - Remove backend layout data provider registration via :php:`$GLOBALS`
-========================================================================================
+===================================================================================
+Breaking: #107784 - Remove backend layout data provider registration via `$GLOBALS`
+===================================================================================
 
 See :issue:`107784`
 
 Description
 ===========
 
-The possibility to register backend layout data provider via
+The possibility to register backend layout data providers via
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider']`
-has been replaced by autoconfiguration via the :yaml:`page_layout.data_provider`
-service tag. The tag is automatically added based on the implemented
-:php:`DataProviderInterface`. However, manual configuration in the
-:file:`Services.yaml` is still possible, especially in case no
-autoconfiguration is enabled. Developers however need to adapt existing
-implementations by adding the new method :php:`getIdentifier()`, as
-outlined in the appropriate :ref:`feature description <feature-107784-1760946896>`.
+has been replaced by autoconfiguration using the service tag
+:yaml:`page_layout.data_provider`.
 
-In addition, the possibility to dynamically add backend layout data providers to
-the global :php:`DataProviderCollection` by using their :php:`add()` method has
-been removed. Developers are advised to make data providers available in the
-service container as described above.
+The tag is automatically added when a class implements
+:php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderInterface`. Manual
+configuration via :file:`Services.yaml` remains possible, especially when
+autoconfiguration is disabled.
 
+Developers need to adapt existing implementations by adding the new method
+:php:`getIdentifier()`, as outlined in
+:ref:`feature-107784-1760946896`.
+
+Additionally, the possibility to dynamically add backend layout data providers
+to the global :php:`DataProviderCollection` via its :php:`add()` method has been
+removed. Developers should register their data providers as service definitions
+in the container as described above.
 
 Impact
 ======
 
-Utilizing the :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider']`
-array won't have any effect anymore in TYPO3 v14.0+.
-
+Using the global array
+:php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider']`
+to register backend layout data providers has no effect in TYPO3 v14.0 and
+later.
 
 Affected installations
 ======================
 
-All installations where :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider']`
-is used for backend layout data provider registration are affected. This
-registration is normally done in an :file:`ext_localconf.php` file. The
-extension scanner will report any usages.
+All installations that use
+:php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider']`
+for backend layout data provider registration are affected.
 
+This registration is typically done in an :file:`ext_localconf.php` file.
+
+The extension scanner will report such usages.
 
 Migration
 =========
 
-Migrate existing registrations to the new autoconfigured-based approach.
+Migrate existing registrations to the new autoconfiguration-based approach.
 
 **Before:**
 
@@ -75,10 +81,10 @@ Migrate existing registrations to the new autoconfigured-based approach.
         }
     }
 
-If you need to support multiple TYPO3 Core versions at once, make sure to
-implement both registration methods (via :php:`$GLOBALS` and using
-autoconfiguration). Make sure to implement the new method
-:php:`getIdentifier()`, which is backwards compatible (even if not used in
-older TYPO3 versions).
+If you need to support multiple TYPO3 versions, you can implement both
+registration methods (via :php:`$GLOBALS` and via autoconfiguration).
+
+Ensure that :php:`getIdentifier()` is implemented, which is backward compatible
+with older TYPO3 versions even if unused.
 
 ..  index:: Backend, PHP-API, FullyScanned, ext:backend

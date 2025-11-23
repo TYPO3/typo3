@@ -3,7 +3,7 @@
 ..  _breaking-107578-1759326054:
 
 =======================================================================
-Breaking: #107578 - Prepare ext:adminpanel DataProviderInterface change
+Breaking: #107578 - Prepare EXT:adminpanel DataProviderInterface change
 =======================================================================
 
 See :issue:`107578`
@@ -11,57 +11,81 @@ See :issue:`107578`
 Description
 ===========
 
-The `adminpanel` extension provides the interface :php:`DataProviderInterface`. It can
-be used by extensions that extend the admin panel with further modules and allows storing
-additional in the admin panel specific request related store.
+The :composer:`typo3/cms-adminpanel` system extension provides the interface
+:php:`\TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface`. It can be used by
+extensions that extend the Admin Panel with custom modules and allows storing
+additional request-related data in the Admin Panel–specific data store.
 
-The signature of the main interface method has been changed.
+The signature of the interface method :php:`getDataToStore()` has changed.
 
 Impact
 ======
 
-Extension authors may benefit from the additional argument that is hand over
-with TYPO3 v14.
-
+Extension authors may benefit from the additional argument passed with TYPO3
+v14, but implementations must be adjusted accordingly.
 
 Affected installations
 ======================
 
-Most instances are not affected by this change since there aren't many known extensions
-that add features to the admin panel extension. Instances with classes implementing
-interface :php:`TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface` are affected.
-
+Most installations are not affected, as few extensions extend the Admin Panel.
+Instances with classes implementing
+:php-short:`\TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface` are affected.
 
 Migration
 =========
 
-The interface until TYPO3 v13:
+**Interface until TYPO3 v13:**
 
-.. code-block:: php
+..  code-block:: php
 
     namespace TYPO3\CMS\Adminpanel\ModuleApi;
 
+    use Psr\Http\Message\ServerRequestInterface;
+    use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
+
     interface DataProviderInterface
     {
-        public function getDataToStore(ServerRequestInterface $request): ModuleData;
+        public function getDataToStore(
+            ServerRequestInterface $request
+        ): ModuleData;
     }
 
-Method :php:`getDataToStore()` is called by the admin panel after the :php:`Response` has been
-created by the TYPO3 core. The interface has been adapted with TYPO3 v14 to receive
-the response from the calling admin panel code:
+The :php:`getDataToStore()` method is called by the Admin Panel after the
+:php:`Response` has been created by the TYPO3 Core.
+Starting with TYPO3 v14, the method receives the :php:`ResponseInterface`
+as an additional argument:
 
-.. code-block:: php
+..  code-block:: php
 
-    public function getDataToStore(ServerRequestInterface $request, ResponseInterface $response): ModuleData;
+    use Psr\Http\Message\ResponseInterface;
+    use Psr\Http\Message\ServerRequestInterface;
+    use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
 
-Extension authors aiming for compatibility with TYPO3 v13 and v14 in the same extension version
-can modify their consumers like this:
+    public function getDataToStore(
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ): ModuleData;
 
-.. code-block:: php
+**Compatibility example for TYPO3 v13 and v14:**
 
-    public function getDataToStore(ServerRequestInterface $request, ?ResponseInterface $response = null): ModuleData
+..  code-block:: php
 
-TYPO3 v13 does not hand over the second argument, so it must be nullable and extensions should not expect to
-receive an instance of :php:`ResponseInterface`. TYPO3 v14 however does hand over the instance.
+    use Psr\Http\Message\ResponseInterface;
+    use Psr\Http\Message\ServerRequestInterface;
+    use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
+
+    public function getDataToStore(
+        ServerRequestInterface $request,
+        ?ResponseInterface $response = null
+    ): ModuleData {
+        // TYPO3 v13: $response is null
+        // TYPO3 v14: $response is an instance of ResponseInterface
+    }
+
+TYPO3 v13 does not pass the second argument, so it must be nullable, and
+extensions should not expect to receive an instance of
+:php-short:`\Psr\Http\Message\ResponseInterface`.
+
+TYPO3 v14, however, provides the response instance automatically.
 
 ..  index:: PHP-API, NotScanned, ext:adminpanel

@@ -1,4 +1,5 @@
 ..  include:: /Includes.rst.txt
+
 ..  _breaking-107823-1730000000:
 
 ================================================================================
@@ -17,72 +18,84 @@ architecture to enhance type safety and developer experience.
 Impact
 ======
 
-Extensions that implement or extend backend template components need to verify
-their type declarations and update usage of changed methods.
+Extensions that implement or extend backend template components must verify
+their type declarations and update any usage of changed methods.
 
 New ComponentInterface
-------------------------
+----------------------
 
-A new :php:`ComponentInterface` has been introduced as the parent interface
-for both :php:`ButtonInterface` and :php:`DropDownItemInterface`. This unifies
-the common contract for all renderable backend components.
+A new :php:`\TYPO3\CMS\Backend\Template\Components\ComponentInterface`
+has been introduced as the parent interface for both
+:php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonInterface` and
+:php-short:`\TYPO3\CMS\Backend\Template\Components\DropDownItemInterface`.
+This unifies the common contract for all renderable backend components.
 
-Both interfaces now extend :php:`ComponentInterface` which defines:
+Both interfaces now extend
+:php-short:`\TYPO3\CMS\Backend\Template\Components\ComponentInterface`,
+which defines:
 
-- :php:`isValid(): bool`
-- :php:`getType(): string`
-- :php:`render(): string`
+*   :php:`isValid(): bool`
+*   :php:`getType(): string`
+*   :php:`render(): string`
 
-Custom implementations of :php:`ButtonInterface` or :php:`DropDownItemInterface`
-will cause a :php:`TypeError` if these return types are missing.
+Custom implementations of :php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonInterface`
+or :php-short:`\TYPO3\CMS\Backend\Template\Components\DropDownItemInterface` will
+now trigger a :php:`\TypeError` if these return types are missing.
 
 PositionInterface enforced
----------------------------
+--------------------------
 
-The :php:`PositionInterface` now enforces strict type hints:
+The :php:`\TYPO3\CMS\Backend\Template\Components\PositionInterface` now enforces
+strict type hints:
 
-- :php:`getPosition(): string`
-- :php:`getGroup(): int`
+*   :php:`getPosition(): string`
+*   :php:`getGroup(): int`
 
 This interface allows buttons to define their own fixed position and group,
-which will automatically override the position/group parameters passed to
+which automatically override the position and group parameters passed to
 :php:`ButtonBar::addButton()`.
 
 Icon nullability
------------------
+----------------
 
 Icons are now consistently nullable across all button types. The
-:php:`AbstractButton::$icon` property and related getter/setter methods now
-use :php:`?Icon` instead of :php:`Icon`.
+:php:`AbstractButton::$icon` property and related getter/setter methods now use
+:php:`?Icon` instead of :php:`Icon`.
 
-This affects classes extending :php:`AbstractButton` (:php:`LinkButton`,
-:php:`InputButton`, :php:`SplitButton`).
+This affects classes extending
+:php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\AbstractButton`, including
+:php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton`,
+:php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\InputButton`, and
+:php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\SplitButton`.
 
 ..  note::
     While icons are technically optional at the type level, validation methods
     may still require icons for buttons to be considered valid.
 
 Method signature changes
--------------------------
+------------------------
 
 Several methods now have stricter parameter types or modified signatures:
 
-- :php:`MenuItem::isValid()` and :php:`Menu::isValid()` no longer accept parameters
-- :php:`AbstractDropDownItem::render()` now declares :php:`string` return type
-- Various setter methods now require proper type hints for their parameters
+*   :php:`MenuItem::isValid()` and :php:`Menu::isValid()` no longer accept
+    parameters
+*   :php:`AbstractDropDownItem::render()` now declares a :php:`string` return
+    type
+*   Various setter methods now require strict type hints for their parameters
 
 Return type consistency
-------------------------
+-----------------------
 
-Abstract classes use :php:`static` return types for better inheritance support,
-while concrete implementations may use :php:`self` or :php:`static` depending
-on extensibility requirements.
+Abstract classes now use :php:`static` return types for better inheritance
+support, while concrete implementations may use :php:`self` or :php:`static`
+depending on extensibility requirements.
 
 SplitButton API improvement
-----------------------------
+---------------------------
 
 The :php:`SplitButton::getButton()` method has been replaced with
-:php:`getItems()` which returns a type-safe :php:`SplitButtonItems` DTO
+:php:`getItems()`, which returns a type-safe
+:php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\SplitButtonItems` DTO
 instead of an untyped array.
 
 **Old (removed):**
@@ -99,26 +112,36 @@ instead of an untyped array.
 
 The :php:`SplitButtonItems` DTO provides:
 
-- :php:`public readonly AbstractButton $primary` - The primary action button
-- :php:`public readonly array $options` - Array of option buttons
+*   :php:`public readonly AbstractButton $primary` - The primary action button
+*   :php:`public readonly array $options` - Array of option buttons
 
 This change improves type safety and prevents runtime errors from accessing
 non-existent array keys.
 
-Affected Migration
-==================
+Affected installations
+======================
+
+All TYPO3 instances with custom backend components, such as buttons, menus, or
+dropdown items, that extend or implement the affected interfaces are impacted.
+
+Migration
+=========
 
 Extension authors should:
 
-1. **Verify custom button implementations** have correct return types on interface methods
-2. **Check custom classes extending abstract buttons** use appropriate return types
-3. **Update isValid() calls** on MenuItem and Menu objects (remove the parameter)
-4. **Handle nullable icons** when working with button getIcon() methods
+1.  **Verify custom button implementations** have correct return types on
+    interface methods.
+2.  **Check custom classes extending abstract buttons** use proper strict types.
+3.  **Update `isValid()` calls** on :php:`MenuItem` and :php:`Menu` objects
+    (remove the parameter).
+4.  **Handle nullable icons** when working with :php:`getIcon()` methods.
 
-Example: Implementing ButtonInterface
---------------------------------------
+Example: implementing ButtonInterface
+-------------------------------------
 
 ..  code-block:: php
+
+    use TYPO3\CMS\Backend\Template\Components\ButtonInterface;
 
     // Before
     class CustomButton implements ButtonInterface {
@@ -127,6 +150,10 @@ Example: Implementing ButtonInterface
         public function getType() { ... }
     }
 
+..  code-block:: php
+
+    use TYPO3\CMS\Backend\Template\Components\ButtonInterface;
+
     // After
     class CustomButton implements ButtonInterface {
         public function isValid(): bool { ... }
@@ -134,18 +161,20 @@ Example: Implementing ButtonInterface
         public function getType(): string { return static::class; }
     }
 
-Example: Working with MenuItem/Menu
-------------------------------------
+Example: working with MenuItem/Menu
+-----------------------------------
 
 ..  code-block:: php
 
     // Before
     if ($menuItem->isValid($menuItem)) { ... }
 
+..  code-block:: php
+
     // After
     if ($menuItem->isValid()) { ... }
 
-Example: Nullable icons
+Example: nullable icons
 -----------------------
 
 ..  code-block:: php
@@ -154,8 +183,8 @@ Example: Nullable icons
     $icon = $button->getIcon();  // Now returns ?Icon
     $html = $icon?->render() ?? '';
 
-Example: Using SplitButton with typed DTO
-------------------------------------------
+Example: using SplitButton with typed DTO
+-----------------------------------------
 
 If you were directly accessing the :php:`getButton()` method:
 
@@ -166,9 +195,11 @@ If you were directly accessing the :php:`getButton()` method:
     $primary = $items['primary'];  // Magic string key
     $options = $items['options'];  // Magic string key
 
+..  code-block:: php
+
     // After
     $items = $splitButton->getItems();
     $primary = $items->primary;  // Type-safe property access
     $options = $items->options;  // Type-safe property access
 
-.. index:: Backend, PHP-API, NotScanned, ext:backend
+..  index:: Backend, PHP-API, NotScanned, ext:backend

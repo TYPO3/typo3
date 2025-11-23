@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _feature-99459-1672857664:
+..  _feature-99459-1672857664:
 
 ================================================================
 Feature: #99459 - Respect record type while creating new records
@@ -11,36 +11,41 @@ See :issue:`99459`
 Description
 ===========
 
-The "Create new record" component in the backend, which is accessbile in
-the :guilabel:`Web > List` module, has been enhanced to automatically detect
-and display all available record types for tables that support sub-schemas
-(record types). This makes creating specific record types much easier and avoids
-the need to change the type in the editing form, as this often leads to invalid
-record state stored in the database.
+The "Create new record" component in the backend, which is accessible in the
+:guilabel:`Content > List` module, has been enhanced to automatically detect and
+display all available record types for tables that support sub-schemas
+(record types). This improvement simplifies creating specific record types and
+eliminates the need to change the type afterward in the editing form, which
+could previously lead to invalid record states being stored in the database.
 
-The interface now features automatic record type detection. Tables with multiple
-record types are automatically expanded to show all available types in a
-collapsible dropdown interface.
+The interface now features automatic record type detection. Tables with
+multiple record types are automatically expanded to show all available types
+in a collapsible dropdown interface.
 
-The options to create new pages now also shows the different page types
-(:php:`doktype`) as expandable options when creating new pages "inside" or "after".
+The options to create new pages now also show the different page types
+(:php:`doktype`) as expandable options when creating new pages "inside" or
+"after" an existing page.
 
 To disable direct creation of a specific record type, a new TCA option
-:php:`['creationOptions']['enableDirectRecordTypeCreation']` is available on
-a record types level:
+`['creationOptions']['enableDirectRecordTypeCreation']` is available at
+the record type level:
 
 ..  code-block:: php
+    :caption: EXT:my_extension/Configuration/TCA/Overrides/pages.php
+
+    use TYPO3\CMS\Core\Domain\Repository\PageRepository´;
 
     // Disable direct creation of shortcuts
-    $GLOBALS['TCA']['pages']['types'][(string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_SHORTCUT]['creationOptions']['enableDirectRecordTypeCreation'] = false;
+    $GLOBALS['TCA']['pages']['types'][(string)PageRepository::DOKTYPE_SHORTCUT]['creationOptions']['enableDirectRecordTypeCreation'] = false;
 
 Individual titles for each record type are automatically picked up from the
 type-specific :php:`title` configuration in the types section (see
 :doc:`Feature #108027 <Feature-108027-Type-SpecificCtrlPropertiesInTCATypes>`),
 falling back to the select item label if no type-specific title is defined.
 
-Additionally, the new PSR-14 :php:`ModifyNewRecordCreationLinksEvent` allows
-for complete customization of the creation links.
+Additionally, the new PSR-14 event
+:php:`\TYPO3\CMS\Backend\Controller\Event\ModifyNewRecordCreationLinksEvent`
+allows for complete customization of the creation links.
 
 Impact
 ======
@@ -49,28 +54,30 @@ For tables that support sub-schemas (multiple record types), the new record
 wizard automatically detects all available types and displays them in a
 collapsible interface. This includes:
 
-* All tables with TCA type fields (like :php:`sys_file_collection` or :php:`index_config`)
-* The :php:`pages` table with its different doktypes
-* Extension tables with custom record types
+*   All tables with TCA type fields (such as :php:`sys_file_collection`
+    or :php:`index_config`)
+*   The :php:`pages` table with its different :php:`doktype` values
+*   Extension tables with custom record types
 
-.. note::
+..  note::
 
-    The collapsible interface keeps the view clean while providing access
+    The collapsible interface keeps the view clear while providing access
     to all options. Icons and labels are automatically generated for each
-    record type based on TCA.
+    record type based on the TCA configuration.
 
 The :php:`ModifyNewRecordCreationLinksEvent` provides complete control over
-the creation links structure, allowing extensions to:
+the creation link structure, allowing extensions to:
 
-* Add custom record creation options
-* Modify existing groups and items
-* Override icons, labels, and URLs
-* Create entirely custom wizard interfaces
+*   Add custom record creation options
+*   Modify existing groups and items
+*   Override icons, labels, and URLs
+*   Create entirely custom wizard interfaces
 
 Data Structure
 ==============
 
-The event works with a nested array structure representing grouped creation links:
+The event works with a nested array structure representing grouped creation
+links:
 
 ..  code-block:: php
 
@@ -126,13 +133,13 @@ Event Listener Example
 
 The event provides access to:
 
-* :php:`$event->groupedCreationLinks` - The complete structure of creation links
-* :php:`$event->pageTS` - The current page's TSconfig array
-* :php:`$event->pageId` - The current page ID
-* :php:`$event->request` - The current server request object
+*   :php:`$event->groupedCreationLinks` - The complete structure of creation links
+*   :php:`$event->pageTS` - The current page's TSconfig array
+*   :php:`$event->pageId` - The current page ID
+*   :php:`$event->request` - The current server request object
 
 This allows for comprehensive customization while maintaining backward
-compatibility with existing customizations.
+compatibility with existing setups.
 
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/EventListener/CustomizeNewRecordCreationLinksEventListener.php
@@ -145,6 +152,7 @@ compatibility with existing customizations.
 
     use TYPO3\CMS\Backend\Controller\Event\ModifyNewRecordCreationLinksEvent;
     use TYPO3\CMS\Backend\Routing\UriBuilder;
+    use TYPO3\CMS\Core\Attribute\AsEventListener;
     use TYPO3\CMS\Core\Imaging\IconFactory;
     use TYPO3\CMS\Core\Imaging\IconSize;
 
@@ -177,7 +185,7 @@ compatibility with existing customizations.
             // Add the custom group to the existing structure
             $event->groupedCreationLinks['custom'] = $customGroup;
 
-            // Modify existing groups - for example, remove specific items
+            // Modify existing groups, for example, remove specific items
             if (isset($event->groupedCreationLinks['system']['items']['sys_template'])) {
                 unset($event->groupedCreationLinks['system']['items']['sys_template']);
             }
@@ -208,4 +216,4 @@ compatibility with existing customizations.
         }
     }
 
-.. index:: Backend, ext:backend
+..  index:: Backend, ext:backend

@@ -1,4 +1,5 @@
 ..  include:: /Includes.rst.txt
+
 ..  _breaking-107884-1730135000:
 
 =====================================================================
@@ -19,83 +20,94 @@ enables more structured manipulation of action buttons through PSR-14 events.
 
 The following components have been affected by this change:
 
-- :php:`\TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListRecordActionsEvent`
-- :php:`\TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent`
-- :php:`\TYPO3\CMS\Backend\RecordList\DatabaseRecordList::makeControl()`
+-   :php:`\TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListRecordActionsEvent`
+-   :php:`\TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent`
+-   :php:`\TYPO3\CMS\Backend\RecordList\DatabaseRecordList::makeControl()`
 
-Buttons can now be put into `ActionGroups` which are identified by PHP
-enum :php:`TYPO3\CMS\Backend\Template\Components\ActionGroup` and
-differentiate groups of buttons into a "primary" and "secondary" group.
+Buttons can now be placed into *ActionGroups*, which are identified by the
+PHP enum :php:`\TYPO3\CMS\Backend\Template\Components\ActionGroup` and
+distinguish between a "primary" and a "secondary" group.
 
-Also, :php:`TYPO3\CMS\Backend\Template\Components\ComponentGroup` enhances
-the ability to group multiple Button API Components into one data object
-and manage its state.
+In addition, :php:`\TYPO3\CMS\Backend\Template\Components\ComponentGroup`
+enhances the ability to group multiple Button API Components into a single data
+object and manage their state.
 
 Impact
 ======
 
-Extensions that listen to the :php:`ModifyRecordListRecordActionsEvent` or
-:php:`ProcessFileListActionsEvent` to modify record or file actions need to be
-updated. The events no longer work with HTML strings but with
-:php:`ComponentInterface` objects (see :issue:`107823`).
+Extensions that listen to the
+:php-short:`\TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListRecordActionsEvent`
+or :php-short:`\TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent` to modify
+record or file actions need to be updated.
 
-Extensions that directly call :php:`DatabaseRecordList::makeControl()` need to
-update the method signature as the `$table` parameter has been removed.
+The events no longer work with HTML strings but with
+:php-short:`\TYPO3\CMS\Backend\Template\Components\ComponentInterface` objects
+(see :issue:`107823`).
+
+Extensions that directly call :php:`DatabaseRecordList::makeControl()` must
+update their code, as the :php:`$table` parameter has been removed.
 
 ModifyRecordListRecordActionsEvent
 ----------------------------------
 
-The method :php:`setAction()` now requires a :php:`ComponentInterface` object,
-the method :php:`getAction()` now returns null or a :php:`ComponentInterface`
-object.
+The method :php:`setAction()` now requires a
+:php-short:`\TYPO3\CMS\Backend\Template\Components\ComponentInterface` object, and
+:php:`getAction()` now returns either `null` or a
+:php-short:`\TYPO3\CMS\Backend\Template\Components\ComponentInterface` instance.
 
-Similar behavior can be for ActionGroup and the :php:`$group` parameter which
-requires a :php:`ActionGroup` enum now and affects these methods:
+The following methods now expect an
+:php-short:`\TYPO3\CMS\Backend\Template\Components\ActionGroup` enum value as the
+:php:`$group` parameter:
 
-- :php:`hasAction()`
-- :php:`getAction()`
-- :php:`removeAction()`
-- :php:`getActionGroup()`
+-   :php:`hasAction()`
+-   :php:`getAction()`
+-   :php:`removeAction()`
+-   :php:`getActionGroup()`
 
-The method :php:`getRecord()` no longer returns a raw data array but an instance
-of the Record API.
+The method :php:`getRecord()` no longer returns a raw array but an instance of
+the Record API.
 
-A new method :php:`getRequest()` allows to access request context for the event.
+A new method :php:`getRequest()` has been added to access the current PSR-7
+request context.
 
 **Removed methods:**
 
-- :php:`getActions()`
-- :php:`setActions()`
-- :php:`getTable()`
+-   :php:`getActions()`
+-   :php:`setActions()`
+-   :php:`getTable()`
 
 ProcessFileListActionsEvent
 ---------------------------
 
-The :php:`ProcessFileListActionsEvent` has received identical changes to its
-API as the :php:`ModifyRecordListRecordActionsEvent`, allowing to modify
-items in both supported ActionGroups (primary and secondary). Several new API
-methods have been created:
+The :php:`\TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent` has received
+identical API changes to
+:php-short:`\TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListRecordActionsEvent`,
+allowing manipulation of items in both supported
+:php-short:`\TYPO3\CMS\Backend\Template\Components\ActionGroup` contexts
+(*primary* and *secondary*).
 
-- :php:`setAction()`
-- :php:`getAction()`
-- :php:`removeAction()`
-- :php:`moveActionTo()`
-- :php:`getActionGroup()`
-- :php:`getRequest()`
+**New methods:**
 
-Buttons can now also be internally relocated, or placed at specific before/after
-positions.
+-   :php:`setAction()`
+-   :php:`getAction()`
+-   :php:`removeAction()`
+-   :php:`moveActionTo()`
+-   :php:`getActionGroup()`
+-   :php:`getRequest()`
+
+Buttons can now also be repositioned or inserted at specific before/after
+locations within an action group.
 
 **Removed methods:**
 
-- :php:`getActionItems()`
-- :php:`setActionItems()`
+-   :php:`getActionItems()`
+-   :php:`setActionItems()`
 
-Affected Installations
+Affected installations
 ======================
 
-TYPO3 installations with custom PHP code that modifies these actions and buttons,
-or utilizes the mentioned PSR-14 events.
+TYPO3 installations with custom PHP code that modifies record or file list
+actions, or utilizes the mentioned PSR-14 events, are affected.
 
 Migration
 =========
@@ -111,48 +123,45 @@ DatabaseRecordList::makeControl()
     // After
     public function makeControl(RecordInterface $record): string
 
-The `$table` parameter has been removed as the table name can be obtained from
-the :php:`RecordInterface` via :php:`$record->getMainType()`.
+The :php:`$table` parameter has been removed, as the table name can now be
+retrieved from the :php:`RecordInterface` via
+:php:`$record->getMainType()`.
 
-Adjust code that calls this (internal) method to drop the `$table` argument:
+Adjust calls accordingly:
 
 ..  code-block:: diff
     :caption: EXT:my_extension/Classes/ViewHelper/MyControlViewHelper.php
 
-    // ...
-    public function render(): string
-    {
-        $row = BackendUtility::getRecord($table, $someRowUid);
-        $databaseRecordList = GeneralUtility::makeInstance(DatabaseRecordList::class);
-    -   return $databaseRecordList->makeControl($table, $row);
-    +   return $databaseRecordList->makeControl($row);
-    }
+     // ...
+     public function render(): string
+     {
+         $row = BackendUtility::getRecord($table, $someRowUid);
+         $databaseRecordList = GeneralUtility::makeInstance(DatabaseRecordList::class);
+    -    return $databaseRecordList->makeControl($table, $row);
+    +    return $databaseRecordList->makeControl($row);
+     }
 
 ProcessFileListActionsEvent
 ---------------------------
 
-Due to the changes in those events, event listeners now need to
-compose extra actions with the Button API and add each button (:php:`$action`)
-via the event's :php:`setAction($button)` method.
+Event listeners must now compose buttons via the Button API and add each
+component using the event’s :php:`setAction()` method.
 
-Internally, buttons are now put into the new :php:`ActionGroup` container
-which can be retrieved via :php:`TYPO3\CMS\Backend\Template\Components\ActionGroup::primary` or
-:php:`TYPO3\CMS\Backend\Template\Components\ActionGroup::secondary`.
+Internally, buttons are placed into an
+:php-short:`\TYPO3\CMS\Backend\Template\Components\ActionGroup` container,
+retrieved via :php:`ActionGroup::primary` or :php:`ActionGroup::secondary`.
 
-The replacement for the old event method :php:`getActionItems()` thus needs the
-context of which action group to retrieve, and can be done now via :php:`getActionGroup()`.
+The previous :php:`getActionItems()` logic is replaced with
+:php:`getActionGroup()` to fetch the corresponding button group.
 
-Instead of retrieving all items and modifying them, distinct event methods
-:php:`removeAction()`, :php:`moveActionTo()` and :php:`getAction()` are now available,
-identifying each action button with a string like the former array key index.
-
-Action buttons can now longer be submitted as raw HTML markup, but instead need to
-utilize either the Button API or the new ComponentFactory() (see :issue:`107823`) for a convenience
-layer on top of the Button API.
+Instead of manipulating raw HTML, you must now create components using the
+:php-short:`\TYPO3\CMS\Backend\Template\Components\ComponentFactory`.
 
 ..  code-block:: php
 
     // Before
+    use TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent;
+
     class ProcessFileListActionsEventListener
     {
         public function __invoke(ProcessFileListActionsEvent $event): void
@@ -164,22 +173,28 @@ layer on top of the Button API.
         }
     }
 
+..  code-block:: php
+
     // After
+    use TYPO3\CMS\Backend\Template\Components\ActionGroup;
+    use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
+    use TYPO3\CMS\Core\Imaging\IconFactory;
+    use TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent;
+
     class ProcessFileListActionsEventListener
     {
         public function __construct(
-            TYPO3\CMS\Backend\Template\Components\ComponentFactory $componentFactory,
-            TYPO3\CMS\Core\Imaging\IconFactory $iconFactory,
-        ) {
-        }
+            private readonly ComponentFactory $componentFactory,
+            private readonly IconFactory $iconFactory,
+        ) {}
 
         public function __invoke(ProcessFileListActionsEvent $event): void
         {
             $viewButton = $this->componentFactory->createGenericButton()
                 ->setIcon($this->iconFactory->getIcon('actions-view'))
-                ->setTitle('My title')
-            $event->setAction($viewButton, 'my-own-action', ActionGroup::primary);
+                ->setTitle('My title');
 
+            $event->setAction($viewButton, 'my-own-action', ActionGroup::primary);
             $event->removeAction('some-other-action', ActionGroup::primary);
         }
     }
@@ -187,37 +202,26 @@ layer on top of the Button API.
 ModifyRecordListRecordActionsEvent
 ----------------------------------
 
-As with the event above, event listeners now need to
-compose extra actions with the Button API and add each button (:php:`$action`)
-via the event's :php:`setAction($button)` method. Buttons can no longer
-contain raw HTML markup.
+This event now behaves identically to the file list event:
+actions must be created via the Button API and added as
+:php:`ComponentInterface` instances using :php:`setAction()`.
 
-The signature of the existing event method :php:`setAction()` has changed, so
-that :php:`$action` needs to be an instance of :php:`ComponentInterface`,
-which is retrieved via the :php:`ComponentFactory`, and no longer a string.
+The :php:`setActions()` and :php:`getActions()` methods are removed and must be
+replaced by distinct calls to :php:`setAction()` or use
+:php:`getActionGroup()` to access existing actions.
 
-Since (as mentioned above) the action groups are managed via the :php:`ActionGroup`
-container, the event methods :php:`hasAction()`, :php:`getAction()`, :php:`removeAction()`,
-:php:`getActionGroup()` now need to specify a :php:`$group` identifier like :php:`ActionGroup::primary`
-or :php:`ActionGroup::secondary` instead of a string.
+The :php:`getRecord()` method now returns a Record API object instead of an
+array.
+:php:`getTable()` can be replaced with
+:php:`getRecord()->getMainType()`.
 
-The ability to inject multiple items at once with :php:`setActions()` must be replaced
-with distinct calls to :php:`setAction()`.
-
-Retrieving all action items can no longer be done with :php:`getActions()` but must specifically
-access either the primary or secondary action group with :php:`getActionGroup()`.
-
-The :php:`getRecord()` method no longer returns an array with record data, but an object of the Record API.
-
-The :php:`getTable()` method can be replaced by retrieving the table name via :php:`getRecord()->getMainType()`
-thanks to easily accessing the Record API object.
-
-Modifying actions
-^^^^^^^^^^^^^^^^^
+**Modifying actions example:**
 
 ..  code-block:: php
 
     // Before
+    use TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListRecordActionsEvent;
+
     class ModifyRecordListRecordActionsEventListener
     {
         public function __invoke(ModifyRecordListRecordActionsEvent $event): void
@@ -232,25 +236,34 @@ Modifying actions
         }
     }
 
+..  code-block:: php
+
     // After
+    use TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListRecordActionsEvent;
+    use TYPO3\CMS\Backend\Template\Components\ActionGroup;
+    use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
+    use TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListRecordActionsEvent;
+    use TYPO3\CMS\Core\Imaging\IconFactory;
+
     class ModifyRecordListRecordActionsEventListener
     {
         public function __construct(
-            TYPO3\CMS\Backend\Template\Components\ComponentFactory $componentFactory,
-            TYPO3\CMS\Core\Imaging\IconFactory $iconFactory,
-        ) {
-        }
+            private readonly ComponentFactory $componentFactory,
+            private readonly IconFactory $iconFactory,
+        ) {}
 
-        public function __invoke(ModifyRecordListRecordActionsEventListener $event): void
+        public function __invoke(ModifyRecordListRecordActionsEvent $event): void
         {
             $viewButton = $this->componentFactory->createGenericButton()
                 ->setIcon($this->iconFactory->getIcon('actions-view'))
-                ->setTitle('My title')
+                ->setTitle('My title');
+
             $event->setAction($viewButton, 'my-own-action', ActionGroup::primary);
             $event->removeAction('some-other-action', ActionGroup::primary);
 
             $inputButton = $this->componentFactory->createInputButton()
-                ->setTitle('My Button')
+                ->setTitle('My Button');
+
             $event->setAction($inputButton, 'my-other-own-action', ActionGroup::secondary);
         }
     }
@@ -266,7 +279,11 @@ Accessing groups
     $event->removeAction('my-button', 'primary');
     $event->getActionGroup('primary');
 
+..  code-block:: php
+
     // After
+    use TYPO3\CMS\Backend\Template\Components\ActionGroup;
+
     $event->getAction('my-button', ActionGroup::primary);
     $event->hasAction('my-button', ActionGroup::primary);
     $event->removeAction('my-button', ActionGroup::primary);
@@ -281,6 +298,8 @@ Accessing record
     $uid = $event->getRecord()['uid'];
     $title = $event->getRecord()['title'];
 
+..  code-block:: php
+
     // After
     $uid = $event->getRecord()->getUid();
     $title = $event->getRecord()->getRawRecord()['title'];
@@ -288,19 +307,23 @@ Accessing record
 Dual-version compatibility
 --------------------------
 
-The create extensions or custom code that works in both TYPO3 v13
-and v14, a version switch can be added within event listeners:
+To support both TYPO3 v13 and v14, extensions can use a version check within
+event listeners:
 
 ..  code-block:: php
+
+    use TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListRecordActionsEvent;
+    use TYPO3\CMS\Backend\Template\Components\ActionGroup;
+    use TYPO3\CMS\Core\Information\Typo3Version;
 
     class ModifyRecordListRecordActionsEventListener
     {
         public function __invoke(ModifyRecordListRecordActionsEvent $event): void
         {
-            if (new TYPO3\CMS\Core\Information\Typo3Version()->getMajorVersion() >= 14) {
+            if ((new Typo3Version())->getMajorVersion() >= 14) {
                 $viewButton = $this->componentFactory->createGenericButton()
                     ->setIcon($this->iconFactory->getIcon('actions-view'))
-                    ->setTitle('My title')
+                    ->setTitle('My title');
                 $event->setAction($viewButton, 'my-own-action', ActionGroup::primary);
                 $event->removeAction('some-other-action', ActionGroup::primary);
             } else {
@@ -313,5 +336,4 @@ and v14, a version switch can be added within event listeners:
         }
     }
 
-
-.. index:: Backend, PHP-API, PartiallyScanned, ext:backend, ext:filelist
+..  index:: Backend, PHP-API, PartiallyScanned, ext:backend, ext:filelist

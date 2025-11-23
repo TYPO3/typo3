@@ -11,15 +11,19 @@ See :issue:`107725`
 Description
 ===========
 
-Since Redis 6.0, it is possible to authenticate against Redis using both a username and
-a password. Prior to this version, authentication was only possible with a password.
-With this patch, you can now configure the TYPO3 Redis cache backend as follows:
+Since Redis 6.0, it is possible to authenticate against Redis using both a
+username and a password. Prior to this version, authentication was only
+possible with a password. With this change, the Redis cache backend in TYPO3
+now supports both authentication mechanisms.
+
+You can configure the Redis cache backend as follows:
 
 ..  code-block:: php
     :caption: config/system/additional.php
 
-    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['pages']['backend']
-        = \TYPO3\CMS\Core\Cache\Backend\RedisBackend::class;
+    use TYPO3\CMS\Core\Cache\Backend\RedisBackend;
+
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['pages']['backend'] = RedisBackend::class;
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['pages']['options']
         = [
             'defaultLifetime' => 86400,
@@ -33,8 +37,11 @@ With this patch, you can now configure the TYPO3 Redis cache backend as follows:
 Impact
 ======
 
-The "password" configuration option of the Redis cache backend is now typed as a
-`array|string`. Setting this configuration option with an array is deprecated and
-will be removed in 15.0.
+The :php-short:`\TYPO3\CMS\Core\Cache\Backend\RedisBackend` now supports
+authentication using both a username and a password.
+
+The :php:`password` configuration option is now typed as
+:php:`array|string`. Using an array for this configuration option is
+deprecated and will be removed in TYPO3 v15.0.
 
 ..  index:: LocalConfiguration, ext:core

@@ -15,8 +15,8 @@ A new Fluid ViewHelper :html:`<f:page.title>` has been introduced to allow
 setting the page title directly from Fluid templates.
 
 This is especially useful for Extbase plugins that need to set a page title
-in their detail views without having to implement their own custom Page Title
-Provider.
+in their detail views without having to implement a custom page title
+provider.
 
 ..  code-block:: html
     :caption: EXT:my_extension/Resources/Private/Templates/Item/Show.html
@@ -36,17 +36,16 @@ The ViewHelper can also be used with static content:
     <h1>About Us</h1>
     <p>Welcome to our company...</p>
 
-
 Impact
 ======
 
 Extension developers can now easily set page titles from their Fluid templates
-without needing to create custom Page Title Providers for each extension. This
-simplifies the implementation of dynamic page titles in Fluid templates or
-especially Extbase plugins for detail views where the title should
-reflect the displayed record.
+without creating custom page title providers for each extension. This
+simplifies the implementation of dynamic page titles in Fluid templates or in
+Extbase plugins for detail views where the title should reflect the displayed
+record.
 
-The ViewHelper integrates seamlessly with TYPO3's existing Page Title Provider
+The ViewHelper integrates seamlessly with TYPO3's existing page title provider
 system and respects the configured provider priorities.
 
 ..  index:: Frontend, ext:fluid

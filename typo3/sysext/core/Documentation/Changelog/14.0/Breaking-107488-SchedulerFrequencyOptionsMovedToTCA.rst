@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _breaking-107488-1758106735:
+..  _breaking-107488-1758106735:
 
 ============================================================
 Breaking: #107488 - Scheduler frequency options moved to TCA
@@ -11,13 +11,16 @@ See :issue:`107488`
 Description
 ===========
 
-The global configuration array :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['frequencyOptions']`
-used to define frequency options for scheduler tasks has been removed. The
-frequency options are now configured directly in the TCA configuration using
-the :php:`overrideFieldTca` mechanism on the :php:`tx_scheduler_task.execution_details`
-field.
+The global configuration array
+:php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['frequencyOptions']`,
+which was used to define frequency options for scheduler tasks, has been
+removed.
 
-This change improves consistency with TYPO3's configuration patterns and
+Frequency options are now configured directly in the TCA using the
+:php:`overrideFieldTca` mechanism on the
+:php:`tx_scheduler_task.execution_details` field.
+
+This change improves consistency with TYPO3’s configuration patterns and
 provides better extensibility for scheduler task timing options.
 
 Impact
@@ -27,14 +30,14 @@ Extensions that previously added custom frequency options through the global
 :php:`frequencyOptions` array will no longer see their custom options in the
 scheduler task frequency field.
 
-Code that relied on reading the global :php:`frequencyOptions` configuration may
-no longer work as expected.
+Code that relied on reading the global :php:`frequencyOptions` configuration
+will no longer work as expected.
 
-Affected Installations
+Affected installations
 ======================
 
-All installations that have extensions providing custom scheduler frequency
-options through the global configuration array are affected.
+All installations with extensions providing custom scheduler frequency options
+through the global configuration array are affected.
 
 Migration
 =========
@@ -88,10 +91,10 @@ to TCA overrides.
         $customFrequencyOptions
     );
 
-Related Features
-=================
+Related features
+================
 
-See :ref:`feature-107488-1758106735` for information about the new extensible
+See :ref:`feature-107488-1758106735` for details about the new extensible
 timing options functionality.
 
-.. index:: Backend, TCA, NotScanned, ext:scheduler
+..  index:: Backend, TCA, NotScanned, ext:scheduler

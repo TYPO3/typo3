@@ -11,40 +11,44 @@ See :issue:`106964`
 Description
 ===========
 
+With :issue:`105640`, context awareness for the CKEditor Rich Text Editor (RTE)
+was introduced, allowing the editor interface to automatically adapt to the
+user’s system-wide light or dark mode preference.
 
-With :issue:`105640` context awareness for CKEditor RTE was introduced, but not enabled
-by default to not break existing customizations/enhancements of the editor interface.
+This feature is now enabled by default. The TYPO3 Core stylesheet
+:file:`EXT:rte_ckeditor/Resources/Public/Css/contents.css` has been updated to
+support light and dark mode variants automatically. Previously fixed white
+backgrounds now adapt dynamically based on the editor’s preferred color scheme.
 
-The TYPO3 Core default stylesheet (`EXT:rte_ckeditor/Resources/Public/Css/contents.css`)
-has now been adapted to enable the context awareness by default. Prior white backgrounds
-are now shown as either dark or light backgrounds, depending on the editor's preference.
-
-Please note that the display of RTE contents in the frontend is unaffected.
+Note that this change affects only the backend editor interface. The display of
+RTE content in the frontend remains unaffected.
 
 Impact
 ======
 
-Prior fixed "light mode" UI display is now made context aware, showing CKEditor RTE
-instance contents in the editor's preferred dark/light mode variant.
+The previously fixed *light mode* user interface of the CKEditor RTE is now
+context-aware, displaying content in light or dark mode according to the
+editor’s system preference.
 
 Affected installations
 ======================
 
-TYPO3 installations relying on "light mode" UI presentation of the CKEditor RTE
-instances in the backend.
-
+TYPO3 installations that rely on a fixed *light mode* presentation of CKEditor
+RTE instances in the backend are affected.
 
 Migration
 =========
 
-Installations with custom CKEditor changes should review their `contents.css` file.
-If previously the TYPO3 Core default sheet was set, and a fixed "light mode" is
-preferred, this can be achieved by adjusting the RTE YAML configuration:
+Installations with custom CKEditor modifications should review their
+:file:`contents.css` file.
+If the TYPO3 Core default stylesheet was previously used, and a fixed *light
+mode* appearance is desired, this can be enforced in the RTE YAML
+configuration:
 
-    ..  code-block:: yaml
-        :caption: MyCKPreset.yaml
+..  code-block:: yaml
+    :caption: EXT:my_extension/Configuration/RTE/MyCKPreset.yaml
 
-        editor.config.contentsCss:
-          - "EXT:my_extension/Resources/Public/Css/CustomContents.css"
+    editor.config.contentsCss:
+      - "EXT:my_extension/Resources/Public/Css/CustomContents.css"
 
 ..  index:: Backend, NotScanned

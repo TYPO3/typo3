@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _breaking-98239-1758890437:
+..  _breaking-98239-1758890437:
 
 =======================================================
 Breaking: #98239 - Removed "afterBuildingFinished" hook
@@ -12,31 +12,32 @@ Description
 ===========
 
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished']`
-has been removed in favor of the more powerful PSR-14 :php:`TYPO3\CMS\Form\Event\BeforeRenderableIsAddedToFormEvent`
-and :php:`TYPO3\CMS\Form\Event\AfterFormIsBuiltEvent`.
-
+has been removed in favor of the more powerful PSR-14 events
+:php:`\TYPO3\CMS\Form\Event\BeforeRenderableIsAddedToFormEvent` and
+:php:`\TYPO3\CMS\Form\Event\AfterFormIsBuiltEvent`.
 
 Impact
 ======
 
-Any hook implementation registered is not executed anymore in TYPO3 v14.0+.
-
+Any hook implementation registered under this identifier will no longer be
+executed in TYPO3 v14.0 and later.
 
 Affected installations
 ======================
 
-TYPO3 installations with custom extensions using this hook. The extensions
-scanner reports any usage as weak match.
-
+TYPO3 installations with custom extensions that implement this hook are
+affected. The extension scanner reports such usages as a weak match.
 
 Migration
 =========
 
-The hook is removed without deprecation in order to allow extensions
-to work with TYPO3 v13 (using the hook) and v14+ (using the new event)
-when implementing the event as well without any further deprecations.
-Use the :ref:`BeforeRenderableIsAddedToFormEvent <feature-107518-1758539757>` or
-:ref:`AfterFormIsBuiltEvent <feature-98239-1758890522>` to allow greater
-influence in the functionality.
+The hook has been removed without a deprecation phase to allow extensions to
+remain compatible with both TYPO3 v13 (using the hook) and v14+ (using the new
+events). Implementing the PSR-14 events provides the same or greater control
+over form rendering.
 
-.. index:: Backend, ext:form, FullyScanned
+Use the :ref:`BeforeRenderableIsAddedToFormEvent <feature-107518-1758539757>` or
+:ref:`AfterFormIsBuiltEvent <feature-98239-1758890522>` to achieve the same
+functionality with the new event-based system.
+
+..  index:: Backend, ext:form, FullyScanned

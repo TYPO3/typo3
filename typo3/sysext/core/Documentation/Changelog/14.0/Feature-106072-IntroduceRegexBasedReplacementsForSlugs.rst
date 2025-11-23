@@ -3,7 +3,7 @@
 ..  _feature-106072-1738662608:
 
 ===============================================================
-Feature: #106072 - Introduce regex based replacements for slugs
+Feature: #106072 - Introduce regex-based replacements for slugs
 ===============================================================
 
 See :issue:`106072`
@@ -11,32 +11,39 @@ See :issue:`106072`
 Description
 ===========
 
-Adds a second replacement config array to provide regex based
-definitions. This way it's possible to define case-insensitive
-or wildcard replacements.
+A second replacement configuration array has been added to support
+regular expression (regex)-based definitions. This allows defining
+case-insensitive or wildcard replacements for slug generation.
 
 ..  note::
 
-    The regexp based replacement operates on the original field values,
-    which are not sanitized yet. That means, not lowercased or otherwise
-    processed and only on field level for the record configured with the
-    :php:`['generatorOptions']['fields']` option. Additional, not automatic
-    character detection and escaping is processed and needs to be taken care
-    when configure patterns. Keep these points in mind.
+    Regular expression replacements are applied **before** any sanitation
+    of the field values takes place. This means:
+
+    *   Values are still in their original form - not lowercased or otherwise processed.
+    *   The replacements apply only to the fields defined in
+        :php:`['generatorOptions']['fields']`.
+    *   No automatic escaping or character detection is performed, so
+        patterns must be written carefully.
+
+    Keep these points in mind when defining regex patterns.
 
 Impact
 ======
 
-Slug fields have now a new `regexReplacements` configuration array inside `generatorOptions`.
+Slug fields now support a new `regexReplacements` configuration array
+inside `generatorOptions`.
 
 ..  code-block:: php
+    :caption: Example TCA configuration
 
-    'generatorOptions' => [
-      'regexReplacements' => [
-          '/foo/i' => 'bar', // case-insensitive replace of Foo, foo, FOO,... with "bar", ignoring casing
-          '/\(.*\)/' => '',  // Remove string wrapped in parentheses
-          '@\(.*\)@' => '',  // Remove string wrapped in parentheses with custom regex delimiter
-       ],
-    ],
+    $GLOBALS['TCA'][$table]['columns']['slug']['config']['generatorOptions']['regexReplacements'] => [
+        // Case-insensitive replacement of Foo, foo, FOO, etc. with "bar"
+        '/foo/i' => 'bar',
+        // Remove string wrapped in parentheses
+        '/\(.*\)/' => '',
+        // Same, using a custom regex delimiter
+        '@\(.*\)@' => '',
+    ];
 
 ..  index:: TCA, ext:core

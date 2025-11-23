@@ -11,40 +11,46 @@ See :issue:`106412`
 Description
 ===========
 
-Each TCA definition has had an optional entry named `interface` to define
-relevant information for displaying the TCA records.
+Each TCA definition previously had an optional section named
+:php:`['interface']`, which defined parameters for displaying TCA records.
 
-The TCA options :php:`['interface']['maxSingleDBListItems']` and
-:php:`['interface']['maxDBListItems']` are removed and not evaluated anymore.
+The last remaining options within this section,
+:php:`$GLOBALS['TCA'][$table]['interface']['maxSingleDBListItems']` and
+:php:`$GLOBALS['TCA'][$table]['interface']['maxDBListItems']`, have been
+removed. As a result, the entire :php:`['interface']` section is no longer
+supported and will be ignored.
 
-These options have been used for defining the amount of table rows to show
-within TYPO3's Web>List module.
-
+These settings were used to define the number of table rows displayed within
+the :guilabel:`Content > List` backend module.
 
 Impact
 ======
 
-Setting these values in custom extensions will have no effect anymore, as they
-are automatically removed during build-time.
+The :php:`$GLOBALS['TCA'][$table]['interface']` section in TCA definitions is
+no longer evaluated.
 
+Setting any values under this key in custom extensions has no effect and will
+be automatically removed during build time.
 
 Affected installations
 ======================
 
-TYPO3 installations with custom TCA settings from third-party-extensions.
-
+TYPO3 installations with custom TCA settings defining
+:php:`$GLOBALS['TCA'][$table]['interface']` are affected.
 
 Migration
 =========
 
-Overriding visual settings can still be done on a per - User TSconfig or
-per - Page TSconfig level, which is much more flexible anyways, as it allows
-for rendering different amount of  values per site / pagetree or usergroup.
+Visual display settings can still be overridden on a per-user or per-page
+basis via TSconfig. This approach is more flexible, as it allows rendering
+different numbers of items per site, page tree, or user group.
 
-The TCA option  :php:`['interface']['maxSingleDBListItems']` is removed in
-favor of :tsconfig:`mod.web_list.itemsLimitSingleTable`.
+The TCA option
+:php:`$GLOBALS['TCA'][$table]['interface']['maxSingleDBListItems']` has been
+removed in favor of :tsconfig:`mod.web_list.itemsLimitSingleTable`.
 
-The TCA option php:`['interface']['maxDBListItems']`is removed in
-favor of :tsconfig:`mod.web_list.itemsLimitPerTable`.
+The TCA option
+:php:`$GLOBALS['TCA'][$table]['interface']['maxDBListItems']` has been removed
+in favor of :tsconfig:`mod.web_list.itemsLimitPerTable`.
 
 ..  index:: TCA, NotScanned, ext:backend

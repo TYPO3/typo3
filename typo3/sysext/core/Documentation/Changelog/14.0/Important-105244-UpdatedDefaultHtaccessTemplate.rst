@@ -11,30 +11,36 @@ See :issue:`105244`
 Description
 ===========
 
-When installing TYPO3 for the first time, a .htaccess file is added to the
-:path:`htdocs` / :path:`public` path, when running TYPO3 via Apache webserver.
+When installing TYPO3 for the first time, a :file:`.htaccess` file is added to
+the :path:`htdocs` or :path:`public` directory when running TYPO3 via an Apache
+web server.
 
-Next to some TYPO3 optimizations, this file mainly contains rules (via the
-"mod_rewrite" Apache2 module) for pointing all URL requests to non-existent
-files within a TYPO3 project to the main :file:`index.php` entry point file.
+In addition to several TYPO3-specific optimizations, this file mainly contains
+rules (using the "mod_rewrite" Apache module) that redirect all URL requests
+for non-existent files within a TYPO3 project to the main :file:`index.php`
+entry point file.
 
-For new installations, this file has some changed configuration, which can be
-adapted to existing TYPO3 installations reflecting a default setup:
+For new installations, this file now contains updated configuration that can
+also be applied to existing TYPO3 setups to reflect the current default
+behavior.
 
-URL requests within :path:`/_assets/` and :path:`/fileadmin/` are not redirected,
-as they contain resources either managed by editors or TYPO3 itself.
-The directory :path:`/_assets/` is added now, as it has been in place since TYPO3 v12 for
-Composer-based installations.
+**Key changes:**
 
-The folder :path:`/uploads/` is officially not needed anymore since TYPO3 v11, and
-not maintained by TYPO3 anymore. This folder is now removed from the :file:`.htaccess`
-configuration as well, so TYPO3 pages can officially have the URL path `/uploads`
-now.
+*   URL requests within :path:`/_assets/` and :path:`/fileadmin/` are no longer
+    redirected, as these directories contain resources either managed by TYPO3
+    or by editors.
+*   The directory :path:`/_assets/` has been included since TYPO3 v12 in
+    Composer-based installations and is now officially added.
+*   The folder :path:`/uploads/` is no longer maintained by TYPO3 since v11 and
+    is now removed from the default :file:`.htaccess` configuration. This means
+    that TYPO3 pages can now officially use the URL path `/uploads`.
 
-It is recommended to change this in existing TYPO3 installations as well - also
-with other server configurations such as nginx or IIS - in case no
-custom usage of :path:`/_assets/` or ":path:`/uploads/` is in effect, like via a PSR-15
-middleware, custom extensions, or custom routing.
+It is recommended to apply these adjustments in existing TYPO3 installations as
+well, even for other web servers such as nginx or IIS, provided there is no
+custom usage of :path:`/_assets/` or :path:`/uploads/` (for example through a
+PSR-15 middleware, custom extension, or custom routing).
+
+**Apache example:**
 
 In Apache-based setups, look for this line:
 
@@ -42,7 +48,7 @@ In Apache-based setups, look for this line:
 
     RewriteRule ^(?:fileadmin/|typo3conf/|typo3temp/|uploads/) - [L]
 
-and replace it with
+and replace it with:
 
 ..  code-block:: text
 

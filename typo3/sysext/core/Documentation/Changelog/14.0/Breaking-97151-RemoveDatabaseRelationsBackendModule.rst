@@ -11,25 +11,24 @@ See :issue:`97151`
 Description
 ===========
 
-The backend sub-module "Database Relations" within "DB Check" aims to provide
-information about potentially broken database relations.
-The information it gives is really sparse and barely helpful, also the whole
-module and its code received no meaningful updates in the past.
+The backend submodule **Database Relations** within **DB Check** provided
+information about potentially broken database relations. However, the
+information it displayed was very limited and barely helpful. In addition, the
+entire module and its code have not received any meaningful updates in recent
+years.
 
 Due to this, the module has been removed.
-
 
 Impact
 ======
 
-The module has been removed. Links and stored bookmarks will not work anymore.
-
+The module has been removed. Existing links and stored bookmarks will no longer
+work.
 
 Affected installations
 ======================
 
 All TYPO3 installations are affected.
-
 
 Migration
 =========

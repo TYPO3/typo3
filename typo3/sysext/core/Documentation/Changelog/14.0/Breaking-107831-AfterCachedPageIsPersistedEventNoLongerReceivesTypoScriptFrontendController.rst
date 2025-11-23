@@ -11,31 +11,37 @@ See :issue:`107831`
 Description
 ===========
 
-The frontend rendering related event :php:`AfterCachedPageIsPersistedEvent`
-had to be changed due to the removal of class :php:`TypoScriptFrontendController`:
-Method :php:`getController()` is removed.
+The frontend rendering related event
+:php:`\TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent` has been
+modified due to the removal of the class
+:php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController`.
 
+The method :php:`getController()` has been removed.
 
 Impact
 ======
 
-Event listeners that call :php:`getController()` will trigger a fatal PHP error and
-have to be adapted.
-
+Event listeners that call :php:`getController()` will now trigger a fatal
+PHP error and and must be adapted.
 
 Affected installations
 ======================
 
-Instances with extensions listening for event :php:`AfterCachedPageIsPersistedEvent`
-may be affected. The extension scanner will find affected extensions.
+Instances with extensions listening for the event
+:php-short:`\TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent` may be
+affected.
+
+The extension scanner will detect and report such usages.
 
 Migration
 =========
 
-In most cases, the data that was previously provided by :php:`TypoScriptFrontendController`
-can now be found in the :php:`Request` which is available using :php:`$event->getRequest()`.
+In most cases, data that was previously retrieved from the
+:php-short:`\TYPO3\CMS\Frontend\Controller\`TypoScriptFrontendController`
+instance can now be accessed through the request object, available via
+:php:`$event->getRequest()`.
 
-See :ref:`breaking-102621-1701937690` for more information.
-
+See :ref:`breaking-102621-1701937690` for further details about accessing
+frontend-related data via the PSR-7 request.
 
 ..  index:: Frontend, NotScanned, ext:frontend

@@ -11,25 +11,27 @@ See :issue:`105549`
 Description
 ===========
 
-The :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler` PHP API has been
-extended to support qualified and unqualified ISO8601 date formats in order to
-correctly process supplied timezone offsets, if supplied.
+The :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler` API has been extended
+to support both qualified and unqualified ISO 8601 date formats, correctly
+handling supplied timezone offsets when provided.
 
-* *Qualified ISO8601:* Includes an explicit timezone offset (e.g.,
-  1999-12-11T10:09:00+01:00 or 1999-12-11T10:09:00Z)
-* *Unqualified ISO8601*: Omits timezone offsets, representing "LOCALTIME"
-  (e.g., 1999-12-11T10:09:00)
+Qualified ISO 8601
+    Includes an explicit timezone offset (for example,
+    `1999-12-11T10:09:00+01:00` or `1999-12-11T10:09:00Z`)
+Unqualified ISO 8601
+    Omits timezone offsets, representing `LOCALTIME` (for example,
+    `1999-12-11T10:09:00`)
 
-TYPO3 :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler` now accepts five
+The :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler` now accepts five
 different formats:
 
 +----------------------------+---------------------------+-----------------------------------+
 |                            | Format                    | Examples                          |
 +============================+===========================+===================================+
-| **Unqualified ISO8601**    | :php:`'Y-m-d\\TH:i:s'`    | `1999-11-11T11:11:11`             |
-| (LOCALTIME)                |                           |                                   |
+| **Unqualified ISO 8601**   | :php:`'Y-m-d\\TH:i:s'`    | `1999-11-11T11:11:11`             |
+| (`LOCALTIME`)              |                           |                                   |
 +----------------------------+---------------------------+-----------------------------------+
-| **Qualified ISO8601**      | :php:`'Y-m-d\\TH:i:sP'`   | `1999-11-11T10:11:11Z`            |
+| **Qualified ISO 8601**     | :php:`'Y-m-d\\TH:i:sP'`   | `1999-11-11T10:11:11Z`            |
 |                            |                           |                                   |
 |                            |                           | `1999-11-11T11:11:11+01:00`       |
 +----------------------------+---------------------------+-----------------------------------+
@@ -37,22 +39,21 @@ different formats:
 |                            |                           |                                   |
 |                            |                           | :php:`new \DateTimeImmutable()`   |
 +----------------------------+---------------------------+-----------------------------------+
-| **SQL flavored dates**     | :php:`'Y-m-d H:i:s'`      | `1999-11-11 11:11:11`             |
-| *(internal)*               |                           |                                   |
+| **SQL-flavored dates**     | :php:`'Y-m-d H:i:s'`      | `1999-11-11 11:11:11`             |
+| (*internal use*)           |                           |                                   |
 +----------------------------+---------------------------+-----------------------------------+
 | **Unix timestamps**        | :php:`'U'`                | `942315071`                       |
-| *(internal)*               |                           |                                   |
+| (*internal use*)           |                           |                                   |
 +----------------------------+---------------------------+-----------------------------------+
 
-
-The ISO8601 variants and :php:`\DateTimeInterface` objects are intended to be
-used as API. The SQL flavored variant and unix timestamps are mainly targeted
-for copy and import operations of native datetime and unix timestamp database
-fields and are considered internal API.
-
+The ISO 8601 variants and :php:`\DateTimeInterface` objects are intended for use
+in the public API. The SQL-flavored variant and Unix timestamps are primarily
+intended for internal operations such as copy or import processes involving
+native :sql:`DATETIME` and :sql:`INT` timestamp database fields.
 
 ..  code-block:: php
-    :caption: Passing datetime data via DataHandler PHP API
+    :caption: Passing datetime data via the DataHandler PHP API
+
 
     $myDate = new \DateTime('yesterday');
     $this->dataHandler->start([
@@ -60,9 +61,9 @@ fields and are considered internal API.
             'NEW-1' => [
                 'pid' => 2,
                 // Format as LOCALTIME
-                'mydatefield_1' => $myDate->format('Y-m-dTH:i:s'),
+                'mydatefield_1' => $myDate->format('Y-m-d\\TH:i:s'),
                 // Format with timezone information
-                // (offsets will be normalized to persistence timezone format,
+                // (offsets will be normalized to the persistence timezone format,
                 // UTC for integer fields, LOCALTIME for native DATETIME fields)
                 'mydatefield_2' => $myDate->format('c'),
                 // Pass \DateTimeInterface objects directly
@@ -71,12 +72,11 @@ fields and are considered internal API.
         ],
     ]);
 
-
 Impact
 ======
 
-TYPO3 now provides accurate and consistent handling of ISO8601 dates,
-eliminating previous issues related to timezone interpretation and LOCALTIME
+TYPO3 now provides accurate and consistent handling of ISO 8601 dates,
+eliminating previous issues related to timezone interpretation and `LOCALTIME`
 representation.
 
 ..  index:: Database, PHP-API, ext:core

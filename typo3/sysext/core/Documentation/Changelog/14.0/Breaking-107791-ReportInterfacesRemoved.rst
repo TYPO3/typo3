@@ -23,48 +23,54 @@ As a result, the following public interfaces have been removed:
 Impact
 ======
 
-Extensions that register custom reports by implementing :php:`ReportInterface`
-or :php:`RequestAwareReportInterface` will no longer work. The reports will
-not appear in the backend Reports module.
+Extensions that register custom reports by implementing
+:php:`\TYPO3\CMS\Reports\ReportInterface` or
+:php:`\TYPO3\CMS\Reports\RequestAwareReportInterface` will no longer work.
+
+These reports will no longer appear in the backend Reports module.
 
 Affected installations
 ======================
 
 TYPO3 installations with custom extensions that provide reports by implementing
-:php:`ReportInterface` or :php:`RequestAwareReportInterface`.
+:php-short:`\TYPO3\CMS\Reports\ReportInterface` or
+:php-short:`\TYPO3\CMS\Reports\RequestAwareReportInterface`.
 
 Migration
 =========
 
 Custom reports must be migrated to backend submodules.
 
-**Register as a submodule under system_reports:**
+**Register as a submodule under `system_reports`:**
 
-.. code-block:: php
-   :caption: EXT:my_extension/Configuration/Backend/Modules.php
+..  code-block:: php
+    :caption: EXT:my_extension/Configuration/Backend/Modules.php
 
-   return [
-       'system_reports_myreport' => [
-           'parent' => 'system_reports',
-           'access' => 'admin',
-           'path' => '/module/system/reports/myreport',
-           'iconIdentifier' => 'module-reports',
-           'labels' => [
-               'title' => 'LLL:EXT:my_extension/Resources/Private/Language/locallang.xlf:myreport.title',
-               'description' => 'LLL:EXT:my_extension/Resources/Private/Language/locallang.xlf:myreport.description',
-           ],
-           'routes' => [
-               '_default' => [
-                   'target' => \Vendor\MyExtension\Controller\MyReportController::class . '::handleRequest',
-               ],
-           ],
-       ],
-   ];
+    use Vendor\MyExtension\Controller\MyReportController;
 
-The controller should implement a standard PSR-7 request handler that returns
-a :php:`ResponseInterface`.
+    return [
+        'system_reports_myreport' => [
+            'parent' => 'system_reports',
+            'access' => 'admin',
+            'path' => '/module/system/reports/myreport',
+            'iconIdentifier' => 'module-reports',
+            'labels' => [
+                'title' => 'my_extension.messages:myreport.title',
+                'description' => 'my_extension.messages:myreport.description',
+            ],
+            'routes' => [
+                '_default' => [
+                    'target' => MyReportController::class . '::handleRequest',
+                ],
+            ],
+        ],
+    ];
 
-Alternatively, you can create a standalone module with :php:`showSubmoduleOverview`
-enabled if you need to group multiple reports under your own container module.
+The controller should implement a standard PSR-7 request handler that returns a
+:php:`\Psr\Http\Message\ResponseInterface` instance.
+
+Alternatively, you can create a standalone module with
+`showSubmoduleOverview` enabled if you need to group multiple reports
+under your own container module.
 
 ..  index:: Backend, PHP-API, NotScanned, ext:reports

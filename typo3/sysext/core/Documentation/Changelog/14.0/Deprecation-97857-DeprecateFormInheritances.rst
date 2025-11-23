@@ -11,29 +11,39 @@ See :issue:`97857`
 Description
 ===========
 
-The :yaml:`__inheritances` operator has been deprecated.
+The custom :yaml:`__inheritances` operator, which was available only in
+YAML configuration files of EXT:form, has been deprecated.
 
-Developers are encouraged to migrate to native YAML features such as anchors, aliases, and overrides
-to avoid code duplication.
+Previously, this operator was used within form definition files to inherit
+and reuse configuration parts between form element definitions.
+With native YAML functionality now providing equivalent and more flexible
+features, this TYPO3-specific operator is no longer necessary.
 
+Developers are encouraged to migrate to standard YAML features such as
+anchors, aliases, and overrides to avoid code duplication and to simplify
+form configuration maintenance.
 
 Impact
 ======
 
 Using the :yaml:`__inheritances` operator inside a custom YAML form configuration
-will trigger a PHP :php:`E_USER_DEPRECATED` error.
+in EXT:form will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 Affected installations
 =======================
 
-All extensions and projects relying on the :yaml:`__inheritances` operator
-need to update their YAML files accordingly.
+All installations with custom form definitions or form element configurations
+that use the :yaml:`__inheritances` operator in their EXT:form YAML files
+are affected and need to update those files accordingly.
 
 Migration
 =========
 
-The custom implementation with the :yaml:`__inheritances` operator can be replaced with native YAML syntax.
-You can avoid duplication in your YAML files by using anchors (&), aliases (*) and overrides (<<:).
+The custom TYPO3 implementation using :yaml:`__inheritances` can be replaced
+with standard YAML syntax.
+
+Developers can achieve the same result by using anchors (:yaml:`&`),
+aliases (:yaml:`*`), and overrides (:yaml:`<<:`).
 
 Before:
 

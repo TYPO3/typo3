@@ -48,26 +48,25 @@ Migration
 
 TypoScript before:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
-  page = PAGE
-  page.includeCSS {
+    page = PAGE
+    page.includeCSS {
         main = https://example.com/styles/main.css
         main.external = 1
         other = /styles/main.css
         other.external = 1
-  }
+    }
 
 TypoScript after:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
-  page = PAGE
-  page.includeCSS {
-      main = https://example.com/styles/main.css
-      other = URI:/styles/main.css
-  }
-
+    page = PAGE
+    page.includeCSS {
+        main = https://example.com/styles/main.css
+        other = URI:/styles/main.css
+    }
 
 PHP Code before:
 
@@ -80,7 +79,6 @@ PHP Code before:
         ['external' => true]
     );
 
-
 PHP Code after:
 
 ..  code-block:: php
@@ -89,6 +87,5 @@ PHP Code after:
         'myCssFile',
         'URI:/styles/main.css',
     );
-
 
 .. index:: Frontend, NotScanned, ext:frontend

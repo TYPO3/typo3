@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _breaking-107403-1757082780:
+..  _breaking-107403-1757082780:
 
 ========================================================================
 Breaking: #107403 - Remove LocalPreviewHelper + LocalCropScaleMaskHelper
@@ -11,45 +11,51 @@ See :issue:`107403`
 Description
 ===========
 
-The helper classes for Preview and CropScaleMask (CSM) for generating images
-blocked a proper unification of the File Abstraction Layer Image Processing API.
+The helper classes for preview and CropScaleMask (CSM) image generation
+prevented further unification of the File Abstraction Layer (FAL) image
+processing API.
 
-The two helper classes :php:`\TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper`
-and :php:`\TYPO3\CMS\Core\Resource\Processing\LocalCropScaleMaskHelper` have
-now been removed, as their functionality has been merged into
+The two helper classes
+:php:`\TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper` and
+:php:`\TYPO3\CMS\Core\Resource\Processing\LocalCropScaleMaskHelper`
+have been removed. Their functionality has been merged into
 :php:`\TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor`.
 
-The helper classes existed due to legacy reasons, but were never intended
-to be Public API.
+These helper classes existed for historical reasons and were never intended
+to be part of the public API.
 
 Impact
 ======
 
-Any code that extends or references :php:`\TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper`
-or :php:`\TYPO3\CMS\Core\Resource\Processing\LocalCropScaleMaskHelper`
-will result in PHP fatal errors.
+Any code that extends or references
+:php-short:`\TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper` or
+:php-short:`\TYPO3\CMS\Core\Resource\Processing\LocalCropScaleMaskHelper`
+will now trigger PHP fatal errors.
 
 Affected installations
 ======================
 
-Installations with custom extensions that extend or reference the
-:php:`\TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper`
-or :php:`\TYPO3\CMS\Core\Resource\Processing\LocalCropScaleMaskHelper`
-will cause PHP fatal errors.
+Installations with custom extensions that extend or reference either
+:php-short:`\TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper` or
+:php-short:`\TYPO3\CMS\Core\Resource\Processing\LocalCropScaleMaskHelper`
+are affected and will cause PHP fatal errors.
 
-The helper classes were meant to be internal, but were not declared
-as such. Implementations utilizing the helpers outside the use
-of the :php:`LocalImageProcessor` should be rare.
+These helper classes were meant to be internal but were never declared as
+such. Implementations using them directly instead of the
+:php-short:`\TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor` should
+be very rare.
 
 Migration
 =========
 
-Remove any references to :php:`\TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper`
-or :php:`\TYPO3\CMS\Core\Resource\Processing\LocalCropScaleMaskHelper`
+Remove all references to
+:php-short:`\TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper` or
+:php-short:`\TYPO3\CMS\Core\Resource\Processing\LocalCropScaleMaskHelper`
 from your code.
 
-Utilize the :php:`\TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor` processor
-directly instead or implement a custom image processor that is executed before
-this processor with custom functionality.
+Use the
+:php-short:`\TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor`
+directly instead, or implement a custom image processor that executes before
+this processor to apply additional functionality.
 
-.. index:: PHP-API, FullyScanned
+..  index:: PHP-API, FullyScanned

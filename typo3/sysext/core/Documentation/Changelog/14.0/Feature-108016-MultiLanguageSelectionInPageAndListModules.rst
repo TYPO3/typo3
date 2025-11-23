@@ -11,7 +11,7 @@ See :issue:`108016`
 Description
 ===========
 
-The :guilabel:`Content > Page` and :guilabel:`Content > List` modules now
+The :guilabel:`Content > Layout` and :guilabel:`Content > List` modules now
 support selecting multiple languages simultaneously for improved comparison
 of translated records.
 
@@ -26,8 +26,20 @@ in the current language selection.
 
     The :guilabel:`Content > Preview` module has been migrated to the
     new shared language API, too. Therefore, a selected language is also
-    kept when navigation to or from this module.
+    kept when navigating to or from this module.
 
+..  note::
+    Some backend modules were renamed in TYPO3 v14.
+
+    The top level module now called :guilabel:`Content` was formerly named
+    :guilabel:`Web`.
+
+    The module :guilabel:`Content > Layout` was formerly called
+    :guilabel:`Web > Page`.
+
+    For details, see:
+    `Feature: #107628 – Improved backend module naming and structure
+    <https://docs.typo3.org/permalink/changelog:feature-107628-1729026000>`_.
 
 Impact
 ======
@@ -42,4 +54,4 @@ Users can now:
 The language selection is persisted in module data and shared between the
 page module and list module for the same page.
 
-.. index:: Backend, ext:backend
+..  index:: Backend, ext:backend

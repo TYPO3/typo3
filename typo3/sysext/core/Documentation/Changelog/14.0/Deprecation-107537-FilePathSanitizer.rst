@@ -3,7 +3,7 @@
 ..  _deprecation-107537-1760305681:
 
 ================================================
-Deprecation: #107537 - FilePathSanitizer Service
+Deprecation: #107537 - FilePathSanitizer service
 ================================================
 
 See :issue:`107537`
@@ -11,27 +11,32 @@ See :issue:`107537`
 Description
 ===========
 
-:php:`TYPO3\CMS\Frontend\Resource\FilePathSanitizer` was introduced as a
-service class to replace the logic that was previously part of `$TSFE->tmpl`.
+:php:`\TYPO3\CMS\Frontend\Resource\FilePathSanitizer` was introduced as a
+service class to replace the logic that was previously part of
+:php:`$TSFE->tmpl`.
 
-The goal of this class was to validate and manipulate given strings to be used for URL
-generation later in the process.
+The goal of this class was to validate and manipulate given strings to be
+used for URL generation later in the process.
 
-This class and its functionality is superseded by the **System Resource API**.
+This class and its functionality are superseded by the **System Resource API**.
 
 Impact
 ======
 
-All installations using the `FilePathSanitizer`
-will trigger a deprecation notice when the class is instantiated.
+All installations using the
+:php-short:`\TYPO3\CMS\Frontend\Resource\FilePathSanitizer` will trigger a
+deprecation notice when the class is instantiated.
 
-Otherwise this class continue to work as is, until removed in TYPO3 v15.0.
+Otherwise, this class will continue to work as is, until removed in TYPO3
+v15.0.
 
 Affected installations
 ======================
 
-TYPO3 installations with custom extensions/code that instantiates `FilePathSanitizer`.
-The extension scanner will report any usage as strong match.
+TYPO3 installations with custom extensions or code that instantiate
+:php-short:`\TYPO3\CMS\Frontend\Resource\FilePathSanitizer`.
+
+The extension scanner will report any usage as a **strong match**.
 
 Migration
 =========
@@ -43,6 +48,9 @@ Before:
 ..  code-block:: php
     :caption: MyClass
 
+    use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
+    use Psr\Http\Message\ServerRequestInterface;
+
     public function __construct(
         private readonly FilePathSanitizer $pathSanitizer,
     ) {}
@@ -50,7 +58,8 @@ Before:
     public function renderUrl(string $someString): string
     {
         $pathRelativeToPublicDir = $this->pathSanitizer->sanitize($someString);
-        return $this->codeThatDoesDetectTheCorrectUrlPrefix() . $pathRelativeToPublicDir;
+        return $this->codeThatDoesDetectTheCorrectUrlPrefix()
+            . $pathRelativeToPublicDir;
     }
 
 After:
@@ -58,14 +67,23 @@ After:
 ..  code-block:: php
     :caption: MyClass
 
+    use TYPO3\CMS\Core\Http\ServerRequestInterface;
+    use TYPO3\CMS\Core\Resource\SystemResourceFactory;
+    use TYPO3\CMS\Core\Resource\SystemResourcePublisherInterface;
+    use TYPO3\CMS\Core\Resource\UriGenerationOptions;
+
     public function __construct(
         private readonly SystemResourceFactory $systemResourceFactory,
         private readonly SystemResourcePublisherInterface $resourcePublisher,
     ) {}
 
-    public function renderUrl(string $resourceIdentifier, ServerRequestInterface $request): string
-    {
-        $resource = $this->systemResourceFactory->createPublicResource($resourceIdentifier);
+    public function renderUrl(
+        string $resourceIdentifier,
+        ServerRequestInterface $request
+    ): string {
+        $resource = $this->systemResourceFactory->createPublicResource(
+            $resourceIdentifier
+        );
         return (string)$this->resourcePublisher->generateUri(
             $resource,
             $request,

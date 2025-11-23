@@ -11,14 +11,17 @@ See :issue:`105310`
 Description
 ===========
 
-TYPO3 parses `ext_tables.sql` files into a Doctrine DBAL object schema to define
-a virtual database scheme, enriched with :php:`DefaultTcaSchema` information for
-TCA-managed tables and fields.
+TYPO3 parses :file:`ext_tables.sql` files into a Doctrine
+:abbr:`DBAL (Database Abstraction Layer)` object schema to define a virtual
+database scheme, enriched with
+:php:`\TYPO3\CMS\Core\Schema\DefaultTcaSchema` information for
+:abbr:`TCA (Table Configuration Array)` managed tables and fields.
 
-Fixed and variable length variants have been parsed already in the past, but missed
-to flag the column as :php:`$fixed = true` for the fixed-length database field types
-:sql:`CHAR` and :sql:`BINARY`. This resulted in the wrong creation of these columns as
-:sql:`VARCHAR` and :sql:`VARBINARY`, which is now corrected.
+Fixed- and variable-length variants have been parsed in the past, but failed
+to flag the column as :php:`$fixed = true` for the fixed-length database
+field types :sql:`CHAR` and :sql:`BINARY`. This resulted in the wrong
+creation of these columns as :sql:`VARCHAR` and :sql:`VARBINARY`, which is
+now corrected.
 
 +----------------+---------------------+------------------+
 | ext_tables.sql | created as (before) | created as (now) |
@@ -32,80 +35,89 @@ to flag the column as :php:`$fixed = true` for the fixed-length database field t
 | VARBINARY(10)  | VARBINARY(10)       | VARBINARY(10)    |
 +----------------+---------------------+------------------+
 
-Not all database systems (RDBMS) act the same way for fixed-length columns. Implementation
-differences need to be respected to ensure the same query/data behaviour across all supported
-database systems.
+Not all relational database management systems (RDBMS) behave the same way
+for fixed-length columns. Implementation differences need to be respected to
+ensure consistent query and data behaviour across all supported database
+systems.
+
 
 ..  warning::
 
-    Using fixed-length :sql:`CHAR` and :sql:`BINARY` column types requires to carefully work
-    with data being persisted and retrieved from the database due to differently
-    behaviour specifically of PostgreSQL.
-
+    Using fixed-length :sql:`CHAR` and :sql:`BINARY` column types requires
+    careful handling of data being persisted to and retrieved from the
+    database due to different behaviour, especially on PostgreSQL.
 
 Fixed-length :sql:`CHAR`
 ------------------------
 
-**Key Difference Between CHAR and VARCHAR**
+**Key difference between CHAR and VARCHAR**
 
-The main difference between :sql:`CHAR` and :sql:`VARCHAR` is how the database
-stores character data in a database. :sql:`CHAR`, which stands for `character`,
-is a fixed-length data type, meaning it always reserves a specific amount of
-storage space for each value, regardless of whether the actual data occupies
-that space entirely. For example, if a column is defined as :sql:`CHAR(10)` and
-the word `apple` is stored inside of it, it will still occupy 10 characters worth of
-space (not just 5). Unusued characters are padded with extra spaces.
+The main difference between :sql:`CHAR` and :sql:`VARCHAR` is how the
+database stores character data. :sql:`CHAR`, which stands for `character`,
+is a fixed-length data type. It always reserves a specific amount of
+storage space for each value, regardless of whether the actual data
+occupies that space entirely. For example, if a column is defined as
+:sql:`CHAR(10)` and the word `apple` is stored inside of it, it will still
+occupy 10 characters (not just 5). Unused characters are padded with
+spaces.
 
 On the other hand, :sql:`VARCHAR`, short for `variable character`, is a
-variable-length data type. It only uses as much storage space as needed
-to store the actual data without padding. So, storing the word `apple` in a
-:sql:`VARCHAR(10)` column will only occupy 5 characters worth of
-space, leaving the remaining table row space available for other data.
+variable-length data type. It only uses as much storage space as needed to
+store the actual data without padding. Thus, storing the word `apple` in a
+:sql:`VARCHAR(10)` column will only occupy 5 characters.
 
-The main difference from `PostgreSQL` to `MySQL`/`MariaDB`/`SQLite` is:
-`PostgreSQL` also returns the filler-spaces for a value not having the
-column length (returning `apple[space][space][space][space][space]`).
+The main difference between PostgreSQL and MySQL, MariaDB or SQLite is
+that PostgreSQL also returns the padded spaces for values that do not fill
+the full defined length (for example, `apple[space][space][space][space]
+[space]`).
 
-On top of that, the filled-up spaces are also respected for query conditions, sorting
-or data calculations (:sql:`concat()` for example). These two facts makes a huge
-difference and **must** be carefully taken into account when using :sql:`CHAR`
-field.
+In addition, these padded spaces are respected in query conditions,
+sorting or calculations (such as :sql:`concat()`). These differences make a
+significant impact and **must** be considered when using :sql:`CHAR`
+fields.
 
 **Rule of thumb for fixed-length** :sql:`CHAR` **columns**
 
-*   Only use with **ensured fixed-length values** (so that no padding occurs).
-
-*   For 255 or more characters :sql:`VARCHAR` or :sql:`TEXT` must be used.
+*   Use only with **guaranteed fixed-length values** to avoid padding.
+*   For 255 or more characters, :sql:`VARCHAR` or :sql:`TEXT` must be used.
 
 **More hints for fixed-length** :sql:`CHAR` **columns**
 
-*   Ensure to write fixed-length values for :sql:`CHAR` (non-space characters),
-    for example use hash algorithms which produce fixed-length hash identifier
-    values.
+*   Ensure that stored values are fixed-length (non-space characters), for
+    example by using hash algorithms that produce fixed-length identifiers.
 
-*   Ensure to use query statements to `trim` OR `rightPad` the value within
-    :sql:`WHERE`, :sql:`HAVING` or :sql:`SELECT` operations, when values are
-    not guaranteed to contain fixed-length values.
+*   Ensure that query statements use `trim` or `rightPad` within :sql:`WHERE`,
+    :sql:`HAVING` or :sql:`SELECT` operations when values are not guaranteed
+    to be fixed-length.
 
-    ..  tip::
+..  tip::
 
-    Helper :php:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder`
-    expressions can be used, for example
-    :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->trim()` or
-    :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->rightPad()` to.
+    Helper expressions from
+    :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder`
+    can be used.
 
-*   Usage of :sql:`CHAR` **must** be avoided when using the column with the
-    `Extbase ORM`, because fixed-value length cannot be ensured due to the
-    lack of using `trim/rightPad` within the ORM generated queries. Only with ensured
-    fixed-length values, it is usable with `Extbase ORM`.
+    For example: :php:`ExpressionBuilder->trim()` or :php:`ExpressionBuilder->rightPad()`.
 
-*   Cover custom queries extensively with `functional tests` executed against
-    all supported database platforms. Code within public extensions **should** ensure to test
-    queries and their operations against all officially TYPO3-supported database platforms.
+    *   The use of :sql:`CHAR` **must** be avoided when the column is used with
+        the Extbase object-relational mapper (ORM). Fixed-length values cannot be
+        guaranteed because trimming or padding is not applied within ORM-generated
+        queries. Only when fixed-length values are guaranteed is usage with
+        Extbase ORM possible.
 
+    *   Cover custom queries extensively with functional tests executed against
+        all supported database platforms. Code within public extensions **should**
+        ensure that queries and their operations are tested across all officially
+        supported TYPO3 database platforms.
 
-Example of difference in behaviour of fixed-length :sql:`CHAR` types
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Example of differences in behaviour of fixed-length :sql:`CHAR` types
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following examples illustrate how different relational database
+management systems handle fixed-length :sql:`CHAR` values, and why the
+behaviour must be carefully considered when storing or querying such data.
+
+Creating a fixed-length field
+"""""""""""""""""""""""""""""
 
 ..  code-block:: sql
     :caption: Example ext_tables.sql defining a fixed-length tt_content field
@@ -114,8 +126,11 @@ Example of difference in behaviour of fixed-length :sql:`CHAR` types
         `some_label` CHAR(10) DEFAULT '' NOT NULL,
     );
 
-Now, add some data. One row which fits exactly to 10 characters, and one row that only uses
-6 characters:
+Inserting example data
+""""""""""""""""""""""
+
+Two example rows are added below: one value fits exactly 10 characters, the
+other uses only 6 characters.
 
 ..  code-block:: php
     :caption: Adding two example rows
@@ -149,7 +164,8 @@ Now, add some data. One row which fits exactly to 10 characters, and one row tha
         ],
     );
 
-Now see the difference in retrieving these records:
+Retrieving the records
+""""""""""""""""""""""
 
 ..  code-block:: php
     :caption: Get all records from table
@@ -167,7 +183,10 @@ Now see the difference in retrieving these records:
         ->executeQuery()
         ->fetchAllAssociative();
 
-Depending on the used database platform, the retrieved rows would contain these strings:
+Result differences across platforms
+"""""""""""""""""""""""""""""""""""
+
+The returned values differ depending on the database platform.
 
 ..  code-block:: php
     :caption: Result rows MySQL, MariaDB or SQLite
@@ -185,8 +204,6 @@ Depending on the used database platform, the retrieved rows would contain these 
             'some_label' => 'label1',
         ],
     ];
-
-but for PostgreSQL
 
 ..  code-block:: php
     :caption: Result rows with PostgreSQL
@@ -207,8 +224,6 @@ but for PostgreSQL
         ],
     ];
 
-or as a `diff` to make this even more visible:
-
 ..  code-block:: diff
     :caption: Result rows difference between database platforms (commented)
 
@@ -228,21 +243,21 @@ or as a `diff` to make this even more visible:
 
 ..  note::
 
-    Because of this, retrieved values need to be trimmed OR padded AFTER
-    the query results are fetched, to ensure the same retrieved value across all
-    supported database systems. Another option is to ensure that the persisted
-    data always has a fixed-value length, like by using the aforementioned hashing
-    algorithms (making results not human-readable).
+    Because of this, retrieved values need to be trimmed or padded after
+    fetching query results to ensure identical values across all supported
+    database systems. Another option is to ensure that persisted data always
+    has a fixed-length value, for example by using hashing algorithms (though
+    these values are not human-readable).
 
-To raise the awareness for problems on this topic, using the trimmed value inside
-a :sql:`WHERE` condition will match the record, but the returned value will be different
-from the value used in the condition:
+Querying trimmed versus padded values
+"""""""""""""""""""""""""""""""""""""
+
+Using a trimmed value in a :sql:`WHERE` clause can match the row, but the
+returned value will differ depending on the database platform.
 
 ..  code-block:: php
     :caption: Retrieve with trimmed value
-    :emphasize-lines: 14,21,22
-
-    <?php
+    :emphasize-lines: 12,19,20
 
     use TYPO3\CMS\Core\Database\ConnectionPool;
     use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -264,6 +279,9 @@ from the value used in the condition:
     // $rows contains the record for
     // PostgreSQL: $rows = [['uid' => 2, 'some_label' => 'label1    ']];
     // Others....: $rows = [['uid' => 2, 'some_label' => 'label1']];
+
+Enforcing trimmed values in queries
+"""""""""""""""""""""""""""""""""""
 
 ..  code-block:: php
     :caption: Retrieve with enforced trimmed value.
@@ -304,9 +322,8 @@ from the value used in the condition:
     // Others....: $rows = [['uid' => 2, 'some_label' => 'label1']];
     // and ensures the same content across all supported database systems.
 
-
-On PostgreSQL, performing a query for a space-padded value will **not** actually
-return the expected row:
+Querying space-padded values in PostgreSQL
+""""""""""""""""""""""""""""""""""""""""""
 
 ..  code-block:: php
     :caption: Retrieve with space-padded value for PostgreSQL does not retrieve the record
@@ -335,8 +352,12 @@ return the expected row:
 
     // $rows === []
 
+Additional tools for consistent behaviour
+-----------------------------------------
+
 Additional :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder`
-methods can be used to ensure same behaviour on all platforms:
+methods can be used to ensure consistent behaviour across all supported
+platforms:
 
 *   :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder::trim()`
 *   :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder::rightPad()`
@@ -344,10 +365,12 @@ methods can be used to ensure same behaviour on all platforms:
 Recommendation
 ==============
 
-:sql:`CHAR` and :sql:`BINARY` fields can be used (for storage or performance adjustments),
-but only when composed data and queries take care of database-system differences.
+:sql:`CHAR` and :sql:`BINARY` fields can be used for storage or performance
+adjustments, but only when composed data and queries account for the
+differences between database systems.
 
-Otherwise, the "safe bet" is to consistently utilize :sql:`VARCHAR` and :sql:`VARBINARY`
-columns types.
+Otherwise, the safe bet is to consistently use :sql:`VARCHAR` and
+:sql:`VARBINARY` column types.
+
 
 ..  index:: Database, ext:core

@@ -11,43 +11,44 @@ See :issue:`101392`
 Description
 ===========
 
-When using the PHP API of `File Abstraction Layer`, there are several classes
-involved representing a File Object.
+When using the PHP API of the **File Abstraction Layer (FAL)**, several classes
+are involved in representing file objects.
 
-Next to the :php:`FileInterface` there is also the :php:`AbstractFile` class,
-where most classes extend from when representing a File.
+In addition to the
+:php-short:`\TYPO3\CMS\Core\Resource\FileInterface`, there is also the
+:php-short:`\TYPO3\CMS\Core\Resource\AbstractFile` class, from which most file-
+related classes inherit.
 
-However, in order to ensure proper code strictness, the Abstract class does
-not implement the methods :php:`getIdentifier()` and :php:`setIdentifier()`
-anymore, as this is indeed part of the subclasses' job.
+To ensure stricter type consistency, the abstract class no longer implements
+the methods :php:`getIdentifier()` and :php:`setIdentifier()`. Implementing
+these methods is now the responsibility of each subclass.
 
-They are now implemented in the respective classes inheriting from
-:php:`AbstractFile`.
-
+The methods are now implemented in the respective concrete classes inheriting
+from :php-short:`\TYPO3\CMS\Core\Resource\AbstractFile`.
 
 Impact
 ======
 
-In an unlikely case that the TYPO3's File Abstraction Layer is extended by
-adding custom PHP classes extending from AbstractFile, this will result in a
-fatal PHP error, as the new abstract methods :php:`getIdentifier()` and
-:php:`setIdentifier()` are not implemented.
-
+In the unlikely case that the TYPO3 File Abstraction Layer has been extended
+with custom PHP classes derived from
+:php-short:`\TYPO3\CMS\Core\Resource\AbstractFile`, this change will
+cause a fatal PHP error, as the new abstract methods :php:`getIdentifier()` and
+:php:`setIdentifier()` must be implemented by the subclass.
 
 Affected installations
 ======================
 
-TYPO3 installations with a custom File Abstraction Layer code extending the
-actual file abstraction layer, which is highly unlikely.
-
+TYPO3 installations that include custom code extending the File Abstraction
+Layer are affected. Such cases are considered highly uncommon.
 
 Migration
 =========
 
 Implement the two methods :php:`getIdentifier()` and :php:`setIdentifier()` in
-the custom File class extending :php:`AbstractFile`.
+any custom file class extending
+:php-short:`\TYPO3\CMS\Core\Resource\AbstractFile`.
 
-This can also be done in previous TYPO3 versions to make the code ready for
-multiple TYPO3 versions.
+This can also be implemented in older TYPO3 versions to ensure forward
+compatibility with TYPO3 v14 and later.
 
 ..  index:: PHP-API, NotScanned, ext:core

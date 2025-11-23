@@ -12,8 +12,8 @@ Description
 ===========
 
 The default configuration for `$GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext']`
-has been enhanced with a list of formats commonly uploaded into web-based
-CMS systems like TYPO3:
+has been extended with additional formats commonly uploaded to web-based
+CMS systems such as TYPO3:
 
 *  3gp
 *  aac
@@ -26,24 +26,25 @@ CMS systems like TYPO3:
 *  mov
 *  psd
 
-This list is only enhanced for systems where the said configuration option
-has not been customized already.
+This list is extended only for systems where the configuration option
+has not already been customized.
 
-Enhancing this list allows to upload files with these extensions into
-the file list (and use these files in TCA fields with "common-media-types"),
-when the security flag `security.system.enforceAllowedFileExtensions` is
-enabled.
+Adding these formats allows files with these extensions to be uploaded
+into the file list (and used in TCA fields with "common-media-types")
+when the security flag `security.system.enforceAllowedFileExtensions`
+is enabled.
 
-This can be a relevant change, if these file types are now used in
-records or content elements, that might not expect files of these types
-for further operation (like frontend display).
+This may be a relevant change if these file types are now used in
+records or content elements that do not expect such files for further
+operations (for example, in frontend display).
 
-Integrators need to ensure that all uploaded file types are handled
-accordingly (e.g. embedding "mov" as a video, "ico" as an image, and
-"psd" as a download), or have an appropriate fallback.
+Integrators must ensure that all uploaded file types are handled
+appropriately (for example, embedding "mov" as a video, "ico" as an
+image, or "psd" as a download) or have a suitable fallback.
 
-The `<f:media>` ViewHelper for example would iterate possible `Renderer`
-implementations, that can deal with several of the mentioned files
-(their MIME types), and try to render a file as an image as fallback.
+The `<f:media>` ViewHelper, for example, iterates over possible
+`Renderer` implementations that can handle several of these file
+types (and their MIME types) and attempts to render a file as an image
+as a fallback.
 
 ..  index:: TCA, ext:core

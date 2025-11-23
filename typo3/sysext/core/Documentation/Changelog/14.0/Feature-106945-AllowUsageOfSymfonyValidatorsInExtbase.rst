@@ -11,28 +11,29 @@ See :issue:`106945`
 Description
 ===========
 
-Extbase models and controllers now support the usage of
+Extbase models and controllers now support the use of
 `Symfony Validators <https://symfony.com/doc/current/components/validator.html>`__.
-Validators are built from Symfony Constraints which can be added as attributes
-to domain properties and controller methods. Once a constraint attribute is
-detected when reflecting properties and methods, it will be decorated by a new
-:php:`ConstraintDecoratingValidator` class, which is compatible to Extbase's
-:php:`ValidatorInterface`.
+Validators are based on Symfony *Constraints*, which can be added as attributes
+to domain model properties and controller methods.
 
-Decorated constraints may contain localizable messages. If a resulting message
-contains valid `LLL:` syntax, the localization label will be translated
-properly. The decorating validator also takes care of messages parameters and
-internally converts them from named parameters such as `{{ value }}` to
-:php:`sprintf`-compatible parameters like `%1$s`.
+Once a constraint attribute is detected while reflecting properties or methods,
+it is decorated by the new
+:php-short:`\TYPO3\CMS\Extbase\Validation\Validator\ConstraintDecoratingValidator`
+class, which is compatible with Extbase's
+:php-short:`\TYPO3\CMS\Extbase\Validation\ValidatorInterface`.
+
+Decorated constraints may include localizable messages. If a message contains
+valid `LLL:` syntax, the label will be translated automatically. The decorating
+validator also handles message parameters by converting named parameters such as
+`{{ value }}` into :php:`sprintf`-compatible placeholders like `%1$s`.
 
 ..  important::
 
-    Most of the available constraints such as :php:`#[NotBlank]` and
-    :php:`#[Regex]` can be used. However, more complex constraints like
-    :php:`#[File]` or :php:`#[Image]` are currently not compatible to the
-    available implementation within Extbase, since they are very strong bound to
-    the Symfony Framework. Compatibility with those validators and constraints
-    may be added in the future.
+    Most available Symfony constraints, such as :php:`#[NotBlank]` and
+    :php:`#[Regex]`, can be used. However, more complex constraints such as
+    :php:`#[File]` or :php:`#[Image]` are not yet compatible with the current
+    Extbase implementation, as they are closely tied to the Symfony framework.
+    Compatibility for those constraints may be added in the future.
 
 Example
 -------
@@ -91,13 +92,12 @@ Example
         }
     }
 
-
 Impact
 ======
 
-A various set of additional validators can now be used within Extbase. This
-allows for an easier integration of validations without the need of building
-custom validators, since Symfony already ships with a huge amount of available
-validators.
+A wide range of Symfony validators can now be used directly in Extbase.
+This provides a more flexible and standardized validation workflow without the
+need to implement custom validators, as Symfony already ships with a large
+number of predefined constraints.
 
 ..  index:: Frontend, ext:extbase

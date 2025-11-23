@@ -11,57 +11,57 @@ See :issue:`93334`
 Description
 ===========
 
-Translation domains have been introduced as a shorter alternative to file-based
-references for label resources (:file:`.xlf` XLIFF files). The syntax uses the format
-`package[.subdomain...].resource` and is fully backward compatible
-with existing `LLL:EXT:` references. "Package" refers to the *extension key*,
-like "*backend*" for "EXT:backend".
+Translation domains have been introduced as a shorter alternative to
+file-based references for label resources (:file:`.xlf` XLIFF files). The
+syntax uses the format `package[.subdomain...].resource` and is fully backward
+compatible with existing `LLL:EXT:` references. *Package* refers to the
+extension key, such as "*backend*" for "EXT:backend".
 
-This synax is designed to improve readability, remove a clear reference
-to the used file extension and to add convenience for new developers and
-integrators: The previous :file:`locallang.xlf` convention as well as the
-name has been removed in favor of a more generic "*messages*" resource name,
-which is common for localization systems or Symfony-based applications.
-This is also where the term "translation domain" stems from.
+This syntax is designed to improve readability, remove explicit references to
+file extensions, and provide convenience for new developers and integrators.
+The previous :file:`locallang.xlf` convention has been replaced with a more
+generic "*messages*" resource name, following common conventions in other
+localization systems (for example Symfony). This is also where the term
+*translation domain* originates.
 
 Example:
 
-.. code-block:: php
+..  code-block:: php
 
     // Domain-based reference
     $languageService->sL('backend.toolbar:save');
 
-    // Equivalent file-based reference (existing syntax, still supported)
-    $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:save');
+    // Equivalent file-based reference (still supported)
+    $languageService->sL(
+        'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:save'
+    );
 
 ..  note::
 
     The existing syntax and naming
     (`LLL:EXT:extension/Resources/Private/Language/locallang.xlf:label`)
-    will be around for a long while without a deprecation notice.
+    will remain available without deprecation for a long time.
 
 ..  _feature-93334-translation-domain-format:
 
 Translation Domain Format
 =========================
 
-The format defines two parts: The *package part* (extension key) and the *resource part*.
-These are separated by a dot.
+The format defines two parts: the *package part* (extension key) and the
+*resource part*, separated by a dot.
 
-As mentioned, the resource part will leave out previous historical
-namings, especially `locallang.xlf` and the `locallang_` prefix.
-
-The actual identifier within the resource is separated by a colon.
+The resource part omits historical namings such as `locallang.xlf` and the
+`locallang_` prefix. The actual label identifier is separated by a colon.
 
 Format
 ------
 
-.. code-block:: php
-   :caption: Example usage of "package.resource:identifier"
+..  code-block:: php
+    :caption: Example usage of "package.resource:identifier"
 
     $languageService->sL('backend.toolbar:save');
-    // Resolves to: EXT:backend/Resources/Private/Language/locallang_toolbar.xlf and
-    // returns the translated "save" identifier.
+    // Resolves to: EXT:backend/Resources/Private/Language/locallang_toolbar.xlf
+    // and returns the translated "save" identifier.
 
 ..  _feature-93334-domain-resolution:
 
@@ -71,22 +71,21 @@ Domain Resolution
 ..  _feature-93334-deterministic-mapping:
 
 Deterministic File-Based Mapping
----------------------------------
+--------------------------------
 
-Translation domains are resolved deterministically by scanning the file system.
-When a domain is first requested for a package:
+Translation domains are resolved deterministically by scanning the file
+system. When a domain is first requested for a package:
 
-1. All label files in :directory:`Resources/Private/Language/` are discovered
-2. A domain name is generated from each file name
-3. The domain-to-file mapping is cached in `cache.l10n`
-4. Subsequent requests use the cached mapping
+1. All label files in :directory:`Resources/Private/Language/` are discovered.
+2. A domain name is generated from each file name.
+3. The domain-to-file mapping is cached in `cache.l10n`.
+4. Subsequent requests use the cached mapping.
 
-This ensures domain names always correspond to existing files and prevents
+This ensures that domain names always correspond to existing files and avoids
 speculative file system lookups.
 
-When there are filename conflicts, such as :file:`locallang_db.xlf` and :file:`db.xlf`,
-then :file:`locallang_db.xlf` will be ignored.
-
+When there are filename conflicts such as :file:`locallang_db.xlf` and
+:file:`db.xlf`, then :file:`locallang_db.xlf` will be ignored.
 
 ..  _feature-93334-performance:
 
@@ -94,8 +93,7 @@ Performance Characteristics
 ---------------------------
 
 The implementation reduces file system operations compared to traditional
-file-based lookups, as all label files within an extension are discovered
-once.
+file-based lookups, as all label files within an extension are discovered once.
 
 ..  _feature-93334-domain-rules:
 
@@ -104,7 +102,7 @@ Domain Generation Rules
 
 Domain names are generated from file paths using these transformation rules:
 
-1. The base path :directory:`Resources/Private/Language/` is omitted
+1. The base path :directory:`Resources/Private/Language/` is omitted.
 
 2. Standard filename patterns:
 
@@ -125,15 +123,15 @@ Domain names are generated from file paths using these transformation rules:
    * UpperCamelCase → snake_case (`SudoMode` → `sudo_mode`)
    * snake_case → preserved (`sudo_mode` → `sudo_mode`)
 
-6. Locale prefixes are irrelevant for the resource identifier resolving.
-   These prefixes will be properly evaluated internally for later locale-based translations:
+6. Locale prefixes are ignored for domain name generation but properly
+   evaluated for locale-specific translations:
 
    * (`de.locallang.xlf` → `messages`)
    * (`de-AT.tabs.xlf` → `tabs`)
 
 Examples:
 
-.. code-block:: text
+..  code-block:: text
 
     File Path                                     → Domain
     ────────────────────────────────────────────────────────────
@@ -148,10 +146,12 @@ Usage
 =====
 
 The translation domain system integrates with the existing
-:php:`TYPO3\CMS\Core\Localization\LanguageService` API. Both
-domain-based and file-based references are supported:
+:php:`\TYPO3\CMS\Core\Localization\LanguageService` API. Both domain-based and
+file-based references are supported:
 
-.. code-block:: php
+..  code-block:: php
+
+    use TYPO3\CMS\Core\Localization\LanguageService;
 
     $languageService = $this->languageServiceFactory->createFromSiteLanguage(
         $request->getAttribute('language')
@@ -164,20 +164,22 @@ domain-based and file-based references are supported:
     $label = $languageService->sL('backend.messages:button.save');
 
     // Traditional file reference (still supported)
-    $label = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:button.save');
+    $label = $languageService->sL(
+        'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:button.save'
+    );
 
-Domain-based references are shorter and expose less implementation detail
-compared to full file paths.
+Domain-based references are shorter and reveal less implementation detail than
+full file paths.
 
 ..  _feature-93334-cli:
 
 CLI Command
 ===========
 
-The development command :bash:`bin/typo3 language:domain:list` lists all available translation domains
-with their available translations and label counts:
+The development command :bash:`bin/typo3 language:domain:list` lists all available
+translation domains along with their available translations and label counts:
 
-.. code-block:: bash
+..  code-block:: bash
 
     # List domains in active extensions
     php bin/typo3 language:domain:list
@@ -187,7 +189,7 @@ with their available translations and label counts:
 
 Output:
 
-.. code-block:: text
+..  code-block:: text
 
     +--------------------+---------------------------------------+----------+
     | Translation Domain | Label Resource                        | # Labels |
@@ -196,8 +198,8 @@ Output:
     | backend.toolbar    | EXT:backend/.../locallang_toolbar.xlf | 42       |
     +--------------------+---------------------------------------+----------+
 
-The **Labels** column displays the number of translatable labels within
-the English source file.
+The **Labels** column displays the number of translatable labels within the
+English source file.
 
 On top of this, the development command :bash:`bin/typo3 language:domain:search`
 can be used to search for specific label contents. Both commands are provided
@@ -208,10 +210,8 @@ in the `EXT:lowlevel` extension.
 PSR-14 Event
 ============
 
-The event :php:`BeforeLabelResourceResolvedEvent` is dispatched after domain
-generation, allowing customization of domain names.
-
-Event: :php:`TYPO3\CMS\Core\Localization\Event\BeforeLabelResourceResolvedEvent`
+The event :php:`\TYPO3\CMS\Core\Localization\Event\BeforeLabelResourceResolvedEvent`
+is dispatched after domain generation, allowing customization of domain names.
 
 The event provides these public properties:
 
@@ -224,7 +224,7 @@ Example
 
 Event listener implementation:
 
-.. code-block:: php
+..  code-block:: php
 
     namespace MyVendor\MyExtension\EventListener;
 
@@ -373,24 +373,28 @@ Impact
 
 Translation domains provide a shorter, more readable alternative to file-based
 label references. The implementation uses deterministic file-system scanning
-with per-package caching to reduce file system operations.
+with per-package caching to reduce lookups.
 
 All existing `LLL:EXT:` file references continue to work. Translation domains
-are optional and can be adopted incrementally. Both syntaxes can be mixed
-within the same codebase. This affects TypoScript, Fluid :fluid:`<f:translate>`
-usages, TCA configuration, and PHP code using the :php:`LanguageService` API.
+are optional and can be adopted incrementally. Both syntaxes can coexist in
+the same codebase. This affects TypoScript, Fluid
+:fluid:`<f:translate>` usages, TCA configuration, and PHP code using the
+:php-short:`\TYPO3\CMS\Core\Localization\LanguageService` API.
 
-TYPO3 Core will slowly migrate internal references to use translation domains
-over time, as this increases readability, especially in Fluid templates,
-or TCA references.
+TYPO3 Core will gradually migrate internal references to translation domains
+over time, increasing readability—especially in Fluid templates or TCA
+definitions.
 
 Technical components:
 
-* :php:`TranslationDomainMapper` - Maps domains to file paths, manages cache
-* :php:`LabelFileResolver` - Discovers label files and handles locale resolution
-* :php:`LocalizationFactory` - Integrates domain resolution transparently
+:php:`\TYPO3\CMS\Core\Localization\TranslationDomainMapper`
+    Maps domains to file paths and manages the cache.
+:php:`\TYPO3\CMS\Core\Localization\LabelFileResolver`
+    Discovers label files and handles locale resolution.
+:php:`\TYPO3\CMS\Core\Localization\LocalizationFactory`
+    Integrates domain resolution transparently.
 
-The :php:`TranslationDomainMapper` automatically detects file references
-(`EXT:` prefix) and passes them through unchanged.
+The :php-short:`\TYPO3\CMS\Core\Localization\TranslationDomainMapper`
+automatically detects `EXT:` file references and passes them through unchanged.
 
 ..  index:: PHP-API, Localization, ext:core

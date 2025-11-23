@@ -1,9 +1,9 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _breaking-107783-1760945127:
+..  _breaking-107783-1760945127:
 
 =======================================================================================
-Breaking: #107783 - Registration of Metadata Extractors via `registerExtractionService`
+Breaking: #107783 - Registration of metadata extractors via `registerExtractionService`
 =======================================================================================
 
 See :issue:`107783`
@@ -11,34 +11,37 @@ See :issue:`107783`
 Description
 ===========
 
-The method :php:`TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::registerExtractionService()`
-has been removed in favor of automatic registration via the
-:php:`TYPO3\CMS\Core\Resource\Index\ExtractorInterface`.
+The method
+:php:`\TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::registerExtractionService()`
+has been removed in favor of automatic registration via the interface
+:php:`\TYPO3\CMS\Core\Resource\Index\ExtractorInterface`.
 
-Registration of Metadata extractors now happens automatically when the required
-interface :php:`TYPO3\CMS\Core\Resource\Index\ExtractorInterface` is implemented
-by a class. No further registration is necessary.
+Registration of metadata extractors now happens automatically when a class
+implements the required interface
+:php-short:`\TYPO3\CMS\Core\Resource\Index\ExtractorInterface`. No further
+registration is necessary.
 
 Impact
 ======
 
-Any call to :php:`ExtractorRegistry::registerExtractionService()` is now a no-op
-and has no effect in TYPO3 v14.0+. Metadata extractors are registered automatically
-via the interface.
+Any call to :php:`ExtractorRegistry::registerExtractionService()` is now a
+no-op and has no effect in TYPO3 v14.0+. Metadata extractors are automatically
+registered via the interface.
 
 Affected installations
 ======================
 
-TYPO3 installations with custom extensions that register Metadata extractor classes
-via the mentioned method in :file:`ext_localconf.php`. The extension scanner will
-report usages.
+TYPO3 installations with custom extensions that register metadata extractor
+classes via the mentioned method in :file:`ext_localconf.php`.
+
+The extension scanner will report such usages.
 
 Migration
 =========
 
-The method is removed without deprecation in order to allow extensions
-to work with TYPO3 v13 (using the registration method) and v14+ (using
-automatic interface-based registration) without any further deprecations.
+The method has been removed without deprecation in order to allow extensions
+to work with TYPO3 v13 (using the registration method) and v14+ (using automatic
+interface-based registration) without additional deprecations.
 
 Remove the manual registration from :file:`ext_localconf.php`:
 
@@ -49,7 +52,7 @@ Remove the manual registration from :file:`ext_localconf.php`:
     - $extractorRegistry->registerExtractionService(MyExtractor::class);
 
 Since custom extractors already implement the required interface
-:php:`TYPO3\CMS\Core\Resource\Index\ExtractorInterface`, no further change
-is required inside the extractor class itself.
+:php-short:`\TYPO3\CMS\Core\Resource\Index\ExtractorInterface`, no further
+changes are required inside the extractor class itself.
 
-.. index:: FAL, PHP-API, FullyScanned, ext:core
+..  index:: FAL, PHP-API, FullyScanned, ext:core

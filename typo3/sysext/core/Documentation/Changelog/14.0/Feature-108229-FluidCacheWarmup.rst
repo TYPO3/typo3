@@ -11,16 +11,16 @@ See :issue:`108229`
 Description
 ===========
 
-TYPO3 v14 leverages the revamped Fluid v5 warmup feature and integrates
-a fluid template warmup directly into CLI command :shell:`typo3 cache:warmup`.
+TYPO3 v14 leverages the revamped Fluid v5 warmup feature and integrates a
+Fluid template warmup directly into the :abbr:`CLI (command line interface)`
+command :shell:`typo3 cache:warmup`.
 
-The command finds and compiles all :file:`*.fluid.*` (example: :file:`Index.fluid.html`)
-files found in extensions.
+The command finds and compiles all :file:`*.fluid.*` (for example
+:file:`Index.fluid.html`) files found in extensions.
 
-Fluid warmup can also be called directly using :shell:`typo3 fluid:cache:warmup`
-which will additionally output compile time deprecations found within fluid
-template files.
-
+Fluid warmup can also be called directly using :shell:`typo3
+fluid:cache:warmup`, which will additionally output compile time
+deprecations found within Fluid template files.
 
 Impact
 ======

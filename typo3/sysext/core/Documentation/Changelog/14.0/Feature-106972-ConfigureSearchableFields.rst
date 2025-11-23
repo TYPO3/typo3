@@ -45,16 +45,16 @@ Supported Field Types
 The following TCA field types support the :php:`searchable` option and are
 automatically considered in searches unless explicitly excluded:
 
-* :php:`color`
-* :php:`datetime` (when not using a custom :php:`dbType`)
-* :php:`email`
-* :php:`flex`
-* :php:`input`
-* :php:`json`
-* :php:`link`
-* :php:`slug`
-* :php:`text`
-* :php:`uuid`
+*   :php:`color`
+*   :php:`datetime` (when not using a custom :php:`dbType`)
+*   :php:`email`
+*   :php:`flex`
+*   :php:`input`
+*   :php:`json`
+*   :php:`link`
+*   :php:`slug`
+*   :php:`text`
+*   :php:`uuid`
 
 Unsupported field types such as :php:`file`, :php:`inline`, :php:`password` or
 :php:`group` are excluded from search and do not support the
@@ -63,10 +63,10 @@ Unsupported field types such as :php:`file`, :php:`inline`, :php:`password` or
 Impact
 ======
 
-- Backend search becomes more consistent and automatic.
-- No need to manually maintain a :php:`searchFields` list in TCA.
-- Integrators have more granular control over search behavior on a field level.
-- Custom fields can easily be excluded from search using the :php:`searchable` option.
+*   Backend search becomes more consistent and automatic.
+*   No need to manually maintain a :php:`searchFields` list in TCA.
+*   Integrators have more granular control over search behavior on a field level.
+*   Custom fields can easily be excluded from search using the :php:`searchable` option.
 
 Migration
 =========

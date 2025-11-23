@@ -11,38 +11,35 @@ See :issue:`98070`
 Description
 ===========
 
-The eval method `year` has been used to check the value of a TCA field. Its
-implementation has never been completed and just casted the value to an integer.
+The eval method `year` was used to validate the value of a TCA field. Its
+implementation was never completed and simply cast the value to an integer.
 
-As there is no definition what value a year can be, it has been removed
-without substitution.
-
+As there is no clear definition of what a valid year value should be, the
+method has been removed without substitution.
 
 Impact
 ======
 
-The value `year` has been removed from the eval list.
+The value `year` has been removed from the list of supported `eval` options.
 
-The TCA migration will trigger a deprecation log entry when
-building the final TCA.
-
+The TCA migration will trigger a deprecation log entry when building the final
+TCA.
 
 Affected installations
 ======================
 
-TYPO3 instances using old extensions which provide custom TCA configurations
-having this option set.
-
+TYPO3 installations using old extensions that define custom TCA configurations
+with this option set are affected.
 
 Migration
 =========
 
-Remove the setting from the TCA and use a TCA type which suits better
-to your needs.
+Remove the `year` eval setting from your TCA configuration and use a TCA field
+type that better suits your needs.
 
-.. code-block:: php
+..  code-block:: php
 
-    // Use type "number" with optional range restriction
+    // Use type "number" with an optional range restriction
     'variant_a' => [
         'label' => 'My year',
         'config' => [
@@ -55,7 +52,7 @@ to your needs.
         ],
     ],
 
-    // Use a date field with optional range restriction
+    // Use a date field with an optional range restriction
     'variant_b' => [
         'label' => 'My year',
         'config' => [

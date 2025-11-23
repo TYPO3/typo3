@@ -16,8 +16,8 @@ using a separate :file:`typo3/install.php` file. This modernization improves
 consistency while maintaining full backward compatibility.
 
 If the TYPO3 installation is not working properly, the Install Tool can now be
-accessed via the `?__typo3_install` parameter behavior so that administrators
-rely on for system maintenance and recovery.
+accessed via the `?__typo3_install` parameter, ensuring administrators can rely
+on it for system maintenance and recovery.
 
 Impact
 ======
@@ -27,15 +27,15 @@ Impact
 All existing workflows continue to work without changes. However, the Install
 Tool is now accessible via:
 
-- The `__typo3_install` parameter (e.g., `https://example.com/?__typo3_install`)
-- Backend routes like `/typo3/install` and `/typo3/install.php` keep working,
-  if the :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['entryPoint']` is set, the
-  Install Tool adapts accordingly.
+*   The `__typo3_install` parameter (for example, `https://example.com/?__typo3_install`)
+*   Backend routes such as `/typo3/install` and `/typo3/install.php` still work.
+    If the :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['entryPoint']` is set, the
+    Install Tool adapts accordingly.
 
 **System Recovery:**
 
-When TYPO3 installation is not set up or not working properly, the magic
-`__typo3_install` parameter still redirects to the installer/maintenance tool
+When the TYPO3 installation is not set up or not working properly, the magic
+`__typo3_install` parameter still redirects to the installer or maintenance tool
 as before, ensuring administrators can always access system recovery tools.
 
 **Technical Benefits:**

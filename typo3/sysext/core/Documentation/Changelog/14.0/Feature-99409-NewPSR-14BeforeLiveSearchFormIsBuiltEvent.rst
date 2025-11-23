@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _feature-99409-1691445436:
+..  _feature-99409-1691445436:
 
 =============================================================
 Feature: #99409 - New PSR-14 BeforeLiveSearchFormIsBuiltEvent
@@ -16,22 +16,25 @@ has been added.
 
 To modify the live search form data, the following methods are available:
 
--   :php:`addHint()`: Add a single hint.
--   :php:`addHints()`: Add one or multiple hints.
--   :php:`setHints()`: Allows to set hints. Can be used to reset or overwrite current hints.
--   :php:`getHints()`: Returns all hints.
--   :php:`getRequest()`: Returns the current PSR-7 Request.
--   :php:`getSearchDemand()`: Returns the :php:`SearchDemand`, used by the live search.
--   :php:`setSearchDemand()`: Allows to set a custom :php:`SearchDemand` object.
--   :php:`getAdditionalViewData(): Returns the additional view data set to be used in the template.
--   :php:`setAdditionalViewData(): Set the additional view data to be used in the template.
+-   :php:`addHint()`: Adds a single hint.
+-   :php:`addHints()`: Adds one or multiple hints.
+-   :php:`setHints()`: Sets hints and can be used to reset or overwrite the
+    current ones.
+-   :php:`getHints()`: Returns all current hints.
+-   :php:`getRequest()`: Returns the current PSR-7 request.
+-   :php:`getSearchDemand()`: Returns the :php:`SearchDemand` used by the live search.
+-   :php:`setSearchDemand()`: Sets a custom :php:`SearchDemand` object.
+-   :php:`getAdditionalViewData()`: Returns the additional view data set to be
+    used in the template.
+-   :php:`setAdditionalViewData()`: Sets the additional view data to be used in
+    the template.
 
 ..  note::
 
-    :php:`setAdditionalViewData()` becomes handy to provide additional data to
-    the template without the need to cross class ("xclass") the controller. The
-    additional view data can be used in a overridden backend template of the
-    live search form.
+    The method :php:`setAdditionalViewData()` is useful to provide additional
+    data to the template without the need to cross-class (XCLASS) the controller.
+    The additional view data can then be used in an overridden backend template
+    of the live search form.
 
 Example
 -------
@@ -49,20 +52,21 @@ The corresponding event listener class:
 
     final class BeforeLiveSearchFormIsBuiltEventListener
     {
-        #[AsEventListener('my-package/backend/search/modify-live-search-form-data')]
+        #[AsEventListener(
+            identifier: 'my-package/backend/search/modify-live-search-form-data'
+        )]
         public function __invoke(BeforeLiveSearchFormIsBuiltEvent $event): void
         {
             $event->addHints(...[
-                'LLL:EXT:my-package/Resources/Private/Language/locallang.xlf:identifier',
+                'my-extension.messages:identifier',
             ]);
         }
     }
 
-
 Impact
 ======
 
-It's now possible to modify the form data for the backend live search, using
-the new PSR-14 event :php:`BeforeLiveSearchFormIsBuiltEvent`.
+With the new PSR-14 event :php:`BeforeLiveSearchFormIsBuiltEvent`, it is now
+possible to modify the form data for the backend live search.
 
-.. index:: Backend, PHP-API, ext:backend
+..  index:: Backend, PHP-API, ext:backend

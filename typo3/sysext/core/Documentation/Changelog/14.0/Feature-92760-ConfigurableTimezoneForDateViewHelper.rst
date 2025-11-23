@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _feature-92760-1733907198:
+..  _feature-92760-1733907198:
 
 ==========================================================
 Feature: #92760 - Configurable timezone for DateViewHelper
@@ -11,10 +11,11 @@ See :issue:`92760`
 Description
 ===========
 
-A new option :html:`timezone` has been added to the :php:`DateViewHelper` to render
-a date with the provided time zone.
+A new option :html:`timezone` has been added to the
+:php:`\TYPO3Fluid\Fluid\ViewHelpers\Format\DateViewHelper` to render a date
+with a provided time zone.
 
-.. code-block:: html
+..  code-block:: html
 
     <f:format.date format="d.m.Y g:i a" date="1640995200" /><br>
     <f:format.date format="d.m.Y g:i a" date="1640995200" timezone="America/Phoenix" /><br>
@@ -22,7 +23,7 @@ a date with the provided time zone.
 
 will render:
 
-.. code-block:: html
+..  code-block:: html
 
     01.01.2022 12:00 am
     31.12.2021 5:00 pm
@@ -31,7 +32,7 @@ will render:
 Impact
 ======
 
-Using the new :html:`timezone` option, it's now possible to set a specific
-time zone for the the :php:`DateViewHelper`.
+Using the new :html:`timezone` option, it is now possible to set a specific
+time zone for the :php:`DateViewHelper`.
 
-.. index:: Fluid, ext:fluid
+..  index:: Fluid, ext:fluid

@@ -12,31 +12,30 @@ Description
 ===========
 
 The :php:`\TYPO3\CMS\Core\DataHandling\DataHandler` PHP API has been
-extended with a new "discard" command to simplify workspace management.
+extended with a new `"discard"` command to simplify workspace management.
 
 This new command provides a cleaner, more explicit way to discard workspace
 records compared to the previous approach using version commands.
 
-The new "discard" command can be used in the :php:`$commandArray` parameter
+The new `"discard"` command can be used in the :php:`$commandArray` parameter
 when calling the DataHandler to remove versioned records from a workspace.
 
 Impact
 ======
 
-The "discard" command offers a more intuitive API for workspace operations:
+The `"discard"` command offers a more intuitive API for workspace operations:
 
-*   Instead of using complex version commands with actions like "clearWSID"
-    or "flush", you can now use the straightforward "discard" command.
+*   Instead of using complex version commands with actions such as `"clearWSID"`
+    or `"flush"`, you can now use the straightforward `"discard"` command.
 *   The command name clearly indicates its purpose.
-*   The command handles all aspects of discarding workspace records,
-    including its child records.
+*   The command handles all aspects of discarding workspace records, including
+    any related child records.
 
 Usage
 =====
 
-When using the "discard" command, it is crucial to use the uid of the
-versioned record (workspace version), not the live record's uid, as it serves
-no purpose.
+When using the `discard` command, it is crucial to use the UID of the
+versioned record (workspace version), not the UID of the live record.
 
 ..  code-block:: php
     :caption: Discarding a workspace record using DataHandler
@@ -77,16 +76,16 @@ no purpose.
     $dataHandler->process_cmdmap();
 
 ..  important::
-    Always ensure you are using the UID of the versioned record when
-    discarding workspace records. Using the live record's UID will not work
-    as expected. You can identify versioned records by checking that
+    Always ensure that you are using the UID of the versioned record when
+    discarding workspace records. Using the live record's UID will not work as
+    expected. You can identify versioned records by checking that
     :sql:`t3ver_wsid` > 0 and :sql:`t3ver_oid` points to the live record.
 
-Migration from Legacy Commands
+Migration from legacy commands
 ==============================
 
-The new "discard" command replaces the previous version-based approach,
-which is not widely known:
+The new `discard` command replaces the previous version-based approach,
+which was not widely known:
 
 ..  code-block:: php
     :caption: Legacy approach (still supported but discouraged)
@@ -114,8 +113,8 @@ which is not widely known:
         ],
     ];
 
-The previous "clearWSID" and "flush" actions are still supported for backward
-compatibility but are considered deprecated and will be removed in future
-versions.
+The previous `clearWSID` and `flush` actions are still supported for
+backward compatibility but are considered deprecated and will be removed in
+future versions.
 
 ..  index:: PHP-API, ext:core

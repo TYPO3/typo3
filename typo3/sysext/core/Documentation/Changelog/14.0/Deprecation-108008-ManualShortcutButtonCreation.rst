@@ -11,17 +11,22 @@ See :issue:`108008`
 Description
 ===========
 
-Manually creating and adding :php:`ShortcutButton` instances to the button bar
-is deprecated and will trigger a deprecation warning.
+Manually creating and adding
+:php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\ShortcutButton`
+instances to the button bar is deprecated and will trigger a deprecation
+warning.
 
-Controllers should use the new :php:`DocHeaderComponent::setShortcutContext()`
+Controllers should use the new
+:php-short:`\TYPO3\CMS\Backend\Template\Components\DocHeaderComponent::setShortcutContext()`
 method instead, which automatically creates and positions the shortcut button.
 
 Impact
 ======
 
-Controllers that manually create and add :php:`ShortcutButton` to the button bar
-will trigger a deprecation warning. The button will still work as expected.
+Controllers that manually create and add
+:php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\ShortcutButton`
+instances to the button bar will trigger a deprecation warning. The shortcut
+button will still work as expected.
 
 Affected installations
 ======================
@@ -31,7 +36,7 @@ Installations with custom backend modules that manually create shortcut buttons.
 Migration
 =========
 
-Replace manual shortcut button creation with the new API:
+Replace manual shortcut button creation with the new API.
 
 **Before**:
 

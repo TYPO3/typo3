@@ -14,10 +14,10 @@ Description
 The following internal methods have been removed from
 :php:`\TYPO3\CMS\Core\Resource\ResourceFactory`:
 
-- :php:`getDefaultStorage()`
-- :php:`getStorageObject()`
-- :php:`createFolderObject()`
-- :php:`getFileObjectByStorageAndIdentifier()`
+*   :php:`getDefaultStorage()`
+*   :php:`getStorageObject()`
+*   :php:`createFolderObject()`
+*   :php:`getFileObjectByStorageAndIdentifier()`
 
 These methods were marked as :php:`@internal` and are replaced by using
 :php:`\TYPO3\CMS\Core\Resource\StorageRepository` directly for better

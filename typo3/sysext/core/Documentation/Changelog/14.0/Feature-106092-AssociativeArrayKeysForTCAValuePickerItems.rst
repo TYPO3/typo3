@@ -12,19 +12,21 @@ Description
 ===========
 
 It is now possible to define associative array keys for the :php:`items`
-configuration of TCA configuration :php:`valuePicker`. The
-new keys are called: :php:`label` and :php:`value`.
+configuration of the TCA type :php:`valuePicker`.
+The new keys are called :php:`label` and :php:`value`.
 
-This follows the change done already to the :php:`items` configuratio of the TCA types :php:`select`, :php:`radio` and :php:`check`. See :issue:`99739`
-
+This follows the change made previously to the :php:`items` configuration
+of the TCA types :php:`select`, :php:`radio`, and :php:`check`.
+See :issue:`99739`.
 
 Impact
 ======
 
-It is now much easier and clearer to define the TCA :php:`items` configuration
-with associative array keys. The struggle to remember which option is first,
-label or value, is now over. In addition, optional keys like :php:`icon` and
-:php:`group` can be omitted, for example, when one desires to set the
-:php:`description` option.
+The TCA :php:`items` configuration can now be defined in a more consistent
+and readable way using associative array keys. This eliminates ambiguity
+about whether the label or value comes first.
+
+Optional keys such as :php:`icon`, :php:`group`, or :php:`description` can be
+used as needed.
 
 ..  index:: TCA, ext:backend

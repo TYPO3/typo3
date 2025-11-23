@@ -11,43 +11,44 @@ See :issue:`105686`
 Description
 ===========
 
-Class :php:`TYPO3\CMS\Core\Resource\Driver\DriverInterface`:
+The interface
+:php:`\TYPO3\CMS\Core\Resource\Driver\DriverInterface` has been updated.
 
-.. code-block:: php
+The method signature
+
+..  code-block:: php
 
     public function sanitizeFileName(string $fileName, string $charset = ''): string
 
 has been simplified to:
 
-.. code-block:: php
+..  code-block:: php
 
     public function sanitizeFileName(string $fileName): string
 
-Classes implementing the interface no longer need to take care of
-a second argument.
+Implementing classes no longer need to handle a second argument.
 
 Impact
 ======
 
-This most likely has little to no impact since the main API caller,
-the core class :php:`ResourceStorage` never hands over the second
-argument. Default implementing class :php:`TYPO3\CMS\Core\Resource\Driver\LocalDriver`
-thus always fell back as if handling utf-8 strings.
-
+This change has little to no impact, since the main API caller - the Core
+class :php-short:`\TYPO3\CMS\Core\Resource\ResourceStorage` - never passed a
+second argument. The default implementation,
+:php-short:`\TYPO3\CMS\Core\Resource\Driver\LocalDriver`, has therefore always
+behaved as if handling UTF-8 strings.
 
 Affected installations
 ======================
 
-Projects with instances implementing own FAL drivers using :php:`DriverInterface`
-may be affected.
-
+TYPO3 installations with custom File Abstraction Layer (FAL) drivers
+implementing :php-short:`\TYPO3\CMS\Core\Resource\Driver\DriverInterface` may
+be affected.
 
 Migration
 =========
 
-Implementing classes should drop support for the second argument. It does
-not collide with the interface if the second argument is kept, but core
-code will never call method :php:`sanitizeFileName()` with handing over
-a value for a second argument.
+Implementing classes should drop support for the second argument. Retaining it
+does not cause a conflict with the interface, but the TYPO3 Core will never
+call :php:`sanitizeFileName()` with a second parameter.
 
 ..  index:: FAL, PHP-API, NotScanned, ext:core

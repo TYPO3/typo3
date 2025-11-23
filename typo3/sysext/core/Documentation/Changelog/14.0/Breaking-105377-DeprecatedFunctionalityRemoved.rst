@@ -196,7 +196,7 @@ The following TCA options are not evaluated anymore:
 
 The following extbase validator options have been removed:
 
-- :php:`errorMessage` in :php:`TYPO3\CMS\Extbase\Validation\Validator\RegularExpressionValidator` :ref:`(Deprecation entry) <deprecation-102326-1699703964>`
+- :php:`errorMessage` in :php:`\TYPO3\CMS\Extbase\Validation\Validator\RegularExpressionValidator` :ref:`(Deprecation entry) <deprecation-102326-1699703964>`
 - Shorthand support of :php`TYPO3.CMS.Extbase` usage :ref:`(Deprecation entry) <deprecation-103965-1717335369>`
 
 The following fallbacks have been removed:

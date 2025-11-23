@@ -3,7 +3,7 @@
 ..  _breaking-107507-1758376090:
 
 ========================================================================================
-Breaking: #107507 - Removed ext:form AbstractFinisher->getTypoScriptFrontendController()
+Breaking: #107507 - Removed EXT:form AbstractFinisher->getTypoScriptFrontendController()
 ========================================================================================
 
 See :issue:`107507`
@@ -11,38 +11,44 @@ See :issue:`107507`
 Description
 ===========
 
-Method :php:`TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher->getTypoScriptFrontendController()`
-has been removed. The entire class is being phased out, forcing removal of this abstract helper
-method.
+The method
+:php:`\TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher->getTypoScriptFrontendController()`
+has been removed.
 
+Since the entire :php-short:`TypoScriptFrontendController` class is being phased out,
+this abstract helper method has been removed as part of that cleanup.
 
 Impact
 ======
 
-Calling the method in a custom ext:form finisher class will trigger a fatal PHP error.
-
+Calling this method in a custom EXT:form finisher will result in a fatal PHP
+error.
 
 Affected installations
 ======================
 
-Instances using the form extension with custom finishers may be affected. The extension scanner is
-configured to find usages.
-
+TYPO3 instances using EXT:form with custom finishers that call this method are
+affected. The extension scanner is configured to detect such usages.
 
 Migration
 =========
 
-Migration depends on what is done with the class instance. Properties and helper methods
-within :php:`TypoScriptFrontendController` are modeled differently, with most data being
-available as request attributes.
+Migration depends on what the finisher previously did with the returned class
+instance. The :php:`TypoScriptFrontendController` properties and helper methods
+have been modernized, with most data now available as request attributes.
 
-An access to property :php:`cObj` can be substituted like this:
+For example, accessing the :php:`cObj` property can be replaced like this:
 
-.. code-block:: php
+..  code-block:: php
+
+    use TYPO3\CMS\Core\Utility\GeneralUtility;
+    use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
     $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
     $cObj->setRequest($request);
-    $cObj->start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages');
-
+    $cObj->start(
+        $request->getAttribute('frontend.page.information')->getPageRecord(),
+        'pages'
+    );
 
 ..  index:: PHP-API, FullyScanned, ext:form

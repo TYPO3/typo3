@@ -3,7 +3,7 @@
 ..  _feature-107759-1729433323:
 
 =========================================================================
-Feature: #107759 - TranslateViewHelper supports Translation Domain syntax
+Feature: #107759 - TranslateViewHelper supports translation domain syntax
 =========================================================================
 
 See :issue:`107759`
@@ -12,44 +12,44 @@ Description
 ===========
 
 The Fluid :html:`<f:translate>` ViewHelper now supports the new
-:ref:`Translation Domain syntax <feature-93334-translation-domain-format>`,
+:ref:`translation domain syntax <feature-93334-translation-domain-format>`,
 providing a more concise and readable way to reference translation labels.
 
-A new :html:`domain` attribute has been added that accepts both traditional
+A new `domain` attribute has been added that accepts both traditional
 extension names and the new translation domain names.
 
 The ViewHelper now supports multiple ways to specify translations:
 
-1. **New domain attribute** - Recommended for new code:
+1.  **New domain attribute** - recommended for new code:
 
-   ..  code-block:: html
+    ..  code-block:: html
 
-       <f:translate key="form.legend" domain="my_extension" />
-       <f:translate key="form.legend" domain="my_extension.messages" />
+        <f:translate key="form.legend" domain="my_extension" />
+        <f:translate key="form.legend" domain="my_extension.messages" />
 
-2. **Inline domain syntax in key** - Shortest form:
+2.  **Inline domain syntax in key** - shortest form:
 
-   ..  code-block:: html
+    ..  code-block:: html
 
-       <f:translate key="my_extension.messages:form.legend" />
-       <f:translate key="LLL:my_extension.messages:form.legend" />
+        <f:translate key="my_extension.messages:form.legend" />
+        <f:translate key="LLL:my_extension.messages:form.legend" />
 
-3. **Traditional extensionName attribute** - Still supported:
+3.  **Traditional extensionName attribute** - still supported:
 
-   ..  code-block:: html
+    ..  code-block:: html
 
-       <f:translate key="form.legend" extensionName="MyExtension" />
-       <f:translate key="form.legend" extensionName="my_extension" />
+        <f:translate key="form.legend" extensionName="MyExtension" />
+        <f:translate key="form.legend" extensionName="my_extension" />
 
-4. **Full LLL reference** - Classic syntax, still supported:
+4.  **Full LLL reference** - classic syntax, still supported:
 
-   ..  code-block:: html
+    ..  code-block:: html
 
-       <f:translate key="LLL:EXT:my_extension/Resources/Private/Language/locallang.xlf:form.legend" />
+        <f:translate key="LLL:EXT:my_extension/Resources/Private/Language/locallang.xlf:form.legend" />
 
 
-Domain Attribute Priority
-==========================
+Domain attribute priority
+=========================
 
 When both :html:`domain` and :html:`extensionName` are provided, the
 :html:`domain` attribute takes precedence:
@@ -60,22 +60,23 @@ When both :html:`domain` and :html:`extensionName` are provided, the
     <f:translate key="label" domain="other_extension.messages" extensionName="MyExtension" />
 
 
-Automatic Domain Detection
-===========================
+Automatic domain detection
+==========================
 
 If neither :html:`domain` nor :html:`extensionName` are specified, the
 ViewHelper attempts to automatically detect the translation domain from the
 context:
 
-1. **Extbase context**: Uses the controller extension name
-2. **Key with domain prefix**: Extracts domain from :html:`key="domain:id"` syntax
-3. **LLL reference**: Parses the extension key from the file path
+1.  **Extbase context**: Uses the controller extension name
+2.  **Key with domain prefix**: Extracts domain from :html:`key="domain:id"`
+3.  **LLL reference**: Parses the extension key from the file path
+
 
 Examples
 ========
 
 Using domain attribute with full domain name
----------------------------------------------
+--------------------------------------------
 
 You can specify the exact translation domain including resource names:
 
@@ -84,8 +85,9 @@ You can specify the exact translation domain including resource names:
     <f:translate key="menu.item" domain="backend.toolbar" />
     <!-- Resolves to: EXT:backend/Resources/Private/Language/locallang_toolbar.xlf -->
 
+
 Inline domain syntax in key
-----------------------------
+---------------------------
 
 The shortest form combines domain and key directly:
 
@@ -94,8 +96,9 @@ The shortest form combines domain and key directly:
     <f:translate key="core.form.tabs:general" />
     <!-- Resolves to: EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf -->
 
+
 With arguments and default values
-----------------------------------
+---------------------------------
 
 All existing ViewHelper features work with the new syntax:
 
@@ -108,8 +111,9 @@ All existing ViewHelper features work with the new syntax:
         default="No users found"
     />
 
+
 Using variables for domain
----------------------------
+--------------------------
 
 Dynamic domain selection is supported:
 
@@ -119,11 +123,11 @@ Dynamic domain selection is supported:
 
 
 Migration from extensionName
-=============================
+============================
 
 Existing code using :html:`extensionName` continues to work without changes.
 However, new code should prefer the :html:`domain` attribute combined with
-translation domain syntax for better readability:
+translation domain syntax for better readability.
 
 Before:
 
@@ -144,9 +148,9 @@ Impact
 ======
 
 The :html:`<f:translate>` ViewHelper now provides a more convenient and
-readable way to reference translations using the new translation domain syntax.
-This reduces verbosity in Fluid templates and aligns with modern translation
-system conventions used in Symfony and other frameworks.
+readable way to reference translations using the new translation domain
+syntax. This reduces verbosity in Fluid templates and aligns with modern
+translation system conventions used in Symfony and other frameworks.
 
 All existing syntax forms remain fully supported, ensuring backward
 compatibility. The new syntax can be adopted incrementally within a project,

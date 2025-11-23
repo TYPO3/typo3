@@ -11,21 +11,26 @@ See :issue:`106637`
 Description
 ===========
 
-A new ARIA 1.2 compliant combobox web component has been added that replaces the
-legacy valuepicker select pattern. The implementation follows W3C accessibility
-guidelines and includes comprehensive keyboard navigation support.
+A new ARIA 1.2–compliant combobox web component has been introduced, replacing
+the legacy value picker select pattern. The implementation follows the W3C
+accessibility guidelines and provides complete keyboard navigation support.
 
-FormEngine elements including EmailElement, InputTextElement, and NumberElement
-have been updated to use the new combobox component instead of the previous
-valuepicker implementation. The link browser components have been adapted to use
-the combobox pattern as well.
-
+FormEngine elements, including
+:php-short:`\TYPO3\CMS\Backend\Form\Element\EmailElement`,
+:php-short:`\TYPO3\CMS\Backend\Form\Element\InputTextElement`, and
+:php-short:`\TYPO3\CMS\Backend\Form\Element\NumberElement`, have been updated to
+use the new combobox component instead of the previous value picker
+implementation. The link browser components have also been adapted to use the
+combobox pattern.
 
 Impact
 ======
 
-The component provides full keyboard navigation support with Arrow keys, Enter,
-Tab, and Escape keys. It includes visual selection indicators with checkmarks
-and a clear button for resetting the input value.
+The new combobox component offers full keyboard navigation using the arrow keys,
+Enter, Tab, and Escape.
+
+It includes visual selection indicators with checkmarks and a clear button
+for resetting the input value, improving accessibility and overall usability
+in the TYPO3 backend.
 
 ..  index:: Backend, ext:backend

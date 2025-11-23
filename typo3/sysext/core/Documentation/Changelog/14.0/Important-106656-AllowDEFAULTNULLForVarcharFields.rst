@@ -13,11 +13,11 @@ Description
 
 In TCA, if an input field is configured to be nullable via
 :php:`'nullable' => true`, the database migration now respects this and creates
-new or updates existing fields with `DEFAULT NULL`.
+or updates existing fields with `DEFAULT NULL`.
 
 In Extbase, this may cause issues if properties and their accessor methods are
-not properly declared to be nullable, therefore this change is introduced to
-TYPO3 v14 only.
+not properly declared as nullable. Therefore, this change is introduced only in
+TYPO3 v14.
 
 Example:
 
@@ -48,7 +48,7 @@ Example:
     }
 
 As stated above, this automatic detection is not provided in TYPO3 versions
-older than 14.0. Using `DEFAULT NULL` can be enforced via an extension's
+earlier than 14.0. Using `DEFAULT NULL` can be enforced via an extension's
 :file:`ext_tables.sql` instead:
 
 ..  code-block:: sql

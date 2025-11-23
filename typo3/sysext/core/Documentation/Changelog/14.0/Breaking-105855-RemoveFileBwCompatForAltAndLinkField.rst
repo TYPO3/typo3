@@ -11,39 +11,37 @@ See :issue:`105855`
 Description
 ===========
 
-Back then, when FAL was introduced, the Core file fields `media` for table
-`pages` as well as `image` and `assets` for table `tt_content` had their
-so-called "overlay palettes" overridden to `imageOverlayPalette`, so that
-additional fields like `alternative`, `link` and `crop` were displayed. However,
-this was done for all file types, including `text`, `application` and the
-fallback type `unknown`. For these types those additional fields serve no
-meaningful purpose. For this reason they are now removed.
-
+When the File Abstraction Layer (FAL) was introduced, the TYPO3 Core file fields
+`media` for table `pages`, and `image` and `assets` for table
+`tt_content`, had their so-called "overlay palettes" overridden to
+`imageOverlayPalette`, so that additional fields like `alternative`, `link`, and
+`crop` were displayed. However, this was done for all file types, including
+`text`, `application`, and the fallback type `unknown`. For these types, the
+additional fields served no meaningful purpose. For this reason, they have now
+been removed.
 
 Impact
 ======
 
-The Core file fields `media` for table `pages` as well as `image` and `assets`
-for table `tt_content` will no longer display the fields `alternative` and
-`link` for file types other than `image`.
-
+The TYPO3 Core file fields `media` for table `pages`, `image` and
+`assets` for table `tt_content`, will no longer display the fields
+`alternative` and `link` for file types other than `image`.
 
 Affected installations
 ======================
 
-This affects installations, which use one of the named Core fields for file
-types other than `image` (for example `text` or `application`) and make use of
-the fields `alternative` and/or `link`.
+This affects installations that use one of the Core fields for file types
+other than `image` (for example `text` or `application`) and make use of the
+fields `alternative` and/or `link`.
 
-This should not affect that many installations, as these fields are used most
-often for images.
-
+This should not affect many installations, as these fields are used primarily
+for images.
 
 Migration
 =========
 
-In case you need those fields back, they can be brought back with TCA overrides.
-First, register a new palette for the `sys_file_reference` table with the needed
+These fields can be restored using TCA overrides if necessary. First,
+register a new palette for the `sys_file_reference` table containing the desired
 set of fields.
 
 ..  code-block:: php
@@ -54,15 +52,17 @@ set of fields.
         'showitem' => 'alternative,description,--linebreak--,link,title',
     ];
 
-Then, use this palette for your specific Core field and file type. This will
-bring back the fields `alternative` and `link` for the `media` field of table
-`pages`, when the file type is `text`.
+Then, use this palette for your specific Core field and file type. The following
+example restores the fields `alternative` and `link` for the `media` field of
+the `pages` table when the file type is `text`.
 
 ..  code-block:: php
     :caption: EXT:my_extension/Configuration/TCA/Overrides/pages.php
 
+    use TYPO3\CMS\Core\Resource\FileType;
+
     $GLOBALS['TCA']['pages']['columns']['media']['config']['overrideChildTca']
-        ['types'][\TYPO3\CMS\Core\Resource\FileType::TEXT->value]['showitem'] =
-         '--palette--;;myCustomPalette,--palette--;;filePalette';
+        ['types'][FileType::TEXT->value]['showitem'] =
+        '--palette--;;myCustomPalette,--palette--;;filePalette';
 
 ..  index:: FAL, TCA, NotScanned, ext:core

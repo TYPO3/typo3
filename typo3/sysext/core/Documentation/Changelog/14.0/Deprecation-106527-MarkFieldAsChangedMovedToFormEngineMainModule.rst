@@ -13,29 +13,27 @@ Description
 
 The static method :js:`markFieldAsChanged()` in the module
 :js:`@typo3/backend/form-engine-validation` is used to modify the markup in the
-DOM to mark a field as changed. Technically, this is unrelated to validation at
-all, therefore the method has been moved to :js:`@typo3/backend/form-engine`.
-
+DOM to mark a field as changed. Technically, this is unrelated to validation
+itself, therefore the method has been moved to
+:js:`@typo3/backend/form-engine`.
 
 Impact
 ======
 
 Calling :js:`markFieldAsChanged()` from
-:js:`@typo3/backend/form-engine-validation` will trigger a deprecation notice in
-the browser console.
-
+:js:`@typo3/backend/form-engine-validation` will trigger a deprecation notice
+in the browser console.
 
 Affected installations
 ======================
 
 All extensions using the deprecated code are affected.
 
-
 Migration
 =========
 
 If not already done, import the main FormEngine module and call
-:js:`markFieldAsChanged()` from that.
+:js:`markFieldAsChanged()` from there.
 
 Example:
 
@@ -46,7 +44,6 @@ Example:
 
     - FormEngineValidation.markFieldAsChanged(fieldReference);
     + FormEngine.markFieldAsChanged(fieldReference);
-
 
 Example compatibility layer:
 

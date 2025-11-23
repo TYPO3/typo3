@@ -11,48 +11,49 @@ See :issue:`106976`
 Description
 ===========
 
-The following TCA field  level search configuration options have been **removed**:
+The following TCA field-level search configuration options have been **removed**:
 
 * :php:`search.case`
 * :php:`search.pidonly`
 * :php:`search.andWhere`
 
 These options were originally intended to customize backend record search
-behavior, but they have proven to be of little practical value:
+behavior but have proven to be of little practical value:
 
-- They were not used in TYPO3 Core,
-- They are not used in common third-party extensions,
-- They had unclear behavior and inconsistent support,
+- They were not used in the TYPO3 Core,
+- They were not used in common third-party extensions,
+- Their behavior was unclear and inconsistently supported,
 - They were insufficiently documented and hard to validate.
 
-The removal is part of an ongoing effort to simplify and streamline the TCA
-configuration and reduce cognitive load for integrators.
+This removal is part of the ongoing effort to simplify and streamline TCA
+configuration and reduce unnecessary complexity for integrators.
 
 Impact
 ======
 
-Any of those option are no longer evaluated. They are automatically removed at
+These options are no longer evaluated. They are automatically removed at
 runtime through a TCA migration, and a deprecation log entry is generated to
 highlight where adjustments are required.
 
-Affected Installations
+Affected installations
 ======================
 
-Any installation or extension that uses any of those options in their TCA
-field configuration:
+Any installation or extension that defines one or more of these options in its
+TCA field configuration:
 
-.. code-block:: php
+..  code-block:: diff
+    :caption: Example of removed TCA options
 
-   'my_field' => [
-       'config' => [
-           'type' => 'input',
-           'search' => [
-               'case' => true,
-               'pidonly' => true,
-               'andWhere' => '{#CType}=\'text\'',
-           ],
-       ],
-   ],
+     'my_field' => [
+         'config' => [
+             'type' => 'input',
+    -        'search' => [
+    -            'case' => true,
+    -            'pidonly' => true,
+    -            'andWhere' => '{#CType}=\'text\'',
+    -        ],
+         ],
+     ],
 
 Migration
 =========

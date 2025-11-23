@@ -2,35 +2,36 @@
 
 ..  _breaking-107777-1760887464:
 
-========================================================
-Breaking: #107777 - Use strict types in Extbase Argument
-========================================================
+================================================================
+Breaking: #107777 - Use strict types in Extbase class `Argument`
+================================================================
 
 See :issue:`107777`
 
 Description
 ===========
 
-All properties, function arguments and returns types are now strictly typed.
-
+All properties, method arguments, and return types in
+:php:`\TYPO3\CMS\Extbase\Mvc\Controller\Argument` are now strictly typed.
 
 Impact
 ======
 
-Classes extending :php:`TYPO3\CMS\Extbase\Mvc\Controller\Argument` must
-now ensure, that overwritten properties and methods are all are strictly typed.
-
+Classes extending :php-short:`\TYPO3\CMS\Extbase\Mvc\Controller\Argument` must now
+ensure that all overridden properties, method arguments, and return types
+declare strict types accordingly.
 
 Affected installations
 ======================
 
-Custom classes extending :php:`TYPO3\CMS\Extbase\Mvc\Controller\Argument`
-
+TYPO3 installations with custom classes extending
+:php-short:`\TYPO3\CMS\Extbase\Mvc\Controller\Argument`.
 
 Migration
 =========
 
-Ensure classes that extend :php:`TYPO3\CMS\Extbase\Mvc\Controller\Argument`
-use strict types for overwritten properties, function arguments and return types.
+Ensure all subclasses of
+:php-short:`\TYPO3\CMS\Extbase\Mvc\Controller\Argument` use strict type
+declarations for overridden properties, method parameters, and return types.
 
 ..  index:: Backend, Frontend, NotScanned, ext:extbase

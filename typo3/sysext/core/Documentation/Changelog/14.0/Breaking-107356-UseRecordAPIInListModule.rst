@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _breaking-107356:
+..  _breaking-107356:
 
 =================================================
 Breaking: #107356 - Use Record API in List Module
@@ -11,53 +11,82 @@ See :issue:`107356`
 Description
 ===========
 
-The List module has been refactored to use the Record API internally instead
-of accessing raw database arrays. Various public methods and class signatures
-have been updated to use strict typing and the Record API, which introduces
-breaking changes.
+The :guilabel:`Content > List` backend module has been refactored to use the
+:php-short:`\TYPO3\CMS\Backend\Record\RecordInterface` and related Record API
+internally instead of working with raw database row arrays.
 
-The following public method signatures have changed:
+This modernization introduces stricter typing and improves data consistency.
+As a result, several public method signatures have been updated.
 
-- :php:`\TYPO3\CMS\Backend\RecordList\DatabaseRecordList->renderListRow()` now expects a :php:`RecordInterface` object instead of an array as the second parameter
-- :php:`\TYPO3\CMS\Backend\RecordList\DatabaseRecordList->makeControl()` now expects a :php:`RecordInterface` object instead of an array as the second parameter
-- :php:`\TYPO3\CMS\Backend\RecordList\DatabaseRecordList->makeCheckbox()` now expects a :php:`RecordInterface` object instead of an array as the second parameter
-- :php:`\TYPO3\CMS\Backend\RecordList\DatabaseRecordList->languageFlag()` now expects a :php:`RecordInterface` object instead of an array as the second parameter
-- :php:`\TYPO3\CMS\Backend\RecordList\DatabaseRecordList->makeLocalizationPanel()` now expects a :php:`RecordInterface` object instead of an array as the second parameter
-- :php:`\TYPO3\CMS\Backend\RecordList\DatabaseRecordList->linkWrapItems()` now expects a :php:`RecordInterface` object instead of an array as the fourth parameter
-- :php:`\TYPO3\CMS\Backend\RecordList\DatabaseRecordList->getPreviewUriBuilder()` now expects a :php:`RecordInterface` object instead of an array as the second parameter
-- :php:`\TYPO3\CMS\Backend\RecordList\DatabaseRecordList->isRecordDeletePlaceholder()` now expects a :php:`RecordInterface` object instead of an array
-- :php:`\TYPO3\CMS\Backend\RecordList\DatabaseRecordList->isRowListingConditionFulfilled()` first parameter :php:`$table` has been dropped and now expects a :php:`RecordInterface` object instead of an array
+The following public methods in
+:php-short:`\TYPO3\CMS\Backend\RecordList\DatabaseRecordList` have changed
+their signatures:
 
-These changes enable the List module to work with structured Record objects instead
-of raw array data, providing better type safety and enabling further modernization
-of the codebase.
+- :php:`renderListRow()` now expects a :php:`RecordInterface` object instead
+  of an array as the second parameter.
+- :php:`makeControl()` now expects a :php:`RecordInterface` object instead of
+  an array as the second parameter.
+- :php:`makeCheckbox()` now expects a :php:`RecordInterface` object instead of
+  an array as the second parameter.
+- :php:`languageFlag()` now expects a :php:`RecordInterface` object instead of
+  an array as the second parameter.
+- :php:`makeLocalizationPanel()` now expects a :php:`RecordInterface` object
+  instead of an array as the second parameter.
+- :php:`linkWrapItems()` now expects a :php:`RecordInterface` object instead
+  of an array as the fourth parameter.
+- :php:`getPreviewUriBuilder()` now expects a :php:`RecordInterface` object
+  instead of an array as the second parameter.
+- :php:`isRecordDeletePlaceholder()` now expects a :php:`RecordInterface`
+  object instead of an array.
+- :php:`isRowListingConditionFulfilled()` has dropped the first parameter
+  :php:`$table` and now expects a :php:`RecordInterface` object instead of an
+  array.
+
+These changes enable the List module to operate on structured Record objects,
+providing better type safety, consistency, and a foundation for further
+modernization of the backend record handling.
 
 Impact
 ======
 
-Code that calls these methods directly will need to be updated to pass
-:php:`RecordInterface` objects instead of arrays.
+Code that calls these methods directly must be updated to pass
+:php-short:`\TYPO3\CMS\Backend\Record\RecordInterface` objects instead of
+database row arrays.
 
-Affected Installations
+Affected installations
 ======================
 
-All installations with extensions that:
+TYPO3 installations with custom extensions that:
 
-- Extend / XCLASS :php:`DatabaseRecordList` and override the affected methods
-- Call the affected methods directly with array parameters
+- Extend or XCLASS
+  :php-short:`\TYPO3\CMS\Backend\RecordList\DatabaseRecordList` and override
+  any of the affected methods.
+- Call the affected methods directly with array-based record data.
 
 Migration
 =========
 
-For calling code, ensure you pass Record objects instead of arrays:
+When calling affected methods, use the Record API to create a Record object
+from a database row:
 
-.. code-block:: php
+**Before:**
 
-   // Before
-   $databaseRecordList->renderListRow($table, $rowArray, $indent, $translations, $enabled);
+..  code-block:: php
+    :caption: Migrating from array-based record handling to the Record API (before)
 
-   // After
-   $record = $recordFactory->createResolvedRecordFromDatabaseRow($table, $rowArray);
-   $databaseRecordList->renderListRow($table, $record, $indent, $translations, $enabled);
+    $databaseRecordList->renderListRow($table, $rowArray, $indent, $translations, $enabled);
 
-.. index:: Backend, PHP-API, FullyScanned, ext:backend
+**After:**
+
+..  code-block:: php
+    :caption: Migrating from array-based record handling to the Record API (after)
+
+    use TYPO3\CMS\Backend\RecordList\DatabaseRecordList;
+    use TYPO3\CMS\Backend\Record\RecordFactory;
+    use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+    $recordFactory = GeneralUtility::makeInstance(RecordFactory::class);
+    $record = $recordFactory->createResolvedRecordFromDatabaseRow($table, $rowArray);
+    $databaseRecordList->renderListRow($table, $record, $indent, $translations, $enabled);
+
+..  index:: Backend, PHP-API, FullyScanned, ext:backend

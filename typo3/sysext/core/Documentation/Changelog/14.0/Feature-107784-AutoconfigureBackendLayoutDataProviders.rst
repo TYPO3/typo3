@@ -12,18 +12,21 @@ Description
 ===========
 
 Backend layout providers are now autoconfigured once they implement the required
-:php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderInterface`. Each
-autoconfigured layout provider is tagged with `page_layout.data_provider` in
-the service container and is automatically added to the global
-:php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection`, in
-case autoconfiguration is enabled in the :file:`Services.yaml` / :file:`Services.php`.
+:php-short:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderInterface`. Each
+autoconfigured layout provider is tagged with
+`page_layout.data_provider` in the service container and is automatically added
+to the global
+:php-short:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection`,
+if autoconfiguration is enabled in :file:`Services.yaml` or
+:file:`Services.php`.
 
-Since backend layout providers must be identifiable in order to establish a
-relation to a configured backend layout, the corresponding interface has been
-extended. It now requires backend layout providers to implement a new method
+Since backend layout providers must be identifiable to establish a relation to
+a configured backend layout, the corresponding interface has been extended.
+It now requires backend layout providers to implement a new method
 :php:`getIdentifier()`.
 
-Example:
+Example
+-------
 
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/View/BackendLayout/MyLayoutDataProvider.php
@@ -43,27 +46,31 @@ Example:
 ..  important::
     The identifier returned by :php:`getIdentifier()` must:
 
-    * Be a non-empty string
-    * Not contain double underscores "__" (used as separator for combined identifiers)
-    * Be unique across all registered backend layout data providers
+    *   Be a non-empty string
+    *   Not contain double underscores (`__`)
+        (used as a separator for combined identifiers)
+    *   Be unique across all registered backend layout data providers
 
     Example of a combined identifier: :php:`my_provider__my_layout`
 
-Manual Service Configuration
------------------------------
 
-If autoconfiguration is disabled, manually tag the service in :file:`Services.yaml`:
+Manual service configuration
+----------------------------
+
+If autoconfiguration is disabled, manually tag the service in
+:file:`Services.yaml`:
 
 ..  code-block:: yaml
     :caption: EXT:my_extension/Configuration/Services.yaml
 
-    services:
-      Vendor\MyExtension\View\BackendLayout\MyLayoutDataProvider:
-        tags:
-          - name: page_layout.data_provider
+     services:
+       MyVendor\MyExtension\View\BackendLayout\MyLayoutDataProvider:
+         tags:
+           - name: page_layout.data_provider
 
-Provider Ordering
-~~~~~~~~~~~~~~~~~
+
+Provider ordering
+-----------------
 
 If you need to control the order in which providers are processed, use service
 priorities in your :file:`Services.yaml`:
@@ -72,7 +79,7 @@ priorities in your :file:`Services.yaml`:
     :caption: EXT:my_extension/Configuration/Services.yaml
 
     services:
-      Vendor\MyExtension\View\BackendLayout\MyLayoutDataProvider:
+      MyVendor\MyExtension\View\BackendLayout\MyLayoutDataProvider:
         tags:
           - name: page_layout.data_provider
             priority: 100
@@ -82,14 +89,14 @@ Impact
 ======
 
 Backend layout data providers are now automatically registered and can be used
-without further configuration. This improves developer experience and avoids
-configuration overload. The previous registration method via
+without further configuration. This improves developer experience and reduces
+configuration overhead. The previous registration method via
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider']`
-can no longer be used. Instead, existing backend layout providers must implement
-a new method :php:`getIdentifier()`.
+can no longer be used. Instead, existing backend layout providers must
+implement the new method :php:`getIdentifier()`.
 
-Using the new autoconfigure-based approach, developers may still support
-multiple TYPO3 core versions by having the legacy array-based approach in place
-next to the new autoconfigure-based approach.
+Using the new autoconfigure-based approach, developers can still support
+multiple TYPO3 Core versions by keeping the legacy array-based approach next
+to the new autoconfigure-based configuration.
 
 ..  index:: Backend, PHP-API, ext:backend

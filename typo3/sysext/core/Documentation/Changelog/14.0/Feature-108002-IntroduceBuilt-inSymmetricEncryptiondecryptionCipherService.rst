@@ -43,7 +43,7 @@ that different applications or contexts can have their own isolated keys while u
 the same master key.
 
 Please note that to decrypt data in the future, the encryptionKey must not be
-changed, and must be kept available.
+changed and must remain available.
 
 Example for deriving a secret key:
 
@@ -70,11 +70,11 @@ between different features or data types within your extension.
 Key Usage/Generation
 --------------------
 
-Instead of deriving a key, it also is possible to generate a new key from
-a random value, or to use a provided key (e.g. via environment variables).
+Instead of deriving a key, it is also possible to generate a new key from a random
+value or to use a provided key (e.g., via environment variables).
 
-* :php:`$this->keyFactory->createSharedKeyFromString(getenv('MY_APP_KEY')`
-* :php:`$this->keyFactory->generateSharedKey()`
+*   :php:`$this->keyFactory->createSharedKeyFromString(getenv('MY_APP_KEY'))`
+*   :php:`$this->keyFactory->generateSharedKey()`
 
 Encryption Example
 ------------------

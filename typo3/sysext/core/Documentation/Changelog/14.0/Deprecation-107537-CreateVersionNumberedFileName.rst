@@ -11,8 +11,8 @@ See :issue:`107537`
 Description
 ===========
 
-`GeneralUtility::createVersionNumberedFilename` adds cache busting to a file
-URL, when called in a certain and correct order with other legacy API
+:php:`GeneralUtility::createVersionNumberedFilename` adds cache busting to a
+file URL, when called in a certain and correct order with other legacy API
 methods to create URLs from system resources.
 
 This class and its functionality is superseded by the **System Resource API**.
@@ -26,11 +26,10 @@ continue to work as is, until it is removed in TYPO3 v15.0.
 Affected installations
 ======================
 
-TYPO3 installations with custom extensions/code that directly call this
+TYPO3 installations with custom extensions or code that directly call this
 deprecated method:
 
 *   :php:`GeneralUtility::createVersionNumberedFilename`
-
 
 Migration
 =========
@@ -41,6 +40,9 @@ Before:
 
 ..  code-block:: php
     :caption: MyClass
+
+    use TYPO3\CMS\Core\Utility\GeneralUtility;
+    use TYPO3\CMS\Core\Utility\PathUtility;
 
     public function renderUrl(string $file): string
     {
@@ -54,14 +56,23 @@ After:
 ..  code-block:: php
     :caption: MyClass
 
+    use TYPO3\CMS\Core\Http\ServerRequestInterface;
+    use TYPO3\CMS\Core\Resource\SystemResourceFactory;
+    use TYPO3\CMS\Core\Resource\SystemResourcePublisherInterface;
+    use TYPO3\CMS\Core\Resource\UriGenerationOptions;
+
     public function __construct(
         private readonly SystemResourceFactory $systemResourceFactory,
         private readonly SystemResourcePublisherInterface $resourcePublisher,
     ) {}
 
-    public function renderUrl(string $resourceIdentifier, ServerRequestInterface $request): string
-    {
-        $resource = $this->systemResourceFactory->createPublicResource($resourceIdentifier);
+    public function renderUrl(
+        string $resourceIdentifier,
+        ServerRequestInterface $request
+    ): string {
+        $resource = $this->systemResourceFactory->createPublicResource(
+            $resourceIdentifier
+        );
         return (string)$this->resourcePublisher->generateUri(
             $resource,
             $request,

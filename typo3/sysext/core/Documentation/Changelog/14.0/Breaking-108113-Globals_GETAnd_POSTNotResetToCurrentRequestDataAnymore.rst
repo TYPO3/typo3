@@ -11,42 +11,47 @@ See :issue:`108113`
 Description
 ===========
 
-The Frontend and Backend application chain roughly splits like this:
+The frontend and backend application chain roughly splits like this:
 
-bootstrap -> create Request object from globals -> start application
--> run middleware chain -> run RequestHandler to create a Response by
-calling controllers (Backend) or ContentObjectRenderer (Frontend).
+1.  Bootstrap
+2.  Create Request object from globals
+3.  Start application
+4.  Run middleware chain
+5.  Run RequestHandler to create a Response by calling controllers (backend) or
+    :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer`
+    (frontend)
 
-There was old compatibility code in :php:`RequestHandler` that did reset
-the PHP global variables :php:`_GET`, :php:`_POST`, :php:`HTTP_GET_VARS`
-and :php:`HTTP_POST_VARS` to current values that may have been written
-to the according Request object counterparts by middlewares.
+There was old compatibility code in :php-short:`\TYPO3\CMS\Core\Http\RequestHandler`
+that reset the PHP global variables :php:`_GET`, :php:`_POST`,
+:php:`HTTP_GET_VARS` and :php:`HTTP_POST_VARS` to values that may have been
+written to their Request object counterparts by middlewares.
 
-This backwards compatible layer has been removed.
+This backwards compatibility layer has been removed.
 
-Additionally, in the frontend rendering, the global variable
+Additionally, in frontend rendering, the global variable
 :php:`$GLOBALS['TYPO3_REQUEST']` is no longer populated within the
-:php:`PrepareTypoScriptFrontendRendering` middleware anymore, but a little
-later by :php:`RequestHandler`. :php:`$GLOBALS['TYPO3_REQUEST']` is another
-compatibility layer the TYPO3 core aims to phase out slowly.
-
+:php-short:`\TYPO3\CMS\Frontend\Middleware\PrepareTypoScriptFrontendRendering`
+middleware. It is now set later in :php-short:`\TYPO3\CMS\Core\Http\RequestHandler`.
+:php:`$GLOBALS['TYPO3_REQUEST']` itself is another compatibility layer that the
+TYPO3 Core aims to phase out over time.
 
 Impact
 ======
 
-The impact is two fold:
+The impact is twofold:
 
-* Some core middlewares manipulate the Request object "GET" parameter
-  list (:php:`$request->getQueryParams()`) to for instance resolve the
-  frontend slug into the page uid (which is a backwards compatible layer
-  as well). Frontend related code can no longer expect these manipulated
-  variables to exist in globals :php:`_GET`, :php:`_POST`, :php:`HTTP_GET_VARS`
-  and :php:`HTTP_POST_VARS`.
+*   Some TYPO3 Core middlewares manipulate the Request object's "GET"
+    parameter list (:php:`$request->getQueryParams()`) to, for example,
+    resolve the frontend slug into the page uid. This is itself a
+    backwards compatibility layer. Frontend-related code can no longer
+    expect these manipulated variables to exist in the globals
+    :php:`_GET`, :php:`_POST`, :php:`HTTP_GET_VARS` and
+    :php:`HTTP_POST_VARS`.
 
-* Middlewares that are executed *after* :php:`PrepareTypoScriptFrontendRendering`
-  (middleware key :code:`typo3/cms-frontend/prepare-tsfe-rendering`) can no
-  longer rely on :php:`$GLOBALS['TYPO3_REQUEST']` being set.
-
+*   Middlewares that are executed *after*
+    :php-short:`\TYPO3\CMS\Frontend\Middleware\PrepareTypoScriptFrontendRendering`
+    (middleware key :code:`typo3/cms-frontend/prepare-tsfe-rendering`)
+    can no longer rely on :php:`$GLOBALS['TYPO3_REQUEST']` being set.
 
 Affected installations
 ======================
@@ -54,26 +59,28 @@ Affected installations
 Instances running code that relies on the removed compatibility layers
 may fail or lead to unexpected results.
 
-
 Migration
 =========
 
-Middlewares receive the Request and should use it instead of fetching it from
-:php:`$GLOBALS['TYPO3_REQUEST']`. Services triggered by middlewares that rely
-on the request should get it hand over. One particular example frequently
-called by middleware classes is the :php:`ContentObjectRenderer`:
+Middlewares receive the Request object directly and should use it instead
+of fetching it from :php:`$GLOBALS['TYPO3_REQUEST']`. Services triggered by
+middlewares that rely on the Request should have it passed in explicitly.
+One example frequently used in middlewares is
+:php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer`:
 
-.. code-block:: php
+..  code-block:: php
 
-    $cor = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-    $cor->setRequest($request);
-    $result = $cor->doSomething();
+     use TYPO3\CMS\Core\Utility\GeneralUtility;
+     use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
-Code should in general never rely on globals :php:`_GET`, :php:`_POST`,
-:php:`HTTP_GET_VARS` and :php:`HTTP_POST_VARS` anymore. Request related state
-should always be fetched from the Request object. Note the helper method
-:php:`GeneralUtility::getIndpEnv()` will be phased out as well when the TYPO3
-core removed last remaining usages.
+     $cor = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+     $cor->setRequest($request);
+     $result = $cor->doSomething();
 
+Code should in general never rely on the globals :php:`_GET`,
+:php:`_POST`, :php:`HTTP_GET_VARS` and :php:`HTTP_POST_VARS`. Request-related
+state should always be fetched from the Request object. Note that the helper
+method :php:`GeneralUtility::getIndpEnv()` will also be phased out once the
+TYPO3 Core has removed its last remaining usages.
 
 ..  index:: PHP-API, NotScanned, ext:core

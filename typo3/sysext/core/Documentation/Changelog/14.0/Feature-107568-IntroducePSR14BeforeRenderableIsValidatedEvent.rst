@@ -1,9 +1,9 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _feature-107568-1759326362:
+..  _feature-107568-1759326362:
 
 ==============================================================
-Feature: #107568 - PSR-14 Event before renderable is validated
+Feature: #107568 - PSR-14 event before renderable is validated
 ==============================================================
 
 See :issue:`107568`
@@ -11,34 +11,37 @@ See :issue:`107568`
 Description
 ===========
 
-A new PSR-14 event :php:`TYPO3\CMS\Form\Event\BeforeRenderableIsValidatedEvent`
-has been introduced which serves as an improved replacement for the now
+A new PSR-14 event :php-short:`\TYPO3\CMS\Form\Event\BeforeRenderableIsValidatedEvent`
+has been introduced. It serves as an improved replacement for the now
 :ref:`removed <breaking-107568-1759325068>` hook
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit']`.
 
-The new event is dispatched just right before a renderable is validated.
+The new event is dispatched right before a renderable is validated.
 
 The event provides the following public properties:
 
-* :php:`$value`: The submitted value of the renderable
-* :php:`$formRuntime`: The form runtime object (readonly)
-* :php:`$renderable`: The renderable (readonly)
-* :php:`$request`: The current request (readonly)
+*   :php:`$value`: The submitted value of the renderable.
+*   :php:`$formRuntime`: The form runtime object (read-only).
+*   :php:`$renderable`: The renderable (read-only).
+*   :php:`$request`: The current request (read-only).
 
 Example
 =======
 
-An example event listener could look like:
+An example event listener could look like this:
 
 ..  code-block:: php
+    :caption: Example event listener class
 
+    use TYPO3\CMS\Core\Attribute\AsEventListener;
+    use TYPO3\CMS\Core\Error\Error;
+    use TYPO3\CMS\Core\Utility\GeneralUtility;
+    use TYPO3\CMS\Core\Localization\TranslationService;
     use TYPO3\CMS\Form\Event\BeforeRenderableIsValidatedEvent;
 
-    class MyEventListener {
-
-        #[AsEventListener(
-            identifier: 'my-extension/before-renderable-is-validated',
-        )]
+    final class BeforeRenderableIsValidatedEventListener
+    {
+        #[AsEventListener('my-extension/before-renderable-is-validated')]
         public function __invoke(BeforeRenderableIsValidatedEvent $event): void
         {
             $renderable = $event->renderable;
@@ -48,7 +51,10 @@ An example event listener could look like:
 
             $elementValue = $event->value;
             if ($elementValue['password'] !== $elementValue['confirmation']) {
-                $processingRule = $renderable->getRootForm()->getProcessingRule($renderable->getIdentifier());
+                $processingRule = $renderable
+                    ->getRootForm()
+                    ->getProcessingRule($renderable->getIdentifier());
+
                 $processingRule->getProcessingMessages()->addError(
                     GeneralUtility::makeInstance(
                         Error::class,
@@ -57,6 +63,7 @@ An example event listener could look like:
                     )
                 );
             }
+
             $event->value = $elementValue['password'];
         }
     }
@@ -64,8 +71,10 @@ An example event listener could look like:
 Impact
 ======
 
-With the new PSR-14 :php:`BeforeRenderableIsValidatedEvent`, it's now
-possible to prevent the deletion of a renderable and to add custom logic
-based on the deletion.
+With the new :php-short:`\TYPO3\CMS\Form\Event\BeforeRenderableIsValidatedEvent`,
+it is now possible to modify or validate the value of a renderable element
+before TYPO3 Core performs its built-in validation logic. This allows
+extensions to inject custom validation rules or preprocessing steps before
+standard validation runs.
 
-.. index:: Backend, ext:form
+..  index:: Backend, ext:form

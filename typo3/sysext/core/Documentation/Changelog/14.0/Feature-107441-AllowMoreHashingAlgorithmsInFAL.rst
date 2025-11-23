@@ -11,14 +11,15 @@ See :issue:`107441`
 Description
 ===========
 
-Previously, FAL's :php:`LocalDriver` only supported `md5` and `sha1` as hashing
-algorithms. While this may be good enough, it might be necessary to use different
-hashing algorithms, depending on the use-case.
+Previously, :abbr:`FAL (File Abstraction Layer)`'s
+:php-short:`\TYPO3\CMS\Core\Resource\Driver\LocalDriver` only supported `md5`
+and `sha1` as hashing algorithms. While this may be sufficient for many use
+cases, it might be necessary to use different hashing algorithms depending on
+the specific scenario.
 
 The method :php:`LocalDriver->hash()` is now able to use any hashing algorithm
 that is registered in PHP itself by building a :php:`HashContext` object and
 updating it by streaming the file content.
-
 
 Impact
 ======

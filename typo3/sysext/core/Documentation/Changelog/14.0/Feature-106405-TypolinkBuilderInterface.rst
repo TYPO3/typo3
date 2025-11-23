@@ -11,19 +11,21 @@ See :issue:`106405`
 Description
 ===========
 
-A new interface :php:`TYPO3\CMS\Frontend\Typolink\TypolinkBuilderInterface`
+A new interface :php:`\TYPO3\CMS\Frontend\Typolink\TypolinkBuilderInterface`
 has been introduced to provide a more flexible way to generate links in TYPO3.
 
 The interface defines a :php:`buildLink()` method that replaces the previous
-:php:`build()` method approach when extending from
-:php:`TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder`.
+:php:`build()` method approach used when extending from
+:php-short:`\TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder`.
 
-All core TypolinkBuilder implementations now implement this interface and use
-dependency injection for better service composition and testability.
+All Core `TypolinkBuilder` implementations now implement this interface and
+use dependency injection for improved service composition and testability.
 
-The interface method signature is:
+The interface method signature is as follows:
 
 ..  code-block:: php
+
+    use TYPO3\CMS\Frontend\Typolink;
 
     public function buildLink(
         array $linkDetails,
@@ -35,37 +37,40 @@ The interface method signature is:
 Impact
 ======
 
-* All implementations of :php:`TypolinkBuilderInterface` are automatically
-  configured as public services in the DI container, eliminating the need for
-  manual service configuration.
+*   All implementations of
+    :php-short:`\TYPO3\CMS\Frontend\Typolink\TypolinkBuilderInterface` are
+    automatically configured as public services in the dependency injection
+    container, removing the need for manual service configuration.
 
-* TypolinkBuilder classes can now use proper dependency injection through
-  their constructors, making them more testable and following TYPO3's
-  architectural patterns.
+*   `TypolinkBuilder` classes can now use proper dependency injection through
+    their constructors, improving testability and aligning with TYPO3's
+    architectural best practices.
 
-* The :php:`ServerRequestInterface` is now passed directly,
-  providing better access to request context without relying on global state.
+*   The :php-short:`\Psr\Http\Message\ServerRequestInterface` is now passed
+    directly, providing access to the request context without relying on global
+    state.
 
-* The new interface provides a cleaner separation of concerns
-  and more explicit parameter passing.
-
+*   The new interface introduces a cleaner separation of concerns
+    and more explicit parameter passing.
 
 Example usage
 =============
 
-Creating a custom TypolinkBuilder with the new interface:
+Creating a custom `TypolinkBuilder` using the new interface:
 
 ..  code-block:: php
-    :caption: Custom TypolinkBuilder implementation
+    :caption: EXT:my_extension/Classes/Typolink/MyCustomLinkBuilder.php
 
     use Psr\Http\Message\ServerRequestInterface;
+    use TYPO3\CMS\Frontend\Typolink\LinkResult;
+    use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
     use TYPO3\CMS\Frontend\Typolink\TypolinkBuilderInterface;
 
-    class MyCustomLinkBuilder implements TypolinkBuilderInterface
+    final readonly class MyCustomLinkBuilder implements TypolinkBuilderInterface
     {
         public function __construct(
-            private readonly MyCustomService $customService,
-            private readonly AnotherService $anotherService,
+            private MyCustomService $customService,
+            private AnotherService $anotherService,
         ) {}
 
         public function buildLink(
@@ -74,7 +79,7 @@ Creating a custom TypolinkBuilder with the new interface:
             ServerRequestInterface $request,
             string $linkText = ''
         ): LinkResultInterface {
-            // Access ContentObjectRenderer from request
+            // Access ContentObjectRenderer from the request
             $contentObjectRenderer = $request->getAttribute('currentContentObject');
 
             // Use injected services

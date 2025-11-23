@@ -11,37 +11,39 @@ See :issue:`107310`
 Description
 ===========
 
-The :php:`FreezableBackendInterface` has been removed from TYPO3 Core.
+The interface :php:`\TYPO3\CMS\Core\Cache\Backend\FreezableBackendInterface`
+has been removed from the TYPO3 Core.
 
-The interface defined the following methods:
+It previously defined the following methods:
 
-- :php:`freeze()` - Freezes this cache backend.
-- :php:`isFrozen()` - Tells if this backend is frozen.
-
+-   :php:`freeze()` — Freezes the cache backend.
+-   :php:`isFrozen()` — Returns whether the backend is frozen.
 
 Impact
 ======
 
-Any code that implements or references :php:`\TYPO3\CMS\Core\Cache\Backend\FreezableBackendInterface`
-will cause PHP fatal errors.
+Any code implementing or referencing
+:php-short:`\TYPO3\CMS\Core\Cache\Backend\FreezableBackendInterface`
+will now trigger a PHP fatal error.
 
-Since this interface was never implemented in TYPO3 Core and had no real-world
-usage, the impact should be minimal for most installations.
+Since this interface was never implemented in the TYPO3 Core and had no known
+real-world usage, the overall impact is expected to be minimal.
 
 Affected installations
 ======================
 
 Installations with custom extensions that implement or reference the
-:php:`FreezableBackendInterface` are affected.
-
+:php-short:`\TYPO3\CMS\Core\Cache\Backend\FreezableBackendInterface`
+are affected.
 
 Migration
 =========
 
-Remove any references to :php:`\TYPO3\CMS\Core\Cache\Backend\FreezableBackendInterface`
-from your code.
+Remove any references to
+:php-short:`\TYPO3\CMS\Core\Cache\Backend\FreezableBackendInterface`
+from your extension code.
 
-If you need the freeze functionality, implement your own logic directly in your
-cache backend class.
+If you require freeze functionality, implement the desired behavior directly
+in your custom cache backend class.
 
-.. index:: PHP-API, FullyScanned
+..  index:: PHP-API, FullyScanned

@@ -11,29 +11,35 @@ See :issue:`107823`
 Description
 ===========
 
-The factory methods in :php:`ButtonBar` for creating button instances, in
-:php:`Menu` for creating menu item instances, and in :php:`MenuRegistry` for
-creating menu instances have been deprecated in favor of using the new
-:php:`ComponentFactory` class directly.
+The factory methods in :php:`\TYPO3\CMS\Backend\Template\Components\ButtonBar`
+for creating button instances, in
+:php:`\TYPO3\CMS\Backend\Template\Components\Menu` for creating menu item
+instances, and in
+:php:`\TYPO3\CMS\Backend\Template\Components\MenuRegistry` for creating
+menu instances have been deprecated in favor of using the new
+:php:`\TYPO3\CMS\Backend\Template\Components\ComponentFactory` class directly.
 
 The following methods are now deprecated:
 
-* :php:`ButtonBar::makeGenericButton()`
-* :php:`ButtonBar::makeInputButton()`
-* :php:`ButtonBar::makeSplitButton()`
-* :php:`ButtonBar::makeDropDownButton()`
-* :php:`ButtonBar::makeLinkButton()`
-* :php:`ButtonBar::makeFullyRenderedButton()`
-* :php:`ButtonBar::makeShortcutButton()`
-* :php:`ButtonBar::makeButton()`
-* :php:`Menu::makeMenuItem()`
-* :php:`MenuRegistry::makeMenu()`
+*   :php:`ButtonBar::makeGenericButton()`
+*   :php:`ButtonBar::makeInputButton()`
+*   :php:`ButtonBar::makeSplitButton()`
+*   :php:`ButtonBar::makeDropDownButton()`
+*   :php:`ButtonBar::makeLinkButton()`
+*   :php:`ButtonBar::makeFullyRenderedButton()`
+*   :php:`ButtonBar::makeShortcutButton()`
+*   :php:`ButtonBar::makeButton()`
+*   :php:`Menu::makeMenuItem()`
+*   :php:`MenuRegistry::makeMenu()`
 
 Impact
 ======
 
-Calling any of the deprecated :php:`make*()` methods on :php:`ButtonBar`,
-:php:`Menu`, or :php:`MenuRegistry` will trigger a PHP deprecation notice.
+Calling any of the deprecated :php:`make*()` methods on
+:php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonBar`,
+:php-short:`\TYPO3\CMS\Backend\Template\Components\Menu`, or
+:php-short:`\TYPO3\CMS\Backend\Template\Components\MenuRegistry` will trigger
+a PHP deprecation notice.
 
 The methods continue to work in TYPO3 v14 but will be removed in TYPO3 v15.
 
@@ -42,18 +48,22 @@ Affected installations
 
 All extensions using :php:`ButtonBar::make*()` methods to create buttons,
 :php:`Menu::makeMenuItem()` to create menu items, or
-:php:`MenuRegistry::makeMenu()` to create menus are affected. The extension
-scanner will report any usages.
+:php:`MenuRegistry::makeMenu()` to create menus are affected.
+The extension scanner will report any usages.
 
 Migration
 =========
 
-Inject :php:`ComponentFactory` in your controller and use its :php:`create*()`
-methods instead of :php:`ButtonBar::make*()`.
+Inject :php:`\TYPO3\CMS\Backend\Template\Components\ComponentFactory` in your
+controller and use its :php:`create*()` methods instead of
+:php:`ButtonBar::make*()`.
 
-Before:
+**Before:**
 
 ..  code-block:: php
+    :caption: Example (before)
+
+    use Psr\Http\Message\ResponseInterface;
 
     public function myAction(): ResponseInterface
     {
@@ -68,9 +78,13 @@ Before:
         // ...
     }
 
-After:
+**After:**
 
 ..  code-block:: php
+    :caption: Example (after)
+
+    use Psr\Http\Message\ResponseInterface;
+    use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 
     public function __construct(
         protected readonly ComponentFactory $componentFactory,
@@ -89,15 +103,19 @@ After:
         // ...
     }
 
-Additionally, consider using the pre-configured button creation methods like
-:php:`createBackButton()`, :php:`createCloseButton()`, :php:`createSaveButton()`,
-:php:`createReloadButton()`, and :php:`createViewButton()` for common button patterns.
+Additionally, consider using the preconfigured button creation methods like
+:php:`createBackButton()`, :php:`createCloseButton()`,
+:php:`createSaveButton()`, :php:`createReloadButton()`, and
+:php:`createViewButton()` for common button patterns.
 
 For the low-level :php:`makeButton(string $className)` method, use
 :php:`GeneralUtility::makeInstance()` directly or the appropriate
 :php:`ComponentFactory::create*()` method:
 
 ..  code-block:: php
+    :caption: Example (button instantiation)
+
+    use TYPO3\CMS\Core\Utility\GeneralUtility;
 
     // Before:
     $button = $buttonBar->makeButton(MyCustomButton::class);
@@ -111,6 +129,9 @@ For the low-level :php:`makeButton(string $className)` method, use
 For :php:`Menu::makeMenuItem()`, use :php:`ComponentFactory::createMenuItem()`:
 
 ..  code-block:: php
+    :caption: Example (menu items)
+
+    use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 
     // Before:
     $menu = $menuRegistry->makeMenu();
@@ -133,6 +154,9 @@ For :php:`Menu::makeMenuItem()`, use :php:`ComponentFactory::createMenuItem()`:
 For :php:`MenuRegistry::makeMenu()`, use :php:`ComponentFactory::createMenu()`:
 
 ..  code-block:: php
+    :caption: Example (menus)
+
+    use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 
     // Before:
     $menuRegistry = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry();
@@ -152,10 +176,11 @@ Additionally, note that :php:`Menu::addMenuItem()` now returns :php:`static`
 to support fluent interface patterns:
 
 ..  code-block:: php
+    :caption: Example (fluent chaining)
 
     // Now possible with fluent interface:
     $menu->addMenuItem($menuItem1)
         ->addMenuItem($menuItem2)
         ->addMenuItem($menuItem3);
 
-.. index:: Backend, PHP-API, FullyScanned, ext:backend
+..  index:: Backend, PHP-API, FullyScanned, ext:backend

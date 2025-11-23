@@ -11,21 +11,21 @@ See :issue:`106992`
 Description
 ===========
 
-Following :issue:`106934`, which introduced the dynamic "Recently Used"
+Following :issue:`106934`, which introduced the dynamic *Recently used*
 category in record wizards, the component has been extended to
-also store the last selected category. When opening a record wizard,
-for example the wizard to create new content elements, it will now
-automatically preselect the category you last used.
+store the last selected category. When opening a record wizard,
+for example, the wizard to create new content elements, it will now
+automatically preselect the category that was last used.
 
-This enhancement improves the user experience, especially as more
-categories, including those from third-party extensions, are added.
-
+This enhancement improves usability and consistency, especially in
+installations with many categories, including those added by third-party
+extensions.
 
 Impact
 ======
 
-Record wizards do now automatically select the last used category.
+Record wizards now automatically preselect the last used category when opened again.
 
-No migration or configuration is required. The behavior is enabled by default.
+No migration or configuration is required. The feature is enabled by default.
 
 ..  index:: Backend, JavaScript, ext:backend

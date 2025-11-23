@@ -129,6 +129,7 @@ The following example doesn't need to be adjusted, no types can/should
 be specified for these properties:
 
 ..  code-block:: php
+
     class MyViewHelper extends AbstractViewHelper
     {
         protected $escapeOutput = false;

@@ -11,46 +11,42 @@ See :issue:`107944`
 Description
 ===========
 
-When the TYPO3 frontend is configured to compress included
-CSS assets, it also tried to minify CSS by removing comments
-and some whitespaces.
+When the TYPO3 frontend was configured to compress included CSS assets, it also
+attempted to minify CSS by removing comments and certain whitespace characters.
 
-This feature has been removed: The implementation is brittle
-especially with modern CSS syntax capabilities and there are
-typically no measurable performance gains neither when transferring
-files nor when clients parse files.
-
+This behavior has now been removed. The previous implementation was brittle,
+especially with modern CSS syntax, and provided no measurable performance
+benefit in either file transfer or client-side parsing.
 
 Impact
 ======
 
-CSS asset files included in frontend pages may become larger when
-they include many comments. TYPO3 CSS parsing was disabled by default
-and only active using a reconfigured system toggle
+CSS asset files included in frontend pages may become slightly larger if they
+contain many comments. TYPO3’s internal CSS parsing was disabled by default and
+only active when explicitly enabled using
 :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel']`
-plus additional TypoScript.
+along with additional TypoScript configuration.
 
-This removed feature should usually have low impact and most systems
-can probably ignore this change.
-
+In most cases, this change has minimal or no practical impact.
 
 Affected installations
 ======================
 
-Systems actively using the CSS parsing feature in TYPO3 frontend
-asset management may be affected.
-
+Instances that actively used TYPO3's built-in CSS parsing feature for frontend
+asset management are affected.
 
 Migration
 =========
 
-Instances worried about CSS asset file sizes that relied on
-the feature could either optimize their CSS files manually, or
-ignore the fact clients will receive comments,  or - better - should
-consider establishing a specialized frontend build chain to minify
-CSS and probably JavaScript as well. Solutions often come with many
-more suitable features on this level like linting and syntax checking
-that TYPO3 core will never provide on its own.
+If minimizing CSS file size is important, consider one of the following options:
 
+-   Optimize or minify CSS files manually during deployment.
+-   Accept that comments and whitespace are retained (usually negligible impact).
+-   Preferably, integrate a dedicated frontend build chain to handle CSS and
+    JavaScript minification.
+
+Modern frontend build tools provide many additional advantages, such as
+linting, syntax validation, and advanced optimizations, which are beyond the
+scope of the TYPO3 Core.
 
 ..  index:: Frontend, NotScanned, ext:frontend

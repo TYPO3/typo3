@@ -12,14 +12,15 @@ Description
 ===========
 
 The class :php:`\TYPO3\CMS\Core\PageTitle\RecordTitleProvider`
-is a new page title provider with the identifier `recordTitle` which is called before
-:php:`\TYPO3\CMS\Core\PageTitle\SeoTitlePageTitleProvider` with the TypoScript
-identifier `seo`.
+introduces a new page title provider with the identifier `recordTitle`.
+It is executed before the :php-short:`\TYPO3\CMS\Core\PageTitle\SeoTitlePageTitleProvider`,
+which uses the TypoScript identifier `seo`.
 
-This provider can be used by 3rd party extensions to set the page title.
+This provider can be used by third-party extensions to set the page title
+programmatically.
 
 ..  code-block:: php
-    :caption: my_extension/Classes/Controller/ItemController.php
+    :caption: EXT:my_extension/Classes/Controller/ItemController.php
 
     use MyVendor\MyExtension\Domain\Model\Item;
     use Psr\Http\Message\ResponseInterface;
@@ -41,11 +42,10 @@ This provider can be used by 3rd party extensions to set the page title.
         }
     }
 
-
 Impact
 ======
 
-Ease the life of extension developers by providing a dedicated provider
-instead of forcing them to provide a provider in every extension.
+A dedicated provider is now available for extensions to set page titles
+without needing to implement their own custom provider.
 
 ..  index:: Frontend, ext:core

@@ -22,42 +22,42 @@ and provides the following options:
 *   All available site languages that have page translations
 *   "All languages" (if translations exist on the current page)
 
-Key Behaviors
+Key behaviors
 -------------
 
-Language Selection Persistence
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Language selection persistence
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The selected language is stored in the backend user's module data and persists
 across page navigation. When switching between pages, the previously selected
 language remains active if available on the new page.
 
-Automatic Fallback
+Automatic fallback
 ~~~~~~~~~~~~~~~~~~
 
 If navigating to a page where the selected language is not available (no
 translation exists), the list module automatically falls back to:
 
 *   "All languages" mode (if the page has any translations)
-*   Default language (if the page has no translations at all)
+*   The default language (if the page has no translations at all)
 
 This fallback is temporary and does not overwrite the language preference.
 When navigating to a page with the selected language translation, it will
 automatically be restored.
 
-Display Behavior
+Display behavior
 ~~~~~~~~~~~~~~~~
 
 When a specific language is selected:
 
 *   Records in the selected language are displayed
 *   Default language records (language 0) are always included as fallback
-*   Records with "all languages" flag (-1) are included
+*   Records with the "all languages" flag (-1) are included
 
 Example: If French is selected, one will see French translations, default
 language content, and content marked for "all languages".
 
-Localization Restrictions
+Localization restrictions
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The localization panel respects page translation availability. When a language
@@ -79,7 +79,8 @@ repeatedly select the same language. The intelligent fallback mechanism ensures
 the list module always displays relevant content, even when switching between
 pages with different translation availability.
 
-This enhancement brings the list module's language handling in line with the
-page module, providing a consistent user experience across TYPO3's backend.
+This enhancement brings the list module's language handling in line with that
+of the page module, providing a consistent user experience across TYPO3's
+backend.
 
 ..  index:: Backend, ext:backend

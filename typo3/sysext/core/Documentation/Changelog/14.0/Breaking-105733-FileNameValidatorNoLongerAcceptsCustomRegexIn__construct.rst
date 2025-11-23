@@ -11,33 +11,31 @@ See :issue:`105733`
 Description
 ===========
 
-Class :php:`TYPO3\CMS\Core\Resource\Security\FileNameValidator` does not handle
-a custom file deny pattern in :php:`__construct()` anymore. The service is now
-stateless and can be injected without side effects.
-
+The class :php-short:`\TYPO3\CMS\Core\Resource\Security\FileNameValidator` no
+longer accepts a custom file deny pattern in :php:`__construct()`. The service
+is now stateless and can be injected without side effects.
 
 Impact
 ======
 
-A custom partial regex as first constructor argument when instantiating the
-service is ignored. The service relies on :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern']`
-configuration, and a hard coded constant as fallback.
-
+A custom partial regex passed as the first constructor argument when
+instantiating the service is now ignored. The service relies on
+:php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern']` configuration and a
+hard-coded constant as a fallback.
 
 Affected installations
 ======================
 
 Instances with custom extensions using
 :php:`GeneralUtility::makeInstance(FileNameValidator::class, 'some-custom-pattern');`
-are affected. This is most likely a very rare case.
-
+are affected. This is expected to be a very rare case.
 
 Migration
 =========
 
-Extensions that need to test with custom patterns that can not be declared
+Extensions that need to be tested with custom patterns that cannot be declared
 globally using :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern']`
-should probably switch to an own service implementing the test, or inline
-the code. The main worker code of the service is just four lines of code.
+should implement their own service for this purpose or inline the necessary
+code. The core implementation performing the check is only a few lines long.
 
 ..  index:: PHP-API, NotScanned, ext:core

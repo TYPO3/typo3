@@ -26,15 +26,14 @@ significantly easier.
 Impact
 ======
 
-All newly created redirects will automatically include creation information,
+All newly created redirects automatically include creation information,
 regardless of whether they are created:
 
 *   Manually through the redirects backend module
 *   Automatically when updating a page slug
 *   Programmatically through the DataHandler API
 
-Existing redirects created before this feature will onyl show the creation
-date, as the user has not been tracked previously.
+Existing redirects created before this feature will only show the creation
+date, as the user information was not tracked previously.
 
 ..  index:: Backend, ext:redirects
-

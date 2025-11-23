@@ -32,31 +32,32 @@ The same syntax is supported in User TSconfig as well.
 Type-specific defaults take precedence over field-level defaults, and Page
 TSconfig overrides User TSconfig following the established inheritance pattern.
 
-Implementation Details
+Implementation details
 ======================
 
 The feature is implemented in two main areas:
 
-1. **Backend Forms**: The
-   :php:`\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew`
-   class now processes type-specific defaults when creating new records in the
-   backend.
+*   **Backend forms**: The
+    :php-short:`\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew`
+    class now processes type-specific defaults when creating new records in the
+    backend.
 
-2. **DataHandler**: The
-   :php:`\TYPO3\CMS\Core\DataHandling\DataHandler` class supports type-specific
-   defaults when creating records programmatically via the PHP API.
+*   **DataHandler**: The
+    :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler` class supports
+    type-specific defaults when creating records programmatically via the PHP
+    API.
 
 ..  important::
     Type-specific defaults only work when the record type is defined in the new
     record values. This happens automatically when using the New Content Element
     Wizard (via :php:`defVals`) or when explicitly providing the type field in
-    the DataHandler datamap (e.g., :php:`'CType' => 'textmedia'` for content
-    elements).
+    the DataHandler datamap (for example, :php:`'CType' => 'textmedia'` for
+    content elements).
 
-    If no type information is available during record creation, only field-level
-    :typoscript:`TCAdefaults` will be applied.
+    If no type information is available during record creation, only
+    field-level :typoscript:`TCAdefaults` will be applied.
 
-Fallback Behavior
+Fallback behavior
 =================
 
 If no type-specific default is found for a given record type, the system falls
@@ -66,7 +67,7 @@ back to:
 2. TCA :php:`'default'` configuration
 3. Database field default value
 
-Automatic Field Discovery
+Automatic field discovery
 =========================
 
 This enhancement makes :typoscript:`TCAdefaults` consistent with
@@ -99,6 +100,9 @@ Examples
 
 ..  code-block:: php
     :caption: PHP API usage - DataHandler with type-specific defaults
+
+    use TYPO3\CMS\Core\DataHandling\DataHandler;
+    use TYPO3\CMS\Core\Utility\GeneralUtility;
 
     $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
     $datamap = [

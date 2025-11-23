@@ -1,38 +1,44 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _breaking-107566-1759226580:
+..  _breaking-107566-1759226580:
 
-===================================================================
+=============================================================
 Breaking: #107566 - Removed "afterInitializeCurrentPage" hook
-===================================================================
+=============================================================
 
 See :issue:`107566`
 
 Description
 ===========
 
-The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage']`
-has been removed in favor of the more powerful PSR-14 :php:`TYPO3\CMS\Form\Event\AfterCurrentPageIsResolvedEvent`.
+The hook
+:php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage']`
+has been removed in favor of the PSR-14 event
+:php:`\TYPO3\CMS\Form\Event\AfterCurrentPageIsResolvedEvent`.
 
 Impact
 ======
 
-Any hook implementation registered is not executed anymore in TYPO3 v14.0+.
+Hook implementations registered under `afterInitializeCurrentPage` are
+no longer executed in TYPO3 v14.0 and later.
 
 Affected installations
 ======================
 
-TYPO3 installations with custom extensions using this hook. The extension
-scanner reports any usage as weak match.
+TYPO3 installations with custom extensions using this hook are affected.
+
+The extension scanner reports any usage as a weak match.
 
 Migration
 =========
 
-The hook is removed without deprecation in order to allow extensions
-to work with TYPO3 v13 (using the hook) and v14+ (using the new event)
-when implementing the event as well without any further deprecations.
-Use the :ref:`PSR-14 Event <feature-107566-1759226649>` to allow greater
-influence in the functionality. Especially because the event is dispatched
-later, it allows more modifications than the previous hook.
+The hook was removed without a deprecation phase to allow extensions to work
+with both TYPO3 v13 (using the hook) and TYPO3 v14+ (using the new event)
+simultaneously.
 
-.. index:: Backend, ext:form, FullyScanned
+Use the :ref:`PSR-14 event <feature-107566-1759226649>` instead to allow
+greater influence over the form rendering process. Since the event is
+dispatched at a later point, it allows more extensive modifications than the
+previous hook.
+
+..  index:: Backend, ext:form, FullyScanned

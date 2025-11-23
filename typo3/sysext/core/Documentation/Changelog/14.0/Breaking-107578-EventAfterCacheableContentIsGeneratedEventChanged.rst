@@ -11,55 +11,62 @@ See :issue:`107578`
 Description
 ===========
 
-The frontend rendering related event :php:`AfterCacheableContentIsGeneratedEvent`
-had to be changed due to the removal of class :php:`TypoScriptFrontendController`:
-Method :php:`getController()` is removed and substituted with methods :php:`getContent()`
-and :php:`setContent()`.
+The frontend rendering event
+:php:`\TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent`
+has been adjusted due to the removal of the
+:php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` class.
 
+The method :php:`getController()` has been removed and replaced by two new
+methods: :php:`getContent()` and :php:`setContent()`.
 
 Impact
 ======
 
-Event listeners that call :php:`getController()` will trigger a fatal PHP error and
-have to be adapted.
-
+Event listeners that call :php:`getController()` will trigger a fatal PHP
+error and must be adapted.
 
 Affected installations
 ======================
 
-The event is relatively commonly used within frontend rendering related extensions
-since it gives an opportunity to get and manipulate the fully rendered Response body
-content at a late point in the rendering chain.
+This event is commonly used in frontend rendering–related extensions, since
+it provides an opportunity to access and manipulate the fully rendered
+response body content at a late point in the rendering chain.
 
-Instances with extensions listening for event :php:`AfterCacheableContentIsGeneratedEvent`
-may be affected. The extension scanner will find affected extensions.
+Instances with extensions listening to
+:php-short:`\TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent` may be
+affected. The extension scanner will detect such usages.
 
 Migration
 =========
 
-In most cases, method :php:`AfterCacheableContentIsGeneratedEvent->getController()` is used
-in event listeners to get and/or set :php:`TypoScriptFrontendController->content` at a late
-point within the frontend rendering chain.
+In most cases, :php:`AfterCacheableContentIsGeneratedEvent->getController()` was
+used within event listeners to get and modify the
+:php:`TypoScriptFrontendController->content` property at the end of the
+rendering process.
 
-The event has been changed by removing :php:`getController()` and adding :php:`getContent()`
-and :php:`setContent()` instead.
+The event now provides :php:`getContent()` and :php:`setContent()` methods
+to achieve the same goal more directly.
 
-Example before:
+**Before:**
 
-.. code-block:: php
+..  code-block:: php
 
-    #[AsEventListener('my-extension')]
-    public function indexPageContent(AfterCacheableContentIsGeneratedEvent $event): void
-    {
+    #[\TYPO3\CMS\Core\Attribute\AsEventListener('my-extension')]
+    public function indexPageContent(
+        \TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent $event
+    ): void {
         $tsfe = $event->getController();
         $content = $tsfe->content;
         // ... $content is manipulated here
         $tsfe->content = $content;
     }
 
-Example now:
+**After:**
 
-.. code-block:: php
+..  code-block:: php
+
+    use TYPO3\CMS\Core\Attribute\AsEventListener;
+    use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
 
     #[AsEventListener('my-extension')]
     public function indexPageContent(AfterCacheableContentIsGeneratedEvent $event): void
@@ -69,30 +76,36 @@ Example now:
         $event->setContent($content);
     }
 
-Extensions aiming for TYPO3 v13 and v14 compatibility in a single version can use a version
-check gate:
+**Version check for TYPO3 v13/v14 compatibility:**
 
-.. code-block:: php
+..  code-block:: php
+
+    use TYPO3\CMS\Core\Attribute\AsEventListener;
+    use TYPO3\CMS\Core\Information\Typo3Version;
+    use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
 
     #[AsEventListener('my-extension')]
-    public function indexPageContent(AfterCacheableContentIsGeneratedEvent $event): void
-    {
-        if ((new Typo3Version)->getMajorVersion() < 14) {
-            // @todo: Remove if() when TYPO3 v13 compatibility is dropped, keep else body only
+    public function indexPageContent(
+        AfterCacheableContentIsGeneratedEvent $event
+    ): void {
+        $version = new Typo3Version();
+        if ($version->getMajorVersion() < 14) {
+            // @todo: Remove if() when TYPO3 v13 compatibility is dropped
             $tsfe = $event->getController();
             $content = $tsfe->content;
         } else {
             $content = $event->getContent();
         }
+
         // ... $content is manipulated here
-        if ((new Typo3Version)->getMajorVersion() < 14) {
-            // @todo: Remove if() when TYPO3 v13 compatibility is dropped, keep else body only
+
+        if ($version->getMajorVersion() < 14) {
+            // @todo: Remove if() when TYPO3 v13 compatibility is dropped
             $tsfe = $event->getController();
             $tsfe->content = $content;
         } else {
             $event->setContent($content);
         }
     }
-
 
 ..  index:: PHP-API, FullyScanned, ext:frontend

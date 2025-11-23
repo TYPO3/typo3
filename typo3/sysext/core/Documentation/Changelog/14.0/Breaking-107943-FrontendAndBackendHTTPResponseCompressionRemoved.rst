@@ -11,34 +11,51 @@ See :issue:`107943`
 Description
 ===========
 
-The TYPO3 frontend and backend application allowed to compress its HTTP responses
-using the configuration toggles :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel']`
-and :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel']`.
+The TYPO3 frontend and backend applications previously allowed compressing
+their HTTP responses using the configuration options
+:php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel']` and
+:php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel']`.
 
-This feature was always disabled by default and has been removed: TYPO3 will no longer
-compress its HTTP responses. Response compression should be applied by web servers and not
-by the application layer. Removing this feature avoids collisions when both apply compression
-and allows web servers to use improved algorithms like brotli or zStandard if HTTP clients
-signal compatibility in HTTP requests.
+This feature, which was always disabled by default, has now been removed.
 
+TYPO3 will no longer compress its HTTP responses itself.
+
+Response compression should be handled by the web server rather than the
+application layer.
+
+Removing this feature avoids potential conflicts when both TYPO3 and the web
+server attempt to compress responses and allows modern web servers to use
+advanced compression algorithms such as brotli or zStandard when supported by
+the client.
 
 Impact
 ======
 
-TYPO3 can not compress its HTTP responses anymore and hands this task over to the
-web server. HTTP response compression had to be actively enabled in instances.
+TYPO3 can no longer compress its HTTP responses.
 
+This responsibility is now fully delegated to the web server.
+
+HTTP response compression had to be explicitly enabled before, so most
+installations will not notice a change unless they relied on this setting.
 
 Affected installations
 ======================
 
-Instances that configured :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel']` or
-:php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel']` to non zero values may be
-affected and should check whether the web server applies HTTP compression, indicated by
-a HTTP response header like :code:`Content-Encoding: gzip` when requesting a frontend
-and backend document with a HTTP header like :code:`Accept-Encoding: gzip, deflate`.
-The default configuration of commonly used web servers enables this feature.
+Instances that configured
+:php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel']` or
+:php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel']` to non-zero values
+are affected.
 
+Administrators should verify that the web server applies HTTP compression by
+checking for a response header such as:
+
+:code:`Content-Encoding: gzip`
+
+when requesting frontend or backend documents with a header like:
+
+:code:`Accept-Encoding: gzip, deflate`
+
+All commonly used web servers enable this feature by default.
 
 Migration
 =========
@@ -47,6 +64,5 @@ The configuration toggles for the backend :php:`$GLOBALS['TYPO3_CONF_VARS']['BE'
 and the frontend :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel']` are
 obsolete, existing settings in :file:`settings.php` configuration files are
 actively removed when first using the install tool after upgrade to TYPO3 v14.
-
 
 ..  index:: Backend, Frontend, LocalConfiguration, NotScanned, ext:core

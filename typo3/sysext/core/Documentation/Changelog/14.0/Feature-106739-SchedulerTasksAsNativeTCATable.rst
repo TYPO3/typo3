@@ -3,7 +3,7 @@
 ..  _feature-106739-1747815655:
 
 ======================================================
-Feature: #106739 - Scheduler Tasks as native TCA table
+Feature: #106739 - Scheduler tasks as native TCA table
 ======================================================
 
 See :issue:`106739`
@@ -11,33 +11,35 @@ See :issue:`106739`
 Description
 ===========
 
-For historical reasons the TYPO3 system extension "scheduler" had a special
-handling for persisting to the database. This was done by serializing the whole
-task object into a field of the database table `tx_scheduler_task`. In TYPO3 v14
-this has been reworked in order to split the logic of custom fields into a
-database field "parameters" of type `json` and a new database field `tasktype`
-for the scheduler task name or the CLI command.
+For historical reasons, the TYPO3 system extension
+:composer:`typo3/cms-scheduler` used a special mechanism for persisting data to
+the database. This was achieved by serializing the entire task object into a
+single field of the database table :sql:`tx_scheduler_task`.
 
-An upgrade wizard is in place for all existing scheduler tasks to use the new
+In TYPO3 v14, this behavior has been reworked. The logic for custom fields has
+been split into a dedicated database field :sql:`parameters` of type :sql:`json`
+and a new database field :sql:`tasktype` that stores the scheduler task name or
+CLI command.
+
+An upgrade wizard automatically migrates all existing scheduler tasks to the new
 database structure.
-
 
 Impact
 ======
 
-Due to this change, TCA is now introduced for this database table within TYPO3.
-This adds several advantages over the previous solution:
+With this change, TCA is now defined for the :sql:`tx_scheduler_task` table in
+TYPO3. This provides several advantages over the previous implementation:
 
-* The editing interface is now handled via FormEngine, making it flexible and
-  extensible.
-* Any changes are now stored to the database via DataHandler, allowing to
-  customize persistence changes – in addition, the history and audit
-  functionality is available for scheduler tasks as well.
-* Database entries of `tx_scheduler_task` can now be used via import/export
-  functionality.
-* Previously removed tasks can be restored via recycler.
+*    The editing interface is now handled via FormEngine, making it more flexible
+     and extensible.
+*    Changes are stored to the database via DataHandler, which allows
+     customization of persistence operations. The history and audit
+     functionality is now also available for scheduler tasks.
+*    Database entries of :sql:`tx_scheduler_task` can now be exported and
+     imported using the standard import/export functionality.
+*    Deleted tasks can be restored via the recycler module.
 
-Other functionality such as support for automated database restrictions and
-TcaSchema are available as well.
+Additional functionality such as support for automated database restrictions and
+the TCA schema is available as well.
 
 ..  index:: TCA, ext:scheduler

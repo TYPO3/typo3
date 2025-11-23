@@ -2,34 +2,36 @@
 
 ..  _feature-106686-1747147977:
 
-==============================================================
-Feature: #106686 - Enhance file browsers with columns selector
-==============================================================
+=============================================================
+Feature: #106686 - Enhance file browsers with column selector
+=============================================================
 
 See :issue:`106686`
 
 Description
 ===========
 
-The file browsers used in the **file selector** (e.g., for file fields)
-and the **file link browser** (e.g., for RTE links) have been enhanced to
-support the column selector component.
+The file browsers used in the **file selector** (for example, in file fields)
+and the **file link browser** (for example, for RTE links) have been enhanced
+to support the column selector component.
 
 This allows backend users to customize which columns are displayed
-(e.g., "alternative", "timestamp", etc.), improving usability and aligning
-the interface with the standard file list module.
+(for example, "alternative", "timestamp", and so on), improving usability and
+aligning the interface with the standard File List module.
 
-This enhancement is especially useful in large file storages, making it easier
-to find recently updated files or identify large files quickly.
+This enhancement is particularly useful in large file storages, making it
+easier to locate recently updated files or identify large files more quickly.
 
 Impact
 ======
 
-The file selector and link browser interfaces now include a column
-selector. This improves consistency across TYPO3 backend modules
-and gives users better control over file metadata visibility.
+The file selector and link browser interfaces now include a column selector.
+This improves consistency across TYPO3 backend modules and provides users with
+greater control over the visibility of file metadata.
 
-This feature requires no additional configuration but remains controlled
-by the UserTS option :typoscript:`options.file_list.displayColumnSelector`.
+No additional configuration is required for this feature.
+
+Whether the column selector is shown is still determined by the user TSconfig
+option :tsconfig:`options.file_list.displayColumnSelector`.
 
 ..  index:: Backend, ext:filelist

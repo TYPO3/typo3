@@ -11,15 +11,21 @@ See :issue:`106752`
 Description
 ===========
 
-This change introduces a new hashed option for the SaveToDatabase finisher in EXT:form.
-When saving data to a table, setting `hashed: true` on a field causes the value to be hashed using
-the default FE password hashing mechanism before storage.
+A new option :yaml:`hashed` has been added to the
+:php-short:`\TYPO3\CMS\Form\Finishers\SaveToDatabaseFinisher` of the system
+extension :composer:`typo3/cms-form`.
 
-This ensures secure handling of passwords and avoids saving them in plain text.
+When saving form data to a database table, setting :yaml:`hashed: true` for a
+field causes the value to be hashed using the default frontend password hashing
+mechanism before it is written to the database.
 
-Example usage in form definition:
+This improves security by preventing passwords from being stored in plain text.
+
+Example usage in a form definition:
 
 ..  code-block:: yaml
+    :caption: EXT:my_extension/Configuration/Form/ExampleForm.form.yaml
+
     - identifier: SaveToDatabase
       options:
         table: 'fe_users'
@@ -28,10 +34,11 @@ Example usage in form definition:
             mapOnDatabaseColumn: 'password'
             hashed: true
 
-
 Impact
 ======
 
-Integrators can now store passwords securely out of the box with EXT:form.
+Integrators can now ensure secure password storage when saving form data with
+the :php-short:`\TYPO3\CMS\Form\Finishers\SaveToDatabaseFinisher`, without
+implementing custom logic.
 
 ..  index:: ext:form

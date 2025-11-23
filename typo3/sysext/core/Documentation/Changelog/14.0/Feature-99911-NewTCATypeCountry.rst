@@ -11,16 +11,17 @@ See :issue:`99911`
 Description
 ===========
 
-A new TCA field type called :php:`country` has been added to TYPO3 Core. Its main
-purpose is to use the newly introduced
-`Country API <https://docs.typo3.org/permalink/t3coreapi:country-api>`_ to provide
-a country selection in the backend and use the stored representation in Extbase
-or TypoScript output.
+A new TCA field type called `country` has been added to TYPO3 Core. Its
+main purpose is to use the newly introduced
+`Country API <https://docs.typo3.org/permalink/t3coreapi:country-api>`_ to
+provide a country selection in the backend and use the stored representation in
+Extbase or TypoScript output.
 
 TCA Configuration
 -----------------
 
-The new TCA type displays all filtered countries including the configurable name and the corresponding flag.
+The new TCA type displays all filtered countries including the configurable
+name and the corresponding flag.
 
 .. code-block:: php
    :caption: Configuration/TCA/tx_myextension_mymodel.php
@@ -49,9 +50,10 @@ The new TCA type displays all filtered countries including the configurable name
         ],
     ],
 
-Note that extra items / countries should be added via the :ref:`new PSR-14 event BeforeCountriesEvaluatedEvent <feature-104168-1719373149>`.
+Note that extra items / countries should be added via the
+:ref:`new PSR-14 event BeforeCountriesEvaluatedEvent <feature-104168-1719373149>`.
 
-Flexform Configuration
+FlexForm Configuration
 ----------------------
 
 Similar keys work for FlexForms:
@@ -98,22 +100,21 @@ Available config keys
 
 The TCA type :php:`country` features the following column configuration:
 
--   :php:`filter` (array): :php:`onlyCountries` (array), :php:`excludeCountries` (array) -
-    filter/reduce specific countries
+-   :php:`filter` (array): :php:`onlyCountries` (array),
+    :php:`excludeCountries` (array) - filter/reduce specific countries
 -   :php:`prioritizedCountries` (array) - items put first in the list
 -   :php:`default` (string) - default value
--   :php:`labelField` (string) - display label (one of `localizedName`, `name`, `iso2`,
-    `iso3`, `officialName`, `localizedOfficialName`)
+-   :php:`labelField` (string) - display label (one of `localizedName`, `name`,
+    `iso2`, `iso3`, `officialName`, `localizedOfficialName`)
 -   :php:`sortItems` (string) - sort order (`asc`, `desc`)
 -   :php:`required` (bool) - whether an empty selection can be made or not
 
 Extbase usage
 -------------
 
-When using Extbase Controllers to fetch Domain Models containing
-properties declared with the :php:`Country` type, these models
-can be used with their usual getters, and passed along to Fluid
-templates as usual.
+When using Extbase Controllers to fetch Domain Models containing properties
+declared with the :php:`Country` type, these models can be used with their
+usual getters, and passed along to Fluid templates as usual.
 
 ..  code-block:: php
     :caption: Extbase Domain Model example
@@ -136,13 +137,13 @@ templates as usual.
         }
     }
 
-
 ..  code-block:: php
     :caption: Extbase Controller usage
 
     use Psr\Http\Message\ResponseInterface;
-    use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
     use TYPO3\CMS\Core\Country\Country;
+    use TYPO3\CMS\Core\Country\CountryProvider;
+    use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
     class ItemController extends ActionController {
         // ...
@@ -175,18 +176,18 @@ templates as usual.
          {model.country.alpha2IsoCode}
        </span>
 
-You can use any of the :php:`getXXX()` methods available from
-the `Country API <https://docs.typo3.org/permalink/t3coreapi:country-api>`_ via
+You can use any of the :php:`getXXX()` methods available from the
+`Country API <https://docs.typo3.org/permalink/t3coreapi:country-api>`_ via
 the Fluid :html:`{model.country.XXX}` accessors.
 
-If you use common Extbase CRUD (Create/Read/Update/Delete) with models using
-a `Country` type, you can utilize the existing
-ViewHelper :ref:`f:form.countrySelect <feature-99618-1674063182>` within
-your `<f:form>` logic.
+If you use common Extbase CRUD (Create/Read/Update/Delete) with models using a
+`Country` type, you can utilize the existing ViewHelper
+:ref:`f:form.countrySelect <feature-99618-1674063182>` within your
+`<f:form>` logic.
 
-Please keep in mind that Extbase by default has no coupling (in terms of validation)
-to definitions made in the `TCA` for the properties, as with other types like
-file uploads or select items.
+Please keep in mind that Extbase by default has no coupling (in terms of
+validation) to definitions made in the `TCA` for the properties, as with other
+types like file uploads or select items.
 
 That means, if you restrict the allowed countries via `filter.onlyCountries` on
 the backend (TCA) side, you also need to enforce this in the frontend.
@@ -194,8 +195,8 @@ the backend (TCA) side, you also need to enforce this in the frontend.
 It is recommended to use
 `Extbase Validators <https://docs.typo3.org/permalink/t3coreapi:extbase-validation>`__
 for this task. If you want to share frontend-based validation and TCA-based
-validation non-redundantly, you could use data objects (DO/DTO) or ENUMs for returning
-the list of allowed countries:
+validation non-redundantly, you could use data objects (DO/DTO) or ENUMs for
+returning the list of allowed countries:
 
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/Domain/Validator/CountryValidator.php
@@ -253,18 +254,17 @@ the list of allowed countries:
         // ...
     }
 
-A fleshed-out example for this (along with Extbase CRUD
-implementation) can be found in
+A full working example, including an Extbase CRUD setup, can be found in
 `EXT:tca_country_example Demo Extension <https://packagist.org/packages/garvinhicking/tca-country-example>`__.
 
 Extbase / Fluid localization
 ----------------------------
 
-The type :php:`Country` does not point to a real Extbase model, and thus has no inherent
-localization or query-logic based on real records. It is just a pure
-PHP data object with some getters, and a magic :php:`__toString()` method
-returning a `LLL:...` translation key for the name of the country
-(:php:`Country->getLocalizedNameLabel()`).
+The type :php-short:`\TYPO3\CMS\Core\Country\Country` does not point to a real
+Extbase model, and thus has no inherent localization or query logic based on
+real records. It is just a pure PHP data object with some getters, and a magic
+:php:`__toString()` method returning a language label (`LLL:...`) translation
+key for the name of the country (:php:`Country->getLocalizedNameLabel()`).
 
 Here are some examples how to access them and provide localization:
 
@@ -295,12 +295,12 @@ Here are some examples how to access them and provide localization:
     Actual localized official country name:
         <f:translate key="{item.country.localizedOfficialNameLabel}" />
 
-    <f:comment>Will show something like "Germany" (always english)</f:comment>
+    <f:comment>Will show something like "Germany" (always English)</f:comment>
         {item.country.name}
 
-You can use the Extbase :php:`TYPO3\CMS\Extbase\Utility\LocalizationUtility`
-in PHP-scope (Controllers, Domain Model)
-to create a custom getter in your Domain Model to create a shorthand method:
+You can use the Extbase :php:`\TYPO3\CMS\Extbase\Utility\LocalizationUtility` in
+PHP scope (Controllers, Domain Model) to create a custom getter in your Domain
+Model to create a shorthand method:
 
 ..  code-block:: php
     :caption: EXT:my_extension/Domain/Model/Item.php
@@ -336,11 +336,11 @@ to create a custom getter in your Domain Model to create a shorthand method:
 Extbase Repository access
 -------------------------
 
-As mentioned above, since `Country` has no database-record relations.
-The single-country relation always uses the 2-letter ISO alpha2 key
-(respectively custom country keys, when added via the PSR-14 event
-`BeforeCountriesEvaluatedEvent`). Thus, queries need to utilize them
-as string comparisons:
+As mentioned above, since :php-short:`\TYPO3\CMS\Core\Country\Country` has no
+database-record relations. The single-country relation always uses the 2-letter
+ISO alpha2 key (respectively custom country keys, when added via the PSR-14 event
+:php-short:`\TYPO3\CMS\Core\Country\Event\BeforeCountriesEvaluatedEvent`). Thus, queries need to utilize them as string
+comparisons:
 
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/Domain/Repository/ItemRepository.php
@@ -348,8 +348,8 @@ as string comparisons:
 
     namespace MyExtension\Domain\Repository;
 
-    use TYPO3\CMS\Extbase\Persistence\Repository;
     use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+    use TYPO3\CMS\Extbase\Persistence\Repository;
 
     class ItemRepository extends Repository
     {
@@ -368,13 +368,12 @@ The default Extbase repository magic method
 TypoScript rendering usage via `record-transformation`
 ------------------------------------------------------
 
-Database records using 'country' type fields can be rendered
-with the TypoScript-based record-transformation rendering
-(data processor).
+Database records using 'country' type fields can be rendered with the
+TypoScript-based record-transformation rendering (data processor).
 
 You can specify how a field containing a country is rendered in the output
-(using the name, the flag icon, specific ISO keys) with regular fluid
-logic then:
+(using the name, the flag icon, specific ISO keys) with regular Fluid logic
+then:
 
 ..  code-block:: typoscript
     :caption: Step 1: TypoScript utilizing `record-transformation`, defining a `Homepage.html` Fluid template
@@ -428,20 +427,20 @@ logic then:
 
 ..  hint::
 
-    Instead of adding the data processor to the `PAGE` definition, you could create
-    an own `country` Content Element type and set it for `tt_content.country`, and
-    utilize a Content-Element specific Fluid template accessing this data, providing
-    something like a "Store" Content Element associated with a country.
-
+    Instead of adding the data processor to the :typoscript:`PAGE` definition, you could
+    create your own `country` Content Element type and set it for
+    `tt_content.country`, and utilize a Content-Element specific Fluid template
+    accessing this data, providing something like a "Store" Content Element
+    associated with a country.
 
 Impact
 ======
 
-It is now possible to use a dedicated TCA type for storing a relation
-to a country in a record.
+It is now possible to use a dedicated TCA type for storing a relation to a
+country in a record.
 
 Using the new TCA type, corresponding database columns are added automatically.
-`Country`-annotated properties of Extbase Domain Models can be evaluated
-in Extbase and via TypoScript.
+`Country`-annotated properties of Extbase Domain Models can be evaluated in
+Extbase and via TypoScript.
 
 .. index:: Backend, TCA, ext:core

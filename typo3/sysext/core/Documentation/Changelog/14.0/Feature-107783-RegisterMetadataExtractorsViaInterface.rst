@@ -3,7 +3,7 @@
 ..  _feature-107783-1760944786:
 
 =============================================================
-Feature: #107783 - Register Metadata extractors via Interface
+Feature: #107783 - Register metadata extractors via interface
 =============================================================
 
 See :issue:`107783`
@@ -11,23 +11,27 @@ See :issue:`107783`
 Description
 ===========
 
-Metadata extractors are service classes that are automatically
-executed whenever an asset / file is added to the FAL storage,
-or FAL indexing is executed.
+Metadata extractors are service classes that are automatically executed
+whenever an asset or file is added to the :abbr:`FAL (File Abstraction Layer)`
+storage, or FAL indexing is executed.
 
-Registration of Metadata extractors will happen automatically when the required interface
-:php:`TYPO3\CMS\Core\Resource\Index\ExtractorInterface` is implemented by the class,
-utilizing autoconfigure tagging by the Symfony Dependence Injection framework.
+Registration of metadata extractors now happens automatically when the required
+interface :php-short:`\TYPO3\CMS\Core\Resource\Index\ExtractorInterface` is
+implemented by the class, utilizing autoconfigure tagging provided by the
+Symfony Dependency Injection framework.
 
-No further registration is necessary.
+No further manual registration is required.
 
-Additionally, the class :php:`TYPO3\CMS\Core\Resource\Index\ExtractorRegistry` now
-uses strong type declarations, which should not affect public consumers. The interface
-remains unchanged in type declarations.
+Additionally, the class
+:php-short:`\TYPO3\CMS\Core\Resource\Index\ExtractorRegistry` now uses strong
+type declarations, which should not affect public consumers. The interface
+remains unchanged in its type declarations.
 
 Impact
 ======
 
-Instances of :php:`TYPO3\CMS\Core\Resource\Index\ExtractorInterface` will be detected and registered automatically.
+Instances of
+:php-short:`\TYPO3\CMS\Core\Resource\Index\ExtractorInterface` are now detected
+and registered automatically.
 
 ..  index:: FAL, PHP-API, ext:core
