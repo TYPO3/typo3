@@ -55,7 +55,7 @@
 				<source>Invisible subpages</source>
 			</trans-unit>
 			<trans-unit id="hasInvisiblePage.message">
-				<source>The page has invisible subpages which are not shown due to access restrictions. Those will not be sorted among others.</source>
+				<source>Some subpages are not visible because of access restrictions. These hidden pages are excluded from sorting.</source>
 			</trans-unit>
 			<trans-unit id="noSubpages.title">
 				<source>No subpages</source>
@@ -67,7 +67,7 @@
 				<source>Not implemented</source>
 			</trans-unit>
 			<trans-unit id="notAvailableInWorkspace.message">
-				<source>Sorry, this function is not available in the current draft workspace!</source>
+				<source>This function is not available in the current draft workspace; please switch back to the LIVE workspace.</source>
 			</trans-unit>
 			<trans-unit id="noEditPermissions">
 				<source>No edit permissions on this sub page. This page can not be re-sorted among others.</source>
