@@ -23,12 +23,13 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Core\BootService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class CacheFlushTagsCommand extends Command
 {
     public function __construct(
-        private readonly CacheManager $cacheManager
+        protected readonly BootService $bootService,
     ) {
         parent::__construct('cache:flushtags');
     }
@@ -61,16 +62,18 @@ class CacheFlushTagsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $container = $this->bootService->getContainer(true);
+        $cacheManager = $container->get(CacheManager::class);
         $groups = GeneralUtility::trimExplode(',', $input->getOption('groups') ?? '', true);
         $tags = GeneralUtility::trimExplode(',', $input->getArgument('tags') ?? '', true);
 
         foreach ($groups as $group) {
             if ($group === 'all') {
-                $this->cacheManager->flushCachesByTags($tags);
+                $cacheManager->flushCachesByTags($tags);
                 continue;
             }
 
-            $this->cacheManager->flushCachesInGroupByTags($group, $tags);
+            $cacheManager->flushCachesInGroupByTags($group, $tags);
         }
 
         return Command::SUCCESS;

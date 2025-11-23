@@ -261,7 +261,7 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getCacheFlushTagsCommand(ContainerInterface $container): Command\CacheFlushTagsCommand
     {
         return new Command\CacheFlushTagsCommand(
-            $container->get(Cache\CacheManager::class)
+            $container->get(Core\BootService::class),
         );
     }
 

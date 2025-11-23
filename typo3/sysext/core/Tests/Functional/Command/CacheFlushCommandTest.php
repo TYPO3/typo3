@@ -60,7 +60,7 @@ final class CacheFlushCommandTest extends AbstractCommandTestCase
 
         $result = $this->executeConsoleCommand('cache:flush');
 
-        self::assertEquals(0, $result['status']);
+        self::assertSame(0, $result['status']);
         self::assertFileDoesNotExist(Environment::getVarPath() . '/cache/code/core/sites-configuration.php');
         self::assertFalse($pageCache->has('dummy-page-cache-hash'));
 
