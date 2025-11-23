@@ -30,6 +30,7 @@ class Typo3Information
     public const URL_LICENSE = 'https://typo3.org/project/licenses/';
     public const URL_EXCEPTION = 'https://typo3.org/go/exception/CMS/';
     public const URL_DONATE = 'https://typo3.org/community/contribute/donate/';
+    public const URL_TRADEMARK = 'https://typo3.org/trademark';
     private const URL_DOCS = 'https://docs.typo3.org/permalink/%s@%s';
 
     protected LanguageService $languageService;
@@ -105,6 +106,11 @@ class Typo3Information
             $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:copyright') . ' &copy; '
             . htmlspecialchars($this->getCopyrightYear()) . ' Kasper Sk&aring;rh&oslash;j. ' .
             $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:extension.copyright') . ' ' .
+            sprintf(
+                $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:extension.trademark'),
+                '<a href="' . htmlspecialchars(static::URL_TRADEMARK) . '" target="_blank" rel="noreferrer">',
+                '</a>'
+            ) . ' ' .
             sprintf(
                 $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:details.link'),
                 '<a href="' . htmlspecialchars(static::URL_COMMUNITY) . '" target="_blank" rel="noreferrer">' . htmlspecialchars(static::URL_COMMUNITY) . '</a>'
