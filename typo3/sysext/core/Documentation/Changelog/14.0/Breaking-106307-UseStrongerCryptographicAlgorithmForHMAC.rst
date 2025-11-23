@@ -92,13 +92,14 @@ Execute the database analyzer in the Install Tool or run :bash:`vendor/bin/typo3
 - File dump and show image URLs regenerate automatically on next access
 - External references to file/image URLs must be updated
 
-> [!IMPORTANT]
-> Existing links with `&cHash=` URL parameters will become invalid and respond with
-> an HTTP 404 error. Search engines first need to crawl the site and discover the
-> new URLs having the longer cache-hash value. This probably has an impact on SEO.
->
-> :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['fallbackToLegacyHash'] = true;`
-> can be used to still allow the legacy MD5 cache-hash during frontend requests.
+..  important::
+
+    Existing links with `&cHash=` URL parameters will become invalid and respond with
+    an HTTP 404 error. Search engines first need to crawl the site and discover the
+    new URLs having the longer cache-hash value. This probably has an impact on SEO.
+
+    :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['fallbackToLegacyHash'] = true;`
+    can be used to still allow the legacy MD5 cache-hash during frontend requests.
 
 **Sessions:**
 
