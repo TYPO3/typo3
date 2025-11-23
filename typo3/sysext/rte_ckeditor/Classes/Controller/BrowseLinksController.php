@@ -346,7 +346,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         }
 
         return '
-            <div class="form-group col-12">
+            <div class="element-browser-form-group">
                 <label for="lrel" class="form-label">' .
                     htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:linkRelationship')) .
                 '</label>
@@ -370,7 +370,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         }
 
         return '
-            <div class="form-group col-sm-6">
+            <div class="element-browser-form-group">
                 <label for="ltarget" class="form-label">
                     ' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:target')) . '
                 </label>
@@ -394,7 +394,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         }
 
         return '
-            <div class="form-group col-sm-6">
+            <div class="element-browser-form-group">
                 <label for="lclass" class="form-label">
                     ' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:class')) . '
                 </label>

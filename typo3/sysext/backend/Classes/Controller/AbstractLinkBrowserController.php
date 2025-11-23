@@ -466,7 +466,7 @@ abstract class AbstractLinkBrowserController
         $fieldRenderingDefinitions = [];
         $fieldRenderingDefinitions['target'] = '
             <!-- Selecting target for link: -->
-            <div class="form-group col-sm-6">
+            <div class="element-browser-form-group">
                 <label for="ltarget" class="form-label">
                     ' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:target')) . '
                 </label>
@@ -479,7 +479,7 @@ abstract class AbstractLinkBrowserController
 
         $fieldRenderingDefinitions['title'] = '
             <!-- Selecting title for link: -->
-            <div class="form-group col-12">
+            <div class="element-browser-form-group">
                 <label for="ltitle" class="form-label">' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:title')) . '</label>
                 <input id="ltitle" type="text" name="ltitle" class="form-control"
                     value="' . htmlspecialchars($this->linkAttributeValues['title'] ?? '') . '" />
@@ -487,7 +487,7 @@ abstract class AbstractLinkBrowserController
 
         $fieldRenderingDefinitions['class'] = '
             <!-- Selecting class for link: -->
-            <div class="form-group col-sm-6">
+            <div class="element-browser-form-group">
                 <label for="lclass" class="form-label">
                     ' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:class')) . '
                 </label>
@@ -497,7 +497,7 @@ abstract class AbstractLinkBrowserController
 
         $fieldRenderingDefinitions['params'] = '
             <!-- Selecting params for link: -->
-            <div class="form-group col-12">
+            <div class="element-browser-form-group">
                 <label for="lparams" class="form-label">' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:params')) . '</label>
                 <input id="lparams" type="text" name="lparams" class="form-control"
                     value="' . htmlspecialchars($this->linkAttributeValues['params'] ?? '') . '" />

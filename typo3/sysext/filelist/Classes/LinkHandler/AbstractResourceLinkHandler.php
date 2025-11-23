@@ -130,7 +130,7 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
 
     public function getLinkAttributes(): array
     {
-        return ['title', 'target', 'class', 'params', 'rel'];
+        return ['target', 'title', 'class', 'params', 'rel'];
     }
 
     public function initialize(AbstractLinkBrowserController $linkBrowser, $identifier, array $configuration)
