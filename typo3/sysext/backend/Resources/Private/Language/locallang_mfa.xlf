@@ -44,9 +44,8 @@
       </trans-unit>
       <trans-unit id="overview.setupRequired.message">
         <source>
-					Your installation requires MFA. Therefore please setup one of the following providers to be
-					able to continue to use the backend.
-                </source>
+          Your installation requires MFA. Therefore please setup one of the following providers to be able to continue to use the backend.
+        </source>
       </trans-unit>
       <trans-unit id="overview.noProviders.title">
         <source>No multi-factor authentication providers</source>
@@ -56,14 +55,13 @@
       </trans-unit>
       <trans-unit id="noprovider_error_message">
         <source>
-					Multi-factor authentification (MFA) setup is required, but no providers are currently available for you to activate. This might be a misconfiguration, so please contact your administrator for assistance.
-                </source>
+          Multi-factor authentification (MFA) setup is required, but no providers are currently available for you to activate. This might be a misconfiguration, so please contact your administrator for assistance.
+        </source>
       </trans-unit>
       <trans-unit id="overview.noProviders.errorMessage" x-unused-since="14.0">
         <source>
-					You are required to setup MFA but there are no providers to activate available. You should contact
-					your administrator to solve this.
-                </source>
+          You are required to setup MFA but there are no providers to activate available. You should contact your administrator to solve this.
+        </source>
       </trans-unit>
       <trans-unit id="providerNotFound">
         <source>Selected MFA provider was not found</source>
@@ -144,7 +142,7 @@
         <source>Go back</source>
       </trans-unit>
       <trans-unit id="auth.locked">
-        <source>This provider is temporarily locked!</source>
+        <source>This provider is temporarily locked.</source>
       </trans-unit>
       <trans-unit id="auth.alternativeProviders">
         <source>Alternative providers</source>
@@ -160,15 +158,13 @@
       </trans-unit>
       <trans-unit id="standalone.selection.message">
         <source>
-					%s requires you setting up MFA to secure your account. Please select one of the
-					available providers below.
-                </source>
+          %s requires you setting up MFA to secure your account. Please select one of the available providers below.
+        </source>
       </trans-unit>
       <trans-unit id="standalone.selection.noAvailableProviders" x-unused-since="14.0">
         <source>
-					You are required to set up MFA. However, there are no MFA providers available for you to use.
-					This might be a misconfiguration. Please get in touch with your administrator to find a solution.
-                </source>
+          You are required to set up MFA. However, there are no MFA providers available for you to use. This might be a misconfiguration. Please get in touch with your administrator to find a solution.
+        </source>
       </trans-unit>
       <trans-unit id="standalone.selection.goBack">
         <source>Go back</source>
@@ -184,9 +180,8 @@
       </trans-unit>
       <trans-unit id="standalone.setup.success.message">
         <source>
-					You have successfully activated MFA provider %s. This provider was also automatically set as your
-					default provider. You can change this at any time in your user settings.
-                </source>
+          You have successfully activated MFA provider %s. This provider was also automatically set as your default provider. You can change this at any time in your user settings.
+        </source>
       </trans-unit>
       <trans-unit id="ajax.success">
         <source>Success</source>
