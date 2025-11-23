@@ -87,8 +87,8 @@
 			<trans-unit id="overview.error_handling">
 				<source>Error handling</source>
 			</trans-unit>
-			<trans-unit id="overview.info.title">
-				<source>Information</source>
+			<trans-unit id="overview.status.title">
+				<source>Status</source>
 			</trans-unit>
 			<trans-unit id="overview.info.all_sites.multiple">
 				<source><![CDATA[The installation includes <strong>%s configured sites</strong>.]]></source>

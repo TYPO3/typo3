@@ -17,7 +17,7 @@
 
     <f:if condition="{rootPagesWithSiteConfiguration -> f:count()} || {rootPagesWithoutSiteConfiguration -> f:count()} || {unassignedSites -> f:count()}">
         <f:be.infobox
-            title="{f:translate(key:'overview.info.title', domain:'backend.siteconfiguration')}"
+            title="{f:translate(key:'overview.status.title', domain:'backend.siteconfiguration')}"
             state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::NOTICE')}"
         >
             <ul>
