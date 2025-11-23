@@ -69,6 +69,9 @@
 			<trans-unit id="extension.copyright" resname="extension.copyright">
 				<source>Extensions are copyright of their respective owners.</source>
 			</trans-unit>
+			<trans-unit id="extension.trademark">
+				<source>TYPO3 is a registered %strademark%s.</source>
+			</trans-unit>
 			<trans-unit id="details.link" resname="details.link">
 				<source>Go to %s for details.</source>
 			</trans-unit>

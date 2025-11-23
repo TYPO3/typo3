@@ -58,6 +58,7 @@ class AboutController
             'typo3Info' => $this->typo3Information,
             'typo3Version' => $this->version,
             'donationUrl' => $this->typo3Information::URL_DONATE,
+            'trademarkUrl' => $this->typo3Information::URL_TRADEMARK,
             'loadedExtensions' => $this->getLoadedExtensions(),
             'messages' => $event->getMessages(),
             'modules' => $this->moduleProvider->getModules($this->getBackendUser()),
