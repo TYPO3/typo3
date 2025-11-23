@@ -55,4 +55,8 @@ export class BackendPage {
         && response.status() === 200;
     });
   }
+
+  getUnixTimestamp(): number {
+    return Math.floor(Date.now() / 1000);
+  }
 }

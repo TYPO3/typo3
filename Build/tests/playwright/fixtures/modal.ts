@@ -1,5 +1,10 @@
 import { Page, Locator, expect } from '@playwright/test';
 
+export interface ModalClickOptions {
+  name?: string;
+  text?: string;
+}
+
 export class Modal {
   readonly frameSelector = 'typo3-backend-modal iframe[name="modal_frame"]';
   readonly element: Locator;
@@ -30,12 +35,16 @@ export class Modal {
   }
 
   /**
-   * Click a button in the modal footer
+   * Click a button in the modal footer (we have some buttons with name and some without)
    *
-   * @param name The buttons name (not text)
+   * @param modalClickOptions Options to identify the button either by name or text
    */
-  async click(name: string) {
-    await expect(this.footer.locator(`button[name="${name}"]`)).toBeEnabled();
-    await this.footer.locator(`button[name="${name}"]`).click();
+  async click(modalClickOptions: ModalClickOptions) {
+    const locator = modalClickOptions.name
+      ? `button[name="${modalClickOptions.name}"]`
+      : `button:has-text("${modalClickOptions.text}")`;
+
+    await expect(this.footer.locator(locator)).toBeEnabled();
+    await this.footer.locator(locator).click();
   }
 }

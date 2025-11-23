@@ -47,7 +47,7 @@ test('Edit existing site configuration', async ({ backend, page }) => {
       await expect(modal).toBeVisible();
       await expect(modal).toContainText('Delete this record?');
 
-      await backend.modal.click('yes');
+      await backend.modal.click({ name: 'yes' });
       await backend.formEngine.save();
 
       const newLanguageCount = await getLanguageCount(backend);

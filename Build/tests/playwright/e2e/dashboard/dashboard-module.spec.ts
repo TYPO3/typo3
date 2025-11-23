@@ -25,7 +25,7 @@ test('Create custom dashboard and widgets', async ({ backend }) => {
 
   await addModal.locator('#dashboard-form-add-title').fill(customDashboardTitle);
   await addModal.locator('label[for="dashboard-form-add-preset-empty"]').click();
-  await backend.modal.click('save');
+  await backend.modal.click({ name: 'save' });
   await expect(contentFrame.locator('.dashboard-tab--active')).toContainText(customDashboardTitle);
 
   // Add widget
@@ -48,14 +48,14 @@ test('Delete dashboard and widgets', async ({ backend }) => {
 
   const modalButton = contentFrame.locator('div[data-widget-key="typeOfUsers"] .widget-action-remove');
   await backend.modal.open(modalButton);
-  await backend.modal.click('delete');
+  await backend.modal.click({ name: 'delete' });
 
   await expect(contentFrame.getByRole('button', { name: 'Remove Widget' })).toBeHidden();
   await expect(contentFrame.locator('.dashboard-empty-content')).toBeVisible();
 
   // Delete custom dashboard
   const deleteModal = await open(backend, 'actions-delete');
-  await backend.modal.click('delete');
+  await backend.modal.click({ name: 'delete' });
   await expect(deleteModal).not.toBeVisible();
   await expect(contentFrame.locator('.dashboard-tab--active', { hasText: customDashboardTitle })).not.toBeVisible();
 });
@@ -68,18 +68,18 @@ test('Create, rename and delete dashboard',async ({ backend }) => {
   // Add dashboard
   await addModal.locator('[name="title"]').fill(titleBeforeRename);
   await addModal.locator('label[for="dashboard-form-add-preset-empty"]').click();
-  await backend.modal.click('save');
+  await backend.modal.click({ name: 'save' });
   await expect(backend.contentFrame.locator('.dashboard-tab--active')).toContainText(titleBeforeRename);
 
   // Rename dashboard
   const renameModal = await open(backend, 'actions-cog');
   await renameModal.locator('[name="title"]').fill(titleAfterRename);
-  await backend.modal.click('save');
+  await backend.modal.click({ name: 'save' });
   await expect(backend.contentFrame.locator('.dashboard-tab--active')).toContainText(titleAfterRename);
 
   // Delete dashboard
   const deleteModal = await open(backend, 'actions-delete');
-  await backend.modal.click('delete');
+  await backend.modal.click({ name: 'delete' });
   await expect(deleteModal).not.toBeVisible();
   await expect(backend.contentFrame.locator('.dashboard-tab--active', { hasText: titleAfterRename })).not.toBeVisible();
 });
