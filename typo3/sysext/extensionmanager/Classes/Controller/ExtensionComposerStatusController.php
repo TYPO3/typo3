@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -39,12 +40,14 @@ class ExtensionComposerStatusController extends AbstractController
         protected readonly ComposerDeficitDetector $composerDeficitDetector,
         protected readonly ComposerManifestProposalGenerator $composerManifestProposalGenerator,
         protected readonly PageRenderer $pageRenderer,
-        protected readonly IconFactory $iconFactory
+        protected readonly IconFactory $iconFactory,
+        protected readonly ExtensionConfiguration $extensionConfiguration
     ) {}
 
     protected function initializeAction(): void
     {
         parent::initializeAction();
+        $this->settings['offlineMode'] = (bool)$this->extensionConfiguration->get('extensionmanager', 'offlineMode');
         // The returnUrl, given in the request contains the actual destination, e.g. reports module.
         // Since we need to forward it in all actions, we define it as class variable here.
         if ($this->request->hasArgument('returnUrl')) {
