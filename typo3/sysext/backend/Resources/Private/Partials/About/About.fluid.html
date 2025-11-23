@@ -2,6 +2,13 @@
     {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:cms_description',
         arguments: '{
             0: "&copy; {typo3Info.copyrightYear}",
-            1: "Kasper Sk&aring;rh&oslash;j"
+            1: "Kasper Sk&aring;rh&oslash;j."
+    }') -> f:format.raw()}
+</p>
+<p>
+    {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:extension.trademark',
+        arguments: '{
+            0: "<a href=\"{trademarkUrl}\" target=\"_blank\" rel=\"noreferrer\">",
+            1: "</a>"
     }') -> f:format.raw()}
 </p>
