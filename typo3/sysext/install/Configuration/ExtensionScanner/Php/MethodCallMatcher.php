@@ -6782,6 +6782,20 @@ return [
             'Breaking-108055-RemovedPageRendererRelatedHooksAndMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Page\CacheHashCalculator->setConfiguration' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-108277-RemoveSuperfluousCacheHashCalculatorPublicMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Page\CacheHashConfiguration->with' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-108277-RemoveSuperfluousCacheHashCalculatorPublicMethods.rst',
+        ],
+    ],
     /** Note (leave this at the bottom):
      *  The FQCN object definitions here are not actually checked, only
      *  the method name itself. That means, never list generic method names

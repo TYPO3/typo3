@@ -58,39 +58,20 @@ class CacheHashConfiguration
     ];
 
     /**
-     * @var array
+     * @var array $configuration The raw configuration of `$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']`
      */
-    protected $configuration;
+    protected array $configuration;
 
     /**
-     * @var array
+     * @var array $data The resolved aspects to be applied, based on the configuration
      */
-    protected $data = [];
+    protected array $data = [];
 
     public function __construct(?array $configuration = null)
     {
         $configuration = $configuration ?? $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash'] ?? [];
         $this->configuration = array_filter($configuration, [$this, 'isAllowedProperty'], ARRAY_FILTER_USE_KEY);
         $this->processConfiguration();
-    }
-
-    /**
-     * Merges other configuration property names with current configuration (extends current configuration).
-     *
-     * Example:
-     * $configuration = (new CacheHashConfiguration(['cachedParametersWhiteList' => [...]])
-     *                      ->with(new CacheHashConfiguration(['excludedParameters' => [...]]));
-     * results in an instance having both aspects 'cachedParametersWhiteList' and 'excludedParameters' defined.
-     *
-     * @param CacheHashConfiguration $other
-     * @return static
-     */
-    public function with(CacheHashConfiguration $other): self
-    {
-        $target = clone $this;
-        $target->configuration = array_merge($this->configuration, $other->configuration);
-        $target->processConfiguration();
-        return $target;
     }
 
     public function shallExcludeAllEmptyParameters(): bool

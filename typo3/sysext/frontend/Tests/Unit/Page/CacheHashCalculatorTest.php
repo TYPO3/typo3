@@ -185,10 +185,10 @@ final class CacheHashCalculatorTest extends UnitTestCase
     public function canWhitelistParameters(string $params, string $expected): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 't3lib_cacheHashTest';
-        $subject = new CacheHashCalculator(new CacheHashConfiguration($this->configuration), new HashService());
-        $subject->setConfiguration([
-            'cachedParametersWhiteList' => ['whitep1', 'whitep2'],
-        ]);
+        $configuration = new CacheHashConfiguration(
+            array_merge($this->configuration, ['cachedParametersWhiteList' => ['whitep1', 'whitep2']])
+        );
+        $subject = new CacheHashCalculator($configuration, new HashService());
         self::assertEquals($expected, $subject->generateForParameters($params));
     }
 
@@ -228,8 +228,10 @@ final class CacheHashCalculatorTest extends UnitTestCase
     public function canSkipParametersWithEmptyValues(string $params, array $settings, array $expected): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 't3lib_cacheHashTest';
-        $subject = new CacheHashCalculator(new CacheHashConfiguration($this->configuration), new HashService());
-        $subject->setConfiguration($settings);
+        $configuration = new CacheHashConfiguration(
+            array_merge($this->configuration, $settings)
+        );
+        $subject = new CacheHashCalculator($configuration, new HashService());
         $actual = $subject->getRelevantParameters($params);
         self::assertEquals($expected, array_keys($actual));
     }

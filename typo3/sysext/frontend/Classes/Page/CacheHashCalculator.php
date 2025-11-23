@@ -243,13 +243,4 @@ class CacheHashCalculator
                 $key
             );
     }
-
-    /**
-     * Extends (or overrides) property names of current configuration.
-     */
-    public function setConfiguration(array $configuration)
-    {
-        $newConfiguration = GeneralUtility::makeInstance(CacheHashConfiguration::class, $configuration);
-        $this->configuration = $this->configuration->with($newConfiguration);
-    }
 }
