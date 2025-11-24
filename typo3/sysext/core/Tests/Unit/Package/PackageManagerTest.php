@@ -87,7 +87,10 @@ final class PackageManagerTest extends UnitTestCase
             mkdir($packagePath, 0770, true);
         }
         file_put_contents($packagePath . 'ext_emconf.php', '<?php' . LF . '$EM_CONF[$_EXTKEY] = [];');
-        file_put_contents($packagePath . 'composer.json', '{}');
+        file_put_contents(
+            $packagePath . 'composer.json',
+            json_encode(['extra' => ['typo3/cms' => ['extension-key' => $packageKey]]], JSON_THROW_ON_ERROR)
+        );
         $package = new Package($this->packageManager, $packageKey, $packagePath);
         $this->packageManager->registerPackage($package);
         $this->packageManager->activatePackage($packageKey);
@@ -127,7 +130,7 @@ final class PackageManagerTest extends UnitTestCase
             $packagePath = $this->testRoot . 'Packages/Application/' . $packageKey . '/';
 
             mkdir($packagePath, 0770, true);
-            file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-test"}');
+            file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-cms-test", "extra": {"typo3/cms": {"extension-key": "' . $packageKey . '"}}}');
         }
 
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['sortAndSavePackageStates'], [new DependencyOrderingService()]);
@@ -158,7 +161,7 @@ final class PackageManagerTest extends UnitTestCase
             $packagePaths[] = $packagePath;
 
             mkdir($packagePath, 0770, true);
-            file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-cms-test"}');
+            file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-cms-test", "extra": {"typo3/cms": {"extension-key": "' . $packageKey . '"}}}');
             file_put_contents($packagePath . 'ext_emconf.php', '<?php' . LF . '$EM_CONF[$_EXTKEY] = [];');
         }
 
@@ -225,7 +228,7 @@ final class PackageManagerTest extends UnitTestCase
             $packagePath = $this->testRoot . 'Packages/Application/' . $packageKey . '/';
 
             mkdir($packagePath, 0770, true);
-            file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-cms-test"}');
+            file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-cms-test", "extra": {"typo3/cms": {"extension-key": "' . $packageKey . '"}}}');
             file_put_contents($packagePath . 'ext_emconf.php', '<?php' . LF . '$EM_CONF[$_EXTKEY] = [];');
             $packagePaths[] = $packagePath;
         }

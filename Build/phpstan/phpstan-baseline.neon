@@ -925,12 +925,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Package/PackageActivationService.php
 
 		-
-			message: '#^Call to function is_object\(\) with object will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Package/PackageManager.php
-
-		-
 			message: '#^Offset string does not exist on null\.$#'
 			identifier: offsetAccess.notFound
 			count: 1

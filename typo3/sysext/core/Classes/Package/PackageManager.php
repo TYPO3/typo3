@@ -319,7 +319,8 @@ class PackageManager implements SingletonInterface
     }
 
     /**
-     * Fetches all directories from sysext/global/local locations and checks if the extension contains an ext_emconf.php
+     * Fetches all directories from sysext/local locations and checks if the extension contains an composer.json
+     * with a type "typo3-cms-framework", or "typo3-cms-extension".
      *
      * @return array
      */
@@ -327,12 +328,12 @@ class PackageManager implements SingletonInterface
     {
         $collectedExtensionPaths = [];
         foreach ($this->getPackageBasePaths() as $packageBasePath) {
-            // Only add the extension if we have an EMCONF and the extension is not yet registered.
+            // Only add the extension if we have a composer.json and the extension is not yet registered.
             // This is crucial in order to allow overriding of system extension by local extensions
             // and strongly depends on the order of paths defined in $this->packagesBasePaths.
             $finder = new Finder();
             $finder
-                ->name('ext_emconf.php')
+                ->name('composer.json')
                 ->followLinks()
                 ->depth(0)
                 ->ignoreUnreadableDirs()
@@ -340,12 +341,22 @@ class PackageManager implements SingletonInterface
 
             /** @var SplFileInfo $fileInfo */
             foreach ($finder as $fileInfo) {
+                try {
+                    $composerContents = json_decode($fileInfo->getContents(), false, 512, JSON_THROW_ON_ERROR);
+                } catch (\JsonException) {
+                    continue;
+                }
+                $packageType = $composerContents->type ?? '';
+                // Only allow typo3-cms package types
+                if (!str_starts_with($packageType, 'typo3-cms-')) {
+                    continue;
+                }
                 $path = PathUtility::dirname($fileInfo->getPathname());
-                $extensionName = PathUtility::basename($path);
                 // Fix Windows backslashes
                 $currentPath = GeneralUtility::fixWindowsFilePath($path) . '/';
-                if (!isset($collectedExtensionPaths[$extensionName])) {
-                    $collectedExtensionPaths[$extensionName] = $currentPath;
+                $packageKey = $this->getPackageKeyFromManifest($composerContents, $currentPath);
+                if (!isset($collectedExtensionPaths[$packageKey])) {
+                    $collectedExtensionPaths[$packageKey] = $currentPath;
                 }
             }
         }
@@ -997,23 +1008,16 @@ class PackageManager implements SingletonInterface
      *
      * Else the composer name will be used with the slash replaced by a dot
      *
-     * @param object $manifest
-     * @param string $packagePath
      * @throws Exception\InvalidPackageManifestException
-     * @return string
      */
-    protected function getPackageKeyFromManifest($manifest, $packagePath)
+    protected function getPackageKeyFromManifest(\stdClass $manifest, string $packagePath): string
     {
-        if (!is_object($manifest)) {
-            throw new InvalidPackageManifestException('Invalid composer manifest in package path: ' . $packagePath, 1348146451);
-        }
         if (!empty($manifest->extra->{'typo3/cms'}->{'extension-key'})) {
             return $manifest->extra->{'typo3/cms'}->{'extension-key'};
         }
         if (empty($manifest->name) || (isset($manifest->type) && str_starts_with($manifest->type, 'typo3-cms-'))) {
-            return PathUtility::basename($packagePath);
+            throw new InvalidPackageManifestException('Invalid composer manifest (no extension key set) in package path: ' . $packagePath, 1348146451);
         }
-
         return $manifest->name;
     }
 
