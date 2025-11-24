@@ -209,6 +209,10 @@ final readonly class PageLanguageInformationService
                 $queryBuilder->expr()->eq(
                     $translationOriginField,
                     $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
+                ),
+                $queryBuilder->expr()->neq(
+                    $languageField,
+                    0
                 )
             );
 
