@@ -23,6 +23,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\Context\PageContext;
 use TYPO3\CMS\Backend\Middleware\PageContextInitialization;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
@@ -178,12 +179,76 @@ final class PageContextInitializationTest extends FunctionalTestCase
         self::assertSame(1, $pageContext->pageId);
     }
 
+    #[Test]
+    public function skipsProcessingWhenRouteDoesNotRequirePageContext(): void
+    {
+        // Route without requestPageContext option
+        $route = new Route('/test', []);
+
+        $request = (new ServerRequest('https://example.com/typo3/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('site', new NullSite())
+            ->withAttribute('backend.user', $this->backendUser)
+            ->withAttribute('route', $route)
+            ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()))
+            ->withQueryParams(['id' => 1]);
+
+        $middleware = $this->get(PageContextInitialization::class);
+
+        $handler = new class () implements RequestHandlerInterface {
+            public ?PageContext $pageContext = null;
+
+            public function handle(ServerRequestInterface $request): ResponseInterface
+            {
+                $this->pageContext = $request->getAttribute('pageContext');
+                return new Response();
+            }
+        };
+
+        $middleware->process($request, $handler);
+
+        // PageContext should NOT be set
+        self::assertNull($handler->pageContext);
+    }
+
+    #[Test]
+    public function skipsProcessingWhenNoRoutePresent(): void
+    {
+        $request = (new ServerRequest('https://example.com/typo3/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('site', new NullSite())
+            ->withAttribute('backend.user', $this->backendUser)
+            ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()))
+            ->withQueryParams(['id' => 1]);
+
+        $middleware = $this->get(PageContextInitialization::class);
+
+        $handler = new class () implements RequestHandlerInterface {
+            public ?PageContext $pageContext = null;
+
+            public function handle(ServerRequestInterface $request): ResponseInterface
+            {
+                $this->pageContext = $request->getAttribute('pageContext');
+                return new Response();
+            }
+        };
+
+        $middleware->process($request, $handler);
+
+        // PageContext should NOT be set
+        self::assertNull($handler->pageContext);
+    }
+
     private function createRequest(): ServerRequestInterface
     {
+        // Create a route with requestPageContext option to trigger middleware
+        $route = new Route('/test', ['requestPageContext' => true]);
+
         return (new ServerRequest('https://example.com/typo3/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('site', new NullSite())
             ->withAttribute('backend.user', $this->backendUser)
+            ->withAttribute('route', $route)
             ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()));
     }
 

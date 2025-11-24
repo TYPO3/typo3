@@ -159,8 +159,35 @@ final class PageContextTest extends FunctionalTestCase
             $this->backendUser
         );
 
+        // Page 0 (root) for admin returns page record with path
         self::assertSame(0, $pageContext->pageId);
-        self::assertSame(['uid' => 0, 'pid' => 0, 'title' => 'Root'], $pageContext->pageRecord);
+        self::assertSame(['_thePath' => '/'], $pageContext->pageRecord);
+        self::assertTrue($pageContext->isAccessible());
+        self::assertInstanceOf(NullSite::class, $pageContext->site);
+    }
+
+    #[Test]
+    public function createsContextForPageZeroAsEditor(): void
+    {
+        // Set up non-admin user (editor)
+        $editorUser = $this->setUpBackendUser(2);
+
+        $request = (new ServerRequest('https://example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('site', new NullSite())
+            ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()));
+
+        $pageContextFactory = $this->get(PageContextFactory::class);
+        $pageContext = $pageContextFactory->createFromRequest(
+            $request,
+            0,
+            $editorUser
+        );
+
+        // Page 0 (root) for editor has no access
+        self::assertSame(0, $pageContext->pageId);
+        self::assertNull($pageContext->pageRecord);
+        self::assertFalse($pageContext->isAccessible());
         self::assertInstanceOf(NullSite::class, $pageContext->site);
     }
 
@@ -224,36 +251,6 @@ final class PageContextTest extends FunctionalTestCase
         $pageTs = BackendUtility::getPagesTSconfig(0);
         $disableLanguages = $pageTs['mod.']['SHARED.']['disableLanguages'] ?? '';
         self::assertSame('', $disableLanguages);
-    }
-
-    #[Test]
-    public function pageZeroValidatesAgainstSiteLanguagesNotExistingTranslations(): void
-    {
-        $site = new Site('test-site', 1, [
-            'base' => 'https://example.com/',
-            'languages' => [
-                ['languageId' => 0, 'locale' => 'en-US', 'base' => '/', 'title' => 'English'],
-                ['languageId' => 1, 'locale' => 'de-DE', 'base' => '/de', 'title' => 'German'],
-                ['languageId' => 2, 'locale' => 'fr-FR', 'base' => '/fr', 'title' => 'French'],
-            ],
-        ]);
-
-        $request = (new ServerRequest('https://example.com/'))
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-            ->withAttribute('site', $site)
-            ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()))
-            ->withQueryParams(['languages' => [0, 1, 2]]);
-
-        $pageContextFactory = $this->get(PageContextFactory::class);
-        $pageContext = $pageContextFactory->createFromRequest(
-            $request,
-            0, // Page 0 has no translations, but child records might have
-            $this->backendUser
-        );
-
-        // Page 0 should allow all site-configured languages (for displaying child records)
-        // NOT just languages with translations (page 0 itself has no translations)
-        self::assertSame([0, 1, 2], $pageContext->selectedLanguageIds);
     }
 
     #[Test]
@@ -733,7 +730,7 @@ final class PageContextTest extends FunctionalTestCase
 
         // Should return context with null values instead of throwing exception
         self::assertFalse($pageContext->isAccessible());
-        self::assertNull($pageContext->pageId);
+        self::assertEquals(1, $pageContext->pageId, 'PageId is always preserved!');
         self::assertNull($pageContext->pageRecord);
         self::assertSame([], $pageContext->rootLine);
         self::assertSame([0], $pageContext->selectedLanguageIds);
@@ -764,7 +761,23 @@ final class PageContextTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function contextProvidesPagePermissionsForPageZero(): void
+    public function contextProvidesPagePermissionsForPageZeroAndAdmin(): void
+    {
+        $request = (new ServerRequest('https://example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('site', new NullSite())
+            ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()));
+
+        $pageContextFactory = $this->get(PageContextFactory::class);
+        $pageContext = $pageContextFactory->createFromRequest($request, 0, $this->backendUser);
+
+        // Admin user has permissions on page 0 (minimal page record)
+        self::assertTrue($pageContext->pagePermissions->showPagePermissionIsGranted());
+        self::assertTrue($pageContext->pagePermissions->editPagePermissionIsGranted());
+    }
+
+    #[Test]
+    public function contextProvidesPagePermissionsForPageZeroAndNonAdmin(): void
     {
         $editorUser = $this->setUpBackendUser(2);
         $request = (new ServerRequest('https://example.com/'))

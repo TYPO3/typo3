@@ -276,6 +276,9 @@ return [
                 'module' => true,
             ],
         ],
+        'options' => [
+            'requestPageContext' => true,
+        ],
     ],
 
     // Image processing

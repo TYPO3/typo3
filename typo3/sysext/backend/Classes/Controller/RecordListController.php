@@ -122,7 +122,7 @@ class RecordListController
             // Create updated PageContext with modified languages and update request
             $this->pageContext = $this->pageContextFactory->createWithLanguages(
                 $request,
-                $this->pageContext->pageId ?? 0,
+                $this->pageContext->pageId,
                 $languagesToDisplay,
                 $backendUser
             );
@@ -130,7 +130,7 @@ class RecordListController
         }
         $this->moduleData->set('languages', $languagesToDisplay);
 
-        $siteLanguages = $this->pageContext->site->getAvailableLanguages($backendUser, false, $this->pageContext->pageId ?? 0);
+        $siteLanguages = $this->pageContext->site->getAvailableLanguages($backendUser, false, $this->pageContext->pageId);
         $backendUser->pushModuleData($this->moduleData->getModuleIdentifier(), $this->moduleData->toArray());
 
         // Loading module configuration, clean up settings, current page and page access
@@ -187,7 +187,7 @@ class RecordListController
         $view = $this->moduleTemplateFactory->create($request);
 
         $tableListHtml = '';
-        if (!empty($this->pageContext->pageRecord) || ($this->pageContext->pageId === 0 && $search_levels !== 0 && $this->searchTerm !== '')) {
+        if ($this->pageContext->isAccessible() || ($this->pageContext->pageId === 0 && $search_levels !== 0 && $this->searchTerm !== '')) {
             // If there is access to the page or root page is used for searching, then perform actions and render table list.
             if ($cmd === 'delete' && $request->getMethod() === 'POST') {
                 $this->deleteRecords($request, $clipboard);

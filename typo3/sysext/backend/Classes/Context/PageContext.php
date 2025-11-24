@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
  * This is a DOMAIN object and should NOT contain HTTP infrastructure concerns like ServerRequestInterface.
  *
  * Access Handling:
- * If the user has no access to the requested page, pageId and pageRecord will be null.
+ * If the user has no access to the requested page, pageRecord will be null.
  * Controllers should check $pageContext->isAccessible() before processing.
  *
  * Usage:
@@ -53,7 +53,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 final readonly class PageContext
 {
     /**
-     * @param ?int $pageId Page ID (null if user has no access to requested page)
+     * @param int $pageId Page ID (always preserved, even if no access)
      * @param ?array $pageRecord Page record from readPageAccess (null if no access)
      * @param int[] $selectedLanguageIds Selected language IDs (resolved and validated)
      * @param PageLanguageInformation $languageInformation Complete language information for this page
@@ -62,7 +62,7 @@ final readonly class PageContext
      * @param Permission $pagePermissions User's permissions for this page (calculated from backendUser->calcPerms)
      */
     public function __construct(
-        public ?int $pageId,
+        public int $pageId,
         public ?array $pageRecord,
         public SiteInterface $site,
         public array $rootLine,
@@ -80,7 +80,7 @@ final readonly class PageContext
      */
     public function isAccessible(): bool
     {
-        return $this->pageId !== null && $this->pageRecord !== null;
+        return $this->pageRecord !== null && $this->pagePermissions->showPagePermissionIsGranted();
     }
 
     /**

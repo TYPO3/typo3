@@ -24,6 +24,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Context\PageContextFactory;
+use TYPO3\CMS\Backend\Module\ModuleInterface;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
@@ -60,6 +62,10 @@ class PageContextInitialization implements MiddlewareInterface, LoggerAwareInter
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        if (!$this->requiresPageContext($request)) {
+            return $handler->handle($request);
+        }
+
         $backendUser = $request->getAttribute('backend.user', $GLOBALS['BE_USER']);
 
         // Only process if user is authenticated in the backend
@@ -141,5 +147,18 @@ class PageContextInitialization implements MiddlewareInterface, LoggerAwareInter
             }
         }
         return $pageId;
+    }
+
+    /**
+     * Check if the current request requires PageContext initialization.
+     *
+     * PageContext is required when:
+     * 1. Module uses the page tree navigation component
+     * 2. Route explicitly has 'requestPageContext' option set to true
+     */
+    private function requiresPageContext(ServerRequestInterface $request): bool
+    {
+        return ((($module = $request->getAttribute('module')) instanceof ModuleInterface) && $module->getNavigationComponent() === '@typo3/backend/tree/page-tree-element')
+            || ((($route = $request->getAttribute('route')) instanceof Route) && $route->getOption('requestPageContext'));
     }
 }

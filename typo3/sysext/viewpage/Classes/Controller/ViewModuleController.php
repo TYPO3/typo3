@@ -101,7 +101,7 @@ final class ViewModuleController
             $languageId = 0;
             $this->pageContext = $this->pageContextFactory->createWithLanguages(
                 $request,
-                $this->pageContext->pageId ?? 0,
+                $this->pageContext->pageId,
                 [$languageId],
                 $this->getBackendUser()
             );

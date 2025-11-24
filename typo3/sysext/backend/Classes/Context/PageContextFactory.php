@@ -51,7 +51,7 @@ final readonly class PageContextFactory
      * Create PageContext from request and page ID.
      *
      * This method:
-     * 1. Validates page access (returns context with null pageId/pageRecord if no access)
+     * 1. Validates page access (returns context with null pageRecord if no access)
      * 2. Fetches language information for the page
      * 3. Resolves selected languages with fallback chain
      * 4. Validates selected languages against existing translations on this page
@@ -67,8 +67,8 @@ final readonly class PageContextFactory
      * navigating to PageB without L=1 shows L=0, returning to PageA restores L=1.
      *
      * Access Handling:
-     * If the user has no access to the requested page, a PageContext is still returned
-     * but with pageId=null and pageRecord=null. Controllers should check isAccessible().
+     * If the user has no access to the requested page or pid=0, a PageContext is still returned,
+     * while pageRecord mit be null if no access. Controllers should check isAccessible().
      *
      * @param int $pageId Page ID to create context for
      */
@@ -82,30 +82,23 @@ final readonly class PageContextFactory
             throw new SiteNotFoundException('No site found in request', 1731234567);
         }
 
-        // Check page access (page 0 is special: root/NullSite without page record)
-        if ($pageId === 0) {
-            // Page 0 has no page record - create a minimal one for NullSite
-            $pageRecord = [
-                'uid' => 0,
-                'pid' => 0,
-                'title' => 'Root',
-            ];
-        } else {
-            $pageRecord = BackendUtility::readPageAccess($pageId, $backendUser->getPagePermsClause(Permission::PAGE_SHOW));
-            if ($pageRecord === false) {
-                // No access - return context with null values (allows controllers to show no-access page)
-                $languageInformation = $this->languageService->getLanguageInformationForPage(0, $site, $backendUser);
-                return new PageContext(
-                    pageId: null,
-                    pageRecord: null,
-                    site: $site,
-                    rootLine: [],
-                    pageTsConfig: GeneralUtility::removeDotsFromTS(BackendUtility::getPagesTSconfig(0)),
-                    selectedLanguageIds: [0],
-                    languageInformation: $languageInformation,
-                    pagePermissions: new Permission(0),
-                );
-            }
+        // Check page access
+        $pageRecord = BackendUtility::readPageAccess($pageId, $backendUser->getPagePermsClause(Permission::PAGE_SHOW)) ?: null;
+        if ($pageId === 0 || !$pageRecord) {
+            // Either root page (pid=0) which has no real page record or no access.
+            // Return context with preserved pageId.
+            // pageRecord might be ['path' => '/'] for admins or NULL if no access or non-admin
+            // Still calculate permissions (admins have access to pid=0, editors don't).
+            return new PageContext(
+                pageId: $pageId,
+                pageRecord: $pageRecord,
+                site: $site,
+                rootLine: [],
+                pageTsConfig: GeneralUtility::removeDotsFromTS(BackendUtility::getPagesTSconfig(0)),
+                selectedLanguageIds: [0],
+                languageInformation: $this->languageService->getLanguageInformationForPage(0, $site, $backendUser),
+                pagePermissions: new Permission($backendUser->calcPerms($pageRecord ?: ['uid' => 0])),
+            );
         }
 
         // Get language information FIRST (needed for validation)
@@ -137,19 +130,10 @@ final readonly class PageContextFactory
             $moduleDataLanguages
         );
 
-        // Validate against languages
-        // - For page 0: accept requested languages (child pages from different sites might have various translations)
-        // - For other pages: validate against existing translations (ensures getPrimaryLanguageId() is valid)
+        // Validate against existing translations on this page (ensures getPrimaryLanguageId() is valid)
         // Preference is preserved across navigation (only stored when explicitly changed via request)
-        if ($pageId === 0) {
-            // Page 0 (root): Accept all requested languages (already permission-filtered)
-            // Child records might belong to different sites with different language configurations
-            $validLanguages = $resolvedLanguages;
-        } else {
-            // Regular pages: Only show languages that have translations on this page
-            $existingLanguageIds = $languageInformation->getAllExistingLanguageIds();
-            $validLanguages = array_intersect($resolvedLanguages, $existingLanguageIds);
-        }
+        $existingLanguageIds = $languageInformation->getAllExistingLanguageIds();
+        $validLanguages = array_intersect($resolvedLanguages, $existingLanguageIds);
 
         // Ensure at least default language if none are valid
         if (empty($validLanguages)) {
@@ -168,6 +152,7 @@ final readonly class PageContextFactory
             $moduleData->set('languages', $validLanguages);
         }
 
+        // Create full PageContext for resolved page record
         return new PageContext(
             pageId: $pageId,
             pageRecord: $pageRecord,
@@ -187,8 +172,8 @@ final readonly class PageContextFactory
      * without going through the fallback chain.
      *
      * Access Handling:
-     * If the user has no access to the requested page, a PageContext is still returned
-     * but with pageId=null and pageRecord=null. Controllers should check isAccessible().
+     * If the user has no access to the requested page or pid=0, a PageContext is still returned,
+     * while pageRecord mit be null if no access. Controllers should check isAccessible().
      */
     public function createWithLanguages(
         ServerRequestInterface $request,
@@ -201,30 +186,25 @@ final readonly class PageContextFactory
             throw new SiteNotFoundException('No site found in request', 1731234569);
         }
 
-        // Check page access (page 0 is special: root/NullSite without page record)
-        if ($pageId === 0) {
-            // Page 0 has no page record - create a minimal one for NullSite
-            $pageRecord = ['uid' => 0, 'pid' => 0, 'title' => 'Root'];
-        } else {
-            $pageRecord = BackendUtility::readPageAccess($pageId, $backendUser->getPagePermsClause(Permission::PAGE_SHOW));
-            if ($pageRecord === false) {
-                // No access - return context with null values (allows controllers to show no-access page)
-                $languageInformation = $this->languageService->getLanguageInformationForPage(0, $site, $backendUser);
-                return new PageContext(
-                    pageId: null,
-                    pageRecord: null,
-                    site: $site,
-                    rootLine: [],
-                    pageTsConfig: GeneralUtility::removeDotsFromTS(BackendUtility::getPagesTSconfig(0)),
-                    selectedLanguageIds: array_map('intval', $languageIds),
-                    languageInformation: $languageInformation,
-                    pagePermissions: new Permission(0),
-                );
-            }
+        $pageRecord = BackendUtility::readPageAccess($pageId, $backendUser->getPagePermsClause(Permission::PAGE_SHOW)) ?: null;
+        if ($pageId === 0 || !$pageRecord) {
+            // Either root page (pid=0) which has no real page record or no access.
+            // Return context with preserved pageId.
+            // pageRecord might be ['path' => '/'] for admins or NULL if no access or non-admin
+            // Still calculate permissions (admins have access to pid=0, editors don't).
+            return new PageContext(
+                pageId: $pageId,
+                pageRecord: $pageRecord,
+                site: $site,
+                rootLine: [],
+                pageTsConfig: GeneralUtility::removeDotsFromTS(BackendUtility::getPagesTSconfig(0)),
+                selectedLanguageIds: array_map('intval', $languageIds),
+                languageInformation: $this->languageService->getLanguageInformationForPage(0, $site, $backendUser),
+                pagePermissions: new Permission($backendUser->calcPerms($pageRecord ?: ['uid' => 0])),
+            );
         }
 
-        $languageInformation = $this->languageService->getLanguageInformationForPage($pageId, $site, $backendUser);
-
+        // Create full PageContext for resolved page record
         return new PageContext(
             pageId: $pageId,
             pageRecord: $pageRecord,
@@ -232,7 +212,7 @@ final readonly class PageContextFactory
             rootLine: BackendUtility::BEgetRootLine($pageId),
             pageTsConfig: GeneralUtility::removeDotsFromTS(BackendUtility::getPagesTSconfig($pageId)),
             selectedLanguageIds: array_map('intval', $languageIds),
-            languageInformation: $languageInformation,
+            languageInformation: $this->languageService->getLanguageInformationForPage($pageId, $site, $backendUser),
             pagePermissions: new Permission($backendUser->calcPerms($pageRecord)),
         );
     }
