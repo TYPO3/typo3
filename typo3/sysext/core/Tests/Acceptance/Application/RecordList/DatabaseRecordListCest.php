@@ -37,13 +37,9 @@ final class DatabaseRecordListCest
         $I->waitForElementNotVisible('#nprogress');
         $pageTree->openPath(['styleguide TCA demo', 'displaycond']);
         $I->switchToContentFrame();
-    }
-
-    public function allRecordsCanBeSeen(ApplicationTester $I): void
-    {
-        $I->wantToTest('whether all records can be seen by default in the record list');
+        // We check all (possible "remaining") languages and uncheck them again
+        // to always have a clean state for every test (only default selected).
         self::toggleAllLanguages($I);
-        self::checkRowVisibility($I, ['1', '2', '3', '4', '5']);
         self::toggleAllLanguages($I, false);
     }
 
@@ -58,7 +54,7 @@ final class DatabaseRecordListCest
         // Verify default language toggle is active (always selected)
         $I->seeElement('.module-docheader-navigation .dropdown-menu [data-dropdowntoggle-status="active"][title*="Default language is always shown"]');
         $I->click('.module-docheader-navigation button.dropdown-toggle'); // Close dropdown
-        self::checkRowVisibility($I, ['1', '5', '2'], ['3', '4']);
+        self::checkRowVisibility($I, ['1'], ['2', '3', '4', '5']);
 
         // Language with records having l10n_parent
         $I->amGoingTo('add a language with records having l10n_parent');
@@ -72,7 +68,7 @@ final class DatabaseRecordListCest
         $I->click('.module-docheader-navigation button.dropdown-toggle');
         $I->waitForElementVisible('.module-docheader-navigation .dropdown-menu');
         $I->click('styleguide demo language danish', '.module-docheader-navigation .dropdown-menu');
-        self::checkRowVisibility($I, ['1', '2', '3'], ['4', '5']);
+        self::checkRowVisibility($I, ['1', '3', '2'], ['4', '5']);
 
         // Check all languages
         $I->amGoingTo('add all languages');
@@ -82,7 +78,7 @@ final class DatabaseRecordListCest
         // Uncheck all languages
         $I->amGoingTo('uncheck all languages');
         self::toggleAllLanguages($I, false);
-        self::checkRowVisibility($I, ['1', '2', '5'], ['3', '4']);
+        self::checkRowVisibility($I, ['1'], ['2', '3', '4', '5']);
     }
 
     public function searchKeepsLanguageFilter(ApplicationTester $I): void

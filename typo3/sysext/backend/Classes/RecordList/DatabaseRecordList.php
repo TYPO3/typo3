@@ -2561,7 +2561,7 @@ class DatabaseRecordList
         if ($schema->isLanguageAware()) {
             // Restrict to filtered language(s)
             $filterLanguages = $this->getSelectedLanguageIds();
-            if (count($filterLanguages) > 1 || ($filterLanguages[0] ?? 0) > 0) {
+            if (!empty($filterLanguages)) {
                 // Build list of allowed languages: always include "all languages" marker (-1) + selected languages
                 $allowedLanguages = [-1, ...$filterLanguages];
 
