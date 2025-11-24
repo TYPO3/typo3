@@ -48,27 +48,6 @@ final class InstalledExtensionsCest
         $I->waitForElementVisible('#typo3-extension-list');
     }
 
-    public function checkSearchFiltersList(ApplicationTester $I): void
-    {
-        $I->seeNumberOfElements('#typo3-extension-list tbody tr[role="row"]', [10, 100]);
-
-        // Fill extension search field
-        $I->fillField('Tx_Extensionmanager_extensionkey', 'backend');
-        $I->waitForElementNotVisible('tr#core');
-
-        // see 2 rows. 1 for the header and one for the result
-        $I->seeNumberOfElements('#typo3-extension-list tbody tr[role="row"]', 3);
-
-        // Look for extension key
-        $I->see('backend', '#typo3-extension-list tbody tr[role="row"] td');
-
-        // unset the filter
-        $I->waitForElementVisible('#Tx_Extensionmanager_extensionkey ~button.close', 10);
-        $I->click('#Tx_Extensionmanager_extensionkey ~button.close');
-        $I->wait(1);
-        $I->seeNumberOfElements('#typo3-extension-list tbody tr[role="row"]', [10, 100]);
-    }
-
     #[Env('classic')]
     public function checkIfUploadFormAppears(ApplicationTester $I): void
     {

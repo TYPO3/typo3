@@ -1,10 +1,11 @@
-import { Page, FrameLocator, expect } from '@playwright/test';
+import { Page, FrameLocator, expect, Locator } from '@playwright/test';
 import { PageTree } from './page-tree';
 import { FormEngine } from './form-engine';
 import { DocHeader } from './doc-header';
 import { Modal } from './modal';
 
 export class BackendPage {
+  readonly moduleNavigation: Locator;
   readonly contentFrame: FrameLocator;
   readonly pageTree: PageTree;
   readonly formEngine: FormEngine;
@@ -14,6 +15,7 @@ export class BackendPage {
 
   constructor(page: Page) {
     this.page = page;
+    this.moduleNavigation = this.page.locator('#modulemenu');
     this.contentFrame = this.page.frameLocator('#typo3-contentIframe');
     this.pageTree = new PageTree(page);
     this.formEngine = new FormEngine(page);
