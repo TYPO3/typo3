@@ -59,7 +59,6 @@ for persisted `be_users` records with an active `is_sso` flag:
     use TYPO3\CMS\Backend\Security\SudoMode\Access\TableAccessSubject;
     use TYPO3\CMS\Backend\Security\SudoMode\Event\SudoModeRequiredEvent;
     use TYPO3\CMS\Backend\Utility\BackendUtility;
-    use TYPO3\CMS\Core\Attribute\AsEventListener;
     use TYPO3\CMS\Core\Utility\MathUtility;
 
     final class SkipSudoModeDialog
