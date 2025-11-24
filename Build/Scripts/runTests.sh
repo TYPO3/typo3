@@ -235,7 +235,7 @@ runPlaywright() {
     fi
 
     if [ ${CONTAINER_BIN} = "docker" ]; then
-        ${CONTAINER_BIN} run --rm -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -e PHPFPM_USER=${HOST_UID} -e PHPFPM_GROUP=${HOST_PID} -e PHPFPM_USER=0 -e PHPFPM_GROUP=0 -e PHPFPM_PM_MAX_CHILDREN=50 -e PHPFPM_PM_START_SERVERS=10 -e PHPFPM_PM_MIN_SPARE_SERVERS=5 -e PHPFPM_PM_MAX_SPARE_SERVERS=15 -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm ${PHP_FPM_OPTIONS} >/dev/null
+        ${CONTAINER_BIN} run --rm -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -e PHPFPM_USER=${HOST_UID} -e PHPFPM_GROUP=${HOST_PID} -e PHPFPM_PM_MAX_CHILDREN=50 -e PHPFPM_PM_START_SERVERS=10 -e PHPFPM_PM_MIN_SPARE_SERVERS=5 -e PHPFPM_PM_MAX_SPARE_SERVERS=15 -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm ${PHP_FPM_OPTIONS} >/dev/null
         SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
         ${CONTAINER_BIN} run --rm -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
         SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
