@@ -89,7 +89,7 @@ class ConfigurationStatus implements StatusProviderInterface
         if (!$count && $lastRefIndexUpdate) {
             $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_empty');
             $severity = ContextualFeedbackSeverity::WARNING;
-            $url = (string)$uriBuilder->buildUriFromRoute('system_dbint', ['id' => 0, 'SET' => ['function' => 'refindex']]);
+            $url = (string)$uriBuilder->buildUriFromRoute('system_maintenance');
             $message = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.backend_reference_index'), '<a href="' . htmlspecialchars($url) . '">', '</a>', BackendUtility::datetime($lastRefIndexUpdate));
         }
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_referenceIndex'), $value, $message, $severity);
