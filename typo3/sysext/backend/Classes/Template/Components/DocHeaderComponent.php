@@ -468,12 +468,20 @@ class DocHeaderComponent
             return null;
         }
 
+        $label = $menu->getLabel();
         $dropdownButton = $this->componentFactory->createDropDownButton()
-            ->setLabel($menu->getLabel())
             ->setShowActiveLabelText(true)
             ->setShowLabelText(true);
 
         foreach ($menu->getMenuItems() as $menuItem) {
+            if ($label === '') {
+                // Previously, the menu was rendered as a <select>, which meant the first or
+                // currently selected <option> acted as the visible label. The menu itself had
+                // no separate label. As a fallback, we now use the first menu item title as the
+                // button label, ensuring the DropDownButton is valid. The button will still
+                // always display the active item, because setShowActiveLabelText(true) is set.
+                $label = $menuItem->getTitle();
+            }
             $dropdownItem = $this->componentFactory->createDropDownRadio()
                 ->setHref($menuItem->getHref())
                 ->setLabel($menuItem->getTitle())
@@ -481,6 +489,8 @@ class DocHeaderComponent
 
             $dropdownButton->addItem($dropdownItem);
         }
+
+        $dropdownButton->setLabel($label);
 
         return $dropdownButton;
     }
