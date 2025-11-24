@@ -37,7 +37,7 @@ var CspReportAttribute,__decorate=function(e,t,l,o){var i,s=arguments.length,n=s
                 ${0===this.reports.length?html`
                   <tr><td colspan="5">${lll("label.label.noEntriesAvailable")||"No entries available."}</td></tr>
                 `:nothing}
-                ${this.reports.map((e=>html`
+                ${this.reports.map(e=>html`
                   <tr class=${classMap({"table-info":this.selectedReport===e})} data-mutation-group=${e.mutationHashes.join("-")}
                       @click=${()=>this.selectReport(e)}>
                     <td>${e.created}</td>
@@ -49,7 +49,7 @@ var CspReportAttribute,__decorate=function(e,t,l,o){var i,s=arguments.length,n=s
                     <td>${this.shortenUri(e.details.blockedUri)}</td>
                     <td>${e.attributes.join(", ")}</td>
                   </tr>
-                `))}
+                `)}
                 </tbody>
               </table>
             </div>
@@ -72,7 +72,7 @@ var CspReportAttribute,__decorate=function(e,t,l,o){var i,s=arguments.length,n=s
             </span>
             ${lll("label.all")||"ALL"}
           </button>
-          ${this.scopes.map((e=>html`
+          ${this.scopes.map(e=>html`
             <li>
               <button class="dropdown-item dropdown-item-spaced" title="${e}" @click=${()=>this.selectScope(e)}>
                 <span class="${e===this.selectedScope?"text-primary":""}">
@@ -80,7 +80,7 @@ var CspReportAttribute,__decorate=function(e,t,l,o){var i,s=arguments.length,n=s
                 </span>
                 ${e}
               </button>
-            </li>`))}
+            </li>`)}
         </ul>
         <button type="button" class="btn btn-danger mx-3" title="${lll("label.removeAll")||"Remove all"}" @click=${()=>this.invokeDeleteReportsAction()}>
           ${lll("label.removeAll")||"Remove all"}
@@ -138,21 +138,21 @@ var CspReportAttribute,__decorate=function(e,t,l,o){var i,s=arguments.length,n=s
               <h3>${lll("label.suggestions")||"Suggestions"}</h3>
             </div>
           `:nothing}
-          ${this.suggestions.map((t=>html`
+          ${this.suggestions.map(t=>html`
             <div class="card-body">
               <h4>${t.label||t.identifier}</h4>
-              ${t.collection.mutations.map((e=>html`
+              ${t.collection.mutations.map(e=>html`
                 <p>
                   <i>${e.mode}</i>
                   <code>${e.directive}: ${e.sources.join(" ")}</code>
                 </p>
-              `))}
+              `)}
               <button class="btn btn-primary" @click=${()=>this.invokeMutateReportAction(e,t)}>
                 <typo3-backend-icon identifier="actions-check" size="small"></typo3-backend-icon>
                 ${lll("button.apply")||"Apply"}
               </button>
             </div>
-          `))}
+          `)}
 
           <div class="card-footer">
             <button class="btn btn-default" @click=${()=>this.selectReport(null)}>
@@ -170,4 +170,4 @@ var CspReportAttribute,__decorate=function(e,t,l,o){var i,s=arguments.length,n=s
           </div>
         </div>
       </div>
-    `:nothing}`}renderCodeLocation(e){if(!e.details.lineNumber)return nothing;const t=[e.details.lineNumber];return e.details.columnNumber&&t.push(e.details.columnNumber),html`(${t.join(":")})`}selectReport(e){this.suggestions=[],null!==e&&this.selectedReport!==e?(this.selectedReport=e,this.invokeHandleReportAction(e).then((e=>this.suggestions=e))):this.selectedReport=null}selectScope(e){this.selectedScope=e,this.fetchReports()}fetchReports(){this.invokeFetchReportsAction().then((e=>this.reports=e))}filterReports(...e){e.includes(this.selectedReport?.uuid)&&(this.selectedReport=null),this.reports=this.reports.filter((t=>!e.includes(t.uuid)))}invokeFetchReportsAction(){return new AjaxRequest(this.controlUri).post({action:"fetchReports",scope:this.selectedScope||""}).then((e=>e.resolve("application/json")))}invokeHandleReportAction(e){return new AjaxRequest(this.controlUri).post({action:"handleReport",uuid:e.uuid}).then((e=>e.resolve("application/json")))}invokeMutateReportAction(e,t){const l=this.reports.filter((e=>e.mutationHashes.includes(t.hash))).map((e=>e.summary));return new AjaxRequest(this.controlUri).post({action:"mutateReport",scope:e.scope,hmac:t.hmac,suggestion:t,summaries:l}).then((e=>e.resolve("application/json"))).then((e=>this.filterReports(...e.uuids)))}invokeMuteReportAction(e){new AjaxRequest(this.controlUri).post({action:"muteReport",summaries:[e.summary]}).then((e=>e.resolve("application/json"))).then((e=>this.filterReports(...e.uuids)))}invokeDeleteReportAction(e){new AjaxRequest(this.controlUri).post({action:"deleteReport",summaries:[e.summary]}).then((e=>e.resolve("application/json"))).then((e=>this.filterReports(...e.uuids)))}invokeDeleteReportsAction(){new AjaxRequest(this.controlUri).post({action:"deleteReports",scope:this.selectedScope||""}).then((e=>e.resolve("application/json"))).then((()=>this.fetchReports())).then((()=>this.selectReport(null)))}shortenUri(e){if("inline"===e)return e;try{return new URL(e).hostname}catch{return e}}};__decorate([property({type:Array})],CspReports.prototype,"scopes",void 0),__decorate([property({type:String})],CspReports.prototype,"controlUri",void 0),__decorate([state()],CspReports.prototype,"selectedScope",void 0),__decorate([state()],CspReports.prototype,"reports",void 0),__decorate([state()],CspReports.prototype,"selectedReport",void 0),__decorate([state()],CspReports.prototype,"suggestions",void 0),CspReports=__decorate([customElement("typo3-backend-security-csp-reports")],CspReports);export{CspReports};
+    `:nothing}`}renderCodeLocation(e){if(!e.details.lineNumber)return nothing;const t=[e.details.lineNumber];return e.details.columnNumber&&t.push(e.details.columnNumber),html`(${t.join(":")})`}selectReport(e){this.suggestions=[],null!==e&&this.selectedReport!==e?(this.selectedReport=e,this.invokeHandleReportAction(e).then(e=>this.suggestions=e)):this.selectedReport=null}selectScope(e){this.selectedScope=e,this.fetchReports()}fetchReports(){this.invokeFetchReportsAction().then(e=>this.reports=e)}filterReports(...e){e.includes(this.selectedReport?.uuid)&&(this.selectedReport=null),this.reports=this.reports.filter(t=>!e.includes(t.uuid))}invokeFetchReportsAction(){return new AjaxRequest(this.controlUri).post({action:"fetchReports",scope:this.selectedScope||""}).then(e=>e.resolve("application/json"))}invokeHandleReportAction(e){return new AjaxRequest(this.controlUri).post({action:"handleReport",uuid:e.uuid}).then(e=>e.resolve("application/json"))}invokeMutateReportAction(e,t){const l=this.reports.filter(e=>e.mutationHashes.includes(t.hash)).map(e=>e.summary);return new AjaxRequest(this.controlUri).post({action:"mutateReport",scope:e.scope,hmac:t.hmac,suggestion:t,summaries:l}).then(e=>e.resolve("application/json")).then(e=>this.filterReports(...e.uuids))}invokeMuteReportAction(e){new AjaxRequest(this.controlUri).post({action:"muteReport",summaries:[e.summary]}).then(e=>e.resolve("application/json")).then(e=>this.filterReports(...e.uuids))}invokeDeleteReportAction(e){new AjaxRequest(this.controlUri).post({action:"deleteReport",summaries:[e.summary]}).then(e=>e.resolve("application/json")).then(e=>this.filterReports(...e.uuids))}invokeDeleteReportsAction(){new AjaxRequest(this.controlUri).post({action:"deleteReports",scope:this.selectedScope||""}).then(e=>e.resolve("application/json")).then(()=>this.fetchReports()).then(()=>this.selectReport(null))}shortenUri(e){if("inline"===e)return e;try{return new URL(e).hostname}catch{return e}}};__decorate([property({type:Array})],CspReports.prototype,"scopes",void 0),__decorate([property({type:String})],CspReports.prototype,"controlUri",void 0),__decorate([state()],CspReports.prototype,"selectedScope",void 0),__decorate([state()],CspReports.prototype,"reports",void 0),__decorate([state()],CspReports.prototype,"selectedReport",void 0),__decorate([state()],CspReports.prototype,"suggestions",void 0),CspReports=__decorate([customElement("typo3-backend-security-csp-reports")],CspReports);export{CspReports};

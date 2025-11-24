@@ -14,7 +14,7 @@ var __decorate=function(e,t,i,a){var o,n=arguments.length,r=n<3?t:null===a?a=Obj
         <div class="wrapper">
           <h1 @dblclick="${()=>{this.startEditing()}}">${this.pageTitle}</h1>
           ${this.composeEditButton()}
-        </div>`,e}isEditable(){return this.editable&&this.pageId>0}endEditing(){this.isEditable()&&(this._isEditing=!1)}updatePageTitle(e){e.preventDefault();const t=new FormData(e.target),i=Object.fromEntries(t).newPageTitle.toString();if(this.pageTitle===i)return void this.endEditing();this._isSubmitting=!0;let a=this.pageId;this.localizedPageId>0&&(a=this.localizedPageId);const o={data:{pages:{[a]:{title:i}}}};AjaxDataHandler.process(o).then((()=>{this.pageTitle=i,top.document.dispatchEvent(new CustomEvent("typo3:pagetree:refresh"))})).finally((()=>{this.endEditing(),this._isSubmitting=!1}))}composeEditButton(){return html`
+        </div>`,e}isEditable(){return this.editable&&this.pageId>0}endEditing(){this.isEditable()&&(this._isEditing=!1)}updatePageTitle(e){e.preventDefault();const t=new FormData(e.target),i=Object.fromEntries(t).newPageTitle.toString();if(this.pageTitle===i)return void this.endEditing();this._isSubmitting=!0;let a=this.pageId;this.localizedPageId>0&&(a=this.localizedPageId);const o={data:{pages:{[a]:{title:i}}}};AjaxDataHandler.process(o).then(()=>{this.pageTitle=i,top.document.dispatchEvent(new CustomEvent("typo3:pagetree:refresh"))}).finally(()=>{this.endEditing(),this._isSubmitting=!1})}composeEditButton(){return html`
       <button
         data-action="edit"
         type="button"

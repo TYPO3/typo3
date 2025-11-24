@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import{MultiRecordSelectionSelectors}from"@typo3/backend/multi-record-selection.js";export class MultiRecordSelectionAction{static getEntityIdentifiers(e){const t=[];return e.checkboxes.forEach((o=>{const c=o.closest(MultiRecordSelectionSelectors.elementSelector);null!==c&&c.dataset[e.configuration.idField]&&t.push(c.dataset[e.configuration.idField])})),t}}
+import{MultiRecordSelectionSelectors}from"@typo3/backend/multi-record-selection.js";export class MultiRecordSelectionAction{static getEntityIdentifiers(e){const t=[];return e.checkboxes.forEach(o=>{const c=o.closest(MultiRecordSelectionSelectors.elementSelector);null!==c&&c.dataset[e.configuration.idField]&&t.push(c.dataset[e.configuration.idField])}),t}}

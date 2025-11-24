@@ -2884,8 +2884,8 @@ typo3-backend-formengine-suggest-result-item .formengine-suggest-result-item-lab
 .btn-permission{--bs-btn-bg:transparent;--bs-btn-border-color:transparent;--bs-btn-box-shadow:none;--bs-btn-padding-x:0;--bs-btn-padding-y:0}
 .table .btn:not(.btn-sm){--bs-btn-padding-x:var(--bs-btn-padding-y)}
 .btn-group>.btn-group:not(:first-child),.btn-group>:not(.btn-check:first-child)+.btn{margin-left:unset;margin-inline-start:calc(var(--bs-border-width) * -1)}
-code,pre{-webkit-hyphens:none;hyphens:none}
-code[class*=language-],pre[class*=language-]{color:inherit;background:0 0;font-size:1em;text-align:start;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;hyphens:none}
+code,pre{hyphens:none}
+code[class*=language-],pre[class*=language-]{color:inherit;background:0 0;font-size:1em;text-align:start;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;hyphens:none}
 pre[class*=language-]{border-radius:4px;padding:1em;overflow:auto;margin-bottom:var(--typo3-spacing)}
 :not(pre)>code[class*=language-],pre[class*=language-]{background-color:rgba(0,0,0,.05)}
 .dropdown-menu{text-align:start;font-size:var(--typo3-component-font-size);line-height:var(--typo3-component-line-height);max-width:calc(100vw - 20px)}
@@ -2936,7 +2936,7 @@ a.dropdown-toggle{text-decoration:none}
 .avatar-size-mega{--avatar-size:var(--avatar-size-mega)}
 .avatar-icon{position:absolute;bottom:0;inset-inline-end:0;height:calc(var(--avatar-size,1em) * .5);width:calc(var(--avatar-size,1em) * .5)}
 .avatar-icon .icon{--icon-size:calc(var(--avatar-size, 1em) * .5);display:block}
-.callout{--callout-color:var(--typo3-component-color);--callout-bg:var(--typo3-component-bg);--callout-border-radius:var(--typo3-component-border-radius);--callout-border-color:var(--typo3-component-border-color);--callout-box-shadow:var(--typo3-component-box-shadow);color:var(--callout-color);background-color:var(--callout-bg);border-inline-start:.5em solid var(--callout-border-color);border-radius:var(--callout-border-radius);margin-bottom:1rem;padding:1rem;overflow-wrap:break-word;word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}
+.callout{--callout-color:var(--typo3-component-color);--callout-bg:var(--typo3-component-bg);--callout-border-radius:var(--typo3-component-border-radius);--callout-border-color:var(--typo3-component-border-color);--callout-box-shadow:var(--typo3-component-box-shadow);color:var(--callout-color);background-color:var(--callout-bg);border-inline-start:.5em solid var(--callout-border-color);border-radius:var(--callout-border-radius);margin-bottom:1rem;padding:1rem;overflow-wrap:break-word;word-wrap:break-word;hyphens:auto}
 .callout-icon{margin-top:-2px}
 .callout-title{font-size:1.3em;line-height:1.2;margin:0 0 .5em}
 .callout-body>:last-child{margin-bottom:0}

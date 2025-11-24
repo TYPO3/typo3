@@ -24,11 +24,11 @@ var __decorate=function(e,a,t,i){var n,s=arguments.length,l=s<3?a:null===i?i=Obj
             </typo3-backend-live-search-result-page>
           </li>`}
         ${this.pagination.hasLessPages?html`<li class="page-item disabled"><span class="page-link disabled">&hellip;</span></li>`:nothing}
-        ${this.pagination.allPageNumbers.map((e=>html`
+        ${this.pagination.allPageNumbers.map(e=>html`
           <li class="page-item">
             <typo3-backend-live-search-result-page page="${e}" perPage="${this.pagination.itemsPerPage}" class="page-link ${this.pagination.currentPage===e?"active":""}">${e}</typo3-backend-live-search-result-page>
           </li>
-        `))}
+        `)}
         ${this.pagination.hasMorePages?html`<li class="page-item"><span class="page-link disabled">&hellip;</span></li>`:nothing}
         ${this.pagination.allPageNumbers.includes(this.pagination.lastPage)?nothing:html`
           <li class="page-item">

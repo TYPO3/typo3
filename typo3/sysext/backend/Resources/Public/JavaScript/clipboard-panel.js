@@ -18,7 +18,7 @@ var ClipboardPanel_1,CopyMode,__decorate=function(t,e,o,a){var i,n=arguments.len
       </div>
     `}createRenderRoot(){return this}render(){return html`
       ${until(this.renderPanel(),ClipboardPanel_1.renderLoader())}
-    `}renderPanel(){return new AjaxRequest(top.TYPO3.settings.Clipboard.moduleUrl).withQueryArguments({action:"getClipboardData"}).post({table:this.table}).then((async t=>{const e=await t.resolve();if(!0===e.success&&e.data){const t=e.data;return html`
+    `}renderPanel(){return new AjaxRequest(top.TYPO3.settings.Clipboard.moduleUrl).withQueryArguments({action:"getClipboardData"}).post({table:this.table}).then(async t=>{const e=await t.resolve();if(!0===e.success&&e.data){const t=e.data;return html`
             <div class="panel panel-default" data-clipboard-panel>
               <div class="panel-heading">
                 ${t.labels.clipboard}
@@ -26,16 +26,16 @@ var ClipboardPanel_1,CopyMode,__decorate=function(t,e,o,a){var i,n=arguments.len
               <div class="table-fit">
                 <table class="table">
                   <tbody>
-                    ${t.tabs.map((e=>this.renderTab(e,t)))}
+                    ${t.tabs.map(e=>this.renderTab(e,t))}
                   </tbody>
                 </table>
               </div>
             </div>
           `}return html`
             <div class="alert alert-danger">Clipboard data could not be fetched</div>
-          `})).catch((()=>html`
+          `}).catch(()=>html`
           <div class="alert alert-danger">An error occurred while fetching clipboard data</div>
-        `))}renderTab(t,e){return html`
+        `)}renderTab(t,e){return html`
       <tr>
         <td colspan="2" class="nowrap">
           <button type="button" class="btn btn-link" aria-checked="${e.current===t.identifier}" title="${t.description}" data-action="setP" @click="${e=>this.updateClipboard(e,{CB:{setP:t.identifier}})}">
@@ -73,7 +73,7 @@ var ClipboardPanel_1,CopyMode,__decorate=function(t,e,o,a){var i,n=arguments.len
           `}
         </td>
       </tr>
-      ${e.current===t.identifier&&t.items?t.items.map((o=>this.renderTabItem(o,t.identifier,e))):nothing}
+      ${e.current===t.identifier&&t.items?t.items.map(o=>this.renderTabItem(o,t.identifier,e)):nothing}
     `}renderTabItem(t,e,o){return html`
       <tr>
         <td class="col-icon nowrap ${classMap({"ps-4":!t.identifier})}">
@@ -99,4 +99,4 @@ var ClipboardPanel_1,CopyMode,__decorate=function(t,e,o,a){var i,n=arguments.len
             `:nothing}
           </div>
         </td>
-      </tr>`}updateClipboard(t,e){t.preventDefault();const o=t.currentTarget;new AjaxRequest(top.TYPO3.settings.Clipboard.moduleUrl).post(e).then((async t=>{const a=await t.resolve();!0===a.success?(o.dataset.action&&o.dispatchEvent(new CustomEvent("typo3:clipboard:"+o.dataset.action,{detail:{payload:e,response:a},bubbles:!0,cancelable:!1})),this.reloadModule()):Notification.error("Clipboard data could not be updated")})).catch((()=>{Notification.error("An error occurred while updating clipboard data")}))}reloadModule(){this.returnUrl?this.ownerDocument.location.href=this.returnUrl:this.ownerDocument.location.reload()}};__decorate([property({type:String,attribute:"return-url"})],ClipboardPanel.prototype,"returnUrl",void 0),__decorate([property({type:String})],ClipboardPanel.prototype,"table",void 0),ClipboardPanel=ClipboardPanel_1=__decorate([customElement("typo3-backend-clipboard-panel")],ClipboardPanel);export{ClipboardPanel};
+      </tr>`}updateClipboard(t,e){t.preventDefault();const o=t.currentTarget;new AjaxRequest(top.TYPO3.settings.Clipboard.moduleUrl).post(e).then(async t=>{const a=await t.resolve();!0===a.success?(o.dataset.action&&o.dispatchEvent(new CustomEvent("typo3:clipboard:"+o.dataset.action,{detail:{payload:e,response:a},bubbles:!0,cancelable:!1})),this.reloadModule()):Notification.error("Clipboard data could not be updated")}).catch(()=>{Notification.error("An error occurred while updating clipboard data")})}reloadModule(){this.returnUrl?this.ownerDocument.location.href=this.returnUrl:this.ownerDocument.location.reload()}};__decorate([property({type:String,attribute:"return-url"})],ClipboardPanel.prototype,"returnUrl",void 0),__decorate([property({type:String})],ClipboardPanel.prototype,"table",void 0),ClipboardPanel=ClipboardPanel_1=__decorate([customElement("typo3-backend-clipboard-panel")],ClipboardPanel);export{ClipboardPanel};

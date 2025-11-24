@@ -10,7 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=function(e,t,o,i){var r,a=arguments.length,n=a<3?t:null===i?i=Object.getOwnPropertyDescriptor(t,o):i;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)n=Reflect.decorate(e,t,o,i);else for(var s=e.length-1;s>=0;s--)(r=e[s])&&(n=(a<3?r(n):a>3?r(t,o,n):r(t,o))||n);return a>3&&n&&Object.defineProperty(t,o,n),n};import{customElement,property}from"lit/decorators.js";import{html,css,LitElement,nothing}from"lit";import Modal from"@typo3/backend/modal.js";import"@typo3/backend/element/icon-element.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import{lll}from"@typo3/core/lit-helper.js";import Notification from"@typo3/backend/notification.js";import Viewport from"@typo3/backend/viewport.js";import RegularEvent from"@typo3/core/event/regular-event.js";class Item{constructor(e,t,o,i,r,a,n,s){this.identifier=e,this.label=t,this.description=o,this.icon=i,this.url=r,this.requestType=a,this.defaultValues=n,this.saveAndClose=s,this.visible=!0}static fromData(e){return new Item(e.identifier,e.label,e.description,e.icon,e.url,e.requestType??"location",e.defaultValues??[],e.saveAndClose??!1)}reset(){this.visible=!0}}class Category{constructor(e,t,o){this.identifier=e,this.label=t,this.items=o,this.disabled=!1}static fromData(e){return new Category(e.identifier,e.label,e.items.map((e=>Item.fromData(e))))}reset(){this.disabled=!1,this.items.forEach((e=>{e.reset()}))}activeItems(){return this.items.filter((e=>e.visible))??[]}}class Categories{constructor(e){this.items=e}static fromData(e){return new Categories(Object.values(e).map((e=>Category.fromData(e))))}reset(){this.items.forEach((e=>{e.reset()}))}categoriesWithItems(){return this.items.filter((e=>e.activeItems().length>0))??[]}}let NewContentElementWizard=class extends LitElement{constructor(){super(),this.categories=new Categories([]),this.selectedCategory=null,this.searchTerm="",this.messages=[],this.toggleMenu=!1}firstUpdated(){const e=document.createElement("link");e.setAttribute("rel","stylesheet"),e.setAttribute("href",TYPO3.settings.cssUrls.backend),this.shadowRoot.appendChild(e);this.renderRoot.querySelector('input[name="search"]').focus(),this.selectAvailableCategory()}selectAvailableCategory(){0===this.categories.categoriesWithItems().filter((e=>e===this.selectedCategory)).length&&(this.selectedCategory=this.categories.categoriesWithItems()[0]??null),this.messages=[],null===this.selectedCategory&&(this.messages=[{message:lll("newContentElement.filter.noResults"),severity:"info"}])}filter(e){this.searchTerm=e,this.categories.reset(),this.categories.items.forEach((e=>{const t=e.label.trim().replace(/\s+/g," ");!(""!==this.searchTerm&&!RegExp(this.searchTerm,"i").test(t))||e.items.forEach((e=>{const t=e.label.trim().replace(/\s+/g," ")+e.description.trim().replace(/\s+/g," ");e.visible=!(""!==this.searchTerm&&!RegExp(this.searchTerm,"i").test(t))})),e.disabled=0===e.items.filter((e=>e.visible)).length})),this.selectAvailableCategory()}render(){return html`
+var __decorate=function(e,t,o,i){var r,a=arguments.length,n=a<3?t:null===i?i=Object.getOwnPropertyDescriptor(t,o):i;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)n=Reflect.decorate(e,t,o,i);else for(var s=e.length-1;s>=0;s--)(r=e[s])&&(n=(a<3?r(n):a>3?r(t,o,n):r(t,o))||n);return a>3&&n&&Object.defineProperty(t,o,n),n};import{customElement,property}from"lit/decorators.js";import{html,css,LitElement,nothing}from"lit";import Modal from"@typo3/backend/modal.js";import"@typo3/backend/element/icon-element.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import{lll}from"@typo3/core/lit-helper.js";import Notification from"@typo3/backend/notification.js";import Viewport from"@typo3/backend/viewport.js";import RegularEvent from"@typo3/core/event/regular-event.js";class Item{constructor(e,t,o,i,r,a,n,s){this.identifier=e,this.label=t,this.description=o,this.icon=i,this.url=r,this.requestType=a,this.defaultValues=n,this.saveAndClose=s,this.visible=!0}static fromData(e){return new Item(e.identifier,e.label,e.description,e.icon,e.url,e.requestType??"location",e.defaultValues??[],e.saveAndClose??!1)}reset(){this.visible=!0}}class Category{constructor(e,t,o){this.identifier=e,this.label=t,this.items=o,this.disabled=!1}static fromData(e){return new Category(e.identifier,e.label,e.items.map(e=>Item.fromData(e)))}reset(){this.disabled=!1,this.items.forEach(e=>{e.reset()})}activeItems(){return this.items.filter(e=>e.visible)??[]}}class Categories{constructor(e){this.items=e}static fromData(e){return new Categories(Object.values(e).map(e=>Category.fromData(e)))}reset(){this.items.forEach(e=>{e.reset()})}categoriesWithItems(){return this.items.filter(e=>e.activeItems().length>0)??[]}}let NewContentElementWizard=class extends LitElement{constructor(){super(),this.categories=new Categories([]),this.selectedCategory=null,this.searchTerm="",this.messages=[],this.toggleMenu=!1}firstUpdated(){const e=document.createElement("link");e.setAttribute("rel","stylesheet"),e.setAttribute("href",TYPO3.settings.cssUrls.backend),this.shadowRoot.appendChild(e);this.renderRoot.querySelector('input[name="search"]').focus(),this.selectAvailableCategory()}selectAvailableCategory(){0===this.categories.categoriesWithItems().filter(e=>e===this.selectedCategory).length&&(this.selectedCategory=this.categories.categoriesWithItems()[0]??null),this.messages=[],null===this.selectedCategory&&(this.messages=[{message:lll("newContentElement.filter.noResults"),severity:"info"}])}filter(e){this.searchTerm=e,this.categories.reset(),this.categories.items.forEach(e=>{const t=e.label.trim().replace(/\s+/g," ");!(""!==this.searchTerm&&!RegExp(this.searchTerm,"i").test(t))||e.items.forEach(e=>{const t=e.label.trim().replace(/\s+/g," ")+e.description.trim().replace(/\s+/g," ");e.visible=!(""!==this.searchTerm&&!RegExp(this.searchTerm,"i").test(t))}),e.disabled=0===e.items.filter(e=>e.visible).length}),this.selectAvailableCategory()}render(){return html`
       <div class="element">
         ${this.renderFilter()}
         ${this.renderMessages()}
@@ -39,7 +39,7 @@ var __decorate=function(e,t,o,i){var r,a=arguments.length,n=a<3?t:null===i?i=Obj
           placeholder="${lll("newContentElement.filter.placeholder")}"
         />
       </form>
-    `}renderMessages(){return html`${this.messages.length>0?html`<div class="messages">${this.messages.map((e=>html`<div class="alert alert-${e.severity}" role="alert">${e.message}</div>`))}</div>`:nothing}`}renderNavigationToggle(){return html`
+    `}renderMessages(){return html`${this.messages.length>0?html`<div class="messages">${this.messages.map(e=>html`<div class="alert alert-${e.severity}" role="alert">${e.message}</div>`)}</div>`:nothing}`}renderNavigationToggle(){return html`
         <button
           class="navigation-toggle btn btn-light"
           @click="${()=>{this.toggleMenu=!this.toggleMenu}}"
@@ -49,7 +49,7 @@ var __decorate=function(e,t,o,i){var r,a=arguments.length,n=a<3?t:null===i?i=Obj
         </button>
       `}renderNavigationList(){return html`
       <div class="navigation-list${!0===this.toggleMenu?" show":""}" role="tablist">
-    ${this.categories.items.map((e=>html`
+    ${this.categories.items.map(e=>html`
         <button
           class="navigation-item${this.selectedCategory===e?" active":""}"
           ?disabled="${e.disabled}"
@@ -58,14 +58,14 @@ var __decorate=function(e,t,o,i){var r,a=arguments.length,n=a<3?t:null===i?i=Obj
           <span class="navigation-item-label">${e.label}</span>
           <span class="navigation-item-count">${e.activeItems().length}</span>
         </button>
-      `))}
+      `)}
       </div>`}renderCategories(){return html`
       <div class="elementwizard-categories">
-  ${this.categories.items.map((e=>this.renderCategory(e)))}
+  ${this.categories.items.map(e=>this.renderCategory(e))}
       </div>
     `}renderCategory(e){return html`${this.selectedCategory===e?html`
         <div class="item-list">
-          ${e.items.map((e=>this.renderCategoryButton(e)))}
+          ${e.items.map(e=>this.renderCategoryButton(e))}
         </div>`:nothing}`}renderCategoryButton(e){return html`${e.visible?html`
       <button
         type="button"
@@ -81,7 +81,7 @@ var __decorate=function(e,t,o,i){var r,a=arguments.length,n=a<3?t:null===i?i=Obj
           <div class="item-body-description">${e.description}</div>
         </div>
       </button>
-      `:nothing}`}handleItemClick(e){if(""!==e.url.trim())return"location"===e.requestType?(Viewport.ContentContainer.setUrl(e.url),void Modal.dismiss()):void("ajax"===e.requestType&&new AjaxRequest(e.url).post({defVals:e.defaultValues,saveAndClose:e.saveAndClose?"1":"0"}).then((async e=>{const t=document.createRange().createContextualFragment(await e.resolve());Modal.currentModal.addEventListener("modal-updated",(()=>{new RegularEvent("click",((e,t)=>{e.preventDefault();const o=t.dataset.target;o&&(Viewport.ContentContainer.setUrl(o),Modal.dismiss())})).delegateTo(Modal.currentModal,"button[data-target]")})),Modal.currentModal.setContent(t)})).catch((()=>{Notification.error("Could not load module data")})))}};NewContentElementWizard.styles=[css`
+      `:nothing}`}handleItemClick(e){if(""!==e.url.trim())return"location"===e.requestType?(Viewport.ContentContainer.setUrl(e.url),void Modal.dismiss()):void("ajax"===e.requestType&&new AjaxRequest(e.url).post({defVals:e.defaultValues,saveAndClose:e.saveAndClose?"1":"0"}).then(async e=>{const t=document.createRange().createContextualFragment(await e.resolve());Modal.currentModal.addEventListener("modal-updated",()=>{new RegularEvent("click",(e,t)=>{e.preventDefault();const o=t.dataset.target;o&&(Viewport.ContentContainer.setUrl(o),Modal.dismiss())}).delegateTo(Modal.currentModal,"button[data-target]")}),Modal.currentModal.setContent(t)}).catch(()=>{Notification.error("Could not load module data")}))}};NewContentElementWizard.styles=[css`
       :host {
         display: block;
         container-type: inline-size;
