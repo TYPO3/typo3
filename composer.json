@@ -7,7 +7,13 @@
 		"content management system",
 		"extbase"
 	],
-	"homepage": "https://typo3.org/",
+	"homepage": "https://typo3.community/",
+	"funding": [
+		{
+			"type": "membership",
+			"url": "https://typo3.org/membership"
+		}
+	],
 	"type": "typo3-cms-core",
 	"license": "GPL-2.0-or-later",
 	"authors": [
@@ -23,10 +29,13 @@
 		}
 	],
 	"support": {
-		"chat": "https://typo3.org/help",
-		"docs": "https://docs.typo3.org",
-		"issues": "https://forge.typo3.org",
-		"source": "https://github.com/typo3/typo3"
+		"issues": "https://forge.typo3.org/issues/",
+		"forum": "https://talk.typo3.org/",
+		"source": "https://github.com/TYPO3/typo3/",
+		"docs": "https://docs.typo3.org/",
+		"rss": "https://news.typo3.com/rss/",
+		"chat": "https://typo3.community/meet/slack/",
+		"security": "https://typo3.org/security/"
 	},
 	"config": {
 		"bin-dir": "bin",

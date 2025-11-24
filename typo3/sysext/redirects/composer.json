@@ -2,18 +2,31 @@
 	"name": "typo3/cms-redirects",
 	"type": "typo3-cms-framework",
 	"description": "TYPO3 CMS Redirects - Create manual redirects, list existing redirects and automatically create\nredirects on slug changes.",
-	"homepage": "https://typo3.org",
-	"license": ["GPL-2.0-or-later"],
-	"authors": [{
-		"name": "TYPO3 Core Team",
-		"email": "typo3cms@typo3.org",
-		"role": "Developer"
-	}],
+	"homepage": "https://typo3.community/",
+	"funding": [
+		{
+			"type": "membership",
+			"url": "https://typo3.org/membership"
+		}
+	],
+	"license": [
+		"GPL-2.0-or-later"
+	],
+	"authors": [
+		{
+			"name": "TYPO3 Core Team",
+			"email": "typo3cms@typo3.org",
+			"role": "Developer"
+		}
+	],
 	"support": {
-		"chat": "https://typo3.org/help",
+		"issues": "https://forge.typo3.org/issues/",
+		"forum": "https://talk.typo3.org/",
+		"source": "https://github.com/TYPO3/typo3/",
 		"docs": "https://docs.typo3.org/c/typo3/cms-redirects/main/en-us/",
-		"issues": "https://forge.typo3.org",
-		"source": "https://github.com/typo3/typo3"
+		"rss": "https://news.typo3.com/rss/",
+		"chat": "https://typo3.community/meet/slack/",
+		"security": "https://typo3.org/security/"
 	},
 	"config": {
 		"sort-packages": true
