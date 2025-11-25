@@ -3,11 +3,13 @@ import { PageTree } from './page-tree';
 import { FormEngine } from './form-engine';
 import { DocHeader } from './doc-header';
 import { Modal } from './modal';
+import { FileTree } from './file-tree';
 
 export class BackendPage {
   readonly moduleNavigation: Locator;
   readonly contentFrame: FrameLocator;
   readonly pageTree: PageTree;
+  readonly fileTree: FileTree;
   readonly formEngine: FormEngine;
   readonly docHeader: DocHeader;
   readonly modal: Modal;
@@ -21,6 +23,7 @@ export class BackendPage {
     this.formEngine = new FormEngine(page);
     this.docHeader = new DocHeader(page);
     this.modal = new Modal(page);
+    this.fileTree = new FileTree(page);
   }
 
   async gotoModule(identifier: string) {
