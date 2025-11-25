@@ -21,6 +21,45 @@ This enhancement allows for more flexible form templates that can adapt to
 different environments through environment variable substitution and YAML
 imports.
 
+Examples
+========
+
+..  code-block:: yaml
+    :caption: EXT:my_extension/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/ContactForm.yaml
+
+    imports:
+      - { resource: 'User.yaml' }
+    identifier: contactForm
+    label: 'Contact Form %env(ENV_NAME)%'
+    type: Form
+    renderables:
+      -
+        type: Page
+        identifier: message
+        label: Message
+        renderables:
+          -
+            defaultValue: ''
+            type: Text
+            identifier: text-1
+            label: Subject
+
+..  code-block:: yaml
+    :caption: EXT:my_extension/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/User.yaml
+
+    renderables:
+      -
+        type: Page
+        identifier: user
+        label: User data
+        renderables:
+          -
+            defaultValue: ''
+            type: Text
+            identifier: username
+            label: Username
+
+
 Impact
 ======
 
