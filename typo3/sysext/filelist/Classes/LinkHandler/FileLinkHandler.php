@@ -112,7 +112,7 @@ class FileLinkHandler extends AbstractResourceLinkHandler
             $markup[] = '<div class="row justify-content-between mb-2">';
             $markup[] = '    <div class="col-auto"></div>';
             $markup[] = '    <div class="col-auto">';
-            $markup[] = '        ' . $this->getSortingModeButtons($request, $this->filelist->mode);
+            $markup[] = '        ' . $this->getSortingModeButtons($request);
             $markup[] = '        ' . $this->getViewModeButton($request);
             $markup[] = '    </div>';
             $markup[] = '</div>';

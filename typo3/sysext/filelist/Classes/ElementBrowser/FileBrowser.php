@@ -148,7 +148,7 @@ class FileBrowser extends AbstractResourceBrowser
             $markup[] = '        </div>';
             $markup[] = '    </div>';
             $markup[] = '    <div class="col-auto">';
-            $markup[] = '        ' . $this->getSortingModeButtons($this->filelist->mode);
+            $markup[] = '        ' . $this->getSortingModeButtons();
             $markup[] = '        ' . $this->getViewModeButton();
             $markup[] = '    </div>';
             $markup[] = '</div>';

@@ -73,7 +73,7 @@ class CreateFolderBrowser extends AbstractResourceBrowser
             $markup[] = '<div class="row justify-content-between mb-2">';
             $markup[] = '    <div class="col-auto"></div>';
             $markup[] = '    <div class="col-auto">';
-            $markup[] = '        ' . $this->getSortingModeButtons($this->filelist->mode);
+            $markup[] = '        ' . $this->getSortingModeButtons();
             $markup[] = '        ' . $this->getViewModeButton();
             $markup[] = '    </div>';
             $markup[] = '</div>';

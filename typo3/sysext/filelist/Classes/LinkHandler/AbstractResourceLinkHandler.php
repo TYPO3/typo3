@@ -42,7 +42,6 @@ use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Filelist\FileList;
 use TYPO3\CMS\Filelist\Matcher\Matcher;
 use TYPO3\CMS\Filelist\Type\LinkType;
-use TYPO3\CMS\Filelist\Type\Mode;
 use TYPO3\CMS\Filelist\Type\SortDirection;
 use TYPO3\CMS\Filelist\Type\ViewMode;
 
@@ -250,7 +249,7 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
         return (string)$this->uriBuilder->buildUriFromRequest($request, $this->getUrlParameters($parameters));
     }
 
-    protected function getSortingModeButtons(ServerRequestInterface $request, Mode $mode): ButtonInterface
+    protected function getSortingModeButtons(ServerRequestInterface $request): ButtonInterface
     {
         $sortingButton = $this->componentFactory->createDropDownButton()
             ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting'))

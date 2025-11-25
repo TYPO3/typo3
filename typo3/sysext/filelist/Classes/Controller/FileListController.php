@@ -56,6 +56,7 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Filelist\ElementBrowser\CreateFileBrowser;
 use TYPO3\CMS\Filelist\ElementBrowser\CreateFolderBrowser;
 use TYPO3\CMS\Filelist\FileList;
 use TYPO3\CMS\Filelist\Matcher\Matcher;
@@ -232,7 +233,7 @@ class FileListController implements LoggerAwareInterface
 
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf', 'buttons');
 
-        $this->initializeModule($request);
+        $this->initializeModule();
 
         // In case the folderObject is NULL, the request is either invalid or the user
         // does not have necessary permissions. Just render and return the "empty" view.
@@ -263,7 +264,7 @@ class FileListController implements LoggerAwareInterface
         $this->registerFileListCheckboxes();
 
         // Register additional doc header buttons
-        $this->registerAdditionalDocHeaderButtons($request);
+        $this->registerAdditionalDocHeaderButtons();
 
         // Add additional view variables
         $this->view->assignMultiple([
@@ -283,7 +284,7 @@ class FileListController implements LoggerAwareInterface
         return $this->view->renderResponse('File/List');
     }
 
-    protected function initializeModule(ServerRequestInterface $request): void
+    protected function initializeModule(): void
     {
         $userTsConfig = $this->getBackendUser()->getTSConfig();
 
@@ -496,7 +497,7 @@ class FileListController implements LoggerAwareInterface
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
      */
-    protected function registerAdditionalDocHeaderButtons(ServerRequestInterface $request): void
+    protected function registerAdditionalDocHeaderButtons(): void
     {
         $lang = $this->getLanguageService();
         // ViewMode
@@ -644,7 +645,7 @@ class FileListController implements LoggerAwareInterface
                 ->setHref((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser'))
                 ->setDataAttributes([
                     'identifier' => $this->folderObject->getCombinedIdentifier(),
-                    'mode' => \TYPO3\CMS\Filelist\ElementBrowser\CreateFileBrowser::IDENTIFIER,
+                    'mode' => CreateFileBrowser::IDENTIFIER,
                 ])
                 ->setShowLabelText(true)
                 ->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.new_file'))

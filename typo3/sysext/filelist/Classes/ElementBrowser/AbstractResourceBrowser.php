@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Filelist\FileList;
 use TYPO3\CMS\Filelist\Matcher\Matcher;
-use TYPO3\CMS\Filelist\Type\Mode;
 use TYPO3\CMS\Filelist\Type\SortDirection;
 use TYPO3\CMS\Filelist\Type\ViewMode;
 
@@ -121,7 +120,7 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
         }
     }
 
-    protected function getSortingModeButtons(Mode $mode): ButtonInterface
+    protected function getSortingModeButtons(): ButtonInterface
     {
         $sortingButton = $this->componentFactory->createDropDownButton()
             ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting'))

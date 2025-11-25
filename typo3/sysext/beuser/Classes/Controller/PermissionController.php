@@ -114,7 +114,7 @@ class PermissionController
                 ContextualFeedbackSeverity::WARNING
             );
         }
-        $this->registerDocHeaderButtons($view, $action, $request);
+        $this->registerDocHeaderButtons($view, $action);
         $view->setTitle(
             $this->getLanguageService()->translate('title', 'beuser.modules.permissions'),
             $this->id !== 0 && !empty($this->pageInfo['title']) ? $this->pageInfo['title'] : ''
@@ -122,7 +122,7 @@ class PermissionController
         $view->getDocHeaderComponent()->setPageBreadcrumb($this->pageInfo);
 
         if ($action === 'edit') {
-            return $this->editAction($view, $request);
+            return $this->editAction($view);
         }
         return $this->indexAction($view, $request);
     }
@@ -306,7 +306,7 @@ class PermissionController
         return $view->renderResponse('Permission/Index');
     }
 
-    public function editAction(ModuleTemplate $view, ServerRequestInterface $request): ResponseInterface
+    public function editAction(ModuleTemplate $view): ResponseInterface
     {
         $lang = $this->getLanguageService();
         $selectNone = $lang->sL('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:selectNone');
@@ -387,7 +387,7 @@ class PermissionController
             ->withHeader('location', $this->returnUrl);
     }
 
-    protected function registerDocHeaderButtons(ModuleTemplate $view, string $action, ServerRequestInterface $request): void
+    protected function registerDocHeaderButtons(ModuleTemplate $view, string $action): void
     {
         $lang = $this->getLanguageService();
 
