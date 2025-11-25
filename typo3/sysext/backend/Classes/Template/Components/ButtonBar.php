@@ -101,12 +101,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *     ->setLabel('Actions')
  *     ->setIcon($iconFactory->getIcon('actions-menu'));
  *
- * $item1 = GeneralUtility::makeInstance(DropDownItem::class)
+ * $item1 = $this->componentFactory->createDropDownItem()
  *     ->setLabel('Edit')
  *     ->setHref('/edit');
  * $dropdownButton->addItem($item1);
  *
- * $item2 = GeneralUtility::makeInstance(DropDownItem::class)
+ * $item2 = $this->componentFactory->createDropDownItem()
  *     ->setLabel('Delete')
  *     ->setHref('/delete');
  * $dropdownButton->addItem($item2);

@@ -23,8 +23,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownHeader;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownRadio;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -409,10 +407,10 @@ class PermissionController
 
         if ($action === 'index' && count($this->getDepthOptions()) > 0) {
             $viewModeItems = [];
-            $viewModeItems[] = GeneralUtility::makeInstance(DropDownHeader::class)
+            $viewModeItems[] = $this->componentFactory->createDropDownHeader()
                 ->setLabel($lang->sL('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Depth'));
             foreach ($this->getDepthOptions() as $value => $label) {
-                $viewModeItems[] = GeneralUtility::makeInstance(DropDownRadio::class)
+                $viewModeItems[] = $this->componentFactory->createDropDownRadio()
                     ->setActive($this->depth === $value)
                     ->setLabel($label)
                     ->setHref((string)$this->uriBuilder->buildUriFromRoute('permissions_pages', [

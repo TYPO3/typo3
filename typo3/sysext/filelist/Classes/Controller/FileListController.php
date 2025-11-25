@@ -28,10 +28,6 @@ use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownDivider;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItem;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownRadio;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownToggle;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -505,26 +501,26 @@ class FileListController implements LoggerAwareInterface
         $lang = $this->getLanguageService();
         // ViewMode
         $viewModeItems = [];
-        $viewModeItems[] = GeneralUtility::makeInstance(DropDownRadio::class)
+        $viewModeItems[] = $this->componentFactory->createDropDownRadio()
             ->setActive($this->moduleData->get('viewMode') === ViewMode::TILES->value)
             ->setHref($this->filelist->createModuleUri(['viewMode' => ViewMode::TILES->value]))
             ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.tiles'))
             ->setIcon($this->iconFactory->getIcon('actions-viewmode-tiles'));
-        $viewModeItems[] = GeneralUtility::makeInstance(DropDownRadio::class)
+        $viewModeItems[] = $this->componentFactory->createDropDownRadio()
             ->setActive($this->moduleData->get('viewMode') === ViewMode::LIST->value)
             ->setHref($this->filelist->createModuleUri(['viewMode' => ViewMode::LIST->value]))
             ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.list'))
             ->setIcon($this->iconFactory->getIcon('actions-viewmode-list'));
-        $viewModeItems[] = GeneralUtility::makeInstance(DropDownDivider::class);
+        $viewModeItems[] = $this->componentFactory->createDropDownDivider();
         if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && ($this->getBackendUser()->getTSConfig()['options.']['file_list.']['enableDisplayThumbnails'] ?? '') === 'selectable') {
-            $viewModeItems[] = GeneralUtility::makeInstance(DropDownToggle::class)
+            $viewModeItems[] = $this->componentFactory->createDropDownToggle()
                 ->setActive((bool)$this->moduleData->get('displayThumbs'))
                 ->setHref($this->filelist->createModuleUri(['displayThumbs' => $this->moduleData->get('displayThumbs') ? 0 : 1]))
                 ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.showThumbnails'))
                 ->setIcon($this->iconFactory->getIcon('actions-image'));
         }
         if ($this->allowClipboard) {
-            $viewModeItems[] = GeneralUtility::makeInstance(DropDownToggle::class)
+            $viewModeItems[] = $this->componentFactory->createDropDownToggle()
                 ->setActive((bool)$this->moduleData->get('clipBoard'))
                 ->setHref($this->filelist->createModuleUri(['clipBoard' => $this->moduleData->get('clipBoard') ? 0 : 1]))
                 ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.showClipboard'))
@@ -532,8 +528,8 @@ class FileListController implements LoggerAwareInterface
         }
         if (($this->getBackendUser()->getTSConfig()['options.']['file_list.']['displayColumnSelector'] ?? true)
             && $this->moduleData->get('viewMode') === ViewMode::LIST->value) {
-            $viewModeItems[] = GeneralUtility::makeInstance(DropDownDivider::class);
-            $viewModeItems[] = GeneralUtility::makeInstance(DropDownItem::class)
+            $viewModeItems[] = $this->componentFactory->createDropDownDivider();
+            $viewModeItems[] = $this->componentFactory->createDropDownItem()
                 ->setTag('typo3-backend-column-selector-button')
                 ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.selectColumns'))
                 ->setAttributes([
@@ -564,7 +560,7 @@ class FileListController implements LoggerAwareInterface
             foreach ($sortableFields as $field) {
                 $label = $this->filelist->getFieldLabel($field);
 
-                $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownRadio::class)
+                $sortingModeButtons[] = $this->componentFactory->createDropDownRadio()
                     ->setActive($this->filelist->sortField === $field)
                     ->setHref($this->filelist->createModuleUri([
                         'sortField' => $field,
@@ -574,14 +570,14 @@ class FileListController implements LoggerAwareInterface
                     ->setLabel($label);
             }
 
-            $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownDivider::class);
+            $sortingModeButtons[] = $this->componentFactory->createDropDownDivider();
         }
         $defaultSortingDirectionParams = ['sortField' => $this->filelist->sortField, 'currentPage' => 0];
-        $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownRadio::class)
+        $sortingModeButtons[] = $this->componentFactory->createDropDownRadio()
             ->setActive($this->filelist->sortDirection === SortDirection::ASCENDING)
             ->setHref($this->filelist->createModuleUri(array_merge($defaultSortingDirectionParams, ['sortDirection' => SortDirection::ASCENDING->value])))
             ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.asc'));
-        $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownRadio::class)
+        $sortingModeButtons[] = $this->componentFactory->createDropDownRadio()
             ->setActive($this->filelist->sortDirection === SortDirection::DESCENDING)
             ->setHref($this->filelist->createModuleUri(array_merge($defaultSortingDirectionParams, ['sortDirection' => SortDirection::DESCENDING->value])))
             ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.desc'));

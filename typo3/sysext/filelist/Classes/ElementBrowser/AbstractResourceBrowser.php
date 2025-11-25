@@ -21,12 +21,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\ElementBrowser\AbstractElementBrowser;
 use TYPO3\CMS\Backend\ElementBrowser\ElementBrowserInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownDivider;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItem;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItemInterface;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownRadio;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownToggle;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton;
 use TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
@@ -129,7 +123,7 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
 
     protected function getSortingModeButtons(Mode $mode): ButtonInterface
     {
-        $sortingButton = GeneralUtility::makeInstance(DropDownButton::class)
+        $sortingButton = $this->componentFactory->createDropDownButton()
             ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting'))
             ->setIcon($this->iconFactory->getIcon($this->sortDirection->getIconIdentifier()));
 
@@ -139,7 +133,7 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
             foreach ($sortableFields as $field) {
                 $label = $this->filelist->getFieldLabel($field);
 
-                $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownRadio::class)
+                $sortingModeButtons[] = $this->componentFactory->createDropDownRadio()
                     ->setActive($this->sortField === $field)
                     ->setHref($this->createUri([
                         'sortField' => $field,
@@ -149,15 +143,15 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
                     ->setLabel($label);
             }
 
-            $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownDivider::class);
+            $sortingModeButtons[] =  $this->componentFactory->createDropDownDivider();
         }
 
         $defaultSortingDirectionParams = ['sortField' => $this->sortField, 'currentPage' => 1];
-        $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownRadio::class)
+        $sortingModeButtons[] =  $this->componentFactory->createDropDownRadio()
             ->setActive($this->sortDirection === SortDirection::ASCENDING)
             ->setHref($this->createUri(array_merge($defaultSortingDirectionParams, ['sortDirection' => SortDirection::ASCENDING->value])))
             ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.asc'));
-        $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownRadio::class)
+        $sortingModeButtons[] =  $this->componentFactory->createDropDownRadio()
             ->setActive($this->sortDirection === SortDirection::DESCENDING)
             ->setHref($this->createUri(array_merge($defaultSortingDirectionParams, ['sortDirection' => SortDirection::DESCENDING->value])))
             ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.desc'));
@@ -172,19 +166,19 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
     protected function getViewModeButton(): ButtonInterface
     {
         $viewModeItems = [];
-        $viewModeItems[] = GeneralUtility::makeInstance(DropDownRadio::class)
+        $viewModeItems[] =  $this->componentFactory->createDropDownRadio()
             ->setActive($this->viewMode === ViewMode::TILES)
             ->setHref($this->createUri(['viewMode' => ViewMode::TILES->value]))
             ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.tiles'))
             ->setIcon($this->iconFactory->getIcon('actions-viewmode-tiles'));
-        $viewModeItems[] = GeneralUtility::makeInstance(DropDownRadio::class)
+        $viewModeItems[] =  $this->componentFactory->createDropDownRadio()
             ->setActive($this->viewMode === ViewMode::LIST)
             ->setHref($this->createUri(['viewMode' => ViewMode::LIST->value]))
             ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.list'))
             ->setIcon($this->iconFactory->getIcon('actions-viewmode-list'));
         if (!($this->getBackendUser()->getTSConfig()['options.']['noThumbsInEB'] ?? false)) {
-            $viewModeItems[] = GeneralUtility::makeInstance(DropDownDivider::class);
-            $viewModeItems[] = GeneralUtility::makeInstance(DropDownToggle::class)
+            $viewModeItems[] =  $this->componentFactory->createDropDownDivider();
+            $viewModeItems[] =  $this->componentFactory->createDropDownToggle()
                 ->setActive($this->displayThumbs)
                 ->setHref($this->createUri(['displayThumbs' => $this->displayThumbs ? 0 : 1]))
                 ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.showThumbnails'))
@@ -196,8 +190,8 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
             && $this->identifier === 'file'
         ) {
             $this->pageRenderer->loadJavaScriptModule('@typo3/backend/column-selector-button.js');
-            $viewModeItems[] = GeneralUtility::makeInstance(DropDownDivider::class);
-            $viewModeItems[] = GeneralUtility::makeInstance(DropDownItem::class)
+            $viewModeItems[] =  $this->componentFactory->createDropDownDivider();
+            $viewModeItems[] =  $this->componentFactory->createDropDownItem()
                 ->setTag('typo3-backend-column-selector-button')
                 ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.selectColumns'))
                 ->setAttributes([
@@ -217,10 +211,9 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
                 ->setIcon($this->iconFactory->getIcon('actions-options'));
         }
 
-        $viewModeButton = GeneralUtility::makeInstance(DropDownButton::class)
+        $viewModeButton =  $this->componentFactory->createDropDownButton()
             ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view'));
         foreach ($viewModeItems as $viewModeItem) {
-            /** @var DropDownItemInterface $viewModeItem */
             $viewModeButton->addItem($viewModeItem);
         }
 

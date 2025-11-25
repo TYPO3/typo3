@@ -23,7 +23,7 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons\DropDown;
  * Example:
  *
  * ```
- * $item = GeneralUtility::makeInstance(DropDownDivider::class);
+ * $item = $this->componentFactory->createDropDownDivider()
  * $dropDownButton->addItem($item);
  * ```
  */

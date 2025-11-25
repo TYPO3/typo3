@@ -22,12 +22,7 @@ use TYPO3\CMS\Backend\LinkHandler\LinkHandlerVariableProviderInterface;
 use TYPO3\CMS\Backend\LinkHandler\LinkHandlerViewProviderInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownDivider;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItem;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItemInterface;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownRadio;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownToggle;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -83,7 +78,8 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
         protected readonly PageRenderer $pageRenderer,
         protected readonly UriBuilder $uriBuilder,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
-        protected readonly LanguageServiceFactory $languageServiceFactory
+        protected readonly LanguageServiceFactory $languageServiceFactory,
+        protected readonly ComponentFactory $componentFactory,
     ) {
         $this->languageService = $this->languageServiceFactory->createFromUserPreferences($this->getBackendUser());
     }
@@ -256,7 +252,7 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
 
     protected function getSortingModeButtons(ServerRequestInterface $request, Mode $mode): ButtonInterface
     {
-        $sortingButton = GeneralUtility::makeInstance(DropDownButton::class)
+        $sortingButton = $this->componentFactory->createDropDownButton()
             ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting'))
             ->setIcon($this->iconFactory->getIcon($this->sortDirection->getIconIdentifier()));
 
@@ -266,7 +262,7 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
             foreach ($sortableFields as $field) {
                 $label = $this->filelist->getFieldLabel($field);
 
-                $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownRadio::class)
+                $sortingModeButtons[] = $this->componentFactory->createDropDownRadio()
                     ->setActive($this->sortField === $field)
                     ->setHref($this->createUri($request, [
                         'sortField' => $field,
@@ -276,14 +272,14 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
                     ->setLabel($label);
             }
 
-            $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownDivider::class);
+            $sortingModeButtons[] = $this->componentFactory->createDropDownDivider();
         }
         $defaultSortingDirectionParams = ['sortField' => $this->sortField, 'currentPage' => 1];
-        $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownRadio::class)
+        $sortingModeButtons[] = $this->componentFactory->createDropDownRadio()
             ->setActive($this->sortDirection === SortDirection::ASCENDING)
             ->setHref($this->createUri($request, array_merge($defaultSortingDirectionParams, ['sortDirection' => SortDirection::ASCENDING->value])))
             ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.asc'));
-        $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownRadio::class)
+        $sortingModeButtons[] = $this->componentFactory->createDropDownRadio()
             ->setActive($this->sortDirection === SortDirection::DESCENDING)
             ->setHref($this->createUri($request, array_merge($defaultSortingDirectionParams, ['sortDirection' => SortDirection::DESCENDING->value])))
             ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.desc'));
@@ -298,19 +294,19 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
     protected function getViewModeButton(ServerRequestInterface $request): ButtonInterface
     {
         $viewModeItems = [];
-        $viewModeItems[] = GeneralUtility::makeInstance(DropDownRadio::class)
+        $viewModeItems[] = $this->componentFactory->createDropDownRadio()
             ->setActive($this->viewMode === ViewMode::TILES)
             ->setHref($this->createUri($request, ['viewMode' => ViewMode::TILES->value]))
             ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.tiles'))
             ->setIcon($this->iconFactory->getIcon('actions-viewmode-tiles'));
-        $viewModeItems[] = GeneralUtility::makeInstance(DropDownRadio::class)
+        $viewModeItems[] = $this->componentFactory->createDropDownRadio()
             ->setActive($this->viewMode === ViewMode::LIST)
             ->setHref($this->createUri($request, ['viewMode' => ViewMode::LIST->value]))
             ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.list'))
             ->setIcon($this->iconFactory->getIcon('actions-viewmode-list'));
         if (!($this->getBackendUser()->getTSConfig()['options.']['noThumbsInEB'] ?? false)) {
-            $viewModeItems[] = GeneralUtility::makeInstance(DropDownDivider::class);
-            $viewModeItems[] = GeneralUtility::makeInstance(DropDownToggle::class)
+            $viewModeItems[] = $this->componentFactory->createDropDownDivider();
+            $viewModeItems[] = $this->componentFactory->createDropDownToggle()
                 ->setActive($this->displayThumbs)
                 ->setHref($this->createUri($request, ['displayThumbs' => $this->displayThumbs ? 0 : 1]))
                 ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.showThumbnails'))
@@ -322,8 +318,8 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
             && ($request->getQueryParams()['act'] ?? '') === 'file'
         ) {
             $this->pageRenderer->loadJavaScriptModule('@typo3/backend/column-selector-button.js');
-            $viewModeItems[] = GeneralUtility::makeInstance(DropDownDivider::class);
-            $viewModeItems[] = GeneralUtility::makeInstance(DropDownItem::class)
+            $viewModeItems[] = $this->componentFactory->createDropDownDivider();
+            $viewModeItems[] = $this->componentFactory->createDropDownItem()
                 ->setTag('typo3-backend-column-selector-button')
                 ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.selectColumns'))
                 ->setAttributes([
@@ -343,10 +339,9 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
                 ->setIcon($this->iconFactory->getIcon('actions-options'));
         }
 
-        $viewModeButton = GeneralUtility::makeInstance(DropDownButton::class)
+        $viewModeButton = $this->componentFactory->createDropDownButton()
             ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view'));
         foreach ($viewModeItems as $viewModeItem) {
-            /** @var DropDownItemInterface $viewModeItem */
             $viewModeButton->addItem($viewModeItem);
         }
 

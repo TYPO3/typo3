@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\ElementBrowser;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -75,6 +76,7 @@ abstract class AbstractElementBrowser
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly BackendViewFactory $backendViewFactory,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly ComponentFactory $componentFactory,
     ) {}
 
     /**

@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons\DropDown;
  * Example:
  *
  * ```
- * $item = GeneralUtility::makeInstance(DropDownHeader::class)->setLabel('Label');
+ * $item = $this->componentFactory->createDropDownHeader()->setLabel('Label');
  * $dropDownButton->addItem($item);
  * ```
  */

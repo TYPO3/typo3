@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Example:
  *
  * ```
- * $item = GeneralUtility::makeInstance(DropDownRadio::class)
+ * $item = $this->componentFactory->createDropDownRadio()
  *     ->setHref('#')
  *     ->setActive(true)
  *     ->setLabel('List')
@@ -42,7 +42,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *     ->setAttributes(['data-type' => 'list']);
  * $dropDownButton->addItem($item);
  *
- * $item = GeneralUtility::makeInstance(DropDownRadio::class)
+ * $item = $this->componentFactory->createDropDownRadio()
  *     ->setHref('#')
  *     ->setActive(false)
  *     ->setLabel('Tiles')

@@ -22,10 +22,9 @@ use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItem;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\GenericButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\PositionInterface;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -199,10 +198,11 @@ class ShortcutButton implements ButtonInterface, PositionInterface
         }
 
         $dropdownItems = [];
+        $componentFactory = GeneralUtility::makeInstance(ComponentFactory::class);
 
         // Shortcut Button
         if ($createShortcut) {
-            $shortcutItem = GeneralUtility::makeInstance(DropDownItem::class);
+            $shortcutItem =  $componentFactory->createDropDownItem();
             $shortcutItem->setTag('button');
             $attributes = $this->getDispatchActionAttrs($routeIdentifier, $encodedArguments, $confirmationText);
             if (GeneralUtility::makeInstance(ShortcutRepository::class)->shortcutExists($routeIdentifier, $encodedArguments)) {
@@ -222,7 +222,7 @@ class ShortcutButton implements ButtonInterface, PositionInterface
             $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
             $pageRenderer->loadJavaScriptModule('@typo3/backend/copy-to-clipboard.js');
             $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_copytoclipboard.xlf');
-            $clipboardItem = GeneralUtility::makeInstance(DropDownItem::class);
+            $clipboardItem = $componentFactory->createDropDownItem();
             $clipboardItem->setTag('typo3-copy-to-clipboard');
             $clipboardItem->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.copyCurrentUrl'));
             $clipboardItem->setAttributes([
@@ -236,7 +236,7 @@ class ShortcutButton implements ButtonInterface, PositionInterface
             $dropdownItems[] = $clipboardItem;
         }
 
-        $dropdownButton = GeneralUtility::makeInstance(DropDownButton::class);
+        $dropdownButton = $componentFactory->createDropDownButton();
         $dropdownButton->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.share'));
         $dropdownButton->setIcon($iconFactory->getIcon('actions-share-alt', IconSize::SMALL));
         $dropdownButton->setDisabled($this->isDisabled());

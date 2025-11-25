@@ -47,7 +47,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *          ->setIcon($this->iconFactory->getIcon('actions-heart'))
  *          ->setShowLabelText(true)
  *          ->addItem(
- *              GeneralUtility::makeInstance(DropDownItem::class)
+ *              $this->componentFactory->createDropDownItem()
  *                  ->setLabel('Item')
  *                  ->setHref('#')
  *          );

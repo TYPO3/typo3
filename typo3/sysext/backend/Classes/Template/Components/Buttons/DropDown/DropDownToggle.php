@@ -25,7 +25,7 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons\DropDown;
  * Example:
  *
  * ```
- * $item = GeneralUtility::makeInstance(DropDownToggle::class)
+ * $item = $this->componentFactory->createDropDownToggle()
  *     ->setHref('#')
  *     ->setActive(true)
  *     ->setLabel('Label')
