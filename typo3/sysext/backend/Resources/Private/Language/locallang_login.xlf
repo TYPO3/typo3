@@ -48,10 +48,10 @@
 			<trans-unit id="error.furtherInformation">
 				<source>For more information or further help click here</source>
 			</trans-unit>
-			<trans-unit id="warranty.by">
+			<trans-unit id="warranty.by" x-unused-since="12.4">
 				<source>Warranty is supplied by %s; %sdetails about licenses.%s</source>
 			</trans-unit>
-			<trans-unit id="no.warranty">
+			<trans-unit id="no.warranty" x-unused-since="12.4">
 				<source>TYPO3 CMS comes with ABSOLUTELY NO WARRANTY; %sdetails about licenses.%s</source>
 			</trans-unit>
 			<trans-unit id="typo3.cms">
@@ -72,11 +72,17 @@
 			<trans-unit id="extension.trademark">
 				<source>TYPO3 is a registered %strademark%s.</source>
 			</trans-unit>
-			<trans-unit id="details.link">
+			<trans-unit id="details.link" x-unused-since="12.4">
 				<source>Go to %s for details.</source>
 			</trans-unit>
 			<trans-unit id="free.software">
 				<source>This is free software, and you are welcome to redistribute it under certain conditions; %sdetails about licenses.%s</source>
+			</trans-unit>
+			<trans-unit id="free_software_and_warranty">
+				<source>TYPO3 CMS comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions, see %sdetails about licenses.%s</source>
+			</trans-unit>
+			<trans-unit id="free_software_and_custom_warranty">
+				<source>Warranty is supplied by %s. This is free software, and you are welcome to redistribute it under certain conditions, see %sdetails about licenses.%s</source>
 			</trans-unit>
 			<trans-unit id="keep.notice">
 				<source>Obstructing the appearance of this notice is prohibited by law.</source>

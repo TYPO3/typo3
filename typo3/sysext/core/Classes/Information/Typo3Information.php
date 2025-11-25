@@ -89,16 +89,16 @@ class Typo3Information
 
         if (strlen($loginCopyrightWarrantyProvider) >= 2 && strlen($loginCopyrightWarrantyURL) >= 10) {
             $warrantyNote = sprintf(
-                $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:warranty.by'),
+                $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:free_software_and_custom_warranty'),
                 htmlspecialchars($loginCopyrightWarrantyProvider),
                 '<a href="' . htmlspecialchars($loginCopyrightWarrantyURL) . '" target="_blank" rel="noreferrer">',
                 '</a>'
             );
         } else {
             $warrantyNote = sprintf(
-                $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:no.warranty'),
+                $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:free_software_and_warranty'),
                 '<a href="' . htmlspecialchars(static::URL_LICENSE) . '" target="_blank" rel="noreferrer">',
-                '</a>'
+                '</a> '
             );
         }
         return '<a href="' . htmlspecialchars(static::URL_COMMUNITY) . '" target="_blank" rel="noreferrer">' .
@@ -111,16 +111,7 @@ class Typo3Information
                 '<a href="' . htmlspecialchars(static::URL_TRADEMARK) . '" target="_blank" rel="noreferrer">',
                 '</a>'
             ) . ' ' .
-            sprintf(
-                $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:details.link'),
-                '<a href="' . htmlspecialchars(static::URL_COMMUNITY) . '" target="_blank" rel="noreferrer">' . htmlspecialchars(static::URL_COMMUNITY) . '</a>'
-            ) . ' ' .
-            strip_tags($warrantyNote, '<a>') . ' ' .
-            sprintf(
-                $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:free.software'),
-                '<a href="' . htmlspecialchars(static::URL_LICENSE) . '" target="_blank" rel="noreferrer">',
-                '</a> '
-            )
+            $warrantyNote
             . $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:keep.notice');
     }
 
