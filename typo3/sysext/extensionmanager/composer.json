@@ -33,14 +33,14 @@
 	},
 	"require": {
 		"ext-libxml": "*",
-		"typo3/cms-core": "14.0.0"
+		"typo3/cms-core": "14.1.*@dev"
 	},
 	"conflict": {
 		"typo3/cms": "*"
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-main": "14.0.x-dev"
+			"dev-main": "14.1.x-dev"
 		},
 		"typo3/cms": {
 			"Package": {
