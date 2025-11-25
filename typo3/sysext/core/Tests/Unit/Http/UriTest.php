@@ -750,4 +750,83 @@ final class UriTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         new Uri($invalidUri);
     }
+
+    /**
+     * These test cases document reported URI parsing inconsistencies from security
+     * researchers at Tsinghua University (reports T9, T10, T13, T18, T24) and prove
+     * that TYPO3's Uri class correctly rejects them via filter_var() validation.
+     *
+     * @return iterable<non-empty-string, array{non-empty-string, non-empty-string}>
+     */
+    public static function securityVulnerabilityClaimsDataProvider(): iterable
+    {
+        // T9 - Invalid IPv6 Format (RFC 2732/3986)
+        yield 'T9a: IPv6-like with domain name and port' => [
+            'http://[0:0::vulndetector.com]:80',
+            'RFC 2732/3986: IPv6 must be valid address only. Domain names in brackets invalid. Filter_var correctly rejects.',
+        ];
+
+        yield 'T9b: IPv6-like with domain name, no port' => [
+            'http://[2001:db8::vulndetector.com]',
+            'RFC 2732/3986: Invalid IPv6 with domain suffix. Filter_var correctly rejects.',
+        ];
+
+        // T10 - IPv6 Zone ID (RFC 6874)
+        yield 'T10: IPv6 Zone ID with %251' => [
+            'http://[fe80::1%251]/',
+            'RFC 6874: Zone ID should decode %25 to %. Filter_var correctly rejects as WHATWG does not support Zone IDs.',
+        ];
+
+        // T13 - Host Resolution Priority (RFC 3986)
+        yield 'T13a: Mixed bracket notation - bracketed IPv4 followed by plain IP' => [
+            'http://[192.168.0.1]127.0.0.1/',
+            'RFC 3986 first-match-wins: Entire host [192.168.0.1]127.0.0.1 is invalid. Filter_var correctly rejects.',
+        ];
+
+        yield 'T13b: Mixed bracket notation - bracketed IPv4 followed by domain name' => [
+            'http://[192.168.0.1]vulndetector.com/',
+            'RFC 3986 first-match-wins: Entire host [192.168.0.1]vulndetector.com/ is invalid. Filter_var correctly rejects.',
+        ];
+
+        yield 'T13c: Mixed bracket notation - plain IP followed by bracketed IP' => [
+            'http://127.0.0.1[192.168.0.1]/',
+            'RFC 3986: Host 127.0.0.1[192.168.0.1] is invalid format. Filter_var correctly rejects.',
+        ];
+
+        // T18 - Multiple Ports (RFC 3986)
+        yield 'T18: Multiple ports separated by colons' => [
+            'http://192.168.1.1:1111:2222/',
+            'RFC 3986: Only one port allowed. Parse_url embeds first port in host, filter_var correctly rejects.',
+        ];
+
+        // T24 - Backslash in Path (RFC 3986)
+        yield 'T24: Backslash in path after domain' => [
+            'http://vulndetector.com\admin\api',
+            'RFC 3986: Backslash not allowed in path. Parse_url treats as host, filter_var correctly rejects.',
+        ];
+    }
+
+    /**
+     * Verify that reported security vulnerability claims are correctly rejected.
+     *
+     * External security researchers reported several URI parsing patterns that could
+     * lead to SSRF, ACL bypass, or open redirect vulnerabilities due to parser
+     * inconsistencies. This test documents those claims and proves that TYPO3's
+     * Uri class correctly rejects all of them.
+     *
+     * The Uri class uses a two-stage validation:
+     * 1. parse_url() for initial parsing (permissive, may parse malformed URLs)
+     * 2. filter_var(FILTER_VALIDATE_URL) for security validation (strict, rejects these)
+     *
+     * @param string $malformedUri The claimed malicious URI pattern
+     * @param string $description Explanation of the vulnerability claim and why it's rejected
+     */
+    #[DataProvider('securityVulnerabilityClaimsDataProvider')]
+    #[Test]
+    public function securityVulnerabilityClaimsAreRejected(string $malformedUri, string $description): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1728057216);
+        new Uri($malformedUri);
+    }
 }
