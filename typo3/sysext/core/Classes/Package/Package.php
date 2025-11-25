@@ -125,7 +125,12 @@ class Package implements PackageInterface
         $this->packageMetaData = new MetaData($this->getPackageKey());
         $description = (string)$this->getValueFromComposerManifest('description');
         $this->packageMetaData->setDescription($description);
-        $this->packageMetaData->setTitle($this->getValueFromComposerManifest('title') ?? $description);
+        $descriptionParts = explode(' - ', $description, 2);
+        $title = $description;
+        if (count($descriptionParts) === 2) {
+            $title = $descriptionParts[0];
+        }
+        $this->packageMetaData->setTitle($title);
         $this->packageMetaData->setVersion((string)$this->getValueFromComposerManifest('version'));
         $this->packageMetaData->setPackageType((string)$this->getValueFromComposerManifest('type'));
         $requirements = $this->getValueFromComposerManifest('require');

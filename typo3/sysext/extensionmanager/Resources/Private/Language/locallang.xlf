@@ -585,11 +585,17 @@
 			<trans-unit id="report.status.composerManifest.composerJsonMissing">
 				<source>Extensions missing composer.json</source>
 			</trans-unit>
+			<trans-unit id="report.status.composerManifest.extensionTitleMissing">
+				<source>Extension title not set correctly in composer.json</source>
+			</trans-unit>
 			<trans-unit id="report.status.composerManifest.extensionKeyMissing.message">
 				<source>%d extension(s) do not have an extension-key set in their composer.json file.</source>
 			</trans-unit>
 			<trans-unit id="report.status.composerManifest.composerJsonMissing.message">
 				<source>%d extension(s) do not provide a composer.json file.</source>
+			</trans-unit>
+			<trans-unit id="report.status.composerManifest.extensionTitleMissing.message">
+				<source>%d extension(s) do not have the extension title set in composer.json file according to their ext_emconf.php file.</source>
 			</trans-unit>
 			<trans-unit id="report.status.composerManifest.update">
 				<source>Update extensions</source>
@@ -653,6 +659,12 @@
 			</trans-unit>
 			<trans-unit id="extensionComposerStatus.deficit.2.short">
 				<source>Extension Key missing</source>
+			</trans-unit>
+			<trans-unit id="extensionComposerStatus.deficit.4">
+				<source>%s has missing or inconsistent extension title in the composer.json</source>
+			</trans-unit>
+			<trans-unit id="extensionComposerStatus.deficit.4.short">
+				<source>Extension Title missing</source>
 			</trans-unit>
 			<trans-unit id="extensionComposerStatus.deficit.information">
 				<source>

@@ -62,6 +62,8 @@ class ComposerManifestProposalGenerator
             if (!is_array($composerManifest) || $composerManifest === []) {
                 return '';
             }
+            $extensionConfig = $this->emConfUtility->includeEmConf($extensionKey, Environment::getExtensionsPath() . '/' . $extensionKey);
+            $composerManifest['description'] = $extensionConfig['title'] . ' - ' . $extensionConfig['description'];
             $composerManifest['extra']['typo3/cms']['extension-key'] = $extensionKey;
         } else {
             try {

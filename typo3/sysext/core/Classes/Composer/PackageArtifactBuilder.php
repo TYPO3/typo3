@@ -114,7 +114,6 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
         foreach ($installedTypo3Packages as [$composerPackage, $path, $extensionKey]) {
             $packagePath = PathUtility::sanitizeTrailingSeparator($path);
             $package = new Package($this, $extensionKey, $packagePath, true);
-            $this->setTitleFromExtEmConf($package);
             $package->makePathRelative($this->fileSystem, $basePath);
             $package->getPackageMetaData()->setVersion($composerPackage->getPrettyVersion());
             $this->registerPackage($package);
@@ -125,23 +124,6 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
         $this->saveToPackageCache();
 
         return true;
-    }
-
-    /**
-     * Sets a title for the package from ext_emconf.php in case this file exists
-     * @todo deprecate or remove in TYPO3 v12
-     */
-    private function setTitleFromExtEmConf(Package $package): void
-    {
-        $emConfPath = $package->getPackagePath() . '/ext_emconf.php';
-        if (file_exists($emConfPath)) {
-            $_EXTKEY = $package->getPackageKey();
-            $EM_CONF = null;
-            include $emConfPath;
-            if (!empty($EM_CONF[$_EXTKEY]['title'])) {
-                $package->getPackageMetaData()->setTitle($EM_CONF[$_EXTKEY]['title']);
-            }
-        }
     }
 
     /**

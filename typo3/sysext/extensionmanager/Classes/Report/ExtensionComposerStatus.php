@@ -46,6 +46,7 @@ class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
         $deficits = [
             ComposerDeficitDetector::EXTENSION_COMPOSER_MANIFEST_MISSING => 'composerJsonMissing',
             ComposerDeficitDetector::EXTENSION_KEY_MISSING => 'extensionKeyMissing',
+            ComposerDeficitDetector::EXTENSION_TITLE_MISSING => 'extensionTitleMissing',
         ];
 
         $queryParameters = [

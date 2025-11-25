@@ -433,18 +433,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Collection/AbstractRecordCollection.php
 
 		-
-			message: '#^Offset string does not exist on null\.$#'
-			identifier: offsetAccess.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
-
-		-
-			message: '#^Offset string on null in empty\(\) does not exist\.$#'
-			identifier: empty.offset
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
-
-		-
 			message: '#^Negated boolean expression is always true\.$#'
 			identifier: booleanNot.alwaysTrue
 			count: 1

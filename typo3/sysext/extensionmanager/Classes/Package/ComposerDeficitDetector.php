@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Package;
 
+use TYPO3\CMS\Extensionmanager\Utility\EmConfUtility;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 
 /**
@@ -28,10 +29,11 @@ class ComposerDeficitDetector
     public const EXTENSION_COMPOSER_MANIFEST_VALID = 0;
     public const EXTENSION_COMPOSER_MANIFEST_MISSING = 1;
     public const EXTENSION_KEY_MISSING = 2;
+    public const EXTENSION_TITLE_MISSING = 4;
 
     private array $availableExtensions;
 
-    public function __construct(ListUtility $listUtility)
+    public function __construct(ListUtility $listUtility, private readonly EmConfUtility $emConfUtility)
     {
         $this->availableExtensions = $listUtility->getAvailableExtensions('Local');
     }
@@ -74,9 +76,17 @@ class ComposerDeficitDetector
             // Treat empty or invalid composer.json as missing
             return self::EXTENSION_COMPOSER_MANIFEST_MISSING;
         }
-
-        return empty($composerManifest['extra']['typo3/cms']['extension-key'])
-            ? self::EXTENSION_KEY_MISSING
-            : self::EXTENSION_COMPOSER_MANIFEST_VALID;
+        if (empty($composerManifest['extra']['typo3/cms']['extension-key'])) {
+            return self::EXTENSION_KEY_MISSING;
+        }
+        $extensionConfig = $this->emConfUtility->includeEmConf($extensionKey, $this->availableExtensions[$extensionKey]['packagePath']);
+        if ($extensionConfig !== false
+            && !empty($extensionConfig['title'])
+            && !empty($extensionConfig['description'])
+            && ($composerManifest['description'] ?? '') !== ($extensionConfig['title'] . ' - ' . $extensionConfig['description'])
+        ) {
+            return self::EXTENSION_TITLE_MISSING;
+        }
+        return self::EXTENSION_COMPOSER_MANIFEST_VALID;
     }
 }
