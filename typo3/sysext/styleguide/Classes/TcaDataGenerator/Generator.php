@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -185,8 +186,13 @@ final class Generator extends AbstractGenerator
 
         // Delete site configuration
         if ($topUids[0] ?? false) {
-            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId($topUids[0]);
-            GeneralUtility::makeInstance(SiteWriter::class)->delete($site->getIdentifier());
+            try {
+                $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId($topUids[0]);
+                GeneralUtility::makeInstance(SiteWriter::class)->delete($site->getIdentifier());
+            } catch (SiteNotFoundException) {
+                // Might be that the site config does not exist anymore, so just return.
+                return;
+            }
         }
     }
 
