@@ -234,6 +234,7 @@ readonly class IconFactory
             }
         }
 
+        $recordType = array_filter($recordType);
         krsort($recordType);
         foreach ($recordType as $iconName) {
             if ($this->iconRegistry->isRegistered($iconName)) {
