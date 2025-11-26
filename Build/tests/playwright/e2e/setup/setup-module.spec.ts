@@ -40,7 +40,7 @@ test('Edit existing site configuration', async ({ backend, page }) => {
 
       const nonDefaultLanguageElement = backend.contentFrame.locator('typo3-formengine-container-sitelanguage > div > div.panel-group > div').nth(1);
       await expect(nonDefaultLanguageElement).toBeVisible();
-      const deleteButton = nonDefaultLanguageElement.getByRole('button', { name: 'Delete record (!)' });
+      const deleteButton = nonDefaultLanguageElement.getByRole('button', { name: 'Delete' });
       await backend.modal.open(deleteButton);
 
       const modal = page.locator('typo3-backend-modal > dialog');

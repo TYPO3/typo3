@@ -94,7 +94,7 @@
 				<source>Move this page to be a subpage of the page above (Outwards)</source>
 			</trans-unit>
 			<trans-unit id="delete">
-				<source>Delete record (!)</source>
+				<source>Delete</source>
 			</trans-unit>
 			<trans-unit id="history">
 				<source>History/Undo</source>
