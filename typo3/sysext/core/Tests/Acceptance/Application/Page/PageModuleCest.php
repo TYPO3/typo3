@@ -56,13 +56,13 @@ final class PageModuleCest
         $I->switchToContentFrame();
         $I->canSee($pageTitleA);
 
-        // Switch to module 'List': page must still be 'A'
+        // Switch to module 'Records': page must still be 'A'
         $I->switchToMainFrame();
-        $I->click('List');
+        $I->click('Records');
         $I->switchToContentFrame();
         $I->canSee($pageTitleA);
 
-        // Stay in module 'List' and switch to page 'B'
+        // Stay in module 'Records' and switch to page 'B'
         $I->switchToMainFrame();
         $pageTree->openPath($pagePathB);
         $I->switchToContentFrame();

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
 /**
- * Fetches all records like in the list module but returns them as array in order to allow
+ * Fetches all records like in the records module but returns them as array in order to allow
  * downloads (e.g. CSV) in the Controller with prepared data.
  *
  * This class acts as a composition-based wrapper for DatabaseRecordList for creating records

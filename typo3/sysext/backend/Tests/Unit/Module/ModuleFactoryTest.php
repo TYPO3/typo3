@@ -49,14 +49,14 @@ final class ModuleFactoryTest extends UnitTestCase
                 'aliases' => ['old_name'],
             ],
             'new_list_module' => [
-                'aliases' => ['web_list', 'web_list_x'],
+                'aliases' => ['records', 'web_list_x'],
             ],
             'content' => [
                 'aliases' => ['web'],
             ],
             'web_info' => [
                 'parent' => 'web',
-                'position' => ['before' => 'web_list', 'after' => 'old_name'],
+                'position' => ['before' => 'records', 'after' => 'old_name'],
             ],
             'new_info_overview' => [
                 'parent' => 'web_info',
@@ -89,7 +89,7 @@ final class ModuleFactoryTest extends UnitTestCase
                 'aliases' => ['old_name'],
             ],
             'new_list_module' => [
-                'aliases' => ['web_list', 'web_list_x'],
+                'aliases' => ['records', 'web_list_x'],
             ],
             'content' => [
                 'aliases' => ['web'],

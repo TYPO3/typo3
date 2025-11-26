@@ -165,12 +165,45 @@ and terminology.
 **Migration:** Since the module is just renamed, there are no migrations
 necessary.
 
+List => Records
+~~~~~~~~~~~~~~~
+
+The second-level :guilabel:`List` module has been renamed to
+:guilabel:`Records` to better convey its purpose and improve clarity.
+
+**Rationale:** The term "List" is too generic and does not adequately
+communicate the module's purpose. While "List" could refer to any kind of
+enumeration or overview, the module actually provides structured access to
+**database records** appearing on a page. The new name "Records" is more
+specific and immediately communicates that this module is about working with
+data records—viewing, editing, and managing them at the database level.
+
+The term "Records" also aligns with how the module is already described in
+its own interface ("List of database records") and better reflects the
+technical nature of the module's functionality. For users coming from other
+enterprise CMS platforms or database-driven systems, "Records" is a widely
+understood term that clearly indicates low-level data management
+capabilities.
+
+This renaming reduces ambiguity and helps users—especially those new to
+TYPO3—understand that this module provides direct access to the underlying
+record structure, distinguishing it from the more content-focused
+:guilabel:`Layout` module.
+
+**Migration:** The module identifier has been renamed from `web_list` to
+`records`. An alias is in place. However, use the new identifier when referecing.
+
+..  code-block:: diff
+
+   - $this->uriBuilder->buildUriFromRoute('web_list');
+   + $this->uriBuilder->buildUriFromRoute('records');
+
 View => Preview
 ~~~~~~~~~~~~~~~
 
 The second-level :guilabel:`View` module has been renamed to
 :guilabel:`Preview` to better match its scope. It has also been moved one
-position down after :guilabel:`List`, as that module is considered more
+position down after :guilabel:`Records`, as that module is considered more
 important for daily work.
 
 **Rationale:** The term "Preview" is more precise, as it triggers a

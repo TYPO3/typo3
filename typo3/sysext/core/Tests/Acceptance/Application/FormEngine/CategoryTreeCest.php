@@ -38,7 +38,7 @@ final class CategoryTreeCest
     {
         // A sub-element of content module is show
         $I->waitForElementVisible('[data-modulemenu-identifier="content"] + .modulemenu-group-container .modulemenu-action');
-        $I->click('[data-modulemenu-identifier="web_list"]');
+        $I->click('[data-modulemenu-identifier="records"]');
         $I->switchToContentFrame();
         $I->waitForElement('#recordlist-sys_category');
         $I->seeNumberOfElements('#recordlist-sys_category table > tbody > tr', [5, 100]);
@@ -48,7 +48,7 @@ final class CategoryTreeCest
     {
         // A sub-element of content module is show
         $I->waitForElementVisible('[data-modulemenu-identifier="content"] + .modulemenu-group-container .modulemenu-action');
-        $I->click('[data-modulemenu-identifier="web_list"]');
+        $I->click('[data-modulemenu-identifier="records"]');
         $I->switchToContentFrame();
         // Collapse all tables to ensure sys_category table fits into window
         $I->click('button[data-table="pages"] .icon-actions-view-list-collapse');

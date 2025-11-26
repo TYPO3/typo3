@@ -77,7 +77,7 @@ Alternatively, the pages can be created in the TYPO3 backend:
 Styleguide comes with a module which is available by clicking on the question mark in the top bar:
 ? | Styleguide.
 
-You can also peruse through the TCA demo by selecting the pages in the page tree. Use the list module to
+You can also peruse through the TCA demo by selecting the pages in the page tree. Use the records module to
 get access to the records.
 
 The TYPO3 TCA reference documentation often uses examples from the styleguide.

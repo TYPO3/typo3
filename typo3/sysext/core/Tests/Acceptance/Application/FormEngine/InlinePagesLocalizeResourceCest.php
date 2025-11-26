@@ -26,7 +26,7 @@ final class InlinePagesLocalizeResourceCest
     {
         $I->useExistingSession('admin');
 
-        $I->click('List');
+        $I->click('Records');
         $pageTree->openPath(['styleguide TCA demo', 'staticdata']);
         $I->switchToContentFrame();
         self::toggleAllLanguages($I);
@@ -37,7 +37,7 @@ final class InlinePagesLocalizeResourceCest
     {
         $I->useExistingSession('admin');
 
-        $I->click('List');
+        $I->click('Records');
         $pageTree->openPath(['styleguide TCA demo', 'staticdata']);
         $I->switchToContentFrame();
         self::toggleAllLanguages($I, false);

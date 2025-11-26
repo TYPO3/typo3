@@ -30,7 +30,7 @@ final class LinkBrowserCest
     {
         $I->useExistingSession('admin');
 
-        $I->click('List');
+        $I->click('Records');
         $pageTree->openPath(['styleguide TCA demo', 'elements basic']);
         $I->switchToContentFrame();
 

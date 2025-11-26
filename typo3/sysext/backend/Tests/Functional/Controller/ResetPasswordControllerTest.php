@@ -115,7 +115,7 @@ final class ResetPasswordControllerTest extends FunctionalTestCase
     {
         $queryParams = [
             'loginProvider'  => '123456789',
-            'redirect' => 'web_list',
+            'redirect' => 'records',
             'redirectParams' => 'id=123',
         ];
         $request = $this->request->withQueryParams($queryParams);

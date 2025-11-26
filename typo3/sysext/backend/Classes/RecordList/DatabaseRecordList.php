@@ -80,7 +80,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
- * Class for rendering of Web>List module
+ * Class for rendering of Content > Records module
  * @internal This class is a specific TYPO3 Backend implementation and is not part of the TYPO3's Core API.
  */
 #[Autoconfigure(public: true, shared: false)]
@@ -382,7 +382,7 @@ class DatabaseRecordList
     protected array $currentLink = [];
 
     /**
-     * Only used to render translated records, used in list module to show page translations
+     * Only used to render translated records, used in records module to show page translations
      */
     protected bool $showOnlyTranslatedRecords = false;
 
@@ -701,7 +701,7 @@ class DatabaseRecordList
         $tableIdentifier = $table;
         // Use a custom table title for translated pages
         if ($table === 'pages' && $this->showOnlyTranslatedRecords) {
-            // pages records in list module are split into two own sections, one for pages with
+            // pages records in records module are split into two own sections, one for pages with
             // sys_language_uid = 0 "Page" and an own section for sys_language_uid > 0 "Page Translation".
             // This if sets the different title for the page translation case and a unique table identifier
             // which is used in DOM as id.

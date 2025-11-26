@@ -43,9 +43,9 @@ entities:
   workspace:
     - self: {id: 1, title: 'Workspace'}
   beGroup:
-    - self: {id: 7, title: 'editors without DB mounts', db_mountpoints: '', tables_select: 'pages,tt_content', tables_modify: 'pages,tt_content', page_types_select: '1,4,7,254', groupMods: 'web_layout,web_list'}
-    - self: {id: 8, title: 'editors with DB mounts', db_mountpoints: '9200', tables_select: 'pages,tt_content', tables_modify: 'pages,tt_content', page_types_select: '1,4,7,254', groupMods: 'web_layout,web_list'}
-    - self: {id: 9, title: 'editors', db_mountpoints: '1000,2000,8110', tables_select: 'pages,tt_content', tables_modify: 'pages,tt_content', page_types_select: '1,4,7,254', groupMods: 'web_layout,web_list'}
+    - self: {id: 7, title: 'editors without DB mounts', db_mountpoints: '', tables_select: 'pages,tt_content', tables_modify: 'pages,tt_content', page_types_select: '1,4,7,254', groupMods: 'web_layout,records'}
+    - self: {id: 8, title: 'editors with DB mounts', db_mountpoints: '9200', tables_select: 'pages,tt_content', tables_modify: 'pages,tt_content', page_types_select: '1,4,7,254', groupMods: 'web_layout,records'}
+    - self: {id: 9, title: 'editors', db_mountpoints: '1000,2000,8110', tables_select: 'pages,tt_content', tables_modify: 'pages,tt_content', page_types_select: '1,4,7,254', groupMods: 'web_layout,records'}
   page:
     - self: {id: 1000, title: 'ACME Inc', type: *pageShortcut, shortcut: 'first', root: true, slug: '/'}
       children:

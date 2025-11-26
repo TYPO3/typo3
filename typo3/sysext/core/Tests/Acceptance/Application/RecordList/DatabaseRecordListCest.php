@@ -33,7 +33,7 @@ final class DatabaseRecordListCest
         $I->useExistingSession('admin');
 
         $I->amGoingTo('list all records');
-        $I->click('List');
+        $I->click('Records');
         $I->waitForElementNotVisible('#nprogress');
         $pageTree->openPath(['styleguide TCA demo', 'displaycond']);
         $I->switchToContentFrame();

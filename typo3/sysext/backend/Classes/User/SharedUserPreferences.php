@@ -75,7 +75,7 @@ final class SharedUserPreferences
      * Store language selection for a page (shared across modules).
      *
      * This preference will be used by ALL modules working with this page,
-     * ensuring consistent language selection across Page Module, List Module, etc.
+     * ensuring consistent language selection across Page Module, Records module, etc.
      */
     public function setPageLanguages(BackendUserAuthentication $backendUser, int $pageId, array $languageIds): void
     {

@@ -8,7 +8,7 @@ use TYPO3\CMS\Viewpage\Controller\ViewModuleController;
 return [
     'page_preview' => [
         'parent' => 'content',
-        'position' => ['after' => 'web_list'],
+        'position' => ['after' => 'records'],
         'access' => 'user',
         'path' => '/module/page-preview',
         'iconIdentifier' => 'module-viewpage',

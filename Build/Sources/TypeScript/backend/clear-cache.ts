@@ -42,7 +42,7 @@ class ClearCache {
    * @return Promise<AjaxResponse>
    */
   private static sendClearCacheRequest(pageId: number): Promise<AjaxResponse> {
-    const request = new AjaxRequest(TYPO3.settings.ajaxUrls.web_list_clearpagecache).withQueryArguments({ id: pageId }).get({ cache: 'no-cache' });
+    const request = new AjaxRequest(TYPO3.settings.ajaxUrls.records_clearpagecache).withQueryArguments({ id: pageId }).get({ cache: 'no-cache' });
     request.then(async (response: AjaxResponse): Promise<void> => {
       const data = await response.resolve();
       if (data.success === true) {

@@ -39,7 +39,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * New Content element wizard. This is the modal that pops up when clicking "+content" in page module, which
  * will trigger wizardAction() since there is a colPos given. Method positionMapAction() is triggered for
- * instance from the list module "+content" on tt_content table header, and from list module doc-header "+"
+ * instance from the records module "+content" on tt_content table header, and from records module doc-header "+"
  * and then "Click here for wizard".
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.

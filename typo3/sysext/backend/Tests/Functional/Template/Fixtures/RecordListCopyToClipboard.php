@@ -29,7 +29,7 @@ return <<<EOF
         <li>
             <button
                 data-dispatch-action="TYPO3.ShortcutMenu.createShortcut"
-                data-dispatch-args="[&amp;quot;web_list&amp;quot;,&amp;quot;[]&amp;quot;,&amp;quot;Recordlist&amp;quot;,&amp;quot;Create a bookmark to this record&amp;quot;,&amp;quot;{\$target}&amp;quot;]"
+                data-dispatch-args="[&amp;quot;records&amp;quot;,&amp;quot;[]&amp;quot;,&amp;quot;Recordlist&amp;quot;,&amp;quot;Create a bookmark to this record&amp;quot;,&amp;quot;{\$target}&amp;quot;]"
                 class="dropdown-item dropdown-item-spaced"
                 title="Create a bookmark to this record">
                 <span
@@ -45,7 +45,7 @@ return <<<EOF
         </li>
         <li>
             <typo3-copy-to-clipboard
-                text="http://example.com/typo3/module/web/list"
+                text="http://example.com/typo3/module/content/records"
                 class="dropdown-item dropdown-item-spaced"
                 title="Copy URL of this record">
                 <span

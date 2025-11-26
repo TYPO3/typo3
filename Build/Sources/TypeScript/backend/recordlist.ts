@@ -116,15 +116,15 @@ class Recordlist {
     // Store collapse state in UC
     let storedModuleDataList = {};
 
-    if (PersistentStorage.isset('moduleData.web_list.collapsedTables')) {
-      storedModuleDataList = PersistentStorage.get('moduleData.web_list.collapsedTables');
+    if (PersistentStorage.isset('moduleData.records.collapsedTables')) {
+      storedModuleDataList = PersistentStorage.get('moduleData.records.collapsedTables');
     }
 
     const collapseConfig: Record<string, number> = {};
     collapseConfig[table] = isExpanded ? 1 : 0;
 
     storedModuleDataList = Object.assign(storedModuleDataList, collapseConfig);
-    PersistentStorage.set('moduleData.web_list.collapsedTables', storedModuleDataList).then((): void => {
+    PersistentStorage.set('moduleData.records.collapsedTables', storedModuleDataList).then((): void => {
       target.dataset.state = isExpanded ? 'collapsed' : 'expanded';
     });
   };

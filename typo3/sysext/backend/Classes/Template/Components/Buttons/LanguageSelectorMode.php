@@ -32,7 +32,7 @@ enum LanguageSelectorMode
 
     /**
      * Multiple language selection using checkboxes/toggles.
-     * Used in Page Module's "Comparison" view and List Module where multiple languages can be viewed simultaneously.
+     * Used in Page Module's "Comparison" view and records module where multiple languages can be viewed simultaneously.
      */
     case MULTI_SELECT;
 }

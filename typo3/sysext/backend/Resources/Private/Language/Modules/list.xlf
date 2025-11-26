@@ -7,10 +7,10 @@
 				<source>List of database records</source>
 			</trans-unit>
 			<trans-unit id="description">
-				<source>The Web&gt;List module provides low level access to records appearing on a page.</source>
+				<source>The records module provides low level access to records appearing on a page.</source>
 			</trans-unit>
 			<trans-unit id="title">
-				<source>List</source>
+				<source>Records</source>
 			</trans-unit>
 		</body>
 	</file>

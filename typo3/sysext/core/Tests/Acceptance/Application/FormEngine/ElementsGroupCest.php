@@ -27,13 +27,13 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 final class ElementsGroupCest
 {
     /**
-     * Open list module of styleguide elements group page
+     * Open records module of styleguide elements group page
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
 
-        $I->click('List');
+        $I->click('Records');
         $pageTree->openPath(['styleguide TCA demo', 'elements group']);
         $I->switchToContentFrame();
 

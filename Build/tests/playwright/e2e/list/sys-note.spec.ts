@@ -1,10 +1,10 @@
 import { test, expect } from '../../fixtures/setup-fixtures';
 
 test.beforeEach(async ({ backend } ) => {
-  await backend.gotoModule('web_list');
+  await backend.gotoModule('records');
 });
 
-test('System note can be created and edited from list module', async ({ backend }) => {
+test('System note can be created and edited from records module', async ({ backend }) => {
   await test.step('Create a new system note', async () => {
     await backend.pageTree.open('styleguide TCA demo');
     await backend.contentFrame.getByRole('button', { name: 'Create new record' }).click();
@@ -23,7 +23,7 @@ test('System note can be created and edited from list module', async ({ backend 
   });
 
   await test.step('Edit the created system note', async () => {
-    const loaded = backend.moduleLoaded('web_list');
+    const loaded = backend.moduleLoaded('records');
     backend.contentFrame.getByRole('link', { name: 'Edit note record' }).first().click();
     await loaded;
 

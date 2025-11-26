@@ -271,7 +271,7 @@ readonly class PageLinkMessageProvider
         }
         $params = [
             'edit' => [$linkConfig['configuration.']['table'] => [$linkInfo['uid'] => 'edit']],
-            'module' => 'web_list',
+            'module' => 'records',
             'returnUrl' => '',
         ];
         $linkToPid = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);

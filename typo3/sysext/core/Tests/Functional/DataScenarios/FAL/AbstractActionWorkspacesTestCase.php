@@ -121,7 +121,7 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         $this->setWorkspaceId(static::VALUE_WorkspaceId);
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, ['header' => 'Testing #1']);
         // Now localize that default language content element in workspace
-        // Note we're using the live uid as source here, which is what page module translation wizard and list module submit to DH as well
+        // Note we're using the live uid as source here, which is what page module translation wizard and records module submit to DH as well
         $recordIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedWsContentId'] = $recordIds['tt_content'][self::VALUE_ContentIdLast];
     }
@@ -135,7 +135,7 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         $this->setWorkspaceId(static::VALUE_WorkspaceId);
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, ['header' => 'Testing #1']);
         // Now localize that default language content element in workspace
-        // Note we're using the live uid as source here, which is what page module translation wizard and list module submit to DH as well
+        // Note we're using the live uid as source here, which is what page module translation wizard and records module submit to DH as well
         $recordIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedWsContentId'] = $recordIds['tt_content'][self::VALUE_ContentIdLast];
         // In addition to modifyContentLocalize(), add an image to the default language content element in workspaces.
@@ -158,7 +158,7 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         $this->setWorkspaceId(static::VALUE_WorkspaceId);
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, ['header' => 'Testing #1']);
         // Now localize that default language content element in workspace
-        // Note we're using the live uid as source here, which is what page module translation wizard and list module submit to DH as well
+        // Note we're using the live uid as source here, which is what page module translation wizard and records module submit to DH as well
         $recordIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedWsContentId'] = $recordIds['tt_content'][self::VALUE_ContentIdLast];
         // In addition to modifyContentLocalize(), add an image to the default language content element in workspaces.

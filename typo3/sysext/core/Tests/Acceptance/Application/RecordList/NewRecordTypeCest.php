@@ -33,7 +33,7 @@ final class NewRecordTypeCest
     public function specificRecordTypeCanBeCreated(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->amGoingTo('create a record');
-        $I->click('List');
+        $I->click('Records');
         $I->waitForElementNotVisible('#nprogress');
         $pageTree->openPath(['styleguide TCA demo']);
         $I->wait(0.2);

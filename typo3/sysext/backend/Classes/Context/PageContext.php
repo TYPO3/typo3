@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
  * This context is added to the backend request by the PSR-15 "PageContextInitialization" middleware.
  * Replaces the module-specific duplication of language handling, page information, and site context.
  *
- * Contains shared data needed across Page Module, List Module, etc.
+ * Contains shared data needed across Layout Module, Records Module, etc.
  * Does NOT contain module-specific rendering configuration.
  *
  * This is a DOMAIN object and should NOT contain HTTP infrastructure concerns like ServerRequestInterface.

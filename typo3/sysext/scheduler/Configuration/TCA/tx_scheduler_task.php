@@ -16,7 +16,7 @@ return [
             'default' => 'mimetypes-x-tx_scheduler_task_group',
         ],
         'type' => 'tasktype',
-        'hideTable' => true, // Disabled for now until sorting and grouping is usable in list module
+        'hideTable' => true, // Disabled for now until sorting and grouping is usable in records module
         'adminOnly' => true, // Only admin users can edit
         'groupName' => 'system',
         'rootLevel' => 1,

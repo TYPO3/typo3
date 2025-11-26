@@ -7,9 +7,9 @@ test.describe('modules', () => {
       'label': 'the page module',
       'route': 'module/web/layout?id=204',
     },
-    'mod_list': {
-      'label': 'the list module',
-      'route': 'module/web/list?id=204',
+    'mod_records': {
+      'label': 'the records module',
+      'route': 'module/content/records?id=204',
     },
     'mod_info': {
       'label': 'the status module',

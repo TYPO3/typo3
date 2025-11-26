@@ -28,12 +28,12 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 final class Inline1nCest
 {
     /**
-     * Open styleguide inline 1n page in list module
+     * Open styleguide inline 1n page in records module
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
-        $I->click('List');
+        $I->click('Records');
         $pageTree->openPath(['styleguide TCA demo', 'inline 1n']);
         $I->switchToContentFrame();
         self::toggleAllLanguages($I);
@@ -47,7 +47,7 @@ final class Inline1nCest
     public function _after(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
-        $I->click('List');
+        $I->click('Records');
         $pageTree->openPath(['styleguide TCA demo', 'inline 1n']);
         $I->switchToContentFrame();
         self::toggleAllLanguages($I, false);

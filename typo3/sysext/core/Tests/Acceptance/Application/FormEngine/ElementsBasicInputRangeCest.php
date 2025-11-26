@@ -28,12 +28,12 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 final class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
 {
     /**
-     * Open list module of styleguide elements basic page
+     * Open records module of styleguide elements basic page
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
-        $I->click('List');
+        $I->click('Records');
         $pageTree->openPath(['styleguide TCA demo', 'elements basic']);
         $I->switchToContentFrame();
 

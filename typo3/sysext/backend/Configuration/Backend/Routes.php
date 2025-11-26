@@ -154,7 +154,7 @@ return [
     ],
 
     /** DB Records-related routes */
-    // Record download in list module
+    // Record download in records module
     'record_download' => [
         'path' => '/record/download',
         'methods' => ['POST'],

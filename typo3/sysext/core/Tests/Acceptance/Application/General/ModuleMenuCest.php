@@ -51,7 +51,7 @@ final class ModuleMenuCest
     {
         $I->seeNumberOfElements('[data-modulemenu-identifier="content"] + .modulemenu-group-container .modulemenu-action', [2, 20]);
         $I->cantSeeElement('[data-modulemenu-identifier="content"].modulemenu-action-active');
-        $I->click('[data-modulemenu-identifier="web_list"]');
-        $I->canSeeElement('[data-modulemenu-identifier="web_list"].modulemenu-action-active');
+        $I->click('[data-modulemenu-identifier="records"]');
+        $I->canSeeElement('[data-modulemenu-identifier="records"].modulemenu-action-active');
     }
 }

@@ -929,7 +929,7 @@ export class TypoScriptStreamParserFactory {
         'web_func': B,
         'web_info': B,
         'web_layout': B,
-        'web_list': B,
+        'records': B,
         'web_ts': kw('web_ts'),
         'where': kw('where'),
         'width': kw('width'),

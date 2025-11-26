@@ -469,7 +469,7 @@ class Clipboard
         if (is_array($reference)) {
             if ($isRequestedTable) {
                 // Wrap in link to corresponding page in recordlist in case current requested table matches
-                $itemText = '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('web_list', ['id' => $reference['pid']])) . '">' . $itemText . '</a>';
+                $itemText = '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('records', ['id' => $reference['pid']])) . '">' . $itemText . '</a>';
             } else {
                 $itemText = '<span class="text-variant">' . $itemText . '</span>';
             }

@@ -5,7 +5,7 @@ test('Delete page and check recycler', async ({ page, backend }) => {
   const newSysNoteSubject = `Dummy sys note ${backend.getUnixTimestamp()}`;
 
   await test.step('Add page for recycler test', async () => {
-    await backend.gotoModule('web_list');
+    await backend.gotoModule('records');
     await backend.pageTree.open('styleguide TCA demo');
     await backend.contentFrame.getByRole('button', { name: 'Create new record' }).click();
     await backend.formEngine.formEngineLoaded();
@@ -88,7 +88,7 @@ test('Delete page and check recycler', async ({ page, backend }) => {
 
     await test.step('Verify restored page and content', async () => {
       await backend.pageTree.refresh();
-      await backend.gotoModule('web_list');
+      await backend.gotoModule('records');
       await backend.pageTree.open('styleguide TCA demo', newPageTitle);
       await backend.contentFrame.locator(`a:has-text("${newSysNoteSubject}")`).click();
       await expect(backend.contentFrame.locator('h1')).toContainText(`Edit Internal note "${newSysNoteSubject}" on page "${newPageTitle}"`);

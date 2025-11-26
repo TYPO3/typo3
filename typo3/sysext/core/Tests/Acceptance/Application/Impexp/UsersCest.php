@@ -40,7 +40,7 @@ final class UsersCest extends AbstractCest
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
-        $I->click('List');
+        $I->click('Records');
     }
 
     public function doNotShowImportAndExportInContextMenuForNonAdminUser(ApplicationTester $I, PageTree $pageTree): void
@@ -49,7 +49,7 @@ final class UsersCest extends AbstractCest
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../../*[contains(@class, \'node-icon\')]';
 
         $this->setPageAccess($I, $pageTree, [$selectedPageTitle], 1);
-        $this->setModAccess($I, 1, ['web_list' => true]);
+        $this->setModAccess($I, 1, ['records' => true]);
         $this->setUserTsConfig($I, 2, '');
         $I->useExistingSession('editor');
 
@@ -136,7 +136,7 @@ final class UsersCest extends AbstractCest
         $I->useExistingSession('admin');
 
         $this->setPageAccess($I, $pageTree, ['Root'], 0);
-        $this->setModAccess($I, 1, ['web_list' => false]);
+        $this->setModAccess($I, 1, ['records' => false]);
         $this->setUserTsConfig($I, 2, '');
     }
 
@@ -155,7 +155,7 @@ final class UsersCest extends AbstractCest
 
         $I->switchToMainFrame();
 
-        $I->click('List');
+        $I->click('Records');
         $I->click($selectedPageIcon);
         $I->switchToMainFrame();
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
@@ -163,7 +163,7 @@ final class UsersCest extends AbstractCest
         $I->seeElement($this->inModuleHeader . ' ' . $this->buttonViewPage);
 
         $this->setPageAccess($I, $pageTree, ['Root'], 1);
-        $this->setModAccess($I, 1, ['web_list' => true]);
+        $this->setModAccess($I, 1, ['records' => true]);
         $this->setUserTsConfig($I, 2, 'options.impexp.enableImportForNonAdminUser = 1');
         $I->useExistingSession('editor');
 
@@ -176,7 +176,7 @@ final class UsersCest extends AbstractCest
         $I->useExistingSession('admin');
 
         $this->setPageAccess($I, $pageTree, ['Root'], 0);
-        $this->setModAccess($I, 1, ['web_list' => false]);
+        $this->setModAccess($I, 1, ['records' => false]);
         $this->setUserTsConfig($I, 2, '');
     }
 

@@ -46,7 +46,7 @@ final class ImportCest extends AbstractCest
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
-        $I->click('List');
+        $I->click('Records');
         $pageTree->openPath(['styleguide TCA demo']);
     }
 

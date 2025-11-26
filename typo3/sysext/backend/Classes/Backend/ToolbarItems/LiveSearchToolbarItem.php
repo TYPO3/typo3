@@ -43,11 +43,11 @@ class LiveSearchToolbarItem implements ToolbarItemInterface, RequestAwareToolbar
 
     /**
      * Checks whether the user has access to this toolbar item.
-     * Live search depends on the list module and only available when that module is allowed.
+     * Live search depends on the records module and only available when that module is allowed.
      */
     public function checkAccess(): bool
     {
-        return $this->moduleProvider->accessGranted('web_list', $this->getBackendUser());
+        return $this->moduleProvider->accessGranted('records', $this->getBackendUser());
     }
 
     /**

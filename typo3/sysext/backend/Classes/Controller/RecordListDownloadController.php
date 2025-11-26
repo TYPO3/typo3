@@ -39,7 +39,7 @@ use TYPO3\CMS\Core\Utility\CsvUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Controller for handling download of records, typically executed from the list module.
+ * Controller for handling download of records, typically executed from the records module.
  *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */

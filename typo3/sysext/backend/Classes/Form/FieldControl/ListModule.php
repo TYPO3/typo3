@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
- * Renders the icon with link parameters to jump to the list module
+ * Renders the icon with link parameters to jump to the records module
  * "single table" view, showing only one configurable table.
  */
 class ListModule extends AbstractNode

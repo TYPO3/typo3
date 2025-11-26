@@ -34,7 +34,7 @@ final class RecordDownloadCest
     public function recordsCanBeExported(ApplicationTester $I, PageTree $pageTree, ModalDialog $modalDialog): void
     {
         $I->amGoingTo('download a record');
-        $I->click('List');
+        $I->click('Records');
         $I->waitForElementNotVisible('#nprogress');
         $pageTree->openPath(['styleguide TCA demo']);
         $I->wait(0.2);

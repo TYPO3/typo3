@@ -34,13 +34,14 @@ return [
             'showHidden' => true,
         ],
     ],
-    'web_list' => [
+    'records' => [
         'parent' => 'content',
         'position' => ['after' => 'web_layout'],
         'access' => 'user',
-        'path' => '/module/web/list',
+        'path' => '/module/content/records',
         'iconIdentifier' => 'module-list',
         'labels' => 'backend.modules.list',
+        'aliases' => ['web_list'],
         'routes' => [
             '_default' => [
                 'target' => RecordListController::class . '::mainAction',

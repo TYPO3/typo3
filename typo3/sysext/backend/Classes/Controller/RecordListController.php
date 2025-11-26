@@ -56,7 +56,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * The Content > List module: Rendering the listing of records on a page.
+ * The Content > Records module: Rendering the listing of records on a page.
  *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
@@ -450,7 +450,7 @@ class RecordListController
                             $this->pageContext->pageId => 'edit',
                         ],
                     ],
-                    'module' => 'web_list',
+                    'module' => 'records',
                     'returnUrl' => $listUrl,
                 ]);
                 $editButton = $this->componentFactory->createLinkButton()
@@ -553,7 +553,7 @@ class RecordListController
             $arguments['GET'][$moduleSettingKey] = $moduleSettingValue;
         }
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'web_list',
+            routeIdentifier: 'records',
             displayName: $this->getShortcutTitle($arguments),
             arguments: $arguments
         );
@@ -736,7 +736,7 @@ class RecordListController
         // Merge with additional parameters (which can override preserved ones)
         $urlParams = array_merge($urlParams, $additionalParams);
 
-        return (string)$this->uriBuilder->buildUriFromRoute('web_list', $urlParams);
+        return (string)$this->uriBuilder->buildUriFromRoute('records', $urlParams);
     }
 
     protected function getBackendUserAuthentication(): BackendUserAuthentication

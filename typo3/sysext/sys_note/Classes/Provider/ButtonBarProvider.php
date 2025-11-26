@@ -44,7 +44,7 @@ final class ButtonBarProvider
     private const TABLE_NAME = 'sys_note';
     private const ALLOWED_MODULES = [
         'web_layout',
-        'web_list',
+        'records',
         'web_info_overview',
         'web_info_translations',
         'web_info_pagets',
@@ -79,7 +79,7 @@ final class ButtonBarProvider
             || !empty($pageTSconfig['mod.']['SHARED.']['disableSysNoteButton'])
             || !$this->canCreateNewRecord($id)
             || !in_array($module->getIdentifier(), self::ALLOWED_MODULES, true)
-            || ($module->getIdentifier() === 'web_list' && !$this->isCreationAllowed($pageTSconfig['mod.']['web_list.'] ?? []))
+            || ($module->getIdentifier() === 'records' && !$this->isCreationAllowed($pageTSconfig['mod.']['web_list.'] ?? []))
         ) {
             return;
         }

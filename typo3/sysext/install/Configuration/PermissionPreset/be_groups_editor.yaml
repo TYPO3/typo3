@@ -7,7 +7,7 @@ groupMods:
   - dashboard
   - web_layout
   - page_preview
-  - web_list
+  - records
   - media_management
   - user_setup
 pageTypesSelect:

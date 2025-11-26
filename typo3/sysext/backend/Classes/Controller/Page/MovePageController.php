@@ -38,7 +38,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * The "move page" wizard. Reachable via list module "Move page" on page records.
+ * The "move page" wizard. Reachable via records module "Move page" on page records.
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */

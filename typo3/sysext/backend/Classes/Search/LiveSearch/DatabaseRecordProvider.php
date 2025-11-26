@@ -464,7 +464,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
                 && $backendUser->check('tables_select', 'pages')
             )
         ) {
-            $showLink = (string)$this->uriBuilder->buildUriFromRoute('web_list', ['id' => $row['pid']]);
+            $showLink = (string)$this->uriBuilder->buildUriFromRoute('records', ['id' => $row['pid']]);
         }
         return $showLink;
     }
@@ -496,7 +496,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
             )
         ) {
             // @todo pass module context to live search and pass module context to edit link and use for return url
-            $returnUrl = (string)$this->uriBuilder->buildUriFromRoute('web_list', ['id' => $row['pid']]);
+            $returnUrl = (string)$this->uriBuilder->buildUriFromRoute('records', ['id' => $row['pid']]);
             $editLink = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                 'edit[' . $tableName . '][' . $row['uid'] . ']' => 'edit',
                 'returnUrl' => $returnUrl,

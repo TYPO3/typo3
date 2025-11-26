@@ -303,11 +303,11 @@ class PageLayoutController
 
         $infoBoxes = [];
         $currentDocumentType = (int)($this->pageContext->pageRecord['doktype'] ?? 0);
-        if ($currentDocumentType === PageRepository::DOKTYPE_SYSFOLDER && $this->moduleProvider->accessGranted('web_list', $backendUser)) {
+        if ($currentDocumentType === PageRepository::DOKTYPE_SYSFOLDER && $this->moduleProvider->accessGranted('records', $backendUser)) {
             $infoBoxes[] = [
                 'title' => $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:goToListModule'),
                 'message' => '<p>' . $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:goToListModuleMessage') . '</p>'
-                    . '<button type="button" class="btn btn-primary" data-dispatch-action="TYPO3.ModuleMenu.showModule" data-dispatch-args-list="web_list">'
+                    . '<button type="button" class="btn btn-primary" data-dispatch-action="TYPO3.ModuleMenu.showModule" data-dispatch-args-list="records">'
                         . $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:goToListModule')
                     . '</button>',
                 'state' => ContextualFeedbackSeverity::INFO,

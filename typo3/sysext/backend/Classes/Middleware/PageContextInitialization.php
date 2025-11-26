@@ -37,7 +37,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
  *
  * This middleware only runs for modules that use the page tree navigation
  * component ('@typo3/backend/tree/page-tree-element'). This includes modules
- * like web_layout, web_list, and others under the 'content' parent, as well
+ * like web_layout, records, and others under the 'content' parent, as well
  * as standalone modules that explicitly set the navigation component.
  *
  * The middleware:

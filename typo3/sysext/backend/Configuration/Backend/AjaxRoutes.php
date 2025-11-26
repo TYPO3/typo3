@@ -411,13 +411,13 @@ return [
         'target' => \TYPO3\CMS\Backend\Controller\ColumnSelectorController::class . '::showColumnsSelectorAction',
     ],
 
-    // Clear page cache in list module
-    'web_list_clearpagecache' => [
-        'path' => '/web/list/clearpagecache',
+    // Clear page cache in records module
+    'records_clearpagecache' => [
+        'path' => '/records/clearpagecache',
         'target' => \TYPO3\CMS\Backend\Controller\ClearPageCacheController::class . '::mainAction',
     ],
 
-    // Record download in list module
+    // Record download in records module
     'record_download_settings' => [
         'path' => '/record/download/settings',
         'target' => \TYPO3\CMS\Backend\Controller\RecordListDownloadController::class . '::downloadSettingsAction',

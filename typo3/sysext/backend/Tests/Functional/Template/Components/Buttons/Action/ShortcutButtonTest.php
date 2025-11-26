@@ -34,9 +34,9 @@ final class ShortcutButtonTest extends FunctionalTestCase
     public function isButtonValid(): void
     {
         self::assertFalse((new ShortcutButton())->isValid());
-        self::assertFalse((new ShortcutButton())->setRouteIdentifier('web_list')->isValid());
+        self::assertFalse((new ShortcutButton())->setRouteIdentifier('records')->isValid());
         self::assertFalse((new ShortcutButton())->setDisplayName('Some module anme')->isValid());
-        self::assertTrue((new ShortcutButton())->setRouteIdentifier('web_list')->setDisplayName('Some module anme')->isValid());
+        self::assertTrue((new ShortcutButton())->setRouteIdentifier('records')->setDisplayName('Some module anme')->isValid());
     }
 
     #[Test]
@@ -45,7 +45,7 @@ final class ShortcutButtonTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../../../Fixtures/be_users_no_bookmarks.csv');
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
-        $result = (new ShortcutButton())->setRouteIdentifier('web_list')->setDisplayName('Some module anme')->render();
+        $result = (new ShortcutButton())->setRouteIdentifier('records')->setDisplayName('Some module anme')->render();
         self::assertStringContainsString('Copy URL of this record', $result);
         self::assertStringNotContainsString('actions-system-shortcut', $result);
     }
@@ -73,20 +73,20 @@ final class ShortcutButtonTest extends FunctionalTestCase
     {
         yield 'Recordlist' => [
             (new ShortcutButton())
-                ->setRouteIdentifier('web_list')
+                ->setRouteIdentifier('records')
                 ->setDisplayName('Recordlist')
                 ->setCopyUrlToClipboard(false),
             'RecordList',
         ];
         yield 'Recordlist with copyToClipboard action' => [
             (new ShortcutButton())
-                ->setRouteIdentifier('web_list')
+                ->setRouteIdentifier('records')
                 ->setDisplayName('Recordlist'),
             'RecordListCopyToClipboard',
         ];
         yield 'Recordlist - single table view' => [
             (new ShortcutButton())
-                ->setRouteIdentifier('web_list')
+                ->setRouteIdentifier('records')
                 ->setDisplayName('Recordlist - single table view')
                 ->setCopyUrlToClipboard(false)
                 ->setArguments([
@@ -100,7 +100,7 @@ final class ShortcutButtonTest extends FunctionalTestCase
         ];
         yield 'Recordlist - single table view with copyToClipboard action' => [
             (new ShortcutButton())
-                ->setRouteIdentifier('web_list')
+                ->setRouteIdentifier('records')
                 ->setDisplayName('Recordlist - single table view')
                 ->setArguments([
                     'id' => 123,

@@ -27,7 +27,7 @@ final class ElementsSelectMultipleSideBySideWithKeyboardCest
     {
         $I->useExistingSession('admin');
 
-        $I->click('List');
+        $I->click('Records');
         $pageTree->openPath(['styleguide TCA demo', 'elements select']);
         $I->switchToContentFrame();
 

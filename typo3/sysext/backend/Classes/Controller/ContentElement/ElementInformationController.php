@@ -47,7 +47,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Modal rendering detail about a record. Reached by "Display information" on click menu and list module.
+ * Modal rendering detail about a record. Reached by "Display information" on click menu and records module.
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
@@ -512,7 +512,7 @@ class ElementInformationController
 
         if ($schema->getName() === 'pages') {
             // Recordlist button
-            $actions['webListUrl'] = (string)$this->uriBuilder->buildUriFromRoute('web_list', ['id' => $uid, 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()]);
+            $actions['recordsModuleUrl'] = (string)$this->uriBuilder->buildUriFromRoute('records', ['id' => $uid, 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()]);
 
             // retrieve record to get page language
             $record = BackendUtility::getRecord($schema->getName(), $uid);

@@ -68,13 +68,13 @@ final class ShortcutRepositoryTest extends FunctionalTestCase
     public static function shortcutExistsTestDataProvider(): \Generator
     {
         yield 'Shortcut exists' => [
-            'web_list',
+            'records',
             ['id' => 123, 'GET' => ['clipBoard' => 1]],
             1,
             true,
         ];
         yield 'Not this user' => [
-            'web_list',
+            'records',
             ['id' => 123, 'GET' => ['clipBoard' => 1]],
             2,
             false,
@@ -86,7 +86,7 @@ final class ShortcutRepositoryTest extends FunctionalTestCase
             false,
         ];
         yield 'Wrong arguments' => [
-            'web_list',
+            'records',
             ['id' => 321, 'GET' => ['clipBoard' => 1]],
             1,
             false,
@@ -111,7 +111,7 @@ final class ShortcutRepositoryTest extends FunctionalTestCase
     {
         return [
             'Basic shortcut with all information' => [
-                'routeIdentifier' => 'web_list',
+                'routeIdentifier' => 'records',
                 'arguments' => ['id' => 111, 'GET' => ['clipBoard' => 1]],
                 'title' => 'Recordlist of id 111',
             ],
@@ -142,7 +142,7 @@ final class ShortcutRepositoryTest extends FunctionalTestCase
                 'type' => 'other',
                 'icon' => 'data-identifier="module-list"',
                 'label' => 'Recordlist',
-                'href' => '/typo3/module/web/list?token=%s&id=123&GET%5BclipBoard%5D=1',
+                'href' => '/typo3/module/content/records?token=%s&id=123&GET%5BclipBoard%5D=1',
             ],
             2 => [
                 'table' => 'tt_content',

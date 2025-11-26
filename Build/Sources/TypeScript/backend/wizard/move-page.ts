@@ -60,14 +60,14 @@ export class MovePage {
             {
               label: lll('movePage.notification.pagePasted.action.open', recordTitle),
               action: new ImmediateAction((): void => {
-                ModuleMenu.App.showModule('web_list', 'id=' + url.searchParams.get('uid'));
+                ModuleMenu.App.showModule('records', 'id=' + url.searchParams.get('uid'));
               })
             }
           ]
         );
 
         top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
-        ModuleMenu.App.showModule('web_list', 'id=' + url.searchParams.get('expandPage'));
+        ModuleMenu.App.showModule('records', 'id=' + url.searchParams.get('expandPage'));
       });
     }).delegateTo(container, '[data-action="paste"]');
   }

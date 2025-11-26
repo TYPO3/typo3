@@ -87,7 +87,7 @@ final class ShortcutControllerTest extends FunctionalTestCase
         ];
         yield 'New data as parsed body' => [
             [
-                'routeIdentifier' => 'web_list',
+                'routeIdentifier' => 'records',
                 'arguments' => '{"id":"123","GET":{"clipBoard":"1"}}',
             ],
             json_encode(['result' => 'success'], JSON_THROW_ON_ERROR),

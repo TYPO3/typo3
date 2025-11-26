@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 final class NullPlaceholderCest
 {
     /**
-     * Call backend and open list module
+     * Call backend and open records module
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
@@ -63,12 +63,12 @@ final class NullPlaceholderCest
     }
 
     /**
-     * Open list module
+     * Open records module
      */
     private function goToListModule(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->switchToMainFrame();
-        $I->click('List');
+        $I->click('Records');
         $pageTree->openPath(['styleguide TCA demo', 'file']);
         $I->switchToContentFrame();
         $I->waitForText('file');

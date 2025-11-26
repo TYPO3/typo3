@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\RecordList\DatabaseRecordList;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
 /**
- * Use this Event to alter the database query when loading content for a page (usually in the list module)
+ * Use this Event to alter the database query when loading content for a page (usually in the records module)
  * before it is executed.
  * @todo This event should contain the $addSorting value, so listener knows when to add ORDER-BY stuff.
  */

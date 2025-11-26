@@ -28,12 +28,12 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 final class SelectPagetreeWithKeyboardCest
 {
     /**
-     * Open list module of styleguide elements basic page
+     * Open records module of styleguide elements basic page
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
-        $I->click('List');
+        $I->click('Records');
         $pageTree->openPath(['Root']);
         $I->waitForElement('#typo3-pagetree-treeContainer [role="treeitem"][data-id="1"]', 5);
     }

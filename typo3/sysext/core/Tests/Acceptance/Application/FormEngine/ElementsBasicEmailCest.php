@@ -29,12 +29,12 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 final class ElementsBasicEmailCest extends AbstractElementsBasicCest
 {
     /**
-     * Open list module of styleguide elements basic page
+     * Open records module of styleguide elements basic page
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
-        $I->click('List');
+        $I->click('Records');
         $pageTree->openPath(['styleguide TCA demo', 'elements basic']);
         // Wait until DOM actually rendered everything
         $I->switchToContentFrame();

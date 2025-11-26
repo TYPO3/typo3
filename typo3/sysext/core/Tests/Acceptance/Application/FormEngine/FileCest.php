@@ -30,13 +30,13 @@ final class FileCest
     private static string $saveButtonLink = '//*/button[@name="_savedok"][1]';
 
     /**
-     * Open styleguide file page in list module
+     * Open styleguide file page in records module
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
 
-        $I->click('List');
+        $I->click('Records');
         $pageTree->openPath(['styleguide TCA demo', 'file']);
         $I->switchToContentFrame();
 

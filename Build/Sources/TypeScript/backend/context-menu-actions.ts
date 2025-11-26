@@ -117,7 +117,7 @@ class ContextMenuActions {
 
   public static openListModule(table: string, uid: number, dataset: DOMStringMap): void {
     const pageId = table === 'pages' ? uid : dataset.pageUid;
-    ModuleMenu.App.showModule('web_list', 'id=' + pageId);
+    ModuleMenu.App.showModule('records', 'id=' + pageId);
   }
 
   public static pagesSort(table: string, uid: number, dataset: DOMStringMap): void {
@@ -240,7 +240,7 @@ class ContextMenuActions {
    * Clear cache for given page uid
    */
   public static clearCache(table: string, uid: number): void {
-    (new AjaxRequest(TYPO3.settings.ajaxUrls.web_list_clearpagecache)).withQueryArguments({ id: uid }).get({ cache: 'no-cache' }).then(
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.records_clearpagecache)).withQueryArguments({ id: uid }).get({ cache: 'no-cache' }).then(
       async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {

@@ -394,7 +394,7 @@ final class PageRecordProvider implements SearchProviderInterface
                 && $backendUser->check('tables_select', 'pages')
             )
         ) {
-            $showLink = (string)$this->uriBuilder->buildUriFromRoute('web_list', ['id' => $row['uid']]);
+            $showLink = (string)$this->uriBuilder->buildUriFromRoute('records', ['id' => $row['uid']]);
         }
         return $showLink;
     }

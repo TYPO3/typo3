@@ -81,7 +81,7 @@ final class DatabaseRecordListTest extends FunctionalTestCase
 
         // Create request with site and PageContext for page 1100 with default language
         $request = (new ServerRequest('http://localhost/'))
-            ->withAttribute('route', (new Route('/typo3/module/web/list', ['_identifier' => 'web_list'])))
+            ->withAttribute('route', (new Route('/typo3/module/content/records', ['_identifier' => 'records'])))
             ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
 
         $pageContextFactory = $this->get(PageContextFactory::class);
@@ -112,7 +112,7 @@ final class DatabaseRecordListTest extends FunctionalTestCase
         );
 
         $request = (new ServerRequest('http://localhost/'))
-            ->withAttribute('route', (new Route('/typo3/module/web/list', ['_identifier' => 'web_list'])))
+            ->withAttribute('route', (new Route('/typo3/module/content/records', ['_identifier' => 'records'])))
             ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
 
         // Create PageContext with specified languages
@@ -186,7 +186,7 @@ final class DatabaseRecordListTest extends FunctionalTestCase
     {
         // Create PageContext with default and French languages [0, 1]
         $request = (new ServerRequest('http://localhost/'))
-            ->withAttribute('route', (new Route('/typo3/module/web/list', ['_identifier' => 'web_list'])))
+            ->withAttribute('route', (new Route('/typo3/module/content/records', ['_identifier' => 'records'])))
             ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
 
         $pageContextFactory = $this->get(PageContextFactory::class);
@@ -212,7 +212,7 @@ final class DatabaseRecordListTest extends FunctionalTestCase
     {
         // Create PageContext with all available languages [0, 1, 2, 3]
         $request = (new ServerRequest('http://localhost/'))
-            ->withAttribute('route', (new Route('/typo3/module/web/list', ['_identifier' => 'web_list'])))
+            ->withAttribute('route', (new Route('/typo3/module/content/records', ['_identifier' => 'records'])))
             ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
 
         $pageContextFactory = $this->get(PageContextFactory::class);
@@ -237,7 +237,7 @@ final class DatabaseRecordListTest extends FunctionalTestCase
     {
         // Create PageContext with default and French languages only [0, 1]
         $request = (new ServerRequest('http://localhost/'))
-            ->withAttribute('route', (new Route('/typo3/module/web/list', ['_identifier' => 'web_list'])))
+            ->withAttribute('route', (new Route('/typo3/module/content/records', ['_identifier' => 'records'])))
             ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
 
         $pageContextFactory = $this->get(PageContextFactory::class);
@@ -261,7 +261,7 @@ final class DatabaseRecordListTest extends FunctionalTestCase
     {
         // Create PageContext with only default language [0] for page 1200
         $request = (new ServerRequest('http://localhost/'))
-            ->withAttribute('route', (new Route('/typo3/module/web/list', ['_identifier' => 'web_list'])))
+            ->withAttribute('route', (new Route('/typo3/module/content/records', ['_identifier' => 'records'])))
             ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
 
         $pageContextFactory = $this->get(PageContextFactory::class);

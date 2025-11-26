@@ -37,7 +37,7 @@ final class ExportCest extends AbstractCest
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
-        $I->click('List');
+        $I->click('Records');
     }
 
     public function exportPageAndRecordsDisplaysTitleOfSelectedPageInModuleHeader(ApplicationTester $I, PageTree $pageTree): void
@@ -69,7 +69,7 @@ final class ExportCest extends AbstractCest
 
         $pageTree->openPath(['styleguide TCA demo', $tablePageTitle]);
         $I->switchToContentFrame();
-        // List module single table mode
+        // Records module single table mode
         $I->waitForText($tableTitle);
         $I->waitForElementNotVisible('#nprogress');
         $I->click($tableTitle);
@@ -95,7 +95,7 @@ final class ExportCest extends AbstractCest
 
         $pageTree->openPath(['styleguide TCA demo', $recordPageTitle]);
         $I->switchToContentFrame();
-        // List module single table mode
+        // Records module single table mode
         $I->waitForText($recordPageTitle);
         $I->waitForElementNotVisible('#nprogress');
         $I->click($recordIcon, $recordTable);
@@ -242,7 +242,7 @@ final class ExportCest extends AbstractCest
         $contentExport = '#export-filepreset';
         $buttonSaveToFile = 'tx_impexp[save_export]';
 
-        // select root page in list module
+        // select root page in records module
         $I->canSeeElement($rootPage);
         $I->click($rootPage);
         $I->switchToContentFrame();

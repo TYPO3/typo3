@@ -231,8 +231,8 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
         $pointer = (int)($request->getParsedBody()['pointer'] ?? $request->getQueryParams()['pointer'] ?? 0);
         $searchLevels = (int)($request->getParsedBody()['search_levels'] ?? $request->getQueryParams()['search_levels'] ?? $modTSconfig['searchLevel.']['default'] ?? 0);
 
-        $existingModuleData = $backendUser->getModuleData('web_list');
-        $moduleData = new ModuleData('web_list', is_array($existingModuleData) ? $existingModuleData : []);
+        $existingModuleData = $backendUser->getModuleData('records');
+        $moduleData = new ModuleData('records', is_array($existingModuleData) ? $existingModuleData : []);
 
         // If table is 'pages', add a pre-entry to make selected page selectable directly.
         $titleLen = (int)$backendUser->uc['titleLen'];

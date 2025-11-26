@@ -37,7 +37,7 @@ final class RecordDownloadWithPresetCest
         $I->wantToTest('whether records can be downloaded in the recordlist from a preset');
 
         $I->amGoingTo('download a record using a preset');
-        $I->click('List');
+        $I->click('Records');
         $I->waitForElementNotVisible('#nprogress');
         $pageTree->openPath(['styleguide TCA demo']);
         $I->wait(0.2);
@@ -62,7 +62,7 @@ final class RecordDownloadWithPresetCest
         $I->wantToTest('whether records can be downloaded in the recordlist without showing a preset');
 
         $I->amGoingTo('download a record using a preset');
-        $I->click('List');
+        $I->click('Records');
         $I->waitForElementNotVisible('#nprogress');
         $pageTree->openPath(['styleguide TCA demo']);
         $I->wait(0.2);

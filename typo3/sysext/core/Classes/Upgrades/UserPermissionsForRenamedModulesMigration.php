@@ -37,6 +37,7 @@ class UserPermissionsForRenamedModulesMigration implements UpgradeWizardInterfac
      * @var array <string, string> an array with the old module identifier as key and the new one as value
      */
     protected array $moduleRenaming = [
+        'web_list' => 'records',
         'web_info' => 'content_status',
         'workspaces_admin' => 'workspaces_publish',
     ];

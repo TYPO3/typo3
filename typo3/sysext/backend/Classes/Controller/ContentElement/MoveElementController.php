@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * The "move tt_content element" wizard. Reachable via list module "Re-position content element" on tt_content records.
+ * The "move tt_content element" wizard. Reachable via records module "Re-position content element" on tt_content records.
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */

@@ -89,7 +89,7 @@ final class RecordListControllerTest extends FunctionalTestCase
     public function multipleLanguagesCanBeSelected(): void
     {
         $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
-        $moduleData = new ModuleData('web_list', [], []);
+        $moduleData = new ModuleData('records', [], []);
 
         // Request with multiple languages
         $request = $this->createRequest(1100, $site, $moduleData, ['languages' => [0, 1, 2]]);
@@ -109,7 +109,7 @@ final class RecordListControllerTest extends FunctionalTestCase
     public function defaultLanguageIsAlwaysIncludedInRecordList(): void
     {
         $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
-        $moduleData = new ModuleData('web_list', [], []);
+        $moduleData = new ModuleData('records', [], []);
 
         // Try to select only translation languages (1, 2) without default
         $request = $this->createRequest(1100, $site, $moduleData, ['languages' => [1, 2]]);
@@ -127,7 +127,7 @@ final class RecordListControllerTest extends FunctionalTestCase
     public function emptyLanguageSelectionDefaultsToDefaultLanguage(): void
     {
         $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
-        $moduleData = new ModuleData('web_list', [], []);
+        $moduleData = new ModuleData('records', [], []);
 
         // Request with empty languages array
         $request = $this->createRequest(1100, $site, $moduleData, ['languages' => []]);
@@ -143,7 +143,7 @@ final class RecordListControllerTest extends FunctionalTestCase
     public function invalidLanguageIdsAreFilteredOut(): void
     {
         $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
-        $moduleData = new ModuleData('web_list', [], []);
+        $moduleData = new ModuleData('records', [], []);
 
         // Request with mix of valid and invalid language IDs
         $request = $this->createRequest(1100, $site, $moduleData, ['languages' => [0, 1, 999, 'invalid']]);
@@ -163,7 +163,7 @@ final class RecordListControllerTest extends FunctionalTestCase
     public function languageSelectionPersistsAcrossRequests(): void
     {
         $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
-        $moduleData = new ModuleData('web_list', [], []);
+        $moduleData = new ModuleData('records', [], []);
 
         // First request: select languages [0, 1]
         $request = $this->createRequest(1100, $site, $moduleData, ['languages' => [0, 1]]);
@@ -183,7 +183,7 @@ final class RecordListControllerTest extends FunctionalTestCase
     public function requestParameterOverridesModuleDataLanguages(): void
     {
         $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
-        $moduleData = new ModuleData('web_list', ['languages' => [0, 1]], []);
+        $moduleData = new ModuleData('records', ['languages' => [0, 1]], []);
 
         // Request explicitly changes languages to [0, 2]
         $request = $this->createRequest(1100, $site, $moduleData, ['languages' => [0, 2]]);
@@ -203,7 +203,7 @@ final class RecordListControllerTest extends FunctionalTestCase
         $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
 
         // Old format: single 'language' value stored as integer
-        $moduleData = new ModuleData('web_list', ['language' => 1], []);
+        $moduleData = new ModuleData('records', ['language' => 1], []);
 
         $request = $this->createRequest(1100, $site, $moduleData);
         $controller = $this->get(RecordListController::class);
@@ -220,7 +220,7 @@ final class RecordListControllerTest extends FunctionalTestCase
     public function languageParametersAreCastToIntegers(): void
     {
         $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
-        $moduleData = new ModuleData('web_list', [], []);
+        $moduleData = new ModuleData('records', [], []);
 
         $request = $this->createRequest(1100, $site, $moduleData, ['languages' => ['0', '1', '2']]);
         $controller = $this->get(RecordListController::class);
@@ -236,7 +236,7 @@ final class RecordListControllerTest extends FunctionalTestCase
     public function duplicateLanguageIdsAreRemoved(): void
     {
         $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
-        $moduleData = new ModuleData('web_list', [], []);
+        $moduleData = new ModuleData('records', [], []);
 
         $request = $this->createRequest(1100, $site, $moduleData, ['languages' => [0, 1, 1, 2, 2, 0]]);
         $controller = $this->get(RecordListController::class);
@@ -251,7 +251,7 @@ final class RecordListControllerTest extends FunctionalTestCase
     public function singleLanguageSelectionWorks(): void
     {
         $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
-        $moduleData = new ModuleData('web_list', [], []);
+        $moduleData = new ModuleData('records', [], []);
 
         $request = $this->createRequest(1100, $site, $moduleData, ['languages' => [0]]);
         $controller = $this->get(RecordListController::class);
@@ -265,7 +265,7 @@ final class RecordListControllerTest extends FunctionalTestCase
     public function allExistingLanguagesCanBeSelected(): void
     {
         $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
-        $moduleData = new ModuleData('web_list', [], []);
+        $moduleData = new ModuleData('records', [], []);
 
         // Page 1100 has L=0, L=1, L=2 in live workspace (L=3 only in workspace)
         // Requesting [0,1,2,3] should filter to [0,1,2]
@@ -285,9 +285,9 @@ final class RecordListControllerTest extends FunctionalTestCase
     {
         $queryParams = array_merge(['id' => $pageId], $additionalParams);
 
-        $request = (new ServerRequest('https://example.com/typo3/module/web/list'))
+        $request = (new ServerRequest('https://example.com/typo3/module/content/records'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-            ->withAttribute('route', new Route('/typo3/module/web/list', ['_identifier' => 'web_list']))
+            ->withAttribute('route', new Route('/typo3/module/content/records', ['_identifier' => 'records']))
             ->withAttribute('site', $site)
             ->withAttribute('moduleData', $moduleData)
             ->withQueryParams($queryParams);
