@@ -27,10 +27,15 @@ TSconfig, using the combined identifier of the folder:
 ..  code-block:: typoscript
     :caption: EXT:my_extension/Configuration/user.tsconfig
 
-    options.folderTree.label.1:/campaigns {
+    options.folderTree.label.1:/campaigns/ {
         label = Main Storage
         color = #ff8700
     }
+
+..  important::
+
+    Make sure to always use the full identifier, which also contains a
+    trailing slash (`/`).
 
 Labels and status information
 =============================
