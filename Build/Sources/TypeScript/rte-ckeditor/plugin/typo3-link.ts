@@ -571,10 +571,14 @@ export class Typo3LinkUI extends Core.Plugin {
   }
 
   private showUI(): void {
-    if (!this.getSelectedLinkElement()) {
+    const selectedLink = this.getSelectedLinkElement();
+    if (!selectedLink) {
       this.showFakeVisualSelection();
       this.openLinkBrowser(this.editor);
     } else {
+      // When clicking inside a link, check if we need to expand selection to full link
+      // This prevents link splitting when editing with partial selection
+      this.expandSelectionToFullLink();
       this.addToolbarView();
       this.balloon.showStack('main');
     }
@@ -736,11 +740,43 @@ export class Typo3LinkUI extends Core.Plugin {
     return position.getAncestors().find((ancestor: any) => LinkUtils.isLinkElement(ancestor));
   }
 
+  /**
+   * Expands the current selection to encompass the entire link element.
+   * This prevents link splitting when editing a link with partial text selection.
+   */
+  private expandSelectionToFullLink(): void {
+    const model = this.editor.model;
+    const selection = model.document.selection;
+
+    // Only expand if we have a link attribute in the selection
+    if (!selection.hasAttribute('linkHref')) {
+      return;
+    }
+
+    const linkHref = selection.getAttribute('linkHref') as string;
+    if (!linkHref) {
+      return;
+    }
+
+    model.change(writer => {
+      const position = selection.getFirstPosition();
+      // Find the full range of the link using the linkHref attribute
+      const linkRange = Typing.findAttributeRange(position, 'linkHref', linkHref, model);
+
+      if (linkRange) {
+        // Expand selection to cover the entire link
+        writer.setSelection(linkRange);
+      }
+    });
+  }
+
   private openLinkBrowser(editor: Core.Editor): void {
     const linkCommand = editor.commands.get('link') as unknown as Typo3LinkCommand;
     let additionalParameters = '';
 
+    // If editing an existing link, expand selection to full link first
     if (linkCommand.value) {
+      this.expandSelectionToFullLink();
       additionalParameters += '&P[curUrl][url]=' + encodeURIComponent(linkCommand.value);
       for (const [attr, value] of Object.entries(linkCommand.attrs)) {
         additionalParameters += '&P[curUrl][' + encodeURIComponent(attr) + ']=' + encodeURIComponent(value);
