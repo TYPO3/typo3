@@ -46,10 +46,10 @@
 				<source>Rollback single field</source>
 			</trans-unit>
 			<trans-unit id="userNotFound">
-				<source>[Not Found]</source>
+				<source>Not found (non-existent user)</source>
 			</trans-unit>
 			<trans-unit id="externalChange">
-				<source>Intermediate external change!</source>
+				<source>Automated process (missing user information)</source>
 			</trans-unit>
 			<trans-unit id="viaUser">
 				<source>via</source>
