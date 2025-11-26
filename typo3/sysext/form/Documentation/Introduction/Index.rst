@@ -1,86 +1,98 @@
 .. include:: /Includes.rst.txt
 
-.. _introduction:
+..  _introduction:
 
 ============
 Introduction
 ============
 
-.. note::
+..  note::
 
-   This documentation will be extended on a constant basis. If you have
-   problems understanding a certain aspect, or if you notice something
-   missing, contribute to improve it. This will help you and everyone else!
+    This documentation will be extended on a constant basis. If you have
+    problems understanding a certain aspect or if you notice something
+    missing, please contribute to improve it. This will help you as well as everyone else!
 
-   Get in touch with us:
+    Get in touch with us:
 
-   - Find us on `Slack <https://typo3.slack.com>`_ and join the channel
-     ``#ext:form``.
-   - Use the "Edit on Github" function.
+    *   Find us on `Slack <https://typo3.community/meet/slack>`_ and join the
+        channel `#ext:form`.
+    *   Use the "Edit on Github" function.
 
 
-.. _what-does-it-do:
+..  _what-does-it-do:
 
 What does it do?
-----------------
+================
 
-The ``form`` extension acts as a flexible, extendible, yet easy to use form
-framework. It equally allows editors, integrators, and developers to build
-all types of forms. For this task, different interfaces and techniques are
-available.
+The :composer:`typo3/cms-form` extension is a system extension that provides a
+flexible, extendable, and easy-to-use form framework. It incorporates interfaces
+and functionality that allow editors, integrators and developers to build forms.
 
-As a non-technical editor, you can use the "Forms" backend module. It
-allows you to create and manage your individual forms with the help of a
-nifty drag and drop interface. Your work can be previewed instantly.
+Non-technical editors can use the :guilabel:`Content > Forms` backend module.
+They can create and manage forms using a simple drag and drop interface.
+Forms can be previewed instantly.
 
-As an experienced integrator, you are able to build ambitious forms which
-are stored directly in your site package. Those forms can utilize hefty
-finishers and ship localization files.
+Experienced integrators can build ambitious forms which are
+stored in a site package. These forms can use powerful finishers and ship
+localization files.
 
-As a developer, you can use the PHP API to forge interfaces with conditional
+Developers can use the PHP API to create interfaces with conditional
 form elements, register new validators and finishers, as well as create
-custom form elements. Plenty of hooks allow you to manipulate the generation
-and processing of the both form and data.
+custom form elements. Plenty of hooks allow form creation
+and processing to be manipulated.
 
-.. figure:: Images/introduction_form_editor.png
-   :alt: The form creation wizard
+..  figure:: Images/introduction_form_editor.png
+    :alt: The form creation wizard
 
-   Form editor displaying a new form in the abstract view
+    Form editor displaying a new form in the abstract view
 
+..  _features_list:
 
-Features List
--------------
+Features list
+=============
 
-The following list names some features of the form framework:
+Here are some of the features of the form framework:
 
-* form editor
-   * fully customizable editor for building complex forms
-   * replaceable and extendible form editor components
-   * JS API to extend form editor
-* PHP API
-   * entire forms via API
-   * own renderers for form and/ or form elements
-   * conditional steps, form elements and validators based on other form
-     elements
-* configuration
-   * YAML as configuration and definition language including inheritances
-     and overrides
-   * file based
-   * behaviour and design of the frontend, plugin, and form editor can be
-     adapted on a per form basis
-   * 'prototypes' can be used as boilerplate
-* form elements
-   * own form elements possible
-   * uploads handled as FAL objects
-* finishers
-   * ships a bunch of built-in finishers, like email, redirect, and save to
-     database
-   * own finishers possible
-   * finisher configuration can be overridden within the form plugin
-* validators
-   * own validators possible
-* miscellaneous
-   * multiple language support
-   * multiple step support
-   * multiple forms on one page
-   * built-in spam protection (honeypot)
+*   form editor
+
+    *   fully customizable editor for building complex forms
+    *   replaceable and extendable form editor components
+    *   JS API to extend form editor
+
+*   PHP API
+
+    *   entire forms via API
+    *   own renderers for form and/ or form elements
+    *   conditional steps, form elements and validators based on other form
+        elements
+
+*   configuration
+
+    *   YAML as configuration and definition language including inheritance
+        and overrides
+    *   file based
+    *   behaviour and design of the frontend, plugin, and form editor can be
+        adapted for individual forms
+    *   'prototypes' can be used as boilerplate
+
+*   form elements
+
+    *   own form elements possible
+    *   uploads handled as FAL objects
+
+*   finishers
+
+    *   ships built-in finishers, like email, redirect, and save-to-database
+    *   own finishers possible
+    *   finisher configuration can be overridden in the form plugin
+
+*   validators
+
+    *   own validators possible
+
+*   miscellaneous
+
+    *   multiple languages support
+    *   multiple steps support
+    *   multiple forms on one page
+    *   built-in spam protection (honeypot)
