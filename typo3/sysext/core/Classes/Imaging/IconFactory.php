@@ -202,6 +202,7 @@ readonly class IconFactory
             $recordType[0] = 'tcarecords-' . $table . '-default';
         }
 
+        $recordType = array_filter($recordType);
         krsort($recordType);
         foreach ($recordType as $iconName) {
             if ($this->iconRegistry->isRegistered($iconName)) {
