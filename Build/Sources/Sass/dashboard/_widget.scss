@@ -103,6 +103,42 @@
     flex-grow: 1;
     overflow-y: auto;
     padding: var(--widget-padding);
+
+    /* Edge-to-edge content fills the space - so no padding added */
+    &-cover {
+        padding: 0;
+    }
+
+    &-scrollable {
+        isolation: isolate;
+
+        /* Overlay the content to keep native scrollbars fully visible */
+        &:before,
+        &:after {
+            content: "";
+            display: block;
+            position: sticky;
+            z-index: 1;
+            height: var(--widget-padding);
+            margin-inline: calc(-1 * var(--widget-padding));
+            pointer-events: none;
+        }
+
+        /* Fade out top of scrollable content */
+        &:before {
+            top: calc(-1 * var(--widget-padding));
+            margin-top: calc(-1 * var(--widget-padding));
+            background-image: linear-gradient(var(--widget-bg) 20%, transparent);
+        }
+
+        /* Fade out bottom of scrollable content */
+        &:after {
+            bottom: calc(-1 * var(--widget-padding));
+            margin-bottom: calc(-1 * var(--widget-padding));
+            background-image: linear-gradient(to top, var(--widget-bg) 20%, transparent);
+            box-shadow: 0 1px var(--widget-bg);
+        }
+    }
 }
 
 .widget-content-footer {

@@ -49,6 +49,11 @@ typo3-dashboard{display:block;width:100%}
 .widget-content-title span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .widget-content-title h2{margin-bottom:0}
 .widget-content-main{flex-basis:0;flex-grow:1;overflow-y:auto;padding:var(--widget-padding)}
+.widget-content-main-cover{padding:0}
+.widget-content-main-scrollable{isolation:isolate}
+.widget-content-main-scrollable:after,.widget-content-main-scrollable:before{content:"";display:block;height:var(--widget-padding);margin-inline:calc(var(--widget-padding)*-1);pointer-events:none;position:-webkit-sticky;position:sticky;z-index:1}
+.widget-content-main-scrollable:before{background-image:linear-gradient(var(--widget-bg) 20%,transparent);margin-top:calc(var(--widget-padding)*-1);top:calc(var(--widget-padding)*-1)}
+.widget-content-main-scrollable:after{background-image:linear-gradient(to top,var(--widget-bg) 20%,transparent);bottom:calc(var(--widget-padding)*-1);box-shadow:0 1px var(--widget-bg);margin-bottom:calc(var(--widget-padding)*-1)}
 .widget-content-footer{padding:var(--widget-padding);padding-top:0}
 .widget-pagination{align-items:center;display:flex;gap:.5rem;justify-content:center}
 .widget-pagination:not(:last-child){margin-bottom:var(--widget-padding)}

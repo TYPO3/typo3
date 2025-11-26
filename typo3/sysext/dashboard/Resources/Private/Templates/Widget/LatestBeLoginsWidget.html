@@ -2,12 +2,11 @@
     xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     data-namespace-typo3-fluid="true">
-<f:layout name="Widget/Widget"/>
+<f:layout name="Widget/Widget{f:if(condition: items, then: 'Cover', else: 'Scrollable')}"/>
 <f:section name="main">
 
     <f:if condition="{items}">
         <f:then>
-            <div class="widget-table-wrapper">
                 <table class="widget-table table table-striped table-hover">
                     <thead>
                         <tr>
@@ -41,7 +40,6 @@
                         </f:for>
                     </tbody>
                 </table>
-            </div>
         </f:then>
         <f:else>
             <div class="callout callout-info">
