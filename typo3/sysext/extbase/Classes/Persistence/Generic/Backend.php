@@ -627,19 +627,21 @@ class Backend implements BackendInterface, SingletonInterface
         if ($parentObject->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID) !== null) {
             $parentUid = $parentObject->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID);
         }
-        $row = [
-            $columnMap->getParentKeyFieldName() => (int)$parentUid,
-            $columnMap->getChildKeyFieldName() => (int)$object->getUid(),
-            $columnMap->getChildSortByFieldName() => $sortingPosition !== null ? (int)$sortingPosition : 0,
-        ];
-        $relationTableName = $columnMap->getRelationTableName();
+        $row = [];
+        if ($columnMap->getParentKeyFieldName() !== null) {
+            $row[$columnMap->getParentKeyFieldName()] = (int)$parentUid;
+        }
+        if ($columnMap->getChildKeyFieldName() !== null) {
+            $row[$columnMap->getChildKeyFieldName()] = (int)$object->getUid();
+        }
+        if ($columnMap->getChildSortByFieldName() !== null) {
+            $row[$columnMap->getChildSortByFieldName()] = $sortingPosition ?? 0;
+        }
+        $relationTableName = $columnMap->getRelationTableName() ?? '';
         if (isset($GLOBALS['TCA'][$relationTableName])) {
             $row[AbstractDomainObject::PROPERTY_PID] = $this->determineStoragePageIdForNewRecord();
         }
-        $relationTableMatchFields = $columnMap->getRelationTableMatchFields();
-        if (is_array($relationTableMatchFields)) {
-            $row = array_merge($relationTableMatchFields, $row);
-        }
+        $row = array_merge($columnMap->getRelationTableMatchFields() ?? [], $row);
         $res = $this->storageBackend->addRow($relationTableName, $row, true);
         return $res;
     }
@@ -657,20 +659,19 @@ class Backend implements BackendInterface, SingletonInterface
     ): bool {
         $dataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
         $columnMap = $dataMap->getColumnMap($propertyName);
-        $row = [
-            $columnMap->getParentKeyFieldName() => (int)$parentObject->getUid(),
-            $columnMap->getChildKeyFieldName() => (int)$object->getUid(),
-            $columnMap->getChildSortByFieldName() => $sortingPosition,
-        ];
-        $relationTableName = $columnMap->getRelationTableName();
-        $relationTableMatchFields = $columnMap->getRelationTableMatchFields();
-        if (is_array($relationTableMatchFields)) {
-            $row = array_merge($relationTableMatchFields, $row);
+        $row = [];
+        if ($columnMap->getParentKeyFieldName() !== null) {
+            $row[$columnMap->getParentKeyFieldName()] = (int)$parentObject->getUid();
         }
-        $this->storageBackend->updateRelationTableRow(
-            $relationTableName,
-            $row
-        );
+        if ($columnMap->getChildKeyFieldName() !== null) {
+            $row[$columnMap->getChildKeyFieldName()] = (int)$object->getUid();
+        }
+        if ($columnMap->getChildSortByFieldName() !== null) {
+            $row[$columnMap->getChildSortByFieldName()] = $sortingPosition;
+        }
+        $relationTableName = $columnMap->getRelationTableName() ?? '';
+        $row = array_merge($columnMap->getRelationTableMatchFields() ?? [], $row);
+        $this->storageBackend->updateRelationTableRow($relationTableName, $row);
         return true;
     }
 
@@ -685,15 +686,13 @@ class Backend implements BackendInterface, SingletonInterface
     ): bool {
         $dataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
         $columnMap = $dataMap->getColumnMap($parentPropertyName);
-        $relationTableName = $columnMap->getRelationTableName();
-        $relationMatchFields = [
-            $columnMap->getParentKeyFieldName() => (int)$parentObject->getUid(),
-        ];
-        $relationTableMatchFields = $columnMap->getRelationTableMatchFields();
-        if (is_array($relationTableMatchFields)) {
-            $relationMatchFields = array_merge($relationTableMatchFields, $relationMatchFields);
+        $relationTableName = $columnMap->getRelationTableName() ?? '';
+        $relationMatchFields = [];
+        if ($columnMap->getParentKeyFieldName() !== null) {
+            $relationMatchFields[$columnMap->getParentKeyFieldName()] = (int)$parentObject->getUid();
         }
-        $this->storageBackend->removeRow($relationTableName, $relationMatchFields, false);
+        $relationMatchFields = array_merge($columnMap->getRelationTableMatchFields() ?? [], $relationMatchFields);
+        $this->storageBackend->removeRow($relationTableName, $relationMatchFields);
         return true;
     }
 
@@ -707,16 +706,16 @@ class Backend implements BackendInterface, SingletonInterface
     ): bool {
         $dataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
         $columnMap = $dataMap->getColumnMap($parentPropertyName);
-        $relationTableName = $columnMap->getRelationTableName();
-        $relationMatchFields = [
-            $columnMap->getParentKeyFieldName() => (int)$parentObject->getUid(),
-            $columnMap->getChildKeyFieldName() => (int)$relatedObject->getUid(),
-        ];
-        $relationTableMatchFields = $columnMap->getRelationTableMatchFields();
-        if (is_array($relationTableMatchFields)) {
-            $relationMatchFields = array_merge($relationTableMatchFields, $relationMatchFields);
+        $relationTableName = $columnMap->getRelationTableName() ?? '';
+        $relationMatchFields = [];
+        if ($columnMap->getParentKeyFieldName() !== null) {
+            $relationMatchFields[$columnMap->getParentKeyFieldName()] = (int)$parentObject->getUid();
         }
-        $this->storageBackend->removeRow($relationTableName, $relationMatchFields, false);
+        if ($columnMap->getChildKeyFieldName() !== null) {
+            $relationMatchFields[$columnMap->getChildKeyFieldName()] = (int)$relatedObject->getUid();
+        }
+        $relationMatchFields = array_merge($columnMap->getRelationTableMatchFields() ?? [], $relationMatchFields);
+        $this->storageBackend->removeRow($relationTableName, $relationMatchFields);
         return true;
     }
 
