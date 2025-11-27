@@ -527,7 +527,7 @@ class GeneralUtility
      * @param int $base The unit base if not using a unit name. Defaults to 1024.
      * @return string Formatted representation of the byte number, for output.
      */
-    public static function formatSize($sizeInBytes, $labels = '', $base = 0)
+    public static function formatSize($sizeInBytes, $labels = '', $base = 0, ?int $decimals = null)
     {
         $defaultFormats = [
             'iec' => ['base' => 1024, 'labels' => [' ', ' Ki', ' Mi', ' Gi', ' Ti', ' Pi', ' Ei', ' Zi', ' Yi']],
@@ -564,7 +564,8 @@ class GeneralUtility
         }
         $multiplier = min($multiplier, count($labelArr) - 1);
         $sizeInUnits = $sizeInBytes / $base ** $multiplier;
-        return number_format($sizeInUnits, (($multiplier > 0) && ($sizeInUnits < 20)) ? 2 : 0, $localeInfo['decimal_point'], '') . $labelArr[$multiplier];
+        $decimals ??= (($multiplier > 0) && ($sizeInUnits < 20)) ? 2 : 0;
+        return number_format($sizeInUnits, $decimals, $localeInfo['decimal_point'], '') . $labelArr[$multiplier];
     }
 
     /**

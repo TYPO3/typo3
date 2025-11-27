@@ -1918,7 +1918,11 @@ class ContentObjectRenderer
      */
     public function stdWrap_bytes($content = '', $conf = [])
     {
-        return GeneralUtility::formatSize((int)$content, $conf['bytes.']['labels'] ?? '', $conf['bytes.']['base'] ?? 0);
+        $decimals = $conf['bytes.']['decimals'] ?? null;
+        if ($decimals !== null) {
+            $decimals = (int)$decimals;
+        }
+        return GeneralUtility::formatSize((int)$content, $conf['bytes.']['labels'] ?? '', $conf['bytes.']['base'] ?? 0, $decimals);
     }
 
     /**

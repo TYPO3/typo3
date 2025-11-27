@@ -414,9 +414,14 @@ final class GeneralUtilityTest extends UnitTestCase
     ///////////////////////////////
     #[DataProvider('formatSizeDataProvider')]
     #[Test]
-    public function formatSizeTranslatesBytesToHigherOrderRepresentation($size, $labels, $base, $expected): void
-    {
-        self::assertEquals($expected, GeneralUtility::formatSize($size, $labels, $base));
+    public function formatSizeTranslatesBytesToHigherOrderRepresentation(
+        int $size,
+        string $labels,
+        int $base,
+        ?int $decimals,
+        string $expected,
+    ): void {
+        self::assertEquals($expected, GeneralUtility::formatSize($size, $labels, $base, $decimals));
     }
 
     /**
@@ -425,39 +430,40 @@ final class GeneralUtilityTest extends UnitTestCase
     public static function formatSizeDataProvider(): array
     {
         return [
-            'IEC Bytes stay bytes (min)' => [1, '', 0, '1 '],
-            'IEC Bytes stay bytes (max)' => [921, '', 0, '921 '],
-            'IEC Kilobytes are used (min)' => [922, '', 0, '0.90 Ki'],
-            'IEC Kilobytes are used (max)' => [943718, '', 0, '922 Ki'],
-            'IEC Megabytes are used (min)' => [943719, '', 0, '0.90 Mi'],
-            'IEC Megabytes are used (max)' => [966367641, '', 0, '922 Mi'],
-            'IEC Gigabytes are used (min)' => [966367642, '', 0, '0.90 Gi'],
-            'IEC Gigabytes are used (max)' => [989560464998, '', 0, '922 Gi'],
-            'IEC Decimal is omitted for large kilobytes' => [31080, '', 0, '30 Ki'],
-            'IEC Decimal is omitted for large megabytes' => [31458000, '', 0, '30 Mi'],
-            'IEC Decimal is omitted for large gigabytes' => [32212254720, '', 0, '30 Gi'],
-            'SI Bytes stay bytes (min)' => [1, 'si', 0, '1 '],
-            'SI Bytes stay bytes (max)' => [899, 'si', 0, '899 '],
-            'SI Kilobytes are used (min)' => [901, 'si', 0, '0.90 k'],
-            'SI Kilobytes are used (max)' => [900000, 'si', 0, '900 k'],
-            'SI Megabytes are used (min)' => [900001, 'si', 0, '0.90 M'],
-            'SI Megabytes are used (max)' => [900000000, 'si', 0, '900 M'],
-            'SI Gigabytes are used (min)' => [900000001, 'si', 0, '0.90 G'],
-            'SI Gigabytes are used (max)' => [900000000000, 'si', 0, '900 G'],
-            'SI Decimal is omitted for large kilobytes' => [30000, 'si', 0, '30 k'],
-            'SI Decimal is omitted for large megabytes' => [30000000, 'si', 0, '30 M'],
-            'SI Decimal is omitted for large gigabytes' => [30000000000, 'si', 0, '30 G'],
-            'Label for bytes can be exchanged (binary unit)' => [1, ' Foo|||', 0, '1 Foo'],
-            'Label for kilobytes can be exchanged (binary unit)' => [1024, '| Foo||', 0, '1.00 Foo'],
-            'Label for megabytes can be exchanged (binary unit)' => [1048576, '|| Foo|', 0, '1.00 Foo'],
-            'Label for gigabytes can be exchanged (binary unit)' => [1073741824, '||| Foo', 0, '1.00 Foo'],
-            'Label for bytes can be exchanged (decimal unit)' => [1, ' Foo|||', 1000, '1 Foo'],
-            'Label for kilobytes can be exchanged (decimal unit)' => [1000, '| Foo||', 1000, '1.00 Foo'],
-            'Label for megabytes can be exchanged (decimal unit)' => [1000000, '|| Foo|', 1000, '1.00 Foo'],
-            'Label for gigabytes can be exchanged (decimal unit)' => [1000000000, '||| Foo', 1000, '1.00 Foo'],
-            'IEC Base is ignored' => [1024, 'iec', 1000, '1.00 Ki'],
-            'SI Base is ignored' => [1000, 'si', 1024, '1.00 k'],
-            'Use binary base for unexpected base' => [2048, '| Bar||', 512, '2.00 Bar'],
+            'IEC Bytes stay bytes (min)' => [1, '', 0, null, '1 '],
+            'IEC Bytes stay bytes (max)' => [921, '', 0, null, '921 '],
+            'IEC Kilobytes are used (min)' => [922, '', 0, null, '0.90 Ki'],
+            'IEC Kilobytes are used (max)' => [943718, '', 0, null, '922 Ki'],
+            'IEC Megabytes are used (min)' => [943719, '', 0, null, '0.90 Mi'],
+            'IEC Megabytes are used (max)' => [966367641, '', 0, null, '922 Mi'],
+            'IEC Gigabytes are used (min)' => [966367642, '', 0, null, '0.90 Gi'],
+            'IEC Gigabytes are used (max)' => [989560464998, '', 0, null, '922 Gi'],
+            'IEC Decimal is omitted for large kilobytes' => [31080, '', 0, null, '30 Ki'],
+            'IEC Decimal is omitted for large megabytes' => [31458000, '', 0, null, '30 Mi'],
+            'IEC Decimal is omitted for large gigabytes' => [32212254720, '', 0, null, '30 Gi'],
+            'SI Bytes stay bytes (min)' => [1, 'si', 0, null, '1 '],
+            'SI Bytes stay bytes (max)' => [899, 'si', 0, null, '899 '],
+            'SI Kilobytes are used (min)' => [901, 'si', 0, null, '0.90 k'],
+            'SI Kilobytes are used (max)' => [900000, 'si', 0, null, '900 k'],
+            'SI Megabytes are used (min)' => [900001, 'si', 0, null, '0.90 M'],
+            'SI Megabytes are used (max)' => [900000000, 'si', 0, null, '900 M'],
+            'SI Gigabytes are used (min)' => [900000001, 'si', 0, null, '0.90 G'],
+            'SI Gigabytes are used (max)' => [900000000000, 'si', 0, null, '900 G'],
+            'SI Decimal is omitted for large kilobytes' => [30000, 'si', 0, null, '30 k'],
+            'SI Decimal is omitted for large megabytes' => [30000000, 'si', 0, null, '30 M'],
+            'SI Decimal is omitted for large gigabytes' => [30000000000, 'si', 0, null, '30 G'],
+            'Label for bytes can be exchanged (binary unit)' => [1, ' Foo|||', 0, null, '1 Foo'],
+            'Label for kilobytes can be exchanged (binary unit)' => [1024, '| Foo||', 0, null, '1.00 Foo'],
+            'Label for megabytes can be exchanged (binary unit)' => [1048576, '|| Foo|', 0, null, '1.00 Foo'],
+            'Label for gigabytes can be exchanged (binary unit)' => [1073741824, '||| Foo', 0, null, '1.00 Foo'],
+            'Label for bytes can be exchanged (decimal unit)' => [1, ' Foo|||', 1000, null, '1 Foo'],
+            'Label for kilobytes can be exchanged (decimal unit)' => [1000, '| Foo||', 1000, null, '1.00 Foo'],
+            'Label for megabytes can be exchanged (decimal unit)' => [1000000, '|| Foo|', 1000, null, '1.00 Foo'],
+            'Label for gigabytes can be exchanged (decimal unit)' => [1000000000, '||| Foo', 1000, null, '1.00 Foo'],
+            'IEC Base is ignored' => [1024, 'iec', 1000, null, '1.00 Ki'],
+            'SI Base is ignored' => [1000, 'si', 1024, null, '1.00 k'],
+            'Use binary base for unexpected base' => [2048, '| Bar||', 512, null, '2.00 Bar'],
+            'Define decimals' => [900000001, 'si', 0, 1, '0.9 G'],
         ];
     }
 
