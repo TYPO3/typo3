@@ -364,7 +364,7 @@ class ReferenceIndex
         if ($errorCount) {
             $progressListener?->log($recordsCheckedString . ' Updates: ' . $errorCount, LogLevel::WARNING);
         } else {
-            $progressListener?->log($recordsCheckedString . ' Index Integrity was perfect!');
+            $progressListener?->log($recordsCheckedString . ' Index Integrity was perfect.');
         }
         if (!$testOnly) {
             $this->registry->set('core', 'sys_refindex_lastUpdate', $GLOBALS['EXEC_TIME']);

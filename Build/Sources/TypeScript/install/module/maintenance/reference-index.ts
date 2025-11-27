@@ -120,7 +120,7 @@ class ReferenceIndex extends AbstractInteractableModule {
               const errorItems = data.result.errors.map((error: string) => `<li>${error}</li>`).join('');
               bodyContent = `<ul class="list-unstyled">${errorItems}</ul>`;
             } else {
-              bodyContent = 'Index integrity was perfect!';
+              bodyContent = 'Index integrity is perfect.';
             }
 
             // Create complete callout markup with icon element
