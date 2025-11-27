@@ -34,6 +34,8 @@ class CropVariant
      */
     protected ?array $coverAreas = null;
 
+    protected bool $excludeFromSync = false;
+
     /**
      * @param Ratio[] $allowedAspectRatios
      * @param string|null $selectedRatio
@@ -48,7 +50,8 @@ class CropVariant
         ?array $allowedAspectRatios = null,
         ?string $selectedRatio = null,
         ?Area $focusArea = null,
-        ?array $coverAreas = null
+        ?array $coverAreas = null,
+        bool $excludeFromSync = false
     ) {
         if ($allowedAspectRatios) {
             $this->setAllowedAspectRatios(...$allowedAspectRatios);
@@ -62,6 +65,7 @@ class CropVariant
         if ($coverAreas !== null) {
             $this->setCoverAreas(...$coverAreas);
         }
+        $this->excludeFromSync = $excludeFromSync;
     }
 
     /**
@@ -77,7 +81,8 @@ class CropVariant
                 isset($config['allowedAspectRatios']) ? Ratio::createMultipleFromConfiguration($config['allowedAspectRatios']) : null,
                 $config['selectedRatio'] ?? null,
                 isset($config['focusArea']) ? Area::createFromConfiguration($config['focusArea']) : null,
-                isset($config['coverAreas']) ? Area::createMultipleFromConfiguration($config['coverAreas']) : null
+                isset($config['coverAreas']) ? Area::createMultipleFromConfiguration($config['coverAreas']) : null,
+                isset($config['excludeFromSync']) ? filter_var($config['excludeFromSync'], FILTER_VALIDATE_BOOLEAN) : false,
             );
         } catch (\Throwable $throwable) {
             throw new InvalidConfigurationException(sprintf('Invalid type in configuration for crop variant: %s', $throwable->getMessage()), 1485278693, $throwable);
@@ -108,6 +113,7 @@ class CropVariant
             'selectedRatio' => $this->selectedRatio,
             'focusArea' => $this->focusArea?->asArray(),
             'coverAreas' => $coverAreasAsArray ?? null,
+            'excludeFromSync' => $this->excludeFromSync,
         ];
     }
 
@@ -171,5 +177,15 @@ class CropVariant
     protected function addCoverArea(Area $area): void
     {
         $this->coverAreas[] = $area;
+    }
+
+    public function isExcludeFromSync(): bool
+    {
+        return $this->excludeFromSync;
+    }
+
+    public function setExcludeFromSync(bool $excludeFromSync): void
+    {
+        $this->excludeFromSync = $excludeFromSync;
     }
 }

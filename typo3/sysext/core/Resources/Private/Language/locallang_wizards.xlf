@@ -180,6 +180,9 @@
       <trans-unit id="imwizard.crop_variant.social">
         <source>Social media</source>
       </trans-unit>
+      <trans-unit id="imwizard.sync-crop-variants">
+        <source>Apply changes to all crop variants</source>
+      </trans-unit>
       <trans-unit id="imwizard.selection">
         <source>Selected Size</source>
       </trans-unit>

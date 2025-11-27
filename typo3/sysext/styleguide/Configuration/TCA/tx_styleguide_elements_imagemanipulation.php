@@ -464,6 +464,82 @@ return [
                 ],
             ],
         ],
+        'crop_11' => [
+            'label' => 'crop_11',
+            'description' => 'Synchronised editing feature, exclusion of listview',
+            'config' => [
+                'type' => 'imageManipulation',
+                'file_field' => 'group_db_3',
+
+                'cropVariants' => [
+                    'lg' => [
+                        'title' => 'Large device',
+                        'allowedAspectRatios' => [
+                            'default' => [
+                                'title' => 'Default',
+                                'value' => 1920 / 680,
+                            ],
+                            'wide-landscape' => [
+                                'title' => 'Landscape (Wide)',
+                                'value' => 1920 / 400,
+                            ],
+                            'tall-portrait' => [
+                                'title' => 'Portrait (Tall)',
+                                'value' => 800 / 1920,
+                            ],
+                        ],
+                        'selectedRatio' => 'default',
+                    ],
+                    'md' => [
+                        'title' => 'Desktop device',
+                        'allowedAspectRatios' => [
+                            'default' => [
+                                'title' => 'Default',
+                                'value' => 1920 / 680,
+                            ],
+                            'wide-landscape' => [
+                                'title' => 'Landscape (Wide)',
+                                'value' => 1920 / 400,
+                            ],
+                            'tall-portrait' => [
+                                'title' => 'Portrait (Tall)',
+                                'value' => 800 / 1920,
+                            ],
+                        ],
+                        'selectedRatio' => 'default',
+                    ],
+                    'sm' => [
+                        'title' => 'Small device',
+                        'allowedAspectRatios' => [
+                            'default' => [
+                                'title' => 'Default',
+                                'value' => 1920 / 680,
+                            ],
+                            'wide-landscape' => [
+                                'title' => 'Landscape (Wide)',
+                                'value' => 1920 / 400,
+                            ],
+                            'tall-portrait' => [
+                                'title' => 'Portrait (Tall)',
+                                'value' => 800 / 1920,
+                            ],
+                        ],
+                        'selectedRatio' => 'default',
+                    ],
+                    'listview' => [
+                        'title' => 'Listview',
+                        'excludeFromSync' => true,
+                        'allowedAspectRatios' => [
+                            'default' => [
+                                'title' => 'Default',
+                                'value' => 800 / 600,
+                            ],
+                        ],
+                        'selectedRatio' => 'default',
+                    ],
+                ],
+            ],
+        ],
         'file_1' => [
             'label' => 'file_1 (crop in IRRE, TCA override)',
             'config' => [
@@ -636,7 +712,7 @@ return [
                 --div--;crop,
                     group_db_1, crop_1,
                     group_db_2, crop_2, crop_4,
-                    group_db_3, crop_3, crop_5, crop_6, crop_7, crop_8, crop_9, crop_10,
+                    group_db_3, crop_3, crop_5, crop_6, crop_7, crop_8, crop_9, crop_10, crop_11,
                     file_1,
                 --div--;meta,
                     disable, sys_language_uid, l10n_parent, l10n_source,

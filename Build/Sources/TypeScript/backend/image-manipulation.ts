@@ -26,6 +26,7 @@ import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-im
 import { Offset } from '@typo3/backend/offset';
 import type { DraggableResizableEvent, PointerEventNames, DraggableResizableElement } from '@typo3/backend/element/draggable-resizable-element';
 import type { EventInterface } from '@typo3/core/event/event-interface';
+import BrowserSession from '@typo3/backend/storage/browser-session';
 
 export interface Area {
   x: number;
@@ -48,6 +49,7 @@ interface CropVariant {
   focusArea?: Area;
   coverAreas?: Area[];
   allowedAspectRatios: {[key: string]: Ratio};
+  excludeFromSync: boolean;
 }
 
 interface CropperEvent extends CustomEvent {
@@ -60,6 +62,8 @@ interface CropperEvent extends CustomEvent {
  * @exports @typo3/backend/image-manipulation
  */
 class ImageManipulation {
+  private syncAvailable: boolean = false;
+  private syncEnabled: boolean = false;
   private initialized: boolean = false;
   private triggerListener: EventInterface = null;
   private trigger: HTMLElement;
@@ -384,6 +388,46 @@ class ImageManipulation {
       crop: this.cropMoveHandler.bind(this),
       data: this.currentCropVariant.cropArea,
     }));
+
+    this.syncAvailable = this.trigger.dataset.syncAvailable.toLowerCase() === 'true';
+    const imageUid = this.trigger.dataset.imageUid;
+    if (this.syncAvailable) {
+      this.currentModal.querySelector('#sync-crop-variants-container').classList.remove('d-none');
+      new RegularEvent(
+        'click',
+        (evt: Event, target: HTMLInputElement): void => {
+          evt.stopPropagation();
+          this.syncEnabled = target.checked;
+          BrowserSession.set('sync-active-' + imageUid, this.syncEnabled ? 'true' : 'false');
+          if (this.syncEnabled) {
+            this.currentModal.querySelectorAll('.panel-button[data-exclude-from-sync="true"]')
+              .forEach((e: HTMLElement) => e.setAttribute('disabled', 'disabled'));
+
+            // if the currently selected crop variant is now disabled, open the first available one.
+            const isDisabled = this.currentModal.querySelector('.panel-button[data-crop-variant-id="' + this.currentCropVariant.id + '"][data-exclude-from-sync="true"]') !== null;
+            if (isDisabled) {
+              const e: HTMLElement = this.currentModal.querySelector('.panel-button[data-exclude-from-sync="false"]');
+              if (e) {
+                e.click();
+              }
+            }
+          } else {
+            this.currentModal.querySelectorAll('.panel-button[data-exclude-from-sync]')
+              .forEach((e: HTMLElement) => e.removeAttribute('disabled'));
+          }
+        }
+      ).delegateTo(this.currentModal, '#sync-crop-variants');
+
+      const isEnabledInSession = (BrowserSession.get('sync-active-' + imageUid) ?? 'false') === 'true';
+      if (isEnabledInSession) {
+        const checkbox = this.currentModal.querySelector('#sync-crop-variants') as HTMLInputElement | null;
+        if (checkbox) {
+          window.setTimeout(() => {
+            checkbox.click();
+          }, 100);
+        }
+      }
+    }
   }
 
   /**
@@ -461,6 +505,24 @@ class ImageManipulation {
       this.focusAreaEl.offset = this.convertAreaToOffset(this.currentCropVariant.focusArea, this.cropBox);
     }
 
+    if (this.syncAvailable && this.syncEnabled) {
+      const data = this.data;
+      Object.keys(this.data).forEach((cropVariant: string): void => {
+        let trigger: HTMLElement = null;
+        this.cropVariantTriggers.forEach((e: HTMLElement) => {
+          if (e.dataset.cropVariantId === cropVariant) {
+            trigger = e;
+          }
+        });
+        const excludeFromSync: boolean = trigger.dataset.excludeFromSync.toLowerCase() === 'true';
+        if (trigger && !excludeFromSync) {
+          const syncTemp = Object.assign({}, data[cropVariant], { cropArea: this.currentCropVariant.cropArea, cropVariant });
+          this.updatePreviewThumbnail(syncTemp, trigger);
+          this.updateCropVariantData(syncTemp);
+        }
+      });
+    }
+
     this.updatePreviewThumbnail(this.currentCropVariant, this.activeCropVariantTrigger);
     this.updateCropVariantData(this.currentCropVariant);
     const naturalWidth: number = Math.round(this.currentCropVariant.cropArea.width * this.imageOriginalSizeFactor);
@@ -475,6 +537,24 @@ class ImageManipulation {
     // set data explicitly or setAspectRatio upscales the crop
     this.setCropArea(temp.cropArea);
     this.currentCropVariant = Object.assign({}, temp, { selectedRatio: ratioId });
+
+    if (this.syncAvailable && this.syncEnabled) {
+      const data = this.data;
+      Object.keys(this.data).forEach((cropVariant: string): void => {
+        let trigger: HTMLElement = null;
+        this.cropVariantTriggers.forEach((e: HTMLElement) => {
+          if (e.dataset.cropVariantId === cropVariant) {
+            trigger = e;
+          }
+        });
+        const excludeFromSync: boolean = trigger.dataset.excludeFromSync.toLowerCase() === 'true';
+        if (trigger && !excludeFromSync) {
+          const syncTemp = Object.assign({}, data[cropVariant], { selectedRatio: ratioId, cropArea: temp.cropArea });
+          this.update(syncTemp);
+          this.updatePreviewThumbnail(syncTemp, trigger);
+        }
+      });
+    }
 
     this.update(this.currentCropVariant);
   }

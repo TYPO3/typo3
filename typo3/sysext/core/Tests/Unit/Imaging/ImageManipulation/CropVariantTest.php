@@ -66,6 +66,7 @@ final class CropVariantTest extends UnitTestCase
                 'height' => 0.2,
             ],
         ],
+        'excludeFromSync' => false,
     ];
 
     private function getExpectedConfig(): array

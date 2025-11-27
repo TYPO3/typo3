@@ -8,6 +8,16 @@
     </div>
 </div>
 <div class="modal-panel-sidebar">
+    <div class="panel-group mb-3 d-none" id="sync-crop-variants-container">
+        <div class="panel">
+            <div class="panel-body">
+                <label class="btn btn-default" for="sync-crop-variants">
+                    <input type="checkbox" value="1" id="sync-crop-variants"/>
+                    <span><f:translate domain="core.wizards" key="imwizard.sync-crop-variants"/></span>
+                </label>
+            </div>
+        </div>
+    </div>
     <div class="panel-group" id="accordion-cropper-variants" role="tablist" aria-multiselectable="false">
         <f:for each="{cropVariants}" as="cropVariant" iteration="cropVariantIterator">
             <div class="panel panel-default" data-crop-variant-container="{cropVariant.id}">
@@ -22,6 +32,7 @@
                             aria-controls="cropper-collapse-{cropVariantIterator.cycle}"
                             data-crop-variant-id="{cropVariant.id}"
                             data-crop-variant
+                            data-exclude-from-sync="{f:if(condition:cropVariant.excludeFromSync, then:'true', else:'false')}"
                             id="cropper-accordion-heading-{cropVariantIterator.cycle}"
                         >
                             <span class="caret"></span>

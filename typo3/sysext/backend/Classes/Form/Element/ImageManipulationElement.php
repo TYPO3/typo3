@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -75,6 +76,7 @@ class ImageManipulationElement extends AbstractFormElement
                         'value' => 0.0,
                     ],
                 ],
+                'excludeFromSync' => false,
                 'selectedRatio' => 'NaN',
                 'cropArea' => [
                     'x' => 0.0,
@@ -283,6 +285,7 @@ class ImageManipulationElement extends AbstractFormElement
      */
     protected function processConfiguration(array $config, string &$elementValue, File $file)
     {
+        $cropVariantsAreEqual = $this->checkIfCropVariantsAreEqual($config['cropVariants']);
         $cropVariantCollection = CropVariantCollection::create($elementValue, $config['cropVariants']);
         if (empty($config['readOnly']) && !empty($file->getProperty('width'))) {
             $cropVariantCollection = $cropVariantCollection->applyRatioRestrictionToSelectedCropArea($file);
@@ -290,6 +293,7 @@ class ImageManipulationElement extends AbstractFormElement
         }
         $config['cropVariants'] = $cropVariantCollection->asArray();
         $config['allowedExtensions'] = implode(', ', GeneralUtility::trimExplode(',', $config['allowedExtensions'], true));
+        $config['syncAvailable'] = $cropVariantsAreEqual;
         return $config;
     }
 
@@ -309,5 +313,33 @@ class ImageManipulationElement extends AbstractFormElement
         $uriArguments['signature'] = $this->hashService->hmac((string)$uriArguments['arguments'], $this->wizardRouteName);
 
         return $uriArguments;
+    }
+
+    protected function checkIfCropVariantsAreEqual(array $cropVariants): bool
+    {
+        $validVariants = array_filter(
+            $cropVariants,
+            static fn($variant) => ! ($variant['excludeFromSync'] ?? false)
+        );
+
+        if (count($validVariants) <= 1) {
+            return true;
+        }
+
+        $processedVariants = array_map(static function (array $variant) {
+            // Remove the title for comparison, because it must be different and does not disturb the feature
+            unset($variant['title']);
+            $variant = ArrayUtility::sortByKeyRecursive($variant);
+
+            return ArrayUtility::flatten($variant);
+        }, $validVariants);
+
+        $first = array_shift($processedVariants);
+
+        return array_reduce(
+            $processedVariants,
+            static fn(bool $allEqualSoFar, array $currentVariant) => $allEqualSoFar && ($currentVariant === $first),
+            true
+        );
     }
 }
