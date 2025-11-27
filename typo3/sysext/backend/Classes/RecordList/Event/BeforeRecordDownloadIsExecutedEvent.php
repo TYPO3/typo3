@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\RecordList\Event;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Listeners to this event are able to manipulate the download of records, usually triggered via Web > List.
+ * Listeners to this event are able to manipulate the download of records, usually triggered via Content > Record.
  */
 final class BeforeRecordDownloadIsExecutedEvent
 {

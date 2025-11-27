@@ -33,9 +33,9 @@ To add a note to a page:
 #.  Click on :guilabel:`Create internal note for this page` .
 
     ..  figure:: /Images/sys_note_create.png
-        :alt: Screenshot demonstrating the location of the "Create internal note" button in the module header of the Page module
+        :alt: Screenshot demonstrating the location of the "Create internal note" button in the module header of the Layout module
 
-        The button to create a system not is located on the top right of the "Page" and "List" modules
+        The button to create a system not is located on the top right of the "Layout" and "Record" modules
 
 #.  Create a new internal note, select the appropriate category and add
     the desired text content.

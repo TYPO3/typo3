@@ -228,7 +228,7 @@ In order to give editors full access to the **redirects module**, give them
 access to the :sql:`sys_redirect` table as outlined above and configure this in
 the backend group :guilabel:`Access Lists` tab:
 
--   Activate :guilabel:`Site Management>Redirects [site_redirects]` in
+-   Activate :guilabel:`Sites > Redirects [site_redirects]` in
     :guilabel:`Modules`.
 
 .. warning::

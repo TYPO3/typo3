@@ -7,7 +7,7 @@
 User TSconfig of the module "Full Search"
 =========================================
 
-The module :ref:`System > DB Check > Full Search <module-db-check-full-search>`
+The module :ref:`System > Database > Full Search <module-db-check-full-search>`
 can be configured with the following
 :ref:`User TSconfig <t3tsref:usertsconfig>`.
 
@@ -61,7 +61,7 @@ See also the chapter of :ref:`Setting user TSconfig
     queries that should be used by the administrator but she should not be able
     to create new ones. If set to true :confval:`disableStoreControl` should be
     set to false, otherwise the module
-    :guilabel:`System > DB Check > Full Search > Advanced query` cannot be used
+    :guilabel:`System > Database > Full Search > Advanced query` cannot be used
     at all by the affected administrator.
 
     ..  code-block:: typoscript

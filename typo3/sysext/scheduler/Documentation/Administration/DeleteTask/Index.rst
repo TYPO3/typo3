@@ -9,7 +9,7 @@ Deleting a task
 When choosing to delete a task, a pop-up window will appear requesting
 confirmation.
 
-Deleted tasks can be recovered in the module :guilabel:`Web > Recycler` if
+Deleted tasks can be recovered in the module :guilabel:`Content > Recycler` if
 installed or by unsetting the deleted flag in the database.
 
 ..  _deleting-a-task-restoration:
@@ -21,7 +21,7 @@ Restoring a deleted scheduler task
     Previously removed tasks can be restored via recycler.
 
 If the system extension :composer:`typo3/cms-recycler` is installed, go to
-module :guilabel:`Web > Recycler`.
+module :guilabel:`Content > Recycler`.
 
 Choose the page root (page 0) in the page tree, all scheduler tasks are stored
 here.

@@ -16,7 +16,7 @@ The Lowlevel system extension provides two backend modules:
     :class: pb-4
     :card-height: 100
 
-    ..  card:: :ref:`DB Check <module-db-check>`
+    ..  card:: :ref:`Database <module-db-check>`
 
         Offers modules that search or give statistics about the database.
 

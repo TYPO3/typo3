@@ -7,7 +7,7 @@ Full Search
 =================================================
 
 Users with administrator rights can find this module at
-:guilabel:`System > DB Check > Full Search`.
+:guilabel:`System > Database > Full Search`.
 
 Raw search of all fields
 ========================

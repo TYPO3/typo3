@@ -86,7 +86,7 @@ How to change values
 --------------------
 
 Usually, Global Configuration can be configured in the backend in
-:guilabel:`Admin Tools > Settings > Configure Installation-Wide Options`.
+:guilabel:`System > Settings > Configure Installation-Wide Options`.
 
 However, the settings relevant for rich text editing, :php:`$GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']`
 cannot be configured in the backend.

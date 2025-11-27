@@ -11,7 +11,7 @@ If the system extension :composer:`typo3/cms-scheduler` is installed,
 you can create automatic reports with the help of a scheduler task.
 
 To create a task for the reports functionality go to
-:guilabel:`System > Scheduler`, click on :guilabel:`+ (add Task)` and chose
+:guilabel:`Administration > Scheduler`, click on :guilabel:`+ (add Task)` and chose
 :guilabel:`System Status Update (reports)` as :guilabel:`Class`.
 
 Enter :guilabel:`Notification Email Addresses` where the reports should be sent
@@ -23,7 +23,7 @@ extension.
 .. figure:: /Images/SchedulerTask.png
    :alt: TYPO3 Backend module "Scheduler", "New task" popup, Category "Reports"
 
-   Create a :guilabel:`System Status Update` task in module :guilabel:`System > Scheduler`
+   Create a :guilabel:`System Status Update` task in module :guilabel:`Administration > Scheduler`
 
 ..  _scheduler-task-mail:
 

@@ -8,7 +8,7 @@ Adding or editing a task
 ========================
 
 Administrators can add or edit scheduler tasks in the backend module
-:guilabel:`System > Scheduler`.
+:guilabel:`Administration > Scheduler`.
 
 When adding a new scheduler task a wizard will allow you to select a task
 type from several categories.
@@ -102,4 +102,3 @@ Task executions timing details
 If an error occurs when validating a cron definition, the
 Scheduler's built-in cron parser tries to provide an explanation about
 what's wrong.
-

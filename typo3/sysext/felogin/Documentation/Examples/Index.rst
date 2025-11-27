@@ -156,7 +156,7 @@ page after successful login.
 #.  Testing the custom error handler
 
     Clear the caches, for example via the backend module
-    :guilabel:`Admin Tools > Maintenance`.
+    :guilabel:`System > Maintenance`.
 
     Then open any access-restricted page
     in an incognito browser window to be sure that

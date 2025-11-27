@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Script Class for redirecting the user to the Web > Records module if a wizard-link has been clicked in FormEngine.
+ * Script Class for redirecting the user to the Content > Records module if a wizard-link has been clicked in FormEngine.
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */

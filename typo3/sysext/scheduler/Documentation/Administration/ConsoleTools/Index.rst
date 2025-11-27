@@ -102,7 +102,7 @@ Listing all scheduler tasks
 
 Command :command:`typo3 scheduler:list` can be used to list all available tasks.
 This command basically displays the same information as the backend module
-:guilabel:`System > Scheduler`.
+:guilabel:`Administration > Scheduler`.
 
 ..  tabs::
 

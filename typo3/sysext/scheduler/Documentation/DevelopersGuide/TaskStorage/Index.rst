@@ -10,7 +10,7 @@ Scheduler task storage
     With TYPO3 v14.0 the storage of scheduler tasks switched from the
     PHP-serialized storage format in the database to a JSON-based format.
 
-The scheduler tasks displayed in backend module :guilabel:`System > Scheduler`
+The scheduler tasks displayed in backend module :guilabel:`Administration > Scheduler`
 are stored in the **database** table :sql:`tx_scheduler_task`. Task groups are
 stored in table :sql:`tx_scheduler_task_group`.
 

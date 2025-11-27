@@ -267,7 +267,7 @@ plugin to a **non-empty value** it will override any other setting not matter if
 is made via site settings, TypoScript constant ot TypoScript setup. Empty values
 take no effect if a default was set by other means.
 
-In the backend module :guilabel:`Web > Page` edit the content element containing
+In the backend module :guilabel:`Content > Layout` edit the content element containing
 the login form. Go to tab :guilabel:`Plugin` and sub tab :guilabel:`General`.
 You should see a form similar to the following:
 

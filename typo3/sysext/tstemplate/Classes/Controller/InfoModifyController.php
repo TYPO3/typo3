@@ -25,7 +25,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 
 /**
- * This class displays the Info/Modify screen of the Web > Template module
+ * This class displays the Info/Modify screen of the Sites > TypoScript module
  *
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */

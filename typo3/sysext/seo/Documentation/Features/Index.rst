@@ -149,5 +149,4 @@ The links are based on the site configuration and depend on translations of a pa
 :html:`hreflang="x-default"` indicates the link of the current page in the default language.
 
 The value of :html:`hreflang` is set for each language in
-:guilabel:`Site Management > Sites` (see :ref:`t3coreapi:sitehandling-addingLanguages`)
-
+:guilabel:`Sites > Setup` (see :ref:`t3coreapi:sitehandling-addingLanguages`)

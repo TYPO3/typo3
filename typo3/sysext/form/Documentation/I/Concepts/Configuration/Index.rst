@@ -66,7 +66,7 @@ module.
 .. tip::
 
    For debugging purposes or for getting an overview about the available
-   configuration use the :guilabel:`SYSTEM > Configuration` module. Select in
+   configuration use the :guilabel:`System > Configuration` module. Select in
    the menu the :guilabel:`Form: YAML Configuration` item to display the
    parsed YAML form setup. If the module is not available install the lowlevel
    system extension.

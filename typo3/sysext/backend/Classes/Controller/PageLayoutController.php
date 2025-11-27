@@ -62,7 +62,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
- * The Content > Page module.
+ * The Content > Layout module.
  *
  * @internal This class is not part of the TYPO3 API.
  */

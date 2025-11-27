@@ -43,10 +43,10 @@ Editing task groups
 ===================
 
 Scheduler task groups can be created, edited and deleted from the module
-:guilabel:`System > Scheduler`.
+:guilabel:`Administration > Scheduler`.
 
 Technically they are records stored on the root page (pid=0). They can also be
-created, edited and sorted with module :guilabel:`Web > List`.
+created, edited and sorted with module :guilabel:`Content > Records`.
 
 It is also possible to create a new task group from within the edit task form by
 clicking on the `+` icon next to the task group select box.

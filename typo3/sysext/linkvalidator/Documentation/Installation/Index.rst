@@ -45,7 +45,7 @@ Classic installation without Composer
 In an installation without Composer, the extension is already shipped but might
 not be activated yet. Activate it as follows:
 
-#.  In the backend, navigate to the :guilabel:`Admin Tools > Extensions`
+#.  In the backend, navigate to the :guilabel:`System > Extensions`
     module.
 #.  Click the :guilabel:`Activate` icon for the LinkValidator extension.
 
@@ -66,5 +66,3 @@ particularly at the HTTP settings.
 
 There, you may define a default timeout. Generally, it is recommended
 to always specify timeouts when working with the LinkValidator.
-
-

@@ -32,7 +32,7 @@ TYPO3 Reports
 ----
 
 This extension shows status reports and installed services in the
-:guilabel:`System > Reports` backend module.
+:guilabel:`Administration > Reports` backend module.
 
 ----
 

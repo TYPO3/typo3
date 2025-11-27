@@ -58,7 +58,7 @@ pages and records.
 
         Explains the two backend modules
         :ref:`System > Configuration <module-configuration>` and
-        :ref:`System > DB Check <module-db-check>` provided by this extension.
+        :ref:`System > Database <module-db-check>` provided by this extension.
 
 **Table of Contents:**
 

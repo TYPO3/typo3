@@ -33,7 +33,7 @@ final class InfoModuleProvider
 
     /**
      * Add sys_notes as additional content to the header and footer of the
-     * "Pagetree overview" and "Localization overview" modules in "Web > Info".
+     * "Pagetree overview" and "Localization overview" modules in "Content > Status".
      */
     #[AsEventListener('note-to-info-module')]
     public function __invoke(ModifyInfoModuleContentEvent $event): void

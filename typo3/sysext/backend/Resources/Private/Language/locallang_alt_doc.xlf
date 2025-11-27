@@ -33,13 +33,13 @@
 			<trans-unit id="noDocuments_msg3">
 				<source>You can select one of your most recently edited records from this list</source>
 			</trans-unit>
-			<trans-unit id="noDocuments_pagemodule">
+			<trans-unit id="noDocuments_pagemodule" x-unused-since="14.0">
 				<source>the Web&gt;Page module</source>
 			</trans-unit>
 			<trans-unit id="noDocuments_OR">
 				<source>or</source>
 			</trans-unit>
-			<trans-unit id="noDocuments_listmodule">
+			<trans-unit id="noDocuments_listmodule" x-unused-since="14.0">
 				<source>the Web&gt;List module</source>
 			</trans-unit>
 			<trans-unit id="noEditForm">

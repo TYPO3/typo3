@@ -46,13 +46,13 @@ kept under version control.
 
 .. rst-class:: bignums-xxl
 
-1.  Go to the module :guilabel:`Web > TypoScript`.
+1.  Go to the module :guilabel:`Sites > TypoScript`.
 
 2.  In the page tree, select the page which contains the root TypoScript
     record of your website.
 
 3.  Select :guilabel:`Edit TypoScript Record` in the dropdown at the top of the
-    :guilabel:`Web > TypoScript` module.
+    :guilabel:`Sites > TypoScript` module.
 
 4.  Click the :guilabel:`Edit the whole TypoScript record`. This will
     open all the settings of the root TypoScript record:

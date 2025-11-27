@@ -2,7 +2,7 @@
 TYPO3 extension ``beuser``
 ==========================
 
-The TYPO3 backend module System>Backend Users is managing backend users and
+The TYPO3 backend module `Administration > Users` is managing backend users and
 groups.
 
 It allows you to add / delete / modify backend users and groups, configure and

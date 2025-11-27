@@ -28,12 +28,12 @@ cron-script independently of frontend requests. The "crawler"
 extension is used as a service to perform the execution of queue
 entries that controls the indexing.
 
-You can create an indexing configuration in the :guilabel:`Web > List` module
+You can create an indexing configuration in the :guilabel:`Content > Record` module
 in on any page. Where to place the configuration depends on the type of
 data that should be indexed. See following sections.
 
 ..  figure:: /Images/IndexingConfiguration/IndexingConfiguration.png
-    :alt: Screenshot of an indexing configuration record in the List module of the TYPO3 backend
+    :alt: Screenshot of an indexing configuration record in the Record module of the TYPO3 backend
 
     Common parameters in Indexing Configurations
 
@@ -55,7 +55,7 @@ configuration of type "Page tree":
 *   Root page: Your start page
 *   Depth: 4 Levels (or as many as there are)
 
-Using the :guilabel:`Web > List` module create this indexing configuration in
+Using the :guilabel:`Content > Records` module create this indexing configuration in
 a system folder on your site.
 
 For each page a combination of
@@ -213,6 +213,6 @@ Disable frontend-initiated indexing
 
 If you choose to index your site using Indexing Configurations you can
 disable indexing through the user requests in the frontend. This is
-done via the module :guilabel:`Admin Tools > Settings > Extension Configuration`.
+done via the module :guilabel:`System > Settings > Extension Configuration`.
 
 Toggle the configuration option "Disable Indexing in Frontend".

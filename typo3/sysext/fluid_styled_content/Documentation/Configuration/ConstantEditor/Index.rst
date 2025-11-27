@@ -21,13 +21,13 @@ Constant Editor
 ..  rst-class:: bignums-xxl
 
 1.  The :guilabel:`Constant Editor` can be found in the
-    :guilabel:`Site Management > TypoScript` module.
+    :guilabel:`Sites > TypoScript` module.
 
 2.  Select the page in the page tree which contains the root Typoscript record
     of your website.
 
 3.  Select :guilabel:`Constant Editor` in the dropdown at the top of the
-    :guilabel:`Site Management > TypoScript` module.
+    :guilabel:`Sites > TypoScript` module.
 
 4.  In the dropdown list select the category :guilabel:`CONTENT`.
 

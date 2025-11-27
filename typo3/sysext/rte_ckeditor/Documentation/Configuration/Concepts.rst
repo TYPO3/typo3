@@ -340,7 +340,7 @@ thus applying the same logic. Just ensure that the :typoscript:`lib.parseFunc_RT
 functionality is available.
 
 You can check if this TypoScript snippet is loaded by using
-:guilabel:`Web > TypoScript` and use the TypoScript Tree (Setup)
+:guilabel:`Sites > TypoScript` and use the TypoScript Tree (Setup)
 to see if :typoscript:`lib.parseFunc_RTE` is filled.
 
 ..  todo: [SCREENSHOT of TSOB having lib.parseFunc_RTE open]

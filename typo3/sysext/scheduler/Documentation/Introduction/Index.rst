@@ -57,7 +57,7 @@ to prevent such parallel (or multiple) executions.
 Follow-up
 =========
 
-Log messages are written out to the TYPO3 system :guilabel:`System > Log`
+Log messages are written out to the TYPO3 system :guilabel:`Administration > Log`
 when a task starts and ends and when parallel execution has been blocked. This
 provides a trace of events of the tasks.
 

@@ -10,13 +10,13 @@ Backend module "Indexing"
 =========================
 
 The system extension Indexed Search provides the backend module
-:guilabel:`Web > Indexing` where administrators or power editors can
+:guilabel:`Sites > Status > Indexing` where administrators or power editors can
 view search statistics and remove listings from the search index.
 
 ..  figure::  /Images/Module/Overview.png
     :alt: TYPO3 backend overview with the Indexing module opened
 
-    Open the module via :guilabel:`Web > Indexing`
+    Open the module via :guilabel:`Content > Status > Indexing`
 
 ..  tip:: If the backend module "Indexing" is not visible and you have an
     editor account your permissions might not be sufficient.
@@ -32,11 +32,11 @@ view search statistics and remove listings from the search index.
 Submodule "Detailed statistics", module "Indexing"
 ==================================================
 
-In the :guilabel:`Web > Indexing` module (sub module
+In the :guilabel:`Content > Status  > Indexing` module (sub module
 :guilabel:`Detailed statistics`) you can see an overview of indexed pages:
 
 ..  figure:: /Images/Module/MultipleIndexes.png
-    :alt: Screenshot of the "Detailed statistics" in module "Web > Indexing" in the TYPO3 backend
+    :alt: Screenshot of the "Detailed statistics" in module "Content > Status  > Indexing" in the TYPO3 backend
 
     The "Login" page is indexed 3 times, the "Search" page not at all.
 
@@ -57,7 +57,7 @@ Submodule "General statistics", module "Indexing"
 =================================================
 
 ..  figure:: /Images/Module/GeneralStatistics.png
-    :alt: Screenshot of the "General statistics" in module "Web > Indexing" in the TYPO3 backend
+    :alt: Screenshot of the "General statistics" in module "Content > Status  > Indexing" in the TYPO3 backend
 
     See statistics like the most frequently searched words or that table usage
 
@@ -70,7 +70,7 @@ This view shows a list of indexed pages with all the technical
 details:
 
 ..  figure:: /Images/Module/ListOfIndexedPages.png
-    :alt: Screenshot of the "List of indexed pages" in module "Web > Indexing" in the TYPO3 backend
+    :alt: Screenshot of the "List of indexed pages" in module "Content > Status  > Indexing" in the TYPO3 backend
 
     Technical details for each page, including size, language, word count, modification time etc.
 

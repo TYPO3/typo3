@@ -33,7 +33,7 @@ user access settings. Here is how you can configure the necessary permissions:
 
 #.  Log in to the TYPO3 backend as an administrator.
 
-#.  In the backend, navigate to the :guilabel:`System > Backend Users` module.
+#.  In the backend, navigate to the :guilabel:`Administration > Users` module.
 
 #.  Create a new
     :ref:`Backend user group <t3coreapi:access-users-groups-groups>`,
@@ -68,7 +68,7 @@ If :composer:`typo3/cms-dashboard` is installed and your editors are using
 the dashboard, it is recommended to grant them access to the special
 system note widgets.
 
-In module :guilabel:`System > Backend Users > Backend user groups` edit the user
+In module :guilabel:`Administration > Users > Backend user groups` edit the user
 group in question. In tab :guilabel:`Module Permissions`, field
 "Allowed dashboard widgets" allow the dashboard widgets related to the
 system notes.
@@ -80,4 +80,3 @@ system notes.
 
     The page must also be within the `DB Mounts <https://docs.typo3.org/permalink/t3coreapi:access-lists-db-mounts>`_
     of the user.
-

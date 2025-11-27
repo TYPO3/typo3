@@ -47,7 +47,7 @@ Installation in classic mode
 In a classic-mode installation (without Composer), the extension is already
 shipped but might not be activated yet. Activate it as follows:
 
-#.  In the backend, navigate to the :guilabel:`Admin Tools > Extensions`
+#.  In the backend, navigate to the :guilabel:`System > Extensions`
     module.
 #.  Click the :guilabel:`Activate` icon for the Lowlevel extension.
 

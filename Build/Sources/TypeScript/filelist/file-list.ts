@@ -83,7 +83,7 @@ export default class Filelist {
       });
     }).bindTo(document);
 
-    // Filelist resource events
+    // Media module resource events
     new RegularEvent(FileListActionEvent.primary, (event: CustomEvent): void => {
       const detail: FileListActionDetail = event.detail;
       const resource = detail.resources[0];

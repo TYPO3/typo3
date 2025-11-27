@@ -37,7 +37,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * @internal To be used in the Content > Page module and not part of public API.
+ * @internal To be used in the Content > Layout module and not part of public API.
  */
 readonly class PageLinkMessageProvider
 {
@@ -50,7 +50,7 @@ readonly class PageLinkMessageProvider
     ) {}
 
     /**
-     * Generates the messages that are displayed in the Content > Page module
+     * Generates the messages that are displayed in the Content > Layout module
      * to show the target of a page of type link.
      *
      * @param array $pageRecord the database row of the page of type link

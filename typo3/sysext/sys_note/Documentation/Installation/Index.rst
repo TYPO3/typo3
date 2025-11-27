@@ -39,7 +39,7 @@ Installation without Composer
 
 In an installation without Composer, the code of EXT:sys_note is already shipped.
 You just have to activate the extension. Head over to the
-:guilabel:`Admin Tools > Extensions` module and activate the extension.
+:guilabel:`System > Extensions` module and activate the extension.
 
 ..  figure:: /Images/InstallActivate.png
     :alt: Extension Manager showing System Notes extension

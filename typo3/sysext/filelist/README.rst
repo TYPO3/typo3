@@ -2,7 +2,7 @@
 TYPO3 extension ``filelist``
 ============================
 
-This TYPO3 backend module (File>Filelist) is used for managing files.
+This TYPO3 backend module "Media" is used for managing files.
 
 It makes files in the defined storages available in the backend (upload, delete,
 copy etc.). The default storage is fileadmin/.

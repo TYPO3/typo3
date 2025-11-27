@@ -12,7 +12,7 @@ When a record in TYPO3 is deleted via the backend, it is marked for deletion
 in the database and not visible anymore in the backend or displayed on
 the website. Deleted records can be restored via the Recycler backend module.
 
-To use the backend module navigate to the :guilabel:`Web > Recycler` module:
+To use the backend module navigate to the :guilabel:`Content > Recycler` module:
 
 ..  figure:: /Images/Module.png
     :class: with-shadow

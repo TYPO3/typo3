@@ -25,7 +25,7 @@ Adding the search plugin to a page
 Create a page called "Search" or something like that. This is where the search
 box will appear.
 
-In the backend module :guilabel:`Web > Page` open the new page called "Search",
+In the backend module :guilabel:`Content > Records` open the new page called "Search",
 then click the "+ Create new content" button.
 
 ..  figure:: /Images/Plugin/NewPageContent.png
@@ -92,7 +92,7 @@ Indexed search plugin trouble shooting for TYPO3 backend editors
 
         Ask your administrator to do the following:
 
-        *   Update the `Language packs in the Admin Tools <https://docs.typo3.org/permalink/t3coreapi:managing-translating>`_.
+        *   Update the `Language packs in the "System > Maintenance" module <https://docs.typo3.org/permalink/t3coreapi:managing-translating>`_.
         *   Check the language settings for your site.
         *   Some languages might not yet have a translation available for the Indexed
             Search form. Consider if you can provide translations on
@@ -138,7 +138,7 @@ The backend module "Indexing"
 =============================
 
 If you have extended permissions as an editor, you might have the backend module
-:guilabel:`Web > Indexing` available. In this module you, as a power user,
+:guilabel:`Content > Status  > Indexing` available. In this module you, as a power user,
 can view which pages are indexed and delete pages from the index if necessary.
 
 Please refer to chapter

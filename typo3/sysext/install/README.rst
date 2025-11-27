@@ -5,7 +5,7 @@ TYPO3 extension ``install``
 The Install Tool is used for installation, upgrade, system administration and
 setup tasks.
 
-It can be accessed via the Admin Tools module in the backend or through a
+It can be accessed via the :guilabel:`System` modules in the backend or through a
 dedicated URL (`/?__typo3_install`). The functionality (via the browser) is only
 available for system maintainers.
 

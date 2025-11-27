@@ -253,7 +253,7 @@ class SettingsController extends AbstractController
 
         if (empty($validatedUserList)) {
             $messages[] = new FlashMessage(
-                'The system has no maintainers enabled anymore. Please use the standalone Admin Tools from now on.',
+                'The system has no maintainers enabled anymore. Please use the standalone Install Tools from now on.',
                 'Cleared system maintainer list',
                 ContextualFeedbackSeverity::INFO
             );

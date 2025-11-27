@@ -6,4 +6,4 @@
 .. figure:: /Images/AutomaticScreenshots/Modules/DB_Check.png
    :class: with-shadow
 
-   The :guilabel:`DB Check` module Overview page
+   The :guilabel:`Database` module Overview page

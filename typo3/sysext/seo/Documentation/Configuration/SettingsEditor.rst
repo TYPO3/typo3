@@ -6,15 +6,11 @@
 Settings editor
 ===============
 
-..  versionadded:: 13.3
-    The new backend module :guilabel:`Site Management > Settings` provides an
-    overview of sites which offer configurable settings and makes them editable.
-
 When the :ref:`site set for the SEO sitemap <configuration-site-sets>` is included,
 the settings for sitemaps become available in the editor:
 
 You can find the available site settings in module
-:guilabel:`Site Management > Settings`
+:guilabel:`Sites > Setup > Settings`
 
 You can change individual settings here. If the site settings are writable
 you can hit the :guilabel:`Save` button and the settings will be written

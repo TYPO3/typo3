@@ -40,7 +40,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Info\Controller\Event\ModifyInfoModuleContentEvent;
 
 /**
- * Script Class for the Web > Info module
+ * Script Class for the Content > Status module
  * This class creates the framework to which other extensions can add their third-level modules
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */

@@ -11,8 +11,7 @@ Usage
 Redirects module
 ================
 
-Access the redirects module in the TYPO3 backend under :guilabel:`Site Management`
-> :guilabel:`Redirects`.
+Access the redirects module in the TYPO3 backend under :guilabel:`Sites > Redirects`.
 
 .. figure:: ../Images/RedirectsMenu.png
     :class: with-shadow

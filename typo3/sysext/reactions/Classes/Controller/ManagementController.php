@@ -35,7 +35,7 @@ use TYPO3\CMS\Reactions\Repository\ReactionDemand;
 use TYPO3\CMS\Reactions\Repository\ReactionRepository;
 
 /**
- * The System > Reaction module: Rendering the listing of reactions.
+ * The Administration > Integrations > Reaction module: Rendering the listing of reactions.
  *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
