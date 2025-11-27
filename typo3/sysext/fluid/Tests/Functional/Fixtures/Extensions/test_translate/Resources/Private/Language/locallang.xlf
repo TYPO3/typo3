@@ -11,6 +11,9 @@
 			<trans-unit id="form.legend">
 				<source>Search form</source>
 			</trans-unit>
+			<trans-unit id="form.legend:example">
+				<source>An example</source>
+			</trans-unit>
 			<trans-unit id="validator.string.notvalid">
 				<source>A valid string is expected.</source>
 			</trans-unit>

@@ -164,6 +164,10 @@ final class TranslateViewHelperTest extends FunctionalTestCase
                 '<f:translate key="form.legend" extensionName="test_translate.messages" />',
                 'Search form',
             ],
+            'translation domain syntax for existing label with combined syntax and : in key' => [
+                '<f:translate key="test_translate.messages:form.legend:example" />',
+                'An example',
+            ],
             'empty string on invalid extension' => [
                 '<f:translate key="LLL:EXT:i_am_invalid/Resources/Private/Language/locallang.xlf:dummy" />',
                 '',
