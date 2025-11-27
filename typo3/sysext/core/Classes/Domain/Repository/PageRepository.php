@@ -1133,14 +1133,13 @@ class PageRepository implements LoggerAwareInterface
         // Find $page record depending on shortcut mode:
         if ($shortcutMode === self::SHORTCUT_MODE_PARENT_PAGE) {
             $parent = $this->getPage(($shortcutId ?: (int)$thisUid), $disableGroupCheck);
-            $referencedPageRecord = $this->getPage((int)$parent['pid'], $disableGroupCheck);
-            if (empty($referencedPageRecord)) {
+            if ($parent === [] || ($referencedPageRecord = $this->getPage((int)($parent['pid'] ?? 0), $disableGroupCheck)) === []) {
                 $message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to its parent page. However, the parent page is not accessible.';
                 throw new ShortcutTargetPageNotFoundException($message, 1301648358);
             }
         } elseif ($shortcutMode === self::DOKTYPE_SHORTCUT || ($shortcutMode !== self::SHORTCUT_MODE_FIRST_SUBPAGE && $shortcutId)) {
             $referencedPageRecord = $this->getPage($shortcutId, $disableGroupCheck);
-            if (empty($referencedPageRecord)) {
+            if ($referencedPageRecord === []) {
                 $message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a page, which is not accessible (ID ' . $shortcutId . ').';
                 throw new ShortcutTargetPageNotFoundException($message, 1301648404);
             }
@@ -1152,7 +1151,7 @@ class PageRepository implements LoggerAwareInterface
             ];
             $pageArray = $this->getMenu($shortcutId ?: (int)$thisUid, '*', 'sorting', 'AND pages.doktype NOT IN (' . implode(', ', $excludedDoktypes) . ')', true, $disableGroupCheck);
             $referencedPageRecord = reset($pageArray);
-            if (empty($referencedPageRecord)) {
+            if ($referencedPageRecord === false || $referencedPageRecord === null) {
                 $message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a subpage. However, this page has no accessible subpages.';
                 throw new ShortcutTargetPageNotFoundException($message, 1301648328);
             }
