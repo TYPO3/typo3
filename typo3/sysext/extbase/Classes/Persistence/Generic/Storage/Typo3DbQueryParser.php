@@ -804,10 +804,6 @@ class Typo3DbQueryParser
             $andConditions[] = $this->queryBuilder->expr()->and(
                 $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, $languageAspect->getContentId()),
                 $this->queryBuilder->expr()->eq($tableAlias . '.' . $transOrigPointerField, 0),
-                $this->queryBuilder->expr()->notIn(
-                    $tableAlias . '.' . $transOrigPointerField,
-                    $defaultLanguageRecordsSubSelect->getSQL()
-                )
             );
         }
         if ($languageAspect->getOverlayType() === LanguageAspect::OVERLAYS_MIXED) {
