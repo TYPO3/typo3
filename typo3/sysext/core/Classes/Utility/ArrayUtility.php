@@ -170,8 +170,8 @@ class ArrayUtility
      * @param array $array Input array
      * @param array|string $path Path within the array
      * @param string $delimiter Defined path delimiter, default /
-     * @throws \RuntimeException if the path is empty, or if the path does not exist
-     * @throws \InvalidArgumentException if the path is neither array nor string
+     * @throws \RuntimeException if the path is empty
+     * @throws MissingArrayPathException if a configured path segment does not exist in the array
      */
     public static function getValueByPath(array $array, array|string $path, string $delimiter = '/'): mixed
     {
