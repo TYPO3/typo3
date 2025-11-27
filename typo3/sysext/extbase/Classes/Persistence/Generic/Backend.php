@@ -615,11 +615,16 @@ class Backend implements BackendInterface
         if ($parentObject->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID) !== null) {
             $parentUid = $parentObject->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID);
         }
-        $row = [
-            $columnMap->parentKeyFieldName => (int)$parentUid,
-            $columnMap->childKeyFieldName => (int)$object->getUid(),
-            $columnMap->childSortByFieldName => $sortingPosition ?? 0,
-        ];
+        $row = [];
+        if ($columnMap->parentKeyFieldName !== null) {
+            $row[$columnMap->parentKeyFieldName] = (int)$parentUid;
+        }
+        if ($columnMap->childKeyFieldName !== null) {
+            $row[$columnMap->childKeyFieldName] = (int)$object->getUid();
+        }
+        if ($columnMap->childSortByFieldName !== null) {
+            $row[$columnMap->childSortByFieldName] = $sortingPosition ?? 0;
+        }
         $relationTableName = $columnMap->relationTableName;
         if ($this->tcaSchemaFactory->has($relationTableName)) {
             $row[AbstractDomainObject::PROPERTY_PID] = $this->determineStoragePageIdForNewRecord();
@@ -641,11 +646,16 @@ class Backend implements BackendInterface
     ): bool {
         $dataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
         $columnMap = $dataMap->getColumnMap($propertyName);
-        $row = [
-            $columnMap->parentKeyFieldName => (int)$parentObject->getUid(),
-            $columnMap->childKeyFieldName => (int)$object->getUid(),
-            $columnMap->childSortByFieldName => $sortingPosition,
-        ];
+        $row = [];
+        if ($columnMap->parentKeyFieldName !== null) {
+            $row[$columnMap->parentKeyFieldName] = (int)$parentObject->getUid();
+        }
+        if ($columnMap->childKeyFieldName !== null) {
+            $row[$columnMap->childKeyFieldName] = (int)$object->getUid();
+        }
+        if ($columnMap->childSortByFieldName !== null) {
+            $row[$columnMap->childSortByFieldName] = $sortingPosition;
+        }
         $relationTableName = $columnMap->relationTableName;
         $row = array_merge($columnMap->relationTableMatchFields, $row);
         $this->storageBackend->updateRelationTableRow($relationTableName, $row);
@@ -664,9 +674,10 @@ class Backend implements BackendInterface
         $dataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
         $columnMap = $dataMap->getColumnMap($parentPropertyName);
         $relationTableName = $columnMap->relationTableName;
-        $relationMatchFields = [
-            $columnMap->parentKeyFieldName => (int)$parentObject->getUid(),
-        ];
+        $relationMatchFields = [];
+        if ($columnMap->parentKeyFieldName !== null) {
+            $relationMatchFields[$columnMap->parentKeyFieldName] = (int)$parentObject->getUid();
+        }
         $relationMatchFields = array_merge($columnMap->relationTableMatchFields, $relationMatchFields);
         $this->storageBackend->removeRow($relationTableName, $relationMatchFields);
         return true;
@@ -683,10 +694,13 @@ class Backend implements BackendInterface
         $dataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
         $columnMap = $dataMap->getColumnMap($parentPropertyName);
         $relationTableName = $columnMap->relationTableName;
-        $relationMatchFields = [
-            $columnMap->parentKeyFieldName => (int)$parentObject->getUid(),
-            $columnMap->childKeyFieldName => (int)$relatedObject->getUid(),
-        ];
+        $relationMatchFields = [];
+        if ($columnMap->parentKeyFieldName !== null) {
+            $relationMatchFields[$columnMap->parentKeyFieldName] = (int)$parentObject->getUid();
+        }
+        if ($columnMap->childKeyFieldName !== null) {
+            $relationMatchFields[$columnMap->childKeyFieldName] = (int)$relatedObject->getUid();
+        }
         $relationMatchFields = array_merge($columnMap->relationTableMatchFields, $relationMatchFields);
         $this->storageBackend->removeRow($relationTableName, $relationMatchFields);
         return true;
