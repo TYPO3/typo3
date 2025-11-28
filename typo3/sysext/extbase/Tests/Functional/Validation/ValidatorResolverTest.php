@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Validation;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
@@ -282,23 +281,14 @@ final class ValidatorResolverTest extends FunctionalTestCase
 
         $expectation = new Result();
         $expectation->addError(new Error('Your foo must be at least %2$s characters long', 286244044, ['""', 1, 0]));
-        self::assertEquals(
-            $propertyValidator->validate(''),
-            $expectation,
-        );
+        $this->assertErrorObjectsAreSame([$expectation], [$propertyValidator->validate('')]);
 
         $expectation = new Result();
-        self::assertEquals(
-            $propertyValidator->validate('success'),
-            $expectation,
-        );
+        $this->assertErrorObjectsAreSame([$expectation], [$propertyValidator->validate('success')]);
 
         $expectation = new Result();
         $expectation->addError(new Error('Your foo cannot be longer than %2$s characters', 1497521431, ['"failure because too long"', 10, 24]));
-        self::assertEquals(
-            $propertyValidator->validate('failure because too long'),
-            $expectation,
-        );
+        $this->assertErrorObjectsAreSame([$expectation], [$propertyValidator->validate('failure because too long')]);
     }
 
     public static function SymfonyAndExtbaseValidatorsDataProvider(): \Generator
@@ -359,6 +349,27 @@ final class ValidatorResolverTest extends FunctionalTestCase
         foreach ($fooPropertyValidators as $fooPropertyValidator) {
             $results[] = $fooPropertyValidator->validate($input);
         }
-        self::assertEquals($results, $expectedErrorResults);
+        $this->assertErrorObjectsAreSame($expectedErrorResults, $results);
+    }
+
+    private function assertErrorObjectsAreSame(array $expectedErrorResults, array $results): void
+    {
+        self::assertCount(count($expectedErrorResults), $results);
+        /** @var Result $expectedErrorResult */
+        foreach ($expectedErrorResults as $resultIndex => $expectedErrorResult) {
+            self::assertSame($expectedErrorResult->hasErrors(), $results[$resultIndex]->hasErrors());
+            if (!$expectedErrorResult->hasErrors()) {
+                continue;
+            }
+
+            $resultErrors = $results[$resultIndex]->getErrors();
+            $expectedErrors = $expectedErrorResult->getErrors();
+            self::assertCount(count($expectedErrors), $resultErrors);
+            foreach ($expectedErrors as $errorIndex => $error) {
+                $msgExpected = sprintf($error->getMessage(), ...$error->getArguments());
+                $msgActual = sprintf($resultErrors[$errorIndex]->getMessage(), ...$resultErrors[$errorIndex]->getArguments());
+                self::assertSame($msgExpected, $msgActual);
+            }
+        }
     }
 }
