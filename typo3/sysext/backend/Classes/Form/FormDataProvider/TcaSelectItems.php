@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Form\Processor\SelectItemProcessor;
+use TYPO3\CMS\Core\Configuration\Processor\Placeholder\EnvPlaceholderProcessor;
 use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -27,6 +28,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 {
     public function __construct(
         private readonly SelectItemProcessor $selectItemProcessor,
+        private readonly EnvPlaceholderProcessor $envPlaceholderProcessor,
     ) {}
 
     /**
@@ -121,6 +123,30 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
             if (!($table === 'sys_file_metadata' && $fieldName === 'file')) {
                 $fieldConfig['config']['items'] = $this->translateLabels($result, $fieldConfig['config']['items'], $table, $fieldName);
                 $fieldConfig['config']['items'] = $this->addIconFromAltIcons($result, $fieldConfig['config']['items'], $table, $fieldName);
+            }
+
+            $unresolvedValue = $result['databaseRow'][$fieldName][0] ?? null;
+
+            if ($table === 'site' && $this->envPlaceholderProcessor->canProcess($unresolvedValue ?? '')) {
+                $resolvedValue = $this->envPlaceholderProcessor->process($unresolvedValue);
+
+                $itemByResolvedPlaceholder = array_find(
+                    $fieldConfig['config']['items'],
+                    fn(array $v) => (string)$v['value'] === $resolvedValue
+                );
+
+                if ($itemByResolvedPlaceholder === null) {
+                    throw new \RuntimeException(
+                        sprintf('Invalid placeholder value "%s" for "%s"', $resolvedValue, $unresolvedValue),
+                        1764310149
+                    );
+                }
+
+                $fieldConfig['config']['items'][0] = [
+                    ...$itemByResolvedPlaceholder,
+                    'label' => $itemByResolvedPlaceholder['label'],
+                    'value' => $unresolvedValue,
+                ];
             }
 
             // Keys may contain table names, so a numeric array is created
