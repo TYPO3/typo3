@@ -20,7 +20,7 @@
 	},
 	"require": {
 		"doctrine/instantiator": "^1.5 || ^2.0",
-		"phpdocumentor/reflection-docblock": "^5.6.3",
+		"phpdocumentor/reflection-docblock": "^5.6.5",
 		"phpdocumentor/type-resolver": "^1.7.1",
 		"symfony/dependency-injection": "^6.4 || ^7.0",
 		"symfony/property-access": "^6.4 || ^7.0",
