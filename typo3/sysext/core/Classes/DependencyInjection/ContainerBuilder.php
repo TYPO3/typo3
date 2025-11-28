@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\DependencyInjection;
 
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -100,6 +101,7 @@ class ContainerBuilder
     {
         $containerBuilder = new SymfonyContainerBuilder();
 
+        $containerBuilder->addCompilerPass(new ResolveClassPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 1000);
         $containerBuilder->addCompilerPass(new ServiceProviderCompilationPass($registry, $this->serviceProviderRegistryServiceName));
 
         $globalConfigDir = Environment::getConfigPath();
