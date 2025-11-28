@@ -33,6 +33,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
+use TYPO3\CMS\Core\Configuration\Processor\Placeholder\EnvPlaceholderProcessor;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -77,6 +78,7 @@ class SiteConfigurationController
         private readonly SiteWriter $siteWriter,
         private readonly NodeFactory $nodeFactory,
         private readonly SetRegistry $setRegistry,
+        private readonly EnvPlaceholderProcessor $envPlaceholderProcessor,
     ) {}
 
     /**
@@ -240,7 +242,12 @@ class SiteConfigurationController
 
         $data = $parsedBody['data'];
         // This can be NEW123 for new records
-        $pageId = (int)key($data['site']);
+        $unprocessedPageId = key($data['site']);
+        $isRootPageIdPlaceholder = $this->envPlaceholderProcessor->canProcess((string)$unprocessedPageId);
+        $pageId = $isRootPageIdPlaceholder
+            ? (int)$this->envPlaceholderProcessor->process($unprocessedPageId)
+            : (int)$unprocessedPageId;
+
         $sysSiteRow = current($data['site']);
         $siteIdentifier = $sysSiteRow['identifier'] ?? '';
 
@@ -267,7 +274,7 @@ class SiteConfigurationController
         try {
             $newSysSiteData = [];
             // Hard set rootPageId: This is TCA readOnly and not transmitted by FormEngine, but is also the "uid" of the site record
-            $newSysSiteData['rootPageId'] = $pageId;
+            $newSysSiteData['rootPageId'] = $isRootPageIdPlaceholder ? $unprocessedPageId : $pageId;
             foreach ($sysSiteRow as $fieldName => $fieldValue) {
                 $type = $siteTca['site']['columns'][$fieldName]['config']['type'];
                 $renderType = $siteTca['site']['columns'][$fieldName]['config']['renderType'] ?? '';

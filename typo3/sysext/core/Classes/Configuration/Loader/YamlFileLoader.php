@@ -44,6 +44,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 readonly class YamlFileLoader
 {
+    // see also: EnvPlaceholderProcessor
     public const PATTERN_PARTS = '%[^(%]+?\([\'"]?([^(]*?)[\'"]?\)%|%([^%()]*?)%';
     public const PROCESS_PLACEHOLDERS = 0x01;
     public const PROCESS_IMPORTS = 0x02;

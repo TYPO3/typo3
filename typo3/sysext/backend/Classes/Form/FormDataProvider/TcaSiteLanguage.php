@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\OnTheFly;
 use TYPO3\CMS\Backend\Form\FormDataGroup\SiteConfigurationDataGroup;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
+use TYPO3\CMS\Core\Configuration\Processor\Placeholder\EnvPlaceholderProcessor;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,6 +39,7 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
     private const FOREIGN_FIELD = 'languageId';
     public function __construct(
         private readonly SiteFinder $siteFinder,
+        private readonly EnvPlaceholderProcessor $envPlaceholderProcessor,
     ) {}
 
     public function addData(array $result): array
@@ -154,9 +156,14 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
         $result['processedTca']['columns'][$fieldName]['children'] = [];
 
         if ($result['command'] === 'edit') {
+            $unprocessedRootPageId = $result['databaseRow']['rootPageId'][0] ?? null;
+            $processedRootPageId = $this->envPlaceholderProcessor->canProcess($unprocessedRootPageId)
+                ? (int)$this->envPlaceholderProcessor->process($unprocessedRootPageId)
+                : (int)$unprocessedRootPageId;
+
             $siteConfiguration = [];
             try {
-                $site = $this->siteFinder->getSiteByRootPageId((int)($result['databaseRow']['rootPageId'][0] ?? 0));
+                $site = $this->siteFinder->getSiteByRootPageId($processedRootPageId);
                 $siteConfiguration = $site->getConfiguration();
             } catch (SiteNotFoundException $e) {
             }

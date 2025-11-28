@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Configuration\SiteTcaConfiguration;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
+use TYPO3\CMS\Core\Configuration\Processor\Placeholder\EnvPlaceholderProcessor;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -34,6 +35,7 @@ readonly class SiteDatabaseEditRow implements FormDataProviderInterface
     public function __construct(
         private SiteFinder $siteFinder,
         private SiteTcaConfiguration $siteTcaConfiguration,
+        private EnvPlaceholderProcessor $envPlaceholderProcessor,
     ) {}
 
     /**
@@ -54,9 +56,14 @@ readonly class SiteDatabaseEditRow implements FormDataProviderInterface
             $result['databaseRow']['uid'] = $rowData['rootPageId'];
             $result['databaseRow']['identifier'] = $result['customData']['siteIdentifier'];
         } elseif (in_array($tableName, ['site_errorhandling', 'site_language', 'site_route', 'site_base_variant'], true)) {
-            $rootPageId = (int)($result['inlineTopMostParentUid'] ?? $result['inlineParentUid']);
+            $unprocessedRootPageId = $result['inlineTopMostParentUid'] ?? $result['inlineParentUid'];
+
+            $processedRootPageId = $this->envPlaceholderProcessor->canProcess($unprocessedRootPageId)
+                ? (int)$this->envPlaceholderProcessor->process($unprocessedRootPageId)
+                : (int)$unprocessedRootPageId;
+
             try {
-                $rowData = $this->getRawConfigurationForSiteWithRootPageId($rootPageId);
+                $rowData = $this->getRawConfigurationForSiteWithRootPageId($processedRootPageId);
                 $parentFieldName = $result['inlineParentFieldName'];
                 if (!isset($rowData[$parentFieldName])) {
                     throw new \RuntimeException('Field "' . $parentFieldName . '" not found', 1520886092);

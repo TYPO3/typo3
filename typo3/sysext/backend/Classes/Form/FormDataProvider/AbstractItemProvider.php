@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 use Doctrine\DBAL\Exception as DBALException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\Processor\Placeholder\EnvPlaceholderProcessor;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -52,6 +53,7 @@ abstract class AbstractItemProvider
     private FileRepository $fileRepository;
     private FlashMessageService $flashMessageService;
     private ConnectionPool $connectionPool;
+    private EnvPlaceholderProcessor $envPlaceholderProcessor;
 
     public function injectIconFactory(IconFactory $iconFactory): void
     {
@@ -71,6 +73,11 @@ abstract class AbstractItemProvider
     public function injectConnectionPool(ConnectionPool $connectionPool): void
     {
         $this->connectionPool = $connectionPool;
+    }
+
+    public function injectEnvPlaceholderProcessor(EnvPlaceholderProcessor $envPlaceholderProcessor): void
+    {
+        $this->envPlaceholderProcessor = $envPlaceholderProcessor;
     }
 
     /**
@@ -992,6 +999,12 @@ abstract class AbstractItemProvider
         $fieldConfig = $result['processedTca']['columns'][$fieldName];
 
         $currentDatabaseValueArray = array_key_exists($fieldName, $result['databaseRow']) ? $result['databaseRow'][$fieldName] : [];
+        $isSiteAction = $result['tableName'] === 'site';
+
+        if ($isSiteAction && count($currentDatabaseValueArray) === 1 && $this->envPlaceholderProcessor->canProcess($currentDatabaseValueArray[0])) {
+            return $currentDatabaseValueArray;
+        }
+
         $newDatabaseValueArray = [];
 
         // Add all values that were defined by static methods and do not come from the relation
