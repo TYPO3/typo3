@@ -30,7 +30,8 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * This is subject to change during v14 development. Do not use.
  * @internal Only to be used in TYPO3\CMS\Core\SystemResource namespace,
- *           with three exceptions due to deprecated legacy code @see Uri\ResourceViewHelper, PageRendererBackendSetupTrait and ExtensionManagementUtility::resolvePackagePath())
+ *           with four exceptions due to deprecated legacy code, see Uri\ResourceViewHelper, PageRendererBackendSetupTrait,
+ *           AbstractItemProvider and ExtensionManagementUtility::resolvePackagePath()
  */
 final readonly class SystemResourceIdentifierFactory
 {

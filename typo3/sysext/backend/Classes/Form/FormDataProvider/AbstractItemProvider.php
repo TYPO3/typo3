@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Schema\Capability\RootLevelCapability;
@@ -40,6 +41,9 @@ use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
+use TYPO3\CMS\Core\SystemResource\Exception\InvalidSystemResourceIdentifierException;
+use TYPO3\CMS\Core\SystemResource\Identifier\PackageResourceIdentifier;
+use TYPO3\CMS\Core\SystemResource\Identifier\SystemResourceIdentifierFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -258,16 +262,25 @@ abstract class AbstractItemProvider
             }
         }
 
-        $folderRaw = $fileFolderConfig['folder'];
-        $folder = GeneralUtility::getFileAbsFileName($folderRaw);
-        if ($folder === '') {
+        $folderResource = rtrim($fileFolderConfig['folder'], '/') . '/';
+        // @todo this needs to be replaced with usage of the yet to be created
+        //       System Resource API that can handle folders
+        //       This will then remove the need to use internal SystemResourceIdentifierFactory here
+        $packageManager = GeneralUtility::makeInstance(PackageManager::class);
+        $identifierFactory = new SystemResourceIdentifierFactory($packageManager);
+        try {
+            $resourceIdentifier = $identifierFactory->create($folderResource);
+            if (!$resourceIdentifier instanceof PackageResourceIdentifier) {
+                throw new InvalidSystemResourceIdentifierException('Only package identifiers are allowed', 1764503770);
+            }
+            $folder = $resourceIdentifier->getPackage()->getPackagePath() . $resourceIdentifier->getRelativePath();
+        } catch (InvalidSystemResourceIdentifierException $e) {
             throw new \RuntimeException(
-                'Invalid folder given for item processing: ' . $folderRaw . ' for table ' . $tableName . ', field ' . $fieldName,
-                1479399227
+                'Invalid folder given for item processing: ' . $folderResource . ' for table ' . $tableName . ', field ' . $fieldName,
+                1479399227,
+                $e,
             );
         }
-        $folder = rtrim($folder, '/') . '/';
-
         if (@is_dir($folder)) {
             $allowedExtensions = '';
             if (!empty($fileFolderConfig['allowedExtensions']) && is_string($fileFolderConfig['allowedExtensions'])) {
@@ -281,7 +294,7 @@ abstract class AbstractItemProvider
             foreach ($fileArray as $fileReference) {
                 $fileInformation = pathinfo($fileReference);
                 $icon = GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], strtolower($fileInformation['extension']))
-                    ? $folder . $fileReference
+                    ? $folderResource . $fileReference
                     : '';
                 $items[] = [
                     'label' => $fileReference,

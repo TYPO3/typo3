@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolveSystemResourceIdentifierException;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -346,7 +347,9 @@ final class TcaSelectItemsTest extends FunctionalTestCase
     #[Test]
     public function addDataAddsFileItemsWithConfiguredFileFolder(): void
     {
-        $directory = Environment::getVarPath() . '/' . StringUtility::getUniqueId('test-') . '/';
+        $directoryRelative = 'typo3temp/assets/' . StringUtility::getUniqueId('test-') . '/';
+        $directory = Environment::getPublicPath() . '/' . $directoryRelative;
+        $directoryIdentifier = 'PKG:typo3/app:' . $directoryRelative;
         $input = [
             'tableName' => 'aTable',
             'databaseRow' => [],
@@ -357,7 +360,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
                             'type' => 'select',
                             'renderType' => 'selectSingle',
                             'fileFolderConfig' => [
-                                'folder' => $directory,
+                                'folder' => $directoryIdentifier,
                                 'allowedExtensions' => 'gif',
                                 'depth' => 1,
                             ],
@@ -370,6 +373,8 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         mkdir($directory);
         touch($directory . 'anImage.gif');
         touch($directory . 'aFile.txt');
+        touch($directory . 'aFileWithoutExtension');
+        touch($directory . 'gif'); // Also a file without extension
         mkdir($directory . '/subdir');
         touch($directory . '/subdir/anotherImage.gif');
         mkdir($directory . '/subdir/subsubdir');
@@ -379,7 +384,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             0 => [
                 'label' => 'anImage.gif',
                 'value' => 'anImage.gif',
-                'icon' => $directory . 'anImage.gif',
+                'icon' => $directoryIdentifier . 'anImage.gif',
                 'iconOverlay' => null,
                 'group' => null,
                 'description' => null,
@@ -387,7 +392,132 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             1 => [
                 'label' => 'subdir/anotherImage.gif',
                 'value' => 'subdir/anotherImage.gif',
-                'icon' => $directory . 'subdir/anotherImage.gif',
+                'icon' => $directoryIdentifier . 'subdir/anotherImage.gif',
+                'iconOverlay' => null,
+                'group' => null,
+                'description' => null,
+            ],
+        ];
+
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $result = $selectItems->addData($input);
+
+        self::assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
+    }
+
+    #[Test]
+    public function addDataAddsFileItemsWithConfiguredFileFolderAsExtension(): void
+    {
+        $directoryRelative = 'Resources/Public/' . StringUtility::getUniqueId('test-') . '/';
+        $directory = Environment::getPublicPath() . '/typo3/sysext/backend/' . $directoryRelative;
+        $directoryExtIdentifier = 'EXT:backend/' . $directoryRelative;
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'fileFolderConfig' => [
+                                'folder' => $directoryExtIdentifier,
+                                'allowedExtensions' => 'gif',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        mkdir($directory);
+        touch($directory . 'anImage.gif');
+        touch($directory . 'aFile.txt');
+        touch($directory . 'aFileWithoutExtension');
+        touch($directory . 'gif'); // Also a file without extension
+        mkdir($directory . '/subdir');
+        touch($directory . '/subdir/anotherImage.gif');
+
+        $expectedItems = [
+            0 => [
+                'label' => 'anImage.gif',
+                'value' => 'anImage.gif',
+                'icon' => $directoryExtIdentifier . 'anImage.gif',
+                'iconOverlay' => null,
+                'group' => null,
+                'description' => null,
+            ],
+            1 => [
+                'label' => 'subdir/anotherImage.gif',
+                'value' => 'subdir/anotherImage.gif',
+                'icon' => $directoryExtIdentifier . 'subdir/anotherImage.gif',
+                'iconOverlay' => null,
+                'group' => null,
+                'description' => null,
+            ],
+        ];
+
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $result = $selectItems->addData($input);
+
+        self::assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
+
+        array_map('unlink', array_filter((array)glob($directory . 'subdir/*')));
+        rmdir($directory . 'subdir');
+        array_map('unlink', array_filter((array)glob($directory . '*')));
+        rmdir($directory);
+    }
+
+    #[Test]
+    public function addDataAddsFileItemsWithConfiguredPublicRelativeFileFolder(): void
+    {
+        // @todo Remove when folders and relative paths have been implemented in SystemResourceFactory.
+        self::markTestSkipped('Folders and relative paths not implemented yet.');
+        // @phpstan-ignore-next-line
+        $directoryRelative = 'typo3temp/assets/' . StringUtility::getUniqueId('test-') . '/';
+        $directory = Environment::getPublicPath() . '/' . $directoryRelative;
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'fileFolderConfig' => [
+                                'folder' => $directoryRelative,
+                                'allowedExtensions' => 'gif',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        mkdir($directory);
+        touch($directory . 'anImage.gif');
+        touch($directory . 'aFile.txt');
+        touch($directory . 'aFileWithoutExtension');
+        touch($directory . 'gif'); // Also a file without extension
+        mkdir($directory . '/subdir');
+        touch($directory . '/subdir/anotherImage.gif');
+
+        $expectedItems = [
+            0 => [
+                'label' => 'anImage.gif',
+                'value' => 'anImage.gif',
+                'icon' => $directoryRelative . 'anImage.gif',
+                'iconOverlay' => null,
+                'group' => null,
+                'description' => null,
+            ],
+            1 => [
+                'label' => 'subdir/anotherImage.gif',
+                'value' => 'subdir/anotherImage.gif',
+                'icon' => $directoryRelative . 'subdir/anotherImage.gif',
                 'iconOverlay' => null,
                 'group' => null,
                 'description' => null,
@@ -404,8 +534,12 @@ final class TcaSelectItemsTest extends FunctionalTestCase
     #[Test]
     public function addDataAddsFileItemsWithOverwrittenFileFolder(): void
     {
-        $directory = Environment::getVarPath() . '/' . StringUtility::getUniqueId('test-') . '/';
-        $overriddenDirectory = Environment::getVarPath() . '/' . StringUtility::getUniqueId('test-overridden-') . '/';
+        $directoryRelative = 'typo3temp/assets/' . StringUtility::getUniqueId('test-') . '/';
+        $directory = Environment::getPublicPath() . '/' . $directoryRelative;
+        $directoryIdentifier = 'PKG:typo3/app:' . $directoryRelative;
+        $overriddenDirectoryRelative = 'typo3temp/assets/' . StringUtility::getUniqueId('test-overridden-') . '/';
+        $overriddenDirectory = Environment::getPublicPath() . '/' . $overriddenDirectoryRelative;
+        $overriddenDirectoryIdentifier = 'PKG:typo3/app:' . $overriddenDirectoryRelative;
         $input = [
             'tableName' => 'aTable',
             'databaseRow' => [],
@@ -416,7 +550,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
                             'type' => 'select',
                             'renderType' => 'selectSingle',
                             'fileFolderConfig' => [
-                                'folder' => $directory,
+                                'folder' => $directoryIdentifier,
                                 'allowedExtensions' => 'gif',
                                 'depth' => 1,
                             ],
@@ -430,7 +564,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
                         'aField.' => [
                             'config.' => [
                                 'fileFolderConfig.' => [
-                                    'folder' => $overriddenDirectory,
+                                    'folder' => $overriddenDirectoryIdentifier,
                                     'allowedExtensions' => 'svg',
                                     'depth' => 0,
                                 ],
@@ -463,7 +597,51 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             0 => [
                 'label' => 'anOverriddenIcon.svg',
                 'value' => 'anOverriddenIcon.svg',
-                'icon' => $overriddenDirectory . 'anOverriddenIcon.svg',
+                'icon' => $overriddenDirectoryIdentifier . 'anOverriddenIcon.svg',
+                'iconOverlay' => null,
+                'group' => null,
+                'description' => null,
+            ],
+        ];
+
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $result = $selectItems->addData($input);
+
+        self::assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
+    }
+
+    #[Test]
+    public function addDataKeepsItemsAndIgnoresNonExistentFileFolder(): void
+    {
+        $directoryRelative = 'typo3temp/assets/' . StringUtility::getUniqueId('test-non-existent-') . '/';
+        $directoryIdentifier = 'PKG:typo3/app:' . $directoryRelative;
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [
+                                ['label' => '', 'value' => 0],
+                            ],
+                            'fileFolderConfig' => [
+                                'folder' => $directoryIdentifier,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expectedItems = [
+            0 => [
+                'label' => '',
+                'value' => 0,
+                'icon' => null,
                 'iconOverlay' => null,
                 'group' => null,
                 'description' => null,
@@ -503,6 +681,46 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
         $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
         $selectItems->addData($input);
+    }
+
+    #[Test]
+    public function addDataThrowsExceptionForRelativeFileFolderDirectlyPointingToExtensionAssets(): void
+    {
+        // @todo Remove when folders and relative paths have been implemented in SystemResourceFactory.
+        self::markTestSkipped('Folders and relative paths not implemented yet.');
+        // @phpstan-ignore-next-line
+        $directoryRelative = '_assets/' . StringUtility::getUniqueId('test-') . '/';
+        $directory = Environment::getPublicPath() . '/' . $directoryRelative;
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'fileFolderConfig' => [
+                                'folder' => $directoryRelative,
+                                'allowedExtensions' => 'gif',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        mkdir($directory, 0777, true);
+        touch($directory . 'anImage.gif');
+
+        $this->expectException(CanNotResolveSystemResourceIdentifierException::class);
+        $this->expectExceptionCode(1758700314);
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->addData($input);
+
+        unlink($directory . 'anImage.gif');
+        rmdir($directory);
     }
 
     #[Test]
