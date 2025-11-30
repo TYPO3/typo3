@@ -42,21 +42,25 @@ class FluidPageErrorHandler implements PageErrorHandlerInterface
     {
         $configuration = $this->configuration;
         $templateRootPaths = null;
-        if (is_string($configuration['errorFluidTemplatesRootPath']) && !empty($configuration['errorFluidTemplatesRootPath'])) {
+        if (is_string($configuration['errorFluidTemplatesRootPath'] ?? false) && $configuration['errorFluidTemplatesRootPath'] !== '') {
             $templateRootPaths = [$configuration['errorFluidTemplatesRootPath']];
         }
         $layoutRootPaths = null;
-        if (is_string($configuration['errorFluidLayoutsRootPath']) && !empty($configuration['errorFluidLayoutsRootPath'])) {
+        if (is_string($configuration['errorFluidLayoutsRootPath'] ?? false) && $configuration['errorFluidLayoutsRootPath'] !== '') {
             $layoutRootPaths = [$configuration['errorFluidLayoutsRootPath']];
         }
         $partialRootPaths = null;
-        if (is_string($configuration['errorFluidPartialsRootPath']) && !empty($configuration['errorFluidPartialsRootPath'])) {
+        if (is_string($configuration['errorFluidPartialsRootPath'] ?? false) && $configuration['errorFluidPartialsRootPath'] !== '') {
             $partialRootPaths = [$configuration['errorFluidPartialsRootPath']];
         }
         $templatePathAndFilename = null;
-        if (is_string($configuration['errorFluidTemplate']) && !empty($configuration['errorFluidTemplate'])) {
+        if (is_string($configuration['errorFluidTemplate'] ?? false) && $configuration['errorFluidTemplate'] !== '') {
             $templatePathAndFilename = GeneralUtility::getFileAbsFileName($configuration['errorFluidTemplate']);
         }
+        if ($templatePathAndFilename === null || !is_file($templatePathAndFilename)) {
+            throw new \RuntimeException('FluidPageErrorHandler: Configured Fluid template file not found.', 1764510148);
+        }
+
         $viewFactoryDate = new ViewFactoryData(
             templateRootPaths: $templateRootPaths,
             partialRootPaths: $partialRootPaths,
