@@ -57,13 +57,21 @@ final class SystemResourceIdentifierFactoryTest extends UnitTestCase
             'https://example.com/foo/bar/',
             UriResourceIdentifier::class,
         ];
+        yield 'Absolute URL without protocol' => [
+            '//example.com/foo/bar/',
+            UriResourceIdentifier::class,
+        ];
         yield 'Absolute URL with prefix' => [
             'URI:https://example.com/foo/bar/',
             UriResourceIdentifier::class,
             'https://example.com/foo/bar/',
         ];
-        yield 'Relative URI' => [
+        yield 'Root path URI' => [
             'URI:/foo/bar/',
+            UriResourceIdentifier::class,
+        ];
+        yield 'Relative path URI' => [
+            'URI:foo/bar/',
             UriResourceIdentifier::class,
         ];
     }
@@ -94,11 +102,19 @@ final class SystemResourceIdentifierFactoryTest extends UnitTestCase
 
     public static function invalidIdentifierThrowsExceptionDataProvider(): \Generator
     {
+        yield 'EXT prefix without colon' => [
+            'EXTxcore/Resources/Public/Icons/Extension.svg',
+            CanNotResolveSystemResourceIdentifierException::class,
+        ];
         yield 'PKG: syntax, leading slash' => [
             'PKG:typo3/cms-core:/Resources/Public/Icons/Extension.svg',
         ];
         yield 'PKG: back path' => [
             'PKG:typo3/cms-core:Resources/../../../../../../etc/passwd',
+        ];
+        yield 'PKG prefix without colon' => [
+            'PKGxtypo3/cms-core:Resources/Public/Icons/Extension.svg',
+            CanNotResolveSystemResourceIdentifierException::class,
         ];
         yield 'FAL: syntax, storage not int' => [
             'FAL:fileadmin:/identifier/of/file.ext',
@@ -109,6 +125,10 @@ final class SystemResourceIdentifierFactoryTest extends UnitTestCase
         yield 'FAL: syntax, too many colons' => [
             'FAL:1:/identifier/of/file:ext',
         ];
+        yield 'FAL prefix without colon' => [
+            'FALx1:/identifier/of/file.ext',
+            CanNotResolveSystemResourceIdentifierException::class,
+        ];
         yield 'URI: with following invalid URI' => [
             'URI:1:/identifier/of/file:ext',
         ];
@@ -117,6 +137,13 @@ final class SystemResourceIdentifierFactoryTest extends UnitTestCase
         ];
         yield 'URI: with following valid EXT identifier' => [
             'URI:EXT:core/Resources/Public/Icons/Extension.svg#fragment',
+        ];
+        yield 'URI: with "invalid" scheme' => [
+            'file://my/path/to/file',
+        ];
+        yield 'URI prefix without colon' => [
+            'URIxfileadmin/path/file.ext',
+            CanNotResolveSystemResourceIdentifierException::class,
         ];
         yield 'relative path' => [
             'fileadmin/templates/main.css',

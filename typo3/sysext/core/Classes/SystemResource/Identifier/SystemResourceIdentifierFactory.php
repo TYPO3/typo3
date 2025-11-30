@@ -42,25 +42,18 @@ final readonly class SystemResourceIdentifierFactory
      */
     public function create(string $resourceIdentifier): SystemResourceIdentifier
     {
-        if (PathUtility::isExtensionPath($resourceIdentifier)) {
-            return $this->createPackageResourceIdentifier($this->convertExtensionPathToPackageResourceIdentifier($resourceIdentifier), $resourceIdentifier);
+        $givenIdentifier = $resourceIdentifier;
+        if (PathUtility::hasProtocolAndScheme($resourceIdentifier)) {
+            $resourceIdentifier = sprintf('%s:%s', UriResourceIdentifier::TYPE, $resourceIdentifier);
         }
-        if (str_starts_with($resourceIdentifier, PackageResourceIdentifier::TYPE)) {
-            return $this->createPackageResourceIdentifier($resourceIdentifier);
-        }
-        if (str_starts_with($resourceIdentifier, FalResourceIdentifier::TYPE)) {
-            return $this->createFalResourceIdentifier($resourceIdentifier);
-        }
-        if (str_starts_with($resourceIdentifier, UriResourceIdentifier::TYPE)
-            || PathUtility::hasProtocolAndScheme($resourceIdentifier)
-        ) {
-            try {
-                return new UriResourceIdentifier($resourceIdentifier);
-            } catch (\Throwable $e) {
-                throw new InvalidSystemResourceIdentifierException(sprintf('Can not resolve system resource identifier "%s". Invalid URI.', $resourceIdentifier), 1761732010, $e);
-            }
-        }
-        throw new CanNotResolveSystemResourceIdentifierException(sprintf('Can not resolve system resource identifier "%s".', $resourceIdentifier), 1758700314);
+        [$identifierType] = explode(':', $resourceIdentifier, 2);
+        return match ($identifierType) {
+            PackageResourceIdentifier::LEGACY_TYPE => $this->createPackageResourceIdentifier($this->convertExtensionPathToPackageResourceIdentifier($resourceIdentifier), $resourceIdentifier),
+            PackageResourceIdentifier::TYPE => $this->createPackageResourceIdentifier($resourceIdentifier),
+            FalResourceIdentifier::TYPE => $this->createFalResourceIdentifier($resourceIdentifier),
+            UriResourceIdentifier::TYPE => $this->createUriResourceIdentifier($givenIdentifier),
+            default => throw new CanNotResolveSystemResourceIdentifierException(sprintf('Can not resolve system resource identifier "%s".', $resourceIdentifier), 1758700314),
+        };
     }
 
     /**
@@ -91,6 +84,18 @@ final readonly class SystemResourceIdentifierFactory
     {
         [,$storageId, $falIdentifier] = $this->parseIdentifier($resourceIdentifier);
         return new FalResourceIdentifier($storageId, $falIdentifier, $resourceIdentifier);
+    }
+
+    /**
+     * @throws InvalidSystemResourceIdentifierException
+     */
+    private function createUriResourceIdentifier(string $resourceIdentifier): UriResourceIdentifier
+    {
+        try {
+            return new UriResourceIdentifier($resourceIdentifier);
+        } catch (\Throwable $e) {
+            throw new InvalidSystemResourceIdentifierException(sprintf('Can not resolve system resource identifier "%s". Invalid URI.', $resourceIdentifier), 1761732010, $e);
+        }
     }
 
     /**

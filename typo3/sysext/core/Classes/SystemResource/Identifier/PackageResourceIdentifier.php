@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\SystemResource\Exception\InvalidSystemResourceIdentifierExcep
  */
 final class PackageResourceIdentifier extends SystemResourceIdentifier
 {
+    public const LEGACY_TYPE = 'EXT';
     public const TYPE = 'PKG';
 
     public function __construct(
