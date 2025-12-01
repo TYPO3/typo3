@@ -126,7 +126,7 @@ final class LoginLogoViewHelper extends AbstractViewHelper
 
         // @todo: move link-removal into a configurable svg-sanitizer option
         $xpath = new \DOMXPath($domXml);
-        $links = $xpath->query('//a');
+        $links = $xpath->query('//*[local-name()="a"]');
         foreach ($links as $link) {
             if ($link instanceof \DOMElement) {
                 $link->remove();
