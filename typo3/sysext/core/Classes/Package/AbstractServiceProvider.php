@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationOriginType;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
 use TYPO3\CMS\Core\Site\Set\InvalidCategoryDefinitionsException;
 use TYPO3\CMS\Core\Site\Set\InvalidSetException;
+use TYPO3\CMS\Core\Site\Set\InvalidSetRouteEnhancersException;
 use TYPO3\CMS\Core\Site\Set\InvalidSettingsDefinitionsException;
 use TYPO3\CMS\Core\Site\Set\InvalidSettingsException;
 use TYPO3\CMS\Core\Site\Set\SetCollector;
@@ -221,6 +222,10 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
                     'error' => SetError::invalidSettings,
                     'logLine' => 'Set {setName} invalidated {file} because of invalid settings.yaml: {reason}',
                 ],
+                InvalidSetRouteEnhancersException::class => [
+                    'error' => SetError::invalidRouteEnhancers,
+                    'logLine' => 'Set {setName} invalidated {file} because of invalid route-enhancers.yaml: {reason}',
+                ],
                 InvalidSetException::class => [
                     'error' => SetError::invalidSet,
                     'logLine' => 'Invalid set {setName} in {file}: {reason}',
@@ -230,7 +235,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
             try {
                 $virtualSetPath = 'EXT:' . $extensionKey . '/Configuration/Sets/' . basename(dirname($fileInfo->getPathname())) . '/';
                 $setCollector->add($setProvider->get($fileInfo, $virtualSetPath));
-            } catch (InvalidSettingsDefinitionsException|InvalidCategoryDefinitionsException|InvalidSettingsException|InvalidSetException $e) {
+            } catch (InvalidSettingsDefinitionsException|InvalidCategoryDefinitionsException|InvalidSettingsException|InvalidSetRouteEnhancersException|InvalidSetException $e) {
                 $errorDetails = $errorMap[get_class($e)];
                 $setCollector->addError(
                     $errorDetails['error'],

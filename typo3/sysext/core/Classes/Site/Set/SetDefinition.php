@@ -26,6 +26,7 @@ readonly class SetDefinition
      * @param list<string> $dependencies
      * @param SettingDefinition[] $settingsDefinitions
      * @param CategoryDefinition[] $categoryDefinitions
+     * @param array<string, array<string, mixed>> $routeEnhancers Route enhancers keyed by identifier
      */
     public function __construct(
         public string $name,
@@ -38,6 +39,7 @@ readonly class SetDefinition
         public ?string $pagets = null,
         public array $settings = [],
         public bool $hidden = false,
+        public array $routeEnhancers = [],
     ) {}
 
     public function toArray(): array

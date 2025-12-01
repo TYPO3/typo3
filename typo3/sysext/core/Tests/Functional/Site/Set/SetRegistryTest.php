@@ -113,6 +113,29 @@ final class SetRegistryTest extends FunctionalTestCase
         self::assertEmpty($setDefinitions[0]->settings);
     }
 
+    #[Test]
+    public function routeEnhancersAreLoadedFromSet(): void
+    {
+        $setRegistry = $this->get(SetRegistry::class);
+        $setDefinitions = $setRegistry->getSets('typo3tests/set-with-route-enhancers');
+
+        self::assertCount(1, $setDefinitions);
+        self::assertArrayHasKey('TestEnhancer', $setDefinitions[0]->routeEnhancers);
+        self::assertSame('Simple', $setDefinitions[0]->routeEnhancers['TestEnhancer']['type']);
+        self::assertSame('/test/{param}', $setDefinitions[0]->routeEnhancers['TestEnhancer']['routePath']);
+    }
+
+    #[Test]
+    public function emptyRouteEnhancersFileIsAccepted(): void
+    {
+        $setRegistry = $this->get(SetRegistry::class);
+        $setDefinitions = $setRegistry->getSets('typo3tests/empty-route-enhancers');
+        $setDefinitionsNames = array_map(static fn(SetDefinition $d): string => $d->name, $setDefinitions);
+
+        self::assertContains('typo3tests/empty-route-enhancers', $setDefinitionsNames);
+        self::assertEmpty($setDefinitions[0]->routeEnhancers);
+    }
+
     public static function invalidSetsDataProvider(): \Generator
     {
         yield [
@@ -144,6 +167,16 @@ final class SetRegistryTest extends FunctionalTestCase
             'set' => 'typo3tests/invalid-settings',
             'error' => SetError::invalidSettings,
             'context' => 'Invalid settings format. Source: EXT:test_sets/Configuration/Sets/InvalidSettings/settings.yaml',
+        ];
+        yield [
+            'set' => 'typo3tests/invalid-route-enhancers-missing-key',
+            'error' => SetError::invalidRouteEnhancers,
+            'context' => 'Missing "routeEnhancers" key in route enhancers file. Source: EXT:test_sets/Configuration/Sets/InvalidRouteEnhancersMissingKey/route-enhancers.yaml',
+        ];
+        yield [
+            'set' => 'typo3tests/invalid-route-enhancers-superfluous-key',
+            'error' => SetError::invalidRouteEnhancers,
+            'context' => 'Superfluous keys in route enhancers file. Use "routeEnhancers" as root level key. Source: EXT:test_sets/Configuration/Sets/InvalidRouteEnhancersSuperfluousKey/route-enhancers.yaml',
         ];
     }
 

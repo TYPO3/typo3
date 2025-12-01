@@ -109,6 +109,40 @@ class YamlSetDefinitionProvider
             $set['settings'] = $settings;
         }
 
+        $routeEnhancersFile = $path . '/route-enhancers.yaml';
+        if (is_file($routeEnhancersFile)) {
+            try {
+                $routeEnhancers = $this->yamlFileLoader->load($routeEnhancersFile, YamlFileLoader::PROCESS_IMPORTS | YamlFileLoader::ALLOW_EMPTY_FILE);
+            } catch (YamlParseException $e) {
+                $source = $virtualSetPath . basename($routeEnhancersFile);
+                throw new InvalidSetRouteEnhancersException(
+                    'Invalid route enhancers format. Source: ' . $source,
+                    1764749081,
+                    $e,
+                    $setName
+                );
+            }
+            if ($routeEnhancers !== [] && !is_array($routeEnhancers['routeEnhancers'] ?? null)) {
+                $source = $virtualSetPath . basename($routeEnhancersFile);
+                throw new InvalidSetRouteEnhancersException(
+                    'Missing "routeEnhancers" key in route enhancers file. Source: ' . $source,
+                    1764749082,
+                    null,
+                    $setName
+                );
+            }
+            if ($routeEnhancers !== [] && array_keys($routeEnhancers) !== ['routeEnhancers']) {
+                $source = $virtualSetPath . basename($routeEnhancersFile);
+                throw new InvalidSetRouteEnhancersException(
+                    'Superfluous keys in route enhancers file. Use "routeEnhancers" as root level key. Source: ' . $source,
+                    1764749083,
+                    null,
+                    $setName
+                );
+            }
+            $set['routeEnhancers'] = $routeEnhancers['routeEnhancers'] ?? [];
+        }
+
         if (($set['labels'] ?? '') === '') {
             if (is_file($path . '/labels.xlf')) {
                 $set['labels'] = $virtualSetPath . 'labels.xlf';
@@ -174,6 +208,17 @@ class YamlSetDefinitionProvider
                 );
             }
             $categoryDefinitions[] = $definition;
+        }
+
+        foreach (($set['routeEnhancers'] ?? []) as $identifier => $config) {
+            if (!is_array($config)) {
+                throw new InvalidSetRouteEnhancersException(
+                    sprintf('Invalid route enhancer definition "%s": expected array, got %s', $identifier, gettype($config)),
+                    1732800002,
+                    null,
+                    $set['name'] ?? ''
+                );
+            }
         }
 
         $setData = [

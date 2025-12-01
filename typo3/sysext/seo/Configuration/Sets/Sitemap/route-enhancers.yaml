@@ -1,0 +1,15 @@
+routeEnhancers:
+  PageTypeSuffix:
+    type: PageType
+    map:
+      sitemap.xml: 1533906435
+  Sitemap:
+    type: Simple
+    routePath: 'sitemap-type/{sitemap}'
+    aspects:
+      sitemap:
+        type: StaticValueMapper
+        map:
+          pages: pages
+    _arguments:
+      sitemap: 'tx_seo/sitemap'

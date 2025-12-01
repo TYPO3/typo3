@@ -10,6 +10,7 @@
 <f:section name="Before">
     <f:asset.module identifier="@typo3/backend/element/immediate-action-element.js"/>
     <f:asset.module identifier="@typo3/backend/utility/collapse-state-persister.js"/>
+    <f:asset.module identifier="@typo3/backend/tree/tree-node-toggle.js"/>
     <f:variable name="args" value="{0: 'site', 1: page.uid}" />
     <typo3-immediate-action
         action="TYPO3.Backend.Storage.ModuleStateStorage.update"
@@ -326,6 +327,53 @@
                     </f:else>
                 </f:if>
 
+                <f:comment><!-- Route enhancers --></f:comment>
+                <f:if condition="{site.configuration.routeEnhancers -> f:count()} > 0">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab">
+                            <div class="panel-heading-row">
+                                <button
+                                    class="panel-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#route-enhancers-collapse"
+                                    aria-controls="route-enhancers-collapse"
+                                    aria-expanded="false"
+                                >
+                                    <div class="panel-title">
+                                        <f:translate key="detail.site_configuration.route_enhancers" domain="backend.siteconfiguration" />
+                                    </div>
+                                    <span class="caret"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="route-enhancers-collapse" class="panel-collapse collapse" data-persist-collapse-state="true" role="tabpanel">
+                            <div class="panel-body">
+                                <ul class="treelist">
+                                    <f:for each="{site.configuration.routeEnhancers}" as="enhancer" key="enhancerName" iteration="enhancerIterator">
+                                        <li>
+                                            <typo3-backend-tree-node-toggle
+                                                class="treelist-control treelist-control-collapsed"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#collapse-enhancer-{enhancerIterator.index}"
+                                                aria-expanded="false"
+                                            ></typo3-backend-tree-node-toggle>
+                                            <span class="treelist-group treelist-group-monospace">
+                                                <span class="treelist-label">
+                                                    {enhancerName}
+                                                </span>
+                                            </span>
+                                            <div class="treelist-collapse collapse" id="collapse-enhancer-{enhancerIterator.index}" data-persist-collapse-state="true" data-persist-collapse-state-suffix="site-route-enhancers" data-persist-collapse-state-if-state="shown">
+                                                <f:render section="RouteEnhancerConfig" arguments="{config: enhancer, enhancerIndex: enhancerIterator.index}" />
+                                            </div>
+                                        </li>
+                                    </f:for>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </f:if>
+
                 <h2>
                     <f:translate key="detail.site_settings.headline" domain="backend.siteconfiguration" />
                 </h2>
@@ -494,4 +542,40 @@
             </span>
         </span>
     </li>
+</f:section>
+
+<f:section name="RouteEnhancerConfig">
+    <ul class="treelist">
+        <f:for each="{config}" as="propertyValue" key="propertyKey" iteration="propertyIterator">
+            <f:render section="RouteEnhancerProperty" arguments="{label: propertyKey, value: propertyValue, idPrefix: 'enhancer-{enhancerIndex}-{propertyIterator.index}'}" />
+        </f:for>
+    </ul>
+</f:section>
+
+<f:section name="RouteEnhancerProperty">
+    <f:if condition="{be:type.isArray(value: value)}">
+        <f:then>
+            <li>
+                <typo3-backend-tree-node-toggle
+                    class="treelist-control treelist-control-collapsed"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse-{idPrefix}"
+                    aria-expanded="false"
+                ></typo3-backend-tree-node-toggle>
+                <span class="treelist-group treelist-group-monospace">
+                    <span class="treelist-label">{label}</span>
+                </span>
+                <div class="treelist-collapse collapse" id="collapse-{idPrefix}" data-persist-collapse-state="true" data-persist-collapse-state-suffix="site-route-enhancers" data-persist-collapse-state-if-state="shown">
+                    <ul class="treelist">
+                        <f:for each="{value}" as="subValue" key="subKey" iteration="subIterator">
+                            <f:render section="RouteEnhancerProperty" arguments="{label: subKey, value: subValue, idPrefix: '{idPrefix}-{subIterator.index}'}" />
+                        </f:for>
+                    </ul>
+                </div>
+            </li>
+        </f:then>
+        <f:else>
+            <f:render section="TreeItem" arguments="{label: label, value: value}" />
+        </f:else>
+    </f:if>
 </f:section>

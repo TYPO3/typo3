@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Frontend;
 
 use Codeception\Attribute\DataProvider;
 use Codeception\Example;
+use Codeception\Scenario;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\RemoteWebElement;
 use Facebook\WebDriver\WebDriverBy;
@@ -27,7 +28,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
 final class SitemapXmlCest
 {
-    public function _before(ApplicationTester $I, PageTree $pageTree)
+    public function _before(ApplicationTester $I, PageTree $pageTree, Scenario $scenario): void
     {
         $I->useExistingSession('admin');
         $I->click('Layout');
@@ -38,8 +39,13 @@ final class SitemapXmlCest
         $I->waitForElementNotVisible('#nprogress', 120);
         $dataDispatchArgs = $I->grabAttributeFrom('a[title="View webpage"]', 'data-dispatch-args');
         $url = json_decode($dataDispatchArgs, false, 512, JSON_THROW_ON_ERROR);
-        // Add Sitemap parameter to URL
-        $I->amOnPage(str_replace('/typo3temp/var/tests/acceptance', '', $url[0]) . '?type=1533906435');
+        $usesSiteSets = str_contains($scenario->current('env'), 'sets');
+        // Add Sitemap path to URL
+        if ($usesSiteSets) {
+            $I->amOnPage(str_replace('/typo3temp/var/tests/acceptance', '', $url[0]) . 'sitemap.xml');
+        } else {
+            $I->amOnPage(str_replace('/typo3temp/var/tests/acceptance', '', $url[0]) . '?type=1533906435');
+        }
     }
 
     private function sitemapDataProvider(): array
@@ -74,11 +80,17 @@ final class SitemapXmlCest
     }
 
     #[DataProvider('sitemapDataProvider')]
-    public function seeSitemapXml(ApplicationTester $I, Example $testData): void
+    public function seeSitemapXml(ApplicationTester $I, Example $testData, Scenario $scenario): void
     {
         $I->see('TYPO3 XML Sitemap');
-        $I->see('tx_seo%5Bsitemap%5D=pages');
-        $I->see('type=1533906435');
+        $usesSiteSets = str_contains($scenario->current('env'), 'sets');
+        if ($usesSiteSets) {
+            $I->see('sitemap-type/pages');
+            $I->see('sitemap.xml');
+        } else {
+            $I->see('tx_seo%5Bsitemap%5D=pages');
+            $I->see('type=1533906435');
+        }
 
         $I->amGoingTo('See sitemap pages details');
         $I->click('a');

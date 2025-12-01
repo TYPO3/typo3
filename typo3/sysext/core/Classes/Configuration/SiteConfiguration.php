@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteTypoScript;
 use TYPO3\CMS\Core\Site\Set\SetError;
 use TYPO3\CMS\Core\Site\Set\SetRegistry;
 use TYPO3\CMS\Core\Site\SiteSettingsFactory;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -120,6 +121,10 @@ class SiteConfiguration
             $siteTypoScript = $this->getSiteTypoScript($identifier);
             $siteTSconfig = $this->getSiteTSconfig($identifier);
             $configuration['contentSecurityPolicies'] = $this->getContentSecurityPolicies($identifier);
+            $configuration['routeEnhancers'] = ArrayUtility::replaceAndAppendScalarValuesRecursive(
+                $this->getRouteEnhancersFromSets($configuration['dependencies'] ?? []),
+                $configuration['routeEnhancers'] ?? []
+            );
 
             $rootPageId = (int)($configuration['rootPageId'] ?? 0);
             if ($rootPageId > 0) {
@@ -278,6 +283,22 @@ class SiteConfiguration
             return $this->yamlFileLoader->load(GeneralUtility::fixWindowsFilePath($fileName));
         }
         return [];
+    }
+
+    /**
+     * Get route enhancers from site sets.
+     */
+    protected function getRouteEnhancersFromSets(array $dependencies): array
+    {
+        $routeEnhancers = [];
+        $sets = $this->setRegistry->getSets(...$dependencies);
+        foreach ($sets as $set) {
+            $routeEnhancers = ArrayUtility::replaceAndAppendScalarValuesRecursive(
+                $routeEnhancers,
+                $set->routeEnhancers
+            );
+        }
+        return $routeEnhancers;
     }
 
     protected function determineInvalidSets(Site $site): void

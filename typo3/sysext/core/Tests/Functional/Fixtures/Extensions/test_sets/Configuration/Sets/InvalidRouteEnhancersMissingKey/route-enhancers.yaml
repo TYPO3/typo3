@@ -1,0 +1,3 @@
+TestEnhancer:
+  type: Simple
+  routePath: '/test/{param}'

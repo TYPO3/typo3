@@ -1,0 +1,10 @@
+routeEnhancers:
+  TestEnhancer:
+    type: Simple
+    routePath: '/test/{param}'
+    aspects:
+      param:
+        type: StaticValueMapper
+        map:
+          foo: foo
+          bar: bar

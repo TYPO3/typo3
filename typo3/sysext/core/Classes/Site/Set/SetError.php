@@ -24,6 +24,7 @@ enum SetError: string
     case invalidSettingsDefinitions = 'invalid-settings-definitions';
     case invalidCategoryDefinitions = 'invalid-category-definitions';
     case invalidSettings = 'invalid-settings';
+    case invalidRouteEnhancers = 'invalid-route-enhancers';
     case invalidSet = 'invalid-set';
 
     public function getLabel(): string
@@ -34,6 +35,7 @@ enum SetError: string
             self::invalidSettingsDefinitions => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.siteSet.invalidSettingsDefinitions',
             self::invalidCategoryDefinitions => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.siteSet.invalidCategoryDefinitions',
             self::invalidSettings => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.siteSet.invalidSettings',
+            self::invalidRouteEnhancers => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.siteSet.invalidRouteEnhancers',
             self::invalidSet => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.siteSet.invalidSet',
         };
     }

@@ -1500,6 +1500,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="error.siteSet.invalidSettings">
 				<source>Site set '%1$s' is disabled due to invalid settings: %2$s</source>
 			</trans-unit>
+			<trans-unit id="error.siteSet.invalidRouteEnhancers">
+				<source>Site set '%1$s' is disabled due to invalid route enhancers: %2$s</source>
+			</trans-unit>
 			<trans-unit id="error.siteSet.invalidSet">
 				<source>Invalid site set '%1$s': %2$s</source>
 			</trans-unit>

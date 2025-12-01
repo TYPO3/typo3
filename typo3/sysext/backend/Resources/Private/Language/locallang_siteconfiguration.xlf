@@ -163,6 +163,9 @@
 			<trans-unit id="detail.site_configuration.static_routes">
 				<source>Static routes</source>
 			</trans-unit>
+			<trans-unit id="detail.site_configuration.route_enhancers">
+				<source>Route enhancers</source>
+			</trans-unit>
 			<trans-unit id="detail.site_settings.active_settings.headline">
 				<source>Active settings</source>
 			</trans-unit>

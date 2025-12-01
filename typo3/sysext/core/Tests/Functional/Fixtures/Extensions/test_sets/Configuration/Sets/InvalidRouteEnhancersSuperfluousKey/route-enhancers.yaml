@@ -1,0 +1,7 @@
+routeEnhancers:
+  TestEnhancer:
+    type: Simple
+    routePath: '/test/{param}'
+
+# superfluous key is not allowed
+foo: bar
