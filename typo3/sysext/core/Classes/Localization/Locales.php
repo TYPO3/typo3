@@ -239,14 +239,14 @@ class Locales implements SingletonInterface
         // $this->localeDependencies
         if ($dependencies === [] && str_contains($locale, '_')) {
             [$languageIsoCode] = explode('_', $locale);
-            // "en" = "default" is always implicitly the default fallback dependency
+            // "en" and "default" is always implicitly the default fallback dependency
             if ($languageIsoCode !== 'en') {
                 $dependencies[] = $languageIsoCode;
                 $dependencies = array_merge($dependencies, $this->getLocaleDependencies($languageIsoCode));
             }
         } elseif ($dependencies === [] && str_contains($locale, '-')) {
             [$languageIsoCode] = explode('-', $locale);
-            // "en" = "default" is always implicitly the default fallback dependency
+            // "en" and "default" is always implicitly the default fallback dependency
             if ($languageIsoCode !== 'en') {
                 $dependencies[] = $languageIsoCode;
                 $dependencies = array_merge($dependencies, $this->getLocaleDependencies($languageIsoCode));

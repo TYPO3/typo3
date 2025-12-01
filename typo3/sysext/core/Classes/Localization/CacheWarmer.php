@@ -29,20 +29,28 @@ class CacheWarmer
     public function __construct(
         protected readonly PackageManager $packageManager,
         protected readonly LabelFileResolver $labelFileResolver,
-        protected readonly LocalizationFactory $localizationFactory
+        protected readonly LocalizationFactory $localizationFactory,
+        protected readonly Locales $locales,
     ) {}
 
     #[AsEventListener]
     public function warmupCaches(CacheWarmupEvent $event): void
     {
         if ($event->hasGroup('system')) {
+            $activeLanguages = $this->locales->getActiveLanguages();
+            $locales = [];
+            foreach ($activeLanguages as $language) {
+                $locales[$language] = $this->locales->createLocale($language);
+            }
+
             $packages = $this->packageManager->getActivePackages();
             foreach ($packages as $package) {
-                $resources = $this->labelFileResolver->getAllLabelFilesOfPackage($package->getPackageKey());
-                foreach ($resources as $language => $filesForLocale) {
-                    // @todo: Force cache renewal
-                    foreach ($filesForLocale as $fileReference) {
-                        $this->localizationFactory->getParsedData($fileReference, $language);
+                $baseLocaleResources = $this->labelFileResolver->getAllLabelFilesOfPackage($package->getPackageKey(), true)['default'] ?? [];
+                foreach ($locales as $locale) {
+                    // Performance: Firstly, loop through locales, as every change of locale will trigger computational expensive Symfony Translator catalogue recomputation.
+                    foreach ($baseLocaleResources as $fileReference) {
+                        // This loads the localized file version and override files.
+                        $this->localizationFactory->getParsedData($fileReference, $locale, true);
                     }
                 }
             }

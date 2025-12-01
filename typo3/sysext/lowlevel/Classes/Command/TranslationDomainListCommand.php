@@ -100,8 +100,8 @@ class TranslationDomainListCommand extends Command
         foreach ($packages as $package) {
             $resourcesByLocale = $this->translationDomainMapper->findLabelResourcesInPackageGroupedByLocale($package->getPackageKey());
 
-            // Get English resources (base files)
-            $resources = $resourcesByLocale['en'] ?? [];
+            // Get 'default' resources (base files)
+            $resources = $resourcesByLocale['default'] ?? [];
             foreach ($resources as $domain => $resource) {
                 $labelCount = $this->countLabelsInResource($resource);
                 $deprecated = $this->localizationFactory->isLanguageFileDeprecated($resource);

@@ -51,7 +51,7 @@ final class XliffLoaderTest extends UnitTestCase
             'expectedMessages' => [
                 'label1' => 'Ceci est le libellé no. 1',
                 'label2' => 'Ceci est le libellé no. 2 [approved]',
-                'label3' => 'Ceci est le libellé no. 3 [not approved]',
+                'label3' => 'Voici la libellule n° 3 [not approved]',
             ],
             'requireApprovedLocalizations' => false,
         ];
@@ -80,7 +80,7 @@ final class XliffLoaderTest extends UnitTestCase
             'expectedMessages' => [
                 'label1' => 'Ceci est le libellé no. 1',
                 'label2' => 'Ceci est le libellé no. 2 [approved]',
-                'label3' => 'Ceci est le libellé no. 3 [not approved]',
+                'label3' => 'Voici la libellule n° 3 [not approved]',
             ],
             'requireApprovedLocalizations' => false,
         ];

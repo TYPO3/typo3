@@ -13,7 +13,7 @@
       </trans-unit>
       <trans-unit id="label3" approved="no">
         <source>This is label #3</source>
-        <target>Ceci est le libellé no. 3 [not approved]</target>
+        <target>Voici la libellule n° 3 [not approved]</target>
       </trans-unit>
     </body>
   </file>

@@ -19,7 +19,6 @@ use Symfony\Component\DependencyInjection\Attribute\Exclude;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -292,7 +291,7 @@ class LanguageService
     {
         $labelArray = [];
         $labelsFromFile = $this->readLLfile($fileReferenceOrDomain);
-        foreach ($labelsFromFile['en'] as $key => $value) {
+        foreach ($labelsFromFile['default'] as $key => $value) {
             $labelArray[$key] = $this->getLLL($key, $labelsFromFile);
         }
         return $labelArray;
@@ -312,24 +311,16 @@ class LanguageService
         if (is_array($cacheEntry)) {
             return $cacheEntry;
         }
-
-        // Get english first
-        $allLabels = [
-            'en' => $this->localizationFactory->getParsedData($fileReferenceOrDomain, 'en'),
-        ];
         $mainLanguageKey = $this->getTypo3LanguageKey();
-        if ($mainLanguageKey !== 'en') {
-            $allLabels[$mainLanguageKey] = $allLabels['en'];
-            $allLocales = array_merge([$mainLanguageKey], $this->locale->getDependencies());
-            $allLocales = array_unique($allLocales);
-            $allLocales = array_reverse($allLocales);
-            foreach ($allLocales as $locale) {
-                // Firstly, get current language labels without any 'en' fallback labels merged into.
-                // Merge current language labels onto labels from previous language
-                // This way we have a labels with fallback applied
-                $labels = $this->localizationFactory->getParsedData($fileReferenceOrDomain, $locale);
-                ArrayUtility::mergeRecursiveWithOverrule($allLabels[$mainLanguageKey], $labels, true, false);
-            }
+
+        $allLabels = [
+            $mainLanguageKey => $this->localizationFactory->getParsedData($fileReferenceOrDomain, $this->locale),
+        ];
+        if (!isset($allLabels['default'])) {
+            // Ensure default labels are additionally set.
+            // @todo: Remove with use of Symfony Translator catalogue format.
+            //        Replace the use of 'array-keys' of 'default' in LanguageService::getLabelsFromResource()
+            $allLabels['default'] = $this->localizationFactory->getParsedData($fileReferenceOrDomain, 'default');
         }
 
         $this->runtimeCache->set($cacheIdentifier, $allLabels);

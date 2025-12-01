@@ -92,7 +92,7 @@ readonly class TranslationDomainMapper
         $domains = [];
         $domainPriorities = [];
         $package = $this->packageManager->getPackage($packageKey);
-        foreach ($allLabelFilesOfPackage['en'] ?? [] as $file) {
+        foreach ($allLabelFilesOfPackage['default'] ?? [] as $file) {
             // Make path relative
             $file = $this->getRelativePath($file, $packageKey, $package);
 

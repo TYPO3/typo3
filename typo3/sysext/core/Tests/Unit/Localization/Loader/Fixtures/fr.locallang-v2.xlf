@@ -16,7 +16,7 @@
     <unit id="label3">
       <segment state="translated">
         <source>This is label #3</source>
-        <target>Ceci est le libellé no. 3 [not approved]</target>
+        <target>Voici la libellule n° 3 [not approved]</target>
       </segment>
     </unit>
   </file>

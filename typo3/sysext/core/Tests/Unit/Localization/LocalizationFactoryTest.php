@@ -99,9 +99,9 @@ final class LocalizationFactoryTest extends UnitTestCase
         $translatorMock = $this->createMock(Translator::class);
 
         // Expect that addResource is called - this proves we're using Symfony Translator
-        $translatorMock->expects($this->exactly(2))
+        $translatorMock->expects($this->once())
             ->method('addResource')
-            ->with('xlf', self::stringContains('locallang.xlf'), 'en', $testFile);
+            ->with('xlf', self::stringContains('locallang.xlf'), 'default', $testFile);
 
         $labelMapperMock = $this->createMock(TranslationDomainMapper::class);
         $labelMapperMock->method('mapFileNameToDomain')->willReturnArgument(0);

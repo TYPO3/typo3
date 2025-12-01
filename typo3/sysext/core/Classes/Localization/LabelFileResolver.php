@@ -50,7 +50,7 @@ readonly class LabelFileResolver
      * Find all label files in a package, but also find overrides.
      * All files are returned in the order they should be loaded.
      */
-    public function getAllLabelFilesOfPackage(string $packageKey): array
+    public function getAllLabelFilesOfPackage(string $packageKey, $defaultLocaleOnlyForCacheWarmup = false): array
     {
         $result = [];
         try {
@@ -66,28 +66,32 @@ readonly class LabelFileResolver
         $allowedFileExtensions = implode(',', $allowedFileExtensions);
         foreach ($directoriesToSearch as $searchPath) {
             $searchPath = $packagePath . $searchPath;
-            $files = GeneralUtility::getAllFilesAndFoldersInPath([], $searchPath, $allowedFileExtensions, true);
+            $files = GeneralUtility::getAllFilesAndFoldersInPath([], $searchPath, $allowedFileExtensions);
             foreach ($files as $file) {
                 $fileName = PathUtility::basename($file);
                 $locale = $this->getLocaleFromLanguageFile($fileName);
                 if ($locale === null) {
-                    $locale = 'en';
+                    $locale = 'default';
                 }
+                if ($defaultLocaleOnlyForCacheWarmup && $locale !== 'default') {
+                    continue;
+                }
+
                 $relativeFilePath = substr($file, strlen($packagePath));
                 $fileReference = 'EXT:' . $packageKey . '/' . $relativeFilePath;
+
+                if ($defaultLocaleOnlyForCacheWarmup) {
+                    $result[$locale][] = $fileReference;
+                    continue;
+                }
+
                 try {
                     $orderedFiles = $this->getOrderedFileResources($fileReference, $locale);
-                    if (isset($orderedFiles[$locale]) && $orderedFiles[$locale] !== []) {
+                    if ($orderedFiles !== []) {
                         if (!isset($result[$locale])) {
                             $result[$locale] = [];
                         }
-                        $result[$locale] = array_merge($result[$locale], $orderedFiles[$locale]);
-                    }
-                    if ($locale !== 'en' && isset($orderedFiles['en']) && $orderedFiles['en'] !== []) {
-                        if (!isset($result['en'])) {
-                            $result['en'] = [];
-                        }
-                        $result['en'] = array_merge($result['en'], $orderedFiles['en']);
+                        $result[$locale] = array_merge($result[$locale], $orderedFiles);
                     }
                 } catch (FileNotFoundException $e) {
                 }
@@ -117,39 +121,42 @@ readonly class LabelFileResolver
     protected function getOrderedFileResources(string $fileReference, string $locale): array
     {
         $result = [];
-        // The "english" (=base) locale must not contain other language entries.
-        // Otherwise, when checking for a base locale file, it will hold an array of ALL
-        // other language variants, and then due to alphabetical sorting, any language with a
-        // first character AFTER "l" (locallang) would be regarded as the base entry.
-        // So this is why non-'en' is not getting special treatment here.
-        $result[$locale] = [];
         try {
-            $baseFile = $this->resolveFileReference($fileReference, $locale, $locale !== 'en');
-            $result[$locale][] = $baseFile;
+            $baseFile = $this->resolveFileReference($fileReference, $locale);
+            if ($baseFile !== null) {
+                $result[] = $baseFile;
+            }
         } catch (FileNotFoundException $e) {
 
         }
         $overrideFiles = $this->getOverrideFilePaths($fileReference, $locale);
         if ($overrideFiles !== []) {
-            $result[$locale] = array_merge($result[$locale], $overrideFiles);
+            $result = array_merge($result, $overrideFiles);
         }
         return $result;
     }
 
-    public function resolveFileReference(string $fileReference, string $locale, bool $useDefault = true): ?string
+    /**
+     * @throws FileNotFoundException
+     */
+    public function resolveFileReference(string $fileReference, string $locale): ?string
     {
         $actualSourcePath = $this->getAbsoluteFileReference($fileReference);
         if (PathUtility::isExtensionPath($fileReference)) {
             $actualSourcePath = $this->resolveExtensionResourcePath($actualSourcePath, $locale, $fileReference);
         }
-        if ($useDefault) {
-            $localizedSourcePath = $this->resolveLocalizedFilePath($actualSourcePath, $locale);
-            if ($locale === 'en' && $localizedSourcePath === null) {
-                return $actualSourcePath;
-            }
-            return $localizedSourcePath;
+
+        if ($locale === 'default') {
+            // The "default" (=base) locale must not contain other language entries.
+            // Otherwise, when checking for a base locale file, it will hold an array of ALL
+            // other language variants, and then due to alphabetical sorting, any language with a
+            // first character AFTER "l" (locallang) would be regarded as the base entry.
+            return $actualSourcePath;
         }
-        return $actualSourcePath;
+
+        // Find localized file. If no localized version exists, return null.
+        $localizedSourcePath = $this->resolveLocalizedFilePath($actualSourcePath, $locale);
+        return $localizedSourcePath;
     }
 
     /**
@@ -202,6 +209,8 @@ readonly class LabelFileResolver
 
     /**
      * Get absolute file reference
+     *
+     * @throws FileNotFoundException Source localization file not found.
      */
     protected function getAbsoluteFileReference(string $fileReference): string
     {

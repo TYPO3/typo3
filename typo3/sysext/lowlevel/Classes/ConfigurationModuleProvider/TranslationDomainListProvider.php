@@ -35,8 +35,8 @@ class TranslationDomainListProvider extends AbstractProvider
 
         foreach ($packages as $package) {
             $resourcesByLocale = $this->translationDomainMapper->findLabelResourcesInPackageGroupedByLocale($package->getPackageKey());
-            // Get English resources (base files)
-            $resources = $resourcesByLocale['en'] ?? [];
+            // Get 'default' resources (base files)
+            $resources = $resourcesByLocale['default'] ?? [];
             foreach ($resources as $domain => $resource) {
                 $labelData[] = [
                     'domain' => $domain,

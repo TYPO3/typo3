@@ -20,7 +20,6 @@ use Symfony\Component\Translation\MessageCatalogueInterface;
 use Symfony\Component\Translation\Translator;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * This class acts currently as facade around SymfonyTranslator.
@@ -101,7 +100,7 @@ readonly class LocalizationFactory
                 $this->translator->addLoader($key, new $loader());
             }
         }
-        $this->translator->setFallbackLocales(['en']);
+        $this->translator->setFallbackLocales(['default']);
     }
 
     /**
@@ -117,14 +116,13 @@ readonly class LocalizationFactory
      * Returns parsed data from a given file and language key.
      *
      * @param string $fileReference Input is a file-reference (see \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName). That file is expected to be a supported locallang file format
-     * @param string $languageKey Language key
+     * @param Locale|string|null $locale Locale with dependencies or language key. Null value is set to 'en' with fallback 'default'. @internal Language key as string loads language data with "en" and "default" as the default fallback dependency.
+     * @param bool $renewCache Recompute data and renew cache entry.
      *
      * @return array<string, string|array<int, array<string, string>>>
      */
-    public function getParsedData(string $fileReference, string $languageKey): array
+    public function getParsedData(string $fileReference, Locale|string|null $locale, bool $renewCache = false): array
     {
-        $languageKey = $languageKey === 'default' ? 'en' : $languageKey;
-
         if (in_array($fileReference, self::DEPRECATED_FILES)) {
             trigger_error(
                 sprintf('The file "%s" is deprecated. Please use a label from a different language file instead.', $fileReference),
@@ -136,20 +134,39 @@ readonly class LocalizationFactory
             $fileReference = self::MOVED_FILES[$fileReference];
         }
 
+        if ($locale === null) {
+            $locale = new Locale('en', ['default']);
+        }
+        if (is_string($locale)) {
+            // Load language data with fallback "en" and "default", as these are always implicitly the default fallback dependencies.
+            $locale = new Locale($locale);
+        }
+        $languageKey = $locale->getName();
+
         $fileReference = $this->translationDomainMapper->mapDomainToFileName($fileReference);
-        $systemCacheIdentifier = md5($fileReference . $languageKey);
+        $domainName = $this->translationDomainMapper->mapFileNameToDomain($fileReference);
+        $allLanguageKeysAsOrderedFallback = $this->computeAllLanguageKeys($locale);
+        $systemCacheIdentifier = md5($domainName . $languageKey . serialize($allLanguageKeysAsOrderedFallback));
 
         // If the content is in system cache, put it in runtime cache and use it
-        $labels = $this->systemCache->get($systemCacheIdentifier);
-        if (is_array($labels)) {
-            return $labels;
+        if (!$renewCache) {
+            $labels = $this->systemCache->get($systemCacheIdentifier);
+            if (is_array($labels)) {
+                return $labels;
+            }
         }
 
-        try {
-            $labels = $this->loadWithSymfonyTranslator($fileReference, $languageKey);
-        } catch (FileNotFoundException) {
-            $labels = [];
+        // Add files for all locales to Symfony Translator catalogue - order does not matter here.
+        foreach ($allLanguageKeysAsOrderedFallback as $currentLanguageKey) {
+            $this->loadFilesIntoSymfonyTranslator($fileReference, $currentLanguageKey, $domainName);
         }
+
+        // Set order of fallback locales in Symfony Translator.
+        if ($this->translator->getFallbackLocales() !== $allLanguageKeysAsOrderedFallback) {
+            // Performance: Setting fallbacks clears all catalogues, which results in computational expensive regeneration of catalogues!
+            $this->translator->setFallbackLocales($allLanguageKeysAsOrderedFallback);
+        }
+        $labels = $this->loadWithSymfonyTranslator($languageKey, $domainName);
 
         // Cache processed data
         $this->systemCache->set($systemCacheIdentifier, $labels);
@@ -157,50 +174,75 @@ readonly class LocalizationFactory
         return $labels;
     }
 
-    /**
-     * Apply localization overrides by merging override file contents
-     */
-    protected function applyLocalizationOverrides(string $fileReference, string $languageKey, array $labels): array
+    protected function computeAllLanguageKeys(Locale $locale): array
     {
-        $overrideFiles = $this->labelFileResolver->getOverrideFilePaths($fileReference, $languageKey);
-        $domainName = $this->translationDomainMapper->mapFileNameToDomain($fileReference);
-        foreach ($overrideFiles as $overrideFile) {
-            $catalogue = $this->getMessageCatalogue($overrideFile, $languageKey, $domainName);
-            $fallbackCatalogue = null;
-            if ($languageKey === 'en') {
-                $fallbackCatalogue = $this->getMessageCatalogue($fileReference, $languageKey, $domainName, false);
-            }
-            $overrideLabels = $this->convertCatalogueToLegacyFormat($catalogue, $domainName, $fallbackCatalogue);
-            ArrayUtility::mergeRecursiveWithOverrule($labels, $overrideLabels, true, false);
+        if ($locale->getName() === 'default') {
+            return ['default'];
         }
 
-        return $labels;
+        $mainLocales = [$locale->getName()];
+        $dependencyLocales = $locale->getDependencies();
+
+        // Firstly, remove 'default' if exists. 'en' must be added before 'default'.
+        if (($keyDefault = array_search('default', $dependencyLocales, true)) !== false) {
+            unset($dependencyLocales[$keyDefault]);
+        }
+        // 'en' and 'default' is always added as the default fallback dependency
+        $allLocales = array_merge($mainLocales, $dependencyLocales, ['en', 'default']);
+        $allLocales = array_unique($allLocales);
+        return $allLocales;
+    }
+
+    /**
+     * Load files into Symfony Translator
+     */
+    protected function loadFilesIntoSymfonyTranslator(string $fileReference, string $languageKey, string $domainName): void
+    {
+        // Firstly, load language into catalogue.
+        try {
+            $this->addFileReferenceToTranslator($fileReference, $languageKey, $domainName);
+        } catch (FileNotFoundException) {
+            // Run localization override, regardless of file reference not found.
+        }
+
+        // Finally, apply localization overrides.
+        $overrideFiles = $this->labelFileResolver->getOverrideFilePaths($fileReference, $languageKey);
+        foreach ($overrideFiles as $overrideFile) {
+            try {
+                $this->addFileReferenceToTranslator($overrideFile, $languageKey, $domainName);
+            } catch (FileNotFoundException) {
+            }
+        }
     }
 
     /**
      * Get the catalogue and convert to TYPO3 format
      */
-    protected function loadWithSymfonyTranslator(string $fileReference, string $languageKey): array
+    protected function loadWithSymfonyTranslator(string $languageKey, string $domainName): array
     {
-        $domainName = $this->translationDomainMapper->mapFileNameToDomain($fileReference);
-        $catalogue = $this->getMessageCatalogue($fileReference, $languageKey, $domainName);
-        $fallbackCatalogue = null;
-        if ($languageKey === 'en') {
-            $fallbackCatalogue = $this->getMessageCatalogue($fileReference, $languageKey, $domainName, false);
-        }
-        $labels = $this->convertCatalogueToLegacyFormat($catalogue, $domainName, $fallbackCatalogue);
-        return $this->applyLocalizationOverrides($fileReference, $languageKey, $labels);
+        $catalogue = $this->getMessageCatalogue($languageKey);
+        return $this->convertCatalogueToLegacyFormat($catalogue, $domainName);
     }
 
     /**
-     * Load translations of one resource using Symfony Translator
+     * Load complete catalogue for locale using Symfony Translator
      */
-    protected function getMessageCatalogue(string $fileReference, string $locale, string $domainName, bool $useDefault = true): MessageCatalogueInterface
+    protected function getMessageCatalogue(string $locale): MessageCatalogueInterface
     {
-        $actualSourcePath = $this->labelFileResolver->resolveFileReference($fileReference, $locale, $useDefault);
+        return $this->translator->getCatalogue($locale);
+    }
+
+    /**
+     * Adds translations of one resource to Symfony Translator
+     *
+     * @throws FileNotFoundException
+     */
+    protected function addFileReferenceToTranslator(string $fileReference, string $locale, string $domainName): void
+    {
+        $actualSourcePath = $this->labelFileResolver->resolveFileReference($fileReference, $locale);
         if ($actualSourcePath === null) {
-            // No file found: return locale catalogue as is or even empty.
-            return $this->translator->getCatalogue($locale);
+            // No file found. This might be the case if there is no localized version.
+            return;
         }
         // Add the resource to Symfony Translator, if not added yet.
         $cacheIdentifier = 'symfony-translator-localization-factory-' . md5($actualSourcePath . '-' . $locale . '-' . $domainName);
@@ -210,15 +252,15 @@ readonly class LocalizationFactory
             $this->translator->addResource($fileExtension ?: 'xlf', $actualSourcePath, $locale, $domainName);
             $this->runtimeCache->set($cacheIdentifier, true);
         }
-        return $this->translator->getCatalogue($locale);
     }
 
     /**
      * Convert Symfony MessageCatalogue to TYPO3's legacy format
      */
-    protected function convertCatalogueToLegacyFormat(MessageCatalogueInterface $catalogue, string $domain, ?MessageCatalogueInterface $fallbackCatalogue = null): array
+    protected function convertCatalogueToLegacyFormat(MessageCatalogueInterface $catalogue, string $domain): array
     {
         $result = [];
+        $fallbackCatalogue = $catalogue->getFallbackCatalogue();
         if ($fallbackCatalogue !== null) {
             $result = $this->convertCatalogueToLegacyFormat($fallbackCatalogue, $domain);
         }
