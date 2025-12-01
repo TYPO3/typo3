@@ -17,6 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Security;
 
+/**
+ * This class represents a value that can be either untrusted
+ * (meaning it needs to be verified later) or trusted
+ * (meaning it has already been verified).
+ */
 final readonly class RawValue
 {
     public function __construct(public string $value, public bool $trusted = false) {}
