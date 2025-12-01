@@ -54,6 +54,12 @@ final class LocalizationUtilityTest extends FunctionalTestCase
             'fallback to English when translation is missing for key' =>
             ['key2', 'da', 'English label for key2'],
 
+            'get translated key (russian, sort order relevant)' =>
+            ['key1', 'ru', 'Russian label for key1'],
+
+            'fallback to English when translation is missing for ru key' =>
+            ['key2', 'ru', 'English label for key2'],
+
             'fallback to English for non existing language' =>
             ['key2', 'xx', 'English label for key2'],
 
@@ -199,6 +205,9 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         $result = LocalizationUtility::translate('key6', 'label_test', languageKey: 'da', request: $request);
         self::assertSame('Dansk label for key6', $result);
 
+        $result = LocalizationUtility::translate('key6', 'label_test', languageKey: 'ru', request: $request);
+        self::assertSame('Russian label for key6', $result);
+
         $result = LocalizationUtility::translate('missingkey', 'label_test', languageKey: 'da', request: $request);
         self::assertNull($result);
     }
@@ -214,6 +223,10 @@ final class LocalizationUtilityTest extends FunctionalTestCase
             'plugin.' => [
                 'tx_labeltest.' => ['_LOCAL_LANG.' => [
                     'da.' => [
+                        'key4' => 'override',
+                        // 'key6' not set, expected to remain as defined in locallang.xlf of fixture
+                    ],
+                    'ru.' => [
                         'key4' => 'override',
                         // 'key6' not set, expected to remain as defined in locallang.xlf of fixture
                     ],
@@ -233,6 +246,19 @@ final class LocalizationUtilityTest extends FunctionalTestCase
 
         $result = LocalizationUtility::translate('missingkey', 'label_test', languageKey: 'da', request: $request);
         self::assertNull($result);
+
+        $result = LocalizationUtility::translate('key1', 'label_test', languageKey: 'ru', request: $request);
+        self::assertSame('Russian label for key1', $result);
+
+        $result = LocalizationUtility::translate('key4', 'label_test', languageKey: 'ru', request: $request);
+        self::assertSame('override', $result);
+
+        $result = LocalizationUtility::translate('key6', 'label_test', languageKey: 'ru', request: $request);
+        self::assertSame('Russian label for key6', $result);
+
+        $result = LocalizationUtility::translate('missingkey', 'label_test', languageKey: 'ru', request: $request);
+        self::assertNull($result);
+
     }
 
     #[Test]
@@ -264,12 +290,18 @@ final class LocalizationUtilityTest extends FunctionalTestCase
                     'da.' => [
                         'key1' => 'I am a new key and there is no xlf file',
                     ],
+                    'ru.' => [
+                        'key1' => 'I am a new key and there is no xlf file',
+                    ],
                 ],
                 ],
             ],
         ]);
         $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
         $result = LocalizationUtility::translate('key1', 'core', [], 'da', request: $request);
+        self::assertSame('I am a new key and there is no xlf file', $result);
+
+        $result = LocalizationUtility::translate('key1', 'core', [], 'ru', request: $request);
         self::assertSame('I am a new key and there is no xlf file', $result);
     }
 }

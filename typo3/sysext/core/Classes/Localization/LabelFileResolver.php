@@ -117,11 +117,12 @@ readonly class LabelFileResolver
     protected function getOrderedFileResources(string $fileReference, string $locale): array
     {
         $result = [];
-        if ($locale !== 'en') {
-            $result['en'] = $this->getOrderedFileResources($fileReference, 'en')['en'];
-        } else {
-            $result[$locale] = [];
-        }
+        // The "english" (=base) locale must not contain other language entries.
+        // Otherwise, when checking for a base locale file, it will hold an array of ALL
+        // other language variants, and then due to alphabetical sorting, any language with a
+        // first character AFTER "l" (locallang) would be regarded as the base entry.
+        // So this is why non-'en' is not getting special treatment here.
+        $result[$locale] = [];
         try {
             $baseFile = $this->resolveFileReference($fileReference, $locale, $locale !== 'en');
             $result[$locale][] = $baseFile;
