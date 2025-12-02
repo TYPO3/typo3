@@ -81,6 +81,7 @@
     }
 
     > .table-fit:last-child,
+    :not(.panel-group) > & > .panel-collapse > .table-fit:last-child,
     .panel-collapse > form > .table-fit:last-child,
     &:last-child .panel-collapse > .table-fit:last-child {
         border-end-start-radius: var(--typo3-panel-border-radius-inner-bottom);
