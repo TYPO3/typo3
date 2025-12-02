@@ -101,7 +101,7 @@ final class ExampleViewHelper extends AbstractViewHelper
 
             $codeMirrorConfig = [
                 'mode' => GeneralUtility::jsonEncodeForHtmlAttribute($mode->getModule(), false),
-                'readonly' => true,
+                'readonly' => 'readonly',
             ];
             $attributes = [
                 'wrap' => 'off',
