@@ -164,10 +164,8 @@ final readonly class RecordFinder
             ->executeQuery()
             ->fetchAllAssociative();
         $result = [];
-        if (is_array($rows)) {
-            foreach ($rows as $row) {
-                $result[] = $row['uid'];
-            }
+        foreach ($rows as $row) {
+            $result[] = $row['uid'];
         }
         return $result;
     }
@@ -192,10 +190,8 @@ final readonly class RecordFinder
             ->executeQuery()
             ->fetchAllAssociative();
         $result = [];
-        if (is_array($rows)) {
-            foreach ($rows as $row) {
-                $result[] = $row['uid'];
-            }
+        foreach ($rows as $row) {
+            $result[] = $row['uid'];
         }
         return $result;
     }
@@ -221,10 +217,8 @@ final readonly class RecordFinder
             ->executeQuery()
             ->fetchAllAssociative();
         $result = [];
-        if (is_array($rows)) {
-            foreach ($rows as $row) {
-                $result[] = $row['uid'];
-            }
+        foreach ($rows as $row) {
+            $result[] = $row['uid'];
         }
         return $result;
     }
@@ -296,11 +290,8 @@ final readonly class RecordFinder
         }
 
         $rows = $queryBuilder->orderBy('pid', 'DESC')->executeQuery()->fetchAllAssociative();
-        $result = [];
-        if (is_array($rows)) {
-            $result = array_column($rows, 'uid');
-            sort($result);
-        }
+        $result = array_column($rows, 'uid');
+        sort($result);
 
         return $result;
     }

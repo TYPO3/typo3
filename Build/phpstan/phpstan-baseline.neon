@@ -2695,24 +2695,6 @@ parameters:
 			path: ../../typo3/sysext/styleguide/Classes/Form/Element/User1Element.php
 
 		-
-			message: '#^Call to function is_array\(\) with list\<array\<string, mixed\>\> will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 4
-			path: ../../typo3/sysext/styleguide/Classes/TcaDataGenerator/RecordFinder.php
-
-		-
-			message: '#^Parameter \#1 \$arr of static method TYPO3\\CMS\\Core\\Utility\\GeneralUtility\:\:implodeAttributes\(\) expects array\<string, int\|string\>, array\<string, string\|true\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/styleguide/Classes/ViewHelpers/CodeViewHelper.php
-
-		-
-			message: '#^Parameter \#1 \$arr of static method TYPO3\\CMS\\Core\\Utility\\GeneralUtility\:\:implodeAttributes\(\) expects array\<string, int\|string\>, array\<string, string\|true\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/styleguide/Classes/ViewHelpers/ExampleViewHelper.php
-
-		-
 			message: '#^Instanceof between TYPO3\\CMS\\Core\\Site\\Entity\\Site and TYPO3\\CMS\\Core\\Site\\Entity\\Site will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
