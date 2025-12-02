@@ -49,10 +49,9 @@ follow these strategies:
 
 ..  note::
 
-    The related upgrade wizard CLI command and services will also be moved to
-    `EXT:core`, making `EXT:install` fully optional while being able to
-    execute TYPO3 and extension upgrade wizards on deployments via CLI
-    commands.
+    The related upgrade wizard CLI command and services have been moved to
+    `EXT:core`, allowing to execute TYPO3 Core and extension upgrade wizards on
+    deployments via CLI commands and making `EXT:install` optional for them.
 
 See :ref:`deprecation-106947-1750759241` for details about moved interfaces,
 PHP attribute and a migration example.
