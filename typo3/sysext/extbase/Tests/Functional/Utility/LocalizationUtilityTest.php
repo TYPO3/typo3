@@ -55,10 +55,10 @@ final class LocalizationUtilityTest extends FunctionalTestCase
             ['key2', 'label_test', 'da', 'English label for key2'],
 
             'get translated key (russian, sort order relevant)' =>
-            ['key1', 'ru', 'Russian label for key1'],
+            ['key1', 'label_test', 'ru', 'Russian label for key1'],
 
             'fallback to English when translation is missing for ru key' =>
-            ['key2', 'ru', 'English label for key2'],
+            ['key2', 'label_test', 'ru', 'English label for key2'],
 
             'fallback to English for non existing language' =>
             ['key2', 'label_test', 'xx', 'English label for key2'],
