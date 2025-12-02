@@ -36,13 +36,16 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
+use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Service\DatabaseUpgradeWizardsService;
 use TYPO3\CMS\Core\Service\SilentConfigurationUpgradeService;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\Type\Map;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 
@@ -81,6 +84,7 @@ class ServiceProvider extends AbstractServiceProvider
             Command\CacheFlushTagsCommand::class => self::getCacheFlushTagsCommand(...),
             Command\CacheWarmupCommand::class => self::getCacheWarmupCommand(...),
             Command\DumpAutoloadCommand::class => self::getDumpAutoloadCommand(...),
+            Command\UpdateLanguagePackCommand::class => self::getUpdateLanguagePackCommand(...),
             Command\UpgradeWizardRunCommand::class => self::getUpgradeWizardRunCommand(...),
             Command\UpgradeWizardListCommand::class => self::getUpgradeWizardListCommand(...),
             Command\UpgradeWizardMarkUndoneCommand::class => self::getUpgradeWizardMarkUndoneCommand(...),
@@ -124,6 +128,7 @@ class ServiceProvider extends AbstractServiceProvider
             Service\DependencyOrderingService::class => self::getDependencyOrderingService(...),
             // @deprecated since TYPO3 v14, will be removed in TYPO3 v15
             Service\FlexFormService::class => self::getFlexFormService(...),
+            Localization\LanguagePackService::class => self::getLanguagePackService(...),
             Service\OpcodeCacheService::class => self::getOpcodeCacheService(...),
             Service\SilentConfigurationUpgradeService::class => self::getSilentConfigurationUpgradeService(...),
             TypoScript\TypoScriptStringFactory::class => self::getTypoScriptStringFactory(...),
@@ -289,6 +294,14 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getDumpAutoloadCommand(ContainerInterface $container): Command\DumpAutoloadCommand
     {
         return new Command\DumpAutoloadCommand();
+    }
+
+    public static function getUpdateLanguagePackCommand(ContainerInterface $container): Command\UpdateLanguagePackCommand
+    {
+        return new Command\UpdateLanguagePackCommand(
+            'language:update',
+            $container->get(Core\BootService::class)
+        );
     }
 
     public static function getUpgradeWizardRunCommand(ContainerInterface $container): Command\UpgradeWizardRunCommand
@@ -617,6 +630,16 @@ class ServiceProvider extends AbstractServiceProvider
         return new Service\DependencyOrderingService();
     }
 
+    public static function getLanguagePackService(ContainerInterface $container): Localization\LanguagePackService
+    {
+        return new Localization\LanguagePackService(
+            $container->get(EventDispatcherInterface::class),
+            $container->get(RequestFactory::class),
+            $container->get(LogManager::class)->getLogger(Localization\LanguagePackService::class),
+            $container->get(SystemResourcePublisherInterface::class),
+        );
+    }
+
     public static function getOpcodeCacheService(ContainerInterface $container): Service\OpcodeCacheService
     {
         return self::new($container, Service\OpcodeCacheService::class);
@@ -815,6 +838,14 @@ class ServiceProvider extends AbstractServiceProvider
             'upgrade:mark:undone',
             Command\UpgradeWizardMarkUndoneCommand::class,
             'Mark upgrade wizard as undone.'
+        );
+
+        $commandRegistry->addLazyCommand(
+            'language:update',
+            Command\UpdateLanguagePackCommand::class,
+            'Update the language files of all activated extensions',
+            false,
+            true,
         );
 
         return $commandRegistry;

@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Service\Event;
+namespace TYPO3\CMS\Core\Localization\Event;
 
 /**
  * Event to modify the language pack array

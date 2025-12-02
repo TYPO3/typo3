@@ -913,18 +913,6 @@ parameters:
 			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/MethodArgumentUnusedMatcher.php
 
 		-
-			message: '#^Offset string on array\{\} on left side of \?\? does not exist\.$#'
-			identifier: nullCoalesce.offset
-			count: 2
-			path: ../../typo3/sysext/install/Classes/Service/LanguagePackService.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between '''' and ''excludeFromUpdates'' will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: ../../typo3/sysext/install/Classes/Service/LanguagePackService.php
-
-		-
 			message: '#^Strict comparison using \!\=\= between object\|resource and null will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 4

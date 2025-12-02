@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Command;
+namespace TYPO3\CMS\Core\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -25,18 +25,19 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Core\BootService;
+use TYPO3\CMS\Core\Localization\LanguagePackService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Service\LanguagePackService;
-use TYPO3\CMS\Install\Service\LateBootService;
 
 /**
  * Core function for updating language packs
+ * @internal to provide "language:update" command in `EXT:core` and not part of public API.
  */
-class LanguagePackCommand extends Command
+class UpdateLanguagePackCommand extends Command
 {
     public function __construct(
         string $name,
-        private readonly LateBootService $lateBootService
+        private readonly BootService $bootService
     ) {
         parent::__construct($name);
     }
@@ -82,7 +83,7 @@ class LanguagePackCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false, true);
+        $container = $this->bootService->loadExtLocalconfDatabaseAndExtTables();
         $languagePackService = $container->get(LanguagePackService::class);
         $noProgress = $input->getOption('no-progress') || $output->isVerbose();
         $isos = (array)$input->getArgument('locales');

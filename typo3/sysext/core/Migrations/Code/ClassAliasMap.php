@@ -17,4 +17,7 @@ declare(strict_types=1);
 
 return [
     'TYPO3\\CMS\\Core\\Service\\FlexFormService' => \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class,
+    'TYPO3\\CMS\\Install\\Command\\LanguagePackCommand' => \TYPO3\CMS\Core\Command\UpdateLanguagePackCommand::class,
+    'TYPO3\\CMS\\Install\\Service\\Event\\ModifyLanguagePackRemoteBaseUrlEvent' => \TYPO3\CMS\Core\Localization\Event\ModifyLanguagePackRemoteBaseUrlEvent::class,
+    'TYPO3\\CMS\\Install\\Service\\Event\\ModifyLanguagePacksEvent' => \TYPO3\CMS\Core\Localization\Event\ModifyLanguagePacksEvent::class,
 ];

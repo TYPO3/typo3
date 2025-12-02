@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Service;
+namespace TYPO3\CMS\Core\Localization;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
@@ -24,20 +24,19 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Localization\Event\ModifyLanguagePackRemoteBaseUrlEvent;
+use TYPO3\CMS\Core\Localization\Event\ModifyLanguagePacksEvent;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Service\Archive\ZipService;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Service\Event\ModifyLanguagePackRemoteBaseUrlEvent;
-use TYPO3\CMS\Install\Service\Event\ModifyLanguagePacksEvent;
 
 /**
  * Service class handling language pack details
  * Used by 'manage language packs' module and 'language packs command'
  *
- * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
+ * @internal This class is only meant to be used within EXT:core and is not part of the TYPO3 Core API.
  */
 class LanguagePackService
 {
@@ -138,11 +137,13 @@ class LanguagePackService
             $key = $package->getPackageKey();
             $title = $package->getValueFromComposerManifest('description') ?? '';
             if (is_file($path . 'ext_emconf.php')) {
+                // @todo Phasing out `ext_emconf.php` is a ongoing process and title, state and excludeFromUpdates
+                //       handling needs a replacement here for composer mode. Investigate.
                 $_EXTKEY = $key;
                 $EM_CONF = [];
                 include $path . 'ext_emconf.php';
+                /** @var array<string, array<string, mixed>> $EM_CONF */
                 $title = $EM_CONF[$key]['title'] ?? $title;
-
                 $state = $EM_CONF[$key]['state'] ?? '';
                 if ($state === 'excludeFromUpdates') {
                     continue;

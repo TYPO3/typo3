@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install;
 
 use Psr\Container\ContainerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
@@ -30,7 +29,6 @@ use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
-use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -48,7 +46,6 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Service\DatabaseUpgradeWizardsService;
 use TYPO3\CMS\Core\Service\SilentConfigurationUpgradeService;
-use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\TypoScript\AST\CommentAwareAstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
@@ -85,7 +82,6 @@ class ServiceProvider extends AbstractServiceProvider
             Service\ClearTableService::class => self::getClearTableService(...),
             Service\CoreUpdateService::class => self::getCoreUpdateService(...),
             Service\CoreVersionService::class => self::getCoreVersionService(...),
-            Service\LanguagePackService::class => self::getLanguagePackService(...),
             Service\LateBootService::class => self::getLateBootService(...),
             Service\LoadTcaService::class => self::getLoadTcaService(...),
             Service\SilentTemplateFileUpgradeService::class => self::getSilentTemplateFileUpgradeService(...),
@@ -103,7 +99,6 @@ class ServiceProvider extends AbstractServiceProvider
             Controller\MaintenanceController::class => self::getMaintenanceController(...),
             Controller\SettingsController::class => self::getSettingsController(...),
             Controller\UpgradeController::class => self::getUpgradeController(...),
-            Command\LanguagePackCommand::class => self::getLanguagePackCommand(...),
             Command\PasswordSetCommand::class => self::getPasswordGenerateCommand(...),
             Command\SetupCommand::class => self::getSetupCommand(...),
             Command\SetupDefaultBackendUserGroupsCommand::class => self::getSetupDefaultBackendUserGroupsCommand(...),
@@ -176,16 +171,6 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getCoreVersionService(ContainerInterface $container): Service\CoreVersionService
     {
         return new Service\CoreVersionService();
-    }
-
-    public static function getLanguagePackService(ContainerInterface $container): Service\LanguagePackService
-    {
-        return new Service\LanguagePackService(
-            $container->get(EventDispatcherInterface::class),
-            $container->get(RequestFactory::class),
-            $container->get(LogManager::class)->getLogger(Service\LanguagePackService::class),
-            $container->get(SystemResourcePublisherInterface::class),
-        );
     }
 
     public static function getLateBootService(ContainerInterface $container): Service\LateBootService
@@ -353,14 +338,6 @@ class ServiceProvider extends AbstractServiceProvider
         );
     }
 
-    public static function getLanguagePackCommand(ContainerInterface $container): Command\LanguagePackCommand
-    {
-        return new Command\LanguagePackCommand(
-            'language:update',
-            $container->get(Service\LateBootService::class)
-        );
-    }
-
     public static function getSetupCommand(ContainerInterface $container): Command\SetupCommand
     {
         return new Command\SetupCommand(
@@ -404,13 +381,6 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function configureCommands(ContainerInterface $container, CommandRegistry $commandRegistry): CommandRegistry
     {
-        $commandRegistry->addLazyCommand(
-            'language:update',
-            Command\LanguagePackCommand::class,
-            'Update the language files of all activated extensions',
-            false,
-            true
-        );
         $commandRegistry->addLazyCommand(
             'setup',
             Command\SetupCommand::class,

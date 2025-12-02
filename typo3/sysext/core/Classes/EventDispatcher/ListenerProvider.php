@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Core\EventDispatcher;
 
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
+use TYPO3\CMS\Core\Localization\Event\ModifyLanguagePackRemoteBaseUrlEvent;
+use TYPO3\CMS\Core\Localization\Event\ModifyLanguagePacksEvent;
 
 /**
  * Provides Listeners configured with the symfony service
@@ -28,6 +30,23 @@ use Psr\EventDispatcher\ListenerProviderInterface;
  */
 class ListenerProvider implements ListenerProviderInterface
 {
+    /**
+     * Maps new event class names to their deprecated predecessors.
+     * Listeners registered for a deprecated alias will still be called
+     * when the new event is dispatched, with a deprecation notice triggered.
+     *
+     * @todo Remove entries in TYPO3 v15.
+     * @var array<class-string, list<string>>
+     */
+    private const DEPRECATED_EVENT_ALIASES = [
+        ModifyLanguagePacksEvent::class => [
+            'TYPO3\\CMS\\Install\\Service\\Event\\ModifyLanguagePacksEvent',
+        ],
+        ModifyLanguagePackRemoteBaseUrlEvent::class => [
+            'TYPO3\\CMS\\Install\\Service\\Event\\ModifyLanguagePackRemoteBaseUrlEvent',
+        ],
+    ];
+
     /**
      * @var ContainerInterface
      */
@@ -77,8 +96,26 @@ class ListenerProvider implements ListenerProviderInterface
         if (!empty($classInterfaces)) {
             array_push($eventClasses, ...array_values($classInterfaces));
         }
+        // @todo Remove deprecated alias handling in TYPO3 v15.
+        $deprecatedAliases = self::DEPRECATED_EVENT_ALIASES[get_class($event)] ?? [];
+        foreach ($deprecatedAliases as $oldClassName) {
+            if (!in_array($oldClassName, $eventClasses, true)) {
+                $eventClasses[] = $oldClassName;
+            }
+        }
         foreach ($eventClasses as $className) {
             if (isset($this->listeners[$className])) {
+                // @todo Remove deprecated alias trigger_error in TYPO3 v15.
+                if (in_array($className, $deprecatedAliases, true)) {
+                    trigger_error(
+                        sprintf(
+                            'Listening to "%s" has been deprecated, use "%s" instead.',
+                            $className,
+                            get_class($event),
+                        ),
+                        E_USER_DEPRECATED,
+                    );
+                }
                 foreach ($this->listeners[$className] as $listener) {
                     yield $this->getCallable($listener['service'], $listener['method']);
                 }
