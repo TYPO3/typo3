@@ -36,6 +36,9 @@ env:
           port: 4444
           path: /wd/hub
           wait: 2
+          capabilities:
+            goog:chromeOptions:
+              args: ["no-sandbox", "disable-gpu", "disable-dev-shm-usage"]
   headless:
     modules:
       config:
@@ -49,7 +52,7 @@ env:
               # This behaviour is caused by the "new" headless mode that became default in chrome 128,
               # were browser chrome like URL bars are virtually rendered in headless mode and therefore implicitly
               # shrink the rendered document size.
-              args: ["headless=old", "no-sandbox", "disable-gpu", "window-size=1280,1024"]
+              args: ["headless=old", "no-sandbox", "disable-gpu", "window-size=1280,1024", "disable-dev-shm-usage"]
 params:
   - parameters.yml
   - env
