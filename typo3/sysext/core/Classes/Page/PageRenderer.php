@@ -156,7 +156,6 @@ class PageRenderer implements SingletonInterface
                 case 'iconRegistry':
                 case 'resourcePublisher':
                 case 'systemResourceFactory':
-                    break;
                 case 'nonce':
                     break;
                 case 'metaTagRegistry':
@@ -189,13 +188,8 @@ class PageRenderer implements SingletonInterface
                 case 'streamFactory':
                 case 'iconRegistry':
                 case 'resourcePublisher':
-                case 'systemResourceFactory':
-                    // @todo: bodyContent is cached twice: once in 'content' of pageRow (see FE setPageCacheContent()),
-                    //        and a second time because it is added using addBodyContent() as well during page generation.
-                    //        An easy solution is to exclude it here, but a bigger overhaul of the entire 'marker' madness
-                    //        is what is *really* needed. Also see the various 'cached' and 'uncached' render methods.
-                    break;
                 case 'nonce':
+                case 'systemResourceFactory':
                     break;
                 case 'metaTagRegistry':
                     $state[$var] = $this->metaTagRegistry->getState();
@@ -1021,23 +1015,43 @@ class PageRenderer implements SingletonInterface
      *
      * @return string Content of rendered page
      */
-    public function render()
+    public function render(): string
     {
         $this->prepareRendering();
         [$jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs] = $this->renderJavaScriptAndCss();
         $metaTags = implode(LF, $this->renderMetaTagsFromAPI());
-        $markerArray = $this->getPreparedMarkerArray($jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs, $metaTags);
+        $markerArray = [
+            'XMLPROLOG_DOCTYPE' => $this->xmlPrologAndDocType,
+            'HTMLTAG' => $this->htmlTag,
+            'HEADTAG' => $this->headTag,
+            'INLINECOMMENT' => $this->inlineComments ? LF . LF . '<!-- ' . LF . implode(LF, $this->inlineComments) . '-->' . LF . LF : '',
+            'SHORTCUT' => $this->favIcon ? sprintf($this->shortcutTag, htmlspecialchars($this->favIcon), $this->iconMimeType) : '',
+            'CSS_LIBS' => $cssLibs,
+            'CSS_INCLUDE' => $cssFiles,
+            'CSS_INLINE' => $cssInline,
+            'JS_INLINE' => $jsInline,
+            'JS_INCLUDE' => $jsFiles,
+            'JS_LIBS' => $jsLibs,
+            'TITLE' => $this->title ? str_replace('|', htmlspecialchars($this->title), $this->titleTag) : '',
+            'META' => $metaTags,
+            'HEADERDATA' => $this->headerData ? implode(LF, $this->headerData) : '',
+            'FOOTERDATA' => $this->footerData ? implode(LF, $this->footerData) : '',
+            'JS_LIBS_FOOTER' => $jsFooterLibs,
+            'JS_INCLUDE_FOOTER' => $jsFooterFiles,
+            'JS_INLINE_FOOTER' => $jsFooterInline,
+            'BODY' => $this->bodyContent,
+            // @internal
+            'TRAILING_SLASH_FOR_SELF_CLOSING_TAG' => $this->endingSlash ? ' ' . $this->endingSlash : '',
+        ];
+        $markerArray = array_map(trim(...), $markerArray);
         $template = $this->getTemplate();
-
         // The page renderer needs a full reset when the page was rendered
         $this->reset();
         return trim($this->templateService->substituteMarkerArray($template, $markerArray, '###|###'));
     }
 
-    public function renderResponse(
-        int $code = 200,
-        string $reasonPhrase = '',
-    ): ResponseInterface {
+    public function renderResponse(int $code = 200, string $reasonPhrase = ''): ResponseInterface
+    {
         $stream = $this->streamFactory->createStream($this->render());
         return $this->responseFactory->createResponse($code, $reasonPhrase)
             ->withHeader('Content-Type', 'text/html; charset=utf-8')
@@ -1064,17 +1078,46 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * Render the page but not the JavaScript and CSS Files
+     * Frontend related rendering of the main page HTML scaffold with placeholders
+     * for dynamic sections finished by uncached element ("INT") processing later.
+     * The result of this method is cached as content in page cache.
      *
      * @param string $substituteHash The hash that is used for the placeholder markers
-     * @internal
-     * @return string Content of rendered page
+     * @internal FE only. Never use in extensions.
      */
-    public function renderPageWithUncachedObjects($substituteHash)
+    public function renderPageWithUncachedObjects(string $substituteHash): string
     {
         $this->prepareRendering();
-        $markerArray = $this->getPreparedMarkerArrayForPageWithUncachedObjects($substituteHash);
+        $markerArray = [
+            'XMLPROLOG_DOCTYPE' => $this->xmlPrologAndDocType,
+            'HTMLTAG' => $this->htmlTag,
+            'HEADTAG' => $this->headTag,
+            'INLINECOMMENT' => $this->inlineComments ? LF . LF . '<!-- ' . LF . implode(LF, $this->inlineComments) . '-->' . LF . LF : '',
+            'SHORTCUT' => $this->favIcon ? sprintf($this->shortcutTag, htmlspecialchars($this->favIcon), $this->iconMimeType) : '',
+            'META' => '<!-- ###META' . $substituteHash . '### -->',
+            'BODY' => $this->bodyContent,
+            'TITLE' => '<!-- ###TITLE' . $substituteHash . '### -->',
+            'CSS_LIBS' => '<!-- ###CSS_LIBS' . $substituteHash . '### -->',
+            'CSS_INCLUDE' => '<!-- ###CSS_INCLUDE' . $substituteHash . '### -->',
+            'CSS_INLINE' => '<!-- ###CSS_INLINE' . $substituteHash . '### -->',
+            'JS_INLINE' => '<!-- ###JS_INLINE' . $substituteHash . '### -->',
+            'JS_INCLUDE' => '<!-- ###JS_INCLUDE' . $substituteHash . '### -->',
+            'JS_LIBS' => '<!-- ###JS_LIBS' . $substituteHash . '### -->',
+            'HEADERDATA' => '<!-- ###HEADERDATA' . $substituteHash . '### -->',
+            'FOOTERDATA' => '<!-- ###FOOTERDATA' . $substituteHash . '### -->',
+            'JS_LIBS_FOOTER' => '<!-- ###JS_LIBS_FOOTER' . $substituteHash . '### -->',
+            'JS_INCLUDE_FOOTER' => '<!-- ###JS_INCLUDE_FOOTER' . $substituteHash . '### -->',
+            'JS_INLINE_FOOTER' => '<!-- ###JS_INLINE_FOOTER' . $substituteHash . '### -->',
+            // @internal
+            'TRAILING_SLASH_FOR_SELF_CLOSING_TAG' => $this->endingSlash ? ' ' . $this->endingSlash : '',
+        ];
+        // Reset body content to empty string so the content is not cached twice since it is
+        // already cached as 'content' section next to the other PageRenderer state.
+        $this->bodyContent = '';
+        $markerArray = array_map(trim(...), $markerArray);
         $template = $this->getTemplate();
+        // Note in contrast to render(), this method does *not* call $this->reset() since the PageRenderer state
+        // is serialized and cached for uncached element processing.
         return trim($this->templateService->substituteMarkerArray($template, $markerArray, '###|###'));
     }
 
@@ -1090,6 +1133,10 @@ class PageRenderer implements SingletonInterface
     public function renderJavaScriptAndCssForProcessingOfUncachedContentObjects($cachedPageContent, $substituteHash)
     {
         $this->prepareRendering();
+        // bodyContent is reset to empty string in FE both after render() and renderPageWithUncachedObjects().
+        // $this->bodyContent is set to the "cached with placeholder" string here for renderJavaScriptAndCss()
+        // hook to consistently receive bodyContent, otherwise it wouldn't be needed to do this here.
+        $this->bodyContent = $cachedPageContent;
         [$jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs] = $this->renderJavaScriptAndCss();
         $title = $this->title ? str_replace('|', htmlspecialchars($this->title), $this->titleTag) : '';
         $markerArray = [
@@ -1119,7 +1166,7 @@ class PageRenderer implements SingletonInterface
      * if the page is being rendered as html (not xhtml)
      * and define property $this->endingSlash for further use
      */
-    protected function prepareRendering()
+    protected function prepareRendering(): void
     {
         if ($this->docType->isXmlCompliant()) {
             $this->endingSlash = ' /';
@@ -1167,85 +1214,6 @@ class PageRenderer implements SingletonInterface
 
         $this->executePostRenderHook($jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs);
         return [$jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs];
-    }
-
-    /**
-     * Fills the marker array with the given strings and trims each value
-     *
-     * @param string $jsLibs
-     * @param string $jsFiles
-     * @param string $jsFooterFiles
-     * @param string $cssLibs
-     * @param string $cssFiles
-     * @param string $jsInline
-     * @param string $cssInline
-     * @param string $jsFooterInline
-     * @param string $jsFooterLibs
-     * @param string $metaTags
-     * @return array Marker array
-     */
-    protected function getPreparedMarkerArray($jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs, $metaTags)
-    {
-        $markerArray = [
-            'XMLPROLOG_DOCTYPE' => $this->xmlPrologAndDocType,
-            'HTMLTAG' => $this->htmlTag,
-            'HEADTAG' => $this->headTag,
-            'INLINECOMMENT' => $this->inlineComments ? LF . LF . '<!-- ' . LF . implode(LF, $this->inlineComments) . '-->' . LF . LF : '',
-            'SHORTCUT' => $this->favIcon ? sprintf($this->shortcutTag, htmlspecialchars($this->favIcon), $this->iconMimeType) : '',
-            'CSS_LIBS' => $cssLibs,
-            'CSS_INCLUDE' => $cssFiles,
-            'CSS_INLINE' => $cssInline,
-            'JS_INLINE' => $jsInline,
-            'JS_INCLUDE' => $jsFiles,
-            'JS_LIBS' => $jsLibs,
-            'TITLE' => $this->title ? str_replace('|', htmlspecialchars($this->title), $this->titleTag) : '',
-            'META' => $metaTags,
-            'HEADERDATA' => $this->headerData ? implode(LF, $this->headerData) : '',
-            'FOOTERDATA' => $this->footerData ? implode(LF, $this->footerData) : '',
-            'JS_LIBS_FOOTER' => $jsFooterLibs,
-            'JS_INCLUDE_FOOTER' => $jsFooterFiles,
-            'JS_INLINE_FOOTER' => $jsFooterInline,
-            'BODY' => $this->bodyContent,
-            // @internal
-            'TRAILING_SLASH_FOR_SELF_CLOSING_TAG' => $this->endingSlash ? ' ' . $this->endingSlash : '',
-        ];
-
-        return array_map(trim(...), $markerArray);
-    }
-
-    /**
-     * Fills the marker array with the given strings and trims each value
-     *
-     * @param string $substituteHash The hash that is used for the placeholder markers
-     * @return array Marker array
-     */
-    protected function getPreparedMarkerArrayForPageWithUncachedObjects($substituteHash)
-    {
-        $markerArray = [
-            'XMLPROLOG_DOCTYPE' => $this->xmlPrologAndDocType,
-            'HTMLTAG' => $this->htmlTag,
-            'HEADTAG' => $this->headTag,
-            'INLINECOMMENT' => $this->inlineComments ? LF . LF . '<!-- ' . LF . implode(LF, $this->inlineComments) . '-->' . LF . LF : '',
-            'SHORTCUT' => $this->favIcon ? sprintf($this->shortcutTag, htmlspecialchars($this->favIcon), $this->iconMimeType) : '',
-            'META' => '<!-- ###META' . $substituteHash . '### -->',
-            'BODY' => $this->bodyContent,
-            'TITLE' => '<!-- ###TITLE' . $substituteHash . '### -->',
-            'CSS_LIBS' => '<!-- ###CSS_LIBS' . $substituteHash . '### -->',
-            'CSS_INCLUDE' => '<!-- ###CSS_INCLUDE' . $substituteHash . '### -->',
-            'CSS_INLINE' => '<!-- ###CSS_INLINE' . $substituteHash . '### -->',
-            'JS_INLINE' => '<!-- ###JS_INLINE' . $substituteHash . '### -->',
-            'JS_INCLUDE' => '<!-- ###JS_INCLUDE' . $substituteHash . '### -->',
-            'JS_LIBS' => '<!-- ###JS_LIBS' . $substituteHash . '### -->',
-            'HEADERDATA' => '<!-- ###HEADERDATA' . $substituteHash . '### -->',
-            'FOOTERDATA' => '<!-- ###FOOTERDATA' . $substituteHash . '### -->',
-            'JS_LIBS_FOOTER' => '<!-- ###JS_LIBS_FOOTER' . $substituteHash . '### -->',
-            'JS_INCLUDE_FOOTER' => '<!-- ###JS_INCLUDE_FOOTER' . $substituteHash . '### -->',
-            'JS_INLINE_FOOTER' => '<!-- ###JS_INLINE_FOOTER' . $substituteHash . '### -->',
-            // @internal
-            'TRAILING_SLASH_FOR_SELF_CLOSING_TAG' => $this->endingSlash ? ' ' . $this->endingSlash : '',
-        ];
-        $markerArray = array_map(trim(...), $markerArray);
-        return $markerArray;
     }
 
     /**

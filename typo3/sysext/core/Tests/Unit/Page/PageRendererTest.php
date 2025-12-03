@@ -47,19 +47,6 @@ final class PageRendererTest extends UnitTestCase
     }
 
     #[Test]
-    public function renderMethodCallsResetInAnyCase(): void
-    {
-        $pageRenderer = $this->getMockBuilder(PageRenderer::class)
-            ->setConstructorArgs($this->getPageRendererConstructorArgs())
-            ->onlyMethods(['reset', 'prepareRendering', 'renderJavaScriptAndCss', 'getPreparedMarkerArray', 'getTemplate'])
-            ->getMock();
-
-        $pageRenderer->expects($this->once())->method('reset');
-        GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
-        $pageRenderer->render();
-    }
-
-    #[Test]
     public function addBodyContentAddsContent(): void
     {
         $subject = $this->getAccessibleMock(PageRenderer::class, null, [], '', false);
