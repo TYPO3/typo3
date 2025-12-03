@@ -136,14 +136,18 @@ readonly class LabelFileResolver
         return $result;
     }
 
-    public function resolveFileReference(string $fileReference, string $locale, bool $useDefault = true): string
+    public function resolveFileReference(string $fileReference, string $locale, bool $useDefault = true): ?string
     {
         $actualSourcePath = $this->getAbsoluteFileReference($fileReference);
         if (PathUtility::isExtensionPath($fileReference)) {
             $actualSourcePath = $this->resolveExtensionResourcePath($actualSourcePath, $locale, $fileReference);
         }
         if ($useDefault) {
-            return $this->resolveLocalizedFilePath($actualSourcePath, $locale);
+            $localizedSourcePath = $this->resolveLocalizedFilePath($actualSourcePath, $locale);
+            if ($locale === 'en' && $localizedSourcePath === null) {
+                return $actualSourcePath;
+            }
+            return $localizedSourcePath;
         }
         return $actualSourcePath;
     }
@@ -281,9 +285,9 @@ readonly class LabelFileResolver
      *
      * @param string $sourcePath Absolute path to the source localization file
      * @param string $locale Language locale (e.g., "de", "de-CH", "de_AT")
-     * @return string Absolute path to the localized file, or original path if not found
+     * @return ?string Absolute path to the localized file, or null if no localized version found
      */
-    protected function resolveLocalizedFilePath(string $sourcePath, string $locale): string
+    protected function resolveLocalizedFilePath(string $sourcePath, string $locale): ?string
     {
         $possiblePrefixes = [$locale];
         if (str_contains($locale, '_')) {
@@ -327,6 +331,6 @@ readonly class LabelFileResolver
             }
         }
 
-        return $sourcePath;
+        return null;
     }
 }

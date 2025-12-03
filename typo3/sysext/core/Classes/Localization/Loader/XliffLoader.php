@@ -88,10 +88,10 @@ final readonly class XliffLoader implements LoaderInterface
         $version = $this->getXliffVersion($root);
 
         if ($version === '2.0') {
-            $this->parseXliff2($root, $catalogue, $locale, $domain);
+            $this->parseXliff2($root, $catalogue, $domain);
         } else {
             // Default to XLIFF 1.2 parsing
-            $this->parseXliff1($root, $catalogue, $locale, $domain);
+            $this->parseXliff1($root, $catalogue, $domain);
         }
 
         return $catalogue;
@@ -124,8 +124,10 @@ final readonly class XliffLoader implements LoaderInterface
     /**
      * Parse XLIFF 1.2 format
      */
-    private function parseXliff1(\SimpleXMLElement $root, MessageCatalogue $catalogue, string $locale, string $domain): void
+    private function parseXliff1(\SimpleXMLElement $root, MessageCatalogue $catalogue, string $domain): void
     {
+        $fileTag = $root->file;
+        $isDefaultLanguage = !isset($fileTag['target-language']); // Default language from XLIFF template (no target element)
         $bodyOfFileTag = $root->file->body;
         $requireApprovedLocalizations = (bool)($GLOBALS['TYPO3_CONF_VARS']['LANG']['requireApprovedLocalizations'] ?? true);
 
@@ -137,9 +139,9 @@ final readonly class XliffLoader implements LoaderInterface
                     // Regular translation unit
                     $id = (string)$translationElement['id'];
                     $deprecated = isset($translationElement['x-unused-since']);
-                    if ($locale === 'en') {
+                    if ($isDefaultLanguage) {
                         // Default language from XLIFF template (no target element)
-                        $translation = (string)($translationElement->target) ?: (string)$translationElement->source;
+                        $translation = (string)$translationElement->source;
                         $catalogue->set($id . ($deprecated ? '.x-unused' : ''), $translation, $domain);
                     } else {
                         $approved = (string)($translationElement['approved'] ?? 'yes');
@@ -156,9 +158,9 @@ final readonly class XliffLoader implements LoaderInterface
                             $deprecated = isset($translationPluralForm['x-unused-since']);
                             // Extract plural form index from ID like "1[0]", "1[1]"
                             $formIndex = substr((string)$translationPluralForm['id'], strpos((string)$translationPluralForm['id'], '[') + 1, -1);
-                            if ($locale === 'en') {
+                            if ($isDefaultLanguage) {
                                 // Default language from XLIFF template (no target element)
-                                $translation = (string)$translationPluralForm->target ?: (string)$translationPluralForm->source;
+                                $translation = (string)$translationPluralForm->source;
                                 $parsedTranslationElement[(int)$formIndex] = $translation;
                             } else {
                                 $approved = (string)($translationPluralForm['approved'] ?? 'yes');
@@ -186,7 +188,7 @@ final readonly class XliffLoader implements LoaderInterface
     /**
      * Parse XLIFF 2.0 format
      */
-    private function parseXliff2(\SimpleXMLElement $root, MessageCatalogue $catalogue, string $locale, string $domain): void
+    private function parseXliff2(\SimpleXMLElement $root, MessageCatalogue $catalogue, string $domain): void
     {
         $requireApprovedLocalizations = (bool)($GLOBALS['TYPO3_CONF_VARS']['LANG']['requireApprovedLocalizations'] ?? true);
 
@@ -194,6 +196,7 @@ final readonly class XliffLoader implements LoaderInterface
         $ns = reset($ns) ?: 'urn:oasis:names:tc:xliff:document:2.0';
         // Register the XLIFF 2.0 namespace
         $root->registerXPathNamespace('xliff', $ns);
+        $isDefaultLanguage = !isset($root['trgLang']); // Default language from XLIFF template (no target element)
 
         // Get all file elements
         $files = $root->xpath('//xliff:file');
@@ -230,9 +233,9 @@ final readonly class XliffLoader implements LoaderInterface
 
                     $deprecated = ((string)($segment['subState'] ?? '')) === 'deprecated';
 
-                    if ($locale === 'en') {
-                        // Default language from XLIFF template
-                        $translation = ($target !== false && isset($target[0])) ? (string)$target[0] : (string)$source[0];
+                    if ($isDefaultLanguage) {
+                        // Default language from XLIFF template (no target element)
+                        $translation = (string)$source[0];
                         $catalogue->set($unitId . ($deprecated ? '.x-unused' : ''), $translation, $domain);
                     } else {
                         // Check approval state (XLIFF 2.0 uses 'state' attribute on segment)
@@ -265,8 +268,9 @@ final readonly class XliffLoader implements LoaderInterface
                         $target = $segment->xpath('.//xliff:target');
                         $deprecated = $deprecated || ((string)($segment['subState'] ?? '')) === 'deprecated';
 
-                        if ($locale === 'en') {
-                            $translation = ($target !== false && isset($target[0])) ? (string)$target[0] : (string)$source[0];
+                        if ($isDefaultLanguage) {
+                            // Default language from XLIFF template (no target element)
+                            $translation = (string)$source[0];
                             $parsedTranslationElement[$formIndex] = $translation;
                         } else {
                             $approved = 'yes';

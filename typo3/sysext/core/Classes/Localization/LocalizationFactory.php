@@ -166,8 +166,11 @@ readonly class LocalizationFactory
         $domainName = $this->translationDomainMapper->mapFileNameToDomain($fileReference);
         foreach ($overrideFiles as $overrideFile) {
             $catalogue = $this->getMessageCatalogue($overrideFile, $languageKey, $domainName);
-            $fallbackCatalogue = $this->getMessageCatalogue($overrideFile, $languageKey, $domainName, false);
-            $overrideLabels = $this->convertCatalogueToLegacyFormat($catalogue, $fallbackCatalogue, $domainName);
+            $fallbackCatalogue = null;
+            if ($languageKey === 'en') {
+                $fallbackCatalogue = $this->getMessageCatalogue($fileReference, $languageKey, $domainName, false);
+            }
+            $overrideLabels = $this->convertCatalogueToLegacyFormat($catalogue, $domainName, $fallbackCatalogue);
             ArrayUtility::mergeRecursiveWithOverrule($labels, $overrideLabels, true, false);
         }
 
@@ -181,9 +184,11 @@ readonly class LocalizationFactory
     {
         $domainName = $this->translationDomainMapper->mapFileNameToDomain($fileReference);
         $catalogue = $this->getMessageCatalogue($fileReference, $languageKey, $domainName);
-        $fallbackCatalogue = $this->getMessageCatalogue($fileReference, $languageKey, $domainName, false);
-
-        $labels = $this->convertCatalogueToLegacyFormat($catalogue, $fallbackCatalogue, $domainName);
+        $fallbackCatalogue = null;
+        if ($languageKey === 'en') {
+            $fallbackCatalogue = $this->getMessageCatalogue($fileReference, $languageKey, $domainName, false);
+        }
+        $labels = $this->convertCatalogueToLegacyFormat($catalogue, $domainName, $fallbackCatalogue);
         return $this->applyLocalizationOverrides($fileReference, $languageKey, $labels);
     }
 
@@ -193,6 +198,10 @@ readonly class LocalizationFactory
     protected function getMessageCatalogue(string $fileReference, string $locale, string $domainName, bool $useDefault = true): MessageCatalogueInterface
     {
         $actualSourcePath = $this->labelFileResolver->resolveFileReference($fileReference, $locale, $useDefault);
+        if ($actualSourcePath === null) {
+            // No file found: return locale catalogue as is or even empty.
+            return $this->translator->getCatalogue($locale);
+        }
         // Add the resource to Symfony Translator, if not added yet.
         $cacheIdentifier = 'symfony-translator-localization-factory-' . md5($actualSourcePath . '-' . $locale . '-' . $domainName);
         if (!$this->runtimeCache->has($cacheIdentifier)) {
@@ -207,17 +216,11 @@ readonly class LocalizationFactory
     /**
      * Convert Symfony MessageCatalogue to TYPO3's legacy format
      */
-    protected function convertCatalogueToLegacyFormat(MessageCatalogueInterface $catalogue, MessageCatalogueInterface $fallbackCatalogue, string $domain): array
+    protected function convertCatalogueToLegacyFormat(MessageCatalogueInterface $catalogue, string $domain, ?MessageCatalogueInterface $fallbackCatalogue = null): array
     {
         $result = [];
-        foreach ($fallbackCatalogue->all($domain) as $key => $value) {
-            // Check if this is a plural form (contains ICU format)
-            if (str_contains($value, '{0, plural,')) {
-                $result[$key] = $this->parseIcuPlural($value);
-            } else {
-                // Regular translation
-                $result[$key] = $value;
-            }
+        if ($fallbackCatalogue !== null) {
+            $result = $this->convertCatalogueToLegacyFormat($fallbackCatalogue, $domain);
         }
         foreach ($catalogue->all($domain) as $key => $value) {
             // Check if this is a plural form (contains ICU format)
@@ -225,7 +228,7 @@ readonly class LocalizationFactory
                 $result[$key] = $this->parseIcuPlural($value);
             } else {
                 // Regular translation
-                $result[$key] = $value ?: $fallbackCatalogue->get($key, $domain);
+                $result[$key] = $value;
             }
         }
 

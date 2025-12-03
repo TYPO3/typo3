@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" datatype="plaintext" original="EXT:test_fluidpagerendering/Resources/Private/Language/page.xlf" date="2023-12-21T11:57:33Z" product-name="test_fluidpagerendering">
+  <file source-language="en" target-language="fr" datatype="plaintext" original="EXT:test_fluidpagerendering/Resources/Private/Language/page.xlf" date="2023-12-21T11:57:33Z" product-name="test_fluidpagerendering">
     <header/>
     <body>
       <trans-unit id="headline">

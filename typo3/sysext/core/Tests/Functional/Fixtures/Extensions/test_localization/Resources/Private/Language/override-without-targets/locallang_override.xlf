@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:test_localization/Resources/Private/Language/locallang.xlf" date="2011-12-21T11:57:33Z" product-name="tests">
+    <header/>
+    <body>
+      <trans-unit id="label1">
+        <source>This is my 1st label</source>
+      </trans-unit>
+      <trans-unit id="label2">
+        <source>This is my 2nd label</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

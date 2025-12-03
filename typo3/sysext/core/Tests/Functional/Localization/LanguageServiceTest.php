@@ -28,12 +28,15 @@ final class LanguageServiceTest extends FunctionalTestCase
 {
     // Constants to access the various language files
     private const LANGUAGE_FILE = 'EXT:test_localization/Resources/Private/Language/locallang.xlf';
+    private const LANGUAGE_FILE__DEFAULT_IS_NON_ENGLISH_WITH_TARGETS = 'EXT:test_localization/Resources/Private/Language/default-with-targets/locallang.xlf';
     private const LANGUAGE_FILE_XLIFF_2 = 'EXT:test_localization/Resources/Private/Language/messages_2.xlf';
     private const LANGUAGE_FILE_OVERRIDE = 'EXT:test_localization/Resources/Private/Language/locallang_override.xlf';
+    private const LANGUAGE_FILE_OVERRIDE__DEFAULT_WITHOUT_TARGETS = 'EXT:test_localization/Resources/Private/Language/override-without-targets/locallang_override.xlf';
     private const LANGUAGE_FILE_OVERRIDE_DE = 'EXT:test_localization/Resources/Private/Language/de.locallang_override.xlf';
     private const LANGUAGE_FILE_OVERRIDE_FR = 'EXT:test_localization/Resources/Private/Language/fr.locallang_override.xlf';
     private const LANGUAGE_FILE_CORE = 'EXT:core/Resources/Private/Language/locallang_common.xlf';
     private const LANGUAGE_FILE_CORE_OVERRIDE = 'EXT:test_localization/Resources/Private/Language/locallang_common_override.xlf';
+    private const LANGUAGE_FILE_CORE_OVERRIDE__DEFAULT_WITHOUT_TARGETS = 'EXT:test_localization/Resources/Private/Language/override-without-targets/locallang_common_override.xlf';
     private const LANGUAGE_FILE_CORE_OVERRIDE_FR = 'EXT:test_localization/Resources/Private/Language/fr.locallang_common_override.xlf';
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_localization',
@@ -140,6 +143,13 @@ final class LanguageServiceTest extends FunctionalTestCase
         $this->ensureLocalizationScenarioWorks($locale, self::LANGUAGE_FILE, $expectedLabels);
     }
 
+    #[DataProvider('ensureVariousLocalizationScenariosWorkDataProvider')]
+    #[Test]
+    public function ensureVariousLocalizationScenariosWorkWithDefaultLanguageFileBasedOnNonEnglishWithTargets(string $locale, array $expectedLabels): void
+    {
+        $this->ensureLocalizationScenarioWorks($locale, self::LANGUAGE_FILE__DEFAULT_IS_NON_ENGLISH_WITH_TARGETS, $expectedLabels);
+    }
+
     public static function ensureVariousLocalizationScenariosWorkDataProvider(): \Generator
     {
         yield 'Can handle localization for native language' => [
@@ -166,6 +176,14 @@ final class LanguageServiceTest extends FunctionalTestCase
                 'label3' => 'This is label #3',
             ],
         ];
+        yield 'Can handle localization with intermediate locale fr for missing translation for locale fr-CA' => [
+            'locale' => 'fr-CA',
+            'expectedLabels' => [
+                'label1' => 'Ceci est le libellé no. 1',
+                'label2' => 'Ceci est le libellé no. 2',
+                'label3' => 'Ceci est le libellé no. 3',
+            ],
+        ];
     }
 
     #[DataProvider('ensureVariousLocalizationOverrideScenariosWorkDataProvider')]
@@ -173,6 +191,17 @@ final class LanguageServiceTest extends FunctionalTestCase
     public function ensureVariousLocalizationOverrideScenariosWork(string $locale, array $expectedLabels): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides'][self::LANGUAGE_FILE][] = self::LANGUAGE_FILE_OVERRIDE;
+        $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides']['de'][self::LANGUAGE_FILE][] = self::LANGUAGE_FILE_OVERRIDE_DE;
+        $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides']['fr'][self::LANGUAGE_FILE][] = self::LANGUAGE_FILE_OVERRIDE_FR;
+
+        $this->ensureLocalizationScenarioWorks($locale, self::LANGUAGE_FILE, $expectedLabels);
+    }
+
+    #[DataProvider('ensureVariousLocalizationOverrideScenariosWorkDataProvider')]
+    #[Test]
+    public function ensureVariousLocalizationOverrideScenariosWorkWithDefaultOverrideFileWithoutTargets(string $locale, array $expectedLabels): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides'][self::LANGUAGE_FILE][] = self::LANGUAGE_FILE_OVERRIDE__DEFAULT_WITHOUT_TARGETS;
         $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides']['de'][self::LANGUAGE_FILE][] = self::LANGUAGE_FILE_OVERRIDE_DE;
         $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides']['fr'][self::LANGUAGE_FILE][] = self::LANGUAGE_FILE_OVERRIDE_FR;
 
@@ -212,6 +241,16 @@ final class LanguageServiceTest extends FunctionalTestCase
     public function ensureVariousLocalizationOverrideScenariosForCoreExtensionWork(string $locale, array $expectedLabels): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides'][self::LANGUAGE_FILE_CORE][] = self::LANGUAGE_FILE_CORE_OVERRIDE;
+        $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides']['fr'][self::LANGUAGE_FILE_CORE][] = self::LANGUAGE_FILE_CORE_OVERRIDE_FR;
+
+        $this->ensureLocalizationScenarioWorks($locale, self::LANGUAGE_FILE_CORE, $expectedLabels);
+    }
+
+    #[DataProvider('ensureVariousLocalizationOverrideScenariosForCoreExtensionWorkDataProvider')]
+    #[Test]
+    public function ensureVariousLocalizationOverrideScenariosForCoreExtensionWorkWithDefaultOverrideFileWithoutTargetsl(string $locale, array $expectedLabels): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides'][self::LANGUAGE_FILE_CORE][] = self::LANGUAGE_FILE_CORE_OVERRIDE__DEFAULT_WITHOUT_TARGETS;
         $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides']['fr'][self::LANGUAGE_FILE_CORE][] = self::LANGUAGE_FILE_CORE_OVERRIDE_FR;
 
         $this->ensureLocalizationScenarioWorks($locale, self::LANGUAGE_FILE_CORE, $expectedLabels);

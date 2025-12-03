@@ -15,14 +15,6 @@
         <source>This is label #3</source>
         <target>Ceci est le libellé no. 3</target>
       </trans-unit>
-      <trans-unit id="label5" approved="yes">
-        <source>This is label #5 is deprecated in english.</source>
-        <target>Cette étiquette n° 5 est obsolète en anglais.</target>
-      </trans-unit>
-      <trans-unit id="label6" approved="yes" x-unused-since="4.5">
-        <source>This is label #6 is deprecated in french.</source>
-        <target>Cette étiquette n° 6 est obsolète en français.</target>
-      </trans-unit>
     </body>
   </file>
 </xliff>

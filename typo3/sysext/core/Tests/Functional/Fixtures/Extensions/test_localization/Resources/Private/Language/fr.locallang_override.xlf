@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" datatype="plaintext" original="EXT:test_localization/Resources/Private/Language/fr.locallang_override.xlf" date="2011-12-21T11:57:33Z" product-name="tests" target-language="fr">
+  <file source-language="en" datatype="plaintext" original="EXT:test_localization/Resources/Private/Language/locallang.xlf" date="2011-12-21T11:57:33Z" product-name="tests" target-language="fr">
     <header/>
     <body>
       <trans-unit id="label1" approved="yes">

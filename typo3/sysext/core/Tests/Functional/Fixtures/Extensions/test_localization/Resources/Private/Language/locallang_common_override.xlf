@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_common.xlf" date="2021-10-27T01:16:33Z" product-name="lang" target-language="en">
+  <file source-language="en" target-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_common.xlf" date="2021-10-27T01:16:33Z" product-name="lang">
     <header/>
     <body>
       <trans-unit id="about">
-        <source>Overriden About</source>
+        <source>About</source>
+        <target>Overriden About</target>
       </trans-unit>
       <trans-unit id="help">
-        <source>Overriden Help</source>
+        <source>Help</source>
+        <target>Overriden Help</target>
       </trans-unit>
       <trans-unit id="ok">
-        <source>Overriden OK</source>
+        <source>OK</source>
+        <target>Overriden OK</target>
       </trans-unit>
     </body>
   </file>

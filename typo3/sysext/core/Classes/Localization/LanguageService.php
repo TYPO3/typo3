@@ -324,6 +324,7 @@ class LanguageService
             $allLocales = array_unique($allLocales);
             $allLocales = array_reverse($allLocales);
             foreach ($allLocales as $locale) {
+                // Firstly, get current language labels without any 'en' fallback labels merged into.
                 // Merge current language labels onto labels from previous language
                 // This way we have a labels with fallback applied
                 $labels = $this->localizationFactory->getParsedData($fileReferenceOrDomain, $locale);

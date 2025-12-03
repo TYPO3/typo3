@@ -3,19 +3,16 @@
   <file id="f1" original="EXT:core/Tests/Unit/Localization/Loader/Fixtures/locallang-v2.xlf">
     <unit id="label1">
       <segment>
-        <source>This is label #1</source>
         <target>Das ist Kennung Nummer 1</target>
       </segment>
     </unit>
     <unit id="label2">
       <segment state="final">
-        <source>This is label #2</source>
         <target>Das ist Kennung Nummer 2 [approved]</target>
       </segment>
     </unit>
     <unit id="label3">
       <segment state="translated">
-        <source>This is label #3</source>
         <target>Das ist Kennung Nummer 3 [not approved]</target>
       </segment>
     </unit>

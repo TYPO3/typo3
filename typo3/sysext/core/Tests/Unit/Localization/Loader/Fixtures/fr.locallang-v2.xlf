@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="fr">
-  <file id="f1" original="EXT:core/Tests/Unit/Localization/Loader/Fixtures/fr.locallang-v2.xlf">
+  <file id="f1" original="EXT:core/Tests/Unit/Localization/Loader/Fixtures/locallang-v2.xlf">
     <unit id="label1">
       <segment>
         <source>This is label #1</source>
