@@ -571,14 +571,10 @@ export class Typo3LinkUI extends Core.Plugin {
   }
 
   private showUI(): void {
-    const selectedLink = this.getSelectedLinkElement();
-    if (!selectedLink) {
+    if (!this.getSelectedLinkElement()) {
       this.showFakeVisualSelection();
       this.openLinkBrowser(this.editor);
     } else {
-      // When clicking inside a link, check if we need to expand selection to full link
-      // This prevents link splitting when editing with partial selection
-      this.expandSelectionToFullLink();
       this.addToolbarView();
       this.balloon.showStack('main');
     }
