@@ -110,6 +110,9 @@
 			<trans-unit id="module.label.guide.no_record_selected">
 				<source>Select a row to see more information.</source>
 			</trans-unit>
+			<trans-unit id="module.label.showDetails">
+				<source>Show details for "%s" violation with URI: %s</source>
+			</trans-unit>
 
 			<trans-unit id="module.button.apply">
 				<source>Apply</source>
