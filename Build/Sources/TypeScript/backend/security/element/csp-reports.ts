@@ -96,6 +96,7 @@ export class CspReports extends LitElement {
   @state() suggestions: MutationSuggestion[] = [];
 
   private peripheralEvent: RegularEvent;
+  private previouslyFocusedRow: HTMLElement | null = null;
 
   public override connectedCallback(): void {
     super.connectedCallback();
@@ -112,6 +113,17 @@ export class CspReports extends LitElement {
   public override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.peripheralEvent?.release();
+  }
+
+  protected override updated(changedProperties: Map<string, any>): void {
+    super.updated(changedProperties);
+    if (changedProperties.has('selectedReport') && this.selectedReport !== null) {
+      // Focus the details panel when a report is selected
+      this.updateComplete.then(() => {
+        const detailsPanel = this.querySelector('#report-details') as HTMLElement;
+        detailsPanel?.focus();
+      });
+    }
   }
 
   protected override createRenderRoot(): HTMLElement | ShadowRoot {
@@ -148,7 +160,11 @@ export class CspReports extends LitElement {
                 ` : nothing}
                 ${this.reports.map((report: SummarizedCspReport) => html`
                   <tr class=${classMap({ 'table-info': this.selectedReport === report })} data-mutation-group=${report.mutationHashes.join('-')}
-                      @click=${() => this.selectReport(report)}>
+                      @click=${() => this.selectReport(report)}
+                      @keydown=${(e: KeyboardEvent) => this.handleReportKeydown(e, report)}
+                      tabindex="0"
+                      role="button"
+                      aria-label="${lll('label.showDetails', report.details.effectiveDirective, report.details.blockedUri) || 'Show details'}">
                     <td>${report.created}</td>
                     <td>${report.scope}</td>
                     <td>
@@ -218,7 +234,7 @@ export class CspReports extends LitElement {
     const report = this.selectedReport;
     return html`${report ? html`
       <div class="infolist-info-record">
-        <div class="card mb-0">
+        <div class="card mb-0" tabindex="-1" id="report-details" @keydown=${(e: KeyboardEvent) => this.handleDetailsKeydown(e)}>
           <div class="card-header">
             <h3>${ lll('label.details') || 'Details'}</h3>
           </div>
@@ -309,12 +325,73 @@ export class CspReports extends LitElement {
   private selectReport(report: SummarizedCspReport): void {
     this.suggestions = [];
     if (report !== null && this.selectedReport !== report) {
+      // Store the currently focused element before changing selection
+      this.previouslyFocusedRow = document.activeElement as HTMLElement;
       this.selectedReport = report;
       this.invokeHandleReportAction(report)
         .then((suggestions: MutationSuggestion[]) => this.suggestions = suggestions);
     } else {
       this.selectedReport = null;
+      // Restore focus to the previously focused row when closing
+      if (this.previouslyFocusedRow) {
+        this.updateComplete.then(() => {
+          this.previouslyFocusedRow?.focus();
+          this.previouslyFocusedRow = null;
+        });
+      }
     }
+  }
+
+  private handleReportKeydown(event: KeyboardEvent, report: SummarizedCspReport): void {
+    // Handle Enter/Space to select report
+    if (event.key === 'Enter' || event.key === 'Space' || event.key === ' ') {
+      event.preventDefault();
+      this.selectReport(report);
+      return;
+    }
+
+    // Arrow key navigation
+    const currentRow = event.currentTarget as HTMLElement;
+    let targetRow: HTMLElement | null = null;
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        targetRow = currentRow.nextElementSibling as HTMLElement;
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        targetRow = currentRow.previousElementSibling as HTMLElement;
+        break;
+      case 'Home':
+        event.preventDefault();
+        targetRow = currentRow.parentElement?.firstElementChild as HTMLElement;
+        break;
+      case 'End':
+        event.preventDefault();
+        targetRow = currentRow.parentElement?.lastElementChild as HTMLElement;
+        break;
+      default:
+        return;
+    }
+
+    if (targetRow && targetRow.hasAttribute('tabindex')) {
+      targetRow.focus();
+    }
+  }
+
+  private handleDetailsKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      this.selectReport(null);
+    }
+  }
+
+  private focusFirstReportRow(): void {
+    this.updateComplete.then(() => {
+      const firstRow = this.querySelector('tbody tr[tabindex="0"]') as HTMLElement;
+      firstRow?.focus();
+    });
   }
 
   private selectScope(scope: string): void {
@@ -363,14 +440,16 @@ export class CspReports extends LitElement {
     (new AjaxRequest(this.controlUri))
       .post({ action: 'muteReport', summaries: [report.summary] })
       .then((response: AjaxResponse) => response.resolve('application/json'))
-      .then((response: CspReportUuids) => this.filterReports(...response.uuids));
+      .then((response: CspReportUuids) => this.filterReports(...response.uuids))
+      .then(() => this.focusFirstReportRow());
   }
 
   private invokeDeleteReportAction(report: SummarizedCspReport): void {
     (new AjaxRequest(this.controlUri))
       .post({ action: 'deleteReport', summaries: [report.summary] })
       .then((response: AjaxResponse) => response.resolve('application/json'))
-      .then((response: CspReportUuids) => this.filterReports(...response.uuids));
+      .then((response: CspReportUuids) => this.filterReports(...response.uuids))
+      .then(() => this.focusFirstReportRow());
   }
 
   private invokeDeleteReportsAction(): void {
