@@ -80,9 +80,7 @@ class PreviewSimulator implements MiddlewareInterface
 
             if ($showHiddenPages || $rootlineRequiresPreviewFlag) {
                 // @todo: We should implement RecordAccessVoter->isRecordScheduled() once we have the full record (also in workspace)
-                // Note: this also renders all hidden and scheduled content on the page. We do not have a different solution to detect this other than
-                // "If the page is hidden, we assume the editor wants to see everything on it, including hidden content and scheduled content / pages"
-                $newAspect = new VisibilityAspect(true, true, $visibilityAspect->includeDeletedRecords(), true);
+                $newAspect = new VisibilityAspect(true, $visibilityAspect->includeHiddenContent(), $visibilityAspect->includeDeletedRecords(), $simulatingDate);
                 $this->context->setAspect('visibility', $newAspect);
             } elseif ($isOfflineWorkspace) {
                 // See WorkspacePreview middleware
