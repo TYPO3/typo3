@@ -15,7 +15,7 @@
 			<segment>
 				<source>Page of type "%1$s" links to the following %2$s: %3$s.</source>
 			</segment>
-		</unit>1
+		</unit>
 		<unit id="link_current">
 			<segment>
 				<source>Page of type "%1$s" links to current request url, and dynamic value cannot be displayed here.</source>

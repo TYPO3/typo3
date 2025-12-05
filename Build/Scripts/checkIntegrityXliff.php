@@ -16,11 +16,13 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Config\Util\XmlUtils;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Translation\Util\XliffUtils;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
@@ -150,6 +152,17 @@ final readonly class CheckIntegrityXliff
         if (!in_array($version, $supportedVersions, true)) {
             $result['error'] = 'Incompatible version: ' . $version . ' (expected: ' . implode(', ', $supportedVersions) . ')';
             $result['errorcode'] = 'XLF version';
+            return $result;
+        }
+
+        $dom = XmlUtils::loadFile($labelFile, null);
+        $errors = XliffUtils::validateSchema($dom);
+        if ($errors) {
+            $result['error'] = sprintf('File %s has errors: ', $labelFile);
+            foreach ($errors as $error) {
+                $result['error'] .= ($error['message'] ?? '') . ' ';
+            }
+            $result['errorcode'] = 'XLF linting';
             return $result;
         }
 
