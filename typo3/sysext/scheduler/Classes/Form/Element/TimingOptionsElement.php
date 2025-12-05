@@ -130,7 +130,7 @@ class TimingOptionsElement extends AbstractFormElement
         $frequency->data['containerFieldName'] = 'frequency';
         $frequency->data['parameterArray']['fieldConf']['label'] = htmlspecialchars($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.frequency.long'));
         $frequency->data['parameterArray']['itemFormElName'] .= '[frequency]';
-        $frequency->data['parameterArray']['itemFormElValue'] = $executionDetails->getCronCmd();
+        $frequency->data['parameterArray']['itemFormElValue'] = $executionDetails->getCronCmd() ?: $executionDetails->getInterval();
         $frequency->data['parameterArray']['fieldChangeFunc'] = [];
         $frequency->data['parameterArray']['fieldConf']['config']['size'] = 40;
         $frequency->data['parameterArray']['fieldConf'] = array_replace_recursive($frequency->data['parameterArray']['fieldConf'], $parameterArray['fieldConf']['config']['overrideFieldTca']['frequency'] ?? []);
