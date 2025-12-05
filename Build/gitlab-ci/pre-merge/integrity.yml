@@ -5,7 +5,7 @@ cgl pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "14.0"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s cglGit -n -p 8.2
@@ -18,7 +18,7 @@ integration various php 8.2 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "14.0"
   script:
     - Build/Scripts/runTests.sh -s composerValidate -p 8.2
     - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.2
@@ -45,7 +45,7 @@ lint php pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "14.0"
   script:
     - Build/Scripts/runTests.sh -s lintPhp -p 8.2
     - Build/Scripts/runTests.sh -s lintPhp -p 8.5
@@ -57,9 +57,9 @@ grunt scss ts html pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "14.0"
   cache:
-    key: main-js
+    key: 14.0-js
     paths:
       - .cache
   script:
@@ -75,7 +75,7 @@ phpstan php 8.2 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "14.0"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s phpstan -p 8.2
@@ -85,7 +85,7 @@ documentation rendering pre-merge:
   tags:
     - metal2
   rules:
-    - if: $CI_PIPELINE_SOURCE != "schedule" && $CI_COMMIT_BRANCH != "main"
+    - if: $CI_PIPELINE_SOURCE != "schedule" && $CI_COMMIT_BRANCH != "14.0"
       changes:
         # detect only changes in last commit
         compare_to: 'HEAD~1'

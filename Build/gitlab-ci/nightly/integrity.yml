@@ -68,7 +68,7 @@ grunt scss ts html:
   only:
     - schedules
   cache:
-    key: main-js
+    key: 14.0-js
     paths:
       - .cache
   script:
