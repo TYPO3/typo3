@@ -181,11 +181,10 @@ class ShortcutButton implements ButtonInterface, PositionInterface
 
         if ($createShortcut && !$this->copyUrlToClipboard) {
             $shortcutButton = GeneralUtility::makeInstance(GenericButton::class);
+            $shortcutButton->setIcon($iconFactory->getIcon('actions-bookmark', IconSize::SMALL));
             if (GeneralUtility::makeInstance(ShortcutRepository::class)->shortcutExists($routeIdentifier, $encodedArguments)) {
                 $shortcutButton->setLabel($alreadyBookmarkedText);
-                $shortcutButton->setIcon($iconFactory->getIcon('actions-system-shortcut-active', IconSize::SMALL));
             } else {
-                $shortcutButton->setIcon($iconFactory->getIcon('actions-system-shortcut-new', IconSize::SMALL));
                 $shortcutButton->setLabel($confirmationText);
                 $shortcutButton->setAttributes(
                     array_merge(
@@ -204,14 +203,13 @@ class ShortcutButton implements ButtonInterface, PositionInterface
         if ($createShortcut) {
             $shortcutItem =  $componentFactory->createDropDownItem();
             $shortcutItem->setTag('button');
+            $shortcutItem->setIcon($iconFactory->getIcon('actions-bookmark', IconSize::SMALL));
             $attributes = $this->getDispatchActionAttrs($routeIdentifier, $encodedArguments, $confirmationText);
             if (GeneralUtility::makeInstance(ShortcutRepository::class)->shortcutExists($routeIdentifier, $encodedArguments)) {
                 $shortcutItem->setLabel($alreadyBookmarkedText);
-                $shortcutItem->setIcon($iconFactory->getIcon('actions-system-shortcut-active', IconSize::SMALL));
                 $shortcutItem->setAttributes($attributes + ['data-dispatch-disabled' => 'disabled', 'disabled' => 'disabled']);
             } else {
                 $shortcutItem->setLabel($confirmationText);
-                $shortcutItem->setIcon($iconFactory->getIcon('actions-system-shortcut-new', IconSize::SMALL));
                 $shortcutItem->setAttributes($attributes);
             }
             $dropdownItems[] = $shortcutItem;

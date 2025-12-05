@@ -39,7 +39,7 @@ class CacheModule extends AbstractModule implements PageSettingsProviderInterfac
 
     public function getIconIdentifier(): string
     {
-        return 'apps-toolbar-menu-cache';
+        return 'actions-bolt';
     }
 
     public function getPageSettings(): string

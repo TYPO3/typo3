@@ -92,7 +92,7 @@ class ShortcutMenu {
 
       const isDropdownItem = shortcutButton.classList.contains('dropdown-item');
       const securityUtility = new SecurityUtility();
-      Icons.getIcon('actions-system-shortcut-active', Icons.sizes.small).then((icon: string): void => {
+      Icons.getIcon('actions-bookmark', Icons.sizes.small).then((icon: string): void => {
         shortcutButton.innerHTML = icon + (isDropdownItem ? ' ' + securityUtility.encodeHtml(TYPO3.lang['labels.alreadyBookmarked']) : '');
       });
 
@@ -232,7 +232,7 @@ class ShortcutMenu {
     const securityUtility = new SecurityUtility();
     const isDropdownItem = shortcutButton.classList.contains('dropdown-item');
 
-    Icons.getIcon('actions-system-shortcut-new', Icons.sizes.small).then((icon: string): void => {
+    Icons.getIcon('actions-bookmark', Icons.sizes.small).then((icon: string): void => {
       shortcutButton.innerHTML = icon + (isDropdownItem ? ' ' + securityUtility.encodeHtml(TYPO3.lang['labels.makeBookmark']) : '');
     });
     shortcutButton.title = securityUtility.encodeHtml(TYPO3.lang['labels.makeBookmark']);

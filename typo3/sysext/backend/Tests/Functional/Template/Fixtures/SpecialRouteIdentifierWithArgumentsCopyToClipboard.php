@@ -41,11 +41,11 @@ return <<<EOF
                 class="dropdown-item dropdown-item-spaced"
                 title="Create a bookmark to this record">
                 <span
-                    class="t3js-icon icon icon-size-small icon-state-default icon-actions-system-shortcut-new"
-                    data-identifier="actions-system-shortcut-new" aria-hidden="true">
+                    class="t3js-icon icon icon-size-small icon-state-default icon-actions-bookmark"
+                    data-identifier="actions-bookmark" aria-hidden="true">
                     <span class="icon-markup">
                         <svg class="icon-color">
-                            <use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?{$fileMtimeActions}#actions-star" />
+                            <use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?{$fileMtimeActions}#actions-bookmark" />
                         </svg>
                     </span>
                 </span>Create a bookmark to this record

@@ -96,7 +96,7 @@ class ListModule extends AbstractNode
         $id = StringUtility::getUniqueId('t3js-formengine-fieldcontrol-');
 
         return [
-            'iconIdentifier' => 'actions-system-list-open',
+            'iconIdentifier' => 'actions-list-alternative',
             'title' => $title,
             'linkAttributes' => [
                 'id' => $id,

@@ -101,7 +101,7 @@ final class SubmoduleOverviewControllerTest extends FunctionalTestCase
         self::assertStringContainsString('actions-refresh', $content);
 
         // Verify shortcut button is present
-        self::assertStringContainsString('actions-star', $content);
+        self::assertStringContainsString('actions-bookmark', $content);
     }
 
     #[Test]

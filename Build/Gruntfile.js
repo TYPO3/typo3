@@ -393,6 +393,14 @@ module.exports = function (grunt) {
           '<%= paths.core %>Public/JavaScript/Contrib/@lit',
           '<%= paths.core %>Public/JavaScript/Contrib/@lit-labs',
         ]
+      },
+      icons: {
+        options: {
+          force: true
+        },
+        src: [
+          '<%= paths.sysext %>core/Resources/Public/Icons/T3Icons/',
+        ]
       }
     },
     esbuild: Object.fromEntries(Object.entries({
