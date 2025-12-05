@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
@@ -42,7 +43,7 @@ class QueryObjectModelFactory implements SingletonInterface
     /**
      * Sets a statement as constraint. This is not part of the JCR 2.0 Specification!
      */
-    public function statement(string $statement, array $boundVariables = []): Statement
+    public function statement(string|\Doctrine\DBAL\Statement|QueryBuilder $statement, array $boundVariables = []): Statement
     {
         return GeneralUtility::makeInstance(Statement::class, $statement, $boundVariables);
     }

@@ -201,10 +201,7 @@ readonly class Typo3DbBackend implements BackendInterface, SingletonInterface
         /** @var Context $context */
         $context = clone GeneralUtility::makeInstance(Context::class);
         $context->setAspect('language', $query->getQuerySettings()->getLanguageAspect());
-        // todo: remove instanceof checks as soon as getStatement() strictly returns Qom\Statement only
-        if ($statement instanceof Statement
-            && !$statement->getStatement() instanceof QueryBuilder
-        ) {
+        if ($statement instanceof Statement && !$statement->getStatement() instanceof QueryBuilder) {
             $rows = $this->getObjectDataByRawQuery($statement);
         } else {
             $queryParser = GeneralUtility::makeInstance(Typo3DbQueryParser::class);
