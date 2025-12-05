@@ -1,4 +1,4 @@
-acceptance install php 8.4 max:
+acceptance install php 8.5 max:
   stage: acceptance
   tags:
     - metal2
@@ -10,13 +10,13 @@ acceptance install php 8.4 max:
     paths:
       - typo3temp/var/tests/AcceptanceReports
   script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.4
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.10 -p 8.4
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -i 8.0 -p 8.4
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -i 15 -p 8.4
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite -p 8.4
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.10 -p 8.5
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -i 8.0 -p 8.5
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -i 15 -p 8.5
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite -p 8.5
 
-acceptance install php 8.3 max:
+acceptance install php 8.2 max:
   stage: acceptance
   tags:
     - metal2
@@ -28,11 +28,11 @@ acceptance install php 8.3 max:
     paths:
       - typo3temp/var/tests/AcceptanceReports
   script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.10 -p 8.3
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -i 8.0 -p 8.3
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -i 15 -p 8.3
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite -p 8.3
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.10 -p 8.2
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -i 8.0 -p 8.2
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -i 15 -p 8.2
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite -p 8.2
 
 acceptance install 8.2 min:
   stage: acceptance
