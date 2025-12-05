@@ -74,7 +74,7 @@ class LinkAnalyzerResult
         string $languages = ''
     ): self {
         $rootLineHidden = $this->pagesRepository->doesRootLineContainHiddenPages($pageRow);
-        $checkHidden = $modTSconfig['checkhidden'] === 1;
+        $checkHidden = (bool)($modTSconfig['checkhidden'] ?? false);
 
         if ($rootLineHidden && !$checkHidden) {
             return $this;
