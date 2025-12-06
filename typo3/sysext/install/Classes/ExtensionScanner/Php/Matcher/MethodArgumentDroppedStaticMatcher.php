@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\ExtensionScanner\Php\Matcher;
 use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Identifier;
 use PhpParser\Node\Name\FullyQualified;
 
 /**
@@ -54,7 +55,7 @@ class MethodArgumentDroppedStaticMatcher extends AbstractCoreMatcher
         ) {
             $isArgumentUnpackingUsed = $this->isArgumentUnpackingUsed($node->args);
 
-            if ($node->class instanceof FullyQualified) {
+            if ($node->class instanceof FullyQualified && $node->name instanceof Identifier) {
                 // 'Foo\Bar::aMethod()' -> strong match
                 $fqdnClassWithMethod = $node->class->toString() . '::' . $node->name->name;
                 if (!$isArgumentUnpackingUsed
@@ -71,6 +72,7 @@ class MethodArgumentDroppedStaticMatcher extends AbstractCoreMatcher
                     ];
                 }
             } elseif ($node->class instanceof Variable
+                && $node->name instanceof Identifier
                 && array_key_exists($node->name->name, $this->flatMatcherDefinitions)
             ) {
                 $match = [

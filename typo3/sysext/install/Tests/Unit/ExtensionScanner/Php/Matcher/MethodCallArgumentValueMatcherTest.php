@@ -210,4 +210,46 @@ EOC;
 
         self::assertEmpty($subject->getMatches());
     }
+
+    /**
+     * Regression test for issue #108413: dynamic method calls must not crash
+     */
+    #[Test]
+    public function dynamicMethodCallDoesNotCrash(): void
+    {
+        $phpCode = <<<'EOC'
+<?php
+class foo
+{
+    public function aTest()
+    {
+        $foo->{$this->getMethod()}('argOld');
+    }
+}
+EOC;
+
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
+        $statements = $parser->parse($phpCode);
+
+        $traverser = new NodeTraverser();
+        $configuration = [
+            'TYPO3\CMS\Backend\Clipboard\Clipboard->confirmMsg' => [
+                'argumentMatches' => [
+                    [
+                        'argumentIndex' => 0,
+                        'argumentValue' => 'argOld',
+                    ],
+                ],
+                'restFiles' => [
+                    'Breaking-80700-DeprecatedFunctionalityRemoved.rst',
+                ],
+            ],
+        ];
+        $subject = new MethodCallArgumentValueMatcher($configuration);
+        $traverser->addVisitor($subject);
+        $traverser->traverse($statements);
+
+        // Must not crash and should return no matches for dynamic calls
+        self::assertEmpty($subject->getMatches());
+    }
 }

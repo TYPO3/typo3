@@ -77,4 +77,38 @@ final class InterfaceMethodChangedMatcherTest extends UnitTestCase
         }
         self::assertEquals($expectedHitLineNumbers, $actualHitLineNumbers);
     }
+
+    /**
+     * Regression test for issue #108413: dynamic method calls must not crash
+     */
+    #[Test]
+    public function dynamicMethodCallDoesNotCrash(): void
+    {
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
+        $phpCode = '<?php
+            class TestClass {
+                public function test() {
+                    $this->{$this->getMethod()}("arg1");
+                }
+            }';
+        $statements = $parser->parse($phpCode);
+
+        $traverser = new NodeTraverser();
+        $traverser->addVisitor(new NameResolver());
+
+        $matcherDefinitions = [
+            'someMethod' => [
+                'newNumberOfArguments' => 2,
+                'restFiles' => [
+                    'Foo-1.rst',
+                ],
+            ],
+        ];
+        $subject = new InterfaceMethodChangedMatcher($matcherDefinitions);
+        $traverser->addVisitor($subject);
+        $traverser->traverse($statements);
+
+        // Must not crash and should return no matches for dynamic calls
+        self::assertSame([], $subject->getMatches());
+    }
 }

@@ -221,6 +221,48 @@ final class MethodArgumentDroppedStaticMatcherTest extends UnitTestCase
                     ],
                 ],
             ],
+            // Regression test for issue #108413: dynamic method calls must not crash
+            'no match for dynamic static call with method call expression' => [
+                [
+                    'Foo::aMethod' => [
+                        'maximumNumberOfArguments' => 0,
+                        'restFiles' => [
+                            'Foo-1.rst',
+                        ],
+                    ],
+                ],
+                '<?php
+                SomeClass::{self::getMethod()}("arg1");',
+                [], // no match, must not crash
+            ],
+            // Trap test: config matches the variable name - buggy code would incorrectly match
+            'no match for dynamic method call with variable as method name' => [
+                [
+                    'Foo::methodName' => [
+                        'maximumNumberOfArguments' => 0,
+                        'restFiles' => [
+                            'Foo-1.rst',
+                        ],
+                    ],
+                ],
+                '<?php
+                $someVar::$methodName(\'arg1\');',
+                [], // no match - dynamic method names must be skipped
+            ],
+            // Trap test: config matches inner method name - buggy code would incorrectly match
+            'no match for dynamic method call with expression as method name' => [
+                [
+                    'SomeClass::getMethod' => [
+                        'maximumNumberOfArguments' => 0,
+                        'restFiles' => [
+                            'Foo-1.rst',
+                        ],
+                    ],
+                ],
+                '<?php
+                \SomeClass::{self::getMethod()}(\'arg1\');',
+                [], // no match - dynamic method names must be skipped
+            ],
         ];
     }
 

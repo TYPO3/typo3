@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\ExtensionScanner\Php\Matcher;
 use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Identifier;
 use PhpParser\Node\Name\FullyQualified;
 
 /**
@@ -60,7 +61,7 @@ class MethodCallStaticMatcher extends AbstractCoreMatcher
             && !$this->isLineIgnored($node)
             && $node instanceof StaticCall
         ) {
-            if ($node->class instanceof FullyQualified) {
+            if ($node->class instanceof FullyQualified && $node->name instanceof Identifier) {
                 // 'Foo\Bar::deprecated()' -> strong match
                 $fqdnClassWithMethod = $node->class->toString() . '::' . $node->name->name;
                 if (array_key_exists($fqdnClassWithMethod, $this->matcherDefinitions)) {
@@ -72,6 +73,7 @@ class MethodCallStaticMatcher extends AbstractCoreMatcher
                     ];
                 }
             } elseif ($node->class instanceof Variable
+                && $node->name instanceof Identifier
                 && array_key_exists($node->name->name, $this->flatMatcherDefinitions)
             ) {
                 $match = [

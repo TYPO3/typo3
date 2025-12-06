@@ -210,6 +210,21 @@ final class MethodArgumentRequiredMatcherTest extends UnitTestCase
                     ],
                 ],
             ],
+            // Regression test for issue #108413: dynamic method calls must not crash
+            'no match for dynamic method call with method call expression' => [
+                [
+                    'Foo->aMethod' => [
+                        'numberOfMandatoryArguments' => 2,
+                        'maximumNumberOfArguments' => 3,
+                        'restFiles' => [
+                            'Foo-1.rst',
+                        ],
+                    ],
+                ],
+                '<?php
+                $someVar->{$this->getMethod()}();',
+                [], // no match, must not crash
+            ],
         ];
     }
 
