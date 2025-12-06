@@ -195,7 +195,7 @@ readonly class SiteConfigurationController
         $this->configureDetailViewDocHeader($view, $siteIdentifier, $request);
         $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);
         $view->setTitle(
-            $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf:mlang_tabs_tab')
+            $this->getLanguageService()->translate('title', 'backend.modules.site_settings')
         );
         $view->assignMultiple([
             'site' => $site,

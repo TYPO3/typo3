@@ -128,7 +128,7 @@ final readonly class PageTsConfigIncludesController
         $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);
         $shortcutTitle = sprintf(
             '%s: %s [%d]',
-            $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes'),
+            $languageService->translate('title', 'backend.modules.pagetsconfig_includes'),
             BackendUtility::getRecordTitle('pages', $pageRecord),
             $pageUid
         );

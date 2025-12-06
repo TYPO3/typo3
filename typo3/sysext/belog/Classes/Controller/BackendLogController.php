@@ -127,7 +127,7 @@ class BackendLogController extends ActionController
         $view = $this->moduleTemplateFactory->create($this->request);
         $view->getDocHeaderComponent()->setShortcutContext(
             routeIdentifier: 'system_log',
-            displayName: $this->getLanguageService()->sL('LLL:EXT:belog/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab')
+            displayName: $this->getLanguageService()->translate('title', 'belog.module')
         );
         return $view->setFlashMessageQueue($this->getFlashMessageQueue())
             ->setTitle(LocalizationUtility::translate('title', 'belog.module'))
