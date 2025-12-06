@@ -299,6 +299,37 @@ EOC;
                     ],
                 ],
             ],
+            // Regression test for issue #108413: dynamic method calls must not crash
+            'no match for dynamic method call with method call expression' => [
+                [
+                    'Foo->aMethod' => [
+                        'numberOfMandatoryArguments' => 0,
+                        'maximumNumberOfArguments' => 2,
+                        'restFiles' => [
+                            'Foo-1.rst',
+                        ],
+                    ],
+                ],
+                '<?php
+                $someVar->{$this->getMethod()}();',
+                [], // no match, must not crash
+            ],
+            // Regression test for issue #108413: $object->$var() syntax must not crash
+            'no match for dynamic method call with variable' => [
+                [
+                    'Foo->aMethod' => [
+                        'numberOfMandatoryArguments' => 0,
+                        'maximumNumberOfArguments' => 2,
+                        'restFiles' => [
+                            'Foo-1.rst',
+                        ],
+                    ],
+                ],
+                '<?php
+                $methodName = "someMethod";
+                $someVar->$methodName();',
+                [], // no match, must not crash
+            ],
         ];
     }
 

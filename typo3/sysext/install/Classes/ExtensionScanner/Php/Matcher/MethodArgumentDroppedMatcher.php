@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\ExtensionScanner\Php\Matcher;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Identifier;
 
 /**
  * Find usages of method calls which changed signature and dropped arguments,
@@ -51,7 +52,7 @@ class MethodArgumentDroppedMatcher extends AbstractCoreMatcher
         if (!$this->isFileIgnored($node)
             && !$this->isLineIgnored($node)
             && $node instanceof MethodCall
-            && isset($node->name->name)
+            && $node->name instanceof Identifier
             && array_key_exists($node->name->name, $this->flatMatcherDefinitions)
         ) {
             $match = [

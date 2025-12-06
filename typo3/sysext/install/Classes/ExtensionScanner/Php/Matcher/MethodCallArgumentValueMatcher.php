@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\ExtensionScanner\Php\Matcher;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Identifier;
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Scalar;
 
@@ -56,6 +57,7 @@ class MethodCallArgumentValueMatcher extends AbstractCoreMatcher
 
         if ($node instanceof Node\Expr\StaticCall
             && $node->class instanceof FullyQualified
+            && $node->name instanceof Identifier
             && array_key_exists($node->class->toString() . '::' . $node->name->name, $this->matcherDefinitions)
         ) {
             $match = [
@@ -67,7 +69,7 @@ class MethodCallArgumentValueMatcher extends AbstractCoreMatcher
 
             $matchCandidate = [$this->matcherDefinitions[$node->class->toString() . '::' . $node->name->name]];
         } elseif ($node instanceof MethodCall
-                && isset($node->name->name)
+                && $node->name instanceof Identifier
                 && array_key_exists($node->name->name, $this->flatMatcherDefinitions)
         ) {
             $match = [

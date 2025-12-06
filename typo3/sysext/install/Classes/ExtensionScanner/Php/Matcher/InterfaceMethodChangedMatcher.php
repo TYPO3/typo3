@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\ExtensionScanner\Php\Matcher;
 use PhpParser\Modifiers;
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Identifier;
 use PhpParser\Node\Stmt\ClassMethod;
 
 /**
@@ -80,7 +81,8 @@ class InterfaceMethodChangedMatcher extends AbstractCoreMatcher
 
         // Match method call (not static) with number of arguments
         if ($node instanceof MethodCall
-            && isset($node->name->name) && array_key_exists($node->name->name, $this->matcherDefinitions)
+            && $node->name instanceof Identifier
+            && array_key_exists($node->name->name, $this->matcherDefinitions)
         ) {
             $methodName = $node->name->name;
             $numberOfUsedArguments = 0;
