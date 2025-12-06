@@ -111,9 +111,9 @@ Before
     use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
     #[UpgradeWizard('myExtensionCustomUpgradeWizardIdentifier')]
-    class CustomUpgradeWizard extends UpgradeWizardInterface, ChattyInterface, RepeatableInterface
+    class CustomUpgradeWizard implements UpgradeWizardInterface, ChattyInterface, RepeatableInterface
     {
-      // ...
+        // ...
     }
 
 After
@@ -136,9 +136,9 @@ After
     use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 
     #[UpgradeWizard('myExtensionCustomUpgradeWizardIdentifier')]
-    class CustomUpgradeWizard extends UpgradeWizardInterface, ChattyInterface, RepeatableInterface
+    class CustomUpgradeWizard implements UpgradeWizardInterface, ChattyInterface, RepeatableInterface
     {
-      // ...
+        // ...
     }
 
 AbstractListTypeToCTypeUpdate
@@ -224,7 +224,7 @@ if an extension needs to provide support for two major TYPO3 versions:
     use TYPO3\CMS\Install\Updates\ReferenceIndexUpdatedPrerequisite;
 
     #[UpgradeWizard('myExtensionCustomUpgradeWizardIdentifier')]
-    class CustomUpgradeWizard extends UpgradeWizardInterface, ChattyInterface, RepeatableInterface
+    class CustomUpgradeWizard implements UpgradeWizardInterface, ChattyInterface, RepeatableInterface
     {
         /**
          * @return string[] All new fields and tables must exist
@@ -233,7 +233,7 @@ if an extension needs to provide support for two major TYPO3 versions:
         {
             return [
                 DatabaseUpdatedPrerequisite::class,
-                ReferenceIndexUpdatedPrerequisite:class,
+                ReferenceIndexUpdatedPrerequisite::class,
             ];
         }
     }
@@ -257,7 +257,7 @@ if an extension needs to provide support for two major TYPO3 versions:
     use TYPO3\CMS\Core\Upgrades\ReferenceIndexUpdatedPrerequisite;
 
     #[UpgradeWizard('myExtensionCustomUpgradeWizardIdentifier')]
-    class CustomUpgradeWizard extends UpgradeWizardInterface, ChattyInterface, RepeatableInterface
+    class CustomUpgradeWizard implements UpgradeWizardInterface, ChattyInterface, RepeatableInterface
     {
         /**
          * @return string[] All new fields and tables must exist
@@ -266,7 +266,7 @@ if an extension needs to provide support for two major TYPO3 versions:
         {
             return [
                 DatabaseUpdatedPrerequisite::class,
-                ReferenceIndexUpdatedPrerequisite:class,
+                ReferenceIndexUpdatedPrerequisite::class,
             ];
         }
     }
