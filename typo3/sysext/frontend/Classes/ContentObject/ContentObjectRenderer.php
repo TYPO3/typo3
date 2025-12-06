@@ -516,7 +516,14 @@ class ContentObjectRenderer
         $this->eventDispatcher->dispatch(new AfterContentObjectRendererInitializedEvent($this));
 
         $autoTagging = $this->features->isFeatureEnabled('frontend.cache.autoTagging');
-        if (is_array($this->data) && $this->currentRecord !== '' && $autoTagging) {
+        if (is_array($this->data) && $this->currentRecord !== '' && $autoTagging && $this->table !== 'pages') {
+            // Page lifetime for the requested page is calculated in RequestHandler, taking
+            // cache_period and TypoScript into account.
+            // When start() is called here, it can be the requested page record, which is handled
+            // already, OR it is a page record *used* on this page, for instance from a menu rendering.
+            // In the latter case, we do *not* want to reduce the lifetime of the rendered page down
+            // to the cache_period of that content related page record. We can thus skip 'pages' records
+            // here altogether.
             $lifetime = $this->cacheLifetimeCalculator->calculateLifetimeForRow($this->table, $this->data);
             $cacheTags = [
                 sprintf('%s_%s', $this->table, ($this->data['uid'] ?? 0)),
