@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Backend\Module\ModuleFactory;
 use TYPO3\CMS\Backend\Module\ModuleRegistry;
+use TYPO3\CMS\Backend\Routing\RouterConfigurationEvent;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
@@ -115,6 +116,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         $listenerProvider->addListener(CacheWarmupEvent::class, 'backend.routes.warmer');
         $listenerProvider->addListener(CacheWarmupEvent::class, 'backend.modules.warmer');
+        $listenerProvider->addListener(RouterConfigurationEvent::class, ModuleRegistry::class, 'registerRoutesForModules', 'backend/module-registry');
 
         return $listenerProvider;
     }

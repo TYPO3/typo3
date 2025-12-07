@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Routing;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use TYPO3\CMS\Backend\Module\ModuleRegistry;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 
 /**
@@ -27,13 +27,13 @@ use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 final readonly class RouterConfigurator
 {
     public function __construct(
-        private ModuleRegistry $moduleRegistry,
         #[Autowire(service: 'backend.routes', lazy: true)]
         private \ArrayObject $backendRoutes,
         #[Autowire(service: 'cache.core')]
         private PhpFrontend $coreCache,
         #[Autowire(expression: 'service("package-dependent-cache-identifier").withPrefix("BackendRoutes").toString()')]
         private string $cacheIdentifier,
+        private EventDispatcherInterface $eventDispatcher,
     ) {}
 
     public function __invoke(Router $router): void
@@ -57,6 +57,6 @@ final readonly class RouterConfigurator
         }
 
         // Add routes from all modules
-        $this->moduleRegistry->registerRoutesForModules($router);
+        $this->eventDispatcher->dispatch(new RouterConfigurationEvent($router));
     }
 }
