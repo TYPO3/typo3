@@ -175,9 +175,6 @@ class NormalizeCommand
             }
             $fieldValues = implode(',', $fieldArray);
         }
-        if ($fieldValues === '') {
-            throw new \InvalidArgumentException('Unable to convert integer field to list of values: Result list empty.', 1291422012);
-        }
         if ($fieldValues !== '*') {
             $fieldList = explode(',', $fieldValues);
             sort($fieldList);
@@ -190,7 +187,7 @@ class NormalizeCommand
             }
             $fieldValues = implode(',', $fieldList);
         }
-        return (string)$fieldValues;
+        return $fieldValues;
     }
 
     /**
@@ -249,7 +246,7 @@ class NormalizeCommand
         }
         $stepValuesAndStepArray = explode('/', $stepExpression);
         $stepValuesAndStepArrayCount = count($stepValuesAndStepArray);
-        if ($stepValuesAndStepArrayCount < 1 || $stepValuesAndStepArrayCount > 2) {
+        if ($stepValuesAndStepArrayCount > 2) {
             throw new \InvalidArgumentException('Unable to convert step values: Multiple slashes found.', 1291242168);
         }
         $left = $stepValuesAndStepArray[0];

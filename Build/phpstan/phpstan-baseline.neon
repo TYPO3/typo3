@@ -2659,24 +2659,6 @@ parameters:
 			path: ../../typo3/sysext/reports/Classes/Report/Status/ConfigurationStatus.php
 
 		-
-			message: '#^Negated boolean expression is always true\.$#'
-			identifier: booleanNot.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/scheduler/Classes/CronCommand/CronCommand.php
-
-		-
-			message: '#^Comparison operation "\<" between int\<1, max\> and 1 is always false\.$#'
-			identifier: smaller.alwaysFalse
-			count: 1
-			path: ../../typo3/sysext/scheduler/Classes/CronCommand/NormalizeCommand.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between non\-falsy\-string and '''' will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: ../../typo3/sysext/scheduler/Classes/CronCommand/NormalizeCommand.php
-
-		-
 			message: '#^Instanceof between DOMDocument and DOMDocument will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1

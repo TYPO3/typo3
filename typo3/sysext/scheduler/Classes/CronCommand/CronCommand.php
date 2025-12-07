@@ -158,13 +158,17 @@ class CronCommand
         // a command to be run at 4:30 am on the 1st and 15th of each month, plus every Friday.
         $isDayOfMonthRestricted = (string)$this->cronCommandSections[2] !== '*';
         $isDayOfWeekRestricted = (string)$this->cronCommandSections[4] !== '*';
-        $commandMatch = false;
-        if ($isInMonth) {
-            if ($isInDayOfMonth && $isDayOfMonthRestricted || $isInDayOfWeek && $isDayOfWeekRestricted || $isInDayOfMonth && !$isDayOfMonthRestricted && $isInDayOfWeek && !$isDayOfWeekRestricted) {
-                $commandMatch = true;
-            }
+        if (!$isInMonth) {
+            return false;
         }
-        return $commandMatch;
+
+        // If both day-of-month and day-of-week are unrestricted, month match is enough.
+        if (!$isDayOfMonthRestricted && !$isDayOfWeekRestricted) {
+            return true;
+        }
+
+        // Otherwise, at least one restriction must match.
+        return ($isInDayOfMonth && $isDayOfMonthRestricted) || ($isInDayOfWeek && $isDayOfWeekRestricted);
     }
 
     /**
