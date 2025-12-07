@@ -55,5 +55,9 @@ attributes at method parameter level, the previous error-prone behavior is
 now hardened. In addition, this change improves developer experience and pushes
 the Extbase ecosystem towards a modernized architecture.
 
+All installations using these attributes on method level need to migrate these as
+described in the related section of
+:ref:`Deprecation #108227 - Migration <deprecation-108227-1763668119-migration>`.
+
 
 ..  index:: Frontend, PHP-API, ext:extbase

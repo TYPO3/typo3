@@ -68,6 +68,8 @@ attributes in Extbase context in combination with the mentioned attribute
 parameters are affected.
 
 
+..  _deprecation-108227-1763668119-migration:
+
 Migration
 =========
 
