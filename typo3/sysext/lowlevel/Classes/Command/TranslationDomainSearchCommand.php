@@ -17,12 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Lowlevel\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Lowlevel\Localization\Dto\DomainSearchResult;
 use TYPO3\CMS\Lowlevel\Localization\Dto\LabelSearchResult;
@@ -36,6 +38,8 @@ use TYPO3\CMS\Lowlevel\Localization\LabelFinder;
  * the file location in EXT: syntax.
  * @internal only for development purposes
  */
+#[AsCommand('language:domain:search', 'Search for translation domain labels and their references (only for development purpose)')]
+#[AsNonSchedulableCommand]
 class TranslationDomainSearchCommand extends Command
 {
     public function __construct(
