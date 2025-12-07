@@ -23,5 +23,6 @@ readonly class LabelSearchResult
         public string $domain,
         public string $reference,
         public string $label,
+        public bool $deprecated = false,
     ) {}
 }

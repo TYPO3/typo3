@@ -26,6 +26,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Lowlevel\Localization\DeprecatedLabels;
 use TYPO3\CMS\Lowlevel\Localization\Dto\DomainSearchResult;
 use TYPO3\CMS\Lowlevel\Localization\Dto\LabelSearchResult;
 use TYPO3\CMS\Lowlevel\Localization\LabelFinder;
@@ -73,6 +74,11 @@ Search all active extensions for labels containing the word "cache":
 Search only in the `core` extension using a regular expression:
 
     vendor/bin/typo3 language:domain:search --extension core --regex "/cache|clear/i"
+
+Deprecated labels are not listed by default. List only the deprecated labels
+of the `core` extension:
+
+    vendor/bin/typo3 language:domain:search --extension core --only-deprecated
 
 ');
 
@@ -139,6 +145,20 @@ Search only in the `core` extension using a regular expression:
             );
         $this
             ->addOption(
+                'include-deprecated',
+                'd',
+                InputOption::VALUE_NONE,
+                'Also display deprecated label references and mark them.'
+            );
+        $this
+            ->addOption(
+                'only-deprecated',
+                null,
+                InputOption::VALUE_NONE,
+                'Show only deprecated label references.'
+            );
+        $this
+            ->addOption(
                 'json',
                 null,
                 InputOption::VALUE_NONE,
@@ -161,6 +181,11 @@ Search only in the `core` extension using a regular expression:
         $limit = (int)$input->getOption('limit');
         $asJson = (bool)$input->getOption('json');
         $flatList = (bool)$input->getOption('flat');
+        $deprecatedLabels = match (true) {
+            (bool)$input->getOption('only-deprecated') => DeprecatedLabels::Only,
+            (bool)$input->getOption('include-deprecated') => DeprecatedLabels::Include,
+            default => DeprecatedLabels::Exclude,
+        };
         if ($regex !== '') {
             if (!$this->isValidRegex($regex)) {
                 $io->warning('Regular expression "' . $regex . '" is not valid. ');
@@ -182,7 +207,7 @@ Search only in the `core` extension using a regular expression:
             $packages = $this->packageManager->getActivePackages();
             $io->title('Labels in active extensions');
         }
-        $searchResult = $this->labelFinder->findLabels($packages, $locale, $searchString, $regex, $searchInIdentifierOnly, $limit, $flatList);
+        $searchResult = $this->labelFinder->findLabels($packages, $locale, $searchString, $regex, $searchInIdentifierOnly, $limit, $flatList, $deprecatedLabels);
 
         if (empty($searchResult)) {
             $io->warning('No language resource files found.');
@@ -247,9 +272,14 @@ Search only in the `core` extension using a regular expression:
             if ($crop > 0 && strlen($label) > $crop) {
                 $label = substr($label, 0, $crop) . '...';
             }
+            $reference = $data->reference;
+            if ($data->deprecated) {
+                $reference .= ' <fg=yellow>[DEPRECATED]</>';
+            }
+
             $row = [
                 $data->domain,
-                $data->reference,
+                $reference,
                 $label,
             ];
             if (!$includeDomain) {

@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lowlevel\Localization\DeprecatedLabels;
 use TYPO3\CMS\Lowlevel\Localization\LabelFinder;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -32,6 +33,10 @@ final class LabelFinderTest extends FunctionalTestCase
     protected array $coreExtensionsToLoad = [
         'lowlevel',
         'core',
+    ];
+
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/lowlevel/Tests/Functional/Fixtures/Extensions/test_label_finder',
     ];
 
     protected function setUp(): void
@@ -116,5 +121,48 @@ final class LabelFinderTest extends FunctionalTestCase
         // Now check that this is NOT returned for english
         $result = $this->get(LabelFinder::class)->findLabels($packages, 'en', 'Testinglabelsearchsuche');
         self::assertCount(0, $result, 'Translated label should not be found in original language file.');
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function labelFinderExcludesDeprecatedLabelsByDefault(): void
+    {
+        $packages = $this->get(PackageManager::class)->getActivePackages();
+        $result = $this->get(LabelFinder::class)->findLabels($packages, 'default', 'Labelfindertest', '', false, 0, true);
+        self::assertSame(['fixture.current'], array_map(static fn($label): string => $label->reference, $result));
+        self::assertFalse($result[0]->deprecated);
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function labelFinderIncludesAndMarksDeprecatedLabels(): void
+    {
+        $packages = $this->get(PackageManager::class)->getActivePackages();
+        $result = $this->get(LabelFinder::class)->findLabels($packages, 'default', 'Labelfindertest', '', false, 0, true, DeprecatedLabels::Include);
+        $deprecatedByReference = [];
+        foreach ($result as $label) {
+            $deprecatedByReference[$label->reference] = $label->deprecated;
+        }
+        self::assertSame(['fixture.deprecated.x-unused' => true, 'fixture.current' => false], $deprecatedByReference);
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function labelFinderReturnsOnlyDeprecatedLabels(): void
+    {
+        $packages = $this->get(PackageManager::class)->getActivePackages();
+        $result = $this->get(LabelFinder::class)->findLabels($packages, 'default', 'Labelfindertest', '', false, 0, true, DeprecatedLabels::Only);
+        self::assertSame(['fixture.deprecated.x-unused'], array_map(static fn($label): string => $label->reference, $result));
+        self::assertTrue($result[0]->deprecated);
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function labelFinderLimitCountsOnlyReturnedLabels(): void
+    {
+        $packages = $this->get(PackageManager::class)->getActivePackages();
+        // The deprecated label comes first in the file, so it must not use up the limit
+        $result = $this->get(LabelFinder::class)->findLabels($packages, 'default', 'Labelfindertest', '', false, 1, true);
+        self::assertSame(['fixture.current'], array_map(static fn($label): string => $label->reference, $result));
     }
 }

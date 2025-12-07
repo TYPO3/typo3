@@ -34,9 +34,11 @@ final readonly class LabelFinder
      *
      * If both $searchString and $regex are given, the regex is applied only to labels or references
      * that already contain the search string.
+     * Deprecated labels are excluded unless $deprecatedLabels includes them. Excluded labels do
+     * not count towards $limit.
      * @returns DomainSearchResult[]|LabelSearchResult[]
      */
-    public function findLabels(array $packages, string $locale = 'en', string $searchString = '', string $regex = '', bool $searchInIdentifierOnly = false, int $limit = 0, bool $flatList = false): array
+    public function findLabels(array $packages, string $locale = 'en', string $searchString = '', string $regex = '', bool $searchInIdentifierOnly = false, int $limit = 0, bool $flatList = false, DeprecatedLabels $deprecatedLabels = DeprecatedLabels::Exclude): array
     {
         // Collect all language resource files with their translations and label counts
         $labelInDomain = [];
@@ -60,10 +62,14 @@ final readonly class LabelFinder
                         // This can happen with plural forms
                         $label = json_encode($label);
                     }
+                    $deprecated = str_ends_with((string)$reference, '.x-unused');
+                    if (!$deprecatedLabels->accepts($deprecated)) {
+                        continue;
+                    }
                     if (!$this->matchesSearchCriteria((string)$reference, $label, $searchString, $regex, $searchInIdentifierOnly)) {
                         continue;
                     }
-                    $totalLabelData[] = $labelData[] = new LabelSearchResult((string)$domain, (string)$reference, (string)$label);
+                    $totalLabelData[] = $labelData[] = new LabelSearchResult((string)$domain, (string)$reference, (string)$label, $deprecated);
                     $count++;
                     if ($limit > 0 && $count >= $limit) {
                         break;
