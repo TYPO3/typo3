@@ -63,7 +63,7 @@ final class CliCommandTest extends AbstractCommandTestCase
         return [
             ['command' => 'styleguide:generate tca', 'args' => [], 'expectedExitCode' => 0],
             ['command' => 'styleguide:generate frontend', 'args' => [], 'expectedExitCode' => 0],
-            ['command' => 'cleanup:localprocessedfiles', 'args' => ['-v'], 'expectedExitCode' => 0],
+            ['command' => 'cleanup:localprocessedfiles %s', 'args' => ['-v'], 'expectedExitCode' => 0],
             ['command' => 'cache:flush', 'args' => [], 'expectedExitCode' => 0],
             ['command' => 'cache:warmup', 'args' => [], 'expectedExitCode' => 0],
             ['command' => 'cleanup:flexforms', 'args' => [], 'expectedExitCode' => 0],
@@ -79,19 +79,19 @@ final class CliCommandTest extends AbstractCommandTestCase
             ['command' => 'mailer:spool:send', 'args' => [], 'expectedExitCode' => 1],
             ['command' => 'redirects:checkintegrity', 'args' => [], 'expectedExitCode' => 0],
             ['command' => 'redirects:cleanup', 'args' => [], 'expectedExitCode' => 0],
-            ['command' => 'referenceindex:update', 'args' => ['--check'], 'expectedExitCode' => 0],
+            ['command' => 'referenceindex:update %s', 'args' => ['--check'], 'expectedExitCode' => 0],
             ['command' => 'scheduler:run', 'args' => [], 'expectedExitCode' => 0],
             ['command' => 'site:list', 'args' => [], 'expectedExitCode' => 0],
             ['command' => 'site:show show-me', 'args' => [], 'expectedExitCode' => 0],
             ['command' => 'syslog:list', 'args' => [], 'expectedExitCode' => 0],
             ['command' => 'upgrade:list', 'args' => [], 'expectedExitCode' => 0],
+            ['command' => 'install:password:set %s %s', 'args' => ['--no-interaction', '--dry-run'], 'expectedExitCode' => 0],
             // supported shells
             ['command' => 'completion bash', 'args' => [], 'expectedExitCode' => 0],
             ['command' => 'completion fish', 'args' => [], 'expectedExitCode' => 0],
             ['command' => 'completion zsh', 'args' => [], 'expectedExitCode' => 0],
             // unsupported shell (not detected)
             ['command' => 'completion', 'args' => [], 'expectedExitCode' => 2],
-            ['command' => 'install:password:set', 'args' => [], 'expectedExitCode' => 1],
         ];
     }
 
