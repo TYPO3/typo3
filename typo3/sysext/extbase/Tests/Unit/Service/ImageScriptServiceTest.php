@@ -32,7 +32,7 @@ final class ImageScriptServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    protected ImageService $subject;
+    private ImageService $subject;
 
     /**
      * Initialize ImageService and environment service mock

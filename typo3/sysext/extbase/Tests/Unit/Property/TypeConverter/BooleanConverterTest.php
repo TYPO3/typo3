@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class BooleanConverterTest extends UnitTestCase
 {
-    protected BooleanConverter $converter;
+    private BooleanConverter $converter;
 
     protected function setUp(): void
     {

@@ -31,7 +31,7 @@ final class DateTimeConverterTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    protected DateTimeConverter $converter;
+    private DateTimeConverter $converter;
 
     protected function setUp(): void
     {

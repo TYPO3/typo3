@@ -28,14 +28,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ArgumentTest extends UnitTestCase
 {
-    protected Argument $simpleValueArgument;
-    protected Argument $objectArgument;
+    private Argument $simpleValueArgument;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->simpleValueArgument = new Argument('someName', 'string');
-        $this->objectArgument = new Argument('someName', 'DateTime');
     }
 
     #[Test]

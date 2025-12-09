@@ -40,7 +40,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/file_upload'];
 
-    protected FileHandlingService $fileHandlingService;
+    private FileHandlingService $fileHandlingService;
 
     protected function setUp(): void
     {

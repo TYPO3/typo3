@@ -33,8 +33,8 @@ final class InTest extends FunctionalTestCase
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
     ];
 
-    protected BlogRepository $blogRepository;
-    protected PostRepository $postRepository;
+    private BlogRepository $blogRepository;
+    private PostRepository $postRepository;
 
     protected function setUp(): void
     {

@@ -38,11 +38,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class QueryTest extends UnitTestCase
 {
-    protected Query&MockObject&AccessibleObjectInterface $query;
-    protected QuerySettingsInterface $querySettings;
-    protected PersistenceManagerInterface $persistenceManager;
-    protected DataMapFactory $dataMapFactory;
-    protected ContainerInterface $container;
+    private Query&MockObject&AccessibleObjectInterface $query;
+    private PersistenceManagerInterface&MockObject $persistenceManager;
+    private ContainerInterface&MockObject $container;
 
     /**
      * Sets up this test case
@@ -51,12 +49,12 @@ final class QueryTest extends UnitTestCase
     {
         parent::setUp();
         $this->query = $this->getAccessibleMock(Query::class, ['getSelectorName'], [], '', false);
-        $this->querySettings = $this->createMock(QuerySettingsInterface::class);
-        $this->query->_set('querySettings', $this->querySettings);
+        $querySettings = $this->createMock(QuerySettingsInterface::class);
+        $this->query->_set('querySettings', $querySettings);
         $this->persistenceManager = $this->createMock(PersistenceManagerInterface::class);
         $this->query->_set('persistenceManager', $this->persistenceManager);
-        $this->dataMapFactory = $this->createMock(DataMapFactory::class);
-        $this->query->_set('dataMapFactory', $this->dataMapFactory);
+        $dataMapFactory = $this->createMock(DataMapFactory::class);
+        $this->query->_set('dataMapFactory', $dataMapFactory);
         $this->container = $this->createMock(ContainerInterface::class);
         $this->query->_set('container', $this->container);
     }

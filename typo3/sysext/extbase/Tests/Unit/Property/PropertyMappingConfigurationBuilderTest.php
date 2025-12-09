@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PropertyMappingConfigurationBuilderTest extends UnitTestCase
 {
-    protected PropertyMappingConfigurationBuilder $propertyMappingConfigurationBuilder;
+    private PropertyMappingConfigurationBuilder $propertyMappingConfigurationBuilder;
 
     protected function setUp(): void
     {

@@ -20,15 +20,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Property\TypeConverter\IntegerConverter;
-use TYPO3\CMS\Extbase\Property\TypeConverterInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class IntegerConverterTest extends UnitTestCase
 {
-    /**
-     * @var TypeConverterInterface
-     */
-    protected $converter;
+    private IntegerConverter $converter;
 
     protected function setUp(): void
     {

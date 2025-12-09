@@ -38,7 +38,7 @@ final class UpdateTest extends FunctionalTestCase
 
     private PersistenceManager $persistentManager;
     private PostRepository $postRepository;
-    protected BlogRepository $blogRepository;
+    private BlogRepository $blogRepository;
 
     protected function setUp(): void
     {

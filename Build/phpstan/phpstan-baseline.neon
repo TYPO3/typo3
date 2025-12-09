@@ -1669,28 +1669,10 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/ArgumentsTest.php
 
 		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface\:\:expects\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/QueryResultTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface'' and TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface\<object\> will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/QueryResultTest.php
-
-		-
-			message: '#^Call to an undefined method Psr\\Container\\ContainerInterface\:\:expects\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/QueryTest.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface\:\:expects\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/QueryTest.php
 
 		-
 			message: '#^Parameter \#1 \$limit of method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Query\<object\>\:\:setLimit\(\) expects int, float given\.$#'

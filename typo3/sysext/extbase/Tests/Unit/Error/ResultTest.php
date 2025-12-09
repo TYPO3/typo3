@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ResultTest extends UnitTestCase
 {
-    protected Result $result;
+    private Result $result;
 
     protected function setUp(): void
     {

@@ -39,8 +39,8 @@ final class AddTest extends FunctionalTestCase
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
     ];
 
-    protected PersistenceManager $persistentManager;
-    protected BlogRepository $blogRepository;
+    private PersistenceManager $persistentManager;
+    private BlogRepository $blogRepository;
 
     protected function setUp(): void
     {

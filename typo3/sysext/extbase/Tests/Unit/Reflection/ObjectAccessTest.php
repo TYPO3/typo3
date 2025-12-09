@@ -33,7 +33,7 @@ final class ObjectAccessTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    protected DummyClassWithGettersAndSetters $dummyObject;
+    private DummyClassWithGettersAndSetters $dummyObject;
 
     protected function setUp(): void
     {

@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CountryConverterTest extends UnitTestCase
 {
-    protected CountryConverter $converter;
+    private CountryConverter $converter;
 
     protected function setUp(): void
     {

@@ -28,11 +28,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class Typo3QuerySettingsTest extends UnitTestCase
 {
-    protected ?Typo3QuerySettings $subject = null;
+    private Typo3QuerySettings $subject;
 
-    /**
-     * setup test environment
-     */
     protected function setUp(): void
     {
         parent::setUp();

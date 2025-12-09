@@ -32,9 +32,9 @@ final class CountTest extends FunctionalTestCase
     ];
 
     /**
-     * @var int number of all records
+     * number of all records
      */
-    protected int $numberOfRecordsInFixture = 14;
+    private int $numberOfRecordsInFixture = 14;
 
     protected function setUp(): void
     {

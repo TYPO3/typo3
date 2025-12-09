@@ -35,8 +35,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ExtensionServiceTest extends UnitTestCase
 {
-    protected ConfigurationManagerInterface&MockObject $mockConfigurationManager;
-    protected ExtensionService $extensionService;
+    private ConfigurationManagerInterface&MockObject $mockConfigurationManager;
+    private ExtensionService $extensionService;
 
     /**
      * Due to nested PageRepository / FrontendRestriction Container issues, the Context object is set

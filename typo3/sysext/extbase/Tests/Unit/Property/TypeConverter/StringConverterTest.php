@@ -19,15 +19,11 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Property\TypeConverter\StringConverter;
-use TYPO3\CMS\Extbase\Property\TypeConverterInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class StringConverterTest extends UnitTestCase
 {
-    /**
-     * @var TypeConverterInterface
-     */
-    protected $converter;
+    private StringConverter $converter;
 
     protected function setUp(): void
     {

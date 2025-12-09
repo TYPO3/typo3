@@ -18,35 +18,23 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class QueryResultTest extends UnitTestCase
 {
-    /**
-     * @var QueryResult
-     */
-    protected $queryResult;
+    private QueryResult&MockObject&AccessibleObjectInterface $queryResult;
 
-    /**
-     * @var QueryInterface
-     */
-    protected $mockQuery;
+    private QueryInterface&MockObject $mockQuery;
 
-    /**
-     * @var PersistenceManagerInterface
-     */
-    protected $mockPersistenceManager;
+    private PersistenceManagerInterface&MockObject $mockPersistenceManager;
 
-    /**
-     * @var DataMapper
-     */
-    protected $mockDataMapper;
-
-    protected array $sampleResult = [];
+    private DataMapper&MockObject $mockDataMapper;
 
     /**
      * Sets up this test case
@@ -62,8 +50,7 @@ final class QueryResultTest extends UnitTestCase
         $this->queryResult = $this->getAccessibleMock(QueryResult::class, null, [], '', false);
         $this->queryResult->_set('persistenceManager', $this->mockPersistenceManager);
         $this->queryResult->_set('dataMapper', $this->mockDataMapper);
-        $this->sampleResult = [['foo' => 'Foo1', 'bar' => 'Bar1'], ['foo' => 'Foo2', 'bar' => 'Bar2']];
-        $this->mockDataMapper->method('map')->willReturn($this->sampleResult);
+        $this->mockDataMapper->method('map')->willReturn([['foo' => 'Foo1', 'bar' => 'Bar1'], ['foo' => 'Foo2', 'bar' => 'Bar2']]);
     }
 
     #[Test]

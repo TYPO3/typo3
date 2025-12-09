@@ -43,9 +43,9 @@ final class WorkspaceTest extends FunctionalTestCase
 
     protected array $coreExtensionsToLoad = ['workspaces'];
 
-    protected BlogRepository $blogRepository;
+    private BlogRepository $blogRepository;
 
-    protected PostRepository $postRepository;
+    private PostRepository $postRepository;
 
     protected function setUp(): void
     {
