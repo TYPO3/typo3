@@ -7,26 +7,26 @@
 Quick Start for Editors
 =======================
 
-You are an editor, your admin installed the form extension and you want
-to get started quickly? Follow these steps!
+Are you an editor, the form extension has already been installed by your admin and you want
+to get started quickly? Follow these steps:
 
 .. rst-class:: bignums-xxl
 
 1. Create a new form
 
-   Go to the ``Forms`` module, and create a new form there. With the help of
-   the form editor you can build appealing forms easily.
+   Go to the ``Forms`` module and build a form using the form editor. With the
+   form editor you can quickly build appealing forms.
 
-2. Insert your form on a page
+2. Insert the form on a page
 
    The next step is inserting the form on the desired page(s).
 
    #. Open the page module in the backend.
-   #. Select the desired page.
-   #. Create a new content element of type "Form". You can find this one
-      under the tab "Form Elements".
-   #. Under the tab "Plugin", choose the desired form.
-   #. Save the content element.
-   #. Repeat steps 2 to 5 until the form is inserted on every page you want.
+   #. Go to your desired page.
+   #. Create a new content element of type "Form". You can find this
+      under the "Form Elements" tab.
+   #. Select your form on the "Plugin" tab.
+   #. Save the form content element.
+   #. Repeat steps 2 to 5 to insert the form on further pages.
 
-You can now view your form on your web site. Enjoy!
+View your form on your web site. Enjoy!
