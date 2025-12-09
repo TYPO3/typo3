@@ -28,7 +28,7 @@ The :composer:`typo3/cms-form` extension is a system extension that provides a
 flexible, extendable, and easy-to-use form framework. It incorporates interfaces
 and functionality that allow editors, integrators and developers to build forms.
 
-Non-technical editors can use the :guilabel:`Content > Forms` backend module.
+Non-technical editors can use the :guilabel:`Web > Forms` backend module.
 They can create and manage forms using a simple drag and drop interface.
 Forms can be previewed instantly.
 
