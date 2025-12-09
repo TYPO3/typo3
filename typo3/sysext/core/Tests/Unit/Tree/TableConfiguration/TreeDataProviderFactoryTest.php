@@ -22,7 +22,6 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration\Fixtures\TreeDataProviderFixture;
 use TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration\Fixtures\TreeDataProviderWithConfigurationFixture;
 use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
 use TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory;
@@ -101,21 +100,6 @@ final class TreeDataProviderFactoryTest extends UnitTestCase
         $this->expectExceptionCode($expectedExceptionCode);
 
         TreeDataProviderFactory::getDataProvider($tcaConfiguration, 'foo', 'bar', ['uid' => 1]);
-    }
-
-    #[Test]
-    public function configuredDataProviderClassIsInstantiated(): void
-    {
-        $dataProviderMockClassName = TreeDataProviderFixture::class;
-        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
-
-        $tcaConfiguration = [
-            'treeConfig' => ['dataProvider' => $dataProviderMockClassName],
-            'type' => 'folder',
-        ];
-        $dataProvider = TreeDataProviderFactory::getDataProvider($tcaConfiguration, 'foo', 'bar', ['uid' => 1]);
-
-        self::assertInstanceOf($dataProviderMockClassName, $dataProvider);
     }
 
     #[Test]

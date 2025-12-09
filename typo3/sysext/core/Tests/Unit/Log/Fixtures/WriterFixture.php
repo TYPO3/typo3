@@ -30,6 +30,7 @@ class WriterFixture extends AbstractWriter
     public function writeLog(LogRecord $record)
     {
         $this->records[] = $record;
+        return $this;
     }
 
     public function getRecords(): array

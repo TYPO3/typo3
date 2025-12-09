@@ -2768,9 +2768,9 @@ final class ArrayUtilityTest extends UnitTestCase
             'zap',
         ];
         ArrayUtility::naturalKeySortRecursive($testArray);
-        self::assertEquals($expectedResult, array_values(array_keys($testArray['aaa']['bad'])));
-        self::assertEquals($expectedResult, array_values(array_keys($testArray['aaa'])));
-        self::assertEquals($expectedResult, array_values(array_keys($testArray)));
+        self::assertEquals($expectedResult, array_keys($testArray['aaa']['bad']));
+        self::assertEquals($expectedResult, array_keys($testArray['aaa']));
+        self::assertEquals($expectedResult, array_keys($testArray));
     }
 
     /**

@@ -2211,10 +2211,6 @@ final class GeneralUtilityTest extends UnitTestCase
     #[Test]
     public function writeFileToTypo3tempDirWorksWithValidPath(string $filePath, string $pathToCleanUp): void
     {
-        if ($pathToCleanUp !== '') {
-            $this->testFilesToDelete[] = $pathToCleanUp;
-        }
-
         $dummyContent = 'Please could you stop the noise, I\'m trying to get some rest from all the unborn chicken voices in my head.';
 
         $result = GeneralUtility::writeFileToTypo3tempDir($filePath, $dummyContent);

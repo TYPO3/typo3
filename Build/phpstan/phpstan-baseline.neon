@@ -1405,34 +1405,10 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Functional/Log/LoggerAwareChannelTest.php
 
 		-
-			message: '#^Constructor of class TYPO3\\CMS\\Core\\Tests\\Unit\\Cache\\Fixtures\\FrontendBackendInstanceFixture has an unused parameter \$_\.$#'
-			identifier: constructor.unusedParameter
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Cache/Fixtures/FrontendBackendInstanceFixture.php
-
-		-
-			message: '#^Parameter \#1 \$expected of static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) contains unresolvable type\.$#'
-			identifier: argument.unresolvableType
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Query/QueryBuilderTest.php
-
-		-
 			message: '#^Access to an undefined property TYPO3\\CMS\\Core\\Log\\Logger\:\:\$records\.$#'
 			identifier: property.notFound
 			count: 2
 			path: ../../typo3/sysext/core/Tests/Unit/Error/ErrorHandlerTest.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Core\\Tests\\Unit\\Html\\Parser\\ParserTest\:\:nodesAreResolvedDataProvider\(\) should return array\<string\> but returns array\<int, list\<list\<string\>\|string\>\>\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Html/Parser/ParserTest.php
-
-		-
-			message: '#^Parameter \#1 \$body of class TYPO3\\CMS\\Core\\Http\\Response constructor expects Psr\\Http\\Message\\StreamInterface\|string\|null, array\<int, string\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Http/ResponseTest.php
 
 		-
 			message: '#^Parameter \#1 \$resource of method TYPO3\\CMS\\Core\\Http\\StreamFactory\:\:createStreamFromResource\(\) expects resource, XMLParser given\.$#'
@@ -1445,66 +1421,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Http/StreamTest.php
-
-		-
-			message: '#^Parameter \#1 \$data of method TYPO3\\CMS\\Core\\LinkHandling\\EmailLinkHandler\:\:resolveHandlerData\(\) expects array, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/LinkHandling/EmailLinkHandlerTest.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Core\\Tests\\Unit\\Log\\Fixtures\\WriterFixture\:\:writeLog\(\) should return TYPO3\\CMS\\Core\\Log\\Writer\\WriterInterface but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Log/Fixtures/WriterFixture.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\Mailer\\Transport\\Smtp\\Stream\\AbstractStream\:\:getHost\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Mail/TransportFactoryTest.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\Mailer\\Transport\\Smtp\\Stream\\AbstractStream\:\:getPort\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Mail/TransportFactoryTest.php
-
-		-
-			message: '#^Constructor of class TYPO3\\CMS\\Core\\Tests\\Unit\\Tree\\TableConfiguration\\Fixtures\\TreeDataProviderFixture has an unused parameter \$configuration\.$#'
-			identifier: constructor.unusedParameter
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Tree/TableConfiguration/Fixtures/TreeDataProviderFixture.php
-
-		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Tree/TableConfiguration/Fixtures/TreeDataProviderWithConfigurationFixture.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Tree\\\\TableConfiguration\\\\Fixtures\\\\TreeDataProviderFixture'' and TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\DatabaseTreeDataProvider will always evaluate to false\.$#'
-			identifier: staticMethod.impossibleType
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Tree/TableConfiguration/TreeDataProviderFactoryTest.php
-
-		-
-			message: '#^Parameter \#1 \$array \(list\<\(int\|string\)\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ArrayUtilityTest.php
-
-		-
-			message: '#^Parameter \#1 \$array \(list\<int\|string\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ArrayUtilityTest.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between non\-empty\-string and '''' will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
 
 		-
 			message: '#^Offset non\-empty\-string on array\{\} on left side of \?\? does not exist\.$#'

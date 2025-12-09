@@ -24,10 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class EmailLinkHandlerTest extends UnitTestCase
 {
-    /**
-     * Data to resolve strings to arrays and vice versa, external, mail, page
-     */
-    public static function resolveParametersForNonFilesDataProvider(): array
+    public static function resolveHandlerDataDataProvider(): array
     {
         return [
             'email without protocol' => [
@@ -37,7 +34,6 @@ final class EmailLinkHandlerTest extends UnitTestCase
                 [
                     'email' => 'one@example.com',
                 ],
-                'mailto:one@example.com',
             ],
             'email with protocol' => [
                 [
@@ -46,7 +42,6 @@ final class EmailLinkHandlerTest extends UnitTestCase
                 [
                     'email' => 'one@example.com',
                 ],
-                'mailto:one@example.com',
             ],
             'email with protocol 2' => [
                 [
@@ -55,34 +50,45 @@ final class EmailLinkHandlerTest extends UnitTestCase
                 [
                     'email' => 'info@example.org',
                 ],
-                'mailto:info@example.org',
             ],
         ];
     }
 
-    /**
-     * @param string $input
-     * @param array $expected
-     * @param string $finalString
-     * @todo Defining the method parameter types results in test bench errors
-     */
-    #[DataProvider('resolveParametersForNonFilesDataProvider')]
+    #[DataProvider('resolveHandlerDataDataProvider')]
     #[Test]
-    public function resolveReturnsSplitParameters($input, $expected, $finalString): void
+    public function resolveReturnsSplitParameters(array $input, array $expected): void
     {
         $subject = new EmailLinkHandler();
         self::assertEquals($expected, $subject->resolveHandlerData($input));
     }
 
-    /**
-     * @param string $input
-     * @param array $parameters
-     * @param string $expected
-     * @todo Defining the method parameter types results in test bench errors
-     */
-    #[DataProvider('resolveParametersForNonFilesDataProvider')]
+    public static function splitParametersToIdentifierDataProvider(): array
+    {
+        return [
+            'email without protocol' => [
+                [
+                    'email' => 'one@example.com',
+                ],
+                'mailto:one@example.com',
+            ],
+            'email with protocol' => [
+                [
+                    'email' => 'one@example.com',
+                ],
+                'mailto:one@example.com',
+            ],
+            'email with protocol 2' => [
+                [
+                    'email' => 'info@example.org',
+                ],
+                'mailto:info@example.org',
+            ],
+        ];
+    }
+
+    #[DataProvider('splitParametersToIdentifierDataProvider')]
     #[Test]
-    public function splitParametersToUnifiedIdentifier($input, $parameters, $expected): void
+    public function splitParametersToUnifiedIdentifier(array $parameters, string $expected): void
     {
         $subject = new EmailLinkHandler();
         self::assertEquals($expected, $subject->asString($parameters));

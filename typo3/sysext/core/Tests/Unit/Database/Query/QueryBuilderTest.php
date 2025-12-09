@@ -999,6 +999,8 @@ final class QueryBuilderTest extends UnitTestCase
 
         //change cloned QueryBuilder
         $clonedQueryBuilder->count('*');
+
+        /** @var non-empty-string $expectedCountSQL */
         $expectedCountSQL = 'SELECT COUNT(*) FROM pages WHERE (uid=1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))';
         self::assertSame($expectedCountSQL, $clonedQueryBuilder->getSQL());
 
@@ -1056,7 +1058,6 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $restrictionClass = get_class($this->createMock(QueryRestrictionInterface::class));
         $GLOBALS['TYPO3_CONF_VARS']['DB']['additionalQueryRestrictions'][$restrictionClass] = ['disabled' => true];
-        $tcaSchemaFactory = $this->getTcaSchemaFactory();
         $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $queryBuilder = new QueryBuilder(
             $this->connection,

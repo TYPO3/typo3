@@ -19,8 +19,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures;
 
 class FrontendBackendInstanceFixture extends FrontendFixture
 {
-    public function __construct($_, $backend)
+    public function __construct($identifier, $backend)
     {
+        parent::__construct($identifier);
         if ($backend instanceof BackendFixture) {
             throw new \RuntimeException('', 1464557160);
         }

@@ -78,13 +78,6 @@ final class ResponseTest extends UnitTestCase
     }
 
     #[Test]
-    public function constructorRaisesExceptionForInvalidStream(): void
-    {
-        $this->expectException(\TypeError::class);
-        new Response(['TOTALLY INVALID']);
-    }
-
-    #[Test]
     public function constructorCanAcceptAllMessageParts(): void
     {
         $body = new Stream('php://memory');

@@ -33,7 +33,7 @@ final class ParserTest extends UnitTestCase
     ];
 
     /**
-     * @return string[]
+     * @return array<int, list<list<string>|string>>
      */
     public static function nodesAreResolvedDataProvider(): array
     {

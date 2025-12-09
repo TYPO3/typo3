@@ -27,9 +27,6 @@ class TreeDataProviderWithConfigurationFixture
      */
     public function __construct(array $configuration)
     {
-        if (!is_array($configuration)) {
-            throw new \Exception('Failed asserting that the constructor arguments are an array', 1438875247);
-        }
         $tcaConfiguration = [
             'treeConfig' => [
                 'dataProvider' => self::class,
