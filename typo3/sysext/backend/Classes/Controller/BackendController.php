@@ -225,7 +225,7 @@ class BackendController
         if (!empty($extConf['backendLogo'])) {
             $configuredLogo = ltrim($extConf['backendLogo'], '/');
             $customBackendLogo = GeneralUtility::getFileAbsFileName($configuredLogo);
-            if ($customBackendLogo !== '' && file_exists($logoPath)) {
+            if ($customBackendLogo !== '' && file_exists($customBackendLogo)) {
                 $logoPath = $customBackendLogo;
                 $logoUrl = (string)PathUtility::getSystemResourceUri($configuredLogo, $request);
                 // set width/height for custom logo
