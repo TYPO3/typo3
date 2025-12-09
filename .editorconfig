@@ -51,7 +51,7 @@ indent_size = 2
 indent_size = 2
 
 # XLF-Files
-[*.xlf, *.xliff]
+[*.{xlf,xliff}]
 indent_size = 2
 
 # SQL-Files
