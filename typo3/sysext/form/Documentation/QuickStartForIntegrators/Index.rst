@@ -6,21 +6,21 @@
 Quick Start for Integrators
 ===========================
 
-You are an integrator, your admin or you installed the form extension
-and you want to get started quickly? Just follow these steps!
+Are you an integrator, you or your admin have already installed the form extension
+and you want to get started quickly? Just follow these steps:
 
 ..  rst-class:: bignums-xxl
 
-#.  Include the site set
+#.  Include a site set
 
     ..  versionadded:: 13.3
-        EXT:form offers a site set that can be included as described here.
+        EXT:form contains a site set that can be included as described here.
         :ref:`quickstartIntegrators-typoscript-includes` are still possible
         for compability reasons but not recommended anymore.
 
-    Include the site set "Form Framework" via the :ref:`site set in the site
-    configuration <t3coreapi:site-sets>` or the custom
-    :ref:`site package's site set <t3sitepackage:site_set>`.
+    Include the "Form Framework" site set in the :ref:`site
+    configuration <t3coreapi:site-sets>` or as a dependency in a custom
+    :ref:`site package <t3sitepackage:site_set>`.
 
     ..  figure:: /Images/SiteSet.png
 
@@ -28,35 +28,34 @@ and you want to get started quickly? Just follow these steps!
 
 #.  Create a new form
 
-    Go to the ``Forms`` module, and create a new form there. With the help of
-    the form editor you can build appealing forms easily.
+    Go to the ``Forms`` module and create a new form using the form editor. With
+    the form editor you can quickly build appealing forms.
 
 #.  Move the form definition
 
-    If you wish, you can :ref:`move the form definition to a dedicated
+    If required, :ref:`move the form definition into a dedicated
     extension<concepts-form-file-storages>`.
 
 #.  Provide a translation
 
-    You can also provide a :ref:`translation<concepts-frontendrendering-translation>`
-    of your form, if needed. This is done in an .xlf file which has to be
-    registered in your YAML configuration.
+    Create a
+    :ref:`translation<concepts-frontendrendering-translation>`
+    of your form if required by registering the .xlf file in your YAML configuration.
 
-#.  Insert your form in a page
+#.  Insert your form on a page
 
-    The final step is inserting the form in the desired page(s).
+    The final step is inserting the form on the desired page(s).
 
     #.  Open the page module in the backend.
-    #.  Select the desired page.
-    #.  Create a new content element of type "Form". You can find this one
-        under the tab "Form Elements".
-    #.  Under the tab "Plugin", choose the desired form.
-    #.  If needed, you can select "Override finisher settings" under the
-        "Plugin" tab. Save the content element.
-    #.  Repeat steps 2 to 5 until the form is inserted in every page requiring
-        it.
+    #.  Go to the desired page.
+    #.  Create a new content element of type "Form". You can find this
+        on the "Form Elements" tab.
+    #.  Select your new form on the "Plugin" tab.
+    #.  Select "Override finisher settings" on the
+        "Plugin" tab if necessary. Save the form content element.
+    #.  Repeat steps 2 to 5 to insert the form on further pages.
 
-You should now be able to view your form on the frontend. Enjoy!
+View your form in the frontend. Enjoy!
 
 ..  _quickstartIntegrators-typoscript-includes:
 
