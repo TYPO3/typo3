@@ -26,14 +26,10 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class SectionTest extends UnitTestCase
 {
-    protected static $IDENTIFIER = 'an_id';
-    protected static $TYPE = 'a_type';
+    private static string $IDENTIFIER = 'an_id';
+    private static string $TYPE = 'a_type';
 
-    /**
-     * An instance of section
-     * @var Section
-     */
-    protected $sectionInstance;
+    private Section $sectionInstance;
 
     public function setUp(): void
     {
@@ -44,7 +40,6 @@ final class SectionTest extends UnitTestCase
     #[Test]
     public function newInstanceHasNoProperties(): void
     {
-        self::assertNotNull($this->sectionInstance);
         self::assertCount(0, $this->sectionInstance->getProperties());
     }
 
@@ -70,7 +65,7 @@ final class SectionTest extends UnitTestCase
 
         $properties = $this->sectionInstance->getProperties();
         self::assertCount(1, $properties);
-        self::assertTrue(array_key_exists('foo', $properties));
+        self::assertArrayHasKey('foo', $properties);
         self::assertEquals('buz', $properties['foo']);
     }
 
@@ -81,12 +76,12 @@ final class SectionTest extends UnitTestCase
         $properties = $this->sectionInstance->getProperties();
 
         self::assertCount(1, $properties);
-        self::assertTrue(array_key_exists('foo', $properties));
+        self::assertArrayHasKey('foo', $properties);
 
         //check arrays details
         self::assertIsArray($properties['foo']);
         self::assertCount(2, $properties['foo']);
-        self::assertTrue(array_key_exists('bar', $properties['foo']));
+        self::assertArrayHasKey('bar', $properties['foo']);
         self::assertEquals('baz', $properties['foo']['bar']);
     }
 

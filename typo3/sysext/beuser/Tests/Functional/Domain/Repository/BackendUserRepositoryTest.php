@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class BackendUserRepositoryTest extends FunctionalTestCase
 {
-    protected BackendUserRepository $subject;
+    private BackendUserRepository $subject;
 
     protected array $testExtensionsToLoad = [
         'beuser',

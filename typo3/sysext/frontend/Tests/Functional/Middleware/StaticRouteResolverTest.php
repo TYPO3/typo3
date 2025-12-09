@@ -33,7 +33,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class StaticRouteResolverTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
-    protected RequestHandlerInterface $requestHandler;
+    private RequestHandlerInterface $requestHandler;
 
     protected function setUp(): void
     {

@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ValuePickerItemDataProviderTest extends UnitTestCase
 {
-    protected array $sysRedirectResultSet = [
+    private array $sysRedirectResultSet = [
         'tableName' => 'sys_redirect',
         'processedTca' => [
             'columns' => [

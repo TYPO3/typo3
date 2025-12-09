@@ -53,7 +53,6 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Page\PageInformationFactory;
-use TYPO3\CMS\Redirects\Repository\RedirectRepository;
 use TYPO3\CMS\Redirects\Service\RedirectCacheService;
 use TYPO3\CMS\Redirects\Service\RedirectService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -66,13 +65,12 @@ final class RedirectServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    protected MockObject&RedirectCacheService $redirectCacheServiceMock;
-    protected MockObject&LinkService $linkServiceMock;
+    private MockObject&RedirectCacheService $redirectCacheServiceMock;
+    private MockObject&LinkService $linkServiceMock;
 
-    protected RedirectService $redirectService;
+    private RedirectService $redirectService;
 
-    protected MockObject&SiteFinder $siteFinder;
-    protected MockObject&RedirectRepository $redirectRepository;
+    private MockObject&SiteFinder $siteFinder;
 
     protected function setUp(): void
     {
@@ -80,7 +78,6 @@ final class RedirectServiceTest extends UnitTestCase
         $this->redirectCacheServiceMock = $this->getMockBuilder(RedirectCacheService::class)->disableOriginalConstructor()->getMock();
         $this->linkServiceMock = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
         $this->siteFinder = $this->getMockBuilder(SiteFinder::class)->disableOriginalConstructor()->getMock();
-        $this->redirectRepository = $this->getMockBuilder(RedirectRepository::class)->disableOriginalConstructor()->getMock();
 
         $this->redirectService = new RedirectService(
             $this->redirectCacheServiceMock,

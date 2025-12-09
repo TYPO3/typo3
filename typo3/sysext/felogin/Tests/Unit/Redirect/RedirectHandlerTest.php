@@ -20,7 +20,6 @@ namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Redirect;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -37,10 +36,10 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class RedirectHandlerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
-    protected RedirectHandler $subject;
-    protected ServerRequestInterface $typo3Request;
-    protected MockObject&RedirectModeHandler $redirectModeHandler;
-    protected MockObject&RedirectUrlValidator $redirectUrlValidator;
+
+    private RedirectHandler $subject;
+    private MockObject&RedirectModeHandler $redirectModeHandler;
+    private MockObject&RedirectUrlValidator $redirectUrlValidator;
 
     protected function setUp(): void
     {

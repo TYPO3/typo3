@@ -30,7 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class HrefLangGeneratorTest extends UnitTestCase
 {
-    protected MockObject&AccessibleObjectInterface&HrefLangGenerator $subject;
+    private MockObject&AccessibleObjectInterface&HrefLangGenerator $subject;
 
     public function setUp(): void
     {

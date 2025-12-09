@@ -37,7 +37,7 @@ final class PagesAndTtContentTest extends AbstractImportExportTestCase
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/template_extension',
     ];
 
-    protected array $recordTypesIncludeFields =
+    private array $recordTypesIncludeFields =
         [
             'pages' => [
                 'title',

@@ -30,9 +30,9 @@ final class CronCommandTest extends UnitTestCase
     private const TIMESTAMP = 1262304000;
 
     /**
-     * @var string Selected timezone backup
+     * Selected timezone backup
      */
-    protected string $timezoneBackup = '';
+    private string $timezoneBackup = '';
 
     /**
      * We're fiddling with hard timestamps in the tests, but time methods in

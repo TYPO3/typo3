@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class DashboardPresetRegistryTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
-    protected DashboardPresetRegistry $subject;
+    private DashboardPresetRegistry $subject;
 
     public function setUp(): void
     {

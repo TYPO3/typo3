@@ -34,12 +34,12 @@ final class IndexedSearchCTypeMigrationTest extends FunctionalTestCase
         'indexed_search',
     ];
 
-    protected string $baseDataSet = __DIR__ . '/Fixtures/IndexedSearchBase.csv';
-    protected string $baseDataSetPartiallyMigration = __DIR__ . '/Fixtures/IndexedSearchBasePartiallyMigration.csv';
-    protected string $fullMigrationResultDataSet = __DIR__ . '/Fixtures/IndexedSearchMigrated.csv';
-    protected string $partiallyMigrationResultDataSet = __DIR__ . '/Fixtures/IndexedSearchPartiallyMigrated.csv';
+    private string $baseDataSet = __DIR__ . '/Fixtures/IndexedSearchBase.csv';
+    private string $baseDataSetPartiallyMigration = __DIR__ . '/Fixtures/IndexedSearchBasePartiallyMigration.csv';
+    private string $fullMigrationResultDataSet = __DIR__ . '/Fixtures/IndexedSearchMigrated.csv';
+    private string $partiallyMigrationResultDataSet = __DIR__ . '/Fixtures/IndexedSearchPartiallyMigrated.csv';
 
-    protected IndexedSearchCTypeMigration $subject;
+    private IndexedSearchCTypeMigration $subject;
 
     protected function setUp(): void
     {

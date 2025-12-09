@@ -29,7 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ConfigurationServiceTest extends UnitTestCase
 {
-    protected MockObject&BackendUserAuthentication $beUser;
+    private MockObject&BackendUserAuthentication $beUser;
 
     public function setUp(): void
     {

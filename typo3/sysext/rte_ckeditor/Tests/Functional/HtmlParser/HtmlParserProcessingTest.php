@@ -29,7 +29,7 @@ final class HtmlParserProcessingTest extends FunctionalTestCase
     protected bool $initializeDatabase = true;
     protected array $coreExtensionsToLoad = ['rte_ckeditor'];
 
-    protected array $removeTagsExpectation = [
+    private array $removeTagsExpectation = [
         'link',
         'meta',
         'o:p',
@@ -41,7 +41,7 @@ final class HtmlParserProcessingTest extends FunctionalTestCase
     ];
 
     // Just some inserted block elements to make expectation more realistic
-    protected array $allowedTagExpectation = [
+    private array $allowedTagExpectation = [
         'p',
         'h1',
         'h2',

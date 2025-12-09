@@ -28,7 +28,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FilesContentObjectTest extends FunctionalTestCase
 {
-    protected ?AbstractContentObject $subject;
+    private AbstractContentObject $subject;
 
     protected array $pathsToProvideInTestInstance = [
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/images',

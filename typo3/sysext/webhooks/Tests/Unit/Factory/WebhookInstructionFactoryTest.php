@@ -29,7 +29,7 @@ final class WebhookInstructionFactoryTest extends UnitTestCase
     /**
      * Simulate a sys_webhook record
      */
-    protected array $mockRecord = [
+    private array $mockRecord = [
         'url' => 'https://example.com',
         'secret' => 'a random secret',
         'method' => 'POST',
@@ -45,7 +45,7 @@ final class WebhookInstructionFactoryTest extends UnitTestCase
         'row' => [],
     ];
 
-    protected WebhookType $webhookType;
+    private WebhookType $webhookType;
 
     protected function setUp(): void
     {

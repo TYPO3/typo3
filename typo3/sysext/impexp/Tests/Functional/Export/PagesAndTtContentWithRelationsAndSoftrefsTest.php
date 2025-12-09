@@ -34,7 +34,7 @@ final class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImport
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/form_definitions' => 'fileadmin/form_definitions',
     ];
 
-    protected array $recordTypesIncludeFields =
+    private array $recordTypesIncludeFields =
         [
             'pages' => [
                 'title',

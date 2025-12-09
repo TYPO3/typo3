@@ -29,9 +29,9 @@ final class DateViewHelperTest extends FunctionalTestCase
     protected bool $initializeDatabase = false;
 
     /**
-     * @var string Backup of current timezone, it is manipulated in tests
+     * Backup of current timezone, it is manipulated in tests
      */
-    protected $timezone;
+    private string $timezone;
 
     protected function setUp(): void
     {

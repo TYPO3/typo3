@@ -25,11 +25,9 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ReactionRegistryTest extends FunctionalTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
     protected array $coreExtensionsToLoad = ['reactions'];
 
-    protected ReactionRegistry $subject;
+    private ReactionRegistry $subject;
 
     protected function setUp(): void
     {

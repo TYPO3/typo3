@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -28,19 +27,18 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ContentDataProcessorTest extends UnitTestCase
 {
-    protected ContentDataProcessor $contentDataProcessor;
-    protected Container $container;
-    protected MockObject&DataProcessorRegistry $dataProcessorRegistryMock;
+    private ContentDataProcessor $contentDataProcessor;
+    private Container $container;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->container = new Container();
-        $this->dataProcessorRegistryMock = $this->getMockBuilder(DataProcessorRegistry::class)->disableOriginalConstructor()->getMock();
-        $this->dataProcessorRegistryMock->method('getDataProcessor')->willReturn(null);
+        $dataProcessorRegistryMock = $this->getMockBuilder(DataProcessorRegistry::class)->disableOriginalConstructor()->getMock();
+        $dataProcessorRegistryMock->method('getDataProcessor')->willReturn(null);
         $this->contentDataProcessor = new ContentDataProcessor(
             $this->container,
-            $this->dataProcessorRegistryMock
+            $dataProcessorRegistryMock
         );
     }
 

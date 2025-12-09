@@ -28,7 +28,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class WidgetRegistryTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['dashboard'];
-    protected WidgetRegistry $subject;
+    private WidgetRegistry $subject;
 
     public function setUp(): void
     {

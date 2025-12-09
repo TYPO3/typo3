@@ -27,7 +27,7 @@ final class EnableFileServiceTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    protected array $environmentBackup = [];
+    private array $environmentBackup = [];
 
     protected function setUp(): void
     {

@@ -31,8 +31,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 #[IgnoreDeprecations]
 final class FilePathSanitizerTest extends FunctionalTestCase
 {
-    protected bool $backupEnvironment = true;
-
     protected function setUp(): void
     {
         parent::setUp();

@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class WidgetGroupRegistryTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
-    protected WidgetGroupRegistry $subject;
+    private WidgetGroupRegistry $subject;
 
     public function setUp(): void
     {

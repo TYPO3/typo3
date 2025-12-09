@@ -26,10 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 #[IgnoreDeprecations]
 final class InheritancesResolverServiceTest extends UnitTestCase
 {
-    /**
-     * @var InheritancesResolverService
-     */
-    protected $subject;
+    private InheritancesResolverService $subject;
 
     protected function setUp(): void
     {

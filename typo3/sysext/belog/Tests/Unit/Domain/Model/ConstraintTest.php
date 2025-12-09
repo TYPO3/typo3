@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ConstraintTest extends UnitTestCase
 {
-    protected Constraint $subject;
+    private Constraint $subject;
 
     protected function setUp(): void
     {

@@ -23,8 +23,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class SynchronizeColPosAndCTypeWithDefaultLanguageTest extends FunctionalTestCase
 {
-    protected string $baseDataSet = __DIR__ . '/Fixtures/SynchronizeColPosAndCTypeBase.csv';
-    protected string $resultDataSet = __DIR__ . '/Fixtures/SynchronizeColPosAndCTypeResult.csv';
+    private string $baseDataSet = __DIR__ . '/Fixtures/SynchronizeColPosAndCTypeBase.csv';
+    private string $resultDataSet = __DIR__ . '/Fixtures/SynchronizeColPosAndCTypeResult.csv';
 
     #[Test]
     public function synchronizeColPosWithDefaultLanguage(): void

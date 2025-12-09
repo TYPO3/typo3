@@ -29,7 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ListUtilityTest extends UnitTestCase
 {
-    protected ListUtility $subject;
+    private ListUtility $subject;
 
     protected function setUp(): void
     {

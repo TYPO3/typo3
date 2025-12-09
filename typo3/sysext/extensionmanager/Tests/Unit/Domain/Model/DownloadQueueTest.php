@@ -28,15 +28,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class DownloadQueueTest extends UnitTestCase
 {
-    /**
-     * @var DownloadQueue
-     */
-    protected $downloadQueue;
+    private DownloadQueue $downloadQueue;
 
-    /**
-     * @var Extension
-     */
-    protected $extension;
+    private Extension $extension;
 
     protected function setUp(): void
     {

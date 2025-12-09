@@ -42,11 +42,11 @@ final class RedirectUrlValidatorTest extends UnitTestCase
 {
     protected bool $backupEnvironment = true;
 
-    protected RedirectUrlValidator&AccessibleObjectInterface $accessibleFixture;
-    protected RequestInterface $extbaseRequest;
-    protected EventDispatcherInterface&MockObject $eventDispatcher;
-    protected string $testHostName;
-    protected string $testSitePath;
+    private RedirectUrlValidator&AccessibleObjectInterface $accessibleFixture;
+    private RequestInterface $extbaseRequest;
+    private EventDispatcherInterface&MockObject $eventDispatcher;
+    private string $testHostName;
+    private string $testSitePath;
 
     protected bool $resetSingletonInstances = true;
 

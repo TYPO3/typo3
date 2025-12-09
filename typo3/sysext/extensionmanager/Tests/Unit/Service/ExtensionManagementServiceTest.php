@@ -34,12 +34,12 @@ final class ExtensionManagementServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    protected ExtensionManagementService $managementService;
-    protected DependencyUtility&MockObject $dependencyUtilityMock;
-    protected InstallUtility&MockObject $installUtilityMock;
-    protected DownloadQueue $downloadQueue;
-    protected ExtensionDownloaderRemoteInterface&MockObject $remoteMock;
-    protected FileHandlingUtility&MockObject $fileHandlingUtilityMock;
+    private ExtensionManagementService $managementService;
+    private DependencyUtility&MockObject $dependencyUtilityMock;
+    private InstallUtility&MockObject $installUtilityMock;
+    private DownloadQueue $downloadQueue;
+    private ExtensionDownloaderRemoteInterface&MockObject $remoteMock;
+    private FileHandlingUtility&MockObject $fileHandlingUtilityMock;
 
     public function setUp(): void
     {

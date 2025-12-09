@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class CheckBrokenRteLinkEventListenerTest extends FunctionalTestCase
 {
-    protected CheckBrokenRteLinkEventListener $subject;
+    private CheckBrokenRteLinkEventListener $subject;
 
     protected function setUp(): void
     {

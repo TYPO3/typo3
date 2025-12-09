@@ -49,8 +49,8 @@ final class FormRuntimeTest extends FunctionalTestCase
         'form',
     ];
 
-    protected ArrayFormFactory $formFactory;
-    protected Request $request;
+    private ArrayFormFactory $formFactory;
+    private Request $request;
 
     protected function setUp(): void
     {

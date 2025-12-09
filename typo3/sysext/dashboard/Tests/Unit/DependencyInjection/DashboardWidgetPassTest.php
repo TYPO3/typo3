@@ -29,9 +29,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DashboardWidgetPassTest extends UnitTestCase
 {
-    protected DashboardWidgetPass $subject;
-    protected ContainerBuilder&MockObject $container;
-    protected Definition&MockObject $widgetRegistryDefinition;
+    private DashboardWidgetPass $subject;
+    private ContainerBuilder&MockObject $container;
+    private Definition&MockObject $widgetRegistryDefinition;
 
     public function setUp(): void
     {

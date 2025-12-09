@@ -34,8 +34,9 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class ManagementControllerTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['redirects'];
-    protected ManagementController $subject;
-    protected NormalizedParams $normalizedParams;
+
+    private ManagementController $subject;
+    private NormalizedParams $normalizedParams;
 
     protected function setUp(): void
     {

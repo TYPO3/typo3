@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class BackendUserTest extends UnitTestCase
 {
-    protected BackendUser $subject;
+    private BackendUser $subject;
 
     protected function setUp(): void
     {

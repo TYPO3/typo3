@@ -31,7 +31,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class PasswordSetCommandTest extends FunctionalTestCase
 {
-    protected string $originalSettings = '';
+    private string $originalSettings = '';
+
     protected function setUp(): void
     {
         parent::setUp();

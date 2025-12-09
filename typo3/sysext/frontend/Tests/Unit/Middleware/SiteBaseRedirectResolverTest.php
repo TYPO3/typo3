@@ -37,7 +37,7 @@ final class SiteBaseRedirectResolverTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    protected RequestHandlerInterface $siteFoundRequestHandler;
+    private RequestHandlerInterface $siteFoundRequestHandler;
 
     protected function setUp(): void
     {

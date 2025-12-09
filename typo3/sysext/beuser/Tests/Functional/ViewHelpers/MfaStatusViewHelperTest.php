@@ -29,7 +29,7 @@ final class MfaStatusViewHelperTest extends FunctionalTestCase
         'beuser',
     ];
 
-    protected TemplateView $view;
+    private TemplateView $view;
 
     protected function setUp(): void
     {

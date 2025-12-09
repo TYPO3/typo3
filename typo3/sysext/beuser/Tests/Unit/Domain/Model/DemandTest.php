@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DemandTest extends UnitTestCase
 {
-    protected Demand $subject;
+    private Demand $subject;
 
     protected function setUp(): void
     {

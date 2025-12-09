@@ -29,7 +29,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class QrCodeControllerTest extends FunctionalTestCase
 {
-    protected QrCodeController $subject;
+    private QrCodeController $subject;
 
     protected function setUp(): void
     {

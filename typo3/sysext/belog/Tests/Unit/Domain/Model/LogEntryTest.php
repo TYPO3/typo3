@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class LogEntryTest extends UnitTestCase
 {
-    protected LogEntry $subject;
+    private LogEntry $subject;
 
     protected function setUp(): void
     {

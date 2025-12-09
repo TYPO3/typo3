@@ -28,7 +28,6 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
 use TYPO3\CMS\Form\Mvc\ProcessingRule;
-use TYPO3\CMS\Form\Mvc\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Form\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
 use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -37,11 +36,10 @@ final class FileUploadTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    protected PropertyMappingConfiguration $propertyMappingConfiguration;
-    protected ExtbasePropertyMappingConfiguration&MockObject $extbasePropertyMappingConfiguration;
-    protected FileUpload&MockObject $fileUpload;
-    protected FormDefinition&MockObject $rootForm;
-    protected ProcessingRule&MockObject $processingRule;
+    private ExtbasePropertyMappingConfiguration&MockObject $extbasePropertyMappingConfiguration;
+    private FileUpload&MockObject $fileUpload;
+    private FormDefinition&MockObject $rootForm;
+    private ProcessingRule&MockObject $processingRule;
 
     public function setUp(): void
     {

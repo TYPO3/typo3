@@ -30,9 +30,7 @@ use TYPO3\TestingFramework\Core\Testbase;
 
 final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
 {
-    protected ?CleanUpLocalProcessedFilesCommand $subject = null;
-
-    protected ?CommandTester $commandTester = null;
+    private ?CommandTester $commandTester = null;
 
     protected array $coreExtensionsToLoad = ['lowlevel'];
 
@@ -54,13 +52,13 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         $this->setUpBackendUser(1);
 
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DataSet/sys_file_processedfile.csv');
-        $this->subject = $this->get(CleanUpLocalProcessedFilesCommand::class);
+        $cleanUpLocalProcessedFilesCommand = $this->get(CleanUpLocalProcessedFilesCommand::class);
 
         $helperSet = new HelperSet();
         $helperSet->set(new QuestionHelper(), 'question');
 
-        $this->subject->setHelperSet($helperSet);
-        $this->commandTester = new CommandTester($this->subject);
+        $cleanUpLocalProcessedFilesCommand->setHelperSet($helperSet);
+        $this->commandTester = new CommandTester($cleanUpLocalProcessedFilesCommand);
         $this->setUpBackendUser(1);
 
         // create fileadmin (1) and an additional absolute local storage (2)
@@ -85,7 +83,7 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
     protected function tearDown(): void
     {
         // Some tests in this testcase deletes provided files. To avoid false-positive with changed orders we need to
-        // ensure that they are re-provided. We are doing this on a test case basis, to avoid unneded disk io if not
+        // ensure that they are re-provided. We are doing this on a test case basis, to avoid unneeded disk io if not
         // really needed.
         $testbase = new Testbase();
         $testbase->providePathsInTestInstance($this->instancePath, $this->pathsToProvideInTestInstance);
@@ -211,5 +209,4 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
 
         $this->assertCSVDataSet(__DIR__ . '/../Fixtures/Modify/allDeleted.csv');
     }
-
 }

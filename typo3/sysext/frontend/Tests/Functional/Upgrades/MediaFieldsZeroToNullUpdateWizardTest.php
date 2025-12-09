@@ -24,10 +24,10 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class MediaFieldsZeroToNullUpdateWizardTest extends FunctionalTestCase
 {
-    protected string $baseDataSet = __DIR__ . '/Fixtures/MediaFieldsZeroToNullUpdateWizardBase.csv';
-    protected string $fullMigrationResultDataSet = __DIR__ . '/Fixtures/MediaFieldsZeroToNullUpdateWizardMigrated.csv';
+    private string $baseDataSet = __DIR__ . '/Fixtures/MediaFieldsZeroToNullUpdateWizardBase.csv';
+    private string $fullMigrationResultDataSet = __DIR__ . '/Fixtures/MediaFieldsZeroToNullUpdateWizardMigrated.csv';
 
-    protected MediaFieldsZeroToNullUpdateWizard $subject;
+    private MediaFieldsZeroToNullUpdateWizard $subject;
 
     protected function setUp(): void
     {

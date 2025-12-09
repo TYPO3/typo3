@@ -39,22 +39,18 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Middleware\SiteResolver;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SiteResolverTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
-    protected SiteFinder&AccessibleObjectInterface $siteFinder;
-
-    protected RequestHandlerInterface $siteFoundRequestHandler;
-    protected string $originalLocale;
+    private RequestHandlerInterface $siteFoundRequestHandler;
+    private string $originalLocale;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->originalLocale = setlocale(LC_COLLATE, '0');
-        $this->siteFinder = $this->getAccessibleMock(SiteFinder::class, null, [], '', false);
 
         // A request handler which expects a site to be found.
         $this->siteFoundRequestHandler = new class () implements RequestHandlerInterface {

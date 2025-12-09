@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ResourceFileExtensionMatcherTest extends UnitTestCase
 {
-    protected ResourceStorage $storage;
+    private ResourceStorage $storage;
 
     protected function setUp(): void
     {

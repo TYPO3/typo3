@@ -28,7 +28,7 @@ final class PagesXmlSitemapDataProviderTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    protected array $items;
+    private array $items;
 
     public function setUp(): void
     {

@@ -43,10 +43,10 @@ final class RecoveryServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    protected MockObject&FrontendUserRepository $userRepository;
-    protected MockObject&RecoveryConfiguration $recoveryConfiguration;
-    protected MockObject&TemplatePaths $templatePaths;
-    protected RequestInterface $extbaseRequest;
+    private MockObject&FrontendUserRepository $userRepository;
+    private MockObject&RecoveryConfiguration $recoveryConfiguration;
+    private MockObject&TemplatePaths $templatePaths;
+    private RequestInterface $extbaseRequest;
 
     protected function setUp(): void
     {

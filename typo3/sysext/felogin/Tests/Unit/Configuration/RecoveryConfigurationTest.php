@@ -34,9 +34,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RecoveryConfigurationTest extends UnitTestCase
 {
-    protected MockObject&ConfigurationManager $configurationManager;
+    private MockObject&ConfigurationManager $configurationManager;
 
-    protected array $settings = [
+    private array $settings = [
         'email_from' => 'example@example.com',
         'email_fromName' => 'TYPO3 Installation',
         'email' => [
@@ -49,8 +49,8 @@ final class RecoveryConfigurationTest extends UnitTestCase
         'replyTo' => '',
     ];
 
-    protected RecoveryConfiguration $subject;
-    protected LoggerInterface $logger;
+    private RecoveryConfiguration $subject;
+    private LoggerInterface $logger;
 
     protected function setUp(): void
     {

@@ -36,7 +36,7 @@ final class MultilingualPagesAndTtContentTest extends AbstractImportExportTestCa
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/template_extension',
     ];
 
-    protected array $recordTypesIncludeFields = [
+    private array $recordTypesIncludeFields = [
         'pages' => [
             'title',
             'deleted',
