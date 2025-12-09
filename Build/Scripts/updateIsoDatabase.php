@@ -53,7 +53,7 @@ class XliffDumper extends \Symfony\Component\Translation\Dumper\XliffFileDumper
     public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = []): string
     {
         $isBaseLanguage = $messages->getLocale() === 'en';
-        $dom = new \DOMDocument('1.0', 'utf-8');
+        $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
         $xliff = $dom->appendChild($dom->createElement('xliff'));
