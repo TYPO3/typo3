@@ -6697,7 +6697,11 @@ class DataHandler
                         // @todo: It would be better to have the current record at hand here already, at least its pid.
                         //        This will require changing structure of $this->registerDBList.
                         $currentRecord = BackendUtility::getRecord($table, $theUidToUpdate_saveTo, 'pid', '', false);
-                        $this->updateDB($table, $theUidToUpdate_saveTo, $newData, (int)$currentRecord['pid']);
+                        if (!empty($currentRecord)) {
+                            // @todo: For some reason, $this->registerDBList may contain records that do not exist in database
+                            //        anymore, so BU::getRecord() above may return null. Find out why/how this happens.
+                            $this->updateDB($table, $theUidToUpdate_saveTo, $newData, (int)$currentRecord['pid']);
+                        }
                     }
                 }
             }
