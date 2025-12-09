@@ -43,6 +43,15 @@ class UserPermissionsForRenamedModulesMigration implements UpgradeWizardInterfac
         'site_redirects' => 'redirects',
     ];
 
+    /**
+     * Modules that require a parent module to be accessible.
+     *
+     * @var array<string, string> Key: the new module identifier, Value: required parent module
+     */
+    protected array $requiredParentModules = [
+        'redirects' => 'link_management',
+    ];
+
     public function getTitle(): string
     {
         return 'Migrate module permissions';
@@ -50,7 +59,8 @@ class UserPermissionsForRenamedModulesMigration implements UpgradeWizardInterfac
 
     public function getDescription(): string
     {
-        return 'Migrate permissions for renamed modules in user and group module permissions.';
+        return 'Migrate permissions for renamed modules in user and group module permissions. '
+            . 'Also adds required parent modules when a module has been moved to a new location in the module hierarchy.';
     }
 
     public function getPrerequisites(): array
@@ -83,10 +93,38 @@ class UserPermissionsForRenamedModulesMigration implements UpgradeWizardInterfac
             foreach ($queryBuilder->fetchAllAssociative() as $record) {
                 $originalModules = (string)($record[$field] ?? '');
                 $modules = explode(',', $originalModules);
-                $updatedModules = array_map(function ($module) {
-                    return $this->moduleRenaming[trim($module)] ?? $module;
+                $parentModulesToAdd = [];
+                $updatedModules = array_map(function ($module) use (&$parentModulesToAdd) {
+                    $trimmedModule = trim($module);
+                    if (isset($this->moduleRenaming[$trimmedModule])) {
+                        $newModule = $this->moduleRenaming[$trimmedModule];
+                        if (isset($this->requiredParentModules[$newModule])) {
+                            $parentModulesToAdd[] = $this->requiredParentModules[$newModule];
+                        }
+                        return $newModule;
+                    }
+                    return $module;
                 }, $modules);
-                $newModules = implode(',', $updatedModules);
+
+                $trimmedModules = array_filter(array_map('trim', $updatedModules));
+                $deduplicatedModules = array_unique($trimmedModules);
+
+                // Check if existing modules (already renamed in a previous migration) need parent modules
+                // This handles the case where the wizard ran in v14.0 before $requiredParentModules existed
+                foreach ($deduplicatedModules as $module) {
+                    if (isset($this->requiredParentModules[$module])) {
+                        $parentModulesToAdd[] = $this->requiredParentModules[$module];
+                    }
+                }
+
+                // Add parent modules if not already present
+                foreach (array_unique($parentModulesToAdd) as $parentModule) {
+                    if (!in_array($parentModule, $deduplicatedModules, true)) {
+                        $deduplicatedModules[] = $parentModule;
+                    }
+                }
+
+                $newModules = implode(',', $deduplicatedModules);
                 if ($originalModules !== $newModules) {
                     if ($dryRun) {
                         return true;

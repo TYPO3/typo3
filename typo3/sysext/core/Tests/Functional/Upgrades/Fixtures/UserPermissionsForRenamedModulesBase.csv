@@ -9,8 +9,14 @@ be_users
 ,7,"file,,,,,,task"
 ,8,"old_module_a_b,recordlist"
 ,9,"old_module_a old_module_b,recordlist"
+,10,"old_module_c,recordlist"
+,11,"old_module_c,parent_module"
+,12," old_module_c , recordlist "
+,13,"old_module_c,old_module_c,old_module_c"
 be_groups
 ,uid,groupMods
-,10,"old_module_a"
-,11,"new_module_a"
-,12,"old_module_a,old_module_a_abc,old_module_b"
+,14,"old_module_a"
+,15,"new_module_a"
+,16,"old_module_a,old_module_a_abc,old_module_b"
+,17,"old_module_c"
+,18,"old_module_c,parent_module,other_module"

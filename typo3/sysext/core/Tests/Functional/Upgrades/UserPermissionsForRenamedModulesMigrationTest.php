@@ -35,6 +35,12 @@ final class UserPermissionsForRenamedModulesMigrationTest extends FunctionalTest
         $moduleRenamingProp->setValue($subject, [
             'old_module_a' => 'new_module_a',
             'old_module_b' => 'new_module_b',
+            'old_module_c' => 'new_module_c',
+        ]);
+
+        $requiredParentModulesProp = $ref->getProperty('requiredParentModules');
+        $requiredParentModulesProp->setValue($subject, [
+            'new_module_c' => 'parent_module',
         ]);
 
         $this->importCSVDataSet($this->baseDataSet);
@@ -48,5 +54,40 @@ final class UserPermissionsForRenamedModulesMigrationTest extends FunctionalTest
         // Running again must not change anything
         $subject->executeUpdate();
         $this->assertCSVDataSet($this->resultDataSet);
+    }
+
+    #[Test]
+    public function parentModulesAreAddedForAlreadyMigratedModules(): void
+    {
+        $alreadyMigratedDataSet = __DIR__ . '/Fixtures/UserPermissionsForRenamedModulesAlreadyMigrated.csv';
+        $alreadyMigratedResultDataSet = __DIR__ . '/Fixtures/UserPermissionsForRenamedModulesAlreadyMigratedResult.csv';
+
+        $subject = new UserPermissionsForRenamedModulesMigration();
+        $ref = new \ReflectionClass($subject);
+
+        // Simulate v14.1 where modules were already renamed in v14.0 but parent modules didn't exist yet
+        $moduleRenamingProp = $ref->getProperty('moduleRenaming');
+        $moduleRenamingProp->setValue($subject, [
+            'old_module_a' => 'new_module_a',
+            'old_module_c' => 'new_module_c',
+        ]);
+
+        // Now in v14.1, we have parent module requirements
+        $requiredParentModulesProp = $ref->getProperty('requiredParentModules');
+        $requiredParentModulesProp->setValue($subject, [
+            'new_module_c' => 'parent_module',
+        ]);
+
+        $this->importCSVDataSet($alreadyMigratedDataSet);
+        self::assertTrue($subject->updateNecessary(), 'updateNecessary before update - parent modules missing');
+
+        $subject->executeUpdate();
+
+        $this->assertCSVDataSet($alreadyMigratedResultDataSet);
+        self::assertFalse($subject->updateNecessary(), 'updateNecessary after update - parent modules added');
+
+        // Running again must not change anything
+        $subject->executeUpdate();
+        $this->assertCSVDataSet($alreadyMigratedResultDataSet);
     }
 }

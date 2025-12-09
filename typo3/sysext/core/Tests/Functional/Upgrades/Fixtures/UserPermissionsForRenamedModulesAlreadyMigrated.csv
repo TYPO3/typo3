@@ -1,0 +1,10 @@
+be_users
+,uid,userMods
+,1,"new_module_c,recordlist"
+,2,"new_module_c"
+,3,"new_module_c,parent_module,other"
+,4,"new_module_a,new_module_c"
+be_groups
+,uid,groupMods
+,5,"new_module_c"
+,6,"new_module_c,other"
