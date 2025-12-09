@@ -31,7 +31,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class DebugExceptionHandlerTest extends UnitTestCase
 {
-    protected DebugExceptionHandler&MockObject $subject;
+    private DebugExceptionHandler&MockObject $subject;
 
     /**
      * Sets up this test case.

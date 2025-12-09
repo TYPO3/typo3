@@ -28,8 +28,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TotpTest extends UnitTestCase
 {
-    protected string $secret;
-    protected int $timestamp = 1613652061;
+    private string $secret;
+    private int $timestamp = 1613652061;
     protected bool $resetSingletonInstances = true;
 
     protected function setUp(): void

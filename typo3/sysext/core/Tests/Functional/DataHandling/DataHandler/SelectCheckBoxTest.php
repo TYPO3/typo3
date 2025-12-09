@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -27,14 +26,13 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class SelectCheckBoxTest extends FunctionalTestCase
 {
     protected const PAGE_ID = 0;
-    protected ?BackendUserAuthentication $backendUserAuthentication = null;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
-        $this->backendUserAuthentication = $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->backendUserAuthentication);
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
     }
 
     #[Test]

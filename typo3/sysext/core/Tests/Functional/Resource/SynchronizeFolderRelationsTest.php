@@ -31,7 +31,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class SynchronizeFolderRelationsTest extends FunctionalTestCase
 {
-    protected SynchronizeFolderRelations $subject;
+    private SynchronizeFolderRelations $subject;
 
     protected function setUp(): void
     {

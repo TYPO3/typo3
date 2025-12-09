@@ -26,15 +26,9 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class SessionManagerTest extends FunctionalTestCase
 {
-    /**
-     * @var SessionManager
-     */
-    protected $subject;
+    private SessionManager $subject;
 
-    /**
-     * @var array
-     */
-    protected $testSessionRecords = [
+    private array $testSessionRecords = [
         'randomSessionId1' => [
             // DatabaseSessionBackend::hash('randomSessionId1') with encryption key 12345
             'ses_id' => '66c4ba45e3d19bc8726e70e5cf837f8ec7cf2e79df51a06b10dcde49eb7faa5e',

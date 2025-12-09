@@ -53,7 +53,7 @@ final class GeneralUtilityTest extends UnitTestCase
 
     protected bool $backupEnvironment = true;
 
-    protected ?PackageManager $backupPackageManager;
+    private PackageManager $backupPackageManager;
 
     protected function setUp(): void
     {
@@ -64,9 +64,7 @@ final class GeneralUtilityTest extends UnitTestCase
     protected function tearDown(): void
     {
         GeneralUtility::flushInternalRuntimeCaches();
-        if ($this->backupPackageManager) {
-            ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backupPackageManager);
-        }
+        ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backupPackageManager);
         parent::tearDown();
     }
 

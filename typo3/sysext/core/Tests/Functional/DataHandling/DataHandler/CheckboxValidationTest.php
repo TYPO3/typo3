@@ -55,7 +55,7 @@ final class CheckboxValidationTest extends FunctionalTestCase
 
     protected array $coreExtensionsToLoad = ['workspaces'];
 
-    protected BackendUserAuthentication $backendUserAuthentication;
+    private BackendUserAuthentication $backendUserAuthentication;
 
     protected function setUp(): void
     {

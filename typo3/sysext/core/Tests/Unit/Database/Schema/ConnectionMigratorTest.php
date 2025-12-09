@@ -33,9 +33,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ConnectionMigratorTest extends UnitTestCase
 {
-    protected MySQLPlatform $platform;
-    protected AccessibleObjectInterface&MockObject $subject;
-    protected int $maxIdentifierLength = -1;
+    private AccessibleObjectInterface&MockObject $subject;
+    private int $maxIdentifierLength = -1;
 
     protected function setUp(): void
     {
@@ -43,13 +42,12 @@ final class ConnectionMigratorTest extends UnitTestCase
 
         $platformMock = $this->createMock(MySQLPlatform::class);
         $platformMock->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
-        $this->platform = $platformMock;
 
         $connectionMock = $this->createMock(Connection::class);
-        $connectionMock->method('getDatabasePlatform')->willReturn($this->platform);
+        $connectionMock->method('getDatabasePlatform')->willReturn($platformMock);
         $connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
 
-        $this->maxIdentifierLength = PlatformInformation::getMaxIdentifierLength($this->platform);
+        $this->maxIdentifierLength = PlatformInformation::getMaxIdentifierLength($platformMock);
 
         $this->subject = $this->getAccessibleMock(ConnectionMigrator::class, null, ['Default', $connectionMock, []]);
     }

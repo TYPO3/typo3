@@ -24,11 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SimplePaginationTest extends UnitTestCase
 {
-    /**
-     * @var array
-     * @todo Specifying the type in the declaration results in a test bench error
-     */
-    protected $paginator = [];
+    private ArrayPaginator $paginator;
 
     protected function setUp(): void
     {

@@ -33,7 +33,7 @@ final class StateTest extends UnitTestCase
 {
     private const TABLE_NAME = 'tx_test_table';
 
-    protected TcaSchemaFactory $tcaSchemaFactory;
+    private TcaSchemaFactory $tcaSchemaFactory;
 
     protected function setUp(): void
     {

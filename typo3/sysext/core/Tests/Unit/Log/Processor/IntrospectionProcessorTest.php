@@ -27,12 +27,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class IntrospectionProcessorTest extends UnitTestCase
 {
-    protected IntrospectionProcessor&MockObject $processor;
+    private IntrospectionProcessor&MockObject $processor;
 
     /**
      * A dummy result for the debug_backtrace function
      */
-    protected array $dummyBacktrace = [
+    private array $dummyBacktrace = [
         [
             'file' => '/foo/filename1.php',
             'line' => 1,

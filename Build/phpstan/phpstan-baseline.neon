@@ -1429,30 +1429,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Mail/TransportFactoryTest.php
 
 		-
-			message: '#^Cannot call method withCurrentPageNumber\(\) on array\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Pagination/SimplePaginationTest.php
-
-		-
-			message: '#^Cannot call method withItemsPerPage\(\) on array\.$#'
-			identifier: method.nonObject
-			count: 3
-			path: ../../typo3/sysext/core/Tests/Unit/Pagination/SimplePaginationTest.php
-
-		-
-			message: '#^Parameter \#1 \$paginator of class TYPO3\\CMS\\Core\\Pagination\\SimplePagination constructor expects TYPO3\\CMS\\Core\\Pagination\\PaginatorInterface, array given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Pagination/SimplePaginationTest.php
-
-		-
-			message: '#^Property TYPO3\\CMS\\Core\\Tests\\Unit\\Pagination\\SimplePaginationTest\:\:\$paginator \(array\) does not accept TYPO3\\CMS\\Core\\Pagination\\ArrayPaginator\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Pagination/SimplePaginationTest.php
-
-		-
 			message: '#^Constructor of class TYPO3\\CMS\\Core\\Tests\\Unit\\Tree\\TableConfiguration\\Fixtures\\TreeDataProviderFixture has an unused parameter \$configuration\.$#'
 			identifier: constructor.unusedParameter
 			count: 1

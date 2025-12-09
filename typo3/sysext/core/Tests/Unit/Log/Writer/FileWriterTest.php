@@ -29,9 +29,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FileWriterTest extends UnitTestCase
 {
-    protected string $logFileDirectory = 'Log';
-    protected string $logFileName = 'test.log';
-    protected string $testRoot;
+    private string $logFileDirectory = 'Log';
+    private string $logFileName = 'test.log';
+    private string $testRoot;
 
     protected function setUp(): void
     {

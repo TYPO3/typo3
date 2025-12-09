@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FlashMessageServiceTest extends UnitTestCase
 {
-    protected FlashMessageService $flashMessageService;
+    private FlashMessageService $flashMessageService;
 
     protected function setUp(): void
     {

@@ -28,7 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class MarkerBasedTemplateServiceTest extends UnitTestCase
 {
-    protected ?MarkerBasedTemplateService $templateService;
+    private MarkerBasedTemplateService $templateService;
 
     protected bool $resetSingletonInstances = true;
 

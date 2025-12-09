@@ -33,7 +33,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 #[IgnoreDeprecations]
 final class PathUtilityPublicPathsTest extends FunctionalTestCase
 {
-    protected array $serverBackup;
+    private array $serverBackup;
 
     protected function setUp(): void
     {

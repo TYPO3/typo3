@@ -23,8 +23,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class UserPermissionsForRenamedModulesMigrationTest extends FunctionalTestCase
 {
-    protected string $baseDataSet = __DIR__ . '/Fixtures/UserPermissionsForRenamedModulesBase.csv';
-    protected string $resultDataSet = __DIR__ . '/Fixtures/UserPermissionsForRenamedModulesMigrated.csv';
+    private string $baseDataSet = __DIR__ . '/Fixtures/UserPermissionsForRenamedModulesBase.csv';
+    private string $resultDataSet = __DIR__ . '/Fixtures/UserPermissionsForRenamedModulesMigrated.csv';
 
     #[Test]
     public function modulePermissionsAreMigratedForUsersAndGroups(): void

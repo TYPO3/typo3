@@ -58,9 +58,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DataHandlerTest extends UnitTestCase
 {
-    protected DataHandler&MockObject&AccessibleObjectInterface $subject;
-    protected BackendUserAuthentication $backendUser;
-    protected TcaSchemaFactory $tcaSchemaFactory;
+    private DataHandler&MockObject&AccessibleObjectInterface $subject;
+    private TcaSchemaFactory $tcaSchemaFactory;
 
     protected function setUp(): void
     {
@@ -90,8 +89,7 @@ final class DataHandlerTest extends UnitTestCase
             $this->createMock(FlashMessageService::class),
         ];
         $this->subject = $this->getAccessibleMock(DataHandler::class, null, $constructorArguments);
-        $this->backendUser = new BackendUserAuthentication();
-        $this->subject->start([], [], $this->backendUser, $this->createMock(ReferenceIndexUpdater::class));
+        $this->subject->start([], [], new BackendUserAuthentication(), $this->createMock(ReferenceIndexUpdater::class));
     }
 
     #[Test]

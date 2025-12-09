@@ -30,9 +30,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RotatingFileWriterTest extends UnitTestCase
 {
-    protected string $logFileDirectory = 'Log';
-    protected string $logFileName = 'test.log';
-    protected string $testRoot;
+    private string $logFileDirectory = 'Log';
+    private string $logFileName = 'test.log';
+    private string $testRoot;
     protected bool $resetSingletonInstances = true;
 
     protected function setUp(): void

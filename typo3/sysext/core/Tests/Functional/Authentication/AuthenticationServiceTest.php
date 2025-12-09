@@ -28,10 +28,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 final class AuthenticationServiceTest extends FunctionalTestCase
 {
-    /**
-     * @var AuthenticationService
-     */
-    protected $subject;
+    private AuthenticationService $subject;
 
     protected function setUp(): void
     {

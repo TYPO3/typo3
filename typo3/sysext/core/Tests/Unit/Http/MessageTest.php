@@ -30,8 +30,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class MessageTest extends UnitTestCase
 {
-    protected ?Stream $stream;
-    protected ?Message $message;
+    private Stream $stream;
+    private Message $message;
 
     protected function setUp(): void
     {

@@ -38,8 +38,8 @@ final class FormProtectionFactoryTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    protected FormProtectionFactory $subject;
-    protected FrontendInterface $runtimeCacheMock;
+    private FormProtectionFactory $subject;
+    private FrontendInterface $runtimeCacheMock;
 
     protected function setUp(): void
     {

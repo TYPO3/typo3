@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class InstallToolFormProtectionTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
-    protected HashService $hashService;
+    private HashService $hashService;
 
     protected function setUp(): void
     {

@@ -31,7 +31,7 @@ final class FileSpoolTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    protected ?FileSpool $subject;
+    private FileSpool $subject;
 
     protected function setUp(): void
     {

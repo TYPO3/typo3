@@ -23,8 +23,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class PagesRecyclerDoktypeMigrationTest extends FunctionalTestCase
 {
-    protected string $baseDataSet = __DIR__ . '/Fixtures/PagesRecyclerBase.csv';
-    protected string $resultDataSet = __DIR__ . '/Fixtures/PagesRecyclerMigrated.csv';
+    private string $baseDataSet = __DIR__ . '/Fixtures/PagesRecyclerBase.csv';
+    private string $resultDataSet = __DIR__ . '/Fixtures/PagesRecyclerMigrated.csv';
 
     #[Test]
     public function recyclerPagesUpdated(): void

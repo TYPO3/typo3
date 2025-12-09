@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ConfigurationManagerTest extends UnitTestCase
 {
-    protected ConfigurationManager&MockObject $subject;
+    private ConfigurationManager&MockObject $subject;
 
     protected function setUp(): void
     {

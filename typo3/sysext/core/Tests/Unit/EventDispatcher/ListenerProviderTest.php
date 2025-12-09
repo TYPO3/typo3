@@ -21,14 +21,13 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
-use Psr\EventDispatcher\ListenerProviderInterface;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ListenerProviderTest extends UnitTestCase
 {
-    protected ContainerInterface&MockObject $containerMock;
-    protected ?ListenerProvider $listenerProvider;
+    private ContainerInterface&MockObject $containerMock;
+    private ListenerProvider $listenerProvider;
 
     protected function setUp(): void
     {
@@ -37,12 +36,6 @@ final class ListenerProviderTest extends UnitTestCase
         $this->listenerProvider = new ListenerProvider(
             $this->containerMock
         );
-    }
-
-    #[Test]
-    public function implementsPsrInterface(): void
-    {
-        self::assertInstanceOf(ListenerProviderInterface::class, $this->listenerProvider);
     }
 
     #[Test]

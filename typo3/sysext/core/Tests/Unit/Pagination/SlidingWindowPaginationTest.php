@@ -24,7 +24,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SlidingWindowPaginationTest extends UnitTestCase
 {
-    protected $paginator = [];
+    private ArrayPaginator $paginator;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->paginator = new ArrayPaginator(range(1, 14));
+    }
 
     #[Test]
     public function checkSlidingWindowPaginationWithAPaginatorWithDefaultSettings(): void
@@ -128,12 +135,5 @@ final class SlidingWindowPaginationTest extends UnitTestCase
         self::assertFalse($pagination->getHasLessPages());
         self::assertFalse($pagination->getHasMorePages());
         self::assertSame(5, $pagination->getMaximumNumberOfLinks());
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->paginator = new ArrayPaginator(range(1, 14));
     }
 }

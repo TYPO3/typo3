@@ -29,7 +29,7 @@ final class PublicPropertyDeprecationTraitTest extends UnitTestCase
      * @var object Test fixture (anonymous class)
      * @see PublicAccessDeprecationTraitTest::setUp()
      */
-    protected $fixture;
+    private $fixture;
 
     /**
      * Setup

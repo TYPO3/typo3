@@ -31,9 +31,9 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class SvgIconProviderTest extends FunctionalTestCase
 {
     private const svgTestFileContent = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="#CD201F" d="M11 12l3-2v6H2v-6l3 2 3-2 3 2z"></path></svg>';
-    protected ?SvgIconProvider $subject;
+    private SvgIconProvider $subject;
 
-    protected Icon $icon;
+    private Icon $icon;
 
     private DummyFileCreationService $file;
 

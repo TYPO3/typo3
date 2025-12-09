@@ -25,8 +25,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class MfaProviderRegistryTest extends FunctionalTestCase
 {
-    protected MfaProviderRegistry $subject;
-    protected AbstractUserAuthentication $user;
+    private MfaProviderRegistry $subject;
+    private AbstractUserAuthentication $user;
 
     protected function setUp(): void
     {

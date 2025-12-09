@@ -26,15 +26,9 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class DatabaseSessionBackendTest extends FunctionalTestCase
 {
-    /**
-     * @var DatabaseSessionBackend
-     */
-    protected $subject;
+    private DatabaseSessionBackend $subject;
 
-    /**
-     * @var array
-     */
-    protected $testSessionRecord = [
+    private array $testSessionRecord = [
         // DatabaseSessionBackend::hash('randomSessionId') with encryption key 12345
         'ses_id' => 'ef88b5c11865f33ab671a1dfb36868e9641bbb2f917980e35f76d9f70b407122',
         'ses_userid' => 1,

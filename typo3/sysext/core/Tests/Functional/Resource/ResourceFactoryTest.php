@@ -18,20 +18,19 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ResourceFactoryTest extends FunctionalTestCase
 {
-    /**
-     * @var ResourceFactory
-     */
-    protected $subject;
+    private ResourceFactory&MockObject&AccessibleObjectInterface $subject;
 
-    protected array $filesCreated = [];
+    private array $filesCreated = [];
 
     protected function setUp(): void
     {
@@ -39,9 +38,6 @@ final class ResourceFactoryTest extends FunctionalTestCase
         $this->subject = $this->getAccessibleMock(ResourceFactory::class, null, [], '', false);
     }
 
-    /**
-     * Tear down
-     */
     protected function tearDown(): void
     {
         foreach ($this->filesCreated as $file) {

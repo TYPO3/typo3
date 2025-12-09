@@ -30,7 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TypoLinkCodecServiceTest extends UnitTestCase
 {
-    protected TypoLinkCodecService $subject;
+    private TypoLinkCodecService $subject;
 
     protected function setUp(): void
     {

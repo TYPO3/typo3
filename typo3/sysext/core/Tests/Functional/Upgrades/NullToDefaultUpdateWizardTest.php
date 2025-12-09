@@ -32,8 +32,8 @@ final class NullToDefaultUpdateWizardTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_notnull_to_default',
     ];
 
-    protected string $baseDataSet = __DIR__ . '/Fixtures/NullToDefaultUpdateWizardBase.csv';
-    protected string $fullMigrationResultDataSet = __DIR__ . '/Fixtures/NullToDefaultUpdateWizardMigrated.csv';
+    private string $baseDataSet = __DIR__ . '/Fixtures/NullToDefaultUpdateWizardBase.csv';
+    private string $fullMigrationResultDataSet = __DIR__ . '/Fixtures/NullToDefaultUpdateWizardMigrated.csv';
 
     #[Test]
     public function nullValuesAreUpdated(): void

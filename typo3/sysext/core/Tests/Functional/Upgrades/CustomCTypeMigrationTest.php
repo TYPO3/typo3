@@ -30,12 +30,12 @@ final class CustomCTypeMigrationTest extends FunctionalTestCase
     protected const TABLE_CONTENT = 'tt_content';
     protected const TABLE_BACKEND_USER_GROUPS = 'be_groups';
 
-    protected string $baseDataSet = __DIR__ . '/Fixtures/CustomCTypeMigrationBase.csv';
-    protected string $baseDataSetPartiallyMigration = __DIR__ . '/Fixtures/CustomCTypeMigrationBasePartiallyMigration.csv';
-    protected string $fullMigrationResultDataSet = __DIR__ . '/Fixtures/CustomCTypeMigrationMigrated.csv';
-    protected string $partiallyMigrationResultDataSet = __DIR__ . '/Fixtures/CustomCTypeMigrationPartiallyMigrated.csv';
+    private string $baseDataSet = __DIR__ . '/Fixtures/CustomCTypeMigrationBase.csv';
+    private string $baseDataSetPartiallyMigration = __DIR__ . '/Fixtures/CustomCTypeMigrationBasePartiallyMigration.csv';
+    private string $fullMigrationResultDataSet = __DIR__ . '/Fixtures/CustomCTypeMigrationMigrated.csv';
+    private string $partiallyMigrationResultDataSet = __DIR__ . '/Fixtures/CustomCTypeMigrationPartiallyMigrated.csv';
 
-    protected CustomCTypeMigration $subject;
+    private CustomCTypeMigration $subject;
 
     protected function setUp(): void
     {

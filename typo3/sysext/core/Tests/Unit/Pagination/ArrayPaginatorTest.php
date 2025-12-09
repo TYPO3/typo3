@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ArrayPaginatorTest extends UnitTestCase
 {
-    protected array $fixture = [];
+    private array $fixture = [];
 
     protected function setUp(): void
     {

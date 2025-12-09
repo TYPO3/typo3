@@ -29,7 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ServiceProviderRegistryTest extends UnitTestCase
 {
-    protected PackageManager&MockObject $packageManagerMock;
+    private PackageManager&MockObject $packageManagerMock;
 
     protected function setUp(): void
     {

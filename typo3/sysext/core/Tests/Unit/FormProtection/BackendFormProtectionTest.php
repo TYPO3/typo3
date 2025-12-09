@@ -30,9 +30,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class BackendFormProtectionTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
-    protected BackendFormProtection $subject;
-    protected BackendUserAuthentication&MockObject $backendUserMock;
-    protected HashService $hashService;
+    private BackendFormProtection $subject;
+    private BackendUserAuthentication&MockObject $backendUserMock;
+    private HashService $hashService;
 
     protected function setUp(): void
     {

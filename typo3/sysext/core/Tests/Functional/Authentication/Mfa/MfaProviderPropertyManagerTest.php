@@ -29,7 +29,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class MfaProviderPropertyManagerTest extends FunctionalTestCase
 {
-    protected AbstractUserAuthentication $user;
+    private AbstractUserAuthentication $user;
 
     protected function setUp(): void
     {

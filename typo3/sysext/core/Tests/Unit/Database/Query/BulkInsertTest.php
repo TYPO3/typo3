@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query;
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
@@ -27,9 +26,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class BulkInsertTest extends UnitTestCase
 {
-    protected Connection&MockObject $connection;
-    protected ?AbstractPlatform $platform;
-    protected string $testTable = 'testTable';
+    private Connection&MockObject $connection;
+    private string $testTable = 'testTable';
 
     /**
      * Create a new database connection mock object for every test.

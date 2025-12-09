@@ -41,8 +41,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class DefaultTcaSchemaTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
-    protected ?DefaultTcaSchema $subject;
-    protected ?Table $defaultTable;
+    private Table $defaultTable;
 
     public function setUp(): void
     {

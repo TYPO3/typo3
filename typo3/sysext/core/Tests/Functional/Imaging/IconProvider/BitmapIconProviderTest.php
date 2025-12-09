@@ -30,12 +30,9 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 final class BitmapIconProviderTest extends FunctionalTestCase
 {
-    protected ?BitmapIconProvider $subject;
+    private BitmapIconProvider $subject;
 
-    /**
-     * @var Icon
-     */
-    protected $icon;
+    private Icon $icon;
 
     private DummyFileCreationService $file;
 

@@ -24,8 +24,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class MigrateExtensionDataImportRegistryKeysUpdateTest extends FunctionalTestCase
 {
-    protected string $baseDataSet = __DIR__ . '/Fixtures/MigrateExtensionDataImportRegistryKeysBase.csv';
-    protected string $fullMigrationResultDataSet = __DIR__ . '/Fixtures/MigrateExtensionDataImportRegistryKeysMigrated.csv';
+    private string $baseDataSet = __DIR__ . '/Fixtures/MigrateExtensionDataImportRegistryKeysBase.csv';
+    private string $fullMigrationResultDataSet = __DIR__ . '/Fixtures/MigrateExtensionDataImportRegistryKeysMigrated.csv';
 
     #[Test]
     public function registryKeysAreUpdated(): void

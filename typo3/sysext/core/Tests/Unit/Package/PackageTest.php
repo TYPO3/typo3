@@ -32,7 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class PackageTest extends UnitTestCase
 {
-    protected string $testRoot;
+    private string $testRoot;
 
     protected function setUp(): void
     {

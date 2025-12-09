@@ -34,12 +34,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class LockFactoryTest extends UnitTestCase
 {
-    protected LockFactory&MockObject&AccessibleObjectInterface $mockFactory;
+    private LockFactory&MockObject&AccessibleObjectInterface $mockFactory;
 
     /**
      * @var array
      */
-    protected $strategiesConfigBackup = [];
+    private $strategiesConfigBackup = [];
 
     protected function setUp(): void
     {

@@ -34,7 +34,7 @@ final class RedisSessionBackendTest extends FunctionalTestCase
     private RedisSessionBackend $subject;
     private \Redis $redis;
 
-    protected array $testSessionRecord = [
+    private array $testSessionRecord = [
         // RedisSessionBackend::hash('randomSessionId') with encryption key 12345
         'ses_id' => 'ef88b5c11865f33ab671a1dfb36868e9641bbb2f917980e35f76d9f70b407122',
         'ses_userid' => 1,

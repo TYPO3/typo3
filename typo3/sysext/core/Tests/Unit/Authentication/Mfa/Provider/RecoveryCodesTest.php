@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RecoveryCodesTest extends UnitTestCase
 {
-    protected RecoveryCodes $subject;
+    private RecoveryCodes $subject;
 
     protected function setUp(): void
     {

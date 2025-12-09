@@ -30,7 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class ServerRequestTest extends UnitTestCase
 {
-    protected ?ServerRequest $request;
+    private ServerRequest $request;
 
     protected function setUp(): void
     {

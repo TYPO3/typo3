@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class UploadedFileTest extends UnitTestCase
 {
-    protected $tmpFile;
+    private $tmpFile;
 
     protected function setUp(): void
     {

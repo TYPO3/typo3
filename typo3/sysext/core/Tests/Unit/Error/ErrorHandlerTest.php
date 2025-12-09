@@ -41,10 +41,8 @@ final class ErrorHandlerTest extends UnitTestCase
     //        See https://wiki.php.net/rfc/deprecations_php_8_4#remove_e_strict_error_level_and_deprecate_e_strict_constant
     protected const DEFAULT_ERROR_HANDLER_LEVELS = E_ALL & ~(2048 /* deprecated E_STRICT */ | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR);
     protected const DEFAULT_EXCEPTIONAL_ERROR_LEVELS = E_ALL & ~(2048 /* deprecated E_STRICT */ | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR | E_DEPRECATED | E_USER_DEPRECATED | E_WARNING | E_USER_ERROR | E_USER_NOTICE | E_USER_WARNING);
-    protected ErrorHandlerInterface $subject;
 
-    protected LoggerInterface $unusedLogger;
-    protected LoggerInterface $trackingLogger;
+    private LoggerInterface $trackingLogger;
 
     protected bool $resetSingletonInstances = true;
 

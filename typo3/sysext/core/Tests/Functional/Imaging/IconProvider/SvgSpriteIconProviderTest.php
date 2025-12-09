@@ -32,12 +32,9 @@ final class SvgSpriteIconProviderTest extends FunctionalTestCase
 {
     private const svgTestFileContent = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="#CD201F" d="M11 12l3-2v6H2v-6l3 2 3-2 3 2z"></path></svg>';
 
-    protected ?SvgSpriteIconProvider $subject;
+    private SvgSpriteIconProvider $subject;
 
-    /**
-     * @var Icon
-     */
-    protected $icon;
+    private Icon $icon;
 
     private DummyFileCreationService $file;
 

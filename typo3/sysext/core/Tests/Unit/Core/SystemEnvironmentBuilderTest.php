@@ -30,7 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class SystemEnvironmentBuilderTest extends UnitTestCase
 {
-    protected SystemEnvironmentBuilder&MockObject&AccessibleObjectInterface $subject;
+    private SystemEnvironmentBuilder&MockObject&AccessibleObjectInterface $subject;
 
     protected function setUp(): void
     {

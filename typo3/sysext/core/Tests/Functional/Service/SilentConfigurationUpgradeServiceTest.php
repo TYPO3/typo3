@@ -40,7 +40,7 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
 
     protected bool $initializeDatabase = false;
 
-    protected array $localConfigurationBackup;
+    private array $localConfigurationBackup;
 
     protected function setUp(): void
     {

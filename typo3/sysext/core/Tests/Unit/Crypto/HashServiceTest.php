@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class HashServiceTest extends UnitTestCase
 {
-    protected HashService $subject;
+    private HashService $subject;
 
     protected function setUp(): void
     {

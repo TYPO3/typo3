@@ -27,7 +27,7 @@ final class LocalesTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    protected string|bool $originalLocale = false;
+    private string|bool $originalLocale = false;
 
     protected function setUp(): void
     {

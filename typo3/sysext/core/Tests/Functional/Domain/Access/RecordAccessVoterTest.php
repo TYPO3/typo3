@@ -29,7 +29,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class RecordAccessVoterTest extends FunctionalTestCase
 {
-    protected RecordAccessVoter $subject;
+    private RecordAccessVoter $subject;
 
     protected function setUp(): void
     {

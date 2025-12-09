@@ -39,13 +39,13 @@ final class SiteConfigurationTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    protected ?SiteConfiguration $siteConfiguration;
+    private SiteConfiguration $siteConfiguration;
 
     /**
      * store temporarily used files here
      * will be removed after each test
      */
-    protected ?string $fixturePath;
+    private string $fixturePath;
 
     protected function setUp(): void
     {

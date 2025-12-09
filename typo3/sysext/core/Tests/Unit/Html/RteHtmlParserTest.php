@@ -29,7 +29,7 @@ final class RteHtmlParserTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    protected array $procOptions = ['overruleMode' => 'default', 'allowTagsOutside' => 'hr,abbr,figure'];
+    private array $procOptions = ['overruleMode' => 'default', 'allowTagsOutside' => 'hr,abbr,figure'];
 
     /**
      * Data provider for hrTagCorrectlyTransformedOnWayToDataBase
