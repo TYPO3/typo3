@@ -417,9 +417,9 @@ class NewRecordController
                 }
             } else {
                 $nameParts = explode('_', $table);
-                $groupName = $schema->getRawConfiguration()['groupName'] ?? null;
+                $groupName = $schema->getRawConfiguration()['groupName'] ?? '';
                 if (!isset($iconFile[$groupName]) || $nameParts[0] === 'tx' || $nameParts[0] === 'tt') {
-                    $groupName = $groupName ?? $nameParts[1] ?? null;
+                    $groupName = $groupName ?: ($nameParts[1] ?? null);
                     // Try to extract extension name
                     if ($groupName) {
                         $_EXTKEY = '';
