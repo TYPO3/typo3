@@ -149,6 +149,7 @@ export default class FormEngineValidation {
       case 'datetime':
       case 'time':
       case 'timesec':
+      case 'datetimesec':
         if (value === '') {
           return '';
         }

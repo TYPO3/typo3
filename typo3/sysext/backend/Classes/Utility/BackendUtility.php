@@ -882,6 +882,21 @@ class BackendUtility
     }
 
     /**
+     * Returns $tstamp formatted as "ddmmyy hhmmss" (According to $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] and
+     * a fixed hhmmss format
+     *
+     * @param int $value Time stamp, seconds
+     * @return string Formatted time
+     */
+    public static function datetimesec(int $value): string
+    {
+        return date(
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' H:i:s',
+            $value
+        );
+    }
+
+    /**
      * Returns $value (in seconds) formatted as hh:mm:ss
      * For instance $value = 3600 + 60*2 + 3 should return "01:02:03"
      *
@@ -1703,6 +1718,8 @@ class BackendUtility
                     $l = $datetime->format('H:i');
                 } elseif ($format === 'timesec') {
                     $l = $datetime->format('H:i:s');
+                } elseif ($format === 'datetimesec') {
+                    $l = self::datetimesec($datetime->getTimestamp());
                 } elseif ($format === 'datetime') {
                     $l = self::datetime($datetime->getTimestamp());
                 } elseif (isset($value)) {

@@ -64,6 +64,7 @@ final class DatetimeTest extends FunctionalTestCase
                 'datetime' => '2014-10-22T23:58:00Z',
                 'date' => '2014-10-22T00:00:00Z',
                 'timesec' => '1970-01-01T23:58:20Z',
+                'datetimesec' => '2014-10-22T23:58:20Z',
                 'time' => '1970-01-01T23:58:00Z',
             ],
             'UTC0 on Europe/Berlin Server' => [
@@ -72,6 +73,7 @@ final class DatetimeTest extends FunctionalTestCase
                 'datetime' => '2014-10-22T23:58:00Z',
                 'date' => '2014-10-22T00:00:00Z',
                 'timesec' => '1970-01-01T23:58:20Z',
+                'datetimesec' => '2014-10-22T23:58:20Z',
                 'time' => '1970-01-01T23:58:00Z',
             ],
 
@@ -81,6 +83,7 @@ final class DatetimeTest extends FunctionalTestCase
                 'datetime' => '2014-10-22T23:58:00',
                 'date' => '2014-10-22T00:00:00',
                 'timesec' => '1970-01-01T23:58:20',
+                'datetimesec' => '2014-10-22T23:58:20',
                 'time' => '1970-01-01T23:58:00',
             ],
             'ISO8601 localtime (Formengine server-client format) on Europe/Berlin Server' => [
@@ -89,6 +92,7 @@ final class DatetimeTest extends FunctionalTestCase
                 'datetime' => '2014-10-22T23:58:00',
                 'date' => '2014-10-22T00:00:00',
                 'timesec' => '1970-01-01T23:58:20',
+                'datetimesec' => '2014-10-22T23:58:20',
                 'time' => '1970-01-01T23:58:00',
             ],
 
@@ -98,6 +102,7 @@ final class DatetimeTest extends FunctionalTestCase
                 'datetime' => '',
                 'date' => '',
                 'timesec' => '',
+                'datetimesec' => '',
                 'time' => '',
             ],
             'empty string to null on Europe/Berlin' => [
@@ -106,6 +111,7 @@ final class DatetimeTest extends FunctionalTestCase
                 'datetime' => '',
                 'date' => '',
                 'timesec' => '',
+                'datetimesec' => '',
                 'time' => '',
             ],
             'null to null on UTC' => [
@@ -114,6 +120,7 @@ final class DatetimeTest extends FunctionalTestCase
                 'datetime' => null,
                 'date' => null,
                 'timesec' => null,
+                'datetimesec' => null,
                 'time' => null,
             ],
             'null to null on Europe/Berlin' => [
@@ -122,6 +129,7 @@ final class DatetimeTest extends FunctionalTestCase
                 'datetime' => null,
                 'date' => null,
                 'timesec' => null,
+                'datetimesec' => null,
                 'time' => null,
             ],
             'timezone offsets on UTC' => [
@@ -130,6 +138,7 @@ final class DatetimeTest extends FunctionalTestCase
                 'datetime' => '2014-10-22T23:58:00+02:00',
                 'date' => '2014-10-22T00:00:00+02:00',
                 'timesec' => '1970-01-01T23:58:20+02:00',
+                'datetimesec' => '2014-10-22T23:58:20+02:00',
                 'time' => '1970-01-01T23:58:00+02:00',
             ],
             'timezone offsets on Europe/Berlin' => [
@@ -138,6 +147,7 @@ final class DatetimeTest extends FunctionalTestCase
                 'datetime' => '2014-10-22T23:58:00+02:00',
                 'date' => '2014-10-22T00:00:00+02:00',
                 'timesec' => '1970-01-01T23:58:20+02:00',
+                'datetimesec' => '2014-10-22T23:58:20+02:00',
                 'time' => '1970-01-01T23:58:00+02:00',
             ],
             '0 on UTC' => [
@@ -146,6 +156,7 @@ final class DatetimeTest extends FunctionalTestCase
                 'datetime' => 0,
                 'date' => 0,
                 'timesec' => 0,
+                'datetimesec' => 0,
                 'time' => 0,
             ],
             '0 on Europe/Berlin' => [
@@ -154,6 +165,7 @@ final class DatetimeTest extends FunctionalTestCase
                 'datetime' => 0,
                 'date' => 0,
                 'timesec' => 0,
+                'datetimesec' => 0,
                 'time' => 0,
             ],
         ];
@@ -167,6 +179,7 @@ final class DatetimeTest extends FunctionalTestCase
         string|int|null $datetime,
         string|int|null $date,
         string|int|null $timesec,
+        string|int|null $datetimesec,
         string|int|null $time,
     ): void {
         $this->importCSVDataSet(__DIR__ . '/DataSet/Datetime/Base.csv');
@@ -183,6 +196,10 @@ final class DatetimeTest extends FunctionalTestCase
             'timesec_int' => $timesec,
             'timesec_int_nullable' => $timesec,
             'timesec_native' => $timesec,
+
+            'datetimesec_int' => $datetimesec,
+            'datetimesec_int_nullable' => $datetimesec,
+            'datetimesec_native' => $datetimesec,
 
             'time_int' => $time,
             'time_int_nullable' => $time,
@@ -219,6 +236,7 @@ final class DatetimeTest extends FunctionalTestCase
                 'datetime' => new \DateTimeImmutable('2014-10-22T23:58:00Z'),
                 'date' => new \DateTimeImmutable('2014-10-22T00:00:00Z'),
                 'timesec' => new \DateTimeImmutable('1970-01-01T23:58:20Z'),
+                'datetimesec' => new \DateTimeImmutable('2014-10-22T23:58:20Z'),
                 'time' => new \DateTimeImmutable('1970-01-01T23:58:00Z'),
             ],
             'UTC0 on Europe/Berlin Server' => [
@@ -227,6 +245,7 @@ final class DatetimeTest extends FunctionalTestCase
                 'datetime' => new \DateTimeImmutable('2014-10-22T23:58:00Z'),
                 'date' => new \DateTimeImmutable('2014-10-22T00:00:00Z'),
                 'timesec' => new \DateTimeImmutable('1970-01-01T23:58:20Z'),
+                'datetimesec' => new \DateTimeImmutable('2014-10-22T23:58:20Z'),
                 'time' => new \DateTimeImmutable('1970-01-01T23:58:00Z'),
             ],
 
@@ -236,6 +255,7 @@ final class DatetimeTest extends FunctionalTestCase
                 'datetime' => new \DateTimeImmutable('2014-10-22T23:58:00'),
                 'date' => new \DateTimeImmutable('2014-10-22T00:00:00'),
                 'timesec' => new \DateTimeImmutable('1970-01-01T23:58:20'),
+                'datetimesec' => new \DateTimeImmutable('2014-10-22T23:58:20'),
                 'time' => new \DateTimeImmutable('1970-01-01T23:58:00'),
             ],
             'ISO8601 localtime (Formengine server-client format) on Europe/Berlin Server' => [
@@ -244,6 +264,7 @@ final class DatetimeTest extends FunctionalTestCase
                 'datetime' => new \DateTimeImmutable('2014-10-22T23:58:00', new \DateTimeZone('Europe/Berlin')),
                 'date' => new \DateTimeImmutable('2014-10-22T00:00:00', new \DateTimeZone('Europe/Berlin')),
                 'timesec' => new \DateTimeImmutable('1970-01-01T23:58:20', new \DateTimeZone('Europe/Berlin')),
+                'datetimesec' => new \DateTimeImmutable('2014-10-22T23:58:20', new \DateTimeZone('Europe/Berlin')),
                 'time' => new \DateTimeImmutable('1970-01-01T23:58:00', new \DateTimeZone('Europe/Berlin')),
             ],
 
@@ -253,6 +274,7 @@ final class DatetimeTest extends FunctionalTestCase
                 'datetime' => null,
                 'date' => null,
                 'timesec' => null,
+                'datetimesec' => null,
                 'time' => null,
             ],
             'null to null on Europe/Berlin' => [
@@ -261,6 +283,7 @@ final class DatetimeTest extends FunctionalTestCase
                 'datetime' => null,
                 'date' => null,
                 'timesec' => null,
+                'datetimesec' => null,
                 'time' => null,
             ],
             'timezone offsets on UTC' => [
@@ -269,6 +292,7 @@ final class DatetimeTest extends FunctionalTestCase
                 'datetime' => new \DateTimeImmutable('2014-10-22T23:58:00+02:00'),
                 'date' => new \DateTimeImmutable('2014-10-22T00:00:00+02:00'),
                 'timesec' => new \DateTimeImmutable('1970-01-01T23:58:20+02:00'),
+                'datetimesec' => new \DateTimeImmutable('2014-10-22T23:58:20+02:00'),
                 'time' => new \DateTimeImmutable('1970-01-01T23:58:00+02:00'),
             ],
             'timezone offsets on Europe/Berlin' => [
@@ -277,6 +301,7 @@ final class DatetimeTest extends FunctionalTestCase
                 'datetime' => new \DateTimeImmutable('2014-10-22T23:58:00+02:00'),
                 'date' => new \DateTimeImmutable('2014-10-22T00:00:00+02:00'),
                 'timesec' => new \DateTimeImmutable('1970-01-01T23:58:20+02:00'),
+                'datetimesec' => new \DateTimeImmutable('2014-10-22T23:58:20+02:00'),
                 'time' => new \DateTimeImmutable('1970-01-01T23:58:00+02:00'),
             ],
         ];
@@ -290,6 +315,7 @@ final class DatetimeTest extends FunctionalTestCase
         ?\DateTimeInterface $datetime,
         ?\DateTimeInterface $date,
         ?\DateTimeInterface $timesec,
+        ?\DateTimeInterface $datetimesec,
         ?\DateTimeInterface $time,
     ): void {
         $this->importCSVDataSet(__DIR__ . '/DataSet/Datetime/Base.csv');
@@ -306,6 +332,10 @@ final class DatetimeTest extends FunctionalTestCase
             'timesec_int' => $timesec,
             'timesec_int_nullable' => $timesec,
             'timesec_native' => $timesec,
+
+            'datetimesec_int' => $datetimesec,
+            'datetimesec_int_nullable' => $datetimesec,
+            'datetimesec_native' => $datetimesec,
 
             'time_int' => $time,
             'time_int_nullable' => $time,

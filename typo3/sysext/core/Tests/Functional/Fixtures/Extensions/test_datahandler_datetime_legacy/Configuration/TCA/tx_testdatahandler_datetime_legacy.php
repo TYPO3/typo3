@@ -33,6 +33,8 @@ return [
 
                 'timesec_native_notnull',
 
+                'datetimesec_native_notnull',
+
                 'time_native_notnull',
             ]),
         ],
@@ -77,6 +79,17 @@ return [
                 'type' => 'datetime',
                 'format' => 'timesec',
                 'dbType' => 'time',
+                'nullable' => false,
+            ],
+        ],
+
+        'datetimesec_native_notnull' => [
+            'exclude' => false,
+            'label' => 'datetimesec native not null',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'datetimesec',
+                'dbType' => 'datetime',
                 'nullable' => false,
             ],
         ],

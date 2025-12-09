@@ -29,7 +29,7 @@ final readonly class ColumnMap
     /**
      * @param string $columnName Name of the DB column
      * @param TableColumnType $type TCA column type like "input", "inline"
-     * @param string|null $dateTimeFormat DataTime format (TCA "format" property). Allowed: "date", "datetime", "time", "timesec"
+     * @param string|null $dateTimeFormat DataTime format (TCA "format" property). Allowed: "date", "datetime", "time", "timesec", "datetimesec"
      * @param string|null $dateTimeStorageFormat Alternative DataTime format instead of using unix timestamps (TCA "dbType" property). Allowed: "date", "datetime", "time"
      * @param Relation|null $typeOfRelation Extbase "Relation" enum if any
      * @param string|null $childTableName TCA "foreign_table" if any, @todo: Does not consider group "allowed" for multi table relations

@@ -73,12 +73,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Element/AbstractFormElement.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between non\-empty\-string and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 3
-			path: ../../typo3/sysext/backend/Classes/Form/Element/AbstractFormElement.php
-
-		-
 			message: '#^Right side of && is always true\.$#'
 			identifier: booleanAnd.rightAlwaysTrue
 			count: 1

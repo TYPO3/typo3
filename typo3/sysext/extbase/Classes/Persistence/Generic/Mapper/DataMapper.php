@@ -341,9 +341,9 @@ class DataMapper
      * Creates a DateTime from a unix timestamp or date/datetime/time value.
      * If the input is empty, NULL is returned.
      *
-     * @param int|string $value Unix timestamp or date/datetime value or seconds for time/timesec
-     * @param string|null $format Output format (date/datetime/time/timesec)
-     * @param string|null $storageFormat Storage format for native date/datetime/time fields
+     * @param int|string $value Unix timestamp or date/datetime/datetimesec value or seconds for time/timesec
+     * @param string|null $format Output format (date/datetime/time/timesec/datetimesec)
+     * @param string|null $storageFormat Storage format for native date/datetime/time/datetimesec fields
      * @param string $targetType The object class name to be created
      * @return \DateTimeInterface|null
      */

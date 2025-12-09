@@ -484,6 +484,42 @@ return [
                 'nullable' => true,
             ],
         ],
+        'inputdatetime_36' => [
+            'label' => 'inputdatetime_36',
+            'description' => 'format=datetimesec',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'datetimesec',
+            ],
+        ],
+        'inputdatetime_37' => [
+            'label' => 'inputdatetime_37',
+            'description' => 'format=datetimesec dbType=datetime',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'datetimesec',
+                'dbType' => 'datetime',
+            ],
+        ],
+        'inputdatetime_38' => [
+            'label' => 'inputdatetime_38',
+            'description' => 'format=datetimesec nullable=true',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'datetimesec',
+                'nullable' => true,
+            ],
+        ],
+        'inputdatetime_39' => [
+            'label' => 'inputdatetime_39',
+            'description' => 'format=datetimesec dbType=datetime nullable=true',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'datetimesec',
+                'dbType' => 'datetime',
+                'nullable' => true,
+            ],
+        ],
 
         'link_1' => [
             'label' => 'link_1',
@@ -1762,6 +1798,21 @@ backend_layout {
                                                 <dbType>time</dbType>
                                             </config>
                                         </inputDateTime_8>
+                                        <inputDateTime_9>
+                                            <label>inputDateTime_9 format=datetimesec</label>
+                                            <config>
+                                                <type>datetime</type>
+                                                <format>datetimesec</format>
+                                            </config>
+                                        </inputDateTime_9>
+                                        <inputDateTime_10>
+                                            <label>inputDateTime_10 format=datetimesec</label>
+                                            <config>
+                                                <type>datetime</type>
+                                                <format>datetimesec</format>
+                                                <dbType>datetime</dbType>
+                                            </config>
+                                        </inputDateTime_10>
                                     </el>
                                 </ROOT>
                             </sInputDateTime>
@@ -2036,6 +2087,7 @@ backend_layout {
                     inputdatetime_21, inputdatetime_22, inputdatetime_23, inputdatetime_24, inputdatetime_25,
                     inputdatetime_26, inputdatetime_27, inputdatetime_28, inputdatetime_29, inputdatetime_30,
                     inputdatetime_31, inputdatetime_32, inputdatetime_33, inputdatetime_35,
+                    inputdatetime_36, inputdatetime_37, inputdatetime_38, inputdatetime_39,
                 --div--;link,
                     link_1,link_2,link_3,link_4,link_5,link_6,
                 --div--;password,

@@ -215,7 +215,7 @@ abstract class AbstractFormElement extends AbstractNode
      * Format field content if 'format' is set to date, filesize, ..., user
      *
      * @param string $format Configuration for the display.
-     * @param string $itemValue The value to display
+     * @param ?string $itemValue The value to display
      * @param array $formatOptions Format options
      * @return string Formatted field value
      */
@@ -264,6 +264,12 @@ abstract class AbstractFormElement extends AbstractNode
                 // compatibility with "eval" (type "input")
                 if ($itemValue !== '' && $itemValue !== null) {
                     $itemValue = BackendUtility::time((int)$itemValue, false);
+                }
+                break;
+            case 'datetimesec':
+                // compatibility with "eval" (type "input")
+                if ($itemValue !== '' && $itemValue !== null) {
+                    $itemValue = BackendUtility::datetimesec((int)$itemValue);
                 }
                 break;
             case 'timesec':

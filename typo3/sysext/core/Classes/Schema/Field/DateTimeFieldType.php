@@ -50,7 +50,7 @@ final readonly class DateTimeFieldType extends AbstractFieldType
         if (($format === 'time' || $format === 'timesec') && $persistenceType === 'date') {
             return 'date';
         }
-        if (in_array($format, ['datetime', 'date', 'time', 'timesec'], true)) {
+        if (in_array($format, ['datetime', 'date', 'time', 'timesec', 'datetimesec'], true)) {
             return $format;
         }
         if ($persistenceType !== null) {

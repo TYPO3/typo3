@@ -247,6 +247,7 @@ class QueryHelper
         } elseif ($format === 'date' || $persistenceType === 'date') {
             $datetime = $datetime->setTime(0, 0, 0);
         }
+        // datetimesec is a "normal" date and needs no removal/adjustment of seconds or date.
 
         // Native DATETIME, DATE or TIME field
         if (in_array($persistenceType, self::getDateTimeTypes(), true)) {

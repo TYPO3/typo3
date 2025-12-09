@@ -82,17 +82,27 @@ class DatetimeElement extends AbstractFormElement
         $config = $parameterArray['fieldConf']['config'];
 
         $format = $config['format'] ?? 'datetime';
-        if (!in_array($format, ['datetime', 'date', 'time', 'timesec'], true)) {
+        if (!in_array($format, ['datetime', 'date', 'time', 'timesec', 'datetimesec'], true)) {
             throw new \UnexpectedValueException(
                 'Format "' . $format . '" for field "' . $fieldName . '" in table "' . $table . '" is '
-                . 'not valid. Must be either empty or set to one of: "date", "datetime", "time", "timesec".',
+                . 'not valid. Must be either empty or set to one of: "date", "datetime", "time", "timesec", "datetimesec".',
                 1647947686
+            );
+        }
+
+        if ($format === 'datetimesec' && ($config['dbType'] ?? 'datetime') !== 'datetime') {
+            throw new \UnexpectedValueException(
+                'Format "datetimesec" for field "' . $fieldName . '" in table "' . $table . '" is '
+                . 'not valid, because the storage type "' . $config['dbType'] . '" does not support storing a time component. '
+                . 'Either set "dbType" to be integer-based (no dbType specified) or set to native "datetime". '
+                . 'Otherwise, pick a different format like "date", "time", "timesec" if both components are not required.',
+                1765438477
             );
         }
 
         $itemValue = $parameterArray['itemFormElValue'];
         $width = $this->formMaxWidth(MathUtility::forceIntegerInRange(
-            $config['size'] ?? ($format === 'date' || $format === 'datetime' ? 13 : 10),
+            $config['size'] ?? ($format === 'datetimesec' ? 14 : ($format === 'date' || $format === 'datetime' ? 13 : 10)),
             $this->minimumInputWidth,
             $this->maxInputWidth
         ));
@@ -157,7 +167,7 @@ class DatetimeElement extends AbstractFormElement
             $attributes['placeholder'] = trim($config['placeholder']);
         }
 
-        if ($format === 'datetime' || $format === 'date') {
+        if ($format === 'datetime' || $format === 'date' || $format === 'datetimesec') {
             // This only handles integer timestamps; if the field is a SQL native date(time), it was already converted
             // to an ISO-8601 date by the DatabaseRowDateTimeFields class. (those dates are stored as server local time)
             if (MathUtility::canBeInterpretedAsInteger($itemValue)) {

@@ -187,6 +187,22 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
                 'expectedValueAfterSave' => '1970-01-01T13:30:00',
                 'comment' => 'inputdatetime_6 eval=timesec as time',
             ],
+            [
+                'label' => 'inputdatetime_36',
+                'inputValue' => '1979-01-28 13:37:42',
+                'expectedValue' => '1979-01-28 13:37:42',
+                'expectedInternalValue' => '1979-01-28T13:37:42',
+                'expectedValueAfterSave' => '1979-01-28T13:37:42',
+                'comment' => 'inputdatetime_36 eval=datetimesec as time',
+            ],
+            [
+                'label' => 'inputdatetime_37',
+                'inputValue' => '1979-01-28 13:37:42',
+                'expectedValue' => '1979-01-28 13:37:42',
+                'expectedInternalValue' => '1979-01-28T13:37:42',
+                'expectedValueAfterSave' => '1979-01-28T13:37:42',
+                'comment' => 'inputdatetime_37 eval=datetimesec as time',
+            ],
         ];
     }
 
@@ -367,6 +383,22 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
                 'expectedValueAfterSave' => '1970-01-01T00:00:00',
                 'comment' => 'inputdatetime_33 format=timesec dbType=time nullable=true',
             ],
+            [
+                'label' => 'inputdatetime_36',
+                'inputValue' => '1979-01-28 00:00:00',
+                'expectedValue' => '1979-01-28 00:00:00',
+                'expectedInternalValue' => '1979-01-28T00:00:00',
+                'expectedValueAfterSave' => '1979-01-28T00:00:00',
+                'comment' => 'inputdatetime_36 format=datetimesec',
+            ],
+            [
+                'label' => 'inputdatetime_37',
+                'inputValue' => '1979-01-28 00:00:00',
+                'expectedValue' => '1979-01-28 00:00:00',
+                'expectedInternalValue' => '1979-01-28T00:00:00',
+                'expectedValueAfterSave' => '1979-01-28T00:00:00',
+                'comment' => 'inputdatetime_37 eval=datetimesec dbType=datetime',
+            ],
         ];
     }
 
@@ -411,6 +443,22 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
                 'expectedValueAfterSave' => '1970-01-01T05:43:21',
                 'comment' => 'inputdatetime_33 format=timesec dbType=time nullable=true',
             ],
+            [
+                'label' => 'inputdatetime_36',
+                'inputValue' => '1979-01-28 05:43:21',
+                'expectedValue' => '1979-01-28 05:43:21',
+                'expectedInternalValue' => '1979-01-28T05:43:21',
+                'expectedValueAfterSave' => '1979-01-28T05:43:21',
+                'comment' => 'inputdatetime_36 format=datetimesec',
+            ],
+            [
+                'label' => 'inputdatetime_37',
+                'inputValue' => '1979-01-28 05:43:21',
+                'expectedValue' => '1979-01-28 05:43:21',
+                'expectedInternalValue' => '1979-01-28T05:43:21',
+                'expectedValueAfterSave' => '1979-01-28T05:43:21',
+                'comment' => 'inputdatetime_37 eval=datetimesec dbType=datetime',
+            ],
         ];
     }
 
@@ -454,6 +502,22 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
                 'expectedInternalValue' => '',
                 'expectedValueAfterSave' => '',
                 'comment' => 'inputdatetime_33 format=timesec dbType=time nullable=true',
+            ],
+            [
+                'label' => 'inputdatetime_38',
+                'inputValue' => '',
+                'expectedValue' => '',
+                'expectedInternalValue' => '',
+                'expectedValueAfterSave' => '',
+                'comment' => 'inputdatetime_38 format=datetimesec nullable=true',
+            ],
+            [
+                'label' => 'inputdatetime_39',
+                'inputValue' => '',
+                'expectedValue' => '',
+                'expectedInternalValue' => '',
+                'expectedValueAfterSave' => '',
+                'comment' => 'inputdatetime_39 format=datetimesec dbType=datetime nullable=true',
             ],
         ];
     }

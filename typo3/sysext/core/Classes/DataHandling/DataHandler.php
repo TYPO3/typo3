@@ -1926,7 +1926,7 @@ class DataHandler
     protected function checkValueForDatetime(int|string|\DateTimeInterface|null $value, array $tcaFieldConf): array
     {
         $format = $tcaFieldConf['format'] ?? 'datetime';
-        if (!in_array($format, ['datetime', 'date', 'time', 'timesec'], true)) {
+        if (!in_array($format, ['datetime', 'date', 'time', 'timesec', 'datetimesec'], true)) {
             // Early return if format is not valid
             return [];
         }

@@ -27,6 +27,8 @@ enum FieldFormat: string
 
     case Timesec = 'timesec';
 
+    case Datetimesec = 'datetimesec';
+
     case Year = 'year';
 
     case Int = 'int';
@@ -77,6 +79,7 @@ enum FieldFormat: string
                 'datetime' => self::Datetime,
                 'time' => self::Time,
                 'timesec' => self::Timesec,
+                'datetimesec' => self::Datetimesec,
                 'year' => self::Year,
                 'int' => self::Int,
                 'float' => self::Float,

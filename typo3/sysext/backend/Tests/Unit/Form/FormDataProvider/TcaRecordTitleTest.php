@@ -328,6 +328,25 @@ final class TcaRecordTitleTest extends UnitTestCase
                 '23:59:59',
                 '23:59:59',
             ],
+            'datetimesec' => [
+                [
+                    'type' => 'datetime',
+                    'format' => 'datetimesec',
+                ],
+                '309965862',
+                '1979-10-28 13:37:42',
+                '1979-10-28 14:37:42',
+            ],
+            'datetimesec (dbType: datetime)' => [
+                [
+                    'type' => 'datetime',
+                    'format' => 'datetimesec',
+                    'dbType' => 'datetime',
+                ],
+                '309965862',
+                '1979-10-28 13:37:42',
+                '1979-10-28 14:37:42',
+            ],
             'datetime (dbType: date)' => [
                 [
                     'type' => 'datetime',

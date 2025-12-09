@@ -126,7 +126,21 @@ final class AbstractFormElementTest extends UnitTestCase
                 '64494',
                 '17:54:54',
             ],
+            'format to datetimesec' => [
+                [
+                    'format' => 'datetimesec',
+                ],
+                '309965862',
+                '1979-10-28 13:37:42',
+            ],
             'format to timesec with empty value' => [
+                [
+                    'format' => 'timesec',
+                ],
+                '',
+                '',
+            ],
+            'format to datetimesec with empty value' => [
                 [
                     'format' => 'timesec',
                 ],
@@ -136,6 +150,13 @@ final class AbstractFormElementTest extends UnitTestCase
             'format to timesec with null value' => [
                 [
                     'format' => 'timesec',
+                ],
+                null,
+                '',
+            ],
+            'format to datetimesec with null value' => [
+                [
+                    'format' => 'datetimesec',
                 ],
                 null,
                 '',

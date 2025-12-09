@@ -633,6 +633,11 @@ final class DataHandlerTest extends UnitTestCase
                 '',
                 1606323240,
             ],
+            'timestamp with format=datetimesec' => [
+                '2020-11-25T18:54:13+02:00',
+                '',
+                1606323253,
+            ],
         ];
     }
 
@@ -754,9 +759,21 @@ final class DataHandlerTest extends UnitTestCase
                 true,
                 null,
             ],
+            'Null on nullable datetimesec' => [
+                null,
+                'datetimesec',
+                true,
+                null,
+            ],
             'Null on not nullable timesec' => [
                 null,
                 'timesec',
+                false,
+                0,
+            ],
+            'Null on not nullable datetimesec' => [
+                null,
+                'datetimesec',
                 false,
                 0,
             ],

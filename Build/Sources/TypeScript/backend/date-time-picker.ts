@@ -266,6 +266,11 @@ class DateTimePicker {
         options.enableTime = true;
         options.noCalendar = true;
         break;
+      case 'datetimesec':
+        options.altFormat = format[0] + ' HH:mm:ss';
+        options.enableSeconds = true;
+        options.enableTime = true;
+        break;
       case 'year':
         options.altFormat = 'yyyy';
         break;

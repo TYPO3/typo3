@@ -86,6 +86,7 @@ final class DatetimeLegacyTest extends FunctionalTestCase
         string|int|null $datetime,
         string|int|null $date,
         string|int|null $timesec,
+        string|int|null $datetimesec,
         string|int|null $time,
     ): void {
         $this->importCSVDataSet(__DIR__ . '/DataSet/Datetime/Legacy/Base.csv');
@@ -94,6 +95,7 @@ final class DatetimeLegacyTest extends FunctionalTestCase
             'datetime_native_notnull' => $datetime,
             'date_native_notnull' => $date,
             'timesec_native_notnull' => $timesec,
+            'datetimesec_native_notnull' => $datetimesec,
             'time_native_notnull' => $time,
         ];
 

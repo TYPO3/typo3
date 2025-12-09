@@ -62,7 +62,7 @@ final readonly class DateTimeFactory
         if (($format === 'time' || $format === 'timesec') && $persistenceType === 'date') {
             return 'date';
         }
-        if (in_array($format, ['datetime', 'date', 'time', 'timesec'], true)) {
+        if (in_array($format, ['datetime', 'date', 'time', 'timesec', 'datetimesec'], true)) {
             return $format;
         }
         if ($persistenceType !== null) {
@@ -140,6 +140,7 @@ final readonly class DateTimeFactory
             'time' => $datetime->setDate(1970, 1, 1)->setTime((int)$datetime->format('H'), (int)$datetime->format('i'), 0),
             'timesec' => $datetime->setDate(1970, 1, 1),
             'date' => $datetime->setTime(0, 0, 0),
+            // default case also for 'datetimesec'
             default => $datetime,
         };
     }

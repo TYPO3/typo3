@@ -403,6 +403,9 @@ class TcaRecordTitle implements FormDataProviderInterface
         if ($format === 'datetime') {
             return BackendUtility::datetime($datetime->getTimestamp());
         }
+        if ($format === 'datetimesec') {
+            return BackendUtility::datetimesec($datetime->getTimestamp());
+        }
         return (string)$value;
     }
 

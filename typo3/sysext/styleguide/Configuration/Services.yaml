@@ -59,6 +59,7 @@ services:
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeDatetimeRequiredFormatDate'
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeDatetimeFormatTime'
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeDatetimeFormatTimesec'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeDatetimeFormatDatetimesec'
 
         # General type=datetime generator
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeDatetime'
