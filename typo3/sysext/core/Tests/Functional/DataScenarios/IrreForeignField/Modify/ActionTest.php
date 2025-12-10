@@ -625,4 +625,32 @@ final class ActionTest extends AbstractActionTestCase
         parent::inlineLocalizeSynchronizeLocalizeMissing();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/inlineLocalizeSynchronizeLocalizeMissing.csv');
     }
+
+    #[Test]
+    public function deletePageWithDirectHotelChild(): void
+    {
+        parent::deletePageWithDirectHotelChild();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deletePageWithDirectHotelChild.csv');
+    }
+
+    #[Test]
+    public function deletePageWithDirectHotelChildThenHardDelete(): void
+    {
+        parent::deletePageWithDirectHotelChildThenHardDelete();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deletePageWithDirectHotelChildThenHardDelete.csv');
+    }
+
+    #[Test]
+    public function deleteHotelWithMultipleOffers(): void
+    {
+        parent::deleteHotelWithMultipleOffers();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteHotelWithMultipleOffers.csv');
+    }
+
+    #[Test]
+    public function deleteHotelWithMultipleOffersThenHardDelete(): void
+    {
+        parent::deleteHotelWithMultipleOffersThenHardDelete();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteHotelWithMultipleOffersThenHardDelete.csv');
+    }
 }
