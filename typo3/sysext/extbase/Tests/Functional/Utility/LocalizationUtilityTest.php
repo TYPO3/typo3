@@ -89,6 +89,27 @@ final class LocalizationUtilityTest extends FunctionalTestCase
 
             'placeholder and empty arguments in translation' =>
             ['keyWithPlaceholderAndNoArguments', 'label_test', 'da', '%d-%m-%Y', []],
+
+            'placeholder and too many arguments in default' =>
+            ['keyWithPlaceholder', 'label_test', 'default', 'English label with number 4', [4, 8, 15, 16, 23, 42]],
+
+            'placeholder and missing arguments in default' =>
+            ['keyWithPlaceholder', 'label_test', 'default', 'English label with number %d'],
+
+            'placeholders and typed, placed arguments in default' =>
+            ['keyWithPlaceholders', 'label_test', 'default', 'English label with number 42 and string abc', ['abc', 42]],
+
+            'placeholders and mistyped, placed arguments in default' =>
+            ['keyWithPlaceholders', 'label_test', 'default', 'English label with number 0 and string 42', [42, 'abc']],
+
+            'key with invalid format specified, without arguments' =>
+            ['keyWithValueError', 'label_test', 'default', '%? something'],
+
+            'placeholders and typed, too few arguments in default' =>
+            ['keyWithPlaceholders', 'label_test', 'default', 'Error: could not translate key "keyWithPlaceholders" with value "English label with number %2$d and string %1$s" and 1 argument(s)!', ['abc']],
+
+            'key with invalid format specified, with arguments' =>
+            ['keyWithValueError', 'label_test', 'default', 'Error: could not translate key "keyWithValueError" with value "%? something" and 4 argument(s)!', [47, 11, 8, 15]],
         ];
     }
 

@@ -261,7 +261,7 @@ class LanguageService
                 return vsprintf($result, array_values($arguments));
             } catch (\ValueError $e) {
                 // @todo: we could at some point add a logger or a custom exception if needed, and hand over the $result differently
-                return new \ValueError($result, 123, $e);
+                throw new \ValueError($result, 1765396511, $e);
             }
         }
         return $result;

@@ -27,6 +27,12 @@
       <trans-unit id="keyWithPlaceholderAndNoArguments">
         <source>%d/%m/%Y</source>
       </trans-unit>
+      <trans-unit id="keyWithValueError">
+        <source>%? something</source>
+      </trans-unit>
+      <trans-unit id="keyWithPlaceholders">
+        <source>English label with number %2$d and string %1$s</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
