@@ -35,10 +35,7 @@ final class PublicServicePass implements CompilerPassInterface
         $this->stateful = $stateful;
     }
 
-    /**
-     * @param ContainerBuilder $container
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         foreach ($container->findTaggedServiceIds($this->tagName) as $id => $tags) {
             $definition = $container->findDefinition($id);

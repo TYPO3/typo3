@@ -25,7 +25,7 @@ final readonly class AllowedCallablePass implements CompilerPassInterface
 {
     public function __construct(private string $tagName) {}
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition(AllowedCallableAssertion::class)) {
             return;

@@ -36,10 +36,7 @@ final class ConsoleCommandPass implements CompilerPassInterface
         $this->tagName = $tagName;
     }
 
-    /**
-     * @param ContainerBuilder $container
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition(CommandRegistry::class)) {
             return;
