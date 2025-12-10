@@ -275,6 +275,9 @@
 		},
 		"files": [
 			"typo3/sysext/core/Resources/PHP/GlobalDebugFunctions.php"
+		],
+		"classmap": [
+			"typo3/sysext/core/DeprecatedClasses/ext-install/"
 		]
 	},
 	"autoload-dev": {
@@ -347,9 +350,6 @@
 			"TYPO3Tests\\TypeConverterTest\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/type_converter_test/Classes/",
 			"TYPO3Tests\\ViewhelperLibrary\\": "typo3/sysext/fluid/Tests/Functional/Fixtures/Libraries/viewhelper_library/src/",
 			"TYPO3\\CMS\\PHPStan\\": "Build/phpstan/src/"
-		},
-		"classmap": [
-			"typo3/sysext/core/DeprecatedClasses/ext-install/"
-		]
+		}
 	}
 }
