@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Belog\Controller;
+namespace TYPO3\CMS\Belog\EventListener;
 
 use TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
@@ -26,16 +26,19 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Count latest exceptions for the system information menu.
  *
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
- * @todo: This is not a controller but an event listener. Rename!
  */
-final readonly class SystemInformationController
+final readonly class SystemInformationEventListener
 {
+    public function __construct(
+        private ConnectionPool $connectionPool,
+        private UriBuilder $uriBuilder
+    ) {}
+
     /**
      * Modifies the SystemInformation toolbar to inject a new message
      * @throws RouteNotFoundException
@@ -43,9 +46,8 @@ final readonly class SystemInformationController
     #[AsEventListener('belog/show-latest-errors')]
     public function appendMessage(SystemInformationToolbarCollectorEvent $event): void
     {
-        $systemInformationToolbarItem = $event->getToolbarItem();
         // we can't use the extbase repository here as the required TypoScript may not be parsed yet
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_log');
         $count = $queryBuilder->count('error')
             ->from('sys_log')
             ->where(
@@ -66,15 +68,19 @@ final readonly class SystemInformationController
             ->fetchOne();
 
         if ($count > 0) {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $moduleIdentifier = 'system_log';
             $moduleParams = ['constraint' => ['channel' => 'php']];
-            $systemInformationToolbarItem->addSystemMessage(
-                sprintf(
-                    $this->getLanguageService()->sL('LLL:EXT:belog/Resources/Private/Language/locallang.xlf:systemmessage.errorsInPeriod'),
+            $text = $this->getLanguageService()->translate(
+                'systemmessage.errorsInPeriod',
+                'belog.messages',
+                [
                     $count,
-                    (string)$uriBuilder->buildUriFromRoute($moduleIdentifier, $moduleParams)
-                ),
+                    (string)$this->uriBuilder->buildUriFromRoute($moduleIdentifier, $moduleParams),
+                ]
+            );
+            $systemInformationToolbarItem = $event->getToolbarItem();
+            $systemInformationToolbarItem->addSystemMessage(
+                $text,
                 InformationStatus::ERROR,
                 $count,
                 $moduleIdentifier,
