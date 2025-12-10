@@ -16,7 +16,7 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
     // cannot inject them properly and doesn't support shared ViewHelper classes
     $containerBuilder->registerForAutoconfiguration(ViewHelperInterface::class)->addTag('fluid.viewhelper');
     $containerBuilder->addCompilerPass(new class () implements CompilerPassInterface {
-        public function process(ContainerBuilder $container)
+        public function process(ContainerBuilder $container): void
         {
             foreach ($container->findTaggedServiceIds('fluid.viewhelper') as $id => $tags) {
                 $container->findDefinition($id)->setPublic(true)->setShared(false);

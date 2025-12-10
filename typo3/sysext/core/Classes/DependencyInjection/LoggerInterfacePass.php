@@ -33,9 +33,8 @@ class LoggerInterfacePass extends AbstractRecursivePass
     /**
      * @param mixed $value
      * @param bool $isRoot
-     * @return mixed
      */
-    protected function processValue($value, $isRoot = false)
+    protected function processValue($value, $isRoot = false): mixed
     {
         $value = parent::processValue($value, $isRoot);
 
