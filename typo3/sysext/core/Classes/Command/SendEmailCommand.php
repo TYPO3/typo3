@@ -43,7 +43,7 @@ class SendEmailCommand extends Command
     /**
      * Defines the allowed options for this command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption('message-limit', null, InputOption::VALUE_REQUIRED, 'The maximum number of messages to send.')

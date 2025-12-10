@@ -110,7 +110,7 @@ class UpgradeWizardRunCommand extends Command
     /**
      * Configure the command by defining the name, options and arguments
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Run upgrade wizard. Without arguments all available wizards will be run.')
             ->addArgument(

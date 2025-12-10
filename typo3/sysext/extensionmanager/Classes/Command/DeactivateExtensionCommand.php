@@ -49,7 +49,7 @@ class DeactivateExtensionCommand extends Command
     /**
      * Defines the allowed options for this command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Deactivates an extension by extension key')

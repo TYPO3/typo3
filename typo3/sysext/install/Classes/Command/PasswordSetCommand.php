@@ -40,7 +40,7 @@ final class PasswordSetCommand extends Command
         parent::__construct($name);
     }
 
-    public function configure(): void
+    protected function configure(): void
     {
         $this
             ->addOption(

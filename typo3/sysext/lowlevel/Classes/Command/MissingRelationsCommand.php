@@ -60,7 +60,7 @@ class MissingRelationsCommand extends Command
     /**
      * Configure the command by defining the name, options and arguments
      */
-    public function configure()
+    protected function configure(): void
     {
         $this
             ->setHelp('

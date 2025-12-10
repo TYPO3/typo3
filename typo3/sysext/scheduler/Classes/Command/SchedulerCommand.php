@@ -75,7 +75,7 @@ class SchedulerCommand extends Command
     /**
      * Configure the command by defining the name, options and arguments
      */
-    public function configure()
+    protected function configure(): void
     {
         $this
             ->setHelp('If no parameter is given, the scheduler executes any tasks that are overdue to run.

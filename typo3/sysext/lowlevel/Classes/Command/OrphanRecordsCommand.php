@@ -37,7 +37,7 @@ class OrphanRecordsCommand extends Command
         parent::__construct();
     }
 
-    public function configure(): void
+    protected function configure(): void
     {
         $this
             ->setHelp(
