@@ -32,7 +32,7 @@ class DumpAutoloadCommand extends Command
     /**
      * Defines the allowed options for this command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('dumpautoload');
         $this->setDescription('Updates class loading information in non-composer mode.');

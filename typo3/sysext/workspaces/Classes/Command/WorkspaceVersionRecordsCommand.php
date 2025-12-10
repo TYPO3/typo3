@@ -74,7 +74,7 @@ class WorkspaceVersionRecordsCommand extends Command
     /**
      * Configuring the command options
      */
-    public function configure()
+    protected function configure(): void
     {
         $this
             ->setHelp('Traverse page tree and find versioned records. Also list all versioned records, additionally with some inconsistencies in the database, which can cleaned up with the "action" option. If you want to get more detailed information, use the --verbose option.')

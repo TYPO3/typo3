@@ -42,7 +42,7 @@ class ExtensionListCommand extends Command
     /**
      * Defines the allowed options for this command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption(

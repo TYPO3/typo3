@@ -47,7 +47,7 @@ class DeletedRecordsCommand extends Command
     /**
      * Configure the command by defining the name, options and arguments
      */
-    public function configure()
+    protected function configure(): void
     {
         $this
             ->setHelp('Traverse page tree and find and flush deleted records. If you want to get more detailed information, use the --verbose option.')

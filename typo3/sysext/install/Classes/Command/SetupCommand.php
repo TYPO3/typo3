@@ -61,7 +61,7 @@ class SetupCommand extends Command
         parent::__construct($name);
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Setup TYPO3 via CLI using environment variables, CLI options or interactive')
             // Connection Parameters

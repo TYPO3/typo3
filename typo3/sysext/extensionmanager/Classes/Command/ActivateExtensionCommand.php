@@ -51,7 +51,7 @@ class ActivateExtensionCommand extends Command
     /**
      * Defines the allowed options for this command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Activates an extension by key')

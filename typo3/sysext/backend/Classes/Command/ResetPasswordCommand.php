@@ -45,7 +45,7 @@ class ResetPasswordCommand extends Command
     /**
      * Configure the command by defining the name, options and arguments
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument(

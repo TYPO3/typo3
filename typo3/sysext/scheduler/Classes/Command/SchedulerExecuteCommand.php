@@ -47,7 +47,7 @@ class SchedulerExecuteCommand extends Command
         parent::__construct();
     }
 
-    public function configure()
+    protected function configure(): void
     {
         $this
             ->addOption(

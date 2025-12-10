@@ -41,7 +41,7 @@ class CleanupPreviewLinksCommand extends Command
     /**
      * Configuring the command options
      */
-    public function configure()
+    protected function configure(): void
     {
         $this->setHelp('Look for preview links within the database table "sys_preview" that have been expired and and remove them. This command should be called regularly when working with workspaces.');
     }
