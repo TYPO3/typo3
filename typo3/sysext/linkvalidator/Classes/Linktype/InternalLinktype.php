@@ -105,7 +105,7 @@ class InternalLinktype extends AbstractLinktype
         $anchor = '';
         $this->responseContent = true;
         // Might already contain values - empty it
-        unset($this->errorParams);
+        $this->errorParams = [];
         // Only check pages records. Content elements will also be checked
         // as we extract the anchor in the next step.
         [$table] = explode(':', $softRefEntry['substr']['recordRef']);
@@ -139,13 +139,6 @@ class InternalLinktype extends AbstractLinktype
             // Check if the content element is OK
             $this->responseContent = $this->checkContent((int)$page, (int)$anchor);
         }
-        if (
-            (is_array($this->errorParams['page'] ?? false) && !$this->responsePage)
-            || (is_array($this->errorParams['content'] ?? false) && !$this->responseContent)
-        ) {
-            $this->setErrorParams($this->errorParams);
-        }
-
         return $this->responsePage && $this->responseContent;
     }
 

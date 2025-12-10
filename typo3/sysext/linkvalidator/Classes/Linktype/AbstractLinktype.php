@@ -26,8 +26,6 @@ abstract class AbstractLinktype implements LinktypeInterface, LabelledLinktypeIn
 {
     /**
      * Contains parameters needed for the rendering of the error message
-     *
-     * @var array
      */
     protected array $errorParams = [];
     protected string $identifier = '';
