@@ -157,6 +157,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'size' => 10,
+                'dbFieldLength' => 4000,
                 'minitems' => 1,
                 'maxitems' => 100,
                 'items' => [],
