@@ -12,6 +12,7 @@
  */
 
 import flatpickr from 'flatpickr';
+import Persistent from '@typo3/backend/storage/persistent';
 import ShortcutButtonsPlugin from 'shortcut-buttons-flatpickr';
 import { DateTime } from 'luxon';
 import ThrottleEvent from '@typo3/core/event/throttle-event';
@@ -63,6 +64,20 @@ class DateTimePicker {
     const scrollEvent = this.getScrollEvent();
     const options = this.getDateOptions(inputElement);
     options.locale = locale;
+
+    // Custom "first day of week" user preference
+    const dow = Persistent.get('dateTimeFirstDayOfWeek');
+
+    if (dow !== '') {
+      // stored number is 1-index based, convert to 0-index.
+      const dowNumber = parseInt(dow, 10) - 1;
+
+      // two entries need to be adjusted here for proper utilization
+      // in non-english localisations.
+      flatpickr.l10ns[locale].firstDayOfWeek = dowNumber;
+      flatpickr.l10ns.default.firstDayOfWeek = dowNumber;
+    }
+
     options.onOpen = [
       (): void => {
         scrollEvent.bindTo(document.querySelector('.t3js-module-body'));

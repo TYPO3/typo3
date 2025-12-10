@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Information\Typo3Information;
+use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -77,6 +78,7 @@ class SetupModuleController
     protected bool $colorSchemeChanged = false;
     protected bool $themeChanged = false;
     protected bool $backendTitleFormatChanged = false;
+    protected bool $dateTimeFirstDayOfWeekChanged = false;
 
     protected array $tsFieldConf = [];
     protected int $passwordIsUpdated = self::PASSWORD_NOT_UPDATED;
@@ -99,6 +101,7 @@ class SetupModuleController
         protected readonly FormProtectionFactory $formProtectionFactory,
         protected readonly Locales $locales,
         protected readonly ComponentFactory $componentFactory,
+        protected readonly DateFormatter $dateFormatter,
     ) {
         $passwordPolicy = $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy'] ?? 'default';
 
@@ -132,6 +135,10 @@ class SetupModuleController
         }
         if ($this->backendTitleFormatChanged || $this->settingsAreResetToDefault) {
             BackendUtility::setUpdateSignal('updateTitleFormat', $this->getBackendUser()->uc['backendTitleFormat'] ?? 'titleFirst');
+        }
+        if ($this->dateTimeFirstDayOfWeekChanged || $this->settingsAreResetToDefault) {
+            BackendUtility::setUpdateSignal('updateDateTimeFirstDayOfWeek', $this->getBackendUser()->uc['dateTimeFirstDayOfWeek'] ?? '');
+
         }
         if ($this->languageUpdate) {
             $this->getLanguageService()->init($this->getBackendUser()->user['lang'] ?? 'default');
@@ -244,9 +251,15 @@ class SetupModuleController
             if (isset($d['backendTitleFormat']) && $d['backendTitleFormat'] !== ($backendUser->uc['backendTitleFormat'] ?? null)) {
                 $this->backendTitleFormatChanged = true;
             }
-
+            if (isset($d['dateTimeFirstDayOfWeek']) && $d['dateTimeFirstDayOfWeek'] !== ($backendUser->uc['dateTimeFirstDayOfWeek'] ?? null)) {
+                $this->dateTimeFirstDayOfWeekChanged = true;
+                $this->persistentUpdate[] = [
+                    'fieldName' => 'dateTimeFirstDayOfWeek',
+                    'value' => $d['dateTimeFirstDayOfWeek'],
+                ];
+            }
             // Options which should trigger direct JS persistent update, because
-            // there new state needs to be available in JS components right away.
+            // their new state needs to be available in JS components right away.
             foreach (['displayRecentlyUsed'] as $fieldName) {
                 $fieldValue = (isset($d[$fieldName]) ? 'on' : 0);
                 if ($fieldValue !== ($backendUser->uc[$fieldName] ?? null)) {
@@ -731,6 +744,29 @@ class SetupModuleController
             }
         }
         return '<select id="field_startModule" name="data[startModule]" class="form-select">' . $startModuleSelect . '</select>';
+    }
+
+    /**
+     * Returns a select with all days of the week.
+     * This method is called from the setup module fake TCA userFunc.
+     *
+     * @return string Complete select as HTML string
+     */
+    public function renderDateTimeFirstDayOfWeekSelect(): string
+    {
+        $weekdaysSelect = '<option value="">' . htmlspecialchars($this->getLanguageService()->translate('datetime_first_day_of_week.inherit', 'setup.messages')) . '</option>';
+        $locale = $this->getLanguageService()->getLocale();
+
+        // There's no "cool" way to retrieve all weekday names like JavaScript Intl.DateTimeFormat->formatToParts() in PHP,
+        // without requiring external dependencies to userland packages.
+        // So we have to iterate that and create a timestamp for each day.
+        // We use an index starting with "1" to prevent "0" being cast to the default value ''.
+        for ($i = 1; $i <= 7; $i++) {
+            $timestamp = new \DateTime('Sunday +' . ($i - 1) . ' days');
+            $dayName = $this->dateFormatter->strftime('%A', $timestamp, $locale);
+            $weekdaysSelect .= '<option value="' . $i . '"' . ((int)($this->getBackendUser()->uc['dateTimeFirstDayOfWeek'] ?? 0) === $i ? 'selected="selected"' : '') . '>' . htmlspecialchars($dayName) . '</option>';
+        }
+        return '<select id="field_dateTimeFirstDayOfWeek" name="data[dateTimeFirstDayOfWeek]" class="form-select">' . $weekdaysSelect . '</select>';
     }
 
     /**

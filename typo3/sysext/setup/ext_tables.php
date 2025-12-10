@@ -47,6 +47,7 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
         ],
         'startModule' => [
             'type' => 'select',
+            // Note: This is fake TCA. It has no itemsProcessors.
             'itemsProcFunc' => SetupModuleController::class . '->renderStartModuleSelect',
             'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:startModule',
         ],
@@ -95,6 +96,12 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
                 'sitenameFirst' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:backendTitleFormat.sitenameFirst',
             ],
         ],
+        'dateTimeFirstDayOfWeek' => [
+            'type' => 'select',
+            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:datetime_first_day_of_week',
+            // Note: This is fake TCA. It has no itemsProcessors.
+            'itemsProcFunc' => SetupModuleController::class . '->renderDateTimeFirstDayOfWeekSelect',
+        ],
         'colorScheme' => [
             'type' => 'select',
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:colorScheme',
@@ -116,7 +123,7 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
         --div--;core.form.tabs:account_security,
             password,password2,mfaProviders,
         --div--;core.form.tabs:backend_appearance,
-            colorScheme,theme,startModule,backendTitleFormat,
+            colorScheme,theme,startModule,backendTitleFormat,dateTimeFirstDayOfWeek,
         --div--;core.form.tabs:personalization,
             titleLen,edit_docModuleUpload,showHiddenFilesAndFolders,displayRecentlyUsed,copyLevels,
         --div--;core.form.tabs:reset_configuration,

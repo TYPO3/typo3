@@ -159,6 +159,12 @@
       <trans-unit id="warning.chineseSimplified">
         <source>Chinese Simplified (legacy) - Warning: Choose Chinese Simplified below, as this is wrong due to older versions of TYPO3 and might be removed soon.</source>
       </trans-unit>
+      <trans-unit id="datetime_first_day_of_week">
+        <source>First day of week in calendar popups</source>
+      </trans-unit>
+      <trans-unit id="datetime_first_day_of_week.inherit">
+        <source>Use default based on personal backend language setting</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

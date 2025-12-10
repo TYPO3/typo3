@@ -22,6 +22,7 @@ enum Identifier {
 export type ColorScheme = 'auto' | 'light' | 'dark';
 export type Theme = 'modern' | 'classic' | 'fresh';
 export type TitleFormat = 'titleFirst' | 'sitenameFirst';
+export type DayOfWeek = '' | '1' | '2' | '3' | '4' | '5' | '6' | '7'; // 1=Sunday, 2=Monday, ... 7=Saturday
 export type Direction = 'rtl' | null;
 
 // Event for typo3:color-scheme:update and typo3:color-scheme:broadcast
@@ -37,6 +38,11 @@ export interface ThemeUpdateEventData {
 // Event for typo3:title-format:update and typo3:title-format:broadcast
 export interface TitleFormatUpdateEventData {
   format: TitleFormat;
+}
+
+// Event for typo3:date-time-first-day-of-week:update and typo3:date-time-first-day-of-week:broadcast
+export interface DateTimeFirstDayOfWeekUpdateEventData {
+  dow: DayOfWeek;
 }
 
 // Event for typo3:backend-language:update and typo3:backend-language:broadcast
@@ -65,7 +71,8 @@ class UserSettingsManager {
     document.addEventListener('typo3:backend-language:update', e => this.onBackendLanguageFormatUpdate(e.detail));
     //  triggered by user setup module (via BackendUtility::setUpdateSignal('updatePersistent', …))
     document.addEventListener('typo3:persistent:update', e => this.onPersistentUpdate(e.detail));
-
+    //  triggered by user setup module (via BackendUtility::setUpdateSignal('updateDateTimeFirstDayOfWeek', …))
+    document.addEventListener('typo3:date-time-first-day-of-week:update', e => this.onDateTimeFirstDayOfWeekUpdate(e.detail));
     // broadcast message by other instances
     document.addEventListener('typo3:color-scheme:broadcast', e => this.activateColorScheme(e.detail.payload.colorScheme));
     document.addEventListener('typo3:theme:broadcast', e => this.activateTheme(e.detail.payload.theme));
@@ -96,6 +103,14 @@ class UserSettingsManager {
 
     // broadcast to other instances
     BroadcastService.post(new BroadcastMessage<TitleFormatUpdateEventData>('title-format', 'broadcast', { format }));
+  }
+
+  private onDateTimeFirstDayOfWeekUpdate(data: DateTimeFirstDayOfWeekUpdateEventData) {
+    const { dow } = data;
+    this.activateDateTimeFirstDayOfWeek(dow);
+
+    // broadcast to other instances
+    BroadcastService.post(new BroadcastMessage<DateTimeFirstDayOfWeekUpdateEventData>('date-time-first-day-of-week', 'broadcast', { dow }));
   }
 
   private onBackendLanguageFormatUpdate(data: BackendLanguageUpdateEventData) {
@@ -132,6 +147,10 @@ class UserSettingsManager {
     } else {
       document.querySelector('typo3-backend-module-router')?.removeAttribute('sitename-first');
     }
+  }
+
+  private activateDateTimeFirstDayOfWeek(dow: DayOfWeek) {
+    this.updatePersistent('dateTimeFirstDayOfWeek', dow);
   }
 
   private updateBackendLanguage(language: string, direction: Direction): void {
@@ -209,5 +228,7 @@ declare global {
     'typo3:backend-language:broadcast': BroadcastEvent<BackendLanguageUpdateEventData>;
     'typo3:persistent:update': CustomEvent<PersistentUpdateEventData>;
     'typo3:persistent:broadcast': BroadcastEvent<PersistentUpdateEventData>;
+    'typo3:date-time-first-day-of-week:update': CustomEvent<DateTimeFirstDayOfWeekUpdateEventData>;
+    'typo3:date-time-first-day-of-week:broadcast': BroadcastEvent<DateTimeFirstDayOfWeekUpdateEventData>;
   }
 }

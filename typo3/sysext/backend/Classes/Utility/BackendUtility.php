@@ -2071,6 +2071,13 @@ class BackendUtility
                             true
                         );
                         break;
+                    case 'updateDateTimeFirstDayOfWeek':
+                        $details['html'][] = ImmediateActionElement::dispatchCustomEvent(
+                            'typo3:date-time-first-day-of-week:update',
+                            ['dow' => $val['parameter']],
+                            true
+                        );
+                        break;
                     case 'updateBackendLanguage':
                         $details['html'][] = ImmediateActionElement::dispatchCustomEvent(
                             'typo3:backend-language:update',
