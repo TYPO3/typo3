@@ -399,7 +399,7 @@ executeRstRenderingWithWatch() {
             fi
 
             local fullTargetFile="${systemExtensionFolder}/Documentation/${newFile}"
-            local templateFile="rstTemplate${issueType}.rst"
+            local templateFile="../rstTemplates/rstTemplate${issueType}.rst"
 
             # This will also be triggered for a filename "interactive", since this will not yet exist
             if [[ ! -f "${fullTargetFile}" ]]; then
@@ -444,7 +444,7 @@ executeRstRenderingWithWatch() {
     echo "  - Leaving the process running for a long time may cause memory leaks / consumption"
     echo ""
     echo "After the initial rendering is done, you can access the local browser and edit the file"
-    echo "simultaneously. Every time the file is changed, your browser will automaticelly reload"
+    echo "simultaneously. Every time the file is changed, your browser will automatically reload"
     echo "the page, and scroll to the last position."
     echo ""
 
@@ -680,6 +680,12 @@ Examples:
 
     # Run lintTypescript fixer
     ./Build/Scripts/runTests.sh -s lintTypescript -- --fix
+
+    # Run ReST live (hot reload) rendering with provided local webserver
+    ./Build/Scripts/runTests.sh -s watchRst core interactive
+    ./Build/Scripts/runTests.sh -s watchRst core Changelog/14.0/Breaking-123456-something.rst
+    ./Build/Scripts/runTests.sh -s watchRst form
+    ./Build/Scripts/runTests.sh -s watchRst felogin KnownProblems/Index.rst
 EOF
 }
 
