@@ -569,6 +569,19 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->deleteRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
     }
 
+    public function localizePageAndContentsAndDeletePageLocalizationThenHardDelete(): void
+    {
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
+        // Deleting the localized page should also delete its localized records
+        $this->actionService->deleteRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], []);
+        $dataHandler->deleteEl(self::TABLE_Page, $this->recordIds['localizedPageId'], true, true);
+    }
+
     public function localizeNestedPagesAndContents(): void
     {
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageIdParent, self::VALUE_LanguageId);
