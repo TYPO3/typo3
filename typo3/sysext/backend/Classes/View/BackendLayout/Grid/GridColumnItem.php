@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Preview\StandardPreviewRendererResolver;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\Event\AfterPageContentPreviewRenderedEvent;
 use TYPO3\CMS\Backend\View\Event\PageContentPreviewRenderingEvent;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
@@ -70,12 +71,13 @@ class GridColumnItem extends AbstractGridObject
 
     public function getPreview(): string
     {
+        $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
         $previewRenderer = GeneralUtility::makeInstance(StandardPreviewRendererResolver::class)->resolveRendererFor($this->record);
         $previewHeader = $previewRenderer->renderPageModulePreviewHeader($this);
 
         // Dispatch event to allow listeners adding an alternative content type
         // specific preview or to manipulate the content elements' record data.
-        $event = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+        $event = $eventDispatcher->dispatch(
             new PageContentPreviewRenderingEvent($this->table, $this->getRecordType(), $this->record, $this->context)
         );
 
@@ -89,7 +91,11 @@ class GridColumnItem extends AbstractGridObject
             $previewContent = $previewRenderer->renderPageModulePreviewContent($this);
         }
 
-        return $previewRenderer->wrapPageModulePreview($previewHeader, $previewContent, $this);
+        $previewContent = $previewRenderer->wrapPageModulePreview($previewHeader, $previewContent, $this);
+        $event = $eventDispatcher->dispatch(
+            new AfterPageContentPreviewRenderedEvent($this->table, $this->getRecordType(), $this->record, $this->context, $previewContent)
+        );
+        return $event->getPreviewContent();
     }
 
     public function getWrapperClassName(): string
