@@ -18,5 +18,5 @@ Impact
 
 (((Text explaining which impact the new feature has)))
 
-..  (((Adapt index with proper tags, see: https://forger.typo3.com/utilities/rst)))
-..  index:: NotScanned, ext:core
+..  (((Adapt index with proper tags - Backend is just an example, see: https://forger.typo3.com/utilities/rst)))
+..  index:: Backend, NotScanned, ext:core

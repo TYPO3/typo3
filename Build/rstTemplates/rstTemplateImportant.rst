@@ -23,5 +23,5 @@ Migration
 
 (((Text how to perform migration or fixes, with code examples)))
 
-..  (((Adapt index with proper tags, see: https://forger.typo3.com/utilities/rst)))
-..  index:: NotScanned, ext:core
+..  (((Adapt index with proper tags - Backend is just an example, see: https://forger.typo3.com/utilities/rst)))
+..  index:: Backend, NotScanned, ext:core
