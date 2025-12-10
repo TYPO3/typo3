@@ -22,6 +22,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use TYPO3\CMS\Backend\Routing\Exception\MethodNotAllowedException;
+use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\Exception\RouteTypeNotAllowedException;
 use TYPO3\CMS\Core\Core\Environment;
@@ -92,6 +93,7 @@ class UriBuilder implements SingletonInterface
      * @param string $referenceType The type of reference to be generated (one of the constants)
      * @return UriInterface The generated Uri
      * @throws RouteNotFoundException If the named route doesn't exist
+     * @throws ResourceNotFoundException If no route matches the path info
      */
     public function buildUriFromRoutePath($pathInfo, $parameters = [], $referenceType = self::ABSOLUTE_PATH)
     {

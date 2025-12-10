@@ -28,16 +28,8 @@ class VariableProcessor
     protected const LEVEL_DELIMITER = '__';
     protected const ARGUMENT_SEPARATOR = '/';
     protected const VARIABLE_PATTERN = '#\{(?P<modifier>!)?(?P<name>[^}]+)\}#';
-
-    /**
-     * @var array
-     */
-    protected $hashes = [];
-
-    /**
-     * @var array
-     */
-    protected $nestedValues = [];
+    protected array $hashes = [];
+    protected array $nestedValues = [];
 
     public function __construct(private readonly VariableProcessorCache $cache) {}
 
@@ -123,9 +115,6 @@ class VariableProcessor
         return $this->nestedValues[$value] ?? $value;
     }
 
-    /**
-     * @param string|null $namespace
-     */
     public function deflateRoutePath(string $routePath, ?string $namespace = null, array $arguments = []): string
     {
         if (!preg_match_all(static::VARIABLE_PATTERN, $routePath, $matches)) {
@@ -142,9 +131,6 @@ class VariableProcessor
         return str_replace($search, $replace, $routePath);
     }
 
-    /**
-     * @param string|null $namespace
-     */
     public function inflateRoutePath(string $routePath, ?string $namespace = null, array $arguments = []): string
     {
         if (!preg_match_all(static::VARIABLE_PATTERN, $routePath, $matches)) {
@@ -216,9 +202,6 @@ class VariableProcessor
     /**
      * Deflates keys names on the first level, now recursion into sub-arrays.
      * Can be used to adjust key names of route requirements, mappers, etc.
-     *
-     * @param string|null $namespace
-     * @param bool $hash = true
      */
     public function deflateKeys(array $items, ?string $namespace = null, array $arguments = [], bool $hash = true): array
     {
@@ -235,9 +218,6 @@ class VariableProcessor
     /**
      * Inflates keys names on the first level, now recursion into sub-arrays.
      * Can be used to adjust key names of route requirements, mappers, etc.
-     *
-     * @param string|null $namespace
-     * @param bool $hash = true
      */
     public function inflateKeys(array $items, ?string $namespace = null, array $arguments = [], bool $hash = true): array
     {
@@ -253,8 +233,6 @@ class VariableProcessor
 
     /**
      * Deflates plain values.
-     *
-     * @param string|null $namespace
      */
     protected function deflateValues(array $values, ?string $namespace = null, array $arguments = [], bool $hash = true): array
     {
@@ -279,8 +257,6 @@ class VariableProcessor
 
     /**
      * Inflates plain values.
-     *
-     * @param string|null $namespace
      */
     protected function inflateValues(array $values, ?string $namespace = null, array $arguments = [], bool $hash = true): array
     {
@@ -356,9 +332,6 @@ class VariableProcessor
         return $result;
     }
 
-    /**
-     * @param string $namespace
-     */
     protected function inflateNestedValue(string $value, ?string $namespace, array $arguments): string
     {
         $namespacePrefix = $namespace ? $namespace . static::LEVEL_DELIMITER : '';

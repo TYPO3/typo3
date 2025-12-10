@@ -87,8 +87,8 @@ class CollectionService implements SingletonInterface
 
         $processedDataArray = $this->finalize($this->dataArray);
 
-        unset($this->dataArray);
-        unset($this->nestedDataArray);
+        $this->dataArray = [];
+        $this->nestedDataArray = [];
 
         return $processedDataArray;
     }
