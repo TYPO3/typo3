@@ -1,5 +1,5 @@
-<f:render partial="List/UnresolvedDependencies.html" arguments="{_all}" />
+<f:render partial="List/UnresolvedDependencies.fluid.html" arguments="{_all}" />
 
 <f:be.infobox title="{f:translate(key: 'dependencyCheck.unresolvedDependencies.title')}" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_WARNING')}">
-	<f:render partial="List/UnresolvedDependenciesMessage.html" />
+	<f:render partial="List/UnresolvedDependenciesMessage.fluid.html" />
 </f:be.infobox>

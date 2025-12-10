@@ -80,6 +80,27 @@ extension and the old file extension can be used, which allows TYPO3
 community extensions to remain compatible with multiple TYPO3 Core
 versions.
 
+Edge case: Templates with file extension specified
+--------------------------------------------------
+
+Note that the described file extension fallback chain only works
+if the file extension is not specified explicitly, but rather derived
+from the template's format. If the file extension is part of the requested
+template name, Fluid can't reliably add the `*.fluid.*` file extension
+automatically and the template needs to be adjusted.
+
+One use case of this would be a template in format `json` that calls a
+partial in format `html`:
+
+..  code-block:: html
+    :caption: MyTemplate.fluid.json
+
+    <!-- Won't work if template file is called MyTemplate.fluid.html: -->
+    <f:render partial="MyTemplate.html" />
+
+    <!-- Needs to be adjusted like this: -->
+    <f:render partial="MyTemplate.fluid.html" />
+
 Impact
 ======
 
