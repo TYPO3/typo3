@@ -86,7 +86,7 @@ objects through the :php-short:`\TYPO3\CMS\Core\Resource\Processing\TaskTypeRegi
 
     $taskTypeRegistry = GeneralUtility::makeInstance(TaskTypeRegistry::class);
     $task = $taskTypeRegistry->getTaskForType(
-        $processedFile->getTaskType(),
+        $processedFile->getTaskIdentifier(),
         $processedFile,
         $processedFile->getProcessingConfiguration()
     );
@@ -113,7 +113,7 @@ Update calls to :php:`ProcessedFileRepository->add()` and
     // After
     $taskTypeRegistry = GeneralUtility::makeInstance(TaskTypeRegistry::class);
     $task = $taskTypeRegistry->getTaskForType(
-        $processedFile->getTaskType(),
+        $processedFile->getTaskIdentifier(),
         $processedFile,
         $processedFile->getProcessingConfiguration()
     );
