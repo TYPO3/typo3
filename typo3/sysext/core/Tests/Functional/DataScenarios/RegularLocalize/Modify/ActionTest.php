@@ -130,6 +130,13 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function localizePageAndContentsAndDeletePageLocalizationThenHardDelete(): void
+    {
+        parent::localizePageAndContentsAndDeletePageLocalizationThenHardDelete();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageAndContentsAndDeletePageLocalizationThenHardDelete.csv');
+    }
+
+    #[Test]
     public function localizeNestedPagesAndContents(): void
     {
         parent::localizeNestedPagesAndContents();

@@ -582,4 +582,17 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized);
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdThird);
     }
+
+    public function deleteContentWithLanguageAll(): void
+    {
+        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentLanguageAll);
+    }
+
+    public function deleteContentWithLanguageAllThenHardDelete(): void
+    {
+        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentLanguageAll);
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], []);
+        $dataHandler->deleteAction(self::TABLE_Content, self::VALUE_ContentLanguageAll, true, true);
+    }
 }

@@ -131,6 +131,32 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $dataHandler->deleteAction(self::TABLE_Content, self::VALUE_ContentIdFirst, true, true);
     }
 
+    public function deletePageWithDirectHotelChild(): void
+    {
+        $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_PageId);
+    }
+
+    public function deletePageWithDirectHotelChildThenHardDelete(): void
+    {
+        $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_PageId);
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], []);
+        $dataHandler->deleteAction(self::TABLE_Page, self::VALUE_PageId, true, true);
+    }
+
+    public function deleteHotelWithMultipleOffers(): void
+    {
+        $this->actionService->deleteRecord(self::TABLE_Hotel, self::VALUE_HotelIdFirst);
+    }
+
+    public function deleteHotelWithMultipleOffersThenHardDelete(): void
+    {
+        $this->actionService->deleteRecord(self::TABLE_Hotel, self::VALUE_HotelIdFirst);
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], []);
+        $dataHandler->deleteAction(self::TABLE_Hotel, self::VALUE_HotelIdFirst, true, true);
+    }
+
     public function copyParentContent(): void
     {
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageId);

@@ -1008,4 +1008,18 @@ final class ActionTest extends AbstractActionTestCase
         parent::deleteThenRecreateThenHardDeleteLocalizedPage();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteThenRecreateThenHardDeleteLocalizedPage.csv');
     }
+
+    #[Test]
+    public function deleteContentWithLanguageAll(): void
+    {
+        parent::deleteContentWithLanguageAll();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentWithLanguageAll.csv');
+    }
+
+    #[Test]
+    public function deleteContentWithLanguageAllThenHardDelete(): void
+    {
+        parent::deleteContentWithLanguageAllThenHardDelete();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentWithLanguageAllThenHardDelete.csv');
+    }
 }
