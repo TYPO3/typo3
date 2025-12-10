@@ -73,7 +73,7 @@ class CommandApplication implements ApplicationInterface
         $this->application->setDispatcher($eventDispatcher);
         $this->application->setCommandLoader($commandRegistry);
         // Replace default list command with TYPO3 override
-        $this->application->add($commandRegistry->get('list'));
+        $this->application->addCommands([$commandRegistry->get('list')]);
     }
 
     /**
