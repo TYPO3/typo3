@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/data_handler.xlf" date="2025-12-12T11:11:11Z" product-name="palettes">
+    <header/>
+    <body>
+      <trans-unit id="error_during_saving">
+        <source>This action could not be completed; please contact your administrator. Technical details: %s</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

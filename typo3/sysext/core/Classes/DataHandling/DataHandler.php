@@ -9046,9 +9046,10 @@ class DataHandler
         while ($row = $result->fetchAssociative()) {
             $affectedRecords[] = $row['tablename'] . '.' . $row['recuid'];
 
-            $msg = $this->formatLogDetails($row['details'], $row['log_data'] ?? '');
-            $msg = $row['error'] . ': ' . $msg;
-            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $msg, '', $row['error'] === SystemLogErrorClassification::WARNING ? ContextualFeedbackSeverity::WARNING : ContextualFeedbackSeverity::ERROR, true);
+            $message = $this->formatLogDetails($row['details'], $row['log_data'] ?? '');
+            $message = $row['error'] . ': ' . $message;
+            $message = $this->getLanguageService()->translate('error_during_saving', 'core.data_handler', [$message]) ?? $message;
+            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, '', $row['error'] === SystemLogErrorClassification::WARNING ? ContextualFeedbackSeverity::WARNING : ContextualFeedbackSeverity::ERROR, true);
             $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }
