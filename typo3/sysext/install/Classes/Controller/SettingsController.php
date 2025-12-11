@@ -457,9 +457,9 @@ class SettingsController extends AbstractController
                     $displayConstants[$constant['cat']][$constant['subcat_sorting_first']]['items'][$constant['subcat_sorting_second']] = $constant;
                 }
                 foreach ($displayConstants as &$constantCategory) {
-                    ksort($constantCategory);
+                    ksort($constantCategory, SORT_NATURAL);
                     foreach ($constantCategory as &$constantDetailItems) {
-                        ksort($constantDetailItems['items']);
+                        ksort($constantDetailItems['items'], SORT_NATURAL);
                     }
                 }
                 $extensionsWithConfigurations[$extensionKey] = $displayConstants;
