@@ -57,6 +57,8 @@ enum ApplicationType: string
     case BACKEND = 'backend';
     // SystemEnvironmentBuilder::REQUESTTYPE_FE
     case FRONTEND = 'frontend';
+    // SystemEnvironmentBuilder::REQUESTTYPE_INSTALL
+    case INSTALL = 'install';
 
     /**
      * Create an ApplicationType object from a given PSR-7 request.
@@ -77,6 +79,9 @@ enum ApplicationType: string
         }
         if (($type & SystemEnvironmentBuilder::REQUESTTYPE_BE) === SystemEnvironmentBuilder::REQUESTTYPE_BE) {
             return self::BACKEND;
+        }
+        if (($type & SystemEnvironmentBuilder::REQUESTTYPE_INSTALL) === SystemEnvironmentBuilder::REQUESTTYPE_INSTALL) {
+            return self::INSTALL;
         }
         throw new \LogicException('Could not resolve application type to either frontend or backend', 1678875015);
     }

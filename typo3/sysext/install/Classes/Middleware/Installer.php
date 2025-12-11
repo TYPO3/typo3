@@ -51,6 +51,9 @@ class Installer implements MiddlewareInterface
         if (!$this->canHandleRequest()) {
             return $handler->handle($request);
         }
+        // This is required for icon API, that still has no way to pass
+        // a request/ normalizedParams to the icon URL generation
+        $GLOBALS['TYPO3_REQUEST'] = $request;
 
         // Lazy load InstallerController, to instantiate the class and the dependencies only if we handle an install request.
         $controller = $this->container->get(InstallerController::class);
@@ -64,7 +67,7 @@ class Installer implements MiddlewareInterface
                 'success' => $this->isInstallerAvailable(),
             ]);
         } elseif ($actionName === 'showInstallerNotAvailable') {
-            $response = $controller->showInstallerNotAvailableAction();
+            $response = $controller->showInstallerNotAvailableAction($request);
         } elseif ($actionName === 'checkEnvironmentAndFolders'
             || $actionName === 'showEnvironmentAndFolders'
             || $actionName === 'executeEnvironmentAndFolders'

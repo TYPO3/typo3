@@ -43,7 +43,7 @@ class AbstractController
             'partialRootPaths' => ['EXT:install/Resources/Private/Partials'],
             'layoutRootPaths' => ['EXT:install/Resources/Private/Layouts'],
         ];
-        $renderingContext = GeneralUtility::makeInstance(RenderingContextFactory::class)->create($templatePaths);
+        $renderingContext = GeneralUtility::makeInstance(RenderingContextFactory::class)->create($templatePaths, $request);
         $fluidView = new FluidTemplateView($renderingContext);
         $view = new FluidViewAdapter($fluidView);
         $view->assignMultiple([

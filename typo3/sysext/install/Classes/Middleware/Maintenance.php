@@ -87,6 +87,9 @@ class Maintenance implements MiddlewareInterface
         if (($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'] ?? '') === '') {
             return new HtmlResponse('$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'installToolPassword\'] must not be empty.', 500);
         }
+        // This is required for icon API, that still has no way to pass
+        // a request/ normalizedParams to the icon URL generation
+        $GLOBALS['TYPO3_REQUEST'] = $request;
 
         $controllerName = $request->getQueryParams()['install']['controller'] ?? 'layout';
         $actionName = $request->getParsedBody()['install']['action'] ?? $request->getQueryParams()['install']['action'] ?? 'init';

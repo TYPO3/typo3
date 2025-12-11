@@ -94,7 +94,7 @@ final class InstallerController
         $importMap = new ImportMap($this->hashService, $packages);
         $sitePath = $request->getAttribute('normalizedParams')->getSitePath();
         $initModule = $sitePath . $importMap->resolveImport('@typo3/install/init-installer.js');
-        $view = $this->initializeView();
+        $view = $this->initializeView($request);
         $view->assign('bust', $bust);
         $view->assign('initModule', $initModule);
         $view->assign('iconCacheIdentifier', sha1($this->iconRegistry->getBackendIconsCacheIdentifier()));
@@ -117,7 +117,7 @@ final class InstallerController
      */
     public function mainLayoutAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeView();
+        $view = $this->initializeView($request);
         return new JsonResponse([
             'success' => true,
             'html' => $view->render('Installer/MainLayout'),
@@ -127,9 +127,9 @@ final class InstallerController
     /**
      * Render "FIRST_INSTALL file need to exist" view
      */
-    public function showInstallerNotAvailableAction(): ResponseInterface
+    public function showInstallerNotAvailableAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeView();
+        $view = $this->initializeView($request);
         return new JsonResponse([
             'success' => true,
             'html' => $view->render('Installer/ShowInstallerNotAvailable'),
@@ -151,7 +151,7 @@ final class InstallerController
      */
     public function showEnvironmentAndFoldersAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeView();
+        $view = $this->initializeView($request);
         $systemCheckMessageQueue = new FlashMessageQueue('install');
         $checkMessages = (new Check())->getStatus();
         foreach ($checkMessages as $message) {
@@ -237,7 +237,7 @@ final class InstallerController
      */
     public function showDatabaseConnectAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeView();
+        $view = $this->initializeView($request);
 
         $driverOptions = $this->setupDatabaseService->getDriverOptions();
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
@@ -279,7 +279,7 @@ final class InstallerController
      */
     public function showDatabaseSelectAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeView();
+        $view = $this->initializeView($request);
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $errors = [];
         try {
@@ -453,7 +453,7 @@ final class InstallerController
      */
     public function showDatabaseDataAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeView();
+        $view = $this->initializeView($request);
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view->assignMultiple([
             'executeDatabaseDataToken' => $formProtection->generateToken('installTool', 'executeDatabaseData'),
@@ -535,7 +535,7 @@ final class InstallerController
      */
     public function showDefaultConfigurationAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeView();
+        $view = $this->initializeView($request);
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view->assignMultiple([
             'composerMode' => Environment::isComposerMode(),
@@ -607,12 +607,12 @@ final class InstallerController
     /**
      * Helper method to initialize a standalone view instance.
      */
-    private function initializeView(): ViewInterface
+    private function initializeView(ServerRequestInterface $request): ViewInterface
     {
         $templatePaths = [
             'templateRootPaths' => ['EXT:install/Resources/Private/Templates'],
         ];
-        $renderingContext = GeneralUtility::makeInstance(RenderingContextFactory::class)->create($templatePaths);
+        $renderingContext = GeneralUtility::makeInstance(RenderingContextFactory::class)->create($templatePaths, $request);
         $fluidView = new FluidTemplateView($renderingContext);
         return new FluidViewAdapter($fluidView);
     }
