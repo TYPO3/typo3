@@ -39,7 +39,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *      ->setLabel('Dropdown')
  *      ->setTitle('Save')
  *      ->setIcon($this->iconFactory->getIcon('actions-heart'))
- *      ->getShowLabelText(true)
+ *      ->setShowLabelText(true)
  *      ->addItem(
  *          GeneralUtility::makeInstance(DropDownItem::class)
  *              ->setLabel('Item')
