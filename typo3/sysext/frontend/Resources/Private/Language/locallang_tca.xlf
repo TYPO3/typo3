@@ -300,34 +300,34 @@
       <trans-unit id="tt_content">
         <source>Page Content</source>
       </trans-unit>
-      <trans-unit id="fe_users">
+      <trans-unit id="fe_users" x-unused-since="15.0">
         <source>Website User</source>
       </trans-unit>
-      <trans-unit id="fe_users.username">
+      <trans-unit id="fe_users.username" x-unused-since="15.0">
         <source>Username</source>
       </trans-unit>
-      <trans-unit id="fe_users.password">
+      <trans-unit id="fe_users.password" x-unused-since="15.0">
         <source>Password</source>
       </trans-unit>
-      <trans-unit id="fe_users.usergroup">
+      <trans-unit id="fe_users.usergroup" x-unused-since="15.0">
         <source>Groups</source>
       </trans-unit>
-      <trans-unit id="fe_users.tabs.access">
+      <trans-unit id="fe_users.tabs.access" x-unused-since="15.0">
         <source>Access</source>
       </trans-unit>
-      <trans-unit id="fe_users.tabs.extended">
+      <trans-unit id="fe_users.tabs.extended" x-unused-since="15.0">
         <source>Extended</source>
       </trans-unit>
-      <trans-unit id="fe_groups">
+      <trans-unit id="fe_groups" x-unused-since="15.0">
         <source>Website Usergroup</source>
       </trans-unit>
-      <trans-unit id="fe_groups.title">
+      <trans-unit id="fe_groups.title" x-unused-since="15.0">
         <source>Group Title</source>
       </trans-unit>
-      <trans-unit id="fe_groups.subgroup">
+      <trans-unit id="fe_groups.subgroup" x-unused-since="15.0">
         <source>Subgroups</source>
       </trans-unit>
-      <trans-unit id="fe_groups.tabs.extended">
+      <trans-unit id="fe_groups.tabs.extended" x-unused-since="15.0">
         <source>Extended</source>
       </trans-unit>
       <trans-unit id="sys_template">
@@ -372,7 +372,7 @@
         <source>Include additional TypoScript records located elsewhere in the page tree. This can be used to load the same TypoScript records at multiple places in a page tree.
 			 	This isn't used very often nowadays and it's often easier to understand and maintain the site by extracting TypoScript configuration to files
 				and to load the full set in a single main TypoScript record.
-            </source>
+			</source>
       </trans-unit>
       <trans-unit id="sys_template.includeStaticAfterBasedOn">
         <source>Load TypoScript sets after included TypoScript records</source>

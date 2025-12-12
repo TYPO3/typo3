@@ -1,9 +1,137 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en">
   <file id="f1">
+    <!-- Account information -->
+    <unit id="username">
+      <segment>
+        <source>Username</source>
+      </segment>
+    </unit>
+    <unit id="password">
+      <segment>
+        <source>Password</source>
+      </segment>
+    </unit>
+    <unit id="group">
+      <segment>
+        <source>Group</source>
+      </segment>
+    </unit>
+    <unit id="last_login">
+      <segment>
+        <source>Last login</source>
+      </segment>
+    </unit>
+    <unit id="group.edit_title">
+      <segment>
+        <source>Edit group</source>
+      </segment>
+    </unit>
+    <unit id="group.add_title">
+      <segment>
+        <source>Create a new group</source>
+      </segment>
+    </unit>
+    <unit id="group.list_title">
+      <segment>
+        <source>List groups</source>
+      </segment>
+    </unit>
+    <unit id="mfa">
+      <segment>
+        <source>Multi-factor authentication</source>
+      </segment>
+    </unit>
+    <!-- Account Information -->
+    <unit id="avatar">
+      <segment>
+        <source>Avatar</source>
+      </segment>
+    </unit>
+    <unit id="email">
+      <segment>
+        <source>Email</source>
+      </segment>
+    </unit>
+    <unit id="name">
+      <segment>
+        <source>Name</source>
+      </segment>
+    </unit>
+    <unit id="first_name">
+      <segment>
+        <source>First name</source>
+      </segment>
+    </unit>
+    <unit id="middle_name">
+      <segment>
+        <source>Middle name</source>
+      </segment>
+    </unit>
+    <unit id="last_name">
+      <segment>
+        <source>Last name</source>
+      </segment>
+    </unit>
+    <unit id="title_person">
+      <segment>
+        <source>Title</source>
+      </segment>
+    </unit>
+    <unit id="address">
+      <segment>
+        <source>Address</source>
+      </segment>
+    </unit>
+    <unit id="phone">
+      <segment>
+        <source>Phone</source>
+      </segment>
+    </unit>
+    <unit id="fax">
+      <segment>
+        <source>Fax</source>
+      </segment>
+    </unit>
+    <unit id="company">
+      <segment>
+        <source>Company</source>
+      </segment>
+    </unit>
+    <unit id="city">
+      <segment>
+        <source>City</source>
+      </segment>
+    </unit>
+    <unit id="zip">
+      <segment>
+        <source>Zipcode</source>
+      </segment>
+    </unit>
+    <unit id="country">
+      <segment>
+        <source>Country</source>
+      </segment>
+    </unit>
+    <unit id="www">
+      <segment>
+        <source>Homepage</source>
+      </segment>
+    </unit>
+    <unit id="image">
+      <segment>
+        <source>Profile picture</source>
+      </segment>
+    </unit>
+    <!-- Enable Fields -->
     <unit id="enabled">
       <segment>
         <source>Login enabled</source>
+      </segment>
+    </unit>
+    <unit id="starttime">
+      <segment>
+        <source>Account active from</source>
       </segment>
     </unit>
     <unit id="endtime">
@@ -14,11 +142,6 @@
     <unit id="group.enabled">
       <segment>
         <source>Group enabled</source>
-      </segment>
-    </unit>
-    <unit id="starttime">
-      <segment>
-        <source>Account active from</source>
       </segment>
     </unit>
   </file>

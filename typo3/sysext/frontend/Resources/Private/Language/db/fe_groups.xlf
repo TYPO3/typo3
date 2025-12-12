@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en">
+  <file id="f1">
+    <unit id="table.title">
+      <segment>
+        <source>Website user group</source>
+      </segment>
+    </unit>
+    <unit id="title">
+      <segment>
+        <source>Group title</source>
+      </segment>
+    </unit>
+    <unit id="subgroup">
+      <segment>
+        <source>Subgroup</source>
+      </segment>
+    </unit>
+  </file>
+</xliff>

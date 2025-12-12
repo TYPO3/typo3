@@ -149,7 +149,7 @@ test.describe('ext:impexp Export', () => {
     const contentFrame = backend.contentFrame;
     await expect(contentFrame.locator('h1', { hasText: 'New TYPO3 site' })).toBeVisible();
 
-    await contentFrame.getByRole('link', { name: /^Backend usergroup/ }).click();
+    await contentFrame.getByRole('link', { name: /^Backend user group/ }).click();
     await contentFrame.locator(`${moduleDocheaderColumn} a[title="Export"]`).click();
 
     await expect(contentFrame.locator(tabFilePresetButton)).toBeVisible();

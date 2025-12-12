@@ -48,55 +48,55 @@
       <trans-unit id="LGL.text">
         <source>Text</source>
       </trans-unit>
-      <trans-unit id="LGL.name">
+      <trans-unit id="LGL.name" x-unused-since="15.0">
         <source>Name</source>
       </trans-unit>
-      <trans-unit id="LGL.first_name">
+      <trans-unit id="LGL.first_name" x-unused-since="15.0">
         <source>First name</source>
       </trans-unit>
-      <trans-unit id="LGL.middle_name">
+      <trans-unit id="LGL.middle_name" x-unused-since="15.0">
         <source>Middle name</source>
       </trans-unit>
-      <trans-unit id="LGL.last_name">
+      <trans-unit id="LGL.last_name" x-unused-since="15.0">
         <source>Last name</source>
       </trans-unit>
       <trans-unit id="LGL.title">
         <source>Title</source>
       </trans-unit>
-      <trans-unit id="LGL.title_person">
+      <trans-unit id="LGL.title_person" x-unused-since="15.0">
         <source>Title</source>
       </trans-unit>
-      <trans-unit id="LGL.address">
+      <trans-unit id="LGL.address" x-unused-since="15.0">
         <source>Address</source>
       </trans-unit>
-      <trans-unit id="LGL.phone">
+      <trans-unit id="LGL.phone" x-unused-since="15.0">
         <source>Phone</source>
       </trans-unit>
-      <trans-unit id="LGL.fax">
+      <trans-unit id="LGL.fax" x-unused-since="15.0">
         <source>Fax</source>
       </trans-unit>
-      <trans-unit id="LGL.author">
+      <trans-unit id="LGL.author" x-unused-since="15.0">
         <source>Author</source>
       </trans-unit>
-      <trans-unit id="LGL.email">
+      <trans-unit id="LGL.email" x-unused-since="15.0">
         <source>Email</source>
       </trans-unit>
-      <trans-unit id="LGL.company">
+      <trans-unit id="LGL.company" x-unused-since="15.0">
         <source>Company</source>
       </trans-unit>
-      <trans-unit id="LGL.city">
+      <trans-unit id="LGL.city" x-unused-since="15.0">
         <source>City</source>
       </trans-unit>
-      <trans-unit id="LGL.zip">
+      <trans-unit id="LGL.zip" x-unused-since="15.0">
         <source>Zipcode</source>
       </trans-unit>
-      <trans-unit id="LGL.country">
+      <trans-unit id="LGL.country" x-unused-since="15.0">
         <source>Country</source>
       </trans-unit>
-      <trans-unit id="LGL.www">
+      <trans-unit id="LGL.www" x-unused-since="15.0">
         <source>www</source>
       </trans-unit>
-      <trans-unit id="LGL.lastlogin">
+      <trans-unit id="LGL.lastlogin" x-unused-since="15.0">
         <source>Last login</source>
       </trans-unit>
       <trans-unit id="LGL.note">

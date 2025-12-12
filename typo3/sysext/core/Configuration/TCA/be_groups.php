@@ -18,13 +18,13 @@ return [
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],
-        'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups',
+        'title' => 'core.db.be_groups:table.title',
         'useColumnsForDefaultValues' => 'file_permissions',
         'versioningWS_alwaysAllowLiveEdit' => true,
     ],
     'columns' => [
         'title' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.title',
+            'label' => 'core.db.be_groups:title',
             'config' => [
                 'type' => 'input',
                 'size' => 25,

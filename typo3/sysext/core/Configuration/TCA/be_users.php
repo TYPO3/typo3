@@ -5,7 +5,7 @@ return [
         'label' => 'username',
         'descriptionColumn' => 'description',
         'tstamp' => 'tstamp',
-        'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users',
+        'title' => 'core.db.be_users:table.title',
         'crdate' => 'crdate',
         'delete' => 'deleted',
         'adminOnly' => true,
@@ -29,7 +29,7 @@ return [
     ],
     'columns' => [
         'username' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.username',
+            'label' => 'core.db.accounts:username',
             'config' => [
                 'type' => 'input',
                 'size' => 20,
@@ -43,7 +43,7 @@ return [
             ],
         ],
         'password' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.password',
+            'label' => 'core.db.accounts:password',
             'config' => [
                 'type' => 'password',
                 'passwordPolicy' => $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy'] ?? '',
@@ -66,7 +66,7 @@ return [
             ],
         ],
         'mfa' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.mfa',
+            'label' => 'core.db.accounts:mfa',
             'config' => [
                 // @todo Use a new internal TCA type to prevent raw data being displayed in the backend
                 'type' => 'none',
@@ -77,7 +77,7 @@ return [
             ],
         ],
         'usergroup' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.usergroup',
+            'label' => 'core.db.accounts:group',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -88,20 +88,20 @@ return [
                     'editPopup' => [
                         'disabled' => false,
                         'options' => [
-                            'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.usergroup_edit_title',
+                            'title' => 'core.db.accounts:group.edit_title',
                         ],
                     ],
                     'addRecord' => [
                         'disabled' => false,
                         'options' => [
-                            'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.usergroup_add_title',
+                            'title' => 'core.db.accounts:group.add_title',
                             'setValue' => 'prepend',
                         ],
                     ],
                     'listModule' => [
                         'disabled' => false,
                         'options' => [
-                            'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.usergroup_list_title',
+                            'title' => 'core.db.accounts:group.list_title',
                         ],
                     ],
                 ],
@@ -111,7 +111,7 @@ return [
             ],
         ],
         'avatar' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.avatar',
+            'label' => 'core.db.accounts:avatar',
             'config' => [
                 'type' => 'file',
                 'relationship' => 'manyToOne',
@@ -169,7 +169,7 @@ return [
             ],
         ],
         'email' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.email',
+            'label' => 'core.db.accounts:email',
             'config' => [
                 'type' => 'email',
                 'size' => 20,
@@ -179,7 +179,7 @@ return [
             ],
         ],
         'realName' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.name',
+            'label' => 'core.db.accounts:name',
             'config' => [
                 'type' => 'input',
                 'size' => 20,
@@ -329,7 +329,7 @@ return [
             ],
         ],
         'lastlogin' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.lastlogin',
+            'label' => 'core.db.accounts:last_login',
             'config' => [
                 'type' => 'datetime',
                 'readOnly' => true,

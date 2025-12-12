@@ -54,10 +54,10 @@
       <trans-unit id="tsconfig_includes">
         <source>Include static TSconfig</source>
       </trans-unit>
-      <trans-unit id="be_users.username">
+      <trans-unit id="be_users.username" x-unused-since="15.0">
         <source>Username</source>
       </trans-unit>
-      <trans-unit id="be_users.password">
+      <trans-unit id="be_users.password" x-unused-since="15.0">
         <source>Password</source>
       </trans-unit>
       <trans-unit id="be_users.mfa">
@@ -66,7 +66,7 @@
       <trans-unit id="be_users.avatar">
         <source>Avatar</source>
       </trans-unit>
-      <trans-unit id="be_users.usergroup">
+      <trans-unit id="be_users.usergroup" x-unused-since="15.0">
         <source>Group</source>
       </trans-unit>
       <trans-unit id="be_users.usergroup_edit_title">
@@ -165,7 +165,7 @@
       <trans-unit id="be_users.user_settings">
         <source>User Settings</source>
       </trans-unit>
-      <trans-unit id="be_groups.title">
+      <trans-unit id="be_groups.title" x-unused-since="15.0">
         <source>Title</source>
       </trans-unit>
       <trans-unit id="be_groups.pagetypes_select">
@@ -375,10 +375,10 @@
       <trans-unit id="pages.description">
         <source>Description for search engines</source>
       </trans-unit>
-      <trans-unit id="be_users">
+      <trans-unit id="be_users" x-unused-since="15.0">
         <source>Backend user</source>
       </trans-unit>
-      <trans-unit id="be_groups">
+      <trans-unit id="be_groups" x-unused-since="15.0">
         <source>Backend usergroup</source>
       </trans-unit>
       <trans-unit id="sys_filemounts">

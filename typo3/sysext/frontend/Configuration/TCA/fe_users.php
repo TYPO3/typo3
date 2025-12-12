@@ -8,7 +8,7 @@ return [
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'groupName' => 'frontendaccess',
-        'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users',
+        'title' => 'frontend.db.fe_users:table.title',
         'delete' => 'deleted',
         'enablecolumns' => [
             'disabled' => 'disable',
@@ -22,7 +22,7 @@ return [
     ],
     'columns' => [
         'username' => [
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.username',
+            'label' => 'core.db.accounts:username',
             'config' => [
                 'type' => 'input',
                 'size' => 20,
@@ -33,7 +33,7 @@ return [
             ],
         ],
         'password' => [
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.password',
+            'label' => 'core.db.accounts:password',
             'config' => [
                 'type' => 'password',
                 'passwordPolicy' => $GLOBALS['TYPO3_CONF_VARS']['FE']['passwordPolicy'] ?? '',
@@ -52,7 +52,7 @@ return [
             ],
         ],
         'usergroup' => [
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.usergroup',
+            'label' => 'core.db.accounts:group',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -64,7 +64,7 @@ return [
         ],
         'name' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.name',
+            'label' => 'core.db.accounts:name',
             'config' => [
                 'type' => 'input',
                 'size' => 40,
@@ -74,7 +74,7 @@ return [
         ],
         'first_name' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.first_name',
+            'label' => 'core.db.accounts:first_name',
             'config' => [
                 'type' => 'input',
                 'size' => 25,
@@ -84,7 +84,7 @@ return [
         ],
         'middle_name' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.middle_name',
+            'label' => 'core.db.accounts:middle_name',
             'config' => [
                 'type' => 'input',
                 'size' => 25,
@@ -94,7 +94,7 @@ return [
         ],
         'last_name' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.last_name',
+            'label' => 'core.db.accounts:last_name',
             'config' => [
                 'type' => 'input',
                 'size' => 25,
@@ -104,7 +104,7 @@ return [
         ],
         'address' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.address',
+            'label' => 'core.db.accounts:address',
             'config' => [
                 'type' => 'text',
                 'cols' => 20,
@@ -114,7 +114,7 @@ return [
         ],
         'telephone' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.phone',
+            'label' => 'core.db.accounts:phone',
             'config' => [
                 'type' => 'input',
                 'eval' => 'trim',
@@ -124,7 +124,7 @@ return [
         ],
         'fax' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.fax',
+            'label' => 'core.db.accounts:fax',
             'config' => [
                 'type' => 'input',
                 'size' => 20,
@@ -134,7 +134,7 @@ return [
         ],
         'email' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.email',
+            'label' => 'core.db.accounts:email',
             'config' => [
                 'type' => 'email',
                 'size' => 20,
@@ -142,7 +142,7 @@ return [
         ],
         'title' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.title_person',
+            'label' => 'core.db.accounts:title_person',
             'config' => [
                 'type' => 'input',
                 'size' => 20,
@@ -152,7 +152,7 @@ return [
         ],
         'zip' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.zip',
+            'label' => 'core.db.accounts:zip',
             'config' => [
                 'type' => 'input',
                 'eval' => 'trim',
@@ -162,7 +162,7 @@ return [
         ],
         'city' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.city',
+            'label' => 'core.db.accounts:city',
             'config' => [
                 'type' => 'input',
                 'size' => 20,
@@ -172,7 +172,7 @@ return [
         ],
         'country' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.country',
+            'label' => 'core.db.accounts:country',
             'config' => [
                 'type' => 'input',
                 'size' => 20,
@@ -182,7 +182,7 @@ return [
         ],
         'www' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.www',
+            'label' => 'core.db.accounts:www',
             'config' => [
                 'type' => 'input',
                 'eval' => 'trim',
@@ -192,7 +192,7 @@ return [
         ],
         'company' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.company',
+            'label' => 'core.db.accounts:company',
             'config' => [
                 'type' => 'input',
                 'eval' => 'trim',
@@ -202,7 +202,7 @@ return [
         ],
         'image' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.image',
+            'label' => 'core.db.accounts:image',
             'config' => [
                 'type' => 'file',
                 'allowed' => 'common-image-types',
@@ -211,7 +211,7 @@ return [
         ],
         'lastlogin' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.lastlogin',
+            'label' => 'core.db.accounts:last_login',
             'config' => [
                 'type' => 'datetime',
                 'readOnly' => true,

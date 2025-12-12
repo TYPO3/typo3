@@ -13,14 +13,14 @@ return [
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],
-        'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_groups',
+        'title' => 'frontend.db.fe_groups:table.title',
         'typeicon_classes' => [
             'default' => 'status-user-group-frontend',
         ],
     ],
     'columns' => [
         'title' => [
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_groups.title',
+            'label' => 'frontend.db.fe_groups:title',
             'config' => [
                 'type' => 'input',
                 'size' => 20,
@@ -31,7 +31,7 @@ return [
         ],
         'subgroup' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_groups.subgroup',
+            'label' => 'frontend.db.fe_groups:subgroup',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
