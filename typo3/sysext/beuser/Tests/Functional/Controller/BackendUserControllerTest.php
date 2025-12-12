@@ -110,7 +110,7 @@ final class BackendUserControllerTest extends FunctionalTestCase
         self::assertEquals('Default', $dispatchedEvents[0]->filemounts[0]->getTitle());
     }
 
-    protected function assembleRequest(string $action): ServerRequest
+    private function assembleRequest(string $action): ServerRequest
     {
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setPluginName('backend_user_management');

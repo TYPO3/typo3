@@ -92,7 +92,7 @@ final class SynchronizeFolderRelationsTest extends FunctionalTestCase
         self::assertStringContainsString('5 File collection records', $flashMessage->getMessage());
     }
 
-    protected function getAfterFolderRenamedEvent(string $targetIdentifier): AfterFolderRenamedEvent
+    private function getAfterFolderRenamedEvent(string $targetIdentifier): AfterFolderRenamedEvent
     {
         $sourceDriver = $this->createMock(LocalDriver::class);
         $storage = new ResourceStorage($sourceDriver, ['uid' => 1]);

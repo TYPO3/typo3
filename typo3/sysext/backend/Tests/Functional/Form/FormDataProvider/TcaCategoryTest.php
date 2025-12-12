@@ -516,7 +516,7 @@ final class TcaCategoryTest extends FunctionalTestCase
      * This adds the default category configuration as
      * done by TcaPreparation->configureCategoryRelations
      */
-    protected function getFieldConfiguration(array $input): array
+    private function getFieldConfiguration(array $input): array
     {
         $default = [
             'relationship' => 'oneToOne',
@@ -545,7 +545,7 @@ final class TcaCategoryTest extends FunctionalTestCase
      *
      * @return array[]
      */
-    protected function getExpectedCategoryItems(array $checked = []): array
+    private function getExpectedCategoryItems(array $checked = []): array
     {
         return [
             [

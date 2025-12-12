@@ -2237,13 +2237,13 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result->get('link');
     }
 
-    protected function setWorkspaceId(int $workspaceId): void
+    private function setWorkspaceId(int $workspaceId): void
     {
         $GLOBALS['BE_USER']->workspace = $workspaceId;
         GeneralUtility::makeInstance(Context::class)->setAspect('workspace', new WorkspaceAspect($workspaceId));
     }
 
-    protected function getTestRecord(): array
+    private function getTestRecord(): array
     {
         return [
             'uid' => 260,
@@ -2295,7 +2295,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         ];
     }
 
-    protected function createTestRecordObject(array $overriddenValues = []): RawRecord
+    private function createTestRecordObject(array $overriddenValues = []): RawRecord
     {
         $dummyRecordData = $this->getTestRecord();
         $dummyRecordData = array_replace($dummyRecordData, $overriddenValues);

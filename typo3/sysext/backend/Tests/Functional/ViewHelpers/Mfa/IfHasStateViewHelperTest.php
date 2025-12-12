@@ -74,7 +74,7 @@ final class IfHasStateViewHelperTest extends FunctionalTestCase
         self::assertStringNotContainsString('isUnlocked', $result);
     }
 
-    protected function getBackendUser(bool $activeProvider = false, bool $lockedProvider = false): BackendUserAuthentication
+    private function getBackendUser(bool $activeProvider = false, bool $lockedProvider = false): BackendUserAuthentication
     {
         $backendUser = new BackendUserAuthentication();
         $mfa = [

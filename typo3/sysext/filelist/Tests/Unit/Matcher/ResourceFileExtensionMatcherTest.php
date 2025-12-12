@@ -67,7 +67,7 @@ final class ResourceFileExtensionMatcherTest extends UnitTestCase
         self::assertFalse($matcher->match($this->getFile('png')));
     }
 
-    protected function getFile(string $extension): File
+    private function getFile(string $extension): File
     {
         return new File(['identifier' => $extension . '-file', 'name' => 'file.' . $extension], $this->storage);
     }

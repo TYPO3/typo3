@@ -30,7 +30,7 @@ final class LogRecordTest extends UnitTestCase
      *
      * @param array $parameters Parameters to set in LogRecord constructor.
      */
-    protected function getRecord(array $parameters = []): LogRecord
+    private function getRecord(array $parameters = []): LogRecord
     {
         $record = new LogRecord(
             $parameters['component'] ?? 'test.core.log',

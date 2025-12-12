@@ -265,7 +265,7 @@ final class ExtensionStatusTest extends UnitTestCase
         self::assertEquals(ContextualFeedbackSeverity::WARNING, $statusObject->getSeverity());
     }
 
-    protected function setUpRegistryStatusTests(
+    private function setUpRegistryStatusTests(
         int $reviewState = 0,
         bool $installed = true
     ): ListUtility&MockObject {
@@ -288,7 +288,7 @@ final class ExtensionStatusTest extends UnitTestCase
         return $mockListUtility;
     }
 
-    protected function setUpRemoteRegistryMock(bool $setupRepositoryStatusOk = true): RemoteRegistry&MockObject
+    private function setUpRemoteRegistryMock(bool $setupRepositoryStatusOk = true): RemoteRegistry&MockObject
     {
         $remoteRegistryMock = $this->createMock(RemoteRegistry::class);
         if ($setupRepositoryStatusOk) {

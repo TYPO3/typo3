@@ -193,7 +193,7 @@ final class ImportMapTest extends FunctionalTestCase
         self::assertStringContainsString('@acme/package4/Backend/Helper.js', $output);
     }
 
-    protected function getPackages(array $packages): array
+    private function getPackages(array $packages): array
     {
         $packageInstances = [];
         $packageManager = $this->get(PackageManager::class);

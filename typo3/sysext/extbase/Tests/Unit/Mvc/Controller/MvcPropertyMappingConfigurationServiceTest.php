@@ -325,7 +325,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     /**
      * Helper which initializes the property mapping configuration and returns arguments
      */
-    protected function initializePropertyMappingConfiguration(array $trustedProperties): Arguments
+    private function initializePropertyMappingConfiguration(array $trustedProperties): Arguments
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'bar';
         $hashService = new HashService();

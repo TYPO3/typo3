@@ -231,7 +231,7 @@ final class ActionControllerValidationTest extends FunctionalTestCase
         self::assertEquals('testFormAction', $response->getBody()->getContents());
     }
 
-    protected function generateTrustedPropertiesToken(array $formFieldNames): string
+    private function generateTrustedPropertiesToken(array $formFieldNames): string
     {
         $mvcPropertyMappingConfigurationService = $this->get(
             MvcPropertyMappingConfigurationService::class

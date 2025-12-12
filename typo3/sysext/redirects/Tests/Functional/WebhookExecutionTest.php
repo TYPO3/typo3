@@ -85,7 +85,7 @@ final class WebhookExecutionTest extends FunctionalTestCase
         self::assertSame(1, $payloadRedirectUid);
     }
 
-    protected function registerRequestInspector(callable $inspector): void
+    private function registerRequestInspector(callable $inspector): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['HTTP']['handler']['logger'] = function () use ($inspector) {
             return function (RequestInterface $request) use ($inspector) {

@@ -37,7 +37,7 @@ final class ServiceProviderRegistryTest extends UnitTestCase
         $this->packageManagerMock = $this->createMock(PackageManager::class);
     }
 
-    protected function mockPackage(string $packageKey, string $serviceProvider): Package
+    private function mockPackage(string $packageKey, string $serviceProvider): Package
     {
         $this->packageManagerMock->method('isPackageActive')->with($packageKey)->willReturn(true);
         $package = $this->createMock(Package::class);

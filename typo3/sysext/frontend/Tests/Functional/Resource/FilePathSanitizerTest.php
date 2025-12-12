@@ -40,7 +40,7 @@ final class FilePathSanitizerTest extends FunctionalTestCase
     /**
      * Sets up Environment to simulate Composer mode and a frontend web request
      */
-    protected function simulateWebRequestInComposerMode(): void
+    private function simulateWebRequestInComposerMode(): void
     {
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['SCRIPT_NAME'] = '/index.php';

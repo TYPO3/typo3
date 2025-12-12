@@ -134,7 +134,7 @@ final class BlogPostEditingControllerTest extends FunctionalTestCase
     /**
      * @todo move this helper method to TF?
      */
-    protected function createBodyFromArray(array $postPayload): StreamInterface
+    private function createBodyFromArray(array $postPayload): StreamInterface
     {
         $streamFactory = $this->get(StreamFactoryInterface::class);
         return $streamFactory->createStream(HttpUtility::buildQueryString($postPayload));

@@ -35,7 +35,7 @@ final class RecordHistoryStoreTest extends FunctionalTestCase
         $this->subject = new RecordHistoryStore();
     }
 
-    protected function getRecordCountByCorrelationId(CorrelationId $correlationId): int
+    private function getRecordCountByCorrelationId(CorrelationId $correlationId): int
     {
         $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('sys_history');
         return (int)$queryBuilder

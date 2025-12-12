@@ -33,7 +33,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ServiceProviderCompilationPassTest extends UnitTestCase
 {
-    protected function getContainer(array $serviceProviders, ?callable $configure = null): ContainerBuilder
+    private function getContainer(array $serviceProviders, ?callable $configure = null): ContainerBuilder
     {
         static $id = 0;
 

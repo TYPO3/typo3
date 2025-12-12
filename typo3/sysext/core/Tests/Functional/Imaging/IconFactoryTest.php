@@ -543,7 +543,7 @@ final class IconFactoryTest extends FunctionalTestCase
     /**
      * Create file object to use as test subject
      */
-    protected function getTestSubjectFileObject(string $extension, string $mimeType = ''): File
+    private function getTestSubjectFileObject(string $extension, string $mimeType = ''): File
     {
         $mockedStorage = $this->createMock(ResourceStorage::class);
         $mockedFile = $this->getMockBuilder(File::class)
@@ -557,7 +557,7 @@ final class IconFactoryTest extends FunctionalTestCase
     /**
      * Create folder object to use as test subject
      */
-    protected function getTestSubjectFolderObject(string $identifier): Folder
+    private function getTestSubjectFolderObject(string $identifier): Folder
     {
         $mockedStorage = $this->createMock(ResourceStorage::class);
         $mockedStorage->method('getRootLevelFolder')->willReturn(

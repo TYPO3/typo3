@@ -39,7 +39,7 @@ final class AddonRegistryTest extends UnitTestCase
     /**
      * Register addons for tests
      */
-    protected function registerAddons(): void
+    private function registerAddons(): void
     {
         $this->subject
             ->register(new Addon('addon/global'))

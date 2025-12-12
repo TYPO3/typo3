@@ -65,7 +65,7 @@ final class BackendLayoutRendererTest extends FunctionalTestCase
         );
     }
 
-    protected function getPageLayoutContext(int $pageId, array $configuration): PageLayoutContext&MockObject
+    private function getPageLayoutContext(int $pageId, array $configuration): PageLayoutContext&MockObject
     {
         $backendLayout = new BackendLayout('layout1', 'Layout 1', $configuration);
         return $this->createConfiguredMock(

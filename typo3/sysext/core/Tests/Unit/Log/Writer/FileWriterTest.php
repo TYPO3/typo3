@@ -41,7 +41,7 @@ final class FileWriterTest extends UnitTestCase
         $this->testFilesToDelete[] = $this->testRoot;
     }
 
-    protected function createWriter(string $prependName = ''): FileWriter
+    private function createWriter(string $prependName = ''): FileWriter
     {
         $logFileName = $this->getDefaultFileName($prependName);
         if (file_exists($logFileName)) {
@@ -53,7 +53,7 @@ final class FileWriterTest extends UnitTestCase
     /**
      * @return non-empty-string
      */
-    protected function getDefaultFileName(string $prependName = ''): string
+    private function getDefaultFileName(string $prependName = ''): string
     {
         return $this->testRoot . $this->logFileDirectory . '/' . $prependName . $this->logFileName;
     }

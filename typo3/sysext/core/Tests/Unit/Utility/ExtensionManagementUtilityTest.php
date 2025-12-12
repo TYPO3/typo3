@@ -49,7 +49,7 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
         parent::tearDown();
     }
 
-    protected function createMockPackageManagerWithMockPackage(string $packageKey, array $packageMethods = ['getPackagePath', 'getPackageKey']): MockObject&PackageManager
+    private function createMockPackageManagerWithMockPackage(string $packageKey, array $packageMethods = ['getPackagePath', 'getPackageKey']): MockObject&PackageManager
     {
         $packagePath = Environment::getVarPath() . '/tests/' . $packageKey . '/';
         GeneralUtility::mkdir_deep($packagePath);

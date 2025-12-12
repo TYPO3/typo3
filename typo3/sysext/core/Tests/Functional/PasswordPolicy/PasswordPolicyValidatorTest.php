@@ -126,7 +126,7 @@ final class PasswordPolicyValidatorTest extends FunctionalTestCase
         self::assertCount(5, $passwordPolicyValidator->getValidationErrors());
     }
 
-    protected function setDefaultPasswordPolicy(): void
+    private function setDefaultPasswordPolicy(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['passwordPolicies'] = [
             'default' => [

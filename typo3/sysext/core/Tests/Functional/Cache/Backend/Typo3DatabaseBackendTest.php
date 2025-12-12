@@ -546,7 +546,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         self::assertSame(0, $tagsTableConnection->count('*', 'cache_pages_tags', []));
     }
 
-    protected function getSubjectObject(): Typo3DatabaseBackend
+    private function getSubjectObject(): Typo3DatabaseBackend
     {
         $frontendMock = $this->createMock(FrontendInterface::class);
         $frontendMock->method('getIdentifier')->willReturn('pages');

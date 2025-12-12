@@ -54,7 +54,7 @@ final class SecureHtmlRenderingTest extends FunctionalTestCase
         });
     }
 
-    protected function setUpDatabase(): void
+    private function setUpDatabase(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $backendUser = $this->setUpBackendUser(1);

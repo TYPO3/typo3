@@ -43,7 +43,7 @@ final class TransportFactoryTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    protected function getSubject(&$eventDispatcher): TransportFactory
+    private function getSubject(&$eventDispatcher): TransportFactory
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $logger = new NullLogger();

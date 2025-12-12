@@ -50,7 +50,7 @@ final class PathUtilityPublicPathsTest extends FunctionalTestCase
     /**
      * Sets up Environment to simulate a frontend web request
      */
-    protected static function simulateWebRequest(string $publicDir, string $subDirectory = '/'): void
+    private static function simulateWebRequest(string $publicDir, string $subDirectory = '/'): void
     {
         GeneralUtility::flushInternalRuntimeCaches();
         $_SERVER['HTTP_HOST'] = 'localhost';
@@ -72,22 +72,22 @@ final class PathUtilityPublicPathsTest extends FunctionalTestCase
         );
     }
 
-    protected static function simulateWebRequestInComposerMode(): void
+    private static function simulateWebRequestInComposerMode(): void
     {
         self::simulateWebRequest(Environment::getPublicPath() . '/typo3temp');
     }
 
-    protected static function simulateWebRequestInComposerModeInSubDirectory(string $subDirectory = '/subDir/'): void
+    private static function simulateWebRequestInComposerModeInSubDirectory(string $subDirectory = '/subDir/'): void
     {
         self::simulateWebRequest(Environment::getPublicPath() . '/typo3temp', $subDirectory);
     }
 
-    protected static function simulateTraditionalWebRequest(): void
+    private static function simulateTraditionalWebRequest(): void
     {
         self::simulateWebRequest(Environment::getPublicPath());
     }
 
-    protected static function simulateTraditionalWebRequestInSubDirectory(string $subDirectory = '/subDir/'): void
+    private static function simulateTraditionalWebRequestInSubDirectory(string $subDirectory = '/subDir/'): void
     {
         self::simulateWebRequest(Environment::getPublicPath(), $subDirectory);
     }

@@ -194,7 +194,7 @@ final class MfaProviderPropertyManagerTest extends FunctionalTestCase
         $this->assertDatabaseValue('[]');
     }
 
-    protected function createPropertyManager(string $providerIdentifier): MfaProviderPropertyManager
+    private function createPropertyManager(string $providerIdentifier): MfaProviderPropertyManager
     {
         return MfaProviderPropertyManager::create(
             $this->get(MfaProviderRegistry::class)->getProvider($providerIdentifier),
@@ -202,7 +202,7 @@ final class MfaProviderPropertyManagerTest extends FunctionalTestCase
         );
     }
 
-    protected function assertDatabaseValue(string $expected): void
+    private function assertDatabaseValue(string $expected): void
     {
         self::assertEquals($expected, BackendUtility::getRecord(...['be_users', 4, 'mfa'])['mfa'] ?? null);
     }

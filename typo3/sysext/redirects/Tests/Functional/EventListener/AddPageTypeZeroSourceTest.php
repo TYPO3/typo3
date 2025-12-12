@@ -238,7 +238,7 @@ final class AddPageTypeZeroSourceTest extends FunctionalTestCase
         self::assertSame(1, $source->getPageType());
     }
 
-    protected function buildBaseSite(array $settings): void
+    private function buildBaseSite(array $settings): void
     {
         $configuration = [
             'rootPageId' => 1,
@@ -248,7 +248,7 @@ final class AddPageTypeZeroSourceTest extends FunctionalTestCase
         $this->buildSite($configuration);
     }
 
-    protected function buildSite(array $configuration): void
+    private function buildSite(array $configuration): void
     {
         $siteWriter = $this->get(SiteWriter::class);
         $siteWriter->write('testing', $configuration);

@@ -126,7 +126,7 @@ final class ScriptAndLinkTagRenderingTest extends FunctionalTestCase
     /**
      * Adds TypoScript constants snippet to the existing template record
      */
-    protected function setTypoScriptConstantsToTemplateRecord(int $pageId, string $constants, bool $append = false): void
+    private function setTypoScriptConstantsToTemplateRecord(int $pageId, string $constants, bool $append = false): void
     {
         $connection = $this->get(ConnectionPool::class)->getConnectionForTable('sys_template');
 
@@ -143,7 +143,7 @@ final class ScriptAndLinkTagRenderingTest extends FunctionalTestCase
         );
     }
 
-    protected function compileTypoScriptConstants(array $constants): string
+    private function compileTypoScriptConstants(array $constants): string
     {
         $lines = [];
         foreach ($constants as $constantName => $constantValue) {

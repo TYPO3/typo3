@@ -109,7 +109,7 @@ final class EditDocumentControllerTest extends FunctionalTestCase
         self::assertEquals(302, $response->getStatusCode());
     }
 
-    protected function getParsedBody(array $additionalData = []): array
+    private function getParsedBody(array $additionalData = []): array
     {
         return [
             'data' => [
@@ -125,7 +125,7 @@ final class EditDocumentControllerTest extends FunctionalTestCase
         ];
     }
 
-    protected function getQueryParamsWithDefaults(array $defaultValues): array
+    private function getQueryParamsWithDefaults(array $defaultValues): array
     {
         return [
             'edit' => [

@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class SortedTreeNodeCollectionTest extends UnitTestCase
 {
-    protected function createTestCollection(): SortedTreeNodeCollection
+    private function createTestCollection(): SortedTreeNodeCollection
     {
         $nodeCollection = new SortedTreeNodeCollection();
         $node = new TreeNode(['id' => 5]);
@@ -39,7 +39,7 @@ final class SortedTreeNodeCollectionTest extends UnitTestCase
         return $nodeCollection;
     }
 
-    protected function createTestCollectionWithTwoNodes(): SortedTreeNodeCollection
+    private function createTestCollectionWithTwoNodes(): SortedTreeNodeCollection
     {
         $nodeCollection = new SortedTreeNodeCollection();
         $node = new TreeNode(['id' => 5]);

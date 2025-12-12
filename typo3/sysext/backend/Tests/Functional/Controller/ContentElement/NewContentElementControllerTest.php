@@ -426,7 +426,7 @@ final class NewContentElementControllerTest extends FunctionalTestCase
         self::assertSame($expected, $result);
     }
 
-    protected function fillDefaultContentTypeTCA(): void
+    private function fillDefaultContentTypeTCA(): void
     {
         $GLOBALS['TCA']['tt_content']['ctrl']['type'] = 'CType';
         $GLOBALS['TCA']['tt_content']['columns']['CType'] = [

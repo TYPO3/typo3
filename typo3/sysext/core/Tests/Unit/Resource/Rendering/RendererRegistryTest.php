@@ -34,7 +34,7 @@ final class RendererRegistryTest extends UnitTestCase
     /**
      * Initialize a RendererRegistry and mock createRendererInstance()
      */
-    protected function getTestRendererRegistry(array $createsRendererInstances = []): RendererRegistry&MockObject
+    private function getTestRendererRegistry(array $createsRendererInstances = []): RendererRegistry&MockObject
     {
         $rendererRegistry = $this->getMockBuilder(RendererRegistry::class)
             ->onlyMethods(['createRendererInstance'])

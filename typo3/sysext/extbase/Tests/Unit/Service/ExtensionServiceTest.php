@@ -20,13 +20,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
-use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\ConcreteQueryBuilder;
-use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockMySQLPlatform;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Exception;
@@ -88,30 +81,6 @@ final class ExtensionServiceTest extends UnitTestCase
                 ],
             ],
         ];
-    }
-
-    /**
-     * Setup and return a mocked database connection that allows
-     * the QueryBuilder to work.
-     */
-    protected function getMockDatabaseConnection(): MockObject&Connection
-    {
-        $connection = $this->createMock(Connection::class);
-        $connection->method('getDatabasePlatform')->willReturn(new MockMySQLPlatform());
-        $connection->method('getExpressionBuilder')->willReturn(new ExpressionBuilder($connection));
-        $connection->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
-
-        $queryBuilder = new QueryBuilder(
-            $connection,
-            null,
-            new ConcreteQueryBuilder($connection),
-        );
-
-        $connectionPool = $this->createMock(ConnectionPool::class);
-        $connectionPool->method('getQueryBuilderForTable')->with('tt_content')->willReturn($queryBuilder);
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPool);
-
-        return $connection;
     }
 
     /**

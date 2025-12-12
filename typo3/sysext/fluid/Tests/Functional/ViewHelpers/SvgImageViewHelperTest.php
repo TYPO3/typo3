@@ -523,7 +523,7 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
         }
     }
 
-    protected function verifySvg(array $file, ?string $cropResult)
+    private function verifySvg(array $file, ?string $cropResult)
     {
         if ($file['storage'] == 1) {
             $dir = Environment::getPublicPath() . '/fileadmin';

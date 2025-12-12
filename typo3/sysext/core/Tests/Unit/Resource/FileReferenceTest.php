@@ -28,7 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FileReferenceTest extends UnitTestCase
 {
-    protected function prepareFixture(array $fileReferenceProperties, array $originalFileProperties): FileReference&MockObject&AccessibleObjectInterface
+    private function prepareFixture(array $fileReferenceProperties, array $originalFileProperties): FileReference&MockObject&AccessibleObjectInterface
     {
         $fixture = $this->getAccessibleMock(FileReference::class, null, [], '', false);
         $originalFileMock = $this->createMock(File::class);

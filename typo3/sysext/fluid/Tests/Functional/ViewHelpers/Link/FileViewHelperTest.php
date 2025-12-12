@@ -239,12 +239,12 @@ final class FileViewHelperTest extends FunctionalTestCase
         }
     }
 
-    protected function getFile(int $fileUid): File
+    private function getFile(int $fileUid): File
     {
         return $this->get(ResourceFactory::class)->retrieveFileOrFolderObject($fileUid);
     }
 
-    protected function getFileReference(int $fileUid): FileReference
+    private function getFileReference(int $fileUid): FileReference
     {
         $fileCollector = $this->get(FileCollector::class);
         $fileCollector->addFileReferences([$fileUid]);
@@ -253,7 +253,7 @@ final class FileViewHelperTest extends FunctionalTestCase
         return reset($fileReferences);
     }
 
-    protected function getProcessedFile(int $fileUid): ProcessedFile
+    private function getProcessedFile(int $fileUid): ProcessedFile
     {
         return $this->get(ProcessedFileRepository::class)->findByUid($fileUid);
     }

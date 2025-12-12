@@ -264,7 +264,7 @@ final class TotpProviderTest extends FunctionalTestCase
         self::assertStringContainsString('The maximum attempts for this provider are exceeded.', $response);
     }
 
-    protected function setupUser(array $properties = []): void
+    private function setupUser(array $properties = []): void
     {
         $this->user->user['mfa'] = json_encode(['totp' => $properties]);
     }

@@ -159,7 +159,7 @@ final class AbstractServiceProviderTest extends UnitTestCase
         self::assertInstanceOf(LoggerInterface::class, $instance->getLogger());
     }
 
-    protected function getClosureForNew(): \Closure
+    private function getClosureForNew(): \Closure
     {
         return \Closure::bind(
             static function ($container, $className, $arguments = []) {

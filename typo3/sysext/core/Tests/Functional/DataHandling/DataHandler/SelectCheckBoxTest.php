@@ -54,7 +54,7 @@ final class SelectCheckBoxTest extends FunctionalTestCase
         self::assertEquals('', $newUserRecord['file_permissions']);
     }
 
-    protected function createBackendUser(array $backendUser): array
+    private function createBackendUser(array $backendUser): array
     {
         $actionService = new ActionService();
         $map = $actionService->createNewRecord('be_users', self::PAGE_ID, $backendUser);

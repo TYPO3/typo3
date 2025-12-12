@@ -29,7 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ListenerProviderPassTest extends UnitTestCase
 {
-    protected function getContainerWithListenerProvider(array $packages = []): ContainerBuilder
+    private function getContainerWithListenerProvider(array $packages = []): ContainerBuilder
     {
         $container = new ContainerBuilder();
 

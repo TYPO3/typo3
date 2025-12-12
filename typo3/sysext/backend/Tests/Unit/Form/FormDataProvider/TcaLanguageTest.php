@@ -574,7 +574,7 @@ final class TcaLanguageTest extends UnitTestCase
         ];
     }
 
-    protected function getDefaultResultArray(
+    private function getDefaultResultArray(
         array $fieldConfig = [],
         array $systemLanguages = [],
         array $databaseRow = [],
@@ -598,7 +598,7 @@ final class TcaLanguageTest extends UnitTestCase
         ], $additionalConfiguration);
     }
 
-    protected function getDefaultSystemLanguages(array $additionalLanguages = []): array
+    private function getDefaultSystemLanguages(array $additionalLanguages = []): array
     {
         return array_replace_recursive([
             -1 => [

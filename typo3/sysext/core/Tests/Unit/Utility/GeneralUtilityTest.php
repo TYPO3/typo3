@@ -89,7 +89,7 @@ final class GeneralUtilityTest extends UnitTestCase
      * Helper method to create a random directory and return the path.
      * The path will be registered for deletion upon test ending
      */
-    protected function getTestDirectory(string $prefix = 'root_'): string
+    private function getTestDirectory(string $prefix = 'root_'): string
     {
         $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId($prefix);
         GeneralUtility::mkdir_deep($path);
@@ -2442,7 +2442,7 @@ final class GeneralUtilityTest extends UnitTestCase
      *
      * @return string A directory name prefixed with FilesInDirTests.
      */
-    protected function getFilesInDirCreateTestDirectory(): string
+    private function getFilesInDirCreateTestDirectory(): string
     {
         $path = Environment::getVarPath() . '/FilesInDirTests';
         $this->testFilesToDelete[] = $path;

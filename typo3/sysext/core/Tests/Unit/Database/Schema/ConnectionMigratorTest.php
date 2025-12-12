@@ -146,7 +146,7 @@ final class ConnectionMigratorTest extends UnitTestCase
     /**
      * Utility method to create a table instance with name that exceeds the identifier limits.
      */
-    protected function getTable(): Table
+    private function getTable(): Table
     {
         $tableName = 'table_name_that_is_ridiculously_long_' . bin2hex(random_bytes(100));
         return new Table($tableName);
@@ -155,7 +155,7 @@ final class ConnectionMigratorTest extends UnitTestCase
     /**
      * Utility method to create a column instance with name that exceeds the identifier limits.
      */
-    protected function getColumn(): Column
+    private function getColumn(): Column
     {
         $columnName = 'column_name_that_is_ridiculously_long_' . bin2hex(random_bytes(100));
         return new Column(

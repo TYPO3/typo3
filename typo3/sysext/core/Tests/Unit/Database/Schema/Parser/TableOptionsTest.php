@@ -157,7 +157,7 @@ final class TableOptionsTest extends UnitTestCase
     /**
      * Parse the CREATE TABLE statement and return the reference definition
      */
-    protected function createSubject(string $statement): AbstractCreateStatement
+    private function createSubject(string $statement): AbstractCreateStatement
     {
         $parser = new Parser(new Lexer());
         return $parser->getAST($statement);

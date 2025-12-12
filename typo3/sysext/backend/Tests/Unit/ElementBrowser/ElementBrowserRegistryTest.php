@@ -72,7 +72,7 @@ final class ElementBrowserRegistryTest extends UnitTestCase
         (new ElementBrowserRegistry([]))->getElementBrowser('non-existent-identifer');
     }
 
-    protected function getElementBrowser(string $identifier = ''): ElementBrowserInterface
+    private function getElementBrowser(string $identifier = ''): ElementBrowserInterface
     {
         return new class ($identifier) implements ElementBrowserInterface {
             private string $identifier;

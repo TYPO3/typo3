@@ -149,7 +149,7 @@ final class MfaAjaxControllerTest extends FunctionalTestCase
         ];
     }
 
-    protected function parseResponse(ResponseInterface $response): array
+    private function parseResponse(ResponseInterface $response): array
     {
         $response = json_decode($response->getBody()->getContents(), true);
 

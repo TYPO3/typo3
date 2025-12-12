@@ -182,21 +182,21 @@ final class MfaProviderRegistryTest extends FunctionalTestCase
         );
     }
 
-    protected function activateProvider(string $provider): void
+    private function activateProvider(string $provider): void
     {
         $mfa = json_decode($this->user->user['mfa'], true);
         $mfa[$provider]['active'] = true;
         $this->user->user['mfa'] = json_encode($mfa);
     }
 
-    protected function lockProvider(string $provider): void
+    private function lockProvider(string $provider): void
     {
         $mfa = json_decode($this->user->user['mfa'], true);
         $mfa[$provider]['attempts'] = 3;
         $this->user->user['mfa'] = json_encode($mfa);
     }
 
-    protected function setDefaultProvider(string $defaultProvider): void
+    private function setDefaultProvider(string $defaultProvider): void
     {
         $this->user->uc['mfa']['defaultProvider'] = $defaultProvider;
     }

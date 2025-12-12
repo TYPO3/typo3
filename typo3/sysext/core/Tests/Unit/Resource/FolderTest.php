@@ -30,7 +30,7 @@ final class FolderTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    protected function createFolderFixture($path, $name, $mockedStorage = null): Folder
+    private function createFolderFixture($path, $name, $mockedStorage = null): Folder
     {
         if ($mockedStorage === null) {
             $mockedStorage = $this->createMock(ResourceStorage::class);

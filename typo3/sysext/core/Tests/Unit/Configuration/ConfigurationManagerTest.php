@@ -44,7 +44,7 @@ final class ConfigurationManagerTest extends UnitTestCase
      * Helper method to create a random directory and return the path.
      * The path will be registered for deletion upon test ending
      */
-    protected function getTestDirectory(string $prefix = 'root_'): string
+    private function getTestDirectory(string $prefix = 'root_'): string
     {
         $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId($prefix);
         GeneralUtility::mkdir_deep($path);
@@ -52,7 +52,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         return $path;
     }
 
-    protected function createSubjectWithMockedMethods(array $methods): void
+    private function createSubjectWithMockedMethods(array $methods): void
     {
         $this->subject = $this->getMockBuilder(ConfigurationManager::class)
             ->onlyMethods($methods)

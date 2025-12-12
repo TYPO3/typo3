@@ -187,7 +187,7 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
-    protected function setUpMailMessageMock(string $recipient = ''): FluidEmail&MockObject
+    private function setUpMailMessageMock(string $recipient = ''): FluidEmail&MockObject
     {
         $mailMessage = $this->createMock(FluidEmail::class);
 

@@ -266,7 +266,7 @@ final class TemplatesPathsTest extends FunctionalTestCase
         self::assertStringContainsString('Override Template', $content);
     }
 
-    protected function fetchFrontendResponseBody(array $requestArguments): string
+    private function fetchFrontendResponseBody(array $requestArguments): string
     {
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest('https://website.local/en/'))->withQueryParameters($requestArguments)

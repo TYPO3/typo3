@@ -51,7 +51,7 @@ final class ReactionRegistryTest extends FunctionalTestCase
         self::assertNull($this->subject->getReactionByType('invalid'));
     }
 
-    protected function buildReactionMock(): \IteratorAggregate
+    private function buildReactionMock(): \IteratorAggregate
     {
         $class = new class () implements \IteratorAggregate {
             public function getIterator(): \Traversable

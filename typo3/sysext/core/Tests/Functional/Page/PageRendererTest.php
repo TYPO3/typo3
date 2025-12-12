@@ -58,7 +58,7 @@ final class PageRendererTest extends FunctionalTestCase
         $this->file->cleanupCreatedFiles();
     }
 
-    protected function createPageRenderer(): PageRenderer
+    private function createPageRenderer(): PageRenderer
     {
         return new PageRenderer(
             $this->get('cache.assets'),

@@ -21,11 +21,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\FrontendLogin\Configuration\RedirectConfiguration;
 use TYPO3\CMS\FrontendLogin\Redirect\RedirectHandler;
 use TYPO3\CMS\FrontendLogin\Redirect\RedirectMode;
@@ -70,15 +68,6 @@ final class RedirectHandlerTest extends UnitTestCase
 
         $result = $this->subject->processRedirect($request, 'logout', new RedirectConfiguration($redirectMode, '', 0, '', 0, 0), '');
         self::assertEquals($expect, $result);
-    }
-
-    protected function getContextMockWithUserLoggedIn(bool $userLoggedIn = true): Context
-    {
-        $mockUserAuthentication = $this->getMockBuilder(FrontendUserAuthentication::class)->disableOriginalConstructor()->getMock();
-        $mockUserAuthentication->user['uid'] = $userLoggedIn ? 1 : 0;
-        $context = new Context();
-        $context->setAspect('frontend.user', new UserAspect($mockUserAuthentication));
-        return $context;
     }
 
     public static function getLoginFormRedirectUrlDataProvider(): array

@@ -49,7 +49,7 @@ final class MemcachedBackendTest extends FunctionalTestCase
     /**
      * Initialize MemcacheBackend ($subject)
      */
-    protected function initializeSubject(): MemcachedBackend
+    private function initializeSubject(): MemcachedBackend
     {
         // We know this env is set, otherwise setUp() would skip the tests
         $memcachedHost = getenv('typo3TestingMemcachedHost');

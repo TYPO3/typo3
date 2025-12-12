@@ -402,7 +402,7 @@ final class ModuleRegistryTest extends UnitTestCase
         self::assertTrue($registry->getModule('child')->hasParentModule());
     }
 
-    protected function createModule($identifier, $configuration = []): ModuleInterface
+    private function createModule($identifier, $configuration = []): ModuleInterface
     {
         return $this->moduleFactory->createModule(
             $identifier,

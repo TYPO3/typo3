@@ -209,7 +209,7 @@ final class MfaInfoElementTest extends FunctionalTestCase
         self::assertEmpty($result['javaScriptModules']);
     }
 
-    protected function getFormElementResult(array $data): array
+    private function getFormElementResult(array $data): array
     {
         $node = new MfaInfoElement($this->get(IconFactory::class), $this->get(MfaProviderRegistry::class));
         $node->setData($data);

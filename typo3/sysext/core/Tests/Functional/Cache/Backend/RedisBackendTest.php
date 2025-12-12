@@ -41,7 +41,7 @@ final class RedisBackendTest extends FunctionalTestCase
         parent::setUp();
     }
 
-    protected function setUpSubject(array $backendOptions = []): RedisBackend
+    private function setUpSubject(array $backendOptions = []): RedisBackend
     {
         // We know this env is set, otherwise setUp() would skip the tests
         $backendOptions['hostname'] = getenv('typo3TestingRedisHost');

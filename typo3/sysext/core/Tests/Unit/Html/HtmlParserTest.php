@@ -839,7 +839,7 @@ final class HtmlParserTest extends UnitTestCase
      * @param string $content The content that should be parsed by the HTMLcleaner.
      * @return string The parsed content.
      */
-    protected function parseConfigAndCleanHtml(array $tsConfig, string $content): string
+    private function parseConfigAndCleanHtml(array $tsConfig, string $content): string
     {
         $config = $this->subject->HTMLparserConfig($tsConfig);
         return $this->subject->HTMLcleaner($content, $config[0], $config[1], $config[2], $config[3]);

@@ -199,7 +199,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertSame(2, $i);
     }
 
-    protected function setUpObjectStorageWithTwoItems(): ObjectStorage
+    private function setUpObjectStorageWithTwoItems(): ObjectStorage
     {
         $objectStorage = new ObjectStorage();
         $exampleObject = new \stdClass();
@@ -234,7 +234,7 @@ final class ObjectAccessTest extends UnitTestCase
         self::assertSame(2, $i);
     }
 
-    protected function setUpSplObjectStorageWithTwoItems(): \SplObjectStorage
+    private function setUpSplObjectStorageWithTwoItems(): \SplObjectStorage
     {
         $objectStorage = new \SplObjectStorage();
         $exampleObject = new \stdClass();

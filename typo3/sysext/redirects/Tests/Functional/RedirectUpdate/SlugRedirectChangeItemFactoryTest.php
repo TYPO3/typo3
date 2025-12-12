@@ -130,7 +130,7 @@ final class SlugRedirectChangeItemFactoryTest extends FunctionalTestCase
         self::assertEquals($modifiedChangeItem, $changeItem);
     }
 
-    protected function buildBaseSite(array $settings): void
+    private function buildBaseSite(array $settings): void
     {
         $configuration = [
             'rootPageId' => 1,

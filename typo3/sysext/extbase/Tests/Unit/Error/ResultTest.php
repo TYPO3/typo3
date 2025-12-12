@@ -42,7 +42,7 @@ final class ResultTest extends UnitTestCase
         ];
     }
 
-    protected function getMockMessage(string $type): MockObject
+    private function getMockMessage(string $type): MockObject
     {
         return $this->createMock('TYPO3\\CMS\\Extbase\\Error\\' . $type);
     }

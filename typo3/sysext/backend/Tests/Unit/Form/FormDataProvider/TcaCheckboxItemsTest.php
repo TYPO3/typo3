@@ -914,7 +914,7 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         self::assertSame($expected, (new TcaCheckboxItems())->addData($input));
     }
 
-    protected function getItemProcessingServiceInstance(FlashMessageService $flashMessageService): ItemProcessingService
+    private function getItemProcessingServiceInstance(FlashMessageService $flashMessageService): ItemProcessingService
     {
         return new ItemProcessingService(
             $this->createMock(SiteFinder::class),

@@ -38,7 +38,7 @@ final class WidgetRegistryTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/be_groups.csv');
     }
 
-    protected function registerWidgets(): void
+    private function registerWidgets(): void
     {
         /** @var Container $container */
         $container = $this->get('service_container');

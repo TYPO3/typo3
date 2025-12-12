@@ -350,7 +350,7 @@ final class ActionControllerTest extends FunctionalTestCase
     /**
      * Helper function to create a test file with the given content.
      */
-    protected function createTestFile(string $filename, string $content): string
+    private function createTestFile(string $filename, string $content): string
     {
         $path = $this->instancePath . '/tmp';
         $testFilename = $path . $filename;

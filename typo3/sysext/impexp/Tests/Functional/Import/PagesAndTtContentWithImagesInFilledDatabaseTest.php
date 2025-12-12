@@ -350,7 +350,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         );
     }
 
-    protected function getFlexFormSoftReferenceDataStructure(): string
+    private function getFlexFormSoftReferenceDataStructure(): string
     {
         return '
 <T3DataStructure>

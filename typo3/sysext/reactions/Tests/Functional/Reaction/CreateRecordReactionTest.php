@@ -98,7 +98,7 @@ final class CreateRecordReactionTest extends FunctionalTestCase
         self::assertEquals('No fields given.', json_decode((string)$response->getBody(), true)['error']);
     }
 
-    protected function getTestPages(): array
+    private function getTestPages(): array
     {
         $queryBuilder = $this->get(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
@@ -114,7 +114,7 @@ final class CreateRecordReactionTest extends FunctionalTestCase
             ->fetchAllAssociative();
     }
 
-    protected function setUpReactionBackendUser(ServerRequestInterface $request, ReactionInstruction $reactionInstruction): BackendUserAuthentication
+    private function setUpReactionBackendUser(ServerRequestInterface $request, ReactionInstruction $reactionInstruction): BackendUserAuthentication
     {
         $backendUser = GeneralUtility::makeInstance(ReactionUserAuthentication::class);
         /** @var ReactionUserAuthentication $backendUser */

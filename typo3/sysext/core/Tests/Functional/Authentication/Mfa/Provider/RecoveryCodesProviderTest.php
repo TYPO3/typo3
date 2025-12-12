@@ -257,7 +257,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
         self::assertStringContainsString('The maximum attempts for this provider are exceeded.', $response);
     }
 
-    protected function setupUser(array $additional = []): void
+    private function setupUser(array $additional = []): void
     {
         $this->user->user['mfa'] = json_encode(
             array_replace_recursive(['totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB']], $additional)

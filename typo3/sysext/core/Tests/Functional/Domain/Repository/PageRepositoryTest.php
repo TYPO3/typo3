@@ -471,13 +471,13 @@ final class PageRepositoryTest extends FunctionalTestCase
         );
     }
 
-    protected function assertOverlayRow($row): void
+    private function assertOverlayRow($row): void
     {
         self::assertIsArray($row);
         self::assertArrayHasKey('_LOCALIZED_UID', $row);
     }
 
-    protected function assertNotOverlayRow($row): void
+    private function assertNotOverlayRow($row): void
     {
         self::assertIsArray($row);
         self::assertFalse(isset($row['_LOCALIZED_UID']));

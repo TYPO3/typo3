@@ -166,7 +166,7 @@ final class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
     /**
      * Add default set of records to export
      */
-    protected function compileExportPagesAndRelatedTtContentWithImages(Export $subject): void
+    private function compileExportPagesAndRelatedTtContentWithImages(Export $subject): void
     {
         $recordTypesIncludeFields =
             [

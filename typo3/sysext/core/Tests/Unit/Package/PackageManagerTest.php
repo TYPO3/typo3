@@ -80,7 +80,7 @@ final class PackageManagerTest extends UnitTestCase
         $this->packageManager->_set('packageStatesPathAndFilename', $this->testRoot . 'Configuration/PackageStates.php');
     }
 
-    protected function createPackage(string $packageKey): Package
+    private function createPackage(string $packageKey): Package
     {
         $packagePath = $this->testRoot . 'Packages/Application/' . $packageKey . '/';
         if (!is_dir($packagePath)) {

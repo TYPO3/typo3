@@ -156,14 +156,14 @@ final class FileMetadataOverlayAspectTest extends AbstractTestCase
         );
     }
 
-    protected function executeRequestAndGetContents(string $uri, ?InternalRequestContext $internalRequestContext = null): array
+    private function executeRequestAndGetContents(string $uri, ?InternalRequestContext $internalRequestContext = null): array
     {
         $response = $this->executeFrontendSubRequest((new InternalRequest($uri)), $internalRequestContext);
         $bodyData = json_decode((string)$response->getBody(), true);
         return $bodyData['Default']['structure']['pages:1000']['__contents'];
     }
 
-    protected function prepareWorkspaceRequest(): InternalRequestContext
+    private function prepareWorkspaceRequest(): InternalRequestContext
     {
         return (new InternalRequestContext())
             ->withBackendUserId(self::VALUE_BackendUserId)

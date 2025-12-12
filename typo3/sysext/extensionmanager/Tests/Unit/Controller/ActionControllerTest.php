@@ -33,7 +33,7 @@ final class ActionControllerTest extends UnitTestCase
      * Creates a fake extension inside typo3temp/. No configuration is created,
      * just the folder
      */
-    protected function createFakeExtension(): array
+    private function createFakeExtension(): array
     {
         $testRoot = Environment::getVarPath() . '/tests';
         $this->testFilesToDelete[] = $testRoot;

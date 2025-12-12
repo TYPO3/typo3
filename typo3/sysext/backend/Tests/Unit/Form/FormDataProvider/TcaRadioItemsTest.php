@@ -649,7 +649,7 @@ final class TcaRadioItemsTest extends UnitTestCase
         (new TcaRadioItems())->addData($input);
     }
 
-    protected function getItemProcessingServiceInstance(FlashMessageService $flashMessageService): ItemProcessingService
+    private function getItemProcessingServiceInstance(FlashMessageService $flashMessageService): ItemProcessingService
     {
         return new ItemProcessingService(
             $this->createMock(SiteFinder::class),

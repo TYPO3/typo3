@@ -68,7 +68,7 @@ final class LinktypeRegistryTest extends UnitTestCase
         new LinktypeRegistry($linktypes);
     }
 
-    protected function getLinkType(string $identifier = ''): LinktypeInterface
+    private function getLinkType(string $identifier = ''): LinktypeInterface
     {
         return new class ($identifier) implements LinktypeInterface, LabelledLinktypeInterface {
             private string $identifier;
