@@ -87,7 +87,7 @@ class SchedulerExecuteCommand extends Command
             return;
         }
 
-        $tasksToRunQuestion = new ChoiceQuestion('Run tasks (comma seperated list): ', $selectableTasks);
+        $tasksToRunQuestion = new ChoiceQuestion('Run tasks (comma-separated list): ', $selectableTasks);
         $tasksToRunQuestion->setAutocompleterValues(array_keys($selectableTasks));
         $tasksToRunQuestion->setMultiselect(true);
         $tasksToRun = $questionHelper->ask($input, $output, $tasksToRunQuestion);
