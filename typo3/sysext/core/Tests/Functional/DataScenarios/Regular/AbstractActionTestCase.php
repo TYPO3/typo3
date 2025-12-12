@@ -479,6 +479,41 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_PageId);
     }
 
+    public function deleteThenHardDeletePage(): void
+    {
+        // Soft-delete a default language page
+        $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_PageId);
+        // Now hard delete that page. Recycler can trigger this.
+        /** @var DataHandler $dataHandler */
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], []);
+        $dataHandler->deleteEl(self::TABLE_Page, self::VALUE_PageId, true, true, false);
+    }
+
+    public function deleteThenHardDeletePageWithSubpages(): void
+    {
+        // Soft-delete a default language page
+        $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_PageIdParent);
+        // Now hard delete that page. Recycler can trigger this.
+        /** @var DataHandler $dataHandler */
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], []);
+        $dataHandler->deleteEl(self::TABLE_Page, self::VALUE_PageIdParent, true, true);
+    }
+
+    public function deleteThenHardDeleteLocalizedPage(): void
+    {
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
+        // Soft-delete a localized page
+        $this->actionService->deleteRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
+        // Now hard delete that localized page. Recycler can trigger this.
+        /** @var DataHandler $dataHandler */
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], []);
+        $dataHandler->deleteEl(self::TABLE_Page, $this->recordIds['localizedPageId'], true, true);
+    }
+
     public function copyPage(): void
     {
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
