@@ -87,7 +87,7 @@ final readonly class LinkController
     /**
      * Prepare response data for a JSON response
      */
-    protected function getResponseData(bool $success, ?string $message = null, ?string $link = null): array
+    private function getResponseData(bool $success, ?string $message = null, ?string $link = null): array
     {
         $flashMessageQueue = new FlashMessageQueue('backend');
         if ($message) {
@@ -106,7 +106,7 @@ final readonly class LinkController
         ];
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

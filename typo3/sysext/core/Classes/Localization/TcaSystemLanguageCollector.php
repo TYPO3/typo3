@@ -101,12 +101,12 @@ final class TcaSystemLanguageCollector
         }
     }
 
-    protected function getAllSites(): array
+    private function getAllSites(): array
     {
         return GeneralUtility::makeInstance(SiteFinder::class)->getAllSites();
     }
 
-    protected function getBackendUser(): BackendUserAuthentication
+    private function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

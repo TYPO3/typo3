@@ -53,7 +53,7 @@ final class FileExtensionMimeTypeConsistencyValidator extends AbstractValidator
         }
     }
 
-    protected function validateUploadedFile(UploadedFile $uploadedFile, ?int $index = null): void
+    private function validateUploadedFile(UploadedFile $uploadedFile, ?int $index = null): void
     {
         $fileInfo = $this->getFileInfo($uploadedFile->getTemporaryFileName());
         $mimeType = $fileInfo->getMimeType();

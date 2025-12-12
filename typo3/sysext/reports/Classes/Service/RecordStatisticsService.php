@@ -156,7 +156,7 @@ final readonly class RecordStatisticsService
         return $tableStatistic;
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

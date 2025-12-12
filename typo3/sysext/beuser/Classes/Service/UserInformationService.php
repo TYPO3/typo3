@@ -105,7 +105,7 @@ final readonly class UserInformationService
      * Convert hard readable user & group information into structured
      * data which can be rendered later
      */
-    protected function convert(BackendUserAuthentication $user): array
+    private function convert(BackendUserAuthentication $user): array
     {
         // usergroups
         $data = [
@@ -262,7 +262,7 @@ final readonly class UserInformationService
         return $data;
     }
 
-    protected function getAllSiteLanguages(): array
+    private function getAllSiteLanguages(): array
     {
         $siteLanguages = [];
         foreach (GeneralUtility::makeInstance(SiteFinder::class)->getAllSites() as $site) {

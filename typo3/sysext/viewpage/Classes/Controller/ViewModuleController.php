@@ -136,7 +136,7 @@ final class ViewModuleController
         return $view->renderResponse('Show');
     }
 
-    protected function registerDocHeader(ModuleTemplate $view, array $previewLanguages, int $languageId, string $targetUrl): void
+    private function registerDocHeader(ModuleTemplate $view, array $previewLanguages, int $languageId, string $targetUrl): void
     {
         $languageService = $this->getLanguageService();
         if (count($previewLanguages) > 1) {
@@ -192,7 +192,7 @@ final class ViewModuleController
         );
     }
 
-    protected function getPreviewPresets(): array
+    private function getPreviewPresets(): array
     {
         $presetGroups = [
             'desktop' => [],
@@ -228,7 +228,7 @@ final class ViewModuleController
         return $presetGroups;
     }
 
-    protected function getPreviewLanguages(): array
+    private function getPreviewLanguages(): array
     {
         $languages = [];
         $modSharedTSconfig = $this->pageContext->getModuleTsConfig('SHARED');
@@ -252,7 +252,7 @@ final class ViewModuleController
     /**
      * Verifies if page itself and also the doktype is valid - not a folder / spacer / ...
      */
-    protected function isValidPage(): bool
+    private function isValidPage(): bool
     {
         if (!$this->pageContext->isAccessible() || $this->pageContext->pageId === 0) {
             return false;
@@ -265,12 +265,12 @@ final class ViewModuleController
             ], true);
     }
 
-    protected function getBackendUser(): BackendUserAuthentication
+    private function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

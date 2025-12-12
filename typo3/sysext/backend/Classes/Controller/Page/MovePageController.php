@@ -135,7 +135,7 @@ final readonly class MovePageController
         ];
     }
 
-    protected function getTargetForAboveInsert(array $targetRow): int
+    private function getTargetForAboveInsert(array $targetRow): int
     {
         $targetPageId = (int)$targetRow['uid'];
         $subpages = $this->getSubpagesForPageId($targetRow['pid']);
@@ -156,7 +156,7 @@ final readonly class MovePageController
         return (int)$targetRow['pid'];
     }
 
-    protected function getSubpagesForPageId(int $pageId): array
+    private function getSubpagesForPageId(int $pageId): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder
@@ -180,7 +180,7 @@ final readonly class MovePageController
             ->fetchFirstColumn();
     }
 
-    protected function pageHasSubpages(int $pageId): bool
+    private function pageHasSubpages(int $pageId): bool
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder

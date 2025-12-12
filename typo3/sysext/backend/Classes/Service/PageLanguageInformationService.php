@@ -165,7 +165,7 @@ final readonly class PageLanguageInformationService
      *
      * @return LanguageItem[] Array of language items
      */
-    protected function getLanguageItems(array $languageStatuses, array $availableLanguages): array
+    private function getLanguageItems(array $languageStatuses, array $availableLanguages): array
     {
         $languageItems = [];
         foreach ($availableLanguages as $siteLanguage) {

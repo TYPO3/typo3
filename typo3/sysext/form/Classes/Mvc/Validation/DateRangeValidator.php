@@ -90,7 +90,7 @@ final class DateRangeValidator extends AbstractValidator
      *
      * @throws InvalidValidationOptionsException if the configured validation options are incorrect
      */
-    protected function validateOptions(): array
+    private function validateOptions(): array
     {
         $options = $this->options;
         if (!empty($this->options['minimum'])) {

@@ -73,7 +73,7 @@ final class ListenerProviderPass implements CompilerPassInterface
     /**
      * Collects all listeners from the container.
      */
-    protected function collectListeners(ContainerBuilder $container): array
+    private function collectListeners(ContainerBuilder $container): array
     {
         $unorderedEventListeners = [];
         foreach ($container->findTaggedServiceIds($this->tagName) as $serviceName => $tags) {
@@ -110,7 +110,7 @@ final class ListenerProviderPass implements CompilerPassInterface
      *
      * @return string[]|null A list of class types or NULL on failure
      */
-    protected function getParameterType(string $serviceName, Definition $definition, string $method = '__invoke'): ?array
+    private function getParameterType(string $serviceName, Definition $definition, string $method = '__invoke'): ?array
     {
         // A Reflection exception should never actually get thrown here, but linters want a try-catch just in case.
         try {
@@ -155,7 +155,7 @@ final class ListenerProviderPass implements CompilerPassInterface
      *
      * This method borrowed very closely from Symfony's AbstractRecurisvePass.
      */
-    protected function getReflectionMethod(string $serviceName, Definition $definition, string $method): \ReflectionFunctionAbstract
+    private function getReflectionMethod(string $serviceName, Definition $definition, string $method): \ReflectionFunctionAbstract
     {
         if (!$class = $definition->getClass()) {
             throw new RuntimeException(sprintf('Invalid service "%s": the class is not set.', $serviceName), 1623881310);

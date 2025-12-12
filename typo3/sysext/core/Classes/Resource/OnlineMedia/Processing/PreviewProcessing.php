@@ -59,7 +59,7 @@ final class PreviewProcessing extends LocalImageProcessor implements ProcessorIn
         );
     }
 
-    protected function getPreviewImageFromOnlineMedia(File $file): string
+    private function getPreviewImageFromOnlineMedia(File $file): string
     {
         $onlineMediaHelper = $this->onlineMediaHelperRegistry->getOnlineMediaHelper($file);
         $previewImage = $onlineMediaHelper->getPreviewImage($file);

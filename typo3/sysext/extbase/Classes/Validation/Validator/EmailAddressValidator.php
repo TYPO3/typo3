@@ -46,7 +46,7 @@ final class EmailAddressValidator extends AbstractValidator
      * @param string $emailAddress Input string to evaluate
      * @return bool Returns TRUE if the $email address (input string) is valid
      */
-    protected function validEmail(string $emailAddress): bool
+    private function validEmail(string $emailAddress): bool
     {
         return GeneralUtility::validEmail($emailAddress);
     }

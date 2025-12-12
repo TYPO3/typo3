@@ -77,7 +77,7 @@ final class RegisteredExtractors extends AbstractFormElement
      * Since the class name can be very long considering the namespace, only take the final
      * part for better readability. The FQN of the class will be displayed as tooltip.
      */
-    protected function formatExtractorClassName(ExtractorInterface $extractor): string
+    private function formatExtractorClassName(ExtractorInterface $extractor): string
     {
         $extractorParts = explode('\\', get_class($extractor));
         return (string)array_pop($extractorParts);

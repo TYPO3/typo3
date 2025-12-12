@@ -260,7 +260,7 @@ final class GeneratorFrontend extends AbstractGenerator
      *
      * @return array
      */
-    protected function getElementContent(): array
+    private function getElementContent(): array
     {
         return [
             'bullets' => [
@@ -478,7 +478,7 @@ final class GeneratorFrontend extends AbstractGenerator
     /**
      * Append file reference to existing content elements
      */
-    protected function populateSysFileReference(): void
+    private function populateSysFileReference(): void
     {
         $files = $this->recordFinder->findDemoFileObjects('styleguide_frontend');
 
@@ -514,7 +514,7 @@ final class GeneratorFrontend extends AbstractGenerator
     /**
      * Append PIDs to tt_content field for menu_* ctype
      */
-    protected function populateTtContentPages(string $field = 'pages', int $count = 5): void
+    private function populateTtContentPages(string $field = 'pages', int $count = 5): void
     {
         $pages = $this->recordFinder->findUidsOfFrontendPages();
         $contentElements = $this->recordFinder->findTtContent(['menu_pages', 'menu_subpages', 'menu_section', 'menu_abstract', 'menu_recently_updated', 'menu_section_pages', 'menu_sitemap_pages']);
@@ -534,7 +534,7 @@ final class GeneratorFrontend extends AbstractGenerator
      *
      * @param string $field
      */
-    protected function populateTtContentRecords(string $field = 'records'): void
+    private function populateTtContentRecords(string $field = 'records'): void
     {
         $shortcutToElement = $this->recordFinder->findTtContent(['text'])[0]['uid'];
         $contentElements = $this->recordFinder->findTtContent(['shortcut']);

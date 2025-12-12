@@ -75,7 +75,7 @@ final readonly class StatusReportController
         ])->renderResponse('StatusReport');
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

@@ -81,7 +81,7 @@ final class RelationMap
         }
     }
 
-    protected function addMMRelation(string $fromTable, string $fromField, string $toTable, string $mm, ?string $mmOppositeField = null, ?string $flexPointer = null): void
+    private function addMMRelation(string $fromTable, string $fromField, string $toTable, string $mm, ?string $mmOppositeField = null, ?string $flexPointer = null): void
     {
         $this->relations[$fromTable][$fromField][] = [
             'target' => $toTable,
@@ -91,7 +91,7 @@ final class RelationMap
         ];
     }
 
-    protected function addActiveRelationWithField(string $fromTable, string $fromField, string $toTable, string $toField, ?string $flexPointer = null): void
+    private function addActiveRelationWithField(string $fromTable, string $fromField, string $toTable, string $toField, ?string $flexPointer = null): void
     {
         $this->relations[$fromTable][$fromField][] = [
             'target' => $toTable,
@@ -100,7 +100,7 @@ final class RelationMap
         ];
     }
 
-    protected function addActiveRelationToTable(string $fromTable, string $fromField, string $toTable, ?string $flexPointer = null): void
+    private function addActiveRelationToTable(string $fromTable, string $fromField, string $toTable, ?string $flexPointer = null): void
     {
         $this->relations[$fromTable][$fromField][] = [
             'target' => $toTable,
@@ -116,7 +116,7 @@ final class RelationMap
         return array_map([$this, 'makeActiveRelation'], $this->relations[$tableName][$fieldName] ?? []);
     }
 
-    protected function makeActiveRelation(array $relation): ActiveRelation
+    private function makeActiveRelation(array $relation): ActiveRelation
     {
         return new ActiveRelation($relation['mm'] ?? $relation['target'], $relation['mmOppositeField'] ?? $relation['targetField'] ?? null);
     }

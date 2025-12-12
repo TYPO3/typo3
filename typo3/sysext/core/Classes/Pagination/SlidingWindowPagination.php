@@ -118,7 +118,7 @@ final class SlidingWindowPagination implements PaginationInterface
         return $this->paginator;
     }
 
-    protected function calculateDisplayRange(): void
+    private function calculateDisplayRange(): void
     {
         $maximumNumberOfLinks = $this->maximumNumberOfLinks;
         $numberOfPages = $this->paginator->getNumberOfPages();

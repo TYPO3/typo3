@@ -183,7 +183,7 @@ final readonly class StatusService
         return $statuses;
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

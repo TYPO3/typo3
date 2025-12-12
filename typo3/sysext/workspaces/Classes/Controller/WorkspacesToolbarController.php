@@ -78,7 +78,7 @@ final readonly class WorkspacesToolbarController
         return new JsonResponse($ajaxResponse);
     }
 
-    protected function getBackendUser(): BackendUserAuthentication
+    private function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

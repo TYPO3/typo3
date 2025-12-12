@@ -88,7 +88,7 @@ final class PasswordSetCommand extends Command
         return Command::SUCCESS;
     }
 
-    protected function getQuestionHelper(): QuestionHelper
+    private function getQuestionHelper(): QuestionHelper
     {
         /** @var QuestionHelper $helper */
         $helper = $this->getHelper('question');

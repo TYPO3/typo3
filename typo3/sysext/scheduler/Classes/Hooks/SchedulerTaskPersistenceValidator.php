@@ -128,7 +128,7 @@ final readonly class SchedulerTaskPersistenceValidator
         }
     }
 
-    protected function convertErrorMessagesToDataHandlerLog(DataHandler $dataHandler, string|int $taskId): void
+    private function convertErrorMessagesToDataHandlerLog(DataHandler $dataHandler, string|int $taskId): void
     {
         $messages = $this->flashMessageQueue->getAllMessagesAndFlush();
         foreach ($messages as $message) {
@@ -148,7 +148,7 @@ final readonly class SchedulerTaskPersistenceValidator
         }
     }
 
-    protected function addErrorMessage(DataHandler $dataHandler, string|int $taskId, string $message, ...$args): void
+    private function addErrorMessage(DataHandler $dataHandler, string|int $taskId, string $message, ...$args): void
     {
         $languageService = $this->getLanguageService();
         $message = $languageService->sL($message);
@@ -165,7 +165,7 @@ final readonly class SchedulerTaskPersistenceValidator
         );
     }
 
-    protected function isSubmittedTaskDataValid(DataHandler $dataHandler, string|int $taskId, array $parsedBody, AbstractTask $task): bool
+    private function isSubmittedTaskDataValid(DataHandler $dataHandler, string|int $taskId, array $parsedBody, AbstractTask $task): bool
     {
         $startTime = $parsedBody['start'] ?? 0;
         $endTime = $parsedBody['end'] ?? 0;
@@ -225,7 +225,7 @@ final readonly class SchedulerTaskPersistenceValidator
      *
      * @throws InvalidDateException
      */
-    protected function getTimestampFromDateString(int|string $input): int
+    private function getTimestampFromDateString(int|string $input): int
     {
         if ($input === '' || $input === 0) {
             return 0;
@@ -243,7 +243,7 @@ final readonly class SchedulerTaskPersistenceValidator
         return $value;
     }
 
-    protected function decodeValues(array $fieldArray): array
+    private function decodeValues(array $fieldArray): array
     {
         foreach (['execution_details', 'parameters'] as $possibleEncodedValueKey) {
             $value = $fieldArray[$possibleEncodedValueKey] ?? [];
@@ -265,7 +265,7 @@ final readonly class SchedulerTaskPersistenceValidator
         return $fieldArray;
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

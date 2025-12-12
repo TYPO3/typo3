@@ -59,7 +59,7 @@ final class MimeTypeValidator extends AbstractValidator
         }
     }
 
-    protected function validateUploadedFile(UploadedFile $uploadedFile, ?int $index = null): void
+    private function validateUploadedFile(UploadedFile $uploadedFile, ?int $index = null): void
     {
         $fileInfo = $this->getFileInfo($uploadedFile->getTemporaryFileName());
         $mimeType = $fileInfo->getMimeType();
@@ -106,7 +106,7 @@ final class MimeTypeValidator extends AbstractValidator
     /**
      * Checks if this validator is correctly configured
      */
-    protected function validateOptions(): void
+    private function validateOptions(): void
     {
         if (!is_array($this->options['allowedMimeTypes'] ?? false) || $this->options['allowedMimeTypes'] === []) {
             throw new InvalidValidationOptionsException('The option "allowedMimeTypes" must be an array with at least one item.', 1708526223);

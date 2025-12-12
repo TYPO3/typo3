@@ -98,7 +98,7 @@ final class FileSizeValidator extends AbstractValidator
      *
      * @throws InvalidValidationOptionsException if the configured validation options are incorrect
      */
-    protected function validateOptions(): void
+    private function validateOptions(): void
     {
         if (!preg_match('/^(\d*\.?\d+)(B|K|M|G)$/i', $this->options['minimum'])) {
             throw new InvalidValidationOptionsException('The option "minimum" has an invalid format. Valid formats are something like this: "10B|K|M|G".', 1505304205);

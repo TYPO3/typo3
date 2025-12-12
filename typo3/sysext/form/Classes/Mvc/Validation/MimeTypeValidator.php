@@ -106,7 +106,7 @@ final class MimeTypeValidator extends AbstractValidator
      *
      * @throws InvalidValidationOptionsException if the configured validation options are incorrect
      */
-    protected function validateOptions(): void
+    private function validateOptions(): void
     {
         if (!is_array($this->options['allowedMimeTypes'] ?? false) || $this->options['allowedMimeTypes'] === []) {
             throw new InvalidValidationOptionsException('The option "allowedMimeTypes" must be an array with at least one item.', 1471713296);

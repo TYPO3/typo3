@@ -107,7 +107,7 @@ final class FailedLoginAttemptNotification
      * @param int $earliestTimeToCheckForFailures A UNIX timestamp that acts as the "earliest" date to check within the logs
      * @return array a list of sys_log entries since the earliest, or empty if no entries have been logged
      */
-    protected function getLoginFailures(int $earliestTimeToCheckForFailures): array
+    private function getLoginFailures(int $earliestTimeToCheckForFailures): array
     {
         // Get last flag set in the log for sending an email
         // If a notification was e.g. sent 20mins ago, only check the entries of the last 20 minutes
@@ -133,7 +133,7 @@ final class FailedLoginAttemptNotification
      *
      * @param array $previousFailures sys_log entries that have been logged since the last time a notification was sent
      */
-    protected function sendLoginAttemptEmail(array $previousFailures, ServerRequestInterface $request): void
+    private function sendLoginAttemptEmail(array $previousFailures, ServerRequestInterface $request): void
     {
         $emailData = [];
         foreach ($previousFailures as $row) {
@@ -161,7 +161,7 @@ final class FailedLoginAttemptNotification
         }
     }
 
-    protected function createPreparedQueryBuilder(int $earliestLogDate, int $loginAction): QueryBuilder
+    private function createPreparedQueryBuilder(int $earliestLogDate, int $loginAction): QueryBuilder
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_log');

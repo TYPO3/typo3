@@ -199,7 +199,7 @@ final class Generator extends AbstractGenerator
     /**
      * Add rows for third party tables like be_users or FAL
      */
-    protected function populateRowsOfThirdPartyTables(): void
+    private function populateRowsOfThirdPartyTables(): void
     {
 
         $demoGroupUids = $this->recordFinder->findUidsOfDemoBeGroups();
@@ -274,7 +274,7 @@ final class Generator extends AbstractGenerator
      *
      * @return array
      */
-    protected function getListOfStyleguideMainTables(): array
+    private function getListOfStyleguideMainTables(): array
     {
         $prefixes = [
             'tx_styleguide_',

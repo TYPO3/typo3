@@ -59,7 +59,7 @@ final class FileSizeValidator extends AbstractValidator
         }
     }
 
-    protected function validateUploadedFile(UploadedFile $uploadedFile, ?int $index = null): void
+    private function validateUploadedFile(UploadedFile $uploadedFile, ?int $index = null): void
     {
         $fileSize = $this->getFileInfo($uploadedFile->getTemporaryFileName())->getSize();
 
@@ -102,7 +102,7 @@ final class FileSizeValidator extends AbstractValidator
     /**
      * Checks if this validator is correctly configured
      */
-    protected function validateOptions(): void
+    private function validateOptions(): void
     {
         if (!preg_match('/^(\d*\.?\d+)(B|K|M|G)$/i', $this->options['minimum'])) {
             throw new InvalidValidationOptionsException('The option "minimum" has an invalid format. Valid formats are something like this: "10B|K|M|G".', 1708595605);

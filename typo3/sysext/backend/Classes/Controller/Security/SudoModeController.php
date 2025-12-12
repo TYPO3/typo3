@@ -245,7 +245,7 @@ final class SudoModeController implements LoggerAwareInterface
         return $GLOBALS['BE_USER'];
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

@@ -78,7 +78,7 @@ final class ImageDimensionsValidator extends AbstractValidator
         }
     }
 
-    protected function validateUploadedFile(UploadedFile $uploadedFile, ?int $index = null): void
+    private function validateUploadedFile(UploadedFile $uploadedFile, ?int $index = null): void
     {
         $imageInfo = $this->getImageInfo($uploadedFile->getTemporaryFileName());
         if ($imageInfo->getWidth() === 0 || $imageInfo->getHeight() === 0) {
@@ -171,7 +171,7 @@ final class ImageDimensionsValidator extends AbstractValidator
         }
     }
 
-    protected function getImageInfo(string $filePath): ImageInfo
+    private function getImageInfo(string $filePath): ImageInfo
     {
         return GeneralUtility::makeInstance(ImageInfo::class, $filePath);
     }
@@ -179,7 +179,7 @@ final class ImageDimensionsValidator extends AbstractValidator
     /**
      * Checks if this validator is correctly configured
      */
-    protected function validateOptions(): void
+    private function validateOptions(): void
     {
         if ((int)$this->options['minWidth'] > (int)$this->options['maxWidth']) {
             throw new InvalidValidationOptionsException('The option "minWidth" must not be greater than "maxWidth"', 1716008127);

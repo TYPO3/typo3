@@ -108,7 +108,7 @@ final class PageRecordProvider implements SearchProviderInterface
         return array_merge([], ...$result);
     }
 
-    protected function parseCommand(SearchDemand $searchDemand): SearchDemand
+    private function parseCommand(SearchDemand $searchDemand): SearchDemand
     {
         $commandQuery = null;
         $query = $searchDemand->getQuery();
@@ -136,7 +136,7 @@ final class PageRecordProvider implements SearchProviderInterface
         return $searchDemand;
     }
 
-    protected function getQueryBuilderForTable(SearchDemand $searchDemand): ?QueryBuilder
+    private function getQueryBuilderForTable(SearchDemand $searchDemand): ?QueryBuilder
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
@@ -178,7 +178,7 @@ final class PageRecordProvider implements SearchProviderInterface
     /**
      * @return ResultItem[]
      */
-    protected function findByTable(SearchDemand $searchDemand, int $limit): array
+    private function findByTable(SearchDemand $searchDemand, int $limit): array
     {
         $queryBuilder = $this->getQueryBuilderForTable($searchDemand);
         if ($queryBuilder === null) {
@@ -258,7 +258,7 @@ final class PageRecordProvider implements SearchProviderInterface
      *
      * @return int[]
      */
-    protected function getPageIdList(): array
+    private function getPageIdList(): array
     {
         if ($this->getBackendUser()->isAdmin()) {
             return [];
@@ -277,7 +277,7 @@ final class PageRecordProvider implements SearchProviderInterface
     /**
      * @return CompositeExpression[]
      */
-    protected function buildConstraintsForTable(string $queryString, QueryBuilder $queryBuilder): array
+    private function buildConstraintsForTable(string $queryString, QueryBuilder $queryBuilder): array
     {
         $platform = $queryBuilder->getConnection()->getDatabasePlatform();
         $isPostgres = $platform instanceof DoctrinePostgreSQLPlatform;
@@ -380,7 +380,7 @@ final class PageRecordProvider implements SearchProviderInterface
      * @param array $row Current record row from database.
      * @return string Link to open an edit window for record.
      */
-    protected function getShowLink(array $row): string
+    private function getShowLink(array $row): string
     {
         $backendUser = $this->getBackendUser();
         $showLink = '';
@@ -399,7 +399,7 @@ final class PageRecordProvider implements SearchProviderInterface
         return $showLink;
     }
 
-    protected function getBackendUser(): BackendUserAuthentication
+    private function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

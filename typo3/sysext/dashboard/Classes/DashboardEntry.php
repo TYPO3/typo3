@@ -145,7 +145,7 @@ final readonly class DashboardEntry
         return $this->context->rawData;
     }
 
-    protected function render(): WidgetResult
+    private function render(): WidgetResult
     {
         try {
             if ($this->renderer instanceof WidgetRendererInterface) {
@@ -165,7 +165,7 @@ final readonly class DashboardEntry
         }
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

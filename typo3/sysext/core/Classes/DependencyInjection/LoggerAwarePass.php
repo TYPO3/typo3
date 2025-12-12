@@ -68,7 +68,7 @@ final class LoggerAwarePass implements CompilerPassInterface
         }
     }
 
-    protected function getClassChannelName(\ReflectionClass $class): ?string
+    private function getClassChannelName(\ReflectionClass $class): ?string
     {
         $attributes = $class->getAttributes(Channel::class, \ReflectionAttribute::IS_INSTANCEOF);
         if ($attributes !== []) {

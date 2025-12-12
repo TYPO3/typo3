@@ -159,7 +159,7 @@ final class InstallStatusReport implements StatusProviderInterface
      * Fetches all wizards that are not marked "done" in the registry and filters out
      * the ones that should not be rendered (= no upgrade required).
      */
-    protected function getIncompleteWizards(): array
+    private function getIncompleteWizards(): array
     {
         $incompleteWizards = $this->upgradeWizardsService->getUpgradeWizardsList();
         $incompleteWizards = array_filter(

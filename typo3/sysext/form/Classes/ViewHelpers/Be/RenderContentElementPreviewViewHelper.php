@@ -94,7 +94,7 @@ final class RenderContentElementPreviewViewHelper extends AbstractViewHelper
         return $content;
     }
 
-    protected function getBackendUser(): BackendUserAuthentication
+    private function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

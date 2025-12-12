@@ -168,7 +168,7 @@ final class CommentAwareAstBuilder extends AbstractAstBuilder implements AstBuil
     /**
      * Slightly different from AstBuilder since it sets 'previousValue'
      */
-    protected function handleIdentifierAssignmentLine(IdentifierAssignmentLine $line, CurrentObjectPath $currentObjectPath): NodeInterface
+    private function handleIdentifierAssignmentLine(IdentifierAssignmentLine $line, CurrentObjectPath $currentObjectPath): NodeInterface
     {
         $node = $this->getOrAddNodeFromIdentifierStream($currentObjectPath, $line->getIdentifierTokenStream());
         $valueTokenStream = $line->getValueTokenStream();

@@ -214,7 +214,7 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
     /**
      * Render elements of configured table
      */
-    protected function renderTableRecords(ServerRequestInterface $request): string
+    private function renderTableRecords(ServerRequestInterface $request): string
     {
         $html = [];
         $backendUser = $this->getBackendUser();

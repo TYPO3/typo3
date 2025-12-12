@@ -201,13 +201,12 @@ final class TablePermissionElement extends AbstractFormElement
         return implode(LF, $html);
     }
 
-    protected function getIconForTable(string $icon): ?string
+    private function getIconForTable(string $icon): ?string
     {
-
         return FormEngineUtility::getIconHtml($icon);
     }
 
-    protected function getRecordSelectionCheckActions(array $optionsToShow, bool $readOnly): string
+    private function getRecordSelectionCheckActions(array $optionsToShow, bool $readOnly): string
     {
         $checkboxOptions = [
             'all' => '

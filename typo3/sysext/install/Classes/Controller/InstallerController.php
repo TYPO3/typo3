@@ -607,7 +607,7 @@ final class InstallerController
     /**
      * Helper method to initialize a standalone view instance.
      */
-    protected function initializeView(): ViewInterface
+    private function initializeView(): ViewInterface
     {
         $templatePaths = [
             'templateRootPaths' => ['EXT:install/Resources/Private/Templates'],

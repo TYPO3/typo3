@@ -55,7 +55,7 @@ final class FileExtensionValidator extends AbstractValidator
         }
     }
 
-    protected function validateUploadedFile(UploadedFile $uploadedFile, ?int $index = null): void
+    private function validateUploadedFile(UploadedFile $uploadedFile, ?int $index = null): void
     {
         $allowedFileExtensions = [];
         if (!empty($this->options['useStorageDefaults'])) {
@@ -91,7 +91,7 @@ final class FileExtensionValidator extends AbstractValidator
     /**
      * Checks if this validator is correctly configured
      */
-    protected function validateOptions(): void
+    private function validateOptions(): void
     {
         $hasAllowedFileExtensions = is_array($this->options['allowedFileExtensions'] ?? null)
             && $this->options['allowedFileExtensions'] !== [];

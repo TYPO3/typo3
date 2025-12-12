@@ -98,7 +98,7 @@ final class EmailLoginNotification implements LoggerAwareInterface
     /**
      * Sends an email.
      */
-    protected function sendEmail(string $recipient, AbstractUserAuthentication $user, ?string $subjectPrefix = null): void
+    private function sendEmail(string $recipient, AbstractUserAuthentication $user, ?string $subjectPrefix = null): void
     {
         $headline = 'TYPO3 Backend Login notification';
         $recipients = explode(',', $recipient);

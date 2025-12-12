@@ -334,7 +334,7 @@ final class PageTreeFilter
         $event->setItems($items);
     }
 
-    protected function createPreparedPagesQueryBuilder(): QueryBuilder
+    private function createPreparedPagesQueryBuilder(): QueryBuilder
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
@@ -355,7 +355,7 @@ final class PageTreeFilter
      *
      * @param array $additionalConditions Extra WHERE conditions (e.g., UID match or title LIKE)
      */
-    protected function fetchTranslatedPages(QueryBuilder $queryBuilder, array $additionalConditions): array
+    private function fetchTranslatedPages(QueryBuilder $queryBuilder, array $additionalConditions): array
     {
         $allowedLanguages = $this->getAllowedLanguagesForCurrentUser();
         $workspace = $this->getBackendUser()->workspace;
@@ -398,7 +398,7 @@ final class PageTreeFilter
      *
      * @param array $translatedPages Query results with l10n_parent and sys_language_uid
      */
-    protected function processTranslatedPages(BeforePageTreeIsFilteredEvent $event, array $translatedPages): void
+    private function processTranslatedPages(BeforePageTreeIsFilteredEvent $event, array $translatedPages): void
     {
         $translationMatches = $this->runtimeCache->get(self::CACHE_IDENTIFIER) ?: [];
         $addedParents = [];
@@ -425,7 +425,7 @@ final class PageTreeFilter
         $this->runtimeCache->set(self::CACHE_IDENTIFIER, $translationMatches);
     }
 
-    protected function getLanguageName(int $pageUid, int $languageUid): string
+    private function getLanguageName(int $pageUid, int $languageUid): string
     {
         try {
             $site = $this->siteFinder->getSiteByPageId($pageUid);
@@ -442,7 +442,7 @@ final class PageTreeFilter
      * - TSConfig options.pageTree.searchInTranslatedPages
      * - User preference pageTree_searchInTranslatedPages
      */
-    protected function isTranslatedPagesSearchEnabled(): bool
+    private function isTranslatedPagesSearchEnabled(): bool
     {
         $backendUser = $this->getBackendUser();
 
@@ -460,18 +460,18 @@ final class PageTreeFilter
         return true;
     }
 
-    protected function getAllowedLanguagesForCurrentUser(): array
+    private function getAllowedLanguagesForCurrentUser(): array
     {
         $allowedLanguages = trim($this->getBackendUser()->groupData['allowed_languages'] ?? '');
         return $allowedLanguages !== '' ? GeneralUtility::intExplode(',', $allowedLanguages) : [];
     }
 
-    protected function getBackendUser(): BackendUserAuthentication
+    private function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

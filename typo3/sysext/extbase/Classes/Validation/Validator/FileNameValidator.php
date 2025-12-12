@@ -49,7 +49,7 @@ final class FileNameValidator extends AbstractValidator
         }
     }
 
-    protected function validateUploadedFile(UploadedFile $uploadedFile, ?int $index = null): void
+    private function validateUploadedFile(UploadedFile $uploadedFile, ?int $index = null): void
     {
         if (!GeneralUtility::makeInstance(CoreFileNameValidator::class)->isValid($uploadedFile->getClientFilename())) {
             $message = $this->translateErrorMessage($this->message);
