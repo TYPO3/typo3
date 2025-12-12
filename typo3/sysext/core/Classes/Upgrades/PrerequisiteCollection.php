@@ -26,10 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class PrerequisiteCollection implements \IteratorAggregate
 {
-    /**
-     * @var \ArrayObject
-     */
-    protected $prerequisites;
+    private \ArrayObject $prerequisites;
 
     public function __construct()
     {

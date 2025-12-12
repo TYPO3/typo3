@@ -51,7 +51,7 @@ return (new \PhpCsFixer\Config())
             ])
             ->exclude([
                 'node_modules',
-                'Build/composer',
+                'composer',
             ])
     )
     ->setRiskyAllowed(true)
@@ -128,6 +128,7 @@ return (new \PhpCsFixer\Config())
         'phpdoc_trim' => true,
         'phpdoc_types' => true,
         'phpdoc_types_order' => ['null_adjustment' => 'always_last', 'sort_algorithm' => 'none'],
+        'protected_to_private' => true,
         'return_type_declaration' => ['space_before' => 'none'],
         'single_quote' => true,
         'single_space_around_construct' => true,

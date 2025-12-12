@@ -51,16 +51,16 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 #[AsController]
 final class ViewModuleController
 {
-    protected PageContext $pageContext;
+    private PageContext $pageContext;
 
     public function __construct(
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-        protected readonly IconFactory $iconFactory,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly PageRepository $pageRepository,
-        protected readonly PolicyRegistry $policyRegistry,
-        protected readonly ComponentFactory $componentFactory,
-        protected readonly PageContextFactory $pageContextFactory,
+        private readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private readonly IconFactory $iconFactory,
+        private readonly UriBuilder $uriBuilder,
+        private readonly PageRepository $pageRepository,
+        private readonly PolicyRegistry $policyRegistry,
+        private readonly ComponentFactory $componentFactory,
+        private readonly PageContextFactory $pageContextFactory,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface

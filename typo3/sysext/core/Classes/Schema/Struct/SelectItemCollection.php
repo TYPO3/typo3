@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Collection\EditableCollectionInterface;
 
 final class SelectItemCollection implements CollectionInterface, EditableCollectionInterface
 {
-    protected \SplDoublyLinkedList $storage;
+    private \SplDoublyLinkedList $storage;
 
     public function __construct()
     {
