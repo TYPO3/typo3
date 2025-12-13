@@ -494,7 +494,7 @@ EOT
 
     protected function getServerType(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): WebserverType
     {
-        $serverTypeValidator = function (string $serverType): WebserverType {
+        $serverTypeValidator = function (?string $serverType): WebserverType {
             if (!array_key_exists($serverType, WebserverType::getDescriptions())) {
                 throw new \RuntimeException(
                     'Webserver must be any of ' . implode(', ', array_keys(WebserverType::getDescriptions())),
