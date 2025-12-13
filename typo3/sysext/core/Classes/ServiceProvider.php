@@ -137,6 +137,7 @@ class ServiceProvider extends AbstractServiceProvider
             'cache.runtime' => self::getRuntimeCache(...),
             'content.security.policies' => self::getContentSecurityPolicies(...),
             'fluid.namespaces' => self::getFluidNamespaces(...),
+            'fluid.component.collections' => self::getFluidComponentCollections(...),
         ];
     }
 
@@ -692,6 +693,11 @@ class ServiceProvider extends AbstractServiceProvider
     }
 
     public static function getFluidNamespaces(ContainerInterface $container): \ArrayObject
+    {
+        return new \ArrayObject();
+    }
+
+    public static function getFluidComponentCollections(ContainerInterface $container): \ArrayObject
     {
         return new \ArrayObject();
     }

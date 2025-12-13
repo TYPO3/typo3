@@ -67,6 +67,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
             'content.security.policies' => [ static::class, 'configureContentSecurityPolicies' ],
             'icons' => [ static::class, 'configureIcons' ],
             'fluid.namespaces' => [ static::class, 'configureFluidNamespaces' ],
+            'fluid.component.collections' => [ static::class, 'configureFluidComponentCollections' ],
             SetCollector::class => [ static::class, 'configureSetCollector' ],
         ];
     }
@@ -81,6 +82,18 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
             }
         }
         return $namespaces;
+    }
+
+    public static function configureFluidComponentCollections(ContainerInterface $container, \ArrayObject $componentCollections, ?string $path = null): \ArrayObject
+    {
+        $packageConfiguration = ($path ?? static::getPackagePath()) . 'Configuration/Fluid/ComponentCollections.php';
+        if (file_exists($packageConfiguration)) {
+            $componentCollectionsInPackage = self::requireFile($packageConfiguration);
+            if (is_array($componentCollectionsInPackage)) {
+                $componentCollections->exchangeArray(array_replace_recursive($componentCollections->getArrayCopy(), $componentCollectionsInPackage));
+            }
+        }
+        return $componentCollections;
     }
 
     /**

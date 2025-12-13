@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper;
 
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Fluid\Core\Component\ComponentCollectionRegistry;
 use TYPO3\CMS\Fluid\Event\ModifyNamespacesEvent;
 
 /**
@@ -40,6 +41,7 @@ final class ViewHelperResolverFactory implements ViewHelperResolverFactoryInterf
     public function __construct(
         private readonly ContainerInterface $container,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ?ComponentCollectionRegistry $componentCollectionRegistry,
         private readonly iterable $namespaces,
     ) {}
 
@@ -51,6 +53,10 @@ final class ViewHelperResolverFactory implements ViewHelperResolverFactoryInterf
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces'] ?? [],
         );
         $event = $this->eventDispatcher->dispatch(new ModifyNamespacesEvent($namespaces));
-        return new ViewHelperResolver($this->container, $event->getNamespaces());
+        return new ViewHelperResolver(
+            $this->container,
+            $event->getNamespaces(),
+            $this->componentCollectionRegistry instanceof ComponentCollectionRegistry ? $this->componentCollectionRegistry->getAll() : [],
+        );
     }
 }

@@ -67,7 +67,7 @@ class ViewHelperResolver extends \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperRes
      *
      * @internal constructor, use `ViewHelperResolverFactory->create()` instead
      */
-    public function __construct(ContainerInterface $container, array $namespaces)
+    public function __construct(ContainerInterface $container, array $namespaces, protected iterable $componentCollections = [])
     {
         $this->container = $container;
         $this->namespaces = $namespaces;
@@ -122,6 +122,9 @@ class ViewHelperResolver extends \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperRes
             // to not rely on symfony DI. Currently the install tool doesn't
             // use any custom resolvers, however this might change in the future.
             return GeneralUtility::makeInstance($delegateClassName);
+        }
+        if (isset($this->componentCollections[$delegateClassName])) {
+            return $this->componentCollections[$delegateClassName];
         }
         if ($this->container->has($delegateClassName)) {
             return $this->container->get($delegateClassName);

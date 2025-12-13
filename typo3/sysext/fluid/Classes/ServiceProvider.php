@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\SystemResource\Identifier\SystemResourceIdentifierFactory;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
+use TYPO3\CMS\Fluid\Core\Component\ComponentCollectionRegistry;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ArgumentProcessorInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\StrictArgumentProcessor;
 
@@ -77,6 +78,9 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Core\ViewHelper\ViewHelperResolverFactory::class, [
             $container,
             $container->get(EventDispatcherInterface::class),
+            // Don't provide component collections to InstallTool because it currently
+            // doesn't use components and can avoid that additional complexity
+            $container->has(ComponentCollectionRegistry::class) ? $container->get(ComponentCollectionRegistry::class) : null,
             $container->get('fluid.namespaces'),
         ]);
     }
