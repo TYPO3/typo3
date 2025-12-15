@@ -17,19 +17,19 @@ Overview of form elements
    :alt: Overview of all form elements included in the TYPO3 core. There may
     be fewer or different elements in your installation.
 
-   Overview of all form elements included in the TYPO3 delivery. There may be
+   Overview of all form elements included in TYPO3. There may be
    fewer or different elements in your installation.
 
 
 .. _form-elements-settings:
 
-Generally available settings of form elements
----------------------------------------------
+Form element settings
+---------------------
 
-By default, most form elements have these basic options:
+Most form elements have these 7 basic settings:
 
 - **Label**: Label of the element.
-- **Description**: Descriptive explanation of the element. Can be used to
+- **Description**: Description of the element. Can be used to
   provide the user with more information about the expected input.
 - **Placeholder**: Example of the expected content. Disappears with the user's
   input.
@@ -40,21 +40,21 @@ By default, most form elements have these basic options:
 - **Custom error message**: Custom message that will be displayed to the user
   if the field is not filled in. If you don't provide a message, a default
   message is shown.
-- **Validators**: Validators are used to check the data entered into the
-  field. The system displays error messages in case of errors.
+- **Validators**: Validators are used to check the data entered in the
+  field. The system displays error messages if there are errors.
 
 .. warning::
 
-   If a form element is a required field or other validators take effect, error
-   messages are displayed by the browser. Both the formatting and the text
-   cannot be directly influenced by you as editor or by integrators.
-   This is controlled by the browser respectively your operating system.
+   If a form element is a required field or validators fail, error
+   messages are displayed by the browser. These error texts and formatting cannot be
+   changed by editors or integrators as they are controlled
+   by the browser/operating system.
 
 
 .. _form-elements-basic-elements:
 
-Basic elements
---------------
+Basic form elements
+-------------------
 
 
 .. _form-elements-basic-elements-text:
@@ -63,8 +63,8 @@ Text
 ====
 
 A single-line text field, e.g. for entering short information such as name,
-address, location. The settings for this element adhere to the
-:ref:`default<form-elements-settings>`.
+address, location. This element has the
+:ref:`basic settings <form-elements-settings>`.
 
 .. figure:: Images/form_elements_text_1.png
    :alt: Element 'Text' - preview in the frontend.
@@ -83,8 +83,8 @@ Textarea
 ========
 
 A multi-line text field, e.g. for the free input of continuous text. This allows
-the user to provide extensive information such as a message. The settings for
-this element adhere to the :ref:`default<form-elements-settings>`.
+the user to provide a short text such as a message. This element has the
+:ref:`basic settings <form-elements-settings>`.
 
 .. figure:: Images/form_elements_textarea_1.png
    :alt: Element 'Textarea' - preview in the frontend.
@@ -103,8 +103,8 @@ Password
 ========
 
 A single-line text field for entering a password. The browser "hides" the text
-input, i.e. the entered characters are not visible. The settings for this element
-adhere to the :ref:`default<form-elements-settings>`.
+input, i.e. the entered characters are not visible. This element has the
+:ref:`basic settings <form-elements-settings>`.
 
 .. figure:: Images/form_elements_password_1.png
    :alt: Element 'Password' - preview in the frontend.
@@ -122,13 +122,11 @@ adhere to the :ref:`default<form-elements-settings>`.
 Special elements
 ================
 
-It is important that you understand and use special elements. Especially
-smartphones and other mobile devices display different on-screen keyboards.
-Instead of entering an e-mail address via the "Text" form element, you should
-use the "Email address" element. The on-screen keyboard then directly contains
-the "@" character in a central position. In addition, other validators take effect
-immediately. For example, the "Email address" element checks for a correct
-input format, e.g. "firstname.lastname@example.org".
+Sometimes it is better to use special elements instead of simple text
+elements. Mobile devices such as smartphones display on-screen keyboards. If you
+use the "Email address" element the form field on the device will contain a
+"@" character in a central position and a validator will be triggered
+that checks for the input format "firstname.lastname@example.org".
 
 
 .. _form-elements-special-elements-email:
@@ -136,9 +134,9 @@ input format, e.g. "firstname.lastname@example.org".
 Email address
 ==============
 
-A sinlge-line field for entering an email address. The settings for this element
-adhere to the :ref:`default<form-elements-settings>`. In addition, the field is
-equipped with the validator `Email` and cannot receive any other validator.
+A single-line field for entering an email address. This element has the
+:ref:`basic settings <form-elements-settings>`. In addition, the field has an
+`Email` validator (this is the only validator available for this form element).
 
 .. figure:: Images/form_elements_email_1.png
    :alt: Element 'E-mail' - preview in the frontend.
@@ -156,8 +154,8 @@ equipped with the validator `Email` and cannot receive any other validator.
 Telephone number
 ================
 
-A single-line text field for entering a phone number. The settings for this element
-adhere to the :ref:`default<form-elements-settings>`.
+A single-line text field for entering a phone number. This element has the
+:ref:`basic settings <form-elements-settings>`.
 
 .. figure:: Images/form_elements_telephone_1.png
    :alt: Element 'Telephone' - preview in the frontend.
@@ -176,8 +174,8 @@ URL
 ===
 
 A single-line text field for entering a URL. A URL is typically an internet
-address, such as that of your website. The settings for this element adhere to
-the :ref:`default<form-elements-settings>`.
+address, such as that of your website. This element has the
+:ref:`basic settings <form-elements-settings>`
 
 .. figure:: Images/form_elements_url_1.png
    :alt: Element 'URL' - preview in the frontend.
@@ -195,13 +193,13 @@ the :ref:`default<form-elements-settings>`.
 Number
 ======
 
-A single-line text field for entering a number. The user can count up and down
-the entered number in preconfigured steps using visual controls in the browser.
-The settings for this element adhere to the :ref:`default<form-elements-settings>`.
-By default, the field is equipped with the `Number` validator. Additional settings:
+A single-line text field for entering a number. A user can increase and decrease
+the number in preconfigured steps using visual controls in the browser.
+This element has the :ref:`basic settings <form-elements-settings>`.
+By default, the field has a `Number` validator. Additional settings:
 
-- **Step**: Here you can enter a number that defines the step size. By this step
-  size the number entered by the user will be counted up or down in the frontend.
+- **Step**: Here you can enter a number that defines the step size. The step size
+  is the amount by which a number is increased or decreased in the frontend.
 
 .. figure:: Images/form_elements_number_1.png
    :alt: Element 'Number' - preview in the frontend.
@@ -219,11 +217,10 @@ By default, the field is equipped with the `Number` validator. Additional settin
 Date
 ====
 
-A single-line text field for entering a date. In addition,
-`modern browsers <https://caniuse.com/input-datetime>`_ display a calendar from
-which the user can select the date. At least partially 96% of browsers support
-this feature. The settings for this element adhere to the
-:ref:`default<form-elements-settings>`. Additional settings:
+A single-line text field for entering a date.
+`Most modern browsers <https://caniuse.com/input-datetime>`_ will also display a calendar from
+which the user can select the date. This element has the
+:ref:`basic settings <form-elements-settings>`. Additional settings:
 
 - **Frequency**: default value "1" means that the user can select every day.
 
@@ -243,14 +240,15 @@ this feature. The settings for this element adhere to the
 Select elements
 ---------------
 
-Select elements do not allow text input. Instead, they offer a predefined
-number of choices. For example, you can query information such as the salutation.
+Select elements (including checkboxes, radio buttons and selectboxes) do not
+allow a user to enter text. Instead, they offer a predefined
+number of choices, for example, salutation options.
 
 .. note::
 
-    Select elements behave differently with regard to validating those fields as
-    required. For example, checkboxes with multiple choices cannot be
-    validated as mandatory fields. This is not supported by the HTML standard.
+    Select elements behave differently to text fields if they are marked as
+    "required".Checkboxes with multiple choices, for example, cannot be
+    be required fields. This is not supported by the HTML standard.
 
 
 .. _form-elements-select-elements-checkbox:
@@ -258,7 +256,7 @@ number of choices. For example, you can query information such as the salutation
 Checkbox
 ========
 
-A simple checkbox. The settings for this element adhere to the :ref:`default<form-elements-settings>`.
+A simple checkbox. This element has the :ref:`basic settings <form-elements-settings>`.
 
 .. figure:: Images/form_elements_checkbox_1.png
    :alt: Element 'Checkbox' - preview in the frontend.
@@ -273,19 +271,19 @@ A simple checkbox. The settings for this element adhere to the :ref:`default<for
 
 .. _form-elements-select-elements-single-select:
 
-Single select
-=============
+Single selectbox
+================
 
-An element to create a drop-down list. The setting for this element adhere to the
-:ref:`default<form-elements-settings>`. Additional settings:
+An element to create a drop-down list. This element has the
+:ref:`basic settings <form-elements-settings>`. Additional settings:
 
 - **First option**: Define the "empty option", i.e. the first element of the
-  select. You can use this to provide additional guidance for the user.
-- **Choices**: A tool to insert and manage the options.
+  selectbox. You can use this to provide additional guidance for the user.
+- **Choices**: A tool to insert and manage options.
    - **Label**: Name of the option.
-   - **Value**: Technical value of the option. The system automatically sets the
-     "Value" to the value of the "Label". You can leave it like this if you don't
-     understand what you are doing.
+   - **Value**: Value of the option. The system automatically sets the
+     "Value" to the "Label". You can leave it like this if you are
+     unsure of what you are doing.
    - **Selected**: Check this to pre-select an option in the frontend.
    - **[ + ]**: Adds a new line for a new option.
 
@@ -302,17 +300,17 @@ An element to create a drop-down list. The setting for this element adhere to th
 
 .. _form-elements-select-elements-radiobutton:
 
-Radio button
-============
+Radio buttons
+=============
 
-An element to display one or more radio buttons. The settings for this element
-adhere to the :ref:`default<form-elements-settings>`. Additional settings:
+An element to display one or more radio buttons. This element has the
+:ref:`basic settings <form-elements-settings>`. Additional settings:
 
 - **Choices**: A tool to insert and manage the options.
    - **Label**: Name of the option.
-   - **Value**: Technical value of the option. The system automatically sets the
-     "Value" to the value of the "Label". You can leave it like this if you don't
-     understand what you are doing.
+   - **Value**: Value of the option. The system automatically sets the
+     "Value" to the "Label". You can leave it like this if you are
+     unsure of what you are doing.
    - **Selected**: Check this to pre-select an option in the frontend.
    - **[ + ]**: Adds a new line for a new option.
 
@@ -332,14 +330,14 @@ adhere to the :ref:`default<form-elements-settings>`. Additional settings:
 Multi checkbox
 ==============
 
-An element to create one or more checkboxes. The settings for this element adhere
-tothe :ref:`default<form-elements-settings>`. Additional settings:
+An element to create one or more checkboxes. This element has the
+:ref:`basic settings <form-elements-settings>`. Additional settings:
 
 - **Choices**: A tool to insert and manage the options.
    - **Label**: Name of the option.
-   - **Value**: Technical value of the option. The system automatically sets the
-     "Value" to the value of the "Label". You can leave it like this if you don't
-     understand what you are doing.
+   - **Value**: Value of the option. The system automatically sets the
+     "Value" to the "Label". You can leave it like this if you are
+     unsure of what you are doing.
    - **Selected**: Check this to pre-select an option in the frontend.
    - **[ + ]**: Adds a new line for a new option.
 
@@ -355,9 +353,8 @@ tothe :ref:`default<form-elements-settings>`. Additional settings:
 
 .. warning::
 
-    As a required field, this element cannot directly be validated by **HTML**.
-    Only after the attempt to submit the form, the element is validated and
-    recognized that it must be filled.
+    **HTML** does not check that "required" fields are filled out. They
+    are only checked after a form has been submitted.
 
 
 .. _form-elements-select-elements-multi-select:
@@ -365,16 +362,16 @@ tothe :ref:`default<form-elements-settings>`. Additional settings:
 Multi select
 ============
 
-An element to create a multiple selection. The settings for this element adhere
-to the :ref:`default<form-elements-settings>`. Additional settings:
+An element to create a multiple selection. This element has the
+:ref:`basic settings <form-elements-settings>`. Additional settings:
 
 - **First option**: Define the "empty option", i.e. the first element of the
   select. You can use this to provide additional guidance for the user.
 - **Choices**: A tool to insert and manage the options.
    - **Label**: Name of the option.
-   - **Value**: Technical value of the option. The system automatically sets the
-     "Value" to the value of the "Label". You can leave it like this if you don't
-     understand what you are doing.
+   - **Value**: Value of the option. The system automatically sets the
+     "Value" to the "Label". You can leave it like this if you are
+     unsure of what you are doing.
    - **Selected**: Check this to pre-select an option in the frontend.
    - **[ + ]**: Adds a new line for a new option.
 
@@ -394,15 +391,15 @@ to the :ref:`default<form-elements-settings>`. Additional settings:
 Country select
 ==============
 
-An element to create a country select. The settings for this element adhere
-to the :ref:`default<form-elements-settings>`. Additional settings:
+An element to create a country selectbox. This element has the
+:ref:`basic settings <form-elements-settings>` Additional settings:
 
 - **First option**: Define the "empty option", i.e. the first element of the
   select. You can use this to provide additional guidance for the user.
 - **Prioritized countries**: A multi-selection of country names, which should
-  always be listed as first options in the form element.
+  be listed as the top options in the form element.
 - **Only countries**: Restrict the countries to be rendered in the selection.
-- **Exclude countries**: Define which countries should not be shown in the
+- **Exclude countries**: Define which countries should not appear in the
   selection.
 
 
@@ -417,12 +414,12 @@ Advanced elements
 File upload
 ===========
 
-An element to upload a file to the 'TYPO3 File list'. The settings for this item
-adhere to the :ref:`default<form-elements-settings>`. Additional settings:
+An element to upload a file to the :guilabel:`File > Filelist` module. This element has the
+:ref:`basic settings <form-elements-settings>`. Additional settings:
 
 - **Allowed Mime Types**: Select the allowed file extensions a user is able to
   upload.
-- **Storage path for uploads**: Select the path within your TYPO3 installation.
+- **Storage path for uploads**: Select the storage path in your TYPO3 installation.
   This is where the uploaded file will be saved.
 
 .. figure:: Images/form_elements_fileUpload_1.png
@@ -451,15 +448,15 @@ Date picker
 A single-line text field to select a date using a calendar. A JavaScript library
 is used for this purpose. This form element is an alternative to the `Date`
 element, which is also supported by older browsers (e.g. Internet Explorer 11).
-However, it has limited accessibility. The settings for this element adhere to the
-:ref:`default<form-elements-settings>`. Additional settings:
+However, it has limited accessibility. This element has the
+:ref:`basic settings <form-elements-settings>`. Additional settings:
 
 - **Date format**: select date format (e.g. **d.m.Y** or **Y-m-d** or **d-m-Y**)
-   - **d**: stands for day
-   - **m**: stands for month
-   - **Y**: stands for year
+   - **d**: day
+   - **m**: month
+   - **Y**: year
 - **Enable date selection**: Check this to display a calendar.
-- **Show time selection**: Check this to display two drop downs for '**Hour**'
+- **Show time selection**: Check this to display two dropdowns for '**Hour**'
   and '**Minute**' respectively.
 
 .. figure:: Images/form_elements_datePicker_1.png
@@ -478,10 +475,10 @@ However, it has limited accessibility. The settings for this element adhere to t
 Hidden
 ======
 
-This field is not visible in the frontend. The form element is inside the red
-rectangle in the image. Such a field is usually needed for technical aspects,
-e.g. to add hidden values to the form. The settings for this element adhere to
-the :ref:`default<form-elements-settings>`. Additional settings:
+A field that is not visible in the frontend. The form element is inside the red
+rectangle in the image. Such a field might be needed for technical functionality,
+e.g. to add hidden values to a form. This element has the
+:ref:`basic settings <form-elements-settings>`. Additional settings:
 
 - **Value**: Here you can set a value for the element.
 
@@ -501,12 +498,12 @@ the :ref:`default<form-elements-settings>`. Additional settings:
 Image upload
 ============
 
-An element to upload an image to the 'TYPO3 File list'. The settings for this
-item adhere to the :ref:`default<form-elements-settings>`. Other settings:
+An element to upload an image to :guilabel:`File > Filelist`. This element has the
+:ref:`basic settings <form-elements-settings>`. Other settings:
 
-- **Allowed Mime Types**: Select the allowed file extensions a user is able to
+- **Allowed Mime Types**: Select the file extensions a user is allowed to
   upload.
-- **Storage path for uploads**: Select the path within your TYPO3 installation.
+- **Storage path for uploads**: Select the storage path in your TYPO3 installation.
   This is where the uploaded file will be saved.
 
 .. figure:: Images/form_elements_imageUpload_1.png
@@ -535,10 +532,9 @@ Advanced password
 The element is analogous to the `Password` form element. A single-line text
 field is displayed for entering a password. The browser "hides" the text input,
 i.e. the entered characters are not visible. Another field is displayed below it
-so that the user has to repeat the password. This ensures that the user did not
-make a typing error. Such a field is useful especially for registration
-forms. The settings for this element adhere to the :ref:`default<form-elements-settings>`.
-Additional settings:
+so that the user has to repeat the password to prevent typing errors. This field
+is useful for registration forms. This element has the
+:ref:`basic settings <form-elements-settings>`. Additional settings:
 
 - **Confirmation label**: Label for the confirmation field.
 
@@ -558,7 +554,7 @@ Additional settings:
 Static text
 ===========
 
-A field for static text. You can't format the text, which means you can't
+A field for static text. This text cannot be formatted, which means you can't
 insert links or highlight text. Instead, the text is output in the style of
 your website. The settings for this element are:
 
@@ -581,14 +577,14 @@ your website. The settings for this element are:
 Content element
 ================
 
-You can display any content element of your website. The settings for
+You can display any content elements that are on your website. The settings for
 this element are:
 
 - **Content element uid**: ID of the content element you want to display. You can
-  either enter the ID manually or select it comfortably via the page tree.
+  either enter the ID manually or select it via the page tree.
   To do this, click on the "Page content" button.
 - **[ Page content ]**: Modal which displays the page tree. You can select
-  a page and a corresponding content element.
+  a page and the content element.
 
 .. figure:: Images/form_elements_contentElement_1.png
    :alt: Element 'Content element' - preview in the frontend.
@@ -606,9 +602,9 @@ this element are:
 Container elements
 ------------------
 
-Container elements are not directly visible. Instead, they help you structure
-your form in terms of content or visual appearance. The different elements can
-be combined. For example, a field group can contain several grids.
+Fieldset and grid elements are container elements that structure
+your form in terms of content or visual appearance. Container elements can
+be combined. For example, a fieldset can contain several grids.
 
 
 .. _form-elements-container-elements-fieldset:
@@ -616,11 +612,10 @@ be combined. For example, a field group can contain several grids.
 Fieldset
 ========
 
-You can use this container to group several elements in the form. This is a
-content-based structuring, i.e. you create a context content-wise. This is
-awarded by screen readers and helps you to improve the accessibility of your form.
-A typical fieldset would be, for example, "Address". Within this fieldset you have
-form elements for the street, house number, postal code and city. The settings for
+This container groups form elements based on content. This is
+important for screen readers and helps you to improve the accessibility of your form.
+For example, in an "Address" fieldset you could have
+street, house number, postal code and city form elements. The settings for
 this element are:
 
 - **Field group name**: Heading for the field group, e.g. "Address".
@@ -646,24 +641,23 @@ this element are:
 Grid
 ====
 
-You can use this container element to place fields next to each other.
-Obviously, this is a visual structuring.
+Use this container element to place fields next to each other (create a visual structure).
 
-**The additional settings apply to the content elements within the grid**:
+**The additional settings apply to the content elements inside the grid**:
 
 - **Configuration Grid Area**:
    - Areas: **xs** (Very small), **sm** (Small), **md** (Medium), **lg** (Large),
      **xl** (Extra large), **xxl** (Extra extra large).
-   - These are the so-called breakpoints. These are specific ranges of
-     resolutions or adaptations to the different screen sizes. Smartphones,
-     for example, have a low resolution range (xs or sm), while desktop monitors
-     have a high resolution range (lg, xl or xxl). You can use this to
+   - These are the "breakpoints". These are ranges of
+     resolutions or adaptations to different screen sizes. Smartphones,
+     for example, have a low resolution range (xs or sm) and desktop monitors
+     have a high resolution range (lg, xl or xxl). Use this to
      abstractly control how many elements are displayed next to each other in
      which resolution.
 - **Number of columns for grid area "xx"**:
-   - Here you can enter a number for the selected area.
-   - The number determines how much space the field takes up on the various
-     screen sizes and thus ultimately how many elements are displayed next to
+   - Enter a number for the selected area.
+   - The number determines how much space the field takes up on the different
+     screen sizes and therefore how many elements are displayed next to
      each other.
 
 .. figure:: Images/form_elements_grid_1.png
