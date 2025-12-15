@@ -13,14 +13,14 @@ Validators
 Introduction
 ------------
 
-Validators can be added to all form elements to check the input for "validity" -
-i.e. presence, meaningfulness and correctness. For example, you can
-determine whether a field has been filled in or the information provided is a
-valid email address. Additionally, you can **define** your own **error messages**.
-These messages can be maintained in the **form editor**.
+Validators can be added to all form elements to check user input for "validity" -
+i.e. existence, meaningfulness and correctness. For example, you can
+determine whether a field has been filled out or if the user has entered a
+valid email address. You can also **define** your own **error messages**.
+These messages can be edited in the **form editor**.
 
-In the following chapter, the individual validators are **explained** and their
-**function** is discussed.
+This chapter **describes** the individual validators and their
+**function**.
 
 .. figure:: Images/form_validators.png
    :alt: In the Inspector - adding validators.
@@ -39,13 +39,13 @@ Overview of validators
 Alphanumeric
 ============
 
-The validator checks whether the field contains an alphanumeric string only.
-"Alphanumeric" defines a combination of alphabetic and numeric characters. No
+This validator checks whether the field contains an alphanumeric string.
+"Alphanumeric" means a combination of alphabetic and numeric characters. No
 special characters can be entered, only characters from **[A-Z] and [0-9]**.
 The settings of the validator are as follows:
 
 - **Custom error message**: Custom error message that will be shown if the
-  validation fails.
+  validator fails.
 
 **The validator is available for the following form elements**:
 
@@ -65,13 +65,13 @@ The settings of the validator are as follows:
 String length
 =============
 
-The validator uses the *minimum* and *maximum* values to check how many
+This validator uses *minimum* and *maximum* values to check how many
 characters can be **entered**. The settings of the validator are as follows:
 
-- **Minimum**: How many characters the field must contain as a minimum.
-- **Maximum**: How many characters the field may contain as a maximum.
+- **Minimum**: Minimum amount of characters the field can contain.
+- **Maximum**: Maximum amount of characters the field can contain.
 - **Custom error message**: Custom error message that will be shown if the
-  validation fails.
+  validator fails.
 
 **The validator is available for the following form elements**:
 
@@ -91,9 +91,9 @@ characters can be **entered**. The settings of the validator are as follows:
 Email
 =====
 
-The validator checks whether the entered value is a **valid email address**.
-The default allows international characters and multiple occurrences of
-the **@ sign**. The settings of the validator are as follows:
+This validator checks whether an entered value is a **valid email address**.
+International characters and multiple occurrences of the **@ sign**
+are allowed by default. The settings of the validator are as follows:
 
 - **Custom error message**: Custom error message that will be shown if the
   validation fails.
@@ -117,8 +117,8 @@ the **@ sign**. The settings of the validator are as follows:
 Integer number
 ==============
 
-The validator checks whether the entered value is a **valid integer**. No
-numbers with commas can be entered. The settings of the validator are as
+The validator checks whether an entered value is a **valid integer**. Numbers
+with commas are not allowed. The settings of the validator are as
 follows:
 
 - **Custom error message**: Custom error message that will be shown if the
@@ -142,8 +142,8 @@ follows:
 Floating-point number
 =====================
 
-The validator checks whether the entered value is a **valid floating-point
-number**. Only numbers with a comma can be entered. The settings of the
+The validator checks whether an entered value is a **valid floating-point
+number**. Only numbers with commas can be entered. The settings of the
 validator are as follows:
 
 - **Custom error message**: Custom error message that will be shown if the
@@ -168,8 +168,8 @@ validator are as follows:
 Number
 ======
 
-The validator checks whether the entered value is a **valid number**. Only
-numbers without a comma can be entered. The settings of the validator are as
+The validator checks whether the entered value is a **valid number**. Numbers with
+commas are not allowed. The settings of the validator are as
 follows:
 
 - **Custom error message**: Custom error message that will be shown if the
@@ -191,11 +191,11 @@ follows:
 Number range
 ============
 
-The validator checks if the entered value is a number within the
+The validator checks if an entered number is within a
 **specified number range**. The settings of the validator are as follows:
 
-- **Minimum**: The minimum value to accept.
-- **Maximum**: The maximum value to be accepted.
+- **Minimum**: The minimum value that can be accepted.
+- **Maximum**: The maximum value that can be accepted.
 - **Custom error message**: Custom error message that will be shown if the
   validation fails.
 
@@ -218,16 +218,16 @@ The validator checks if the entered value is a number within the
 Regular expression
 ==================
 
-The validator checks whether the **entered value** matches the
-**specified regular expression**. The settings of the validator are as follows:
+The validator checks whether an **entered value** matches a
+**specific regular expression**. The settings of the validator are as follows:
 
-- **Regular expression**: The regular expression to use for validation.
+- **Regular expression**: The regular expression used for validation.
 - **Custom error message**: Custom error message that will be shown if the
   validation fails.
 
-Imagine the following example. You want the user to specify a domain name. The
-value entered should contain only the domain, for example, "docs.typo3.org"
-instead of "https://docs.typo3.org". The regular expression for this use case
+Imagine that you want users to specify a domain name. The
+resulting value of the field should contain only the domain, for example, "docs.typo3.org"
+instead of "https://docs.typo3.org". The regular expression for this
 would be **/^[a-z]+.[a-z]+.[a-z]$/**.
 
 **The validator is available for the following form elements**:
@@ -250,12 +250,12 @@ would be **/^[a-z]+.[a-z]+.[a-z]$/**.
 Date range
 ==========
 
-The validator checks whether the entered value is within the specified
+This validator checks whether an entered value is within a specific
 **date range**. The range can be defined by specifying a **start** and/ or
 **end date**. The settings of the validator are as follows:
 
-- **Start date**: Select the beginning of the date range (input: YYYY-MM-DD).
-- **End date**: Select the end of the date range (input: YYYY-MM-DD).
+- **Start date**: The beginning of the date range (input: YYYY-MM-DD).
+- **End date**: The end of the date range (input: YYYY-MM-DD).
 - **Custom error message**: Custom error message that will be shown if the
   validation fails.
 
@@ -274,9 +274,8 @@ The validator checks whether the entered value is within the specified
 Number of submitted values
 ==========================
 
-The validator checks whether the entered value, which is defined in a
-*minimum* and a *maximum*, contains the specified number of elements. The
-settings of the validator are as follows:
+The validator checks whether an entered value contains a specific number of
+elements. The settings of the validator are as follows:
 
 - **Minimum**: The minimum number of values submitted.
 - **Maximum**: The maximum number of submitted values.
@@ -300,11 +299,11 @@ settings of the validator are as follows:
 File size
 =========
 
-The validator checks a **file resource** for its file size. The settings of the
+The validator checks the file size of a **file resource**. The settings of the
 validator are as follows:
 
-- **Minimum**: The minimum file size that is accepted (default: 0B).
-- **Maximum**: The maximum file size that will be accepted (default: 10M).
+- **Minimum**: The minimum acceptable file size (default: 0B).
+- **Maximum**: The maximum acceptable file size (default: 10M).
 
 Use the format **B | K | M | G** (byte | kilobyte | megabyte | gigabyte) when
 entering file sizes. For example: **10M** means **10 megabytes**. Please note
@@ -327,7 +326,7 @@ environment.
 Date/ Time
 ==========
 
-The validator checks if the entered value is a valid **date and/ or time**.
+The validator checks if an entered value is a valid **date and/ or time**.
 The settings of the validator are as follows:
 
 - **Custom error message**: Custom error message that will be shown if the

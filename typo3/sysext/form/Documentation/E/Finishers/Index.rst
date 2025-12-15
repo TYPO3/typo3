@@ -8,12 +8,11 @@
 Finishers
 =========
 
-To each form any number of so-called "finishers" can be added. Finishers allow
-you to specify actions that will be executed once the form has been submitted by
-the user.
+Any number of "finishers" can be added to a form. Finishers are actions that will
+be executed once the form has been submitted by a user.
 
-In the following chapter, each finisher and its functions are explained. Not all
-of the existing finishers can be added via the form editor. There are additional
+In the following chapter, each finisher and its function will be explained. Not all
+finishers can be added via the form editor. There are some
 finishers that can only be added by integrators/ administrators. The following
 finishers are available by default:
 
@@ -30,9 +29,8 @@ finishers are available by default:
 
 ..  important::
 
-    Finishers are executed in the order defined in your form definition. This is
-    especially important when you are using the ``Redirect finisher``. Make sure
+    Finishers are executed in the order that they appear in your form definition.
+    This is particularly important for the  ``Redirect finisher``. Make sure
     this finisher is the very last one to be executed. The ``Redirect finisher``
     stops the execution of all subsequent finishers in order to perform the redirect.
-    I.e. finishers defined after the ``Redirect finisher`` will not be executed in
-    any case.
+    Finishers defined after the ``Redirect finisher`` will be ignored.
