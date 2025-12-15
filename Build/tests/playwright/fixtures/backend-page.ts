@@ -4,6 +4,19 @@ import { FormEngine } from './form-engine';
 import { DocHeader } from './doc-header';
 import { Modal } from './modal';
 import { FileTree } from './file-tree';
+import { Sidebar } from './sidebar';
+
+export enum ViewportSize {
+  Desktop = 'desktop',
+  Tablet = 'tablet',
+  Mobile = 'mobile',
+}
+
+const viewportDimensions = {
+  [ViewportSize.Desktop]: { width: 1280, height: 960 },
+  [ViewportSize.Tablet]: { width: 768, height: 1024 },
+  [ViewportSize.Mobile]: { width: 375, height: 667 },
+};
 
 export class BackendPage {
   readonly moduleNavigation: Locator;
@@ -13,6 +26,7 @@ export class BackendPage {
   readonly formEngine: FormEngine;
   readonly docHeader: DocHeader;
   readonly modal: Modal;
+  readonly sidebar: Sidebar;
   private readonly page: Page;
 
   constructor(page: Page) {
@@ -24,6 +38,7 @@ export class BackendPage {
     this.docHeader = new DocHeader(page);
     this.modal = new Modal(page);
     this.fileTree = new FileTree(page);
+    this.sidebar = new Sidebar(page);
   }
 
   async gotoModule(identifier: string) {
@@ -63,5 +78,9 @@ export class BackendPage {
 
   getUnixTimestamp(): number {
     return Math.floor(Date.now() / 1000);
+  }
+
+  async setViewportSize(size: ViewportSize): Promise<void> {
+    await this.page.setViewportSize(viewportDimensions[size]);
   }
 }

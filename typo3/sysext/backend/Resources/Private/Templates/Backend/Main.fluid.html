@@ -22,16 +22,16 @@
 <f:asset.module identifier="@typo3/backend/live-search/element/backend-search.js"/>
 <f:asset.module identifier="@typo3/backend/drag-tooltip.js"/>
 
-<div class="scaffold{f:if(condition: '!{modulesCollapsed} && {modules}', then: ' scaffold-modulemenu-expanded')}{f:if(condition: '{isInWorkspace}', then: ' scaffold-in-workspace')}{f:if(condition: '{isImpersonated}', then: ' scaffold-in-impersonation')} t3js-scaffold">
+<div class="scaffold{f:if(condition: '!{sidebarCollapsed} && {modules}', then: ' scaffold-sidebar-expanded')}{f:if(condition: '{isInWorkspace}', then: ' scaffold-in-workspace')}{f:if(condition: '{isImpersonated}', then: ' scaffold-in-impersonation')} t3js-scaffold">
     <div class="scaffold-header t3js-scaffold-header">
         <f:render partial="Backend/Topbar" arguments="{_all}" />
     </div>
-    <f:if condition="{hasModules}">
-        <div class="scaffold-modulemenu t3js-scaffold-modulemenu">
+    <div class="scaffold-sidebar t3js-scaffold-sidebar"><f:spaceless>
+        <f:if condition="{hasModules}">
             <f:render partial="Backend/ModuleMenu" arguments="{modules: modules, modulesInformation: modulesInformation}" />
-        </div>
-    </f:if>
-    <div class="scaffold-content t3js-scaffold-content {f:if(condition: '!{hasModules}', then: 'scaffold-no-modules')}">
+        </f:if>
+    </f:spaceless></div>
+    <div class="scaffold-content t3js-scaffold-content">
         <typo3-backend-content-navigation
             identifier="backend"
             navigation-title="{f:translate(key: 'viewport.navigation', domain: 'backend.messages')}"
@@ -52,8 +52,8 @@
                 ></typo3-backend-module-router>
             </div>
         </typo3-backend-content-navigation>
-        <div class="scaffold-content-overlay t3js-scaffold-content-overlay"></div>
     </div>
+    <div class="scaffold-overlay"></div>
 </div>
 
 <typo3-backend-drag-tooltip></typo3-backend-drag-tooltip>

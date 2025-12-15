@@ -14,7 +14,7 @@ $nprogress-color: #ff8700;
 #nprogress .bar {
     background: $nprogress-color;
     position: fixed;
-    z-index: 1031;
+    z-index: calc(var(--typo3-zindex-header) + 1);
     top: 0;
     left: 0;
     width: 100%;
@@ -38,7 +38,7 @@ $nprogress-color: #ff8700;
 #nprogress .spinner {
     display: block;
     position: fixed;
-    z-index: 1031;
+    z-index: calc(var(--typo3-zindex-header) + 1);
     top: 15px;
     inset-inline-end: 15px;
 }

@@ -278,6 +278,12 @@
             0 #{$_offset_y_first} #{$_blur_first} light-dark(#{$shadow-light-first-color}, #{$shadow-dark-first-color}),
             0 #{$_offset_y_second} #{$_blur_second} light-dark(#{$shadow-light-second-color}, #{$shadow-dark-second-color});
     }
+    --typo3-shadow-type-basic: var(--typo3-shadow-2);
+    --typo3-shadow-type-strong: var(--typo3-shadow-4);
+    --typo3-shadow-type-tooltip: var(--typo3-shadow-8);
+    --typo3-shadow-type-flyout: var(--typo3-shadow-16);
+    --typo3-shadow-type-dialog: var(--typo3-shadow-28);
+    --typo3-shadow-type-window: var(--typo3-shadow-64);
 
     // Component
     --typo3-component-color: var(--typo3-text-color-base);
@@ -297,11 +303,11 @@
     --typo3-component-padding-y: .75rem;
     --typo3-component-padding-x: 1rem;
     --typo3-component-box-shadow: var(--typo3-shadow-2);
-    --typo3-component-box-shadow-strong: var(--typo3-shadow-4);
-    --typo3-component-box-shadow-tooltip: var(--typo3-shadow-8);
-    --typo3-component-box-shadow-flyout: var(--typo3-shadow-16);
-    --typo3-component-box-shadow-dialog: var(--typo3-shadow-28);
-    --typo3-component-box-shadow-window: var(--typo3-shadow-64);
+    --typo3-component-box-shadow-strong: var(--typo3-shadow-type-strong);
+    --typo3-component-box-shadow-tooltip: var(--typo3-shadow-type-tooltip);
+    --typo3-component-box-shadow-flyout: var(--typo3-shadow-type-flyout);
+    --typo3-component-box-shadow-dialog: var(--typo3-shadow-type-dialog);
+    --typo3-component-box-shadow-window: var(--typo3-shadow-type-window);
     --typo3-component-hover-color: var(--typo3-state-default-hover-color);
     --typo3-component-hover-bg: var(--typo3-state-default-hover-bg);
     --typo3-component-hover-border-color: var(--typo3-state-default-hover-border-color);
@@ -368,7 +374,8 @@
     // Scaffold
     --typo3-scaffold-color: var(--typo3-text-color-base);
     --typo3-scaffold-bg: var(--typo3-surface-base);
-    --typo3-scaffold-border-color: color-mix(in srgb, var(--typo3-surface-base), var(--typo3-scaffold-color) var(--typo3-border-mix));
+    --typo3-scaffold-border-color: color-mix(in srgb, var(--typo3-surface-base), var(--typo3-scaffold-color) var(--typo3-scaffold-border-mix));
+    --typo3-scaffold-border-mix: 10%;
     --typo3-scaffold-gap: .5rem;
     --typo3-scaffold-header-height: 3.75rem;
     --typo3-scaffold-header-color: var(--typo3-text-color-base);
@@ -381,12 +388,14 @@
     --typo3-scaffold-header-padding-x: .5rem;
     --typo3-scaffold-header-foldout-bg: var(--typo3-surface-container-high);
     --typo3-scaffold-header-zindex: var(--typo3-zindex-header);
-    --typo3-scaffold-modulemenu-color: var(--typo3-text-color-base);
-    --typo3-scaffold-modulemenu-bg: var(--typo3-surface-container-high);
-    --typo3-scaffold-modulemenu-collapsed-width: minmax(0, min-content);
-    --typo3-scaffold-modulemenu-expanded-width: 240px;
-    --typo3-scaffold-modulemenu-box-shadow: var(--typo3-shadow-2);
-    --typo3-scaffold-modulemenu-width: var(--typo3-scaffold-modulemenu-collapsed-width);
+    --typo3-scaffold-sidebar-color: var(--typo3-text-color-base);
+    --typo3-scaffold-sidebar-bg: var(--typo3-surface-container-high);
+    --typo3-scaffold-sidebar-boder-color: color-mix(in srgb, var(--typo3-scaffold-sidebar-bg), var(--typo3-scaffold-sidebar-color) var(--typo3-scaffold-border-mix));
+    --typo3-scaffold-sidebar-border-width: 1px;
+    --typo3-scaffold-sidebar-collapsed-width: minmax(0, min-content);
+    --typo3-scaffold-sidebar-expanded-width: 240px;
+    --typo3-scaffold-sidebar-box-shadow: var(--typo3-shadow-type-flyout);
+    --typo3-scaffold-sidebar-width: var(--typo3-scaffold-sidebar-collapsed-width);
 }
 
 [data-color-scheme="dark"] {
@@ -401,7 +410,7 @@
     --typo3-color-neutral-mix: 0%;
 
     .scaffold-header,
-    .scaffold-modulemenu {
+    .scaffold-sidebar {
         color-scheme: only dark;
     }
 }
@@ -412,8 +421,33 @@
     --token-color-secondary-base: hsl(from var(--token-color-primary-base) h 10% l);
 
     // Scaffold
-    --typo3-scaffold-modulemenu-bg: light-dark(hsl(from var(--typo3-surface-primary) h 40% 20), hsl(from var(--typo3-surface-primary) h 20% 10));
-    --typo3-scaffold-modulemenu-color: var(--typo3-surface-primary-text);
+    --typo3-scaffold-header-color: var(--typo3-surface-primary-text);
+    --typo3-scaffold-header-bg: light-dark(hsl(from var(--typo3-surface-primary) h 40% 20), hsl(from var(--typo3-surface-primary) h 20% 10));
+    --typo3-scaffold-header-box-shadow: none;
+    --typo3-scaffold-sidebar-color: var(--typo3-surface-primary-text);
+    --typo3-scaffold-sidebar-bg: light-dark(hsl(from var(--typo3-surface-primary) h 40% 20%), hsl(from var(--typo3-surface-primary) h 20% 10%));
+    --typo3-scaffold-sidebar-border-width: 0;
+
+    @media (min-width: 992px) {
+        .scaffold-content:before {
+            --size: 1rem;
+            content: '';
+            position: absolute;
+            top: calc(var(--size) * -1);
+            inset-inline-start: calc(var(--size) * -1);
+            height: calc(var(--size) * 2);
+            width: calc(var(--size) * 2);
+            background-color: var(--typo3-scaffold-sidebar-bg);
+            user-select: none;
+            mask:
+                radial-gradient(
+                    circle at 100% 100%,
+                    transparent calc(var(--size) - .5px),
+                    black calc(var(--size) + .5px)
+                );
+            z-index: calc(var(--typo3-zindex-header) + 2);
+        }
+    }
 }
 
 :root.t3js-disable-transitions {

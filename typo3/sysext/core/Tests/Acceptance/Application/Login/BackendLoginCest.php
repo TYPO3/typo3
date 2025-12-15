@@ -126,7 +126,7 @@ final class BackendLoginCest
         // wait for the next to element to indicate if the backend was loaded successful
         if ($username !== 'editor') {
             // "editor" doesn't have any modules available in this setup
-            $I->waitForElement('.scaffold-modulemenu', 30);
+            $I->waitForElement('.scaffold-sidebar', 30);
         }
         $I->waitForElement('.toolbar-item-user', 30);
         $I->seeCookie('be_typo_user');

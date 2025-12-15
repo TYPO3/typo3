@@ -13,6 +13,11 @@
 
 import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
+import {
+  ScaffoldState,
+  SearchToggleRequestEvent,
+  ToolbarToggleRequestEvent,
+} from './viewport/scaffold-state';
 
 /**
  * Module: @typo3/backend/toolbar
@@ -21,19 +26,17 @@ import RegularEvent from '@typo3/core/event/regular-event';
  */
 class Toolbar {
   public static initialize(): void {
+    ScaffoldState.initialize();
     Toolbar.initializeEvents();
   }
 
   private static initializeEvents(): void {
     new RegularEvent('click', (): void => {
-      const scaffold = document.querySelector('.scaffold');
-      scaffold.classList.remove('scaffold-modulemenu-expanded');
-      scaffold.classList.toggle('scaffold-toolbar-expanded');
+      document.dispatchEvent(new ToolbarToggleRequestEvent());
     }).bindTo(document.querySelector('.t3js-topbar-button-toolbar'));
 
     new RegularEvent('click', (): void => {
-      const scaffold = document.querySelector('.scaffold');
-      scaffold.classList.remove('scaffold-modulemenu-expanded', 'scaffold-toolbar-expanded');
+      document.dispatchEvent(new SearchToggleRequestEvent());
     }).bindTo(document.querySelector('.t3js-topbar-button-search'));
   }
 }

@@ -16,7 +16,7 @@ import { ContentNavigationSlotEnum, type ContentNavigation } from '@typo3/backen
 export enum ScaffoldIdentifierEnum {
   scaffold = '.t3js-scaffold',
   header = '.t3js-scaffold-header',
-  moduleMenu = '.t3js-scaffold-modulemenu',
+  sidebar = '.t3js-scaffold-sidebar',
   content = '.t3js-scaffold-content',
   contentModuleRouter = 'typo3-backend-module-router',
   contentModuleIframe = '.t3js-scaffold-content-module-iframe',

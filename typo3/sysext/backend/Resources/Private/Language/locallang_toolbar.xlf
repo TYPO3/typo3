@@ -51,8 +51,11 @@
       <trans-unit id="toolbarItems.help">
         <source>Help</source>
       </trans-unit>
-      <trans-unit id="toolbarItems.minMaxModuleMenu">
-        <source>Minimize/maximize module menu</source>
+      <trans-unit id="toolbarItems.sidebarCollapse">
+        <source>Collapse sidebar</source>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sidebarExpand">
+        <source>Expand sidebar</source>
       </trans-unit>
       <trans-unit id="toolbarItems.search">
         <source>Search</source>

@@ -48,7 +48,7 @@ class AbstractController
         $view = new FluidViewAdapter($fluidView);
         $view->assignMultiple([
             'controller' => $request->getQueryParams()['install']['controller'] ?? 'maintenance',
-            'context' => $request->getQueryParams()['install']['context'] ?? '',
+            'context' => $request->getQueryParams()['install']['context'] ?? 'install',
             'composerMode' => Environment::isComposerMode(),
             'currentTypo3Version' => (string)(new Typo3Version()),
             'colorScheme' => $request->getQueryParams()['install']['colorScheme'] ?? '',

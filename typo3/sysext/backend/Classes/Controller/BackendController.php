@@ -171,7 +171,7 @@ class BackendController
         $this->assignTopbarDetailsToView($request, $view);
         $view->assignMultiple([
             'modules' => $this->modules,
-            'modulesCollapsed' => $this->getCollapseStateOfMenu(),
+            'sidebarCollapsed' => $this->getCollapseStateOfSidebar(),
             'modulesInformation' => GeneralUtility::jsonEncodeForHtmlAttribute($this->getModulesInformation(), false),
             'startupModule' => $this->getStartupModule($request),
             'entryPoint' => $this->backendEntryPointResolver->getPathFromRequest($request),
@@ -374,11 +374,11 @@ class BackendController
         return $modules;
     }
 
-    protected function getCollapseStateOfMenu(): bool
+    protected function getCollapseStateOfSidebar(): bool
     {
         $backendUser = $this->getBackendUser();
         $uc = json_decode((string)json_encode($backendUser->uc), true);
-        $collapseState = $uc['BackendComponents']['States']['typo3-module-menu']['collapsed'] ?? false;
+        $collapseState = $uc['BackendComponents']['States']['typo3-sidebar']['collapsed'] ?? false;
         return $collapseState === true || $collapseState === 'true';
     }
 

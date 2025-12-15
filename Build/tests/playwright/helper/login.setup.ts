@@ -7,6 +7,6 @@ setup('authenticate as admin', async ({ page }) => {
   await page.getByLabel('Password').fill(config.login.admin.password);
   await page.getByRole('button', { name: 'Login' }).click();
   await page.waitForLoadState('networkidle');
-  await expect(page.locator('.t3js-topbar-button-modulemenu')).toBeVisible();
+  await expect(page.locator('typo3-backend-sidebar-toggle')).toBeVisible();
   await page.context().storageState({ path: './.auth/login.json' });
 });

@@ -62,7 +62,7 @@ body:has(.module) *:target {
     position: fixed;
     min-height: 5px;
     width: 100%;
-    z-index: 999999;
+    z-index: calc(var(--typo3-zindex-header) + 1);
 
     &.nprogress-custom-parent {
         position: fixed;

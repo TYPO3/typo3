@@ -23,14 +23,12 @@ import '@typo3/backend/element/spinner-element';
 import type MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import '@typo3/backend/element/progress-bar-element';
+import { ScaffoldState } from '@typo3/backend/viewport/scaffold-state';
+import '@typo3/backend/element/sidebar-toggle-element';
 
 class Router {
   private readonly rootSelector: string = '.t3js-body';
   private readonly contentSelector: string = '.t3js-module-body';
-
-  private readonly scaffoldSelector: string = '.t3js-scaffold';
-  private readonly scaffoldContentOverlaySelector: string = '.t3js-scaffold-content-overlay';
-  private readonly scaffoldMenuToggleSelector: string = '.t3js-topbar-button-modulemenu';
 
   private rootContainer: HTMLElement;
   private controller: string;
@@ -406,35 +404,13 @@ class Router {
   }
 
   public registerScaffoldEvents(): void {
-    if(!localStorage.getItem('typo3-install-modulesCollapsed')) {
-      localStorage.setItem('typo3-install-modulesCollapsed', 'false');
-    }
-    this.toggleMenu(localStorage.getItem('typo3-install-modulesCollapsed') === 'true');
-    document.querySelector(this.scaffoldMenuToggleSelector).addEventListener('click', (event: MouseEvent) => {
-      event.preventDefault();
-      this.toggleMenu();
-    });
-    document.querySelector(this.scaffoldContentOverlaySelector).addEventListener('click', (event: MouseEvent) => {
-      event.preventDefault();
-      this.toggleMenu(true);
-    });
+    ScaffoldState.initialize();
+
     document.querySelectorAll('[data-installroute-controller]').forEach((element: Element) => {
       element.addEventListener('click', (): void => {
-        if (window.innerWidth < 768) {
-          localStorage.setItem('typo3-install-modulesCollapsed', 'true');
-        }
+        ScaffoldState.toggleSidebarFlyout(false);
       });
     });
-  }
-
-  public toggleMenu(collapse?: boolean): void {
-    const scaffold = document.querySelector(this.scaffoldSelector);
-    const expandedClass = 'scaffold-modulemenu-expanded';
-    if (typeof collapse === 'undefined') {
-      collapse = scaffold.classList.contains(expandedClass);
-    }
-    scaffold.classList.toggle(expandedClass, !collapse);
-    localStorage.setItem('typo3-install-modulesCollapsed', collapse ? 'true' : 'false');
   }
 
   public updateLoadingInfo(info: string): void {

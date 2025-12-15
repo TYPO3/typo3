@@ -51,7 +51,7 @@ final class BookmarkCest
     public function checkThatAddingABookmarkAddsItemToTheBookmarkList(ApplicationTester $I, Scenario $scenario): ApplicationTester
     {
         // open the scheduler module as we would like to put it into the bookmark list
-        $I->click('Scheduler', '.scaffold-modulemenu');
+        $I->click('Scheduler', '.scaffold-sidebar');
 
         $I->switchToContentFrame();
 

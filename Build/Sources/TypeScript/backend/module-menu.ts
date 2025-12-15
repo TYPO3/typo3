@@ -12,7 +12,6 @@
  */
 
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { ScaffoldIdentifierEnum } from './enum/viewport/scaffold-identifier';
 import { flushModuleCache, type Module, ModuleSelector, type ModuleState, ModuleUtility } from '@typo3/backend/module';
 import PersistentStorage from './storage/persistent';
 import Viewport from './viewport';
@@ -129,28 +128,6 @@ class ModuleMenu {
     return params;
   }
 
-  private static toggleMenu(collapse?: boolean): void {
-    const scaffold = document.querySelector(ScaffoldIdentifierEnum.scaffold);
-    const expandedClass = 'scaffold-modulemenu-expanded';
-
-    if (typeof collapse === 'undefined') {
-      collapse = scaffold.classList.contains(expandedClass);
-    }
-    scaffold.classList.toggle(expandedClass, !collapse);
-
-    if (!collapse) {
-      scaffold.classList.remove('scaffold-toolbar-expanded');
-    }
-
-    // Persist collapsed state in the UC of the current user
-    PersistentStorage.set(
-      'BackendComponents.States.typo3-module-menu',
-      {
-        collapsed: collapse,
-      },
-    );
-  }
-
   private static toggleModuleGroup(element: HTMLElement, expand?: boolean): void {
     const menuItem = ModuleMenu.getModuleMenuItemFromElement(element);
     const moduleGroup = menuItem.element.closest('.modulemenu-group');
@@ -182,22 +159,9 @@ class ModuleMenu {
   }
 
   private static highlightModule(identifier: string): void {
-    // Handle modulemenu
     const menu = document.querySelector(ModuleMenuSelector.menu);
     menu.querySelectorAll(ModuleMenuSelector.item).forEach((element: Element) => {
       element.classList.remove('modulemenu-action-active');
-      element.removeAttribute('aria-current');
-    });
-
-    // Handle toolbar
-    //
-    // This is a workaround, to ensure the toolbar module links are handled.
-    // There is no dedicated module rendering in the toolbar, so we rely on this
-    // workaround until this changes. Even the code matches the handling of
-    // module-menu-items we keep this separate to show the problem here.
-    const toolbar = document.querySelector('.t3js-scaffold-toolbar');
-    toolbar.querySelectorAll(ModuleSelector.link + '.dropdown-item').forEach((element: Element) => {
-      element.classList.remove('active');
       element.removeAttribute('aria-current');
     });
 
@@ -206,7 +170,6 @@ class ModuleMenu {
   }
 
   private static highlightModuleMenuItem(module: Module, current: boolean = true): void {
-    // Handle modulemenu
     const menu = document.querySelector(ModuleMenuSelector.menu);
     const menuElements = menu.querySelectorAll(ModuleMenuSelector.item + selector`[data-modulemenu-identifier="${module.name}"]`);
     menuElements.forEach((element: HTMLElement) => {
@@ -216,22 +179,7 @@ class ModuleMenu {
       }
     });
 
-    // Handle toolbar
-    //
-    // This is a workaround, to ensure the toolbar module links are handled.
-    // There is no dedicated module rendering in the toolbar, so we rely on this
-    // workaround until this changes. Even the code matches the handling of
-    // module-menu-items we keep this separate to show the problem here.
-    const toolbar = document.querySelector('.t3js-scaffold-toolbar');
-    const toolbarElements = toolbar.querySelectorAll(ModuleSelector.link + selector`[data-moduleroute-identifier="${module.name}"].dropdown-item`);
-    toolbarElements.forEach((element: HTMLElement) => {
-      element.classList.add('active');
-      if (current) {
-        element.setAttribute('aria-current', 'location');
-      }
-    });
-
-    if (menuElements.length > 0 || toolbarElements.length > 0) {
+    if (menuElements.length > 0) {
       current = false;
     }
 
@@ -324,13 +272,7 @@ class ModuleMenu {
     }
 
     this.initializeModuleMenuEvents();
-    Viewport.Topbar.Toolbar.registerEvent(() => {
-      // Only initialize top bar events when top bar exists.
-      // E.g. install tool has no top bar
-      if (document.querySelector('.t3js-scaffold-toolbar')) {
-        this.initializeTopBarEvents();
-      }
-    });
+    this.initializeModuleLoadListeners();
   }
 
   /**
@@ -438,27 +380,9 @@ class ModuleMenu {
   }
 
   /**
-   * Initialize events for label toggle and help menu
+   * Initialize module load event listeners for highlighting and navigation synchronization
    */
-  private initializeTopBarEvents(): void {
-    const toolbar = document.querySelector('.t3js-scaffold-toolbar');
-
-    new RegularEvent('click', (event: Event, target: HTMLElement): void => {
-      event.preventDefault();
-      const moduleRoute = ModuleUtility.getRouteFromElement(target);
-      this.showModule(moduleRoute.identifier, moduleRoute.params, event);
-    }).delegateTo(toolbar, ModuleSelector.link);
-
-    new RegularEvent('click', (e: Event): void => {
-      e.preventDefault();
-      ModuleMenu.toggleMenu();
-    }).bindTo(document.querySelector('.t3js-topbar-button-modulemenu'));
-
-    new RegularEvent('click', (e: Event): void => {
-      e.preventDefault();
-      ModuleMenu.toggleMenu(true);
-    }).bindTo(document.querySelector('.t3js-scaffold-content-overlay'));
-
+  private initializeModuleLoadListeners(): void {
     const moduleLoadListener = (evt: CustomEvent<ModuleState>) => {
       const moduleName = evt.detail.module;
       if (!moduleName || this.loadedModule === moduleName) {

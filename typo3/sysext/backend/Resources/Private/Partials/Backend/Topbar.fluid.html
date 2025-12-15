@@ -5,17 +5,15 @@
     data-namespace-typo3-fluid="true"
 >
 
+<f:asset.module identifier="@typo3/backend/element/sidebar-toggle-element.js" />
 <div class="scaffold-topbar t3js-scaffold-topbar" data-topbar-identifier="topbar">
     <div class="topbar t3js-topbar">
-        <f:render
-            section="ToggleButton"
-            arguments="{
-                icon: 'actions-menu',
-                enabled: '{hasModules}',
-                classes: 'topbar-button-modulemenu t3js-topbar-button-modulemenu',
-                title: '{f:translate(key: \'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.minMaxModuleMenu\')}'
-            }"
-        />
+        <typo3-backend-sidebar-toggle
+            class="topbar-button topbar-button-modulemenu"
+            label-collapse="{f:translate(key: 'toolbarItems.sidebarCollapse', domain: 'backend.toolbar')}"
+            label-expand="{f:translate(key: 'toolbarItems.sidebarExpand', domain: 'backend.toolbar')}"
+            {f:if(condition: '!{hasModules}', then: 'disabled')}
+        ></typo3-backend-sidebar-toggle>
         <div class="topbar-site-container">
             <a class="topbar-site" href="./" target="_top" title="{siteName} - {applicationVersion}">
                 <span class="topbar-site-logo">
@@ -67,20 +65,5 @@
         </ul>
     </div>
 </div>
-
-<f:section name="ToggleButton">
-    <f:variable name="disabled" value="{f:if(condition: '!{enabled}', then: 1, else: 0)}" />
-    <f:variable name="disabledAttr" value="{f:if(condition: '{disabled}', then: 'disabled')}" />
-
-    <button {disabledAttr} class="topbar-button {classes}" title="{title}" aria-label="{title}">
-        <f:render section="Icon" arguments="{identifier: icon, disabled: disabled}" />
-    </button>
-</f:section>
-
-<f:section name="Icon">
-    <f:variable name="overlay" value="{f:if(condition: '{disabled}', then: 'overlay-readonly', else: null)}" />
-
-    <core:icon identifier="{identifier}" alternativeMarkupIdentifier="inline" overlay="{overlay}" />
-</f:section>
 
 </html>

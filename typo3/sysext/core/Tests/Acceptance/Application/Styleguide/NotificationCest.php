@@ -24,7 +24,7 @@ final class NotificationCest
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
-        $I->click('Styleguide', '.scaffold-modulemenu');
+        $I->click('Styleguide', '.scaffold-sidebar');
     }
 
     public function seeClearAllButton(ApplicationTester $I): void
