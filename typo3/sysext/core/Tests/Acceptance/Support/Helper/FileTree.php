@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 final class FileTree extends AbstractTree
 {
     // Selectors
-    public static $treeSelector = '#typo3-filestoragetree';
+    public static $treeSelector = '#typo3-filestoragetree-tree';
 
     /**
      * Inject our core AcceptanceTester actor into PageTree

@@ -74,15 +74,6 @@
 //
 // AJAX Page Tree
 //
-body#typo3-pagetree {
-    margin: 0;
-    padding: 0;
-}
-
-#typo3-pagetree #typo3-inner-docbody {
-    padding: 10px 0;
-}
-
 span.dragIcon {
     display: inline-block;
     height: 16px;
@@ -94,22 +85,4 @@ span.dragIcon {
     z-index: 20;
     opacity: .5;
     white-space: nowrap;
-}
-
-//
-// Tree
-//
-.scaffold-content-navigation-component {
-    &,
-    .tree,
-    .tree > div,
-    .navigation-tree-container {
-        flex: 1 0 0;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .tree-wrapper {
-        flex: 1 0 0;
-    }
 }

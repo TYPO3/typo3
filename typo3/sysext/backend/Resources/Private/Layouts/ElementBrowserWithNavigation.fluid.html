@@ -3,29 +3,39 @@
     data-namespace-typo3-fluid="true"
 >
 
+<f:asset.module identifier="@typo3/backend/viewport/content-navigation.js"/>
+
 <f:if condition="{contentOnly}">
     <f:then>
         <f:render section="Content" />
     </f:then>
     <f:else>
         <div class="element-browser">
-            <div class="element-browser-main scaffold-content-navigation-available scaffold-content-navigation-expanded">
-                <div class="element-browser-main-sidebar" style="width: {initialNavigationWidth}px">
+            <typo3-backend-content-navigation
+                class="element-browser-main"
+                identifier="elementbrowser"
+                navigation-title="{f:translate(key: 'viewport.navigation', domain: 'backend.messages')}"
+                navigation-label-collapse="{f:translate(key: 'viewport.navigation.hide', domain: 'backend.messages')}"
+                navigation-label-expand="{f:translate(key: 'viewport.navigation.show', domain: 'backend.messages')}"
+                navigation-initial-width="{initialNavigationWidth}"
+            >
+                <div slot="navigation" class="element-browser-main-sidebar">
                     <f:render section="Navigation" />
                 </div>
-                <typo3-backend-navigation-switcher
-                    parent=".element-browser-main"
-                    navigation=".element-browser-main-sidebar"
-                    minimum-width="250"
-                    initial-width="{initialNavigationWidth}"
-                    persistence-identifier="selector.navigation.width"
-                ></typo3-backend-navigation-switcher>
-                <div class="element-browser-main-content">
+                <div slot="content" class="element-browser-main-content">
+                    <div class="element-browser-navigation-toggle">
+                        <typo3-backend-content-navigation-toggle
+                            class="btn btn-sm btn-icon btn-default btn-borderless"
+                            action="expand"
+                            hidden
+                        >
+                        </typo3-backend-content-navigation-toggle>
+                    </div>
                     <div class="element-browser-body">
                         <f:render section="Content" />
                     </div>
                 </div>
-            </div>
+            </typo3-backend-content-navigation>
         </div>
     </f:else>
 </f:if>

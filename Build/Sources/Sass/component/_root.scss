@@ -387,11 +387,6 @@
     --typo3-scaffold-modulemenu-expanded-width: 240px;
     --typo3-scaffold-modulemenu-box-shadow: var(--typo3-shadow-2);
     --typo3-scaffold-modulemenu-width: var(--typo3-scaffold-modulemenu-collapsed-width);
-    --typo3-scaffold-content-navigation-width: 300px;
-    --typo3-scaffold-content-navigation-drag-bg: color-mix(in srgb, var(--typo3-surface-container-high), var(--typo3-text-color-base) 10%);
-    --typo3-scaffold-content-navigation-drag-bg-hover: color-mix(in srgb, var(--typo3-surface-container-high), var(--typo3-text-color-base) 15%);
-    --typo3-scaffold-content-navigation-switcher-bg: var(--typo3-surface-container-base);
-    --typo3-scaffold-content-navigation-switcher-border: color-mix(in srgb, var(--typo3-surface-container-base), var(--typo3-text-color-base) 10%);
 }
 
 [data-color-scheme="dark"] {

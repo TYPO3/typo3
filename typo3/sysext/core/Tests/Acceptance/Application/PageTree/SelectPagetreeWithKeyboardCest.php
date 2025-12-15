@@ -35,7 +35,7 @@ final class SelectPagetreeWithKeyboardCest
         $I->useExistingSession('admin');
         $I->click('Records');
         $pageTree->openPath(['Root']);
-        $I->waitForElement('#typo3-pagetree-treeContainer [role="treeitem"][data-id="1"]', 5);
+        $I->waitForElement('#typo3-pagetree-tree [role="treeitem"][data-id="1"]', 5);
     }
 
     /**

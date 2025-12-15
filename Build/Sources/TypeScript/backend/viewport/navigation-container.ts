@@ -11,11 +11,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { ScaffoldIdentifierEnum } from '../enum/viewport/scaffold-identifier';
+import { ScaffoldContentArea } from '../enum/viewport/scaffold-identifier';
 import { AbstractContainer } from './abstract-container';
 import TriggerRequest from '../event/trigger-request';
 import { selector } from '@typo3/core/literals';
 import type InteractionRequest from '../event/interaction-request';
+import type { ContentNavigation } from '@typo3/backend/viewport/content-navigation';
 
 class NavigationContainer extends AbstractContainer {
   private activeComponentId: string = '';
@@ -25,14 +26,14 @@ class NavigationContainer extends AbstractContainer {
     super(consumerScope);
   }
 
-  private get parent(): HTMLElement
+  private get contentNavigation(): ContentNavigation | null
   {
-    return document.querySelector(ScaffoldIdentifierEnum.scaffold);
+    return ScaffoldContentArea.getContentNavigation();
   }
 
-  private get container(): HTMLElement
+  private get navigationContainer(): HTMLElement | null
   {
-    return document.querySelector(ScaffoldIdentifierEnum.contentNavigation);
+    return ScaffoldContentArea.getNavigationContainer();
   }
 
   /**
@@ -41,14 +42,19 @@ class NavigationContainer extends AbstractContainer {
    * @param {string} navigationComponentId
    */
   public showComponent(navigationComponentId: string): void {
-    const container = this.container;
+    const contentNavigation = this.contentNavigation;
+    const navigationContainer = this.navigationContainer;
+    if (!contentNavigation || !navigationContainer) {
+      return;
+    }
+
     this.show(navigationComponentId);
     // Component is already loaded and active, nothing to do
     if (navigationComponentId === this.activeComponentId) {
       return;
     }
     if (this.activeComponentId !== '') {
-      const activeComponentElement = container.querySelector('#navigationComponent-' + this.activeComponentId.replace(/[/@]/g, '_')) as HTMLElement;
+      const activeComponentElement = navigationContainer.querySelector('#navigationComponent-' + this.activeComponentId.replace(/[/@]/g, '_')) as HTMLElement;
       if (activeComponentElement) {
         activeComponentElement.style.display = 'none';
       }
@@ -58,7 +64,7 @@ class NavigationContainer extends AbstractContainer {
     const navigationComponentElement = 'navigationComponent-' + componentCssName;
 
     // The component was already set up, so requiring the module again can be excluded.
-    if (container.querySelectorAll(selector`[data-component="${navigationComponentId}"]`).length === 1) {
+    if (navigationContainer.querySelectorAll(selector`[data-component="${navigationComponentId}"]`).length === 1) {
       this.show(navigationComponentId);
       this.activeComponentId = navigationComponentId;
       return;
@@ -69,14 +75,13 @@ class NavigationContainer extends AbstractContainer {
         const tagName: string = __esModule.navigationComponentName;
         const element = document.createElement(tagName);
         element.setAttribute('id', navigationComponentElement);
-        element.classList.add('scaffold-content-navigation-component');
         element.dataset.component = navigationComponentId;
-        container.append(element);
+        navigationContainer.append(element);
       } else {
         // Because the component does not exist, let's create the div as wrapper
-        container.insertAdjacentHTML(
+        navigationContainer.insertAdjacentHTML(
           'beforeend',
-          '<div class="scaffold-content-navigation-component" data-component="' + navigationComponentId + '" id="' + navigationComponentElement + '"></div>'
+          '<div data-component="' + navigationComponentId + '" id="' + navigationComponentElement + '"></div>'
         );
 
         // manual static initialize method, unused but kept for backwards-compatibility until TYPO3 v12
@@ -89,16 +94,18 @@ class NavigationContainer extends AbstractContainer {
   }
 
   public hide(): void {
-    const parent = this.parent;
-    parent.classList.remove('scaffold-content-navigation-available');
+    this.contentNavigation?.hideNavigation();
   }
 
   public show(component: string): void {
-    const parent = this.parent;
-    const container = this.container;
-    container.querySelectorAll(ScaffoldIdentifierEnum.contentNavigationDataComponent).forEach((el: HTMLElement) => el.style.display = 'none');
-    parent.classList.add('scaffold-content-navigation-available');
-    const selectedElement = container.querySelector('[data-component="' + component + '"]') as HTMLElement;
+    const contentNavigation = this.contentNavigation;
+    const navigationContainer = this.navigationContainer;
+    if (!contentNavigation || !navigationContainer) {
+      return;
+    }
+    navigationContainer.querySelectorAll('[data-component]').forEach((el: HTMLElement) => el.style.display = 'none');
+    contentNavigation.showNavigation();
+    const selectedElement = navigationContainer.querySelector('[data-component="' + component + '"]') as HTMLElement;
     if (selectedElement) {
       // Re-set to the display setting from CSS
       selectedElement.style.display = null;
@@ -110,7 +117,7 @@ class NavigationContainer extends AbstractContainer {
       new TriggerRequest('typo3.setUrl', interactionRequest),
     );
     promise.then((): void => {
-      this.parent.classList.add('scaffold-content-navigation-expanded');
+      this.contentNavigation?.showNavigation();
     });
     return promise;
   }

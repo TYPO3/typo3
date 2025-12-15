@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import{ScaffoldIdentifierEnum as r}from"@typo3/backend/enum/viewport/scaffold-identifier.js";import t from"nprogress";class e{static start(){t.configure({parent:r.contentModule,showSpinner:!1}),t.start()}static finish(){t.done()}}export{e as default};
+import{ScaffoldContentArea as o}from"@typo3/backend/enum/viewport/scaffold-identifier.js";import{ContentNavigationSlotEnum as r}from"@typo3/backend/viewport/content-navigation.js";import t from"nprogress";class e{static start(){t.configure({parent:`${o.selector} > [slot="${r.content}"]`,showSpinner:!1}),t.start()}static finish(){t.done()}}export{e as default};

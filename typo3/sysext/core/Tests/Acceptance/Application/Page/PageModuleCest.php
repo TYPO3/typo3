@@ -37,7 +37,7 @@ final class PageModuleCest
         $I->switchToMainFrame();
         $I->click('Layout');
         // click on PID=0
-        $I->clickWithLeftButton('#typo3-pagetree-treeContainer [role="treeitem"][data-id="0"] .node-contentlabel');
+        $I->clickWithLeftButton('#typo3-pagetree-tree [role="treeitem"][data-id="0"] .node-contentlabel');
         $I->switchToContentFrame();
         $I->canSee('Please select a page in the page tree to edit page content.');
     }

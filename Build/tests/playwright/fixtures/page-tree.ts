@@ -1,16 +1,16 @@
 import { Page, expect, Locator } from '@playwright/test';
 
 export class PageTree {
-  readonly container: Locator;
   readonly toolbar: Locator;
+  readonly tree: Locator;
   readonly root: Locator;
   private readonly page: Page;
 
   constructor(page: Page) {
     this.page = page;
-    this.container = this.page.locator('#typo3-pagetree');
-    this.toolbar = this.container.locator('#typo3-pagetree-toolbar');
-    this.root = this.container.locator('[identifier="apps-pagetree-root"]');
+    this.toolbar = this.page.locator('#typo3-pagetree-toolbar');
+    this.tree = this.page.locator('#typo3-pagetree-tree');
+    this.root = this.tree.locator('[identifier="apps-pagetree-root"]');
   }
 
   /**
@@ -43,8 +43,8 @@ export class PageTree {
    */
   async isReady() {
     // For some reason sometimes there are multiple loaders, just wait for the last to disappear
-    await expect(this.container.locator('.nodes-loader-inner').last()).not.toBeAttached();
-    await expect(this.container.locator('[identifier="spinner-circle"]')).not.toBeAttached();
+    await expect(this.tree.locator('.nodes-loader-inner').last()).not.toBeAttached();
+    await expect(this.tree.locator('[identifier="spinner-circle"]')).not.toBeAttached();
     await expect(this.page.locator('.nprogress-busy')).not.toBeVisible();
   }
 
@@ -118,7 +118,7 @@ export class PageTree {
       level++;
 
       // Consider only pages on the current level to avoid naming conflicts.
-      const element = this.container.locator(`[aria-level="${level}"]`, {
+      const element = this.tree.locator(`[aria-level="${level}"]`, {
         has: this.page.locator('.node-contentlabel', { hasText: new RegExp(`^${page}$`) })
       });
 
@@ -178,7 +178,7 @@ export class PageTree {
         if (!dataId) {
           throw new Error(`Could not get data-id for page "${page}"`);
         }
-        return this.container.locator(`[data-id="${dataId}"]`);
+        return this.tree.locator(`[data-id="${dataId}"]`);
       }
     }
 

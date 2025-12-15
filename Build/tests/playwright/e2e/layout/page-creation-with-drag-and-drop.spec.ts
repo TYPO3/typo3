@@ -24,7 +24,7 @@ test('Drag and drop new page in node with children', async ({ backend }) => {
 
   // Create child page under newRootPageElement
   await backend.pageTree.create(newRootPageElement, pageTitle);
-  const newPageElement = backend.pageTree.container.locator('[role="treeitem"]', { hasText: pageTitle });
+  const newPageElement = backend.pageTree.tree.locator('[role="treeitem"]', { hasText: pageTitle });
 
   // Validate page creation
   await backend.pageTree.open(dummySiteTitle, pageTitle);

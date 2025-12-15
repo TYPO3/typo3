@@ -156,8 +156,12 @@ iframe {
 //
 .scaffold-content {
     position: relative !important;
-    display: flex;
     background: var(--typo3-scaffold-bg);
+    overflow: auto;
+}
+
+.scaffold-content-module {
+    height: 100%;
 }
 
 .scaffold-content-module-iframe {
@@ -167,26 +171,19 @@ iframe {
     width: 100%;
 }
 
-.scaffold-content-navigation {
-    display: none;
-
-    .scaffold-content-navigation-available.scaffold-content-navigation-expanded & {
+.scaffold-content typo3-backend-content-navigation {
+    [slot="navigation"] {
         display: flex;
+        flex-direction: column;
+        height: 100%;
     }
-    flex-direction: column;
-    inset-inline-start: 0;
-    height: 100%;
-    width: var(--typo3-scaffold-content-navigation-width);
 
-    &-component {
-        flex: 1 0 auto;
+    [slot="content"] {
+        flex: 1 0 0;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
     }
-}
-
-.scaffold-content-module {
-    flex: 1 0 0%;
-    display: flex;
-    flex-direction: row;
 }
 
 //
@@ -210,105 +207,4 @@ iframe {
             display: none;
         }
     }
-}
-
-.scaffold-content-navigation-drag {
-    display: none;
-    flex: 0 0 auto;
-    width: 1px;
-    height: 100%;
-    user-select: none;
-    z-index: 3;
-    color: var(--typo3-scaffold-color);
-    background-color: var(--typo3-scaffold-content-navigation-drag-bg);
-    transition: background-color .2s ease-in-out, border .2s ease-in-out;
-
-    &:hover {
-        --typo3-scaffold-content-navigation-drag-bg: var(--typo3-scaffold-content-navigation-drag-bg-hover);
-        background-color: var(--typo3-scaffold-content-navigation-drag-bg);
-
-        &:after {
-            border-inline-end: 2px solid var(--typo3-scaffold-content-navigation-drag-bg);
-        }
-    }
-
-    &:after {
-        content: '';
-        position: absolute;
-        height: 100%;
-        width: 8px;
-        margin-inline-start: -5px;
-        border-inline-end: 2px solid transparent;
-    }
-
-    &.resizing {
-        &:before {
-            background-color: transparent;
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            user-select: none;
-            z-index: 2;
-        }
-    }
-
-    .scaffold-content-navigation-expanded & {
-        display: block;
-        cursor: ew-resize;
-    }
-}
-
-.scaffold-content-navigation-switcher {
-    display: none;
-
-    .scaffold-content-navigation-available & {
-        width: 38px;
-        height: 100%;
-        display: flex;
-        position: relative;
-        flex-direction: column;
-        color: var(--typo3-scaffold-color);
-        border-inline-end: 1px solid var(--typo3-scaffold-content-navigation-switcher-border);
-        padding: 4px;
-        background: var(--typo3-scaffold-content-navigation-switcher-bg);
-    }
-
-    .scaffold-content-navigation-available.scaffold-content-navigation-expanded & {
-        position: static;
-        display: block;
-        width: 0;
-        height: 30px;
-        border-inline-end: 0;
-        background: transparent;
-        transform: translate(calc((-1 * (var(--tree-toolbar-padding-x) + 28px)) * var(--typo3-position-modifier)), var(--tree-toolbar-padding-y));
-        z-index: 3;
-        padding: 0;
-    }
-
-    .scaffold-content-navigation-switcher-btn {
-        display: inline-flex;
-    }
-
-    .scaffold-content-navigation-switcher-open {
-        display: inline-flex;
-
-        .scaffold-content-navigation-expanded & {
-            display: none;
-        }
-    }
-
-    .scaffold-content-navigation-switcher-close {
-        display: none;
-
-        .scaffold-content-navigation-expanded & {
-            display: inline-flex;
-        }
-    }
-}
-
-typo3-backend-navigation-switcher {
-    display: flex;
 }

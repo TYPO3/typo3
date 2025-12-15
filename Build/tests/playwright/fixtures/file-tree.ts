@@ -1,16 +1,16 @@
 import { Page, expect, Locator } from '@playwright/test';
 
 export class FileTree {
-  readonly container: Locator;
+  readonly tree: Locator;
   readonly toolbar: Locator;
   readonly root: Locator;
   private readonly page: Page;
 
   constructor(page: Page) {
     this.page = page;
-    this.container = this.page.locator('#typo3-filestoragetree');
-    this.toolbar = this.container.locator('#filestoragetree-toolbar');
-    this.root = this.container.locator('typo3-backend-navigation-component-filestorage-tree');
+    this.toolbar = this.page.locator('#typo3-filestoragetree-toolbar');
+    this.tree = this.page.locator('#typo3-filestoragetree-tree');
+    this.root = this.tree.locator('typo3-backend-navigation-component-filestorage-tree');
   }
 
   /**
@@ -18,7 +18,7 @@ export class FileTree {
    * - No tree loading spinner overlay
    */
   async isReady() {
-    await expect(this.container.locator('.nodes-loader-inner').last()).not.toBeAttached();
+    await expect(this.tree.locator('.nodes-loader-inner').last()).not.toBeAttached();
   }
 
   /**
@@ -51,7 +51,7 @@ export class FileTree {
       level++;
 
       // Consider only folder on the current level to avoid naming conflicts.
-      const element = this.container.locator(`[aria-level="${level}"]`, {
+      const element = this.tree.locator(`[aria-level="${level}"]`, {
         has: this.page.locator('.node-contentlabel', { hasText: new RegExp(`^${folder}$`) })
       });
 
@@ -84,7 +84,7 @@ export class FileTree {
         if (!dataId) {
           throw new Error(`Could not get data-id for page "${folder}"`);
         }
-        return this.container.locator(`[data-id="${dataId}"]`);
+        return this.tree.locator(`[data-id="${dataId}"]`);
       }
     }
 

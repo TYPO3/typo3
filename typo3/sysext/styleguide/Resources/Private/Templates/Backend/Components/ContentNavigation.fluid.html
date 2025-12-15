@@ -1,0 +1,544 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Before">
+    <f:asset.module identifier="@typo3/backend/viewport/content-navigation.js"/>
+    <f:asset.module identifier="@typo3/backend/viewport/content-navigation-toggle.js"/>
+    <f:asset.css identifier="styleguide-content-navigation-demo">
+        .content-navigation-demo {
+            height: 300px;
+            border: 1px solid var(--typo3-border-color);
+            border-radius: var(--typo3-border-radius);
+            overflow: hidden;
+        }
+        .content-navigation-actions {
+            margin-top: .5rem;
+        }
+        .content-navigation-demo typo3-backend-content-navigation {
+            --content-navigation-divider-bg: var(--typo3-surface-container-low);
+            --content-navigation-divider-border-color: var(--typo3-border-color);
+        }
+        .demo-panel {
+            padding: 1rem;
+            height: 100%;
+            overflow: auto;
+        }
+        .demo-panel--navigation {
+            background: var(--typo3-surface-container-base);
+        }
+        .demo-panel--content {
+            background: var(--typo3-surface-container-lowest);
+        }
+        .demo-panel-header {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            margin-bottom: .5rem;
+        }
+        .demo-panel-header--space-between {
+            justify-content: space-between;
+        }
+    </f:asset.css>
+</f:section>
+
+<f:section name="Content">
+
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
+
+    <div class="styleguide-content">
+
+        <h1><f:translate key="component.contentNavigation.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="component.contentNavigation.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+
+        <h2><f:translate key="component.contentNavigation.section.basic.headline" domain="styleguide.messages" /></h2>
+        <p>
+            <f:sanitize.html><f:translate key="component.contentNavigation.section.basic.text" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+        <f:variable name="basicCodeSnippet">
+<typo3-backend-content-navigation
+    identifier="my-container"
+    navigation-title="Navigation"
+    navigation-label-collapse="Collapse navigation"
+    navigation-label-expand="Expand navigation"
+    navigation-min-width="200"
+    navigation-max-width="400"
+    navigation-initial-width="250"
+>
+    <div slot="navigation">
+        <div class="panel-header">
+            <strong>Navigation Panel</strong>
+            <typo3-backend-content-navigation-toggle
+                class="btn btn-sm btn-default"
+                action="collapse"
+            ></typo3-backend-content-navigation-toggle>
+        </div>
+        Navigation content
+    </div>
+    <div slot="content">
+        <div class="panel-header">
+            <typo3-backend-content-navigation-toggle
+                class="btn btn-sm btn-default"
+                action="expand"
+            ></typo3-backend-content-navigation-toggle>
+            <strong>Content Panel</strong>
+        </div>
+        Main content
+    </div>
+</typo3-backend-content-navigation></f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{basicCodeSnippet}">
+            <div class="content-navigation-demo">
+                <typo3-backend-content-navigation
+                    identifier="styleguide-basic"
+                    navigation-title="Navigation"
+                    navigation-label-collapse="Collapse navigation"
+                    navigation-label-expand="Expand navigation"
+                    navigation-min-width="200"
+                    navigation-max-width="400"
+                    navigation-initial-width="250"
+                >
+                    <div slot="navigation" class="demo-panel demo-panel--navigation">
+                        <div class="demo-panel-header demo-panel-header--space-between">
+                            <strong>Navigation Panel</strong>
+                            <typo3-backend-content-navigation-toggle class="btn btn-sm btn-default" action="collapse"></typo3-backend-content-navigation-toggle>
+                        </div>
+                        <p>This panel is resizable. Drag the divider to resize (min: 200px, max: 400px).</p>
+                        <ul>
+                            <li>Item 1</li>
+                            <li>Item 2</li>
+                            <li>Item 3</li>
+                        </ul>
+                    </div>
+                    <div slot="content" class="demo-panel demo-panel--content">
+                        <div class="demo-panel-header">
+                            <typo3-backend-content-navigation-toggle class="btn btn-sm btn-default" action="expand"></typo3-backend-content-navigation-toggle>
+                            <strong>Content Panel</strong>
+                        </div>
+                        <p>This is the main content area. It flexes to fill available space.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    </div>
+                </typo3-backend-content-navigation>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="component.contentNavigation.section.controls.headline" domain="styleguide.messages" /></h2>
+        <p>
+            <f:sanitize.html><f:translate key="component.contentNavigation.section.controls.text" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+        <f:variable name="controlsCodeSnippet">
+// Expand the navigation panel
+container.expandNavigation();
+
+// Collapse the navigation panel
+container.collapseNavigation();
+
+// Toggle the navigation panel
+container.toggleNavigation();
+
+// Check if navigation is collapsed
+container.isCollapsed(); // returns boolean</f:variable>
+        <sg:example codePreview="true" codeLanguage="javascript" customCode="{controlsCodeSnippet}">
+            <div class="content-navigation-demo">
+                <typo3-backend-content-navigation
+                    identifier="styleguide-controls"
+                    id="demo-container"
+                    navigation-title="Navigation"
+                    navigation-label-collapse="Collapse navigation"
+                    navigation-label-expand="Expand navigation"
+                    navigation-min-width="200"
+                    navigation-initial-width="280"
+                >
+                    <div slot="navigation" class="demo-panel demo-panel--navigation">
+                        <div class="demo-panel-header demo-panel-header--space-between">
+                            <strong>Controlled Navigation</strong>
+                            <typo3-backend-content-navigation-toggle class="btn btn-sm btn-default" action="collapse"></typo3-backend-content-navigation-toggle>
+                        </div>
+                        <p>Use the buttons to expand or collapse this panel programmatically.</p>
+                    </div>
+                    <div slot="content" class="demo-panel demo-panel--content">
+                        <div class="demo-panel-header">
+                            <typo3-backend-content-navigation-toggle class="btn btn-sm btn-default" action="expand"></typo3-backend-content-navigation-toggle>
+                            <strong>Content Panel</strong>
+                        </div>
+                        <p>The navigation panel can be controlled via JavaScript using the component's public API.</p>
+                    </div>
+                </typo3-backend-content-navigation>
+            </div>
+            <div class="content-navigation-actions">
+                <button type="button" class="btn btn-default" id="expand-navigation">Expand Navigation</button>
+                <button type="button" class="btn btn-default" id="collapse-navigation">Collapse Navigation</button>
+            </div>
+        </sg:example>
+        <f:asset.script identifier="resizableContainerControlsDemo" useNonce="true">
+            const container = document.getElementById('demo-container');
+            document.getElementById('expand-navigation').addEventListener('click', () => {
+                container.expandNavigation();
+            });
+            document.getElementById('collapse-navigation').addEventListener('click', () => {
+                container.collapseNavigation();
+            });
+        </f:asset.script>
+
+        <h2><f:translate key="component.contentNavigation.section.toggleButton.headline" domain="styleguide.messages" /></h2>
+        <p>
+            <f:sanitize.html><f:translate key="component.contentNavigation.section.toggleButton.text" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+        <f:variable name="toggleButtonCodeSnippet">
+<!-- Collapse button (shown when navigation is expanded) -->
+<typo3-backend-content-navigation-toggle
+    class="btn btn-sm btn-default"
+    action="collapse"
+></typo3-backend-content-navigation-toggle>
+
+<!-- Expand button (shown when navigation is collapsed) -->
+<typo3-backend-content-navigation-toggle
+    class="btn btn-sm btn-default"
+    action="expand"
+></typo3-backend-content-navigation-toggle></f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{toggleButtonCodeSnippet}">
+            <div class="content-navigation-demo">
+                <typo3-backend-content-navigation
+                    identifier="styleguide-toggle"
+                    navigation-title="Navigation"
+                    navigation-label-collapse="Collapse navigation"
+                    navigation-label-expand="Expand navigation"
+                    navigation-min-width="200"
+                    navigation-initial-width="280"
+                >
+                    <div slot="navigation" class="demo-panel demo-panel--navigation">
+                        <div class="demo-panel-header demo-panel-header--space-between">
+                            <strong>Navigation</strong>
+                            <typo3-backend-content-navigation-toggle class="btn btn-sm btn-default" action="collapse"></typo3-backend-content-navigation-toggle>
+                        </div>
+                        <p>Click the collapse button in the header to collapse this panel.</p>
+                    </div>
+                    <div slot="content" class="demo-panel demo-panel--content">
+                        <div class="demo-panel-header">
+                            <typo3-backend-content-navigation-toggle class="btn btn-sm btn-default" action="expand"></typo3-backend-content-navigation-toggle>
+                            <strong>Content Panel</strong>
+                        </div>
+                        <p>When collapsed, the expand button appears here. The toggle buttons automatically show/hide based on the navigation state.</p>
+                    </div>
+                </typo3-backend-content-navigation>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="component.contentNavigation.section.hidingPanels.headline" domain="styleguide.messages" /></h2>
+        <p>
+            <f:sanitize.html><f:translate key="component.contentNavigation.section.hidingPanels.text" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+        <f:variable name="hidingPanelsCodeSnippet">
+// Use the component's public API
+container.hideNavigation();
+container.showNavigation();
+container.isNavigationHidden(); // returns boolean</f:variable>
+        <sg:example codePreview="true" codeLanguage="javascript" customCode="{hidingPanelsCodeSnippet}">
+            <div class="content-navigation-demo">
+                <typo3-backend-content-navigation
+                    identifier="styleguide-hiding"
+                    id="hiding-container"
+                    navigation-title="Navigation"
+                    navigation-label-collapse="Collapse navigation"
+                    navigation-label-expand="Expand navigation"
+                    navigation-min-width="150"
+                    navigation-initial-width="200"
+                >
+                    <div slot="navigation" class="demo-panel demo-panel--navigation">
+                        <div class="demo-panel-header demo-panel-header--space-between">
+                            <strong>Navigation</strong>
+                            <typo3-backend-content-navigation-toggle class="btn btn-sm btn-default" action="collapse"></typo3-backend-content-navigation-toggle>
+                        </div>
+                        <p>This panel can be hidden</p>
+                    </div>
+                    <div slot="content" class="demo-panel demo-panel--content">
+                        <div class="demo-panel-header">
+                            <typo3-backend-content-navigation-toggle class="btn btn-sm btn-default" action="expand"></typo3-backend-content-navigation-toggle>
+                            <strong>Content</strong>
+                        </div>
+                        <p>The content panel always remains visible and fills the available space.</p>
+                    </div>
+                </typo3-backend-content-navigation>
+            </div>
+            <div class="content-navigation-actions">
+                <button type="button" class="btn btn-default" id="toggle-navigation">Toggle Navigation Visibility</button>
+            </div>
+        </sg:example>
+        <f:asset.script identifier="contentNavigationHidingDemo" useNonce="true">
+            const hidingContainer = document.getElementById('hiding-container');
+            document.getElementById('toggle-navigation').addEventListener('click', () => {
+                if (hidingContainer.isNavigationHidden()) {
+                    hidingContainer.showNavigation();
+                } else {
+                    hidingContainer.hideNavigation();
+                }
+            });
+        </f:asset.script>
+
+        <h2><f:translate key="component.contentNavigation.section.persistence.headline" domain="styleguide.messages" /></h2>
+        <p>
+            <f:sanitize.html><f:translate key="component.contentNavigation.section.persistence.text" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+        <f:variable name="persistenceCodeSnippet"><!-- The identifier attribute enables width persistence -->
+<typo3-backend-content-navigation
+    identifier="unique-identifier"
+    navigation-title="Navigation"
+    navigation-min-width="150"
+>
+    <div slot="navigation">
+        <div class="panel-header">
+            <strong>Navigation Panel</strong>
+            <typo3-backend-content-navigation-toggle
+                class="btn btn-sm btn-default"
+                action="collapse"
+            ></typo3-backend-content-navigation-toggle>
+        </div>
+        Navigation content
+    </div>
+    <div slot="content">
+        <div class="panel-header">
+            <typo3-backend-content-navigation-toggle
+                class="btn btn-sm btn-default"
+                action="expand"
+            ></typo3-backend-content-navigation-toggle>
+            <strong>Content Panel</strong>
+        </div>
+        Main content
+    </div>
+</typo3-backend-content-navigation>
+
+// Storage key format: resize.{identifier}.navigation</f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{persistenceCodeSnippet}">
+            <div class="content-navigation-demo">
+                <typo3-backend-content-navigation
+                    identifier="styleguide-persistence"
+                    navigation-title="Navigation"
+                    navigation-label-collapse="Collapse navigation"
+                    navigation-label-expand="Expand navigation"
+                    navigation-min-width="150"
+                    navigation-max-width="500"
+                    navigation-initial-width="250"
+                >
+                    <div slot="navigation" class="demo-panel demo-panel--navigation">
+                        <div class="demo-panel-header demo-panel-header--space-between">
+                            <strong>Persistent Panel</strong>
+                            <typo3-backend-content-navigation-toggle class="btn btn-sm btn-default" action="collapse"></typo3-backend-content-navigation-toggle>
+                        </div>
+                        <p>Resize this panel, then reload the page. The width will be restored from localStorage.</p>
+                        <p>The identifier <code>styleguide-persistence</code> is used as the storage key.</p>
+                    </div>
+                    <div slot="content" class="demo-panel demo-panel--content">
+                        <div class="demo-panel-header">
+                            <typo3-backend-content-navigation-toggle class="btn btn-sm btn-default" action="expand"></typo3-backend-content-navigation-toggle>
+                            <strong>Content Panel</strong>
+                        </div>
+                        <p>Try resizing the navigation panel and reloading the page to see persistence in action.</p>
+                    </div>
+                </typo3-backend-content-navigation>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="component.contentNavigation.section.rtl.headline" domain="styleguide.messages" /></h2>
+        <p>
+            <f:sanitize.html><f:translate key="component.contentNavigation.section.rtl.text" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+        <f:variable name="rtlCodeSnippet"><!-- RTL is inherited from parent elements or document -->
+<div dir="rtl">
+    <typo3-backend-content-navigation
+        identifier="my-rtl-container"
+        navigation-title="تنقل"
+    >
+        <div slot="navigation">
+            <div class="panel-header">
+                <strong>لوحة التنقل</strong>
+                <typo3-backend-content-navigation-toggle
+                    class="btn btn-sm btn-default"
+                    action="collapse"
+                ></typo3-backend-content-navigation-toggle>
+            </div>
+            Navigation content
+        </div>
+        <div slot="content">
+            <div class="panel-header">
+                <typo3-backend-content-navigation-toggle
+                    class="btn btn-sm btn-default"
+                    action="expand"
+                ></typo3-backend-content-navigation-toggle>
+                <strong>لوحة المحتوى</strong>
+            </div>
+            Main content
+        </div>
+    </typo3-backend-content-navigation>
+</div></f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{rtlCodeSnippet}">
+            <div class="content-navigation-demo" dir="rtl">
+                <typo3-backend-content-navigation
+                    identifier="styleguide-rtl"
+                    navigation-title="تنقل"
+                    navigation-label-collapse="طي التنقل"
+                    navigation-label-expand="توسيع التنقل"
+                    navigation-min-width="200"
+                    navigation-max-width="400"
+                    navigation-initial-width="250"
+                >
+                    <div slot="navigation" class="demo-panel demo-panel--navigation">
+                        <div class="demo-panel-header demo-panel-header--space-between">
+                            <strong>لوحة التنقل</strong>
+                            <typo3-backend-content-navigation-toggle class="btn btn-sm btn-default" action="collapse"></typo3-backend-content-navigation-toggle>
+                        </div>
+                        <p>هذه اللوحة قابلة لتغيير الحجم. اسحب الفاصل لتغيير الحجم.</p>
+                        <ul>
+                            <li>العنصر 1</li>
+                            <li>العنصر 2</li>
+                            <li>العنصر 3</li>
+                        </ul>
+                    </div>
+                    <div slot="content" class="demo-panel demo-panel--content">
+                        <div class="demo-panel-header">
+                            <typo3-backend-content-navigation-toggle class="btn btn-sm btn-default" action="expand"></typo3-backend-content-navigation-toggle>
+                            <strong>لوحة المحتوى</strong>
+                        </div>
+                        <p>هذه هي منطقة المحتوى الرئيسية. تتمدد لملء المساحة المتاحة.</p>
+                    </div>
+                </typo3-backend-content-navigation>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="component.contentNavigation.section.flyout.headline" domain="styleguide.messages" /></h2>
+        <p>
+            <f:sanitize.html><f:translate key="component.contentNavigation.section.flyout.text" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+        <f:variable name="flyoutCodeSnippet"><!-- Flyout mode activates automatically via container query at 750px -->
+<typo3-backend-content-navigation
+    identifier="my-container"
+    navigation-title="Navigation"
+>
+    <div slot="navigation">
+        <div class="panel-header">
+            <strong>Navigation Panel</strong>
+            <typo3-backend-content-navigation-toggle
+                class="btn btn-sm btn-default"
+                action="collapse"
+            ></typo3-backend-content-navigation-toggle>
+        </div>
+        Navigation content
+    </div>
+    <div slot="content">
+        <div class="panel-header">
+            <typo3-backend-content-navigation-toggle
+                class="btn btn-sm btn-default"
+                action="expand"
+            ></typo3-backend-content-navigation-toggle>
+            <strong>Content Panel</strong>
+        </div>
+        Main content
+    </div>
+</typo3-backend-content-navigation>
+
+/* CSS container query triggers flyout at 750px */
+@container (max-width: 750px) {
+    .panel--navigation { position: absolute; }
+}</f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{flyoutCodeSnippet}">
+            <div class="content-navigation-demo content-navigation-demo--flyout" id="flyout-demo-wrapper">
+                <typo3-backend-content-navigation
+                    identifier="styleguide-flyout"
+                    id="flyout-container"
+                    navigation-title="Navigation"
+                    navigation-label-collapse="Collapse navigation"
+                    navigation-label-expand="Expand navigation"
+                    navigation-min-width="200"
+                    navigation-initial-width="250"
+                >
+                    <div slot="navigation" class="demo-panel demo-panel--navigation">
+                        <div class="demo-panel-header demo-panel-header--space-between">
+                            <strong>Flyout Navigation</strong>
+                            <typo3-backend-content-navigation-toggle class="btn btn-sm btn-default" action="collapse"></typo3-backend-content-navigation-toggle>
+                        </div>
+                        <p>When the container is narrow, this panel becomes a flyout overlay instead of a side panel.</p>
+                        <ul>
+                            <li>Item 1</li>
+                            <li>Item 2</li>
+                            <li>Item 3</li>
+                        </ul>
+                    </div>
+                    <div slot="content" class="demo-panel demo-panel--content">
+                        <div class="demo-panel-header">
+                            <typo3-backend-content-navigation-toggle class="btn btn-sm btn-default" action="expand"></typo3-backend-content-navigation-toggle>
+                            <strong>Content Panel</strong>
+                        </div>
+                        <p>The content takes full width when navigation is in flyout mode. Resize the container below 600px to see flyout mode.</p>
+                    </div>
+                </typo3-backend-content-navigation>
+            </div>
+            <div class="content-navigation-actions">
+                <button type="button" class="btn btn-default" id="flyout-narrow">Narrow (Flyout)</button>
+                <button type="button" class="btn btn-default" id="flyout-wide">Wide (Side-by-side)</button>
+            </div>
+        </sg:example>
+        <f:asset.css identifier="styleguide-flyout-demo">
+            .content-navigation-demo--flyout {
+                transition: width 0.3s ease;
+            }
+        </f:asset.css>
+        <f:asset.script identifier="contentNavigationFlyoutDemo" useNonce="true">
+            const flyoutWrapper = document.getElementById('flyout-demo-wrapper');
+            const flyoutContainer = document.getElementById('flyout-container');
+            document.getElementById('flyout-narrow').addEventListener('click', () => {
+                flyoutWrapper.style.width = '400px';
+                flyoutContainer.collapseNavigation();
+            });
+            document.getElementById('flyout-wide').addEventListener('click', () => {
+                flyoutWrapper.style.width = '100%';
+            });
+        </f:asset.script>
+
+        <h2><f:translate key="section.frontend.headline" domain="styleguide.messages" /></h2>
+
+        <h3><f:translate key="section.colorScheme.headline" domain="styleguide.messages" /></h3>
+        <sg:colorScheme>
+            <div class="content-navigation-demo">
+                <typo3-backend-content-navigation
+                    identifier="styleguide-colorscheme"
+                    navigation-title="Navigation"
+                    navigation-label-collapse="Collapse navigation"
+                    navigation-label-expand="Expand navigation"
+                    navigation-min-width="200"
+                    navigation-max-width="400"
+                    navigation-initial-width="250"
+                >
+                    <div slot="navigation" class="demo-panel demo-panel--navigation">
+                        <div class="demo-panel-header demo-panel-header--space-between">
+                            <strong>Navigation Panel</strong>
+                            <typo3-backend-content-navigation-toggle class="btn btn-sm btn-default" action="collapse"></typo3-backend-content-navigation-toggle>
+                        </div>
+                        <p>Test the component in different color schemes using the switcher above.</p>
+                    </div>
+                    <div slot="content" class="demo-panel demo-panel--content">
+                        <div class="demo-panel-header">
+                            <typo3-backend-content-navigation-toggle class="btn btn-sm btn-default" action="expand"></typo3-backend-content-navigation-toggle>
+                            <strong>Content Panel</strong>
+                        </div>
+                        <p>Switch between light, dark, and auto color schemes to see how the component adapts.</p>
+                    </div>
+                </typo3-backend-content-navigation>
+            </div>
+        </sg:colorScheme>
+
+    </div>
+
+</f:section>
+
+</html>

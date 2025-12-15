@@ -109,7 +109,7 @@ export class PageBrowserTree extends PageTree {
 @customElement('typo3-backend-component-page-browser')
 export class PageBrowser extends LitElement {
   @property({ type: String }) mountPointPath: string = null;
-  @query('.tree-wrapper') tree: PageBrowserTree;
+  @query('typo3-backend-component-page-browser-tree') tree: PageBrowserTree;
 
   private activePageId: number = 0;
   // selectPage
@@ -159,9 +159,7 @@ export class PageBrowser extends LitElement {
 
   protected override render(): TemplateResult {
     return html`
-      <div class="tree">
       ${until(this.renderTree(), '')}
-      </div>
     `;
   }
 
@@ -177,11 +175,17 @@ export class PageBrowser extends LitElement {
         };
 
         return html`
-          <typo3-backend-tree-toolbar .tree="${this.tree}"></typo3-backend-tree-toolbar>
-          <div class="navigation-tree-container">
-            ${this.renderMountPoint()}
-            <typo3-backend-component-page-browser-tree id="typo3-pagetree-tree" class="tree-wrapper" .setup=${configuration} @tree:initialized=${initialized}></typo3-backend-component-page-browser-tree>
-          </div>
+          <typo3-backend-tree-toolbar
+            .tree="${this.tree}"
+          >
+          </typo3-backend-tree-toolbar>
+          ${this.renderMountPoint()}
+          <typo3-backend-component-page-browser-tree
+            id="typo3-pagetree-tree"
+            .setup=${configuration}
+            @tree:initialized=${initialized}
+          >
+          </typo3-backend-component-page-browser-tree>
         `;
       });
   }

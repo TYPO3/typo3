@@ -323,7 +323,7 @@ export class Tree extends LitElement {
 
     this.resetSelectedNodes();
     node.checked = true;
-    this.dispatchEvent(new CustomEvent('typo3:tree:node-selected', { detail: { node: node, propagate: propagate } }));
+    this.dispatchEvent(new CustomEvent('typo3:tree:node-selected', { detail: { node: node, propagate: propagate }, bubbles: true, composed: true }));
   }
 
   public async focusNode(node: TreeNodeInterface): Promise<void>

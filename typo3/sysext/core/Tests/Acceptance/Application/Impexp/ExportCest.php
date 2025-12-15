@@ -199,7 +199,7 @@ final class ExportCest extends AbstractCest
 
     public function exportTable(ApplicationTester $I): void
     {
-        $rootPage = '#typo3-pagetree-treeContainer [role="treeitem"][data-id="0"] .node-contentlabel';
+        $rootPage = '#typo3-pagetree-tree [role="treeitem"][data-id="0"] .node-contentlabel';
         $rootPageTitle = 'New TYPO3 site';
         $beUsergroupTableTitle = 'Backend usergroup';
         $listModuleBtnExport = 'a[title="Export"]';
@@ -234,7 +234,7 @@ final class ExportCest extends AbstractCest
 
     public function exportRecord(ApplicationTester $I): void
     {
-        $rootPage = '#typo3-pagetree-treeContainer [role="treeitem"][data-id="0"] .node-contentlabel';
+        $rootPage = '#typo3-pagetree-tree [role="treeitem"][data-id="0"] .node-contentlabel';
         $rootPageTitle = 'New TYPO3 site';
         $sysLanguageTable = '#recordlist-be_groups';
         $sysLanguageIcon = 'tr:first-child button[data-contextmenu-trigger]';

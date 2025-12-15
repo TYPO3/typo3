@@ -266,7 +266,7 @@ export class EditableFileStorageTree extends FileStorageTree {
  */
 @customElement('typo3-backend-navigation-component-filestoragetree')
 export class FileStorageTreeNavigationComponent extends TreeModuleState(LitElement) {
-  @query('.tree-wrapper') tree: EditableFileStorageTree;
+  @query('typo3-backend-navigation-component-filestorage-tree') tree: EditableFileStorageTree;
   @query('typo3-backend-tree-toolbar') toolbar: TreeToolbar;
 
   protected override moduleStateType: string = 'media';
@@ -298,20 +298,17 @@ export class FileStorageTreeNavigationComponent extends TreeModuleState(LitEleme
     };
 
     return html`
-      <div id="typo3-filestoragetree" class="tree">
-        <typo3-backend-tree-toolbar .tree="${this.tree}" id="filestoragetree-toolbar"></typo3-backend-tree-toolbar>
-        <div class="navigation-tree-container">
-          <typo3-backend-navigation-component-filestorage-tree
-              id="typo3-filestoragetree-tree"
-              class="tree-wrapper"
-              .setup=${treeSetup}
-              @typo3:tree:node-selected=${this.loadContent}
-              @typo3:tree:node-context=${this.showContextMenu}
-              @typo3:tree:nodes-prepared=${this.selectActiveNodeInLoadedNodes}
-              @tree:initialized=${this.fetchActiveNodeIfMissing}
-          ></typo3-backend-navigation-component-filestorage-tree>
-        </div>
-      </div>
+      <typo3-backend-tree-toolbar .tree="${this.tree}"
+        id="typo3-filestoragetree-toolbar"
+      ></typo3-backend-tree-toolbar>
+      <typo3-backend-navigation-component-filestorage-tree
+          id="typo3-filestoragetree-tree"
+          .setup=${treeSetup}
+          @typo3:tree:node-selected=${this.loadContent}
+          @typo3:tree:node-context=${this.showContextMenu}
+          @typo3:tree:nodes-prepared=${this.selectActiveNodeInLoadedNodes}
+          @tree:initialized=${this.fetchActiveNodeIfMissing}
+      ></typo3-backend-navigation-component-filestorage-tree>
     `;
   }
 

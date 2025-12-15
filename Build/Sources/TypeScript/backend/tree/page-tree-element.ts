@@ -31,6 +31,7 @@ import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import type { DragTooltipMetadata } from '@typo3/backend/drag-tooltip';
 import type { DataTransferStringItem } from '@typo3/backend/tree/tree';
+import '@typo3/backend/viewport/content-navigation-toggle';
 import 'bootstrap'; // for data-bs-toggle="dropdown"
 
 /**
@@ -313,7 +314,7 @@ interface Configuration {
 export class PageTreeNavigationComponent extends TreeModuleState(LitElement) {
   @property({ type: String }) mountPointPath: string = null;
 
-  @query('.tree-wrapper') tree: EditablePageTree;
+  @query('typo3-backend-navigation-component-pagetree-tree') tree: EditablePageTree;
   @query('typo3-backend-navigation-component-pagetree-toolbar') toolbar: PageTreeToolbar;
 
   protected override moduleStateType: string = 'web';
@@ -341,9 +342,7 @@ export class PageTreeNavigationComponent extends TreeModuleState(LitElement) {
 
   protected override render(): TemplateResult {
     return html`
-      <div id="typo3-pagetree" class="tree">
       ${until(this.renderTree(), '')}
-      </div>
     `;
   }
 
@@ -366,18 +365,15 @@ export class PageTreeNavigationComponent extends TreeModuleState(LitElement) {
     const configuration = await this.getConfiguration();
     return html`
       <typo3-backend-navigation-component-pagetree-toolbar id="typo3-pagetree-toolbar" .tree="${this.tree}"></typo3-backend-navigation-component-pagetree-toolbar>
-      <div id="typo3-pagetree-treeContainer" class="navigation-tree-container">
-        ${this.renderMountPoint()}
-        <typo3-backend-navigation-component-pagetree-tree
-            id="typo3-pagetree-tree"
-            class="tree-wrapper"
-            .setup=${configuration}
-            @tree:initialized=${() => { this.toolbar.tree = this.tree; this.fetchActiveNodeIfMissing(); }}
-            @typo3:tree:node-selected=${this.loadContent}
-            @typo3:tree:node-context=${this.showContextMenu}
-            @typo3:tree:nodes-prepared=${this.selectActiveNodeInLoadedNodes}
-        ></typo3-backend-navigation-component-pagetree-tree>
-      </div>
+      ${this.renderMountPoint()}
+      <typo3-backend-navigation-component-pagetree-tree
+          id="typo3-pagetree-tree"
+          .setup=${configuration}
+          @tree:initialized=${() => { this.toolbar.tree = this.tree; this.fetchActiveNodeIfMissing(); }}
+          @typo3:tree:node-selected=${this.loadContent}
+          @typo3:tree:node-context=${this.showContextMenu}
+          @typo3:tree:nodes-prepared=${this.selectActiveNodeInLoadedNodes}
+      ></typo3-backend-navigation-component-pagetree-tree>
     `;
   }
 
@@ -500,30 +496,11 @@ class PageTreeToolbar extends TreeToolbar {
               </label>
               <input type="search" id="toolbarSearch" class="form-control form-control-sm search-input" placeholder="${lll('tree.searchPageTree')}">
           </div>
-        </div>
-        <div class="tree-toolbar__submenu">
-          ${this.tree?.settings?.doktypes?.length
-        ? this.tree.settings.doktypes.map((item: any) => {
-          return html`
-                <div
-                  class="tree-toolbar__menuitem tree-toolbar__drag-node"
-                  title="${item.title}"
-                  draggable="true"
-                  data-tree-icon="${item.icon}"
-                  data-node-type="${item.nodeType}"
-                  aria-hidden="true"
-                  @dragstart="${(event: DragEvent) => { this.handleDragStart(event, item); }}"
-                >
-                  <typo3-backend-icon identifier="${item.icon}" size="small"></typo3-backend-icon>
-                </div>
-              `;
-        })
-        : ''
-      }
           <button
             type="button"
             class="btn btn-sm btn-icon btn-default btn-borderless"
             data-bs-toggle="dropdown"
+            data-bs-boundary="window"
             aria-expanded="false"
             aria-label="${lll('labels.openPageTreeOptionsMenu')}"
           >
@@ -572,6 +549,31 @@ class PageTreeToolbar extends TreeToolbar {
               </li>
             ` : nothing}
           </ul>
+          <typo3-backend-content-navigation-toggle
+            class="btn btn-sm btn-icon btn-default btn-borderless"
+            action="collapse"
+          >
+          </typo3-backend-content-navigation-toggle>
+        </div>
+        <div class="tree-toolbar__submenu">
+          ${this.tree?.settings?.doktypes?.length
+        ? this.tree.settings.doktypes.map((item: any) => {
+          return html`
+                <div
+                  class="tree-toolbar__menuitem tree-toolbar__drag-node"
+                  title="${item.title}"
+                  draggable="true"
+                  data-tree-icon="${item.icon}"
+                  data-node-type="${item.nodeType}"
+                  aria-hidden="true"
+                  @dragstart="${(event: DragEvent) => { this.handleDragStart(event, item); }}"
+                >
+                  <typo3-backend-icon identifier="${item.icon}" size="small"></typo3-backend-icon>
+                </div>
+              `;
+        })
+        : ''
+      }
         </div>
       </div>
     `;

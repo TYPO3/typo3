@@ -36,7 +36,6 @@ export class SelectTreeElement {
     this.recordField = <HTMLInputElement>document.getElementById(treeRecordFieldId);
     const treeWrapper = <HTMLElement>document.getElementById(treeWrapperId);
     this.tree = document.createElement('typo3-backend-form-selecttree') as SelectTree;
-    this.tree.classList.add('tree-wrapper');
     this.tree.addEventListener('typo3:tree:nodes-prepared', this.loadDataAfter);
     this.tree.addEventListener('typo3:tree:node-selected', this.selectNode);
 

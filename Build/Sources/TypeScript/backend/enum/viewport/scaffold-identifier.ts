@@ -11,14 +11,34 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import { ContentNavigationSlotEnum, type ContentNavigation } from '@typo3/backend/viewport/content-navigation';
+
 export enum ScaffoldIdentifierEnum {
   scaffold = '.t3js-scaffold',
   header = '.t3js-scaffold-header',
   moduleMenu = '.t3js-scaffold-modulemenu',
   content = '.t3js-scaffold-content',
-  contentModule = '.t3js-scaffold-content-module',
   contentModuleRouter = 'typo3-backend-module-router',
   contentModuleIframe = '.t3js-scaffold-content-module-iframe',
-  contentNavigation = '.t3js-scaffold-content-navigation',
-  contentNavigationDataComponent = '.t3js-scaffold-content-navigation [data-component]',
+}
+
+/**
+ * Helper to get scaffold content area elements scoped to the backend content navigation
+ */
+export class ScaffoldContentArea {
+  public static readonly selector = 'typo3-backend-content-navigation[identifier="backend"]';
+
+  public static getContentNavigation(): ContentNavigation | null {
+    return document.querySelector(this.selector) as ContentNavigation | null;
+  }
+
+  public static getNavigationContainer(): HTMLElement | null {
+    const container = this.getContentNavigation();
+    return container?.querySelector(`[slot="${ContentNavigationSlotEnum.navigation}"]`) ?? null;
+  }
+
+  public static getContentContainer(): HTMLElement | null {
+    const container = this.getContentNavigation();
+    return container?.querySelector(`[slot="${ContentNavigationSlotEnum.content}"]`) ?? null;
+  }
 }

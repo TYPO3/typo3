@@ -149,7 +149,6 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
     {
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/record-link-handler.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/record-search.js');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/viewport/resizable-navigation.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/column-selector-button.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/tree/page-browser.js');
         $this->getBackendUser()->initializeWebmountsForElementBrowser();

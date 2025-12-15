@@ -31,23 +31,31 @@ final class NavigationComponentTreeCest
 
     public function checkTreeExpandsAndCollapseByPageModule(ApplicationTester $I): void
     {
-        $treeArea = '.scaffold-content-navigation-expanded';
+        $navigationContainer = 'typo3-backend-content-navigation[identifier="backend"]';
+        $navigationExpanded = $navigationContainer . ':not([navigation-collapsed])';
+        $navigationCollapsed = $navigationContainer . '[navigation-collapsed]';
+        $navigationSlot = $navigationContainer . ' [slot="navigation"]';
+
         $I->click('Layout');
-        $I->waitForElement($treeArea);
-        $I->see('New TYPO3 site', $treeArea);
+        $I->waitForElement($navigationExpanded);
+        $I->see('New TYPO3 site', $navigationSlot);
 
-        $I->click('button.scaffold-content-navigation-switcher-close');
-        $I->waitForElementNotVisible($treeArea);
-        $I->cantSee('New TYPO3 site', $treeArea);
+        $I->click($navigationContainer . ' typo3-backend-content-navigation-toggle[action="collapse"]');
+        $I->waitForElement($navigationCollapsed);
 
-        $I->click('button.scaffold-content-navigation-switcher-open');
-        $I->waitForElement($treeArea);
-        $I->see('New TYPO3 site', $treeArea);
+        $I->switchToContentFrame();
+        $I->click('typo3-backend-content-navigation-toggle[action="expand"]');
+        $I->switchToMainFrame();
+        $I->waitForElement($navigationExpanded);
+        $I->see('New TYPO3 site', $navigationSlot);
     }
 
     public function checkTreeExpandsAndCollapseByFileModule(ApplicationTester $I): void
     {
-        $treeArea = '.scaffold-content-navigation-expanded';
+        $navigationContainer = 'typo3-backend-content-navigation[identifier="backend"]';
+        $navigationExpanded = $navigationContainer . ':not([navigation-collapsed])';
+        $navigationCollapsed = $navigationContainer . '[navigation-collapsed]';
+        $navigationSlot = $navigationContainer . ' [slot="navigation"]';
 
         $I->click('Media');
 
@@ -56,15 +64,16 @@ final class NavigationComponentTreeCest
         $I->waitForText('fileadmin');
         $I->click('//*[@id="typo3-filestoragetree-tree"]//*[text()="fileadmin"]/..');
 
-        $I->waitForElement($treeArea);
-        $I->see('fileadmin', $treeArea);
+        $I->waitForElement($navigationExpanded);
+        $I->see('fileadmin', $navigationSlot);
 
-        $I->click('button.scaffold-content-navigation-switcher-close');
-        $I->waitForElementNotVisible($treeArea);
-        $I->cantSee('fileadmin', $treeArea);
+        $I->click($navigationContainer . ' typo3-backend-content-navigation-toggle[action="collapse"]');
+        $I->waitForElement($navigationCollapsed);
 
-        $I->click('button.scaffold-content-navigation-switcher-open');
-        $I->waitForElement($treeArea);
-        $I->see('fileadmin', $treeArea);
+        $I->switchToContentFrame();
+        $I->click('typo3-backend-content-navigation-toggle[action="expand"]');
+        $I->switchToMainFrame();
+        $I->waitForElement($navigationExpanded);
+        $I->see('fileadmin', $navigationSlot);
     }
 }

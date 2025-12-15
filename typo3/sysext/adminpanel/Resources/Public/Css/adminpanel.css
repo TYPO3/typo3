@@ -56,12 +56,8 @@ to{transform:rotate(1turn)}}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .treeline-icon-joinbottom:before{top:-50%}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .treeline-icon-blank,#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .treeline-icon-clear:after,#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .treeline-icon-clear:before,#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .treeline-icon-line:after{display:none}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .treeline-container{align-items:center;display:flex;gap:calc(var(--typo3-spacing)*.25)}
-#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel body#typo3-pagetree{margin:0;padding:0}
-#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel #typo3-pagetree #typo3-inner-docbody{padding:10px 0}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel span.dragIcon{display:inline-block;height:16px}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel #dragIcon{opacity:.5;position:absolute;visibility:hidden;white-space:nowrap;z-index:20}
-#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .scaffold-content-navigation-component,#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .scaffold-content-navigation-component .navigation-tree-container,#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .scaffold-content-navigation-component .tree,#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .scaffold-content-navigation-component .tree>div{display:flex;flex:1 0 0;flex-direction:column}
-#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .scaffold-content-navigation-component .tree-wrapper{flex:1 0 0}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .treeline-icon{margin-bottom:-8px;margin-top:-8px}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .typo3-adminPanel-backdrop{background-color:rgba(0,0,0,.5);bottom:0;content:"";left:0;position:fixed;right:0;top:0;z-index:99991}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .typo3-adminPanel-message{background-color:#fff;border-left:3px solid #cacaca;box-shadow:0 0 1px rgba(0,0,0,.15);margin-bottom:1em;padding:20px}

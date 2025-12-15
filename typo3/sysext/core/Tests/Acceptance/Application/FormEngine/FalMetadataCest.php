@@ -63,8 +63,8 @@ final class FalMetadataCest
         $I->click('Add image');
         $I->switchToWindow('typo3-backend');
         $I->switchToIFrame('modal_frame');
-        $I->waitForElement('.tree-wrapper .nodes-list [role="treeitem"]', 5);
-        $I->click('.tree-wrapper .nodes-list [role="treeitem"][title="styleguide"]');
+        $I->waitForElement('.nodes-container .nodes-list [role="treeitem"]', 5);
+        $I->click('.nodes-container .nodes-list [role="treeitem"][title="styleguide"]');
         $I->waitForText('fileadmin: /styleguide/');
         $I->click('bus_lane.jpg');
         $I->switchToWindow('typo3-backend');
@@ -158,8 +158,8 @@ final class FalMetadataCest
         $I->click('Add image');
         $I->switchToWindow('typo3-backend');
         $I->switchToIFrame('modal_frame');
-        $I->waitForElement('.tree-wrapper .nodes-list [role="treeitem"]', 5);
-        $I->click('.tree-wrapper .nodes-list [role="treeitem"][title="styleguide"]');
+        $I->waitForElement('.nodes-container .nodes-list [role="treeitem"]', 5);
+        $I->click('.nodes-container .nodes-list [role="treeitem"][title="styleguide"]');
         $I->waitForText('fileadmin: /styleguide/', 5);
         $I->click('bus_lane.jpg');
         $I->switchToWindow('typo3-backend');

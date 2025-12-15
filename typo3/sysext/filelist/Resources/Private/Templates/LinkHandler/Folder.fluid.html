@@ -7,7 +7,6 @@
 
 <f:section name="Navigation">
     <typo3-backend-component-filestorage-browser
-        class="scaffold-content-navigation-component"
         tree-actions="{treeActions -> f:format.json()}"
         active-folder="{f:if(condition: selectedFolder, then: selectedFolder.combinedIdentifier, else: '') -> f:format.htmlentities()}"
     >

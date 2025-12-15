@@ -69,7 +69,7 @@ export class FileStorageBrowserTree extends FileStorageTree {
 
 @customElement('typo3-backend-component-filestorage-browser')
 export class FileStorageBrowser extends LitElement {
-  @query('.tree-wrapper') tree: FileStorageBrowserTree;
+  @query('typo3-backend-component-filestorage-browser-tree') tree: FileStorageBrowserTree;
 
   private activeFolder: string = '';
   private actions: Array<string> = [];
@@ -106,18 +106,13 @@ export class FileStorageBrowser extends LitElement {
     };
 
     return html`
-      <div class="tree">
-        <typo3-backend-tree-toolbar .tree="${this.tree}"></typo3-backend-tree-toolbar>
-        <div class="navigation-tree-container">
-          <typo3-backend-component-filestorage-browser-tree
-            class="tree-wrapper"
-            .setup=${treeSetup}
-            @tree:initialized=${initialized}
-            @typo3:tree:node-selected=${this.loadFolderDetails}
-            @typo3:tree:nodes-prepared=${this.selectActiveNode}
-          ></typo3-backend-component-page-browser-tree>
-        </div>
-      </div>
+      <typo3-backend-tree-toolbar .tree="${this.tree}"></typo3-backend-tree-toolbar>
+      <typo3-backend-component-filestorage-browser-tree
+        .setup=${treeSetup}
+        @tree:initialized=${initialized}
+        @typo3:tree:node-selected=${this.loadFolderDetails}
+        @typo3:tree:nodes-prepared=${this.selectActiveNode}
+      ></typo3-backend-component-page-browser-tree>
     `;
   }
 

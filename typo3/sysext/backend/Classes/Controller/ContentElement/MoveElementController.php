@@ -63,7 +63,6 @@ final readonly class MoveElementController
         $contentOnly = $queryParams['contentOnly'] ?? false;
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/global-event-handler.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/tree/page-browser.js');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/viewport/resizable-navigation.js');
         $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
             JavaScriptModuleInstruction::create('@typo3/backend/wizard/move-content-element.js', 'MoveContentElement')->instance()
         );

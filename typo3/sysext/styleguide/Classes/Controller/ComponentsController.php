@@ -54,6 +54,7 @@ final class ComponentsController
         'cards',
         'checkboxes',
         'comboboxes',
+        'contentNavigation',
         'developerTools',
         'dropdown',
         'flashMessages',
@@ -114,6 +115,7 @@ final class ComponentsController
             'progressIndicators' => $this->renderProgressIndicatorsView($request),
             'progressTrackers' => $this->renderProgressTrackersView($request),
             'radio' => $this->renderRadioView($request),
+            'contentNavigation' => $this->renderContentNavigationView($request),
             'select' => $this->renderSelectView($request),
             'tab' => $this->renderTabView($request),
             'tables' => $this->renderTablesView($request),
@@ -492,6 +494,17 @@ final class ComponentsController
             'routeIdentifier' => 'styleguide_components',
         ]);
         return $view->renderResponse('Backend/Components/Radio');
+    }
+
+    private function renderContentNavigationView(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->createModuleTemplate($request, 'contentNavigation');
+        $view->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'contentNavigation',
+            'routeIdentifier' => 'styleguide_components',
+        ]);
+        return $view->renderResponse('Backend/Components/ContentNavigation');
     }
 
     private function renderSelectView(ServerRequestInterface $request): ResponseInterface

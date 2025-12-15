@@ -51,7 +51,6 @@ class CategoryElement extends HTMLElement {
     }
 
     this.tree = document.createElement('typo3-backend-form-selecttree') as SelectTree;
-    this.tree.classList.add('tree-wrapper');
     this.tree.setup = {
       id: this.treeWrapper.id,
       dataUrl: this.generateDataUrl(),

@@ -11,12 +11,14 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { ScaffoldIdentifierEnum } from '../enum/viewport/scaffold-identifier';
+import { ScaffoldContentArea } from '../enum/viewport/scaffold-identifier';
+import { ContentNavigationSlotEnum } from './content-navigation';
 import NProgress from 'nprogress';
 
 class Loader {
   public static start(): void {
-    NProgress.configure({ parent: ScaffoldIdentifierEnum.contentModule, showSpinner: false });
+    // NProgress requires a CSS selector string, it doesn't accept an HTMLElement
+    NProgress.configure({ parent: `${ScaffoldContentArea.selector} > [slot="${ContentNavigationSlotEnum.content}"]`, showSpinner: false });
     NProgress.start();
   }
 

@@ -33,7 +33,7 @@ final class IndexedSearchModuleCest
     {
         $I->click('[data-modulemenu-identifier="content_status"]');
         // click on PID=0
-        $I->clickWithLeftButton('#typo3-pagetree-treeContainer [role="treeitem"][data-id="0"] .node-contentlabel');
+        $I->clickWithLeftButton('#typo3-pagetree-tree [role="treeitem"][data-id="0"] .node-contentlabel');
         $I->switchToContentFrame();
         $I->see('Status', 'h1');
         $I->click('a[aria-label="Open Indexing module"]');

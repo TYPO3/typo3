@@ -16,6 +16,7 @@ import { customElement, property } from 'lit/decorators';
 import { lll } from '@typo3/core/lit-helper';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import '@typo3/backend/element/icon-element';
+import '@typo3/backend/viewport/content-navigation-toggle';
 import { Tree } from './tree';
 import type { TreeNodeInterface } from './tree-node';
 import 'bootstrap'; // for data-bs-toggle="dropdown"
@@ -53,12 +54,11 @@ export class TreeToolbar extends LitElement {
               </label>
               <input type="search" id="toolbarSearch" class="form-control form-control-sm search-input" placeholder="${this.tree?.setup?.searchPlaceholder || lll('tree.searchTermInfo')}">
           </div>
-        </div>
-        <div class="tree-toolbar__submenu">
           <button
             type="button"
             class="btn btn-sm btn-icon btn-default btn-borderless"
             data-bs-toggle="dropdown"
+            data-bs-boundary="window"
             aria-expanded="false"
             aria-label="${lll('labels.openTreeOptionsMenu')}"
           >
@@ -90,7 +90,11 @@ export class TreeToolbar extends LitElement {
               </button>
             </li>
           </ul>
-        </div>
+          <typo3-backend-content-navigation-toggle
+            class="btn btn-sm btn-icon btn-default btn-borderless"
+            action="collapse"
+          >
+          </typo3-backend-content-navigation-toggle>
       </div>
     `;
   }

@@ -105,6 +105,12 @@
       <trans-unit id="action.comboboxes.description">
         <source>Input fields with dropdown suggestions for selecting or entering values.</source>
       </trans-unit>
+      <trans-unit id="action.contentNavigation">
+        <source>Content Navigation</source>
+      </trans-unit>
+      <trans-unit id="action.contentNavigation.description">
+        <source>A two-panel container with a resizable navigation area and a flexible content area.</source>
+      </trans-unit>
       <trans-unit id="action.colorTokens">
         <source>Color Tokens</source>
       </trans-unit>
@@ -909,6 +915,55 @@
       </trans-unit>
       <trans-unit id="component.radio.section.default.headline">
         <source>Default</source>
+      </trans-unit>
+      <!-- Component: Content Navigation -->
+      <trans-unit id="component.contentNavigation.headline">
+        <source>Content Navigation</source>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.introtext">
+        <source><![CDATA[A two-panel container with a resizable navigation area and a flexible content area. The navigation panel is optional, resizable, and can be collapsed to the left. The content panel is required and fills the remaining space.]]></source>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.basic.headline">
+        <source>Basic usage</source>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.basic.text">
+        <source><![CDATA[The content navigation uses named slots: <code>navigation</code> and <code>content</code>. The <code>content</code> slot is required. The navigation panel can be collapsed by dragging below half of its minimum width. When collapsed, an expand button with the panel title is displayed.]]></source>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.controls.headline">
+        <source>External controls</source>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.controls.text">
+        <source><![CDATA[The navigation panel can be expanded or collapsed programmatically using <code>expand()</code>, <code>collapse()</code>, and <code>isCollapsed()</code> methods.]]></source>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.toggleButton.headline">
+        <source>Toggle button</source>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.toggleButton.text">
+        <source><![CDATA[The <code>&lt;typo3-backend-content-navigation-toggle&gt;</code> component provides a button to expand or collapse the navigation. Place it anywhere within the content-navigation component. Use <code>action="collapse"</code> for a collapse button (visible when expanded) or <code>action="expand"</code> for an expand button (visible when collapsed). The component automatically shows/hides based on the navigation state and reads labels from the parent content-navigation's <code>navigation-label-collapse</code> and <code>navigation-label-expand</code> attributes.]]></source>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.hidingPanels.headline">
+        <source>Hiding navigation</source>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.hidingPanels.text">
+        <source><![CDATA[The navigation panel can be hidden by adding the <code>hidden</code> attribute to the slotted element. Use the component's <code>showNavigation()</code>, <code>hideNavigation()</code>, and <code>isNavigationHidden()</code> methods for programmatic control.]]></source>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.persistence.headline">
+        <source>Width persistence</source>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.persistence.text">
+        <source><![CDATA[The navigation width is automatically persisted to <code>localStorage</code> using the container's <code>identifier</code> attribute. Resize the panel below, then reload the page to see the width restored.]]></source>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.rtl.headline">
+        <source>Right-to-left support</source>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.rtl.text">
+        <source><![CDATA[The container automatically adapts to right-to-left layouts. The navigation panel appears on the right and drag directions are mirrored.]]></source>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.flyout.headline">
+        <source>Flyout mode</source>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.flyout.text">
+        <source><![CDATA[When the container becomes too narrow (below 750px), the navigation automatically switches to flyout mode using CSS container queries. In flyout mode, the navigation overlays the content instead of sitting beside it, and resizing is disabled.]]></source>
       </trans-unit>
       <!-- Component: Select -->
       <trans-unit id="component.select.headline">

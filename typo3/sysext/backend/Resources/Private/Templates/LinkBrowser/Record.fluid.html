@@ -7,10 +7,10 @@
 
 <f:section name="Navigation"><f:if condition="{treeEnabled}">
     <typo3-backend-component-page-browser
-        class="scaffold-content-navigation-component"
         tree-actions="{treeActions -> f:format.json()}"
         alternative-entry-points="{pageTreeMountPoints -> f:format.json()}"
-        active-page="{expandedPage}">
+        active-page="{expandedPage}"
+    >
     </typo3-backend-component-page-browser>
 </f:if></f:section>
 

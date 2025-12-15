@@ -14,8 +14,8 @@
     --module-docheader-padding-y: .75rem;
     --module-docheader-padding-x: 1.5rem;
     --module-docheader-padding: var(--module-docheader-padding-y) var(--module-docheader-padding-x);
-    --module-docheader-spacing-y: 1rem;
-    --module-docheader-spacing-x: .5rem;
+    --module-docheader-spacing-y: .5rem;
+    --module-docheader-spacing-x: .75rem;
     --module-docheader-spacing: var(--module-docheader-spacing-y) var(--module-docheader-spacing-x);
     --module-docheader-bg: var(--module-bg);
     --module-docheader-border-color: color-mix(in srgb, var(--module-docheader-bg), var(--module-color) 10%);
@@ -88,6 +88,10 @@ body:has(.module) *:target {
         align-items: center;
         display: flex;
         max-width: 100%;
+
+        &:has(typo3-backend-content-navigation-toggle[hidden]) {
+            display: none;
+        }
     }
 
     &-column-grow {

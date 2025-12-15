@@ -33,12 +33,21 @@
     --tree-toolbar-border-width: 1px;
     --tree-toolbar-element-height: 1.78125rem; // 28.5px / 16 - to match input small height
     --tree-toolbar-bar-height: calc((var(--tree-toolbar-padding-y) * 2) + var(--tree-toolbar-element-height));
-    --tree-toolbar-height: calc(var(--tree-toolbar-bar-height) * 2 + var(--tree-toolbar-border-width));
     --tree-toolbar-box-shadow: var(--typo3-shadow-2);
 }
 
-.tree {
-    position: relative;
+//
+// Components
+//
+typo3-backend-navigation-component-filestoragetree,
+typo3-backend-navigation-component-pagetree {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    > *:last-child {
+        flex: 1;
+    }
 }
 
 //
@@ -465,6 +474,11 @@
 typo3-backend-form-selecttree {
     display: flex;
     flex-direction: column;
+    height: 100%;
+
+    > *:last-child {
+        flex: 1;
+    }
 }
 
 typo3-backend-form-selecttree-toolbar {
@@ -475,17 +489,9 @@ typo3-backend-form-selecttree-toolbar {
 // NEEDS WORK
 //
 .tree-element {
-    display: flex;
-    flex-direction: column;
     border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
-
-    & > .tree-wrapper {
-        flex: 1 0 0;
-    }
-}
-
-.scaffold-content .tree-toolbar {
-    min-height: var(--tree-toolbar-height);
+    border-radius: var(--typo3-input-border-radius);
+    overflow: hidden;
 }
 
 .tree-toolbar {
@@ -493,16 +499,18 @@ typo3-backend-form-selecttree-toolbar {
     background-color: var(--tree-bg);
 
     &__menu {
+        display: flex;
+        position: relative;
+        gap: var(--tree-toolbar-spacing-x);
         padding: var(--tree-toolbar-padding);
-        padding-inline-end: calc(var(--tree-toolbar-padding-x) + 30px);
         min-height: calc(var(--tree-toolbar-bar-height) + var(--tree-toolbar-border-width));
         border-bottom: var(--tree-toolbar-border-width) solid var(--tree-toolbar-border-color);
     }
 
     &__submenu {
+        display: flex;
         position: relative;
         z-index: 1;
-        display: flex;
         align-items: center;
         padding: var(--tree-toolbar-padding);
         min-height: var(--tree-toolbar-bar-height);
@@ -525,7 +533,7 @@ typo3-backend-form-selecttree-toolbar {
     }
 
     &__search {
-        flex: 1 0 auto;
+        flex-grow: 1;
     }
 
     &__menuitem {

@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
 final class PageTree extends AbstractTree
 {
-    public static $treeSelector = '#typo3-pagetree-treeContainer';
+    public static $treeSelector = '#typo3-pagetree-tree';
 
     /**
      * Inject our core AcceptanceTester actor into PageTree

@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
  */
 final class UsersCest extends AbstractCest
 {
-    private string $inPageTree = '#typo3-pagetree-treeContainer .nodes-list';
+    private string $inPageTree = '#typo3-pagetree-tree .nodes-list';
     private string $inModuleHeader = '.module-docheader';
     private string $inModuleTabs = '#ImportExportController .nav-tabs';
     private string $inModuleTabsBody = '#ImportExportController .tab-content';

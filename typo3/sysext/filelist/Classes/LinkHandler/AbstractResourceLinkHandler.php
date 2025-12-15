@@ -135,7 +135,6 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
 
     public function initializeVariables(ServerRequestInterface $request): void
     {
-        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/viewport/resizable-navigation.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/tree/file-storage-browser.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-list-actions.js');
 

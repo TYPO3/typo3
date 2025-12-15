@@ -252,6 +252,15 @@
       <trans-unit id="pageTree.searchResult">
         <source>Search result</source>
       </trans-unit>
+      <trans-unit id="viewport.navigation">
+        <source>Navigation</source>
+      </trans-unit>
+      <trans-unit id="viewport.navigation.show">
+        <source>Show navigation</source>
+      </trans-unit>
+      <trans-unit id="viewport.navigation.hide">
+        <source>Hide navigation</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

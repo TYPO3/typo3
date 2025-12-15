@@ -22,11 +22,17 @@
 //             <li class="active"><a href="#">Page 3</a></li>
 //         </ul>
 //     </div>
-//     <div class="element-browser-main">
-//         <div class="element-browser-main-sidebar">
+//     <typo3-backend-content-navigation class="element-browser-main">
+//         <div slot="navigation" class="element-browser-main-sidebar">
 //             ...
 //         </div>
-//         <div class="element-browser-main-content">
+//         <div slot="content" class="element-browser-main-content">
+//             <div class="element-browser-navigation-toggle">
+//                 <typo3-backend-content-navigation-toggle
+//                     class="btn btn-sm btn-icon btn-default btn-borderless"
+//                     action="expand"
+//                 ></typo3-backend-content-navigation-toggle>
+//             </div>
 //             <div class="element-browser-attributes">
 //                 ...
 //             </div>
@@ -34,7 +40,7 @@
 //                 ...
 //             </div>
 //         </div>
-//     </div>
+//     </typo3-backend-content-navigation>
 // </div>
 //
 
@@ -118,31 +124,56 @@
     background-color: var(--module-docheader-bg);
     height: 100%;
     flex-shrink: 0;
-
-    .scaffold-content-navigation-available & {
-        display: none;
-    }
-
-    .scaffold-content-navigation-available.scaffold-content-navigation-expanded & {
-        display: flex;
-    }
-}
-
-.element-browser-main-content {
-    flex-grow: 1;
-    overflow: auto;
-
-    @media (max-width: 499px) {
-        min-width: calc(100% - 38px);
-    }
 }
 
 .element-browser-main-content {
     container-type: inline-size;
+    flex-grow: 1;
+    overflow: auto;
+    height: 100%;
+
+    &:has(typo3-backend-content-navigation-toggle:not([hidden])) {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto 1fr;
+
+        > :not(.element-browser-navigation-toggle) {
+            grid-column: 2;
+        }
+
+        &:before {
+            content: '';
+            grid-column: 1;
+            grid-row: 1 / -1;
+            background-color: var(--module-docheader-bg);
+            border-inline-end: 1px solid var(--module-docheader-border-color);
+        }
+    }
+}
+
+.element-browser-navigation-toggle {
+    display: none;
+    padding: .75rem;
+    background-color: var(--module-docheader-bg);
+    border-inline-end: 1px solid var(--module-docheader-border-color);
+    grid-column: 1;
+    grid-row: 1 / -1;
+    position: sticky;
+    top: 0;
+    align-self: start;
+
+    &:has(typo3-backend-content-navigation-toggle:not([hidden])) {
+        display: flex;
+        align-items: start;
+    }
 }
 
 .element-browser-form-group {
     margin-bottom: calc(var(--typo3-spacing) / 2);
+
+    &:last-child {
+        margin-bottom: 0;
+    }
 
     .form-label {
         display: block;

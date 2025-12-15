@@ -40,7 +40,7 @@ final class TemplateCest
         // Select the root page
         $I->switchToMainFrame();
         // click on PID=0
-        $I->clickWithLeftButton('#typo3-pagetree-treeContainer [role="treeitem"][data-id="0"] .node-contentlabel');
+        $I->clickWithLeftButton('#typo3-pagetree-tree [role="treeitem"][data-id="0"] .node-contentlabel');
 
         $I->switchToContentFrame();
         $I->waitForElementVisible('#ts-overview');

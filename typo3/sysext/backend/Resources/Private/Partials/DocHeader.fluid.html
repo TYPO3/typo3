@@ -1,12 +1,17 @@
-<f:be.pageRenderer
-    includeJavaScriptModules="{
-        0: '@typo3/backend/element/breadcrumb.js',
-    }"
-/>
 <div class="module-loading-indicator"></div>
 <div class="module-docheader module-docheader-navigation t3js-module-docheader-navigation">
+    <f:be.pageRenderer includeJavaScriptModules="{0: '@typo3/backend/viewport/content-navigation-toggle.js'}" />
+    <div class="module-docheader-column">
+        <typo3-backend-content-navigation-toggle
+            class="btn btn-sm btn-icon btn-default btn-borderless"
+            action="expand"
+            hidden
+        >
+        </typo3-backend-content-navigation-toggle>
+    </div>
     <div class="module-docheader-column module-docheader-column-grow">
         <f:if condition="{docHeader.breadcrumb}">
+            <f:be.pageRenderer includeJavaScriptModules="{0: '@typo3/backend/element/breadcrumb.js'}" />
             <typo3-breadcrumb
                 label='{f:translate(key: "LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:breadcrumb")}'
                 nodes='{docHeader.breadcrumb -> f:format.json()}'

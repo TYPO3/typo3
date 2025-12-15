@@ -1,0 +1,8 @@
+//
+// Theme styles for typo3-backend-content-navigation web component
+//
+typo3-backend-content-navigation {
+    --content-navigation-divider-color: color-mix(in srgb, var(--typo3-surface-container-lowest), var(--typo3-text-color-base) 10%);
+    --content-navigation-divider-color-active: var(--typo3-state-primary-border-color);
+    --content-navigation-flyout-box-shadow: var(--typo3-component-box-shadow-flyout);
+}
