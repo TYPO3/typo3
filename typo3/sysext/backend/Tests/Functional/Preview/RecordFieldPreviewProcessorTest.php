@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\RawRecord;
 use TYPO3\CMS\Core\Domain\Record;
 use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
+use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -53,7 +54,8 @@ final class RecordFieldPreviewProcessorTest extends FunctionalTestCase
         $this->subject = new RecordFieldPreviewProcessor(
             $this->get(TcaSchemaFactory::class),
             $this->get(UriBuilder::class),
-            $this->get(IconFactory::class)
+            $this->get(IconFactory::class),
+            $this->get(SanitizerBuilderFactory::class),
         );
     }
 

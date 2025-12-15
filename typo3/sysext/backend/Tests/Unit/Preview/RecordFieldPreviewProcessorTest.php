@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Preview\RecordFieldPreviewProcessor;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Domain\RawRecord;
 use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
+use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -39,11 +40,14 @@ final class RecordFieldPreviewProcessorTest extends UnitTestCase
         $tcaSchemaFactory = $this->createMock(TcaSchemaFactory::class);
         $uriBuilder = $this->createMock(UriBuilder::class);
         $iconFactory = $this->createMock(IconFactory::class);
+        // Class is final, not mocking, not really actively used in what we're testing here
+        $sanitizerBuilderFactory = new SanitizerBuilderFactory();
 
         $this->subject = new RecordFieldPreviewProcessor(
             $tcaSchemaFactory,
             $uriBuilder,
-            $iconFactory
+            $iconFactory,
+            $sanitizerBuilderFactory
         );
     }
 

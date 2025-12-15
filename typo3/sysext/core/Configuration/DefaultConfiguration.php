@@ -283,6 +283,7 @@ return [
         'rateLimiter' => [],
         'htmlSanitizer' => [
             'default' => \TYPO3\CMS\Core\Html\DefaultSanitizerBuilder::class,
+            'preview' => \TYPO3\CMS\Core\Html\PreviewSanitizerBuilder::class,
             'i18n' => \TYPO3\CMS\Core\Html\I18nSanitizerBuilder::class,
         ],
         'displayErrors' => -1,

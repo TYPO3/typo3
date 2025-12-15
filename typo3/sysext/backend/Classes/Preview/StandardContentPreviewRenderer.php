@@ -244,7 +244,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                 $html = (string)$this->fieldProcessor->preparePlainHtml($recordObj, 'bodytext');
                 return $this->fieldProcessor->linkToEditForm($html, $recordObj, $request);
             default:
-                $content = (string)$this->fieldProcessor->prepareText($recordObj, 'bodytext');
+                $content = (string)$this->fieldProcessor->preparePreviewableHtml($recordObj, 'bodytext');
                 foreach ($subSchema->getFieldsOfType(TableColumnType::FILE) as $field) {
                     $fieldName = $field->getName();
                     if ($recordObj->has($fieldName) && ($image = $recordObj->get($fieldName))) {

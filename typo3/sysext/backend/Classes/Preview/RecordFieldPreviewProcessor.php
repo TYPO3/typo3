@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Domain\RecordInterface;
+use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
@@ -51,6 +52,7 @@ final class RecordFieldPreviewProcessor
         private readonly TcaSchemaFactory $schemaFactory,
         private readonly UriBuilder $uriBuilder,
         private readonly IconFactory $iconFactory,
+        private readonly SanitizerBuilderFactory $sanitizerBuilderFactory,
     ) {}
 
     /**
@@ -110,6 +112,16 @@ final class RecordFieldPreviewProcessor
                 $html = array_slice($html, 0, $maxLines);
                 return str_replace(LF, '<br />', htmlspecialchars(implode(LF, $html)));
             }
+        }
+        return null;
+    }
+
+    public function preparePreviewableHtml(RecordInterface $record, string $fieldName): ?string
+    {
+        if ($record->has($fieldName)) {
+            $content = $record->get($fieldName);
+            $builder = $this->sanitizerBuilderFactory->build('preview');
+            return $builder->build()->sanitize($content);
         }
         return null;
     }
