@@ -85,6 +85,9 @@ export class Typo3BackendColorPicker extends LitElement {
         swatches: this.swatches,
         preset: false,
         color: this.color,
+        // Casting to `unknown` to prevent TypeScript Error
+        // > TS2589: Type instantiation is excessively deep and possibly infinite.
+        parent: (this.closest('dialog') ?? '') as unknown,
       });
 
       alwan.on('color', (e): void => {
