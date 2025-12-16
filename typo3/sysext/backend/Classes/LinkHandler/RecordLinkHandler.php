@@ -266,7 +266,7 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
             ->setAllowedSearchLevels((array)($modTSconfig['searchLevel.']['items.'] ?? []))
             ->setSearchLevel($searchLevels)
             ->setSearchWord($searchWord)
-            ->render($request, $dbList->listURL('', '-1', 'pointer,searchTerm'));
+            ->render($request, $dbList->listURL('', null, 'pointer,searchTerm'));
         $html[] = $dbList->generateList();
 
         return implode("\n", $html);

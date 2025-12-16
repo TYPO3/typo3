@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Clipboard\Type\CountMode;
@@ -222,7 +221,7 @@ class RecordListController
         if ($this->pageContext->pageRecord) {
             $view->getDocHeaderComponent()->setPageBreadcrumb($this->pageContext->pageRecord);
         }
-        $this->getDocHeaderButtons($view, $clipboard, $request, $this->table, $dbList->listURL(), []);
+        $this->getDocHeaderButtons($view, $clipboard, $request, $dbList);
         $view->assignMultiple([
             'pageId' => $this->pageContext->pageId,
             'pageTitle' => $title,
@@ -404,14 +403,14 @@ class RecordListController
             ->setAllowedSearchLevels((array)($this->modTSconfig['searchLevel']['items'] ?? []))
             ->setSearchWord($searchWord)
             ->setSearchLevel($searchLevels)
-            ->render($request, $dbList->listURL('', '-1', 'pointer,searchTerm'));
+            ->render($request, $dbList->listURL('', null, 'pointer,searchTerm'));
         return $searchBox;
     }
 
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
      */
-    protected function getDocHeaderButtons(ModuleTemplate $view, Clipboard $clipboard, ServerRequestInterface $request, string $table, UriInterface $listUrl, array $moduleSettings): void
+    protected function getDocHeaderButtons(ModuleTemplate $view, Clipboard $clipboard, ServerRequestInterface $request, DatabaseRecordList $dbList): void
     {
         $queryParams = $request->getQueryParams();
         $lang = $this->getLanguageService();
@@ -419,15 +418,19 @@ class RecordListController
         // Language selector (top right area)
         $this->createLanguageSelector($view, $request);
 
-        if ($table !== 'tt_content' && !($this->modTSconfig['noCreateRecordsLink'] ?? false) && $this->editLockPermissions()) {
-            // New record button if: table is not tt_content - tt_content should be managed in page module, link is
-            // not disabled via TSconfig, page is not 'edit locked'
-            $newRecordButton = $this->componentFactory->createLinkButton()
-                ->setHref((string)$this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->pageContext->pageId, 'returnUrl' => $listUrl]))
-                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:newRecordGeneral'))
-                ->setShowLabelText(true)
-                ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
-            $view->addButtonToButtonBar($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
+        if (!($this->modTSconfig['noCreateRecordsLink'] ?? false) && $this->editLockPermissions()) {
+            if ($this->table === '') {
+                // "General" new record button if: not in single table view, not disabled via TSconfig and page is not 'edit locked'
+                $newRecordButton = $this->componentFactory->createLinkButton()
+                    ->setHref((string)$this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->pageContext->pageId, 'returnUrl' => $dbList->listURL()]))
+                    ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:newRecordGeneral'))
+                    ->setShowLabelText(true)
+                    ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
+                $view->addButtonToButtonBar($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
+            } elseif (($createNewRecordButton = $dbList->createActionButtonNewRecord($this->table)) !== null) {
+                // In single table view, render the specific create new button
+                $view->addButtonToButtonBar($createNewRecordButton);
+            }
         }
 
         if ($this->pageContext->isAccessible() && $this->pageContext->pageId > 0) {
@@ -451,7 +454,7 @@ class RecordListController
                         ],
                     ],
                     'module' => 'records',
-                    'returnUrl' => $listUrl,
+                    'returnUrl' => $dbList->listURL(),
                 ]);
                 $editButton = $this->componentFactory->createLinkButton()
                     ->setHref((string)$editLink)
@@ -491,13 +494,13 @@ class RecordListController
                 ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', IconSize::SMALL));
             $view->addButtonToButtonBar($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT);
         }
-        if ($table
+        if ($this->table
             && !($this->modTSconfig['noExportRecordsLinks'] ?? false)
             && $this->getBackendUserAuthentication()->isExportEnabled()
         ) {
             // Export
             if (ExtensionManagementUtility::isLoaded('impexp')) {
-                $url = (string)$this->uriBuilder->buildUriFromRoute('tx_impexp_export', ['tx_impexp' => ['list' => [$table . ':' . $this->pageContext->pageId]]]);
+                $url = (string)$this->uriBuilder->buildUriFromRoute('tx_impexp_export', ['tx_impexp' => ['list' => [$this->table . ':' . $this->pageContext->pageId]]]);
                 $exportButton = $this->componentFactory->createLinkButton()
                     ->setHref($url)
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.export'))
@@ -548,9 +551,6 @@ class RecordListController
             if (!empty($queryParams[$argument])) {
                 $arguments[$argument] = $queryParams[$argument];
             }
-        }
-        foreach ($moduleSettings as $moduleSettingKey => $moduleSettingValue) {
-            $arguments['GET'][$moduleSettingKey] = $moduleSettingValue;
         }
         $view->getDocHeaderComponent()->setShortcutContext(
             routeIdentifier: 'records',

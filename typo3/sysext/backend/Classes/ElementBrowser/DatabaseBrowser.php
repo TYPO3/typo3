@@ -234,7 +234,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
             ->setAllowedSearchLevels((array)($this->modTSconfig['searchLevel.']['items.'] ?? []))
             ->setSearchWord($searchWord)
             ->setSearchLevel($searchLevels)
-            ->render($request, $dblist->listURL('', '-1', 'pointer,searchTerm'));
+            ->render($request, $dblist->listURL('', null, 'pointer,searchTerm'));
     }
 
     /**
