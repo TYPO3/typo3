@@ -8,10 +8,6 @@
 Site sets settings of EXT:seo
 =============================
 
-..  versionadded:: 13.3
-    :ref:`Site sets <t3coreapi:site-sets>` have been added, their settings supersede using TypoScript
-    constants for settings.
-
 The following settings are available via the
 :ref:`site set settings <configuration-site-sets>` and can be adjusted in
 the :ref:`settings-editor`.
@@ -21,6 +17,10 @@ the :ref:`settings-editor`.
     been changed from `page` and  `sitemap` to `tx_seo[page]` and `tx_seo[sitemap]`
     respectively. If you are overriding the templates for the sitemap, provide
     separate sets for TYPO3 13.4 and 14.x support.
+
+..  versionchanged:: 14.1
+    The site set `typo3/seo-sitemap` now ships a sitemap route enhancer. See
+    also `Automatic routing for the XML sitemap <https://docs.typo3.org/permalink/typo3/cms-seo:xmlsitemap-routing>`_.
 
 ..  typo3:site-set-settings:: PROJECT:/Configuration/Sets/Sitemap/settings.definitions.yaml
     :name: seo-settings
