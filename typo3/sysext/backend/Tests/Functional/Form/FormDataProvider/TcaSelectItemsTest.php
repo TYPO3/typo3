@@ -3609,9 +3609,9 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = ['foo'];
         $expected['processedTca']['columns']['aField']['config']['items'] = [
-            ['label' => '[ MISSING LABEL ("bar") ]', 'value' => 'bar', 'icon' => null, 'iconOverlay' => null, 'group' => 'none', 'description' => null],
-            ['label' => '[ MISSING LABEL ("2") ]', 'value' => '2', 'icon' => null, 'iconOverlay' => null, 'group' => 'none', 'description' => null],
-            ['label' => '[ MISSING LABEL ("1") ]', 'value' => '1', 'icon' => null, 'iconOverlay' => null, 'group' => 'none', 'description' => null],
+            ['label' => '[ Missing label ("bar") ]', 'value' => 'bar', 'icon' => null, 'iconOverlay' => null, 'group' => 'none', 'description' => null],
+            ['label' => '[ Missing label ("2") ]', 'value' => '2', 'icon' => null, 'iconOverlay' => null, 'group' => 'none', 'description' => null],
+            ['label' => '[ Missing label ("1") ]', 'value' => '1', 'icon' => null, 'iconOverlay' => null, 'group' => 'none', 'description' => null],
             ['label' => 'foo', 'value' => 'foo', 'icon' => null, 'iconOverlay' => null, 'group' => null, 'description' => null],
         ];
         $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
