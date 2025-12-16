@@ -207,7 +207,7 @@ class RecordListController
         if ($pageinfo) {
             $view->getDocHeaderComponent()->setMetaInformation($pageinfo);
         }
-        $this->getDocHeaderButtons($view, $clipboard, $request, $this->table, $dbList->listURL(), []);
+        $this->getDocHeaderButtons($view, $clipboard, $request, $dbList);
         $view->assignMultiple([
             'pageId' => $this->id,
             'pageTitle' => $title,
@@ -290,20 +290,24 @@ class RecordListController
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
      */
-    protected function getDocHeaderButtons(ModuleTemplate $view, Clipboard $clipboard, ServerRequestInterface $request, string $table, string $listUrl, array $moduleSettings): void
+    protected function getDocHeaderButtons(ModuleTemplate $view, Clipboard $clipboard, ServerRequestInterface $request, DatabaseRecordList $dbList): void
     {
         $queryParams = $request->getQueryParams();
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $lang = $this->getLanguageService();
-        if ($table !== 'tt_content' && !($this->modTSconfig['noCreateRecordsLink'] ?? false) && $this->editLockPermissions()) {
-            // New record button if: table is not tt_content - tt_content should be managed in page module, link is
-            // not disabled via TSconfig, page is not 'edit locked'
-            $newRecordButton = $buttonBar->makeLinkButton()
-                ->setHref((string)$this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id, 'returnUrl' => $listUrl]))
-                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:newRecordGeneral'))
-                ->setShowLabelText(true)
-                ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
-            $buttonBar->addButton($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
+        if (!($this->modTSconfig['noCreateRecordsLink'] ?? false) && $this->editLockPermissions()) {
+            if ($this->table === '') {
+                // "General" new record button if: not in single table view, not disabled via TSconfig and page is not 'edit locked'
+                $newRecordButton = $buttonBar->makeLinkButton()
+                    ->setHref((string)$this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id, 'returnUrl' => $dbList->listURL()]))
+                    ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:newRecordGeneral'))
+                    ->setShowLabelText(true)
+                    ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
+                $buttonBar->addButton($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
+            } elseif (($createNewRecordButton = $dbList->createActionButtonNewRecord($this->table)) !== null) {
+                // In single table view, render the specific create new button
+                $buttonBar->addButton($createNewRecordButton);
+            }
         }
 
         if ($this->id !== 0) {
@@ -330,7 +334,7 @@ class RecordListController
                             $this->id => 'edit',
                         ],
                     ],
-                    'returnUrl' => $listUrl,
+                    'returnUrl' => $dbList->listURL(),
                 ]);
                 $editButton = $buttonBar->makeLinkButton()
                     ->setHref((string)$editLink)
@@ -370,13 +374,13 @@ class RecordListController
                 ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', IconSize::SMALL));
             $buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT);
         }
-        if ($table
+        if ($this->table
             && !($this->modTSconfig['noExportRecordsLinks'] ?? false)
             && $this->getBackendUserAuthentication()->isExportEnabled()
         ) {
             // Export
             if (ExtensionManagementUtility::isLoaded('impexp')) {
-                $url = (string)$this->uriBuilder->buildUriFromRoute('tx_impexp_export', ['tx_impexp' => ['list' => [$table . ':' . $this->id]]]);
+                $url = (string)$this->uriBuilder->buildUriFromRoute('tx_impexp_export', ['tx_impexp' => ['list' => [$this->table . ':' . $this->id]]]);
                 $exportButton = $buttonBar->makeLinkButton()
                     ->setHref($url)
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.export'))
@@ -387,7 +391,7 @@ class RecordListController
         }
         // Reload
         $reloadButton = $buttonBar->makeLinkButton()
-            ->setHref($listUrl)
+            ->setHref($dbList->listURL())
             ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
             ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
@@ -436,9 +440,6 @@ class RecordListController
             if (!empty($queryParams[$argument])) {
                 $arguments[$argument] = $queryParams[$argument];
             }
-        }
-        foreach ($moduleSettings as $moduleSettingKey => $moduleSettingValue) {
-            $arguments['GET'][$moduleSettingKey] = $moduleSettingValue;
         }
         $shortCutButton->setArguments($arguments);
         $shortCutButton->setDisplayName($this->getShortcutTitle($arguments));

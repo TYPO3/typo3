@@ -896,7 +896,7 @@ class DatabaseRecordList
     /**
      * If new records can be created on this page, create a button
      */
-    protected function createActionButtonNewRecord(string $table): ?ButtonInterface
+    public function createActionButtonNewRecord(string $table): ?ButtonInterface
     {
         if (!$this->isEditable($table)) {
             return null;
