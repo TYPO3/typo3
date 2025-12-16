@@ -22,13 +22,15 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Controller\Event\AfterBackendPageRenderEvent;
-use TYPO3\CMS\Backend\Module\MenuModule;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Sidebar\Sidebar;
+use TYPO3\CMS\Backend\Sidebar\SidebarComponentContext;
+use TYPO3\CMS\Backend\Sidebar\SidebarFactory;
 use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
 use TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
@@ -62,25 +64,19 @@ class BackendController
 {
     use PageRendererBackendSetupTrait;
 
-    /**
-     * @var ModuleInterface[]
-     */
-    protected array $modules;
-
     public function __construct(
         protected readonly Typo3Version $typo3Version,
         protected readonly UriBuilder $uriBuilder,
         protected readonly PageRenderer $pageRenderer,
         protected readonly ModuleProvider $moduleProvider,
         protected readonly ToolbarItemsRegistry $toolbarItemsRegistry,
+        protected readonly SidebarFactory $sidebarFactory,
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly BackendViewFactory $viewFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly FlashMessageService $flashMessageService,
         protected readonly BackendEntryPointResolver $backendEntryPointResolver,
-    ) {
-        $this->modules = $this->moduleProvider->getModulesForModuleMenu($this->getBackendUser());
-    }
+    ) {}
 
     /**
      * Main function generating the BE scaffolding.
@@ -167,17 +163,17 @@ class BackendController
         $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [' . $typo3Version . ']' : $typo3Version;
         $pageRenderer->setTitle($title);
 
+        $sidebarContext = new SidebarComponentContext($request, $backendUser);
+        $sidebar = $this->sidebarFactory->create($sidebarContext);
         $view = $this->viewFactory->create($request);
-        $this->assignTopbarDetailsToView($request, $view);
+        $this->assignTopbarDetailsToView($request, $view, $sidebar);
         $view->assignMultiple([
-            'modules' => $this->modules,
-            'sidebarCollapsed' => $this->getCollapseStateOfSidebar(),
-            'modulesInformation' => GeneralUtility::jsonEncodeForHtmlAttribute($this->getModulesInformation(), false),
             'startupModule' => $this->getStartupModule($request),
             'entryPoint' => $this->backendEntryPointResolver->getPathFromRequest($request),
             'stateTracker' => (string)$this->uriBuilder->buildUriFromRoute('state-tracker'),
             'sitename' => $title,
             'sitenameFirstInBackendTitle' => ($backendUser->uc['backendTitleFormat'] ?? '') === 'sitenameFirst',
+            'sidebar' => $sidebar->render(),
         ]);
         $content = $view->render('Backend/Main');
         $content = $this->eventDispatcher->dispatch(new AfterBackendPageRenderEvent($content, $view))->getContent();
@@ -192,12 +188,9 @@ class BackendController
      */
     public function getModuleMenu(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->viewFactory->create($request);
-        $view->assignMultiple([
-            'modulesInformation' => GeneralUtility::jsonEncodeForHtmlAttribute($this->getModulesInformation(), false),
-            'modules' => $this->modules,
-        ]);
-        return new JsonResponse(['menu' => $view->render('Backend/ModuleMenu')]);
+        $sidebarContext = new SidebarComponentContext($request, $this->getBackendUser());
+        $component = $this->sidebarFactory->create($sidebarContext)->getComponentByIdentifier('module-menu');
+        return new JsonResponse(['menu' => $component?->getResult($sidebarContext)->html]);
     }
 
     /**
@@ -206,15 +199,16 @@ class BackendController
      */
     public function getTopbar(ServerRequestInterface $request): ResponseInterface
     {
+        $sidebar = $this->sidebarFactory->create(new SidebarComponentContext($request, $this->getBackendUser()));
         $view = $this->viewFactory->create($request);
-        $this->assignTopbarDetailsToView($request, $view);
+        $this->assignTopbarDetailsToView($request, $view, $sidebar);
         return new JsonResponse(['topbar' => $view->render('Backend/Topbar')]);
     }
 
     /**
      * Renders the topbar, containing the backend logo, sitename etc.
      */
-    protected function assignTopbarDetailsToView(ServerRequestInterface $request, ViewInterface $view): void
+    protected function assignTopbarDetailsToView(ServerRequestInterface $request, ViewInterface $view, Sidebar $sidebar): void
     {
         // Extension Configuration to find the TYPO3 logo in the left corner
         $extConf = $this->extensionConfiguration->get('backend');
@@ -244,7 +238,7 @@ class BackendController
         if ($logoPath === '') {
             $logoUrl = (string)PathUtility::getSystemResourceUri('EXT:backend/Resources/Public/Images/typo3_logo_orange.svg', $request);
         }
-        $view->assign('hasModules', (bool)$this->modules);
+        $view->assign('sidebar', $sidebar);
         $view->assign('logoUrl', $logoUrl);
         $view->assign('logoWidth', $logoWidth);
         $view->assign('logoHeight', $logoHeight);
@@ -351,35 +345,6 @@ class BackendController
             }
         }
         return [null, null];
-    }
-
-    /**
-     * Returns information for each registered and allowed module. Used by various JS components.
-     */
-    protected function getModulesInformation(): array
-    {
-        $modules = [];
-        foreach ($this->moduleProvider->getModules(user: $this->getBackendUser(), grouped: false) as $identifier => $module) {
-            $menuModule = new MenuModule(clone $module);
-            $modules[$identifier] = [
-                'name' => $identifier,
-                'aliases' => $module->getAliases(),
-                'component' => $menuModule->getComponent(),
-                'navigationComponentId' => $menuModule->getNavigationComponent(),
-                'parent' => $menuModule->hasParentModule() ? $menuModule->getParentIdentifier() : '',
-                'link' => $menuModule->getShouldBeLinked() ? (string)$this->uriBuilder->buildUriFromRoute($module->getIdentifier()) : '',
-            ];
-        }
-
-        return $modules;
-    }
-
-    protected function getCollapseStateOfSidebar(): bool
-    {
-        $backendUser = $this->getBackendUser();
-        $uc = json_decode((string)json_encode($backendUser->uc), true);
-        $collapseState = $uc['BackendComponents']['States']['typo3-sidebar']['collapsed'] ?? false;
-        return $collapseState === true || $collapseState === 'true';
     }
 
     protected function enqueueRedirectMessage(ModuleInterface $requestedModule, ModuleInterface $redirectedModule): void

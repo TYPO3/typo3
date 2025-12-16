@@ -12,7 +12,7 @@
             class="topbar-button topbar-button-modulemenu"
             label-collapse="{f:translate(key: 'toolbarItems.sidebarCollapse', domain: 'backend.toolbar')}"
             label-expand="{f:translate(key: 'toolbarItems.sidebarExpand', domain: 'backend.toolbar')}"
-            {f:if(condition: '!{hasModules}', then: 'disabled')}
+            {f:if(condition: '!{sidebar.accessible}', then: 'disabled')}
         ></typo3-backend-sidebar-toggle>
         <div class="topbar-site-container">
             <a class="topbar-site" href="./" target="_top" title="{siteName} - {applicationVersion}">

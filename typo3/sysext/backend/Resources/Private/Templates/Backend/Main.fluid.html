@@ -7,7 +7,6 @@
 <f:asset.module identifier="bootstrap"/>
 <f:asset.module identifier="@typo3/backend/dropdown.js"/>
 <f:asset.module identifier="@typo3/backend/module/router.js"/>
-<f:asset.module identifier="@typo3/backend/module-menu.js"/>
 <f:asset.module identifier="@typo3/backend/viewport/content-navigation.js"/>
 <f:asset.module identifier="@typo3/backend/storage/module-state-storage.js"/>
 <f:asset.module identifier="@typo3/backend/toolbar.js"/>
@@ -23,15 +22,16 @@
 <f:asset.module identifier="@typo3/backend/live-search/element/backend-search.js"/>
 <f:asset.module identifier="@typo3/backend/drag-tooltip.js"/>
 
-<div class="scaffold{f:if(condition: '!{sidebarCollapsed} && {modules}', then: ' scaffold-sidebar-expanded')}{f:if(condition: '{isInWorkspace}', then: ' scaffold-in-workspace')}{f:if(condition: '{isImpersonated}', then: ' scaffold-in-impersonation')} t3js-scaffold">
+<div class="scaffold{f:if(condition: '{sidebar.accessible} && {sidebar.expanded}', then: ' scaffold-sidebar-expanded')}{f:if(condition: '{isInWorkspace}', then: ' scaffold-in-workspace')}{f:if(condition: '{isImpersonated}', then: ' scaffold-in-impersonation')} t3js-scaffold">
     <div class="scaffold-header t3js-scaffold-header">
         <f:render partial="Backend/Topbar" arguments="{_all}" />
     </div>
-    <div class="scaffold-sidebar t3js-scaffold-sidebar"><f:spaceless>
-        <f:if condition="{hasModules}">
-            <f:render partial="Backend/ModuleMenu" arguments="{modules: modules, modulesInformation: modulesInformation}" />
-        </f:if>
-    </f:spaceless></div>
+    <div class="scaffold-sidebar{f:if(condition: '!{sidebar.accessible}', then: ' scaffold-sidebar-disabled')} t3js-scaffold-sidebar">
+        <f:for each="{sidebar.modules}" as="module">
+            <f:asset.module identifier="{module}"/>
+        </f:for>
+        {sidebar.html -> f:format.raw()}
+    </div>
     <div class="scaffold-content t3js-scaffold-content">
         <typo3-backend-content-navigation
             identifier="backend"

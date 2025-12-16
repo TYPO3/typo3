@@ -1,0 +1,26 @@
+//
+// Sidebar Component Structure
+// ===========================
+//
+// Scrollable container for sidebar components.
+//
+
+.sidebar-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+//
+// Individual sidebar components
+//
+.sidebar-component {
+    --sidebar-component-padding-x: .5rem;
+    --sidebar-component-padding-y: .75rem;
+    position: relative;
+    display: block;
+    flex: 0 0 auto;
+    padding: var(--sidebar-component-padding-y) var(--sidebar-component-padding-x);
+}

@@ -9,8 +9,6 @@
 .modulemenu {
     --modulemenu-color: var(--typo3-scaffold-sidebar-color);
     --modulemenu-bg: var(--typo3-scaffold-sidebar-bg);
-    --modulemenu-padding-x: .5rem;
-    --modulemenu-padding-y: .75rem;
     --modulemenu-group-spacer: .5rem;
     --modulemenu-icon-size: 32px;
     --modulemenu-icon-border-radius: calc(var(--modulemenu-action-border-radius) - var(--modulemenu-action-padding));
@@ -34,7 +32,6 @@
     --modulemenu-action-active-bg: color-mix(in srgb, var(--modulemenu-bg), var(--modulemenu-color) 10%);
     --modulemenu-action-active-border-color: color-mix(in srgb, var(--modulemenu-bg), var(--modulemenu-color) 25%);
     margin: 0;
-    padding: var(--modulemenu-padding-y) var(--modulemenu-padding-x);
     list-style: none;
     background-color: var(--modulemenu-bg);
     color: var(--modulemenu-color);
