@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Event\PolicyPreparedEvent;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Middleware\PolicyBag;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceKeyword;
+use TYPO3\CMS\Fluid\ViewHelpers\Security\NonceViewHelper;
 use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -105,6 +106,11 @@ final class AvoidContentSecurityPolicyNonceEventListener
 
     private function familyConsumedInlineNonce(Directive $directive, ConsumableNonce $nonce): bool
     {
+        // in case the directive was not specified for the `{f:security.nonce()}`
+        // view-helper, the nonce usage is considered active for all directives
+        if ($nonce->countInline(NonceViewHelper::class) > 0) {
+            return true;
+        }
         foreach ($directive->getFamily() as $member) {
             if ($nonce->countInline($member) > 0) {
                 return true;
