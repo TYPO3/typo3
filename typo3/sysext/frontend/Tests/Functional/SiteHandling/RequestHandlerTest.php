@@ -375,4 +375,68 @@ final class RequestHandlerTest extends AbstractTestCase
         self::assertNotEmpty($secondResponse->getHeaderLine('Content-Security-Policy-Report-Only'));
         self::assertSame('private, no-store', $secondResponse->getHeaderLine('Cache-Control'));
     }
+
+    public static function nonceValuesAreExpectedDataProvider(): iterable
+    {
+        yield 'cached (static content)' => [
+            (new TypoScriptInstruction())->withTypoScript([
+                'page.' => [
+                    '10' => 'TEXT',
+                    '10.' => ['value' => '<p>cached content</p>'],
+                ],
+            ]),
+            false,
+        ];
+        yield 'cached (specific f:security.nonce view-helper)' => [
+            (new TypoScriptInstruction())->withTypoScript([
+                'page.' => [
+                    '10' => 'FLUIDTEMPLATE',
+                    '10.' => [
+                        'template' => 'TEXT',
+                        'template.' => [
+                            'value' => '<script nonce="{f:security.nonce(directive: \'script-src\')}">const test = true;</script>',
+                        ],
+                    ],
+                ],
+            ]),
+            false,
+        ];
+        yield 'cached (unspecific f:security.nonce view-helper)' => [
+            (new TypoScriptInstruction())->withTypoScript([
+                'page.' => [
+                    '10' => 'FLUIDTEMPLATE',
+                    '10.' => [
+                        'template' => 'TEXT',
+                        'template.' => [
+                            'value' => '<script nonce="{f:security.nonce()}">const test = true;</script>',
+                        ],
+                    ],
+                ],
+            ]),
+            true,
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('nonceValuesAreExpectedDataProvider')]
+    public function nonceValuesAreExpected(TypoScriptInstruction $instruction, bool $expectation): void
+    {
+        $internalRequest = new InternalRequest('https://website.local/csp-drop-nonce/authors');
+        $internalRequest = $internalRequest->withInstructions([$instruction]);
+        $firstResponse = $this->executeFrontendSubRequest($internalRequest);
+        $firstCspHeader = $firstResponse->getHeaderLine('Content-Security-Policy');
+        $dom = new \DOMDocument();
+        $dom->loadHTML((string)$firstResponse->getBody());
+        $xpath = new \DOMXPath($dom);
+
+        if ($expectation) {
+            self::assertGreaterThan(0, count($xpath->query('//script[@nonce]')));
+            self::assertGreaterThan(0, count($xpath->query('//link[@nonce]')));
+            self::assertMatchesRegularExpression("/'nonce-[^']+'/", $firstCspHeader);
+        } else {
+            self::assertCount(0, $xpath->query('//script[@nonce]'));
+            self::assertCount(0, $xpath->query('//link[@nonce]'));
+            self::assertDoesNotMatchRegularExpression("/'nonce-[^']+'/", $firstCspHeader);
+        }
+    }
 }

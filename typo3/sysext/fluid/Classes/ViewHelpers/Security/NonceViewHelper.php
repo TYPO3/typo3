@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers\Security;
 
 use TYPO3\CMS\Core\Core\RequestId;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceKeyword;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -26,7 +28,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * service as a fall-back value.
  *
  * ```
- *   <script nonce="{f:security.nonce()}">const inline = 'script';</script>
+ *   <script nonce="{f:security.nonce(directive: 'script-src')}">const inline = 'script';</script>
+ *   <script nonce="{f:security.nonce(directive: 'script-src', scope: 'static')}" src="app.js"></script>
  * ```
  *
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-security-nonce
@@ -42,11 +45,22 @@ final class NonceViewHelper extends AbstractViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
+        $this->registerArgument('directive', 'string', 'Value of the CSP directive');
+        $this->registerArgument('scope', 'string', '`inline` or `static`', false, 'inline');
     }
 
     public function render(): string
     {
+        $applicableDirectives = SourceKeyword::nonceProxy->getApplicableDirectives();
+        $directive = Directive::tryFrom($this->arguments['directive'] ?? '');
+        $directive = $directive !== null && in_array($directive, $applicableDirectives, true)
+            ? $directive->value
+            : self::class;
+        $scope = $this->arguments['scope'] ?? '';
+        if ($scope === 'static') {
+            return $this->requestId->nonce->consumeStatic($directive);
+        }
         // `inline` is guessed here, it might be `static` as well in templates
-        return $this->requestId->nonce->consumeInline(self::class);
+        return $this->requestId->nonce->consumeInline($directive);
     }
 }
