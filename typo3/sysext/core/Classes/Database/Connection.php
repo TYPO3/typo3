@@ -87,7 +87,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      * @param Driver $driver The driver to use.
      * @param Configuration|null $config The configuration, optional.
      */
-    public function __construct(array $params, Driver $driver, ?Configuration $config = null)
+    public function __construct(#[\SensitiveParameter] array $params, Driver $driver, ?Configuration $config = null)
     {
         parent::__construct($params, $driver, $config);
         $this->expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this);

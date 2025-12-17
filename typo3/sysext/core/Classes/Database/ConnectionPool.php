@@ -167,7 +167,7 @@ class ConnectionPool
         return $this->migrateConnectionParams($connectionName, $connectionParams);
     }
 
-    private function migrateConnectionParams(string $connectionName, array $params): array
+    private function migrateConnectionParams(string $connectionName, #[\SensitiveParameter] array $params): array
     {
         $params['defaultTableOptions'] ??= [];
         $params = $this->migrateTableOptionsToDefaultTableOptions($connectionName, $params);
@@ -182,7 +182,7 @@ class ConnectionPool
      *
      * @deprecated since 13.4 and will be removed in v15 (or later as it does not hurt to keep them).
     */
-    private function migrateTableOptionsToDefaultTableOptions(string $connectionName, array $params): array
+    private function migrateTableOptionsToDefaultTableOptions(string $connectionName, #[\SensitiveParameter] array $params): array
     {
         $params['defaultTableOptions'] ??= [];
         if (array_key_exists('tableoptions', $params)
@@ -216,7 +216,7 @@ class ConnectionPool
      * @link https://github.com/doctrine/dbal/pull/5246
      * @deprecated since 13.4 and will be removed in v15 (or later as it does not hurt to keep them).
      */
-    private function migrateDefaultTableOptionCollateToCollation(string $connectionName, array $params): array
+    private function migrateDefaultTableOptionCollateToCollation(string $connectionName, #[\SensitiveParameter] array $params): array
     {
         $params['defaultTableOptions'] ??= [];
         if (array_key_exists('defaultTableOptions', $params)
@@ -243,7 +243,7 @@ class ConnectionPool
     /**
      * Clean up invalid connection parameters.
      */
-    private function removeInvalidConnectionParams(array $params): array
+    private function removeInvalidConnectionParams(#[\SensitiveParameter] array $params): array
     {
         // Remove defaultTableOptions for unsupported databases
         unset($params['tableoptions']);
@@ -274,7 +274,7 @@ class ConnectionPool
      * @todo Investigate how to deal with missing defaultTableOptions for MariaDB and MySQL connections,
      *       which may be already partially set even when charset is missing.
      */
-    private function ensureDefaultConnectionCharset(array $params): array
+    private function ensureDefaultConnectionCharset(#[\SensitiveParameter] array $params): array
     {
         if (!array_key_exists('charset', $params) || !is_string($params['charset']) || $params['charset'] === '') {
             $params['charset'] = 'utf8';
@@ -288,7 +288,7 @@ class ConnectionPool
      * - for all configured connections
      * - $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['driverMiddlewares'] for a specific connection
      */
-    protected function getDriverMiddlewares(string $connectionName, array $connectionParams): array
+    protected function getDriverMiddlewares(string $connectionName, #[\SensitiveParameter] array $connectionParams): array
     {
         $driverMiddlewares = $this->getOrderedConnectionDriverMiddlewareConfiguration($connectionName, $connectionParams);
         $middlewares = [];
@@ -331,7 +331,7 @@ class ConnectionPool
      * @param array $connectionParams
      * @return array<non-empty-string, array{target: class-string, disabled: bool, after: string[], before: string[], type: string}>
      */
-    protected function getOrderedConnectionDriverMiddlewareConfiguration(string $connectionName, array $connectionParams): array
+    protected function getOrderedConnectionDriverMiddlewareConfiguration(string $connectionName, #[\SensitiveParameter] array $connectionParams): array
     {
         /** @var DriverMiddlewareService $driverMiddlewareService */
         $driverMiddlewareService = GeneralUtility::makeInstance(DriverMiddlewareService::class);
@@ -381,7 +381,7 @@ class ConnectionPool
     /**
      * Creates a connection object based on the specified parameters
      */
-    protected function getDatabaseConnection(string $connectionName, array $connectionParams): Connection
+    protected function getDatabaseConnection(string $connectionName, #[\SensitiveParameter] array $connectionParams): Connection
     {
         $this->registerDoctrineTypes();
 
