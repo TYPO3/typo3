@@ -741,8 +741,62 @@
       <trans-unit id="component.modal.section.severity.headline">
         <source>Severity</source>
       </trans-unit>
+      <trans-unit id="component.modal.section.severity.description">
+        <source>Set the visual style of the modal using severity levels to indicate the nature of the content or action.</source>
+      </trans-unit>
       <trans-unit id="component.modal.section.size.headline">
         <source>Size</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.size.description">
+        <source>Control the width of the modal. The default size grows based on content, while other sizes have fixed widths.</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.position.headline">
+        <source>Position</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.position.description">
+        <source>Position the modal at different locations on the screen. Top-positioned modals slide down from the top, end-positioned modals slide in from the right.</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.headline">
+        <source>Playground</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.description">
+        <source>Interactively test different modal configurations by selecting options below.</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.position">
+        <source>Position</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.size">
+        <source>Size</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.severity">
+        <source>Severity</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.hideHeader">
+        <source>Hide header</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.staticBackdrop">
+        <source>Static backdrop</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.openModal">
+        <source>Open modal</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.yes">
+        <source>Yes</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.no">
+        <source>No</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.hideHeader.headline">
+        <source>Hide header</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.hideHeader.description">
+        <source>Hide the modal header for a cleaner look. The title is still used for accessibility purposes.</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.staticBackdrop.headline">
+        <source>Static backdrop</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.staticBackdrop.description">
+        <source>Prevent the modal from closing when clicking outside of it. Users must use the buttons or close icon to dismiss.</source>
       </trans-unit>
       <!-- Component: Navs -->
       <trans-unit id="component.navs.headline">

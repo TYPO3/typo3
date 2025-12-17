@@ -372,6 +372,7 @@ final class ComponentsController
             'routeIdentifier' => 'styleguide_components',
             'variants' => ['notice', 'info', 'ok', 'warning', 'error'],
             'sizes' => ['small', 'default', 'medium', 'large', 'full'],
+            'positions' => ['center', 'top', 'end', 'bottom', 'start'],
         ]);
         return $view->renderResponse('Backend/Components/Modal');
     }

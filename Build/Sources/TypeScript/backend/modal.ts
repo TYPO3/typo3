@@ -43,6 +43,14 @@ export enum Sizes {
   full = 'full',
 }
 
+export enum Positions {
+  center = 'center',
+  top = 'top',
+  end = 'end',
+  bottom = 'bottom',
+  start = 'start',
+}
+
 export enum Styles {
   default = 'default',
   light = 'light',
@@ -78,11 +86,13 @@ export interface Configuration {
   buttons: Array<Button>;
   style: Styles;
   size: Sizes;
+  position: Positions;
   additionalCssClasses: Array<string>;
   callback: ModalCallbackFunction | null;
   ajaxCallback: ModalCallbackFunction | null;
   staticBackdrop: boolean;
   hideCloseButton: boolean;
+  hideHeader: boolean;
 }
 
 type PartialConfiguration = Partial<Omit<Configuration, 'buttons'> & { buttons: Array<Partial<Button>> }>;
@@ -97,8 +107,10 @@ export class ModalElement extends LitElement {
   @property({ type: String, reflect: true }) severity: SeverityEnum = SeverityEnum.notice;
   @property({ type: String, reflect: true }) variant: Styles = Styles.default;
   @property({ type: String, reflect: true }) size: Sizes = Sizes.default;
+  @property({ type: String, reflect: true }) position: Positions = Positions.center;
   @property({ type: Boolean }) staticBackdrop: boolean = false;
   @property({ type: Boolean }) hideCloseButton: boolean = false;
+  @property({ type: Boolean }) hideHeader: boolean = false;
   @property({ type: Array }) additionalCssClasses: Array<string> = [];
   @property({ type: Array, attribute: false }) buttons: Array<Button> = [];
 
@@ -179,25 +191,29 @@ export class ModalElement extends LitElement {
       `modal-style-${this.variant}`,
       `modal-severity-${Severity.getCssClass(this.severity)}`,
       `modal-size-${this.size}`,
+      `modal-position-${this.position}`,
       ...this.additionalCssClasses,
     ]);
     return html`
       <dialog
           class=${classMap(classes)}
-          aria-labelledby="t3-modal-header-${this.uniqueId}"
+          aria-labelledby=${ifDefined(this.hideHeader ? undefined : `t3-modal-header-${this.uniqueId}`)}
+          aria-label=${ifDefined(this.hideHeader ? this.modalTitle : undefined)}
           @close=${this.handleDialogClose}
           @cancel=${this.handleDialogCancel}
           @click=${this.handleDialogClick}
       >
-        <div class="modal-header t3js-modal-header">
-          <div class="modal-header-title t3js-modal-title" id="t3-modal-header-${this.uniqueId}">${this.modalTitle}</div>
-          ${this.hideCloseButton ? nothing : html`
-            <button class="modal-header-close t3js-modal-close" @click=${() => this.hideModal()}>
-              <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
-              <span class="visually-hidden">${TYPO3?.lang?.['button.close'] || 'Close'} ${this.modalTitle}</span>
-            </button>
-          `}
-        </div>
+        ${this.hideHeader ? nothing : html`
+          <div class="modal-header t3js-modal-header">
+            <div class="modal-header-title t3js-modal-title" id="t3-modal-header-${this.uniqueId}">${this.modalTitle}</div>
+            ${this.hideCloseButton ? nothing : html`
+              <button class="modal-header-close t3js-modal-close" @click=${() => this.hideModal()}>
+                <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
+                <span class="visually-hidden">${TYPO3?.lang?.['button.close'] || 'Close'} ${this.modalTitle}</span>
+              </button>
+            `}
+          </div>
+        `}
         <div class="modal-body t3js-modal-body">${this.renderModalBody()}</div>
         ${this.buttons.length === 0 ? nothing : html`
           <div class="modal-footer t3js-modal-footer">
@@ -343,6 +359,7 @@ class Modal {
   public readonly sizes: typeof Sizes = Sizes;
   public readonly styles: typeof Styles = Styles;
   public readonly types: typeof Types = Types;
+  public readonly positions: typeof Positions = Positions;
 
   // @todo: currentModal could be a getter method for the last element in this.instances
   public currentModal: ModalElement = null;
@@ -356,11 +373,13 @@ class Modal {
     buttons: [],
     style: Styles.default,
     size: Sizes.default,
+    position: Positions.center,
     additionalCssClasses: [],
     callback: null,
     ajaxCallback: null,
     staticBackdrop: false,
-    hideCloseButton: false
+    hideCloseButton: false,
+    hideHeader: false
   };
 
   constructor() {
@@ -523,6 +542,9 @@ class Modal {
     configuration.style = typeof configuration.style === 'string' && configuration.style in Styles
       ? configuration.style
       : this.defaultConfiguration.style;
+    configuration.position = typeof configuration.position === 'string' && configuration.position in Positions
+      ? configuration.position
+      : this.defaultConfiguration.position;
     configuration.additionalCssClasses = configuration.additionalCssClasses || this.defaultConfiguration.additionalCssClasses;
     configuration.callback = typeof configuration.callback === 'function' ? configuration.callback : this.defaultConfiguration.callback;
     configuration.ajaxCallback = typeof configuration.ajaxCallback === 'function'
@@ -530,6 +552,7 @@ class Modal {
       : this.defaultConfiguration.ajaxCallback;
     configuration.hideCloseButton = configuration.hideCloseButton || this.defaultConfiguration.hideCloseButton;
     configuration.staticBackdrop = configuration.staticBackdrop || this.defaultConfiguration.staticBackdrop;
+    configuration.hideHeader = configuration.hideHeader || this.defaultConfiguration.hideHeader;
 
     return this.generate(configuration);
   }
@@ -562,6 +585,13 @@ class Modal {
         const sizeKey = triggerElement.dataset.size as keyof typeof Sizes;
         size = Sizes[sizeKey];
       }
+      let position = Positions.center;
+      if (triggerElement.dataset.position in Positions) {
+        const positionKey = triggerElement.dataset.position as keyof typeof Positions;
+        position = Positions[positionKey];
+      }
+      const hideHeader = triggerElement.dataset.hideHeader !== undefined;
+      const staticBackdrop = triggerElement.dataset.staticBackdrop !== undefined;
       let url = triggerElement.dataset.url || null;
       if (url !== null) {
         const separator = url.includes('?') ? '&' : '?';
@@ -574,6 +604,9 @@ class Modal {
         content: url !== null ? url : content,
         size,
         severity,
+        position,
+        hideHeader,
+        staticBackdrop,
         buttons: [
           {
             text: triggerElement.dataset.buttonCloseText || TYPO3?.lang?.['button.close'] || 'Close',
@@ -635,11 +668,13 @@ class Modal {
     currentModal.severity = configuration.severity;
     currentModal.variant = configuration.style;
     currentModal.size = configuration.size;
+    currentModal.position = configuration.position;
     currentModal.modalTitle = configuration.title;
     currentModal.additionalCssClasses = configuration.additionalCssClasses;
     currentModal.buttons = <Array<Button>>configuration.buttons;
     currentModal.hideCloseButton = configuration.hideCloseButton;
     currentModal.staticBackdrop = configuration.staticBackdrop;
+    currentModal.hideHeader = configuration.hideHeader;
     if (configuration.callback) {
       currentModal.callback = configuration.callback;
     }

@@ -23,6 +23,93 @@
             <f:sanitize.html><f:translate key="component.modal.introtext" domain="styleguide.messages" /></f:sanitize.html>
         </p>
 
+        <h2><f:translate key="component.modal.section.playground.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.modal.section.playground.description" domain="styleguide.messages" /></p>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="modal-demo-position" class="form-label"><f:translate key="component.modal.section.playground.position" domain="styleguide.messages" /></label>
+                <select id="modal-demo-position" class="form-select">
+                    <f:for each="{positions}" as="position">
+                        <option value="{position}">{position}</option>
+                    </f:for>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="modal-demo-size" class="form-label"><f:translate key="component.modal.section.playground.size" domain="styleguide.messages" /></label>
+                <select id="modal-demo-size" class="form-select">
+                    <f:for each="{sizes}" as="size">
+                        <option value="{size}">{size}</option>
+                    </f:for>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="modal-demo-severity" class="form-label"><f:translate key="component.modal.section.playground.severity" domain="styleguide.messages" /></label>
+                <select id="modal-demo-severity" class="form-select">
+                    <f:for each="{variants}" as="variant">
+                        <option value="{variant}">{variant}</option>
+                    </f:for>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="modal-demo-hide-header" class="form-label"><f:translate key="component.modal.section.playground.hideHeader" domain="styleguide.messages" /></label>
+                <select id="modal-demo-hide-header" class="form-select">
+                    <option value="no"><f:translate key="component.modal.section.playground.no" domain="styleguide.messages" /></option>
+                    <option value="yes"><f:translate key="component.modal.section.playground.yes" domain="styleguide.messages" /></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="modal-demo-static-backdrop" class="form-label"><f:translate key="component.modal.section.playground.staticBackdrop" domain="styleguide.messages" /></label>
+                <select id="modal-demo-static-backdrop" class="form-select">
+                    <option value="no"><f:translate key="component.modal.section.playground.no" domain="styleguide.messages" /></option>
+                    <option value="yes"><f:translate key="component.modal.section.playground.yes" domain="styleguide.messages" /></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button
+                    type="button"
+                    class="btn btn-primary t3js-modal-trigger"
+                    id="modal-demo-trigger"
+                    data-title="Modal Demo"
+                    data-content="This modal demonstrates the selected options."
+                >
+                    <f:translate key="component.modal.section.playground.openModal" domain="styleguide.messages" />
+                </button>
+            </div>
+        </div>
+        <f:asset.script identifier="modalDemo" useNonce="true">
+            const positionSelect = document.getElementById('modal-demo-position');
+            const sizeSelect = document.getElementById('modal-demo-size');
+            const severitySelect = document.getElementById('modal-demo-severity');
+            const hideHeaderSelect = document.getElementById('modal-demo-hide-header');
+            const staticBackdropSelect = document.getElementById('modal-demo-static-backdrop');
+            const trigger = document.getElementById('modal-demo-trigger');
+
+            function updateTriggerAttributes() {
+                trigger.dataset.position = positionSelect.value;
+                trigger.dataset.size = sizeSelect.value;
+                trigger.dataset.severity = severitySelect.value;
+
+                if (hideHeaderSelect.value === 'yes') {
+                    trigger.dataset.hideHeader = '';
+                } else {
+                    delete trigger.dataset.hideHeader;
+                }
+
+                if (staticBackdropSelect.value === 'yes') {
+                    trigger.dataset.staticBackdrop = '';
+                } else {
+                    delete trigger.dataset.staticBackdrop;
+                }
+            }
+
+            positionSelect.addEventListener('change', updateTriggerAttributes);
+            sizeSelect.addEventListener('change', updateTriggerAttributes);
+            severitySelect.addEventListener('change', updateTriggerAttributes);
+            hideHeaderSelect.addEventListener('change', updateTriggerAttributes);
+            staticBackdropSelect.addEventListener('change', updateTriggerAttributes);
+            updateTriggerAttributes();
+        </f:asset.script>
+
         <h2><f:translate key="component.modal.section.default.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <button type="button" class="btn btn-default t3js-modal-trigger">Open modal</button>
@@ -44,6 +131,7 @@
         </sg:example>
 
         <h2><f:translate key="component.modal.section.severity.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.modal.section.severity.description" domain="styleguide.messages" /></p>
         <f:variable name="codeSnippetSeverity">
             <f:for each="{variants}" as="variant">
             data-severity="{variant}"
@@ -67,12 +155,13 @@
         </sg:example>
 
         <h2><f:translate key="component.modal.section.size.headline" domain="styleguide.messages" /></h2>
-        <f:variable name="codeSnippetSeverity">
+        <p><f:translate key="component.modal.section.size.description" domain="styleguide.messages" /></p>
+        <f:variable name="codeSnippetSize">
             <f:for each="{sizes}" as="size">
             data-size="{size}"
             </f:for>
         </f:variable>
-        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetSeverity}">
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetSize}">
             <div class="example-container">
                 <f:for each="{sizes}" as="size">
                     <div class="example-item">
@@ -86,6 +175,59 @@
                     </div>
                 </f:for>
             </div>
+        </sg:example>
+
+        <h2><f:translate key="component.modal.section.position.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.modal.section.position.description" domain="styleguide.messages" /></p>
+        <f:variable name="codeSnippetPosition">
+            <f:for each="{positions}" as="position">
+            data-position="{position}"
+            </f:for>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetPosition}">
+            <div class="example-container">
+                <f:for each="{positions}" as="position">
+                    <div class="example-item">
+                        <a
+                            class="btn btn-default t3js-modal-trigger"
+                            data-position="{position}"
+                            data-content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam condimentum faucibus libero sed efficitur. Aenean dictum faucibus tortor, ac rutrum lorem vulputate sit amet. Proin quis sem ante. Sed fermentum id leo et mollis. Aenean rhoncus metus vitae eros auctor aliquet. Mauris tristique rhoncus lacus in fermentum."
+                        >
+                            Open {position} modal
+                        </a>
+                    </div>
+                </f:for>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="component.modal.section.hideHeader.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.modal.section.hideHeader.description" domain="styleguide.messages" /></p>
+        <f:variable name="codeSnippetHideHeader">
+            data-hide-header
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetHideHeader}">
+            <a
+                class="btn btn-default t3js-modal-trigger"
+                data-hide-header
+                data-content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam condimentum faucibus libero sed efficitur. Aenean dictum faucibus tortor, ac rutrum lorem vulputate sit amet. Proin quis sem ante. Sed fermentum id leo et mollis. Aenean rhoncus metus vitae eros auctor aliquet. Mauris tristique rhoncus lacus in fermentum."
+            >
+                Open modal without header
+            </a>
+        </sg:example>
+
+        <h2><f:translate key="component.modal.section.staticBackdrop.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.modal.section.staticBackdrop.description" domain="styleguide.messages" /></p>
+        <f:variable name="codeSnippetStaticBackdrop">
+            data-static-backdrop
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetStaticBackdrop}">
+            <a
+                class="btn btn-default t3js-modal-trigger"
+                data-static-backdrop
+                data-content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam condimentum faucibus libero sed efficitur. Aenean dictum faucibus tortor, ac rutrum lorem vulputate sit amet. Proin quis sem ante. Sed fermentum id leo et mollis. Aenean rhoncus metus vitae eros auctor aliquet. Mauris tristique rhoncus lacus in fermentum."
+            >
+                Open modal with static backdrop
+            </a>
         </sg:example>
 
     </div>

@@ -8,6 +8,9 @@
     --typo3-modal-shadow: var(--typo3-component-box-shadow-dialog);
     --typo3-modal-padding: 1rem;
     --typo3-modal-spacing: .5rem;
+    --typo3-modal-offset: 1.5rem;
+    --typo3-modal-offset-multiplier-y: 2;
+    --typo3-modal-offset-multiplier-x: 2;
     --typo3-modal-color: var(--typo3-component-color);
     --typo3-modal-bg: var(--typo3-component-bg);
     --typo3-modal-border-width: var(--typo3-component-border-width);
@@ -20,8 +23,8 @@
     flex-direction: column;
     height: var(--typo3-modal-height);
     width: var(--typo3-modal-width);
-    max-height: calc(100dvh - (var(--typo3-component-spacing) * 2));
-    max-width: calc(100dvw - (var(--typo3-component-spacing) * 2));
+    max-height: calc(100dvh - (var(--typo3-modal-offset) * var(--typo3-modal-offset-multiplier-y)));
+    max-width: calc(100dvw - (var(--typo3-modal-offset) * var(--typo3-modal-offset-multiplier-x)));
     padding: 0;
     border: var(--typo3-modal-border-width) solid var(--typo3-modal-border-color);
     border-radius: var(--typo3-modal-border-radius);
@@ -94,6 +97,9 @@
         color: var(--typo3-modal-color);
         overflow-y: auto;
         flex-grow: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
         padding: var(--typo3-modal-padding);
 
         > *:first-child {
@@ -248,6 +254,69 @@
 .modal-size-full {
     --typo3-modal-width: 100%;
     --typo3-modal-height: 100%;
+}
+
+/**
+ * Positions
+ */
+.modal-position-top {
+    --typo3-modal-offset-multiplier-y: 1;
+    margin-block-start: 0;
+    margin-block-end: auto;
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+    border-block-start: 0;
+}
+
+.modal-position-end {
+    --typo3-modal-offset-multiplier-x: 1;
+    margin-inline-start: auto;
+    margin-inline-end: 0;
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+    border-inline-end: 0;
+
+    @starting-style {
+        transform: translate(50px, 0);
+    }
+
+    &.modal-closing {
+        transform: translate(50px, 0);
+    }
+}
+
+.modal-position-bottom {
+    --typo3-modal-offset-multiplier-y: 1;
+    margin-block-start: auto;
+    margin-block-end: 0;
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+    border-block-end: 0;
+
+    @starting-style {
+        transform: translate(0, 50px);
+    }
+
+    &.modal-closing {
+        transform: translate(0, 50px);
+    }
+}
+
+.modal-position-start {
+    --typo3-modal-offset-multiplier-x: 1;
+    margin-inline-start: 0;
+    margin-inline-end: auto;
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+    border-inline-start: 0;
+
+    @starting-style {
+        transform: translate(-50px, 0);
+    }
+
+    &.modal-closing {
+        transform: translate(-50px, 0);
+    }
 }
 
 /**
