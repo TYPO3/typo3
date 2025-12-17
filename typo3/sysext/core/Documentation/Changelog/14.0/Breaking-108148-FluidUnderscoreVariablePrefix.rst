@@ -36,6 +36,19 @@ with an underscore (`_`) will encounter exceptions when such a template is
 rendered. A deprecation has been written to the deprecation log since
 TYPO3 13.4.21 if this is encountered in a Fluid template during rendering.
 
+For template files already using the new `*.fluid.*` file extension, the built-in
+template cache warmup command will discover affected template files:
+
+..  code-block:: sh
+
+    vendor/bin/typo3 fluid:cache:warmup
+
+For each affected template, the command will output an error like this:
+
+..  code-block::
+
+    [error] packages/myext/Resources/Private/Templates/Test.fluid.html: Variable identifiers cannot start with a "_": _myvariable
+
 Migration
 =========
 
@@ -43,32 +56,32 @@ The following examples no longer work with Fluid 5:
 
 ..  code-block:: html
 
-     <f:variable name="_temp" value="a temporary value" />
-     {_temp}
+    <f:variable name="_temp" value="a temporary value" />
+    {_temp}
 
 ..  code-block:: html
 
-     <f:for each="{myArray}" as="_item">
-         {_item}
-     </f:for>
+    <f:for each="{myArray}" as="_item">
+        {_item}
+    </f:for>
 
 ..  code-block:: html
 
-     <f:render partial="Footer" arguments="{_data: myData}" />
+    <f:render partial="Footer" arguments="{_data: myData}" />
 
 ..  code-block:: php
 
-     $view->assign('_data', $myData);
-     $view->assignMultiple([
-         '_data' => $myData,
-     ]);
+    $view->assign('_data', $myData);
+    $view->assignMultiple([
+        '_data' => $myData,
+    ]);
 
 All examples lead to the following exception:
 
 ..  code-block::
 
-     #1756622558 TYPO3Fluid\Fluid\Core\Variables\InvalidVariableIdentifierException
-     Variable identifiers cannot start with a "_": _myVariable
+    #1756622558 TYPO3Fluid\Fluid\Core\Variables\InvalidVariableIdentifierException
+    Variable identifiers cannot start with a "_": _myVariable
 
 In all cases, the variable name must be changed to no longer start with an
 underscore (`_`).
@@ -79,14 +92,14 @@ are **not** affected by this change:
 
 ..  code-block:: html
 
-     {myArray._myKey}
-     {myObject._myProperty}
+    {myArray._myKey}
+    {myObject._myProperty}
 
 Also note that the existing `{_all}` (and any further internal variables added
 by Fluid) are **not affected**. This code will continue to work:
 
 ..  code-block:: html
 
-     <f:render partial="Footer" arguments="{_all}"/>
+    <f:render partial="Footer" arguments="{_all}"/>
 
 ..  index:: Fluid, NotScanned, ext:fluid
