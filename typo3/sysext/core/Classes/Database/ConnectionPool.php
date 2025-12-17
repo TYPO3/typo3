@@ -180,7 +180,7 @@ class ConnectionPool
      *
      * @internal
      */
-    protected function mapCustomDriver(array $connectionParams): array
+    protected function mapCustomDriver(#[\SensitiveParameter] array $connectionParams): array
     {
         // if no custom driver is provided, map TYPO3 specific drivers
         if (!isset($connectionParams['driverClass']) && isset(static::$driverMap[$connectionParams['driver']])) {
@@ -194,7 +194,7 @@ class ConnectionPool
      * Return any doctrine driver middlewares, that may have been set up in:
      * $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['driverMiddlewares']
      */
-    protected function getDriverMiddlewares(array $connectionParams): array
+    protected function getDriverMiddlewares(#[\SensitiveParameter] array $connectionParams): array
     {
         $middlewares = [];
 
@@ -211,7 +211,7 @@ class ConnectionPool
     /**
      * Creates a connection object based on the specified parameters
      */
-    protected function getDatabaseConnection(array $connectionParams): Connection
+    protected function getDatabaseConnection(#[\SensitiveParameter] array $connectionParams): Connection
     {
         $this->registerDoctrineTypes();
 
