@@ -34,7 +34,7 @@ final class DatabaseRecordListCest
 
         $I->amGoingTo('list all records');
         $I->click('Records');
-        $I->waitForElementNotVisible('#nprogress');
+        $I->waitForElementNotVisible('typo3-backend-progress-bar');
         $pageTree->openPath(['styleguide TCA demo', 'displaycond']);
         $I->switchToContentFrame();
         // We check all (possible "remaining") languages and uncheck them again

@@ -12,7 +12,7 @@
  */
 
 import DocumentService from '@typo3/core/document-service';
-import NProgress from 'nprogress';
+import { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
 import '@typo3/backend/input/clearable';
 import '@typo3/backend/element/alert-element';
 import '@typo3/backend/element/icon-element';
@@ -54,6 +54,7 @@ class Recycler {
     itemsPerPage: parseInt(TYPO3.settings.Recycler.pagingSize, 10),
   };
   public markedRecordsForMassAction: RecordToDelete[] = [];
+  private progressBar: ProgressBarElement | null = null;
 
   constructor() {
     DocumentService.ready().then((): void => {
@@ -66,6 +67,14 @@ class Recycler {
    */
   public static refreshPageTree(): void {
     top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
+  }
+
+  private getProgress(): ProgressBarElement {
+    if (!this.progressBar || !this.progressBar.isConnected) {
+      this.progressBar = document.createElement('typo3-backend-progress-bar');
+      document.querySelector(Identifiers.recyclerTable).prepend(this.progressBar);
+    }
+    return this.progressBar;
   }
 
   /**
@@ -164,8 +173,6 @@ class Recycler {
    * Initialize the recycler module
    */
   private initialize(): void {
-    NProgress.configure({ parent: '.module-loading-indicator', showSpinner: false });
-
     this.registerEvents();
 
     if (TYPO3.settings.Recycler.depthSelection > 0) {
@@ -236,7 +243,7 @@ class Recycler {
     const tableSelector = document.querySelector(Identifiers.tableSelector) as HTMLSelectElement;
     const depthSelector = document.querySelector(Identifiers.depthSelector) as HTMLSelectElement;
 
-    NProgress.start();
+    this.getProgress().start();
     tableSelector.value = '';
     this.paging.currentPage = 1;
 
@@ -270,7 +277,11 @@ class Recycler {
       }
 
       return response;
-    }).finally(() => NProgress.done());
+    }).finally(() => {
+      if (this.progressBar) {
+        this.progressBar.done();
+      }
+    });
   }
 
   /**
@@ -281,7 +292,7 @@ class Recycler {
     const tableSelector = document.querySelector(Identifiers.tableSelector) as HTMLSelectElement;
     const searchTextField = document.querySelector(Identifiers.searchText) as HTMLInputElement;
 
-    NProgress.start();
+    this.getProgress().start();
     this.resetMassActionButtons();
 
     return new AjaxRequest(TYPO3.settings.ajaxUrls.recycler).withQueryArguments({
@@ -314,7 +325,11 @@ class Recycler {
       this.buildPaginator(data.totalItems);
 
       return response;
-    }).finally(() => NProgress.done());
+    }).finally(() => {
+      if (this.progressBar) {
+        this.progressBar.done();
+      }
+    });
   }
 
   private deleteRecord(event: Event, currentTarget: HTMLElement): void {
@@ -464,7 +479,7 @@ class Recycler {
       return null;
     }
 
-    NProgress.start();
+    this.getProgress().start();
     return new AjaxRequest(TYPO3.settings.ajaxUrls.recycler).post(data).then(async (response: AjaxResponse): Promise<AjaxResponse> => {
       const responseData = await response.resolve();
 

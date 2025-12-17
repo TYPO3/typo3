@@ -38,14 +38,14 @@ export class PageTree {
   /**
    * Wait for the page tree to be loaded, that means:
    * - No tree loading spinner overlay
-   * - NProgress has finished
+   * - typo3-backend-progress-bar has finished
    * - All icons are loaded
    */
   async isReady() {
     // For some reason sometimes there are multiple loaders, just wait for the last to disappear
     await expect(this.tree.locator('.nodes-loader-inner').last()).not.toBeAttached();
     await expect(this.tree.locator('[identifier="spinner-circle"]')).not.toBeAttached();
-    await expect(this.page.locator('.nprogress-busy')).not.toBeVisible();
+    await expect(this.page.locator('typo3-backend-progress-bar')).not.toBeVisible();
   }
 
   /**

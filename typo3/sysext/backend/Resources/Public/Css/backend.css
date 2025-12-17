@@ -2698,7 +2698,6 @@ body:has(.module) :target{scroll-margin-top:var(--module-docheader-height)}
 .module{background-color:var(--module-bg);color:var(--module-color);display:grid;grid-template-areas:"moduleDocHeaderNavigation" "moduleDocHeaderButtons" "moduleBody";grid-template-rows:auto auto 1fr;max-width:100%;min-height:100%;position:relative;width:100%}
 body>.module{min-height:100dvh}
 .module-loading-indicator{min-height:5px;position:fixed;width:100%;z-index:calc(var(--typo3-zindex-header) + 1)}
-.module-loading-indicator.nprogress-custom-parent{position:fixed;top:0}
 .module-docheader{background-color:var(--module-docheader-bg);display:flex;flex-wrap:wrap;gap:var(--module-docheader-spacing);justify-content:space-between;min-height:var(--module-docheader-bar-height);padding:var(--module-docheader-padding);position:relative;z-index:var(--typo3-zindex-header)}
 .module-docheader-column{align-items:center;display:flex;max-width:100%}
 .module-docheader-column:has(typo3-backend-content-navigation-toggle[hidden]){display:none}
@@ -2820,10 +2819,11 @@ to{box-shadow:var(--module-docheader-box-shadow)}}
 .table-transparent{--typo3-table-bg:transparent}
 .table-vertical-top>:not(caption)>*>*{vertical-align:top}
 .table-center>:not(caption)>*>*{text-align:center}
-.table-fit{--typo3-table-color:var(--typo3-component-color);--typo3-table-bg:var(--typo3-component-bg);--typo3-table-border-width:var(--typo3-component-border-width);--typo3-table-border-color:var(--typo3-component-border-color);border-radius:var(--typo3-component-border-radius);box-shadow:var(--typo3-component-box-shadow);color:var(--typo3-table-color);margin-bottom:var(--typo3-spacing);overflow-x:auto;overflow-y:hidden;width:100%;-webkit-overflow-scrolling:touch;-ms-overflow-style:-ms-autohiding-scrollbar;background-color:var(--typo3-table-bg);border:1px solid var(--typo3-table-border-color)}
+.table-fit{--typo3-table-color:var(--typo3-component-color);--typo3-table-bg:var(--typo3-component-bg);--typo3-table-border-width:var(--typo3-component-border-width);--typo3-table-border-color:var(--typo3-component-border-color);--typo3-table-border-radius:var(--typo3-component-border-radius);--typo3-table-progress-height:3px;border-radius:var(--typo3-table-border-radius);box-shadow:var(--typo3-component-box-shadow);color:var(--typo3-table-color);margin-bottom:var(--typo3-spacing);overflow-x:auto;overflow-y:hidden;width:100%;-webkit-overflow-scrolling:touch;-ms-overflow-style:-ms-autohiding-scrollbar;background-color:var(--typo3-table-bg);border:1px solid var(--typo3-table-border-color)}
 td .table-fit{margin-bottom:0}
 .table-fit caption{border-top:var(--typo3-table-border-width) solid var(--typo3-table-border-color);-webkit-padding-start:var(--typo3-component-padding-x);padding-inline-start:var(--typo3-component-padding-x);-webkit-padding-end:var(--typo3-component-padding-x);padding-inline-end:var(--typo3-component-padding-x)}
 .table-fit .caption-top caption{border-bottom:var(--typo3-table-border-width) solid var(--typo3-table-border-color);border-top:0}
+.table-fit>typo3-backend-progress-bar{--progress-border-radius:0;--progress-bar-height:var(--typo3-table-progress-height);height:0;-webkit-user-select:none;-moz-user-select:none;user-select:none}
 .table-fit>.table{margin-bottom:0}
 .table-fit>.table>:first-child>*,.table-fit>.table>colgroup:first-child+*>*{border-top-width:0}
 .table-fit>.table>*>*>:first-child{-webkit-border-start:0;border-inline-start:0}
@@ -3027,16 +3027,6 @@ td .table-fit{margin-bottom:0}
 select-pure{--typo3-form-selectpure-border-radius:var(--typo3-input-border-radius);--typo3-form-selectpure-border-width:var(--typo3-input-border-width);--typo3-form-selectpure-border-color:var(--typo3-input-border-color);--typo3-form-selectpure-padding-x:var(--typo3-input-padding-x);--typo3-form-selectpure-padding-y:var(--typo3-input-padding-y);--typo3-form-selectpure-font-size:var(--typo3-input-font-size);--typo3-form-selectpure-line-height:var(--typo3-input-line-height);--typo3-form-selectpure-color:var(--typo3-input-color);--typo3-form-selectpure-bg:var(--typo3-input-bg);--typo3-form-selectpure-hover-color:var(--typo3-input-hover-color);--typo3-form-selectpure-hover-bg:var(--typo3-input-hover-bg);--typo3-form-selectpure-focus-border-color:var(--typo3-input-focus-border-color);--typo3-form-selectpure-disabled-color:var(--typo3-input-disabled-color);--typo3-form-selectpure-disabled-bg:var(--typo3-input-disabled-bg);--font-size:var(--typo3-form-selectpure-font-size);--font-family:inherit;--font-weight:400;--border-radius:var(--typo3-form-selectpure-border-radius);--border-width:var(--typo3-form-selectpure-border-width);--border-color:var(--typo3-form-selectpure-border-color);--padding:calc(var(--typo3-form-selectpure-padding-y) - 4px) var(--typo3-form-selectpure-padding-x);--select-height:calc(var(--typo3-form-selectpure-padding-y)*2 + var(--typo3-form-selectpure-font-size)*var(--typo3-form-selectpure-line-height) + var(--typo3-form-selectpure-border-width)*2);--select-width:100%;--color:var(--typo3-form-selectpure-color);--background-color:var(--typo3-form-selectpure-bg);--hover-color:var(--typo3-form-selectpure-hover-color);--hover-background-color:var(--typo3-form-selectpure-hover-bg);--disabled-color:var(--typo3-form-selectpure-disabled-color);--disabled-background-color:var(--typo3-form-selectpure-disabled-bg);--select-outline:var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb,var(--typo3-form-selectpure-focus-border-color),transparent 25%);--selected-background-color:var(--typo3-component-active-bg);--selected-color:var(--typo3-component-active-color);--dropdown-gap:calc(var(--typo3-spacing)*0.5);--dropdown-items:5;--dropdown-z-index:2}
 .input-group>select-pure{flex:1 1 auto;position:relative}
 .sortable-ghost{opacity:.4!important}
-#nprogress{pointer-events:none}
-#nprogress .bar{background:#ff8700;height:2px;left:0;position:fixed;top:0;width:100%;z-index:calc(var(--typo3-zindex-header) + 1)}
-#nprogress .peg{box-shadow:0 0 10px #ff8700,0 0 5px #ff8700;display:block;height:100%;opacity:1;padding:0;position:absolute;right:0;transform:rotate(3deg) translateY(-4px);width:100px}
-#nprogress .spinner{display:block;inset-inline-end:15px;position:fixed;top:15px;z-index:calc(var(--typo3-zindex-header) + 1)}
-#nprogress .spinner-icon{animation:nprogress-spinner .4s linear infinite;border:2px solid transparent;border-inline-start-color:#ff8700;border-radius:50%;border-top-color:#ff8700;box-sizing:border-box;height:18px;width:18px}
-.nprogress-custom-parent{overflow:hidden;position:relative}
-.nprogress-custom-parent #nprogress .bar,.nprogress-custom-parent #nprogress .spinner{position:absolute}
-@keyframes nprogress-spinner{
-0%{transform:rotate(0deg)}
-to{transform:rotate(1turn)}}
 :root{--alwan-pattern:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 20 20'%3E%3Cpath fill='%23D0D0D0' d='M0 0h10v10H0Z'/%3E%3Cpath fill='%23fff' d='M0 10h10v10H0Z'/%3E%3Cpath fill='%23D0D0D0' d='M10 10h10v10H10Z'/%3E%3Cpath fill='%23fff' d='M10 0h10v10H10Z'/%3E%3C/svg%3E")}
 .alwan{--bg:#fff;--fg:#333;--outer-bc:#ccc;--bc:#ccc;--btn-bg-hover:#f0f0f0;--thumb-bg:#fff;--thumb-bg-hover:#f0f0f0;--label-color:#555;--input-bg:#fafafa;--input-bg-hover:#f0f0f0;--input-bc-hover:#a8a8a8;--swatches-bg:#f5f5f5;background:var(--bg);border:1px solid var(--outer-bc);max-width:260px;overflow:hidden;width:260px}
 .alwan *{box-sizing:border-box}
@@ -3705,6 +3695,7 @@ typo3-backend-combobox-choice::part(icon){-webkit-margin-end:.5rem;flex-shrink:0
 typo3-backend-combobox-choice::part(content){flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 typo3-backend-combobox-choice::part(indicator){color:var(--typo3-form-combobox-option-indicator);-webkit-margin-end:.25rem;margin-inline-end:.25rem;min-width:var(--typo3-form-combobox-icon-size)}
 typo3-backend-content-navigation{--content-navigation-divider-color:color-mix(in srgb,var(--typo3-surface-container-lowest),var(--typo3-text-color-base) 10%);--content-navigation-divider-color-active:var(--typo3-state-primary-border-color);--content-navigation-flyout-box-shadow:var(--typo3-component-box-shadow-flyout)}
+typo3-backend-content-navigation [slot=content] typo3-backend-progress-bar{--progress-border-radius:0;left:0;position:absolute;right:0;top:0;z-index:10}
 typo3-qrcode{display:inline-block}
 typo3-qrcode .preview{margin-bottom:var(--typo3-spacing);text-align:center}
 .collapse-horizontal{height:auto;overflow:hidden;vertical-align:middle;width:0}

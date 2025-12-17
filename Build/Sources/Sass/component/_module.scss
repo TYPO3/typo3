@@ -63,11 +63,6 @@ body:has(.module) *:target {
     min-height: 5px;
     width: 100%;
     z-index: calc(var(--typo3-zindex-header) + 1);
-
-    &.nprogress-custom-parent {
-        position: fixed;
-        top: 0;
-    }
 }
 
 //

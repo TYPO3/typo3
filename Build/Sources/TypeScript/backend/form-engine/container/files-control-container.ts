@@ -13,7 +13,7 @@
 
 import { MessageUtility } from '../../utility/message-utility';
 import { AjaxDispatcher } from './../inline-relation/ajax-dispatcher';
-import NProgress from 'nprogress';
+import { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
 import Sortable from 'sortablejs';
 import FormEngine from '@typo3/backend/form-engine';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
@@ -59,7 +59,7 @@ interface RequestQueue {
 }
 
 interface ProgressQueue {
-  [key: string]: any;
+  [key: string]: ProgressBarElement;
 }
 
 interface Appearance {
@@ -369,7 +369,7 @@ class FilesControlContainer extends HTMLElement {
     const isLoaded = recordFieldsContainer !== null && !recordContainer.classList.contains(States.notLoaded);
 
     if (!isLoaded) {
-      const progress = this.getProgress(objectId, recordContainer.dataset.objectIdHash);
+      const progress = this.getProgress(objectId);
 
       if (!isLoading) {
         const ajaxRequest = this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint('file_reference_details'));
@@ -582,15 +582,15 @@ class FilesControlContainer extends HTMLElement {
     });
   }
 
-  private getProgress(objectId: string, objectIdHash: string): any {
-    const headerIdentifier = '#' + objectIdHash + '_header';
-    let progress: any;
+  private getProgress(objectId: string): ProgressBarElement {
+    let progress: ProgressBarElement;
 
     if (typeof this.progressQueue[objectId] !== 'undefined') {
       progress = this.progressQueue[objectId];
     } else {
-      progress = NProgress;
-      progress.configure({ parent: headerIdentifier, showSpinner: false });
+      progress = document.createElement('typo3-backend-progress-bar');
+      const panel = document.querySelector<HTMLElement>(selector`[data-object-id="${objectId}"]`);
+      panel.insertBefore(progress, panel.firstChild);
       this.progressQueue[objectId] = progress;
     }
 

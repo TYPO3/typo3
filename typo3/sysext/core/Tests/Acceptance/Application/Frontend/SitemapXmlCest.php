@@ -36,7 +36,7 @@ final class SitemapXmlCest
         $I->switchToContentFrame();
         $I->waitForElementVisible('a[title="View webpage"]');
         $I->wait(1);
-        $I->waitForElementNotVisible('#nprogress', 120);
+        $I->waitForElementNotVisible('typo3-backend-progress-bar', 120);
         $dataDispatchArgs = $I->grabAttributeFrom('a[title="View webpage"]', 'data-dispatch-args');
         $url = json_decode($dataDispatchArgs, false, 512, JSON_THROW_ON_ERROR);
         $usesSiteSets = str_contains($scenario->current('env'), 'sets');

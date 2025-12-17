@@ -79,6 +79,36 @@
             <typo3-backend-progress-bar value="5" max="10" label="error" severity="2"></typo3-backend-progress-bar>
         </sg:example>
 
+        <h2><f:translate key="component.progressIndicator.section.table.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.progressIndicator.section.table.text" domain="styleguide.messages" /></p>
+        <sg:example codePreview="true" codeLanguage="html">
+            <div class="table-fit mb-0">
+                <typo3-backend-progress-bar></typo3-backend-progress-bar>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Column 1</th>
+                            <th>Column 2</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Row 1</td>
+                            <td>Lorem ipsum dolor sit amet</td>
+                        </tr>
+                        <tr>
+                            <td>Row 2</td>
+                            <td>Consetetur sadipscing elitr</td>
+                        </tr>
+                        <tr>
+                            <td>Row 3</td>
+                            <td>Sed diam nonumy eirmod tempor</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </sg:example>
+
         <h2><f:translate key="section.frontend.headline" domain="styleguide.messages" /></h2>
 
         <h3><f:translate key="section.colorScheme.headline" domain="styleguide.messages" /></h3>
@@ -89,6 +119,99 @@
             <typo3-backend-progress-bar value="5" max="10" label="warning" severity="1"></typo3-backend-progress-bar><br>
             <typo3-backend-progress-bar value="5" max="10" label="error" severity="2"></typo3-backend-progress-bar>
         </sg:colorScheme>
+
+        <h2><f:translate key="component.progressIndicator.section.interactiveDemos.headline" domain="styleguide.messages" /></h2>
+
+        <h3><f:translate key="component.progressIndicator.section.indeterminate.headline" domain="styleguide.messages" /></h3>
+        <p><f:translate key="component.progressIndicator.section.indeterminate.text" domain="styleguide.messages" /></p>
+        <button type="button" class="btn btn-default" id="progressBarDemoIndeterminate">
+            <f:translate key="component.progressIndicator.section.indeterminate.button" domain="styleguide.messages" />
+        </button>
+        <button type="button" class="btn btn-default" id="progressBarDemoIndeterminateDelayed">
+            <f:translate key="component.progressIndicator.section.indeterminate.buttonDelayed" domain="styleguide.messages" />
+        </button>
+        <div id="progressBarDemoIndeterminateTarget" class="mt-3" style="min-height: 2rem;"></div>
+
+        <h3 class="mt-4"><f:translate key="component.progressIndicator.section.determinate.headline" domain="styleguide.messages" /></h3>
+        <p><f:translate key="component.progressIndicator.section.determinate.text" domain="styleguide.messages" /></p>
+        <button type="button" class="btn btn-default" id="progressBarDemoDeterminate">
+            <f:translate key="component.progressIndicator.section.determinate.button" domain="styleguide.messages" />
+        </button>
+        <button type="button" class="btn btn-default" id="progressBarDemoDeterminateDelayed">
+            <f:translate key="component.progressIndicator.section.determinate.buttonDelayed" domain="styleguide.messages" />
+        </button>
+        <div id="progressBarDemoDeterminateTarget" class="mt-3" style="min-height: 2rem;"></div>
+
+        <h3 class="mt-4"><f:translate key="component.progressIndicator.section.reusable.headline" domain="styleguide.messages" /></h3>
+        <p><f:translate key="component.progressIndicator.section.reusable.text" domain="styleguide.messages" /></p>
+        <button type="button" class="btn btn-default" id="progressBarDemoReuse">
+            <f:translate key="component.progressIndicator.section.reusable.button" domain="styleguide.messages" />
+        </button>
+        <div id="progressBarDemoReuseTarget" class="mt-3" style="min-height: 2rem;">
+            <typo3-backend-progress-bar id="progressBarDemoReuseElement" label="Click button to start demo"></typo3-backend-progress-bar>
+        </div>
+
+        <f:asset.script identifier="progressBarDemo" useNonce="true">
+            document.querySelector('#progressBarDemoIndeterminate').addEventListener('click', () => {
+                const target = document.querySelector('#progressBarDemoIndeterminateTarget');
+                target.innerHTML = '';
+                const progressBar = document.createElement('typo3-backend-progress-bar');
+                progressBar.label = 'Indeterminate progress...';
+                target.appendChild(progressBar);
+                progressBar.start(true);
+                progressBar.done();
+            });
+
+            document.querySelector('#progressBarDemoIndeterminateDelayed').addEventListener('click', () => {
+                const target = document.querySelector('#progressBarDemoIndeterminateTarget');
+                target.innerHTML = '';
+                const progressBar = document.createElement('typo3-backend-progress-bar');
+                progressBar.label = 'Indeterminate progress (2s delay)...';
+                target.appendChild(progressBar);
+                progressBar.start(true);
+                setTimeout(() => progressBar.done(), 2000);
+            });
+
+            document.querySelector('#progressBarDemoDeterminate').addEventListener('click', () => {
+                const target = document.querySelector('#progressBarDemoDeterminateTarget');
+                target.innerHTML = '';
+                const progressBar = document.createElement('typo3-backend-progress-bar');
+                progressBar.label = 'Determinate progress...';
+                progressBar.value = 50;
+                target.appendChild(progressBar);
+                progressBar.done();
+            });
+
+            document.querySelector('#progressBarDemoDeterminateDelayed').addEventListener('click', () => {
+                const target = document.querySelector('#progressBarDemoDeterminateTarget');
+                target.innerHTML = '';
+                const progressBar = document.createElement('typo3-backend-progress-bar');
+                progressBar.label = 'Determinate progress (2s delay)...';
+                progressBar.value = 50;
+                target.appendChild(progressBar);
+                setTimeout(() => progressBar.done(), 2000);
+            });
+
+            // Reuse demo - shows how start() cancels done() during its animation
+            const reuseProgressBar = document.querySelector('#progressBarDemoReuseElement');
+            document.querySelector('#progressBarDemoReuse').addEventListener('click', () => {
+                // Start in indeterminate mode
+                reuseProgressBar.label = 'Loading...';
+                reuseProgressBar.start(true);
+
+                // Call done() which will animate to 100% and then try to hide
+                setTimeout(() => {
+                    reuseProgressBar.label = 'done() called...';
+                    reuseProgressBar.done();
+
+                    // While done() is in progress, call start() to cancel it
+                    setTimeout(() => {
+                        reuseProgressBar.label = 'start() called! done() was cancelled - stays visible';
+                        reuseProgressBar.start(true);
+                    }, 100);
+                }, 1000);
+            });
+        </f:asset.script>
     </div>
 
 </f:section>

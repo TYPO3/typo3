@@ -483,7 +483,6 @@ module.exports = function (grunt) {
         'jquery',
         { name: 'luxon', src: 'node_modules/luxon/build/es6/luxon.js' },
         'marked',
-        'nprogress',
         'shortcut-buttons-flatpickr',
         { name: 'sortablejs', src: 'node_modules/sortablejs/modular/sortable.complete.esm.js' },
         {

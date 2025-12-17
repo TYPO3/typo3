@@ -147,7 +147,9 @@ class UpgradeWizards extends AbstractInteractableModule {
   }
 
   private static removeLoadingMessage(container: HTMLElement): void {
-    container.querySelectorAll('typo3-backend-progress-bar').forEach((progressBar: ProgressBarElement): void => progressBar.remove());
+    container.querySelectorAll('typo3-backend-progress-bar').forEach((progressBar: ProgressBarElement): void => {
+      progressBar.remove();
+    });
   }
 
   public override initialize(currentModal: ModalElement): void {

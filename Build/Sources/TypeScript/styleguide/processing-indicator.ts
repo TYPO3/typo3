@@ -11,13 +11,14 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import NProgress from 'nprogress';
+import { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
 import Notification from '@typo3/backend/notification';
 import RegularEvent from '@typo3/core/event/regular-event';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 let itemProcessing = 0;
+let progressBar: ProgressBarElement | null = null;
 
 function setButtonStates(scope: HTMLElement, action: string): void {
   for (const _button of scope.children) {
@@ -47,14 +48,20 @@ new RegularEvent('click', (e: MouseEvent, target: HTMLButtonElement): void => {
   }
   target.querySelector('typo3-backend-icon').identifier = 'spinner-circle';
 
-  NProgress.start();
+  if (!progressBar) {
+    progressBar = document.createElement('typo3-backend-progress-bar');
+    document.body.appendChild(progressBar);
+  }
+  progressBar.start();
   itemProcessing++;
 
   // Trigger generate action
   new AjaxRequest(target.dataset.href).get().then(async (response: AjaxResponse): Promise<void> => {
     const json = await response.resolve('application/json');
     if (json.status === false) {
-      NProgress.done();
+      if (progressBar) {
+        progressBar.done();
+      }
       Notification.error(json.title, json.body, 5);
       target.querySelector('typo3-backend-icon').identifier = 'actions-' + target.dataset.generatorAction;
       target.classList.remove('disabled');
@@ -62,15 +69,17 @@ new RegularEvent('click', (e: MouseEvent, target: HTMLButtonElement): void => {
     }
     itemProcessing--;
     Notification.showMessage(json.title, json.body, json.status, 5);
-    // Hide nprogress only if all items done loading/processing
-    if (itemProcessing === 0) {
-      NProgress.done();
+    // Hide progress bar only if all items done loading/processing
+    if (itemProcessing === 0 && progressBar) {
+      progressBar.done();
     }
     // Set button states
     setButtonStates(target.parentElement, target.dataset.generatorAction === 'plus' ? 'delete' : 'plus');
   }).catch((error: AjaxResponse): void => {
     // Action failed, reset to its original state
-    NProgress.done();
+    if (progressBar) {
+      progressBar.done();
+    }
     Notification.error('', error.response.status + ' ' + error.response.statusText, 5);
     target.querySelector('typo3-backend-icon').identifier = 'actions-' + target.dataset.generatorAction;
     target.classList.remove('disabled');

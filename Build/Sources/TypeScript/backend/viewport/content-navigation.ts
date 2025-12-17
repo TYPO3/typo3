@@ -103,6 +103,10 @@ export class ContentNavigation extends LitElement {
       min-width: 0;
     }
 
+    .panel--content ::slotted(*) {
+      position: relative;
+    }
+
     .panel--collapsed {
       display: none;
     }

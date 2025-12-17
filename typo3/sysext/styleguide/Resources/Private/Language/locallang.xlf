@@ -917,6 +917,42 @@
       <trans-unit id="component.progressIndicator.introtext">
         <source><![CDATA[Progress bars represent a specific state that can be displayed in a percental fashion, e.g. amount of uploaded files, executed Upgrade Wizards or disk space usage.<br>If the exact amount of data being loaded is not known, progress bars may be rendered in an indeterminate state.<br>If applicable, use clear wording that describes the progress bar.]]></source>
       </trans-unit>
+      <trans-unit id="component.progressIndicator.section.interactiveDemos.headline">
+        <source>Interactive Demos</source>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.headline">
+        <source>Indeterminate Progress Bar</source>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.text">
+        <source><![CDATA[Creates a progress bar in indeterminate state, then calls done() to trigger the transition to 100% and removal.]]></source>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.button">
+        <source>Start Indeterminate Progress</source>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.buttonDelayed">
+        <source>Start Indeterminate Progress (with delay)</source>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.headline">
+        <source>Determinate Progress Bar</source>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.text">
+        <source><![CDATA[Creates a progress bar with an initial value, then calls done() to trigger the transition to 100% and removal.]]></source>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.button">
+        <source>Start Determinate Progress</source>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.buttonDelayed">
+        <source>Start Determinate Progress (with delay)</source>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.reusable.headline">
+        <source>Reusable Progress Bar</source>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.reusable.text">
+        <source>Demonstrates how calling start() cancels a done() operation that is already in progress. The progress bar below calls done() after 1 second, but start() is called 100ms later to cancel the removal.</source>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.reusable.button">
+        <source>Run Demo</source>
+      </trans-unit>
       <trans-unit id="component.progressIndicator.section.customLabel.headline">
         <source>Custom label</source>
       </trans-unit>
@@ -940,6 +976,12 @@
       </trans-unit>
       <trans-unit id="component.progressIndicator.section.value.headline">
         <source>Value</source>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.table.headline">
+        <source>Progress Bar with Table</source>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.table.text">
+        <source>Demonstrates using a progress bar as the first child of a table wrapper to indicate loading state.</source>
       </trans-unit>
       <!-- Component: Progress trackers -->
       <trans-unit id="component.progressTrackers.headline">

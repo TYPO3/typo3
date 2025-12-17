@@ -14,12 +14,13 @@
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
-import NProgress from 'nprogress';
+import { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
 import { default as Modal, type ModalElement } from '@typo3/backend/modal';
 import { html } from 'lit';
 
 export default class Workspaces {
   protected readonly ajaxRoute: string = 'workspace_dispatch';
+  protected progressBar: ProgressBarElement | null = null;
 
   /**
    * Renders the send to stage window
@@ -70,8 +71,9 @@ export default class Workspaces {
    * @return {$}
    */
   protected sendRemoteRequest(payload: object, progressContainer: string = '#workspace-content-wrapper'): Promise<AjaxResponse> {
-    NProgress.configure({ parent: progressContainer, showSpinner: false });
-    NProgress.start();
+    this.progressBar = document.createElement('typo3-backend-progress-bar');
+    document.querySelector(progressContainer).prepend(this.progressBar);
+    this.progressBar.start();
     return (new AjaxRequest(TYPO3.settings.ajaxUrls[this.ajaxRoute])).post(
       payload,
       {
@@ -79,7 +81,11 @@ export default class Workspaces {
           'Content-Type': 'application/json; charset=utf-8'
         }
       }
-    ).finally(() => NProgress.done());
+    ).finally(() => {
+      if (this.progressBar) {
+        this.progressBar.done();
+      }
+    });
   }
 
   /**

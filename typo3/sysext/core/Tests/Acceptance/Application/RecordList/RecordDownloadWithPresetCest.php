@@ -38,7 +38,7 @@ final class RecordDownloadWithPresetCest
 
         $I->amGoingTo('download a record using a preset');
         $I->click('Records');
-        $I->waitForElementNotVisible('#nprogress');
+        $I->waitForElementNotVisible('typo3-backend-progress-bar');
         $pageTree->openPath(['styleguide TCA demo']);
         $I->wait(0.2);
         $I->switchToContentFrame();
@@ -63,7 +63,7 @@ final class RecordDownloadWithPresetCest
 
         $I->amGoingTo('download a record using a preset');
         $I->click('Records');
-        $I->waitForElementNotVisible('#nprogress');
+        $I->waitForElementNotVisible('typo3-backend-progress-bar');
         $pageTree->openPath(['styleguide TCA demo']);
         $I->wait(0.2);
         $I->switchToContentFrame();

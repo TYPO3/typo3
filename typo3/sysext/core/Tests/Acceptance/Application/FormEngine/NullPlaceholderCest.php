@@ -48,7 +48,7 @@ final class NullPlaceholderCest
         $I->waitForText('Edit Form engine - file "1" on page "file"');
         $I->click('typical fal');
         $I->click('.form-irre-header');
-        $I->waitForElementNotVisible('.nprogress-custom-parent');
+        $I->waitForElementNotVisible('typo3-backend-progress-bar');
 
         $I->amGoingTo('enable checkboxes and see whether the fields get marked as changed');
         foreach (['title', 'alternative', 'description'] as $fieldName) {

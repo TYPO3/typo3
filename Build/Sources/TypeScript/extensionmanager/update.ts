@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import NProgress from 'nprogress';
+import { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
 import Notification from '@typo3/backend/notification';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -26,6 +26,8 @@ enum ExtensionManagerUpdateIdentifier {
 }
 
 class ExtensionManagerUpdate {
+  private progressBar: ProgressBarElement;
+
   /**
    * Register "update from ter" action
    */
@@ -63,7 +65,7 @@ class ExtensionManagerUpdate {
 
     let reload = false;
 
-    NProgress.start();
+    this.getProgress().start();
     new AjaxRequest(url).post({}).then(async (response: AjaxResponse): Promise<void> => {
       const data = await response.resolve();
       // Something went wrong, show message
@@ -94,7 +96,7 @@ class ExtensionManagerUpdate {
         10,
       );
     }).finally((): void => {
-      NProgress.done();
+      this.progressBar?.done();
 
       if (!reload) {
         // Hide loaders
@@ -112,6 +114,14 @@ class ExtensionManagerUpdate {
         }
       }
     });
+  }
+
+  private getProgress(): ProgressBarElement {
+    if (!this.progressBar || !this.progressBar.isConnected) {
+      this.progressBar = document.createElement('typo3-backend-progress-bar');
+      document.querySelector('.module-loading-indicator').appendChild(this.progressBar);
+    }
+    return this.progressBar;
   }
 }
 

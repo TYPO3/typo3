@@ -16,7 +16,6 @@ import { DateTime } from 'luxon';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { SeverityEnum } from './enum/severity';
 import { MessageUtility } from './utility/message-utility';
-import NProgress from 'nprogress';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { default as Modal, type ModalElement, Sizes as ModalSizes } from './modal';
 import Notification from './notification';
@@ -97,6 +96,7 @@ export default class DragUploader {
   private askForOverride: Array<FileConflict> = [];
 
   private percentagePerFile: number = 1;
+  private overallProgressBar: ProgressBarElement | null = null;
 
   private readonly body: HTMLElement;
   private readonly element: HTMLElement;
@@ -364,7 +364,9 @@ export default class DragUploader {
       this.fileList.closest('.filelist-main')?.querySelector('.t3-filelist-info-container')?.setAttribute('hidden', 'hidden');
     }
 
-    NProgress.start();
+    this.overallProgressBar = document.createElement('typo3-backend-progress-bar');
+    document.body.appendChild(this.overallProgressBar);
+    this.overallProgressBar.start();
     this.percentagePerFile = 1 / files.length;
 
     // Check for each file if is already exist before adding it to the queue
@@ -382,7 +384,9 @@ export default class DragUploader {
             uploaded: file,
             action: this.irreObjectUid ? Action.USE_EXISTING : this.defaultAction,
           });
-          NProgress.inc(this.percentagePerFile);
+          if (this.overallProgressBar) {
+            this.overallProgressBar.inc(this.percentagePerFile);
+          }
         } else {
           new FileQueueItem(this, file, Action.SKIP, this.fileList.dataset.mode === Mode.BROWSE ? Mode.BROWSE : Mode.MANAGE);
         }
@@ -392,7 +396,9 @@ export default class DragUploader {
 
     Promise.all(ajaxCalls).then((): void => {
       this.drawOverrideModal();
-      NProgress.done();
+      if (this.overallProgressBar) {
+        this.overallProgressBar.done();
+      }
     });
 
     this.fileInput.value = '';

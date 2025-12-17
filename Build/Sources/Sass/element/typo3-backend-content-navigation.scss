@@ -5,4 +5,13 @@ typo3-backend-content-navigation {
     --content-navigation-divider-color: color-mix(in srgb, var(--typo3-surface-container-lowest), var(--typo3-text-color-base) 10%);
     --content-navigation-divider-color-active: var(--typo3-state-primary-border-color);
     --content-navigation-flyout-box-shadow: var(--typo3-component-box-shadow-flyout);
+
+    [slot="content"] typo3-backend-progress-bar {
+        --progress-border-radius: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+    }
 }

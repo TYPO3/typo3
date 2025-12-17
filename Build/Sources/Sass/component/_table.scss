@@ -282,9 +282,11 @@
     --typo3-table-bg: var(--typo3-component-bg);
     --typo3-table-border-width: var(--typo3-component-border-width);
     --typo3-table-border-color: var(--typo3-component-border-color);
+    --typo3-table-border-radius: var(--typo3-component-border-radius);
+    --typo3-table-progress-height: 3px;
     width: 100%;
     color: var(--typo3-table-color);
-    border-radius: var(--typo3-component-border-radius);
+    border-radius: var(--typo3-table-border-radius);
     box-shadow: var(--typo3-component-box-shadow);
     margin-bottom: var(--typo3-spacing);
     overflow-x: auto;
@@ -309,6 +311,13 @@
             border-top: 0;
             border-bottom: var(--typo3-table-border-width) solid var(--typo3-table-border-color);
         }
+    }
+
+    > typo3-backend-progress-bar {
+        --progress-border-radius: 0;
+        --progress-bar-height: var(--typo3-table-progress-height);
+        height: 0;
+        user-select: none;
     }
 
     > .table {

@@ -13,7 +13,6 @@
 
 import { MessageUtility } from '@typo3/backend/utility/message-utility';
 import ElementBrowser from '@typo3/backend/element-browser';
-import NProgress from 'nprogress';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Icons from '@typo3/backend/icons';
 import type { ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
@@ -122,9 +121,6 @@ class BrowseFiles {
       target.classList.add('disabled');
       target.innerHTML = icon;
     });
-    NProgress.configure({ parent: '.element-browser-main-content', showSpinner: false });
-    NProgress.start();
-    const stepping = 1 / selectedItems.length;
     BrowseFiles.handleNext(selectedItems);
 
     new RegularEvent('message', (event: MessageEvent): void => {
@@ -134,10 +130,8 @@ class BrowseFiles {
 
       if (event.data.actionName === 'typo3:foreignRelation:inserted') {
         if (selectedItems.length > 0) {
-          NProgress.inc(stepping);
           BrowseFiles.handleNext(selectedItems);
         } else {
-          NProgress.done();
           ElementBrowser.focusOpenerAndClose();
         }
       }

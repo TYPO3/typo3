@@ -51,7 +51,7 @@ final class TemplateCest
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
         $I->waitForElementVisible('.module-docheader-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementNotVisible('#nprogress', 120);
+        $I->waitForElementNotVisible('typo3-backend-progress-bar', 120);
         // Click the module actions dropdown button and select "Edit TypoScript Record"
         $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
         $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
@@ -68,7 +68,7 @@ final class TemplateCest
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
         $I->waitForElementVisible('.module-docheader-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementNotVisible('#nprogress', 120);
+        $I->waitForElementNotVisible('typo3-backend-progress-bar', 120);
         // Click the module actions dropdown button and select "Constant Editor"
         $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
         $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
@@ -80,7 +80,7 @@ final class TemplateCest
 
         // change to Override TypoScript and see the TypoScript record overview table
         $I->waitForElementVisible('.module-docheader-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementNotVisible('#nprogress', 120);
+        $I->waitForElementNotVisible('typo3-backend-progress-bar', 120);
         $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
         $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
         $I->click('Edit TypoScript Record', '.module-docheader-buttons .dropdown-menu');
@@ -121,7 +121,7 @@ final class TemplateCest
 
         // change the TypoScript record within the TypoScript Object Browser
         $I->waitForElementVisible('.module-docheader-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementNotVisible('#nprogress', 120);
+        $I->waitForElementNotVisible('typo3-backend-progress-bar', 120);
         $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
         $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
         $I->click('Active TypoScript', '.module-docheader-buttons .dropdown-menu');
@@ -158,7 +158,7 @@ final class TemplateCest
         }
         $I->switchToContentFrame();
         $I->waitForElementVisible('.module-docheader-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementNotVisible('#nprogress', 120);
+        $I->waitForElementNotVisible('typo3-backend-progress-bar', 120);
         $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
         $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
         $I->click('Constant Editor', '.module-docheader-buttons .dropdown-menu');
@@ -171,7 +171,7 @@ final class TemplateCest
 
         // see the page has a TypoScript record
         $I->waitForElementVisible('.module-docheader-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementNotVisible('#nprogress', 120);
+        $I->waitForElementNotVisible('typo3-backend-progress-bar', 120);
         $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
         $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
         $I->click('Edit TypoScript Record', '.module-docheader-buttons .dropdown-menu');
@@ -191,7 +191,7 @@ final class TemplateCest
         // Avoid race condition:
         // SEVERE - http://web/typo3/sysext/backend/Resources/Public/JavaScript/code-editor/autocomplete/ts-ref.js?bust=[…]
         // 12:613 Uncaught TypeError: Cannot convert undefined or null to object
-        $I->waitForElementNotVisible('#nprogress', 120);
+        $I->waitForElementNotVisible('typo3-backend-progress-bar', 120);
     }
 
     public function createExtensionTemplate(ApplicationTester $I, PageTree $pageTree): void
@@ -201,7 +201,7 @@ final class TemplateCest
         $I->clickWithLeftButton('//*[text()=\'menu_sitemap_pages\']');
         $I->switchToContentFrame();
         $I->waitForElementVisible('.module-docheader-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementNotVisible('#nprogress', 120);
+        $I->waitForElementNotVisible('typo3-backend-progress-bar', 120);
         $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
         $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
         $I->click('Constant Editor', '.module-docheader-buttons .dropdown-menu');
@@ -212,7 +212,7 @@ final class TemplateCest
         $I->clickWithLeftButton('//input[@name=\'createExtension\']');
         // see the page has a TypoScript record
         $I->waitForElementVisible('.module-docheader-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementNotVisible('#nprogress', 120);
+        $I->waitForElementNotVisible('typo3-backend-progress-bar', 120);
         $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
         $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
         $I->click('Edit TypoScript Record', '.module-docheader-buttons .dropdown-menu');
@@ -242,7 +242,7 @@ final class TemplateCest
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
         $I->waitForElementVisible('.module-docheader-buttons .btn-group button.dropdown-toggle');
-        $I->waitForElementNotVisible('#nprogress', 120);
+        $I->waitForElementNotVisible('typo3-backend-progress-bar', 120);
         $I->click('.module-docheader-buttons .btn-group button.dropdown-toggle');
         $I->waitForElementVisible('.module-docheader-buttons .dropdown-menu');
         $I->click('Active TypoScript', '.module-docheader-buttons .dropdown-menu');

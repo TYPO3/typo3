@@ -13,7 +13,7 @@
 
 import DocumentService from '@typo3/core/document-service';
 import BrowserSession from '@typo3/backend/storage/browser-session';
-import NProgress from 'nprogress';
+import { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
 import { default as Modal, type ModalElement } from '@typo3/backend/modal';
 import Severity from '@typo3/backend/severity';
 import SecurityUtility from '@typo3/core/security-utility';
@@ -52,6 +52,7 @@ class ExtensionManager {
   public UploadForm: ExtensionManagerUploadForm;
   public Repository: ExtensionManagerRepository;
   private readonly searchFilterSessionKey: string = 'tx-extensionmanager-local-filter';
+  private progressBar: ProgressBarElement | null = null;
 
   constructor() {
     DocumentService.ready().then((): void => {
@@ -112,11 +113,13 @@ class ExtensionManager {
                 text: TYPO3.lang['button.reimport'],
                 btnClass: 'btn-warning',
                 trigger: (): void => {
-                  NProgress.start();
+                  const progressBar = document.createElement('typo3-backend-progress-bar');
+                  document.body.appendChild(progressBar);
+                  progressBar.start();
                   new AjaxRequest(target.href).post({}).then((): void => {
                     location.reload();
                   }).finally((): void => {
-                    NProgress.done();
+                    progressBar.done();
                     Modal.dismiss();
                   });
                 },
@@ -128,13 +131,17 @@ class ExtensionManager {
       }
 
       new RegularEvent('click', (): void => {
-        NProgress.start();
+        this.progressBar = document.createElement('typo3-backend-progress-bar');
+        document.body.appendChild(this.progressBar);
+        this.progressBar.start();
       }).delegateTo(document, '.onClickMaskExtensionManager');
 
       new RegularEvent('click', (e: Event, target: HTMLAnchorElement): void => {
         e.preventDefault();
 
-        NProgress.start();
+        this.progressBar = document.createElement('typo3-backend-progress-bar');
+        document.body.appendChild(this.progressBar);
+        this.progressBar.start();
         new AjaxRequest(target.href).get().then(this.updateExtension);
       }).delegateTo(document, 'a[data-action=update-extension]');
 
@@ -149,7 +156,9 @@ class ExtensionManager {
       }).delegateTo(document, 'input[name=unlockDependencyIgnoreButton]');
 
       new RegularEvent('click', (): void => {
-        NProgress.start();
+        this.progressBar = document.createElement('typo3-backend-progress-bar');
+        document.body.appendChild(this.progressBar);
+        this.progressBar.start();
       }).delegateTo(document, '.t3-button-action-installdistribution');
 
       let searchField: HTMLInputElement;
@@ -202,11 +211,13 @@ class ExtensionManager {
   }
 
   private removeExtensionFromDisk(trigger: HTMLAnchorElement): void {
-    NProgress.start();
+    const progressBar = document.createElement('typo3-backend-progress-bar');
+    document.body.appendChild(progressBar);
+    progressBar.start();
     new AjaxRequest(trigger.href).post({}).then((): void => {
       location.reload();
     }).finally((): void => {
-      NProgress.done();
+      progressBar.done();
     });
   }
 
@@ -252,7 +263,9 @@ class ExtensionManager {
       form,
     );
 
-    NProgress.done();
+    if (this.progressBar) {
+      this.progressBar.done();
+    }
 
     Modal.confirm(
       TYPO3.lang['extensionList.updateConfirmation.questionVersionComments'],
@@ -268,7 +281,9 @@ class ExtensionManager {
           text: TYPO3.lang['button.updateExtension'],
           btnClass: 'btn-warning',
           trigger: (e: Event, modal: ModalElement): void => {
-            NProgress.start();
+            const progressBar = document.createElement('typo3-backend-progress-bar');
+            document.body.appendChild(progressBar);
+            progressBar.start();
             new AjaxRequest(data.url).post({
               version: (modal.querySelector('input[name="version"]:checked') as HTMLInputElement)?.value,
             }).finally((): void => {

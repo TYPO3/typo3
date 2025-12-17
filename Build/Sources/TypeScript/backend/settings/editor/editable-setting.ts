@@ -209,7 +209,7 @@ export class EditableSettingElement extends LitElement {
     data.append('specificSetting', this.setting.definition.key);
     data.append(name, value);
 
-    // @todo hookup with NProgress
+    // @todo hookup with ProgressBar
     const response = await new AjaxRequest(this.dumpuri).post(
       data
     );

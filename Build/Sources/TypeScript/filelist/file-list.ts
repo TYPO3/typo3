@@ -16,7 +16,6 @@ import DocumentService from '@typo3/core/document-service';
 import Notification from '@typo3/backend/notification';
 import InfoWindow from '@typo3/backend/info-window';
 import { FileListActionEvent, type FileListActionDetail, FileListActionSelector, FileListActionUtility } from '@typo3/filelist/file-list-actions';
-import NProgress from 'nprogress';
 import Icons from '@typo3/backend/icons';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
@@ -29,6 +28,7 @@ import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selec
 import ContextMenu from '@typo3/backend/context-menu';
 import type { ActionConfiguration, ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
 import type { ResourceInterface } from '@typo3/backend/resource/resource';
+import { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
 
 type QueryParameters = Record<string, string>;
 
@@ -64,6 +64,8 @@ export const fileListOpenElementBrowser = 'typo3:filelist:openElementBrowser';
  * @exports @typo3/filelist/filelist
  */
 export default class Filelist {
+  private progressBar: ProgressBarElement;
+
   constructor() {
     new RegularEvent(fileListOpenElementBrowser, (event: CustomEvent): void => {
       const url = new URL(event.detail.actionUrl, window.location.origin);
@@ -328,9 +330,8 @@ export default class Filelist {
     }
 
     // Configure and start the progress bar, while preparing
-    NProgress
-      .configure({ parent: '#typo3-filelist', showSpinner: false })
-      .start();
+    const progressBar = this.getProgress();
+    progressBar.start();
 
     const itemIdentifiers = items.map((resource: ResourceInterface) => resource.identifier);
     (new AjaxRequest(downloadUrl)).post({ items: itemIdentifiers })
@@ -358,7 +359,7 @@ export default class Filelist {
       })
       .finally(() => {
         // Remove progress bar and restore target (button)
-        NProgress.done();
+        progressBar.done();
         if (button) {
           button.removeAttribute('disabled');
           button.innerHTML = targetContent;
@@ -371,7 +372,8 @@ export default class Filelist {
       return;
     }
 
-    NProgress.configure({ parent: '#typo3-filelist', showSpinner: false }).start();
+    const progressBar = this.getProgress();
+    progressBar.start();
     (new AjaxRequest(url)).post({ resource: resource })
       .then(() => {
         Notification.success(lll('online_media.update.success'));
@@ -380,7 +382,7 @@ export default class Filelist {
         Notification.error(lll('online_media.update.error'));
       })
       .finally(() => {
-        NProgress.done();
+        progressBar.done();
         window.location.reload();
       });
   }
@@ -393,5 +395,13 @@ export default class Filelist {
     anchorTag.click();
     URL.revokeObjectURL(downloadUrl);
     document.body.removeChild(anchorTag);
+  }
+
+  private getProgress(): ProgressBarElement {
+    if (!this.progressBar || !this.progressBar.isConnected) {
+      this.progressBar = document.createElement('typo3-backend-progress-bar');
+      document.querySelector('.module-loading-indicator').appendChild(this.progressBar);
+    }
+    return this.progressBar;
   }
 }

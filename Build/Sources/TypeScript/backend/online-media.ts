@@ -14,7 +14,7 @@
 import DocumentService from '@typo3/core/document-service';
 import { MessageUtility } from '@typo3/backend/utility/message-utility';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import NProgress from 'nprogress';
+import { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Modal, { type ModalElement, Types } from './modal';
 import Notification from './notification';
@@ -32,6 +32,8 @@ interface Response {
  * Javascript for show the online media dialog
  */
 class OnlineMedia {
+  private progressBar: ProgressBarElement | null = null;
+
   constructor() {
     DocumentService.ready().then(async (): Promise<void> => {
       // Since the web component is used in a modal and therefore in outer frames, we have to import the module in the
@@ -52,7 +54,9 @@ class OnlineMedia {
     const allowed = trigger.dataset.onlineMediaAllowed;
     const irreObjectUid = trigger.dataset.fileIrreObject;
 
-    NProgress.start();
+    this.progressBar = document.createElement('typo3-backend-progress-bar');
+    document.body.appendChild(this.progressBar);
+    this.progressBar.start();
     new AjaxRequest(TYPO3.settings.ajaxUrls.online_media_create).post({
       url: url,
       targetFolder: target,
@@ -71,7 +75,9 @@ class OnlineMedia {
       } else {
         Notification.error(top.TYPO3.lang['online_media.error.new_media.failed'], data.error);
       }
-      NProgress.done();
+      if (this.progressBar) {
+        this.progressBar.done();
+      }
     });
   }
 

@@ -34,7 +34,7 @@ final class NewRecordTypeCest
     {
         $I->amGoingTo('create a record');
         $I->click('Records');
-        $I->waitForElementNotVisible('#nprogress');
+        $I->waitForElementNotVisible('typo3-backend-progress-bar');
         $pageTree->openPath(['styleguide TCA demo']);
         $I->wait(0.2);
         $I->switchToContentFrame();

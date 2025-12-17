@@ -52,7 +52,7 @@ final class ExportCest extends AbstractCest
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
         $I->switchToContentFrame();
         $I->waitForText($selectedPageTitle);
-        $I->waitForElementNotVisible('#nprogress');
+        $I->waitForElementNotVisible('typo3-backend-progress-bar');
         $I->see($selectedPageTitle, $this->inModuleHeader);
 
         $I->click('Update', $this->inTabConfiguration);
@@ -71,7 +71,7 @@ final class ExportCest extends AbstractCest
         $I->switchToContentFrame();
         // Records module single table mode
         $I->waitForText($tableTitle);
-        $I->waitForElementNotVisible('#nprogress');
+        $I->waitForElementNotVisible('typo3-backend-progress-bar');
         $I->click($tableTitle);
 
         $I->waitForElementVisible('.module-docheader-column ' . $listModuleBtnExport, 5);
@@ -97,7 +97,7 @@ final class ExportCest extends AbstractCest
         $I->switchToContentFrame();
         // Records module single table mode
         $I->waitForText($recordPageTitle);
-        $I->waitForElementNotVisible('#nprogress');
+        $I->waitForElementNotVisible('typo3-backend-progress-bar');
         $I->click($recordIcon, $recordTable);
         $I->switchToMainFrame();
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
@@ -132,7 +132,7 @@ final class ExportCest extends AbstractCest
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
         $I->switchToContentFrame();
         $I->waitForText($exportPageTitle);
-        $I->waitForElementNotVisible('#nprogress');
+        $I->waitForElementNotVisible('typo3-backend-progress-bar');
 
         $I->click($tabExport, $this->inModuleTabs);
         $I->waitForElementVisible($contentExport, 5);
@@ -182,7 +182,7 @@ final class ExportCest extends AbstractCest
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
         $I->switchToContentFrame();
         $I->waitForText($exportPageTitle);
-        $I->waitForElementNotVisible('#nprogress');
+        $I->waitForElementNotVisible('typo3-backend-progress-bar');
 
         $I->cantSee('No tree exported - only tables on the page.', $this->inModuleTabsBody);
         $I->see('Inside pagetree');
@@ -211,7 +211,7 @@ final class ExportCest extends AbstractCest
         $I->click($rootPage);
         $I->switchToContentFrame();
         $I->waitForText($rootPageTitle);
-        $I->waitForElementNotVisible('#nprogress');
+        $I->waitForElementNotVisible('typo3-backend-progress-bar');
 
         $I->click($beUsergroupTableTitle);
         $I->waitForElementVisible('.module-docheader-column ' . $listModuleBtnExport, 5);
@@ -246,7 +246,7 @@ final class ExportCest extends AbstractCest
         $I->canSeeElement($rootPage);
         $I->click($rootPage);
         $I->switchToContentFrame();
-        $I->waitForElementNotVisible('#nprogress');
+        $I->waitForElementNotVisible('typo3-backend-progress-bar');
         $I->waitForText($rootPageTitle);
         $I->click($sysLanguageIcon, $sysLanguageTable);
         $I->switchToMainFrame();

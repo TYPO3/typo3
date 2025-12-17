@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { css, html, LitElement, nothing, type TemplateResult } from 'lit';
+import { css, html, LitElement, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators';
 import { classMap } from 'lit/directives/class-map';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -23,6 +23,7 @@ import { SeverityEnum } from '@typo3/backend/enum/severity';
  * @internal
  *
  * @example
+ * Instance usage:
  * <typo3-backend-progress-bar></typo3-backend-progress-bar>
  * + `value` can be any positive number value between and 0 and `max` or `undefined`. The latter will render an indeterminate state.
  * + `max` represents the upper value range
@@ -42,6 +43,15 @@ export class ProgressBarElement extends LitElement {
       }
     }
 
+    @keyframes fade-out {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+
     :host {
       --progress-bar-height: 4px;
       --progress-bar-color-primary: var(--typo3-state-primary-border-color);
@@ -55,6 +65,14 @@ export class ProgressBarElement extends LitElement {
       display: block;
       width: 100%;
       border-radius: var(--progress-border-radius);
+    }
+
+    :host([hidden]) {
+      display: none;
+    }
+
+    :host([is-hiding]) {
+      animation: fade-out 0.3s ease-out forwards;
     }
 
     .progress {
@@ -126,6 +144,99 @@ export class ProgressBarElement extends LitElement {
   @property({ type: Number, reflect: true }) max: number = 100;
   @property({ type: Number, reflect: true }) severity: SeverityEnum|undefined = undefined;
   @property({ type: String, reflect: true }) label: string|undefined;
+  @property({ type: Boolean, reflect: true, attribute: 'hidden' }) isHidden: boolean = false;
+  @property({ type: Boolean, state: true }) isHiding: boolean = false;
+
+  /**
+   * Used to cancel pending done/hide operations when the progress bar is reused.
+   * This prevents race conditions where a previous done() call could remove the
+   * element while a new start() has already begun.
+   */
+  private abortController: AbortController = new AbortController();
+
+  /**
+   * Start the progress bar. Sets value to 0 by default or undefined for indeterminate mode.
+   *
+   * @param indeterminate If true, shows indeterminate loading animation
+   */
+  public start(indeterminate: boolean = false): void {
+    // Cancel any pending done/hide operations
+    this.abortController.abort();
+    this.abortController = new AbortController();
+
+    this.isHiding = false;
+    this.isHidden = false;
+    this.value = indeterminate ? undefined : 0;
+  }
+
+  /**
+   * Increment the progress bar by a specific amount (or auto-increment if no amount given).
+   *
+   * @param amount The amount to increment (default: 5)
+   */
+  public inc(amount: number = 5): void {
+    let currentValue = this.value ?? 0;
+    currentValue = this.clamp(currentValue + amount, 0, this.max);
+    this.value = currentValue >= this.max ? this.max : currentValue;
+  }
+
+  /**
+   * Complete the progress bar and automatically hide it after the bar animation completes.
+   */
+  public async done(): Promise<void> {
+    // Capture signal at start to detect if start() was called during async operations
+    const signal = this.abortController.signal;
+
+    const currentValue = this.value ?? 0;
+    if (currentValue >= this.max) {
+      this.hide();
+      return;
+    }
+
+    if (isNaN(this.value)) {
+      this.value = 0;
+    }
+
+    await this.updateComplete;
+    if (signal.aborted) {
+      return;
+    }
+
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    if (signal.aborted) {
+      return;
+    }
+
+    this.value = this.max;
+    await this.updateComplete;
+    if (signal.aborted) {
+      return;
+    }
+
+    const bar = this.shadowRoot.querySelector('.bar');
+    bar.addEventListener('transitionend', () => {
+      this.hide();
+    }, { once: true, signal });
+  }
+
+  /**
+   * Hide the progress bar with fade-out animation and remove from DOM.
+   */
+  public hide(): void {
+    this.isHiding = true;
+    this.addEventListener('animationend', () => {
+      this.remove();
+    }, { once: true, signal: this.abortController.signal });
+  }
+
+  public override connectedCallback(): void {
+    super.connectedCallback();
+    this.updateHostClass();
+  }
+
+  public override disconnectedCallback(): void {
+    super.disconnectedCallback();
+  }
 
   protected override render(): TemplateResult {
     const labelIdentifier = 'progress-label-' + (Math.random() + 1).toString(36).substring(2);
@@ -158,6 +269,21 @@ export class ProgressBarElement extends LitElement {
         ${isLabelDefined ? html`<div class="label" id=${labelIdentifier}>${this.label}</div>` : nothing}
       </div>
     `;
+  }
+
+  protected override updated(changedProperties: PropertyValues): void {
+    super.updated(changedProperties);
+    if (changedProperties.has('isHiding')) {
+      this.updateHostClass();
+    }
+  }
+
+  private updateHostClass(): void {
+    if (this.isHiding) {
+      this.setAttribute('is-hiding', '');
+    } else {
+      this.removeAttribute('is-hiding');
+    }
   }
 
   private clamp(value: number, min: number, max: number): number {

@@ -120,7 +120,6 @@ export default {
             'lit-html': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/lit-html/lit-html.js',
             'lit-html/': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/lit-html/',
             'luxon': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/luxon.js',
-            'nprogress': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/nprogress.js',
             'shortcut-buttons-flatpickr': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/shortcut-buttons-flatpickr.js',
             'sortablejs': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/sortablejs.js',
             'tablesort': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/tablesort.js',

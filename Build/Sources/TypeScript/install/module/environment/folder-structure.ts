@@ -112,7 +112,8 @@ class FolderStructure extends AbstractInteractableModule {
     this.setModalButtonsState(false);
 
     const modalContent = this.getModalBody();
-    const outputContainer = this.findInModal(Identifiers.outputContainer);
+    const outputContainer = this.findInModal(Identifiers.outputContainer) as HTMLElement;
+    outputContainer.style.display = 'block';
     this.renderProgressBar(outputContainer);
     (new AjaxRequest(Router.getUrl('folderStructureFix')))
       .get({ cache: 'no-cache' })
@@ -130,10 +131,12 @@ class FolderStructure extends AbstractInteractableModule {
             }
             this.getStatus();
           } else {
+            outputContainer.style.display = 'none';
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
         (error: AjaxResponse): void => {
+          outputContainer.style.display = 'none';
           Router.handleAjaxError(error, modalContent);
         }
       ).finally((): void => {

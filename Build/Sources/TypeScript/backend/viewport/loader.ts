@@ -12,18 +12,24 @@
  */
 
 import { ScaffoldContentArea } from '../enum/viewport/scaffold-identifier';
-import { ContentNavigationSlotEnum } from './content-navigation';
-import NProgress from 'nprogress';
+import { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
 
 class Loader {
+  private static el: ProgressBarElement | null = null;
+
   public static start(): void {
-    // NProgress requires a CSS selector string, it doesn't accept an HTMLElement
-    NProgress.configure({ parent: `${ScaffoldContentArea.selector} > [slot="${ContentNavigationSlotEnum.content}"]`, showSpinner: false });
-    NProgress.start();
+    if (!this.el || !this.el.isConnected) {
+      this.el = document.createElement('typo3-backend-progress-bar');
+      ScaffoldContentArea.getContentContainer()?.appendChild(this.el);
+    }
+    this.el.start();
   }
 
   public static finish(): void {
-    NProgress.done();
+    if (this.el) {
+      this.el.done();
+      this.el = null;
+    }
   }
 }
 

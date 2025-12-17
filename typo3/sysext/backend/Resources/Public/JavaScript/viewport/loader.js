@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import{ScaffoldContentArea as o}from"@typo3/backend/enum/viewport/scaffold-identifier.js";import{ContentNavigationSlotEnum as r}from"@typo3/backend/viewport/content-navigation.js";import t from"nprogress";class e{static start(){t.configure({parent:`${o.selector} > [slot="${r.content}"]`,showSpinner:!1}),t.start()}static finish(){t.done()}}export{e as default};
+import{ScaffoldContentArea as t}from"@typo3/backend/enum/viewport/scaffold-identifier.js";import"@typo3/backend/element/progress-bar-element.js";class e{static{this.el=null}static start(){(!this.el||!this.el.isConnected)&&(this.el=document.createElement("typo3-backend-progress-bar"),t.getContentContainer()?.appendChild(this.el)),this.el.start()}static finish(){this.el&&(this.el.done(),this.el=null)}}export{e as default};

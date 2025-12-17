@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import NProgress from 'nprogress';
+import { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import Severity from '@typo3/backend/severity';
@@ -36,8 +36,9 @@ interface ExtensionInstallResult {
 }
 
 class Repository {
+  private progressBar: ProgressBarElement;
+
   public initDom(): void {
-    NProgress.configure({ parent: '.module-loading-indicator', showSpinner: false });
 
     const terVersionTable = document.getElementById('terVersionTable');
     const terSearchTable = document.getElementById('terSearchTable');
@@ -59,7 +60,7 @@ class Repository {
 
       const form = target.closest('form');
       const url = form.dataset.href;
-      NProgress.start();
+      this.getProgress().start();
       new AjaxRequest(url).get().then(this.getDependencies);
     }).delegateTo(document, '.downloadFromTer form.download button[type=submit]');
   }
@@ -69,7 +70,7 @@ class Repository {
     const messageElement = document.createElement('div');
     messageElement.innerHTML = data.message;
 
-    NProgress.done();
+    this.progressBar?.done();
     if (data.hasDependencies) {
       Modal.confirm(data.title, messageElement, Severity.info, [
         {
@@ -98,7 +99,7 @@ class Repository {
   };
 
   private getResolveDependenciesAndInstallResult(url: string): void {
-    NProgress.start();
+    this.getProgress().start();
     new AjaxRequest(url).post({}).then(async (response: AjaxResponse): Promise<void> => {
       try {
         // FIXME: As of now, the endpoint doesn't set proper headers, thus we have to parse the response text
@@ -171,8 +172,16 @@ class Repository {
         TYPO3.lang['extensionList.dependenciesResolveInstallError.message'] || 'Your installation failed while resolving dependencies.'
       );
     }).finally((): void => {
-      NProgress.done();
+      this.progressBar?.done();
     });
+  }
+
+  private getProgress(): ProgressBarElement {
+    if (!this.progressBar || !this.progressBar.isConnected) {
+      this.progressBar = document.createElement('typo3-backend-progress-bar');
+      document.querySelector('.module-loading-indicator').appendChild(this.progressBar);
+    }
+    return this.progressBar;
   }
 
   private bindSearchFieldResetter(): void {
