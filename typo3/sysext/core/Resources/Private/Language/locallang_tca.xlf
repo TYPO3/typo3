@@ -613,13 +613,13 @@
         <source>Type</source>
       </trans-unit>
       <trans-unit id="sys_file_collection.type.0">
-        <source>Static selection of files</source>
+        <source>Selection of single files</source>
       </trans-unit>
       <trans-unit id="sys_file_collection.type.1">
-        <source>Folder from Storage</source>
+        <source>Files from a selected folder</source>
       </trans-unit>
       <trans-unit id="sys_file_collection.type.2">
-        <source>Select by category</source>
+        <source>Files from a selected category</source>
       </trans-unit>
       <trans-unit id="sys_file_collection.storage">
         <source>File Storage</source>

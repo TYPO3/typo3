@@ -132,7 +132,7 @@ final class NewRecordControllerTest extends FunctionalTestCase
 
         self::assertEquals(200, $response->getStatusCode());
         self::assertStringContainsString('list-group mt-2', $content);
-        self::assertStringContainsString('Folder from Storage', $content);
+        self::assertStringContainsString('Selection of single files', $content);
     }
 
     #[Test]
@@ -153,7 +153,7 @@ final class NewRecordControllerTest extends FunctionalTestCase
         $content = (string)$response->getBody();
 
         self::assertEquals(200, $response->getStatusCode());
-        self::assertStringNotContainsString('Folder from Storage', $content);
+        self::assertStringNotContainsString('Files from a selected folder', $content);
     }
 
     private function createRequest(string $path, array $queryParams = []): ServerRequest
