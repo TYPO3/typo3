@@ -6,43 +6,32 @@
 Target groups and main principles
 =================================
 
-As :ref:`mentioned earlier<what-does-it-do>`, the ``form`` extension can be
-seen as a framework which allows editors, integrators, and developers to
-create and manage all kind of forms. For this task, different interfaces
-and techniques are available.
+As :ref:`we saw in the introduction<what-does-it-do>`, the ``form`` extension is a
+framework where editors, integrators, and developers can
+create and manage forms with different interfaces and functionality.
 
-Conceptually, EXT:form always tries to consider the ``form editor`` first.
-The requirements for the ``form editor`` differ between the defined target
-groups. On the one hand, as an integrator, you may want to manage HTML
-class attributes. On the other hand, as a developer you may want to use the
-``form editor`` as a kick starter for complex ``form definitions``, and you
-may want to edit all possible (technical) properties you can think of.
+The most important part of EXT:form is the backend ``form editor``. Different types of users
+can use  the ``form editor`` for different things. Integrators can manage HTML
+class attributes, developers can create
+complex ``form definitions`` and editors can edit properties.
 
-The form extension tries to find a compromise for such cases. Since the
-``form editor`` is mainly used by backend editors, only simple,
-nontechnical properties are displayed and editable. However, EXT:form
-allows you to easily extend the ``form editor`` by writing some YAML
-configurations.
+The form extension tries to find a compromise between these things. The
+``form editor`` is mainly designed for editors, so simple, easy-to-edit properties are
+displayed. However, the ``form editor`` can be easily extended by YAML configuration.
 
-If this is not enough for your specific project, EXT:form provides a way to
-integrate your own JavaScript code by utilizing the JavaScript API. Thus,
-it should be possible to meet all your requirements.
+And should this is not enough for your specific project, you can
+integrate your own JavaScript code using the JavaScript API.
 
-Your forms can be created and defined globally in the ``form module`` and/
-or loaded from extensions. Within the ``Mail form`` content element, one of
-those forms can be referenced.
+You can create and define forms globally in the :guilabel:`Web->Forms` module or you can load forms
+from inside extensions, for example, the ``Mail form`` content element.
 
-Furthermore, certain aspects of a form can be overridden in the plugin. This
-concept allows you to reuse the same form on different pages with the same,
-or a different, configuration.
+Some parts of a form can be overridden in the form plugin. This means you can
+reuse the same form on different pages with a different configuration.
 
-The following explanations will show you that there are many ways to
-manipulate the form framework in different contexts.
-
-Those explanations are partly contradictory, depending on your use case. It
-is up to you how you want to use the form framework. Be creative and share
+The information in this chapter will show you that there are many ways to
+customize the form framework, depending on your use case. Be creative and share
 your solution with the TYPO3 community!
 
-This chapter attempts to describe the basics of the form framework. Check
-out the reference and the example sections to get a deeper understanding of
+This chapter describes the basics of the form framework. Check
+out the reference and the examples to get a deeper understanding of
 the framework.
