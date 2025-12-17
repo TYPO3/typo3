@@ -27,6 +27,9 @@ enum HashScope: string
     case ReferringArguments = 'arguments';
     case TrustedProperties = '__trustedProperties';
 
+    /**
+     * @return non-empty-string
+     */
     public function prefix(): string
     {
         return self::class . '::' . $this->value;

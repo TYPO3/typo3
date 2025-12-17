@@ -27,6 +27,9 @@ enum HashScope: string
     case FormSession = '__session';
     case ResourcePointer = 'resourcePointer';
 
+    /**
+     * @return non-empty-string
+     */
     public function prefix(): string
     {
         return self::class . '::' . $this->value;
