@@ -226,7 +226,9 @@ class LiveSearch {
       this.updateSearchResults(null);
     } else {
       const searchResultContainer = document.querySelector(resultContainerComponentName) as ResultContainer;
+      const paginationElement: ResultPagination = document.querySelector('typo3-backend-live-search-result-pagination');
       searchResultContainer.loading = true;
+      paginationElement.loading = true;
 
       this.currentSearchRequest?.abort();
       try {
@@ -270,6 +272,7 @@ class LiveSearch {
   private updatePagination(pagination: Pagination): void {
     const paginationElement: ResultPagination = document.querySelector('typo3-backend-live-search-result-pagination');
     paginationElement.pagination = pagination;
+    paginationElement.loading = false;
   }
 }
 

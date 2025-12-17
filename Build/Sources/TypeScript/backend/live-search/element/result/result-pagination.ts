@@ -31,6 +31,7 @@ export type Pagination = {
 @customElement('typo3-backend-live-search-result-pagination')
 export class ResultPagination extends LitElement {
   @property({ type: Object }) pagination: Pagination|null = null;
+  @property({ type: Boolean, attribute: false }) loading: boolean = false;
 
   protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
@@ -38,7 +39,7 @@ export class ResultPagination extends LitElement {
   }
 
   protected override render(): TemplateResult | symbol {
-    if (this.pagination === null || this.pagination.allPageNumbers.length <= 1) {
+    if (this.loading || this.pagination === null || this.pagination.allPageNumbers.length <= 1) {
       return nothing;
     }
 
