@@ -358,7 +358,7 @@
                 <source>Remove element?</source>
             </trans-unit>
       <trans-unit id="formEditor.modals.removeElement.dialogMessage" xml:space="preserve">
-                <source>Are you sure that you want to remove this element?</source>
+                <source>Remove this element?</source>
             </trans-unit>
       <trans-unit id="formEditor.modals.removeElement.confirmButton" xml:space="preserve">
                 <source>Remove</source>
@@ -373,10 +373,10 @@
                 <source>There must be at least one step within your form.</source>
             </trans-unit>
       <trans-unit id="formEditor.modals.close.dialogMessage" xml:space="preserve">
-                <source>You have currently unsaved changes. Are you sure that you want to discard all changes?</source>
+                <source>You currently have unsaved changes. Closing the form will discard them. Continue?</source>
             </trans-unit>
       <trans-unit id="formEditor.modals.close.dialogTitle" xml:space="preserve">
-                <source>Do you want to quit without saving?</source>
+                <source>Quit without saving?</source>
             </trans-unit>
       <trans-unit id="formEditor.modals.close.confirmButton" xml:space="preserve">
                 <source>Discard changes</source>
@@ -670,13 +670,13 @@
                 <source>Sender address</source>
             </trans-unit>
       <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.fieldExplanationText" xml:space="preserve">
-                <source>The email address of the sender which appears in your email client. If you want, you can use the "insert formelement identifier" dropdown to choose a form element which holds the website visitors email address.</source>
+                <source>The email address of the sender which appears in your email client. Use the "insert formelement identifier" dropdown if you need to select a form element which contains the website visitor's email address instead.</source>
             </trans-unit>
       <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.label" xml:space="preserve">
                 <source>Sender name</source>
             </trans-unit>
       <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.fieldExplanationText" xml:space="preserve">
-                <source>The name of the sender which appears in your email client. If you want, you can use the "insert formelement identifier" dropdown to choose one or more form elements which holds the website visitors name.</source>
+                <source>The name of the sender which appears in your email client. Use the "insert formelement identifier" dropdown if you need to choose one or more form elements which contain the website visitor's name</source>
             </trans-unit>
       <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.replyToRecipients.label" xml:space="preserve">
                 <source>Reply-To Recipients</source>
