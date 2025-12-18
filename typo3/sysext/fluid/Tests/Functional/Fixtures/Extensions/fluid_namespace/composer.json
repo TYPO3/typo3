@@ -1,0 +1,19 @@
+{
+	"name": "typo3tests/fixture-fluid-namespace",
+	"type": "typo3-cms-extension",
+	"description": "Fluid namespace test",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "14.1.*@dev"
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\FluidNamespace\\": "Classes"
+		}
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "fluid_namespace"
+		}
+	}
+}

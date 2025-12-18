@@ -66,8 +66,21 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
             'backend.modules' => [ static::class, 'configureBackendModules' ],
             'content.security.policies' => [ static::class, 'configureContentSecurityPolicies' ],
             'icons' => [ static::class, 'configureIcons' ],
+            'fluid.namespaces' => [ static::class, 'configureFluidNamespaces' ],
             SetCollector::class => [ static::class, 'configureSetCollector' ],
         ];
+    }
+
+    public static function configureFluidNamespaces(ContainerInterface $container, \ArrayObject $namespaces, ?string $path = null): \ArrayObject
+    {
+        $packageConfiguration = ($path ?? static::getPackagePath()) . 'Configuration/Fluid/Namespaces.php';
+        if (file_exists($packageConfiguration)) {
+            $namespacesInPackage = self::requireFile($packageConfiguration);
+            if (is_array($namespacesInPackage)) {
+                $namespaces->exchangeArray(array_merge_recursive($namespaces->getArrayCopy(), $namespacesInPackage));
+            }
+        }
+        return $namespaces;
     }
 
     /**

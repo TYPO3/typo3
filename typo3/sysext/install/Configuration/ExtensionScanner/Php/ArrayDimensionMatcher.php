@@ -1354,4 +1354,10 @@ return [
             'Feature-107871-AutoconfigureBackendAvatarProviders.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'fluid\'][\'namespaces\']' => [
+        'restFiles' => [
+            'Deprecation-108524-FluidNamespacesInTYPO3_CONF_VARS.rst',
+            'Feature-108524-ConfigurationFileToRegisterGlobalFluidNamespaces.rst',
+        ],
+    ],
 ];

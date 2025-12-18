@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Core\ViewHelper;
 
 use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Fluid\Event\ModifyNamespacesEvent;
 
 /**
  * Factory class registered in ServiceProvider to create a ViewHelperResolver.
@@ -35,11 +37,20 @@ use Psr\Container\ContainerInterface;
  */
 final class ViewHelperResolverFactory implements ViewHelperResolverFactoryInterface
 {
-    public function __construct(private readonly ContainerInterface $container) {}
+    public function __construct(
+        private readonly ContainerInterface $container,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly iterable $namespaces,
+    ) {}
 
     public function create(): ViewHelperResolver
     {
-        $namespaces = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces'] ?? [];
-        return new ViewHelperResolver($this->container, $namespaces);
+        // @deprecated remove merging with TYPO3_CONF_VARS in TYPO3 v15.0
+        $namespaces = array_merge_recursive(
+            (array)$this->namespaces,
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces'] ?? [],
+        );
+        $event = $this->eventDispatcher->dispatch(new ModifyNamespacesEvent($namespaces));
+        return new ViewHelperResolver($this->container, $event->getNamespaces());
     }
 }

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid;
 
 use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\SystemResource\Identifier\SystemResourceIdentifierFactory;
@@ -75,6 +76,8 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return self::new($container, Core\ViewHelper\ViewHelperResolverFactory::class, [
             $container,
+            $container->get(EventDispatcherInterface::class),
+            $container->get('fluid.namespaces'),
         ]);
     }
 

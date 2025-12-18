@@ -508,15 +508,8 @@ return [
                 \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\MathExpressionNode::class,
                 \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\TernaryExpressionNode::class,
             ],
-            'namespaces' => [
-                'core' => [
-                    'TYPO3\\CMS\\Core\\ViewHelpers',
-                ],
-                'f' => [
-                    'TYPO3Fluid\\Fluid\\ViewHelpers',
-                    'TYPO3\\CMS\\Fluid\\ViewHelpers',
-                ],
-            ],
+            // @deprecated drop backward compatibility with TYPO3 v15.0
+            'namespaces' => [],
         ],
         'defaultScheme' => \TYPO3\CMS\Core\LinkHandling\LinkHandlingInterface::DEFAULT_SCHEME,
         'linkHandler' => [ // Array: Available link types, class which implement the LinkHandling interface

@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\Core\ViewHelper;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolverFactoryInterface;
 use TYPO3\CMS\Fluid\View\FluidViewAdapter;
 use TYPO3\CMS\Fluid\View\FluidViewFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -26,7 +28,20 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class ViewHelperResolverTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
+        'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test',
+        'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_namespace',
         'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/resolverdelegate_test',
+    ];
+
+    protected array $configurationToUseInTestInstance = [
+        'SYS' => [
+            'fluid' => [
+                'namespaces' => [
+                    'instance_legacy' => ['TYPO3Tests\\FluidTest\\Instance'],
+                    'event' => ['TYPO3Tests\\FluidTest\\Instance'],
+                ],
+            ],
+        ],
     ];
 
     #[Test]
@@ -38,5 +53,24 @@ final class ViewHelperResolverTest extends FunctionalTestCase
             '{namespace test=TYPO3Tests\ResolverdelegateTest\Fluid\TestViewHelperResolverDelegate}<test:foo />|<test:bar />'
         );
         self::assertSame('catchall|catchall', $view->render());
+    }
+
+    public static function namespacesAreProperlyMergedDataProvider(): array
+    {
+        return [
+            ['instance_legacy', ['TYPO3Tests\\FluidTest\\NamespacesPhp', 'TYPO3Tests\\FluidTest\\Instance']],
+            ['thirdparty_legacy', ['TYPO3Tests\\FluidTest\\NamespacesPhp', 'TYPO3Tests\\FluidNamespace\\ExtLocalconf', 'TYPO3Tests\\FluidTest\\ExtLocalconf']],
+            ['f', ['TYPO3Fluid\\Fluid\\ViewHelpers', 'TYPO3\\CMS\\Fluid\\ViewHelpers', 'TYPO3Tests\\FluidTest\\NamespacesPhp']],
+            ['thirdparty', ['TYPO3Tests\\FluidNamespace\\NamespacesPhp', 'TYPO3Tests\\FluidTest\\NamespacesPhp']],
+            ['event', ['TYPO3Tests\\FluidTest\\EventBefore', 'TYPO3Tests\\FluidTest\\NamespacesPhp', 'TYPO3Tests\\FluidTest\\Instance', 'TYPO3Tests\\FluidTest\\EventAfter']],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('namespacesAreProperlyMergedDataProvider')]
+    public function namespacesAreProperlyMerged(string $namespaceAlias, array $expectedNamespaces): void
+    {
+        $subject = $this->get(ViewHelperResolverFactoryInterface::class)->create();
+        self::assertSame($expectedNamespaces, $subject->getNamespaces()[$namespaceAlias]);
     }
 }
