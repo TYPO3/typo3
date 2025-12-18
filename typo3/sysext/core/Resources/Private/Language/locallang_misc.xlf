@@ -426,6 +426,9 @@
 			<trans-unit id="liveSearch_helpDescription">
 				<source>Search in certain tables</source>
 			</trans-unit>
+			<trans-unit id="liveSearch_hasErrors">
+				<source>Something went wrong.</source>
+			</trans-unit>
 			<trans-unit id="liveSearch.versionizedRecord">
 				<source>Versionized record</source>
 			</trans-unit>
