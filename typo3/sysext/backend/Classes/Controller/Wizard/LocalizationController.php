@@ -166,12 +166,18 @@ readonly class LocalizationController
 
         // Get available modes based on PageTSconfig
         $pageTsConfig = BackendUtility::getPagesTSconfig($page);
+        $schema = $this->schemaFactory->get($recordType);
+        if (!$schema->hasCapability(TcaSchemaCapability::Language)) {
+            // Table is not language-aware
+            return new JsonResponse(null, 400);
+        }
+        $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
 
         $availableModes = array_filter(
             LocalizationMode::cases(),
-            static function (LocalizationMode $mode) use ($pageTsConfig): bool {
+            static function (LocalizationMode $mode) use ($pageTsConfig, $languageCapability): bool {
                 return match ($mode) {
-                    LocalizationMode::COPY => (bool)($pageTsConfig['mod.']['web_layout.']['localization.']['enableCopy'] ?? true),
+                    LocalizationMode::COPY => ($pageTsConfig['mod.']['web_layout.']['localization.']['enableCopy'] ?? true) && $languageCapability->hasTranslationSourceField(),
                     LocalizationMode::TRANSLATE => (bool)($pageTsConfig['mod.']['web_layout.']['localization.']['enableTranslate'] ?? true),
                 };
             }
@@ -697,8 +703,7 @@ readonly class LocalizationController
     private function detectExistingLocalizationMode(int $pageId, int $targetLanguage): ?LocalizationMode
     {
         // Get the TCA schema to determine the correct field names
-        $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
-        $schema = $schemaFactory->get('tt_content');
+        $schema = $this->schemaFactory->get('tt_content');
 
         if (!$schema->hasCapability(TcaSchemaCapability::Language)) {
             // Table is not language-aware
