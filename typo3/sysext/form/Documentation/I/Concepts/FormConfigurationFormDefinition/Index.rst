@@ -6,32 +6,31 @@
 Form configuration vs. form definition
 ======================================
 
-So far, we have only described the configuration of the form framework.
-Once again, based on prototypes, the **form configuration** allows you to
-define:
+Up to this point, we have mainly looked at form framework configuration.
+In short, **form configuration** is based on *prototypes* and allows you to define:
 
-- which form elements, finishers, and validators are available,
-- how those objects are pre-configured,
-- how those objects will be displayed within the frontend and backend.
+- which form elements, finishers, and validators are available to the system,
+- how they are pre-configured,
+- how they are displayed in the frontend and backend.
 
-In contrast, the **form definition** describes the specific form, including
+However, a second important part of the form framework is **form definition**,
+which is configuration but for *specific* forms, for example the ones users define. Form
+definition includes:
 
-- all form elements and their corresponding validators,
-- the order of the form elements within the form, and
-- the finishers which are fired as soon as the form has been submitted.
-- Furthermore, it defines the concrete values of each property of the
-  mentioned aspects.
-
-In other words, the **prototype configuration** defines the existence of a
-form element of type ``Text`` globally. The **form definition** declares
-that such a form element of type ``Text`` is located on page 1 at position
-1 of a specific form. In addition, it carries the information that this form
-element comes with the HTML attribute "placeholder" with value "Your name
-here". The form definition is written by the ``form editor``.
+- form elements and their validators,
+- the order of the form elements on the form
+- the finishers that are fired when the form is submitted
+- values of form element properties.
 
 
-Example form definition
------------------------
+In other words, a ``Text`` form element would be defined in **form configuration**
+but a ``Text`` form element located on page 1 at position 1 of a specific form
+would be defined in a **form definition**. A **form definition** might also define
+a placeholder (HTML attribute) with a value of "Your name
+here" in a form element. Form definitions are created by the backend ``form editor``.
+
+Example form definition (for a specific form)
+---------------------------------------------
 
 .. code-block:: yaml
 
