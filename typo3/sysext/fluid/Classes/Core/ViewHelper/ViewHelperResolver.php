@@ -133,9 +133,9 @@ class ViewHelperResolver extends \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperRes
         return new ViewHelperCollection($delegateClassName);
     }
 
-    public function getAdmPanelUserTsConfiguration(): array
+    protected function getAdmPanelUserTsConfiguration(): array
     {
-        return $this->getBackendUser()->getTSConfig()['admPanel.'] ?? [];
+        return $this->getBackendUser()?->getTSConfig()['admPanel.'] ?? [];
     }
 
     protected function getBackendUser(): ?BackendUserAuthentication
