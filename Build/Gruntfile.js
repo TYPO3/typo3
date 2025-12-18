@@ -167,6 +167,73 @@ module.exports = function (grunt) {
       adminpanel: {
         src: '<%= paths.sass %>adminpanel.scss',
         dest: '<%= paths.adminpanel %>Public/Css/adminpanel.css',
+        options: {
+          processors: () => [
+            require('@csstools/postcss-sass')({
+              sass: require('sass'),
+              outputStyle: 'expanded',
+              precision: 8
+            }),
+            require('autoprefixer')(),
+            require('cssnano')({
+              preset: [
+                'default',
+              ],
+            }),
+            {
+              postcssPlugin: 'keep line breaks',
+              OnceExit(css) {
+                css.walk(node => {
+                  if (['rule', 'atrule'].includes(node.type)) {
+                    node.raws.before = "\n";
+                  }
+                })
+              },
+            },
+            {
+              postcssPlugin: 'adminpanel scope selectors',
+              // Prepend all selectors with the adminpanel identifier for specificity
+              // and replace :root with the identifier
+              OnceExit(css) {
+                const adminPanelSelector = '#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel';
+                css.walkRules(rule => {
+                  // Skip rules inside @keyframes
+                  if (rule.parent?.type === 'atrule' && rule.parent?.name === 'keyframes') {
+                    return;
+                  }
+                  rule.selectors = rule.selectors.map(selector => {
+                    // Skip selectors targeting body element (these are global styles)
+                    if (selector.startsWith('body')) {
+                      return selector;
+                    }
+                    // Replace all occurrences of :root with the adminpanel identifier
+                    let processedSelector = selector.replace(/:root/g, adminPanelSelector);
+                    // Skip selectors that already start with the adminpanel identifier
+                    if (processedSelector.startsWith(adminPanelSelector)) {
+                      return processedSelector;
+                    }
+                    // Prepend the identifier to all other selectors
+                    return `${adminPanelSelector} ${processedSelector}`;
+                  });
+                });
+              },
+            },
+            require('postcss-banner')({
+              banner: 'This file is part of the TYPO3 CMS project.\n' +
+                '\n' +
+                'It is free software; you can redistribute it and/or modify it under\n' +
+                'the terms of the GNU General Public License, either version 2\n' +
+                'of the License, or any later version.\n' +
+                '\n' +
+                'For the full copyright and license information, please read the\n' +
+                'LICENSE.txt file that was distributed with this source code.\n' +
+                '\n' +
+                'The TYPO3 project - inspiring people to share!',
+              important: true,
+              inline: false
+            }),
+          ]
+        }
       },
       backend: {
         src: '<%= paths.sass %>backend.scss',
