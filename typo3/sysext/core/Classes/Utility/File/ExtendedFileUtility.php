@@ -894,7 +894,7 @@ class ExtendedFileUtility extends BasicFileUtility
             $this->addMessageToFlashMessageQueue('FileUtility.DirectoryCreatedIn', [$folderName, $targetFolderObject->getIdentifier()], ContextualFeedbackSeverity::OK);
         } catch (InvalidFileNameException $e) {
             $this->writeLog(SystemLogFileAction::NEW_FOLDER, SystemLogErrorClassification::USER_ERROR, 'Invalid folder name "{identifier}"', ['identifier' => $folderName]);
-            $this->addMessageToFlashMessageQueue('FileUtility.YouAreNotAllowedToCreateDirectories', [$folderName]);
+            $this->addMessageToFlashMessageQueue('FileUtility.InvalidFolderName', [$folderName]);
         } catch (InsufficientFolderWritePermissionsException $e) {
             $this->writeLog(SystemLogFileAction::NEW_FOLDER, SystemLogErrorClassification::USER_ERROR, 'You are not allowed to create directories');
             $this->addMessageToFlashMessageQueue('FileUtility.YouAreNotAllowedToCreateDirectories');
