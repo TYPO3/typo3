@@ -66,10 +66,10 @@ export class ThemeSwitcherElement extends LitElement {
     for (const [identifier, theme] of Object.entries(this.themes)) {
       themeOptions.push(html`
         <li>
-          <a class="dropdown-item dropdown-item-spaced" href="#" data-theme="${identifier}" @click="${this.setTheme}">
+          <button class="dropdown-item dropdown-item-spaced" data-theme="${identifier}" @click="${this.setTheme}">
             ${identifier === this.activeTheme ? dropdownActiveIcon : dropdownInactiveIcon}
             ${lll(theme.label)}
-          </a>
+          </button>
         </li>
       `);
     }
