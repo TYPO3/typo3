@@ -29,6 +29,7 @@ use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordException;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordWorkspaceDeletePlaceholderException;
 use TYPO3\CMS\Backend\Form\Exception\NoFieldsToRenderException;
+use TYPO3\CMS\Backend\Form\FormAction;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\FormResultCompiler;
@@ -87,18 +88,12 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 #[AsController]
 class EditDocumentController
 {
-    protected const DOCUMENT_CLOSE_MODE_DEFAULT = 0;
-    // works like DOCUMENT_CLOSE_MODE_DEFAULT
-    protected const DOCUMENT_CLOSE_MODE_REDIRECT = 1;
-    protected const DOCUMENT_CLOSE_MODE_CLEAR_ALL = 3;
-    protected const DOCUMENT_CLOSE_MODE_NO_REDIRECT = 4;
-
     /**
      * An array looking approx like [tablename][list-of-ids]=command, eg. "&edit[pages][123]=edit".
      *
-     * @var array<string,array>
+     * @var array<string,mixed>
      */
-    protected $editconf = [];
+    protected array $editconf = [];
 
     /**
      * Array of tables with a lists of field names to edit for those tables. If specified, only those fields
@@ -122,7 +117,7 @@ class EditDocumentController
 
     /**
      * If set, this value will be set in $this->retUrl as "returnUrl", if not,
-     * $this->retUrl will link to dummy controller
+     * $this->retUrl will link to dummy action
      *
      * @var string|null
      */
@@ -131,25 +126,11 @@ class EditDocumentController
     /**
      * Prepared return URL. Contains the URL that we should return to from FormEngine if
      * close button is clicked. Usually passed along as 'returnUrl', but falls back to
-     * "dummy" controller.
+     * "dummy" action.
      *
      * @var string
      */
     protected $retUrl;
-
-    /**
-     * Close document command. One of the DOCUMENT_CLOSE_MODE_* constants above
-     */
-    protected int $closeDoc;
-
-    /**
-     * If true, the processing of incoming data will be performed as if a save-button is pressed.
-     * Used in the forms as a hidden field which can be set through
-     * JavaScript if the form is somehow submitted by JavaScript.
-     *
-     * @var bool
-     */
-    protected $doSave;
 
     /**
      * Main DataHandler datamap array
@@ -188,11 +169,6 @@ class EditDocumentController
     protected $popViewId;
 
     /**
-     * @var string|null
-     */
-    protected $previewCode;
-
-    /**
      * Alternative title for the document handler.
      *
      * @var string
@@ -207,23 +183,11 @@ class EditDocumentController
     protected $noView;
 
     /**
-     * @var string
-     */
-    protected $perms_clause;
-
-    /**
      * If true, $this->editconf array is added a redirect response, used by Wizard/AddController
      *
      * @var bool
      */
     protected $returnEditConf;
-
-    /**
-     * parse_url() of current requested URI, contains ['path'] and ['query'] parts.
-     *
-     * @var array
-     */
-    protected $R_URL_parts;
 
     /**
      * Contains $request query parameters. This array is the foundation for creating
@@ -366,70 +330,18 @@ class EditDocumentController
         $view = $this->moduleTemplateFactory->create($request);
         $view->setUiBlock(true);
         $view->setTitle($this->getShortcutTitle($request));
+        $body = '';
 
         // Unlock all locked records
         BackendUtility::lockRecords();
-        if ($response = $this->preInit($request)) {
-            return $response;
-        }
-
-        // Process incoming data via DataHandler?
-        $parsedBody = $request->getParsedBody();
-        if ((
-            $this->doSave
-                || isset($parsedBody['_savedok'])
-                || isset($parsedBody['_saveandclosedok'])
-                || isset($parsedBody['_savedokview'])
-                || isset($parsedBody['_savedoknew'])
-                || isset($parsedBody['_duplicatedoc'])
-        )
-            && $request->getMethod() === 'POST'
-            && $response = $this->processData($view, $request)
-        ) {
-            return $response;
-        }
-
-        $this->setModuleContext($view);
-        $this->init($request);
-
-        if ($request->getMethod() === 'POST') {
-            // In case save&view is requested, we have to add this information to the redirect
-            // URL, since the ImmediateAction will be added to the module body afterwards.
-            if (isset($parsedBody['_savedokview'])) {
-                $this->R_URI = rtrim($this->R_URI, '&') .
-                    HttpUtility::buildQueryString([
-                        'showPreview' => true,
-                        'popViewId' => $parsedBody['popViewId'] ?? PreviewUriBuilder::getPreviewPageId(
-                            ($this->firstEl['table'] ?? ''),
-                            ($this->firstEl['uid'] ?? ''),
-                            ($this->popViewId ?: $this->viewId),
-                        ),
-                    ], (empty($this->R_URL_getvars) ? '?' : '&'));
-            }
-            return new RedirectResponse($this->R_URI, 302);
-        }
-
-        $view->assign('bodyHtml', $this->main($view, $request));
-
-        return $view->renderResponse('Form/EditDocument');
-    }
-
-    /**
-     * First initialization, always called, even before processData() executes DataHandler processing.
-     */
-    protected function preInit(ServerRequestInterface $request): ?ResponseInterface
-    {
         $queryParams = $request->getQueryParams();
-        $this->module = $this->moduleProvider->getModule((string)($queryParams['module'] ?? ''), $this->getBackendUser());
-
         $parsedBody = $request->getParsedBody();
+        $this->module = $this->moduleProvider->getModule((string)($queryParams['module'] ?? ''), $this->getBackendUser());
 
         $this->editconf = $parsedBody['edit'] ?? $queryParams['edit'] ?? [];
         $this->defVals = $parsedBody['defVals'] ?? $queryParams['defVals'] ?? null;
         $this->overrideVals = $parsedBody['overrideVals'] ?? $queryParams['overrideVals'] ?? null;
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
-        $this->closeDoc = (int)($parsedBody['closeDoc'] ?? $queryParams['closeDoc'] ?? self::DOCUMENT_CLOSE_MODE_DEFAULT);
-        $this->doSave = ($parsedBody['doSave'] ?? false) && $request->getMethod() === 'POST';
         $this->returnEditConf = (bool)($parsedBody['returnEditConf'] ?? $queryParams['returnEditConf'] ?? false);
 
         $columnsOnly = $parsedBody['columnsOnly'] ?? $queryParams['columnsOnly'] ?? null;
@@ -453,7 +365,6 @@ class EditDocumentController
         $this->fixWSversioningInEditConf();
 
         // Prepare R_URL (request url)
-        $this->R_URL_parts = parse_url($request->getAttribute('normalizedParams')->getRequestUri()) ?: [];
         $this->R_URL_getvars = $queryParams;
         $this->R_URL_getvars['edit'] = $this->editconf;
 
@@ -464,20 +375,137 @@ class EditDocumentController
         $this->docHandler = $this->docDat[0] ?? [];
 
         // Close document if a request for closing the document has been sent
-        if ($this->closeDoc > self::DOCUMENT_CLOSE_MODE_DEFAULT) {
-            if ($response = $this->closeDocument($this->closeDoc, $request)) {
+        $requestAction = FormAction::createFromRequest($request);
+        if ($requestAction->shouldHandleDocumentClosing()) {
+            if ($response = $this->closeDocument($requestAction)) {
                 return $response;
             }
         }
 
         $event = new BeforeFormEnginePageInitializedEvent($this, $request);
         $this->eventDispatcher->dispatch($event);
-        return null;
+
+        // Process incoming data via DataHandler?
+        if ($requestAction->shouldProcessData()) {
+            $this->processData($view, $request);
+            // Redirect if element should be closed after save
+            if ($requestAction->shouldCloseAfterSave()) {
+                return $this->closeDocument($requestAction);
+            }
+        }
+
+        $this->setModuleContext($view);
+
+        $this->popViewId = (int)($parsedBody['popViewId'] ?? $queryParams['popViewId'] ?? 0);
+        $this->recTitle = (string)($parsedBody['recTitle'] ?? $queryParams['recTitle'] ?? '');
+        $this->noView = (bool)($parsedBody['noView'] ?? $queryParams['noView'] ?? false);
+
+        // Preview code is implicit only generated for GET requests, having the query
+        // parameters "popViewId" (the preview page id) and "showPreview" set.
+        if ($this->popViewId && ($queryParams['showPreview'] ?? false)) {
+            // Generate the preview code (markup), which is added to the module body later
+            $body = $this->getPreviewUriBuilderForRecordPreview()->buildImmediateActionElement([PreviewUriBuilder::OPTION_SWITCH_FOCUS => null]);
+            // After generating the preview code, those params should not longer be applied to the form
+            // action, as this would otherwise always refresh the preview window on saving the record.
+            unset($this->R_URL_getvars['showPreview'], $this->R_URL_getvars['popViewId']);
+        }
+
+        // Set other internal variables:
+        $this->R_URL_getvars['returnUrl'] = $this->retUrl;
+        $currentRequestUrlPath = parse_url($request->getAttribute('normalizedParams')->getRequestUri(), PHP_URL_PATH);
+        $this->R_URI = $currentRequestUrlPath . HttpUtility::buildQueryString($this->R_URL_getvars, '?');
+
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/Wizards/localization.xlf');
+        $this->pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('show_item'));
+
+        $event = new AfterFormEnginePageInitializedEvent($this, $request);
+        $this->eventDispatcher->dispatch($event);
+
+        if ($requestAction->isPostRequest) {
+            // In case save&view is requested, we have to add this information to the redirect
+            // URL, since the ImmediateAction will be added to the module body afterwards.
+            $url = $this->R_URI;
+            if ($requestAction->savedokview()) {
+                $url = rtrim($url, '&') .
+                    HttpUtility::buildQueryString([
+                        'showPreview' => true,
+                        'popViewId' => $parsedBody['popViewId'] ?? PreviewUriBuilder::getPreviewPageId(
+                            ($this->firstEl['table'] ?? ''),
+                            ($this->firstEl['uid'] ?? ''),
+                            ($this->popViewId ?: $this->viewId),
+                        ),
+                    ], (empty($this->R_URL_getvars) ? '?' : '&'));
+            }
+            return new RedirectResponse($url, 302);
+        }
+
+        // Begin edit
+        $this->formResultCompiler = GeneralUtility::makeInstance(FormResultCompiler::class);
+
+        // Creating the editing form, wrap it with buttons, document selector etc.
+        $editForm = $this->makeEditForm($request, $view);
+        if ($editForm) {
+            $this->firstEl = $this->elementsData ? reset($this->elementsData) : null;
+            // Checking if the currently open document is stored in the list of "open documents" - if not, add it:
+            if ((($this->docDat[1] ?? null) !== $this->storeUrlMd5 || !isset($this->docHandler[$this->storeUrlMd5]))
+                && !$this->dontStoreDocumentRef
+            ) {
+                $this->docHandler[$this->storeUrlMd5] = [
+                    $this->storeTitle,
+                    $this->storeArray,
+                    $this->storeUrl,
+                    $this->firstEl,
+                    $this->returnUrl,
+                ];
+                $this->getBackendUser()->pushModuleData('FormEngine', [$this->docHandler, $this->storeUrlMd5]);
+                BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($this->docHandler));
+            }
+            $body .= $this->formResultCompiler->addCssFiles();
+            $body .= $this->compileForm($editForm);
+            $body .= $this->formResultCompiler->printNeededJSFunctions();
+            $body .= '</form>';
+        }
+
+        if ($this->firstEl === null) {
+            // In case firstEl is null, no edit form could be created. Therefore, add an
+            // info box and remove the spinner, since it will never be resolved by FormEngine.
+            $view->setUiBlock(false);
+            $body .= $this->getInfobox(
+                $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:noEditForm.message'),
+                $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:noEditForm'),
+            );
+        }
+
+        // Access check...
+        // The page will show only if there is a valid page and if this page may be viewed by the user
+        $perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
+        $this->pageinfo = BackendUtility::readPageAccess($this->viewId, $perms_clause) ?: [];
+        $this->isSavedRecord = is_array($this->firstEl)
+            && $this->firstEl['cmd'] !== 'new'
+            && MathUtility::canBeInterpretedAsInteger($this->firstEl['uid']);
+
+        // Setting up the buttons, markers for doc header and navigation component state
+        $this->createBreadcrumb($view);
+        $this->getButtons($view, $request);
+
+        // Create language switch options if the record is already persisted, and it is a single record to edit
+        if ($this->isSavedRecord && $this->isSingleRecordView()) {
+            $this->languageSwitch(
+                $view,
+                (string)($this->firstEl['table'] ?? ''),
+                (int)($this->firstEl['uid'] ?? 0),
+                isset($this->firstEl['pid']) ? (int)$this->firstEl['pid'] : null
+            );
+        }
+
+        $view->assign('bodyHtml', $body);
+
+        return $view->renderResponse('Form/EditDocument');
     }
 
-    protected function setModuleContext(
-        ModuleTemplate $view,
-    ): void {
+    protected function setModuleContext(ModuleTemplate $view): void
+    {
         $view->assign('moduleContext', '');
         $view->assign('moduleContextId', '');
         if ($this->module === null) {
@@ -551,8 +579,9 @@ class EditDocumentController
     /**
      * Do processing of data, submitting it to DataHandler. May return a RedirectResponse.
      */
-    protected function processData(ModuleTemplate $view, ServerRequestInterface $request): ?ResponseInterface
+    protected function processData(ModuleTemplate $view, ServerRequestInterface $request): void
     {
+        $requestAction = FormAction::createFromRequest($request);
         $parsedBody = $request->getParsedBody();
 
         $beUser = $this->getBackendUser();
@@ -580,7 +609,7 @@ class EditDocumentController
         }
 
         // Perform the saving operation with DataHandler:
-        if ($this->doSave === true) {
+        if ($requestAction->doSave()) {
             $tce->process_datamap();
             $tce->process_cmdmap();
 
@@ -632,7 +661,7 @@ class EditDocumentController
                         }
                         // Traverse all new records and forge the content of ->editconf so we can continue to edit these records!
                         if ($tableName === 'pages'
-                            && $this->retUrl !== (string)$this->uriBuilder->buildUriFromRoute('dummy')
+                            && !$this->shouldRedirectToEmptyPage()
                             && $this->retUrl !== $this->getCloseUrl($request)
                             && $this->returnNewPageId
                         ) {
@@ -644,7 +673,7 @@ class EditDocumentController
                 }
             }
             // Reset editconf if newEditConf has values
-            if (!empty($newEditConf)) {
+            if ($newEditConf !== []) {
                 $this->editconf = $newEditConf;
             }
             // Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
@@ -659,10 +688,8 @@ class EditDocumentController
             $this->fixWSversioningInEditConf($tce->autoVersionIdMap);
         }
         // If a document is saved and a new one is created right after.
-        if (isset($parsedBody['_savedoknew']) && is_array($this->editconf)) {
-            if ($redirect = $this->closeDocument(self::DOCUMENT_CLOSE_MODE_NO_REDIRECT, $request)) {
-                return $redirect;
-            }
+        if ($requestAction->savedoknew()) {
+            $this->closeDocument($requestAction, false);
             // Find the current table
             reset($this->editconf);
             $nTable = (string)key($this->editconf);
@@ -711,7 +738,7 @@ class EditDocumentController
         }
 
         // Explicitly require a save operation
-        if ($this->doSave) {
+        if ($requestAction->doSave()) {
             $erroneousRecords = $tce->printLogErrorMessages();
             $messages = [];
             $table = (string)key($this->editconf);
@@ -770,8 +797,8 @@ class EditDocumentController
         }
 
         // If a document should be duplicated.
-        if (isset($parsedBody['_duplicatedoc']) && is_array($this->editconf)) {
-            $this->closeDocument(self::DOCUMENT_CLOSE_MODE_NO_REDIRECT, $request);
+        if ($requestAction->duplicatedoc()) {
+            $this->closeDocument($requestAction, false);
             // Find current table
             reset($this->editconf);
             $nTable = (string)key($this->editconf);
@@ -797,6 +824,7 @@ class EditDocumentController
                 $relatedPageId = -$nRec['t3ver_oid'];
             }
 
+            /** @var DataHandler $duplicateTce */
             $duplicateTce = GeneralUtility::makeInstance(DataHandler::class);
 
             $duplicateCmd = [
@@ -834,50 +862,6 @@ class EditDocumentController
                 );
             }
         }
-
-        if ($this->closeDoc < self::DOCUMENT_CLOSE_MODE_DEFAULT
-            || isset($parsedBody['_saveandclosedok'])
-        ) {
-            // Redirect if element should be closed after save
-            return $this->closeDocument((int)abs($this->closeDoc), $request);
-        }
-        return null;
-    }
-
-    /**
-     * Initialize the view part of the controller logic.
-     */
-    protected function init(ServerRequestInterface $request): void
-    {
-        $parsedBody = $request->getParsedBody();
-        $queryParams = $request->getQueryParams();
-        $beUser = $this->getBackendUser();
-
-        $this->popViewId = (int)($parsedBody['popViewId'] ?? $queryParams['popViewId'] ?? 0);
-        $this->recTitle = (string)($parsedBody['recTitle'] ?? $queryParams['recTitle'] ?? '');
-        $this->noView = (bool)($parsedBody['noView'] ?? $queryParams['noView'] ?? false);
-        $this->perms_clause = $beUser->getPagePermsClause(Permission::PAGE_SHOW);
-
-        // Preview code is implicit only generated for GET requests, having the query
-        // parameters "popViewId" (the preview page id) and "showPreview" set.
-        if ($this->popViewId && ($queryParams['showPreview'] ?? false)) {
-            // Generate the preview code (markup), which is added to the module body later
-            $this->previewCode = $this->getPreviewUriBuilderForRecordPreview()->buildImmediateActionElement([PreviewUriBuilder::OPTION_SWITCH_FOCUS => null]);
-            // After generating the preview code, those params should not longer be applied to the form
-            // action, as this would otherwise always refresh the preview window on saving the record.
-            unset($this->R_URL_getvars['showPreview'], $this->R_URL_getvars['popViewId']);
-        }
-
-        // Set other internal variables:
-        $this->R_URL_getvars['returnUrl'] = $this->retUrl;
-        $this->R_URI = $this->R_URL_parts['path'] . HttpUtility::buildQueryString($this->R_URL_getvars, '?');
-
-        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
-        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/Wizards/localization.xlf');
-        $this->pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('show_item'));
-
-        $event = new AfterFormEnginePageInitializedEvent($this, $request);
-        $this->eventDispatcher->dispatch($event);
     }
 
     protected function getPreviewUriBuilderForRecordPreview(): PreviewUriBuilder
@@ -892,74 +876,6 @@ class EditDocumentController
         $recordId = (int)((reset($array_keys) ?: null) ?? ($this->firstEl['uid'] ?? ''));
         $pageId = $this->popViewId ?: $this->viewId;
         return PreviewUriBuilder::createForRecordPreview($table, $recordId, $pageId);
-    }
-
-    /**
-     * Main module operation
-     */
-    protected function main(ModuleTemplate $view, ServerRequestInterface $request): string
-    {
-        $body = $this->previewCode ?? '';
-        // Begin edit
-        if (is_array($this->editconf)) {
-            $this->formResultCompiler = GeneralUtility::makeInstance(FormResultCompiler::class);
-
-            // Creating the editing form, wrap it with buttons, document selector etc.
-            $editForm = $this->makeEditForm($request, $view);
-            if ($editForm) {
-                $this->firstEl = $this->elementsData ? reset($this->elementsData) : null;
-                // Checking if the currently open document is stored in the list of "open documents" - if not, add it:
-                if ((($this->docDat[1] ?? null) !== $this->storeUrlMd5 || !isset($this->docHandler[$this->storeUrlMd5]))
-                    && !$this->dontStoreDocumentRef
-                ) {
-                    $this->docHandler[$this->storeUrlMd5] = [
-                        $this->storeTitle,
-                        $this->storeArray,
-                        $this->storeUrl,
-                        $this->firstEl,
-                        $this->returnUrl,
-                    ];
-                    $this->getBackendUser()->pushModuleData('FormEngine', [$this->docHandler, $this->storeUrlMd5]);
-                    BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($this->docHandler));
-                }
-                $body .= $this->formResultCompiler->addCssFiles();
-                $body .= $this->compileForm($editForm);
-                $body .= $this->formResultCompiler->printNeededJSFunctions();
-                $body .= '</form>';
-            }
-        }
-
-        if ($this->firstEl === null) {
-            // In case firstEl is null, no edit form could be created. Therefore, add an
-            // info box and remove the spinner, since it will never be resolved by FormEngine.
-            $view->setUiBlock(false);
-            $body .= $this->getInfobox(
-                $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:noEditForm.message'),
-                $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:noEditForm'),
-            );
-        }
-
-        // Access check...
-        // The page will show only if there is a valid page and if this page may be viewed by the user
-        $this->pageinfo = BackendUtility::readPageAccess($this->viewId, $this->perms_clause) ?: [];
-        $this->isSavedRecord = is_array($this->firstEl)
-            && $this->firstEl['cmd'] !== 'new'
-            && MathUtility::canBeInterpretedAsInteger($this->firstEl['uid']);
-        // Setting up the buttons, markers for doc header and navigation component state
-        $this->createBreadcrumb($view);
-        $this->getButtons($view, $request);
-
-        // Create language switch options if the record is already persisted, and it is a single record to edit
-        if ($this->isSavedRecord && $this->isSingleRecordView()) {
-            $this->languageSwitch(
-                $view,
-                (string)($this->firstEl['table'] ?? ''),
-                (int)($this->firstEl['uid'] ?? 0),
-                isset($this->firstEl['pid']) ? (int)$this->firstEl['pid'] : null
-            );
-        }
-
-        return $body;
     }
 
     protected function createBreadcrumb(ModuleTemplate $view): void
@@ -1063,7 +979,7 @@ class EditDocumentController
                         if (is_array($this->overrideVals) && is_array($this->overrideVals[$table])) {
                             $formDataCompilerInput['overrideValues'] = $this->overrideVals[$table];
                         }
-                        if (!empty($this->defVals) && is_array($this->defVals)) {
+                        if (is_array($this->defVals) && $this->defVals !== []) {
                             $formDataCompilerInput['defaultValues'] = $this->defVals;
                         }
 
@@ -2099,9 +2015,6 @@ class EditDocumentController
      */
     protected function fixWSversioningInEditConf(?array $mapArray = null): void
     {
-        if (!is_array($this->editconf)) {
-            return;
-        }
         foreach ($this->editconf as $table => $conf) {
             if (is_array($conf) && $this->tcaSchemaFactory->has($table)) {
                 // Traverse the keys/comments of each table (keys can be a comma list of uids)
@@ -2215,22 +2128,41 @@ class EditDocumentController
     }
 
     /**
-     * Handling the closing of a document
-     * The argument $mode can be one of this values:
-     * - 0/1 will redirect to $this->retUrl [self::DOCUMENT_CLOSE_MODE_DEFAULT || self::DOCUMENT_CLOSE_MODE_REDIRECT]
-     * - 3 will clear the docHandler (thus closing all documents) [self::DOCUMENT_CLOSE_MODE_CLEAR_ALL]
-     * - 4 will do no redirect [self::DOCUMENT_CLOSE_MODE_NO_REDIRECT]
-     * - other values will call setDocument with ->retUrl
+     * Handling the closing of a document and then creates a valid redirect
      *
-     * @param int $mode the close mode: one of self::DOCUMENT_CLOSE_MODE_*
-     * @param ServerRequestInterface $request Incoming request
      * @return ResponseInterface|null Redirect response if needed
      */
-    protected function closeDocument(int $mode, ServerRequestInterface $request): ?ResponseInterface
+    protected function closeDocument(FormAction $requestAction, bool $allowRedirects = true): ?ResponseInterface
     {
-        $setupArr = [];
-        // If current document is found in docHandler,
-        // then unset it, possibly unset it ALL and finally, write it to the session data
+        $this->handleDocumentClosing($requestAction);
+        if (!$allowRedirects) {
+            return null;
+        }
+        // If ->returnEditConf is set, then add the current content of editconf to the ->retUrl variable: used by
+        // other scripts, like wizard_add, to know which records was created or so...
+        if ($this->returnEditConf && !$this->shouldRedirectToEmptyPage()) {
+            $this->retUrl .= '&returnEditConf=' . rawurlencode((string)json_encode($this->editconf));
+        }
+        if ($requestAction->shouldCloseWithARedirect()) {
+            return new RedirectResponse($this->retUrl, 303);
+        }
+        if ($this->retUrl === '') {
+            return null;
+        }
+        return new RedirectResponse((string)$this->returnUrl, 303);
+    }
+
+    protected function shouldRedirectToEmptyPage(): bool
+    {
+        return $this->retUrl === (string)$this->uriBuilder->buildUriFromRoute('dummy');
+    }
+
+    /**
+     * If current document is found in docHandler,
+     * then unset it, possibly unset it ALL and finally, write it to the session data
+     */
+    protected function handleDocumentClosing(FormAction $requestAction): void
+    {
         if (isset($this->docHandler[$this->storeUrlMd5])) {
             // add the closing document to the recent documents
             $recentDocs = $this->getBackendUser()->getModuleData('opendocs::recent');
@@ -2244,7 +2176,7 @@ class EditDocumentController
             }
             // remove it from the list of the open documents
             unset($this->docHandler[$this->storeUrlMd5]);
-            if ($mode === self::DOCUMENT_CLOSE_MODE_CLEAR_ALL) {
+            if ($requestAction->getAbsoluteCloseDocValue() === $requestAction::DOCUMENT_CLOSE_MODE_CLEAR_ALL) {
                 $recentDocs = array_merge($this->docHandler, $recentDocs);
                 $this->docHandler = [];
             }
@@ -2252,29 +2184,6 @@ class EditDocumentController
             $this->getBackendUser()->pushModuleData('FormEngine', [$this->docHandler, $this->docDat[1]]);
             BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($this->docHandler));
         }
-        if ($mode === self::DOCUMENT_CLOSE_MODE_NO_REDIRECT) {
-            return null;
-        }
-        // If ->returnEditConf is set, then add the current content of editconf to the ->retUrl variable: used by
-        // other scripts, like wizard_add, to know which records was created or so...
-        if ($this->returnEditConf && $this->retUrl != (string)$this->uriBuilder->buildUriFromRoute('dummy')) {
-            $this->retUrl .= '&returnEditConf=' . rawurlencode((string)json_encode($this->editconf));
-        }
-        // If mode is NOT set (means 0) OR set to 1, then make a header location redirect to $this->retUrl
-        if ($mode === self::DOCUMENT_CLOSE_MODE_DEFAULT || $mode === self::DOCUMENT_CLOSE_MODE_REDIRECT) {
-            return new RedirectResponse($this->retUrl, 303);
-        }
-        if ($this->retUrl === '') {
-            return null;
-        }
-        $retUrl = (string)$this->returnUrl;
-        if (is_array($this->docHandler) && !empty($this->docHandler)) {
-            if (!empty($setupArr[2])) {
-                $sParts = parse_url($request->getAttribute('normalizedParams')->getRequestUri());
-                $retUrl = $sParts['path'] . '?' . $setupArr[2] . '&returnUrl=' . rawurlencode($retUrl);
-            }
-        }
-        return new RedirectResponse($retUrl, 303);
     }
 
     /**

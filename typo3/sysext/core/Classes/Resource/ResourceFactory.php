@@ -108,9 +108,6 @@ readonly class ResourceFactory implements SingletonInterface
      *
      * @param int|string $uid The uid of the file to instantiate. (string is used for the time being as compat-mode)
      * @param array $fileData The record row from database.
-     *
-     * @throws \InvalidArgumentException
-     * @throws Exception\FileDoesNotExistException
      */
     public function getFileObject(int|string $uid, array $fileData = []): File
     {
