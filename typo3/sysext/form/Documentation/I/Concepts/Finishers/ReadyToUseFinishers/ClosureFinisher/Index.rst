@@ -5,9 +5,8 @@
 Closure finisher
 ================
 
-The "Closure finisher" can only be used within forms that are created
-programmatically. It allows you to execute your own finisher code without
-implementing/ declaring a finisher.
+The "Closure finisher" can only be used in programmatically-created forms. It allows
+you to execute your own finisher code without implementing/ declaring a finisher.
 
 ..  contents:: Table of contents
 
@@ -15,8 +14,8 @@ implementing/ declaring a finisher.
 
 ..  _apireference-finisheroptions-closurefinisher-options:
 
-Options of the closure finisher
-===============================
+Closure finisher option
+=======================
 
 ..  _apireference-finisheroptions-closurefinisher-options-closure:
 
@@ -33,11 +32,10 @@ Options of the closure finisher
 Using the closure finisher programmatically
 ===========================================
 
-This finisher can only be used in programmatically-created forms. It makes it
-possible to execute one's own finisher code without having to implement/
-declare this finisher.
+This finisher can only be used in programmatically-created forms. It allows
+you to execute your own finisher code without implementing/ declaring a finisher.
 
-Usage through code:
+Code example:
 
 ..  literalinclude:: _codesnippets/_finisher.php.inc
     :language: php

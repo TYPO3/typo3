@@ -5,8 +5,8 @@
 Email finisher
 ==============
 
-The EmailFinisher sends an email to one recipient. EXT:form uses two
-EmailFinisher declarations with the identifiers EmailToReceiver and EmailToSender.
+The EmailFinisher sends an email to one recipient. EXT:form has two
+EmailFinishers with the identifiers EmailToReceiver and EmailToSender.
 
 ..  contents:: Table of contents
 
@@ -17,19 +17,19 @@ EmailFinisher declarations with the identifiers EmailToReceiver and EmailToSende
 ..  _finishers-email-to-sender:
 ..  _finishers-email-to-receiver:
 
-Email finisher usage in the backend form
-========================================
+Using email finishers in the backend form editor
+================================================
 
-The backend form offers two email finishers to the editor:
+Editors can use two email finishers in the backend form editor:
 
 Email to sender (form submitter)
-    This finisher sends an email to the form submitter - i.e. the user - with the
-    contents of the form.
+    This finisher sends an email with the contents of the form to the user
+    submitting the form .
 
 Email to receiver (you)
-    This finisher sends an email to the receiver - you as the owner of the
-    website - with the contents of the form. The settings of the finisher are the
-    same as for the finisher "Email to sender"
+    This finisher sends an email with the contents of the form to the owner of the
+    website. The settings of this finisher are the
+    same as the "Email to sender" finisher
 
 ..  _apireference-finisheroptions-emailfinisher-options:
 
@@ -70,9 +70,9 @@ Options of the email finisher
     Email address of the sender, for example "your.company@example.org".
 
     If `smtp <https://docs.typo3.org/permalink/t3coreapi:mail-configuration-smtp>`_
-    is used to send the email it should always be an email address allowed by the
+    is used, this email address needs to be allowed by the
     SMTP server. Use `replyToRecipients` if you want to enable the receiver to
-    easily reply to the message.
+    reply to the message.
 
 ..  _apireference-finisheroptions-emailfinisher-options-sendername:
 
@@ -134,9 +134,8 @@ Options of the email finisher
     :type: bool
     :default: `true`
 
-    If set, mails will contain a plaintext and HTML part, otherwise only a
-    plaintext part. That way, it can be used to disable HTML and enforce
-    plaintext-only mails.
+    If set, emails will contain plaintext and HTML, otherwise only plaintext.
+    In this way, HTML can be disabled and plaintext-only emails enforced.
 
 ..  _apireference-finisheroptions-emailfinisher-options-attachuploads:
 
@@ -155,7 +154,7 @@ Options of the email finisher
     :required: false
     :default: `undefined`
 
-    The title, being shown in the email.
+    The title shown in the email.
 
 ..  _apireference-finisheroptions-emailfinisher-options-translation-language:
 
@@ -168,15 +167,15 @@ Options of the email finisher
     If not set, the finisher options are translated depending on the current
     frontend language (if translations exist). This option allows you to force
     translations for a given language isocode, e.g. `da` or `de`.
-    Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>`.
+    See :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>`.
 
 ..  _apireference-finisheroptions-emailfinisher-options-options:
 
-Additional options of the email finisher
-========================================
+Additional email finisher options
+=================================
 
-These additional options can be set directly in the form definition YAML or
-programmatically in the options array but **not** from the backend editor:
+Additional options can be set in the form definition YAML and
+programmatically in the options array but **not** in the backend editor:
 
 ..  _apireference-finisheroptions-emailfinisher-options-translation-propertiesExcludedFromTranslation:
 
@@ -188,7 +187,8 @@ programmatically in the options array but **not** from the backend editor:
 
     If not set, the finisher options are translated depending on the current frontend language (if translations exists).
     This option allows you to force translations for a given language isocode, e.g 'da' or 'de'.
-    Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.l be skipped for all specified finisher options.
+    See :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>`.
+    It will be skipped for all specified finisher options.
 
 ..  _apireference-finisheroptions-emailfinisher-options-translation-translationfiles:
 
@@ -247,11 +247,11 @@ programmatically in the options array but **not** from the backend editor:
 
 ..  _concepts-finishers-emailfinisher-yaml:
 
-Email finisher in the YAML form definition
-==========================================
+Email finishers in the YAML form definition
+===========================================
 
 This finisher sends an email to one recipient.
-EXT:form uses 2 EmailFinisher declarations with the identifiers
+EXT:form has two email finishers with identifiers
 `EmailToReceiver` and `EmailToSender`.
 
 ..  literalinclude:: _codesnippets/_form.yaml
@@ -259,8 +259,8 @@ EXT:form uses 2 EmailFinisher declarations with the identifiers
 
 ..  _apireference-finisheroptions-emailfinisher:
 
-Usage of the Email finisher in PHP code
-=======================================
+Using Email finishers in PHP code
+=================================
 
 Developers can create a confirmation finisher by using the key `EmailToReceiver`
 or `EmailToSender`.
@@ -275,19 +275,19 @@ This finisher is implemented in :php:`TYPO3\CMS\Form\Domain\Finishers\EmailFinis
 Working with BCC recipients
 ===========================
 
-Both email finishers support different recipient types, including Carbon Copy
-(CC) and Blind Carbon Copy (BCC). Depending on the configuration of the server
-and the TYPO3 instance, it may not be possible to send emails to BCC recipients.
-The configuration of the :php:`$GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport_sendmail_command']`
-value is crucial. As documented in :ref:`CORE API <t3coreapi:mail-configuration-sendmail>`,
-TYPO3 recommends the parameter :php:`-bs` (instead of :php:`-t -i`) when using
+Email finishers can work with different recipient types, including Carbon Copy
+(CC) and Blind Carbon Copy (BCC). Depending on the configuration of your server
+and TYPO3 instance, it may not be possible to send emails to BCC recipients.
+The :php:`$GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport_sendmail_command']`
+configuration value is important here. As documented in :ref:`CORE API <t3coreapi:mail-configuration-sendmail>`,
+TYPO3 recommends using the parameter :php:`-bs` (instead of :php:`-t -i`) with
 :php:`sendmail`. The parameter :php:`-bs` tells TYPO3 to use the SMTP standard
-and that way the BCC recipients are properly set. `Symfony <https://symfony.com/doc/current/mailer.html#using-built-in-transports>`__
-refers to the problem of using the :php:`-t` parameter as well. Since TYPO3 7.5
+so that BCC recipients are properly set. `Symfony <https://symfony.com/doc/current/mailer.html#using-built-in-transports>`__
+also mentions the :php:`-t` parameter problem. Since TYPO3 7.5
 (`#65791 <https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/7.5/Feature-65791-UsePHPConfiguredSendmailPathIfMAILtransportSendmailIsActive.html>`__)
 the :php:`transport_sendmail_command` is automatically set from the PHP runtime
-configuration and saved. Thus, if you have problems with sending emails to BCC
-recipients, check the above mentioned configuration.
+configuration and saved. If you have problems sending emails to BCC
+recipients, this could be the solution.
 
 ..  _concepts-finishers-emailfinisher-fluidemail:
 
@@ -297,32 +297,29 @@ About FluidEmail
 ..  versionchanged:: 12.0
     The :php:`EmailFinisher` always sends email via :php:`FluidEmail`.
 
-FluidEmail allows to send mails in a standardized way.
+The FluidEmail finisher allows emails to be sent in a standardized way.
 
-The option :yaml:`title` is available which can
-be used to add an email title to the default FluidEmail template. This option is
-capable of rendering form element variables using the known bracket syntax and can
-be overwritten in the FlexForm configuration of the form plugin.
+The finisher has an :yaml:`option` property :yaml:`title` that adds an email title to the default
+FluidEmail template. Variables can be used in options using the bracket syntax.
+These variables can be overwritten by FlexForm configuration in the form plugin
 
-To customize the templates being used following options can be set:
+Use these options to customize the fluid templates:
 
-*   :yaml:`templateName`: The template name (for both HTML and plaintext) without the
-    extension
+*   :yaml:`templateName`: The template name (for both HTML and plaintext, without the
+    extension)
 *   :yaml:`templateRootPaths`: The paths to the templates
 *   :yaml:`partialRootPaths`: The paths to the partials
 *   :yaml:`layoutRootPaths`: The paths to the layouts
 
 ..  note::
-    The formerly available field :yaml:`templatePathAndFilename` is not evaluated
-    anymore.
+    The field :yaml:`templatePathAndFilename` is no longer evaluated.
 
-A finisher configuration could look like this:
+Here is an example finisher configuration:
 
 ..  literalinclude:: _codesnippets/_example-email.yaml
     :caption: public/fileadmin/forms/my_form_with_email_finisher.yaml
 
-In the example above the following files must exist in the specified
-template path:
+These template files must exist:
 
 *   :file:`EXT:my_site_package/Resources/Private/Templates/Email/ContactForm.html`
 *   :file:`EXT:my_site_package/Resources/Private/Templates/Email/ContactForm.txt`

@@ -6,14 +6,14 @@
 DeleteUploads finishers
 =======================
 
-The "DeleteUploads finisher" removes submitted files. Use this finisher,
-for example, after the email finisher if you do not want to keep the files
-within your TYPO3 installation.
+The "DeleteUploads finisher" removes files that have been submitted. You can use this
+finisher after the email finisher if you do not want to keep the files
+in your TYPO3 installation.
 
 ..  note::
 
-    Finishers are only executed on successfully submitted forms. If a user uploads
-    a file but does not finish the form successfully, the uploaded files will not
+    Finishers are only executed when a form is successfully submitted. If a user uploads
+    a file but does not finish filling out the form, the uploaded files will not
     be deleted.
 
 ..  contents:: Table of contents
@@ -25,10 +25,10 @@ within your TYPO3 installation.
 DeleteUploads finisher in the YAML form definition
 ==================================================
 
-For example: use this finisher after the email finisher if you do not want
-to keep the files online.
+Use this finisher after the email finisher if you do not want to keep the files
+in your TYPO3 installation.
 
-The finishers are executed in the order they are listed in the form definition
+Finishers are executed in the order they are listed in the form definition
 YAML file:
 
 ..  literalinclude:: _codesnippets/_form.yaml
@@ -36,10 +36,11 @@ YAML file:
 
 ..  _apireference-finisheroptions-deleteuploadsfinisher:
 
-Usage of the DeleteUploads finisher in PHP code
-===============================================
+Using the DeleteUploads finisher in PHP code
+============================================
 
-Developers can create a confirmation finisher by using the key `DeleteUploads`:
+Developers can use the finisher key `DeleteUploads` to create
+deleteuploads finishers in their own classes:
 
 ..  literalinclude:: _codesnippets/_finisher.php.inc
     :language: php

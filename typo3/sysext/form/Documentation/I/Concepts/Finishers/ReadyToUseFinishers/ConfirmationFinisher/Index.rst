@@ -6,7 +6,7 @@
 Confirmation finisher
 =====================
 
-A basic finisher that outputs a given text or a content element, respectively.
+A basic finisher that outputs a text or content element.
 
 ..  contents:: Table of contents
 
@@ -14,12 +14,12 @@ A basic finisher that outputs a given text or a content element, respectively.
 
 ..  _apireference-finisheroptions-confirmationfinisher-options:
 
-Options of the confirmation finisher
-====================================
+Confirmation finisher options
+=============================
 
-This finisher outputs a given text after the form has been submitted.
+This finisher outputs a text or a content element after the form has been submitted.
 
-The settings of the finisher are as follows:
+The settings of the finisher are:
 
 ..  _apireference-finisheroptions-confirmationfinisher-options-message:
 
@@ -28,14 +28,14 @@ The settings of the finisher are as follows:
     :type: string
     :default: `The form has been submitted.`
 
-    Displays this message if the `contentElementUid` is not set.
+    Displays this text if the `contentElementUid` is not set.
 
 ..  confval:: contentElementUid
     :name: confirmationfinisher-contentElementUid
     :type: int
     :default: 0
 
-    Renders the content element with the ID supplied here.
+    Renders the content element with the supplied ID.
 
 ..  confval:: translation.propertiesExcludedFromTranslation
     :name: confirmationfinisher-translation-propertiesExcludedFromTranslation
@@ -62,14 +62,14 @@ The settings of the finisher are as follows:
 Confirmation finisher in the YAML form definition
 =================================================
 
-A basic finisher that outputs a given text or a content element, respectively.
+A basic finisher that outputs text or a content element.
 
-Usage within form definition for the case, you want to use a given text.
+Outputs text ``message``:
 
 ..  literalinclude:: _codesnippets/_form_with_confirmation_finisher.yaml
     :caption: public/fileadmin/forms/my_form.yaml
 
-Usage within form definition for the case, you want to output a content element.
+Outputs content element with id 42:
 
 ..  literalinclude:: _codesnippets/_form_with_confirmation_content_element.yaml
     :caption: public/fileadmin/forms/my_form.yaml
@@ -79,30 +79,31 @@ Usage within form definition for the case, you want to output a content element.
 Skip translation of overridden form finisher options
 ====================================================
 
-Example for option `translation.propertiesExcludedFromTranslation <https://docs.typo3.org/permalink/typo3/cms-form:confval-confirmationfinisher-translation-propertiesexcludedfromtranslation>`_.
-
-The following example excludes three properties (subject, recipients and
+The following is an example of the `translation.propertiesExcludedFromTranslation <https://docs.typo3.org/permalink/typo3/cms-form:confval-confirmationfinisher-translation-propertiesexcludedfromtranslation>`_
+option being used to exclude  three properties (subject, recipients and
 format) from translation.
 
-That way, the options can only be overridden within a FlexForm but not by the
+Using this translation option, the properties can only be overridden by a FlexForm, not by the
 :php-short:`\TYPO3\CMS\Form\Service\TranslationService`.
 
 This option is automatically generated as soon as FlexForm overrides are in place.
 
 The following syntax is only documented for completeness. Nonetheless, it can
-also be written manually into a form definition.
+also be added to a form definition YAML file.
 
 ..  literalinclude:: _codesnippets/_form_with_propertiesExcludedFromTranslation.yaml
     :caption: public/fileadmin/forms/my_form.yaml
 
 ..  _apireference-finisheroptions-confirmationfinisher:
 
-Usage of the confirmation finisher in PHP code
-==============================================
+Using the confirmation finisher in PHP code
+===========================================
 
-Developers can create a confirmation finisher by using the key `Confirmation`:
+Developers can use the finisher key `Confirmation` to create
+confirmation finishers in their own classes:
 
 ..  literalinclude:: _codesnippets/_finisher.php.inc
     :language: php
 
-This finisher is implemented in :php:`TYPO3\CMS\Form\Domain\Finishers\ConfirmationFinisher`.
+Th confirmation finisher is implemented in
+:php:`TYPO3\CMS\Form\Domain\Finishers\ConfirmationFinisher`.

@@ -5,25 +5,25 @@
 SaveToDatabase finisher
 =======================
 
-The "SaveToDatabase finisher" saves the data of a submitted form into a
+The "SaveToDatabase finisher" saves data from a submitted form into a
 database table.
 
 ..  contents:: Table of contents
 
 ..  note::
 
-    This finisher cannot be used from the backend editor. It can only be
-    inserted directly into the YAML form definition or programmatically.
+    This finisher cannot be used in the backend form editor. It can only be
+    used in a form definition YAML file or programmatically.
 
 ..  include:: /Includes/_NoteFinisher.rst
 
 ..  _apireference-finisheroptions-savetodatabasefinisher-options:
 
-Options of the SaveToDatabase finisher
-======================================
+SaveToDatabase finisher options
+===============================
 
-The following options can be set directly in the form definition YAML or
-programmatically in the options array:
+The finisher options can be set in the form definition YAML file or
+programmatically:
 
 ..  _apireference-finisheroptions-savetodatabasefinisher-options-table:
 
@@ -32,7 +32,7 @@ programmatically in the options array:
     :type: string
     :required: true
 
-    Insert or update values into this table.
+    Insert or update values in this table.
 
 ..  _apireference-finisheroptions-savetodatabasefinisher-options-mode:
 
@@ -47,7 +47,7 @@ programmatically in the options array:
         :confval:`savetodatabasefinisher-databaseColumnMappings`.
 
     `update`
-        will update a given database row with the values from the submitted form
+        will update a database row with the values from the submitted form
         and/or some predefined values. In this case :confval:`savetodatabasefinisher-whereClause` is required.
 
 ..  _apireference-finisheroptions-savetodatabasefinisher-options-whereclause:
@@ -58,7 +58,7 @@ programmatically in the options array:
     :required: true (if mode = update)
     :default: `[]`
 
-    This where clause will be used for a database update action.
+    The  ``where`` clause for a database update action.
 
 ..  _apireference-finisheroptions-savetodatabasefinisher-options-elements:
 
@@ -67,9 +67,9 @@ programmatically in the options array:
     :type: array
     :required: true
 
-    Use `options.elements` to map form element values to existing database columns.
-    Each key within `options.elements` has to match with a form element identifier.
-    The value for each key within `options.elements` is an array with additional information.
+    Use `options.elements` to map form element values to database columns (they must exist).
+    Each key in `options.elements` has to match a form element identifier.
+    The value of each key in `options.elements` is an array containing additional information.
 
 ..  _apireference-finisheroptions-savetodatabasefinisher-options-elements-mapondatabasecolumn:
 
@@ -136,14 +136,14 @@ programmatically in the options array:
     :type: array
     :default: `[]`
 
-    Use this to map database columns to static values.
+    Use this to map database columns to values.
     Each key within `options.databaseColumnMappings` has to match an existing database column.
-    The value for each key within `options.databaseColumnMappings` is an array with
+    Each value in `options.databaseColumnMappings` is an array with
     additional information.
 
-    This mapping is done *before* the :confval:`savetodatabasefinisher-elements` mapping.
+    This mapping is done *before* :confval:`savetodatabasefinisher-elements` are mapped.
     If you map both, the value from :confval:`savetodatabasefinisher-elements` will override the
-    :confval:`savetodatabasefinisher-databaseColumnMappings-value` value.
+    :confval:`savetodatabasefinisher-databaseColumnMappings-value`.
 
 ..  _apireference-finisheroptions-savetodatabasefinisher-options-databasecolumnmappings-value:
 
@@ -172,16 +172,16 @@ programmatically in the options array:
     :type: array
     :default: `[]`
 
-    Defines a list of finisher option properties that should be excluded from
+    Defines a list of finisher option properties to be excluded from
     translation.
 
-    When specified, the listed properties are not processed by the
-    :php-short:`\TYPO3\CMS\Form\Service\TranslationService` during translation
-    of finisher options. This prevents their values from being replaced by
+    If set, these properties are not processed by the
+    :php-short:`\TYPO3\CMS\Form\Service\TranslationService` during translation.
+    This prevents the values from being replaced by
     translated equivalents, even if translations exist for those options.
 
-    This option is usually generated automatically as soon as FlexForm overrides
-    are in place and normally does not need to be set manually in the form
+    This option is usually generated when FlexForm overrides
+    exist and normally does not need to be set manually in the form
     definition.
 
     See `Skip translation of overridden form finisher options <https://docs.typo3.org/permalink/typo3/cms-form:concepts-finishers-confirmationfinisher-yaml-propertiesexcludedfromtranslation>`_
@@ -189,10 +189,10 @@ programmatically in the options array:
 
 ..  _concepts-finishers-savetodatabasefinisher-yaml:
 
-SaveToDatabase finisher in the YAML form definition
-===================================================
+SaveToDatabase finisher in a YAML form definition
+=================================================
 
-This finisher saves the data from a submitted form into a database table.
+This finisher saves data from a submitted form into a database table.
 
 ..  literalinclude:: _codesnippets/_form.yaml
     :linenos:
@@ -200,8 +200,8 @@ This finisher saves the data from a submitted form into a database table.
 
 ..  _concepts-finishers-savetodatabasefinisher-example-news:
 
-Example for adding uploads to ext:news (fal_related_files and fal_media):
-=========================================================================
+Example: adding uploads to ext:news (fal_related_files and fal_media):
+======================================================================
 
 ..  literalinclude:: _codesnippets/_example-fal-uploads_news.yaml
     :linenos:
@@ -209,10 +209,11 @@ Example for adding uploads to ext:news (fal_related_files and fal_media):
 
 ..  _apireference-finisheroptions-savetodatabasefinisher:
 
-Usage of the SaveToDatabase finisher in PHP code
+Using a SaveToDatabase finisher in PHP code
 ================================================
 
-Developers can create a confirmation finisher by using the key `SaveToDatabase`:
+Developers can use the finisher key `SaveToDatabase` to create
+flash message finishers in their own classes:
 
 ..  literalinclude:: _codesnippets/_finisher.php.inc
     :language: php
@@ -225,24 +226,20 @@ This finisher is implemented in :php:`TYPO3\CMS\Form\Domain\Finishers\SaveToData
 Multiple database operations
 ============================
 
-You can write options as an array to perform multiple database operations.
+You can use options to perform multiple database operations.
 
-Usage within form definition.
+Example form definition file (performs inserts):
 
 ..  literalinclude:: _codesnippets/_example-fal-uploads_news.yaml
     :linenos:
     :caption: public/fileadmin/forms/my_form_with_multiple_finishers.yaml
 
-Usage through code:
+Using PHP code (performs an update):
 
 ..  literalinclude:: _codesnippets/_finisher.php.inc
     :language: php
     :linenos:
 
-This performs 2 database operations.
-
-One insert and one update.
-
-You can access the inserted UIDs through '{SaveToDatabase.insertedUids.<theArrayKeyNumberWithinOptions>}'
-If you perform an insert operation, the value of the inserted database row will be stored within the FinisherVariableProvider.
-<theArrayKeyNumberWithinOptions> references to the numeric options.* key.
+You can access inserted UIDs with '{SaveToDatabase.insertedUids.<theArrayKeyNumberInsideOptions>}'.
+If you perform an insert operation, the inserted values will be stored in the FinisherVariableProvider.
+<theArrayKeyNumberInOptions> references the numeric options.* key.

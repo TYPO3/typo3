@@ -6,9 +6,9 @@
 Ready-to-use finishers
 ======================
 
-he TYPO3 Form Framework provides several built-in finishers that can be
-used out of the box. These handle common post-submission tasks such as
-sending emails, showing confirmation messages, or saving data.
+The TYPO3 Form Framework provides several built-in finishers that can be
+used out of the box. These handle common post submission tasks such as
+sending emails, showing confirmation messages, and saving data.
 
 In addition, third-party extensions may provide further finishers, which
 can be found in the `TYPO3 Extension Repository (TER) <https://extensions.typo3.org/>`_.
@@ -32,12 +32,12 @@ can be found in the `TYPO3 Extension Repository (TER) <https://extensions.typo3.
 
     ..  card:: `DeleteUploads finisher <https://docs.typo3.org/permalink/typo3/cms-form:concepts-finishers-deleteuploadsfinisher>`_
 
-        Removes files uploaded during the submission—handy after
-        emailing them if you don’t want files kept on the server.
+        Removes files uploaded during the submission—useful if after
+        emailing them you don’t want to keep the files on the server.
 
     ..  card:: `Email finisher <https://docs.typo3.org/permalink/typo3/cms-form:concepts-finishers-emailfinisher>`_
 
-        Sends an email based on the submitted data; supports Fluid
+        Sends an email with the submitted data; supports Fluid
         templates and placeholders for field values.
 
     ..  card:: :doc:`Flash message finisher <FlashMessageFinisher/Index>`
@@ -47,8 +47,8 @@ can be found in the `TYPO3 Extension Repository (TER) <https://extensions.typo3.
 
     ..  card:: `Redirect finisher <https://docs.typo3.org/permalink/typo3/cms-form:concepts-finishers-redirectfinisher>`_
 
-        Redirects to another page or route after submit; place it last
-        since it stops subsequent finishers.
+        Redirects to another page or route after submit; must be last
+        finisher since it stops subsequent finishers.
 
     ..  card:: `SaveToDatabase finisher <https://docs.typo3.org/permalink/typo3/cms-form:concepts-finishers-savetodatabasefinisher>`_
 

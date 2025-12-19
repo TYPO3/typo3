@@ -12,18 +12,18 @@ FlashMessageContainer.
 
 ..  note::
 
-    This finisher cannot be used from the backend editor. It can only be
-    inserted directly into the YAML form definition or programmatically.
+    This finisher cannot be used in the backend form editor. It can only be used
+    in a form definition YAML file or programmatically.
 
 ..  include:: /Includes/_NoteFinisher.rst
 
 ..  _apireference-finisheroptions-flashmessagefinisher-options:
 
-Options of the FlashMessage finisher
-====================================
+FlashMessage finisher options
+=============================
 
-The following options can be set directly in the form definition YAML or
-programmatically in the options array:
+The following options can be set (in the form definition YAML or
+programmatically):
 
 ..  _apireference-finisheroptions-flashmessagefinisher-options-messagebody:
 
@@ -32,8 +32,8 @@ programmatically in the options array:
     :type: string
     :required: true
 
-    The flash message to be displayed. May contain placeholders like `%s` that
-    are replaced with the `messageArguments`.
+    The flash message. May contain placeholders like `%s` that
+    are replaced with `messageArguments`.
 
 ..  _apireference-finisheroptions-flashmessagefinisher-options-messagetitle:
 
@@ -42,7 +42,7 @@ programmatically in the options array:
     :type: string
     :default: `''`
 
-    If set is displayed as the title of the flash message.
+    If set, is the flash message title.
 
 ..  _apireference-finisheroptions-flashmessagefinisher-options-messagearguments:
 
@@ -51,8 +51,8 @@ programmatically in the options array:
     :type: array
     :default: `[]`
 
-    If the `messageBody` contains placeholders like `%s` they can be replaced
-    with these arguments.
+    If `messageBody` contains placeholders (like `%s`), they will be replaced
+    by these.
 
 ..  _apireference-finisheroptions-flashmessagefinisher-options-messagecode:
 
@@ -61,8 +61,8 @@ programmatically in the options array:
     :type: ?int
     :default: `null`
 
-    A unique code to make the message recognizable. By convention the current
-    unix time stamp at the time of initially creating the message is used,
+    A unique code to identify the message. By convention, the
+    unix time stamp at the time when the message is created is used,
     for example `1758455932`.
 
 ..  _apireference-finisheroptions-flashmessagefinisher-options-severity:
@@ -79,10 +79,10 @@ programmatically in the options array:
     :type: array
     :default: `[]`
 
-    Defines a list of finisher option properties that should be excluded from
+    Defines a list of finisher option properties to be excluded from
     translation.
 
-    When specified, the listed properties are not processed by the
+    If set, these properties will not be processed by the
     :php-short:`\TYPO3\CMS\Form\Service\TranslationService` during translation
     of finisher options. This prevents their values from being replaced by
     translated equivalents, even if translations exist for those options.
@@ -96,18 +96,19 @@ programmatically in the options array:
 
 ..  _concepts-finishers-flashmessagefinisher-yaml:
 
-FlashMessage finisher in the YAML form definition
-=================================================
+FlashMessage finisher in a YAML form definition
+===============================================
 
 ..  literalinclude:: _codesnippets/_form.yaml
     :caption: public/fileadmin/forms/my_form.yaml
 
 ..  _apireference-finisheroptions-flashmessagefinisher:
 
-Usage of the FlashMessage finisher in PHP code
-==============================================
+Using FlashMessage finishers in PHP code
+========================================
 
-Developers can create a confirmation finisher by using the key `FlashMessage`:
+Developers can use the finisher key `FlashMessage` to create
+flash message finishers in their own classes:
 
 ..  literalinclude:: _codesnippets/_finisher.php.inc
     :language: php

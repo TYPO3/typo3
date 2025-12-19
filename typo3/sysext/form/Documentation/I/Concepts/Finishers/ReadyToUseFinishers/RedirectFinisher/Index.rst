@@ -6,8 +6,8 @@
 Redirect finisher
 =================
 
-This finisher redirects the user after submitting the form to a given page.
-Additional parameters can be added to the URL.
+This finisher redirects the user to a particular page after the form has been submitted.
+Parameters can be added to the URL.
 
 ..  contents:: Table of contents
 
@@ -16,12 +16,12 @@ Additional parameters can be added to the URL.
     Finishers are executed in the order defined in your form definition.
     This finisher stops the execution of all subsequent finishers in order to perform
     the redirect. Therefore, this finisher should always be the last finisher to be
-    executed. Finishers after this one will never be executed.
+    executed. Finishers placed after this one in the form definition will be ignored.
 
 ..  _apireference-finisheroptions-redirectfinisher-options:
 
-Options of the redirect finisher
-================================
+Redirect finisher options
+=========================
 
 ..  _apireference-finisheroptions-redirectfinisher-options-pageuid:
 
@@ -31,7 +31,7 @@ Options of the redirect finisher
     :required: true
     :default: `1`
 
-    ID of the page to redirect to. Button :guilabel:`Page` can be used to chose
+    ID of the page to redirect to. Button :guilabel:`Page` can be used to select
     a page from the page tree.
 
 ..  _apireference-finisheroptions-redirectfinisher-options-additionalparameters:
@@ -60,11 +60,11 @@ Options of the redirect finisher
 
 ..  _apireference-finisheroptions-redirectfinisher-options-additional:
 
-Additional options of the redirect finisher
-===========================================
+Additional redirect finisher options
+====================================
 
-These additional options can be set directly in the form definition YAML or
-programmatically in the options array but **not** from the backend editor:
+These options can be set in the form definition YAML or
+programmatically in the options array. They cannot be set in the backend form editor:
 
 ..  _apireference-finisheroptions-redirectfinisher-options-delay:
 
@@ -91,15 +91,15 @@ programmatically in the options array but **not** from the backend editor:
     :type: array
     :default: `[]`
 
-    Defines a list of finisher option properties that should be excluded from
+    Defines a list of finisher option properties to be excluded from
     translation.
 
-    When specified, the listed properties are not processed by the
-    :php-short:`\TYPO3\CMS\Form\Service\TranslationService` during translation
-    of finisher options. This prevents their values from being replaced by
+    If set, these properties are not processed by the
+    :php-short:`\TYPO3\CMS\Form\Service\TranslationService` during translation.
+    This prevents their values from being replaced by
     translated equivalents, even if translations exist for those options.
 
-    This option is usually generated automatically as soon as FlexForm overrides
+    This option is usually generated automatically shen FlexForm overrides
     are in place and normally does not need to be set manually in the form
     definition.
 
@@ -108,8 +108,8 @@ programmatically in the options array but **not** from the backend editor:
 
 ..  _concepts-finishers-redirectfinisher-yaml:
 
-Redirect finisher in the YAML form definition
-=============================================
+Redirect finisher in a YAML form definition
+===========================================
 
 ..  literalinclude:: _codesnippets/_form.yaml
     :caption: public/fileadmin/forms/my_form.yaml
@@ -124,10 +124,10 @@ Example: Load the redirect finisher last
 
 ..  _apireference-finisheroptions-redirectfinisher:
 
-Usage of the Redirect finisher in PHP code
-==========================================
+Using a Redirect finisher in PHP code
+=====================================
 
-Developers can create a confirmation finisher by using the key `Redirect`:
+Developers can use the finisher key `Redirect` to create redirect finishers in their own classes:
 
 ..  literalinclude:: _codesnippets/_finisher.php.inc
     :language: php

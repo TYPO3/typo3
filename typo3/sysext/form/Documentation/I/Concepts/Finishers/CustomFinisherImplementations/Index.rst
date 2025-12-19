@@ -15,88 +15,87 @@ Custom finisher
 Write a custom finisher
 =======================
 
-If you want to make the finisher configurable in the backend UI read
+To make your finisher configurable by users in the backend form editor, see
 :ref:`here <concepts-finishers-customfinisherimplementations-extend-gui>`.
 
-Finishers are defined as part of a prototype within a
-`finishersDefinition`. The property `implementationClassName` is to be
-utilized to load the finisher implementation.
+Add a new finisher to the form configuration prototype by defining a
+`finishersDefinition`. Set the `implementationClassName` property to your new implementation class.
 
 ..  literalinclude:: _codesnippets/_finishersDefinition.yaml
     :caption: EXT:my_site_package/Configuration/Form/CustomFormSetup.yaml
 
-The custom form definition has to be `registered <https://docs.typo3.org/permalink/typo3/cms-form:concepts-finishers-custom-extend-gui-configuration>`_.
+`Register <https://docs.typo3.org/permalink/typo3/cms-form:concepts-finishers-custom-extend-gui-configuration>`_
+your custom form definition.
 
-If the finisher requires options, you can define those within the
-`options` property. The options will be used as default values and can
-be overridden using the `form definition`.
+Add options to your finisher with the `options` property. Options
+are default values which can be overridden in the `form definition`.
 
 ..  _concepts-finishers-custom-default-value:
 
-Define the default value
-------------------------
+Define default values
+---------------------
 
 ..  literalinclude:: _codesnippets/_CustomFinisher.yaml
     :caption: EXT:my_site_package/Configuration/Form/CustomFormSetup.yaml
 
 ..  _concepts-finishers-custom-option-override:
 
-Override the option using the `form definition`
--------------------------------------------------
+Override options using the `form definition`
+--------------------------------------------
 
 ..  literalinclude:: _codesnippets/_my_form.yaml
     :caption: public/fileadmin/forms/my_form.yaml
 
-Each finisher has to be programmed to the interface
-:php-short:`TYPO3\CMS\Form\Domain\Finishers\FinisherInterface` and should extend the
-class :php-short:`TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher`. In doing so, the logic of the
-finisher should start with the method `executeInternal()`.
+A finisher must implement :php-short:`TYPO3\CMS\Form\Domain\Finishers\FinisherInterface`
+and should extend :php-short:`TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher`.
+In doing so, in the logic of the
+finisher the method `executeInternal()` will be called first.
 
 ..  _concepts-finishers-customfinisherimplementations-accessingoptions:
 
 Accessing finisher options
 ==========================
 
-If your finisher extends :php-short:`TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher`,
-you can access your finisher options with the help of the `parseOption()`
-method:
+If your finisher class extends :php-short:`TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher`,
+you can access the option values in the finisher using method `parseOption()`:
 
 ..  code-block:: php
 
     $yourCustomOption = $this->parseOption('yourCustomOption');
 
-`parseOption()` is looking for 'yourCustomOption' in your
-`form definition`. If it cannot be found, the method checks
+`parseOption()` looks for 'yourCustomOption' in your
+`form definition`.
 
-1.  the `prototype` configuration for a default value,
+..  literalinclude:: _codesnippets/_CustomFinisher.yaml
+    :caption: EXT:my_site_package/Classes/Domain/Finishers/CustomFinisher.yaml
 
-2.  the finisher class itself by searching for a default value within the
-    `$defaultOptions` property:
+If it can't find it, `parseOption()` checks
 
-    ..  literalinclude:: _codesnippets/_CustomFinisher.yaml
-        :caption: EXT:my_site_package/Classes/Domain/Finishers/CustomFinisher.yaml
+1.  for a default value in the `prototype` configuration,
 
-If the option cannot be found by processing this fallback chain, `null` is
-returned.
+2.  for `$defaultOptions` inside your finisher class:
 
-If the option is found, the process checks whether the option value will
+
+
+If it doesn't find anything, `parseOption()` returns `null`.
+
+If it finds the option, the process checks whether the option value will
 access :ref:`FormRuntime values <concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`.
 If the `FormRuntime` returns a positive result, it is checked whether the
 option value :ref:`can access values of preceding finishers <concepts-finishers-customfinisherimplementations-finishercontext-sharedatabetweenfinishers>`.
-At the very end, it tries to :ref:`translate the finisher options <concepts-frontendrendering-translation-finishers>`.
+At the end, it :ref:`translates the finisher options <concepts-frontendrendering-translation-finishers>`.
 
 ..  _concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor:
 
 Accessing form runtime values
 =============================
 
-By utilizing a specific notation, finisher options can be populated with
-submitted form values (assuming you are using the `parseOption()` method).
-You can access values of the `FormRuntime` and thus values of each single
-form element by encapsulating the option values with `{}`. If there is a
-form element with the `identifier` 'subject', you can access its value
-within the finisher configuration. Check out the following example to
-get the whole idea.
+You can populate finisher options with
+submitted form values using the `parseOption()` method.
+You can access values of the `FormRuntime` and therefore values in every
+form element by encapsulating option values with `{}`. Below, if there is a
+form element with the `identifier` 'subject', you can access the value
+in the finisher configuration:
 
 ..  literalinclude:: _codesnippets/_my_form_extended.yaml
     :caption: public/fileadmin/forms/my_form.yaml
@@ -107,32 +106,30 @@ get the whole idea.
     // identifier 'subject'
     $yourCustomOption = $this->parseOption('yourCustomOption');
 
-In addition, you can use `{__currentTimestamp}` as a special option value.
-It will return the current UNIX timestamp.
+You can use `{__currentTimestamp}` as an option value to return the
+current UNIX timestamp.
 
 ..  _concepts-finishers-customfinisherimplementations-finishercontext:
 
 Finisher Context
 ================
 
-The class :php-short:`TYPO3\CMS\Form\Domain\Finishers\FinisherContext` takes care of
-transferring a finisher context to each finisher. Given the finisher is
-derived from :php-short:`TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher` the
+The :php-short:`TYPO3\CMS\Form\Domain\Finishers\FinisherContext` class takes care of
+transferring a finisher context to each finisher. If your finisher class extends
+:php-short:`TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher` the
 finisher context will be available via:
 
 ..  code-block:: php
 
     $this->finisherContext
 
-The method `cancel` prevents the execution of successive finishers:
+The  `cancel` method prevents the execution of successive finishers:
 
 ..  code-block:: php
 
     $this->finisherContext->cancel();
 
-The method `getFormValues` returns all of the submitted form values.
-
-`getFormValues`:
+The method `getFormValues` returns the submitted form values.
 
 ..  code-block:: php
 
@@ -152,27 +149,27 @@ Share data between finishers
 The method `getFinisherVariableProvider` returns an
 object (:php-short:`TYPO3\CMS\Form\Domain\Finishers\FinisherVariableProvider`) which allows you
 to store data and transfer it to other finishers. The data
-can be easily accessed programmatically or within your configuration:
+can be easily accessed programmatically or inside your configuration:
 
 ..  code-block:: php
 
     $this->finisherContext->getFinisherVariableProvider();
 
-The data is stored within the :php-short:`TYPO3\CMS\Form\Domain\Finishers\FinisherVariableProvider` and is addressed
+The data is stored in :php-short:`TYPO3\CMS\Form\Domain\Finishers\FinisherVariableProvider` and is accessed
 by a user-defined 'finisher identifier' and a custom option value path. The
 name of the 'finisher identifier' should consist of the name of the finisher
-without the potential 'Finisher' appendix. If your finisher is derived from
-the class :php-short:`TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher`, the name of
-this construct is stored in the following variable:
+without the 'Finisher' appendix. If your finisher class extends
+:php-short:`TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher`, the finisher
+identifier name is stored in the following variable:
 
 ..  code-block:: php
 
     $this->shortFinisherIdentifier
 
-For example, if the name of your finisher class is 'CustomFinisher', the
-mentioned variable will contain the value 'Custom'.
+For example, if the name of your finisher class is 'CustomFinisher', this
+variable will contain 'Custom'.
 
-There are a bunch of methods to access and manage the finisher data:
+There are 4 methods to access and manage data in the `FinisherVariableProvider`:
 
 *   Add data:
 
@@ -212,11 +209,10 @@ There are a bunch of methods to access and manage the finisher data:
             'unique.value.identifier'
         );
 
-In this way, each finisher can access data programmatically. Moreover, it is
-possible to retrieve the data via configuration, provided that a finisher
-stores the values within the `FinisherVariableProvider`.
+In this way, finishers can access `FinisherVariableProvider` data programmatically.
+However, it is also possible to access `FinisherVariableProvider` data using form configuration.
 
-Assuming that a finisher called 'Custom' sets data as follows:
+Assuming that a finisher called 'Custom' adds data to a `FinisherVariableProvider`:
 
 ..  code-block:: php
 
@@ -226,8 +222,8 @@ Assuming that a finisher called 'Custom' sets data as follows:
         'Wouter'
     );
 
-... you are now able to access the value 'Wouter' via `{Custom.unique.value.identifier}`
-in any other finisher.
+other finishers can access the value 'Wouter' by setting
+`{Custom.unique.value.identifier}` in the form definition file.
 
 
 ..  literalinclude:: _codesnippets/_my_form_custom.yaml
@@ -238,9 +234,9 @@ in any other finisher.
 Add finisher to backend UI
 ==========================
 
-After adding a custom finisher you can also add the finisher to the
-form editor GUI to let your backend users configure it visually. Add the
-following to the backend yaml setup:
+After registering  a new finisher in the yaml form definition file, you can also
+add it to the backend form editor for your backend users ( `formEditor:`
+section below) to work with in the GUI:
 
 ..  literalinclude:: _codesnippets/_backend-ui.yaml
     :caption: EXT:my_site_package/Configuration/Form/CustomFormSetup.yaml
@@ -248,8 +244,8 @@ following to the backend yaml setup:
 
 ..  important::
 
-    Make sure to define an iconIdentifier within the finishersDefinition of your
-    custom finisher; otherwise, the button to remove the finisher from the
+    Make sure to define an  `iconIdentifier` in the `finishersDefinition` of your
+    finisher, otherwise the button to remove the finisher from the
     form will not be visible.
 
 ..  _concepts-finishers-custom-extend-gui-configuration:
@@ -257,8 +253,7 @@ following to the backend yaml setup:
 Configuration registration
 --------------------------
 
-Make sure the setup file is registered in
-either a :file:`EXT:my_extension/ext_localconf.php` file:
+Register the form configuration yaml file in :file:`EXT:my_extension/ext_localconf.php`:
 
 ..  literalinclude:: _codesnippets/_ext_localconf.php
     :caption: EXT:my_extension/ext_localconf.php
@@ -272,5 +267,5 @@ either a :file:`EXT:my_extension/ext_localconf.php` file:
     Registration of global TypoScript for the TYPO3 backend has to be done in
     an extensions :file:`ext_localconf.php` using method `ExtensionManagementUtility::addTypoScriptSetup`.
 
-    Former methods of global TypoScript registration are not compatible with
+    Former methods for registering global TypoScript are not compatible with
     site sets.
