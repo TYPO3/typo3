@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Backend\View\BackendLayout\Grid;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Backend\View\Event\BeforeSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
@@ -173,7 +172,6 @@ class GridColumn extends AbstractGridObject
                 ],
             ],
             'module' => 'web_layout',
-            'recTitle' => BackendUtility::getRecordTitle('pages', $pageRecord, true),
             'returnUrl' => $this->context->getReturnUrl(),
         ]);
     }

@@ -169,20 +169,6 @@ class EditDocumentController
     protected $popViewId;
 
     /**
-     * Alternative title for the document handler.
-     *
-     * @var string
-     */
-    protected $recTitle;
-
-    /**
-     * If set, then no save & view button is printed
-     *
-     * @var bool
-     */
-    protected $noView;
-
-    /**
      * If true, $this->editconf array is added a redirect response, used by Wizard/AddController
      *
      * @var bool
@@ -397,15 +383,13 @@ class EditDocumentController
         $this->setModuleContext($view);
 
         $this->popViewId = (int)($parsedBody['popViewId'] ?? $queryParams['popViewId'] ?? 0);
-        $this->recTitle = (string)($parsedBody['recTitle'] ?? $queryParams['recTitle'] ?? '');
-        $this->noView = (bool)($parsedBody['noView'] ?? $queryParams['noView'] ?? false);
 
         // Preview code is implicit only generated for GET requests, having the query
         // parameters "popViewId" (the preview page id) and "showPreview" set.
         if ($this->popViewId && ($queryParams['showPreview'] ?? false)) {
             // Generate the preview code (markup), which is added to the module body later
             $body = $this->getPreviewUriBuilderForRecordPreview()->buildImmediateActionElement([PreviewUriBuilder::OPTION_SWITCH_FOCUS => null]);
-            // After generating the preview code, those params should not longer be applied to the form
+            // After generating the preview code, those params should no longer be applied to the form
             // action, as this would otherwise always refresh the preview window on saving the record.
             unset($this->R_URL_getvars['showPreview'], $this->R_URL_getvars['popViewId']);
         }
@@ -423,9 +407,9 @@ class EditDocumentController
         $this->eventDispatcher->dispatch($event);
 
         if ($requestAction->isPostRequest) {
+            $url = $this->R_URI;
             // In case save&view is requested, we have to add this information to the redirect
             // URL, since the ImmediateAction will be added to the module body afterwards.
-            $url = $this->R_URI;
             if ($requestAction->savedokview()) {
                 $url = rtrim($url, '&') .
                     HttpUtility::buildQueryString([
@@ -435,34 +419,35 @@ class EditDocumentController
                             ($this->firstEl['uid'] ?? ''),
                             ($this->popViewId ?: $this->viewId),
                         ),
-                    ], (empty($this->R_URL_getvars) ? '?' : '&'));
+                    ], (!str_contains($url, '?') ? '?' : '&'));
             }
             return new RedirectResponse($url, 302);
         }
 
-        // Begin edit
+        // Begin to show the edit form
         $this->formResultCompiler = GeneralUtility::makeInstance(FormResultCompiler::class);
 
         // Creating the editing form, wrap it with buttons, document selector etc.
         $editForm = $this->makeEditForm($request, $view);
         if ($editForm) {
             $this->firstEl = $this->elementsData ? reset($this->elementsData) : null;
-            // Checking if the currently open document is stored in the list of "open documents" - if not, add it:
-            if ((($this->docDat[1] ?? null) !== $this->storeUrlMd5 || !isset($this->docHandler[$this->storeUrlMd5]))
-                && !$this->dontStoreDocumentRef
-            ) {
-                $this->docHandler[$this->storeUrlMd5] = [
-                    $this->storeTitle,
-                    $this->storeArray,
-                    $this->storeUrl,
-                    $this->firstEl,
-                    $this->returnUrl,
-                ];
-                $this->getBackendUser()->pushModuleData('FormEngine', [$this->docHandler, $this->storeUrlMd5]);
-                BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($this->docHandler));
-            }
-            $body .= $this->formResultCompiler->addCssFiles();
-            $body .= $this->compileForm($editForm);
+            $this->storeCurrentDocumentInOpenDocuments();
+            $this->formResultCompiler->addCssFiles();
+            // Put together the various elements (buttons, selectors, form) into a table
+            $body .= '
+            <form
+                action="' . htmlspecialchars($this->R_URI) . '"
+                method="post"
+                enctype="multipart/form-data"
+                name="editform"
+                id="EditDocumentController"
+            >
+            ' . $editForm . '
+            <input type="hidden" name="returnUrl" value="' . htmlspecialchars($this->retUrl) . '" />
+            <input type="hidden" name="popViewId" value="' . htmlspecialchars((string)$this->viewId) . '" />
+            <input type="hidden" name="closeDoc" value="0" />
+            <input type="hidden" name="doSave" value="0" />
+            <input type="hidden" name="returnNewPageId" value="' . ($this->returnNewPageId ? 1 : 0) . '" />';
             $body .= $this->formResultCompiler->printNeededJSFunctions();
             $body .= '</form>';
         }
@@ -502,6 +487,26 @@ class EditDocumentController
         $view->assign('bodyHtml', $body);
 
         return $view->renderResponse('Form/EditDocument');
+    }
+
+    /**
+     * Checking if the currently open document is stored in the list of "open documents" - if not, add it
+     */
+    protected function storeCurrentDocumentInOpenDocuments(): void
+    {
+        if ((($this->docDat[1] ?? null) !== $this->storeUrlMd5 || !isset($this->docHandler[$this->storeUrlMd5]))
+            && !$this->dontStoreDocumentRef
+        ) {
+            $this->docHandler[$this->storeUrlMd5] = [
+                $this->storeTitle,
+                $this->storeArray,
+                $this->storeUrl,
+                $this->firstEl,
+                $this->returnUrl,
+            ];
+            $this->getBackendUser()->pushModuleData('FormEngine', [$this->docHandler, $this->storeUrlMd5]);
+            BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($this->docHandler));
+        }
     }
 
     protected function setModuleContext(ModuleTemplate $view): void
@@ -594,7 +599,6 @@ class EditDocumentController
 
         // Only options related to $this->data submission are included here
         $tce = GeneralUtility::makeInstance(DataHandler::class);
-
         $tce->setControl($parsedBody['control'] ?? []);
 
         // Set default values fetched previously from GET / POST vars
@@ -641,7 +645,7 @@ class EditDocumentController
             $newEditConf = [];
             foreach ($this->editconf as $tableName => $tableCmds) {
                 $keys = array_keys($tce->substNEWwithIDs_table, $tableName);
-                if (!empty($keys)) {
+                if ($keys !== []) {
                     foreach ($keys as $key) {
                         $editId = $tce->substNEWwithIDs[$key];
                         // Check if the $editId isn't a child record of an IRRE action
@@ -914,7 +918,6 @@ class EditDocumentController
                         (int)($this->pageinfo['uid'] ?? 0)
                     );
                 }
-                $view->getDocHeaderComponent()->setBreadcrumbContext($breadcrumbContext);
             } else {
                 // Create new record
                 $breadcrumbContext = $this->breadcrumbFactory->forNewAction(
@@ -922,8 +925,8 @@ class EditDocumentController
                     (int)($this->pageinfo['uid'] ?? 0),
                     $this->defVals[$this->firstEl['table']] ?? []
                 );
-                $view->getDocHeaderComponent()->setBreadcrumbContext($breadcrumbContext);
             }
+            $view->getDocHeaderComponent()->setBreadcrumbContext($breadcrumbContext);
         }
     }
 
@@ -991,15 +994,13 @@ class EditDocumentController
                             && !empty($formData['parentPageRow']['uid'])
                         ) {
                             $this->viewId = $formData['parentPageRow']['uid'];
-                        } else {
-                            if ($table === 'pages') {
-                                // Only set viewId in case it's not a new page - as this can not be viewed before being saved
-                                if ($command !== 'new' && MathUtility::canBeInterpretedAsInteger($formData['databaseRow']['uid'])) {
-                                    $this->viewId = (int)$formData['databaseRow']['uid'];
-                                }
-                            } elseif (!empty($formData['parentPageRow']['uid'])) {
-                                $this->viewId = $formData['parentPageRow']['uid'];
+                        } elseif ($table === 'pages') {
+                            // Only set viewId in case it's not a new page - as this can not be viewed before being saved
+                            if ($command !== 'new' && MathUtility::canBeInterpretedAsInteger($formData['databaseRow']['uid'])) {
+                                $this->viewId = (int)$formData['databaseRow']['uid'];
                             }
+                        } elseif (!empty($formData['parentPageRow']['uid'])) {
+                            $this->viewId = $formData['parentPageRow']['uid'];
                         }
 
                         // Determine if delete button can be shown
@@ -1020,7 +1021,7 @@ class EditDocumentController
 
                         // Record title
                         if (!$this->storeTitle) {
-                            $this->storeTitle = htmlspecialchars($this->recTitle ?: ($formData['recordTitle'] ?? ''));
+                            $this->storeTitle = htmlspecialchars($formData['recordTitle']);
                         }
 
                         $this->elementsData[] = [
@@ -1166,7 +1167,7 @@ class EditDocumentController
 
         $this->registerInfoButtonToButtonBar($view, ButtonBar::BUTTON_POSITION_RIGHT, 2);
         $this->registerOpenInNewWindowButtonToButtonBar($view, ButtonBar::BUTTON_POSITION_RIGHT, 3, $request);
-        $this->registerShortcutButtonToButtonBar($view, ButtonBar::BUTTON_POSITION_RIGHT, 4, $request);
+        $this->registerShortcutButtonToButtonBar($view, $request);
     }
 
     /**
@@ -1238,7 +1239,6 @@ class EditDocumentController
     protected function registerViewButtonToButtonBar(ModuleTemplate $view, string $position, int $group): void
     {
         if ($this->viewId // Pid to show the record
-            && !$this->noView // Passed parameter
             && !empty($this->firstEl['table']) // No table
             // @TODO: TsConfig option should change to viewDoc
             && $this->getTsConfigOption($this->firstEl['table'], 'saveDocView')
@@ -1477,7 +1477,7 @@ class EditDocumentController
     }
 
     /**
-     * Register the columns only button to the button bar
+     * Register "Edit whole record" button to the button bar
      */
     protected function registerColumnsOnlyButtonToButtonBar(ModuleTemplate $view, string $position, int $group): void
     {
@@ -1528,7 +1528,7 @@ class EditDocumentController
     /**
      * Register the shortcut button to the button bar
      */
-    protected function registerShortcutButtonToButtonBar(ModuleTemplate $view, string $position, int $group, ServerRequestInterface $request): void
+    protected function registerShortcutButtonToButtonBar(ModuleTemplate $view, ServerRequestInterface $request): void
     {
         if ($this->returnUrl !== $this->getCloseUrl($request)) {
             $arguments = $this->getUrlQueryParamsForCurrentRequest($request);
@@ -1549,7 +1549,6 @@ class EditDocumentController
             'overrideVals',
             'columnsOnly',
             'returnNewPageId',
-            'noView',
             'module',
         ];
         $arguments = [];
@@ -1625,33 +1624,6 @@ class EditDocumentController
     }
 
     /**
-     * Put together the various elements (buttons, selectors, form) into a table
-     *
-     * @param string $editForm HTML form.
-     * @return string Composite HTML
-     */
-    protected function compileForm(string $editForm): string
-    {
-        $formContent = '
-            <form
-                action="' . htmlspecialchars($this->R_URI) . '"
-                method="post"
-                enctype="multipart/form-data"
-                name="editform"
-                id="EditDocumentController"
-            >
-            ' . $editForm . '
-            <input type="hidden" name="returnUrl" value="' . htmlspecialchars($this->retUrl) . '" />
-            <input type="hidden" name="popViewId" value="' . htmlspecialchars((string)$this->viewId) . '" />
-            <input type="hidden" name="closeDoc" value="0" />
-            <input type="hidden" name="doSave" value="0" />';
-        if ($this->returnNewPageId) {
-            $formContent .= '<input type="hidden" name="returnNewPageId" value="1" />';
-        }
-        return $formContent;
-    }
-
-    /**
      * Update expanded/collapsed states on new inline records if any within backendUser->uc.
      *
      * @param array|null $uc The uc array to be processed and saved - uc[inlineView][...]
@@ -1659,10 +1631,10 @@ class EditDocumentController
      */
     protected function updateInlineView(?array $uc, DataHandler $dataHandler): void
     {
-        $backendUser = $this->getBackendUser();
-        if (!isset($uc['inlineView']) || !is_array($uc['inlineView'])) {
+        if (!is_array($uc['inlineView'] ?? null)) {
             return;
         }
+        $backendUser = $this->getBackendUser();
         $inlineView = (array)json_decode(is_string($backendUser->uc['inlineView'] ?? false) ? $backendUser->uc['inlineView'] : '', true);
         foreach ($uc['inlineView'] as $topTable => $topRecords) {
             foreach ($topRecords as $topUid => $childElements) {
@@ -2103,7 +2075,7 @@ class EditDocumentController
         $queryParams = $request->getQueryParams();
         $parsedBody = $request->getParsedBody();
 
-        foreach (['edit', 'defVals', 'overrideVals' , 'columnsOnly' , 'noView'] as $key) {
+        foreach (['edit', 'defVals', 'overrideVals' , 'columnsOnly'] as $key) {
             if (isset($this->R_URL_getvars[$key])) {
                 $this->storeArray[$key] = $this->R_URL_getvars[$key];
             } else {

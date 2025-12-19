@@ -29,7 +29,6 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -164,11 +163,12 @@ class EditFileController
         $formResultCompiler = GeneralUtility::makeInstance(FormResultCompiler::class);
         $formResultCompiler->mergeResult($resultArray);
 
-        // Rendering of the output via fluid
+        // Rendering of the output via fluid and PageRenderer
+        $formResultCompiler->addCssFiles();
         $view->assignMultiple([
             'moduleUrlTceFile' => (string)$this->uriBuilder->buildUriFromRoute('tce_file'),
             'fileName' => $file->getName(),
-            'form' => $formResultCompiler->addCssFiles() . ($resultArray['html'] ?? '') . $formResultCompiler->printNeededJSFunctions(),
+            'form' => ($resultArray['html'] ?? '') . $formResultCompiler->printNeededJSFunctions(),
         ]);
         $content = $view->render('File/EditFile');
 
@@ -192,10 +192,5 @@ class EditFileController
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
-    }
-
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 }

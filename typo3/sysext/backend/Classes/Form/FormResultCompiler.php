@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
@@ -36,47 +35,36 @@ class FormResultCompiler
     /**
      * @var array HTML of additional hidden fields rendered by sub containers
      */
-    protected $hiddenFieldAccum = [];
+    protected array $hiddenFieldAccum = [];
 
     /**
      * Can be set to point to a field name in the form which will be set to '1' when the form
      * is submitted with a *save* button. This way the recipient script can determine that
      * the form was submitted for save and not "close" for example.
-     *
-     * @var string
      */
-    protected $doSaveFieldName = '';
+    protected string $doSaveFieldName = '';
 
     /**
-     * @var array Data array from IRRE pushed to frontend as json array
+     * Data array from IRRE pushed to frontend as json array
      */
-    protected $inlineData = [];
+    protected array $inlineData = [];
 
     /**
      * List of additional style sheet files to load
-     *
-     * @var array
      */
-    protected $stylesheetFiles = [];
+    protected array $stylesheetFiles = [];
 
     /**
      * Additional language label files to include.
-     *
-     * @var array
      */
-    protected $additionalInlineLanguageLabelFiles = [];
+    protected array $additionalInlineLanguageLabelFiles = [];
 
     /**
      * Array with instances of JavaScriptModuleInstruction.
      *
      * @var list<JavaScriptModuleInstruction>
      */
-    protected $javaScriptModules = [];
-
-    /**
-     * @var PageRenderer
-     */
-    protected $pageRenderer;
+    protected array $javaScriptModules = [];
 
     /**
      * Merge existing data with the given result array
@@ -84,7 +72,7 @@ class FormResultCompiler
      * @param array $resultArray Array returned by child
      * @internal Temporary method to use FormEngine class as final data merger
      */
-    public function mergeResult(array $resultArray)
+    public function mergeResult(array $resultArray): void
     {
         $this->doSaveFieldName = $resultArray['doSaveFieldName'] ?? '';
         foreach ($resultArray['javaScriptModules'] ?? [] as $module) {
@@ -125,42 +113,26 @@ class FormResultCompiler
 
     /**
      * Adds CSS files BEFORE the form is drawn
-     *
-     * @return string
      */
-    public function addCssFiles()
+    public function addCssFiles(): void
     {
-        $pageRenderer = $this->getPageRenderer();
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         foreach ($this->stylesheetFiles as $stylesheetFile) {
             $pageRenderer->addCssFile($stylesheetFile);
         }
-        return '';
     }
 
     /**
      * Prints necessary JavaScript for TCEforms (after the form HTML).
      * currently this is used to transform page-specific options in the TYPO3.Settings array for JS
      * so the JS module can access these values
-     *
-     * @return string
      */
-    public function printNeededJSFunctions()
+    public function printNeededJSFunctions(): string
     {
         // set variables to be accessible for JS
-        $pageRenderer = $this->getPageRenderer();
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addInlineSetting('FormEngine', 'formName', 'editform');
 
-        return $this->JSbottom();
-    }
-
-    /**
-     * JavaScript bottom code
-     *
-     * @return string A section with JavaScript - if $update is FALSE, embedded in <script></script>
-     */
-    protected function JSbottom()
-    {
-        $pageRenderer = $this->getPageRenderer();
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         // @todo: this is messy here - "additional hidden fields" should be handled elsewhere
@@ -214,33 +186,15 @@ class FormResultCompiler
         ]);
 
         // Add JS required for inline fields
-        if (!empty($this->inlineData)) {
+        if ($this->inlineData !== []) {
             $pageRenderer->addInlineSettingArray('FormEngineInline', $this->inlineData);
         }
 
         return $html;
     }
 
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
-    }
-
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * Wrapper for access to the current page renderer object
-     *
-     * @return \TYPO3\CMS\Core\Page\PageRenderer
-     */
-    protected function getPageRenderer()
-    {
-        if ($this->pageRenderer === null) {
-            $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        }
-        return $this->pageRenderer;
     }
 }
