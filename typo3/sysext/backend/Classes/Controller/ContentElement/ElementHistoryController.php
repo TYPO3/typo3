@@ -439,12 +439,11 @@ class ElementHistoryController
      */
     protected function generateTitle(string $table, string $uid): string
     {
-        $title = '';
         if ($this->tcaSchemaFactory->get($table)->hasCapability(TcaSchemaCapability::Label)) {
             $record = $this->getRecord($table, (int)$uid) ?? [];
-            $title .= BackendUtility::getRecordTitle($table, $record);
+            return BackendUtility::getRecordTitle($table, $record);
         }
-        return $title;
+        return '';
     }
 
     /**

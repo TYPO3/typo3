@@ -243,10 +243,7 @@ class NewRecordController
         }
         $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         if ($this->pageinfo['uid'] ?? false) {
-            $labelCapability = $this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::Label);
-            if ($labelCapability->hasPrimaryField()) {
-                $title = strip_tags($this->pageinfo[$labelCapability->getPrimaryFieldName()]);
-            }
+            $title = strip_tags(BackendUtility::getRecordTitle('pages', $this->pageinfo));
         }
         $this->view->setTitle($title);
         // Acquiring TSconfig for this module/current page:

@@ -108,6 +108,134 @@ final class BackendUtilityTest extends FunctionalTestCase
         );
     }
 
+    #[Test]
+    public function getRecordTitleUsesTypeSpecificLabelConfiguration(): void
+    {
+        $GLOBALS['TCA']['test_table'] = [
+            'ctrl' => [
+                'label' => 'title',
+                'type' => 'record_type',
+            ],
+            'columns' => [
+                'title' => ['config' => ['type' => 'input']],
+                'name' => ['config' => ['type' => 'input']],
+                'record_type' => ['config' => ['type' => 'select', 'items' => []]],
+            ],
+            'types' => [
+                'default' => ['showitem' => 'title,name,record_type'],
+                'special' => [
+                    'showitem' => 'title,name,record_type',
+                    'label' => 'name',
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        // Record with "default" type uses ctrl label
+        $recordDefault = ['uid' => 1, 'title' => 'Default Title', 'name' => 'Default Name', 'record_type' => 'default'];
+        self::assertSame('Default Title', BackendUtility::getRecordTitle('test_table', $recordDefault));
+
+        // Record with "special" type uses type-specific label
+        $recordSpecial = ['uid' => 2, 'title' => 'Special Title', 'name' => 'Special Name', 'record_type' => 'special'];
+        self::assertSame('Special Name', BackendUtility::getRecordTitle('test_table', $recordSpecial));
+    }
+
+    #[Test]
+    public function getRecordTitleUsesTypeSpecificLabelAltConfiguration(): void
+    {
+        $GLOBALS['TCA']['test_table'] = [
+            'ctrl' => [
+                'label' => 'title',
+                'type' => 'record_type',
+            ],
+            'columns' => [
+                'title' => ['config' => ['type' => 'input']],
+                'subtitle' => ['config' => ['type' => 'input']],
+                'description' => ['config' => ['type' => 'input']],
+                'record_type' => ['config' => ['type' => 'select', 'items' => []]],
+            ],
+            'types' => [
+                'default' => ['showitem' => 'title,subtitle,description,record_type'],
+                'article' => [
+                    'showitem' => 'title,subtitle,description,record_type',
+                    'label_alt' => 'subtitle',
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        // Record with "article" type and empty title falls back to type-specific label_alt
+        $recordArticle = ['uid' => 1, 'title' => '', 'subtitle' => 'Article Subtitle', 'description' => 'Desc', 'record_type' => 'article'];
+        self::assertSame('Article Subtitle', BackendUtility::getRecordTitle('test_table', $recordArticle));
+
+        // Record with "default" type and empty title shows [No title] (no label_alt defined)
+        $recordDefault = ['uid' => 2, 'title' => '', 'subtitle' => 'Default Subtitle', 'description' => 'Desc', 'record_type' => 'default'];
+        self::assertSame('[No title]', BackendUtility::getRecordTitle('test_table', $recordDefault));
+    }
+
+    #[Test]
+    public function getRecordTitleUsesTypeSpecificLabelAltForceConfiguration(): void
+    {
+        $GLOBALS['TCA']['test_table'] = [
+            'ctrl' => [
+                'label' => 'title',
+                'type' => 'record_type',
+            ],
+            'columns' => [
+                'title' => ['config' => ['type' => 'input']],
+                'event_date' => ['config' => ['type' => 'input']],
+                'location' => ['config' => ['type' => 'input']],
+                'record_type' => ['config' => ['type' => 'select', 'items' => []]],
+            ],
+            'types' => [
+                'default' => ['showitem' => 'title,event_date,location,record_type'],
+                'event' => [
+                    'showitem' => 'title,event_date,location,record_type',
+                    'label_alt' => 'event_date,location',
+                    'label_alt_force' => true,
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        // Record with "event" type shows title plus alt fields due to label_alt_force
+        $recordEvent = ['uid' => 1, 'title' => 'Conference', 'event_date' => '2024-12-01', 'location' => 'Berlin', 'record_type' => 'event'];
+        self::assertSame('Conference, 2024-12-01, Berlin', BackendUtility::getRecordTitle('test_table', $recordEvent));
+
+        // Record with "default" type only shows title
+        $recordDefault = ['uid' => 2, 'title' => 'Meeting', 'event_date' => '2024-12-02', 'location' => 'Munich', 'record_type' => 'default'];
+        self::assertSame('Meeting', BackendUtility::getRecordTitle('test_table', $recordDefault));
+    }
+
+    #[Test]
+    public function getRecordTitleFallsBackToCtrlLabelWhenTypeHasNoSpecificLabel(): void
+    {
+        $GLOBALS['TCA']['test_table'] = [
+            'ctrl' => [
+                'label' => 'title',
+                'label_alt' => 'fallback',
+                'type' => 'record_type',
+            ],
+            'columns' => [
+                'title' => ['config' => ['type' => 'input']],
+                'fallback' => ['config' => ['type' => 'input']],
+                'record_type' => ['config' => ['type' => 'select', 'items' => []]],
+            ],
+            'types' => [
+                'default' => ['showitem' => 'title,fallback,record_type'],
+                'custom' => [
+                    'showitem' => 'title,fallback,record_type',
+                    // No label override - should use ctrl settings
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        // Record with "custom" type but no label override uses ctrl label
+        $record = ['uid' => 1, 'title' => '', 'fallback' => 'Fallback Value', 'record_type' => 'custom'];
+        self::assertSame('Fallback Value', BackendUtility::getRecordTitle('test_table', $record));
+    }
+
     public static function enableFieldsStatementIsCorrectDataProvider(): array
     {
         // Expected sql should contain identifier escaped in mysql/mariadb identifier quotings "`", which are

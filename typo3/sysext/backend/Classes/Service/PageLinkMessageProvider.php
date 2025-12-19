@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\LinkHandling\PageTypeLinkResolver;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -256,30 +255,29 @@ readonly class PageLinkMessageProvider
     ): array {
         $pageTsConfig = BackendUtility::getPagesTSconfig($request->getQueryParams()['id'] ?? 0);
         $linkConfig = $pageTsConfig['TCEMAIN.']['linkHandler.'][$linkInfo['identifier'] . '.'] ?? [];
-        if ($linkConfig === []) {
+        $table = $linkConfig['configuration.']['table'] ?? null;
+        if ($linkConfig === [] || $table === null) {
             return [
                 'message' => 'No page TSconfig definition found for link of type ' . $linkInfo['identifier'] . '. Expected TCEMAIN.linkHandler.' . $linkInfo['identifier'],
                 'state' => ContextualFeedbackSeverity::ERROR,
             ];
         }
-        $record = $this->findRecord($linkConfig['configuration.']['table'], (int)$linkInfo['uid']);
+        $uid = (int)$linkInfo['uid'];
+        $record = $this->findRecord($table, $uid);
         if ($record === null) {
             return [
-                'message' => 'This page links to record with uid ' . $linkInfo['uid'] . ' in table ' . $linkConfig['configuration.']['table'] . ' which could not be resolved.',
+                'message' => 'This page links to record with uid ' . $uid . ' in table ' . $table . ' which could not be resolved.',
                 'state' => ContextualFeedbackSeverity::ERROR,
             ];
         }
         $params = [
-            'edit' => [$linkConfig['configuration.']['table'] => [$linkInfo['uid'] => 'edit']],
+            'edit' => [$table => [$uid => 'edit']],
             'module' => 'records',
             'returnUrl' => '',
         ];
         $linkToPid = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
-        $schema = $this->tcaSchemaFactory->get($linkConfig['configuration.']['table']);
-        $label = '[No title]';
-        if ($schema->hasCapability(TcaSchemaCapability::Label)) {
-            $label = $record->get($schema->getCapability(TcaSchemaCapability::Label)->getPrimaryFieldName()) ?? $label;
-        }
+        $schema = $this->tcaSchemaFactory->get($table);
+        $label = BackendUtility::getRecordTitle($table, $record);
         $linkedPath = '<a href="' . htmlspecialchars($linkToPid) . '">' . $label . '</a>';
         $message = sprintf(
             $languageService->translate('link_destination_record', 'backend.pages.messages'),

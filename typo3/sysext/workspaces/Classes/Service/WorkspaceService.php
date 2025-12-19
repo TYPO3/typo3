@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Schema\Capability\LabelCapability;
 use TYPO3\CMS\Core\Schema\Capability\RootLevelCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchema;
@@ -100,13 +99,9 @@ readonly class WorkspaceService
                 $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:shortcut_onlineWS');
                 break;
             default:
-                $schema = $this->tcaSchemaFactory->get('sys_workspace');
-                /** @var LabelCapability $labelCapability */
-                $labelCapability = $schema->getCapability(TcaSchemaCapability::Label);
-                $labelField = $labelCapability->getPrimaryFieldName();
-                $wsRecord = BackendUtility::getRecord('sys_workspace', $wsId, 'uid,' . $labelField);
+                $wsRecord = BackendUtility::getRecord('sys_workspace', $wsId);
                 if (is_array($wsRecord)) {
-                    $title = (string)$wsRecord[$labelField];
+                    $title = (string)BackendUtility::getRecordTitle('sys_workspace', $wsRecord);
                 }
         }
         if ($title === false) {

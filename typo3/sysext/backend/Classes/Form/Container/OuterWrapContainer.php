@@ -90,7 +90,7 @@ class OuterWrapContainer extends AbstractContainer
                 $pageTitle = sprintf($label, $tableTitle, $recordLabel);
             } else {
                 $label = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editRecord'));
-                $workspacedPageRecord = BackendUtility::getRecordWSOL('pages', $row['pid'], 'uid,title');
+                $workspacedPageRecord = BackendUtility::getRecordWSOL('pages', $row['pid']);
                 $pageTitle = BackendUtility::getRecordTitle('pages', $workspacedPageRecord, true, false);
                 if (empty($recordLabel)) {
                     $label = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editRecordNoTitle'));
