@@ -12,46 +12,46 @@ Variants
 Basics
 ------
 
-Variants allow you to change properties of form elements, validators,
-and finishers and are activated by conditions. This allows you among
-other things:
+A variant is an "alternative" form definition section that allows you to change
+properties of form elements, validators, and finishers. Variants are activated
+by conditions. This allows you to:
 
-* translating form element values depending on the frontend language
-* setting and removing validators of one form element depending on the
+* translate form element values depending on the frontend language
+* set and remove validators from one form element depending on the
   value of another form element
-* hiding entire steps (form pages) depending on the value of a form
+* hide entire steps (form pages) depending on the value of a form
   element
-* setting finisher options depending on the value of a form element
-* hiding a form element in certain finishers and on the summary step
+* set finisher options depending on the value of a form element
+* hide a form element in particular finishers and on the summary step
 
-Variants are defined on the form element level either statically in
+Form element variants can be defined statically in
 form definitions or created programmatically through an API. The
-variants defined within a form definition are automatically applied to
-the form based on their conditions at runtime. Programmatically,
-variants can be applied at any time.
+variants defined in a form definition are applied to
+a form based on their conditions at runtime. Programmatically defined variants
+can be applied at any time.
 
-Furthermore, conditions of a variant can be evaluated programmatically
+Variant conditions can be evaluated programmatically
 at any time. However, some conditions are only available at runtime,
-for example a check for a form element value.
+for example, checking a form element value.
 
-Custom conditions and operators can be added easily.
+Custom conditions and operators can be easily added.
 
 Only the form element properties listed in a variant are applied to the
 form element, all other properties are retained. An exception to this
 rule are finishers and validators. If finishers or validators are
-**not** defined within a variant, the original finishers and validators
+**not** defined in a variant, the original finishers and validators
 will be used. If at least one finisher or validator is defined in a
-variant, the originally defined finishers or validators are overwritten
-by the list of finishers and validators of the variant.
+variant, the original finishers and validators are overwritten
+by the finishers and validators in the variant.
 
-Variants defined within a form definition are **all** processed and
+Variants defined in a form definition are **all** processed and
 applied in the order of their matching conditions. This means if
 variant 1 sets the label of a form element to "X" and variant 2 sets
 the label to "Y", then variant 2 is applied, i.e. the label will be "Y".
 
 .. note::
-   At the current state it is **not** possible to define variants in
-   the UI of the form editor.
+   Currently it is **not** possible to define variants in
+   the backend form editor.
 
 
 .. _concepts-variants-enabled-property:
@@ -60,22 +60,22 @@ Rendering option ``enabled``
 ----------------------------
 
 The rendering option :yaml:`enabled` is available for all finishers and
-all form elements - except the root form element and the first form
+form elements except the root form element and the first form
 page. The option accepts a boolean value (:yaml:`true` or :yaml:`false`).
 
-Setting :yaml:`enabled: true` for a form element renders it in the
-frontend and enables processing of its value including property mapping
-and validation. Setting :yaml:`enabled: false` disables the form
-element in the frontend. All form elements and finishers except the root form element and the first form page can be enabled
+Setting a form element to :yaml:`enabled: true` renders it in the
+frontend and enables processing of its values, including property mapping
+and validation. Setting :yaml:`enabled: false` disables it in the frontend. All
+form elements and finishers except the root form element and the first form page can be enabled
 or disabled.
 
-Setting :yaml:`enabled: true` for a finisher executes it when
-submitting forms. Setting :yaml:`enabled: false` skips the finisher.
+Setting a finisher to :yaml:`enabled: true` executes it when
+the form is submitted. Setting :yaml:`enabled: false` skips the finisher.
 
 By default, :yaml:`enabled` is set to :yaml:`true`.
 
 See :ref:`examples<concepts-variants-examples-hide-form-elements>`
-below to learn more about using this rendering option.
+below to learn more.
 
 
 .. _concepts-variants-definition:
@@ -83,8 +83,8 @@ below to learn more about using this rendering option.
 Definition of variants
 ----------------------
 
-Variants are defined on the form element level. Check the following -
-incomplete - example:
+Variants are defined at the form element level in YAML. Here is an example of a text
+form element variant:
 
 .. code-block:: yaml
 
@@ -100,25 +100,23 @@ incomplete - example:
        label: Bar
 
 
-As usual, :yaml:`identifier` must be a unique name of the variant on
-the form element level.
+The :yaml:`identifier` must be unique at the form element level.
 
-Each variant has a single :yaml:`condition` which applies the variants'
-changes as soon as the condition matches. In addition, the remaining
-properties are applied to the form element as well. In the
-aforementioned example the label of the form element :yaml:`text-1` is
+Each variant has a single :yaml:`condition` which applies the variant if the
+condition is satisfied. The
+properties in the variant are applied to the form element. In the
+example above the label of :yaml:`text-1` is
 changed to ``Bar`` if the checkbox :yaml:`checkbox-1` is checked.
 
-The following properties can be overwritten by variants within the
-topmost element (:yaml:`Form`):
+The following properties can be overwritten by :yaml:`Form` (the topmost element)
+variants:
 
 * :yaml:`label`
 * :yaml:`renderingOptions`
 * :yaml:`finishers`
 * :yaml:`rendererClassName`
 
-The following properties can be overwritten by variants within all of
-the other form elements:
+The following properties can be overwritten by all other form element variants:
 
 * :yaml:`enabled`
 * :yaml:`label`
@@ -128,37 +126,39 @@ the other form elements:
 * :yaml:`validators`
 
 .. note::
-   To selectively unset list items in variants like select options the special value :code:`__UNSET` can be used as value for the item to remove.
+   Unset individual list items in select option variants by marking the values with
+   :code:`__UNSET`. See :ref:`example <concepts-variants-examples-remove-options>` below.
 
 .. _concepts-variants-conditions:
 
 Conditions
 ----------
 
-The form framework uses the Symfony component `expression language <https://symfony.com/doc/4.1/components/expression_language.html>`_.
-Here, an expression is a one-liner that returns a boolean value like
-:yaml:`applicationContext matches "#Production/Local#"`. Please check
-the `Symfony docs <https://symfony.com/doc/4.1/components/expression_language/syntax.html>`_
-to learn more about this topic. The form framework extends the
-expression language with some variables which can be used to access
+The form framework uses the Symfony component `expression language <https://symfony.com/doc/4.1/components/expression_language.html>`_
+for conditions. An expression is a one-liner that returns a boolean value, for example,
+:yaml:`applicationContext matches "#Production/Local#"`. For further information see
+the `Symfony docs <https://symfony.com/doc/4.1/components/expression_language/syntax.html>`_.
+The form framework extends the expression language with variables to access
 form values and environment settings.
 
+.. _concepts-variants-conditions-formruntime:
 
 ``formRuntime`` (object)
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can access every public method from the :php:`\TYPO3\CMS\Form\Domain\Runtime\FormRuntime`,
-learn more :ref:`here<apireference-frontendrendering-programmatically-apimethods-formruntime>`.
+You can access every public method of :php:`\TYPO3\CMS\Form\Domain\Runtime\FormRuntime`.
+Learn more :ref:`here<apireference-frontendrendering-programmatically-apimethods-formruntime>`.
 
 For example:
 
 :yaml:`formRuntime.getIdentifier() == "test"`.
 
+.. _concepts-variants-conditions-renderable:
 
 ``renderable`` (VariableRenderableInterface)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-:yaml:`renderable` holds the instance of renderable, the condition
+:yaml:`renderable` contains the instance of renderable that the condition
 is applied to. This can be used e.g. to access the identifier of the
 current renderable without having to duplicate it.
 
@@ -166,17 +166,19 @@ For example:
 
 :yaml:`traverse(formValues, renderable.getIdentifier()) == "special value"`.
 
+.. _concepts-variants-conditions-formvalues:
 
 ``formValues`` (array)
 ^^^^^^^^^^^^^^^^^^^^^^
 
 :yaml:`formValues` holds all the submitted form element values. Each
-key within this array represents a form element identifier.
+key in the array represents a form element identifier.
 
 For example:
 
 :yaml:`traverse(formValues, "text-1") == "yes"`.
 
+.. _concepts-variants-conditions-stepidentifier:
 
 ``stepIdentifier`` (string)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -188,6 +190,7 @@ For example:
 
 :yaml:`stepIdentifier == "page-1"`.
 
+.. _concepts-variants-conditions-steptype:
 
 ``stepType`` (string)
 ^^^^^^^^^^^^^^^^^^^^^
@@ -198,32 +201,34 @@ For example:
 
 :yaml:`stepType == "SummaryPage"`.
 
+.. _concepts-variants-conditions-finisheridentifer:
 
 ``finisherIdentifier`` (string)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 :yaml:`finisherIdentifier` is set to the :yaml:`identifier` of the
-current finisher or an empty string (while no finishers are executed).
+current finisher or an empty string (if no finishers are executed).
 
 For example:
 
 :yaml:`finisherIdentifier == "EmailToSender"`.
 
+.. _concepts-variants-conditions-site:
 
 ``site`` (object)
 ^^^^^^^^^^^^^^^^^
 
-You can access every public method from :php:`\TYPO3\CMS\Core\Site\Entity\Site`
-to access the following important ones:
+You can access every public method in :php:`\TYPO3\CMS\Core\Site\Entity\Site`.
+The following are the most important ones:
 
 * getSettings() / The site settings array
 * getDefaultLanguage() / The default language object for the current site
 * getConfiguration() / The whole configuration of the current site
-* getIdentifier() / The identifier for the current site
-* getBase() / The base URL for the current site
+* getIdentifier() / The identifier of the current site
+* getBase() / The base URL of the current site
 * getRootPageId() / The ID of the root page of the current site
-* getLanguages() / An array of available language for the current site
-* getSets() / Configured sets of a site (new in TYPO3 v13+)
+* getLanguages() / An array of available languages for the current site
+* getSets() / Configured site sets of a site (new in TYPO3 v13+)
 
 For example:
 
@@ -233,23 +238,24 @@ For example:
 More details on the `Site` object can be found in
 :ref:`Using site configuration in conditions <t3coreapi:sitehandling-inConditions>`.
 
+.. _concepts-variants-conditions-sitelanguage:
+
 ``siteLanguage`` (object)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can access every public method from :php:`\TYPO3\CMS\Core\Site\Entity\SiteLanguage`.
-The most needed ones are for sure:
+You can access every public method in :php:`\TYPO3\CMS\Core\Site\Entity\SiteLanguage`.
+The most important ones are:
 
-* getLanguageId() / Aka sys_language_uid.
-* getLocale() / The language locale. Something like 'en_US.UTF-8'.
-* getTypo3Language() / The language key for XLF files. Something like
-  'de' or 'default'.
-* getTwoLetterIsoCode() / Returns the ISO-639-1 language ISO code.
-  Something like 'de'.
+* getLanguageId() / The sys_language_uid.
+* getLocale() / The language locale, for example 'en_US.UTF-8'.
+* getTypo3Language() / The language key for XLF files, for example, 'de' or 'default'.
+* getTwoLetterIsoCode() / Returns the ISO-639-1 language ISO code, for example, 'de'.
 
 For example:
 
 :yaml:`siteLanguage("locale").getName() == "de-DE"`.
 
+.. _concepts-variants-conditions-applicationcontext:
 
 ``applicationContext`` (string)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -261,12 +267,13 @@ For example:
 
 :yaml:`applicationContext matches "#Production/Local#"`.
 
+.. _concepts-variants-conditions-contentobject:
 
 ``contentObject`` (array)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-:yaml:`contentObject` is set to the data of the current content object
-or to an empty array if no content object is available.
+:yaml:`contentObject` contains the data of the current content object
+or an empty array if no content object is available.
 
 For example:
 
@@ -288,13 +295,13 @@ Create a variant with conditions through the PHP API::
    ]);
 
 
-Get all variants of a form element::
+Get all the variants of a form element::
 
    /** @var TYPO3\CMS\Form\Domain\Model\Renderable\RenderableVariantInterface[] $variants */
    $variants = $formElement->getVariants();
 
 
-Apply a variant to a form element regardless of its defined conditions::
+Apply a variant to a form element regardless of its conditions::
 
    $formElement->applyVariant($variant);
 
@@ -304,7 +311,7 @@ Apply a variant to a form element regardless of its defined conditions::
 Examples
 --------
 
-Here are some complex examples to show you the possibilities of the
+Here are some more complex examples to show you what is possible with the
 form framework.
 
 
@@ -313,10 +320,11 @@ form framework.
 Translation of form elements
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In this example form elements are translated differently depending on
-the frontend language.
+In this example, form, page and text elements have variants so that they are translated differently depending on
+the frontend language (whether it is German or English).
 
 .. code-block:: yaml
+   :emphasize-lines: 9,10,24,25,40,41
 
    type: Form
    prototypeName: standard
@@ -370,11 +378,12 @@ the frontend language.
 Adding validators dynamically
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In this example a bunch of validators are added to the field
-:yaml:`email-address` depending on the value of the form element
-:yaml:`checkbox-1`.
+In this example, the :yaml:`email-address` field has a variant that adds validators
+if :yaml:`checkbox-1` is checked.
+
 
 .. code-block:: yaml
+   :emphasize-lines: 18,19
 
    type: Form
    prototypeName: standard
@@ -414,17 +423,17 @@ In this example a bunch of validators are added to the field
 Hide form elements
 ^^^^^^^^^^^^^^^^^^
 
-In this extensive example the form element :yaml:`email-address` has
-been enabled explicitly but it is fine to leave this out since this is
+In this example, the form element :yaml:`email-address` has
+been enabled explicitly but this can be left out as this is
 the default state. The form element :yaml:`text-3` has been disabled
-completely, for example to temporarily remove it from the form. The
-field :yaml:`text-1` is hidden in all finishers and on the summary step.
-The :yaml:`EmailToSender` finisher takes the fact into account that
-finishers can refer to form values. It is only enabled if the form
-element :yaml:`checkbox-1` has been activated by the user. Otherwise,
-the finisher is skipped.
+to (temporarily) remove it from the form. The
+field :yaml:`text-1` has a variant that hides it in all finishers and on the summary step.
+The :yaml:`EmailToSender` finisher contains form values (:yaml:`email-address`
+and :yaml:`name`). The :yaml:`EmailToSender` finisher is only enabled if
+:yaml:`checkbox-1` has been checked by the user, otherwise it is skipped.
 
 .. code-block:: yaml
+   :emphasize-lines: 15,19,23,32,36,39,42,51
 
    type: Form
    prototypeName: standard
@@ -495,11 +504,12 @@ the finisher is skipped.
 Hide steps
 ^^^^^^^^^^
 
-In this example the second step :yaml:`page-2` is disabled if the field
-:yaml:`checkbox-1` is checked. Furthermore, the form element
-:yaml:`checkbox-1` is disabled on the summary step.
+In this example, the second step (:yaml:`page-2`) has a variant that disables it
+if :yaml:`checkbox-1` is checked. :yaml:`checkbox-1` has a variant which
+disables it on the summary step.
 
 .. code-block:: yaml
+   :emphasize-lines: 17, 21,22,24,27,31,32,34
 
    type: Form
    prototypeName: standard
@@ -551,10 +561,11 @@ In this example the second step :yaml:`page-2` is disabled if the field
 Set finisher values dynamically
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In this example finisher values are set differently depending on the
-application context.
+In this example, the form has a variant so that the finisher has different values
+depending on the application context.
 
 .. code-block:: yaml
+   :emphasize-lines: 9,12,13,18
 
    type: Form
    prototypeName: standard
@@ -591,9 +602,11 @@ application context.
 Remove select options
 ^^^^^^^^^^^^^^^^^^^^^
 
-In this example a select option is removed for a specific locale.
+In this example, a select form element has a variant which removes an option for
+a specific locale.
 
 .. code-block:: yaml
+   :emphasize-lines: 13,24,25,28
 
    type: Form
    prototypeName: standard
@@ -627,16 +640,16 @@ In this example a select option is removed for a specific locale.
 
 .. _concepts-variants-custom-language-providers:
 
-Adding own expression language providers
-----------------------------------------
+Adding your own expression language providers
+---------------------------------------------
 
-If you need to extend the expression language with custom functions you
-can extend it. For more information check the official `docs <https://symfony.com/doc/5.4/components/expression_language/extending.html#using-expression-providers>`__
+You can extend the expression language with your own custom functions. For more
+information see the official `docs <https://symfony.com/doc/5.4/components/expression_language/extending.html#using-expression-providers>`__
 and the appropriate :ref:`TYPO3 implementation details<t3coreapi:symfony-expression-language>`.
 
-Register the expression language provider in the extension file
-:file:`Configuration/ExpressionLanguage.php`. Make sure your expression
-language provider implements :php:`Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface`.
+Register your own expression language provider class in
+:file:`Configuration/ExpressionLanguage.php` and create it, making sure it
+implements :php:`Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface`.
 
 .. code-block:: php
     :caption: EXT:some_extension/Configuration/ExpressionLanguage.php
@@ -649,14 +662,15 @@ language provider implements :php:`Symfony\Component\ExpressionLanguage\Expressi
 
 .. _concepts-variants-custom-language-variables:
 
-Adding own expression language variables
-----------------------------------------
+Adding your own expression language variables
+---------------------------------------------
 
-If you need to add custom variables to the expression language you can
-extend it. Then the variables are ready to be checked in conditions.
+You can extend the expression language with your own variables. These
+variables can be used in conditions.
 
-Register a custom expression language provider as written above and
-provide the expression language variables:
+Register your own expression language provider class in
+:file:`Configuration/ExpressionLanguage.php` as above and
+and create it as follows:
 
 .. code-block:: php
     :caption: EXT:some_extension/Classes/ExpressionLanguage/CustomExpressionLanguageProvider.php
