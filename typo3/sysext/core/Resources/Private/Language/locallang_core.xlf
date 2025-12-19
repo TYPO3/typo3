@@ -1068,13 +1068,13 @@ Do you want to refresh it now?</source>
         <source>Flush all caches</source>
       </trans-unit>
       <trans-unit id="flushAllCachesDescription2">
-        <source>Clear all system-related caches, including localization, extension configuration, file caches and opcode caches. Rebuilding this cache may take some time.</source>
+        <source>Clear frontend and page-related caches, all system-related caches, including localization, extension configuration, file and opcode caches. Rebuilding these caches may take some time.</source>
       </trans-unit>
       <trans-unit id="flushCaches.error">
         <source>An error occurred</source>
       </trans-unit>
       <trans-unit id="flushCaches.error.description">
-        <source>An error occurred while clearing the cache. It is likely not all caches were cleared as expected.</source>
+        <source>An error occurred while clearing the cache. Some caches may not have been cleared successfully.</source>
       </trans-unit>
       <trans-unit id="rm.adminFunctions">
         <source>Admin functions</source>
