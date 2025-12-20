@@ -2567,11 +2567,13 @@ return [
     'TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic' => [
         'restFiles' => [
             'Deprecation-104789-RenderStaticForFluidViewHelpers.rst',
+            'Breaking-108148-Fluid50.rst',
         ],
     ],
     'TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic' => [
         'restFiles' => [
             'Deprecation-104789-RenderStaticForFluidViewHelpers.rst',
+            'Breaking-108148-Fluid50.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController' => [
@@ -2742,6 +2744,11 @@ return [
     'TYPO3\CMS\Install\Updates\PrerequisiteCollection' => [
         'restFiles' => [
             'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+        ],
+    ],
+    'TYPO3Fluid\Fluid\Core\ViewHelper\LenientArgumentProcessor' => [
+        'restFiles' => [
+            'Deprecation-108148-FluidLenientArgumentProcessor.rst',
         ],
     ],
 ];

@@ -6371,6 +6371,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-104223-FluidStandaloneMethods.rst',
+            'Breaking-108148-Fluid50.rst',
         ],
     ],
     'TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper->registerTagAttribute' => [
@@ -6378,6 +6379,7 @@ return [
         'maximumNumberOfArguments' => 5,
         'restFiles' => [
             'Deprecation-104223-FluidStandaloneMethods.rst',
+            'Breaking-108148-Fluid50.rst',
         ],
     ],
     'TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper->overrideArgument' => [
@@ -6385,6 +6387,7 @@ return [
         'maximumNumberOfArguments' => 6,
         'restFiles' => [
             'Deprecation-104463-FluidStandaloneOverrideArgument.rst',
+            'Breaking-108148-Fluid50.rst',
         ],
     ],
     'TYPO3\CMS\Fluid\View\TemplatePaths->fillDefaultsByPackageName' => [
@@ -6794,6 +6797,27 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Breaking-108277-RemoveSuperfluousCacheHashCalculatorPublicMethods.rst',
+        ],
+    ],
+    'TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper->isValidType' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-108148-Fluid50.rst',
+        ],
+    ],
+    'TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper->getFirstElementOfNonEmpty' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-108148-Fluid50.rst',
+        ],
+    ],
+    'TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper->validateArguments' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-108148-Fluid50.rst',
         ],
     ],
     /** Note (leave this at the bottom):
