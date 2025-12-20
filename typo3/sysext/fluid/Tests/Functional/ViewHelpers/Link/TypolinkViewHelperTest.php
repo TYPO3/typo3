@@ -204,14 +204,14 @@ EOT
                 'Link text',
             ],
             'target _self' => [
-                '<f:link.typolink parameter="{parameter}" parts-as="typoLinkParts">Individual {typoLinkParts.target} {typoLinkParts.class} {typoLinkParts.title}</f:link.typolink>',
+                '<f:link.typolink parameter="{parameter}" partsAs="typoLinkParts">Individual {typoLinkParts.target} {typoLinkParts.class} {typoLinkParts.title}</f:link.typolink>',
                 [
                     'parameter' => 'http://typo3.org/ "_self" "<CSS>" "<Title>"',
                 ],
                 '<a href="http://typo3.org/" target="_self" title="&lt;Title&gt;" class="&lt;CSS&gt;">Individual _self &lt;CSS&gt; &lt;Title&gt;</a>',
             ],
             'target does not point to "self", adds noreferrer relationship' => [
-                '<f:link.typolink parameter="{parameter}" parts-as="typoLinkParts">Individual {typoLinkParts.target} {typoLinkParts.class} {typoLinkParts.title}</f:link.typolink>',
+                '<f:link.typolink parameter="{parameter}" partsAs="typoLinkParts">Individual {typoLinkParts.target} {typoLinkParts.class} {typoLinkParts.title}</f:link.typolink>',
                 [
                     'parameter' => 'http://typo3.org/ "<Target>" "<CSS>" "<Title>"',
                 ],
@@ -232,26 +232,40 @@ EOT
                     . '&lt;img src=&quot;logo.png&quot; alt=&quot;&amp;quot;&amp;lt;ALT&amp;gt;&amp;quot;&quot;&gt;&lt;/div&gt;"'
                     . ' data-other="&#039;&#039;" title="&lt;Title&gt;" class="&lt;CSS&gt;">Link Text</a>',
             ],
-            'parts-as is local variable' => [
-                '<f:link.typolink parameter="{parameter}" parts-as="typoLinkParts">{typoLinkParts.target}</f:link.typolink>{typoLinkParts.target}',
+            'partsAs is local variable' => [
+                '<f:link.typolink parameter="{parameter}" partsAs="typoLinkParts">{typoLinkParts.target}</f:link.typolink>{typoLinkParts.target}',
                 [
                     'parameter' => 'http://typo3.org/ "_self"',
                 ],
                 '<a href="http://typo3.org/" target="_self">_self</a>',
             ],
             'typolinkParameter object' => [
-                '<f:link.typolink parameter="{parameter}" parts-as="typoLinkParts">{typoLinkParts.target}</f:link.typolink>{typoLinkParts.target}',
+                '<f:link.typolink parameter="{parameter}" partsAs="typoLinkParts">{typoLinkParts.target}</f:link.typolink>{typoLinkParts.target}',
                 [
                     'parameter' => new TypolinkParameter('http://typo3.org/', '_self'),
                 ],
                 '<a href="http://typo3.org/" target="_self">_self</a>',
             ],
             'invalid parameter' => [
-                '<f:link.typolink parameter="{parameter}" parts-as="typoLinkParts">{typoLinkParts.target}</f:link.typolink>{typoLinkParts.target}',
+                '<f:link.typolink parameter="{parameter}" partsAs="typoLinkParts">{typoLinkParts.target}</f:link.typolink>{typoLinkParts.target}',
                 [
                     'parameter' => new \stdClass(),
                 ],
                 '',
+            ],
+            'partsAs works' => [
+                '<f:link.typolink parameter="{parameter}" partsAs="foo">{foo.target}</f:link.typolink>{foo.target}',
+                [
+                    'parameter' => 'http://typo3.org/ "_self"',
+                ],
+                '<a href="http://typo3.org/" target="_self">_self</a>',
+            ],
+            'parts-as still works' => [
+                '<f:link.typolink parameter="{parameter}" parts-as="foo">{foo.target}</f:link.typolink>{foo.target}',
+                [
+                    'parameter' => 'http://typo3.org/ "_self"',
+                ],
+                '<a href="http://typo3.org/" target="_self">_self</a>',
             ],
         ];
     }
@@ -275,6 +289,12 @@ EOT
         $context->getTemplatePaths()->setTemplateSource($template);
         $view = new TemplateView($context);
         $view->assignMultiple($assigns);
-        self::assertSame($expected, trim($view->render()));
+        self::assertSame($expected, trim($view->render()), 'uncached');
+
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $view = new TemplateView($context);
+        $view->assignMultiple($assigns);
+        self::assertSame($expected, trim($view->render()), 'cached');
     }
 }
