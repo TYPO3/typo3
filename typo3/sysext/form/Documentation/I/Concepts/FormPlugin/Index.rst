@@ -12,20 +12,19 @@ Form plugin
 What does it do?
 ----------------
 
-The ``form plugin`` allows you to assign a form - created with the ``form
-editor`` or shipped with your extension - to a specific page. This enables
-you to re-use forms throughout the whole TYPO3 installation. Furthermore, it
-offers the backend editor the possibility to override certain aspects of the
-form definition. At the moment, only finisher options can be overridden. The
+The ``form plugin`` allows you to assign a form to a page and view it in the
+frontend. The form can have been created via the ``form editor`` or shipped with
+your extension. Forms can be re-used throughout the TYPO3 installation and backend editors
+can override form definitions. At the moment, only finisher options can be overridden but the
 possibilities depend on the configuration of the underlying prototype.
 
-Imagine, your form contains a redirect finisher. The redirect target is set
-globally and valid for the whole ``form definition`` . While adding the form
-to a specific page, the backend editor can define a different redirect target. This
-setting is only valid for the page containing the plugin.
+Imagine that your form contains a redirect finisher. The redirect target is set
+globally and valid for the whole ``form definition``. When they are adding the form
+to a page, a backend editor can define a redirect target that is different to the
+'global' form definition. This setting is only valid on the page containing the plugin.
 
-Read more about changing the :ref:`general<prototypes.prototypeIdentifier.formengine>`
-and :ref:`aspect-specific form plugin configuration<prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.formengine>`.
+Read more about changing :ref:`general<prototypes.prototypeIdentifier.formengine>`
+and :ref:`specific form plugin configuration<prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.formengine>`.
 
 
 .. _concepts-formplugin-exclude-override:
@@ -33,13 +32,12 @@ and :ref:`aspect-specific form plugin configuration<prototypes.prototypeIdentifi
 Exclude options from overrides
 ------------------------------
 
-Sometimes, it is useful to exclude specific options from being overridden via the
-form plugin. This can be achieved by unsetting the options concerned in your
-custom YAML configuration. For unsetting options use the YAML NULL (:yaml:`~`) value.
+Sometimes it is useful to prevent options from being overridden by the
+form plugin. You can do this by unsetting the options in your
+general forms configuration YAML. To unset options use the YAML NULL (:yaml:`~`) value.
 
-The following example unsets four fields of the ``EmailToReceiver`` finisher. The
-options will only be removed from the form plugin. The Form editor is not affected
-by this.
+In this example, four ``EmailToReceiver`` finisher fields are unset. The
+options will be removed from the form plugin but not the form editor.
 
 .. code-block:: yaml
 
@@ -60,7 +58,7 @@ by this.
 Translation of form plugin
 --------------------------
 
-All option values which reside below the following configuration keys can be
+All option values under the following configuration keys can be
 translated:
 
 .. code-block:: yaml
@@ -71,7 +69,7 @@ translated:
          <finisherIdentifier>
            formEngine:
 
-The translation files of the ``form plugin`` are loaded as follows:
+``Form plugin`` translation files are loaded as follows:
 
 .. code-block:: yaml
 
@@ -82,11 +80,11 @@ The translation files of the ``form plugin`` are loaded as follows:
            # custom translation file
            20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'
 
-The process searches for each option value within all of the defined
+Each option value is searched for in the defined
 translation files. If a translation is found, the translated option value
-will be used in preference.
+will be used.
 
-Imagine, the following is defined for an option value:
+Imagine that the following option value is defined:
 
 .. code-block:: yaml
 
@@ -94,9 +92,9 @@ Imagine, the following is defined for an option value:
    label: 'tt_content.finishersDefinition.EmailToReceiver.label'
    ...
 
-First of all, the process searches for the translation key
-``tt_content.finishersDefinition.EmailToReceiver.label`` within the file
+The translation key
+``tt_content.finishersDefinition.EmailToReceiver.label`` is first searched for in the file
 ``20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'`` and
-afterwards inside the file 10: 'EXT:form/Resources/Private/Language/Database.xlf'
-(loaded by default). If nothing is found, the option value will be
+then in the file 10: 'EXT:form/Resources/Private/Language/Database.xlf'
+(loaded by EXT:form by default). If nothing is found, the option value will be
 displayed unmodified.
