@@ -174,83 +174,79 @@ final class DateViewHelperTest extends FunctionalTestCase
         self::assertEquals('2015', (new TemplateView($context))->render());
     }
 
-    public static function viewHelperRespectsDefaultTimezoneForIntegerTimestampDataProvider(): array
+    public static function viewHelperRespectsTimezoneDataProvider(): array
     {
         return [
-            'Europe/Berlin' => [
+            'integer, Europe/Berlin' => [
                 'Europe/Berlin',
+                1359891658, // 2013-02-03 11:40 UTC
                 '2013-02-03 12:40',
             ],
-            'Asia/Riyadh' => [
+            'integer, Asia/Riyadh' => [
                 'Asia/Riyadh',
+                1359891658, // 2013-02-03 11:40 UTC
                 '2013-02-03 14:40',
             ],
-        ];
-    }
-
-    #[DataProvider('viewHelperRespectsDefaultTimezoneForIntegerTimestampDataProvider')]
-    #[Test]
-    public function viewHelperRespectsDefaultTimezoneForIntegerTimestamp(string $timezone, string $expected): void
-    {
-        date_default_timezone_set($timezone);
-        $date = 1359891658; // 2013-02-03 11:40 UTC
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:format.date date="' . $date . '" format="Y-m-d H:i"/>');
-        self::assertEquals($expected, (new TemplateView($context))->render());
-    }
-
-    #[DataProvider('viewHelperRespectsDefaultTimezoneForIntegerTimestampDataProvider')]
-    #[Test]
-    public function viewHelperRespectGivenTimezoneForIntegerTimestamp(string $timezone, string $expected): void
-    {
-        $date = 1359891658; // 2013-02-03 11:40 UTC
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:format.date timezone="' . $timezone . '" date="' . $date . '" format="Y-m-d H:i"/>');
-        self::assertEquals($expected, (new TemplateView($context))->render());
-    }
-
-    public static function viewHelperRespectsDefaultTimezoneForStringTimestampDataProvider(): array
-    {
-        return [
-            'Europe/Berlin UTC' => [
+            'string, Europe/Berlin UTC' => [
                 'Europe/Berlin',
                 '@1359891658',
                 '2013-02-03 12:40',
             ],
-            'Europe/Berlin Moscow' => [
+            'string, Europe/Berlin Moscow' => [
                 'Europe/Berlin',
                 '03/Oct/2000:14:55:36 +0400',
                 '2000-10-03 12:55',
             ],
-            'Asia/Riyadh UTC' => [
+            'string, Asia/Riyadh UTC' => [
                 'Asia/Riyadh',
                 '@1359891658',
                 '2013-02-03 14:40',
             ],
-            'Asia/Riyadh Moscow' => [
+            'string, Asia/Riyadh Moscow' => [
                 'Asia/Riyadh',
                 '03/Oct/2000:14:55:36 +0400',
                 '2000-10-03 13:55',
             ],
+
         ];
     }
 
-    #[DataProvider('viewHelperRespectsDefaultTimezoneForStringTimestampDataProvider')]
-    #[Test]
-    public function viewHelperRespectsDefaultTimezoneForStringTimestamp(string $timeZone, string $date, string $expected): void
+    public static function viewHelperRespectsTimezoneForObjectsDataProvider(): array
     {
-        date_default_timezone_set($timeZone);
+        return [
+            'mutable object' => [
+                'Asia/Riyadh',
+                new \DateTime('@1359891658'), // 2013-02-03 11:40 UTC
+                '2013-02-03 14:40',
+            ],
+            'immutable object' => [
+                'Asia/Riyadh',
+                new \DateTimeImmutable('@1359891658'), // 2013-02-03 11:40 UTC
+                '2013-02-03 14:40',
+            ],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('viewHelperRespectsTimezoneDataProvider')]
+    public function viewHelperRespectsDefaultTimezone(string $timezone, mixed $date, string $expected): void
+    {
+        date_default_timezone_set($timezone);
         $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:format.date date="' . $date . '" format="Y-m-d H:i"/>');
+        $context->getVariableProvider()->add('date', $date);
+        $context->getTemplatePaths()->setTemplateSource('<f:format.date date="{date}" format="Y-m-d H:i"/>');
         self::assertEquals($expected, (new TemplateView($context))->render());
     }
 
-    #[DataProvider('viewHelperRespectsDefaultTimezoneForStringTimestampDataProvider')]
     #[Test]
-    public function viewHelperRespectsGivenTimezoneForStringTimestamp(string $timeZone, string $date, string $expected): void
+    #[DataProvider('viewHelperRespectsTimezoneDataProvider')]
+    #[DataProvider('viewHelperRespectsTimezoneForObjectsDataProvider')]
+    public function viewHelperRespectsTimezone(string $timezone, mixed $date, string $expected): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:format.date timezone="' . $timeZone . '" date="' . $date . '" format="Y-m-d H:i"/>');
+        $context->getVariableProvider()->add('date', $date);
+        $context->getVariableProvider()->add('timezone', $timezone);
+        $context->getTemplatePaths()->setTemplateSource('<f:format.date timezone="{timezone}" date="{date}" format="Y-m-d H:i"/>');
         self::assertEquals($expected, (new TemplateView($context))->render());
     }
 

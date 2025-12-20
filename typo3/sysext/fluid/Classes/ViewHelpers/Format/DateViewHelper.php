@@ -99,9 +99,13 @@ final class DateViewHelper extends AbstractViewHelper
             $date = (new \DateTime())->setTimestamp($dateTimestamp);
         }
 
-        if (!empty($this->arguments['timezone']) && $date instanceof \DateTime) {
+        if (!empty($this->arguments['timezone'])) {
             $timezone = (string)$this->arguments['timezone'];
-            $date->setTimezone(new \DateTimeZone($timezone));
+            if ($date instanceof \DateTime) {
+                $date->setTimezone(new \DateTimeZone($timezone));
+            } elseif ($date instanceof \DateTimeImmutable) {
+                $date = $date->setTimezone(new \DateTimeZone($timezone));
+            }
         }
 
         if ($pattern !== null) {
