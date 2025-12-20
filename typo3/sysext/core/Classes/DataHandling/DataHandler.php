@@ -7433,16 +7433,14 @@ class DataHandler
     /**
      * Checks if there are records on a page from tables that are not allowed
      *
-     * @param int|string $page_uid Page ID
+     * @param int $page_uid Page ID
      * @param int $doktype Page doktype
      * @return array Returns a list of the tables that are 'present' on the page but not allowed with the page_uid/doktype
      * @internal should only be used from within DataHandler
      */
-    public function doesPageHaveUnallowedTables($page_uid, int $doktype): array
+    public function doesPageHaveUnallowedTables(int $page_uid, int $doktype): array
     {
-        $page_uid = (int)$page_uid;
-        if (!$page_uid) {
-            // Not a number. Probably a new page
+        if ($page_uid === 0) {
             return [];
         }
         $allowedTables = $this->pageDoktypeRegistry->getAllowedTypesForDoktype($doktype);
