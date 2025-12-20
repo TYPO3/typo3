@@ -401,7 +401,6 @@ final readonly class FrontendTypoScriptFactory
                 //        is currently blocked by functional tests that assert details?
                 //        Also, we need to still cache with full 'config' to handle multiple types.
                 $setupRawConfigAst = $setupAst->getChildByName('config');
-                // $setupAst->removeChildByName('config');
                 $frontendTypoScript->setSetupTree($setupAst);
                 $frontendTypoScript->setSetupArray($setupAst->toArray());
 

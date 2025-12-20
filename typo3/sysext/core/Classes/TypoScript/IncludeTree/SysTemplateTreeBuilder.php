@@ -240,8 +240,6 @@ final class SysTemplateTreeBuilder
         $includeStaticFileFileIncludePath = $path . 'include_static_file.txt';
         if (file_exists($path . 'include_static_file.txt')) {
             $includeStaticFileFileInclude = new IncludeStaticFileFileInclude();
-            //$name = 'EXT:' . $extensionKey . '/' . $pathSegmentWithAppendedSlash . 'include_static_file.txt';
-            //$includeStaticFileFileInclude->setName($name);
             $includeStaticFileFileInclude->setName($label . ':include_static_file.txt');
             $includeStaticFileFileInclude->setPath($path . 'include_static_file.txt');
             $parentNode->addChild($includeStaticFileFileInclude);
