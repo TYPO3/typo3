@@ -21,7 +21,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -162,8 +161,6 @@ class SimpleDataHandlerController
      */
     protected function init(ServerRequestInterface $request): void
     {
-        $beUser = $this->getBackendUser();
-
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 
@@ -285,10 +282,5 @@ class SimpleDataHandlerController
             $clipboard->removeElement($key);
         }
         $clipboard->endClipboard();
-    }
-
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 }
