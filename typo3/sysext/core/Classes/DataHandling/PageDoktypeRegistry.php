@@ -98,17 +98,6 @@ class PageDoktypeRegistry
     }
 
     /**
-     * @internal
-     */
-    public function getRegisteredDoktypes(): array
-    {
-        $this->initializeTca();
-        $items = $this->pageTypes;
-        unset($items['default']);
-        return array_keys($items);
-    }
-
-    /**
      * Used to find out if a specific doktype is restricted to only allow a certain list of tables.
      * This list can be checked against via 'isRecordTypeAllowedForDoktype()'
      */

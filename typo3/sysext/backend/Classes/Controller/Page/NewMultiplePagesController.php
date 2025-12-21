@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
@@ -185,12 +184,11 @@ class NewMultiplePagesController
         $pagesTsConfig = $tsConfig['TCEFORM.']['pages.'] ?? [];
 
         // Find all available doktypes for the current user
-        $types = $this->pageDoktypeRegistry->getRegisteredDoktypes();
-        $types[] = PageRepository::DOKTYPE_DEFAULT;
-        $types[] = PageRepository::DOKTYPE_LINK;
-        $types[] = PageRepository::DOKTYPE_SHORTCUT;
-        $types[] = PageRepository::DOKTYPE_MOUNTPOINT;
-        $types[] = PageRepository::DOKTYPE_SPACER;
+        $types = [];
+        $schema = $this->tcaSchemaFactory->get('pages');
+        foreach ($schema->getSubSchemata() as $type => $subSchema) {
+            $types[] = (int)$type;
+        }
 
         if (!$this->getBackendUser()->isAdmin() && isset($this->getBackendUser()->groupData['pagetypes_select'])) {
             $types = GeneralUtility::intExplode(',', $this->getBackendUser()->groupData['pagetypes_select'], true);
@@ -198,7 +196,6 @@ class NewMultiplePagesController
         $removeItems = isset($pagesTsConfig['doktype.']['removeItems']) ? GeneralUtility::intExplode(',', $pagesTsConfig['doktype.']['removeItems'], true) : [];
         $allowedPageTypes = array_diff($types, $removeItems);
 
-        $schema = $this->tcaSchemaFactory->get('pages');
         $pageTypeConfig = $schema->getField($schema->getSubSchemaTypeInformation()->getFieldName())->getConfiguration();
         $availablePageTypes = $this->pageDoktypeRegistry->getAllDoktypes();
 
