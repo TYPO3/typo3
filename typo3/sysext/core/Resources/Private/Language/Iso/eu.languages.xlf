@@ -190,10 +190,6 @@
         <source>Bulgarian</source>
         <target>bulgariera</target>
       </trans-unit>
-      <trans-unit id="bh" resname="bh" approved="yes">
-        <source>Bihari languages</source>
-        <target>Bihari hizkuntzak</target>
-      </trans-unit>
       <trans-unit id="bho" resname="bho" approved="yes">
         <source>Bhojpuri</source>
         <target>bhojpurera</target>
@@ -201,6 +197,10 @@
       <trans-unit id="bi" resname="bi" approved="yes">
         <source>Bislama</source>
         <target>bislama</target>
+      </trans-unit>
+      <trans-unit id="bih" resname="bih" approved="yes">
+        <source>Bihari languages</source>
+        <target>Bihari hizkuntzak</target>
       </trans-unit>
       <trans-unit id="bik" resname="bik" approved="yes">
         <source>Bikol</source>
@@ -223,8 +223,8 @@
         <target>Bengalera</target>
       </trans-unit>
       <trans-unit id="bnt" resname="bnt" approved="yes">
-        <source>Bantu (Other)</source>
-        <target>bantu (beste batzuk)</target>
+        <source>Bantu languages</source>
+        <target>Bantu languages</target>
       </trans-unit>
       <trans-unit id="bo" resname="bo" approved="yes">
         <source>Tibetan</source>
@@ -423,8 +423,8 @@
         <target>slavey (athapascan)</target>
       </trans-unit>
       <trans-unit id="dgr" resname="dgr" approved="yes">
-        <source>Dogrib</source>
-        <target>dogribera</target>
+        <source>Tlicho; Dogrib</source>
+        <target>Tlicho; Dogrib</target>
       </trans-unit>
       <trans-unit id="din" resname="din" approved="yes">
         <source>Dinka</source>
@@ -1163,20 +1163,20 @@
         <target>napoliera</target>
       </trans-unit>
       <trans-unit id="nb" resname="nb" approved="yes">
-        <source>Bokmål, Norwegian; Norwegian Bokmål</source>
-        <target>bokmål, Norvegiako bokmål, norvegiera estandarra</target>
+        <source>Norwegian Bokmål</source>
+        <target>Norwegian Bokmål</target>
       </trans-unit>
       <trans-unit id="nd" resname="nd" approved="yes">
-        <source>Ndebele, North; North Ndebele</source>
-        <target>Iparraldeko ndebelera</target>
+        <source>North Ndebele</source>
+        <target>North Ndebele</target>
       </trans-unit>
       <trans-unit id="ne" resname="ne" approved="yes">
         <source>Nepali</source>
         <target>Nepalera</target>
       </trans-unit>
       <trans-unit id="new" resname="new" approved="yes">
-        <source>Nepal Bhasa; Newari</source>
-        <target>newarera</target>
+        <source>Nepal Bhasa; Newar; Newari</source>
+        <target>Nepal Bhasa; Newar; Newari</target>
       </trans-unit>
       <trans-unit id="ng" resname="ng" approved="yes">
         <source>Ndonga</source>
@@ -1199,8 +1199,8 @@
         <target>Nederlandera; flandesera</target>
       </trans-unit>
       <trans-unit id="nn" resname="nn" approved="yes">
-        <source>Norwegian Nynorsk; Nynorsk, Norwegian</source>
-        <target>Norvegiera (Nynorsk)</target>
+        <source>Norwegian Nynorsk</source>
+        <target>Norwegian Nynorsk</target>
       </trans-unit>
       <trans-unit id="no" resname="no" approved="yes">
         <source>Norwegian</source>
@@ -1219,8 +1219,8 @@
         <target>n’koera</target>
       </trans-unit>
       <trans-unit id="nr" resname="nr" approved="yes">
-        <source>Ndebele, South; South Ndebele</source>
-        <target>Hegoaldeko ndebelera</target>
+        <source>South Ndebele</source>
+        <target>South Ndebele</target>
       </trans-unit>
       <trans-unit id="nso" resname="nso" approved="yes">
         <source>Pedi; Sepedi; Northern Sotho</source>
@@ -1239,8 +1239,8 @@
         <target>ankolera</target>
       </trans-unit>
       <trans-unit id="oc" resname="oc" approved="yes">
-        <source>Occitan (post 1500); Provençal</source>
-        <target>Okzitaniera (1500 ondorengoa); Proventzera</target>
+        <source>Occitan (post 1500)</source>
+        <target>Occitan (post 1500)</target>
       </trans-unit>
       <trans-unit id="oj" resname="oj" approved="yes">
         <source>Ojibwa</source>
@@ -1311,8 +1311,8 @@
         <target>Prakrit hizkuntzak</target>
       </trans-unit>
       <trans-unit id="pro" resname="pro" approved="yes">
-        <source>Provençal, Old (to 1500)</source>
-        <target>Proventzera, zaharra (1500 arte)</target>
+        <source>Provençal, Old (to 1500); Occitan, Old (to 1500)</source>
+        <target>Provençal, Old (to 1500); Occitan, Old (to 1500)</target>
       </trans-unit>
       <trans-unit id="ps" resname="ps" approved="yes">
         <source>Pushto; Pashto</source>
@@ -1383,8 +1383,8 @@
         <target>sakhera</target>
       </trans-unit>
       <trans-unit id="sai" resname="sai" approved="yes">
-        <source>South American Indian (Other)</source>
-        <target>South American Indian (Other)</target>
+        <source>South American Indian languages</source>
+        <target>South American Indian languages</target>
       </trans-unit>
       <trans-unit id="sal" resname="sal" approved="yes">
         <source>Salishan languages</source>
@@ -1721,10 +1721,6 @@
       <trans-unit id="wak" resname="wak" approved="yes">
         <source>Wakashan languages</source>
         <target>Wakashar hizkuntzak</target>
-      </trans-unit>
-      <trans-unit id="wal" resname="wal" approved="yes">
-        <source>Walamo</source>
-        <target>welayta</target>
       </trans-unit>
       <trans-unit id="war" resname="war" approved="yes">
         <source>Waray</source>

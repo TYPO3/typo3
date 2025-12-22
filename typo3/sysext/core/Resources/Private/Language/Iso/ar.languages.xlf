@@ -138,10 +138,6 @@
         <source>Bulgarian</source>
         <target>البلغارية</target>
       </trans-unit>
-      <trans-unit id="bh" resname="bh" approved="yes">
-        <source>Bihari languages</source>
-        <target>Bihari languages</target>
-      </trans-unit>
       <trans-unit id="bho" resname="bho" approved="yes">
         <source>Bhojpuri</source>
         <target>البوجبوري</target>
@@ -149,6 +145,10 @@
       <trans-unit id="bi" resname="bi" approved="yes">
         <source>Bislama</source>
         <target>البيسلامية</target>
+      </trans-unit>
+      <trans-unit id="bih" resname="bih" approved="yes">
+        <source>Bihari languages</source>
+        <target>Bihari languages</target>
       </trans-unit>
       <trans-unit id="bik" resname="bik" approved="yes">
         <source>Bikol</source>
@@ -171,8 +171,8 @@
         <target>البنغالية</target>
       </trans-unit>
       <trans-unit id="bnt" resname="bnt" approved="yes">
-        <source>Bantu (Other)</source>
-        <target>البانتو (أخرى)</target>
+        <source>Bantu languages</source>
+        <target>Bantu languages</target>
       </trans-unit>
       <trans-unit id="bo" resname="bo" approved="yes">
         <source>Tibetan</source>
@@ -315,8 +315,8 @@
         <target>ديلاوير</target>
       </trans-unit>
       <trans-unit id="dgr" resname="dgr" approved="yes">
-        <source>Dogrib</source>
-        <target>دوغريب</target>
+        <source>Tlicho; Dogrib</source>
+        <target>Tlicho; Dogrib</target>
       </trans-unit>
       <trans-unit id="din" resname="din" approved="yes">
         <source>Dinka</source>
@@ -795,8 +795,8 @@
         <target>North American Indian languages</target>
       </trans-unit>
       <trans-unit id="nb" resname="nb" approved="yes">
-        <source>Bokmål, Norwegian; Norwegian Bokmål</source>
-        <target>بوكمول، النرويجية؛ بوكمول النرويجية</target>
+        <source>Norwegian Bokmål</source>
+        <target>Norwegian Bokmål</target>
       </trans-unit>
       <trans-unit id="ne" resname="ne" approved="yes">
         <source>Nepali</source>
@@ -815,8 +815,8 @@
         <target>Niger-Kordofanian languages</target>
       </trans-unit>
       <trans-unit id="nn" resname="nn" approved="yes">
-        <source>Norwegian Nynorsk; Nynorsk, Norwegian</source>
-        <target>Norwegian Nynorsk; Nynorsk, Norwegian</target>
+        <source>Norwegian Nynorsk</source>
+        <target>Norwegian Nynorsk</target>
       </trans-unit>
       <trans-unit id="no" resname="no" approved="yes">
         <source>Norwegian</source>
@@ -835,8 +835,8 @@
         <target>نافاجو؛ نافاهو</target>
       </trans-unit>
       <trans-unit id="oc" resname="oc" approved="yes">
-        <source>Occitan (post 1500); Provençal</source>
-        <target>القسطانية (ما بعد 1500)؛ البروفانسية</target>
+        <source>Occitan (post 1500)</source>
+        <target>Occitan (post 1500)</target>
       </trans-unit>
       <trans-unit id="os" resname="os" approved="yes">
         <source>Ossetian; Ossetic</source>
@@ -939,8 +939,8 @@
         <target>الياكوتية</target>
       </trans-unit>
       <trans-unit id="sai" resname="sai" approved="yes">
-        <source>South American Indian (Other)</source>
-        <target>South American Indian (Other)</target>
+        <source>South American Indian languages</source>
+        <target>South American Indian languages</target>
       </trans-unit>
       <trans-unit id="sal" resname="sal" approved="yes">
         <source>Salishan languages</source>

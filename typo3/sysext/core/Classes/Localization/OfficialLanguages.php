@@ -184,16 +184,15 @@ class OfficialLanguages
             'name' => 'Bulgarian',
             'alias' => 'bul',
         ],
-        'bh' => [
-            'name' => 'Bihari languages',
-            'alias' => 'bih',
-        ],
         'bho' => [
             'name' => 'Bhojpuri',
         ],
         'bi' => [
             'name' => 'Bislama',
             'alias' => 'bis',
+        ],
+        'bih' => [
+            'name' => 'Bihari languages',
         ],
         'bik' => [
             'name' => 'Bikol',
@@ -213,7 +212,7 @@ class OfficialLanguages
             'alias' => 'ben',
         ],
         'bnt' => [
-            'name' => 'Bantu (Other)',
+            'name' => 'Bantu languages',
         ],
         'bo' => [
             'name' => 'Tibetan',
@@ -377,7 +376,7 @@ class OfficialLanguages
             'name' => 'Slave (Athapascan)',
         ],
         'dgr' => [
-            'name' => 'Dogrib',
+            'name' => 'Tlicho; Dogrib',
         ],
         'din' => [
             'name' => 'Dinka',
@@ -1046,11 +1045,11 @@ class OfficialLanguages
             'name' => 'Neapolitan',
         ],
         'nb' => [
-            'name' => 'Bokmål, Norwegian; Norwegian Bokmål',
+            'name' => 'Norwegian Bokmål',
             'alias' => 'nob',
         ],
         'nd' => [
-            'name' => 'Ndebele, North; North Ndebele',
+            'name' => 'North Ndebele',
             'alias' => 'nde',
         ],
         'nds' => [
@@ -1061,7 +1060,7 @@ class OfficialLanguages
             'alias' => 'nep',
         ],
         'new' => [
-            'name' => 'Nepal Bhasa; Newari',
+            'name' => 'Nepal Bhasa; Newar; Newari',
         ],
         'ng' => [
             'name' => 'Ndonga',
@@ -1081,7 +1080,7 @@ class OfficialLanguages
             'alias' => 'nld',
         ],
         'nn' => [
-            'name' => 'Norwegian Nynorsk; Nynorsk, Norwegian',
+            'name' => 'Norwegian Nynorsk',
             'alias' => 'nno',
         ],
         'no' => [
@@ -1098,7 +1097,7 @@ class OfficialLanguages
             'name' => 'N\'Ko',
         ],
         'nr' => [
-            'name' => 'Ndebele, South; South Ndebele',
+            'name' => 'South Ndebele',
             'alias' => 'nbl',
         ],
         'nso' => [
@@ -1131,7 +1130,7 @@ class OfficialLanguages
             'name' => 'Nzima',
         ],
         'oc' => [
-            'name' => 'Occitan (post 1500); Provençal',
+            'name' => 'Occitan (post 1500)',
             'alias' => 'oci',
         ],
         'oj' => [
@@ -1205,7 +1204,7 @@ class OfficialLanguages
             'name' => 'Prakrit languages',
         ],
         'pro' => [
-            'name' => 'Provençal, Old (to 1500)',
+            'name' => 'Provençal, Old (to 1500); Occitan, Old (to 1500)',
         ],
         'ps' => [
             'name' => 'Pushto; Pashto',
@@ -1271,7 +1270,7 @@ class OfficialLanguages
             'name' => 'Yakut',
         ],
         'sai' => [
-            'name' => 'South American Indian (Other)',
+            'name' => 'South American Indian languages',
         ],
         'sal' => [
             'name' => 'Salishan languages',
@@ -1598,7 +1597,7 @@ class OfficialLanguages
             'name' => 'Wakashan languages',
         ],
         'wal' => [
-            'name' => 'Walamo',
+            'name' => 'Wolaitta; Wolaytta',
         ],
         'war' => [
             'name' => 'Waray',

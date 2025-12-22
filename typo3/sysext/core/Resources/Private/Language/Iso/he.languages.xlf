@@ -102,13 +102,13 @@
         <source>Bulgarian</source>
         <target>בולגרית</target>
       </trans-unit>
-      <trans-unit id="bh" resname="bh" approved="yes">
-        <source>Bihari languages</source>
-        <target>Bihari languages</target>
-      </trans-unit>
       <trans-unit id="bho" resname="bho" approved="yes">
         <source>Bhojpuri</source>
         <target>בוג׳פורית</target>
+      </trans-unit>
+      <trans-unit id="bih" resname="bih" approved="yes">
+        <source>Bihari languages</source>
+        <target>Bihari languages</target>
       </trans-unit>
       <trans-unit id="bin" resname="bin" approved="yes">
         <source>Bini; Edo</source>
@@ -121,6 +121,10 @@
       <trans-unit id="bn" resname="bn" approved="yes">
         <source>Bengali</source>
         <target>בנגלית</target>
+      </trans-unit>
+      <trans-unit id="bnt" resname="bnt" approved="yes">
+        <source>Bantu languages</source>
+        <target>Bantu languages</target>
       </trans-unit>
       <trans-unit id="bo" resname="bo" approved="yes">
         <source>Tibetan</source>
@@ -542,6 +546,10 @@
         <source>North American Indian languages</source>
         <target>North American Indian languages</target>
       </trans-unit>
+      <trans-unit id="nb" resname="nb" approved="yes">
+        <source>Norwegian Bokmål</source>
+        <target>Norwegian Bokmål</target>
+      </trans-unit>
       <trans-unit id="ng" resname="ng" approved="yes">
         <source>Ndonga</source>
         <target>נדונגה</target>
@@ -551,8 +559,8 @@
         <target>שפות ניגר-קורדופניות</target>
       </trans-unit>
       <trans-unit id="nn" resname="nn" approved="yes">
-        <source>Norwegian Nynorsk; Nynorsk, Norwegian</source>
-        <target>נורווגית חדשה; נינורשק</target>
+        <source>Norwegian Nynorsk</source>
+        <target>Norwegian Nynorsk</target>
       </trans-unit>
       <trans-unit id="no" resname="no" approved="yes">
         <source>Norwegian</source>
@@ -619,8 +627,8 @@
         <target>רוסית</target>
       </trans-unit>
       <trans-unit id="sai" resname="sai" approved="yes">
-        <source>South American Indian (Other)</source>
-        <target>South American Indian (Other)</target>
+        <source>South American Indian languages</source>
+        <target>South American Indian languages</target>
       </trans-unit>
       <trans-unit id="sc" resname="sc" approved="yes">
         <source>Sardinian</source>

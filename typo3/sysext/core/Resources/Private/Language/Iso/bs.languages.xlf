@@ -66,9 +66,13 @@
         <source>Bulgarian</source>
         <target>Bugarski</target>
       </trans-unit>
-      <trans-unit id="bh" resname="bh" approved="yes">
+      <trans-unit id="bih" resname="bih" approved="yes">
         <source>Bihari languages</source>
         <target>Bihari languages</target>
+      </trans-unit>
+      <trans-unit id="bnt" resname="bnt" approved="yes">
+        <source>Bantu languages</source>
+        <target>Bantu languages</target>
       </trans-unit>
       <trans-unit id="br" resname="br" approved="yes">
         <source>Breton</source>
@@ -418,6 +422,10 @@
         <source>Marwari</source>
         <target>Marwari</target>
       </trans-unit>
+      <trans-unit id="nb" resname="nb" approved="yes">
+        <source>Norwegian Bokmål</source>
+        <target>Norwegian Bokmål</target>
+      </trans-unit>
       <trans-unit id="ng" resname="ng" approved="yes">
         <source>Ndonga</source>
         <target>Ndonga</target>
@@ -427,8 +435,8 @@
         <target>Niger-Kordofanian languages</target>
       </trans-unit>
       <trans-unit id="nn" resname="nn" approved="yes">
-        <source>Norwegian Nynorsk; Nynorsk, Norwegian</source>
-        <target>Norwegian Nynorsk; Nynorsk, Norwegian</target>
+        <source>Norwegian Nynorsk</source>
+        <target>Norwegian Nynorsk</target>
       </trans-unit>
       <trans-unit id="no" resname="no" approved="yes">
         <source>Norwegian</source>
@@ -493,6 +501,10 @@
       <trans-unit id="ru" resname="ru" approved="yes">
         <source>Russian</source>
         <target>Ruski</target>
+      </trans-unit>
+      <trans-unit id="sai" resname="sai" approved="yes">
+        <source>South American Indian languages</source>
+        <target>South American Indian languages</target>
       </trans-unit>
       <trans-unit id="sc" resname="sc" approved="yes">
         <source>Sardinian</source>

@@ -138,10 +138,6 @@
         <source>Bulgarian</source>
         <target>بلغاری</target>
       </trans-unit>
-      <trans-unit id="bh" resname="bh" approved="yes">
-        <source>Bihari languages</source>
-        <target>Bihari languages</target>
-      </trans-unit>
       <trans-unit id="bho" resname="bho" approved="yes">
         <source>Bhojpuri</source>
         <target>بوجپوری</target>
@@ -149,6 +145,10 @@
       <trans-unit id="bi" resname="bi" approved="yes">
         <source>Bislama</source>
         <target>بیسلاما</target>
+      </trans-unit>
+      <trans-unit id="bih" resname="bih" approved="yes">
+        <source>Bihari languages</source>
+        <target>Bihari languages</target>
       </trans-unit>
       <trans-unit id="bik" resname="bik" approved="yes">
         <source>Bikol</source>
@@ -161,6 +161,10 @@
       <trans-unit id="bn" resname="bn" approved="yes">
         <source>Bengali</source>
         <target>بنگالی</target>
+      </trans-unit>
+      <trans-unit id="bnt" resname="bnt" approved="yes">
+        <source>Bantu languages</source>
+        <target>Bantu languages</target>
       </trans-unit>
       <trans-unit id="bo" resname="bo" approved="yes">
         <source>Tibetan</source>
@@ -946,9 +950,13 @@
         <source>Neapolitan</source>
         <target>ناپلی</target>
       </trans-unit>
+      <trans-unit id="nb" resname="nb" approved="yes">
+        <source>Norwegian Bokmål</source>
+        <target>Norwegian Bokmål</target>
+      </trans-unit>
       <trans-unit id="nd" resname="nd" approved="yes">
-        <source>Ndebele, North; North Ndebele</source>
-        <target>Ndebele, North; North Ndebele</target>
+        <source>North Ndebele</source>
+        <target>North Ndebele</target>
       </trans-unit>
       <trans-unit id="ne" resname="ne" approved="yes">
         <source>Nepali</source>
@@ -967,8 +975,8 @@
         <target>نیویی</target>
       </trans-unit>
       <trans-unit id="nn" resname="nn" approved="yes">
-        <source>Norwegian Nynorsk; Nynorsk, Norwegian</source>
-        <target>Norwegian Nynorsk; Nynorsk, Norwegian</target>
+        <source>Norwegian Nynorsk</source>
+        <target>Norwegian Nynorsk</target>
       </trans-unit>
       <trans-unit id="no" resname="no" approved="yes">
         <source>Norwegian</source>
@@ -983,8 +991,8 @@
         <target>نرس کهن</target>
       </trans-unit>
       <trans-unit id="nr" resname="nr" approved="yes">
-        <source>Ndebele, South; South Ndebele</source>
-        <target>Ndebele, South; South Ndebele</target>
+        <source>South Ndebele</source>
+        <target>South Ndebele</target>
       </trans-unit>
       <trans-unit id="nub" resname="nub" approved="yes">
         <source>Nubian languages</source>
@@ -1083,8 +1091,8 @@
         <target>زبانهای پراکریتی</target>
       </trans-unit>
       <trans-unit id="pro" resname="pro" approved="yes">
-        <source>Provençal, Old (to 1500)</source>
-        <target>Provençal, Old (to 1500)</target>
+        <source>Provençal, Old (to 1500); Occitan, Old (to 1500)</source>
+        <target>Provençal, Old (to 1500); Occitan, Old (to 1500)</target>
       </trans-unit>
       <trans-unit id="ps" resname="ps" approved="yes">
         <source>Pushto; Pashto</source>
@@ -1143,8 +1151,8 @@
         <target>یاقوتی</target>
       </trans-unit>
       <trans-unit id="sai" resname="sai" approved="yes">
-        <source>South American Indian (Other)</source>
-        <target>South American Indian (Other)</target>
+        <source>South American Indian languages</source>
+        <target>South American Indian languages</target>
       </trans-unit>
       <trans-unit id="sal" resname="sal" approved="yes">
         <source>Salishan languages</source>

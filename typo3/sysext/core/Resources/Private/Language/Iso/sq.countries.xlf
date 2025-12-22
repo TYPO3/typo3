@@ -104,7 +104,7 @@
       </trans-unit>
       <trans-unit id="BA.official_name" resname="BA.official_name" approved="yes">
         <source>Republic of Bosnia and Herzegovina</source>
-        <target>Republika e Bosnjes dhe Herzegovinës</target>
+        <target>Republika e Bosnjës dhe Hercegovinës</target>
       </trans-unit>
       <trans-unit id="BB.name" resname="BB.name" approved="yes">
         <source>Barbados</source>
@@ -132,7 +132,7 @@
       </trans-unit>
       <trans-unit id="BG.name" resname="BG.name" approved="yes">
         <source>Bulgaria</source>
-        <target>Bullgarië</target>
+        <target>Bullgari</target>
       </trans-unit>
       <trans-unit id="BG.official_name" resname="BG.official_name" approved="yes">
         <source>Republic of Bulgaria</source>
@@ -176,11 +176,11 @@
       </trans-unit>
       <trans-unit id="BO.name" resname="BO.name" approved="yes">
         <source>Bolivia, Plurinational State of</source>
-        <target>Bolivi, Shteti Shumëkombëtar i</target>
+        <target>Bolivi, Shteti Shumëkombësh i</target>
       </trans-unit>
       <trans-unit id="BO.official_name" resname="BO.official_name" approved="yes">
         <source>Plurinational State of Bolivia</source>
-        <target>Shteti Shumëkombëtar i Bolivisë</target>
+        <target>Shteti Shumëkombësh i Bolivisë</target>
       </trans-unit>
       <trans-unit id="BQ.name" resname="BQ.name" approved="yes">
         <source>Bonaire, Sint Eustatius and Saba</source>

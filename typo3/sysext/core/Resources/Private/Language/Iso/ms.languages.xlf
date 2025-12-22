@@ -70,7 +70,7 @@
         <source>Bulgarian</source>
         <target>Bulgarian</target>
       </trans-unit>
-      <trans-unit id="bh" resname="bh" approved="yes">
+      <trans-unit id="bih" resname="bih" approved="yes">
         <source>Bihari languages</source>
         <target>Bihari languages</target>
       </trans-unit>
@@ -81,6 +81,10 @@
       <trans-unit id="bn" resname="bn" approved="yes">
         <source>Bengali</source>
         <target>Bengali</target>
+      </trans-unit>
+      <trans-unit id="bnt" resname="bnt" approved="yes">
+        <source>Bantu languages</source>
+        <target>Bantu languages</target>
       </trans-unit>
       <trans-unit id="br" resname="br" approved="yes">
         <source>Breton</source>
@@ -498,6 +502,10 @@
         <source>Neapolitan</source>
         <target>Neapolitan</target>
       </trans-unit>
+      <trans-unit id="nb" resname="nb" approved="yes">
+        <source>Norwegian Bokmål</source>
+        <target>Norwegian Bokmål</target>
+      </trans-unit>
       <trans-unit id="ne" resname="ne" approved="yes">
         <source>Nepali</source>
         <target>Nepali</target>
@@ -507,8 +515,8 @@
         <target>Niger-Kordofanian languages</target>
       </trans-unit>
       <trans-unit id="nn" resname="nn" approved="yes">
-        <source>Norwegian Nynorsk; Nynorsk, Norwegian</source>
-        <target>Norwegian Nynorsk; Nynorsk, Norwegian</target>
+        <source>Norwegian Nynorsk</source>
+        <target>Norwegian Nynorsk</target>
       </trans-unit>
       <trans-unit id="no" resname="no" approved="yes">
         <source>Norwegian</source>
@@ -579,8 +587,8 @@
         <target>Sanskrit</target>
       </trans-unit>
       <trans-unit id="sai" resname="sai" approved="yes">
-        <source>South American Indian (Other)</source>
-        <target>South American Indian (Other)</target>
+        <source>South American Indian languages</source>
+        <target>South American Indian languages</target>
       </trans-unit>
       <trans-unit id="sas" resname="sas" approved="yes">
         <source>Sasak</source>
