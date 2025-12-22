@@ -190,10 +190,6 @@
         <source>Bulgarian</source>
         <target>bulgaaria</target>
       </trans-unit>
-      <trans-unit id="bh" approved="yes">
-        <source>Bihari languages</source>
-        <target>bihaari keeled</target>
-      </trans-unit>
       <trans-unit id="bho" approved="yes">
         <source>Bhojpuri</source>
         <target>bhodžpuri</target>
@@ -201,6 +197,10 @@
       <trans-unit id="bi" approved="yes">
         <source>Bislama</source>
         <target>bislama</target>
+      </trans-unit>
+      <trans-unit id="bih" approved="yes">
+        <source>Bihari languages</source>
+        <target>bihaari keeled</target>
       </trans-unit>
       <trans-unit id="bik" approved="yes">
         <source>Bikol</source>
@@ -223,7 +223,7 @@
         <target>bengali</target>
       </trans-unit>
       <trans-unit id="bnt" approved="yes">
-        <source>Bantu (Other)</source>
+        <source>Bantu languages</source>
         <target>bantu keeled</target>
       </trans-unit>
       <trans-unit id="bo" approved="yes">
@@ -423,7 +423,7 @@
         <target>sleivi (orjaindiaani)</target>
       </trans-unit>
       <trans-unit id="dgr" approved="yes">
-        <source>Dogrib</source>
+        <source>Tlicho; Dogrib</source>
         <target>dogribi</target>
       </trans-unit>
       <trans-unit id="din" approved="yes">
@@ -1211,11 +1211,11 @@
         <target>napoli</target>
       </trans-unit>
       <trans-unit id="nb" approved="yes">
-        <source>Bokmål, Norwegian; Norwegian Bokmål</source>
-        <target>norra (bokmål)</target>
+        <source>Norwegian Bokmål</source>
+        <target>norra bokmål</target>
       </trans-unit>
       <trans-unit id="nd" approved="yes">
-        <source>Ndebele, North; North Ndebele</source>
+        <source>North Ndebele</source>
         <target>(põhja)ndebele</target>
       </trans-unit>
       <trans-unit id="nds" approved="yes">
@@ -1227,7 +1227,7 @@
         <target>nepali</target>
       </trans-unit>
       <trans-unit id="new" approved="yes">
-        <source>Nepal Bhasa; Newari</source>
+        <source>Nepal Bhasa; Newar; Newari</source>
         <target>nevari</target>
       </trans-unit>
       <trans-unit id="ng" approved="yes">
@@ -1251,8 +1251,8 @@
         <target>hollandi</target>
       </trans-unit>
       <trans-unit id="nn" approved="yes">
-        <source>Norwegian Nynorsk; Nynorsk, Norwegian</source>
-        <target>uusnorra (nynorsk)</target>
+        <source>Norwegian Nynorsk</source>
+        <target>uusnorra</target>
       </trans-unit>
       <trans-unit id="no" approved="yes">
         <source>Norwegian</source>
@@ -1271,7 +1271,7 @@
         <target>nkoo</target>
       </trans-unit>
       <trans-unit id="nr" approved="yes">
-        <source>Ndebele, South; South Ndebele</source>
+        <source>South Ndebele</source>
         <target>lõunandebele</target>
       </trans-unit>
       <trans-unit id="nso" approved="yes">
@@ -1311,7 +1311,7 @@
         <target>nzima</target>
       </trans-unit>
       <trans-unit id="oc" approved="yes">
-        <source>Occitan (post 1500); Provençal</source>
+        <source>Occitan (post 1500)</source>
         <target>oksitaani (alates 1500)</target>
       </trans-unit>
       <trans-unit id="oj" approved="yes">
@@ -1399,8 +1399,8 @@
         <target>praakriti keeled</target>
       </trans-unit>
       <trans-unit id="pro" approved="yes">
-        <source>Provençal, Old (to 1500)</source>
-        <target>vanaprovansi (aastani 1500)</target>
+        <source>Provençal, Old (to 1500); Occitan, Old (to 1500)</source>
+        <target>vanaprovansi (aastani 1500); vanaoksitaani (kuni 1500)</target>
       </trans-unit>
       <trans-unit id="ps" approved="yes">
         <source>Pushto; Pashto</source>
@@ -1475,7 +1475,7 @@
         <target>jakuudi</target>
       </trans-unit>
       <trans-unit id="sai" approved="yes">
-        <source>South American Indian (Other)</source>
+        <source>South American Indian languages</source>
         <target>Lõuna-Ameerika indiaanikeeled</target>
       </trans-unit>
       <trans-unit id="sal" approved="yes">
@@ -1859,7 +1859,7 @@
         <target>vakaši keelkond</target>
       </trans-unit>
       <trans-unit id="wal" approved="yes">
-        <source>Walamo</source>
+        <source>Wolaitta; Wolaytta</source>
         <target>volaita</target>
       </trans-unit>
       <trans-unit id="war" approved="yes">

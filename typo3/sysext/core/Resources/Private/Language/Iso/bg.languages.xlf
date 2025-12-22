@@ -128,7 +128,7 @@
       </trans-unit>
       <trans-unit id="awa" approved="yes">
         <source>Awadhi</source>
-        <target>Авадхи</target>
+        <target>Авади</target>
       </trans-unit>
       <trans-unit id="ay" approved="yes">
         <source>Aymara</source>
@@ -156,7 +156,7 @@
       </trans-unit>
       <trans-unit id="ban" approved="yes">
         <source>Balinese</source>
-        <target>Балинески</target>
+        <target>Балийски</target>
       </trans-unit>
       <trans-unit id="bas" approved="yes">
         <source>Basa</source>
@@ -186,17 +186,17 @@
         <source>Bulgarian</source>
         <target>Български</target>
       </trans-unit>
-      <trans-unit id="bh" approved="yes">
-        <source>Bihari languages</source>
-        <target>Бихарски езици</target>
-      </trans-unit>
       <trans-unit id="bho" approved="yes">
         <source>Bhojpuri</source>
-        <target>Бходжури</target>
+        <target>Боджпури</target>
       </trans-unit>
       <trans-unit id="bi" approved="yes">
         <source>Bislama</source>
         <target>Бислама</target>
+      </trans-unit>
+      <trans-unit id="bih" approved="yes">
+        <source>Bihari languages</source>
+        <target>Бихарски езици</target>
       </trans-unit>
       <trans-unit id="bik" approved="yes">
         <source>Bikol</source>
@@ -219,8 +219,8 @@
         <target>Бенгалски</target>
       </trans-unit>
       <trans-unit id="bnt" approved="yes">
-        <source>Bantu (Other)</source>
-        <target>Банту (други)</target>
+        <source>Bantu languages</source>
+        <target>Bantu languages</target>
       </trans-unit>
       <trans-unit id="bo" approved="yes">
         <source>Tibetan</source>
@@ -296,7 +296,7 @@
       </trans-unit>
       <trans-unit id="chk" approved="yes">
         <source>Chuukese</source>
-        <target>Чухски</target>
+        <target>Чуук</target>
       </trans-unit>
       <trans-unit id="chm" approved="yes">
         <source>Mari</source>
@@ -398,6 +398,10 @@
         <source>German</source>
         <target>Германски</target>
       </trans-unit>
+      <trans-unit id="dgr" approved="yes">
+        <source>Tlicho; Dogrib</source>
+        <target>Tlicho; Dogrib</target>
+      </trans-unit>
       <trans-unit id="din" approved="yes">
         <source>Dinka</source>
         <target>Динка</target>
@@ -417,6 +421,10 @@
       <trans-unit id="dv" approved="yes">
         <source>Divehi; Dhivehi; Maldivian</source>
         <target>Дхивехи</target>
+      </trans-unit>
+      <trans-unit id="dyu" approved="yes">
+        <source>Dyula</source>
+        <target>Диула</target>
       </trans-unit>
       <trans-unit id="dz" approved="yes">
         <source>Dzongkha</source>
@@ -485,6 +493,10 @@
       <trans-unit id="fo" approved="yes">
         <source>Faroese</source>
         <target>Фарьорски</target>
+      </trans-unit>
+      <trans-unit id="fon" approved="yes">
+        <source>Fon</source>
+        <target>Фон</target>
       </trans-unit>
       <trans-unit id="fr" approved="yes">
         <source>French</source>
@@ -598,6 +610,10 @@
         <source>Armenian</source>
         <target>Арменски</target>
       </trans-unit>
+      <trans-unit id="iba" approved="yes">
+        <source>Iban</source>
+        <target>Ибан</target>
+      </trans-unit>
       <trans-unit id="id" approved="yes">
         <source>Indonesian</source>
         <target>Индонезийски</target>
@@ -654,6 +670,10 @@
         <source>Kongo</source>
         <target>Конгоански</target>
       </trans-unit>
+      <trans-unit id="kha" approved="yes">
+        <source>Khasi</source>
+        <target>Кхаси</target>
+      </trans-unit>
       <trans-unit id="kk" approved="yes">
         <source>Kazakh</source>
         <target>Казахски</target>
@@ -666,6 +686,10 @@
         <source>Korean</source>
         <target>Корейски</target>
       </trans-unit>
+      <trans-unit id="kr" approved="yes">
+        <source>Kanuri</source>
+        <target>Канури</target>
+      </trans-unit>
       <trans-unit id="krc" approved="yes">
         <source>Karachay-Balkar</source>
         <target>Карачаевобалкарски</target>
@@ -677,6 +701,10 @@
       <trans-unit id="ku" approved="yes">
         <source>Kurdish</source>
         <target>Кюрдски</target>
+      </trans-unit>
+      <trans-unit id="kv" approved="yes">
+        <source>Komi</source>
+        <target>Коми</target>
       </trans-unit>
       <trans-unit id="kw" approved="yes">
         <source>Cornish</source>
@@ -706,9 +734,17 @@
         <source>Lithuanian</source>
         <target>Литовски</target>
       </trans-unit>
+      <trans-unit id="luo" approved="yes">
+        <source>Luo (Kenya and Tanzania)</source>
+        <target>Луо (Кения и Танзания)</target>
+      </trans-unit>
       <trans-unit id="lv" approved="yes">
         <source>Latvian</source>
         <target>Латвийски</target>
+      </trans-unit>
+      <trans-unit id="mad" approved="yes">
+        <source>Madurese</source>
+        <target>Мадурски</target>
       </trans-unit>
       <trans-unit id="mg" approved="yes">
         <source>Malagasy</source>
@@ -734,6 +770,10 @@
         <source>Mongolian</source>
         <target>Монголски</target>
       </trans-unit>
+      <trans-unit id="mni" approved="yes">
+        <source>Manipuri</source>
+        <target>Манипурски</target>
+      </trans-unit>
       <trans-unit id="ms" approved="yes">
         <source>Malay</source>
         <target>Малайски</target>
@@ -755,8 +795,8 @@
         <target>Неаполитански</target>
       </trans-unit>
       <trans-unit id="nb" approved="yes">
-        <source>Bokmål, Norwegian; Norwegian Bokmål</source>
-        <target>Букмол</target>
+        <source>Norwegian Bokmål</source>
+        <target>Norwegian Bokmål</target>
       </trans-unit>
       <trans-unit id="nds" approved="yes">
         <source>Low German; Low Saxon; German, Low; Saxon, Low</source>
@@ -771,8 +811,8 @@
         <target>Холандски</target>
       </trans-unit>
       <trans-unit id="nn" approved="yes">
-        <source>Norwegian Nynorsk; Nynorsk, Norwegian</source>
-        <target>Нинорск, Норвежки</target>
+        <source>Norwegian Nynorsk</source>
+        <target>Norwegian Nynorsk</target>
       </trans-unit>
       <trans-unit id="no" approved="yes">
         <source>Norwegian</source>
@@ -782,13 +822,21 @@
         <source>Navajo; Navaho</source>
         <target>Навахо</target>
       </trans-unit>
+      <trans-unit id="ny" approved="yes">
+        <source>Chichewa; Chewa; Nyanja</source>
+        <target>Чичева; Чева, Нянджа</target>
+      </trans-unit>
       <trans-unit id="oc" approved="yes">
-        <source>Occitan (post 1500); Provençal</source>
-        <target>Occitan (post 1500); Provençal</target>
+        <source>Occitan (post 1500)</source>
+        <target>Occitan (post 1500)</target>
       </trans-unit>
       <trans-unit id="ota" approved="yes">
         <source>Turkish, Ottoman (1500-1928)</source>
         <target>Османски турски (1500-1928)</target>
+      </trans-unit>
+      <trans-unit id="pam" approved="yes">
+        <source>Pampanga; Kapampangan</source>
+        <target>Пампанга</target>
       </trans-unit>
       <trans-unit id="peo" approved="yes">
         <source>Persian, Old (ca. 600-400 B.C.)</source>
@@ -807,8 +855,8 @@
         <target>Полски</target>
       </trans-unit>
       <trans-unit id="pro" approved="yes">
-        <source>Provençal, Old (to 1500)</source>
-        <target>Provençal, Old (to 1500)</target>
+        <source>Provençal, Old (to 1500); Occitan, Old (to 1500)</source>
+        <target>Provençal, Old (to 1500); Occitan, Old (to 1500)</target>
       </trans-unit>
       <trans-unit id="ps" approved="yes">
         <source>Pushto; Pashto</source>
@@ -847,8 +895,8 @@
         <target>Санскритски</target>
       </trans-unit>
       <trans-unit id="sai" approved="yes">
-        <source>South American Indian (Other)</source>
-        <target>южноамерикански индиански (други)</target>
+        <source>South American Indian languages</source>
+        <target>South American Indian languages</target>
       </trans-unit>
       <trans-unit id="sc" approved="yes">
         <source>Sardinian</source>

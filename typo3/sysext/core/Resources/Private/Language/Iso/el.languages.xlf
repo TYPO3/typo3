@@ -70,7 +70,7 @@
         <source>Bulgarian</source>
         <target>Βουλγάρικα</target>
       </trans-unit>
-      <trans-unit id="bh" approved="yes">
+      <trans-unit id="bih" approved="yes">
         <source>Bihari languages</source>
         <target>Bihari languages</target>
       </trans-unit>
@@ -85,6 +85,10 @@
       <trans-unit id="bn" approved="yes">
         <source>Bengali</source>
         <target>Βεγγαλικά</target>
+      </trans-unit>
+      <trans-unit id="bnt" approved="yes">
+        <source>Bantu languages</source>
+        <target>Bantu languages</target>
       </trans-unit>
       <trans-unit id="bo" approved="yes">
         <source>Tibetan</source>
@@ -498,6 +502,10 @@
         <source>North American Indian languages</source>
         <target>Ινδιάνικες γλώσσες Βόρειας Αμερικής</target>
       </trans-unit>
+      <trans-unit id="nb" approved="yes">
+        <source>Norwegian Bokmål</source>
+        <target>Norwegian Bokmål</target>
+      </trans-unit>
       <trans-unit id="nds" approved="yes">
         <source>Low German; Low Saxon; German, Low; Saxon, Low</source>
         <target>Κάτω Γερμανικά; Κάτω Σαξονικά; Γερμανικά, κάτω; Σαξονικά, κάτω</target>
@@ -507,8 +515,8 @@
         <target>Niger-Kordofanian languages</target>
       </trans-unit>
       <trans-unit id="nn" approved="yes">
-        <source>Norwegian Nynorsk; Nynorsk, Norwegian</source>
-        <target>Norwegian Nynorsk; Nynorsk, Norwegian</target>
+        <source>Norwegian Nynorsk</source>
+        <target>Norwegian Nynorsk</target>
       </trans-unit>
       <trans-unit id="no" approved="yes">
         <source>Norwegian</source>
@@ -543,8 +551,8 @@
         <target>Πολωνέζικα</target>
       </trans-unit>
       <trans-unit id="pro" approved="yes">
-        <source>Provençal, Old (to 1500)</source>
-        <target>Provençal, Old (to 1500)</target>
+        <source>Provençal, Old (to 1500); Occitan, Old (to 1500)</source>
+        <target>Provençal, Old (to 1500); Occitan, Old (to 1500)</target>
       </trans-unit>
       <trans-unit id="pt" approved="yes">
         <source>Portuguese</source>
@@ -571,8 +579,8 @@
         <target>Σανσκριτικά</target>
       </trans-unit>
       <trans-unit id="sai" approved="yes">
-        <source>South American Indian (Other)</source>
-        <target>South American Indian (Other)</target>
+        <source>South American Indian languages</source>
+        <target>South American Indian languages</target>
       </trans-unit>
       <trans-unit id="scn" approved="yes">
         <source>Sicilian</source>

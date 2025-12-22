@@ -142,13 +142,13 @@
         <source>Bulgarian</source>
         <target>Bugarski</target>
       </trans-unit>
-      <trans-unit id="bh" approved="yes">
-        <source>Bihari languages</source>
-        <target>Biharski jezici</target>
-      </trans-unit>
       <trans-unit id="bi" approved="yes">
         <source>Bislama</source>
         <target>Bislama</target>
+      </trans-unit>
+      <trans-unit id="bih" approved="yes">
+        <source>Bihari languages</source>
+        <target>Biharski jezici</target>
       </trans-unit>
       <trans-unit id="bik" approved="yes">
         <source>Bikol</source>
@@ -161,6 +161,10 @@
       <trans-unit id="bn" approved="yes">
         <source>Bengali</source>
         <target>Bengalski</target>
+      </trans-unit>
+      <trans-unit id="bnt" approved="yes">
+        <source>Bantu languages</source>
+        <target>Bantu languages</target>
       </trans-unit>
       <trans-unit id="bo" approved="yes">
         <source>Tibetan</source>
@@ -775,8 +779,8 @@
         <target>Napolitanski</target>
       </trans-unit>
       <trans-unit id="nb" approved="yes">
-        <source>Bokmål, Norwegian; Norwegian Bokmål</source>
-        <target>Knjiški norveški (bokmål)</target>
+        <source>Norwegian Bokmål</source>
+        <target>Norwegian Bokmål</target>
       </trans-unit>
       <trans-unit id="ne" approved="yes">
         <source>Nepali</source>
@@ -795,8 +799,8 @@
         <target>Nizozemski; flamanski</target>
       </trans-unit>
       <trans-unit id="nn" approved="yes">
-        <source>Norwegian Nynorsk; Nynorsk, Norwegian</source>
-        <target>Novonorveški (nynorsk)</target>
+        <source>Norwegian Nynorsk</source>
+        <target>Norwegian Nynorsk</target>
       </trans-unit>
       <trans-unit id="no" approved="yes">
         <source>Norwegian</source>
@@ -811,8 +815,8 @@
         <target>Nubijski jezici</target>
       </trans-unit>
       <trans-unit id="oc" approved="yes">
-        <source>Occitan (post 1500); Provençal</source>
-        <target>Okcitanski (nakon 1500.)</target>
+        <source>Occitan (post 1500)</source>
+        <target>Occitan (post 1500)</target>
       </trans-unit>
       <trans-unit id="or" approved="yes">
         <source>Oriya</source>
@@ -871,8 +875,8 @@
         <target>Prakritski jezici</target>
       </trans-unit>
       <trans-unit id="pro" approved="yes">
-        <source>Provençal, Old (to 1500)</source>
-        <target>Okcitanski, stari (do 1500.)</target>
+        <source>Provençal, Old (to 1500); Occitan, Old (to 1500)</source>
+        <target>Provençal, Old (to 1500); Occitan, Old (to 1500)</target>
       </trans-unit>
       <trans-unit id="ps" approved="yes">
         <source>Pushto; Pashto</source>
@@ -931,8 +935,8 @@
         <target>Sanskrt</target>
       </trans-unit>
       <trans-unit id="sai" approved="yes">
-        <source>South American Indian (Other)</source>
-        <target>Južnoamerički indijanski (ostali)</target>
+        <source>South American Indian languages</source>
+        <target>South American Indian languages</target>
       </trans-unit>
       <trans-unit id="sal" approved="yes">
         <source>Salishan languages</source>

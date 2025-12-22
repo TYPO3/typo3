@@ -16,7 +16,7 @@
       </trans-unit>
       <trans-unit id="AF.name" approved="yes">
         <source>Afghanistan</source>
-        <target>Afghanistan</target>
+        <target>Afganistan</target>
       </trans-unit>
       <trans-unit id="AF.official_name" approved="yes">
         <source>Islamic Republic of Afghanistan</source>
@@ -100,7 +100,7 @@
       </trans-unit>
       <trans-unit id="BA.name" approved="yes">
         <source>Bosnia and Herzegovina</source>
-        <target>Bosnia-Hertsegovina</target>
+        <target>Bosnia ja Hertsegovina</target>
       </trans-unit>
       <trans-unit id="BA.official_name" approved="yes">
         <source>Republic of Bosnia and Herzegovina</source>
@@ -332,11 +332,11 @@
       </trans-unit>
       <trans-unit id="CV.name" approved="yes">
         <source>Cabo Verde</source>
-        <target>Cabo Verde</target>
+        <target>Kap Verde</target>
       </trans-unit>
       <trans-unit id="CV.official_name" approved="yes">
         <source>Republic of Cabo Verde</source>
-        <target>Republic of Cabo Verde</target>
+        <target>Kap Verden tasavalta</target>
       </trans-unit>
       <trans-unit id="CW.name" approved="yes">
         <source>Curaçao</source>
@@ -357,6 +357,10 @@
       <trans-unit id="CY.official_name" approved="yes">
         <source>Republic of Cyprus</source>
         <target>Kyproksen tasavalta</target>
+      </trans-unit>
+      <trans-unit id="CZ.name" approved="yes">
+        <source>Czechia</source>
+        <target>Tšekki</target>
       </trans-unit>
       <trans-unit id="CZ.official_name" approved="yes">
         <source>Czech Republic</source>
@@ -440,7 +444,7 @@
       </trans-unit>
       <trans-unit id="ER.official_name" approved="yes">
         <source>the State of Eritrea</source>
-        <target>the State of Eritrea</target>
+        <target>Eritrean valtio</target>
       </trans-unit>
       <trans-unit id="ES.name" approved="yes">
         <source>Spain</source>
@@ -552,7 +556,7 @@
       </trans-unit>
       <trans-unit id="GM.official_name" approved="yes">
         <source>Republic of the Gambia</source>
-        <target>Republic of the Gambia</target>
+        <target>Gambian tasavalta</target>
       </trans-unit>
       <trans-unit id="GN.name" approved="yes">
         <source>Guinea</source>
@@ -616,7 +620,7 @@
       </trans-unit>
       <trans-unit id="HK.name" approved="yes">
         <source>Hong Kong</source>
-        <target>Hong Kong</target>
+        <target>Hongkong</target>
       </trans-unit>
       <trans-unit id="HK.official_name" approved="yes">
         <source>Hong Kong Special Administrative Region of China</source>
@@ -1184,7 +1188,7 @@
       </trans-unit>
       <trans-unit id="PG.official_name" approved="yes">
         <source>Independent State of Papua New Guinea</source>
-        <target>Independent State of Papua New Guinea</target>
+        <target>Papua-Uuden-Guinean itsenäinen valtio</target>
       </trans-unit>
       <trans-unit id="PH.name" approved="yes">
         <source>Philippines</source>
@@ -1222,9 +1226,13 @@
         <source>Puerto Rico</source>
         <target>Puerto Rico</target>
       </trans-unit>
+      <trans-unit id="PS.name" approved="yes">
+        <source>Palestine, State of</source>
+        <target>Palestiina, valtio</target>
+      </trans-unit>
       <trans-unit id="PS.official_name" approved="yes">
         <source>the State of Palestine</source>
-        <target>the State of Palestine</target>
+        <target>Palestiinan valtio</target>
       </trans-unit>
       <trans-unit id="PT.name" approved="yes">
         <source>Portugal</source>
@@ -1384,7 +1392,7 @@
       </trans-unit>
       <trans-unit id="SO.official_name" approved="yes">
         <source>Federal Republic of Somalia</source>
-        <target>Federal Republic of Somalia</target>
+        <target>Somalian liittotasavalta</target>
       </trans-unit>
       <trans-unit id="SR.name" approved="yes">
         <source>Suriname</source>
@@ -1430,9 +1438,13 @@
         <source>Syrian Arab Republic</source>
         <target>Syyrian arabitasavalta</target>
       </trans-unit>
+      <trans-unit id="SZ.name" approved="yes">
+        <source>Eswatini</source>
+        <target>Swazimaa</target>
+      </trans-unit>
       <trans-unit id="SZ.official_name" approved="yes">
         <source>Kingdom of Eswatini</source>
-        <target>Kingdom of Eswatini</target>
+        <target>Eswatinin kuningaskunta</target>
       </trans-unit>
       <trans-unit id="TC.name" approved="yes">
         <source>Turks and Caicos Islands</source>

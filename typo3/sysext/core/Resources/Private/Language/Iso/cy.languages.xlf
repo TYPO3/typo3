@@ -190,10 +190,6 @@
         <source>Bulgarian</source>
         <target>Bwlgareg</target>
       </trans-unit>
-      <trans-unit id="bh" approved="yes">
-        <source>Bihari languages</source>
-        <target>Ieithoedd Bihari</target>
-      </trans-unit>
       <trans-unit id="bho" approved="yes">
         <source>Bhojpuri</source>
         <target>Bhojpureg</target>
@@ -201,6 +197,10 @@
       <trans-unit id="bi" approved="yes">
         <source>Bislama</source>
         <target>Bislama</target>
+      </trans-unit>
+      <trans-unit id="bih" approved="yes">
+        <source>Bihari languages</source>
+        <target>Ieithoedd Bihari</target>
       </trans-unit>
       <trans-unit id="bik" approved="yes">
         <source>Bikol</source>
@@ -223,8 +223,8 @@
         <target>Bengaleg</target>
       </trans-unit>
       <trans-unit id="bnt" approved="yes">
-        <source>Bantu (Other)</source>
-        <target>Bantw (Arall)</target>
+        <source>Bantu languages</source>
+        <target>Bantu languages</target>
       </trans-unit>
       <trans-unit id="bo" approved="yes">
         <source>Tibetan</source>
@@ -375,8 +375,8 @@
         <target>Delaware</target>
       </trans-unit>
       <trans-unit id="dgr" approved="yes">
-        <source>Dogrib</source>
-        <target>Dogrib</target>
+        <source>Tlicho; Dogrib</source>
+        <target>Tlicho; Dogrib</target>
       </trans-unit>
       <trans-unit id="din" approved="yes">
         <source>Dinka</source>
@@ -1075,8 +1075,8 @@
         <target>Neapolitan</target>
       </trans-unit>
       <trans-unit id="nb" approved="yes">
-        <source>Bokmål, Norwegian; Norwegian Bokmål</source>
-        <target>Norwyeg (Bokmål)</target>
+        <source>Norwegian Bokmål</source>
+        <target>Norwegian Bokmål</target>
       </trans-unit>
       <trans-unit id="ne" approved="yes">
         <source>Nepali</source>
@@ -1103,8 +1103,8 @@
         <target>Iseldireg; Fflemeg</target>
       </trans-unit>
       <trans-unit id="nn" approved="yes">
-        <source>Norwegian Nynorsk; Nynorsk, Norwegian</source>
-        <target>Norwyeg (Nynorsk)</target>
+        <source>Norwegian Nynorsk</source>
+        <target>Norwegian Nynorsk</target>
       </trans-unit>
       <trans-unit id="no" approved="yes">
         <source>Norwegian</source>
@@ -1267,8 +1267,8 @@
         <target>Yakut</target>
       </trans-unit>
       <trans-unit id="sai" approved="yes">
-        <source>South American Indian (Other)</source>
-        <target>South American Indian (Other)</target>
+        <source>South American Indian languages</source>
+        <target>South American Indian languages</target>
       </trans-unit>
       <trans-unit id="sas" approved="yes">
         <source>Sasak</source>
@@ -1597,10 +1597,6 @@
       <trans-unit id="wa" approved="yes">
         <source>Walloon</source>
         <target>Walloon</target>
-      </trans-unit>
-      <trans-unit id="wal" approved="yes">
-        <source>Walamo</source>
-        <target>Walamo</target>
       </trans-unit>
       <trans-unit id="war" approved="yes">
         <source>Waray</source>
