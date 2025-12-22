@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
-use TYPO3\CMS\Core\Domain\Record;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
@@ -42,10 +41,11 @@ use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Security\PermissionSet\PrincipalRole;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
-use TYPO3\CMS\Core\SysLog\Type;
+use TYPO3\CMS\Core\SysLog\Repository\LogEntryRepository;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Type\Bitmask\BackendGroupMountOption;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -414,6 +414,17 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             return true;
         }
         return false;
+    }
+
+    public function getRole(): PrincipalRole
+    {
+        if ($this->isSystemMaintainer()) {
+            return PrincipalRole::MAINTAINER;
+        }
+        if ($this->isAdmin()) {
+            return PrincipalRole::ADMIN;
+        }
+        return PrincipalRole::USER;
     }
 
     /**
@@ -1777,54 +1788,17 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public function writelog($type, $action, $error, $_, $details, $data, $tablename = '', $recuid = '', $__ = null, $event_pid = -1, $___ = null, $userId = 0)
     {
-        if (!$userId && !empty($this->user['uid'])) {
-            $userId = $this->user['uid'];
-        }
-        if ($backuserid = $this->getOriginalUserIdWhenInSwitchUserMode()) {
-            if (empty($data)) {
-                $data = [];
-            }
-            $data['originalUser'] = $backuserid;
-        }
-        // @todo Remove this once this method is properly typed.
-        $type = (int)$type;
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_log');
-        $connection->insert(
-            'sys_log',
-            [
-                'userid' => (int)$userId,
-                'type' => $type,
-                'channel' => Type::toChannel($type),
-                'level' => Type::toLevel($type),
-                'action' => (int)$action,
-                'error' => (int)$error,
-                'details' => $details,
-                'log_data' => empty($data) ? '' : json_encode($data),
-                'tablename' => $tablename,
-                'recuid' => (int)$recuid,
-                'IP' => (string)GeneralUtility::getIndpEnv('REMOTE_ADDR'),
-                'tstamp' => $GLOBALS['EXEC_TIME'] ?? time(),
-                'event_pid' => (int)$event_pid,
-                'workspace' => $this->workspace,
-            ],
-            [
-                Connection::PARAM_INT,
-                Connection::PARAM_INT,
-                Connection::PARAM_STR,
-                Connection::PARAM_STR,
-                Connection::PARAM_INT,
-                Connection::PARAM_INT,
-                Connection::PARAM_STR,
-                Connection::PARAM_STR,
-                Connection::PARAM_STR,
-                Connection::PARAM_INT,
-                Connection::PARAM_STR,
-                Connection::PARAM_INT,
-                Connection::PARAM_INT,
-                Connection::PARAM_INT,
-            ]
+        return GeneralUtility::makeInstance(LogEntryRepository::class)->writeLogEntryForBackendUser(
+            $this,
+            (int)$type,
+            (int)$action,
+            (int)$error,
+            (string)$details,
+            (array)$data,
+            (string)$tablename,
+            (int)$recuid,
+            (int)$event_pid,
         );
-        return (int)$connection->lastInsertId();
     }
 
     /**

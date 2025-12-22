@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface;
@@ -45,9 +46,11 @@ use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
 use TYPO3\CMS\Core\Schema\FieldTypeFactory;
 use TYPO3\CMS\Core\Schema\RelationMapBuilder;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Security\PermissionSet\PrincipalRole;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\SysLog\Action;
 use TYPO3\CMS\Core\SysLog\Error;
+use TYPO3\CMS\Core\SysLog\Repository\LogEntryRepository;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\AllowAccessHookFixture;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\InvalidHookFixture;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\UserOddNumberFilter;
@@ -72,11 +75,16 @@ final class DataHandlerTest extends UnitTestCase
             '',
             $cacheMock
         );
+        $connectionMock = $this->createMock(Connection::class);
+        $connectionMock->method('insert')->willReturn(1);
+        $connectionMock->method('lastInsertId')->willReturn('1');
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolMock->method('getConnectionForTable')->willReturn($connectionMock);
         $constructorArguments = [
             new NoopEventDispatcher(),
             $this->createMock(CacheManager::class),
             $this->createMock(FrontendInterface::class),
-            $this->createMock(ConnectionPool::class),
+            $connectionPoolMock,
             $this->createMock(LoggerInterface::class),
             new PagePermissionAssembler(),
             $this->tcaSchemaFactory,
@@ -87,6 +95,7 @@ final class DataHandlerTest extends UnitTestCase
             new TypoLinkCodecService(new NoopEventDispatcher()),
             new OpcodeCacheService(),
             $this->createMock(FlashMessageService::class),
+            new LogEntryRepository($connectionPoolMock),
         ];
         $this->subject = $this->getAccessibleMock(DataHandler::class, null, $constructorArguments);
         $this->subject->start([], [], new BackendUserAuthentication(), $this->createMock(ReferenceIndexUpdater::class));
@@ -241,11 +250,12 @@ final class DataHandlerTest extends UnitTestCase
         $event = new EnrichPasswordValidationContextDataEvent(new ContextData(), [], '');
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcher->expects($this->once())->method('dispatch')->willReturn($event);
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
         $constructorArguments = [
             $eventDispatcher,
             $this->createMock(CacheManager::class),
             $this->createMock(FrontendInterface::class),
-            $this->createMock(ConnectionPool::class),
+            $connectionPoolMock,
             $this->createMock(LoggerInterface::class),
             new PagePermissionAssembler(),
             $this->tcaSchemaFactory,
@@ -256,6 +266,7 @@ final class DataHandlerTest extends UnitTestCase
             new TypoLinkCodecService(new NoopEventDispatcher()),
             new OpcodeCacheService(),
             $this->createMock(FlashMessageService::class),
+            new LogEntryRepository($connectionPoolMock),
         ];
         $subject = $this->getAccessibleMock(DataHandler::class, null, $constructorArguments, '');
         $inputValue = 'myPassword';
@@ -1017,26 +1028,37 @@ final class DataHandlerTest extends UnitTestCase
     public function logCallsWriteLogOfBackendUserIfLoggingIsEnabled(): void
     {
         $backendUser = $this->createMock(BackendUserAuthentication::class);
-        $backendUser->expects($this->once())->method('writelog');
+        $backendUser->method('getRole')->willReturn(PrincipalRole::USER);
+        $backendUser->method('getUserId')->willReturn(1);
+        $backendUser->workspace = 0;
         $this->subject->enableLogging = true;
         $this->subject->BE_USER = $backendUser;
-        $this->subject->log('', 23, Action::UNDEFINED, null, Error::MESSAGE, 'details');
+        $result = $this->subject->log('', 23, Action::UNDEFINED, null, Error::MESSAGE, 'details');
+        // When logging is enabled, a log entry ID should be returned
+        self::assertGreaterThan(0, $result);
     }
 
     #[Test]
     public function logDoesNotCallWriteLogOfBackendUserIfLoggingIsDisabled(): void
     {
         $backendUser = $this->createMock(BackendUserAuthentication::class);
-        $backendUser->expects($this->never())->method('writelog');
+        $backendUser->method('getRole')->willReturn(PrincipalRole::USER);
+        $backendUser->method('getUserId')->willReturn(1);
+        $backendUser->workspace = 0;
         $this->subject->enableLogging = false;
         $this->subject->BE_USER = $backendUser;
-        $this->subject->log('', 23, Action::UNDEFINED, null, Error::MESSAGE, 'details');
+        $result = $this->subject->log('', 23, Action::UNDEFINED, null, Error::MESSAGE, 'details');
+        // When logging is disabled, 0 should be returned
+        self::assertEquals(0, $result);
     }
 
     #[Test]
     public function logAddsEntryToLocalErrorLogArray(): void
     {
         $backendUser = $this->createMock(BackendUserAuthentication::class);
+        $backendUser->method('getRole')->willReturn(PrincipalRole::USER);
+        $backendUser->method('getUserId')->willReturn(1);
+        $backendUser->workspace = 0;
         $this->subject->BE_USER = $backendUser;
         $this->subject->enableLogging = true;
         $this->subject->errorLog = [];
@@ -1049,11 +1071,12 @@ final class DataHandlerTest extends UnitTestCase
     #[Test]
     public function logFormatsDetailMessageWithAdditionalDataInLocalErrorArray(): void
     {
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
         $subject = new DataHandler(
             new NoopEventDispatcher(),
             $this->createMock(CacheManager::class),
             $this->createMock(FrontendInterface::class),
-            $this->createMock(ConnectionPool::class),
+            $connectionPoolMock,
             $this->createMock(LoggerInterface::class),
             new PagePermissionAssembler(),
             $this->tcaSchemaFactory,
@@ -1064,8 +1087,13 @@ final class DataHandlerTest extends UnitTestCase
             new TypoLinkCodecService(new NoopEventDispatcher()),
             new OpcodeCacheService(),
             $this->createMock(FlashMessageService::class),
+            new LogEntryRepository($connectionPoolMock),
         );
-        $subject->start([], [], $this->createMock(BackendUserAuthentication::class), $this->createMock(ReferenceIndexUpdater::class));
+        $backendUser = $this->createMock(BackendUserAuthentication::class);
+        $backendUser->method('getRole')->willReturn(PrincipalRole::USER);
+        $backendUser->method('getUserId')->willReturn(1);
+        $backendUser->workspace = 0;
+        $subject->start([], [], $backendUser, $this->createMock(ReferenceIndexUpdater::class));
         $logDetails = StringUtility::getUniqueId('details');
         $subject->log('', 23, Action::UNDEFINED, null, Error::USER_ERROR, '%1$s' . $logDetails . '%2$s', null, ['foo', 'bar']);
         $expected = 'foo' . $logDetails . 'bar';
@@ -1075,11 +1103,12 @@ final class DataHandlerTest extends UnitTestCase
     #[Test]
     public function logFormatsDetailMessageWithPlaceholders(): void
     {
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
         $subject = new DataHandler(
             new NoopEventDispatcher(),
             $this->createMock(CacheManager::class),
             $this->createMock(FrontendInterface::class),
-            $this->createMock(ConnectionPool::class),
+            $connectionPoolMock,
             $this->createMock(LoggerInterface::class),
             new PagePermissionAssembler(),
             $this->tcaSchemaFactory,
@@ -1090,8 +1119,13 @@ final class DataHandlerTest extends UnitTestCase
             new TypoLinkCodecService(new NoopEventDispatcher()),
             new OpcodeCacheService(),
             $this->createMock(FlashMessageService::class),
+            new LogEntryRepository($connectionPoolMock),
         );
-        $subject->start([], [], $this->createMock(BackendUserAuthentication::class), $this->createMock(ReferenceIndexUpdater::class));
+        $backendUser = $this->createMock(BackendUserAuthentication::class);
+        $backendUser->method('getRole')->willReturn(PrincipalRole::USER);
+        $backendUser->method('getUserId')->willReturn(1);
+        $backendUser->workspace = 0;
+        $subject->start([], [], $backendUser, $this->createMock(ReferenceIndexUpdater::class));
         $logDetails = 'An error occurred on {table}:{uid} when localizing';
         $subject->log('', 23, Action::UNDEFINED, null, Error::USER_ERROR, $logDetails, null, ['table' => 'tx_sometable', 0 => 'some random value']);
         // UID is kept as non-replaced, and other properties are not replaced.
@@ -1498,11 +1532,12 @@ final class DataHandlerTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageServiceMock;
         $GLOBALS['TCA']['testTable']['ctrl']['prependAtCopy'] = 'testLabel';
         $this->tcaSchemaFactory->load($GLOBALS['TCA'], true);
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
         $subject = new DataHandler(
             new NoopEventDispatcher(),
             $this->createMock(CacheManager::class),
             $this->createMock(FrontendInterface::class),
-            $this->createMock(ConnectionPool::class),
+            $connectionPoolMock,
             $this->createMock(LoggerInterface::class),
             new PagePermissionAssembler(),
             $this->tcaSchemaFactory,
@@ -1513,6 +1548,7 @@ final class DataHandlerTest extends UnitTestCase
             new TypoLinkCodecService(new NoopEventDispatcher()),
             new OpcodeCacheService(),
             $this->createMock(FlashMessageService::class),
+            new LogEntryRepository($connectionPoolMock),
         );
         self::assertEquals($expected, $subject->clearPrefixFromValue('testTable', $input));
     }

@@ -78,6 +78,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\SysLog\Action\Cache as SystemLogCacheAction;
 use TYPO3\CMS\Core\SysLog\Action\Database as SystemLogDatabaseAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
+use TYPO3\CMS\Core\SysLog\Repository\LogEntryRepository;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -404,6 +405,7 @@ class DataHandler
         private readonly TypoLinkCodecService $typoLinkCodecService,
         private readonly OpcodeCacheService $opcodeCacheService,
         private readonly FlashMessageService $flashMessageService,
+        private readonly LogEntryRepository $logEntryRepository,
     ) {}
 
     /**
@@ -8929,7 +8931,14 @@ class DataHandler
      */
     public function clear_cacheCmd($cacheCmd): void
     {
-        $this->BE_USER->writeLog(SystemLogType::CACHE, SystemLogCacheAction::CLEAR, SystemLogErrorClassification::MESSAGE, null, 'User {username} has cleared the cache (cacheCmd={command})', ['username' => $this->BE_USER->user['username'], 'command' => $cacheCmd]);
+        $this->logEntryRepository->writeLogEntryForBackendUser(
+            $this->BE_USER,
+            SystemLogType::CACHE,
+            SystemLogCacheAction::CLEAR,
+            SystemLogErrorClassification::MESSAGE,
+            'User {username} has cleared the cache (cacheCmd={command})',
+            ['username' => $this->BE_USER->user['username'], 'command' => $cacheCmd]
+        );
         $userTsConfig = $this->BE_USER->getTSConfig();
         switch (strtolower($cacheCmd)) {
             case 'pages':
@@ -9017,7 +9026,17 @@ class DataHandler
             $detailMessage = $this->formatLogDetails($detailMessage, $data);
             $this->errorLog[] = '[' . SystemLogType::DB . '.' . $action . ']: ' . $detailMessage;
         }
-        return $this->BE_USER->writelog(SystemLogType::DB, $action, $error, null, $details, $data, $table, abs((int)$recuid), null, $event_pid);
+        return $this->logEntryRepository->writeLogEntryForBackendUser(
+            $this->BE_USER,
+            SystemLogType::DB,
+            (int)$action,
+            (int)$error,
+            (string)$details,
+            $data,
+            (string)$table,
+            abs((int)$recuid),
+            (int)$event_pid
+        );
     }
 
     /**
