@@ -190,10 +190,6 @@
         <source>Bulgarian</source>
         <target>Bulgáiris</target>
       </trans-unit>
-      <trans-unit id="bh" approved="yes">
-        <source>Bihari languages</source>
-        <target>Teangacha Bihari</target>
-      </trans-unit>
       <trans-unit id="bho" approved="yes">
         <source>Bhojpuri</source>
         <target>Bhojpuri</target>
@@ -201,6 +197,10 @@
       <trans-unit id="bi" approved="yes">
         <source>Bislama</source>
         <target>Bioslamais</target>
+      </trans-unit>
+      <trans-unit id="bih" approved="yes">
+        <source>Bihari languages</source>
+        <target>Teangacha Bihari</target>
       </trans-unit>
       <trans-unit id="bik" approved="yes">
         <source>Bikol</source>
@@ -223,8 +223,8 @@
         <target>Beangáilis</target>
       </trans-unit>
       <trans-unit id="bnt" approved="yes">
-        <source>Bantu (Other)</source>
-        <target>Bantu (Eile)</target>
+        <source>Bantu languages</source>
+        <target>Teangacha Bantu</target>
       </trans-unit>
       <trans-unit id="bo" approved="yes">
         <source>Tibetan</source>
@@ -423,8 +423,8 @@
         <target>Sclábhaí (Athapascan)</target>
       </trans-unit>
       <trans-unit id="dgr" approved="yes">
-        <source>Dogrib</source>
-        <target>Dogrib</target>
+        <source>Tlicho; Dogrib</source>
+        <target>Tlicho; Dogrib</target>
       </trans-unit>
       <trans-unit id="din" approved="yes">
         <source>Dinka</source>
@@ -1211,11 +1211,11 @@
         <target>Naiplis</target>
       </trans-unit>
       <trans-unit id="nb" approved="yes">
-        <source>Bokmål, Norwegian; Norwegian Bokmål</source>
+        <source>Norwegian Bokmål</source>
         <target>Ioruais Bokmål</target>
       </trans-unit>
       <trans-unit id="nd" approved="yes">
-        <source>Ndebele, North; North Ndebele</source>
+        <source>North Ndebele</source>
         <target>Ndebele Thuaidh</target>
       </trans-unit>
       <trans-unit id="nds" approved="yes">
@@ -1227,8 +1227,8 @@
         <target>Neipeailis</target>
       </trans-unit>
       <trans-unit id="new" approved="yes">
-        <source>Nepal Bhasa; Newari</source>
-        <target>Teanga Neipeal; Newari</target>
+        <source>Nepal Bhasa; Newar; Newari</source>
+        <target>Bhasa Neipeal; Newar; Newari</target>
       </trans-unit>
       <trans-unit id="ng" approved="yes">
         <source>Ndonga</source>
@@ -1251,7 +1251,7 @@
         <target>Ollainnis; Pléimeannais</target>
       </trans-unit>
       <trans-unit id="nn" approved="yes">
-        <source>Norwegian Nynorsk; Nynorsk, Norwegian</source>
+        <source>Norwegian Nynorsk</source>
         <target>Ioruais Nynorsk</target>
       </trans-unit>
       <trans-unit id="no" approved="yes">
@@ -1271,7 +1271,7 @@
         <target>N'Ko</target>
       </trans-unit>
       <trans-unit id="nr" approved="yes">
-        <source>Ndebele, South; South Ndebele</source>
+        <source>South Ndebele</source>
         <target>Ndebele Theas</target>
       </trans-unit>
       <trans-unit id="nso" approved="yes">
@@ -1311,8 +1311,8 @@
         <target>Nzima</target>
       </trans-unit>
       <trans-unit id="oc" approved="yes">
-        <source>Occitan (post 1500); Provençal</source>
-        <target>Occitan (i ndiaidh 1500); Provençal</target>
+        <source>Occitan (post 1500)</source>
+        <target>Ocsaítéis (i ndiaidh 1500)</target>
       </trans-unit>
       <trans-unit id="oj" approved="yes">
         <source>Ojibwa</source>
@@ -1399,8 +1399,8 @@
         <target>Teangacha Prakrit</target>
       </trans-unit>
       <trans-unit id="pro" approved="yes">
-        <source>Provençal, Old (to 1500)</source>
-        <target>Provençal, Sean (go 1500)</target>
+        <source>Provençal, Old (to 1500); Occitan, Old (to 1500)</source>
+        <target>Provençal, Sean-Teangais (go dtí 1500); Occitan, Sean-Teangais (go dtí 1500)</target>
       </trans-unit>
       <trans-unit id="ps" approved="yes">
         <source>Pushto; Pashto</source>
@@ -1475,8 +1475,8 @@
         <target>Iacúitis</target>
       </trans-unit>
       <trans-unit id="sai" approved="yes">
-        <source>South American Indian (Other)</source>
-        <target>Indiach Mheiriceá Theas (Eile)</target>
+        <source>South American Indian languages</source>
+        <target>Teangacha Indiach Mheiriceá Theas</target>
       </trans-unit>
       <trans-unit id="sal" approved="yes">
         <source>Salishan languages</source>
@@ -1859,8 +1859,8 @@
         <target>Teangacha Wakashan</target>
       </trans-unit>
       <trans-unit id="wal" approved="yes">
-        <source>Walamo</source>
-        <target>Walamo</target>
+        <source>Wolaitta; Wolaytta</source>
+        <target>Wolaitta; Wolaytta</target>
       </trans-unit>
       <trans-unit id="war" approved="yes">
         <source>Waray</source>

@@ -143,14 +143,14 @@
       <trans-unit id="bg">
         <source>Bulgarian</source>
       </trans-unit>
-      <trans-unit id="bh">
-        <source>Bihari languages</source>
-      </trans-unit>
       <trans-unit id="bho">
         <source>Bhojpuri</source>
       </trans-unit>
       <trans-unit id="bi">
         <source>Bislama</source>
+      </trans-unit>
+      <trans-unit id="bih">
+        <source>Bihari languages</source>
       </trans-unit>
       <trans-unit id="bik">
         <source>Bikol</source>
@@ -168,7 +168,7 @@
         <source>Bengali</source>
       </trans-unit>
       <trans-unit id="bnt">
-        <source>Bantu (Other)</source>
+        <source>Bantu languages</source>
       </trans-unit>
       <trans-unit id="bo">
         <source>Tibetan</source>
@@ -318,7 +318,7 @@
         <source>Slave (Athapascan)</source>
       </trans-unit>
       <trans-unit id="dgr">
-        <source>Dogrib</source>
+        <source>Tlicho; Dogrib</source>
       </trans-unit>
       <trans-unit id="din">
         <source>Dinka</source>
@@ -909,10 +909,10 @@
         <source>Neapolitan</source>
       </trans-unit>
       <trans-unit id="nb">
-        <source>Bokmål, Norwegian; Norwegian Bokmål</source>
+        <source>Norwegian Bokmål</source>
       </trans-unit>
       <trans-unit id="nd">
-        <source>Ndebele, North; North Ndebele</source>
+        <source>North Ndebele</source>
       </trans-unit>
       <trans-unit id="nds">
         <source>Low German; Low Saxon; German, Low; Saxon, Low</source>
@@ -921,7 +921,7 @@
         <source>Nepali</source>
       </trans-unit>
       <trans-unit id="new">
-        <source>Nepal Bhasa; Newari</source>
+        <source>Nepal Bhasa; Newar; Newari</source>
       </trans-unit>
       <trans-unit id="ng">
         <source>Ndonga</source>
@@ -939,7 +939,7 @@
         <source>Dutch; Flemish</source>
       </trans-unit>
       <trans-unit id="nn">
-        <source>Norwegian Nynorsk; Nynorsk, Norwegian</source>
+        <source>Norwegian Nynorsk</source>
       </trans-unit>
       <trans-unit id="no">
         <source>Norwegian</source>
@@ -954,7 +954,7 @@
         <source>N'Ko</source>
       </trans-unit>
       <trans-unit id="nr">
-        <source>Ndebele, South; South Ndebele</source>
+        <source>South Ndebele</source>
       </trans-unit>
       <trans-unit id="nso">
         <source>Pedi; Sepedi; Northern Sotho</source>
@@ -984,7 +984,7 @@
         <source>Nzima</source>
       </trans-unit>
       <trans-unit id="oc">
-        <source>Occitan (post 1500); Provençal</source>
+        <source>Occitan (post 1500)</source>
       </trans-unit>
       <trans-unit id="oj">
         <source>Ojibwa</source>
@@ -1050,7 +1050,7 @@
         <source>Prakrit languages</source>
       </trans-unit>
       <trans-unit id="pro">
-        <source>Provençal, Old (to 1500)</source>
+        <source>Provençal, Old (to 1500); Occitan, Old (to 1500)</source>
       </trans-unit>
       <trans-unit id="ps">
         <source>Pushto; Pashto</source>
@@ -1107,7 +1107,7 @@
         <source>Yakut</source>
       </trans-unit>
       <trans-unit id="sai">
-        <source>South American Indian (Other)</source>
+        <source>South American Indian languages</source>
       </trans-unit>
       <trans-unit id="sal">
         <source>Salishan languages</source>
@@ -1395,7 +1395,7 @@
         <source>Wakashan languages</source>
       </trans-unit>
       <trans-unit id="wal">
-        <source>Walamo</source>
+        <source>Wolaitta; Wolaytta</source>
       </trans-unit>
       <trans-unit id="war">
         <source>Waray</source>
