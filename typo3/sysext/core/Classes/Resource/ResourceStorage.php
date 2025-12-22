@@ -1163,11 +1163,11 @@ class ResourceStorage implements ResourceStorageInterface
     public function sanitizeFileName(string $fileName, ?Folder $targetFolder = null): string
     {
         $targetFolder = $targetFolder ?: $this->getDefaultFolder();
-        $fileName = $this->driver->sanitizeFileName($fileName);
+        $sanitizedFileName = $this->driver->sanitizeFileName($fileName);
 
         // The file name could be changed by an event listener
         return $this->eventDispatcher->dispatch(
-            new SanitizeFileNameEvent($fileName, $targetFolder, $this, $this->driver)
+            new SanitizeFileNameEvent($sanitizedFileName, $fileName, $targetFolder, $this, $this->driver)
         )->getFileName();
     }
 

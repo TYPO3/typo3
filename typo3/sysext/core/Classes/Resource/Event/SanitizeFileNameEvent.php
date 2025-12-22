@@ -29,6 +29,7 @@ final class SanitizeFileNameEvent
 {
     public function __construct(
         private string $fileName,
+        private readonly string $originalFileName,
         private readonly Folder $targetFolder,
         private readonly ResourceStorage $storage,
         private readonly DriverInterface $driver
@@ -37,6 +38,11 @@ final class SanitizeFileNameEvent
     public function getFileName(): string
     {
         return $this->fileName;
+    }
+
+    public function getOriginalFileName(): string
+    {
+        return $this->originalFileName;
     }
 
     public function setFileName(string $fileName): void
