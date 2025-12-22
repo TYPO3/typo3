@@ -133,27 +133,6 @@ class EditDocumentController
     protected $retUrl;
 
     /**
-     * Main DataHandler datamap array
-     *
-     * @var array
-     */
-    protected $data;
-
-    /**
-     * Main DataHandler cmdmap array
-     *
-     * @var array
-     */
-    protected $cmd;
-
-    /**
-     * DataHandler 'mirror' input
-     *
-     * @var array
-     */
-    protected $mirror;
-
-    /**
      * Boolean: If set, then the GET var "&id=" will be added to the
      * retUrl string so that the NEW id of something is returned to the script calling the form.
      *
@@ -278,10 +257,8 @@ class EditDocumentController
 
     /**
      * Used internally to disable the storage of the document reference (eg. new records)
-     *
-     * @var int
      */
-    protected $dontStoreDocumentRef = 0;
+    protected bool $dontStoreDocumentRef = false;
 
     /**
      * True if a record has been saved
@@ -582,7 +559,9 @@ class EditDocumentController
     }
 
     /**
-     * Do processing of data, submitting it to DataHandler. May return a RedirectResponse.
+     * Do processing of data, submitting it to DataHandler.
+     *
+     * Also handles the "duplication" of a record.
      */
     protected function processData(ModuleTemplate $view, ServerRequestInterface $request): void
     {
@@ -591,39 +570,38 @@ class EditDocumentController
 
         $beUser = $this->getBackendUser();
 
-        // Processing related GET / POST vars
-        $this->data = $parsedBody['data'] ?? [];
-        $this->cmd = $parsedBody['cmd'] ?? [];
-        $this->mirror = $parsedBody['mirror']  ?? [];
+        $dataMap = $parsedBody['data'] ?? [];
+        $dataHandlerIncomingCommandMap = $parsedBody['cmd'] ?? [];
         $this->returnNewPageId = (bool)($parsedBody['returnNewPageId'] ?? false);
 
-        // Only options related to $this->data submission are included here
-        $tce = GeneralUtility::makeInstance(DataHandler::class);
-        $tce->setControl($parsedBody['control'] ?? []);
+        /** @var DataHandler $dataHandler */
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        // Only options related to $dataMap submission are included here
+        $dataHandler->setControl($parsedBody['control'] ?? []);
 
         // Set default values fetched previously from GET / POST vars
-        if (is_array($this->defVals) && $this->defVals !== []) {
-            $tce->defaultValues = array_merge_recursive($this->defVals, $tce->defaultValues);
+        if (is_array($this->defVals)) {
+            $dataHandler->defaultValues = $this->defVals;
         }
 
         // Load DataHandler with data
-        $tce->start($this->data, $this->cmd);
-        if (is_array($this->mirror)) {
-            $tce->setMirror($this->mirror);
+        $dataHandler->start($dataMap, $dataHandlerIncomingCommandMap);
+        if (is_array($parsedBody['mirror'] ?? null)) {
+            $dataHandler->setMirror($parsedBody['mirror']);
         }
 
         // Perform the saving operation with DataHandler:
         if ($requestAction->doSave()) {
-            $tce->process_datamap();
-            $tce->process_cmdmap();
+            $dataHandler->process_datamap();
+            $dataHandler->process_cmdmap();
 
             // Update the module menu for the current backend user, as they updated their UI language
             $currentUserId = $beUser->getUserId();
             if ($currentUserId
-                && (string)($this->data['be_users'][$currentUserId]['lang'] ?? '') !== ''
-                && $this->data['be_users'][$currentUserId]['lang'] !== $beUser->user['lang']
+                && (string)($dataMap['be_users'][$currentUserId]['lang'] ?? '') !== ''
+                && $dataMap['be_users'][$currentUserId]['lang'] !== $beUser->user['lang']
             ) {
-                $newLanguageKey = $this->data['be_users'][$currentUserId]['lang'];
+                $newLanguageKey = $dataMap['be_users'][$currentUserId]['lang'];
                 // Update the current backend user language as well
                 $beUser->user['lang'] = $newLanguageKey;
                 // Re-create LANG to have the current request updated the translated page as well
@@ -631,66 +609,69 @@ class EditDocumentController
                 BackendUtility::setUpdateSignal('updateModuleMenu');
                 BackendUtility::setUpdateSignal('updateTopbar');
             }
-        }
-        // If pages are being edited, we set an instruction about updating the page tree after this operation.
-        if ($tce->pagetreeNeedsRefresh
-            && (isset($this->data['pages']) || $beUser->workspace !== 0 && !empty($this->data))
-        ) {
-            BackendUtility::setUpdateSignal('updatePageTree');
-        }
-        // If there was saved any new items, load them:
-        if (!empty($tce->substNEWwithIDs_table)) {
-            // Save the expanded/collapsed states for new inline records, if any
-            $this->updateInlineView($request->getParsedBody()['uc'] ?? $request->getQueryParams()['uc'] ?? null, $tce);
-            $newEditConf = [];
-            foreach ($this->editconf as $tableName => $tableCmds) {
-                $keys = array_keys($tce->substNEWwithIDs_table, $tableName);
-                if ($keys !== []) {
-                    foreach ($keys as $key) {
-                        $editId = $tce->substNEWwithIDs[$key];
-                        // Check if the $editId isn't a child record of an IRRE action
-                        if (!(is_array($tce->newRelatedIDs[$tableName] ?? null)
-                            && in_array($editId, $tce->newRelatedIDs[$tableName]))
-                        ) {
-                            // Translate new id to the workspace version
-                            if ($versionRec = BackendUtility::getWorkspaceVersionOfRecord(
-                                $beUser->workspace,
-                                $tableName,
-                                $editId,
-                                'uid'
-                            )) {
-                                $editId = $versionRec['uid'];
+
+            // If pages are being edited, we set an instruction about updating the page tree after this operation.
+            if ($dataHandler->pagetreeNeedsRefresh
+                && (isset($dataMap['pages']) || $beUser->workspace !== 0 && !empty($dataMap))
+            ) {
+                BackendUtility::setUpdateSignal('updatePageTree');
+            }
+
+            // If there was saved any new items, load them:
+            if (!empty($dataHandler->substNEWwithIDs_table)) {
+                // Save the expanded/collapsed states for new inline records, if any
+                $this->updateInlineView($request->getParsedBody()['uc'] ?? $request->getQueryParams()['uc'] ?? null, $dataHandler);
+                $newEditConf = [];
+                foreach ($this->editconf as $tableName => $tableCmds) {
+                    $keys = array_keys($dataHandler->substNEWwithIDs_table, $tableName);
+                    if ($keys !== []) {
+                        foreach ($keys as $key) {
+                            $editId = $dataHandler->substNEWwithIDs[$key];
+                            // Check if the $editId isn't a child record of an IRRE action
+                            if (!(is_array($dataHandler->newRelatedIDs[$tableName] ?? null)
+                                && in_array($editId, $dataHandler->newRelatedIDs[$tableName]))
+                            ) {
+                                // Translate new id to the workspace version
+                                if ($versionRec = BackendUtility::getWorkspaceVersionOfRecord(
+                                    $beUser->workspace,
+                                    $tableName,
+                                    $editId,
+                                    'uid'
+                                )) {
+                                    $editId = $versionRec['uid'];
+                                }
+                                $newEditConf[$tableName][$editId] = 'edit';
                             }
-                            $newEditConf[$tableName][$editId] = 'edit';
+                            // Traverse all new records and forge the content of ->editconf so we can continue to edit these records!
+                            if ($tableName === 'pages'
+                                && !$this->shouldRedirectToEmptyPage()
+                                && $this->retUrl !== $this->getCloseUrl($request)
+                                && $this->returnNewPageId
+                            ) {
+                                $this->retUrl .= '&id=' . $dataHandler->substNEWwithIDs[$key];
+                            }
                         }
-                        // Traverse all new records and forge the content of ->editconf so we can continue to edit these records!
-                        if ($tableName === 'pages'
-                            && !$this->shouldRedirectToEmptyPage()
-                            && $this->retUrl !== $this->getCloseUrl($request)
-                            && $this->returnNewPageId
-                        ) {
-                            $this->retUrl .= '&id=' . $tce->substNEWwithIDs[$key];
-                        }
+                    } else {
+                        $newEditConf[$tableName] = $tableCmds;
                     }
-                } else {
-                    $newEditConf[$tableName] = $tableCmds;
                 }
+                // Reset editconf if newEditConf has values
+                if ($newEditConf !== []) {
+                    $this->editconf = $newEditConf;
+                }
+                // Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
+                $this->R_URL_getvars['edit'] = $this->editconf;
+                // Unset default values since we don't need them anymore.
+                unset($this->R_URL_getvars['defVals']);
+                // Recompile the store* values since editconf changed
+                $this->compileStoreData($request);
             }
-            // Reset editconf if newEditConf has values
-            if ($newEditConf !== []) {
-                $this->editconf = $newEditConf;
+            // See if any records was auto-created as new versions?
+            if (!empty($dataHandler->autoVersionIdMap)) {
+                $this->fixWSversioningInEditConf($dataHandler->autoVersionIdMap);
             }
-            // Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
-            $this->R_URL_getvars['edit'] = $this->editconf;
-            // Unset default values since we don't need them anymore.
-            unset($this->R_URL_getvars['defVals']);
-            // Recompile the store* values since editconf changed
-            $this->compileStoreData($request);
         }
-        // See if any records was auto-created as new versions?
-        if (!empty($tce->autoVersionIdMap)) {
-            $this->fixWSversioningInEditConf($tce->autoVersionIdMap);
-        }
+
         // If a document is saved and a new one is created right after.
         if ($requestAction->savedoknew()) {
             $this->closeDocument($requestAction, false);
@@ -743,7 +724,7 @@ class EditDocumentController
 
         // Explicitly require a save operation
         if ($requestAction->doSave()) {
-            $erroneousRecords = $tce->printLogErrorMessages();
+            $erroneousRecords = $dataHandler->printLogErrorMessages();
             $messages = [];
             $table = (string)key($this->editconf);
             $uidList = GeneralUtility::intExplode(',', (string)key($this->editconf[$table]));
@@ -751,15 +732,15 @@ class EditDocumentController
             foreach ($uidList as $uid) {
                 $uid = (int)abs($uid);
                 if (!in_array($table . '.' . $uid, $erroneousRecords, true)) {
-                    $realUidInPayload = ($tceSubstId = array_search($uid, $tce->substNEWwithIDs, true)) !== false ? $tceSubstId : $uid;
-                    $row = $this->data[$table][$uid] ?? $this->data[$table][$realUidInPayload] ?? null;
+                    $realUidInPayload = ($tceSubstId = array_search($uid, $dataHandler->substNEWwithIDs, true)) !== false ? $tceSubstId : $uid;
+                    $row = $dataMap[$table][$uid] ?? $dataMap[$table][$realUidInPayload] ?? null;
                     if ($row === null) {
                         continue;
                     }
                     // Ensure, uid is always available to make labels with foreign table lookups possible
                     $row['uid'] ??= $realUidInPayload;
                     // If the label column of the record is not available, fetch it from database.
-                    // This is the when EditDocumentController is booted in single field mode (e.g.
+                    // This is the case when EditDocumentController is booted in single field mode (e.g.
                     // Template module > 'info/modify' > edit 'setup' field) or in case the field is
                     // not in "showitem" or is set to readonly (e.g. "file" in sys_file_metadata).
                     $labelCapability = $this->tcaSchemaFactory->get($table)->getCapability(TcaSchemaCapability::Label);
@@ -810,7 +791,7 @@ class EditDocumentController
             reset($this->editconf[$nTable]);
             $nUid = key($this->editconf[$nTable]);
             if (!MathUtility::canBeInterpretedAsInteger($nUid)) {
-                $nUid = $tce->substNEWwithIDs[$nUid];
+                $nUid = $dataHandler->substNEWwithIDs[$nUid];
             }
 
             $recordFields = 'pid,uid';
@@ -965,7 +946,7 @@ class EditDocumentController
                 foreach ($ids as $theUid) {
                     // Don't save this document title in the document selector if the document is new.
                     if ($command === 'new') {
-                        $this->dontStoreDocumentRef = 1;
+                        $this->dontStoreDocumentRef = true;
                     }
 
                     try {
