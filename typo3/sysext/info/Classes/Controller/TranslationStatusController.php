@@ -161,7 +161,7 @@ class TranslationStatusController extends InfoModuleController
                 . $this->iconFactory->getIconForRecord('pages', $data['row'], IconSize::SMALL)->setTitle(BackendUtility::getRecordIconAltText($data['row'], 'pages', false))->render()
                 . '</span>';
 
-            if ($this->getBackendUser()->recordEditAccessInternals('pages', $data['row'])) {
+            if ($this->getBackendUser()->checkRecordEditAccess('pages', $data['row'])->isAllowed) {
                 $icon = BackendUtility::wrapClickMenuOnIcon($icon, 'pages', $data['row']['uid']);
             }
 

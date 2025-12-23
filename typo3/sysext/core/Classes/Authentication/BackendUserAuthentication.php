@@ -20,6 +20,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -65,7 +66,13 @@ use TYPO3\CMS\Install\Service\SessionService;
  */
 class BackendUserAuthentication extends AbstractUserAuthentication
 {
+    use PublicPropertyDeprecationTrait;
+
     public const ROLE_SYSTEMMAINTAINER = 'systemMaintainer';
+
+    protected array $deprecatedPublicProperties = [
+        'errorMsg' => '$errorMsg is deprecated since TYPO3 v14, will be removed in v15.0. Use checkRecordEditAccess() to get error messages.',
+    ];
 
     /**
      * Should be set to the usergroup-column (id-list) in the user-record
@@ -125,10 +132,10 @@ class BackendUserAuthentication extends AbstractUserAuthentication
 
     /**
      * Contains last error message
+     * @deprecated since TYPO3 v14, will be removed in v15.0. Use checkRecordEditAccess() to get error messages.
      * @internal should only be used from within TYPO3 Core
-     * @var string
      */
-    public $errorMsg = '';
+    protected string $errorMsg = '';
 
     /**
      * Cache for checkWorkspaceCurrent()
@@ -673,6 +680,106 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
+     * Check if a user has editing access to a record from a $GLOBALS['TCA'] table.
+     * Returns a result object with access status and error message.
+     *
+     * The checks do not take page permissions and other "environmental" things into account.
+     * It only deals with record internals; If any values in the record fields disallows it.
+     * For instance languages settings, authMode selector boxes are evaluated (and maybe more in the future).
+     * It will check for workspace-dependent access.
+     *
+     * @param string $table Table name
+     * @param array|RecordInterface $row Full record row
+     * @param bool $newRecord Set, if testing a new (non-existing) record array. Will disable certain checks that doesn't make much sense in that context.
+     * @param bool $checkFullLanguageAccess Set, whenever access to all translations of the record is required
+     * @return AccessCheckResult Result object with access decision and error message
+     * @internal should only be used from within TYPO3 Core
+     */
+    public function checkRecordEditAccess(
+        string $table,
+        array|RecordInterface $row,
+        bool $newRecord = false,
+        bool $checkFullLanguageAccess = false
+    ): AccessCheckResult {
+        $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
+        if (!$schemaFactory->has($table)) {
+            return new AccessCheckResult(false);
+        }
+        if ($row instanceof RecordInterface) {
+            $row = $row->getRawRecord()->toArray();
+        }
+        $schema = $schemaFactory->get($table);
+        // Always return TRUE for Admin users.
+        if ($this->isAdmin()) {
+            return new AccessCheckResult(true);
+        }
+        // Checking languages:
+        if ($table === 'pages' && $checkFullLanguageAccess && !$this->checkFullLanguagesAccess($schema, $row)) {
+            return new AccessCheckResult(false);
+        }
+        if ($schema->isLanguageAware()) {
+            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+            $languageField = $languageCapability->getLanguageField()->getName();
+
+            // Language field must be found in input row - otherwise it does not make sense.
+            if (isset($row[$languageField])) {
+                if (!$this->checkLanguageAccess($row[$languageField])) {
+                    return new AccessCheckResult(false, 'ERROR: Language was not allowed.');
+                }
+                if (
+                    $checkFullLanguageAccess && $row[$languageField] == 0
+                    && !$this->checkFullLanguagesAccess($table, $row)
+                ) {
+                    return new AccessCheckResult(false, 'ERROR: Related/affected language was not allowed.');
+                }
+            } else {
+                return new AccessCheckResult(false, 'ERROR: The "languageField" field named "' . $languageField . '" was not found in testing record!');
+            }
+        }
+        // Checking authMode fields:
+        foreach ($schema->getFields() as $fieldName => $fieldType) {
+            if (isset($row[$fieldName])
+                && $fieldType->isType(TableColumnType::SELECT)
+                && ($fieldType->getConfiguration()['authMode'] ?? false)
+                && !$this->checkAuthMode($table, $fieldName, $row[$fieldName])) {
+                return new AccessCheckResult(
+                    false,
+                    'ERROR: authMode "' . $fieldType->getConfiguration()['authMode']
+                        . '" failed for field "' . $fieldName . '" with value "'
+                        . $row[$fieldName] . '" evaluated'
+                );
+            }
+        }
+        // Checking "editlock" feature (doesn't apply to new records)
+        if (!$newRecord && $schema->hasCapability(TcaSchemaCapability::EditLock)) {
+            $editLockFieldName = $schema->getCapability(TcaSchemaCapability::EditLock)->getFieldName();
+            if (isset($row[$editLockFieldName])) {
+                if ($row[$editLockFieldName]) {
+                    return new AccessCheckResult(false, 'ERROR: Record was locked for editing. Only admin users can change this state.');
+                }
+            } else {
+                return new AccessCheckResult(false, 'ERROR: The "editLock" field named "' . $editLockFieldName
+                    . '" was not found in testing record!');
+            }
+        }
+        // Checking record permissions
+        // THIS is where we can include a check for "perms_" fields for other records than pages...
+        // Process any hooks
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['recordEditAccessInternals'] ?? [] as $funcRef) {
+            $params = [
+                'table' => $table,
+                'idOrRow' => $row,
+                'newRecord' => $newRecord,
+            ];
+            if (!GeneralUtility::callUserFunction($funcRef, $params, $this)) {
+                return new AccessCheckResult(false);
+            }
+        }
+        // Finally, return TRUE if all is well.
+        return new AccessCheckResult(true);
+    }
+
+    /**
      * Checking if a user has editing access to a record from a $GLOBALS['TCA'] table.
      * The checks do not take page permissions and other "environmental" things into account.
      * It only deals with record internals; If any values in the record fields disallows it.
@@ -686,89 +793,22 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param null $_ unused
      * @param bool $checkFullLanguageAccess Set, whenever access to all translations of the record is required
      * @return bool TRUE if OK, otherwise FALSE
+     * @deprecated since TYPO3 v14, will be removed in v15.0. Use checkRecordEditAccess() instead.
      * @internal should only be used from within TYPO3 Core
      */
     public function recordEditAccessInternals(string $table, array|RecordInterface $row, $newRecord = false, $_ = null, $checkFullLanguageAccess = false): bool
     {
-        $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
-        if (!$schemaFactory->has($table)) {
-            return false;
-        }
-        if ($row instanceof RecordInterface) {
-            $row = $row->getRawRecord()->toArray();
-        }
-        $schema = $schemaFactory->get($table);
-        // Always return TRUE for Admin users.
-        if ($this->isAdmin()) {
-            return true;
-        }
-        // Checking languages:
-        if ($table === 'pages' && $checkFullLanguageAccess && !$this->checkFullLanguagesAccess($schema, $row)) {
-            return false;
-        }
-        if ($schema->isLanguageAware()) {
-            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
-            $languageField = $languageCapability->getLanguageField()->getName();
+        trigger_error(
+            'Calling BackendUserAuthentication->recordEditAccessInternals is deprecated, use BackendUserAuthentication->checkRecordEditAccess instead.',
+            E_USER_DEPRECATED
+        );
 
-            // Language field must be found in input row - otherwise it does not make sense.
-            if (isset($row[$languageField])) {
-                if (!$this->checkLanguageAccess($row[$languageField])) {
-                    $this->errorMsg = 'ERROR: Language was not allowed.';
-                    return false;
-                }
-                if (
-                    $checkFullLanguageAccess && $row[$languageField] == 0
-                    && !$this->checkFullLanguagesAccess($table, $row)
-                ) {
-                    $this->errorMsg = 'ERROR: Related/affected language was not allowed.';
-                    return false;
-                }
-            } else {
-                $this->errorMsg = 'ERROR: The "languageField" field named "' . $languageField . '" was not found in testing record!';
-                return false;
-            }
-        }
-        // Checking authMode fields:
-        foreach ($schema->getFields() as $fieldName => $fieldType) {
-            if (isset($row[$fieldName])
-                && $fieldType->isType(TableColumnType::SELECT)
-                && ($fieldType->getConfiguration()['authMode'] ?? false)
-                && !$this->checkAuthMode($table, $fieldName, $row[$fieldName])) {
-                $this->errorMsg = 'ERROR: authMode "' . $fieldType->getConfiguration()['authMode']
-                        . '" failed for field "' . $fieldName . '" with value "'
-                        . $row[$fieldName] . '" evaluated';
-                return false;
-            }
-        }
-        // Checking "editlock" feature (doesn't apply to new records)
-        if (!$newRecord && $schema->hasCapability(TcaSchemaCapability::EditLock)) {
-            $editLockFieldName = $schema->getCapability(TcaSchemaCapability::EditLock)->getFieldName();
-            if (isset($row[$editLockFieldName])) {
-                if ($row[$editLockFieldName]) {
-                    $this->errorMsg = 'ERROR: Record was locked for editing. Only admin users can change this state.';
-                    return false;
-                }
-            } else {
-                $this->errorMsg = 'ERROR: The "editLock" field named "' . $editLockFieldName
-                    . '" was not found in testing record!';
-                return false;
-            }
-        }
-        // Checking record permissions
-        // THIS is where we can include a check for "perms_" fields for other records than pages...
-        // Process any hooks
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['recordEditAccessInternals'] ?? [] as $funcRef) {
-            $params = [
-                'table' => $table,
-                'idOrRow' => $row,
-                'newRecord' => $newRecord,
-            ];
-            if (!GeneralUtility::callUserFunction($funcRef, $params, $this)) {
-                return false;
-            }
-        }
-        // Finally, return TRUE if all is well.
-        return true;
+        $result = $this->checkRecordEditAccess($table, $row, $newRecord, $checkFullLanguageAccess);
+
+        // Maintain backward compatibility by setting errorMsg
+        $this->errorMsg = $result->errorMessage;
+
+        return $result->isAllowed;
     }
 
     /**

@@ -6820,6 +6820,13 @@ return [
             'Breaking-108148-Fluid50.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->recordEditAccessInternals' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 5,
+        'restFiles' => [
+            'Deprecation-108568-BackendUserAuthenticationRecordEditAccessInternals.rst',
+        ],
+    ],
     /** Note (leave this at the bottom):
      *  The FQCN object definitions here are not actually checked, only
      *  the method name itself. That means, never list generic method names

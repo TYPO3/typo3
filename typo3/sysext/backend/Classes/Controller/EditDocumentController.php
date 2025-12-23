@@ -938,9 +938,8 @@ class EditDocumentController
                     );
                 } catch (AccessDeniedException $e) {
                     $this->numberOfErrors++;
-                    // Try to fetch error message from "recordInternals" be user object
-                    // @todo: This construct should be logged and localized and de-uglified
-                    $message = (!empty($beUser->errorMsg)) ? $beUser->errorMsg : $e->getMessage() . ' ' . $e->getCode();
+
+                    $message = $e->getMessage();
                     $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission');
                     $editForm .= $this->getInfobox($message, $title);
                 } catch (DatabaseRecordException | DatabaseRecordWorkspaceDeletePlaceholderException $e) {

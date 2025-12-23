@@ -1633,7 +1633,7 @@ class DatabaseRecordList
         if ($table === 'pages') {
             $permsEdit = $backendUser->checkLanguageAccess($record->getRawRecord()?->has($languageFieldName) ? $record->getRawRecord()->get($languageFieldName) : 0) && $localCalcPerms->editPagePermissionIsGranted();
         } else {
-            $permsEdit = $localCalcPerms->editContentPermissionIsGranted() && $backendUser->recordEditAccessInternals($table, $record);
+            $permsEdit = $localCalcPerms->editContentPermissionIsGranted() && $backendUser->checkRecordEditAccess($table, $record)->isAllowed;
         }
         $permsEdit = $this->overlayEditLockPermissions($table, $record, $permsEdit);
 
@@ -2081,7 +2081,7 @@ class DatabaseRecordList
                 $localCalcPerms = $this->getPagePermissionsForRecord($record);
                 $permsEdit = $localCalcPerms->editPagePermissionIsGranted();
             } else {
-                $permsEdit = $this->calcPerms->editContentPermissionIsGranted() && $this->getBackendUserAuthentication()->recordEditAccessInternals($table, $record);
+                $permsEdit = $this->calcPerms->editContentPermissionIsGranted() && $this->getBackendUserAuthentication()->checkRecordEditAccess($table, $record)->isAllowed;
             }
             if (!$isEditable || !$this->overlayEditLockPermissions($table, $record, $permsEdit)) {
                 $clipboardButtons['cut'] = null;
@@ -2820,7 +2820,7 @@ class DatabaseRecordList
                     $permsEdit = $localCalcPerms->editPagePermissionIsGranted();
                 } else {
                     $backendUser = $this->getBackendUserAuthentication();
-                    $permsEdit = $this->calcPerms->editContentPermissionIsGranted() && $backendUser->recordEditAccessInternals($table, $record);
+                    $permsEdit = $this->calcPerms->editContentPermissionIsGranted() && $backendUser->checkRecordEditAccess($table, $record)->isAllowed;
                 }
                 // "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
                 if ($permsEdit && $this->isEditable($table)) {

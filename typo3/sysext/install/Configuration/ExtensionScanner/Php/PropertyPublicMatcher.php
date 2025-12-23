@@ -1214,4 +1214,10 @@ return [
             'Breaking-107856-DataHandlerRemoveInternalPropertyCopyWhichTablesandPropertiesNeverHideAtCopyandCopyTree.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->errorMessage' => [
+        'restFiles' => [
+            'Deprecation-108568-BackendUserAuthenticationRecordEditAccessInternals.rst',
+        ],
+    ],
+
 ];

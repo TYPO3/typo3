@@ -377,7 +377,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         $table = $record->getMainType();
         $backendUser = $this->getBackendUser();
         if ($backendUser->check('tables_modify', $table)
-            && $backendUser->recordEditAccessInternals($table, $record)
+            && $backendUser->checkRecordEditAccess($table, $record)->isAllowed
             && (new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $record->getPid()) ?? [])))->editContentPermissionIsGranted()
         ) {
             $urlParameters = [

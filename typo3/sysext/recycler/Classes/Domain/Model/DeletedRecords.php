@@ -519,7 +519,7 @@ class DeletedRecords
             }
             // Check internals regarding access:
             if ($hasAccess) {
-                $hasAccess = $backendUser->recordEditAccessInternals($table, $calcPRec);
+                $hasAccess = $backendUser->checkRecordEditAccess($table, $calcPRec)->isAllowed;
             }
         }
         return $hasAccess;

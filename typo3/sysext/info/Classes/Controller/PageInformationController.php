@@ -586,7 +586,7 @@ readonly class PageInformationController
         $backendUser = $this->getBackendUser();
         $icon = '<span title="' . BackendUtility::getRecordIconAltText($row, 'pages') . '">' . $this->iconFactory->getIconForRecord('pages', $row, IconSize::SMALL)->render() . '</span>';
         // The icon with link
-        if ($backendUser->recordEditAccessInternals('pages', $row)) {
+        if ($backendUser->checkRecordEditAccess('pages', $row)->isAllowed) {
             $icon = BackendUtility::wrapClickMenuOnIcon($icon, 'pages', $row['uid']);
         }
         return $icon;

@@ -491,7 +491,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
                     $permissionSet->editContentPermissionIsGranted()
                     && !$schema->hasCapability(TcaSchemaCapability::AccessAdminOnly)
                     && $backendUser->check('tables_modify', $tableName)
-                    && $backendUser->recordEditAccessInternals($tableName, $row)
+                    && $backendUser->checkRecordEditAccess($tableName, $row)->isAllowed
                 )
             )
         ) {

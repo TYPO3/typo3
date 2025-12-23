@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,9 +15,20 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Backend\Form\Exception;
+namespace TYPO3\CMS\Core\Authentication;
 
 /**
- * User check did not survive "checkRecordEditAccess" to edit record
+ * Result object for access checks.
+ *
+ * Encapsulates the result of access checks in BackendUserAuthentication
+ * without requiring state sharing via properties.
+ *
+ * @internal
  */
-class AccessDeniedEditInternalsException extends AccessDeniedException {}
+final readonly class AccessCheckResult
+{
+    public function __construct(
+        public bool $isAllowed,
+        public string $errorMessage = '',
+    ) {}
+}

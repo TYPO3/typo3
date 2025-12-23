@@ -187,7 +187,7 @@ class GridColumnItem extends AbstractGridObject
             ->getIconForRecord($this->table, $row, IconSize::SMALL)
             ->setTitle(BackendUtility::getRecordIconAltText($row, $this->table, false))
             ->render();
-        if ($this->getBackendUser()->recordEditAccessInternals($this->table, $this->getRow())) {
+        if ($this->getBackendUser()->checkRecordEditAccess($this->table, $this->getRow())->isAllowed) {
             $icon = BackendUtility::wrapClickMenuOnIcon($icon, $this->table, $this->record->getUid());
         }
         $icons[] = $icon;
@@ -260,7 +260,7 @@ class GridColumnItem extends AbstractGridObject
         }
         $pageRecord = $this->context->getPageRecord();
         return $backendUser->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT)
-            && $backendUser->recordEditAccessInternals($this->table, $this->record)
+            && $backendUser->checkRecordEditAccess($this->table, $this->record)->isAllowed
             && (
                 !($pagesSchema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('pages'))->hasCapability(TcaSchemaCapability::EditLock)
                 || !($pageRecord[$pagesSchema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] ?? false)
