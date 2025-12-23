@@ -1354,26 +1354,26 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Creates a (cryptographic) hash for a file.
      *
-     * @param string $hash
+     * @param string $hashAlgorithm
      * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidHashException
      * @return string
      */
-    public function hashFile(FileInterface $fileObject, $hash)
+    public function hashFile(FileInterface $fileObject, $hashAlgorithm)
     {
-        return $this->hashFileByIdentifier($fileObject->getIdentifier(), $hash);
+        return $this->hashFileByIdentifier($fileObject->getIdentifier(), $hashAlgorithm);
     }
 
     /**
      * Creates a (cryptographic) hash for a fileIdentifier.
      *
      * @param string $fileIdentifier
-     * @param string $hash
+     * @param string $hashAlgorithm
      * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidHashException
      * @return string
      */
-    public function hashFileByIdentifier($fileIdentifier, $hash)
+    public function hashFileByIdentifier($fileIdentifier, $hashAlgorithm)
     {
-        $hash = $this->driver->hash($fileIdentifier, $hash);
+        $hash = $this->driver->hash($fileIdentifier, $hashAlgorithm);
         if (!is_string($hash) || $hash === '') {
             throw new InvalidHashException('Hash has to be non-empty string.', 1551950301);
         }
