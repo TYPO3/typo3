@@ -1249,9 +1249,9 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Creates a (cryptographic) hash for a file.
      */
-    public function hashFile(FileInterface $fileObject, string $hash): string
+    public function hashFile(FileInterface $fileObject, string $hashAlgorithm): string
     {
-        return $this->hashFileByIdentifier($fileObject->getIdentifier(), $hash);
+        return $this->hashFileByIdentifier($fileObject->getIdentifier(), $hashAlgorithm);
     }
 
     /**
@@ -1259,9 +1259,9 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @throws InvalidHashException
      */
-    public function hashFileByIdentifier(string $fileIdentifier, string $hash): string
+    public function hashFileByIdentifier(string $fileIdentifier, string $hashAlgorithm): string
     {
-        $hash = $this->driver->hash($fileIdentifier, $hash);
+        $hash = $this->driver->hash($fileIdentifier, $hashAlgorithm);
         if ($hash === '') {
             throw new InvalidHashException('Hash has to be non-empty string.', 1551950301);
         }
