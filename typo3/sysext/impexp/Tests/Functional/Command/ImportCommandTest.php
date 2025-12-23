@@ -28,6 +28,13 @@ use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
 final class ImportCommandTest extends AbstractImportExportTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        // there is no request object available in the command context
+        unset($GLOBALS['TYPO3_REQUEST']);
+    }
+
     #[Test]
     public function importCommandRequiresFileArgument(): void
     {
