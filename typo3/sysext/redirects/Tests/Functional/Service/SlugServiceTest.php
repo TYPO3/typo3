@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
-use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -819,8 +818,8 @@ final class SlugServiceTest extends FunctionalTestCase
         $this->buildBaseSite();
 
         // For testing scenario we need to allow redirect records be added to normal pages.
-        $dokTypeRegistry = $this->get(PageDoktypeRegistry::class);
-        $dokTypeRegistry->addAllowedRecordTypes(['sys_redirect'], PageRepository::DOKTYPE_DEFAULT);
+        $GLOBALS['TCA']['pages']['types']['1']['allowedRecordTypes'] = ['sys_redirect'];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start($dataMap, []);

@@ -50,6 +50,7 @@ readonly class TcaPreparation
         $tca = $this->configureSelectSingle($tca);
         $tca = $this->configureRelationshipToOne($tca);
         $tca = $this->addSystemFieldsToShowitemTypes($tca);
+        $tca = $this->addIgnoredPageTypeRestrictionRecords($tca);
         return $tca;
     }
 
@@ -599,5 +600,24 @@ readonly class TcaPreparation
             }
         }
         return $showitemParts;
+    }
+
+    protected function addIgnoredPageTypeRestrictionRecords(array $tca): array
+    {
+        $allowedRecordTypes = [];
+        foreach ($tca as $table => $configuration) {
+            if ($configuration['ctrl']['security']['ignorePageTypeRestriction'] ?? false) {
+                $allowedRecordTypes[] = $table;
+            }
+        }
+        if ($allowedRecordTypes === []) {
+            return $tca;
+        }
+        $mergedAllowedRecords = array_merge(
+            $tca['pages']['ctrl']['defaultAllowedRecordTypes'] ?? [],
+            $allowedRecordTypes
+        );
+        $tca['pages']['ctrl']['defaultAllowedRecordTypes'] = array_unique($mergedAllowedRecords);
+        return $tca;
     }
 }

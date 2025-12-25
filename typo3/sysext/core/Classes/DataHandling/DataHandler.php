@@ -1224,14 +1224,12 @@ class DataHandler
             if ($status === 'update') {
                 // Switching from one doktype to a different one. This is denied if the new doktype restricts the
                 // list of tables that can exist on them and if there are such records on the current page.
-                if ($this->pageDoktypeRegistry->doesDoktypeOnlyAllowSpecifiedRecordTypes((int)$value)) {
-                    // Use the page uid of the default language
-                    $recordId = $this->getDefaultLanguagePageId((int)$id);
-                    $existingDisallowedTables = $this->doesPageHaveUnallowedTables($recordId, (int)$value);
-                    if ($existingDisallowedTables !== []) {
-                        $this->log($table, (int)$id, SystemLogDatabaseAction::CHECK, null, SystemLogErrorClassification::USER_ERROR, 'Can not set pages:{uid} doktype to "{value}". The page contains records from tables "{disallowedTables}" that are not allowed with new doktype.', null, ['uid' => (int)$id, 'value' => $value, 'disallowedTables' => implode(', ', $existingDisallowedTables)], $recordId);
-                        return [];
-                    }
+                // Use the page uid of the default language
+                $recordId = $this->getDefaultLanguagePageId((int)$id);
+                $existingDisallowedTables = $this->doesPageHaveUnallowedTables($recordId, (int)$value);
+                if ($existingDisallowedTables !== []) {
+                    $this->log($table, (int)$id, SystemLogDatabaseAction::CHECK, null, SystemLogErrorClassification::USER_ERROR, 'Can not set pages:{uid} doktype to "{value}". The page contains records from tables "{disallowedTables}" that are not allowed with new doktype.', null, ['uid' => (int)$id, 'value' => $value, 'disallowedTables' => implode(', ', $existingDisallowedTables)], $recordId);
+                    return [];
                 }
             }
         }

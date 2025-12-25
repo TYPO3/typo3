@@ -6827,6 +6827,20 @@ return [
             'Deprecation-108568-BackendUserAuthenticationRecordEditAccessInternals.rst',
         ],
     ],
+    'TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->addAllowedRecordTypes' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-108557-TCAOptionAllowedRecordTypesForPageTypes.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->doesDoktypeOnlyAllowSpecifiedRecordTypes' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-108557-TCAOptionAllowedRecordTypesForPageTypes.rst',
+        ],
+    ],
     /** Note (leave this at the bottom):
      *  The FQCN object definitions here are not actually checked, only
      *  the method name itself. That means, never list generic method names

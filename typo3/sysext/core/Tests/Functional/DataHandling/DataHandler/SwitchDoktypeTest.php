@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -33,10 +35,11 @@ final class SwitchDoktypeTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function switchingDoktypeAllowedWhenOnlyAllowedTablesFalse(): void
+    #[IgnoreDeprecations]
+    public function switchingDoktypeAllowedWhenStateAfterIsValidDeprecated(): void
     {
         $pageDoktypeRegistry = $this->get(PageDoktypeRegistry::class);
-        $pageDoktypeRegistry->add(1, ['allowedTables' => 'pages', 'onlyAllowedTables' => false]);
+        $pageDoktypeRegistry->add(1, ['allowedTables' => 'pages, sys_category']);
         $actionService = new ActionService();
         $actionService->modifyRecord(
             'pages',
@@ -49,10 +52,46 @@ final class SwitchDoktypeTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function switchingDoktypeChecksForAllowedRecordsOnPageWhenOnlyAllowedTablesTrue(): void
+    #[IgnoreDeprecations]
+    public function switchingDoktypeAllowedWhenStateAfterIsValidDeprecatedAddAllowedRecords(): void
     {
         $pageDoktypeRegistry = $this->get(PageDoktypeRegistry::class);
-        $pageDoktypeRegistry->add(1, ['allowedTables' => 'pages', 'onlyAllowedTables' => true]);
+        $pageDoktypeRegistry->add(1, ['allowedTables' => 'pages']);
+        $pageDoktypeRegistry->addAllowedRecordTypes(['sys_category'], 1);
+        $actionService = new ActionService();
+        $actionService->modifyRecord(
+            'pages',
+            1,
+            [
+                'doktype' => 1,
+            ]
+        );
+        self::assertCSVDataSet(__DIR__ . '/../DataHandler/DataSet/SwitchDoktype/doktypeSwitched.csv');
+    }
+
+    #[Test]
+    public function switchingDoktypeAllowedWhenStateAfterIsValid(): void
+    {
+        $GLOBALS['TCA']['pages']['types']['1']['allowedRecordTypes'] = ['pages', 'sys_category'];
+        $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
+        $actionService = new ActionService();
+        $actionService->modifyRecord(
+            'pages',
+            1,
+            [
+                'doktype' => 1,
+            ]
+        );
+        self::assertCSVDataSet(__DIR__ . '/../DataHandler/DataSet/SwitchDoktype/doktypeSwitched.csv');
+    }
+
+    #[Test]
+    public function switchingDoktypeNotAllowedIfAllowedRecordTypesAreViolated(): void
+    {
+        $GLOBALS['TCA']['pages']['types']['1']['allowedRecordTypes'] = ['pages'];
+        $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
         $actionService = new ActionService();
         $actionService->modifyRecord(
             'pages',

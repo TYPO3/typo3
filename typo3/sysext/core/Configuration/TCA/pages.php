@@ -58,6 +58,8 @@ return [
             'page-contentFromPid-hideinmenu' => 'apps-pagetree-page-content-from-page-hideinmenu',
             'default' => 'apps-pagetree-page-default',
         ],
+        // Will be filled automatically, if ctrl.security.ignorePageTypeRestrictions is enabled for a table.
+        'defaultAllowedRecordTypes' => [],
     ],
     'columns' => [
         'doktype' => [
@@ -678,6 +680,7 @@ return [
             ',
         ],
         (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_BE_USER_SECTION => [
+            'allowedRecordTypes' => ['*'],
             'showitem' => '
                 --div--;core.form.tabs:general,
                     --palette--;;standard,
@@ -819,8 +822,10 @@ return [
                 --div--;core.form.tabs:extended,
             ',
         ],
-        // Folder
+        // Doktype 254 is a 'Folder' - a general purpose storage folder for whatever you like.
+        // In CMS context it's NOT a viewable page. Can contain any element.
         (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_SYSFOLDER => [
+            'allowedRecordTypes' => ['*'],
             'showitem' => '
                 --div--;core.form.tabs:general,
                     --palette--;;standard,
