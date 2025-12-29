@@ -669,6 +669,11 @@ abstract class AbstractItemProvider
             $queryBuilder->groupBy(...$foreignTableClauseArray['GROUPBY']);
         }
 
+        // Sorting is applied to the inner query to ensure proper sorting and in combination with LIMIT to retrieve
+        // the expected/correct dataset and not cutting away data. Sorting is applied a second time below on the
+        // outer joined table (wrapping QueryBuilder) to keep the sorting between inner and outer query for vendors
+        // applying deterministic sorting criterias and returning other results than other vendors to ensure the same
+        // behavior across all supported database vendors.
         if (!empty($foreignTableClauseArray['ORDERBY'])) {
             foreach ($foreignTableClauseArray['ORDERBY'] as $orderPair) {
                 [$fieldName, $order] = $orderPair;
@@ -739,6 +744,8 @@ abstract class AbstractItemProvider
         // Second step to respect all database requirements regarding `GROUP BY` and still returning full foreign table
         // records is using the QueryBuilder (query) as a sub-query, join the table and retrieve the full records using
         // column wildcard. That ensures that really the full records are retrieved including not TCA managed columns.
+        // @todo Look in this again and consider using a non-recursive CTE here instead of a sub-query table when
+        //       upstream doctrine/dbal CTE support is completely available and working.
         $wrapQueryBuilder->select('joined_table.*');
         $wrapQueryBuilder->getConcreteQueryBuilder()->from(
             '(' . $queryBuilder->getSQL() . ')',
@@ -752,6 +759,31 @@ abstract class AbstractItemProvider
                 $wrapQueryBuilder->expr()->eq('joined_table.uid', $wrapQueryBuilder->quoteIdentifier('inner_table_alias.uid'))
             )
         );
+
+        // Adding orderings to the re-joined table result is required to ensure that a non-joined table PK sorting
+        // leads to the same result. For example MariaDB/MySQL applies a deterministic joined table PK sorting and
+        // other platforms like PostgresSQL does this not. That leads to a re-sorting on the outer result based on
+        // the automatic sorting override for MySQL/MariaDB. INNER sorting above is still required to have proper
+        // result in case limiting the resultset (LIMIT) is applied to the foreign table and would otherwise lead
+        // to retrieving unexpected datasets.
+        $orderByClauses = [];
+        if (!empty($foreignTableClauseArray['ORDERBY'])) {
+            $orderByClauses = $foreignTableClauseArray['ORDERBY'];
+        } elseif ($schema->hasCapability(TcaSchemaCapability::DefaultSorting)) {
+            $orderByClauses = QueryHelper::parseOrderBy($schema->getCapability(TcaSchemaCapability::DefaultSorting)->getValue());
+        }
+        if ($orderByClauses !== []) {
+            foreach ($orderByClauses as $orderPair) {
+                [$fieldName, $order] = $orderPair;
+                // Remove table name
+                if (str_contains($fieldName, '.')) {
+                    $fieldName = substr($fieldName, strpos($fieldName, '.') + 1);
+                }
+                $fieldName = 'joined_table.' . $fieldName;
+                $wrapQueryBuilder->addOrderBy($fieldName, $order);
+            }
+        }
+
         return $wrapQueryBuilder;
     }
 
