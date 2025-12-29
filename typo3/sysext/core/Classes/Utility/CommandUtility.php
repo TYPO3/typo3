@@ -89,12 +89,12 @@ class CommandUtility
      *
      * @see Process
      */
-    public static function exec(string|array $command, ?array &$output = null, int &$returnValue = 0): string|false
+    public static function exec(string|array $command, ?array &$output = null, int &$returnValue = 0, ?float $timeout = 60): string|false
     {
         if (is_string($command)) {
-            $process = Process::fromShellCommandline($command);
+            $process = Process::fromShellCommandline($command, null, null, null, $timeout);
         } else {
-            $process = new Process($command);
+            $process = new Process($command, null, null, null, $timeout);
         }
 
         try {
