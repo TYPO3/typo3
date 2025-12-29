@@ -47,10 +47,7 @@
         <source>This code should now be displayed on your device or in your application.</source>
       </trans-unit>
       <trans-unit id="locked">
-        <source>
-					The maximum attempts for this provider are exceeded. Please use another provider or contact your
-					administrator.
-                </source>
+        <source>The maximum attempts for this provider are exceeded. Please use another provider or contact your administrator.</source>
       </trans-unit>
       <trans-unit id="edit.table.head">
         <source>Provider information</source>

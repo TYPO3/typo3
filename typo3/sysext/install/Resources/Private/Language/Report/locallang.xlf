@@ -18,12 +18,12 @@
       <trans-unit id="environment.status.message.notice">
         <source>The system environment check returned notices. Those should not affect the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
       </trans-unit>
-      <trans-unit id="environment.status.message.ok" xml:space="preserve">
-                <source/>
-            </trans-unit>
-      <trans-unit id="environment.status.message.info" xml:space="preserve">
-                <source/>
-            </trans-unit>
+      <trans-unit id="environment.status.message.ok">
+        <source/>
+      </trans-unit>
+      <trans-unit id="environment.status.message.info">
+        <source/>
+      </trans-unit>
       <trans-unit id="status_fileSystem">
         <source>File System</source>
       </trans-unit>

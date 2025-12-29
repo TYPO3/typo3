@@ -42,28 +42,24 @@
       <trans-unit id="workspacelist">
         <source>Workspace List</source>
       </trans-unit>
-      <trans-unit id="editorInLive" xml:space="preserve">
-                <source>You are in LIVE workspace. Please select a draft workspace from the top bar
-					menu before you can review and publish changes.
-                </source>
-            </trans-unit>
-      <trans-unit id="moduleOnPageIdZero" xml:space="preserve">
-                <source>Please select a page in the page tree to review and publish changes.</source>
-            </trans-unit>
-      <trans-unit id="admin.noWorkspaceSetup.title" xml:space="preserve">
-                <source>No workspace set up</source>
-            </trans-unit>
-      <trans-unit id="admin.noWorkspaceSetup.message" xml:space="preserve">
-                <source>There are currently no workspace records configured in the database. To use the workspace
-					functionality, at least one workspace must be set up on the root page.
-                </source>
-            </trans-unit>
-      <trans-unit id="admin.noWorkspaceSetup.buttonCreate" xml:space="preserve">
-                <source>Create a workspace</source>
-            </trans-unit>
-      <trans-unit id="button.editWorkspaceSettings" xml:space="preserve">
-                <source>Edit workspace settings</source>
-            </trans-unit>
+      <trans-unit id="editorInLive">
+        <source>You are in LIVE workspace. Please select a draft workspace from the top bar menu before you can review and publish changes.</source>
+      </trans-unit>
+      <trans-unit id="moduleOnPageIdZero">
+        <source>Please select a page in the page tree to review and publish changes.</source>
+      </trans-unit>
+      <trans-unit id="admin.noWorkspaceSetup.title">
+        <source>No workspace set up</source>
+      </trans-unit>
+      <trans-unit id="admin.noWorkspaceSetup.message">
+        <source>There are currently no workspace records configured in the database. To use the workspace functionality, at least one workspace must be set up on the root page.</source>
+      </trans-unit>
+      <trans-unit id="admin.noWorkspaceSetup.buttonCreate">
+        <source>Create a workspace</source>
+      </trans-unit>
+      <trans-unit id="button.editWorkspaceSettings">
+        <source>Edit workspace settings</source>
+      </trans-unit>
       <trans-unit id="actionSendToStage">
         <source>Send to stage</source>
       </trans-unit>

@@ -900,10 +900,9 @@
       <trans-unit id="mess.deleteClip">
         <source>Are you sure you want to delete ALL referenced elements (%s) on the clipboard?</source>
       </trans-unit>
-      <trans-unit id="mess.refresh_login" xml:space="preserve">
-				<source>Your login has probably expired.
-Do you want to refresh it now?</source>
-			</trans-unit>
+      <trans-unit id="mess.refresh_login">
+        <source>Your login has probably expired. Do you want to refresh it now?</source>
+      </trans-unit>
       <trans-unit id="mess.refresh_login_refresh_button">
         <source>Stay logged in</source>
       </trans-unit>

@@ -3,24 +3,24 @@
   <file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/db.xlf" date="2020-09-19T08:53:36Z" product-name="impexp">
     <header/>
     <body>
-      <trans-unit id="tx_impexp_presets" xml:space="preserve">
-                <source>Export Configuration</source>
-            </trans-unit>
-      <trans-unit id="title" xml:space="preserve">
-                <source>Title</source>
-            </trans-unit>
-      <trans-unit id="public" xml:space="preserve">
-                <source>Public</source>
-            </trans-unit>
-      <trans-unit id="user_uid" xml:space="preserve">
-                <source>Owner</source>
-            </trans-unit>
-      <trans-unit id="item_uid" xml:space="preserve">
-                <source>Page Root</source>
-            </trans-unit>
-      <trans-unit id="preset_data" xml:space="preserve">
-                <source>Configuration</source>
-            </trans-unit>
+      <trans-unit id="tx_impexp_presets">
+        <source>Export Configuration</source>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Title</source>
+      </trans-unit>
+      <trans-unit id="public">
+        <source>Public</source>
+      </trans-unit>
+      <trans-unit id="user_uid">
+        <source>Owner</source>
+      </trans-unit>
+      <trans-unit id="item_uid">
+        <source>Page Root</source>
+      </trans-unit>
+      <trans-unit id="preset_data">
+        <source>Configuration</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

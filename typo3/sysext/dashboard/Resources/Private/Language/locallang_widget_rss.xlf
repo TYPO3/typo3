@@ -3,54 +3,54 @@
   <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard">
     <header/>
     <body>
-      <trans-unit id="widget.rss.title" xml:space="preserve">
-                <source>RSS Feed</source>
-            </trans-unit>
-      <trans-unit id="widget.rss.description" xml:space="preserve">
-                <source>Displays the latest entries from a customizable RSS feed.</source>
-            </trans-unit>
-      <trans-unit id="widget.rss.setting.label.label" xml:space="preserve">
-                <source>Label</source>
-            </trans-unit>
-      <trans-unit id="widget.rss.setting.label.description" xml:space="preserve">
-                <source>Defines the label of the widget.</source>
-            </trans-unit>
-      <trans-unit id="widget.rss.setting.fieldUrl.label" xml:space="preserve">
-                <source>RSS Feed</source>
-            </trans-unit>
-      <trans-unit id="widget.rss.setting.fieldUrl.description" xml:space="preserve">
-                <source>Defines the URL or file providing the RSS Feed. This is read by the widget in order to fetch entries to show.</source>
-            </trans-unit>
-      <trans-unit id="widget.rss.setting.limit.label" xml:space="preserve">
-                <source>Limit</source>
-            </trans-unit>
-      <trans-unit id="widget.rss.setting.limit.description" xml:space="preserve">
-                <source>Defines how many RSS items should be shown.</source>
-            </trans-unit>
-      <trans-unit id="widget.rss.setting.lifetime.label" xml:space="preserve">
-                <source>Lifetime</source>
-            </trans-unit>
-      <trans-unit id="widget.rss.setting.lifetime.description" xml:space="preserve">
-                <source>Defines how long to wait, in seconds, until fetching RSS Feed again.</source>
-            </trans-unit>
-      <trans-unit id="widget.rss.missingFeedConfiguration.title" xml:space="preserve">
-                <source>Missing feed configuration</source>
-            </trans-unit>
-      <trans-unit id="widget.rss.missingFeedConfiguration.message" xml:space="preserve">
-                <source>Please configure a feed URL to retrieve items from.</source>
-            </trans-unit>
-      <trans-unit id="widget.rss.feedError.title" xml:space="preserve">
-                <source>Feed error</source>
-            </trans-unit>
-      <trans-unit id="widget.rss.feedError.message" xml:space="preserve">
-                <source>The feed at "%1$s" could not be parsed.</source>
-            </trans-unit>
-      <trans-unit id="widget.rss.noItems.title" xml:space="preserve">
-                <source>No items to display</source>
-            </trans-unit>
-      <trans-unit id="widget.rss.noItems.message" xml:space="preserve">
-                <source>The feed at "%1$s" does not contain any items.</source>
-            </trans-unit>
+      <trans-unit id="widget.rss.title">
+        <source>RSS Feed</source>
+      </trans-unit>
+      <trans-unit id="widget.rss.description">
+        <source>Displays the latest entries from a customizable RSS feed.</source>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.label.label">
+        <source>Label</source>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.label.description">
+        <source>Defines the label of the widget.</source>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.fieldUrl.label">
+        <source>RSS Feed</source>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.fieldUrl.description">
+        <source>Defines the URL or file providing the RSS Feed. This is read by the widget in order to fetch entries to show.</source>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.limit.label">
+        <source>Limit</source>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.limit.description">
+        <source>Defines how many RSS items should be shown.</source>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.lifetime.label">
+        <source>Lifetime</source>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.lifetime.description">
+        <source>Defines how long to wait, in seconds, until fetching RSS Feed again.</source>
+      </trans-unit>
+      <trans-unit id="widget.rss.missingFeedConfiguration.title">
+        <source>Missing feed configuration</source>
+      </trans-unit>
+      <trans-unit id="widget.rss.missingFeedConfiguration.message">
+        <source>Please configure a feed URL to retrieve items from.</source>
+      </trans-unit>
+      <trans-unit id="widget.rss.feedError.title">
+        <source>Feed error</source>
+      </trans-unit>
+      <trans-unit id="widget.rss.feedError.message">
+        <source>The feed at "%1$s" could not be parsed.</source>
+      </trans-unit>
+      <trans-unit id="widget.rss.noItems.title">
+        <source>No items to display</source>
+      </trans-unit>
+      <trans-unit id="widget.rss.noItems.message">
+        <source>The feed at "%1$s" does not contain any items.</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

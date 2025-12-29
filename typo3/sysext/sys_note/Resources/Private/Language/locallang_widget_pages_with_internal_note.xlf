@@ -3,12 +3,12 @@
   <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="sys_note">
     <header/>
     <body>
-      <trans-unit id="widget.pagesWithInternalNote.title" xml:space="preserve">
-                <source>System Notes</source>
-            </trans-unit>
-      <trans-unit id="widget.pagesWithInternalNote.description" xml:space="preserve">
-                <source>Shows a list of pages with system notes.</source>
-            </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.title">
+        <source>System Notes</source>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.description">
+        <source>Shows a list of pages with system notes.</source>
+      </trans-unit>
       <trans-unit id="widget.pagesWithInternalNote.all.title">
         <source>All System Notes</source>
       </trans-unit>
@@ -45,15 +45,15 @@
       <trans-unit id="widget.pagesWithInternalNote.instructions.description">
         <source>Shows a list of pages with system notes in the category "Instructions"</source>
       </trans-unit>
-      <trans-unit id="widget.pagesWithInternalNote.setting.category.label" xml:space="preserve">
-                <source>Category</source>
-            </trans-unit>
-      <trans-unit id="widget.pagesWithInternalNote.setting.category.description" xml:space="preserve">
-                <source>Category to be displayed.</source>
-            </trans-unit>
-      <trans-unit id="widget.pagesWithInternalNote.setting.category.label.all" xml:space="preserve">
-                <source>All</source>
-            </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.setting.category.label">
+        <source>Category</source>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.setting.category.description">
+        <source>Category to be displayed.</source>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.setting.category.label.all">
+        <source>All</source>
+      </trans-unit>
       <trans-unit id="widget.pagesWithInternalNote.created">
         <source>Created</source>
       </trans-unit>

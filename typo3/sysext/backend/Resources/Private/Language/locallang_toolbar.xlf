@@ -73,9 +73,9 @@
         <source>Environment Module</source>
       </trans-unit>
       <trans-unit id="toolbarItems.sysinfo.allgood" xml:space="preserve">
-                <source>Your system is fully operational.
+        <source>Your system is fully operational.
 Have a nice day.</source>
-            </trans-unit>
+      </trans-unit>
       <trans-unit id="toolbarItems.sysinfo.applicationcontext">
         <source>Application Context</source>
       </trans-unit>

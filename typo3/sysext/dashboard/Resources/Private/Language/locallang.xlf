@@ -3,324 +3,324 @@
   <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard">
     <header/>
     <body>
-      <trans-unit id="close" xml:space="preserve">
-                <source>Close</source>
-            </trans-unit>
-      <trans-unit id="title" xml:space="preserve">
-                <source>Dashboard</source>
-            </trans-unit>
-      <trans-unit id="widget.add" xml:space="preserve">
-                <source>Add widget</source>
-            </trans-unit>
-      <trans-unit id="widget.addToDashboard" xml:space="preserve">
-                <source>Add widget to "%s"</source>
-            </trans-unit>
-      <trans-unit id="widget.addToDashboard.searchLabel" xml:space="preserve">
-                <source>Search for dashboard widgets</source>
-            </trans-unit>
-      <trans-unit id="widget.addToDashboard.searchNotFound" xml:space="preserve">
-                <source>Unfortunately no dashboard widget matches your query, please try a different one.</source>
-            </trans-unit>
-      <trans-unit id="widget.add.button.close" xml:space="preserve">
-                <source>Close</source>
-            </trans-unit>
-      <trans-unit id="widget.add.button.ok" xml:space="preserve">
-                <source>Add widget</source>
-            </trans-unit>
-      <trans-unit id="widget.refresh" xml:space="preserve">
-                <source>Refresh Widget</source>
-            </trans-unit>
-      <trans-unit id="widget.settings" xml:space="preserve">
-                <source>Widget Settings</source>
-            </trans-unit>
-      <trans-unit id="widget.settings.button.close" xml:space="preserve">
-                <source>Close</source>
-            </trans-unit>
-      <trans-unit id="widget.settings.button.save" xml:space="preserve">
-                <source>Save</source>
-            </trans-unit>
-      <trans-unit id="widget.settings.unchanged" xml:space="preserve">
-                <source>Settings unchanged</source>
-            </trans-unit>
-      <trans-unit id="widget.move" xml:space="preserve">
-                <source>Move Widget</source>
-            </trans-unit>
-      <trans-unit id="widget.remove" xml:space="preserve">
-                <source>Remove Widget</source>
-            </trans-unit>
-      <trans-unit id="widget.remove.button.close" xml:space="preserve">
-                <source>Close</source>
-            </trans-unit>
-      <trans-unit id="widget.remove.button.ok" xml:space="preserve">
-                <source>Remove</source>
-            </trans-unit>
-      <trans-unit id="widget.remove.confirm.title" xml:space="preserve">
-                <source>Remove widget</source>
-            </trans-unit>
-      <trans-unit id="widget.remove.confirm.message" xml:space="preserve">
-                <source>Are you sure you want to remove this widget?</source>
-            </trans-unit>
-      <trans-unit id="widget.error" xml:space="preserve">
-                <source>An error occurred while retrieving information for this widget. Please try again, and if the problem persists, contact your administrator.</source>
-            </trans-unit>
+      <trans-unit id="close">
+        <source>Close</source>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Dashboard</source>
+      </trans-unit>
+      <trans-unit id="widget.add">
+        <source>Add widget</source>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard">
+        <source>Add widget to "%s"</source>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard.searchLabel">
+        <source>Search for dashboard widgets</source>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard.searchNotFound">
+        <source>Unfortunately no dashboard widget matches your query, please try a different one.</source>
+      </trans-unit>
+      <trans-unit id="widget.add.button.close">
+        <source>Close</source>
+      </trans-unit>
+      <trans-unit id="widget.add.button.ok">
+        <source>Add widget</source>
+      </trans-unit>
+      <trans-unit id="widget.refresh">
+        <source>Refresh Widget</source>
+      </trans-unit>
+      <trans-unit id="widget.settings">
+        <source>Widget Settings</source>
+      </trans-unit>
+      <trans-unit id="widget.settings.button.close">
+        <source>Close</source>
+      </trans-unit>
+      <trans-unit id="widget.settings.button.save">
+        <source>Save</source>
+      </trans-unit>
+      <trans-unit id="widget.settings.unchanged">
+        <source>Settings unchanged</source>
+      </trans-unit>
+      <trans-unit id="widget.move">
+        <source>Move Widget</source>
+      </trans-unit>
+      <trans-unit id="widget.remove">
+        <source>Remove Widget</source>
+      </trans-unit>
+      <trans-unit id="widget.remove.button.close">
+        <source>Close</source>
+      </trans-unit>
+      <trans-unit id="widget.remove.button.ok">
+        <source>Remove</source>
+      </trans-unit>
+      <trans-unit id="widget.remove.confirm.title">
+        <source>Remove widget</source>
+      </trans-unit>
+      <trans-unit id="widget.remove.confirm.message">
+        <source>Are you sure you want to remove this widget?</source>
+      </trans-unit>
+      <trans-unit id="widget.error">
+        <source>An error occurred while retrieving information for this widget. Please try again, and if the problem persists, contact your administrator.</source>
+      </trans-unit>
       <trans-unit id="dashboard.headline">
         <source>Dashboard "%s"</source>
       </trans-unit>
-      <trans-unit id="dashboard.default" xml:space="preserve">
-                <source>My dashboard</source>
-            </trans-unit>
-      <trans-unit id="dashboard.default.description" xml:space="preserve">
-                <source>Create a new dashboard with some general TYPO3 widgets on it</source>
-            </trans-unit>
-      <trans-unit id="dashboard.empty" xml:space="preserve">
-                <source>Empty dashboard</source>
-            </trans-unit>
-      <trans-unit id="dashboard.empty.description" xml:space="preserve">
-                <source>Your dashboard will be created without any widget on it.</source>
-            </trans-unit>
-      <trans-unit id="dashboard.add" xml:space="preserve">
-                <source>Add dashboard</source>
-            </trans-unit>
-      <trans-unit id="dashboard.add.button.close" xml:space="preserve">
-                <source>Close</source>
-            </trans-unit>
-      <trans-unit id="dashboard.add.button.ok" xml:space="preserve">
-                <source>Add Dashboard</source>
-            </trans-unit>
-      <trans-unit id="dashboard.configure" xml:space="preserve">
-                <source>Configure dashboard</source>
-            </trans-unit>
-      <trans-unit id="dashboard.configure.button.close" xml:space="preserve">
-                <source>Close</source>
-            </trans-unit>
-      <trans-unit id="dashboard.configure.button.ok" xml:space="preserve">
-                <source>Save Dashboard</source>
-            </trans-unit>
-      <trans-unit id="dashboard.delete" xml:space="preserve">
-                <source>Delete dashboard</source>
-            </trans-unit>
-      <trans-unit id="dashboard.delete.sure" xml:space="preserve">
-                <source>Are you sure you want to delete this dashboard?</source>
-            </trans-unit>
-      <trans-unit id="dashboard.delete.ok" xml:space="preserve">
-                <source>Yes, delete it</source>
-            </trans-unit>
-      <trans-unit id="dashboard.delete.cancel" xml:space="preserve">
-                <source>Cancel</source>
-            </trans-unit>
-      <trans-unit id="dashboard.title" xml:space="preserve">
-                <source>Title of dashboard</source>
-            </trans-unit>
-      <trans-unit id="widgets.documentation.gettingStarted.title" xml:space="preserve">
-                <source>Getting Started with TYPO3</source>
-            </trans-unit>
-      <trans-unit id="widgets.documentation.gettingStarted.description" xml:space="preserve">
-                <source>Add a shortcut to the TYPO3 Getting Started Tutorial.</source>
-            </trans-unit>
-      <trans-unit id="widgets.documentation.gettingStarted.text" xml:space="preserve">
-                <source>New to TYPO3? In our Getting Started Tutorial you will learn the basics how to use TYPO3.</source>
-            </trans-unit>
-      <trans-unit id="widgets.documentation.gettingStarted.content.label" xml:space="preserve">
-                <source>Getting Started Tutorial</source>
-            </trans-unit>
-      <trans-unit id="widgets.documentation.typoscriptReference.title" xml:space="preserve">
-                <source>TypoScript Template Reference</source>
-            </trans-unit>
-      <trans-unit id="widgets.documentation.typoscriptReference.description" xml:space="preserve">
-                <source>Add a shortcut to the TYPO3 TypoScript Template Reference.</source>
-            </trans-unit>
-      <trans-unit id="widgets.documentation.typoscriptReference.text" xml:space="preserve">
-                <source>This document is a reference, used to lookup TypoScript templating.</source>
-            </trans-unit>
-      <trans-unit id="widgets.documentation.typoscriptReference.content.label" xml:space="preserve">
-                <source>TypoScript Template Reference</source>
-            </trans-unit>
-      <trans-unit id="widgets.documentation.TSconfigReference.title" xml:space="preserve">
-                <source>TSconfig Reference</source>
-            </trans-unit>
-      <trans-unit id="widgets.documentation.TSconfigReference.description" xml:space="preserve">
-                <source>Add a shortcut to the TYPO3 TSconfig Reference.</source>
-            </trans-unit>
-      <trans-unit id="widgets.documentation.TSconfigReference.text" xml:space="preserve">
-                <source>This document describes TSconfig and its options.</source>
-            </trans-unit>
-      <trans-unit id="widgets.documentation.TSconfigReference.content.label" xml:space="preserve">
-                <source>TSconfig Reference</source>
-            </trans-unit>
-      <trans-unit id="widgets.t3news.title" xml:space="preserve">
-                <source>TYPO3 news</source>
-            </trans-unit>
-      <trans-unit id="widgets.t3news.description" xml:space="preserve">
-                <source>Add a list of news items from the TYPO3 project</source>
-            </trans-unit>
-      <trans-unit id="widgets.t3news.moreItems" xml:space="preserve">
-                <source>More TYPO3 news</source>
-            </trans-unit>
-      <trans-unit id="widgets.t3information.title" xml:space="preserve">
-                <source>About TYPO3</source>
-            </trans-unit>
-      <trans-unit id="widgets.t3information.description" xml:space="preserve">
-                <source>Some general information about TYPO3 and the version used</source>
-            </trans-unit>
+      <trans-unit id="dashboard.default">
+        <source>My dashboard</source>
+      </trans-unit>
+      <trans-unit id="dashboard.default.description">
+        <source>Create a new dashboard with some general TYPO3 widgets on it</source>
+      </trans-unit>
+      <trans-unit id="dashboard.empty">
+        <source>Empty dashboard</source>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.description">
+        <source>Your dashboard will be created without any widget on it.</source>
+      </trans-unit>
+      <trans-unit id="dashboard.add">
+        <source>Add dashboard</source>
+      </trans-unit>
+      <trans-unit id="dashboard.add.button.close">
+        <source>Close</source>
+      </trans-unit>
+      <trans-unit id="dashboard.add.button.ok">
+        <source>Add Dashboard</source>
+      </trans-unit>
+      <trans-unit id="dashboard.configure">
+        <source>Configure dashboard</source>
+      </trans-unit>
+      <trans-unit id="dashboard.configure.button.close">
+        <source>Close</source>
+      </trans-unit>
+      <trans-unit id="dashboard.configure.button.ok">
+        <source>Save Dashboard</source>
+      </trans-unit>
+      <trans-unit id="dashboard.delete">
+        <source>Delete dashboard</source>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.sure">
+        <source>Are you sure you want to delete this dashboard?</source>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.ok">
+        <source>Yes, delete it</source>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.cancel">
+        <source>Cancel</source>
+      </trans-unit>
+      <trans-unit id="dashboard.title">
+        <source>Title of dashboard</source>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.title">
+        <source>Getting Started with TYPO3</source>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.description">
+        <source>Add a shortcut to the TYPO3 Getting Started Tutorial.</source>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.text">
+        <source>New to TYPO3? In our Getting Started Tutorial you will learn the basics how to use TYPO3.</source>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.content.label">
+        <source>Getting Started Tutorial</source>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.title">
+        <source>TypoScript Template Reference</source>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.description">
+        <source>Add a shortcut to the TYPO3 TypoScript Template Reference.</source>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.text">
+        <source>This document is a reference, used to lookup TypoScript templating.</source>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.content.label">
+        <source>TypoScript Template Reference</source>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.title">
+        <source>TSconfig Reference</source>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.description">
+        <source>Add a shortcut to the TYPO3 TSconfig Reference.</source>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.text">
+        <source>This document describes TSconfig and its options.</source>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.content.label">
+        <source>TSconfig Reference</source>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.title">
+        <source>TYPO3 news</source>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.description">
+        <source>Add a list of news items from the TYPO3 project</source>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.moreItems">
+        <source>More TYPO3 news</source>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.title">
+        <source>About TYPO3</source>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.description">
+        <source>Some general information about TYPO3 and the version used</source>
+      </trans-unit>
       <trans-unit id="widgets.t3information.text">
         <source><![CDATA[TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.<br /><br />For further information visit <a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer">typo3.org</a>.<br /><br />TYPO3 CMS is <b>freely available</b> under the <a href="https://typo3.org/project/licenses/" target="_blank" rel="noreferrer">TYPO3-license (GNU/GPL)</a>.<br /><br />You are using version %s - Copyright %s %s]]></source>
       </trans-unit>
       <trans-unit id="widgets.t3information.logo">
         <source>TYPO3 CMS logo</source>
       </trans-unit>
-      <trans-unit id="widgets.sysLogErrors.title" xml:space="preserve">
-                <source>Number of errors in system log</source>
-            </trans-unit>
-      <trans-unit id="widgets.sysLogErrors.description" xml:space="preserve">
-                <source>Shows the number of errors in the sys log of the last month, grouped by date</source>
-            </trans-unit>
-      <trans-unit id="widgets.sysLogErrors.buttonText" xml:space="preserve">
-                <source>Show all errors in log</source>
-            </trans-unit>
-      <trans-unit id="widgets.sysLogErrors.chart.dataSet.0" xml:space="preserve">
-                <source>Number of errors</source>
-            </trans-unit>
-      <trans-unit id="widgets.typeOfUsers.title" xml:space="preserve">
-                <source>Type of backend users</source>
-            </trans-unit>
-      <trans-unit id="widgets.typeOfUsers.description" xml:space="preserve">
-                <source>Shows the amount of normal- and admin-users</source>
-            </trans-unit>
-      <trans-unit id="widgets.typeOfUsers.normalUsers" xml:space="preserve">
-                <source>Normal users</source>
-            </trans-unit>
-      <trans-unit id="widgets.typeOfUsers.adminUsers" xml:space="preserve">
-                <source>Admin users</source>
-            </trans-unit>
-      <trans-unit id="widgets.failedLogins.title" xml:space="preserve">
-                <source>Failed backend logins</source>
-            </trans-unit>
-      <trans-unit id="widgets.failedLogins.subtitle" xml:space="preserve">
-                <source>In last 24 hours</source>
-            </trans-unit>
-      <trans-unit id="widgets.failedLogins.description" xml:space="preserve">
-                <source>Information about the number of failed logins during the last 24 hours.</source>
-            </trans-unit>
-      <trans-unit id="widgets.t3securityAdvisories.title" xml:space="preserve">
-                <source>TYPO3 security advisories</source>
-            </trans-unit>
-      <trans-unit id="widgets.t3securityAdvisories.description" xml:space="preserve">
-                <source>Add a list of security advisories from the TYPO3 project</source>
-            </trans-unit>
-      <trans-unit id="widgets.t3securityAdvisories.moreItems" xml:space="preserve">
-                <source>More TYPO3 security advisories</source>
-            </trans-unit>
-      <trans-unit id="widgets.latestChangedPages.title" xml:space="preserve">
-                <source>Latest changed pages</source>
-            </trans-unit>
-      <trans-unit id="widgets.latestChangedPages.title.restrictToCurrentUser" xml:space="preserve">
-                <source>My latest changed pages</source>
-            </trans-unit>
-      <trans-unit id="widgets.latestChangedPages.description" xml:space="preserve">
-                <source>Show a list of pages where the latest changes were made</source>
-            </trans-unit>
-      <trans-unit id="widgets.latestChangedPages.empty" xml:space="preserve">
-                <source>No history found</source>
-            </trans-unit>
-      <trans-unit id="widgets.latestChangedPages.settings.restrictToCurrentUser" xml:space="preserve">
-                <source>Only show my changes</source>
-            </trans-unit>
-      <trans-unit id="widgets.latestChangedPages.column.change" xml:space="preserve">
-                <source>Change</source>
-            </trans-unit>
-      <trans-unit id="widgets.latestChangedPages.column.user" xml:space="preserve">
-                <source>User</source>
-            </trans-unit>
-      <trans-unit id="widgets.latestChangedPages.column.user.userNotFound" xml:space="preserve">
-                <source>Not Found</source>
-            </trans-unit>
-      <trans-unit id="widgets.latestChangedPages.column.page" xml:space="preserve">
-                <source>Page</source>
-            </trans-unit>
-      <trans-unit id="widgets.latestChangedPages.column.page.workspace" xml:space="preserve">
-                <source>Changes in current selected workspace</source>
-            </trans-unit>
-      <trans-unit id="widgets.latestChangedPages.column.page.pagetree" xml:space="preserve">
-                <source>Position in pagetree</source>
-            </trans-unit>
-      <trans-unit id="widgets.latestChangedPages.column.control" xml:space="preserve">
-                <source>Control</source>
-            </trans-unit>
-      <trans-unit id="widgets.latestChangedPages.column.control.recordHistory" xml:space="preserve">
-                <source>Show history</source>
-            </trans-unit>
-      <trans-unit id="widgets.latestChangedPages.column.control.viewWebpage" xml:space="preserve">
-                <source>View webpage</source>
-            </trans-unit>
-      <trans-unit id="widgets.latestChangedPages.column.control.editPageContent" xml:space="preserve">
-                <source>Edit page content</source>
-            </trans-unit>
-      <trans-unit id="widgets.latestChangedPages.column.control.editPage" xml:space="preserve">
-                <source>Edit page properties</source>
-            </trans-unit>
-      <trans-unit id="widgets.latestChangedPages.table.tt_content" xml:space="preserve">
-                <source>Content</source>
-            </trans-unit>
-      <trans-unit id="widgets.latestChangedPages.table.pages" xml:space="preserve">
-                <source>Page</source>
-            </trans-unit>
-      <trans-unit id="widget_group.general" xml:space="preserve">
-                <source>General</source>
-            </trans-unit>
-      <trans-unit id="widget_group.typo3" xml:space="preserve">
-                <source>TYPO3 community</source>
-            </trans-unit>
-      <trans-unit id="widget_group.news" xml:space="preserve">
-                <source>News</source>
-            </trans-unit>
-      <trans-unit id="widget_group.documentation" xml:space="preserve">
-                <source>Documentation</source>
-            </trans-unit>
-      <trans-unit id="widget_group.system" xml:space="preserve">
-                <source>System Information</source>
-            </trans-unit>
-      <trans-unit id="widget_group.content" xml:space="preserve">
-                <source>Content</source>
-            </trans-unit>
-      <trans-unit id="dashboard.empty.content.title" xml:space="preserve">
-                <source>No widgets</source>
-            </trans-unit>
-      <trans-unit id="dashboard.empty.content.description" xml:space="preserve">
-                <source>There are no widgets on this dashboard yet. You can add widgets now by clicking on the button below.</source>
-            </trans-unit>
-      <trans-unit id="dashboard.empty.content.button" xml:space="preserve">
-                <source>Add a widget</source>
-            </trans-unit>
-      <trans-unit id="widgets.bookmarks.title" xml:space="preserve">
-                <source>Bookmarks</source>
-            </trans-unit>
-      <trans-unit id="widgets.bookmarks.description" xml:space="preserve">
-                <source>Display current bookmarks as a dashboard widget</source>
-            </trans-unit>
-      <trans-unit id="widgets.bookmarks.noBookmarks" xml:space="preserve">
-                <source>You haven't added any bookmarks yet. To add one, click the share icon %s, available on all pages throughout the backend.</source>
-            </trans-unit>
-      <trans-unit id="widget.bookmarks.setting.label.label" xml:space="preserve">
-                <source>Widget Label</source>
-            </trans-unit>
-      <trans-unit id="widget.bookmarks.setting.label.description" xml:space="preserve">
-                <source>Leave empty to use the selected group title automatically.</source>
-            </trans-unit>
-      <trans-unit id="widget.bookmarks.setting.groups.label" xml:space="preserve">
-                <source>Bookmark groups</source>
-            </trans-unit>
-      <trans-unit id="widget.bookmarks.setting.groups.description" xml:space="preserve">
-                <source>Bookmark groups to be displayed.</source>
-            </trans-unit>
-      <trans-unit id="widget.bookmarks.setting.limit.label" xml:space="preserve">
-                <source>Limit</source>
-            </trans-unit>
-      <trans-unit id="widget.bookmarks.setting.limit.description" xml:space="preserve">
-                <source>Defines how many Bookmark items should be shown.</source>
-            </trans-unit>
-      <trans-unit id="widget.bookmarks.setting.label.showAll" xml:space="preserve">
-                <source>Show all Bookmarks</source>
-            </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.title">
+        <source>Number of errors in system log</source>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.description">
+        <source>Shows the number of errors in the sys log of the last month, grouped by date</source>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.buttonText">
+        <source>Show all errors in log</source>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.chart.dataSet.0">
+        <source>Number of errors</source>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.title">
+        <source>Type of backend users</source>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.description">
+        <source>Shows the amount of normal- and admin-users</source>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.normalUsers">
+        <source>Normal users</source>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.adminUsers">
+        <source>Admin users</source>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.title">
+        <source>Failed backend logins</source>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.subtitle">
+        <source>In last 24 hours</source>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.description">
+        <source>Information about the number of failed logins during the last 24 hours.</source>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.title">
+        <source>TYPO3 security advisories</source>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.description">
+        <source>Add a list of security advisories from the TYPO3 project</source>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.moreItems">
+        <source>More TYPO3 security advisories</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.title">
+        <source>Latest changed pages</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.title.restrictToCurrentUser">
+        <source>My latest changed pages</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.description">
+        <source>Show a list of pages where the latest changes were made</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.empty">
+        <source>No history found</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.settings.restrictToCurrentUser">
+        <source>Only show my changes</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.change">
+        <source>Change</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.user">
+        <source>User</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.user.userNotFound">
+        <source>Not Found</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.page">
+        <source>Page</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.page.workspace">
+        <source>Changes in current selected workspace</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.page.pagetree">
+        <source>Position in pagetree</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control">
+        <source>Control</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.recordHistory">
+        <source>Show history</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.viewWebpage">
+        <source>View webpage</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.editPageContent">
+        <source>Edit page content</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.editPage">
+        <source>Edit page properties</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.table.tt_content">
+        <source>Content</source>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.table.pages">
+        <source>Page</source>
+      </trans-unit>
+      <trans-unit id="widget_group.general">
+        <source>General</source>
+      </trans-unit>
+      <trans-unit id="widget_group.typo3">
+        <source>TYPO3 community</source>
+      </trans-unit>
+      <trans-unit id="widget_group.news">
+        <source>News</source>
+      </trans-unit>
+      <trans-unit id="widget_group.documentation">
+        <source>Documentation</source>
+      </trans-unit>
+      <trans-unit id="widget_group.system">
+        <source>System Information</source>
+      </trans-unit>
+      <trans-unit id="widget_group.content">
+        <source>Content</source>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.title">
+        <source>No widgets</source>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.description">
+        <source>There are no widgets on this dashboard yet. You can add widgets now by clicking on the button below.</source>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.button">
+        <source>Add a widget</source>
+      </trans-unit>
+      <trans-unit id="widgets.bookmarks.title">
+        <source>Bookmarks</source>
+      </trans-unit>
+      <trans-unit id="widgets.bookmarks.description">
+        <source>Display current bookmarks as a dashboard widget</source>
+      </trans-unit>
+      <trans-unit id="widgets.bookmarks.noBookmarks">
+        <source>You haven't added any bookmarks yet. To add one, click the share icon %s, available on all pages throughout the backend.</source>
+      </trans-unit>
+      <trans-unit id="widget.bookmarks.setting.label.label">
+        <source>Widget Label</source>
+      </trans-unit>
+      <trans-unit id="widget.bookmarks.setting.label.description">
+        <source>Leave empty to use the selected group title automatically.</source>
+      </trans-unit>
+      <trans-unit id="widget.bookmarks.setting.groups.label">
+        <source>Bookmark groups</source>
+      </trans-unit>
+      <trans-unit id="widget.bookmarks.setting.groups.description">
+        <source>Bookmark groups to be displayed.</source>
+      </trans-unit>
+      <trans-unit id="widget.bookmarks.setting.limit.label">
+        <source>Limit</source>
+      </trans-unit>
+      <trans-unit id="widget.bookmarks.setting.limit.description">
+        <source>Defines how many Bookmark items should be shown.</source>
+      </trans-unit>
+      <trans-unit id="widget.bookmarks.setting.label.showAll">
+        <source>Show all Bookmarks</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
