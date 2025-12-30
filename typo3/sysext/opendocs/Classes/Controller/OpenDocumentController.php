@@ -20,9 +20,10 @@ namespace TYPO3\CMS\Opendocs\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Domain\Repository\OpenDocumentRepository;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Opendocs\Backend\ToolbarItems\OpendocsToolbarItem;
-use TYPO3\CMS\Opendocs\Service\OpenDocumentService;
 
 /**
  * Controller for documents processing.
@@ -34,7 +35,7 @@ use TYPO3\CMS\Opendocs\Service\OpenDocumentService;
 class OpenDocumentController
 {
     public function __construct(
-        protected readonly OpenDocumentService $documents,
+        protected readonly OpenDocumentRepository $openDocumentRepository,
         protected readonly OpendocsToolbarItem $toolbarItem
     ) {}
 
@@ -53,11 +54,22 @@ class OpenDocumentController
     public function closeDocument(ServerRequestInterface $request): ResponseInterface
     {
         $identifier = $request->getParsedBody()['md5sum'] ?? $request->getQueryParams()['md5sum'] ?? null;
+        $backendUser = $this->getBackendUser();
         if ($identifier) {
-            $this->documents->closeDocument($identifier);
+            // Parse identifier (format: "table:uid")
+            $parts = explode(':', $identifier, 2);
+            if (count($parts) === 2) {
+                [$table, $uid] = $parts;
+                $this->openDocumentRepository->closeDocument($table, $uid, $backendUser);
+            }
         } else {
-            $this->documents->closeAllDocuments();
+            $this->openDocumentRepository->closeAllDocuments($backendUser);
         }
         return $this->renderMenu($request);
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

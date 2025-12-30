@@ -21,13 +21,14 @@ use Doctrine\DBAL\Exception\TableNotFoundException;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Domain\Model\Element\ImmediateActionElement;
+use TYPO3\CMS\Backend\Domain\Model\OpenDocument;
+use TYPO3\CMS\Backend\Domain\Repository\OpenDocumentRepository;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Opendocs\Service\OpenDocumentService;
 
 /**
  * Main functionality to render a list of all open documents in the top bar of the Backend.
@@ -40,7 +41,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface, RequestAwareToolbarIt
     private ServerRequestInterface $request;
 
     public function __construct(
-        private readonly OpenDocumentService $documentService,
+        private readonly OpenDocumentRepository $openDocumentRepository,
         private readonly UriBuilder $uriBuilder,
         private readonly BackendViewFactory $backendViewFactory,
     ) {}
@@ -81,10 +82,11 @@ class OpendocsToolbarItem implements ToolbarItemInterface, RequestAwareToolbarIt
     public function getDropDown(): string
     {
         $view = $this->backendViewFactory->create($this->request, ['typo3/cms-opendocs']);
+        $backendUser = $this->getBackendUser();
         $view->assignMultiple([
-            'openDocuments' => $this->getMenuEntries($this->documentService->getOpenDocuments()),
+            'openDocuments' => $this->getMenuEntries($this->openDocumentRepository->findOpenDocumentsForUser($backendUser)),
             // If there are "recent documents" in the list, add them
-            'recentDocuments' => $this->getMenuEntries($this->documentService->getRecentDocuments()),
+            'recentDocuments' => $this->getMenuEntries($this->openDocumentRepository->findRecentDocumentsForUser($backendUser)),
         ]);
         return $view->render('ToolbarItems/DropDown');
     }
@@ -120,6 +122,8 @@ class OpendocsToolbarItem implements ToolbarItemInterface, RequestAwareToolbarIt
 
     /**
      * Get menu entries for all eligible records.
+     *
+     * @param array<string, OpenDocument> $documents
      */
     protected function getMenuEntries(array $documents): array
     {
@@ -138,37 +142,49 @@ class OpendocsToolbarItem implements ToolbarItemInterface, RequestAwareToolbarIt
      *
      * @return array The data of a recent or closed document, or empty array if no record was found (e.g. deleted)
      */
-    protected function getMenuEntry(array $document, string $identifier): array
+    protected function getMenuEntry(OpenDocument $document, string $identifier): array
     {
-        $table = $document[3]['table'] ?? '';
-        $uid = $document[3]['uid'] ?? 0;
+        $table = $document->table;
+        $uid = $document->uid;
 
-        try {
-            $record = BackendUtility::getRecordWSOL($table, $uid);
-        } catch (TableNotFoundException) {
-            // This exception is caught in cases, when you have an recently opened document
-            // from an extension record (let's say a sys_note record) and then uninstall
-            // the extension and drop the DB table. After then, the DB table could
-            // not be found anymore and will throw an exception making the
-            // whole backend unusable.
-            $record = null;
+        // For new records (uid starts with "NEW"), we can't fetch the record yet
+        $isNewRecord = str_starts_with($uid, 'NEW');
+        if ($isNewRecord) {
+            $record = ['uid' => $uid];
+        } else {
+            try {
+                $record = BackendUtility::getRecordWSOL($table, (int)$uid);
+            } catch (TableNotFoundException) {
+                // This exception is caught in cases, when you have an recently opened document
+                // from an extension record (let's say a sys_note record) and then uninstall
+                // the extension and drop the DB table. After then, the DB table could
+                // not be found anymore and will throw an exception making the
+                // whole backend unusable.
+                $record = null;
+            }
+
+            if (!is_array($record)) {
+                // Record seems to be deleted
+                return [];
+            }
         }
 
-        if (!is_array($record)) {
-            // Record seems to be deleted
-            return [];
-        }
+        $label = $document->title ?: BackendUtility::getRecordTitle($table, $record);
 
         $result = [];
         $result['table'] = $table;
         $result['record'] = $record;
-        $result['label'] = strip_tags(htmlspecialchars_decode($document[0]));
+        $result['label'] = strip_tags($label);
         // @todo store module context in open docs?
-        $uri = $this->uriBuilder->buildUriFromRoute('record_edit', ['returnUrl' => $document[4] ?? null]) . '&' . $document[2];
-        $pid = (int)$document[3]['pid'];
+        $parameters = $document->parameters;
+        if ($document->returnUrl) {
+            $parameters['returnUrl'] = $document->returnUrl;
+        }
+        $uri = $this->uriBuilder->buildUriFromRoute('record_edit', $parameters);
+        $pid = $document->pid;
 
-        if ($document[3]['table'] === 'pages') {
-            $pid = (int)$document[3]['uid'];
+        if ($document->table === 'pages' && !$isNewRecord) {
+            $pid = (int)$document->uid;
         }
 
         $result['pid'] = $pid;

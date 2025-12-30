@@ -25,6 +25,8 @@ use TYPO3\CMS\Backend\Breadcrumb\BreadcrumbFactory;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Controller\Event\AfterFormEnginePageInitializedEvent;
 use TYPO3\CMS\Backend\Controller\Event\BeforeFormEnginePageInitializedEvent;
+use TYPO3\CMS\Backend\Domain\Model\OpenDocument;
+use TYPO3\CMS\Backend\Domain\Repository\OpenDocumentRepository;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordException;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordWorkspaceDeletePlaceholderException;
@@ -185,41 +187,8 @@ class EditDocumentController
     /**
      * Contains an array with key/value pairs of GET parameters needed to reach the
      * current document displayed - used in the 'open documents' toolbar.
-     *
-     * @var array
      */
-    protected $storeArray;
-
-    /**
-     * $this->storeArray imploded to url
-     *
-     * @var string
-     */
-    protected $storeUrl;
-
-    /**
-     * md5 hash of storeURL, used to identify a single open document in backend user uc
-     *
-     * @var string
-     */
-    protected $storeUrlMd5;
-
-    /**
-     * Backend user session data of this module
-     *
-     * @var array
-     */
-    protected $docDat;
-
-    /**
-     * An array of the "open documents" - keys are md5 hashes (see $storeUrlMd5) identifying
-     * the various documents on the GET parameter list needed to open it. The values are
-     * arrays with 0,1,2 keys with information about the document (see compileStoreData()).
-     * The docHandler variable is stored in the $docDat session data, key "0".
-     *
-     * @var array
-     */
-    protected $docHandler;
+    protected array $storeArray = [];
 
     /**
      * Array of the elements to create edit forms for.
@@ -254,12 +223,6 @@ class EditDocumentController
      * @var FormResultCompiler
      */
     protected $formResultCompiler;
-
-    /**
-     * Used internally to disable the storage of the document reference (eg. new records)
-     */
-    protected bool $dontStoreDocumentRef = false;
-
     /**
      * True if a record has been saved
      */
@@ -283,6 +246,7 @@ class EditDocumentController
         private readonly FormDataCompiler $formDataCompiler,
         private readonly NodeFactory $nodeFactory,
         protected TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly OpenDocumentRepository $openDocumentRepository,
     ) {}
 
     /**
@@ -332,10 +296,7 @@ class EditDocumentController
         $this->R_URL_getvars['edit'] = $this->editconf;
 
         // Prepare 'open documents' url, this is later modified again various times
-        $this->compileStoreData($request);
-        // Backend user session data of this module
-        $this->docDat = $this->getBackendUser()->getModuleData('FormEngine', 'ses');
-        $this->docHandler = $this->docDat[0] ?? [];
+        $this->storeArray = $this->compileStoreData($request);
 
         // Close document if a request for closing the document has been sent
         $requestAction = FormAction::createFromRequest($request);
@@ -467,23 +428,44 @@ class EditDocumentController
     }
 
     /**
-     * Checking if the currently open document is stored in the list of "open documents" - if not, add it
+     * Store all currently edited records as open documents.
+     *
+     * Creates one document entry per record being edited.
      */
     protected function storeCurrentDocumentInOpenDocuments(): void
     {
-        if ((($this->docDat[1] ?? null) !== $this->storeUrlMd5 || !isset($this->docHandler[$this->storeUrlMd5]))
-            && !$this->dontStoreDocumentRef
-        ) {
-            $this->docHandler[$this->storeUrlMd5] = [
-                $this->storeTitle,
-                $this->storeArray,
-                $this->storeUrl,
-                $this->firstEl,
-                $this->returnUrl,
-            ];
-            $this->getBackendUser()->pushModuleData('FormEngine', [$this->docHandler, $this->storeUrlMd5]);
-            BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($this->docHandler));
+        foreach ($this->elementsData as $element) {
+            $recordUid = (string)$element['uid'];
+            $table = $element['table'];
+            $action = $element['cmd'];
+            $title = $element['title'];
+
+            // Determine pid for this record
+            if ($action === 'new') {
+                // For new records, use the pageId from context
+                $pid = $this->viewId;
+            } else {
+                $pid = (int)($element['pid'] ?? 0);
+            }
+
+            // Create OpenDocument object for this record
+            $document = new OpenDocument(
+                table: $table,
+                // Ensure to only have one "new" entry in the list
+                uid: str_starts_with($recordUid, 'NEW') ? 'NEW' : $recordUid,
+                title: $title,
+                parameters: $this->storeArray,
+                pid: $pid,
+                returnUrl: $this->returnUrl,
+            );
+
+            // Store to session (updates if already exists)
+            $this->openDocumentRepository->addOrUpdateOpenDocument($document, $this->getBackendUser());
         }
+
+        // Update signal for UI
+        $openDocuments = $this->openDocumentRepository->findOpenDocumentsForUser($this->getBackendUser());
+        BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($openDocuments));
     }
 
     protected function setModuleContext(ModuleTemplate $view): void
@@ -664,7 +646,7 @@ class EditDocumentController
                 // Unset default values since we don't need them anymore.
                 unset($this->R_URL_getvars['defVals']);
                 // Recompile the store* values since editconf changed
-                $this->compileStoreData($request);
+                $this->storeArray = $this->compileStoreData($request);
             }
             // See if any records was auto-created as new versions?
             if (!empty($dataHandler->autoVersionIdMap)) {
@@ -719,7 +701,7 @@ class EditDocumentController
             // Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
             $this->R_URL_getvars['edit'] = $this->editconf;
             // Recompile the store* values since editconf changed...
-            $this->compileStoreData($request);
+            $this->storeArray = $this->compileStoreData($request);
         }
 
         // Explicitly require a save operation
@@ -833,8 +815,8 @@ class EditDocumentController
                 $this->editconf[$nTable][$duplicateUid] = 'edit';
                 // Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
                 $this->R_URL_getvars['edit'] = $this->editconf;
-                // Recompile the store* values since editconf changed...
-                $this->compileStoreData($request);
+                // Recompile the storeArray values since editconf changed...
+                $this->storeArray = $this->compileStoreData($request);
 
                 // Inform the user of the duplication
                 $view->addFlashMessage($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.recordDuplicated'));
@@ -944,11 +926,6 @@ class EditDocumentController
                 $ids = GeneralUtility::trimExplode(',', (string)$cKey, true);
                 // Traverse the ids:
                 foreach ($ids as $theUid) {
-                    // Don't save this document title in the document selector if the document is new.
-                    if ($command === 'new') {
-                        $this->dontStoreDocumentRef = true;
-                    }
-
                     try {
                         // Reset viewId - it should hold data of last entry only
                         $this->viewId = 0;
@@ -1008,8 +985,9 @@ class EditDocumentController
                         $this->elementsData[] = [
                             'table' => $table,
                             'uid' => $formData['databaseRow']['uid'],
-                            'pid' => $formData['databaseRow']['pid'],
+                            'pid' => $formData['databaseRow']['pid'] ?? $this->viewId,
                             'cmd' => $command,
+                            'title' => $formData['recordTitle'],
                             'deleteAccess' => $deleteAccess,
                         ];
 
@@ -2048,24 +2026,21 @@ class EditDocumentController
     }
 
     /**
-     * Populates the variables $this->storeArray, $this->storeUrl, $this->storeUrlMd5
-     * to prepare 'open documents' urls
+     * The return value is used for the variable $this->storeArray to prepare 'open documents' urls
      */
-    protected function compileStoreData(ServerRequestInterface $request): void
+    protected function compileStoreData(ServerRequestInterface $request): array
     {
         $queryParams = $request->getQueryParams();
         $parsedBody = $request->getParsedBody();
 
+        $storeArray = [];
         foreach (['edit', 'defVals', 'overrideVals' , 'columnsOnly'] as $key) {
-            if (isset($this->R_URL_getvars[$key])) {
-                $this->storeArray[$key] = $this->R_URL_getvars[$key];
-            } else {
-                $this->storeArray[$key] = $parsedBody[$key] ?? $queryParams[$key] ?? null;
+            $value = $this->R_URL_getvars[$key] ?? $parsedBody[$key] ?? $queryParams[$key] ?? null;
+            if ($value !== null) {
+                $storeArray[$key] = $value;
             }
         }
-
-        $this->storeUrl = HttpUtility::buildQueryString($this->storeArray, '&');
-        $this->storeUrlMd5 = md5($this->storeUrl);
+        return $storeArray;
     }
 
     /**
@@ -2087,7 +2062,7 @@ class EditDocumentController
      */
     protected function closeDocument(FormAction $requestAction, bool $allowRedirects = true): ?ResponseInterface
     {
-        $this->handleDocumentClosing($requestAction);
+        $this->handleDocumentClosing();
         if (!$allowRedirects) {
             return null;
         }
@@ -2111,32 +2086,23 @@ class EditDocumentController
     }
 
     /**
-     * If current document is found in docHandler,
-     * then unset it, possibly unset it ALL and finally, write it to the session data
+     * Close the current document(s).
      */
-    protected function handleDocumentClosing(FormAction $requestAction): void
+    protected function handleDocumentClosing(): void
     {
-        if (isset($this->docHandler[$this->storeUrlMd5])) {
-            // add the closing document to the recent documents
-            $recentDocs = $this->getBackendUser()->getModuleData('opendocs::recent');
-            if (!is_array($recentDocs)) {
-                $recentDocs = [];
+        foreach ($this->editconf as $table => $records) {
+            foreach ($records as $uid => $action) {
+                if ($action === 'new') {
+                    $this->openDocumentRepository->closeDocument($table, 'NEW', $this->getBackendUser());
+                } else {
+                    $this->openDocumentRepository->closeDocument($table, (string)$uid, $this->getBackendUser());
+                }
             }
-            $closedDoc = $this->docHandler[$this->storeUrlMd5];
-            $recentDocs = array_merge([$this->storeUrlMd5 => $closedDoc], $recentDocs);
-            if (count($recentDocs) > 8) {
-                $recentDocs = array_slice($recentDocs, 0, 8);
-            }
-            // remove it from the list of the open documents
-            unset($this->docHandler[$this->storeUrlMd5]);
-            if ($requestAction->getAbsoluteCloseDocValue() === $requestAction::DOCUMENT_CLOSE_MODE_CLEAR_ALL) {
-                $recentDocs = array_merge($this->docHandler, $recentDocs);
-                $this->docHandler = [];
-            }
-            $this->getBackendUser()->pushModuleData('opendocs::recent', $recentDocs);
-            $this->getBackendUser()->pushModuleData('FormEngine', [$this->docHandler, $this->docDat[1]]);
-            BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($this->docHandler));
         }
+
+        // Update signal for UI
+        $openDocuments = $this->openDocumentRepository->findOpenDocumentsForUser($this->getBackendUser());
+        BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($openDocuments));
     }
 
     /**
