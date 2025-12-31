@@ -27,6 +27,7 @@ use TYPO3\CMS\Backend\Controller\Event\AfterFormEnginePageInitializedEvent;
 use TYPO3\CMS\Backend\Controller\Event\BeforeFormEnginePageInitializedEvent;
 use TYPO3\CMS\Backend\Domain\Model\OpenDocument;
 use TYPO3\CMS\Backend\Domain\Repository\OpenDocumentRepository;
+use TYPO3\CMS\Backend\Dto\FormElementData;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordException;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordWorkspaceDeletePlaceholderException;
@@ -75,7 +76,6 @@ use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -144,10 +144,10 @@ class EditDocumentController
 
     /**
      * ID for displaying the page in the frontend, "save and view"
-     *
-     * @var int
+     * Is set to the pid value of the last shown record from "viewId" - thus indicating which page to
+     * show when clicking the SAVE/VIEW button and transferred via GET/POST parameter "popViewId"
      */
-    protected $popViewId;
+    protected int $popViewId = 0;
 
     /**
      * If true, $this->editconf array is added a redirect response, used by Wizard/AddController
@@ -177,32 +177,16 @@ class EditDocumentController
     protected $pageinfo;
 
     /**
-     * Is loaded with the "title" of the currently "open document"
-     * used for the open document toolbar
-     *
-     * @var string
-     */
-    protected $storeTitle = '';
-
-    /**
-     * Contains an array with key/value pairs of GET parameters needed to reach the
-     * current document displayed - used in the 'open documents' toolbar.
-     */
-    protected array $storeArray = [];
-
-    /**
      * Array of the elements to create edit forms for.
      *
-     * @var array
+     * @var FormElementData[]
      */
-    protected $elementsData;
+    protected array $elementsData = [];
 
     /**
      * Pointer to the first element in $elementsData
-     *
-     * @var array|null
      */
-    protected $firstEl;
+    protected ?FormElementData $firstEl = null;
 
     /**
      * Counter, used to count the number of errors (when users do not have edit permissions)
@@ -212,21 +196,9 @@ class EditDocumentController
     protected $errorC;
 
     /**
-     * Is set to the pid value of the last shown record - thus indicating which page to
-     * show when clicking the SAVE/VIEW button
-     *
-     * @var int
-     */
-    protected $viewId;
-
-    /**
      * @var FormResultCompiler
      */
     protected $formResultCompiler;
-    /**
-     * True if a record has been saved
-     */
-    protected bool $isSavedRecord = false;
 
     protected bool $isPageInFreeTranslationMode = false;
 
@@ -265,43 +237,36 @@ class EditDocumentController
         $parsedBody = $request->getParsedBody();
         $this->module = $this->moduleProvider->getModule((string)($queryParams['module'] ?? ''), $this->getBackendUser());
 
-        $this->editconf = $parsedBody['edit'] ?? $queryParams['edit'] ?? [];
+        $this->errorC = 0;
+        $this->editconf = $this->sanitizeEditConf($parsedBody['edit'] ?? $queryParams['edit'] ?? []);
+        // Change $this->editconf if versioning applies to any of the records
+        $this->fixWSversioningInEditConf();
         $this->defVals = $parsedBody['defVals'] ?? $queryParams['defVals'] ?? null;
         $this->overrideVals = $parsedBody['overrideVals'] ?? $queryParams['overrideVals'] ?? null;
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
         $this->returnEditConf = (bool)($parsedBody['returnEditConf'] ?? $queryParams['returnEditConf'] ?? false);
-
-        $columnsOnly = $parsedBody['columnsOnly'] ?? $queryParams['columnsOnly'] ?? null;
-        if (is_array($columnsOnly) && $columnsOnly !== []) {
-            foreach ($columnsOnly as $table => $fields) {
-                $this->columnsOnly[$table] = is_array($fields) ? $fields : GeneralUtility::trimExplode(',', $fields, true);
-            }
-        }
+        $this->columnsOnly = $this->prepareColumnsOnlyConfigurationFromRequest($request);
+        $this->popViewId = (int)($parsedBody['popViewId'] ?? $queryParams['popViewId'] ?? 0);
 
         // Set overrideVals as default values if defVals does not exist.
         // @todo: Why?
         if (!is_array($this->defVals) && is_array($this->overrideVals)) {
             $this->defVals = $this->overrideVals;
         }
-        $this->addSlugFieldsToColumnsOnly($queryParams);
 
         // Set final return URL
         $this->retUrl = $this->returnUrl ?: $this->resolveDefaultReturnUrl();
 
-        // Change $this->editconf if versioning applies to any of the records
-        $this->fixWSversioningInEditConf();
-
         // Prepare R_URL (request url)
         $this->R_URL_getvars = $queryParams;
         $this->R_URL_getvars['edit'] = $this->editconf;
-
-        // Prepare 'open documents' url, this is later modified again various times
-        $this->storeArray = $this->compileStoreData($request);
+        $this->R_URL_getvars['returnUrl'] = $this->retUrl;
 
         // Close document if a request for closing the document has been sent
         $requestAction = FormAction::createFromRequest($request);
         if ($requestAction->shouldHandleDocumentClosing()) {
-            if ($response = $this->closeDocument($requestAction)) {
+            $this->markOpenDocumentsAsRecentInSesssion();
+            if ($response = $this->closeAndPossiblyRedirectAction($requestAction)) {
                 return $response;
             }
         }
@@ -314,13 +279,9 @@ class EditDocumentController
             $this->processData($view, $request);
             // Redirect if element should be closed after save
             if ($requestAction->shouldCloseAfterSave()) {
-                return $this->closeDocument($requestAction);
+                return $this->closeAndPossiblyRedirectAction($requestAction);
             }
         }
-
-        $this->setModuleContext($view);
-
-        $this->popViewId = (int)($parsedBody['popViewId'] ?? $queryParams['popViewId'] ?? 0);
 
         // Preview code is implicit only generated for GET requests, having the query
         // parameters "popViewId" (the preview page id) and "showPreview" set.
@@ -332,44 +293,38 @@ class EditDocumentController
             unset($this->R_URL_getvars['showPreview'], $this->R_URL_getvars['popViewId']);
         }
 
-        // Set other internal variables:
-        $this->R_URL_getvars['returnUrl'] = $this->retUrl;
-        $currentRequestUrlPath = parse_url($request->getAttribute('normalizedParams')->getRequestUri(), PHP_URL_PATH);
-        $this->R_URI = $currentRequestUrlPath . HttpUtility::buildQueryString($this->R_URL_getvars, '?');
-
-        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
-        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/Wizards/localization.xlf');
-        $this->pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('show_item'));
-
         $event = new AfterFormEnginePageInitializedEvent($this, $request);
         $this->eventDispatcher->dispatch($event);
 
         if ($requestAction->isPostRequest) {
-            $url = $this->R_URI;
+            $urlParameters = $this->R_URL_getvars;
             // In case save&view is requested, we have to add this information to the redirect
-            // URL, since the ImmediateAction will be added to the module body afterwards.
+            // URL, since the ImmediateAction will be added to the module body afterward.
             if ($requestAction->savedokview()) {
-                $url = rtrim($url, '&') .
-                    HttpUtility::buildQueryString([
-                        'showPreview' => true,
-                        'popViewId' => $parsedBody['popViewId'] ?? PreviewUriBuilder::getPreviewPageId(
-                            ($this->firstEl['table'] ?? ''),
-                            ($this->firstEl['uid'] ?? ''),
-                            ($this->popViewId ?: $this->viewId),
-                        ),
-                    ], (!str_contains($url, '?') ? '?' : '&'));
+                $urlParameters['showPreview'] = true;
+                $urlParameters['popViewId'] = $this->popViewId;
             }
+            $url = $this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
             return new RedirectResponse($url, 302);
         }
 
         // Begin to show the edit form
+        $this->setModuleContext($view);
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/Wizards/localization.xlf');
+        $this->pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('show_item'));
         $this->formResultCompiler = GeneralUtility::makeInstance(FormResultCompiler::class);
+
+        // Generate the URL to the current request with modified GET parameters
+        // This is used in various plces to "return to" in the form and for buttons etc.
+        $this->R_URI = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $this->R_URL_getvars);
 
         // Creating the editing form, wrap it with buttons, document selector etc.
         $editForm = $this->makeEditForm($request, $view);
         if ($editForm) {
-            $this->firstEl = $this->elementsData ? reset($this->elementsData) : null;
-            $this->storeCurrentDocumentInOpenDocuments();
+            $this->firstEl = $this->elementsData !== [] ? reset($this->elementsData) : null;
+            $lastEl = end($this->elementsData);
+            $this->storeCurrentDocumentInOpenDocuments($request);
             $this->formResultCompiler->addCssFiles();
             // Put together the various elements (buttons, selectors, form) into a table
             $body .= '
@@ -382,7 +337,7 @@ class EditDocumentController
             >
             ' . $editForm . '
             <input type="hidden" name="returnUrl" value="' . htmlspecialchars($this->retUrl) . '" />
-            <input type="hidden" name="popViewId" value="' . htmlspecialchars((string)$this->viewId) . '" />
+            <input type="hidden" name="popViewId" value="' . htmlspecialchars((string)$lastEl->viewId) . '" />
             <input type="hidden" name="closeDoc" value="0" />
             <input type="hidden" name="doSave" value="0" />
             <input type="hidden" name="returnNewPageId" value="' . ($this->returnNewPageId ? 1 : 0) . '" />';
@@ -403,22 +358,19 @@ class EditDocumentController
         // Access check...
         // The page will show only if there is a valid page and if this page may be viewed by the user
         $perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
-        $this->pageinfo = BackendUtility::readPageAccess($this->viewId, $perms_clause) ?: [];
-        $this->isSavedRecord = is_array($this->firstEl)
-            && $this->firstEl['cmd'] !== 'new'
-            && MathUtility::canBeInterpretedAsInteger($this->firstEl['uid']);
+        $this->pageinfo = BackendUtility::readPageAccess($this->firstEl->viewId ?? 0, $perms_clause) ?: [];
 
         // Setting up the buttons, markers for doc header and navigation component state
         $this->createBreadcrumb($view);
         $this->getButtons($view, $request);
 
         // Create language switch options if the record is already persisted, and it is a single record to edit
-        if ($this->isSavedRecord && $this->isSingleRecordView()) {
+        if ($this->isSingleRecordView() && $this->firstEl->isSavedRecord()) {
             $this->languageSwitch(
                 $view,
-                (string)($this->firstEl['table'] ?? ''),
-                (int)($this->firstEl['uid'] ?? 0),
-                isset($this->firstEl['pid']) ? (int)$this->firstEl['pid'] : null
+                $this->firstEl->table,
+                (int)$this->firstEl->uid,
+                $this->firstEl->pid ?? null
             );
         }
 
@@ -427,35 +379,57 @@ class EditDocumentController
         return $view->renderResponse('Form/EditDocument');
     }
 
+    protected function sanitizeEditConf(array $editConf): array
+    {
+        $newConfiguration = [];
+        $beUser = $this->getBackendUser();
+        // Traverse the GPvar edit array tables
+        foreach ($editConf as $table => $conf) {
+            if (!is_array($conf) || !$this->tcaSchemaFactory->has($table)) {
+                // Skip for invalid config or in case no TCA exists
+                continue;
+            }
+            if (!$beUser->check('tables_modify', $table)) {
+                // Skip in case the user has insufficient permissions and increment the error counter
+                $this->errorC++;
+                continue;
+            }
+            // Traverse the keys/comments of each table (keys can be a comma list of uids)
+            foreach ($conf as $cKey => $command) {
+                if ($command !== 'edit' && $command !== 'new') {
+                    // Skip if invalid command
+                    continue;
+                }
+                $newConfiguration[$table][$cKey] = $command;
+            }
+        }
+        return $newConfiguration;
+    }
+
     /**
      * Store all currently edited records as open documents.
      *
      * Creates one document entry per record being edited.
      */
-    protected function storeCurrentDocumentInOpenDocuments(): void
+    protected function storeCurrentDocumentInOpenDocuments(ServerRequestInterface $request): void
     {
+        if ($this->elementsData === []) {
+            return;
+        }
+        // Contains an array with key/value pairs of GET parameters needed to reach the
+        // current document displayed - used in the 'open documents' toolbar.
+        $storeArray = $this->compileStoreData($request);
         foreach ($this->elementsData as $element) {
-            $recordUid = (string)$element['uid'];
-            $table = $element['table'];
-            $action = $element['cmd'];
-            $title = $element['title'];
-
-            // Determine pid for this record
-            if ($action === 'new') {
-                // For new records, use the pageId from context
-                $pid = $this->viewId;
-            } else {
-                $pid = (int)($element['pid'] ?? 0);
-            }
+            $recordUid = (string)$element->uid;
 
             // Create OpenDocument object for this record
             $document = new OpenDocument(
-                table: $table,
+                table: $element->table,
                 // Ensure to only have one "new" entry in the list
                 uid: str_starts_with($recordUid, 'NEW') ? 'NEW' : $recordUid,
-                title: $title,
-                parameters: $this->storeArray,
-                pid: $pid,
+                title: $element->title,
+                parameters: $storeArray,
+                pid: $element->pid,
                 returnUrl: $this->returnUrl,
             );
 
@@ -499,17 +473,29 @@ class EditDocumentController
         $view->assign('moduleContext', $moduleContext);
     }
 
+    protected function prepareColumnsOnlyConfigurationFromRequest(ServerRequestInterface $request): ?array
+    {
+        $columnsOnly = $request->getParsedBody()['columnsOnly'] ?? $request->getQueryParams()['columnsOnly'] ?? null;
+        $usedTables = array_keys($request->getQueryParams()['edit'] ?? []);
+        $finalColumnsOnly = null;
+        if (is_array($columnsOnly) && $columnsOnly !== []) {
+            $finalColumnsOnly = array_map(function ($fields) {
+                return is_array($fields) ? $fields : GeneralUtility::trimExplode(',', $fields, true);
+            }, $columnsOnly);
+            $finalColumnsOnly = $this->addSlugFieldsToColumnsOnly($finalColumnsOnly, $usedTables);
+        }
+        return $finalColumnsOnly;
+    }
+
     /**
      * Always add required fields of slug field
      */
-    protected function addSlugFieldsToColumnsOnly(array $queryParams): void
+    protected function addSlugFieldsToColumnsOnly(array $finalColumnsOnly, array $tables): array
     {
-        $data = $queryParams['edit'] ?? [];
-        $tables = array_keys($data);
         foreach ($tables as $table) {
-            if (!empty($this->columnsOnly[$table]) && $this->tcaSchemaFactory->has($table)) {
+            if (!empty($finalColumnsOnly[$table]) && $this->tcaSchemaFactory->has($table)) {
                 $schema = $this->tcaSchemaFactory->get($table);
-                foreach ($this->columnsOnly[$table] as $field) {
+                foreach ($finalColumnsOnly[$table] as $field) {
                     if (!$schema->hasField($field)) {
                         continue;
                     }
@@ -523,21 +509,22 @@ class EditDocumentController
                             $fieldGroups = [$fieldGroups];
                         }
                         foreach ($fieldGroups as $fields) {
-                            $this->columnsOnly['__hiddenGeneratorFields'][$table] = array_merge(
-                                $this->columnsOnly['__hiddenGeneratorFields'][$table] ?? [],
+                            $finalColumnsOnly['__hiddenGeneratorFields'][$table] = array_merge(
+                                $finalColumnsOnly['__hiddenGeneratorFields'][$table] ?? [],
                                 (is_array($fields) ? $fields : GeneralUtility::trimExplode(',', $fields, true))
                             );
                         }
                     }
                 }
-                if (!empty($this->columnsOnly['__hiddenGeneratorFields'][$table])) {
-                    $this->columnsOnly['__hiddenGeneratorFields'][$table] = array_diff(
-                        array_unique($this->columnsOnly['__hiddenGeneratorFields'][$table]),
-                        $this->columnsOnly[$table]
+                if (!empty($finalColumnsOnly['__hiddenGeneratorFields'][$table])) {
+                    $finalColumnsOnly['__hiddenGeneratorFields'][$table] = array_diff(
+                        array_unique($finalColumnsOnly['__hiddenGeneratorFields'][$table]),
+                        $finalColumnsOnly[$table]
                     );
                 }
             }
         }
+        return $finalColumnsOnly;
     }
 
     /**
@@ -562,9 +549,7 @@ class EditDocumentController
         $dataHandler->setControl($parsedBody['control'] ?? []);
 
         // Set default values fetched previously from GET / POST vars
-        if (is_array($this->defVals)) {
-            $dataHandler->defaultValues = $this->defVals;
-        }
+        $dataHandler->defaultValues = $this->defVals ?? [];
 
         // Load DataHandler with data
         $dataHandler->start($dataMap, $dataHandlerIncomingCommandMap);
@@ -603,6 +588,7 @@ class EditDocumentController
             if (!empty($dataHandler->substNEWwithIDs_table)) {
                 // Save the expanded/collapsed states for new inline records, if any
                 $this->updateInlineView($request->getParsedBody()['uc'] ?? $request->getQueryParams()['uc'] ?? null, $dataHandler);
+                // EditConf is now updated to replace NEW-Ids with the actual persisted IDs.
                 $newEditConf = [];
                 foreach ($this->editconf as $tableName => $tableCmds) {
                     $keys = array_keys($dataHandler->substNEWwithIDs_table, $tableName);
@@ -645,8 +631,6 @@ class EditDocumentController
                 $this->R_URL_getvars['edit'] = $this->editconf;
                 // Unset default values since we don't need them anymore.
                 unset($this->R_URL_getvars['defVals']);
-                // Recompile the store* values since editconf changed
-                $this->storeArray = $this->compileStoreData($request);
             }
             // See if any records was auto-created as new versions?
             if (!empty($dataHandler->autoVersionIdMap)) {
@@ -656,7 +640,7 @@ class EditDocumentController
 
         // If a document is saved and a new one is created right after.
         if ($requestAction->savedoknew()) {
-            $this->closeDocument($requestAction, false);
+            $this->markOpenDocumentsAsRecentInSesssion();
             // Find the current table
             reset($this->editconf);
             $nTable = (string)key($this->editconf);
@@ -672,36 +656,22 @@ class EditDocumentController
             } else {
                 $nUid = (int)end($ids);
             }
-            $recordFields = 'pid,uid';
-            if ($this->tcaSchemaFactory->get($nTable)->isWorkspaceAware()) {
-                $recordFields .= ',t3ver_oid';
-            }
-            $nRec = BackendUtility::getRecord($nTable, $nUid, $recordFields);
-            // Setting a blank editconf array for a new record:
-            $this->editconf = [];
-            // Determine related page ID for regular live context
-            if ((int)($nRec['t3ver_oid'] ?? 0) === 0) {
-                if ($insertRecordOnTop) {
-                    $relatedPageId = $nRec['pid'];
-                } else {
-                    $relatedPageId = -$nRec['uid'];
-                }
+            $nRec = BackendUtility::getRecord($nTable, $nUid);
+            if ($insertRecordOnTop) {
+                $relatedPageId = $nRec['pid'];
             } else {
-                // Determine related page ID for workspace context
-                if ($insertRecordOnTop) {
-                    // Fetch live version of workspace version since the pid value is always -1 in workspaces
-                    $liveRecord = BackendUtility::getRecord($nTable, $nRec['t3ver_oid'], $recordFields);
-                    $relatedPageId = $liveRecord['pid'];
+                if ((int)($nRec['t3ver_oid'] ?? 0) === 0) {
+                    $relatedPageId = -$nRec['uid'];
                 } else {
                     // Use uid of live version of workspace version
                     $relatedPageId = -$nRec['t3ver_oid'];
                 }
             }
+            // Setting a blank editconf array for a new record:
+            $this->editconf = [];
             $this->editconf[$nTable][$relatedPageId] = 'new';
             // Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
             $this->R_URL_getvars['edit'] = $this->editconf;
-            // Recompile the store* values since editconf changed...
-            $this->storeArray = $this->compileStoreData($request);
         }
 
         // Explicitly require a save operation
@@ -765,7 +735,7 @@ class EditDocumentController
 
         // If a document should be duplicated.
         if ($requestAction->duplicatedoc()) {
-            $this->closeDocument($requestAction, false);
+            $this->markOpenDocumentsAsRecentInSesssion();
             // Find current table
             reset($this->editconf);
             $nTable = (string)key($this->editconf);
@@ -776,13 +746,9 @@ class EditDocumentController
                 $nUid = $dataHandler->substNEWwithIDs[$nUid];
             }
 
-            $recordFields = 'pid,uid';
-            if ($this->tcaSchemaFactory->get($nTable)->isWorkspaceAware()) {
-                $recordFields .= ',t3ver_oid';
-            }
-            $nRec = BackendUtility::getRecord($nTable, $nUid, $recordFields);
+            $nRec = BackendUtility::getRecord($nTable, $nUid);
 
-            // Setting a blank editconf array for a new record:
+            // Setting a blank editconf array for a new record
             $this->editconf = [];
 
             if ((int)($nRec['t3ver_oid'] ?? 0) === 0) {
@@ -793,7 +759,6 @@ class EditDocumentController
 
             /** @var DataHandler $duplicateTce */
             $duplicateTce = GeneralUtility::makeInstance(DataHandler::class);
-
             $duplicateCmd = [
                 $nTable => [
                     $nUid => [
@@ -804,23 +769,20 @@ class EditDocumentController
 
             $duplicateTce->start([], $duplicateCmd);
             $duplicateTce->process_cmdmap();
-            $duplicateMappingArray = $duplicateTce->copyMappingArray;
-
-            if (isset($duplicateMappingArray[$nTable][$nUid])) {
-                $duplicateUid = $duplicateMappingArray[$nTable][$nUid];
+            $duplicateUid = $duplicateTce->copyMappingArray[$nTable][$nUid] ?? null;
+            if ($duplicateUid !== null) {
                 if ($nTable === 'pages') {
                     BackendUtility::setUpdateSignal('updatePageTree');
                 }
 
                 $this->editconf[$nTable][$duplicateUid] = 'edit';
-                // Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
+                // Finally, set the editconf array in the "getvars" so they will be passed along in URLs / Open Documents as needed.
                 $this->R_URL_getvars['edit'] = $this->editconf;
-                // Recompile the storeArray values since editconf changed...
-                $this->storeArray = $this->compileStoreData($request);
 
                 // Inform the user of the duplication
                 $view->addFlashMessage($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.recordDuplicated'));
             } else {
+                $this->errorC++;
                 // Inform the user about the failed duplication
                 $view->addFlashMessage(
                     $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.recordDuplicationFailed'),
@@ -838,10 +800,10 @@ class EditDocumentController
         if ($table) {
             $array_keys = array_keys($this->editconf[$table]);
         } else {
-            $table = (string)($this->firstEl['table'] ?? '');
+            $table = $this->firstEl->table;
         }
-        $recordId = (int)((reset($array_keys) ?: null) ?? ($this->firstEl['uid'] ?? ''));
-        $pageId = $this->popViewId ?: $this->viewId;
+        $recordId = (int)((reset($array_keys) ?: null) ?? ($this->firstEl->uid ?? ''));
+        $pageId = $this->popViewId ?: $this->firstEl->viewId;
         return PreviewUriBuilder::createForRecordPreview($table, $recordId, $pageId);
     }
 
@@ -849,8 +811,8 @@ class EditDocumentController
     {
         // Handle file metadata records
         $file = null;
-        if (($this->firstEl['table'] ?? '') === 'sys_file_metadata' && (int)($this->firstEl['uid'] ?? 0) > 0) {
-            $fileUid = (int)(BackendUtility::getRecord('sys_file_metadata', (int)$this->firstEl['uid'], 'file')['file'] ?? 0);
+        if ($this->firstEl->table === 'sys_file_metadata' && $this->firstEl->uid > 0) {
+            $fileUid = (int)(BackendUtility::getRecord('sys_file_metadata', (int)$this->firstEl->uid, 'file')['file'] ?? 0);
             try {
                 $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($fileUid);
             } catch (FileDoesNotExistException|InsufficientUserPermissionsException $e) {
@@ -867,26 +829,26 @@ class EditDocumentController
             $view->assign('moduleContextId', $l10nParent !== 0 ? $l10nParent : $pageUid);
 
             // Determine breadcrumb based on action (edit existing vs. create new)
-            if ($this->isSavedRecord) {
+            if ($this->firstEl->isSavedRecord()) {
                 if ($this->isSingleRecordView()) {
                     // Edit single existing record
                     $breadcrumbContext = $this->breadcrumbFactory->forEditAction(
-                        $this->firstEl['table'],
-                        (int)$this->firstEl['uid']
+                        $this->firstEl->table,
+                        (int)$this->firstEl->uid
                     );
                 } else {
                     // Edit multiple records
                     $breadcrumbContext = $this->breadcrumbFactory->forEditMultipleAction(
-                        $this->firstEl['table'],
+                        $this->firstEl->table,
                         (int)($this->pageinfo['uid'] ?? 0)
                     );
                 }
             } else {
                 // Create new record
                 $breadcrumbContext = $this->breadcrumbFactory->forNewAction(
-                    $this->firstEl['table'],
+                    $this->firstEl->table,
                     (int)($this->pageinfo['uid'] ?? 0),
-                    $this->defVals[$this->firstEl['table']] ?? []
+                    $this->defVals[$this->firstEl->table] ?? []
                 );
             }
             $view->getDocHeaderComponent()->setBreadcrumbContext($breadcrumbContext);
@@ -901,35 +863,17 @@ class EditDocumentController
     protected function makeEditForm(ServerRequestInterface $request, ModuleTemplate $view): string
     {
         // Initialize variables
-        $this->elementsData = [];
-        $this->errorC = 0;
         $editForm = '';
         $beUser = $this->getBackendUser();
         // Traverse the GPvar edit array tables
         foreach ($this->editconf as $table => $conf) {
-            if (!is_array($conf) || !$this->tcaSchemaFactory->has($table)) {
-                // Skip for invalid config or in case no TCA exists
-                continue;
-            }
-            if (!$beUser->check('tables_modify', $table)) {
-                // Skip in case the user has insufficient permissions and increment the error counter
-                $this->errorC++;
-                continue;
-            }
             // Traverse the keys/comments of each table (keys can be a comma list of uids)
             foreach ($conf as $cKey => $command) {
-                if ($command !== 'edit' && $command !== 'new') {
-                    // Skip if invalid command
-                    continue;
-                }
                 // Get the ids:
                 $ids = GeneralUtility::trimExplode(',', (string)$cKey, true);
                 // Traverse the ids:
                 foreach ($ids as $theUid) {
                     try {
-                        // Reset viewId - it should hold data of last entry only
-                        $this->viewId = 0;
-
                         $formDataCompilerInput = [
                             'request' => $request,
                             'tableName' => $table,
@@ -946,27 +890,19 @@ class EditDocumentController
 
                         $formData = $this->formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
 
-                        // Set this->viewId if possible
+                        $viewId = 0;
                         if ($command === 'new'
                             && $table !== 'pages'
                             && !empty($formData['parentPageRow']['uid'])
                         ) {
-                            $this->viewId = $formData['parentPageRow']['uid'];
+                            $viewId = $formData['parentPageRow']['uid'];
                         } elseif ($table === 'pages') {
                             // Only set viewId in case it's not a new page - as this can not be viewed before being saved
                             if ($command !== 'new' && MathUtility::canBeInterpretedAsInteger($formData['databaseRow']['uid'])) {
-                                $this->viewId = (int)$formData['databaseRow']['uid'];
+                                $viewId = (int)$formData['databaseRow']['uid'];
                             }
                         } elseif (!empty($formData['parentPageRow']['uid'])) {
-                            $this->viewId = $formData['parentPageRow']['uid'];
-                        }
-
-                        // Determine if delete button can be shown
-                        $permission = new Permission($formData['userPermissionOnPage']);
-                        if ($formData['tableName'] === 'pages') {
-                            $deleteAccess = $permission->get(Permission::PAGE_DELETE);
-                        } else {
-                            $deleteAccess = $permission->get(Permission::CONTENT_EDIT);
+                            $viewId = $formData['parentPageRow']['uid'];
                         }
 
                         // Display "is-locked" message
@@ -977,22 +913,20 @@ class EditDocumentController
                             }
                         }
 
-                        // Record title
-                        if (!$this->storeTitle) {
-                            $this->storeTitle = htmlspecialchars($formData['recordTitle']);
-                        }
+                        $el = new FormElementData(
+                            title: $formData['recordTitle'],
+                            table: $table,
+                            uid: $formData['databaseRow']['uid'],
+                            pid: ($formData['databaseRow']['pid'] ?? $viewId),
+                            viewId: (int)$viewId,
+                            command: $command,
+                            userPermissionOnPage: $formData['userPermissionOnPage'],
+                        );
 
-                        $this->elementsData[] = [
-                            'table' => $table,
-                            'uid' => $formData['databaseRow']['uid'],
-                            'pid' => $formData['databaseRow']['pid'] ?? $this->viewId,
-                            'cmd' => $command,
-                            'title' => $formData['recordTitle'],
-                            'deleteAccess' => $deleteAccess,
-                        ];
+                        $this->elementsData[] = $el;
 
                         if ($command !== 'new') {
-                            BackendUtility::lockRecords($table, $formData['databaseRow']['uid'], $table === 'tt_content' ? $formData['databaseRow']['pid'] : 0);
+                            BackendUtility::lockRecords($table, $el->uid, $table === 'tt_content' ? $el->pid : 0);
                         }
 
                         // Set list if only specific fields should be rendered. This will trigger
@@ -1022,8 +956,8 @@ class EditDocumentController
                             // @todo: looks ugly
                             $html .= LF
                                 . '<input type="hidden"'
-                                . ' name="data[' . htmlspecialchars($table) . '][' . htmlspecialchars($formData['databaseRow']['uid']) . '][pid]"'
-                                . ' value="' . (int)$formData['databaseRow']['pid'] . '" />';
+                                . ' name="data[' . htmlspecialchars($table) . '][' . htmlspecialchars($el->uid) . '][pid]"'
+                                . ' value="' . $el->pid . '" />';
                         }
 
                         $editForm .= $html;
@@ -1073,18 +1007,18 @@ class EditDocumentController
     protected function getButtons(ModuleTemplate $view, ServerRequestInterface $request): void
     {
         if (!empty($this->firstEl)) {
-            $record = BackendUtility::getRecord($this->firstEl['table'], $this->firstEl['uid']);
-            $schema = $this->tcaSchemaFactory->get($this->firstEl['table']);
+            $record = BackendUtility::getRecord($this->firstEl->table, $this->firstEl->uid);
+            $schema = $this->tcaSchemaFactory->get($this->firstEl->table);
             $languageCapability = $schema->isLanguageAware() ? $schema->getCapability(TcaSchemaCapability::Language) : null;
             $sysLanguageUid = 0;
             if (
-                $this->isSavedRecord
+                $this->firstEl->isSavedRecord()
                 && $schema->isLanguageAware()
                 && isset($record[($languageField = $languageCapability->getLanguageField()->getName())])
             ) {
                 $sysLanguageUid = (int)$record[$languageField];
-            } elseif (isset($this->defVals['sys_language_uid'])) {
-                $sysLanguageUid = (int)$this->defVals['sys_language_uid'];
+            } elseif (isset($this->defVals[$this->firstEl->table]['sys_language_uid'])) {
+                $sysLanguageUid = (int)$this->defVals[$this->firstEl->table]['sys_language_uid'];
             }
 
             $l18nParent = $schema->isLanguageAware() && isset($record[($translationOriginPointerField = $languageCapability->getTranslationOriginPointerField()->getName())])
@@ -1102,7 +1036,7 @@ class EditDocumentController
             ) {
                 $view->addButtonToButtonBar($this->componentFactory->createSaveButton('EditDocumentController')->setDisabled(true), ButtonBar::BUTTON_POSITION_LEFT, 2);
                 $this->registerViewButtonToButtonBar($view, ButtonBar::BUTTON_POSITION_LEFT, 3);
-                if ($this->firstEl['cmd'] !== 'new') {
+                if ($this->firstEl->command !== 'new') {
                     $this->registerNewButtonToButtonBar(
                         $view,
                         ButtonBar::BUTTON_POSITION_LEFT,
@@ -1146,11 +1080,11 @@ class EditDocumentController
      */
     protected function setIsPageInFreeTranslationMode(?array $record, int $sysLanguageUid): void
     {
-        if ($this->firstEl['table'] === 'tt_content') {
-            if (!$this->isSavedRecord) {
+        if ($this->firstEl->table === 'tt_content') {
+            if (!$this->firstEl->isSavedRecord()) {
                 $this->isPageInFreeTranslationMode = $this->getFreeTranslationMode(
                     (int)($this->pageinfo['uid'] ?? 0),
-                    (int)($this->defVals['colPos'] ?? 0),
+                    (int)($this->defVals[$this->firstEl->table]['colPos'] ?? 0),
                     $sysLanguageUid
                 );
             } else {
@@ -1197,10 +1131,10 @@ class EditDocumentController
      */
     protected function registerViewButtonToButtonBar(ModuleTemplate $view, string $position, int $group): void
     {
-        if ($this->viewId // Pid to show the record
-            && !empty($this->firstEl['table']) // No table
+        if ($this->firstEl->viewId // Pid to show the record
+            && !empty($this->firstEl->table) // No table
             // @TODO: TsConfig option should change to viewDoc
-            && $this->getTsConfigOption($this->firstEl['table'], 'saveDocView')
+            && $this->getTsConfigOption($this->firstEl->table, 'saveDocView')
         ) {
             $previewUriBuilderForCurrentPage = PreviewUriBuilder::create($this->pageinfo)->isPreviewable();
             $previewUriBuilder = $this->getPreviewUriBuilderForRecordPreview();
@@ -1214,7 +1148,7 @@ class EditDocumentController
                         ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.viewDoc'))
                         ->setClasses('t3js-editform-view')
                         ->setDisabled(true);
-                    if (!$this->isSavedRecord && $this->firstEl['table'] === 'pages') {
+                    if (!$this->firstEl->isSavedRecord() && $this->firstEl->table === 'pages') {
                         $viewButton->setDataAttributes(['is-new' => '']);
                     }
                     $view->addButtonToButtonBar($viewButton, $position, $group);
@@ -1228,25 +1162,25 @@ class EditDocumentController
      */
     protected function registerNewButtonToButtonBar(ModuleTemplate $view, string $position, int $group, int $sysLanguageUid, int $l18nParent): void
     {
-        if ($this->firstEl['table'] !== 'sys_file_metadata'
-            && !empty($this->firstEl['table'])
+        if ($this->firstEl->table !== 'sys_file_metadata'
+            && !empty($this->firstEl->table)
             && (
                 (
                     (
                         $this->isInconsistentLanguageHandlingAllowed()
                         || $this->isPageInFreeTranslationMode
                     )
-                    && $this->firstEl['table'] === 'tt_content'
+                    && $this->firstEl->table === 'tt_content'
                 )
                 || (
-                    $this->firstEl['table'] !== 'tt_content'
+                    $this->firstEl->table !== 'tt_content'
                     && (
                         $sysLanguageUid === 0
                         || $l18nParent === 0
                     )
                 )
             )
-            && $this->getTsConfigOption($this->firstEl['table'], 'saveDocNew')
+            && $this->getTsConfigOption($this->firstEl->table, 'saveDocNew')
         ) {
             $newButton = $this->componentFactory->createLinkButton()
                 ->setHref('#')
@@ -1255,7 +1189,7 @@ class EditDocumentController
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.newDoc'))
                 ->setClasses('t3js-editform-new')
                 ->setDisabled(true);
-            if (!$this->isSavedRecord) {
+            if (!$this->firstEl->isSavedRecord()) {
                 $newButton->setDataAttributes(['is-new' => '']);
             }
             $view->addButtonToButtonBar($newButton, $position, $group);
@@ -1267,25 +1201,25 @@ class EditDocumentController
      */
     protected function registerDuplicationButtonToButtonBar(ModuleTemplate $view, string $position, int $group, int $sysLanguageUid, int $l18nParent): void
     {
-        if ($this->firstEl['table'] !== 'sys_file_metadata'
-            && !empty($this->firstEl['table'])
+        if ($this->firstEl->table !== 'sys_file_metadata'
+            && !empty($this->firstEl->table)
             && (
                 (
                     (
                         $this->isInconsistentLanguageHandlingAllowed()
                         || $this->isPageInFreeTranslationMode
                     )
-                    && $this->firstEl['table'] === 'tt_content'
+                    && $this->firstEl->table === 'tt_content'
                 )
                 || (
-                    $this->firstEl['table'] !== 'tt_content'
+                    $this->firstEl->table !== 'tt_content'
                     && (
                         $sysLanguageUid === 0
                         || $l18nParent === 0
                     )
                 )
             )
-            && $this->getTsConfigOption($this->firstEl['table'], 'showDuplicate')
+            && $this->getTsConfigOption($this->firstEl->table, 'showDuplicate')
             && $this->isSingleRecordView()
         ) {
             $duplicateButton = $this->componentFactory->createLinkButton()
@@ -1295,7 +1229,7 @@ class EditDocumentController
                 ->setIcon($this->iconFactory->getIcon('actions-document-duplicates-select', IconSize::SMALL))
                 ->setClasses('t3js-editform-duplicate')
                 ->setDisabled(true);
-            if (!$this->isSavedRecord) {
+            if (!$this->firstEl->isSavedRecord()) {
                 $duplicateButton->setDataAttributes(['is-new' => '']);
             }
             $view->addButtonToButtonBar($duplicateButton, $position, $group);
@@ -1307,14 +1241,14 @@ class EditDocumentController
      */
     protected function registerDeleteButtonToButtonBar(ModuleTemplate $view, string $position, int $group, ServerRequestInterface $request): void
     {
-        if ($this->firstEl['deleteAccess']
-            && $this->isSavedRecord
+        if ($this->firstEl->hasDeleteAccess()
+            && $this->firstEl->isSavedRecord()
             && !$this->getDisableDelete()
             && !$this->isRecordCurrentBackendUser()
             && $this->isSingleRecordView()
         ) {
             $returnUrl = $this->retUrl;
-            if ($this->firstEl['table'] === 'pages') {
+            if ($this->firstEl->table === 'pages') {
                 // The below is a hack to replace the return url with an url to the current module on id=0. Otherwise,
                 // this might lead to empty views, since the current id is the page, which is about to be deleted.
                 $parsedUrl = parse_url($returnUrl);
@@ -1323,7 +1257,7 @@ class EditDocumentController
                 parse_str($parsedUrl['query'] ?? '', $queryParams);
                 if ($routePath
                     && isset($queryParams['id'])
-                    && (string)$this->firstEl['uid'] === (string)$queryParams['id']
+                    && (string)$this->firstEl->uid === (string)$queryParams['id']
                 ) {
                     try {
                         // TODO: Use the page's pid instead of 0, this requires a clean API to manipulate the page
@@ -1337,20 +1271,20 @@ class EditDocumentController
 
             $referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
             $numberOfReferences = $referenceIndex->getNumberOfReferencedRecords(
-                $this->firstEl['table'],
-                (int)$this->firstEl['uid']
+                $this->firstEl->table,
+                (int)$this->firstEl->uid
             );
             $referenceCountMessage = BackendUtility::referenceCount(
-                $this->firstEl['table'],
-                (int)$this->firstEl['uid'],
+                $this->firstEl->table,
+                (int)$this->firstEl->uid,
                 $this->getLanguageService()->sL(
                     'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord'
                 ),
                 (string)$numberOfReferences
             );
             $translationCountMessage = BackendUtility::translationCount(
-                $this->firstEl['table'],
-                (string)(int)$this->firstEl['uid'],
+                $this->firstEl->table,
+                (string)(int)$this->firstEl->uid,
                 $this->getLanguageService()->sL(
                     'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord'
                 )
@@ -1358,8 +1292,8 @@ class EditDocumentController
 
             $deleteUrl = (string)$this->uriBuilder->buildUriFromRoute('tce_db', [
                 'cmd' => [
-                    $this->firstEl['table'] => [
-                        $this->firstEl['uid'] => [
+                    $this->firstEl->table => [
+                        $this->firstEl->uid => [
                             'delete' => '1',
                         ],
                     ],
@@ -1367,16 +1301,16 @@ class EditDocumentController
                 'redirect' => $returnUrl,
             ]);
 
-            $recordInfo = $this->storeTitle;
+            $recordInfo = $this->firstEl->title;
             if ($this->getBackendUser()->shallDisplayDebugInformation()) {
-                $recordInfo .= ' [' . $this->firstEl['table'] . ':' . $this->firstEl['uid'] . ']';
+                $recordInfo .= ' [' . $this->firstEl->table . ':' . $this->firstEl->uid . ']';
             }
 
             $deleteButton = $this->componentFactory->createLinkButton()
                 ->setClasses('t3js-editform-delete-record')
                 ->setDataAttributes([
-                    'uid' => $this->firstEl['uid'],
-                    'table' => $this->firstEl['table'],
+                    'uid' => $this->firstEl->uid,
+                    'table' => $this->firstEl->table,
                     'record-info' => trim($recordInfo),
                     'reference-count-message' => $referenceCountMessage,
                     'translation-count-message' => $translationCountMessage,
@@ -1395,16 +1329,13 @@ class EditDocumentController
      */
     protected function registerInfoButtonToButtonBar(ModuleTemplate $view, string $position, int $group): void
     {
-        if ($this->isSingleRecordView()
-            && !empty($this->firstEl['table'])
-            && $this->isSavedRecord
-        ) {
+        if ($this->isSingleRecordView() && $this->firstEl->isSavedRecord()) {
             $button = GeneralUtility::makeInstance(GenericButton::class);
             $button->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:showInfo'));
             $button->setAttributes([
                 'type' => 'button',
                 'data-dispatch-action' => 'TYPO3.InfoWindow.showItem',
-                'data-dispatch-args-list' => $this->firstEl['table'] . ',' . $this->firstEl['uid'],
+                'data-dispatch-args-list' => $this->firstEl->table . ',' . $this->firstEl->uid,
                 'disabled' => 'disabled',
             ]);
             $button->setIcon($this->iconFactory->getIcon('actions-document-info', IconSize::SMALL));
@@ -1419,11 +1350,11 @@ class EditDocumentController
     {
         $userTsConfig = $this->getBackendUser()->getTSConfig();
         if ($this->isSingleRecordView()
-            && !empty($this->firstEl['table'])
-            && (bool)trim($userTsConfig['options.']['showHistory.'][$this->firstEl['table']] ?? $userTsConfig['options.']['showHistory'] ?? '1')
+            && !empty($this->firstEl->table)
+            && (bool)trim($userTsConfig['options.']['showHistory.'][$this->firstEl->table] ?? $userTsConfig['options.']['showHistory'] ?? '1')
         ) {
             $historyUrl = (string)$this->uriBuilder->buildUriFromRoute('record_history', [
-                'element' => $this->firstEl['table'] . ':' . $this->firstEl['uid'],
+                'element' => $this->firstEl->table . ':' . $this->firstEl->uid,
                 'returnUrl' => $this->R_URI,
             ]);
             $historyButton = $this->componentFactory->createLinkButton()
@@ -1440,9 +1371,7 @@ class EditDocumentController
      */
     protected function registerColumnsOnlyButtonToButtonBar(ModuleTemplate $view, string $position, int $group): void
     {
-        if ($this->columnsOnly
-            && $this->isSingleRecordView()
-        ) {
+        if (!empty($this->columnsOnly) && $this->isSingleRecordView()) {
             $columnsOnlyButton = $this->componentFactory->createLinkButton()
                 ->setHref($this->R_URI . '&columnsOnly=')
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:editWholeRecord'))
@@ -1631,14 +1560,14 @@ class EditDocumentController
     protected function getDisableDelete(): bool
     {
         $disableDelete = false;
-        if ($this->firstEl['table'] === 'sys_file_metadata') {
-            $row = BackendUtility::getRecord('sys_file_metadata', $this->firstEl['uid'], 'sys_language_uid');
+        if ($this->firstEl->table === 'sys_file_metadata') {
+            $row = BackendUtility::getRecord('sys_file_metadata', $this->firstEl->uid, 'sys_language_uid');
             if ((int)($row['sys_language_uid'] ?? 0) === 0) {
                 // Always disable for default language
                 $disableDelete = true;
             }
         } else {
-            $disableDelete = (bool)$this->getTsConfigOption($this->firstEl['table'] ?? '', 'disableDelete');
+            $disableDelete = (bool)$this->getTsConfigOption($this->firstEl->table, 'disableDelete');
         }
         return $disableDelete;
     }
@@ -1649,7 +1578,7 @@ class EditDocumentController
     protected function isRecordCurrentBackendUser(): bool
     {
         $backendUser = $this->getBackendUser();
-        return $this->firstEl['table'] === 'be_users' && (int)($this->firstEl['uid'] ?? 0) === $backendUser->getUserId();
+        return $this->firstEl->table === 'be_users' && (int)($this->firstEl->uid ?? 0) === $backendUser->getUserId();
     }
 
     /**
@@ -1947,36 +1876,34 @@ class EditDocumentController
     protected function fixWSversioningInEditConf(?array $mapArray = null): void
     {
         foreach ($this->editconf as $table => $conf) {
-            if (is_array($conf) && $this->tcaSchemaFactory->has($table)) {
-                // Traverse the keys/comments of each table (keys can be a comma list of uids)
-                $newConf = [];
-                foreach ($conf as $cKey => $cmd) {
-                    if ($cmd === 'edit') {
-                        // Traverse the ids:
-                        $ids = GeneralUtility::trimExplode(',', (string)$cKey, true);
-                        foreach ($ids as $idKey => $theUid) {
-                            if (is_array($mapArray)) {
-                                if ($mapArray[$table][$theUid] ?? false) {
-                                    $ids[$idKey] = $mapArray[$table][$theUid];
-                                }
-                            } else {
-                                // Default, look for versions in workspace for record:
-                                $calcPRec = $this->getRecordForEdit((string)$table, (int)$theUid);
-                                if (is_array($calcPRec)) {
-                                    // Setting UID again if it had changed, eg. due to workspace versioning.
-                                    $ids[$idKey] = $calcPRec['uid'];
-                                }
+            // Traverse the keys/comments of each table (keys can be a comma list of uids)
+            $newConf = [];
+            foreach ($conf as $cKey => $cmd) {
+                if ($cmd === 'edit') {
+                    // Traverse the ids:
+                    $ids = GeneralUtility::trimExplode(',', (string)$cKey, true);
+                    foreach ($ids as $idKey => $theUid) {
+                        if (is_array($mapArray)) {
+                            if ($mapArray[$table][$theUid] ?? false) {
+                                $ids[$idKey] = $mapArray[$table][$theUid];
+                            }
+                        } else {
+                            // Default, look for versions in workspace for record:
+                            $calcPRec = $this->getRecordForEdit((string)$table, (int)$theUid);
+                            if (is_array($calcPRec)) {
+                                // Setting UID again if it had changed, eg. due to workspace versioning.
+                                $ids[$idKey] = $calcPRec['uid'];
                             }
                         }
-                        // Add the possibly manipulated IDs to the new-build newConf array:
-                        $newConf[implode(',', $ids)] = $cmd;
-                    } else {
-                        $newConf[$cKey] = $cmd;
                     }
+                    // Add the possibly manipulated IDs to the new-build newConf array:
+                    $newConf[implode(',', $ids)] = $cmd;
+                } else {
+                    $newConf[$cKey] = $cmd;
                 }
-                // Store the new conf array:
-                $this->editconf[$table] = $newConf;
             }
+            // Store the new conf array:
+            $this->editconf[$table] = $newConf;
         }
     }
 
@@ -2056,16 +1983,15 @@ class EditDocumentController
     }
 
     /**
-     * Handling the closing of a document and then creates a valid redirect
+     * Called when someone is done finishing editing - either by just hitting "close" or "save + close",
+     * but also for New/AddController when using returnEditConf.
+     *
+     * At this time, "closing" open documents in the session and unlocking should be done already.
      *
      * @return ResponseInterface|null Redirect response if needed
      */
-    protected function closeDocument(FormAction $requestAction, bool $allowRedirects = true): ?ResponseInterface
+    protected function closeAndPossiblyRedirectAction(FormAction $requestAction): ?ResponseInterface
     {
-        $this->handleDocumentClosing();
-        if (!$allowRedirects) {
-            return null;
-        }
         // If ->returnEditConf is set, then add the current content of editconf to the ->retUrl variable: used by
         // other scripts, like wizard_add, to know which records was created or so...
         if ($this->returnEditConf && !$this->shouldRedirectToEmptyPage()) {
@@ -2088,7 +2014,7 @@ class EditDocumentController
     /**
      * Close the current document(s).
      */
-    protected function handleDocumentClosing(): void
+    protected function markOpenDocumentsAsRecentInSesssion(): void
     {
         foreach ($this->editconf as $table => $records) {
             foreach ($records as $uid => $action) {

@@ -33,12 +33,12 @@ final class EditDocumentControllerTest extends UnitTestCase
 
     #[DataProvider('slugDependentFieldsAreAddedToColumnsOnlyDataProvider')]
     #[Test]
-    public function slugDependentFieldsAreAddedToColumnsOnly(array $result, array $selectedFields, string $tableName, array $configuration): void
+    public function slugDependentFieldsAreAddedToColumnsOnly(array $expectedResult, array $selectedFields, string $tableName, array $configuration): void
     {
         $GLOBALS['TCA'][$tableName]['columns'] = $configuration;
 
         $editDocumentControllerMock = $this->getAccessibleMock(EditDocumentController::class, null, [], '', false);
-        $editDocumentControllerMock->_set('columnsOnly', [$tableName => $selectedFields]);
+        $incomingColumnsOnly = [$tableName => $selectedFields];
         $queryParams = [
             'edit' => [
                 $tableName => [
@@ -50,10 +50,10 @@ final class EditDocumentControllerTest extends UnitTestCase
         $tcaSchemaFactory = $this->getTcaSchemaFactory();
         $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
         $editDocumentControllerMock->_set('tcaSchemaFactory', $tcaSchemaFactory);
-        $editDocumentControllerMock->_call('addSlugFieldsToColumnsOnly', $queryParams);
+        $result = $editDocumentControllerMock->_call('addSlugFieldsToColumnsOnly', $incomingColumnsOnly, array_keys($queryParams['edit']));
 
-        self::assertEquals($selectedFields, array_values($editDocumentControllerMock->_get('columnsOnly')[$tableName] ?? []));
-        self::assertEquals($result, array_values($editDocumentControllerMock->_get('columnsOnly')['__hiddenGeneratorFields'][$tableName] ?? []));
+        self::assertEquals($selectedFields, array_values($result[$tableName] ?? []));
+        self::assertEquals($expectedResult, array_values($result['__hiddenGeneratorFields'][$tableName] ?? []));
     }
 
     public static function slugDependentFieldsAreAddedToColumnsOnlyDataProvider(): array
@@ -162,10 +162,10 @@ final class EditDocumentControllerTest extends UnitTestCase
         ];
 
         $editDocumentControllerMock = $this->getAccessibleMock(EditDocumentController::class, null, [], '', false);
-        $editDocumentControllerMock->_set('columnsOnly', [
+        $incomingColumnsOnly = [
             'aTable' => ['aField'],
             'bTable' => ['bField'],
-        ]);
+        ];
         $queryParams = [
             'edit' => [
                 'aTable' => [
@@ -182,12 +182,12 @@ final class EditDocumentControllerTest extends UnitTestCase
 
         $editDocumentControllerMock->_set('tcaSchemaFactory', $tcaSchemaFactory);
 
-        $editDocumentControllerMock->_call('addSlugFieldsToColumnsOnly', $queryParams);
+        $result = $editDocumentControllerMock->_call('addSlugFieldsToColumnsOnly', $incomingColumnsOnly, array_keys($queryParams['edit']));
 
-        self::assertEquals(['aField'], array_values($editDocumentControllerMock->_get('columnsOnly')['aTable']));
-        self::assertEquals(['aTitle'], array_values($editDocumentControllerMock->_get('columnsOnly')['__hiddenGeneratorFields']['aTable']));
-        self::assertEquals(['bField'], array_values($editDocumentControllerMock->_get('columnsOnly')['bTable']));
-        self::assertEquals(['bTitle'], array_values($editDocumentControllerMock->_get('columnsOnly')['__hiddenGeneratorFields']['bTable']));
+        self::assertEquals(['aField'], array_values($result['aTable']));
+        self::assertEquals(['aTitle'], array_values($result['__hiddenGeneratorFields']['aTable']));
+        self::assertEquals(['bField'], array_values($result['bTable']));
+        self::assertEquals(['bTitle'], array_values($result['__hiddenGeneratorFields']['bTable']));
     }
 
     private function getTcaSchemaFactory(): TcaSchemaFactory
