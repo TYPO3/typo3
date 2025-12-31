@@ -178,6 +178,11 @@ final class CountrySelectViewHelper extends AbstractFormFieldViewHelper
         if ($isSelected) {
             $output .= ' selected="selected"';
         }
+        if (($this->arguments['prioritizedCountries'] ?? []) !== []
+            && in_array($value, $this->arguments['prioritizedCountries'], true)
+        ) {
+            $output .= ' data-prioritized="1"';
+        }
         $output .= '>' . htmlspecialchars($label) . '</option>';
         return $output;
     }

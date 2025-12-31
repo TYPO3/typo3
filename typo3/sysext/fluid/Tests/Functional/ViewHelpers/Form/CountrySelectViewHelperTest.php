@@ -68,7 +68,7 @@ final class CountrySelectViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:form.countrySelect required="true" prioritizedCountries="{0: \'GB\', 1: \'US\', 2: \'CA\'}" name="myCountry" value="US" alternativeLanguage="en" prependOptionLabel="Please choose" />');
         $result = (new TemplateView($context))->render();
         self::assertStringContainsString('<select required="required" name="myCountry"><option value="">Please choose</option>
-<option value="GB">United Kingdom</option><option value="US" selected="selected">United States</option><option value="CA">Canada</option><option value="AD">Andorra</option>', $result);
+<option value="GB" data-prioritized="1">United Kingdom</option><option value="US" selected="selected" data-prioritized="1">United States</option><option value="CA" data-prioritized="1">Canada</option><option value="AD">Andorra</option>', $result);
     }
 
     #[Test]
