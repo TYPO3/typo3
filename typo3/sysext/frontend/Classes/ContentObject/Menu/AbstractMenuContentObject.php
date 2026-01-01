@@ -573,6 +573,10 @@ abstract class AbstractMenuContentObject
         foreach ($languageItems as $sUid) {
             // Find overlay record:
             if ($sUid) {
+                // Skip if language doesn't exist in site configuration
+                if (!isset($languages[$sUid])) {
+                    continue;
+                }
                 $languageAspect = LanguageAspectFactory::createFromSiteLanguage($languages[$sUid]);
                 $pageRepository = $this->buildPageRepository($languageAspect);
                 $lRecs = $pageRepository->getPageOverlay($currentPageWithNoOverlay, $languageAspect);
