@@ -139,6 +139,7 @@ export default class Filelist {
 
     DocumentService.ready().then((): void => {
       Filelist.processTriggers();
+      this.registerPaginationEvents();
 
       new RegularEvent('click', (e: Event, trigger: HTMLAnchorElement): void => {
         e.preventDefault();
@@ -404,4 +405,28 @@ export default class Filelist {
     }
     return this.progressBar;
   }
+
+  private readonly registerPaginationEvents = (): void => {
+    document.querySelectorAll('.t3js-filelist-paging').forEach((trigger: HTMLInputElement) => {
+      trigger.addEventListener('keyup', (e: KeyboardEvent) => {
+        e.preventDefault();
+        let value = Number(trigger.value);
+        const min = Number(trigger.min);
+        const max = Number(trigger.max);
+        if (min && value < min) {
+          value = min;
+        }
+        if (max && value > max) {
+          value = max;
+        }
+        trigger.value = value.toString(10);
+        if (e.key === 'Enter' && value !== Number(trigger.dataset.currentpage)) {
+          const form = trigger.closest('form[name="fileListForm"]') as HTMLFormElement;
+          const submitUrl = new URL(form.action, window.origin);
+          submitUrl.searchParams.set('currentPage', value.toString());
+          window.location.href = submitUrl.toString();
+        }
+      });
+    });
+  };
 }

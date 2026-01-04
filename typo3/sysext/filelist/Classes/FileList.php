@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Filelist;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Routing\Route;
@@ -56,7 +57,6 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\View\ViewInterface;
-use TYPO3\CMS\Filelist\Dto\PaginationLink;
 use TYPO3\CMS\Filelist\Dto\ResourceCollection;
 use TYPO3\CMS\Filelist\Dto\ResourceView;
 use TYPO3\CMS\Filelist\Dto\UserPermissions;
@@ -66,7 +66,6 @@ use TYPO3\CMS\Filelist\Matcher\ResourceFileExtensionMatcher;
 use TYPO3\CMS\Filelist\Matcher\ResourceFolderTypeMatcher;
 use TYPO3\CMS\Filelist\Pagination\ResourceCollectionPaginator;
 use TYPO3\CMS\Filelist\Type\Mode;
-use TYPO3\CMS\Filelist\Type\NavigationDirection;
 use TYPO3\CMS\Filelist\Type\SortDirection;
 use TYPO3\CMS\Filelist\Type\ViewMode;
 
@@ -273,16 +272,14 @@ class FileList
     /**
      * @param ResourceView[] $resourceViews
      */
-    protected function renderTiles(ResourceCollectionPaginator $paginator, array $resourceViews, ViewInterface $view): string
+    protected function renderTiles(array $resourceViews, ViewInterface $view): string
     {
-        $view->assign('displayThumbs', $this->thumbs);
-        $view->assign('displayCheckbox', $this->resourceSelectableMatcher ? true : false);
-        $view->assign('defaultLanguageAccess', $this->getBackendUser()->checkLanguageAccess(0));
-        $view->assign('pagination', [
-            'backward' => $this->getPaginationLinkForDirection($paginator, NavigationDirection::BACKWARD),
-            'forward' => $this->getPaginationLinkForDirection($paginator, NavigationDirection::FORWARD),
+        $view->assignMultiple([
+            'displayThumbs' => $this->thumbs,
+            'displayCheckbox' => (bool)$this->resourceSelectableMatcher,
+            'defaultLanguageAccess' => $this->getBackendUser()->checkLanguageAccess(0),
+            'resources' => $resourceViews,
         ]);
-        $view->assign('resources', $resourceViews);
 
         return $view->render('Filelist/Tiles');
     }
@@ -290,13 +287,13 @@ class FileList
     /**
      * @param ResourceView[] $resourceViews
      */
-    protected function renderList(ResourceCollectionPaginator $paginator, array $resourceViews, ViewInterface $view): string
+    protected function renderList(array $resourceViews, ViewInterface $view): string
     {
-        $view->assign('mode', $this->mode->value);
-        $view->assign('tableHeader', $this->renderListTableHeader());
-        $view->assign('tableBackwardNavigation', $this->renderListTableForwardBackwardNavigation($paginator, NavigationDirection::BACKWARD));
-        $view->assign('tableBody', $this->renderListTableBody($resourceViews));
-        $view->assign('tableForwardNavigation', $this->renderListTableForwardBackwardNavigation($paginator, NavigationDirection::FORWARD));
+        $view->assignMultiple([
+            'mode' => $this->mode->value,
+            'tableHeader' => $this->renderListTableHeader(),
+            'tableBody' => $this->renderListTableBody($resourceViews),
+        ]);
 
         return $view->render('Filelist/List');
     }
@@ -373,11 +370,42 @@ class FileList
             $resourceViews[] = $resourceView;
         }
 
-        if ($this->viewMode === ViewMode::TILES) {
-            return $this->renderTiles($paginator, $resourceViews, $view);
+        $pagination = new SimplePagination($paginator);
+        $currentPage = $paginator->getCurrentPageNumber();
+        $totalItems = $this->totalItems;
+        $itemsPerPage = $this->itemsPerPage;
+        if ($totalItems > $currentPage * $itemsPerPage) {
+            $lastElementNumber = $currentPage * $itemsPerPage;
+        } else {
+            $lastElementNumber = $totalItems;
         }
 
-        return $this->renderList($paginator, $resourceViews, $view);
+        $view->assignMultiple([
+            'currentUrl' => $this->getListURL(),
+            'paginator' => $paginator,
+            'pagination' => $pagination,
+            'currentPage' => $currentPage,
+            'totalPages' => $paginator->getNumberOfPages(),
+            'firstElement' => ((($currentPage - 1) * $itemsPerPage) + 1),
+            'lastElement' => $lastElementNumber,
+        ]);
+
+        if ($this->viewMode === ViewMode::TILES) {
+            return $this->renderTiles($resourceViews, $view);
+        }
+
+        return $this->renderList($resourceViews, $view);
+    }
+
+    protected function getListURL(): UriInterface
+    {
+        $uri = new Uri($this->request->getAttribute('normalizedParams')->getRequestUri());
+        parse_str($uri->getQuery(), $queryParameters);
+        unset($queryParameters['contentOnly'], $queryParameters['currentPage']);
+        if ($this->searchDemand) {
+            $queryParameters['searchTerm'] = $this->searchDemand->getSearchTerm() ?? '';
+        }
+        return $uri->withQuery(HttpUtility::buildQueryString($queryParameters, '&'));
     }
 
     /**
@@ -584,32 +612,6 @@ class FileList
         }
 
         return $output;
-    }
-
-    protected function renderListTableForwardBackwardNavigation(
-        ResourceCollectionPaginator $paginator,
-        NavigationDirection $direction
-    ): string {
-        if (!$link = $this->getPaginationLinkForDirection($paginator, $direction)) {
-            return '';
-        }
-
-        $iconIdentifier = match ($direction) {
-            NavigationDirection::BACKWARD => 'actions-move-up',
-            NavigationDirection::FORWARD => 'actions-move-down',
-        };
-
-        $markup = [];
-        $markup[] = '<tr>';
-        $markup[] = '  <td colspan="' . count($this->fieldArray) . '">';
-        $markup[] = '    <a href="' . htmlspecialchars($link->uri) . '">';
-        $markup[] = '      ' . $this->iconFactory->getIcon($iconIdentifier, IconSize::SMALL)->render();
-        $markup[] = '      <i>[' . $link->label . ']</i>';
-        $markup[] = '    </a>';
-        $markup[] = '  </td>';
-        $markup[] = '</tr>';
-
-        return implode(PHP_EOL, $markup);
     }
 
     /**
@@ -1497,52 +1499,6 @@ class FileList
             return 'sys_file';
         }
         return 'sys_file_metadata';
-    }
-
-    protected function getPaginationLinkForDirection(ResourceCollectionPaginator $paginator, NavigationDirection $direction): ?PaginationLink
-    {
-        $currentPagination = new SimplePagination($paginator);
-        $targetPage = null;
-        switch ($direction) {
-            case NavigationDirection::BACKWARD:
-                $targetPage = $currentPagination->getPreviousPageNumber();
-                break;
-            case NavigationDirection::FORWARD:
-                $targetPage = $currentPagination->getNextPageNumber();
-                break;
-        }
-
-        return $this->getPaginationLinkForPage($paginator, $targetPage);
-    }
-
-    protected function getPaginationLinkForPage(ResourceCollectionPaginator $paginator, ?int $targetPage = null): ?PaginationLink
-    {
-        if ($targetPage === null) {
-            return null;
-        }
-        if ($targetPage > $paginator->getNumberOfPages()) {
-            return null;
-        }
-        if ($targetPage < 1) {
-            return null;
-        }
-
-        $targetPaginator = $paginator->withCurrentPageNumber($targetPage);
-        $targetPagination = new SimplePagination($targetPaginator);
-
-        $uri = new Uri($this->request->getAttribute('normalizedParams')->getRequestUri());
-        parse_str($uri->getQuery(), $queryParameters);
-        unset($queryParameters['contentOnly']);
-        $queryParameters = array_merge($queryParameters, ['currentPage' => $targetPage]);
-        if ($this->searchDemand) {
-            $queryParameters['searchTerm'] = $this->searchDemand->getSearchTerm() ?? '';
-        }
-        $uri = $uri->withQuery(HttpUtility::buildQueryString($queryParameters, '&'));
-
-        return new PaginationLink(
-            $targetPagination->getStartRecordNumber() . '-' . $targetPagination->getEndRecordNumber(),
-            (string)$uri,
-        );
     }
 
     /**

@@ -1,44 +1,24 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 <div class="resource-tiles-container">
-    <div class="resource-tiles">
-        <f:if condition="{pagination.backward}">
-            <f:render section="PaginationTile" arguments="{
-                iconIdentifier: 'actions-move-left',
-                link: pagination.backward,
-                id: 'pagination-backward'
-            }" />
-        </f:if>
+    <div class="resource-tiles my-3">
         <f:for each="{resources}" as="resource">
             <f:render section="ResourceTile" arguments="{resource: resource, displayThumbs: displayThumbs, displayCheckbox: displayCheckbox, defaultLanguageAccess: defaultLanguageAccess}" />
         </f:for>
-        <f:if condition="{pagination.forward}">
-            <f:render section="PaginationTile" arguments="{
-                iconIdentifier: 'actions-move-right',
-                link: pagination.forward,
-                id: 'pagination-forward'
-            }" />
-        </f:if>
     </div>
 </div>
 
-<f:section name="PaginationTile">
-    <div class="resource-tile" aria-labelledby="resource-tile-label-{uid}">
-        <a
-            href="{link.uri}"
-        >
-            <span class="resource-tile-label" id="resource-tile-label-{uid}">{link.label}</span>
-            <span class="resource-tile-preview" role="presentation">
-                <span class="resource-tile-preview-content">
-                    <span class="resource-tile-icon">
-                        <core:icon identifier="{iconIdentifier}" size="large" />
-                    </span>
-                </span>
-            </span>
-            <span class="resource-tile-nameplate">
-                <span class="resource-tile-nameplate-label">{link.label}</span>
-            </span>
-        </a>
-    </div>
-</f:section>
+<f:render partial="Pagination" arguments="{
+        paginator:paginator,
+        pagination:pagination,
+        currentPage:currentPage,
+        totalPages:totalPages,
+        currentUrl:currentUrl,
+        firstElement:firstElement,
+        lastElement:lastElement
+    }" />
 
 <f:section name="ResourceTile">
     <div
@@ -64,7 +44,6 @@
             <span class="resource-tile-label" id="resource-tile-label-{resource.uid}">{resource.name}</span>
             <span class="resource-tile-preview" role="presentation">
                 <span class="resource-tile-preview-content">
-
                     <f:if condition="{displayThumbs} && {resource.preview}">
                         <f:then>
                             <span class="resource-tile-image">
@@ -77,7 +56,6 @@
                             </span>
                         </f:else>
                     </f:if>
-
                 </span>
             </span>
             <span class="resource-tile-nameplate">
@@ -105,3 +83,4 @@
         </f:if>
     </div>
 </f:section>
+</html>

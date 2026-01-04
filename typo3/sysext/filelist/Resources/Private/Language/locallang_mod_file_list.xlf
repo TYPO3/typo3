@@ -108,6 +108,9 @@
       <trans-unit id="reloadMetadata">
         <source>Reload Metadata</source>
       </trans-unit>
+      <trans-unit id="rangeIndicator">
+        <source>Media %1$d - %2$d</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

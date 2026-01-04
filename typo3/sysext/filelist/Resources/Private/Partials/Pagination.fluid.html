@@ -1,0 +1,51 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+<f:if condition="{paginator.numberOfPages} > 1">
+    <nav aria-labelledby="filelist-pagination">
+        <ul class="pagination mb-0">
+            <li class="page-item">
+                <span id="filelist-pagination" class="page-link">
+                    <f:translate key="rangeIndicator" domain="filelist.mod_file_list" arguments="{firstElement: firstElement, lastElement: lastElement}" />
+                    <span class="visually-hidden">, <f:translate key="pageIndicator" domain="core.mod_web_list" arguments="{currentPage: currentPage, totalPages: totalPages}"/></span>
+                </span>
+            </li>
+            <f:comment><!--First page and previous page--></f:comment>
+            <f:if condition="{currentPage} > 1">
+                <f:then>
+                    <li class="page-item"><a class="page-link" href="{currentUrl}&currentPage=1" aria-label="{f:translate(key: 'first', domain: 'core.common')}" title="{f:translate(key: 'first', domain: 'core.common')}"><core:icon identifier="actions-view-paging-first"/></a></li>
+                    <li class="page-item"><a class="page-link" href="{currentUrl}&currentPage={currentPage -1}" aria-label="{f:translate(key: 'previous', domain: 'core.common')}" title="{f:translate(key: 'previous', domain: 'core.common')}"><core:icon identifier="actions-view-paging-previous" /></a></li>
+                </f:then>
+                <f:else>
+                    <li class="page-item disabled" aria-hidden="true"><span class="page-link"><core:icon identifier="actions-view-paging-first" /></span></li>
+                    <li class="page-item disabled" aria-hidden="true"><span class="page-link"><core:icon identifier="actions-view-paging-previous" /></span></li>
+                </f:else>
+            </f:if>
+            <f:variable name="pageInput">
+                <input type="number" autocomplete="off" name="currentPage" min="1" max="{totalPages}" value="{currentPage}" size="3" class="t3js-filelist-paging form-control form-control-sm paginator-input" />
+                <span aria-hidden="true">
+            </f:variable>
+            <li class="page-item">
+                <span class="page-link">
+                    <f:format.raw><f:translate key="pageIndicator" domain="core.mod_web_list" arguments="{pageInput: pageInput, totalPages: totalPages}"/></f:format.raw></span>
+                </span>
+            </li>
+
+            <f:comment><!--Next page and last page--></f:comment>
+            <f:if condition="{currentPage} < {totalPages}">
+                <f:then>
+                    <li class="page-item"><a class="page-link" href="{currentUrl}&currentPage={currentPage + 1}" aria-label="{f:translate(key: 'next', domain: 'core.common')}" title="{f:translate(key: 'next', domain: 'core.common')}"><core:icon identifier="actions-view-paging-next" /></a></li>
+                    <li class="page-item"><a class="page-link" href="{currentUrl}&currentPage={totalPages}" aria-label="{f:translate(key: 'last', domain: 'core.common')}" title="{f:translate(key: 'last', domain: 'core.common')}"><core:icon identifier="actions-view-paging-last" /></a></li>
+                </f:then>
+                <f:else>
+                    <li class="page-item disabled" aria-hidden="true"><span class="page-link"><core:icon identifier="actions-view-paging-next" /></span></li>
+                    <li class="page-item disabled" aria-hidden="true"><span class="page-link"><core:icon identifier="actions-view-paging-last" /></span></li>
+                </f:else>
+            </f:if>
+            <li class="page-item"><a class="page-link" href="{currentUrl}&currentPage={currentPage}" aria-label="{f:translate(key: 'reload', domain: 'core.common')}" title="{f:translate(key: 'reload', domain: 'core.common')}"><core:icon identifier="actions-refresh" /></a></li>
+        </ul>
+    </nav>
+</f:if>
+</html>
