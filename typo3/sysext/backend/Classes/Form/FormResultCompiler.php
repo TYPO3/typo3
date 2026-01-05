@@ -158,10 +158,8 @@ class FormResultCompiler
 
         $pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf', 'file_upload');
         $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
-        if (!empty($this->additionalInlineLanguageLabelFiles)) {
-            foreach ($this->additionalInlineLanguageLabelFiles as $additionalInlineLanguageLabelFile) {
-                $pageRenderer->addInlineLanguageLabelFile($additionalInlineLanguageLabelFile);
-            }
+        foreach ($this->additionalInlineLanguageLabelFiles as $additionalInlineLanguageLabelFile) {
+            $pageRenderer->addInlineLanguageLabelFile($additionalInlineLanguageLabelFile);
         }
 
         // todo: change these things in JS

@@ -36,6 +36,7 @@ final readonly class FormElementData
         public string $table,
         public int|string $uid,
         public int $pid,
+        public array $record,
         public int $viewId,
         public string $command,
         private int $userPermissionOnPage,

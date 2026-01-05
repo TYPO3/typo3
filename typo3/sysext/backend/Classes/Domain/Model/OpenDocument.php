@@ -31,6 +31,8 @@ readonly class OpenDocument implements \JsonSerializable
         public string $table,
         public string $uid,
         public string $title,
+        // Contains an array with key/value pairs of GET parameters needed to reach the
+        // current document displayed - used in the 'open documents' toolbar.
         public array $parameters,
         public int $pid,
         public string $returnUrl = '',
