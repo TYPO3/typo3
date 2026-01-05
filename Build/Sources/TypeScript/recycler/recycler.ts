@@ -13,7 +13,6 @@
 
 import DocumentService from '@typo3/core/document-service';
 import { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
-import '@typo3/backend/input/clearable';
 import '@typo3/backend/element/alert-element';
 import '@typo3/backend/element/icon-element';
 import '@typo3/backend/element/pagination';
@@ -128,15 +127,13 @@ class Recycler {
       });
     }).delegateTo(document, Identifiers.reloadAction);
 
-    (document.querySelector(Identifiers.searchText) as HTMLInputElement).clearable(
-      {
-        onClear: () => {
-          const searchSubmitButton = document.querySelector(Identifiers.searchSubmitBtn) as HTMLButtonElement;
-          searchSubmitButton.disabled = true;
-          this.loadDeletedElements();
-        },
-      },
-    );
+    new RegularEvent('search', (_event: Event, target: HTMLInputElement) => {
+      if (target.value === '') {
+        const searchSubmitButton = document.querySelector(Identifiers.searchSubmitBtn) as HTMLButtonElement;
+        searchSubmitButton.disabled = true;
+        this.loadDeletedElements();
+      }
+    }).delegateTo(document, Identifiers.searchText);
 
     // clicking an action in the paginator
     new RegularEvent('click', (event: Event) => {

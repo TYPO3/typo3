@@ -349,6 +349,7 @@ export class SettingsEditorElement extends LitElement {
               </label>
               <input
                 type="search"
+                autocomplete="off"
                 id="settings-search"
                 class="form-control"
                 placeholder=${lll('settingseditor.search.searchTermPlaceholder')}

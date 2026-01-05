@@ -12,7 +12,6 @@
  */
 
 import Client from '@typo3/backend/storage/client';
-import '@typo3/backend/input/clearable';
 import DocumentService from '@typo3/core/document-service';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import RegularEvent from '@typo3/core/event/regular-event';
@@ -67,11 +66,11 @@ class CollapseStateSearch {
   }
 
   private registerEvents(): void {
-    this.searchField.clearable({
-      onClear: (input: HTMLInputElement): void => {
-        input.closest('form').requestSubmit();
-      },
-    });
+    new RegularEvent('search', (): void => {
+      if (this.searchField.value === '') {
+        this.searchForm.requestSubmit();
+      }
+    }).bindTo(this.searchField);
 
     new DebounceEvent('input', (): void => {
       this.searchForm.requestSubmit();

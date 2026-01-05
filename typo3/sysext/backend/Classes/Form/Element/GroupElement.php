@@ -255,29 +255,24 @@ class GroupElement extends AbstractFormElement
         if (!isset($config['hideSuggest']) || (bool)$config['hideSuggest'] !== true) {
             $html[] =   '<div class="form-wizards-item-top">';
             $html[] =       '<div class="autocomplete t3-form-suggest-container">';
-            $html[] =           '<div class="input-group">';
-            $html[] =               '<span class="input-group-text">';
-            $html[] =                   $this->iconFactory->getIcon('actions-search', IconSize::SMALL)->render();
-            $html[] =               '</span>';
-            $html[] =               '<input type="search" class="t3-form-suggest form-control"';
-            $html[] =                   ' placeholder="' . $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:search.find_record') . '"';
-            $html[] =                   ' data-fieldname="' . htmlspecialchars($fieldName) . '"';
-            $html[] =                   ' data-tablename="' . htmlspecialchars($table) . '"';
-            $html[] =                   ' data-field="' . htmlspecialchars($elementName) . '"';
-            $html[] =                   ' data-uid="' . htmlspecialchars($this->data['databaseRow']['uid']) . '"';
-            $html[] =                   ' data-pid="' . htmlspecialchars($this->data['parentPageRow']['uid'] ?? 0) . '"';
-            $html[] =                   ' data-fieldtype="' . htmlspecialchars($config['type']) . '"';
-            $html[] =                   ' data-minchars="' . htmlspecialchars((string)$suggestMinimumCharacters) . '"';
-            $html[] =                   ' data-datastructureidentifier="' . htmlspecialchars($dataStructureIdentifier) . '"';
-            $html[] =                   ' data-flexformsheetname="' . htmlspecialchars($flexFormSheetName) . '"';
-            $html[] =                   ' data-flexformfieldname="' . htmlspecialchars($flexFormFieldName) . '"';
-            $html[] =                   ' data-flexformcontainername="' . htmlspecialchars($flexFormContainerName) . '"';
-            $html[] =                   ' data-flexformcontainerfieldname="' . htmlspecialchars($flexFormContainerFieldName) . '"';
+            $html[] =           '<input type="search" autocomplete="off" class="t3-form-suggest form-control"';
+            $html[] =               ' placeholder="' . $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:search.find_record') . '"';
+            $html[] =               ' data-fieldname="' . htmlspecialchars($fieldName) . '"';
+            $html[] =               ' data-tablename="' . htmlspecialchars($table) . '"';
+            $html[] =               ' data-field="' . htmlspecialchars($elementName) . '"';
+            $html[] =               ' data-uid="' . htmlspecialchars($this->data['databaseRow']['uid']) . '"';
+            $html[] =               ' data-pid="' . htmlspecialchars($this->data['parentPageRow']['uid'] ?? 0) . '"';
+            $html[] =               ' data-fieldtype="' . htmlspecialchars($config['type']) . '"';
+            $html[] =               ' data-minchars="' . htmlspecialchars((string)$suggestMinimumCharacters) . '"';
+            $html[] =               ' data-datastructureidentifier="' . htmlspecialchars($dataStructureIdentifier) . '"';
+            $html[] =               ' data-flexformsheetname="' . htmlspecialchars($flexFormSheetName) . '"';
+            $html[] =               ' data-flexformfieldname="' . htmlspecialchars($flexFormFieldName) . '"';
+            $html[] =               ' data-flexformcontainername="' . htmlspecialchars($flexFormContainerName) . '"';
+            $html[] =               ' data-flexformcontainerfieldname="' . htmlspecialchars($flexFormContainerFieldName) . '"';
             if ($recordTypeValue !== null && $recordTypeValue !== '') {
-                $html[] =                   ' data-recordtypevalue="' . htmlspecialchars($recordTypeValue) . '"';
+                $html[] =               ' data-recordtypevalue="' . htmlspecialchars($recordTypeValue) . '"';
             }
-            $html[] =               '/>';
-            $html[] =           '</div>';
+            $html[] =           '/>';
             $html[] =       '</div>';
             $html[] =   '</div>';
         }

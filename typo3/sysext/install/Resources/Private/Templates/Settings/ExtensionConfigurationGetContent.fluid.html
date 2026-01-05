@@ -6,10 +6,19 @@
     <div class="t3js-extensionConfiguration-output"></div>
 
     <div class="form-group">
-        <div class="input-group">
-            <span class="input-group-text">Filter by:</span>
-            <input type="text" class="form-control t3js-extensionConfiguration-search" placeholder="search setting">
-        </div>
+        <label
+            for="extension-configuration-search"
+            class="visually-hidden"
+        >
+            Filter by
+        </label>
+        <input
+            id="extension-configuration-search"
+            type="search"
+            autocomplete="off"
+            class="form-control t3js-extensionConfiguration-search"
+            placeholder="search setting"
+        >
     </div>
 
     <div class="panel-group" role="tablist" aria-multiselectable="true">

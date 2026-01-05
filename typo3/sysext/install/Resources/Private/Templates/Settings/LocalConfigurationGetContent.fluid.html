@@ -10,10 +10,19 @@
 
 <div class="t3js-module-content" data-local-configuration-write-token="{localConfigurationWriteToken}">
     <div class="form-group">
-        <div class="input-group">
-            <span class="input-group-text">Filter by:</span>
-            <input type="text" autocomplete="off" class="form-control t3js-localConfiguration-search" placeholder="search setting">
-        </div>
+        <label
+            for="localconfiguration-search"
+            class="visually-hidden"
+        >
+            Filter by
+        </label>
+        <input
+            id="localconfiguration-search"
+            type="search"
+            autocomplete="off"
+            class="form-control t3js-localConfiguration-search"
+            placeholder="search setting"
+        >
     </div>
 
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">

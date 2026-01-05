@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import l from"@typo3/core/document-service.js";import"@typo3/backend/input/clearable.js";class a{constructor(){this.clearableElements=null,l.ready().then(()=>{this.clearableElements=document.querySelectorAll(".t3js-clearable"),this.initializeClearableElements()})}initializeClearableElements(){this.clearableElements.forEach(e=>e.clearable())}}var t=new a;export{t as default};
+import t from"@typo3/core/document-service.js";import o from"@typo3/core/event/regular-event.js";class a{constructor(){t.ready().then(()=>{const e=document.getElementById("search_field");if(e!==null){const r=e.value!=="";new o("search",()=>{e.value===""&&r&&e.closest("form").requestSubmit()}).bindTo(e)}})}}var n=new a;export{n as default};

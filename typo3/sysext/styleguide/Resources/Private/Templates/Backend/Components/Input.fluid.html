@@ -187,6 +187,19 @@
             />
         </sg:example>
 
+        <h2><f:translate key="component.input.section.search.headline" domain="styleguide.messages" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <f:render
+                partial="Backend/Form/Input"
+                arguments="{
+                    identifier: 'inputFormControlSearch',
+                    fieldLabel: 'Search',
+                    type: 'search',
+                    placeholder: 'Search...'
+                }"
+            />
+        </sg:example>
+
         <h2><f:translate key="section.frontend.headline" domain="styleguide.messages" /></h2>
 
         <h3><f:translate key="section.colorScheme.headline" domain="styleguide.messages" /></h3>

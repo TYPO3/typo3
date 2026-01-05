@@ -43,12 +43,7 @@ export class SelectTreeToolbar extends LitElement {
     return html`
       <div class="tree-toolbar">
         <div class="tree-toolbar__buttons">
-          <div class="input-group">
-            <span class="input-group-text input-group-icon filter">
-              <typo3-backend-icon identifier="actions-filter" size="small"></typo3-backend-icon>
-            </span>
-            <input type="search" class="form-control ${this.settings.searchInput}" placeholder="${lll('tcatree.findItem')}" @input="${(evt: InputEvent) => this.filter(evt)}">
-          </div>
+          <input type="search" autocomplete="off" class="form-control ${this.settings.searchInput}" placeholder="${lll('tcatree.findItem')}" @input="${(evt: InputEvent) => this.filter(evt)}">
           <div class="btn-group">
             <button type="button" class="btn btn-default ${this.settings.expandAllBtn}" title="${lll('tcatree.expandAll')}" @click="${() => this.expandAll()}">
               <typo3-backend-icon identifier="apps-pagetree-category-expand-all" size="small"></typo3-backend-icon>

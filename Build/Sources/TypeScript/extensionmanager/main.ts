@@ -20,7 +20,6 @@ import SecurityUtility from '@typo3/core/security-utility';
 import ExtensionManagerRepository from './repository';
 import ExtensionManagerUpdate from './update';
 import ExtensionManagerUploadForm from './upload-form';
-import '@typo3/backend/input/clearable';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import DebounceEvent from '@typo3/core/event/debounce-event';
@@ -178,12 +177,13 @@ class ExtensionManager {
           BrowserSession.set(this.searchFilterSessionKey, target.value);
           this.filterExtensions(target.value);
         }, 100).bindTo(searchField);
-        searchField.clearable({
-          onClear: (): void => {
+
+        new RegularEvent('search', (): void => {
+          if (searchField.value === '') {
             BrowserSession.unset(this.searchFilterSessionKey);
             this.filterExtensions('');
-          },
-        });
+          }
+        }).bindTo(searchField);
       }
 
       this.Repository.initDom();

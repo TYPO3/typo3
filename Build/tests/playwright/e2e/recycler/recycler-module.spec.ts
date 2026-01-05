@@ -57,7 +57,7 @@ test('Delete page and check recycler', async ({ page, backend }) => {
       await backend.contentFrame.getByLabel('Depth').selectOption('Infinite');
       await expect(backend.contentFrame.getByLabel('Depth')).toContainText('Infinite');
 
-      const searchBox = backend.contentFrame.getByRole('textbox', { name: 'Search term' });
+      const searchBox = backend.contentFrame.getByRole('searchbox', { name: 'Search term' });
       await searchBox.fill(newPageTitle);
       await backend.contentFrame.getByRole('button', { name: 'Search' }).click();
 
@@ -72,7 +72,7 @@ test('Delete page and check recycler', async ({ page, backend }) => {
       await backend.contentFrame.getByLabel('Depth').selectOption('Infinite');
       await expect(backend.contentFrame.getByLabel('Depth')).toContainText('Infinite');
 
-      const searchBox = backend.contentFrame.getByRole('textbox', { name: 'Search term' });
+      const searchBox = backend.contentFrame.getByRole('searchbox', { name: 'Search term' });
       await searchBox.fill(newSysNoteSubject);
       await backend.contentFrame.getByRole('button', { name: 'Search' }).click();
 

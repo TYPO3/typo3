@@ -8,6 +8,7 @@
                 data-recordsearchbox-input
                 class="form-control"
                 type="search"
+                autocomplete="off"
                 placeholder="{f:translate(id:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}"
                 title="{f:translate(id: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchString')}"
                 name="searchTerm"
@@ -32,8 +33,8 @@
                     </f:for>
                 </select>
             </f:if>
-            <button data-recordsearchbox-submit class="btn btn-default" type="submit" name="search" title="{f:translate(id:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search')}">
-                <core:icon identifier="actions-search" size="small" />
+            <button data-recordsearchbox-submit class="btn btn-default" type="submit" name="search">
+                <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search" />
             </button>
         </div>
     </form>

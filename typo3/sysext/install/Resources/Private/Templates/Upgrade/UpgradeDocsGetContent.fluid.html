@@ -1,35 +1,29 @@
 <html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <div class="t3js-module-content" data-upgrade-docs-mark-read-token="{upgradeDocsMarkReadToken}" data-upgrade-docs-unmark-read-token="{upgradeDocsUnmarkReadToken}">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-text">Search:</span>
-                    <input
-                        type="text"
-                        class="form-control t3js-upgradeDocs-fulltext-search"
-                        placeholder="Enter searchword"
-                        disabled
-                    >
-                </div>
-            </div>
-        </div>
+
+    <div class="form-group">
+        <label for="upgrade-docs-search-field" class="visually-hidden">Search</label>
+        <input
+            type="search"
+            autocomplete="off"
+            id="upgrade-docs-search-field"
+            class="form-control t3js-upgradeDocs-fulltext-search"
+            placeholder="Enter searchword"
+            disabled
+        >
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                <div class="input-group flex-nowrap">
-                    <span class="input-group-text">Filter by:</span>
-                    <select-pure
-                        default-label="Select category"
-                        class="t3js-upgradeDocs-select-pure"
-                        multiple
-                        tabindex=""
-                        disabled
-                        ></select-pure>
-                </div>
-            </div>
+    <div class="form-group">
+        <div class="input-group flex-nowrap">
+            <span class="input-group-text">Filter by:</span>
+            <select-pure
+                default-label="Select category"
+                class="t3js-upgradeDocs-select-pure"
+                multiple
+                tabindex=""
+                disabled
+                >
+            </select-pure>
         </div>
     </div>
 

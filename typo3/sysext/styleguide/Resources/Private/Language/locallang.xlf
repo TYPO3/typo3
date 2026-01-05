@@ -691,6 +691,9 @@
       <trans-unit id="component.input.section.password.headline">
         <source>Password</source>
       </trans-unit>
+      <trans-unit id="component.input.section.search.headline">
+        <source>Search</source>
+      </trans-unit>
       <trans-unit id="component.input.section.state.headline">
         <source>State</source>
       </trans-unit>

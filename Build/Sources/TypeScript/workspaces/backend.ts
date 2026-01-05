@@ -16,7 +16,6 @@ import DocumentService from '@typo3/core/document-service';
 import { html } from 'lit';
 import '@typo3/backend/element/icon-element';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
-import '@typo3/backend/input/clearable';
 import '@typo3/workspaces/renderable/record-table';
 import '@typo3/backend/element/pagination';
 import Workspaces from './workspaces';
@@ -269,19 +268,14 @@ class Backend extends Workspaces {
       }
     }).delegateTo(document, Identifiers.searchTextField);
 
-    const searchTextField = document.querySelector(Identifiers.searchTextField) as HTMLInputElement;
-    if (searchTextField !== null) {
-      searchTextField.clearable(
-        {
-          onClear: (): void => {
-            const searchSubmitButton = document.querySelector(Identifiers.searchSubmitBtn) as HTMLButtonElement;
-            searchSubmitButton.disabled = true;
-            this.settings.filterTxt = '';
-            this.getWorkspaceInfos();
-          },
-        },
-      );
-    }
+    new RegularEvent('search', (_event: Event, target: HTMLInputElement) => {
+      if (target.value === '') {
+        const searchSubmitButton = document.querySelector(Identifiers.searchSubmitBtn) as HTMLButtonElement;
+        searchSubmitButton.disabled = true;
+        this.settings.filterTxt = '';
+        this.getWorkspaceInfos();
+      }
+    }).delegateTo(document, Identifiers.searchTextField);
 
     // checkboxes in the table
     new RegularEvent('multiRecordSelection:checkbox:state:changed', this.handleCheckboxStateChanged).bindTo(document);

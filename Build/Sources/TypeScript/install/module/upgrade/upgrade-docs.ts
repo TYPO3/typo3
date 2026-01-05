@@ -12,7 +12,6 @@
  */
 
 import 'bootstrap';
-import '../../renderable/clearable';
 import { AbstractInteractableModule, type ModuleLoadedResponse } from '../abstract-interactable-module';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -122,11 +121,13 @@ class UpgradeDocs extends AbstractInteractableModule {
   private initializeFullTextSearch(): void {
     this.fulltextSearchField = this.findInModal(Identifiers.fulltextSearch) as HTMLInputElement;
     const searchInput = <HTMLInputElement>this.fulltextSearchField;
-    searchInput.clearable({
-      onClear: (): void => {
+
+    new RegularEvent('search', (): void => {
+      if (searchInput.value === '') {
         this.combinedFilterSearch();
       }
-    });
+    }).bindTo(searchInput);
+
     searchInput.focus();
 
     new DebounceEvent('keyup', (): void => {

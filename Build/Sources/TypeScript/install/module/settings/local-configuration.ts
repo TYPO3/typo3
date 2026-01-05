@@ -13,7 +13,6 @@
 
 import 'bootstrap';
 import { Collapse } from 'bootstrap';
-import '../../renderable/clearable';
 import { AbstractInteractableModule, type ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
@@ -44,7 +43,6 @@ type LocalConfigurationWrittenResponse = {
  * Module: @typo3/install/module/local-configuration
  */
 class LocalConfiguration extends AbstractInteractableModule {
-  private searchInput: HTMLInputElement;
   private toggleAll: boolean = false;
 
   public override initialize(currentModal: ModalElement): void {
@@ -188,8 +186,6 @@ class LocalConfiguration extends AbstractInteractableModule {
           if (data.success === true) {
             modalContent.innerHTML = data.html;
             Modal.setButtons(data.buttons);
-            this.searchInput = modalContent.querySelector<HTMLInputElement>((Identifiers.searchTrigger));
-            this.searchInput.clearable();
           }
         },
         (error: AjaxResponse): void => {

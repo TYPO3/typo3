@@ -7,31 +7,36 @@
 <typo3-backend-live-search>
     <form>
         <div class="input-group mb-2">
+            <input
+                type="search"
+                autocomplete="off"
+                name="query"
+                class="form-control"
+                placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:liveSearch_search')}"
+                value="{searchDemand.query}"
+            >
             <f:if condition="{searchProviders->f:count()} > 0">
-                <div class="btn-group">
-                    <button class="btn btn-default t3js-search-provider-dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                        <core:icon identifier="actions-filter" size="small" />
-                        <span class="search-option-badge badge badge-primary {activeOptions == 0 ? 'hidden' : ''}" data-active-options-counter="{activeOptions}">
-                            <output>{activeOptions}</output>
-                            <span class="visually-hidden">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:liveSearch_activeFilters')}</span>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu t3js-search-provider-dropdown">
-                        <h6 class="dropdown-header">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:liveSearch_searchIn')}</h6>
-                        <div class="dropdown-item-text">
-                            <f:for each="{searchProviders}" as="searchProvider" key="searchProviderIdentifier">
-                                <typo3-backend-live-search-option-item
-                                    optionId="{searchProviderIdentifier}"
-                                    optionName="searchProviders"
-                                    optionLabel="{searchProvider.instance.filterLabel}"
-                                    {searchProvider.isActive ? 'active' : ''}
-                                ></typo3-backend-live-search-option-item>
-                            </f:for>
-                        </div>
-                    </div>
+            <button class="btn btn-default dropdown-toggle t3js-search-provider-dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                <core:icon identifier="actions-filter" size="small" />
+                <span class="search-option-badge badge badge-primary {activeOptions == 0 ? 'hidden' : ''}" data-active-options-counter="{activeOptions}">
+                    <output>{activeOptions}</output>
+                    <span class="visually-hidden">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:liveSearch_activeFilters')}</span>
+                </span>
+            </button>
+            <div class="dropdown-menu t3js-search-provider-dropdown">
+                <h6 class="dropdown-header">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:liveSearch_searchIn')}</h6>
+                <div class="dropdown-item-text">
+                    <f:for each="{searchProviders}" as="searchProvider" key="searchProviderIdentifier">
+                        <typo3-backend-live-search-option-item
+                            optionId="{searchProviderIdentifier}"
+                            optionName="searchProviders"
+                            optionLabel="{searchProvider.instance.filterLabel}"
+                            {searchProvider.isActive ? 'active' : ''}
+                        ></typo3-backend-live-search-option-item>
+                    </f:for>
                 </div>
+            </div>
             </f:if>
-            <input type="search" name="query" class="form-control" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:liveSearch_search')}" value="{searchDemand.query}" autocomplete="off">
         </div>
         <div class="form-text">
             <typo3-backend-live-search-hint hint="{hint}"></typo3-backend-live-search-hint>

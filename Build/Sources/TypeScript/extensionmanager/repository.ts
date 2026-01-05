@@ -16,7 +16,6 @@ import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import Severity from '@typo3/backend/severity';
 import SortableTable from '@typo3/backend/sortable-table';
-import '@typo3/backend/input/clearable';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import RegularEvent from '@typo3/core/event/regular-event';
@@ -186,17 +185,14 @@ class Repository {
 
   private bindSearchFieldResetter(): void {
     let searchField: HTMLInputElement;
-    if ((searchField = document.querySelector('.typo3-extensionmanager-searchTerForm input[type="text"]')) !== null) {
+    if ((searchField = document.querySelector('.typo3-extensionmanager-searchTerForm input[type="search"]')) !== null) {
       const searchResultShown = ('' !== searchField.value);
 
-      // make search field clearable
-      searchField.clearable({
-        onClear: (input: HTMLInputElement): void => {
-          if (searchResultShown) {
-            input.closest('form').submit();
-          }
-        },
-      });
+      new RegularEvent('search', (): void => {
+        if (searchField.value === '' && searchResultShown) {
+          searchField.closest('form').submit();
+        }
+      }).bindTo(searchField);
     }
   }
 }

@@ -7,10 +7,21 @@
 <form id="columnSelectorForm">
 
     <div class="sticky-form-actions">
-        <div class="input-group">
-            <span class="input-group-text" id="columns-filter-label"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:columnsFilter" /></span>
-            <input type="search" name="columns-filter" class="form-control" value="" aria-labelledby="columns-filter-label" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}">
-        </div>
+        <label
+            for="columns-filter-input"
+            class="visually-hidden"
+        >
+            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:columnsFilter" />
+        </label>
+        <input
+            type="search"
+            autocomplete="off"
+            id="columns-filter-input"
+            name="columns-filter"
+            class="form-control"
+            value=""
+            placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}"
+        >
         <div class="btn-group t3js-column-selector-actions">
             <button type="button" class="btn btn-default disabled" data-action="select-all">
                 <core:icon identifier="actions-check-square"/> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll" />

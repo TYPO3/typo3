@@ -23,17 +23,16 @@ test('Filter installed extensions', async ({ backend }) => {
   });
 
   await test.step('Filter for "backend" extension', async () => {
-    await backend.contentFrame.getByRole('textbox', { name: 'Search term' }).pressSequentially('backend');
-    await backend.contentFrame.getByRole('button', { name: 'Search' }).click();
-
+    await backend.contentFrame.getByRole('searchbox', { name: 'Search term' }).pressSequentially('backend');
     await expect(backend.contentFrame.locator('tr#core')).not.toBeVisible();
     expect(await backend.contentFrame.locator('#typo3-extension-list tbody tr[role="row"]:not(.hidden)').count()).toBe(3);
     expect(await backend.contentFrame.locator('#typo3-extension-list tbody tr[role="row"] td').filter({ hasText: 'backend' }).count()).toBeGreaterThan(0);
   });
 
   await test.step('Reset filter and check amount of installed extensions', async () => {
-    await expect(backend.contentFrame.getByLabel('Clear input')).toBeVisible();
-    await backend.contentFrame.getByLabel('Clear input').click();
+    const searchBox = backend.contentFrame.getByRole('searchbox', { name: 'Search term' });
+    await searchBox.clear();
+    await searchBox.dispatchEvent('search');
     expect(await backend.contentFrame.locator('#typo3-extension-list tbody tr[role="row"]:not(.hidden)').count()).toBeGreaterThanOrEqual(10);
   });
 });

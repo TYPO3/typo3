@@ -20,9 +20,9 @@
                     <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString"/>
                 </label>
                 <div class="input-group">
-                    <input type="search" id="searchField" name="SET[sword]" class="form-control" value="{sword}" />
-                    <button class="btn btn-default" disabled type="submit" name="submitSearch" id="submitSearch" title="{f:translate(domain:'lowlevel.messages', key:'search.submit')}">
-                        <core:icon identifier="actions-search" size="small" />
+                    <input type="search" autocomplete="off" id="searchField" name="SET[sword]" class="form-control" value="{sword}" />
+                    <button class="btn btn-default" disabled type="submit" name="submitSearch" id="submitSearch">
+                        <f:translate domain="lowlevel.messages" key="search.submit" />
                     </button>
                 </div>
             </form>

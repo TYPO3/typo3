@@ -494,7 +494,7 @@ class PageTreeToolbar extends TreeToolbar {
               <label for="toolbarSearch" class="visually-hidden">
                 ${lll('labels.label.searchString')}
               </label>
-              <input type="search" id="toolbarSearch" class="form-control form-control-sm search-input" placeholder="${lll('tree.searchPageTree')}">
+              <input type="search" autocomplete="off" id="toolbarSearch" class="form-control form-control-sm search-input" placeholder="${lll('tree.searchPageTree')}">
           </div>
           <button
             type="button"

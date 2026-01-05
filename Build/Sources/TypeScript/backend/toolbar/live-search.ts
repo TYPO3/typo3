@@ -14,7 +14,6 @@
 import { lll } from '@typo3/core/lit-helper';
 import Modal from '../modal';
 import '@typo3/backend/element/icon-element';
-import '@typo3/backend/input/clearable';
 import '../live-search/element/hint';
 import '../live-search/element/result/result-pagination';
 import '../live-search/element/search-option-item';
@@ -149,11 +148,11 @@ class LiveSearch {
           optionCounterElement.classList.toggle('hidden', count === 0);
         }).bindTo(searchForm);
 
-        searchField.clearable({
-          onClear: (): void => {
+        new RegularEvent('search', (): void => {
+          if (searchField.value === '') {
             searchForm.requestSubmit();
-          },
-        });
+          }
+        }).bindTo(searchField);
 
         const searchResultContainer: ResultContainer = document.querySelector('typo3-backend-live-search-result-container');
         new RegularEvent('live-search:item-chosen', (): void => {

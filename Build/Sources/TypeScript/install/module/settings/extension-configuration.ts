@@ -12,7 +12,6 @@
  */
 
 import 'bootstrap';
-import '../../renderable/clearable';
 import '../../renderable/wrap-group';
 import '../../renderable/offset-group';
 import { AbstractInteractableModule, type ModuleLoadedResponse } from '../abstract-interactable-module';
@@ -107,7 +106,6 @@ class ExtensionConfiguration extends AbstractInteractableModule {
           const data: ModuleLoadedResponse = await response.resolve();
           if (data.success === true) {
             modalContent.innerHTML = data.html;
-            (modalContent.querySelector(Identifiers.searchInput) as HTMLInputElement).clearable();
             this.initializeWrap();
             this.initializeColorPicker();
           }

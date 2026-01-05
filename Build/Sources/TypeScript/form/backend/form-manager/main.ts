@@ -12,7 +12,7 @@
  */
 
 import DocumentService from '@typo3/core/document-service';
-import '@typo3/backend/input/clearable';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 /**
  * Module: @typo3/form/backend/form-manager/main
@@ -20,19 +20,18 @@ import '@typo3/backend/input/clearable';
  * @exports @typo3/form/backend/form-manager/main
  */
 class FormManager {
-  private clearableElements: NodeListOf<HTMLInputElement> = null;
-
   constructor() {
     DocumentService.ready().then((): void => {
-      this.clearableElements = document.querySelectorAll('.t3js-clearable') as NodeListOf<HTMLInputElement>;
-      this.initializeClearableElements();
+      const searchField = document.getElementById('search_field') as HTMLInputElement;
+      if (searchField !== null) {
+        const searchResultShown = searchField.value !== '';
+        new RegularEvent('search', (): void => {
+          if (searchField.value === '' && searchResultShown) {
+            searchField.closest('form').requestSubmit();
+          }
+        }).bindTo(searchField);
+      }
     });
-  }
-
-  private initializeClearableElements(): void {
-    this.clearableElements.forEach(
-      (clearableField) => clearableField.clearable()
-    );
   }
 }
 

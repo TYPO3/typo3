@@ -56,6 +56,10 @@ class SelectBoxFilter {
       this.filter((<HTMLInputElement>e.target).value);
     }).delegateTo(wizardsElement, Selectors.filterTextFieldSelector);
 
+    new RegularEvent('search', (e: Event): void => {
+      this.filter((<HTMLInputElement>e.target).value);
+    }).delegateTo(wizardsElement, Selectors.filterTextFieldSelector);
+
     new RegularEvent('change', (e: Event): void => {
       this.filter((<HTMLInputElement>e.target).value);
     }).delegateTo(wizardsElement, Selectors.filterSelectFieldSelector);
