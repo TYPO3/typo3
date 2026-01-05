@@ -7438,7 +7438,7 @@ class DataHandler
      * @return array Returns a list of the tables that are 'present' on the page but not allowed with the page_uid/doktype
      * @internal should only be used from within DataHandler
      */
-    public function doesPageHaveUnallowedTables(int $page_uid, int $doktype): array
+    protected function doesPageHaveUnallowedTables(int $page_uid, int $doktype): array
     {
         if ($page_uid === 0) {
             return [];
