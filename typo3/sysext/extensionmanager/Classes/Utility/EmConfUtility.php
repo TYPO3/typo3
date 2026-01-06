@@ -34,6 +34,8 @@ class EmConfUtility
     {
         $_EXTKEY = $extensionKey;
         $path = rtrim($absolutePath, '/') . '/ext_emconf.php';
+
+        /** @var array|null $EM_CONF */
         $EM_CONF = null;
         if (!empty($absolutePath) && file_exists($path)) {
             include $path;

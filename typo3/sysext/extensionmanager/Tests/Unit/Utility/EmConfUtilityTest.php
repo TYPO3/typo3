@@ -49,6 +49,8 @@ final class EmConfUtilityTest extends UnitTestCase
             ],
         ];
         $subject = new EmConfUtility();
+        /** @var array|null $EM_CONF */
+        $EM_CONF = null;
         $_EXTKEY = 'seminars';
         $result = $subject->constructEmConf($_EXTKEY, $input);
         eval(substr($result, 7));
@@ -76,6 +78,8 @@ final class EmConfUtilityTest extends UnitTestCase
         ];
         $subject = new EmConfUtility();
 
+        /** @var array|null $EM_CONF */
+        $EM_CONF = null;
         $_EXTKEY = 'seminars';
         $result = $subject->constructEmConf($_EXTKEY, $input);
         eval(substr($result, 7));

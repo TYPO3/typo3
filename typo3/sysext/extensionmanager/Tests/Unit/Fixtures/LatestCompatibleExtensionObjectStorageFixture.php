@@ -23,14 +23,9 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Fixtures;
 class LatestCompatibleExtensionObjectStorageFixture implements \IteratorAggregate
 {
     /**
-     * @var int
-     */
-    private $position = 0;
-
-    /**
      * @var array<int, \TYPO3\CMS\Extensionmanager\Domain\Model\Extension>
      */
-    public $extensions = [];
+    public array $extensions = [];
 
     public function getIterator(): \Generator
     {

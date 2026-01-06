@@ -235,7 +235,7 @@ readonly class ExtensionRepository
             } else {
                 $constraints[] = $queryBuilder->expr()->lt('integer_version', $queryBuilder->createNamedParameter($highestVersion, Connection::PARAM_INT));
             }
-        } elseif ($lowestVersion !== 0 && $highestVersion === 0) {
+        } elseif ($lowestVersion !== 0) {
             if ($includeCurrentVersion) {
                 $constraints[] = $queryBuilder->expr()->gte('integer_version', $queryBuilder->createNamedParameter($lowestVersion, Connection::PARAM_INT));
             } else {

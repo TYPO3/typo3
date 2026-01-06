@@ -30,12 +30,9 @@ class RemoteRegistry
     /**
      * @var array<string,array>
      */
-    protected $remotes = [];
+    protected array $remotes = [];
 
-    /**
-     * @var ExtensionDownloaderRemoteInterface
-     */
-    protected $defaultRemote;
+    protected ExtensionDownloaderRemoteInterface|ListableRemoteInterface|null $defaultRemote = null;
 
     public function registerRemote(ExtensionDownloaderRemoteInterface $remote, array $configuration): void
     {
@@ -79,7 +76,7 @@ class RemoteRegistry
         return isset($this->defaultRemote);
     }
 
-    public function getDefaultRemote(): ExtensionDownloaderRemoteInterface
+    public function getDefaultRemote(): ExtensionDownloaderRemoteInterface|ListableRemoteInterface
     {
         if ($this->defaultRemote !== null) {
             return $this->defaultRemote;

@@ -179,7 +179,7 @@ class ListController extends AbstractController
                     $remote->getAvailablePackages();
                 }
             } catch (ExtensionManagerException $e) {
-                $this->addFlashMessage($e->getMessage(), $e->getCode(), ContextualFeedbackSeverity::ERROR);
+                $this->addFlashMessage($e->getMessage(), (string)$e->getCode(), ContextualFeedbackSeverity::ERROR);
             }
             $officialDistributions = $this->extensionRepository->findAllOfficialDistributions($showUnsuitableDistributions);
             $communityDistributions = $this->extensionRepository->findAllCommunityDistributions($showUnsuitableDistributions);
