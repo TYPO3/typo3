@@ -287,10 +287,6 @@ abstract class AbstractContentPagePositionMap
     protected function getColumnsConfiguration(int $pageId): array
     {
         $backendLayout = $this->backendLayoutView->getBackendLayoutForPage($pageId);
-        if (!$backendLayout) {
-            return [];
-        }
-
         $items = [];
         // Prepare the columns configuration (using named keys, etc.)
         foreach ($backendLayout->getUsedColumns() as $colPos => $label) {

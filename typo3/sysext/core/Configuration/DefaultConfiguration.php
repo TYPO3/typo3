@@ -796,9 +796,19 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFolder::class,
                         ],
                     ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems::class => [
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTtContentCtypeItemsRestrictionByBackendLayout::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTtContentColPosItemsRestrictionByBackendLayout::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTtContentCtypeItemsRestrictionByBackendLayout::class,
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTtContentColPosItemsRestrictionByBackendLayout::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCategory::class => [

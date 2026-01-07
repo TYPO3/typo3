@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class for displaying page information (records, page record properties) in Web -> Info
+ * @todo: This class should be made standalone and not extend InfoModuleController
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 #[AsController]
@@ -466,9 +467,7 @@ class PageInformationController extends InfoModuleController
                     break;
                 case 'actual_backend_layout':
                     $backendLayout = $this->backendLayoutView->getBackendLayoutForPage((int)$row['uid']);
-                    $theData[$field] = $backendLayout !== null
-                        ? htmlspecialchars($this->getLanguageService()->sL($backendLayout->getTitle()))
-                        : '';
+                    $theData[$field] = htmlspecialchars($this->getLanguageService()->sL($backendLayout->getTitle()));
                     break;
                 case 'backend_layout':
                     $layoutValue = $backendLayouts[$row[$field]] ?? null;

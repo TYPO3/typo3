@@ -31,7 +31,6 @@ use TYPO3\CMS\Backend\Localization\LocalizationInstructions;
 use TYPO3\CMS\Backend\Localization\LocalizationMode;
 use TYPO3\CMS\Backend\Localization\LocalizationResult;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -64,6 +63,7 @@ readonly class LocalizationController
         protected LocalizationHandlerRegistry $localizationHandlerRegistry,
         protected TcaSchemaFactory $schemaFactory,
         protected TranslationConfigurationProvider $translationConfigurationProvider,
+        protected BackendLayoutView $backendLayoutView,
     ) {}
 
     /**
@@ -377,7 +377,7 @@ readonly class LocalizationController
         $this->eventDispatcher->dispatch($event);
 
         // Get the backend layout structure for visual representation
-        $backendLayout = $this->getPageLayout($pageUid);
+        $backendLayout = $this->backendLayoutView->getBackendLayoutForPage($pageUid);
         $layoutStructure = $this->buildLayoutStructure($backendLayout, $event->getColumns(), $event->getRecords());
 
         return new JsonResponse([
@@ -457,8 +457,7 @@ readonly class LocalizationController
     private function getPageColumns(int $page, array $flatRecords, array $params): array
     {
         $columns = [];
-        $backendLayoutView = GeneralUtility::makeInstance(BackendLayoutView::class);
-        $backendLayout = $backendLayoutView->getBackendLayoutForPage($page);
+        $backendLayout = $this->backendLayoutView->getBackendLayoutForPage($page);
 
         foreach ($backendLayout->getUsedColumns() as $columnPos => $columnLabel) {
             $columns[$columnPos] = $this->getLanguageService()->sL($columnLabel);
@@ -468,12 +467,6 @@ readonly class LocalizationController
         $this->eventDispatcher->dispatch($event);
 
         return $event->getColumns();
-    }
-
-    private function getPageLayout(int $page): ?BackendLayout
-    {
-        $backendLayoutView = GeneralUtility::makeInstance(BackendLayoutView::class);
-        return $backendLayoutView->getBackendLayoutForPage($page);
     }
 
     private function buildLayoutStructure($backendLayout, array $columns, array $records): array

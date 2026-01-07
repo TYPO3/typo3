@@ -17,34 +17,44 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\View;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext;
+use TYPO3\CMS\Backend\View\Event\ManipulateBackendLayoutColPosConfigurationForPageEvent;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Page\PageLayoutResolver;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Backend layout for CMS
+ *
+ * @todo: This class name is unfortunate and the scope of this class in general convoluted and unclear.
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
-class BackendLayoutView implements SingletonInterface
+#[Autoconfigure(public: true)]
+readonly class BackendLayoutView
 {
-    protected array $selectedCombinedIdentifier = [];
-    protected array $selectedBackendLayout = [];
+    private const SELECTED_COMBINED_CACHE_IDENTIFIER = 'backend-layout-view-selected-combined-identifiers';
+    private const SELECTED_BACKEND_LAYOUTS_CACHE_IDENTIFIER = 'backend-layout-view-selected-backend-layouts';
 
     public function __construct(
-        private readonly DataProviderCollection $dataProviderCollection,
-        private readonly TypoScriptStringFactory $typoScriptStringFactory,
-        private readonly PageLayoutResolver $pageLayoutResolver,
+        private EventDispatcherInterface $eventDispatcher,
+        #[Autowire(service: 'cache.runtime')]
+        private FrontendInterface $runtimeCache,
+        private DataProviderCollection $dataProviderCollection,
+        private TypoScriptStringFactory $typoScriptStringFactory,
+        private PageLayoutResolver $pageLayoutResolver,
     ) {}
 
     /**
-     * Gets backend layout items to be shown in the forms engine.
      * This method is called as "itemsProcFunc" with the accordant context
      * for pages.backend_layout and pages.backend_layout_next_level.
      * Also used in the info module, since we need those items with
@@ -55,11 +65,14 @@ class BackendLayoutView implements SingletonInterface
      *       has to be adjusted, as soon as the itemsProcFunc
      *       functionality is changed in this regard.
      */
-    public function addBackendLayoutItems(array &$parameters)
+    public function addBackendLayoutItems(array &$parameters): void
     {
         $pageId = $this->determinePageId($parameters['table'], $parameters['row']) ?: 0;
         $pageTsConfig = BackendUtility::getPagesTSconfig($pageId);
-        $identifiersToBeExcluded = $this->getIdentifiersToBeExcluded($pageTsConfig);
+        $identifiersToBeExcluded = [];
+        if (isset($pageTsConfig['options.']['backendLayout.']['exclude'])) {
+            $identifiersToBeExcluded = GeneralUtility::trimExplode(',', $pageTsConfig['options.']['backendLayout.']['exclude'], true);
+        }
         $dataProviderContext = new DataProviderContext(
             pageId: $pageId,
             tableName: $parameters['table'],
@@ -88,149 +101,108 @@ class BackendLayoutView implements SingletonInterface
     }
 
     /**
-     * Determines the page id for a given record of a database table.
-     *
-     * @return int|false Returns page id or false on error
-     */
-    protected function determinePageId(string $tableName, array $data): int|false
-    {
-        if ($data === []) {
-            return false;
-        }
-
-        if (str_starts_with((string)$data['uid'], 'NEW')) {
-            // negative uid_pid values of content elements indicate that the element
-            // has been inserted after an existing element so there is no pid to get
-            // the backendLayout for and we have to get that first
-            if ($data['pid'] < 0) {
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable($tableName);
-                $queryBuilder->getRestrictions()
-                    ->removeAll();
-                $pageId = $queryBuilder
-                    ->select('pid')
-                    ->from($tableName)
-                    ->where(
-                        $queryBuilder->expr()->eq(
-                            'uid',
-                            $queryBuilder->createNamedParameter(abs($data['pid']), Connection::PARAM_INT)
-                        )
-                    )
-                    ->executeQuery()
-                    ->fetchOne();
-            } else {
-                $pageId = $data['pid'];
-            }
-        } elseif ($tableName === 'pages') {
-            $pageId = $data['uid'];
-        } else {
-            $pageId = $data['pid'];
-        }
-
-        return (int)$pageId;
-    }
-
-    /**
-     * Returns the backend layout which should be used for this page.
-     *
-     * @return false|string Identifier of the backend layout to be used, or FALSE if none
-     * @internal only public for testing purposes
-     */
-    public function getSelectedCombinedIdentifier(int $pageId): string|false
-    {
-        if (!isset($this->selectedCombinedIdentifier[$pageId])) {
-            // If it not set check the root-line for a layout on next level and use this
-            // (root-line starts with current page and has page "0" at the end)
-            $rootLine = BackendUtility::BEgetRootLine($pageId, '', true);
-            // Use first element as current page,
-            $page = reset($rootLine);
-            // and remove last element (root page / pid=0)
-            array_pop($rootLine);
-            $selectedLayout = $this->pageLayoutResolver->getLayoutIdentifierForPage($page, $rootLine);
-            if ($selectedLayout === 'none') {
-                // If it is set to "none" - don't use any
-                $selectedLayout = false;
-            } elseif ($selectedLayout === 'default') {
-                $selectedLayout = '0';
-            }
-            $this->selectedCombinedIdentifier[$pageId] = $selectedLayout;
-        }
-        // If it is set to a positive value use this
-        return $this->selectedCombinedIdentifier[$pageId];
-    }
-
-    /**
-     * Gets backend layout identifiers to be excluded
-     */
-    protected function getIdentifiersToBeExcluded(array $pageTSconfig): array
-    {
-        if (isset($pageTSconfig['options.']['backendLayout.']['exclude'])) {
-            return GeneralUtility::trimExplode(
-                ',',
-                $pageTSconfig['options.']['backendLayout.']['exclude'],
-                true
-            );
-        }
-        return [];
-    }
-
-    /**
-     * Gets colPos items to be shown in the forms engine.
-     * This method is called as "itemsProcFunc" with the accordant context
-     * for tt_content.colPos.
+     * Gets colPos items to be shown in form engine. This method is called
+     * as "itemsProcFunc" with the accordant context for tt_content.colPos.
      */
     public function colPosListItemProcFunc(array &$parameters): void
     {
         $pageId = $this->determinePageId($parameters['table'], $parameters['row']);
-
         if ($pageId !== false) {
-            $parameters['items'] = $this->addColPosListLayoutItems($pageId, $parameters['items']);
+            $layout = $this->getSelectedBackendLayout($pageId);
+            if ($layout && !empty($layout['__items'])) {
+                $parameters['items'] = $layout['__items'];
+            }
         }
-    }
-
-    /**
-     * Adds items to a colpos list
-     */
-    protected function addColPosListLayoutItems(int $pageId, array $items): array
-    {
-        $layout = $this->getSelectedBackendLayout($pageId);
-        if ($layout && !empty($layout['__items'])) {
-            $items = $layout['__items'];
-        }
-        return $items;
     }
 
     /**
      * Gets the selected backend layout structure as an array
      */
-    public function getSelectedBackendLayout(int $pageId): ?array
+    public function getSelectedBackendLayout(int $pageId): array
     {
-        return $this->getBackendLayoutForPage($pageId)?->getStructure();
+        return $this->getBackendLayoutForPage($pageId)->getStructure();
     }
 
     /**
      * Get the BackendLayout object and parse the structure based on the UserTSconfig
      */
-    public function getBackendLayoutForPage(int $pageId): ?BackendLayout
+    public function getBackendLayoutForPage(int $pageId): BackendLayout
     {
-        if (isset($this->selectedBackendLayout[$pageId])) {
-            return $this->selectedBackendLayout[$pageId];
+        $selectedBackendLayoutsByPageId = $this->runtimeCache->get(self::SELECTED_BACKEND_LAYOUTS_CACHE_IDENTIFIER);
+        if (($selectedBackendLayoutsByPageId[$pageId] ?? null) instanceof BackendLayout) {
+            return $selectedBackendLayoutsByPageId[$pageId];
+        }
+        if (!is_array($selectedBackendLayoutsByPageId)) {
+            $selectedBackendLayoutsByPageId = [];
         }
         $selectedCombinedIdentifier = $this->getSelectedCombinedIdentifier($pageId);
-        // If no backend layout is selected, use default
         if (empty($selectedCombinedIdentifier)) {
+            // If no backend layout is selected, use default
             $selectedCombinedIdentifier = 'default';
         }
         $backendLayout = $this->dataProviderCollection->getBackendLayout($selectedCombinedIdentifier, $pageId);
-        // If backend layout is not found available anymore, use default
         if ($backendLayout === null) {
+            // If backend layout is not found available anymore, use default
             $backendLayout = $this->dataProviderCollection->getBackendLayout('default', $pageId);
         }
-
-        if ($backendLayout !== null) {
-            $this->selectedBackendLayout[$pageId] = $backendLayout;
+        if ($backendLayout === null) {
+            // The 'default' backend layout must *always* return something. We must have some layout at this
+            // point and the method always returns a BackendLayout instance.
+            throw new \RuntimeException('Fallback to default backend layout failed', 1768151069);
         }
+        $selectedBackendLayoutsByPageId[$pageId] = $backendLayout;
+        $this->runtimeCache->set(self::SELECTED_BACKEND_LAYOUTS_CACHE_IDENTIFIER, $selectedBackendLayoutsByPageId);
         return $backendLayout;
+    }
+
+    /**
+     * This method is mainly used to retrieve the final allowed/disallowed content element configuration per colPos. It
+     * is an implementation of what ext:content_defender provided as extension for a long time already. This method is
+     * embedded in the overall rather convoluted handling around backend layouts. It is - at least for now - subject to change.
+     * The method emits an event that is declared internal as well.
+     *
+     * When calling the method, the optional request argument should be hand whenever available to give event listeners
+     * as much context as possible.
+     *
+     * @internal as the entire class. Note ManipulateBackendLayoutColPosConfigurationForPageEvent is declared internal
+     *           as well. The event is needed for extensions like ext:container, but may still change when backend layout
+     *           related code is consolidated.
+     */
+    public function getColPosConfigurationForPage(BackendLayout $backendLayout, int $colPos, int $pageUid, ?ServerRequestInterface $request = null): array
+    {
+        $configuration = [];
+        $backendLayoutStructure = $backendLayout->getStructure();
+        if (in_array($colPos, array_map('intval', $backendLayoutStructure['__colPosList']), true)) {
+            foreach ($backendLayoutStructure['__config']['backend_layout.']['rows.'] as $row) {
+                if (empty($row['columns.'])) {
+                    continue;
+                }
+                foreach ($row['columns.'] as $column) {
+                    if (isset($column['colPos']) && $column['colPos'] !== '' && $colPos === (int)$column['colPos']) {
+                        $configuration = $column;
+                        // Compatibility layer for ext:content_defender: allowed.CType is now allowedContentTypes and
+                        // disallowed.CType is now disallowedContentTypes. Copy the old content_defender settings to
+                        // the new names if new names are not set.
+                        // @todo: These fallbacks could potentially be deprecated at some point. Maybe v15?
+                        if (!empty($configuration['allowed.']['CType'] ?? '') && !isset($configuration['allowedContentTypes'])) {
+                            $configuration['allowedContentTypes'] = $configuration['allowed.']['CType'];
+                        }
+                        if (!empty($configuration['disallowed.']['CType'] ?? '') && !isset($configuration['disallowedContentTypes'])) {
+                            $configuration['disallowedContentTypes'] = $configuration['disallowed.']['CType'];
+                        }
+                        break 2;
+                    }
+                }
+            }
+        }
+        $event = new ManipulateBackendLayoutColPosConfigurationForPageEvent(
+            configuration: $configuration,
+            backendLayout: $backendLayout,
+            colPos: $colPos,
+            pageUid: $pageUid,
+            request: $request,
+        );
+        return $this->eventDispatcher->dispatch($event)->configuration;
     }
 
     /**
@@ -271,5 +243,80 @@ class BackendLayoutView implements SingletonInterface
             }
         }
         return $backendLayoutData;
+    }
+
+    /**
+     * Determines the page id for a given record of a database table.
+     *
+     * @return int|false Returns page id or false on error
+     */
+    protected function determinePageId(string $tableName, array $data): int|false
+    {
+        if ($data === []) {
+            return false;
+        }
+
+        if (str_starts_with((string)$data['uid'], 'NEW')) {
+            // Negative uid_pid values of content elements indicate that the element
+            // has been inserted after an existing element so there is no pid to get
+            // the backendLayout for, and we have to get that first.
+            if ($data['pid'] < 0) {
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable($tableName);
+                $queryBuilder->getRestrictions()
+                    ->removeAll();
+                $pageId = $queryBuilder
+                    ->select('pid')
+                    ->from($tableName)
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter(abs($data['pid']), Connection::PARAM_INT)
+                        )
+                    )
+                    ->executeQuery()
+                    ->fetchOne();
+            } else {
+                $pageId = $data['pid'];
+            }
+        } elseif ($tableName === 'pages') {
+            $pageId = $data['uid'];
+        } else {
+            $pageId = $data['pid'];
+        }
+
+        return (int)$pageId;
+    }
+
+    /**
+     * Returns the backend layout which should be used for this page.
+     *
+     * @return false|string Identifier of the backend layout to be used, or FALSE if none
+     */
+    protected function getSelectedCombinedIdentifier(int $pageId): string|false
+    {
+        $selectedCombinedIdentifiers = $this->runtimeCache->get(self::SELECTED_COMBINED_CACHE_IDENTIFIER);
+        if (is_array($selectedCombinedIdentifiers) && array_key_exists($pageId, $selectedCombinedIdentifiers)) {
+            return $selectedCombinedIdentifiers[$pageId];
+        }
+        if (!is_array($selectedCombinedIdentifiers)) {
+            $selectedCombinedIdentifiers = [];
+        }
+        // If it not set check the rootline for a layout on next level and use this: Rootline
+        // starts with current page and has page "0" at the end.
+        $rootLine = BackendUtility::BEgetRootLine($pageId, '', true);
+        // Use first element as current page and remove last element (root page / pid=0)
+        $page = reset($rootLine);
+        array_pop($rootLine);
+        $selectedLayout = $this->pageLayoutResolver->getLayoutIdentifierForPage($page, $rootLine);
+        if ($selectedLayout === 'none') {
+            // If it is set to "none" - don't use any
+            $selectedLayout = false;
+        } elseif ($selectedLayout === 'default') {
+            $selectedLayout = '0';
+        }
+        $selectedCombinedIdentifiers[$pageId] = $selectedLayout;
+        $this->runtimeCache->set(self::SELECTED_COMBINED_CACHE_IDENTIFIER, $selectedCombinedIdentifiers);
+        return $selectedLayout;
     }
 }

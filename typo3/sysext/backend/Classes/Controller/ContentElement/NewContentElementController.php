@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Controller\Event\ModifyNewContentElementWizardItemsEvent;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -62,8 +63,9 @@ class NewContentElementController
         protected readonly UriBuilder $uriBuilder,
         protected readonly BackendViewFactory $backendViewFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
-        protected DependencyOrderingService $dependencyOrderingService,
-        protected TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly DependencyOrderingService $dependencyOrderingService,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly BackendLayoutView $backendLayoutView,
     ) {}
 
     /**
@@ -73,11 +75,6 @@ class NewContentElementController
     {
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
-
-        $action = (string)($parsedBody['action'] ?? $queryParams['action'] ?? 'wizard');
-        if (!in_array($action, ['wizard', 'positionMap'], true)) {
-            return new HtmlResponse('Action not allowed', 400);
-        }
 
         // Setting internal vars:
         $this->id = (int)($parsedBody['id'] ?? $queryParams['id'] ?? 0);
@@ -90,8 +87,14 @@ class NewContentElementController
         // Getting the current page and receiving access information
         $this->pageInfo = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
 
-        // Call action and return the response
-        return $this->{$action . 'Action'}($request);
+        $action = (string)($parsedBody['action'] ?? $queryParams['action'] ?? 'wizard');
+        if ($action === 'wizard') {
+            return $this->wizardAction($request);
+        }
+        if ($action === 'positionMap') {
+            return $this->positionMapAction($request);
+        }
+        return new HtmlResponse('Action not allowed', 400);
     }
 
     /**
@@ -109,7 +112,7 @@ class NewContentElementController
         // Get processed and modified wizard items
         $wizardItems = $this->eventDispatcher->dispatch(
             new ModifyNewContentElementWizardItemsEvent(
-                $this->getWizards(),
+                $this->getWizards($request),
                 $this->pageInfo,
                 $this->colPos,
                 $this->sys_language,
@@ -237,7 +240,7 @@ class NewContentElementController
      * Returns the array of elements in the wizard display.
      * For the plugin section there is support for adding elements there from a global variable.
      */
-    protected function getWizards(): array
+    protected function getWizards(ServerRequestInterface $request): array
     {
         $wizards = $this->loadAvailableWizards();
         $newContentElementWizardTsConfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['wizards.']['newContentElement.'] ?? [];
@@ -245,11 +248,11 @@ class NewContentElementController
         $wizardsFromPageTSConfig = $this->migratePositionalCommonGroupToDefault($wizardsFromPageTSConfig);
         $wizards = $this->mergeContentElementWizardsWithPageTSConfigWizards($wizards, $wizardsFromPageTSConfig);
         $wizards = $this->removeWizardsByPageTs($wizards, $newContentElementWizardTsConfig);
+        $wizards = $this->removeWizardsByBackendLayoutColPosRestriction($wizards, $this->pageInfo, $this->colPos, $request);
         if ($wizards === []) {
             return [];
         }
         $wizardItems = [];
-        $appendWizards = $this->getAppendWizards((array)($wizards['elements.'] ?? []));
         foreach ($wizards as $groupKey => $wizardGroup) {
             $wizards[$groupKey] = $this->prepareDependencyOrdering($wizards[$groupKey], 'before');
             $wizards[$groupKey] = $this->prepareDependencyOrdering($wizards[$groupKey], 'after');
@@ -258,12 +261,7 @@ class NewContentElementController
         foreach ($orderedWizards as $groupKey => $wizardGroup) {
             $groupKey = rtrim($groupKey, '.');
             $groupItems = [];
-            $appendWizardElements = $appendWizards[$groupKey . '.']['elements.'] ?? null;
-            if (is_array($appendWizardElements)) {
-                $wizardElements = array_merge((array)($wizardGroup['elements.'] ?? []), $appendWizardElements);
-            } else {
-                $wizardElements = $wizardGroup['elements.'] ?? [];
-            }
+            $wizardElements = $wizardGroup['elements.'] ?? [];
             if (is_array($wizardElements)) {
                 foreach ($wizardElements as $itemKey => $itemConf) {
                     $itemKey = rtrim($itemKey, '.');
@@ -469,17 +467,6 @@ class NewContentElementController
         return $wizards;
     }
 
-    protected function getAppendWizards(array $wizardElements): array
-    {
-        $returnElements = [];
-        foreach ($wizardElements as $key => $wizardItem) {
-            preg_match('/^[a-zA-Z0-9]+_/', $key, $group);
-            $wizardGroup = $group[0] ? substr($group[0], 0, -1) . '.' : $key;
-            $returnElements[$wizardGroup]['elements.'][substr($key, strlen($wizardGroup)) . '.'] = $wizardItem;
-        }
-        return $returnElements;
-    }
-
     protected function prepareWizardItem(array $itemConf): array
     {
         // Just replace the "known" keys of $itemConf. This way extensions are able to set custom keys, which are not
@@ -531,6 +518,46 @@ class NewContentElementController
         }
 
         return $wizards;
+    }
+
+    protected function removeWizardsByBackendLayoutColPosRestriction(array $wizardGroups, array $pageInfo, ?int $colPos, ServerRequestInterface $request): array
+    {
+        // Force colPos to 0 if null to apply restrictions for 0 by default.
+        $colPos = (int)$colPos;
+        // This is the page uid of a workspace overlay already so backend layouts of workspace
+        // changed or moved pages should be considered correctly.
+        $pid = (int)$pageInfo['uid'];
+        $backendLayout = $this->backendLayoutView->getBackendLayoutForPage($pid);
+        $columnConfiguration = $this->backendLayoutView->getColPosConfigurationForPage($backendLayout, $colPos, $pid, $request);
+        if (!empty($columnConfiguration['allowedContentTypes'])) {
+            $allowedContentTypes = GeneralUtility::trimExplode(',', $columnConfiguration['allowedContentTypes'], true);
+            foreach ($wizardGroups as $wizardGroupName => $wizards) {
+                foreach (($wizards['elements.'] ?? []) as $wizardKey => $wizard) {
+                    $cType = $wizard['defaultValues']['CType'] ?? $wizard['tt_content_defValues.']['CType'] ?? '';
+                    if (empty($cType)) {
+                        continue;
+                    }
+                    if (!in_array(trim($cType), $allowedContentTypes, true)) {
+                        unset($wizardGroups[$wizardGroupName]['elements.'][$wizardKey]);
+                    }
+                }
+            }
+        }
+        if (!empty($columnConfiguration['disallowedContentTypes'])) {
+            $disAllowedContentTypes = GeneralUtility::trimExplode(',', $columnConfiguration['disallowedContentTypes'], true);
+            foreach ($wizardGroups as $wizardGroupName => $wizards) {
+                foreach (($wizards['elements.'] ?? []) as $wizardKey => $wizard) {
+                    $cType = $wizard['defaultValues']['CType'] ?? $wizard['tt_content_defValues.']['CType'] ?? '';
+                    if (empty($cType)) {
+                        continue;
+                    }
+                    if (in_array(trim($cType), $disAllowedContentTypes, true)) {
+                        unset($wizardGroups[$wizardGroupName]['elements.'][$wizardKey]);
+                    }
+                }
+            }
+        }
+        return $wizardGroups;
     }
 
     /**

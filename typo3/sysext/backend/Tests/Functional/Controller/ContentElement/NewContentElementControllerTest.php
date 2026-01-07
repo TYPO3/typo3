@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -253,16 +252,9 @@ final class NewContentElementControllerTest extends FunctionalTestCase
                 ],
             ],
         ];
-        $subject = $this->getAccessibleMock(
-            originalClassName: NewContentElementController::class,
-            methods: ['wizardAction'],
-            callOriginalConstructor: false
-        );
-        $subject->_set('dependencyOrderingService', new DependencyOrderingService());
-        $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);
-        $tcaSchemaFactory->load($GLOBALS['TCA'], true);
-        $subject->_set('tcaSchemaFactory', $tcaSchemaFactory);
-        $result = $subject->_call('orderWizards', $wizards);
+        $subject = $this->get(NewContentElementController::class);
+        $orderWizardsMethod = (new \ReflectionMethod($subject, 'orderWizards'));
+        $result = $orderWizardsMethod->invoke($subject, $wizards);
         self::assertSame($expected, $result);
     }
 
@@ -357,16 +349,9 @@ final class NewContentElementControllerTest extends FunctionalTestCase
                 ],
             ],
         ];
-        $subject = $this->getAccessibleMock(
-            originalClassName: NewContentElementController::class,
-            methods: ['wizardAction'],
-            callOriginalConstructor: false
-        );
-        $subject->_set('dependencyOrderingService', new DependencyOrderingService());
-        $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);
-        $tcaSchemaFactory->load($GLOBALS['TCA'], true);
-        $subject->_set('tcaSchemaFactory', $tcaSchemaFactory);
-        $result = $subject->_call('orderWizards', $wizards);
+        $subject = $this->get(NewContentElementController::class);
+        $orderWizardsMethod = (new \ReflectionMethod($subject, 'orderWizards'));
+        $result = $orderWizardsMethod->invoke($subject, $wizards);
         self::assertSame($expected, $result);
     }
 
@@ -414,15 +399,9 @@ final class NewContentElementControllerTest extends FunctionalTestCase
                 'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.plugins',
             ],
         ];
-        $subject = $this->getAccessibleMock(
-            originalClassName: NewContentElementController::class,
-            methods: ['orderWizards'],
-            callOriginalConstructor: false
-        );
-        $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);
-        $tcaSchemaFactory->load($GLOBALS['TCA'], true);
-        $subject->_set('tcaSchemaFactory', $tcaSchemaFactory);
-        $result = $subject->_call('loadAvailableWizards');
+        $subject = $this->get(NewContentElementController::class);
+        $loadAvailableWizardsMethod = (new \ReflectionMethod($subject, 'loadAvailableWizards'));
+        $result = $loadAvailableWizardsMethod->invoke($subject);
         self::assertSame($expected, $result);
     }
 
@@ -461,5 +440,7 @@ final class NewContentElementControllerTest extends FunctionalTestCase
                 ],
             ],
         ];
+        $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);
+        $tcaSchemaFactory->load($GLOBALS['TCA'], true);
     }
 }

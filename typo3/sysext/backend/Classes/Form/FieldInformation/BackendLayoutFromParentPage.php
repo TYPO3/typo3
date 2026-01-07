@@ -75,15 +75,11 @@ class BackendLayoutFromParentPage extends AbstractNode
             }
         } else {
             // Get the resolved backend layout for the current page.
-            $backendLayout = $this->backendLayoutView->getBackendLayoutForPage(
-                (int)($this->data['databaseRow']['uid'] ?? $this->data['effectivePid'] ?? 0)
+            $backendLayout = $this->backendLayoutView->getBackendLayoutForPage((int)($this->data['databaseRow']['uid'] ?? $this->data['effectivePid'] ?? 0));
+            $backendLayoutInformation = sprintf(
+                $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:formEngine.pages.backendLayout.information.inheritedFromParentPage'),
+                $languageService->sL($backendLayout->getTitle())
             );
-            if ($backendLayout !== null) {
-                $backendLayoutInformation = sprintf(
-                    $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:formEngine.pages.backendLayout.information.inheritedFromParentPage'),
-                    $languageService->sL($backendLayout->getTitle())
-                );
-            }
         }
 
         if ($backendLayoutInformation !== '') {

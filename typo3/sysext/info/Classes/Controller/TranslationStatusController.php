@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class for displaying translation status of pages in the tree in Web -> Info
+ * @todo: This class should be made standalone and not extend InfoModuleController
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 #[AsController]
