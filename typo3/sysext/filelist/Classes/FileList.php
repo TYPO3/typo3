@@ -1665,10 +1665,18 @@ class FileList
                 return -1 * $sortMultiplier;
             }
 
-            return (int)($collator->compare(
-                $this->getSortingValue($resource1, $sortField) . $index1,
-                $this->getSortingValue($resource2, $sortField) . $index2
-            )) * $sortMultiplier;
+            // Sort by value first
+            $result = (int)$collator->compare(
+                $this->getSortingValue($resource1, $sortField),
+                $this->getSortingValue($resource2, $sortField)
+            );
+
+            // Use index as tiebreaker for stable sorting
+            if ($result === 0) {
+                $result = $index1 <=> $index2;
+            }
+
+            return $result * $sortMultiplier;
         });
 
         return $resources;
