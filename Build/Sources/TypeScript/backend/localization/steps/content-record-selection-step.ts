@@ -292,13 +292,13 @@ export class ContentRecordSelectionStep implements LocalizationStepInterface, Lo
                 @change=${(e: Event) => this.handleColumnToggle(e, column)}
               >
               <label class="form-check-label" for="records-column-${column.position}">
-                ${column.label} (${column.position})
+                ${column.label}
               </label>
             </div>
           ` : html`
             <div class="form-check form-check-type-toggle">
               <div class="form-check-text">
-                ${column.label} (${column.position})
+                ${column.label}
               </div>
             </div>
           `}
