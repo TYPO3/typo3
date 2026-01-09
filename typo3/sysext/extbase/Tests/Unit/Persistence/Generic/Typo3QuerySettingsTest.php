@@ -22,7 +22,6 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -75,12 +74,6 @@ final class Typo3QuerySettingsTest extends UnitTestCase
         self::assertEquals($input, $this->subject->getRespectStoragePage());
     }
 
-    #[Test]
-    public function setRespectStoragePageAllowsChaining(): void
-    {
-        self::assertInstanceOf(QuerySettingsInterface::class, $this->subject->setRespectStoragePage(true));
-    }
-
     #[DataProvider('arrayValueProvider')]
     #[Test]
     public function setStoragePageIdsSetsStoragePageIdsCorrectly(array $input): void
@@ -89,24 +82,12 @@ final class Typo3QuerySettingsTest extends UnitTestCase
         self::assertEquals($input, $this->subject->getStoragePageIds());
     }
 
-    #[Test]
-    public function setStoragePageIdsAllowsChaining(): void
-    {
-        self::assertInstanceOf(QuerySettingsInterface::class, $this->subject->setStoragePageIds([1, 2, 3]));
-    }
-
     #[DataProvider('booleanValueProvider')]
     #[Test]
     public function setRespectSysLanguageSetsRespectSysLanguageCorrectly(bool $input): void
     {
         $this->subject->setRespectSysLanguage($input);
         self::assertEquals($input, $this->subject->getRespectSysLanguage());
-    }
-
-    #[Test]
-    public function setRespectSysLanguageAllowsChaining(): void
-    {
-        self::assertInstanceOf(QuerySettingsInterface::class, $this->subject->setRespectSysLanguage(true));
     }
 
     #[Test]
@@ -123,12 +104,6 @@ final class Typo3QuerySettingsTest extends UnitTestCase
         self::assertEquals($input, $this->subject->getIgnoreEnableFields());
     }
 
-    #[Test]
-    public function setIgnoreEnableFieldsAllowsChaining(): void
-    {
-        self::assertInstanceOf(QuerySettingsInterface::class, $this->subject->setIgnoreEnableFields(true));
-    }
-
     #[DataProvider('arrayValueProvider')]
     #[Test]
     public function setEnableFieldsToBeIgnoredSetsEnableFieldsToBeIgnoredCorrectly(array $input): void
@@ -137,26 +112,11 @@ final class Typo3QuerySettingsTest extends UnitTestCase
         self::assertEquals($input, $this->subject->getEnableFieldsToBeIgnored());
     }
 
-    #[Test]
-    public function setEnableFieldsToBeIgnoredAllowsChaining(): void
-    {
-        self::assertInstanceOf(
-            QuerySettingsInterface::class,
-            $this->subject->setEnableFieldsToBeIgnored(['starttime', 'endtime'])
-        );
-    }
-
     #[DataProvider('booleanValueProvider')]
     #[Test]
     public function setIncludeDeletedSetsIncludeDeletedCorrectly(bool $input): void
     {
         $this->subject->setIncludeDeleted($input);
         self::assertEquals($input, $this->subject->getIncludeDeleted());
-    }
-
-    #[Test]
-    public function setIncludeDeletedAllowsChaining(): void
-    {
-        self::assertInstanceOf(QuerySettingsInterface::class, $this->subject->setIncludeDeleted(true));
     }
 }

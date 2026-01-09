@@ -135,18 +135,18 @@ final class ClassSchemaTest extends UnitTestCase
             /**
              * @param ClassSchema $foo
              */
-            public function foo(string $foo): void {}
+            public function foo(mixed $foo): void {}
         };
 
         $classSchema = new ClassSchema(get_class($class));
-        self::assertSame('string', $classSchema->getMethod('foo')->getParameter('foo')->getType());
+        self::assertSame('mixed', $classSchema->getMethod('foo')->getParameter('foo')->getType());
     }
 
     #[Test]
     public function classSchemaCanHandleSelfMethodReturnTypes(): void
     {
         $class = new class () {
-            public function __construct(?self $copy = null) {}
+            public function __construct(public ?self $copy = null) {}
             public function injectCopy(self $copy): void {}
             public function foo($copy): self
             {

@@ -51,7 +51,8 @@ class CacheService implements SingletonInterface
     /**
      * Clears the page cache
      *
-     * @param int|int[] $pageIdsToClear single or multiple pageIds to clear the cache for
+     * @param int|int[]|string $pageIdsToClear single or multiple pageIds to clear the cache for
+     * @todo This method should be hardened to only accept integers or an array of integers
      */
     public function clearPageCache($pageIdsToClear = null): void
     {

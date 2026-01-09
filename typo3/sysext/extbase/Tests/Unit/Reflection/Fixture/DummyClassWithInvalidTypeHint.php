@@ -22,5 +22,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  */
 class DummyClassWithInvalidTypeHint
 {
+    // @phpstan-ignore-next-line constructor.unusedParameter class.notFound
     public function __construct(\Foo\Bar\Not\Found $invalid) {}
 }

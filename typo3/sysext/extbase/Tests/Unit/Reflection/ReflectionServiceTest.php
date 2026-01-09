@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
-use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithInvalidTypeHint;
@@ -64,7 +63,6 @@ final class ReflectionServiceTest extends UnitTestCase
         $reflectionService = unserialize($serialized, ['allowed_classes' => [ReflectionService::class]]);
 
         self::assertInstanceOf(ReflectionService::class, $reflectionService);
-        self::assertInstanceOf(ClassSchema::class, $reflectionService->getClassSchema($class));
     }
 
     #[Test]
@@ -79,7 +77,6 @@ final class ReflectionServiceTest extends UnitTestCase
         $reflectionService = unserialize($serialized, ['allowed_classes' => [ReflectionService::class]]);
 
         self::assertInstanceOf(ReflectionService::class, $reflectionService);
-        self::assertInstanceOf(ClassSchema::class, $reflectionService->getClassSchema($class));
     }
 
     /**

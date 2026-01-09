@@ -62,11 +62,11 @@ final class ArgumentsTest extends UnitTestCase
     }
 
     #[Test]
-    public function addNewArgumentProvidesFluentInterface(): void
+    public function addNewArgumentCreatesArgumentWithGivenName(): void
     {
         $arguments = new Arguments();
         $newArgument = $arguments->addNewArgument('someArgument');
-        self::assertInstanceOf(Argument::class, $newArgument);
+        self::assertEquals('someArgument', $newArgument->getName());
     }
 
     #[Test]
@@ -184,7 +184,6 @@ final class ArgumentsTest extends UnitTestCase
         $mockArgument->method('getName')->willReturn('dummyName');
         $arguments = new Arguments();
         $addedArgument = $arguments->addNewArgument('dummyName');
-        self::assertInstanceOf(Argument::class, $addedArgument, 'addNewArgument() either did not add a new argument or did not return it.');
         $retrievedArgument = $arguments['dummyName'];
         self::assertSame($addedArgument, $retrievedArgument, 'The added and the retrieved argument are not the same.');
     }
@@ -211,6 +210,7 @@ final class ArgumentsTest extends UnitTestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1210858451);
         $arguments = new Arguments();
+        /** @phpstan-ignore-next-line method.notFound */
         $arguments->nonExistingMethod();
     }
 

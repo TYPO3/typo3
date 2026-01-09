@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Extbase\Mvc\Controller\Argument;
-use TYPO3\CMS\Extbase\Mvc\Controller\FileHandlingServiceConfiguration;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -132,7 +131,8 @@ final class ArgumentTest extends UnitTestCase
     #[Test]
     public function fileHandlingServiceConfigurationInitializedForNewArgument(): void
     {
-        self::assertInstanceOf(FileHandlingServiceConfiguration::class, $this->simpleValueArgument->getFileHandlingServiceConfiguration());
+        self::assertCount(0, $this->simpleValueArgument->getFileHandlingServiceConfiguration()->getFileUploadConfigurations());
+        self::assertCount(0, $this->simpleValueArgument->getFileHandlingServiceConfiguration()->getFileUploadDeletionConfigurations());
     }
 
     #[Test]

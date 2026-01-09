@@ -82,6 +82,7 @@ final class QueryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1245071870);
+        /** @phpstan-ignore-next-line argument.type */
         $this->query->setLimit(1.5);
     }
 
@@ -120,6 +121,7 @@ final class QueryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1245071872);
+        /** @phpstan-ignore-next-line argument.type */
         $this->query->setOffset(1.5);
     }
 

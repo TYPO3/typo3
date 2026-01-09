@@ -365,8 +365,7 @@ final class ObjectAccessTest extends UnitTestCase
     #[Test]
     public function isPropertyGettableWorksOnArrayAccessObjects(): void
     {
-        $arrayObject = new \ArrayObject();
-        $arrayObject['key'] = 'v';
+        $arrayObject = new \ArrayObject(['key' => 'v']);
         self::assertTrue(ObjectAccess::isPropertyGettable($arrayObject, 'key'));
         self::assertFalse(ObjectAccess::isPropertyGettable($arrayObject, 'undefinedKey'));
     }
@@ -374,7 +373,6 @@ final class ObjectAccessTest extends UnitTestCase
     #[Test]
     public function isPropertyGettableWorksOnObjectsMixingRegularPropertiesAndArrayAccess(): void
     {
-        /** @var \ArrayAccess $object */
         $object = new class () extends \ArrayObject {
             private $regularProperty = 'foo';
 

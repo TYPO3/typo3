@@ -19,8 +19,10 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Error;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Extbase\Error\Error;
+use TYPO3\CMS\Extbase\Error\Notice;
 use TYPO3\CMS\Extbase\Error\Result;
+use TYPO3\CMS\Extbase\Error\Warning;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ResultTest extends UnitTestCase
@@ -42,16 +44,17 @@ final class ResultTest extends UnitTestCase
         ];
     }
 
-    private function getMockMessage(string $type): MockObject
+    private function createMessage(string $type): Error|Warning|Notice
     {
-        return $this->createMock('TYPO3\\CMS\\Extbase\\Error\\' . $type);
+        $className = 'TYPO3\\CMS\\Extbase\\Error\\' . $type;
+        return new $className('Dummy Message', 1767807832);
     }
 
     #[DataProvider('dataTypes')]
     #[Test]
     public function addedMessagesShouldBeRetrievableAgain(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
-        $message = $this->getMockMessage($dataTypeInSingular);
+        $message = $this->createMessage($dataTypeInSingular);
         $addMethodName = 'add' . $dataTypeInSingular;
         $this->result->{$addMethodName}($message);
         $getterMethodName = 'get' . $dataTypeInPlural;
@@ -62,7 +65,7 @@ final class ResultTest extends UnitTestCase
     #[Test]
     public function getMessageShouldNotBeRecursive(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
-        $message = $this->getMockMessage($dataTypeInSingular);
+        $message = $this->createMessage($dataTypeInSingular);
         $addMethodName = 'add' . $dataTypeInSingular;
         $this->result->forProperty('foo')->{$addMethodName}($message);
         $getterMethodName = 'get' . $dataTypeInPlural;
@@ -73,8 +76,8 @@ final class ResultTest extends UnitTestCase
     #[Test]
     public function getFirstMessageShouldReturnFirstMessage(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
-        $message1 = $this->getMockMessage($dataTypeInSingular);
-        $message2 = $this->getMockMessage($dataTypeInSingular);
+        $message1 = $this->createMessage($dataTypeInSingular);
+        $message2 = $this->createMessage($dataTypeInSingular);
         $addMethodName = 'add' . $dataTypeInSingular;
         $this->result->{$addMethodName}($message1);
         $this->result->{$addMethodName}($message2);
@@ -86,7 +89,6 @@ final class ResultTest extends UnitTestCase
     public function forPropertyShouldReturnSubResult(): void
     {
         $container2 = $this->result->forProperty('foo.bar');
-        self::assertInstanceOf(Result::class, $container2);
         self::assertSame($container2, $this->result->forProperty('foo')->forProperty('bar'));
     }
 
@@ -108,7 +110,7 @@ final class ResultTest extends UnitTestCase
     #[Test]
     public function hasMessagesShouldReturnTrueIfTopLevelObjectHasMessages(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
-        $message = $this->getMockMessage($dataTypeInSingular);
+        $message = $this->createMessage($dataTypeInSingular);
         $addMethodName = 'add' . $dataTypeInSingular;
         $this->result->{$addMethodName}($message);
         $methodName = 'has' . $dataTypeInPlural;
@@ -121,7 +123,7 @@ final class ResultTest extends UnitTestCase
     {
         $addMethodName = 'add' . $dataTypeInSingular;
         $methodName = 'has' . $dataTypeInPlural;
-        $message = $this->getMockMessage($dataTypeInSingular);
+        $message = $this->createMessage($dataTypeInSingular);
         $this->result->forProperty('foo.bar')->{$addMethodName}($message);
         self::assertTrue($this->result->{$methodName}());
     }
@@ -140,11 +142,11 @@ final class ResultTest extends UnitTestCase
     #[Test]
     public function getFlattenedMessagesShouldReturnAllSubMessages(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
-        $message1 = $this->getMockMessage($dataTypeInSingular);
-        $message2 = $this->getMockMessage($dataTypeInSingular);
-        $message3 = $this->getMockMessage($dataTypeInSingular);
-        $message4 = $this->getMockMessage($dataTypeInSingular);
-        $message5 = $this->getMockMessage($dataTypeInSingular);
+        $message1 = $this->createMessage($dataTypeInSingular);
+        $message2 = $this->createMessage($dataTypeInSingular);
+        $message3 = $this->createMessage($dataTypeInSingular);
+        $message4 = $this->createMessage($dataTypeInSingular);
+        $message5 = $this->createMessage($dataTypeInSingular);
         $addMethodName = 'add' . $dataTypeInSingular;
         $this->result->forProperty('foo.bar')->{$addMethodName}($message1);
         $this->result->forProperty('foo.baz')->{$addMethodName}($message2);
@@ -165,8 +167,8 @@ final class ResultTest extends UnitTestCase
     #[Test]
     public function getFlattenedMessagesShouldNotContainEmptyResults(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
-        $message1 = $this->getMockMessage($dataTypeInSingular);
-        $message2 = $this->getMockMessage($dataTypeInSingular);
+        $message1 = $this->createMessage($dataTypeInSingular);
+        $message2 = $this->createMessage($dataTypeInSingular);
         $addMethodName = 'add' . $dataTypeInSingular;
         $this->result->forProperty('foo.bar')->{$addMethodName}($message1);
         $this->result->forProperty('foo.baz')->{$addMethodName}($message2);
@@ -181,15 +183,15 @@ final class ResultTest extends UnitTestCase
     #[Test]
     public function mergeShouldMergeTwoResults(): void
     {
-        $notice1 = $this->getMockMessage('Notice');
-        $notice2 = $this->getMockMessage('Notice');
-        $notice3 = $this->getMockMessage('Notice');
-        $warning1 = $this->getMockMessage('Warning');
-        $warning2 = $this->getMockMessage('Warning');
-        $warning3 = $this->getMockMessage('Warning');
-        $error1 = $this->getMockMessage('Error');
-        $error2 = $this->getMockMessage('Error');
-        $error3 = $this->getMockMessage('Error');
+        $notice1 = $this->createMessage('Notice');
+        $notice2 = $this->createMessage('Notice');
+        $notice3 = $this->createMessage('Notice');
+        $warning1 = $this->createMessage('Warning');
+        $warning2 = $this->createMessage('Warning');
+        $warning3 = $this->createMessage('Warning');
+        $error1 = $this->createMessage('Error');
+        $error2 = $this->createMessage('Error');
+        $error3 = $this->createMessage('Error');
         $otherResult = new Result();
         $otherResult->addNotice($notice1);
         $otherResult->forProperty('foo.bar')->addNotice($notice2);

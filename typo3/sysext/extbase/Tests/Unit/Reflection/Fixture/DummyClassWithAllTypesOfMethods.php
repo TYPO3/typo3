@@ -26,6 +26,7 @@ class DummyClassWithAllTypesOfMethods
 
     protected function protectedMethod(): void {}
 
+    // @phpstan-ignore-next-line method.unused
     private function privateMethod(): void {}
 
     public function methodWithMandatoryParam($param): void {}

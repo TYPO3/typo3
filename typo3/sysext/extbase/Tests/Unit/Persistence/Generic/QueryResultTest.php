@@ -57,7 +57,7 @@ final class QueryResultTest extends UnitTestCase
     public function getQueryReturnsQueryObject(): void
     {
         $this->queryResult->setQuery($this->mockQuery);
-        self::assertInstanceOf(QueryInterface::class, $this->queryResult->getQuery());
+        self::assertEquals($this->mockQuery, $this->queryResult->getQuery());
     }
 
     #[Test]

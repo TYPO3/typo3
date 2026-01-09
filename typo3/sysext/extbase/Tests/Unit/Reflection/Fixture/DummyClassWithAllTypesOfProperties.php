@@ -33,6 +33,7 @@ class DummyClassWithAllTypesOfProperties extends AbstractEntity
 
     protected $protectedProperty;
 
+    // @phpstan-ignore-next-line property.unused */
     private $privateProperty;
 
     public $publicPropertyWithDefaultValue = 'foo';
