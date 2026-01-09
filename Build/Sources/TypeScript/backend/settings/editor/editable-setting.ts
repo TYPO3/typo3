@@ -35,8 +35,7 @@ interface SettingDefinition {
   label: string,
   description: string|null,
   readonly: boolean,
-  // @todo php json_encode encodes ['0' => 'foo'] as ['foo'] instead of {'0' => 'foo'}
-  enum: Record<string, string>|Array<string>,
+  enum: Record<string, string>,
   categories: string[],
   tags: string[],
   options: Record<string, unknown>,
@@ -119,10 +118,6 @@ export class EditableSettingElement extends LitElement {
 
   protected updateFieldAttributes(element: HTMLElement): void {
     const { definition, value } = this.setting;
-    // Force conversion to an object, as PHP json_encode encodes ['0' => 'foo'] as
-    // ['foo'] instead of {'0' => 'foo'}
-    const enumEntries = Object.entries(definition.enum || {});
-
     const attributes = {
       key: definition.key,
       formid: `setting-${definition.key}`,
@@ -130,9 +125,9 @@ export class EditableSettingElement extends LitElement {
       value: Array.isArray(value) ? JSON.stringify(value) : String(value),
       debug: this.mode === SettingsMode.advanced,
       readonly: definition.readonly,
-      enum: enumEntries.length > 0 ? JSON.stringify(Object.fromEntries(enumEntries)) : false,
+      enum: JSON.stringify(definition.enum),
       default: Array.isArray(definition.default) ? JSON.stringify(definition.default) : String(definition.default),
-      options: definition.options ? (Array.isArray(definition.options) && definition.options.length === 0 ? '{}' : JSON.stringify(definition.options)) : '{}',
+      options: JSON.stringify(definition.options),
     };
     for (const [key, value] of Object.entries(attributes)) {
       if (typeof value === 'boolean') {

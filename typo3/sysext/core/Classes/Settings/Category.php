@@ -17,11 +17,18 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Settings;
 
+use TYPO3\CMS\Backend\Dto\Settings\EditableSetting;
+
 /**
+ * @template T of SettingDefinition|EditableSetting
  * @internal
  */
-class Category
+final readonly class Category implements \JsonSerializable
 {
+    /**
+     * @param list<T> $settings
+     * @param list<Category<T>> $categories
+     */
     public function __construct(
         public string $key,
         public string $label,
@@ -31,13 +38,13 @@ class Category
         public array $categories = [],
     ) {}
 
-    public function toArray(): array
-    {
-        return array_filter(get_object_vars($this), fn(mixed $value) => $value !== null && $value !== []);
-    }
-
     public static function __set_state(array $state): self
     {
         return new self(...$state);
+    }
+
+    public function jsonSerialize(): array
+    {
+        return get_object_vars($this);
     }
 }
