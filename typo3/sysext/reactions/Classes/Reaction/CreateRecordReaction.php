@@ -107,7 +107,7 @@ class CreateRecordReaction implements ReactionInterface
     protected function buildResponseFromDataHandler(DataHandler $dataHandler, int $successCode = 200): ResponseInterface
     {
         // Success depends on whether at least one NEW id has been substituted
-        $success = $dataHandler->substNEWwithIDs !== [] && $dataHandler->substNEWwithIDs_table !== [];
+        $success = $dataHandler->substNEWwithIDs !== [];
 
         $statusCode = $successCode;
         $data = [

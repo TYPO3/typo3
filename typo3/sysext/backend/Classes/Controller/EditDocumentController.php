@@ -99,9 +99,9 @@ class EditDocumentController
 
     /**
      * Array of tables with a lists of field names to edit for those tables. If specified, only those fields
-     * will be rendered. Otherwise all (available) fields in the record are shown according to the TCA type.
+     * will be rendered. Otherwise, all (available) fields in the record are shown according to the TCA type.
      */
-    protected ?array $columnsOnly = null;
+    protected array $columnsOnly = [];
 
     /**
      * Default values for fields
@@ -213,8 +213,6 @@ class EditDocumentController
         $this->module = $this->moduleProvider->getModule((string)($queryParams['module'] ?? ''), $this->getBackendUser());
 
         $this->editconf = $this->sanitizeEditConf($parsedBody['edit'] ?? $queryParams['edit'] ?? []);
-        // Change $this->editconf if versioning applies to any of the records
-        $this->fixWSversioningInEditConf();
         $this->defVals = $parsedBody['defVals'] ?? $queryParams['defVals'] ?? null;
         $this->overrideVals = $parsedBody['overrideVals'] ?? $queryParams['overrideVals'] ?? null;
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
@@ -377,10 +375,14 @@ class EditDocumentController
                     // Skip if invalid command
                     continue;
                 }
-                $newConfiguration[$table][$cKey] = $command;
+                $ids = GeneralUtility::trimExplode(',', (string)$cKey, true);
+                foreach ($ids as $id) {
+                    $newConfiguration[$table][$id] = $command;
+                }
             }
         }
-        return $newConfiguration;
+        // Change $this->editconf if versioning applies to any of the records
+        return $this->fixWSversioningInEditConf($newConfiguration);
     }
 
     /**
@@ -447,11 +449,11 @@ class EditDocumentController
         $view->assign('moduleContext', $moduleContext);
     }
 
-    protected function prepareColumnsOnlyConfigurationFromRequest(ServerRequestInterface $request): ?array
+    protected function prepareColumnsOnlyConfigurationFromRequest(ServerRequestInterface $request): array
     {
         $columnsOnly = $request->getParsedBody()['columnsOnly'] ?? $request->getQueryParams()['columnsOnly'] ?? null;
         $usedTables = array_keys($request->getQueryParams()['edit'] ?? []);
-        $finalColumnsOnly = null;
+        $finalColumnsOnly = [];
         if (is_array($columnsOnly) && $columnsOnly !== []) {
             $finalColumnsOnly = array_map(function ($fields) {
                 return is_array($fields) ? $fields : GeneralUtility::trimExplode(',', $fields, true);
@@ -569,11 +571,12 @@ class EditDocumentController
             }
 
             // If there was saved any new items, load them:
-            if (!empty($dataHandler->substNEWwithIDs_table)) {
+            if (!empty($dataHandler->substNEWwithIDs)) {
                 // Save the expanded/collapsed states for new inline records, if any
                 $this->updateInlineView($request->getParsedBody()['uc'] ?? $request->getQueryParams()['uc'] ?? null, $dataHandler);
-                // EditConf is now updated to replace NEW-Ids with the actual persisted IDs.
                 $newEditConf = [];
+                // Traverse all new records and forge the content of $this->editconf so we can continue to edit these records!
+                // $this->editconf is now updated to replace NEW-Ids with the actual persisted IDs.
                 foreach ($this->editconf as $tableName => $tableCmds) {
                     $keys = array_keys($dataHandler->substNEWwithIDs_table, $tableName);
                     if ($keys !== []) {
@@ -594,7 +597,6 @@ class EditDocumentController
                                 }
                                 $newEditConf[$tableName][$editId] = 'edit';
                             }
-                            // Traverse all new records and forge the content of ->editconf so we can continue to edit these records!
                             if ($tableName === 'pages'
                                 && !$this->shouldRedirectToEmptyPage()
                                 && $this->retUrl !== $this->getCloseUrl($request)
@@ -607,14 +609,13 @@ class EditDocumentController
                         $newEditConf[$tableName] = $tableCmds;
                     }
                 }
-                // Reset editconf if newEditConf has values
                 if ($newEditConf !== []) {
                     $this->editconf = $newEditConf;
                 }
             }
             // See if any records was auto-created as new versions?
             if (!empty($dataHandler->autoVersionIdMap)) {
-                $this->fixWSversioningInEditConf($dataHandler->autoVersionIdMap);
+                $this->editconf = $this->fixWSversioningInEditConf($this->editconf, $dataHandler->autoVersionIdMap);
             }
         }
 
@@ -627,9 +628,7 @@ class EditDocumentController
             // Determine insertion mode: 'top' is self-explaining,
             // otherwise new elements are inserted after one using a negative uid
             $insertRecordOnTop = ($this->getTsConfigOption($nTable, 'saveDocNew') === 'top');
-            // Fetching id's - might be a comma-separated list
-            reset($this->editconf[$nTable]);
-            $ids = GeneralUtility::trimExplode(',', (string)key($this->editconf[$nTable]), true);
+            $ids = array_keys($this->editconf[$nTable]);
             // Depending on $insertRecordOnTop, retrieve either the first or last id to get the records' pid+uid
             if ($insertRecordOnTop) {
                 $nUid = (int)reset($ids);
@@ -657,7 +656,7 @@ class EditDocumentController
             $erroneousRecords = $dataHandler->printLogErrorMessages();
             $messages = [];
             $table = (string)key($this->editconf);
-            $uidList = GeneralUtility::intExplode(',', (string)key($this->editconf[$table]));
+            $uidList = array_keys($this->editconf[$table]);
 
             foreach ($uidList as $uid) {
                 $uid = (int)abs($uid);
@@ -718,8 +717,8 @@ class EditDocumentController
             reset($this->editconf);
             $nTable = (string)key($this->editconf);
             // Find the first id, getting the records pid+uid
-            reset($this->editconf[$nTable]);
-            $nUid = key($this->editconf[$nTable]);
+            $nUid = array_keys($this->editconf[$nTable]);
+            $nUid = reset($nUid);
             if (!MathUtility::canBeInterpretedAsInteger($nUid)) {
                 $nUid = $dataHandler->substNEWwithIDs[$nUid];
             }
@@ -772,11 +771,12 @@ class EditDocumentController
     protected function getPreviewUriBuilderForRecordPreview($pageId): PreviewUriBuilder
     {
         $array_keys = array_keys($this->editconf);
-        $table = (string)(reset($array_keys) ?: null);
+        $table = reset($array_keys);
+        $recordId = 0;
         if ($table) {
-            $array_keys = array_keys($this->editconf[$table]);
+            $uids = array_keys($this->editconf[$table]);
+            $recordId = (int)((reset($uids) ?: null) ?? '');
         }
-        $recordId = (int)((reset($array_keys) ?: null) ?? '');
         return PreviewUriBuilder::createForRecordPreview($table, $recordId, $pageId);
     }
 
@@ -845,117 +845,107 @@ class EditDocumentController
         // Traverse the GPvar edit array tables
         foreach ($this->editconf as $table => $conf) {
             // Traverse the keys/comments of each table (keys can be a comma list of uids)
-            foreach ($conf as $cKey => $command) {
-                // Get the ids:
-                $ids = GeneralUtility::trimExplode(',', (string)$cKey, true);
-                // Traverse the ids:
-                foreach ($ids as $theUid) {
-                    try {
-                        $formDataCompilerInput = [
-                            'request' => $request,
-                            'tableName' => $table,
-                            'vanillaUid' => (int)$theUid,
-                            'command' => $command,
-                            'returnUrl' => (string)$currentRequestUrl,
-                        ];
-                        if (is_array($this->overrideVals) && is_array($this->overrideVals[$table])) {
-                            $formDataCompilerInput['overrideValues'] = $this->overrideVals[$table];
-                        }
-                        if (is_array($this->defVals) && $this->defVals !== []) {
-                            $formDataCompilerInput['defaultValues'] = $this->defVals;
-                        }
-
-                        $formData = $this->formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
-
-                        $viewId = 0;
-                        if ($command === 'new'
-                            && $table !== 'pages'
-                            && !empty($formData['parentPageRow']['uid'])
-                        ) {
-                            $viewId = $formData['parentPageRow']['uid'];
-                        } elseif ($table === 'pages') {
-                            // Only set viewId in case it's not a new page - as this can not be viewed before being saved
-                            if ($command !== 'new' && MathUtility::canBeInterpretedAsInteger($formData['databaseRow']['uid'])) {
-                                $viewId = (int)$formData['databaseRow']['uid'];
-                            }
-                        } elseif (!empty($formData['parentPageRow']['uid'])) {
-                            $viewId = $formData['parentPageRow']['uid'];
-                        }
-
-                        // Display "is-locked" message
-                        if ($command === 'edit') {
-                            $lockInfo = BackendUtility::isRecordLocked($table, $formData['databaseRow']['uid']);
-                            if ($lockInfo) {
-                                $view->addFlashMessage($lockInfo['msg'], '', ContextualFeedbackSeverity::WARNING);
-                            }
-                        }
-
-                        $el = new FormElementData(
-                            title: $formData['recordTitle'],
-                            table: $table,
-                            uid: $formData['databaseRow']['uid'],
-                            pid: ($formData['databaseRow']['pid'] ?? $viewId),
-                            record: $formData['databaseRow'],
-                            viewId: (int)$viewId,
-                            command: $command,
-                            userPermissionOnPage: $formData['userPermissionOnPage'],
-                        );
-
-                        $this->elementsData[] = $el;
-
-                        if ($command !== 'new') {
-                            BackendUtility::lockRecords($table, $el->uid, $table === 'tt_content' ? $el->pid : 0);
-                        }
-
-                        // Set list if only specific fields should be rendered. This will trigger
-                        // ListOfFieldsContainer instead of FullRecordContainer in OuterWrapContainer
-                        if (!empty($this->columnsOnly[$table])) {
-                            $formData['fieldListToRender'] = implode(',', $this->columnsOnly[$table]);
-                            if (!empty($this->columnsOnly['__hiddenGeneratorFields'][$table])) {
-                                $formData['hiddenFieldListToRender'] = implode(',', $this->columnsOnly['__hiddenGeneratorFields'][$table]);
-                            }
-                        }
-
-                        $formData['renderType'] = 'outerWrapContainer';
-                        $formResult = $this->nodeFactory->create($formData)->render();
-
-                        $html = $formResult['html'];
-
-                        $formResult['html'] = '';
-                        $formResult['doSaveFieldName'] = 'doSave';
-
-                        // @todo: Put all the stuff into FormEngine as final "compiler" class
-                        // @todo: This is done here for now to not rewrite addCssFiles()
-                        // @todo: and printNeededJSFunctions() now
-                        $this->formResultCompiler->mergeResult($formResult);
-
-                        // Seems the pid is set as hidden field (again) at end?!
-                        if ($command === 'new') {
-                            // @todo: looks ugly
-                            $html .= LF
-                                . '<input type="hidden"'
-                                . ' name="data[' . htmlspecialchars($table) . '][' . htmlspecialchars($el->uid) . '][pid]"'
-                                . ' value="' . $el->pid . '" />';
-                        }
-
-                        $editForm .= $html;
-                    } catch (NoFieldsToRenderException $e) {
-                        $this->numberOfErrors++;
-                        $editForm .= $this->getInfobox(
-                            $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:noFieldsEditForm.message'),
-                            $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:noFieldsEditForm'),
-                        );
-                    } catch (AccessDeniedException $e) {
-                        $this->numberOfErrors++;
-                        // Try to fetch error message from "recordInternals" be user object
-                        // @todo: This construct should be logged and localized and de-uglified
-                        $message = (!empty($beUser->errorMsg)) ? $beUser->errorMsg : $e->getMessage() . ' ' . $e->getCode();
-                        $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission');
-                        $editForm .= $this->getInfobox($message, $title);
-                    } catch (DatabaseRecordException | DatabaseRecordWorkspaceDeletePlaceholderException $e) {
-                        $editForm .= $this->getInfobox($e->getMessage());
+            foreach ($conf as $theUid => $command) {
+                try {
+                    $formDataCompilerInput = [
+                        'request' => $request,
+                        'tableName' => $table,
+                        'vanillaUid' => (int)$theUid,
+                        'command' => $command,
+                        'returnUrl' => (string)$currentRequestUrl,
+                    ];
+                    if (is_array($this->overrideVals) && is_array($this->overrideVals[$table])) {
+                        $formDataCompilerInput['overrideValues'] = $this->overrideVals[$table];
                     }
-                } // End of for each uid
+                    if (is_array($this->defVals) && $this->defVals !== []) {
+                        $formDataCompilerInput['defaultValues'] = $this->defVals;
+                    }
+
+                    $formData = $this->formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
+
+                    $viewId = 0;
+                    if ($table === 'pages') {
+                        // Only set viewId in case it's not a new page - as this can not be viewed before being saved
+                        if ($command !== 'new' && MathUtility::canBeInterpretedAsInteger($formData['databaseRow']['uid'])) {
+                            $viewId = (int)$formData['databaseRow']['uid'];
+                        }
+                    } elseif (!empty($formData['parentPageRow']['uid'])) {
+                        $viewId = $formData['parentPageRow']['uid'];
+                    }
+
+                    // Display "is-locked" message
+                    if ($command === 'edit') {
+                        $lockInfo = BackendUtility::isRecordLocked($table, $formData['databaseRow']['uid']);
+                        if ($lockInfo) {
+                            $view->addFlashMessage($lockInfo['msg'], '', ContextualFeedbackSeverity::WARNING);
+                        }
+                    }
+
+                    $el = new FormElementData(
+                        title: $formData['recordTitle'],
+                        table: $table,
+                        uid: $formData['databaseRow']['uid'],
+                        pid: ($formData['databaseRow']['pid'] ?? $viewId),
+                        record: $formData['databaseRow'],
+                        viewId: (int)$viewId,
+                        command: $command,
+                        userPermissionOnPage: $formData['userPermissionOnPage'],
+                    );
+
+                    $this->elementsData[] = $el;
+
+                    if ($command !== 'new') {
+                        BackendUtility::lockRecords($table, $el->uid, $table === 'tt_content' ? $el->pid : 0);
+                    }
+
+                    // Set list if only specific fields should be rendered. This will trigger
+                    // ListOfFieldsContainer instead of FullRecordContainer in OuterWrapContainer
+                    if (!empty($this->columnsOnly[$table])) {
+                        $formData['fieldListToRender'] = implode(',', $this->columnsOnly[$table]);
+                        if (!empty($this->columnsOnly['__hiddenGeneratorFields'][$table])) {
+                            $formData['hiddenFieldListToRender'] = implode(',', $this->columnsOnly['__hiddenGeneratorFields'][$table]);
+                        }
+                    }
+
+                    $formData['renderType'] = 'outerWrapContainer';
+                    $formResult = $this->nodeFactory->create($formData)->render();
+
+                    $html = $formResult['html'];
+
+                    $formResult['html'] = '';
+                    $formResult['doSaveFieldName'] = 'doSave';
+
+                    // @todo: Put all the stuff into FormEngine as final "compiler" class
+                    // @todo: This is done here for now to not rewrite addCssFiles()
+                    // @todo: and printNeededJSFunctions() now
+                    $this->formResultCompiler->mergeResult($formResult);
+
+                    // Seems the pid is set as hidden field (again) at end?!
+                    if ($command === 'new') {
+                        // @todo: looks ugly
+                        $html .= LF
+                            . '<input type="hidden"'
+                            . ' name="data[' . htmlspecialchars($table) . '][' . htmlspecialchars($el->uid) . '][pid]"'
+                            . ' value="' . $el->pid . '" />';
+                    }
+
+                    $editForm .= $html;
+                } catch (NoFieldsToRenderException $e) {
+                    $this->numberOfErrors++;
+                    $editForm .= $this->getInfobox(
+                        $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:noFieldsEditForm.message'),
+                        $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:noFieldsEditForm'),
+                    );
+                } catch (AccessDeniedException $e) {
+                    $this->numberOfErrors++;
+                    // Try to fetch error message from "recordInternals" be user object
+                    // @todo: This construct should be logged and localized and de-uglified
+                    $message = (!empty($beUser->errorMsg)) ? $beUser->errorMsg : $e->getMessage() . ' ' . $e->getCode();
+                    $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission');
+                    $editForm .= $this->getInfobox($message, $title);
+                } catch (DatabaseRecordException | DatabaseRecordWorkspaceDeletePlaceholderException $e) {
+                    $editForm .= $this->getInfobox($e->getMessage());
+                }
             }
         }
         return $editForm;
@@ -1861,52 +1851,47 @@ class EditDocumentController
      *
      * @param array|null $mapArray Mapping between old and new ids if auto-versioning has been performed.
      */
-    protected function fixWSversioningInEditConf(?array $mapArray = null): void
+    protected function fixWSversioningInEditConf(array $editConf, ?array $mapArray = null): array
     {
-        foreach ($this->editconf as $table => $conf) {
+        $finalConfiguration = [];
+        foreach ($editConf as $table => $conf) {
             // Traverse the keys/comments of each table (keys can be a comma list of uids)
             $newConf = [];
-            foreach ($conf as $cKey => $cmd) {
+            foreach ($conf as $theUid => $cmd) {
                 if ($cmd === 'edit') {
-                    // Traverse the ids:
-                    $ids = GeneralUtility::trimExplode(',', (string)$cKey, true);
-                    foreach ($ids as $idKey => $theUid) {
-                        if (is_array($mapArray)) {
-                            if ($mapArray[$table][$theUid] ?? false) {
-                                $ids[$idKey] = $mapArray[$table][$theUid];
-                            }
-                        } else {
-                            // Default, look for versions in workspace for record:
-                            $calcPRec = $this->getRecordForEdit((string)$table, (int)$theUid);
-                            if (is_array($calcPRec)) {
-                                // Setting UID again if it had changed, eg. due to workspace versioning.
-                                $ids[$idKey] = $calcPRec['uid'];
-                            }
+                    if (is_array($mapArray)) {
+                        if ($mapArray[$table][$theUid] ?? false) {
+                            $theUid = $mapArray[$table][$theUid];
+                        }
+                    } else {
+                        // Default, look for versions in workspace for record:
+                        $calcPRec = $this->getRecordForEdit($table, (int)$theUid);
+                        if (is_array($calcPRec)) {
+                            // Setting UID again if it had changed, due to workspace versioning.
+                            $theUid = (int)$calcPRec['uid'];
                         }
                     }
                     // Add the possibly manipulated IDs to the new-build newConf array:
-                    $newConf[implode(',', $ids)] = $cmd;
+                    $newConf[$theUid] = $cmd;
                 } else {
-                    $newConf[$cKey] = $cmd;
+                    $newConf[$theUid] = $cmd;
                 }
             }
-            // Store the new conf array:
-            $this->editconf[$table] = $newConf;
+            $finalConfiguration[$table] = $newConf;
         }
+        return $finalConfiguration;
     }
 
     /**
      * Get record for editing.
      *
-     * @param string $table Table name
-     * @param int $theUid Record UID
      * @return array|false Returns record to edit, false if none
      */
-    protected function getRecordForEdit(string $table, int $theUid): array|bool
+    protected function getRecordForEdit(string $table, int $recordId): array|bool
     {
         $schema = $this->tcaSchemaFactory->get($table);
         // Fetch requested record:
-        $reqRecord = BackendUtility::getRecord($table, $theUid, 'uid,pid' . ($schema->isWorkspaceAware() ? ',t3ver_oid' : ''));
+        $reqRecord = BackendUtility::getRecord($table, $recordId, 'uid,pid' . ($schema->isWorkspaceAware() ? ',t3ver_oid' : ''));
         if (is_array($reqRecord)) {
             // If workspace is OFFLINE:
             if ($this->getBackendUser()->workspace !== 0) {
