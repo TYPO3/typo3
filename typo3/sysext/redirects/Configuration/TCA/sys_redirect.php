@@ -52,6 +52,7 @@ return [
             'showitem' => '
                 --div--;core.form.tabs:general, --palette--;;qrcode_target,qrcode_display,
                 --div--;redirects.db:tabs.redirectCount, disable_hitcount, hitcount, lasthiton, createdon,
+                --div--;core.form.tabs:access, --palette--;;visibility,
                 --div--;core.form.tabs:notes, description, redirect_type
                 ',
         ],
