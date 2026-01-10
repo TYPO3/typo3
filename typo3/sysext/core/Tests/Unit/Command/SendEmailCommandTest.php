@@ -38,14 +38,9 @@ final class SendEmailCommandTest extends UnitTestCase
         $mailer->method('getTransport')->willReturn($delayedTransportMock);
         $mailer->method('getRealTransport')->willReturn($realTransportMock);
 
-        $command = $this->getMockBuilder(SendEmailCommand::class)
-            ->setConstructorArgs(['mailer:spool:send'])
-            ->onlyMethods(['getMailer'])
-            ->getMock();
-        $command->method('getMailer')->willReturn($mailer);
-
+        $command = new SendEmailCommand($mailer);
         $tester = new CommandTester($command);
-        $tester->execute([], []);
+        $tester->execute([]);
 
         self::assertTrue(strpos($tester->getDisplay(), '5 emails sent') > 0);
     }

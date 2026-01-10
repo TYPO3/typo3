@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
 use TYPO3\CMS\Core\Mail\DelayedTransportInterface;
 use TYPO3\CMS\Core\Mail\FileSpool;
 use TYPO3\CMS\Core\Mail\MailerInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Command for sending spooled messages.
@@ -40,6 +39,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[AsNonSchedulableCommand]
 class SendEmailCommand extends Command
 {
+    public function __construct(protected readonly MailerInterface $mailer)
+    {
+        parent::__construct('mailer:spool:send');
+    }
+
     /**
      * Defines the allowed options for this command
      */
@@ -58,9 +62,7 @@ class SendEmailCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $mailer = $this->getMailer();
-
-        $transport = $mailer->getTransport();
+        $transport = $this->mailer->getTransport();
         if ($transport instanceof DelayedTransportInterface) {
             if ($transport instanceof FileSpool) {
                 $transport->setMessageLimit((int)$input->getOption('message-limit'));
@@ -72,21 +74,12 @@ class SendEmailCommand extends Command
                     $transport->recover();
                 }
             }
-            $sent = $transport->flushQueue($mailer->getRealTransport());
+            $sent = $transport->flushQueue($this->mailer->getRealTransport());
             $io->comment($sent . ' emails sent');
             return Command::SUCCESS;
         }
         $io->error('The Mailer Transport is not set to "spool".');
 
         return Command::FAILURE;
-    }
-
-    /**
-     * Returns the TYPO3 mailer.
-     */
-    protected function getMailer(): MailerInterface
-    {
-        // TODO: DI should be used to inject the MailerInterface
-        return GeneralUtility::makeInstance(MailerInterface::class);
     }
 }
