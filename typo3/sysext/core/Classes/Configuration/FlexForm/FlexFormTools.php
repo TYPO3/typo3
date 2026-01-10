@@ -734,8 +734,8 @@ readonly class FlexFormTools
 
         // Check for record type specific configuration
         if ($schema->supportsSubSchema()) {
-            $recordType = $row[$schema->getSubSchemaTypeInformation()->getFieldName()] ?? '';
-            if ($schema->hasSubSchema($recordType) && ($subSchema = $schema->getSubSchema($recordType))->hasField($fieldName)) {
+            $recordType = (string)($row[$schema->getSubSchemaTypeInformation()->getFieldName()] ?? '');
+            if ($recordType !== '' && $schema->hasSubSchema($recordType) && ($subSchema = $schema->getSubSchema($recordType))->hasField($fieldName)) {
                 $flexField = $subSchema->getField($fieldName);
                 if ($flexField instanceof FlexFormFieldType && $flexField->getDataStructure() !== '') {
                     $defaultIdentifier['dataStructureKey'] = $recordType;
