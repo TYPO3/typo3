@@ -779,7 +779,7 @@ class DatabaseRecordList
                     $translationEnabled = false;
                     // Guard clause so we can quickly return if a record is localized to "all languages"
                     // It should only be possible to localize a record off default (uid 0)
-                    if ($l10nEnabled && ($row[$GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? null] ?? false) !== -1) {
+                    if ($l10nEnabled && ($row[$GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? ''] ?? false) !== -1) {
                         $translationsRaw = $this->translateTools->translationInfo($table, $row['uid'], 0, $row, $selectFields);
                         if (is_array($translationsRaw)) {
                             $translationEnabled = true;
@@ -1548,10 +1548,10 @@ class DatabaseRecordList
         ];
 
         // Hide the move elements for localized records - doesn't make much sense to perform these options for them
-        $isL10nOverlay = (int)($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? null] ?? 0) !== 0;
+        $isL10nOverlay = (int)($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? ''] ?? 0) !== 0;
         $localCalcPerms = $this->getPagePermissionsForRecord($table, $row);
         if ($table === 'pages') {
-            $permsEdit = ($backendUser->checkLanguageAccess($row[$GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? null] ?? 0))
+            $permsEdit = ($backendUser->checkLanguageAccess($row[$GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? ''] ?? 0))
                 && $localCalcPerms->editPagePermissionIsGranted();
         } else {
             $permsEdit = $localCalcPerms->editContentPermissionIsGranted() && $backendUser->recordEditAccessInternals($table, $row);
@@ -1587,7 +1587,7 @@ class DatabaseRecordList
             $iconIdentifier = 'actions-open';
             if ($table === 'pages') {
                 // Disallow manual adjustment of the language field for pages
-                $params['overrideVals']['pages']['sys_language_uid'] = $row[$GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? null] ?? 0;
+                $params['overrideVals']['pages']['sys_language_uid'] = $row[$GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? ''] ?? 0;
                 $iconIdentifier = 'actions-page-open';
             }
             $params['returnUrl'] = $this->listURL();
@@ -2064,7 +2064,7 @@ class DatabaseRecordList
     {
         // Early return if current record is a "delete placeholder" or a translation
         if ($this->isRecordDeletePlaceholder($row)
-            || (int)($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? null] ?? 0) !== 0
+            || (int)($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? ''] ?? 0) !== 0
         ) {
             return '';
         }
@@ -3145,7 +3145,7 @@ class DatabaseRecordList
     protected function languageFlag(string $table, array $row): string
     {
         $pageId = (int)($table === 'pages' ? ($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] ?: $row['uid']) : $row['pid']);
-        $languageUid = (int)($row[$GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? null] ?? 0);
+        $languageUid = (int)($row[$GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? ''] ?? 0);
         $languageInformation = $this->translateTools->getSystemLanguages($pageId);
         $title = htmlspecialchars($languageInformation[$languageUid]['title'] ?? '');
         $indent = !$this->showOnlyTranslatedRecords && $this->isLocalized($table, $row) ? '<span class="indent indent-inline-block" style="--indent-level: 1"></span> ' : '';
@@ -3426,7 +3426,7 @@ class DatabaseRecordList
                 $row === []
                 || (
                     !$this->isRecordDeletePlaceholder($row)
-                    && (int)($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? null] ?? 0) === 0
+                    && (int)($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? ''] ?? 0) === 0
                 )
             )
             && (BackendUtility::isTableWorkspaceEnabled($table) || $this->getBackendUserAuthentication()->workspaceAllowsLiveEditingInTable($table));
