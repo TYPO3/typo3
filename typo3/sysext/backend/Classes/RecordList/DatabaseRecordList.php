@@ -568,6 +568,7 @@ class DatabaseRecordList
             $selectFields[] = 'shortcut';
             $selectFields[] = 'shortcut_mode';
             $selectFields[] = 'mount_pid';
+            $selectFields[] = 'is_siteroot';
         }
         $schema = $this->tcaSchemaFactory->get($table);
         foreach ([TcaSchemaCapability::RestrictionDisabledField,

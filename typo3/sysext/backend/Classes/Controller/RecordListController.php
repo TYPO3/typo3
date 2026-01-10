@@ -301,6 +301,7 @@ class RecordListController
                 $selectFields[] = 'shortcut';
                 $selectFields[] = 'shortcut_mode';
                 $selectFields[] = 'mount_pid';
+                $selectFields[] = 'is_siteroot';
             }
 
             $row = BackendUtility::getRecord($table, $uid, implode(',', $selectFields));
