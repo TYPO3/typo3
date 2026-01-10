@@ -550,6 +550,7 @@ class DatabaseRecordList
             $selectFields[] = 'shortcut';
             $selectFields[] = 'shortcut_mode';
             $selectFields[] = 'mount_pid';
+            $selectFields[] = 'is_siteroot';
         }
         if (is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'] ?? null)) {
             $selectFields = array_merge($selectFields, array_values($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']));
