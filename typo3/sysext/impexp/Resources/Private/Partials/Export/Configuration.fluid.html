@@ -1,5 +1,4 @@
 <html
-    xmlns:impexp="http://typo3.org/ns/TYPO3/CMS/Impexp/ViewHelpers"
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true"
@@ -68,7 +67,7 @@
             size="{f:if(condition: '{tableSelectOptions -> f:count()} > 9', then: '10', else: '5')}"
         >
             <f:for each="{tableSelectOptions}" as="optionLabel" key="optionValue">
-                <option value="{optionValue}" {impexp:inArray(needle:optionValue, haystack:inData.pagetree.tables, then:'selected="selected"')}>{optionLabel}</option>
+                <option value="{optionValue}" {f:contains(value: optionValue, subject: inData.pagetree.tables, then: 'selected="selected"')}>{optionLabel}</option>
             </f:for>
         </select>
     </div>
@@ -130,7 +129,7 @@
             size="{f:if(condition: '{externalReferenceTableSelectOptions -> f:count()} > 9', then: '10', else: '5')}"
         >
             <f:for each="{externalReferenceTableSelectOptions}" as="optionLabel" key="optionValue">
-                <option value="{optionValue}" {impexp:inArray(needle:optionValue, haystack:inData.external_ref.tables, then:'selected="selected"')}>{optionLabel}</option>
+                <option value="{optionValue}" {f:contains(value: optionValue, subject: inData.external_ref.tables, then: 'selected="selected"')}>{optionLabel}</option>
             </f:for>
         </select>
     </div>
@@ -147,7 +146,7 @@
             size="{f:if(condition: '{externalStaticTableSelectOptions -> f:count()} > 9', then: '10', else: '5')}"
         >
             <f:for each="{externalStaticTableSelectOptions}" as="optionLabel" key="optionValue">
-                <option value="{optionValue}" {impexp:inArray(needle:optionValue, haystack:inData.external_static.tables, then:'selected="selected"')}>{optionLabel}</option>
+                <option value="{optionValue}" {f:contains(value: optionValue, subject: inData.external_static.tables, then: 'selected="selected"')}>{optionLabel}</option>
             </f:for>
         </select>
     </div>
