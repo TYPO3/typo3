@@ -1349,7 +1349,7 @@ Do you want to refresh it now?</source>
         <source>The value of fileDenyPattern is not set to its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
       </trans-unit>
       <trans-unit id="warning.file_deny_pattern_partsNotPresent">
-        <source>Security risk: The new value of fileDenyPattern misses parts of its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
+        <source>Security risk: The new value of fileDenyPattern misses parts of its default: %s. If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious PHP scripts.</source>
       </trans-unit>
       <trans-unit id="warning.file_deny_htaccess">
         <source>The current value of fileDenyPattern allows to upload/create files with the name ".htaccess". If TYPO3 is running on Apache, this enables backend or frontend users to create and execute php scripts. Please reset the value of fileDenyPattern to its default.</source>
