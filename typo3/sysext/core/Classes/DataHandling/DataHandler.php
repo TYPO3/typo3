@@ -5219,6 +5219,12 @@ class DataHandler
         }
         unset($uidOrRow);
 
+        // Exit if the current user does not have permission to modify the table and $noRecordCheck is set to false
+        if (!$noRecordCheck && !$this->checkModifyAccessList($table)) {
+            $this->log($table, 0, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::USER_ERROR, 'Cannot delete "{table}:{uid}" without permission', null, ['table' => $table, 'uid' => $uid]);
+            return;
+        }
+
         if ((int)($recordToDelete['t3ver_wsid'] ?? null) !== 0) {
             // When uid to a workspace record is given, then discard always. This is coming from workspace BE
             // module "waste bin" icon, which sends the workspace uid of the record with the intention to
@@ -5339,7 +5345,7 @@ class DataHandler
                     return;
                 }
             }
-            if (!$noRecordCheck && is_string($pagesDeletePermissionError = $this->canDeletePage($recordToDelete, $defaultLanguagePageRecord, $subPages))) {
+            if (!$noRecordCheck && is_string($pagesDeletePermissionError = $this->canDeletePage($recordToDelete, $defaultLanguagePageRecord, $subPages, !$forceHardDelete))) {
                 $this->log('pages', $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::SYSTEM_ERROR, $pagesDeletePermissionError);
                 return;
             }
@@ -5714,8 +5720,9 @@ class DataHandler
      * @param array $defaultLanguagePageRecord The default language page record if $pageRecord is a localization. Identical to
      *                                       $pageRecord if $pageRecord *is* a default language record
      * @param array $subPages List of subpages. Only set if a default language page record should be deleted.
+     * @param bool $useDeleteClause Use the delete clause to check if the page is deleted
      */
-    protected function canDeletePage(array $pageRecord, array $defaultLanguagePageRecord, array $subPages): ?string
+    protected function canDeletePage(array $pageRecord, array $defaultLanguagePageRecord, array $subPages, bool $useDeleteClause = true): ?string
     {
         $languageCapability = $this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::Language);
         $localizationParentFieldName = $languageCapability->getTranslationOriginPointerField()->getName();
@@ -5724,14 +5731,14 @@ class DataHandler
         if ($localizationParent > 0) {
             $pageRecordToCheck = $defaultLanguagePageRecord;
         }
-        if (!$this->hasPagePermission(Permission::PAGE_DELETE, $pageRecordToCheck)) {
+        if (!$this->hasPagePermission(Permission::PAGE_DELETE, $pageRecordToCheck, $useDeleteClause)) {
             return 'Attempt to delete page without permissions';
         }
         if (!$this->BE_USER->recordEditAccessInternals('pages', $pageRecord, false, null, $localizationParent === $pageRecord['uid'])) {
             return 'Attempt to delete page which has prohibited localizations';
         }
         foreach ($subPages as $subPage) {
-            if (!$this->admin && !$this->BE_USER->doesUserHaveAccess($subPage, Permission::PAGE_DELETE)) {
+            if (!$this->admin && !$this->BE_USER->doesUserHaveAccess($subPage, Permission::PAGE_DELETE, $useDeleteClause)) {
                 return 'Attempt to delete pages in branch without permissions';
             }
             if (!$this->BE_USER->recordEditAccessInternals('pages', $subPage, false, null, true)) {
@@ -7609,9 +7616,10 @@ class DataHandler
      *
      * @param int $perms Permission restrictions to observe. An integer bitmask of Permission constants
      * @param array $page Full page record
+     * @param bool $useDeleteClause Use the delete clause to check if the page is deleted
      * @internal Strictly internal. May change or vanish any time.
      */
-    public function hasPagePermission(int $perms, array $page): bool
+    public function hasPagePermission(int $perms, array $page, bool $useDeleteClause = true): bool
     {
         if (!$perms) {
             throw new \RuntimeException('Invalid $perms bitset: "' . $perms . '"', 1270853920);
@@ -7621,7 +7629,7 @@ class DataHandler
         }
 
         $pagesSchema = $this->tcaSchemaFactory->get('pages');
-        if (!$pagesSchema->hasCapability(TcaSchemaCapability::RestrictionWebMount) && !$this->BE_USER->isInWebMount($page)) {
+        if (!$pagesSchema->hasCapability(TcaSchemaCapability::RestrictionWebMount) && !$this->BE_USER->isInWebMount($page, '', $useDeleteClause)) {
             return false;
         }
         $beUserUid = $this->BE_USER->getUserId();

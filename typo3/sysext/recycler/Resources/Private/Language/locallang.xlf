@@ -75,6 +75,9 @@
 			<trans-unit id="modal.massundo.text">
 				<source>Do you really want to recover all selected records and optionally potential subpages?</source>
 			</trans-unit>
+			<trans-unit id="flashmessage.delete.unauthorized">
+				<source>Insufficient permissions to delete records.</source>
+			</trans-unit>
 			<trans-unit id="flashmessage.delete.norecordsselected">
 				<source>No records set to delete.</source>
 			</trans-unit>
