@@ -7,6 +7,7 @@ use TYPO3\CMS\Redirects\Evaluation\SourceHost;
 use TYPO3\CMS\Redirects\FormDataProvider\QrCodeSourceHostDataProvider;
 use TYPO3\CMS\Redirects\FormDataProvider\ValuePickerItemDataProvider;
 use TYPO3\CMS\Redirects\Hooks\DataHandlerCacheFlushingHook;
+use TYPO3\CMS\Redirects\Hooks\DataHandlerPermissionGuardHook;
 use TYPO3\CMS\Redirects\Hooks\DataHandlerSlugUpdateHook;
 use TYPO3\CMS\Redirects\Hooks\DispatchNotificationHook;
 use TYPO3\CMS\Redirects\Hooks\HandleNewQrCodeRecord;
@@ -17,6 +18,7 @@ defined('TYPO3') or die();
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']['redirects'] = DataHandlerCacheFlushingHook::class . '->rebuildRedirectCacheIfNecessary';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['redirects'] = DataHandlerSlugUpdateHook::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['redirects-qrcode'] = HandleNewQrCodeRecord::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['redirectsAccessGuard'] = DataHandlerPermissionGuardHook::class;
 
 // Inject sys_domains into valuepicker form
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord']

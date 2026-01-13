@@ -31,7 +31,7 @@ final readonly class ModulePaginationService
 
     public function preparePagination(Demand $demand): array
     {
-        $count = $this->redirectRepository->countRedirectsByByDemand($demand);
+        $count = $this->redirectRepository->countRedirectsByDemand($demand);
         $numberOfPages = ceil($count / $demand->getLimit());
         $endRecord = $demand->getOffset() + $demand->getLimit();
         if ($endRecord > $count) {
