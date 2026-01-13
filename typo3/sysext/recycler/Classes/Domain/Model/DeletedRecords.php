@@ -318,7 +318,7 @@ class DeletedRecords
             $tce->start([], []);
             foreach ($recordsArray as $record) {
                 [$table, $uid] = explode(':', $record);
-                $tce->deleteAction($table, (int)$uid, true, true);
+                $tce->deleteAction($table, (int)$uid, false, true);
             }
             return true;
         }

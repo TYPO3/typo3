@@ -106,13 +106,10 @@ class RecyclerAjaxController
                 $model = GeneralUtility::makeInstance(DeletedRecords::class);
                 $totalDeleted = $model->getTotalCount($this->conf['startUid'], $this->conf['table'], $this->conf['depth'], $this->conf['filterTxt']);
 
-                $allowDelete = $this->getBackendUser()->isAdmin()
-                    ?: (bool)($this->getBackendUser()->getTSConfig()['mod.']['recycler.']['allowDelete'] ?? false);
-
                 $view = $this->backendViewFactory->create($request);
                 $view->assign('showTableHeader', empty($this->conf['table']));
                 $view->assign('showTableName', $this->getBackendUser()->shallDisplayDebugInformation());
-                $view->assign('allowDelete', $allowDelete);
+                $view->assign('allowDelete', $this->isDeleteAllowed());
                 $view->assign('groupedRecords', $this->transform($deletedRowsArray));
                 $content = [
                     'rows' => $view->render('Ajax/RecordsTable'),
@@ -137,6 +134,14 @@ class RecyclerAjaxController
                 ];
                 break;
             case 'deleteRecords':
+                if (!$this->isDeleteAllowed()) {
+                    $content = [
+                        'success' => false,
+                        'message' => LocalizationUtility::translate('flashmessage.delete.unauthorized', 'recycler'),
+                    ];
+                    break;
+                }
+
                 if (empty($this->conf['records']) || !is_array($this->conf['records'])) {
                     $content = [
                         'success' => false,
@@ -150,12 +155,23 @@ class RecyclerAjaxController
                 $affectedRecords = count($this->conf['records']);
                 $messageKey = 'flashmessage.delete.' . ($success ? 'success' : 'failure') . '.' . ($affectedRecords === 1 ? 'singular' : 'plural');
                 $content = [
-                    'success' => true,
+                    'success' => $success,
                     'message' => sprintf((string)LocalizationUtility::translate($messageKey, 'recycler'), $affectedRecords),
                 ];
                 break;
         }
         return new JsonResponse($content);
+    }
+
+    protected function isDeleteAllowed(): bool
+    {
+        $backendUser = $this->getBackendUser();
+
+        if ($backendUser->isAdmin()) {
+            return true;
+        }
+
+        return (bool)($backendUser->getTSConfig()['mod.']['recycler.']['allowDelete'] ?? false);
     }
 
     /**

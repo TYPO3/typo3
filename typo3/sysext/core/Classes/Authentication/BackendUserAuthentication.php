@@ -299,11 +299,12 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @param array $row Is the pagerow for which the permissions is checked
      * @param int $perms Is the binary representation of the permission we are going to check. Every bit in this number represents a permission that must be set. See function explanation.
+     * @param bool $useDeleteClause Use the delete clause to check if a record is deleted
      * @return bool
      */
-    public function doesUserHaveAccess($row, $perms)
+    public function doesUserHaveAccess($row, $perms, bool $useDeleteClause = true)
     {
-        $userPerms = $this->calcPerms($row);
+        $userPerms = $this->calcPerms($row, $useDeleteClause);
         return ($userPerms & $perms) == $perms;
     }
 
