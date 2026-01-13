@@ -545,8 +545,16 @@ class EditDocumentController
         }
 
         // Set default values fetched previously from GET / POST vars
-        if (is_array($this->defVals) && $this->defVals !== []) {
-            $tce->defaultValues = array_merge_recursive($this->defVals, $tce->defaultValues);
+        if (is_array($this->data)) {
+            foreach ($this->data as $tableName => $records) {
+                if (is_array($this->defVals[$tableName] ?? null)) {
+                    foreach ($records as $uid => $_) {
+                        if (str_contains((string)$uid, 'NEW')) {
+                            $this->data[$tableName][$uid] = array_merge($this->defVals[$tableName], $this->data[$tableName][$uid]);
+                        }
+                    }
+                }
+            }
         }
 
         // Load DataHandler with data

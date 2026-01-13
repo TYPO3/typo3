@@ -193,7 +193,7 @@ class DataHandler
      * If ->setDefaultsFromUserTS is called UserTSconfig default values will overrule existing values in this array
      * (thus UserTSconfig overrules externally set defaults which overrules TCA defaults)
      *
-     * @internal should only be used from within TYPO3 Core
+     * @internal should only be used from within DataHandler as permission checks do not apply to default values
      */
     public array $defaultValues = [];
 
