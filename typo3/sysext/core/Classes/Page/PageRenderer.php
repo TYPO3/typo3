@@ -950,6 +950,27 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
+     * Loads all labels from a language domain and prefixes them with the domain name.
+     *
+     * The domain name follows the format "extension.domain" (e.g. 'core.common', 'core.modules.media').
+     * The language file is resolved automatically by the LanguageService,
+     * e.g. 'EXT:core/Resources/Private/Language/locallang_common.xlf', 'EXT:core/Resources/Private/Language/Modules/media.xlf'.
+     *
+     * Labels are accessible in JavaScript as TYPO3.lang['domain:key'], e.g. TYPO3.lang['core.common:notAvailableAbbreviation'].
+     *
+     * @param string $domain The domain name in format "extension.domain" (e.g. 'core.common', 'core.modules.media')
+     */
+    public function addInlineLanguageDomain(string $domain): void
+    {
+        $languageService = $this->languageServiceFactory->create($this->locale);
+        $allLabels = $languageService->getLabelsFromResource($domain);
+
+        foreach ($allLabels as $label => $value) {
+            $this->inlineLanguageLabels[$domain . ':' . $label] = $value;
+        }
+    }
+
+    /**
      * Adds Javascript Inline Setting. This will occur in TYPO3.settings - object
      * The label can be used in scripts with TYPO3.setting.<key>
      *

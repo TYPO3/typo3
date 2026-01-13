@@ -523,4 +523,19 @@ final class PageRendererTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/<!\[CDATA\[(.|\n)*var\sx\s=(.|\n)*]]>/', $renderedString);
         self::assertMatchesRegularExpression('/<!\[CDATA\[(.|\n)*body\s{margin:20px;}(.|\n)*]]>/', $renderedString);
     }
+
+    #[Test]
+    public function pageRendererResolvesInlineLanguageDomainLabels(): void
+    {
+        $subject = $this->createPageRenderer();
+        $subject->setLanguage(new Locale());
+
+        $subject->addInlineLanguageDomain('core.common');
+        $subject->addInlineLanguageDomain('core.modules.media');
+
+        $labels = $subject->getInlineLanguageLabels();
+
+        self::assertArrayHasKey('core.common:notAvailableAbbreviation', $labels);
+        self::assertArrayHasKey('core.modules.media:title', $labels);
+    }
 }
