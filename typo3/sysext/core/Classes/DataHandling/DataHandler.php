@@ -214,7 +214,7 @@ class DataHandler implements LoggerAwareInterface
      * (thus UserTSconfig overrules externally set defaults which overrules TCA defaults)
      *
      * @var array
-     * @internal should only be used from within TYPO3 Core
+     * @internal should only be used from within DataHandler as permission checks do not apply to default values
      */
     public $defaultValues = [];
 
