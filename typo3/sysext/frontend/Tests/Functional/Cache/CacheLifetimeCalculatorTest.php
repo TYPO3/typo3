@@ -22,6 +22,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
+use TYPO3\CMS\Frontend\Event\ModifyCacheLifetimeForRowEvent;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class CacheLifetimeCalculatorTest extends FunctionalTestCase
@@ -30,6 +31,32 @@ final class CacheLifetimeCalculatorTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/fixtures.csv');
+    }
+
+    #[Test]
+    public function calculateLifetimeForRowUsesModifiedEventLifetime(): void
+    {
+        $eventDispatcher = new class () implements EventDispatcherInterface {
+            public function dispatch(object $event): object
+            {
+                if ($event instanceof ModifyCacheLifetimeForRowEvent) {
+                    $event->cacheLifetime = 123;
+                }
+
+                return $event;
+            }
+        };
+
+        $subject = new CacheLifetimeCalculator(
+            $this->get('cache.runtime'),
+            $eventDispatcher,
+            $this->get(ConnectionPool::class),
+            $this->get(TcaSchemaFactory::class)
+        );
+
+        $result = $subject->calculateLifetimeForRow('tt_content', ['uid' => 999], 300);
+
+        self::assertSame(123, $result);
     }
 
     #[Test]

@@ -18,8 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Event;
 
 /**
- * Event to allow listeners to modify the amount of seconds that a generated frontend page
- * should be cached in the "pages" cache when initially generated.
+ * Event to allow listeners to modify the amount of seconds that a page
+ * containing this record should be cached.
  */
 class ModifyCacheLifetimeForRowEvent
 {

@@ -93,7 +93,8 @@ class CacheLifetimeCalculator
             $record
         );
         $event = $this->eventDispatcher->dispatch($event);
-        $this->runtimeCache->set($cachedCacheLifetimeIdentifier, (string)$event->cacheLifetime);
+        $cacheTimeout = $event->cacheLifetime;
+        $this->runtimeCache->set($cachedCacheLifetimeIdentifier, (string)$cacheTimeout);
         return $cacheTimeout;
     }
 
