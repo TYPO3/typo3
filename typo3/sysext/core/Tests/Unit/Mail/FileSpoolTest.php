@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Mail;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Transport\NullTransport;
 use Symfony\Component\Mime\Address;
@@ -31,12 +33,17 @@ final class FileSpoolTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
+    private string $spoolPath;
+    private LoggerInterface&MockObject $loggerMock;
     private FileSpool $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = new FileSpool(Environment::getVarPath() . '/spool/');
+
+        $this->spoolPath = Environment::getVarPath() . '/spool/';
+        $this->loggerMock = $this->createMock(LoggerInterface::class);
+        $this->subject = new FileSpool($this->spoolPath, null, $this->loggerMock);
         $this->subject->setMessageLimit(10);
         $this->subject->setTimeLimit(1);
     }
@@ -53,6 +60,47 @@ final class FileSpoolTest extends UnitTestCase
         }
 
         self::assertEquals($count, $this->subject->flushQueue(new NullTransport()));
+    }
+
+    #[Test]
+    public function flushQueueSkipsDisallowedSerializedMessages(): void
+    {
+        $disallowedMessage = $this->spoolPath . 'disallowed.message';
+        $disallowedMessageSending = $this->spoolPath . 'invalid.message.sending';
+
+        file_put_contents($disallowedMessage, serialize(new \stdClass()));
+
+        $this->loggerMock->expects($this->once())->method('error')->with(
+            'Serialized message from {fileName} was rejected, because it contains a disallowed class object.',
+            ['fileName' => $disallowedMessage],
+        );
+
+        self::assertFileExists($disallowedMessage);
+        self::assertSame(0, $this->subject->flushQueue(new NullTransport()));
+        self::assertFileDoesNotExist($disallowedMessage);
+        self::assertFileDoesNotExist($disallowedMessageSending);
+    }
+
+    #[Test]
+    public function flushQueueSkipsUnsupportedSerializedMessages(): void
+    {
+        $invalidMessage = $this->spoolPath . 'invalid.message';
+        $invalidMessageSending = $this->spoolPath . 'invalid.message.sending';
+
+        file_put_contents($invalidMessage, serialize(new RawMessage('Hello World')));
+
+        $this->loggerMock->expects($this->once())->method('error')->with(
+            'Serialized message from {fileName} was rejected, because {className} is not an instance of SentMessage.',
+            [
+                'fileName' => $invalidMessage,
+                'className' => RawMessage::class,
+            ],
+        );
+
+        self::assertFileExists($invalidMessage);
+        self::assertSame(0, $this->subject->flushQueue(new NullTransport()));
+        self::assertFileDoesNotExist($invalidMessage);
+        self::assertFileDoesNotExist($invalidMessageSending);
     }
 
     /**
