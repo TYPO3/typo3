@@ -523,7 +523,17 @@ class EditDocumentController
         $dataHandler->setControl($parsedBody['control'] ?? []);
 
         // Set default values fetched previously from GET / POST vars
-        $dataHandler->defaultValues = $this->defVals ?? [];
+        if (is_array($dataMap)) {
+            foreach ($dataMap as $tableName => $records) {
+                if (is_array($this->defVals[$tableName] ?? null)) {
+                    foreach ($records as $uid => $_) {
+                        if (str_contains((string)$uid, 'NEW')) {
+                            $dataMap[$tableName][$uid] = array_merge($this->defVals[$tableName], $dataMap[$tableName][$uid]);
+                        }
+                    }
+                }
+            }
+        }
 
         // Load DataHandler with data
         $dataHandler->start($dataMap, $dataHandlerIncomingCommandMap);

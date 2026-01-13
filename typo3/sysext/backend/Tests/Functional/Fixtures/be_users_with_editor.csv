@@ -1,0 +1,5 @@
+"be_users",,,,,,,
+,"uid","pid","username","usergroup","deleted","admin","options","TSconfig"
+,1,0,"admin",,0,1,0,""
+,9,0,"editor",9,0,0,3,"page.TCEFORM.tt_content.header_position.disabled = 1
+page.TCEFORM.tt_content.colPos.readOnly = 1"
