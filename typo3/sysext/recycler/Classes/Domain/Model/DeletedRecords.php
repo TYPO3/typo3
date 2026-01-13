@@ -347,7 +347,7 @@ class DeletedRecords
             $tce->disableDeleteClause();
             foreach ($recordsArray as $record) {
                 [$table, $uid] = explode(':', $record);
-                $tce->deleteEl($table, (int)$uid, true, true);
+                $tce->deleteEl($table, (int)$uid, false, true);
             }
             return true;
         }

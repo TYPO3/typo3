@@ -301,11 +301,12 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @param array $row Is the pagerow for which the permissions is checked
      * @param int $perms Is the binary representation of the permission we are going to check. Every bit in this number represents a permission that must be set. See function explanation.
+     * @param bool $useDeleteClause Use the delete clause to check if a record is deleted
      * @return bool
      */
-    public function doesUserHaveAccess($row, $perms)
+    public function doesUserHaveAccess($row, $perms, bool $useDeleteClause = true)
     {
-        $userPerms = $this->calcPerms($row);
+        $userPerms = $this->calcPerms($row, $useDeleteClause);
         return ($userPerms & $perms) == $perms;
     }
 
@@ -320,10 +321,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @param int|array $idOrRow Page ID or full page record to check
      * @param string $readPerms Content of "->getPagePermsClause(1)" (read-permissions). If not set, they will be internally calculated (but if you have the correct value right away you can save that database lookup!)
-     * @throws \RuntimeException
+     * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
      * @return int|null The page UID of a page in the rootline that matched a mount point
+     *@throws \RuntimeException
      */
-    public function isInWebMount($idOrRow, $readPerms = '')
+    public function isInWebMount($idOrRow, $readPerms = '', bool $useDeleteClause = true)
     {
         if ($this->isAdmin()) {
             return 1;
@@ -350,7 +352,9 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 $id,
                 't3ver_oid,'
                 . $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] . ','
-                . $GLOBALS['TCA']['pages']['ctrl']['languageField']
+                . $GLOBALS['TCA']['pages']['ctrl']['languageField'],
+                '',
+                $useDeleteClause,
             );
         }
         if ((int)($checkRec['t3ver_oid'] ?? 0) > 0) {
@@ -368,7 +372,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         }
         if ($id > 0) {
             $wM = $this->getWebmounts();
-            $rL = BackendUtility::BEgetRootLine($id, ' AND ' . $readPerms, true);
+            $rL = BackendUtility::BEgetRootLine($id, ' AND ' . $readPerms, true, [], $useDeleteClause);
             foreach ($rL as $v) {
                 if ($v['uid'] && in_array($v['uid'], $wM)) {
                     return $v['uid'];
@@ -542,16 +546,17 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * If the user is admin, 31 is returned	(full permissions for all five flags)
      *
      * @param array $row Input page row with all perms_* fields available.
+     * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
      * @return int Bitwise representation of the users permissions in relation to input page row, $row
      */
-    public function calcPerms($row)
+    public function calcPerms($row, bool $useDeleteClause = true)
     {
         // Return 31 for admin users.
         if ($this->isAdmin()) {
             return Permission::ALL;
         }
         // Return 0 if page is not within the allowed web mount
-        if (!$this->isInWebMount($row)) {
+        if (!$this->isInWebMount($row, '', $useDeleteClause)) {
             return Permission::NOTHING;
         }
         $out = Permission::NOTHING;

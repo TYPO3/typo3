@@ -5208,6 +5208,12 @@ class DataHandler implements LoggerAwareInterface
      */
     public function deleteEl($table, $uid, $noRecordCheck = false, $forceHardDelete = false, bool $deleteRecordsOnPage = true)
     {
+        // Exit if the current user does not have permission to modify the table and $noRecordCheck is set to false
+        if (!$noRecordCheck && !$this->checkModifyAccessList($table)) {
+            $this->log($table, 0, SystemLogDatabaseAction::DELETE, 0, SystemLogErrorClassification::USER_ERROR, 'Cannot delete "{table}:{uid}" without permission', -1, ['table' => $table, 'uid' => $uid]);
+            return;
+        }
+
         if ($table === 'pages') {
             $this->deletePages($uid, $noRecordCheck, $forceHardDelete, $deleteRecordsOnPage);
         } else {
@@ -5443,10 +5449,10 @@ class DataHandler implements LoggerAwareInterface
         // Getting list of pages to delete:
         if ($force) {
             // Returns the branch WITHOUT permission checks (0 secures that), so it cannot return -1
-            $pageIdsInBranch = $this->doesBranchExist('', $uid, 0, true);
+            $pageIdsInBranch = $this->doesBranchExist('', $uid, 0, true, !$forceHardDelete);
             $res = GeneralUtility::intExplode(',', $pageIdsInBranch . $uid, true);
         } else {
-            $res = $this->canDeletePage($uid);
+            $res = $this->canDeletePage($uid, !$forceHardDelete);
         }
         // Perform deletion if not error:
         if (is_array($res)) {
@@ -5570,10 +5576,11 @@ class DataHandler implements LoggerAwareInterface
      * Used to evaluate if a page can be deleted
      *
      * @param int $uid Page id
+     * @param bool $useDeleteClause Use the delete clause to check if the page is deleted
      * @return int[]|string If array: List of page uids to traverse and delete (means OK), if string: error message.
      * @internal should only be used from within DataHandler
      */
-    public function canDeletePage($uid)
+    public function canDeletePage($uid, bool $useDeleteClause = true)
     {
         $uid = (int)$uid;
         $isTranslatedPage = null;
@@ -5588,11 +5595,11 @@ class DataHandler implements LoggerAwareInterface
             } else {
                 return 'Attempt to delete page without permissions';
             }
-        } elseif (!$this->doesRecordExist('pages', $uid, Permission::PAGE_DELETE)) {
+        } elseif (!$this->doesRecordExist('pages', $uid, Permission::PAGE_DELETE, $useDeleteClause)) {
             return 'Attempt to delete page without permissions';
         }
 
-        $pageIdsInBranch = $this->doesBranchExist('', $uid, Permission::PAGE_DELETE, true);
+        $pageIdsInBranch = $this->doesBranchExist('', $uid, Permission::PAGE_DELETE, true, $useDeleteClause);
 
         if ($pageIdsInBranch === -1) {
             return 'Attempt to delete pages in branch without permissions';
@@ -5605,7 +5612,7 @@ class DataHandler implements LoggerAwareInterface
         }
 
         foreach ($pagesInBranch as $pageInBranch) {
-            if (!$this->BE_USER->recordEditAccessInternals('pages', $pageInBranch, false, false, $isTranslatedPage ? false : true)) {
+            if (!$this->BE_USER->recordEditAccessInternals('pages', $pageInBranch, false, true, $isTranslatedPage ? false : true)) {
                 return 'Attempt to delete page which has prohibited localizations';
             }
         }
@@ -7112,31 +7119,35 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @param int $id UID of record
+     * @param bool $useDeleteClause Use the delete clause to check if the page is deleted
      * @return bool Returns TRUE if OK. Cached results.
      * @internal should only be used from within DataHandler
      */
-    public function isRecordInWebMount($table, $id)
+    public function isRecordInWebMount($table, $id, bool $useDeleteClause = true)
     {
-        if (!isset($this->isRecordInWebMount_Cache[$table . ':' . $id])) {
+        $cacheIdentifier = $table . ':' . $id . ($this->disableDeleteClause || !$useDeleteClause ? '' : '-delete');
+        if (!isset($this->isRecordInWebMount_Cache[$cacheIdentifier])) {
             $recP = $this->getRecordProperties($table, $id);
-            $this->isRecordInWebMount_Cache[$table . ':' . $id] = $this->isInWebMount($recP['event_pid']);
+            $this->isRecordInWebMount_Cache[$cacheIdentifier] = $this->isInWebMount($recP['event_pid'], $useDeleteClause);
         }
-        return $this->isRecordInWebMount_Cache[$table . ':' . $id];
+        return $this->isRecordInWebMount_Cache[$cacheIdentifier];
     }
 
     /**
      * Checks if the input page ID is in the BE_USER webmounts
      *
      * @param int $pid Page ID to check
+     * @param bool $useDeleteClause Use the delete clause to check if the page is deleted
      * @return bool TRUE if OK. Cached results.
      * @internal should only be used from within DataHandler
      */
-    public function isInWebMount($pid)
+    public function isInWebMount($pid, bool $useDeleteClause = true)
     {
-        if (!isset($this->isInWebMount_Cache[$pid])) {
-            $this->isInWebMount_Cache[$pid] = $this->BE_USER->isInWebMount($pid);
+        $cacheIdentifier = $pid . ($this->disableDeleteClause || !$useDeleteClause ? '' : '-delete');
+        if (!isset($this->isInWebMount_Cache[$cacheIdentifier])) {
+            $this->isInWebMount_Cache[$cacheIdentifier] = $this->BE_USER->isInWebMount($pid, '', !$this->disableDeleteClause && $useDeleteClause);
         }
-        return $this->isInWebMount_Cache[$pid];
+        return $this->isInWebMount_Cache[$cacheIdentifier];
     }
 
     /**
@@ -7271,14 +7282,15 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Record table name
      * @param int $id Record UID
      * @param int $perms Permission restrictions to observe: integer that will be bitwise AND'ed.
+     * @param bool $useDeleteClause Use the delete clause to check if the page is deleted
      * @return bool Returns TRUE if the record given by $table, $id and $perms can be selected
      *
      * @throws \RuntimeException
      * @internal should only be used from within DataHandler
      */
-    public function doesRecordExist($table, $id, int $perms)
+    public function doesRecordExist($table, $id, int $perms, bool $useDeleteClause = true)
     {
-        return $this->recordInfoWithPermissionCheck($table, $id, $perms, 'uid, pid') !== false;
+        return $this->recordInfoWithPermissionCheck($table, $id, $perms, 'uid, pid', $useDeleteClause) !== false;
     }
 
     /**
@@ -7287,17 +7299,18 @@ class DataHandler implements LoggerAwareInterface
      * @param int $id Page id
      * @param int $perms Permission integer
      * @param array $columns Columns to select
+     * @param bool $useDeleteClause Use the delete clause to check if the page is deleted
      * @return bool|array
      * @internal
      * @see doesRecordExist()
      */
-    protected function doesRecordExist_pageLookUp($id, $perms, $columns = ['uid'])
+    protected function doesRecordExist_pageLookUp($id, $perms, $columns = ['uid'], bool $useDeleteClause = true)
     {
         $permission = new Permission($perms);
         $cacheId = md5('doesRecordExist_pageLookUp_' . $id . '_' . $perms . '_' . implode(
             '_',
             $columns
-        ) . '_' . (string)$this->admin);
+        ) . '_' . (string)$this->admin) . ($useDeleteClause ? '_delete' : '');
 
         // If result is cached, return it
         $cachedResult = $this->runtimeCache->get($cacheId);
@@ -7306,7 +7319,10 @@ class DataHandler implements LoggerAwareInterface
         }
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+        $restrictions = $queryBuilder->getRestrictions()->removeAll();
+        if ($useDeleteClause) {
+            $this->addDeleteRestriction($restrictions);
+        }
         $queryBuilder
             ->select(...$columns)
             ->from('pages')
@@ -7342,15 +7358,19 @@ class DataHandler implements LoggerAwareInterface
      * @param int $pid Page ID to select subpages from.
      * @param int $perms Perms integer to check each page record for.
      * @param bool $recurse Recursion flag: If set, it will go out through the branch.
+     * @param bool $useDeleteClause Use the delete clause to check if the page is deleted
      * @return string|int List of page IDs in branch, if there are subpages, empty string if there are none or -1 if no permission
      * @internal should only be used from within DataHandler
      */
-    public function doesBranchExist($inList, $pid, $perms, $recurse)
+    public function doesBranchExist($inList, $pid, $perms, $recurse, bool $useDeleteClause = true)
     {
         $pid = (int)$pid;
         $perms = (int)$perms;
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+        $restrictions = $queryBuilder->getRestrictions()->removeAll();
+        if ($useDeleteClause) {
+            $this->addDeleteRestriction($restrictions);
+        }
         $result = $queryBuilder
             ->select('uid', 'perms_userid', 'perms_groupid', 'perms_user', 'perms_group', 'perms_everybody')
             ->from('pages')
@@ -7359,11 +7379,11 @@ class DataHandler implements LoggerAwareInterface
             ->executeQuery();
         while ($row = $result->fetchAssociative()) {
             // IF admin, then it's OK
-            if ($this->admin || $this->BE_USER->doesUserHaveAccess($row, $perms)) {
+            if ($this->admin || $this->BE_USER->doesUserHaveAccess($row, $perms, !$this->disableDeleteClause && $useDeleteClause)) {
                 $inList .= $row['uid'] . ',';
                 if ($recurse) {
                     // Follow the subpages recursively...
-                    $inList = $this->doesBranchExist($inList, $row['uid'], $perms, $recurse);
+                    $inList = $this->doesBranchExist($inList, $row['uid'], $perms, $recurse, $useDeleteClause);
                     if ($inList === -1) {
                         return -1;
                     }
@@ -7581,10 +7601,11 @@ class DataHandler implements LoggerAwareInterface
      * @param int $id Record UID
      * @param int $perms Permission restrictions to observe: An integer that will be bitwise AND'ed.
      * @param string $fieldList - fields - default is '*'
+     * @param bool $useDeleteClause Use the delete clause to check if the page is deleted
      * @throws \RuntimeException
      * @return array<string,mixed>|false Row if exists and accessible, false otherwise
      */
-    protected function recordInfoWithPermissionCheck(string $table, int $id, int $perms, string $fieldList = '*')
+    protected function recordInfoWithPermissionCheck(string $table, int $id, int $perms, string $fieldList = '*', bool $useDeleteClause = true)
     {
         if ($this->bypassAccessCheckForRecords) {
             $columns = GeneralUtility::trimExplode(',', $fieldList, true);
@@ -7605,7 +7626,7 @@ class DataHandler implements LoggerAwareInterface
         }
         // For all tables: Check if record exists:
         $isWebMountRestrictionIgnored = BackendUtility::isWebMountRestrictionIgnored($table);
-        if (is_array($GLOBALS['TCA'][$table]) && $id > 0 && ($this->admin || $isWebMountRestrictionIgnored || $this->isRecordInWebMount($table, $id))) {
+        if (is_array($GLOBALS['TCA'][$table]) && $id > 0 && ($this->admin || $isWebMountRestrictionIgnored || $this->isRecordInWebMount($table, $id, $useDeleteClause))) {
             $columns = GeneralUtility::trimExplode(',', $fieldList, true);
             if ($table !== 'pages') {
                 // Find record without checking page
@@ -7630,7 +7651,7 @@ class DataHandler implements LoggerAwareInterface
                 }
                 return false;
             }
-            return $this->doesRecordExist_pageLookUp($id, $perms, $columns);
+            return $this->doesRecordExist_pageLookUp($id, $perms, $columns, $useDeleteClause);
         }
         return false;
     }
