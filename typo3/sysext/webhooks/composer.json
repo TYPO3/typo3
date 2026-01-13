@@ -33,7 +33,7 @@
 	},
 	"require": {
 		"symfony/uid": "^7.3",
-		"typo3/cms-core": "14.0.*@dev"
+		"typo3/cms-core": "14.0.2"
 	},
 	"suggest": {
 		"typo3/cms-lowlevel": "To display registered webhooks in the configuration module"
