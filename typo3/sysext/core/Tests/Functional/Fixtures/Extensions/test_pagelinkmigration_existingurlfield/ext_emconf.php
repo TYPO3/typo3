@@ -6,11 +6,11 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Test Extension for PageLinkMigration upgrade wizard - Existing url field',
     'description' => 'Test Extension for PageLinkMigration upgrade wizard - Existing url field',
     'category' => 'example',
-    'version' => '14.0.2',
+    'version' => '14.0.3',
     'state' => 'stable',
     'constraints' => [
         'depends' => [
-            'typo3' => '14.0.2',
+            'typo3' => '14.0.3',
         ],
         'conflicts' => [],
         'suggests' => [],

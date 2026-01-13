@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'BackendViewFactory testing b',
     'description' => 'BackendViewFactory testing b',
     'category' => 'example',
-    'version' => '14.0.2',
+    'version' => '14.0.3',
     'state' => 'beta',
     'author' => 'Christian Kuhn',
     'author_email' => 'lolli@schwarzbu.ch',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '14.0.2',
+            'typo3' => '14.0.3',
         ],
         'conflicts' => [],
         'suggests' => [],

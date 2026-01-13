@@ -8,11 +8,11 @@ $EM_CONF[$_EXTKEY] = [
     'author_email' => 'typo3cms@typo3.org',
     'author_company' => '',
     'state' => 'stable',
-    'version' => '14.0.2',
+    'version' => '14.0.3',
     'constraints' => [
         'depends' => [
-            'core' => '14.0.2',
-            'extbase' => '14.0.2',
+            'core' => '14.0.3',
+            'extbase' => '14.0.3',
         ],
         'conflicts' => [],
         'suggests' => [],
