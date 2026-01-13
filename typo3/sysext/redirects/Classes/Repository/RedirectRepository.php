@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Repository;
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Redirects\Security\RedirectPermissionGuard;
 
 /**
  * Class for accessing redirect records from the database
@@ -29,23 +31,125 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RedirectRepository
 {
+    public function __construct(
+        private readonly RedirectPermissionGuard $redirectPermissionGuard,
+    ) {}
+
     /**
      * Used within the backend module, which also includes the hidden records, but never deleted records.
      */
     public function findRedirectsByDemand(Demand $demand): array
     {
-        return $this->getQueryBuilderForDemand($demand)
-            ->setMaxResults($demand->getLimit())
-            ->setFirstResult($demand->getOffset())
+        // Fast path for admin users - use SQL pagination directly
+        if ($this->getBackendUser()->isAdmin()) {
+            return $this->getQueryBuilderForDemand($demand)
+                ->select('*')
+                ->setMaxResults($demand->getLimit())
+                ->setFirstResult($demand->getOffset())
+                ->executeQuery()
+                ->fetchAllAssociative();
+        }
+
+        // Non-admin: Two-phase fetch without caching
+        // Phase 1: Fetch minimal fields for ALL matching records with SQL source host filtering
+        $queryBuilder = $this->getQueryBuilderForDemand($demand);
+
+        try {
+            $this->addSourceHostConstraint($queryBuilder);
+        } catch (StopQueryException) {
+            return [];
+        }
+
+        $redirects = $queryBuilder
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        // Phase 2: Apply PHP target permission filtering
+        $filteredRedirects = $this->sortOutInaccessibleRedirects($redirects);
+
+        // Phase 3: Get UIDs for current page (applying pagination in PHP)
+        $filteredUids = array_column($filteredRedirects, 'uid');
+        $currentPageUids = array_slice($filteredUids, $demand->getOffset(), $demand->getLimit());
+
+        if ($currentPageUids === []) {
+            return [];
+        }
+
+        // Phase 4: Fetch full records only for the current page
+        $queryBuilder = $this->getQueryBuilder();
+        return $queryBuilder
+            ->select('*')
+            ->from('sys_redirect')
+            ->where(
+                $queryBuilder->expr()->in(
+                    'uid',
+                    $queryBuilder->createNamedParameter($currentPageUids, Connection::PARAM_INT_ARRAY)
+                )
+            )
+            ->orderBy($demand->getOrderField(), $demand->getOrderDirection())
             ->executeQuery()
             ->fetchAllAssociative();
     }
 
-    public function countRedirectsByByDemand(Demand $demand): int
+    public function countRedirectsByDemand(Demand $demand): int
     {
-        return (int)$this->getQueryBuilderForDemand($demand, true)
+        // Fast path for admin users - use SQL COUNT
+        if ($this->getBackendUser()->isAdmin()) {
+            $queryBuilder = $this->getQueryBuilderForDemand($demand, true);
+            return (int)$queryBuilder
+                ->count('uid')
+                ->executeQuery()
+                ->fetchOne();
+        }
+
+        // Non-admin: Fetch minimal fields with SQL source host filtering
+        $queryBuilder = $this->getQueryBuilderForDemand($demand);
+
+        try {
+            $this->addSourceHostConstraint($queryBuilder);
+        } catch (StopQueryException) {
+            return 0;
+        }
+
+        $redirects = $queryBuilder
             ->executeQuery()
-            ->fetchOne();
+            ->fetchAllAssociative();
+
+        // Apply PHP target permission filtering and count
+        $filteredRedirects = $this->sortOutInaccessibleRedirects($redirects);
+
+        return count($filteredRedirects);
+    }
+
+    /**
+     * Adds source host constraint to query for non-admin users
+     * This significantly reduces the dataset before PHP filtering
+     * @throws StopQueryException
+     */
+    protected function addSourceHostConstraint(QueryBuilder $queryBuilder): void
+    {
+        // Admin users see all hosts
+        if ($this->getBackendUser()->isAdmin()) {
+            return;
+        }
+
+        // Get allowed hosts for the current user
+        $allowedHosts = $this->redirectPermissionGuard->getAllowedHosts();
+        if (empty($allowedHosts)) {
+            throw new StopQueryException('No allowed hosts found for current user', 1764702053);
+        }
+
+        $queryBuilder->andWhere(
+            $queryBuilder->expr()->in(
+                'source_host',
+                $queryBuilder->createNamedParameter($allowedHosts, Connection::PARAM_STR_ARRAY)
+            )
+        );
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 
     /**
@@ -56,9 +160,9 @@ class RedirectRepository
         $queryBuilder = $this->getQueryBuilder();
 
         if ($createCountQuery) {
-            $queryBuilder->count('*');
+            $queryBuilder->count('uid');
         } else {
-            $queryBuilder->select('*');
+            $queryBuilder->select('uid', 'source_host', 'target');
         }
 
         $queryBuilder->from('sys_redirect');
@@ -68,12 +172,14 @@ class RedirectRepository
                 $demand->getOrderField(),
                 $demand->getOrderDirection()
             );
+
             if ($demand->hasSecondaryOrdering()) {
                 $queryBuilder->addOrderBy($demand->getSecondaryOrderField());
             }
         }
 
         $constraints = [];
+
         if ($demand->hasSourceHosts()) {
             $constraints[] = $queryBuilder->expr()->in(
                 'source_host',
@@ -126,6 +232,7 @@ class RedirectRepository
         if (!empty($constraints)) {
             $queryBuilder->where(...$constraints);
         }
+
         return $queryBuilder;
     }
 
@@ -163,15 +270,53 @@ class RedirectRepository
         return $types;
     }
 
+    /**
+     * @return list<array<string, scalar|null>>
+     */
     protected function getGroupedRows(string $field, string $as): array
     {
-        return $this->getQueryBuilder()
-            ->select(sprintf('%s as %s', $field, $as))
+        // Admin: Direct SQL query
+        if ($this->getBackendUser()->isAdmin()) {
+            return $this->getQueryBuilder()
+                ->select(sprintf('%s as %s', $field, $as))
+                ->from('sys_redirect')
+                ->orderBy($field)
+                ->groupBy($field)
+                ->executeQuery()
+                ->fetchAllAssociative();
+        }
+
+        // Non-admin: Need to include source_host and target for filtering
+        $fields = [$field];
+        if ($field !== 'source_host') {
+            $fields[] = 'source_host';
+        }
+        if ($field !== 'target') {
+            $fields[] = 'target';
+        }
+
+        $queryBuilder = $this->getQueryBuilder()
+            ->select(...$fields)
             ->from('sys_redirect')
             ->orderBy($field)
-            ->groupBy($field)
+            ->groupBy(...$fields);
+
+        try {
+            $this->addSourceHostConstraint($queryBuilder);
+        } catch (StopQueryException) {
+            return [];
+        }
+
+        $redirects = $queryBuilder
             ->executeQuery()
             ->fetchAllAssociative();
+
+        $filteredRedirects = $this->sortOutInaccessibleRedirects($redirects);
+
+        return array_map(
+            static fn(mixed $value) => [$as => $value],
+            array_values(array_unique(array_column($filteredRedirects, $field))),
+        );
     }
 
     protected function getQueryBuilder(): QueryBuilder
@@ -227,5 +372,14 @@ class RedirectRepository
         }
 
         $queryBuilder->executeStatement();
+    }
+
+    /**
+     * @param list<non-empty-array> $redirects
+     * @return list<non-empty-array>
+     */
+    protected function sortOutInaccessibleRedirects(array $redirects): array
+    {
+        return array_filter($redirects, $this->redirectPermissionGuard->isAllowedRedirect(...));
     }
 }

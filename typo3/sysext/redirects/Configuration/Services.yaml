@@ -19,6 +19,12 @@ services:
   TYPO3\CMS\Redirects\Hooks\DataHandlerSlugUpdateHook:
     public: true
 
+  TYPO3\CMS\Redirects\Hooks\DataHandlerPermissionGuardHook:
+    public: true
+
+  TYPO3\CMS\Redirects\FormDataProvider\ValuePickerItemDataProvider:
+    public: true
+
   TYPO3\CMS\Redirects\Command\CheckIntegrityCommand:
     tags:
       - name: 'console.command'
@@ -60,3 +66,8 @@ services:
       - name: event.listener
         identifier: 'redirects-add-page-type-zero-source'
         after: 'redirects-add-plain-slug-replacement-source'
+
+  TYPO3\CMS\Redirects\EventListener\RedirectEditPermissionGuard:
+    tags:
+      - name: event.listener
+        identifier: redirect-edit-permission-guard
