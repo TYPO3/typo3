@@ -75,6 +75,9 @@
       <trans-unit id="modal.massundo.text">
         <source>Restore all selected records and any subpages? All records are restored to their original position and may take effect immediately, including the pages and their content that may become visible online. Undoing this requires deleting each record individually.</source>
       </trans-unit>
+      <trans-unit id="flashmessage.delete.unauthorized">
+        <source>Insufficient permissions to delete records.</source>
+      </trans-unit>
       <trans-unit id="flashmessage.delete.norecordsselected">
         <source>No records set to delete.</source>
       </trans-unit>
