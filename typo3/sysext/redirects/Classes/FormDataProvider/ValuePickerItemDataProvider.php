@@ -17,25 +17,20 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\FormDataProvider;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Redirects\Data\SourceHostProvider;
 
 /**
  * Inject available domain hosts into a valuepicker form
  * @internal
  */
-class ValuePickerItemDataProvider implements FormDataProviderInterface
+#[Autoconfigure(public: true)]
+final readonly class ValuePickerItemDataProvider implements FormDataProviderInterface
 {
-    /**
-     * @var SiteFinder
-     */
-    protected $siteFinder;
-
-    public function __construct(?SiteFinder $siteFinder = null)
-    {
-        $this->siteFinder = $siteFinder ?? GeneralUtility::makeInstance(SiteFinder::class);
-    }
+    public function __construct(
+        private SourceHostProvider $sourceHostProvider,
+    ) {}
 
     /**
      * Add sys_domains into $result data array
@@ -46,7 +41,7 @@ class ValuePickerItemDataProvider implements FormDataProviderInterface
     public function addData(array $result): array
     {
         if ($result['tableName'] === 'sys_redirect' && isset($result['processedTca']['columns']['source_host'])) {
-            $domains = $this->getHosts();
+            $domains = $this->sourceHostProvider->getHosts();
             foreach ($domains as $domain) {
                 $result['processedTca']['columns']['source_host']['config']['valuePicker']['items'][] =
                     [
@@ -56,23 +51,5 @@ class ValuePickerItemDataProvider implements FormDataProviderInterface
             }
         }
         return $result;
-    }
-
-    /**
-     * Get all hosts from sites
-     *
-     * @return string[] domain records
-     */
-    protected function getHosts(): array
-    {
-        $domains = [];
-        foreach ($this->siteFinder->getAllSites() as $site) {
-            foreach ($site->getAllLanguages() as $language) {
-                $domains[] = $language->getBase()->getHost();
-            }
-        }
-        $domains = array_unique($domains);
-        sort($domains, SORT_NATURAL);
-        return $domains;
     }
 }
