@@ -27,7 +27,7 @@ return [
         'parent' => 'link_management',
         'access' => 'user',
         'path' => '/module/link-management/qrcodes',
-        'iconIdentifier' => 'actions-qrcode',
+        'iconIdentifier' => 'module-qrcode',
         'labels' => 'redirects.modules.qrcodes',
         'routes' => [
             '_default' => [

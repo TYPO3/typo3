@@ -210,7 +210,7 @@ services:
         groupNames: 'content'
         title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.bookmarks.title'
         description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.bookmarks.description'
-        iconIdentifier: 'actions-bookmark'
+        iconIdentifier: 'content-bookmark'
         height: 'medium'
         width: 'medium'
 

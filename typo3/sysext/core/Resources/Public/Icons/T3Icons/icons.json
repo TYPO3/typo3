@@ -301,11 +301,32 @@
       "sprite": "sprites/actions.svg#actions-book",
       "bidi": false
     },
+    "actions-bookmark-add": {
+      "identifier": "actions-bookmark-add",
+      "category": "actions",
+      "svg": "svgs/actions/actions-bookmark-add.svg",
+      "sprite": "sprites/actions.svg#actions-bookmark-add",
+      "bidi": false
+    },
+    "actions-bookmark-remove": {
+      "identifier": "actions-bookmark-remove",
+      "category": "actions",
+      "svg": "svgs/actions/actions-bookmark-remove.svg",
+      "sprite": "sprites/actions.svg#actions-bookmark-remove",
+      "bidi": false
+    },
     "actions-bookmark": {
       "identifier": "actions-bookmark",
       "category": "actions",
       "svg": "svgs/actions/actions-bookmark.svg",
       "sprite": "sprites/actions.svg#actions-bookmark",
+      "bidi": false
+    },
+    "actions-bookmarks": {
+      "identifier": "actions-bookmarks",
+      "category": "actions",
+      "svg": "svgs/actions/actions-bookmarks.svg",
+      "sprite": "sprites/actions.svg#actions-bookmarks",
       "bidi": false
     },
     "actions-brand-apple": {
@@ -3318,6 +3339,13 @@
       "sprite": "sprites/content.svg#content-book",
       "bidi": false
     },
+    "content-bookmark": {
+      "identifier": "content-bookmark",
+      "category": "content",
+      "svg": "svgs/content/content-bookmark.svg",
+      "sprite": "sprites/content.svg#content-bookmark",
+      "bidi": false
+    },
     "content-briefcase": {
       "identifier": "content-briefcase",
       "category": "content",
@@ -5101,6 +5129,13 @@
       "category": "module",
       "svg": "svgs/module/module-permission.svg",
       "sprite": "sprites/module.svg#module-permission",
+      "bidi": false
+    },
+    "module-qrcode": {
+      "identifier": "module-qrcode",
+      "category": "module",
+      "svg": "svgs/module/module-qrcode.svg",
+      "sprite": "sprites/module.svg#module-qrcode",
       "bidi": false
     },
     "module-reactions": {
