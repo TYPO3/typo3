@@ -33,6 +33,12 @@
 				<source>Create new redirect</source>
 			</trans-unit>
 
+			<trans-unit id="noAccessPermissions.title">
+				<source>Access denied</source>
+			</trans-unit>
+			<trans-unit id="noAccessPermissions.message">
+				<source>You are not allowed to list or modify redirects due to insufficient permissions.</source>
+			</trans-unit>
 			<trans-unit id="redirect_not_found_with_filter.title">
 				<source>No redirects found</source>
 			</trans-unit>

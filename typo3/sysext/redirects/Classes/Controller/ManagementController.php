@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\Components\MultiRecordSelection\Action;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -66,6 +67,10 @@ class ManagementController
         );
         $this->registerDocHeaderButtons($view);
 
+        if (!$this->canListRedirects()) {
+            return $view->renderResponse('Management/Overview');
+        }
+
         $event = $this->eventDispatcher->dispatch(
             new ModifyRedirectManagementControllerViewDataEvent(
                 $demand,
@@ -82,6 +87,7 @@ class ManagementController
         $requestUri = $request->getAttribute('normalizedParams')->getRequestUri();
         $languageService = $this->getLanguageService();
         $view = $event->getView();
+        $hasEditPermissions = $this->canEditRedirects();
         $view->assignMultiple([
             'redirects' => $event->getRedirects(),
             'hosts' => $event->getHosts(),
@@ -92,7 +98,9 @@ class ManagementController
             'demand' => $event->getDemand(),
             'showHitCounter' => $event->getShowHitCounter(),
             'pagination' => $this->preparePagination($event->getDemand()),
-            'actions' => [
+            'canEditRedirects' => $hasEditPermissions,
+            'canListRedirects' => true,
+            'actions' => $hasEditPermissions ? [
                 new Action(
                     'edit',
                     [
@@ -117,9 +125,19 @@ class ManagementController
                     'actions-edit-delete',
                     'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'
                 ),
-            ],
+            ] : [],
         ]);
         return $view->renderResponse('Management/Overview');
+    }
+
+    protected function canListRedirects(): bool
+    {
+        return $this->getBackendUser()->check('tables_select', 'sys_redirect');
+    }
+
+    protected function canEditRedirects(): bool
+    {
+        return $this->getBackendUser()->check('tables_modify', 'sys_redirect');
     }
 
     /**
@@ -127,7 +145,7 @@ class ManagementController
      */
     protected function preparePagination(Demand $demand): array
     {
-        $count = $this->redirectRepository->countRedirectsByByDemand($demand);
+        $count = $this->redirectRepository->countRedirectsByDemand($demand);
         $numberOfPages = ceil($count / $demand->getLimit());
         $endRecord = $demand->getOffset() + $demand->getLimit();
         if ($endRecord > $count) {
@@ -159,24 +177,26 @@ class ManagementController
         $languageService = $this->getLanguageService();
 
         // Create new
-        $newRecordButton = $this->componentFactory->createLinkButton()
-            ->setHref((string)$this->uriBuilder->buildUriFromRoute(
-                'record_edit',
-                [
-                    'edit' => ['sys_redirect' => ['new']],
-                    'module' => 'site_redirects',
-                    'defVals' => [
-                        'sys_redirect' => [
-                            'redirect_type' => Demand::DEFAULT_REDIRECT_TYPE,
+        if ($this->canEditRedirects()) {
+            $newRecordButton = $this->componentFactory->createLinkButton()
+                ->setHref((string)$this->uriBuilder->buildUriFromRoute(
+                    'record_edit',
+                    [
+                        'edit' => ['sys_redirect' => ['new']],
+                        'module' => 'site_redirects',
+                        'defVals' => [
+                            'sys_redirect' => [
+                                'redirect_type' => Demand::DEFAULT_REDIRECT_TYPE,
+                            ],
                         ],
-                    ],
-                    'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('site_redirects'),
-                ]
-            ))
-            ->setTitle($languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_add_text'))
-            ->setShowLabelText(true)
-            ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
-        $view->getDocHeaderComponent()->getButtonBar()->addButton($newRecordButton);
+                        'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('site_redirects'),
+                    ]
+                ))
+                ->setTitle($languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_add_text'))
+                ->setShowLabelText(true)
+                ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
+            $view->getDocHeaderComponent()->getButtonBar()->addButton($newRecordButton);
+        }
 
         // Shortcut
         $view->getDocHeaderComponent()->setShortcutContext(
@@ -188,5 +208,10 @@ class ManagementController
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }
