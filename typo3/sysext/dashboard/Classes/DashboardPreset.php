@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 class DashboardPreset implements \JsonSerializable
 {
     /**
-     * @param string[] $defaultWidgets
+     * @param list<array{identifier: string, settings?: array<string, mixed>}> $defaultWidgets
      */
     public function __construct(
         protected readonly string $identifier,
@@ -57,7 +57,7 @@ class DashboardPreset implements \JsonSerializable
     }
 
     /**
-     * @return string[]
+     * @return list<array{identifier: string, settings?: array<string, mixed>}>
      */
     public function getDefaultWidgets(): array
     {

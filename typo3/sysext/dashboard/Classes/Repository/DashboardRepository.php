@@ -21,6 +21,7 @@ use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Dashboard\Dashboard;
 use TYPO3\CMS\Dashboard\DashboardPreset;
 use TYPO3\CMS\Dashboard\Factory\WidgetSettingsFactory;
@@ -78,9 +79,9 @@ class DashboardRepository
         $widgets = [];
         $title = $title ?: $dashboardPreset->getTitle();
 
-        foreach ($dashboardPreset->getDefaultWidgets() as $widget) {
-            $hash = sha1($widget . '-' . time());
-            $widgets[$hash] = ['identifier' => $widget];
+        foreach ($dashboardPreset->getDefaultWidgets() as $defaultWidget) {
+            $hash = sha1(StringUtility::getUniqueId('widget_') . '-' . $defaultWidget['identifier']);
+            $widgets[$hash] = $defaultWidget;
         }
         $identifier = sha1($dashboardPreset->getIdentifier() . '-' . time());
         $this->getQueryBuilder()

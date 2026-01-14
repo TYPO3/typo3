@@ -26,7 +26,19 @@ New presets can be configured:
             'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboard.default',
             'description' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboard.default.description',
             'iconIdentifier' => 'content-dashboard',
-            'defaultWidgets' => ['t3information', 't3news', 'docGettingStarted'],
+            'defaultWidgets' => [
+                't3information',
+                't3news',
+                'docGettingStarted',
+                [
+                    'identifier' => 'rss',
+                    'settings' => [
+                        'label' => 'My RSS Feed',
+                        'feedUrl' => 'https://typo3.org/rss',
+                        'limit' => 10,
+                    ],
+                ],
+            ],
             'showInWizard' => false,
         ],
     ];
@@ -61,7 +73,7 @@ Each preset consists of the following options:
     :type: array
     :name: widget-presets-defaultWidgets
 
-    An array of widget identifiers, that should be part of the dashboard preset.
+    An array of widget identifiers, or fine-grained structure, that should be part of the dashboard preset.
 
     Widgets are always filtered by permissions of each user.
     Only widgets with access are actually part of the dashboard.

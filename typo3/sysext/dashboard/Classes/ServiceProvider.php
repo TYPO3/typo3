@@ -93,12 +93,18 @@ class ServiceProvider extends AbstractServiceProvider
         }
 
         foreach ($dashboardPresetsFromPackages as $identifier => $options) {
+            // Compatibility layer for presets using the widget identifier only
+            $defaultWidgets = array_map(
+                static fn(string|array $defaultWidget): array => is_string($defaultWidget) ? ['identifier' => $defaultWidget] : $defaultWidget,
+                $options['defaultWidgets'] ?? []
+            );
+
             $preset = new DashboardPreset(
                 $identifier,
                 $options['title'],
                 $options['description'],
                 $options['iconIdentifier'],
-                $options['defaultWidgets'],
+                $defaultWidgets,
                 $options['showInWizard']
             );
             $dashboardPresetRegistry->registerDashboardPreset($preset);
