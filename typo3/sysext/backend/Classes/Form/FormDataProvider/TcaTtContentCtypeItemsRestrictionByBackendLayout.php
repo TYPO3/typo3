@@ -27,6 +27,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * content element types in current record colPos (via "allowedContentTypes" and
  * "disallowedContentTypes" backend layout column configuration), then the content element
  * can not be switched into those types. The implementation reduces CType items accordingly.
+ *
+ * @internal
  */
 final readonly class TcaTtContentCtypeItemsRestrictionByBackendLayout implements FormDataProviderInterface
 {

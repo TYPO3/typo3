@@ -596,7 +596,7 @@ class BackendUtility
      * @param string $perms_clause This is typically a value generated with static::getBackendUserAuthentication()->getPagePermsClause(1);
      * @return array|false Returns page record if OK, otherwise FALSE.
      */
-    public static function readPageAccess($id, $perms_clause)
+    public static function readPageAccess($id, $perms_clause): array|false
     {
         if ((string)$id !== '') {
             $id = (int)$id;
@@ -609,7 +609,9 @@ class BackendUtility
                 if (($pageinfo['uid'] ?? false) && static::getBackendUserAuthentication()->isInWebMount($pageinfo, $perms_clause)) {
                     self::workspaceOL('pages', $pageinfo);
                     if (is_array($pageinfo)) {
-                        [$pageinfo['_thePath'], $pageinfo['_thePathFull']] = self::getRecordPath((int)$pageinfo['uid'], $perms_clause, 15, 1000);
+                        $recordPathResultArray = self::getRecordPath((int)$pageinfo['uid'], $perms_clause, 15, 1000);
+                        $pageinfo['_thePath'] = $recordPathResultArray[0];
+                        $pageinfo['_thePathFull'] = $recordPathResultArray[1];
                         return $pageinfo;
                     }
                 }

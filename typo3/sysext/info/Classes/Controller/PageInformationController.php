@@ -17,176 +17,214 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Info\Controller;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Info\Controller\Event\ModifyInfoModuleContentEvent;
 
 /**
- * Class for displaying page information (records, page record properties) in Web -> Info
- * @todo: This class should be made standalone and not extend InfoModuleController
+ * Status -> Pagetree Overview
+ *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 #[AsController]
-class PageInformationController extends InfoModuleController
+readonly class PageInformationController
 {
-    protected ?BackendLayoutView $backendLayoutView = null;
-    protected array $siteLanguages = [];
-    protected array $fieldConfiguration = [];
-    protected array $fieldArray = [];
-
-    /**
-     * Keys are fieldnames and values are td-css-classes to add in addElement();
-     */
-    protected array $addElement_tdCssClass = [];
+    public function __construct(
+        protected IconFactory $iconFactory,
+        protected UriBuilder $uriBuilder,
+        protected ModuleTemplateFactory $moduleTemplateFactory,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected TcaSchemaFactory $tcaSchemaFactory,
+        protected ComponentFactory $componentFactory,
+        protected BackendLayoutView $backendLayoutView,
+        protected ConnectionPool $connectionPool,
+    ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $this->init($request);
-        $this->initializeSiteLanguages($request);
         $backendUser = $this->getBackendUser();
+        $languageService = $this->getLanguageService();
+        $module = $request->getAttribute('module');
+        $currentSite = $request->getAttribute('site');
         $moduleData = $request->getAttribute('moduleData');
-        $allowedModuleOptions = $this->getAllowedModuleOptions();
+        $pageId = (int)($request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0);
+
+        $pageinfo = BackendUtility::readPageAccess($pageId, $backendUser->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
+        $hasAccess = false;
+        if (($pageId > 0 && $pageinfo !== []) || ($backendUser->isAdmin() && $pageId === 0)) {
+            $hasAccess = true;
+        }
+        if ($pageId === 0 && $backendUser->isAdmin()) {
+            $pageinfo = ['title' => '[root-level]', 'uid' => 0, 'pid' => 0];
+        }
+
+        $siteLanguages = [
+            $currentSite->getDefaultLanguage()->getLanguageId() => $currentSite->getDefaultLanguage(),
+        ];
+        foreach ($currentSite->getAvailableLanguages($this->getBackendUser(), false, $pageId) as $language) {
+            $siteLanguages[$language->getLanguageId()] = $language;
+        }
+
+        $fieldConfiguration = $this->getFieldConfiguration($pageId);
+        $allowedModuleOptions = $this->getModuleOptions($siteLanguages, $fieldConfiguration);
         if ($moduleData->cleanUp($allowedModuleOptions)) {
             $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
         }
-        $depth = (int)($moduleData->get('depth') ?? 0);
-        $pages = (string)($moduleData->get('pages') ?? '0');
-        $language = (int)($moduleData->get('lang') ?? 0);
+        $selectedDepth = (int)($moduleData->get('depth') ?? 0);
+        $selectedGroup = (string)($moduleData->get('pages') ?? '0'); // field or table list to render
+        $selectedLanguage = (int)($moduleData->get('lang') ?? 0);
 
-        if (isset($this->fieldConfiguration[$pages])) {
-            $this->fieldArray = $this->fieldConfiguration[$pages]['fields'];
+        $mainContent = $this->renderMainTable($pageId, $selectedDepth, $selectedLanguage, $siteLanguages, $request, $fieldConfiguration[$selectedGroup]['fields'] ?? []);
+
+        $view = $this->moduleTemplateFactory->create($request);
+        $view->assign('hasAccess', $hasAccess);
+        if ($hasAccess) {
+            $view->setTitle($languageService->sL($module->getTitle()), $pageId !== 0 && isset($pageinfo['title']) ? $pageinfo['title'] : '');
+            $view->getDocHeaderComponent()->setPageBreadcrumb($pageinfo);
+            $view->makeDocHeaderModuleMenu(['id' => $pageId]);
+            $view->getDocHeaderComponent()->setShortcutContext($module->getIdentifier(), sprintf('%s [%d]', $languageService->sL($module->getTitle()), $pageId), ['id' => $pageId]);
+            $previewUriBuilder = PreviewUriBuilder::create($pageinfo);
+            if ($previewUriBuilder->isPreviewable()) {
+                // View page
+                $previewDataAttributes = $previewUriBuilder
+                    ->withRootLine(BackendUtility::BEgetRootLine($pageinfo['uid']))
+                    ->buildDispatcherDataAttributes();
+                $viewButton = $this->componentFactory->createLinkButton()
+                    ->setHref('#')
+                    ->setDataAttributes($previewDataAttributes ?? [])
+                    ->setDisabled(!$previewDataAttributes)
+                    ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+                    ->setIcon($this->iconFactory->getIcon('actions-view-page', IconSize::SMALL))
+                    ->setShowLabelText(true);
+                $view->addButtonToButtonBar($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+            }
         }
-
-        if ($this->id) {
-            $this->view->assignMultiple([
-                'pageUid' => $this->id,
+        $event = $this->eventDispatcher->dispatch(new ModifyInfoModuleContentEvent($hasAccess, $request, $module, $view));
+        if ($hasAccess) {
+            $view->assignMultiple([
+                'pageUid' => $pageId,
+                'content' => $mainContent,
                 'depthDropdownOptions' => $allowedModuleOptions['depth'],
-                'depthDropdownCurrentValue' => $depth,
+                'depthDropdownCurrentValue' => $selectedDepth,
                 'pagesDropdownOptions' => $allowedModuleOptions['pages'],
-                'pagesDropdownCurrentValue' => $pages,
-                'content' => $this->getTable_pages($this->id, $depth, $language, $request),
+                'pagesDropdownCurrentValue' => $selectedGroup,
                 'langDropdownOptions' => $allowedModuleOptions['lang'],
-                'langDropdownCurrentValue' => $language,
-                'displayLangDropdown' => !empty($allowedModuleOptions['lang']),
+                'langDropdownCurrentValue' => $selectedLanguage,
+                'headerContent' => $event->getHeaderContent(),
+                'footerContent' => $event->getFooterContent(),
             ]);
         }
-        return $this->view->renderResponse('PageInformation');
+        return $view->renderResponse('PageInformation');
     }
 
-    protected function getAllowedModuleOptions(): array
+    protected function getModuleOptions(array $siteLanguages, array $fieldConfiguration): array
     {
+        $languageService = $this->getLanguageService();
         $menu = [
             'pages' => [],
             'depth' => [
-                0 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0'),
-                1 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1'),
-                2 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2'),
-                3 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3'),
-                4 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4'),
-                999 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi'),
+                0 => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0'),
+                1 => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1'),
+                2 => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2'),
+                3 => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3'),
+                4 => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4'),
+                999 => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi'),
             ],
+            'lang' => [],
         ];
-
-        $this->fillFieldConfiguration($this->id);
-        foreach ($this->fieldConfiguration as $key => $item) {
+        foreach ($fieldConfiguration as $key => $item) {
             $menu['pages'][$key] = $item['label'];
         }
-
-        $menu['lang'] = [];
-        foreach ($this->siteLanguages as $language) {
+        foreach ($siteLanguages as $language) {
             $menu['lang'][$language->getLanguageId()] = $language->getTitle();
         }
-
         return $menu;
     }
 
     /**
-     * Function, which returns all tables to
-     * which the user has access. Also a set of standard tables (pages, sys_filemounts, etc...)
-     * are filtered out. So what is left is basically all tables which makes sense to list content from.
+     * Generate configuration for field and table selection from TSConfig.
      */
-    protected function cleanTableNames(): string
+    protected function getFieldConfiguration(int $pageId): array
     {
-        $standardTables = [
-            'pages',
-            'sys_filemounts',
-            'be_users',
-            'be_groups',
-        ];
-        $allowedTableNames = [];
-        // Traverse table names and set them in allowedTableNames array IF they can be read-accessed by the user.
-        foreach ($this->tcaSchemaFactory->all() as $schemaName => $schema) {
-            // Unset common names
-            if (in_array($schemaName, $standardTables, true)) {
-                continue;
-            }
-            if ($schema->hasCapability(TcaSchemaCapability::HideInUi)) {
-                continue;
-            }
-            if (!$this->getBackendUser()->check('tables_select', $schemaName)) {
-                continue;
-            }
-            $allowedTableNames[$schemaName] = 'table_' . $schemaName;
-        }
-        return implode(',', $allowedTableNames);
-    }
-
-    /**
-     * Generate configuration for field selection
-     */
-    protected function fillFieldConfiguration(int $pageId): void
-    {
+        $languageService = $this->getLanguageService();
+        $fieldConfiguration = [];
         $modTSconfig = BackendUtility::getPagesTSconfig($pageId)['mod.']['web_info.']['fieldDefinitions.'] ?? [];
+        $allowedTables = $this->getAllowedTableNames();
         foreach ($modTSconfig as $key => $item) {
-            $fieldList = str_replace('###ALL_TABLES###', $this->cleanTableNames(), $item['fields']);
+            $fieldList = str_replace('###ALL_TABLES###', implode(',', $allowedTables), $item['fields']);
             $fields = GeneralUtility::trimExplode(',', $fieldList, true);
             $key = trim($key, '.');
-            $this->fieldConfiguration[$key] = [
-                'label' => $item['label'] ? $this->getLanguageService()->sL($item['label']) : $key,
+            $fieldConfiguration[$key] = [
+                'label' => $item['label'] ? $languageService->sL($item['label']) : $key,
                 'fields' => $fields,
             ];
         }
+        return $fieldConfiguration;
+    }
+
+    /**
+     * A list of table names allowed to be listed when ###ALL_TABLES### is used in TSConfig.
+     * Some tables like 'pages' are blinded by default, all remaining ones are user access checked.
+     */
+    protected function getAllowedTableNames(): array
+    {
+        $hideTables = ['pages', 'sys_filemounts', 'be_users', 'be_groups']; // Never show these tables
+        $allowedTables = [];
+        foreach ($this->tcaSchemaFactory->all() as $schemaName => $schema) {
+            if (in_array($schemaName, $hideTables, true)
+                || $schema->hasCapability(TcaSchemaCapability::HideInUi)
+                || !$this->getBackendUser()->check('tables_select', $schemaName)
+            ) {
+                continue;
+            }
+            $allowedTables[] = 'table_' . $schemaName;
+        }
+        return $allowedTables;
     }
 
     /**
      * Renders records from the pages table from page id
      *
      * @return string HTML for the listing
-     * @throws RouteNotFoundException
      */
-    protected function getTable_pages(int $id, int $depth, int $language, ServerRequestInterface $request): string
+    protected function renderMainTable(int $id, int $depth, int $language, array $siteLanguages, ServerRequestInterface $request, array $fieldArray): string
     {
+        $languageService = $this->getLanguageService();
+        $backendUser = $this->getBackendUser();
         $out = '';
         $pagesSchema = $this->tcaSchemaFactory->get('pages');
         $languageFieldName = $pagesSchema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
         $translationOriginFieldName = $pagesSchema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName();
-        $lang = $this->getLanguageService();
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $row = $queryBuilder
             ->select('*')
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)),
-                $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
+                $backendUser->getPagePermsClause(Permission::PAGE_SHOW)
             )
             ->executeQuery()
             ->fetchAssociative();
@@ -198,111 +236,109 @@ class PageInformationController extends InfoModuleController
                 $row['uid'] = $row[$translationOriginFieldName];
             }
         }
-        // If there was found a page:
-        if (is_array($row)) {
-            // Creating elements
-            $editUids = [];
-            // Getting children
-            $theRows = $this->getPageRecordsRecursive($row['uid'], $depth, $language);
-            // Get tree root page
-            $treeRootPage = $this->getTreeRootPage($row['uid'], $row[$languageFieldName]);
-            if ($this->getBackendUser()->doesUserHaveAccess($treeRootPage, Permission::PAGE_EDIT) && $treeRootPage['uid'] > 0) {
-                $editUids[] = $treeRootPage['uid'];
-            }
-            $out .= $this->pages_drawItem($treeRootPage, $request);
-            // Traverse all pages selected:
-            foreach ($theRows as $sRow) {
-                if ($this->getBackendUser()->doesUserHaveAccess($sRow, Permission::PAGE_EDIT)) {
-                    $editUids[] = $sRow['uid'];
-                }
-                $out .= $this->pages_drawItem($sRow, $request);
-            }
-            // Header line is drawn
-            $headerCells = [];
-            $editIdList = implode(',', $editUids);
-            // Traverse fields (as set above) in order to create header values:
-            foreach ($this->fieldArray as $field) {
-                $editButton = '';
-                if (
-                    $editIdList
-                    && $pagesSchema->hasField($field)
-                    && $this->getBackendUser()->check('tables_modify', 'pages')
-                    && $this->getBackendUser()->check('non_exclude_fields', 'pages:' . $field)
-                ) {
-                    $iTitle = sprintf(
-                        $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editThisColumn'),
-                        rtrim(trim($lang->sL($pagesSchema->getField($field)->getLabel())), ':')
-                    );
-                    $urlParameters = [
-                        'edit' => [
-                            'pages' => [
-                                $editIdList => 'edit',
-                            ],
-                        ],
-                        'columnsOnly' => [
-                            'pages' => [$field],
-                        ],
-                        'module' => 'web_info_overview',
-                        'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
-                    ];
-                    $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-                    $editButton = '<a class="btn btn-default" href="' . htmlspecialchars($url)
-                        . '" title="' . htmlspecialchars($iTitle) . '">'
-                        . $this->iconFactory->getIcon('actions-document-open', IconSize::SMALL)->render() . '</a>';
-                }
-                switch ($field) {
-                    case 'title':
-                        $headerCells[$field] = $editButton . '&nbsp;<strong>'
-                            . $lang->sL($pagesSchema->getField($field)->getLabel())
-                            . '</strong>';
-                        break;
-                    case 'uid':
-                        $headerCells[$field] = '';
-                        break;
-                    case 'actual_backend_layout':
-                        $headerCells[$field] = htmlspecialchars($lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:actual_backend_layout'));
-                        break;
-                    default:
-                        if (str_starts_with($field, 'table_')) {
-                            $f2 = substr($field, 6);
-                            if ($this->tcaSchemaFactory->has($f2)) {
-                                $schema = $this->tcaSchemaFactory->get($f2);
-                                $headerCells[$field] = '&nbsp;' .
-                                    '<span title="' .
-                                    htmlspecialchars($schema->getTitle($lang->sL(...)) ?: $f2) .
-                                    '">' .
-                                    $this->iconFactory->getIconForRecord($f2, [], IconSize::SMALL)->render() .
-                                    '</span>';
-                            }
-                        } else {
-                            if ($pagesSchema->hasField($field)) {
-                                $headerCells[$field] = $editButton . '&nbsp;<strong>'
-                                    . htmlspecialchars($lang->sL($pagesSchema->getField($field)->getLabel()))
-                                    . '</strong>';
-                            } else {
-                                // Invalid field configured in `mod.web_info.fieldDefinitions.*`,
-                                // using field name as header label.
-                                $headerCells[$field] = $editButton . '&nbsp;<strong>'
-                                    . htmlspecialchars($field)
-                                    . '</strong>';
-                            }
-                        }
-                }
-            }
-            $out = '
-                <div class="table-fit">
-                    <table class="table table-striped table-hover" id="PageInformationControllerTable">
-                        <thead>
-                            ' . $this->addElement($headerCells) . '
-                        </thead>
-                        <tbody>
-                            ' . $out . '
-                        </tbody>
-                    </table>
-                </div>';
+        if (!is_array($row)) {
+            return '';
         }
 
-        return $out;
+        $editUids = [];
+        // Getting children
+        $theRows = $this->getPageRecordsRecursive($row['uid'], $depth, $language);
+        // Get tree root page
+        $treeRootPage = $this->getTreeRootPage($row['uid'], $row[$languageFieldName]);
+        if ($backendUser->doesUserHaveAccess($treeRootPage, Permission::PAGE_EDIT) && $treeRootPage['uid'] > 0) {
+            $editUids[] = $treeRootPage['uid'];
+        }
+        $out .= $this->pages_drawItem($treeRootPage, $request, $siteLanguages, $fieldArray);
+        // Traverse all pages selected:
+        foreach ($theRows as $sRow) {
+            if ($backendUser->doesUserHaveAccess($sRow, Permission::PAGE_EDIT)) {
+                $editUids[] = $sRow['uid'];
+            }
+            $out .= $this->pages_drawItem($sRow, $request, $siteLanguages, $fieldArray);
+        }
+        // Header line is drawn
+        $headerCells = [];
+        $editIdList = implode(',', $editUids);
+        // Traverse fields (as set above) in order to create header values:
+        foreach ($fieldArray as $field) {
+            $editButton = '';
+            if (
+                $editIdList
+                && $pagesSchema->hasField($field)
+                && $backendUser->check('tables_modify', 'pages')
+                && $backendUser->check('non_exclude_fields', 'pages:' . $field)
+            ) {
+                $iTitle = sprintf(
+                    $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editThisColumn'),
+                    rtrim(trim($languageService->sL($pagesSchema->getField($field)->getLabel())), ':')
+                );
+                $urlParameters = [
+                    'edit' => [
+                        'pages' => [
+                            $editIdList => 'edit',
+                        ],
+                    ],
+                    'columnsOnly' => [
+                        'pages' => [$field],
+                    ],
+                    'module' => 'web_info_overview',
+                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
+                ];
+                $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+                $editButton = '<a class="btn btn-default" href="' . htmlspecialchars($url)
+                    . '" title="' . htmlspecialchars($iTitle) . '">'
+                    . $this->iconFactory->getIcon('actions-document-open', IconSize::SMALL)->render() . '</a>';
+            }
+            switch ($field) {
+                case 'title':
+                    $headerCells[$field] = $editButton . '&nbsp;<strong>'
+                        . $languageService->sL($pagesSchema->getField($field)->getLabel())
+                        . '</strong>';
+                    break;
+                case 'uid':
+                    $headerCells[$field] = '';
+                    break;
+                case 'actual_backend_layout':
+                    $headerCells[$field] = htmlspecialchars($languageService->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:actual_backend_layout'));
+                    break;
+                default:
+                    if (str_starts_with($field, 'table_')) {
+                        $f2 = substr($field, 6);
+                        if ($this->tcaSchemaFactory->has($f2)) {
+                            $schema = $this->tcaSchemaFactory->get($f2);
+                            $headerCells[$field] = '&nbsp;' .
+                                '<span title="' .
+                                htmlspecialchars($schema->getTitle($languageService->sL(...)) ?: $f2) .
+                                '">' .
+                                $this->iconFactory->getIconForRecord($f2, [], IconSize::SMALL)->render() .
+                                '</span>';
+                        }
+                    } else {
+                        if ($pagesSchema->hasField($field)) {
+                            $headerCells[$field] = $editButton . '&nbsp;<strong>'
+                                . htmlspecialchars($languageService->sL($pagesSchema->getField($field)->getLabel()))
+                                . '</strong>';
+                        } else {
+                            // Invalid field configured in `mod.web_info.fieldDefinitions.*`,
+                            // using field name as header label.
+                            $headerCells[$field] = $editButton . '&nbsp;<strong>'
+                                . htmlspecialchars($field)
+                                . '</strong>';
+                        }
+                    }
+            }
+        }
+        return '
+            <div class="table-fit">
+                <table class="table table-striped table-hover" id="PageInformationControllerTable">
+                    <thead>
+                        ' . $this->addElement($headerCells, $fieldArray) . '
+                    </thead>
+                    <tbody>
+                        ' . $out . '
+                    </tbody>
+                </table>
+            </div>';
     }
 
     /**
@@ -310,19 +346,19 @@ class PageInformationController extends InfoModuleController
      *
      * @param int $pid Starting page
      * @param int $language Selected site language
-     * @return array
      */
     protected function getTreeRootPage(int $pid, int $language): array
     {
+        $backendUser = $this->getBackendUser();
         $pagesSchema = $this->tcaSchemaFactory->get('pages');
         $languageFieldName = $pagesSchema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
         $translationOriginFieldName = $pagesSchema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName();
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $backendUser->workspace));
 
         if ($language > 0) {
             return $queryBuilder
@@ -331,7 +367,7 @@ class PageInformationController extends InfoModuleController
                 ->where(
                     $queryBuilder->expr()->eq($translationOriginFieldName, $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)),
                     $queryBuilder->expr()->eq($languageFieldName, $queryBuilder->createNamedParameter($language, Connection::PARAM_INT)),
-                    $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
+                    $backendUser->getPagePermsClause(Permission::PAGE_SHOW)
                 )
                 ->setMaxResults(1)
                 ->executeQuery()
@@ -343,7 +379,7 @@ class PageInformationController extends InfoModuleController
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)),
-                $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
+                $backendUser->getPagePermsClause(Permission::PAGE_SHOW)
             )
             ->setMaxResults(1)
             ->executeQuery()
@@ -361,15 +397,16 @@ class PageInformationController extends InfoModuleController
      */
     protected function getPageRecordsRecursive(int $pid, int $depth, int $language, string $iconPrefix = '', array $rows = []): array
     {
+        $backendUser = $this->getBackendUser();
         $pagesSchema = $this->tcaSchemaFactory->get('pages');
         $languageFieldName = $pagesSchema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
 
         $depth--;
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $backendUser->workspace));
 
         $queryBuilder
             ->select('*')
@@ -377,7 +414,7 @@ class PageInformationController extends InfoModuleController
             ->where(
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)),
                 $queryBuilder->expr()->eq($languageFieldName, $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
-                $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
+                $backendUser->getPagePermsClause(Permission::PAGE_SHOW)
             );
 
         if ($pagesSchema->hasCapability(TcaSchemaCapability::SortByField)) {
@@ -428,20 +465,19 @@ class PageInformationController extends InfoModuleController
     /**
      * Adds a list item for the pages-rendering
      */
-    protected function pages_drawItem(array $row, ServerRequestInterface $request): string
+    protected function pages_drawItem(array $row, ServerRequestInterface $request, array $siteLanguages, array $fieldArray): string
     {
+        $languageService = $this->getLanguageService();
+        $backendUser = $this->getBackendUser();
         $pagesSchema = $this->tcaSchemaFactory->get('pages');
         $languageFieldName = $pagesSchema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
-        $translationOriginFieldName = $pagesSchema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName();
-
-        $this->backendLayoutView = GeneralUtility::makeInstance(BackendLayoutView::class);
         $backendLayouts = $this->getBackendLayouts($row, 'backend_layout');
         $backendLayoutsNextLevel = $this->getBackendLayouts($row, 'backend_layout_next_level');
         $userTsConfig = $this->getBackendUser()->getTSConfig();
         $theIcon = $this->getIcon($row);
         // Preparing and getting the data-array
         $theData = [];
-        foreach ($this->fieldArray as $field) {
+        foreach ($fieldArray as $field) {
             switch ($field) {
                 case 'title':
                     $showPageId = !empty($userTsConfig['options.']['pageTree.']['showPageIdWithTitle']);
@@ -454,11 +490,17 @@ class PageInformationController extends InfoModuleController
                         . '</div>';
                     break;
                 case $languageFieldName:
-                    if (count($this->siteLanguages) === 1) {
+                    if (count($siteLanguages) === 1) {
                         $theData[$field] = '';
                         break;
                     }
-                    $theData[$field] = $this->getLanguageInformation($row[$languageFieldName]);
+                    $siteLanguage = $siteLanguages[$row[$languageFieldName]] ?? null;
+                    if (!$siteLanguage) {
+                        $theData[$field] = '';
+                        break;
+                    }
+                    $theData[$field] = $this->iconFactory->getIcon($siteLanguage->getFlagIdentifier(), IconSize::SMALL)->setTitle($siteLanguage->getTitle())->render()
+                        . ' ' . $siteLanguage->getTitle();
                     break;
                 case 'php_tree_stop':
                     // Intended fall through
@@ -467,7 +509,7 @@ class PageInformationController extends InfoModuleController
                     break;
                 case 'actual_backend_layout':
                     $backendLayout = $this->backendLayoutView->getBackendLayoutForPage((int)$row['uid']);
-                    $theData[$field] = htmlspecialchars($this->getLanguageService()->sL($backendLayout->getTitle()));
+                    $theData[$field] = htmlspecialchars($languageService->sL($backendLayout->getTitle()));
                     break;
                 case 'backend_layout':
                     $layoutValue = $backendLayouts[$row[$field]] ?? null;
@@ -481,7 +523,7 @@ class PageInformationController extends InfoModuleController
                     $uid = 0;
                     $editButton = '';
                     $viewButton = '';
-                    if ($this->getBackendUser()->doesUserHaveAccess($row, 2) && $row['uid'] > 0) {
+                    if ($backendUser->doesUserHaveAccess($row, 2) && $row['uid'] > 0) {
                         $uid = (int)$row['uid'];
                         $urlParameters = [
                             'edit' => [
@@ -498,13 +540,13 @@ class PageInformationController extends InfoModuleController
                             ->serializeDispatcherAttributes();
                         $viewButton =
                             '<button ' . ($previewDataAttributes ?? 'disabled="true"') . ' class="btn btn-default" title="' .
-                            htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">' .
+                            htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">' .
                             $this->iconFactory->getIcon('actions-view-page', IconSize::SMALL)->render() .
                             '</button>';
-                        if ($this->getBackendUser()->check('tables_modify', 'pages')) {
+                        if ($backendUser->check('tables_modify', 'pages')) {
                             $editButton =
                                 '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' .
-                                htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageProperties')) . '">' .
+                                htmlspecialchars($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageProperties')) . '">' .
                                 $this->iconFactory->getIcon('actions-page-open', IconSize::SMALL)->render() .
                                 '</a>';
                         }
@@ -518,7 +560,7 @@ class PageInformationController extends InfoModuleController
                 case 'shortcut':
                 case 'shortcut_mode':
                     if ((int)$row['doktype'] === PageRepository::DOKTYPE_SHORTCUT) {
-                        $theData[$field] = $this->getPagesTableFieldValue($field, $row);
+                        $theData[$field] = htmlspecialchars((string)BackendUtility::getProcessedValue('pages', $field, $row[$field], 0, false, false, 0, true, 0, $row));
                     }
                     break;
                 default:
@@ -529,12 +571,11 @@ class PageInformationController extends InfoModuleController
                             $theData[$field] = ($c ?: '');
                         }
                     } else {
-                        $theData[$field] = $this->getPagesTableFieldValue($field, $row);
+                        $theData[$field] = htmlspecialchars((string)BackendUtility::getProcessedValue('pages', $field, $row[$field], 0, false, false, 0, true, 0, $row));
                     }
             }
         }
-        $this->addElement_tdCssClass['title'] = 'col-title-flexible';
-        return $this->addElement($theData);
+        return $this->addElement($theData, $fieldArray);
     }
 
     /**
@@ -542,25 +583,13 @@ class PageInformationController extends InfoModuleController
      */
     protected function getIcon(array $row): string
     {
-        // Initialization
+        $backendUser = $this->getBackendUser();
         $icon = '<span title="' . BackendUtility::getRecordIconAltText($row, 'pages') . '">' . $this->iconFactory->getIconForRecord('pages', $row, IconSize::SMALL)->render() . '</span>';
         // The icon with link
-        if ($this->getBackendUser()->recordEditAccessInternals('pages', $row)) {
+        if ($backendUser->recordEditAccessInternals('pages', $row)) {
             $icon = BackendUtility::wrapClickMenuOnIcon($icon, 'pages', $row['uid']);
         }
         return $icon;
-    }
-    /**
-     * Returns the HTML code for rendering a field in the pages table.
-     * The row value is processed to a human readable form and the result is parsed through htmlspecialchars().
-     *
-     * @param string $field The name of the field of which the value should be rendered.
-     * @param array $row The pages table row as an associative array.
-     * @return string The rendered table field value.
-     */
-    protected function getPagesTableFieldValue(string $field, array $row): string
-    {
-        return htmlspecialchars((string)BackendUtility::getProcessedValue('pages', $field, $row[$field], 0, false, false, 0, true, 0, $row));
     }
 
     /**
@@ -571,30 +600,25 @@ class PageInformationController extends InfoModuleController
         if (!$this->tcaSchemaFactory->has($table)) {
             return 0;
         }
-
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
-
         return (int)$queryBuilder->count('uid')
             ->from($table)
-            ->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT))
-            )
+            ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchOne();
     }
 
     /**
      * Returns a table-row with the content from the fields in the input data array.
-     * OBS: $this->fieldArray MUST be set! (represents the list of fields to display)
      *
-     * @param array $data Is the data array, record with the fields. Notice: These fields are (currently) NOT htmlspecialchar'ed before being wrapped in <td>-tags
+     * @param array $data Record with field values, NOT htmlspecialchar'ed
      * @return string HTML content for the table row
      */
-    protected function addElement(array $data): string
+    protected function addElement(array $data, array $fieldArray): string
     {
         // Start up:
         $attributes = '';
@@ -611,15 +635,17 @@ class PageInformationController extends InfoModuleController
         $c = 0;
         // __label is used as the label key to circumvent problems with uid used as label (see #67756)
         // as it was introduced later on, check if it really exists before using it
-        $fields = $this->fieldArray;
         if (array_key_exists('__label', $data)) {
-            $fields[0] = '__label';
+            $fieldArray[0] = '__label';
         }
         // Traverse field array which contains the data to present:
-        foreach ($fields as $vKey) {
+        foreach ($fieldArray as $vKey) {
             if (isset($data[$vKey])) {
+                $cssClass = '';
+                if ($lastKey === 'title') {
+                    $cssClass = 'col-title-flexible';
+                }
                 if ($lastKey) {
-                    $cssClass = $this->addElement_tdCssClass[$lastKey] ?? '';
                     $out .= '<' . $rowTag . ' class="' . $cssClass . ' nowrap"' . $colsp . '>' . $data[$lastKey] . '</' . $rowTag . '>';
                 }
                 $lastKey = $vKey;
@@ -637,9 +663,11 @@ class PageInformationController extends InfoModuleController
             }
         }
         if ($lastKey) {
-            $cssClass = $this->addElement_tdCssClass[$lastKey] ?? '';
-            $out .= '
-				<' . $rowTag . ' class="' . $cssClass . ' nowrap"' . $colsp . '>' . $data[$lastKey] . '</' . $rowTag . '>';
+            $cssClass = '';
+            if ($lastKey === 'title') {
+                $cssClass = 'col-title-flexible';
+            }
+            $out .= '<' . $rowTag . ' class="' . $cssClass . ' nowrap"' . $colsp . '>' . $data[$lastKey] . '</' . $rowTag . '>';
         }
         $out .= '</tr>';
         return $out;
@@ -647,9 +675,6 @@ class PageInformationController extends InfoModuleController
 
     protected function getBackendLayouts(array $row, string $field): array
     {
-        if ($this->backendLayoutView === null) {
-            $this->backendLayoutView = GeneralUtility::makeInstance(BackendLayoutView::class);
-        }
         $configuration = ['row' => $row, 'table' => 'pages', 'field' => $field, 'items' => []];
         // Below we call the itemsProcFunc to retrieve properly resolved backend layout items,
         // including the translated labels and the correct field values (backend layout identifiers).
@@ -665,48 +690,27 @@ class PageInformationController extends InfoModuleController
 
     protected function resolveBackendLayoutValue(?string $layoutValue, string $field, array $row): string
     {
+        $languageService = $this->getLanguageService();
         if ($layoutValue !== null) {
             // Directly return the resolved layout value from BackendLayoutView
             return htmlspecialchars($layoutValue);
         }
-
-        // Fetch field value from a database (this is already htmlspecialchar'ed)
-        $layoutValue = $this->getPagesTableFieldValue($field, $row);
+        $layoutValue = htmlspecialchars((string)BackendUtility::getProcessedValue('pages', $field, $row[$field], 0, false, false, 0, true, 0, $row));
         if ($layoutValue !== '') {
-            // In case getPagesTableFieldValue returns a non-empty string, the database field
+            // If getProcessedValue() returns a non-empty string, the database field
             // is filled with an invalid value (the backend layout does no longer exist).
-            return sprintf(
-                $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'),
-                $this->getPagesTableFieldValue($field, $row)
-            );
+            return sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'), $layoutValue);
         }
         return '';
     }
 
-    protected function getLanguageInformation(int $languageId): string
+    protected function getLanguageService(): LanguageService
     {
-        /** @var SiteLanguage|null $siteLanguage */
-        $siteLanguage = $this->siteLanguages[$languageId] ?? null;
-        if (!$siteLanguage) {
-            return '';
-        }
-        return $this->iconFactory
-                ->getIcon($siteLanguage->getFlagIdentifier(), IconSize::SMALL)
-                ->setTitle($siteLanguage->getTitle())
-                ->render() . ' ' . $siteLanguage->getTitle();
+        return $GLOBALS['LANG'];
     }
 
-    protected function initializeSiteLanguages(ServerRequestInterface $request): void
+    protected function getBackendUser(): BackendUserAuthentication
     {
-        /** @var SiteInterface $currentSite */
-        $currentSite = $request->getAttribute('site');
-
-        $this->siteLanguages = [
-            $currentSite->getDefaultLanguage()->getLanguageId() => $currentSite->getDefaultLanguage(),
-        ];
-        foreach ($currentSite->getAvailableLanguages($this->getBackendUser(), false, $this->id) as $language) {
-            $this->siteLanguages[$language->getLanguageId()] = $language;
-        }
+        return $GLOBALS['BE_USER'];
     }
-
 }

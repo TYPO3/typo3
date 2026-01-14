@@ -325,21 +325,14 @@ class DocHeaderComponent
      *
      * Example:
      *
-     *     $docHeader->setShortcutContext(
-     *         routeIdentifier: 'site_configuration.edit',
-     *         displayName: sprintf('Edit site: %s', $siteIdentifier),
-     *         arguments: ['site' => $siteIdentifier]
-     *     );
+     *     $docHeader->setShortcutContext('site_configuration.edit', sprintf('Edit site: %s', $siteIdentifier), ['site' => $siteIdentifier]);
      *
      * @param string $routeIdentifier The route identifier for the shortcut
      * @param string $displayName The display name shown in the bookmark list
      * @param array $arguments Optional arguments to include in the shortcut URL
      */
-    public function setShortcutContext(
-        string $routeIdentifier,
-        string $displayName,
-        array $arguments = []
-    ): void {
+    public function setShortcutContext(string $routeIdentifier, string $displayName, array $arguments = []): void
+    {
         $this->automaticShortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier($routeIdentifier)
             ->setDisplayName($displayName)

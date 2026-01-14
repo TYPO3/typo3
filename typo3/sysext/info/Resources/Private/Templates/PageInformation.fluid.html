@@ -8,8 +8,8 @@
 <f:section name="Before">
     <f:asset.module identifier="@typo3/backend/context-menu.js"/>
     <f:asset.module identifier="@typo3/backend/element/immediate-action-element.js"/>
-    <f:if condition="{accessContent}">
-        <f:variable name="args" value="{0: 'web', 1: id}"/>
+    <f:if condition="{hasAccess}">
+        <f:variable name="args" value="{0: 'web', 1: pageUid}"/>
         <typo3-immediate-action
             action="TYPO3.Backend.Storage.ModuleStateStorage.update"
             args="{args -> f:format.json() -> f:format.htmlspecialchars()}"
@@ -19,23 +19,34 @@
 
 <f:section name="Content">
 
-    <f:if condition="{accessContent}">
+    <f:if condition="!{hasAccess}">
         <f:then>
+            <f:be.infobox
+                title="{f:translate(key:'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:error.noAccess.title')}"
+                message="{f:translate(key:'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:error.noAccess.message')}"
+                state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR')}"
+            />
+        </f:then>
+        <f:else>
             <h1><f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:page_title" /></h1>
-            <f:if condition="{pageUid}">
+            <f:if condition="{pageUid} == 0">
                 <f:then>
+                    <f:be.infobox
+                        message="{f:translate(key:'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:info.noPageSelected.message')}"
+                        state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}"
+                    />
+                </f:then>
+                <f:else>
                     <f:if condition="{content}">
                         <f:then>
                             <form action="{f:be.uri(route: 'web_info_overview', parameters: '{id: pageUid}')}" method="post">
                                 <div class="form-row">
-                                    <f:if condition="{displayLangDropdown} && {langDropdownOptions}">
-                                        <div class="form-group">
-                                            <label class="form-label" for="lang">
-                                                <f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.lang" />
-                                            </label>
-                                            <f:render partial="DropdownMenu" arguments="{name: 'lang', id: 'lang', options: langDropdownOptions, currentValue: langDropdownCurrentValue}"/>
-                                        </div>
-                                    </f:if>
+                                    <div class="form-group">
+                                        <label class="form-label" for="lang">
+                                            <f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.lang" />
+                                        </label>
+                                        <f:render partial="DropdownMenu" arguments="{name: 'lang', id: 'lang', options: langDropdownOptions, currentValue: langDropdownCurrentValue}"/>
+                                    </div>
                                     <div class="form-group">
                                         <label class="form-label" for="depth">
                                             <f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.depth"/>
@@ -59,21 +70,8 @@
                             />
                         </f:else>
                     </f:if>
-                </f:then>
-                <f:else>
-                    <f:be.infobox
-                        message="{f:translate(key:'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:info.noPageSelected.message')}"
-                        state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}"
-                    />
                 </f:else>
             </f:if>
-        </f:then>
-        <f:else>
-            <f:be.infobox
-                title="{f:translate(key:'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:error.noAccess.title')}"
-                message="{f:translate(key:'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:error.noAccess.message')}"
-                state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR')}"
-            />
         </f:else>
     </f:if>
 
