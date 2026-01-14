@@ -66,7 +66,7 @@ final class ExportCommandTest extends AbstractImportExportTestCase
             '--list' => ['sys_category:123'],
             '--include-related' => ['be_users'],
             '--include-static' => ['sys_category'],
-            '--exclude' => ['be_users:3'],
+            '--exclude' => ['be_users:3', 'pages:5'], // equals --exclude be_users:3 --exclude pages:5 on CLI
             '--exclude-disabled-records' => false,
             '--exclude-html-css' => false,
             '--title' => 'Export Command',
@@ -91,7 +91,7 @@ final class ExportCommandTest extends AbstractImportExportTestCase
         $exportMock->expects($this->once())->method('setList')->with(self::equalTo(['sys_category:123']));
         $exportMock->expects($this->once())->method('setRelOnlyTables')->with(self::equalTo(['be_users']));
         $exportMock->expects($this->once())->method('setRelStaticTables')->with(self::equalTo(['sys_category']));
-        $exportMock->expects($this->once())->method('setExcludeMap')->with(self::equalTo(['be_users:3']));
+        $exportMock->expects($this->once())->method('setExcludeMap')->with(self::equalTo(['be_users:3' => 1, 'pages:5' => 1]));
         $exportMock->expects($this->once())->method('setExcludeDisabledRecords')->with(self::equalTo(false));
         $exportMock->expects($this->once())->method('setIncludeExtFileResources')->with(self::equalTo(true));
         $exportMock->expects($this->once())->method('setTitle')->with(self::equalTo('Export Command'));
