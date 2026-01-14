@@ -55,6 +55,28 @@ mod.web_layout.BackendLayouts {
                 colPos = 4
                 identifier = footer
               }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  special_layout {
+    title = Special Layout
+    config {
+      backend_layout {
+        colCount = 1
+        rowCount = 1
+        rows {
+          1 {
+            columns {
+              1 {
+                name = Main
+                colPos = 0
+                identifier = main
+              }
+            }
           }
         }
       }

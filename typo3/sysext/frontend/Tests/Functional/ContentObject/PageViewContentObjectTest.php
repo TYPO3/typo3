@@ -29,11 +29,12 @@ final class PageViewContentObjectTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    protected const LANGUAGE_PRESETS = [
+    private const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en-US'],
         'FR' => ['id' => 1, 'title' => 'French', 'locale' => 'fr-FR'],
     ];
-    protected const ROOT_PAGE_ID = 1;
+    private const ROOT_PAGE_ID = 1;
+    private const SPECIAL_PAGE_ID = 3;
 
     protected array $testExtensionsToLoad = [
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_fluidpagerendering',
@@ -53,21 +54,51 @@ final class PageViewContentObjectTest extends FunctionalTestCase
         );
     }
 
+    public static function renderWorksWithPlainRenderingInMultipleLanguagesDataProvider(): array
+    {
+        return [
+            'standard layout on root page' => [
+                self::ROOT_PAGE_ID,
+                0,
+                [
+                    'You are on page Fluid Root Page',
+                    'This is a standard page with no content.',
+                    'page-layout-identifier-Standard',
+                ],
+            ],
+            'standard layout on root page, FR' => [
+                self::ROOT_PAGE_ID,
+                1,
+                [
+                    'Vous êtes à la page Fluid Root Page FR',
+                ],
+            ],
+            'special layout on root page' => [
+                self::SPECIAL_PAGE_ID,
+                0,
+                [
+                    'This is a special page with no content.',
+                    'page-layout-identifier-special_layout',
+                ],
+            ],
+        ];
+    }
+
     #[Test]
-    public function renderWorksWithPlainRenderingInMultipleLanguages(): void
+    #[DataProvider('renderWorksWithPlainRenderingInMultipleLanguagesDataProvider')]
+    public function renderWorksWithPlainRenderingInMultipleLanguages(int $pageUid, int $languageId, array $contentMatches): void
     {
         $this->setUpFrontendRootPage(
-            self::ROOT_PAGE_ID,
+            $pageUid,
             [
                 'EXT:frontend/Tests/Functional/Fixtures/Extensions/test_fluidpagerendering/Configuration/TypoScript/plain.typoscript',
             ]
         );
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID));
-        self::assertStringContainsString('You are on page Fluid Root Page', (string)$response->getBody());
-        self::assertStringContainsString('This is a standard page with no content.', (string)$response->getBody());
-        self::assertStringContainsString('page-layout-identifier-Standard', (string)$response->getBody());
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID)->withLanguageId(1));
-        self::assertStringContainsString('Vous êtes à la page Fluid Root Page FR', (string)$response->getBody());
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($pageUid)->withLanguageId($languageId));
+        $body = (string)$response->getBody();
+        foreach ($contentMatches as $match) {
+            self::assertStringContainsString($match, $body);
+        }
     }
 
     #[Test]

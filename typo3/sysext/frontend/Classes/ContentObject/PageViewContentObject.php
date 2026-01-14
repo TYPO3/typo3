@@ -86,7 +86,7 @@ final class PageViewContentObject extends AbstractContentObject
         $paths = array_map(PathUtility::sanitizeTrailingSeparator(...), $conf['paths.']);
         $viewFactoryData = new ViewFactoryData(
             // @todo: Do discuss: Rename 'paths.' to 'templateRootPaths.' again?
-            templateRootPaths: $paths,
+            templateRootPaths: array_map(static fn(string $path): string => $path . 'Pages/', $paths),
             // @todo: We should *still* allow setting both partialRootPaths and layoutRootPaths, and only fall back to
             //        [templateRootPaths]/Partials and [templateRootPaths]/Layouts if not set. And the fallback should be
             //        advertised as best practice.
@@ -108,13 +108,14 @@ final class PageViewContentObject extends AbstractContentObject
             $pageInformationObject->getPageRecord(),
             $pageInformationObject->getRootLine()
         );
-        $templateFileName = 'Pages/' . ucfirst($pageLayoutName);
         try {
-            return $view->render($templateFileName);
+            return $view->render($pageLayoutName);
         } catch (InvalidTemplateResourceException $e) {
             // Only add a PAGEVIEW specific message in case the exception has been thrown for the given $templateFileName.
+            // @todo: Improve error handling once raw data is provided by Fluid
+            $templateFileName = $pageLayoutName . '.html';
             if (str_contains($e->getMessage(), $templateFileName)) {
-                $templateFileName .= '.html';
+                $templateFileName = 'Pages/' . $templateFileName;
                 $checkedPaths = implode(', ', array_map(static fn($path) => $path . $templateFileName, $paths));
                 throw new InvalidTemplateResourceException(
                     sprintf(
