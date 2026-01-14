@@ -184,7 +184,7 @@ class ExportCommand extends Command
             $this->export->setList($input->getOption('list'));
             $this->export->setRelOnlyTables($input->getOption('include-related'));
             $this->export->setRelStaticTables($input->getOption('include-static'));
-            $this->export->setExcludeMap($input->getOption('exclude'));
+            $this->export->setExcludeMap(array_fill_keys($input->getOption('exclude'), 1));
             $this->export->setExcludeDisabledRecords($input->getOption('exclude-disabled-records'));
             $this->export->setIncludeExtFileResources(!$input->getOption('exclude-html-css'));
             $this->export->setTitle((string)$input->getOption('title'));
