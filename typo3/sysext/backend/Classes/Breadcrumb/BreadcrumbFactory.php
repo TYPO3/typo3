@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Breadcrumb;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Domain\RecordFactory;
@@ -43,15 +41,13 @@ use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
  *
  * @internal Subject to change until v15 LTS
  */
-#[Autoconfigure(public: true)]
-final class BreadcrumbFactory implements LoggerAwareInterface
+final readonly class BreadcrumbFactory
 {
-    use LoggerAwareTrait;
-
     public function __construct(
-        private readonly RecordFactory $recordFactory,
-        private readonly IconFactory $iconFactory,
-        private readonly TcaSchemaFactory $tcaSchemaFactory,
+        private LoggerInterface $logger,
+        private RecordFactory $recordFactory,
+        private IconFactory $iconFactory,
+        private TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -66,7 +62,7 @@ final class BreadcrumbFactory implements LoggerAwareInterface
         $rawRecord = BackendUtility::getRecord($table, $uid);
 
         if ($rawRecord === null) {
-            $this->logger?->warning(
+            $this->logger->warning(
                 'Failed to load record for breadcrumb',
                 ['table' => $table, 'uid' => $uid]
             );
@@ -77,7 +73,8 @@ final class BreadcrumbFactory implements LoggerAwareInterface
             $record = $this->recordFactory->createResolvedRecordFromDatabaseRow($table, $rawRecord);
             return new BreadcrumbContext($record, []);
         } catch (\Exception $e) {
-            $this->logger?->error(
+            // @todo: Catching \Exception here is a code smell, this shouldn't be so generic and can hide away too many issues.
+            $this->logger->error(
                 'Failed to create record instance for breadcrumb',
                 ['table' => $table, 'uid' => $uid, 'exception' => $e->getMessage()]
             );
@@ -144,7 +141,7 @@ final class BreadcrumbFactory implements LoggerAwareInterface
                 iconOverlay: 'overlay-new',
             );
         } catch (\Exception $e) {
-            $this->logger?->warning(
+            $this->logger->warning(
                 'Failed to create icon for new record breadcrumb',
                 ['table' => $table, 'exception' => $e->getMessage()]
             );
@@ -175,7 +172,7 @@ final class BreadcrumbFactory implements LoggerAwareInterface
     public function forPageArray(array $pageRecord): BreadcrumbContext
     {
         if (!isset($pageRecord['uid'])) {
-            $this->logger?->warning('Page record array must contain uid for breadcrumb');
+            $this->logger->warning('Page record array must contain uid for breadcrumb');
             return new BreadcrumbContext(null, []);
         }
 
@@ -183,7 +180,7 @@ final class BreadcrumbFactory implements LoggerAwareInterface
             $record = $this->recordFactory->createResolvedRecordFromDatabaseRow('pages', $pageRecord);
             return new BreadcrumbContext($record, []);
         } catch (\Exception $e) {
-            $this->logger?->error(
+            $this->logger->error(
                 'Failed to create page record instance for breadcrumb',
                 ['uid' => $pageRecord['uid'], 'exception' => $e->getMessage()]
             );
@@ -216,7 +213,7 @@ final class BreadcrumbFactory implements LoggerAwareInterface
 
         $rawRecord = BackendUtility::getRecord('pages', $pid);
         if ($rawRecord === null) {
-            $this->logger?->warning(
+            $this->logger->warning(
                 'Failed to load parent page for breadcrumb',
                 ['pid' => $pid]
             );
@@ -226,7 +223,8 @@ final class BreadcrumbFactory implements LoggerAwareInterface
         try {
             return $this->recordFactory->createResolvedRecordFromDatabaseRow('pages', $rawRecord);
         } catch (\Exception $e) {
-            $this->logger?->error(
+            // @todo: Catching \Exception here is a code smell, this shouldn't be so generic and can hide away too many issues.
+            $this->logger->error(
                 'Failed to create page record instance for breadcrumb',
                 ['pid' => $pid, 'exception' => $e->getMessage()]
             );
