@@ -26,6 +26,8 @@ use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Header\HeaderInterface;
 use Symfony\Component\Mime\Header\Headers;
+use Symfony\Component\Mime\Part\AbstractPart;
+use Symfony\Component\Mime\Part\File;
 use Symfony\Component\Mime\RawMessage;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Serializer\PolymorphicDeserializer;
@@ -150,30 +152,35 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface
                             RawMessage::class,
                             Envelope::class,
                             Address::class,
+                            AbstractPart::class,
+                            File::class, // This one does not extend AbstractPart
                             Headers::class,
                             HeaderInterface::class,
                         ]
                     );
-
-                    if ($message instanceof SentMessage) {
-                        $transport->send($message->getMessage(), $message->getEnvelope());
-                        $count++;
-                    } else {
-                        $this->logger?->error(
-                            'Serialized message from {fileName} was rejected, because {className} is not an instance of SentMessage.',
-                            [
-                                'fileName' => $file,
-                                'className' => get_debug_type($message),
-                            ],
-                        );
-                    }
-                } catch (\Throwable) {
+                } catch (\Throwable $e) {
                     $this->logger?->error(
                         'Serialized message from {fileName} was rejected, because it contains a disallowed class object.',
-                        ['fileName' => $file],
+                        ['fileName' => $file, 'exception' => $e],
                     );
-                } finally {
+                    rename($file . '.sending', $file . '.invalid');
+                    continue;
+                }
+                if ($message instanceof SentMessage) {
+                    // This may throw an exception if something goes wrong.
+                    // That is expected and will cause the `.sending` file to remain within the spooler.
+                    $transport->send($message->getMessage(), $message->getEnvelope());
+                    $count++;
                     unlink($file . '.sending');
+                } else {
+                    $this->logger?->error(
+                        'Serialized message from {fileName} was rejected, because {className} is not an instance of SentMessage.',
+                        [
+                            'fileName' => $file,
+                            'className' => get_debug_type($message),
+                        ],
+                    );
+                    rename($file . '.sending', $file . '.invalid');
                 }
             } else {
                 /* This message has just been caught by another process */
