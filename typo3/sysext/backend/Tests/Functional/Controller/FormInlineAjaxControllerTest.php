@@ -134,6 +134,7 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
         unset($GLOBALS['TCA']['tx_testirrecsv_offer']['ctrl']['languageField']);
         unset($GLOBALS['TCA']['tx_testirrecsv_offer']['ctrl']['transOrigPointerField']);
         unset($GLOBALS['TCA']['tx_testirrecsv_offer']['ctrl']['transOrigDiffSourceField']);
+        unset($GLOBALS['TCA']['tx_testirrecsv_offer']['columns']['sys_language_uid']);
 
         $parsedBody = [
             'ajax' => [
@@ -149,7 +150,7 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
         $body = (string)$response->getBody();
         $jsonArray = json_decode($body, true);
 
-        self::assertDoesNotMatchRegularExpression('/<select[^>]* name="data\[tx_testirrecsv_offer\]\[NEW[1-9]+\]\[sys_language_uid\]"[^>]*>/', $jsonArray['data']);
+        self::assertDoesNotMatchRegularExpression('/<select[^>]* name="data\[tx_testirrecsv_offer\]\[NEW[[:alnum:]]+\]\[sys_language_uid\]"[^>]*>/', $jsonArray['data']);
     }
 
     protected function getContextForSysLanguageUid(int $sysLanguageUid): array
