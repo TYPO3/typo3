@@ -97,7 +97,38 @@ class DataHandlerHook
      */
     public function processCmdmap($command, $table, $id, $value, &$commandIsProcessed, DataHandler $dataHandler)
     {
-        // custom command "version"
+        // Custom command "publish": Publishes a workspace record to live. In contrast to the
+        // legacy "version" command with action "swap", it is keyed by the uid of the workspace
+        // version, the live uid and the workspace are resolved from t3ver_oid and t3ver_wsid.
+        if ($command === 'publish') {
+            $commandIsProcessed = true;
+            $versionId = (int)$id;
+            $versionRecord = BackendUtility::getRecord($table, $versionId);
+            if ($versionRecord === null) {
+                // Publishing an outer element can cascade and remove the workspace versions of
+                // its children, so commands queued for them afterwards have nothing left to do.
+                return;
+            }
+            // New records (t3ver_state=NEW_PLACEHOLDER) have no t3ver_oid, they become the live
+            // record themselves when published.
+            $liveId = (int)($versionRecord['t3ver_oid'] ?: $versionId);
+            // version_swap() evaluates the workspace of the current user, which is not
+            // necessarily the workspace the record to publish lives in.
+            $backupWorkspaceId = $dataHandler->BE_USER->workspace;
+            $dataHandler->BE_USER->workspace = (int)($versionRecord['t3ver_wsid'] ?? 0);
+            $this->version_swap(
+                $table,
+                $liveId,
+                $versionId,
+                $dataHandler,
+                (string)($value['comment'] ?? ''),
+                (array)($value['notificationAlternativeRecipients'] ?? [])
+            );
+            $dataHandler->BE_USER->workspace = $backupWorkspaceId;
+            return;
+        }
+
+        // Custom command "version"
         if ($command !== 'version') {
             return;
         }
@@ -259,6 +290,7 @@ class DataHandlerHook
     /**
      * Publishing / Swapping (= switching) versions of a record
      * Version from archive (future/past, called "swap version") will get the uid of the "t3ver_oid", the official element with uid = "t3ver_oid" will get the new versions old uid. PIDs are swapped also
+     * @todo: in v16 we should rename "swapping" to "publishing" everywhere.
      *
      * @param string $table Table name
      * @param int $id UID of the online record to swap
@@ -435,6 +467,7 @@ class DataHandlerHook
         $historyStore = $this->getRecordHistoryStore((int)$wsAccess['uid'], $dataHandler->BE_USER);
         $historyStore->publishRecord($table, $id, $swapWith, $publishPayload, $dataHandler->getCorrelationId());
 
+        // @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0.
         $this->notificationInfo = $this->createNotificationInformation(
             $this->notificationInfo,
             $wsAccess,
@@ -639,6 +672,9 @@ class DataHandlerHook
             ],
             $dataHandler->getCorrelationId()
         );
+        // @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0.
+        //             STAGE_PUBLISH_EXECUTE_ID usage for notifications will be replaced
+        //             with a dedicated notification mechanism for publish actions.
         $this->notificationInfo = $this->createNotificationInformation(
             $this->notificationInfo,
             $wsAccess,

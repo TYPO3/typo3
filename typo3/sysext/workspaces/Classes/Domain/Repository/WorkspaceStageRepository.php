@@ -124,6 +124,7 @@ final readonly class WorkspaceStageRepository
         );
 
         // Add 'internal' 'pseudo' execute stage
+        // @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0.
         $stages[] = new WorkspaceStage(
             uid: StagesService::STAGE_PUBLISH_EXECUTE_ID,
             isEditStage: false,

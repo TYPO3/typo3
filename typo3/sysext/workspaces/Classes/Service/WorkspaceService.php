@@ -204,9 +204,9 @@ readonly class WorkspaceService
             // Traverse the selection to build CMD array:
             foreach ($versions as $table => $records) {
                 foreach ($records as $rec) {
-                    // For new records, the live ID is the same as the version ID
-                    $liveId = $rec['t3ver_oid'] ?: $rec['uid'];
-                    $cmd[$table][$liveId]['version'] = ['action' => 'swap', 'swapWith' => $rec['uid']];
+                    // Publishing always uses the versionId
+                    $versionId = (int)$rec['uid'];
+                    $cmd[$table][$versionId]['publish'] = [];
                 }
             }
         }
@@ -214,7 +214,7 @@ readonly class WorkspaceService
     }
 
     /**
-     * Building DataHandler CMD-array for releasing all versions in a workspace.
+     * Building DataHandler CMD-array for discarding all versions in a workspace.
      *
      * @param int $wsid Real workspace ID, cannot be ONLINE (zero).
      * @param int|null $language Select specific language only
@@ -238,7 +238,8 @@ readonly class WorkspaceService
             // Traverse the selection to build CMD array:
             foreach ($versions as $table => $records) {
                 foreach ($records as $rec) {
-                    $cmd[$table][$rec['uid']]['version'] = ['action' => 'flush'];
+                    $versionId = (int)$rec['uid'];
+                    $cmd[$table][$versionId]['discard'] = true;
                 }
             }
         }
@@ -293,9 +294,9 @@ readonly class WorkspaceService
             $recs = $this->selectAllVersionsFromPages($schema, $pageList, $wsid, $stage, $language);
             $newRecords = $this->getNewVersionsForPages($schema, $pageList, $wsid, $stage, $language);
             foreach ($newRecords as &$newRecord) {
-                // If we're dealing with a 'new' record, this one has no t3ver_oid. On publish, there is no
-                // live counterpart, but the publish methods later need a live uid to publish to. We thus
-                // use the uid as t3ver_oid here to be transparent on javascript side.
+                // If we're dealing with a 'new' record, this one has no t3ver_oid. We use the uid as
+                // t3ver_oid here to be transparent on the JavaScript side for display purposes.
+                // The publish command uses the versioned UID directly and resolves the live ID internally.
                 $newRecord['t3ver_oid'] = $newRecord['uid'];
             }
             unset($newRecord);

@@ -22,6 +22,12 @@ import '@typo3/workspaces/renderable/send-to-stage-form';
 import RegularEvent from '@typo3/core/event/regular-event';
 import labels from '~labels/workspaces.messages';
 
+/**
+ * Stage ID for the publish execute action.
+ * @deprecated Will be removed in TYPO3 v16.0. Use explicit publish actions instead.
+ */
+const STAGE_PUBLISH_EXECUTE_ID = -20;
+
 enum Identifiers {
   topbar = '.t3js-workspace-topbar',
   stageSliderContainer = '.t3js-stage-slider-container',
@@ -210,6 +216,7 @@ class Preview extends Workspaces {
    */
   private renderSendPageToStageWindow(e: Event, target: HTMLElement): void {
     const direction = target.dataset.direction;
+    const stageId = parseInt(target.dataset.stageId, 10);
     let actionName;
 
     if (direction === 'prev') {
@@ -219,6 +226,11 @@ class Preview extends Workspaces {
     } else {
       throw 'Invalid direction ' + direction + ' requested.';
     }
+
+    // Use explicit publish action when the target stage is the publish execute stage
+    const executeAction = stageId === STAGE_PUBLISH_EXECUTE_ID
+      ? 'publishPageCollectionExecute'
+      : 'sendCollectionToStage';
 
     this.sendRemoteRequest(
       this.generateRemotePayloadBody(actionName, [TYPO3.settings.Workspaces.id]),
@@ -231,9 +243,9 @@ class Preview extends Workspaces {
         if (modalTarget.name === 'ok') {
           const serializedForm = Utility.convertFormToObject(modal.querySelector('form'));
           serializedForm.affects = resolvedResponse[0].result.affects;
-          serializedForm.stageId = parseInt(target.dataset.stageId, 10);
+          serializedForm.stageId = stageId;
           this.sendRemoteRequest([
-            this.generateRemotePayloadBody('sendCollectionToStage', [serializedForm]),
+            this.generateRemotePayloadBody(executeAction, [serializedForm]),
             this.generateRemotePayloadBody('updateStageChangeButtons', [TYPO3.settings.Workspaces.id]),
           ], Identifiers.topbar).then(async (updateResponse: AjaxResponse): Promise<void> => {
             modal.hideModal();

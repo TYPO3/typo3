@@ -237,6 +237,7 @@ final readonly class ReviewController
             ],
         ];
         foreach ($stages as $stage) {
+            // @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0.
             if ($stage->uid === StagesService::STAGE_PUBLISH_EXECUTE_ID) {
                 // Removes the publishing stage (-20) by skipping it.
                 continue;

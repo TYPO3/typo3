@@ -30,8 +30,13 @@ use TYPO3\CMS\Workspaces\Exception\WorkspaceStageNotFoundException;
  */
 readonly class StagesService
 {
-    // If a record is in the "ready to publish" stage STAGE_PUBLISH_ID the
-    // next stage is STAGE_PUBLISH_EXECUTE_ID, this id is never saved in db
+    /**
+     * If a record is in the "ready to publish" stage STAGE_PUBLISH_ID the
+     * next stage is STAGE_PUBLISH_EXECUTE_ID, this id is never saved in db.
+     *
+     * @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0.
+     *             Use explicit publish actions instead of checking for this stage ID.
+     */
     public const STAGE_PUBLISH_EXECUTE_ID = -20;
     // "Ready to publish" stage
     public const STAGE_PUBLISH_ID = -10;
@@ -237,6 +242,7 @@ readonly class StagesService
     {
         $languageService = $this->getLanguageService();
         switch ($stageId) {
+            // @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0.
             case self::STAGE_PUBLISH_EXECUTE_ID:
                 return $languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:stage_publish');
             case self::STAGE_PUBLISH_ID:

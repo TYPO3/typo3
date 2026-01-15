@@ -31,6 +31,12 @@ import DeferredAction from '@typo3/backend/action-button/deferred-action';
 import type { PaginationElement } from '@typo3/backend/element/pagination';
 import labels from '~labels/workspaces.messages';
 
+/**
+ * Stage ID for the publish execute action.
+ * @deprecated Will be removed in TYPO3 v16.0. Use explicit publish actions instead.
+ */
+const STAGE_PUBLISH_EXECUTE_ID = -20;
+
 enum Identifiers {
   searchForm = '#workspace-settings-form',
   searchTextField = '#workspace-settings-form input[name="search-text"]',
@@ -398,7 +404,10 @@ class Backend extends Workspaces {
     if (direction === 'next') {
       nextStage = row.dataset.nextStage;
       stageWindowAction = 'sendToNextStageWindow';
-      stageExecuteAction = 'sendToNextStageExecute';
+      // Use explicit publish action when the next stage is the publish execute stage
+      stageExecuteAction = parseInt(nextStage, 10) === STAGE_PUBLISH_EXECUTE_ID
+        ? 'publishRecordExecute'
+        : 'sendToNextStageExecute';
     } else if (direction === 'prev') {
       nextStage = row.dataset.prevStage;
       stageWindowAction = 'sendToPrevStageWindow';
@@ -707,8 +716,7 @@ class Backend extends Workspaces {
             await this.sendRemoteRequest(
               this.generateRemotePayloadBody('publishSingleRecord', [
                 row.dataset.table,
-                row.dataset.t3ver_oid,
-                row.dataset.uid,
+                row.dataset.uid, // versioned UID - live ID is resolved automatically
               ]),
             );
             this.getWorkspaceInfos();
@@ -865,6 +873,11 @@ class Backend extends Workspaces {
   private sendToSpecificStageAction(event: Event, target: HTMLInputElement): void {
     const affectedRecords: Array<{ [key: string]: number | string }> = [];
     const stage = target.value;
+    const stageId = parseInt(stage, 10);
+    // Use explicit publish action when the target stage is the publish execute stage
+    const executeAction = stageId === STAGE_PUBLISH_EXECUTE_ID
+      ? 'publishCollectionExecute'
+      : 'sendToSpecificStageExecute';
     for (let i = 0; i < this.markedRecordsForMassAction.length; ++i) {
       const affected = this.markedRecordsForMassAction[i].split(':');
       affectedRecords.push({
@@ -886,7 +899,7 @@ class Backend extends Workspaces {
             nextStage: stage,
           };
           this.sendRemoteRequest([
-            this.generateRemotePayloadBody('sendToSpecificStageExecute', [serializedForm]),
+            this.generateRemotePayloadBody(executeAction, [serializedForm]),
             this.generateRemotePayloadBody('getWorkspaceInfos', this.settings),
           ]).then(async (response: AjaxResponse): Promise<void> => {
             const actionResponse = await response.resolve();

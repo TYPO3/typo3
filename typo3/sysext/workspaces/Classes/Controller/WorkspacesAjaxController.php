@@ -73,7 +73,7 @@ final readonly class WorkspacesAjaxController
             'getWorkspaceInfos' => $this->getWorkspaceInfos($call->data[0]),
             'checkIntegrity' => $this->checkIntegrity($call->data[0]),
             'getRowDetails' => $this->getRowDetails($call->data[0]),
-            'publishSingleRecord' => $this->publishSingleRecord((string)$call->data[0], (int)$call->data[1], (int)$call->data[2]),
+            'publishSingleRecord' => $this->publishSingleRecord((string)$call->data[0], (int)$call->data[1]),
             'discardSingleRecord' => $this->discardSingleRecord((string)$call->data[0], (int)$call->data[1]),
             'generateWorkspacePreviewLinksForAllLanguages' => $this->generateWorkspacePreviewLinksForAllLanguages((int)$call->data[0]),
             'viewSingleRecord' => $this->viewSingleRecord((string)$call->data[0], (int)$call->data[1]),
@@ -84,6 +84,9 @@ final readonly class WorkspacesAjaxController
             'sendToPrevStageExecute' => $this->sendToPrevStageExecute($call->data[0]),
             'sendToSpecificStageWindow' => $this->sendToSpecificStageWindow((int)$call->data[0]),
             'sendToSpecificStageExecute' => $this->sendToSpecificStageExecute($call->data[0]),
+            'publishRecordExecute' => $this->publishRecordExecute($call->data[0]),
+            'publishCollectionExecute' => $this->publishCollectionExecute($call->data[0]),
+            'publishPageCollectionExecute' => $this->publishPageCollectionExecute($call->data[0]),
             'publishEntireWorkspace' => $this->publishEntireWorkspace($call->data[0]),
             'discardEntireWorkspace' => $this->discardEntireWorkspace($call->data[0]),
             default => throw new \RuntimeException('Not implemented', 1749983978),
@@ -270,12 +273,9 @@ final readonly class WorkspacesAjaxController
         return $this->gridDataService->getRowDetails($stages, $parameters);
     }
 
-    private function publishSingleRecord(string $table, int $t3ver_oid, int $orig_uid): array
+    private function publishSingleRecord(string $table, int $versionId): array
     {
-        $cmd[$table][$t3ver_oid]['version'] = [
-            'action' => 'publish',
-            'swapWith' => $orig_uid,
-        ];
+        $cmd[$table][$versionId]['publish'] = [];
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([], $cmd);
         $dataHandler->process_cmdmap();
@@ -322,10 +322,7 @@ final readonly class WorkspacesAjaxController
         $commands = [];
         if ($parameter->action === 'publish') {
             foreach ($parameter->selection as $record) {
-                $commands[$record->table][$record->liveId]['version'] = [
-                    'action' => 'publish',
-                    'swapWith' => $record->versionId,
-                ];
+                $commands[$record->table][$record->versionId]['publish'] = [];
             }
         } elseif ($parameter->action === 'discard') {
             foreach ($parameter->selection as $record) {
@@ -447,20 +444,12 @@ final readonly class WorkspacesAjaxController
         $setStageId = (int)$parameters->affects->nextStage;
         $comments = $parameters->comments;
         $table = $parameters->affects->table;
-        $uid = $parameters->affects->uid;
-        $t3ver_oid = $parameters->affects->t3ver_oid;
+        $versionId = $parameters->affects->uid;
         $recipients = $this->getRecipientList((array)($parameters->recipients ?? []), (string)($parameters->additional ?? ''), $setStageId);
-        if ($setStageId === StagesService::STAGE_PUBLISH_EXECUTE_ID) {
-            $cmdArray[$table][$t3ver_oid]['version']['action'] = 'publish';
-            $cmdArray[$table][$t3ver_oid]['version']['swapWith'] = $uid;
-            $cmdArray[$table][$t3ver_oid]['version']['comment'] = $comments;
-            $cmdArray[$table][$t3ver_oid]['version']['notificationAlternativeRecipients'] = $recipients;
-        } else {
-            $cmdArray[$table][$uid]['version']['action'] = 'setStage';
-            $cmdArray[$table][$uid]['version']['stageId'] = $setStageId;
-            $cmdArray[$table][$uid]['version']['comment'] = $comments;
-            $cmdArray[$table][$uid]['version']['notificationAlternativeRecipients'] = $recipients;
-        }
+        $cmdArray[$table][$versionId]['version']['action'] = 'setStage';
+        $cmdArray[$table][$versionId]['version']['stageId'] = $setStageId;
+        $cmdArray[$table][$versionId]['version']['comment'] = $comments;
+        $cmdArray[$table][$versionId]['version']['notificationAlternativeRecipients'] = $recipients;
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([], $cmdArray);
         $dataHandler->process_cmdmap();
@@ -475,14 +464,121 @@ final readonly class WorkspacesAjaxController
         $setStageId = (int)$parameters->affects->nextStage;
         $comments = $parameters->comments;
         $table = $parameters->affects->table;
-        $uid = $parameters->affects->uid;
+        $versionId = $parameters->affects->uid;
         $recipients = $this->getRecipientList((array)($parameters->recipients ?? []), (string)($parameters->additional ?? ''), $setStageId);
-        $cmdArray[$table][$uid]['version']['action'] = 'setStage';
-        $cmdArray[$table][$uid]['version']['stageId'] = $setStageId;
-        $cmdArray[$table][$uid]['version']['comment'] = $comments;
-        $cmdArray[$table][$uid]['version']['notificationAlternativeRecipients'] = $recipients;
+        $cmdArray[$table][$versionId]['version']['action'] = 'setStage';
+        $cmdArray[$table][$versionId]['version']['stageId'] = $setStageId;
+        $cmdArray[$table][$versionId]['version']['comment'] = $comments;
+        $cmdArray[$table][$versionId]['version']['notificationAlternativeRecipients'] = $recipients;
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([], $cmdArray);
+        $dataHandler->process_cmdmap();
+        return [
+            'success' => true,
+        ];
+    }
+
+    /**
+     * Publish a single record with optional comment and notification recipients.
+     * This is an explicit publish action, separate from stage changes.
+     */
+    private function publishRecordExecute(\stdClass $parameters): array
+    {
+        $table = $parameters->affects->table;
+        $versionId = (int)$parameters->affects->uid;
+        $comments = $parameters->comments ?? '';
+        $recipients = $this->getRecipientList(
+            (array)($parameters->recipients ?? []),
+            (string)($parameters->additional ?? ''),
+            StagesService::STAGE_PUBLISH_EXECUTE_ID
+        );
+        $cmdArray[$table][$versionId]['publish'] = [
+            'comment' => $comments,
+            'notificationAlternativeRecipients' => $recipients,
+        ];
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], $cmdArray);
+        $dataHandler->process_cmdmap();
+        return [
+            'success' => true,
+        ];
+    }
+
+    /**
+     * Publish a collection of records with optional comment and notification recipients.
+     * This is an explicit publish action, separate from stage changes.
+     *
+     * Accepts the same parameter structure as sendToSpecificStageExecute:
+     * - parameters->affects->elements: array of {table, uid, t3ver_oid}
+     * - parameters->comments: string
+     * - parameters->recipients: array
+     * - parameters->additional: string
+     */
+    private function publishCollectionExecute(\stdClass $parameters): array
+    {
+        $cmdMapArray = [];
+        $comment = $parameters->comments ?? '';
+        $recipients = $this->getRecipientList(
+            (array)($parameters->recipients ?? []),
+            (string)($parameters->additional ?? ''),
+            StagesService::STAGE_PUBLISH_EXECUTE_ID
+        );
+        $elements = $parameters->affects->elements ?? [];
+        if (empty($elements)) {
+            throw new \InvalidArgumentException('Missing "affected elements" in $parameters array.', 1768515021);
+        }
+        foreach ($elements as $element) {
+            // Avoid any action on records that have already been published to live
+            $elementRecord = BackendUtility::getRecord($element->table, $element->uid);
+            if ((int)($elementRecord['t3ver_wsid'] ?? 0) === 0) {
+                continue;
+            }
+            $cmdMapArray[$element->table][$element->uid]['publish'] = [
+                'comment' => $comment,
+                'notificationAlternativeRecipients' => $recipients,
+            ];
+        }
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], $cmdMapArray);
+        $dataHandler->process_cmdmap();
+        return [
+            'success' => true,
+        ];
+    }
+
+    /**
+     * Publish a page collection of records (from preview module).
+     * This method is used by the preview module's "Send to Publish" button.
+     *
+     * Accepts the same parameter structure as sendCollectionToStage:
+     * - parameters->affects: object with tableName -> array of items (each item has 'uid')
+     * - parameters->stageId: int (used for validation only)
+     * - parameters->comments: string
+     * - parameters->recipients: array
+     * - parameters->additional: string
+     */
+    private function publishPageCollectionExecute(\stdClass $parameters): array
+    {
+        $cmdMapArray = [];
+        $comment = $parameters->comments ?? '';
+        $recipients = $this->getRecipientList(
+            (array)($parameters->recipients ?? []),
+            (string)($parameters->additional ?? ''),
+            StagesService::STAGE_PUBLISH_EXECUTE_ID
+        );
+        if (!is_object($parameters->affects) || empty($parameters->affects)) {
+            throw new \InvalidArgumentException('Missing "affected items" in $parameters array.', 1768515022);
+        }
+        foreach ($parameters->affects as $tableName => $items) {
+            foreach ($items as $item) {
+                $cmdMapArray[$tableName][$item->uid]['publish'] = [
+                    'comment' => $comment,
+                    'notificationAlternativeRecipients' => $recipients,
+                ];
+            }
+        }
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], $cmdMapArray);
         $dataHandler->process_cmdmap();
         return [
             'success' => true,
@@ -521,17 +617,10 @@ final readonly class WorkspacesAjaxController
             if ((int)($elementRecord['t3ver_wsid'] ?? 0) === 0) {
                 continue;
             }
-            if ($setStageId === StagesService::STAGE_PUBLISH_EXECUTE_ID) {
-                $cmdArray[$element->table][$element->t3ver_oid]['version']['action'] = 'publish';
-                $cmdArray[$element->table][$element->t3ver_oid]['version']['swapWith'] = $element->uid;
-                $cmdArray[$element->table][$element->t3ver_oid]['version']['comment'] = $comments;
-                $cmdArray[$element->table][$element->t3ver_oid]['version']['notificationAlternativeRecipients'] = $recipients;
-            } else {
-                $cmdArray[$element->table][$element->uid]['version']['action'] = 'setStage';
-                $cmdArray[$element->table][$element->uid]['version']['stageId'] = $setStageId;
-                $cmdArray[$element->table][$element->uid]['version']['comment'] = $comments;
-                $cmdArray[$element->table][$element->uid]['version']['notificationAlternativeRecipients'] = $recipients;
-            }
+            $cmdArray[$element->table][$element->uid]['version']['action'] = 'setStage';
+            $cmdArray[$element->table][$element->uid]['version']['stageId'] = $setStageId;
+            $cmdArray[$element->table][$element->uid]['version']['comment'] = $comments;
+            $cmdArray[$element->table][$element->uid]['version']['notificationAlternativeRecipients'] = $recipients;
         }
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([], $cmdArray);
@@ -579,19 +668,10 @@ final readonly class WorkspacesAjaxController
         $recipients = $this->getRecipientList((array)($parameters->recipients ?? []), (string)($parameters->additional ?? ''), $stageId);
         foreach ($parameters->affects as $tableName => $items) {
             foreach ($items as $item) {
-                if ($stageId == StagesService::STAGE_PUBLISH_EXECUTE_ID) {
-                    // Publishing uses live id in command map
-                    $cmdMapArray[$tableName][$item->t3ver_oid]['version']['action'] = 'publish';
-                    $cmdMapArray[$tableName][$item->t3ver_oid]['version']['swapWith'] = $item->uid;
-                    $cmdMapArray[$tableName][$item->t3ver_oid]['version']['comment'] = $comment;
-                    $cmdMapArray[$tableName][$item->t3ver_oid]['version']['notificationAlternativeRecipients'] = $recipients;
-                } else {
-                    // Setting stage uses version id in command map
-                    $cmdMapArray[$tableName][$item->uid]['version']['action'] = 'setStage';
-                    $cmdMapArray[$tableName][$item->uid]['version']['stageId'] = $stageId;
-                    $cmdMapArray[$tableName][$item->uid]['version']['comment'] = $comment;
-                    $cmdMapArray[$tableName][$item->uid]['version']['notificationAlternativeRecipients'] = $recipients;
-                }
+                $cmdMapArray[$tableName][$item->uid]['version']['action'] = 'setStage';
+                $cmdMapArray[$tableName][$item->uid]['version']['stageId'] = $stageId;
+                $cmdMapArray[$tableName][$item->uid]['version']['comment'] = $comment;
+                $cmdMapArray[$tableName][$item->uid]['version']['notificationAlternativeRecipients'] = $recipients;
             }
         }
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
