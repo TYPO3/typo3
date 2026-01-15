@@ -8,21 +8,31 @@
         <div class="t3js-installer-defaultConfiguration-output"></div>
         <div class="typo3-install-content-spacer"></div>
 
-        <h3>Initial state</h3>
+        <h3>Initial site setup</h3>
         <p>
-            You currently have an empty installation of TYPO3.
+            Your TYPO3 installation is ready. You can now set up your first website.
         </p>
 
         <f:if condition="!{composerMode}">
             <p>
-                If you would like to view a list of pre-configured distributions select “Download list of distributions” from the list below.
+                If you would like to view a list of pre-configured distributions select "Download list of distributions" from the list below.
                 Note: This may take some time to load.
             </p>
         </f:if>
-        <p>
-            The Installation Wizard can create an empty page at the root of your website to help you get started. If you would like to use this
-            option select "Create empty starting page".
-        </p>
+        <f:if condition="{hasDefaultTheme}">
+            <f:then>
+                <p>
+                    The Installation Wizard can create a starter website with the default TYPO3 theme.
+                    This includes a root page, site configuration, and frontend rendering ready to use.
+                </p>
+            </f:then>
+            <f:else>
+                <p>
+                    The Installation Wizard can create a starter website with basic frontend rendering.
+                    This includes a root page, site configuration, and content element support.
+                </p>
+            </f:else>
+        </f:if>
 
         <form method="post" spellcheck="false">
             <div class="form-group">
@@ -35,13 +45,16 @@
                     </div>
                 </f:if>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" id="create-site" name="install[values][sitesetup]" value="createsite" />
+                    <input class="form-check-input" type="radio" id="create-site" name="install[values][sitesetup]" value="createsite"{f:if(condition: hasDefaultTheme, then: ' checked="checked"')} />
                     <label class="form-check-label" for="create-site">
-                        Create empty starting page
+                        <f:if condition="{hasDefaultTheme}">
+                            <f:then>Create starter website with default theme</f:then>
+                            <f:else>Create starter website with basic rendering</f:else>
+                        </f:if>
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" id="do-nothing" name="install[values][sitesetup]" value="donothing" checked="checked" />
+                    <input class="form-check-input" type="radio" id="do-nothing" name="install[values][sitesetup]" value="donothing"{f:if(condition: '!{hasDefaultTheme}', then: ' checked="checked"')} />
                     <label class="form-check-label" for="do-nothing">
                         Do nothing, take me straight to the backend
                     </label>

@@ -249,8 +249,22 @@ EOT
 
         $siteUrl = $this->getSiteSetup($questionHelper, $input, $output);
         if ($siteUrl) {
-            $pageUid = $this->setupService->createSite();
-            $this->setupService->createSiteConfiguration('main', (int)$pageUid, $siteUrl);
+            [$pageId, $contentId] = $this->setupService->createSite();
+            $dependencies = $this->setupService->getDefaultSiteSetDependencies();
+            $siteIdentifier = 'main';
+            $this->setupService->createSiteConfiguration($siteIdentifier, (int)$pageId, $siteUrl, $dependencies);
+            if ($this->setupService->hasDefaultTheme()) {
+                $this->setupService->initializeDefaultThemeContent($pageId, $contentId);
+            } elseif ($dependencies !== []) {
+                // No default theme but fluid_styled_content is available - write PAGE setup to site config
+                if (!$this->setupService->writeSiteSetupTypoScript($siteIdentifier)) {
+                    // Some error occurred while trying to write setup to new site, fall back to sys_template record
+                    $this->setupService->createSysTemplateRecord($pageId);
+                }
+            } else {
+                // In case no site set is available, create a fallback sys_template record
+                $this->setupService->createSysTemplateRecord($pageId);
+            }
         }
 
         $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();

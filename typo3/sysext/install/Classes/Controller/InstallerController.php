@@ -531,7 +531,7 @@ final class InstallerController
     }
 
     /**
-     * Show last "create empty site / install distribution"
+     * Show last "create site with theme / install distribution"
      */
     public function showDefaultConfigurationAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -539,6 +539,7 @@ final class InstallerController
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view->assignMultiple([
             'composerMode' => Environment::isComposerMode(),
+            'hasDefaultTheme' => $this->setupService->hasDefaultTheme(),
             'executeDefaultConfigurationToken' => $formProtection->generateToken('installTool', 'executeDefaultConfiguration'),
         ]);
         return new JsonResponse([
@@ -558,8 +559,8 @@ final class InstallerController
         $nextStepUrl = $uriBuilder->buildUriFromRoute('login');
         // Let the admin user redirect to the distributions page on first login
         if ($request->getParsedBody()['install']['values']['sitesetup'] === 'createsite') {
-            // Create a page with UID 1 and PID1 and fluid_styled_content for page TS config, respect ownership
-            $pageUid = $this->setupService->createSite();
+            // Create a root page and site configuration with appropriate site set dependencies
+            [$pageId, $contentId] = $this->setupService->createSite();
             $normalizedParams = $request->getAttribute('normalizedParams');
             if (!($normalizedParams instanceof NormalizedParams)) {
                 $normalizedParams = NormalizedParams::createFromRequest($request);
@@ -570,7 +571,21 @@ final class InstallerController
             // In the future this controller should be refactored to a generic service, where site URL is
             // just one input argument.
             $siteUrl = $request->getParsedBody()['install']['values']['siteUrl'] ?? $normalizedParams->getSiteUrl();
-            $this->setupService->createSiteConfiguration('main', (int)$pageUid, $siteUrl);
+            $dependencies = $this->setupService->getDefaultSiteSetDependencies();
+            $siteIdentifier = 'main';
+            $this->setupService->createSiteConfiguration($siteIdentifier, (int)$pageId, $siteUrl, $dependencies);
+            if ($this->setupService->hasDefaultTheme()) {
+                $this->setupService->initializeDefaultThemeContent($pageId, $contentId);
+            } elseif ($dependencies !== []) {
+                // No default theme but fluid_styled_content is available - write PAGE setup to site config
+                if (!$this->setupService->writeSiteSetupTypoScript($siteIdentifier)) {
+                    // Some error occurred while trying to write setup to new site, fall back to sys_template record
+                    $this->setupService->createSysTemplateRecord($pageId);
+                }
+            } else {
+                // In case no site set is available, create a fallback sys_template record
+                $this->setupService->createSysTemplateRecord($pageId);
+            }
         } elseif ($request->getParsedBody()['install']['values']['sitesetup'] === 'loaddistribution'
             && !Environment::isComposerMode()
             && $this->packageManager->isPackageActive('extensionmanager')

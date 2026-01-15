@@ -73,6 +73,6 @@ final class BlankPageCest
 
         // Verify default frontend is rendered
         $I->amOnPage('/');
-        $I->waitForText('Welcome to a default website made with TYPO3');
+        $I->waitForText('Welcome to your default website');
     }
 }

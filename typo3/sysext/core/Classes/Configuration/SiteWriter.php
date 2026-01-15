@@ -55,12 +55,13 @@ class SiteWriter
     /**
      * Creates a site configuration with one language "English" which is the de-facto default language for TYPO3 in general.
      *
+     * @param string[] $dependencies Site set identifiers to add as dependencies
      * @throws SiteConfigurationWriteException
      */
-    public function createNewBasicSite(string $identifier, int $rootPageId, string $base): void
+    public function createNewBasicSite(string $identifier, int $rootPageId, string $base, array $dependencies = []): void
     {
         // Create a default site configuration called "main" as best practice
-        $this->write($identifier, [
+        $configuration = [
             'rootPageId' => $rootPageId,
             'base' => $base,
             'languages' => [
@@ -76,7 +77,10 @@ class SiteWriter
             ],
             'errorHandling' => [],
             'routes' => [],
-        ]);
+            'dependencies' => $dependencies,
+        ];
+
+        $this->write($identifier, $configuration);
     }
 
     public function writeSettings(string $siteIdentifier, array $settings): void
