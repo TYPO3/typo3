@@ -457,6 +457,15 @@ class FileContentParser
                     unset($res);
                     if ((int)($pdfInfo['pages'] ?? 0)) {
                         [$low, $high] = explode('-', $cPKey);
+                        // Security fix: Validate and escape page numbers to prevent command injection
+                        $low = (int)$low;
+                        $high = (int)$high;
+                        if ($low < 1 || $high < 1 || $low > $high || $high > 999999) {
+                            throw new \RuntimeException(
+                                'Invalid page range provided: ' . $cPKey,
+                                1704000001
+                            );
+                        }
                         // Get pdf content:
                         $tempFileName = GeneralUtility::tempnam('Typo3_indexer');
                         // Create temporary name
