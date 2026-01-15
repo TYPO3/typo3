@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownUrnException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Redirects\Data\SourceHostProvider;
@@ -42,6 +43,7 @@ final class RedirectPermissionGuard
 
     public function __construct(
         private readonly LinkService $linkService,
+        private readonly TypoLinkCodecService $typoLinkCodecService,
         private readonly SourceHostProvider $sourceHostProvider,
         #[Autowire(service: 'cache.runtime')]
         private readonly FrontendInterface $cache,
@@ -78,10 +80,12 @@ final class RedirectPermissionGuard
         }
 
         $result = true;
+        $linkParameterParts = $this->typoLinkCodecService->decode($target);
+        $redirectTarget = $linkParameterParts['url'];
 
-        if (str_starts_with($target, 't3://')) {
+        if (str_starts_with($redirectTarget, 't3://')) {
             try {
-                $resolvedLink = $this->linkService->resolveByStringRepresentation($target);
+                $resolvedLink = $this->linkService->resolveByStringRepresentation($redirectTarget);
 
                 if ((int)($resolvedLink['pageuid'] ?? 0) > 0) {
                     $result = $this->canAccessPage((int)$resolvedLink['pageuid']);

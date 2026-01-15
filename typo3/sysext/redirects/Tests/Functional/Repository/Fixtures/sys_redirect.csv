@@ -6,3 +6,4 @@ sys_redirect,,,,,,,,,,,,
 ,4,0,1,0,0,foo.com,/foo/baz,https://example.com/bar,304,0,0,0,default
 ,5,0,1,0,0,bar.com,/bar,https://example.com/bar,305,0,0,1,default
 ,6,0,2147483647,0,0,bar.com,/bar/foo,https://example.com/foo,305,0,0,0,default
+,7,0,1,0,0,*,/foofile/linkparam,t3://file?uid=1 - - - linkparam,302,10,0,0,default
