@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Redirects\Tests\Functional\Repository;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\Repository\Demand;
@@ -65,12 +66,12 @@ final class RedirectRepositoryTest extends FunctionalTestCase
 
     public static function demandProvider(): array
     {
-        $allRecordCount = 6;
+        $allRecordCount = 7;
         return [
             'default demand' => [
                 self::getDemand(),
                 $allRecordCount,
-                $allRecordCount - 4,
+                $allRecordCount - 5,
             ],
             'configuration with hitCount' => [
                 self::getDemand(2),
@@ -80,12 +81,12 @@ final class RedirectRepositoryTest extends FunctionalTestCase
             'configuration with statusCode 302' => [
                 self::getDemand(0, [302]),
                 $allRecordCount,
-                $allRecordCount - 1,
+                $allRecordCount - 2,
             ],
             'demand with statusCode 302, 303' => [
                 self::getDemand(0, [302, 303]),
                 $allRecordCount,
-                $allRecordCount - 2,
+                $allRecordCount - 3,
             ],
             'demand with domain' => [
                 self::getDemand(0, [], ['foo.com']),
@@ -105,7 +106,7 @@ final class RedirectRepositoryTest extends FunctionalTestCase
             'demand with path starts with' => [
                 self::getDemand(0, [], [], '/foo%'),
                 $allRecordCount,
-                $allRecordCount - 3,
+                $allRecordCount - 4,
             ],
             'demand with path ends with' => [
                 self::getDemand(0, [], [], '%/foo'),
@@ -115,7 +116,7 @@ final class RedirectRepositoryTest extends FunctionalTestCase
             'demand with path in the middle' => [
                 self::getDemand(0, [], [], '%foo%'),
                 $allRecordCount,
-                $allRecordCount - 3,
+                $allRecordCount - 4,
             ],
             'demand with creation type "manually created"' => [
                 self::getDemand(0, [], [], '', 1),
@@ -131,6 +132,7 @@ final class RedirectRepositoryTest extends FunctionalTestCase
     {
         self::assertSame(0, $this->getRedirectCount());
         $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_redirect.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_file.csv');
 
         self::assertSame($redirectBeforeCleanup, $this->getRedirectCount());
         $repository = $this->get(RedirectRepository::class);
@@ -142,7 +144,7 @@ final class RedirectRepositoryTest extends FunctionalTestCase
     {
         yield 'default demand' => [
             new Demand(),
-            6,
+            7,
         ];
 
         yield 'configuration with hitCount' => [
@@ -152,12 +154,12 @@ final class RedirectRepositoryTest extends FunctionalTestCase
 
         yield 'configuration with statusCode 302' => [
             new Demand(statusCodes: [302]),
-            1,
+            2,
         ];
 
         yield 'demand with statusCode 302, 303' => [
             new Demand(statusCodes: [302, 303]),
-            2,
+            3,
         ];
 
         yield 'demand with domain' => [
@@ -172,7 +174,7 @@ final class RedirectRepositoryTest extends FunctionalTestCase
 
         yield 'demand with path' => [
             new Demand(sourcePath: '/foo'),
-            5,
+            6,
         ];
 
         yield 'demand with target' => [
@@ -195,6 +197,7 @@ final class RedirectRepositoryTest extends FunctionalTestCase
     public function countRedirectsByDemandCountsCorrectly(Demand $demand, int $expectedCount): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_redirect.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_file.csv');
 
         $repository = $this->get(RedirectRepository::class);
         $redirectsCount = $repository->countRedirectsByDemand($demand);
@@ -259,7 +262,9 @@ final class RedirectRepositoryTest extends FunctionalTestCase
     public function countRedirectsByDemandRespectsUserPermissions(Demand $demand, int $expectedCount): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_redirect.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_file.csv');
 
+        $this->get(StorageRepository::class)->getStorageObject(1)->setEvaluatePermissions(true);
         $backendUser = $this->setUpBackendUser(2);
         $backendUser->userGroupsUID = [1];
         $backendUser->groupData['webmounts'] = '13';
@@ -293,7 +298,9 @@ final class RedirectRepositoryTest extends FunctionalTestCase
     public function filteredRedirectsArePaginatedCorrectly(Demand $demand, array $expectation): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_redirect.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_file.csv');
 
+        $this->get(StorageRepository::class)->getStorageObject(1)->setEvaluatePermissions(true);
         $backendUser = $this->setUpBackendUser(2);
         $backendUser->userGroupsUID = [1];
         $backendUser->groupData['webmounts'] = '13';

@@ -1,0 +1,3 @@
+"sys_file"
+,"uid","pid","storage","identifier","identifier_hash","folder_hash","extension","name","sha1","size"
+,1,0,1,"/test/example.txt","7bfbe611efc02b56579d6fbdbd6c64b189cd96f8","f133a4599372cf531bcdbfeb1116b9afe8d09b4f","txt","example.txt","da39a3ee5e6b4b0d3255bfef95601890afd80709",0
