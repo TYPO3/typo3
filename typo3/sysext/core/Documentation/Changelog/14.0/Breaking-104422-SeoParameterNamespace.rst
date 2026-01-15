@@ -1,12 +1,12 @@
 ..  include:: /Includes.rst.txt
 
-..  _breaking-85323-1721646316:
+..  _breaking-104422-1721646316:
 
 ================================================================
-Breaking: #85323 - Move GET parameters in sitemap into namespace
+Breaking: #104422 - Move GET parameters in sitemap into namespace
 ================================================================
 
-See :issue:`85323`
+See :issue:`104422`
 
 Description
 ===========
